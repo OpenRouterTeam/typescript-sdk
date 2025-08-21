@@ -1,0 +1,1596 @@
+openapi: 3.0.0
+info:
+  title: OpenRouter Chat Completions API
+  version: 1.0.0
+  description: OpenAI-compatible Chat Completions API with additional OpenRouter features
+  contact:
+    name: OpenRouter Support
+    url: https://openrouter.ai/docs
+    email: support@openrouter.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://{provider_url}/api/v1
+    variables:
+      provider_url:
+        default: openrouter.ai
+    description: Production server
+security:
+  - BearerAuth: []
+tags:
+  - name: Chat
+    description: Chat completion operations
+externalDocs:
+  description: OpenRouter Documentation
+  url: https://openrouter.ai/docs
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: API key as bearer token in Authorization header
+  schemas:
+    ChatCompletionMessageToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tool call identifier
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name to call
+            arguments:
+              type: string
+              description: Function arguments as JSON string
+          required:
+            - name
+            - arguments
+      required:
+        - id
+        - type
+        - function
+      description: Tool call made by the assistant
+    ReasoningDetailSummary:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.summary
+        summary:
+          type: string
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - anthropic-claude-v1
+          default: anthropic-claude-v1
+        index:
+          type: number
+      required:
+        - type
+        - summary
+      description: Reasoning summary detail
+    ReasoningDetailEncrypted:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.encrypted
+        data:
+          type: string
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - anthropic-claude-v1
+          default: anthropic-claude-v1
+        index:
+          type: number
+      required:
+        - type
+        - data
+      description: Encrypted reasoning detail
+    ReasoningDetailText:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.text
+        text:
+          type: string
+          nullable: true
+        signature:
+          type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - anthropic-claude-v1
+          default: anthropic-claude-v1
+        index:
+          type: number
+      required:
+        - type
+      description: Text reasoning detail
+    ReasoningDetail:
+      oneOf:
+        - $ref: '#/components/schemas/ReasoningDetailSummary'
+        - $ref: '#/components/schemas/ReasoningDetailEncrypted'
+        - $ref: '#/components/schemas/ReasoningDetailText'
+      discriminator:
+        propertyName: type
+        mapping:
+          reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
+          reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.text: '#/components/schemas/ReasoningDetailText'
+      description: Reasoning detail information
+    FileAnnotationDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - file
+        file:
+          type: object
+          properties:
+            hash:
+              type: string
+            name:
+              type: string
+            content:
+              type: array
+              items:
+                anyOf:
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - text
+                      text:
+                        type: string
+                    required:
+                      - type
+                      - text
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - image_url
+                      image_url:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                        required:
+                          - url
+                    required:
+                      - type
+                      - image_url
+          required:
+            - hash
+            - content
+      required:
+        - type
+        - file
+      description: File annotation with content
+    URLCitationAnnotationDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - url_citation
+        url_citation:
+          type: object
+          properties:
+            end_index:
+              type: number
+            start_index:
+              type: number
+            title:
+              type: string
+            url:
+              type: string
+            content:
+              type: string
+          required:
+            - end_index
+            - start_index
+            - title
+            - url
+      required:
+        - type
+        - url_citation
+      description: URL citation annotation
+    AnnotationDetail:
+      oneOf:
+        - $ref: '#/components/schemas/FileAnnotationDetail'
+        - $ref: '#/components/schemas/URLCitationAnnotationDetail'
+      discriminator:
+        propertyName: type
+        mapping:
+          file: '#/components/schemas/FileAnnotationDetail'
+          url_citation: '#/components/schemas/URLCitationAnnotationDetail'
+      description: Annotation information
+    ChatCompletionMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          type: string
+          nullable: true
+          description: Message content
+        reasoning:
+          type: string
+          nullable: true
+          description: Reasoning output
+        refusal:
+          type: string
+          nullable: true
+          description: Refusal message if content was refused
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+          description: Tool calls made by the assistant
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningDetail'
+          description: Reasoning details delta to send reasoning details back to upstream
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnnotationDetail'
+          description: Annotations delta to send annotations back to upstream
+      required:
+        - role
+        - content
+        - refusal
+      description: Assistant message in completion response
+    ChatCompletionTokenLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token
+        logprob:
+          type: number
+          description: Log probability of the token
+        bytes:
+          type: array
+          nullable: true
+          items:
+            type: number
+          description: UTF-8 bytes of the token
+        top_logprobs:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+              logprob:
+                type: number
+              bytes:
+                type: array
+                nullable: true
+                items:
+                  type: number
+            required:
+              - token
+              - logprob
+              - bytes
+          description: Top alternative tokens with probabilities
+      required:
+        - token
+        - logprob
+        - bytes
+        - top_logprobs
+      description: Token log probability information
+    ChatCompletionTokenLogprobs:
+      type: object
+      nullable: true
+      properties:
+        content:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+          description: Log probabilities for content tokens
+        refusal:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+          description: Log probabilities for refusal tokens
+      required:
+        - content
+        - refusal
+      description: Log probabilities for the completion
+    ChatCompletionChoice:
+      type: object
+      properties:
+        finish_reason:
+          type: string
+          nullable: true
+          enum:
+            - tool_calls
+            - stop
+            - length
+            - content_filter
+            - error
+          description: Reason the completion finished
+        index:
+          type: number
+          description: Choice index
+        message:
+          $ref: '#/components/schemas/ChatCompletionMessage'
+        logprobs:
+          $ref: '#/components/schemas/ChatCompletionTokenLogprobs'
+      required:
+        - finish_reason
+        - index
+        - message
+      description: Chat completion choice
+    CompletionUsage:
+      type: object
+      properties:
+        completion_tokens:
+          type: number
+          description: Number of tokens in the completion
+        prompt_tokens:
+          type: number
+          description: Number of tokens in the prompt
+        total_tokens:
+          type: number
+          description: Total number of tokens
+        completion_tokens_details:
+          type: object
+          properties:
+            reasoning_tokens:
+              type: number
+              description: Tokens used for reasoning
+            audio_tokens:
+              type: number
+              description: Tokens used for audio output
+            accepted_prediction_tokens:
+              type: number
+              description: Accepted prediction tokens
+            rejected_prediction_tokens:
+              type: number
+              description: Rejected prediction tokens
+          description: Detailed completion token usage
+        prompt_tokens_details:
+          type: object
+          properties:
+            cached_tokens:
+              type: number
+              description: Cached prompt tokens
+            audio_tokens:
+              type: number
+              description: Audio input tokens
+          description: Detailed prompt token usage
+      required:
+        - completion_tokens
+        - prompt_tokens
+        - total_tokens
+      description: Token usage statistics
+    ChatCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique completion identifier
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChoice'
+          description: List of completion choices
+        created:
+          type: number
+          description: Unix timestamp of creation
+        model:
+          type: string
+          description: Model used for completion
+        object:
+          type: string
+          enum:
+            - chat.completion
+        system_fingerprint:
+          type: string
+          description: System fingerprint
+          nullable: true
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+      required:
+        - id
+        - choices
+        - created
+        - model
+        - object
+      description: Chat completion response
+    ChatCompletionError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              nullable: true
+            message:
+              type: string
+            param:
+              type: string
+              nullable: true
+            type:
+              type: string
+          required:
+            - code
+            - message
+            - param
+            - type
+          description: Error object structure
+      required:
+        - error
+      description: Chat completion error response
+    ChatCompletionChunkChoiceDeltaToolCall:
+      type: object
+      properties:
+        index:
+          type: number
+          description: Tool call index in the array
+        id:
+          type: string
+          description: Tool call identifier
+        type:
+          type: string
+          enum:
+            - function
+          description: Tool call type
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name
+            arguments:
+              type: string
+              description: Function arguments as JSON string
+          description: Function call details
+      required:
+        - index
+      description: Tool call delta for streaming responses
+    ChatCompletionChunkChoiceDelta:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+          description: The role of the message author
+        content:
+          type: string
+          nullable: true
+          description: Message content delta
+        reasoning:
+          type: string
+          nullable: true
+          description: Reasoning content delta
+        refusal:
+          type: string
+          nullable: true
+          description: Refusal message delta
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChunkChoiceDeltaToolCall'
+          description: Tool calls delta
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningDetail'
+          description: Reasoning details delta to send reasoning details back to upstream
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnnotationDetail'
+          description: Annotations delta to send annotations back to upstream
+      description: Delta changes in streaming response
+    ChatCompletionChunkChoice:
+      type: object
+      properties:
+        delta:
+          $ref: '#/components/schemas/ChatCompletionChunkChoiceDelta'
+        finish_reason:
+          type: string
+          nullable: true
+          enum:
+            - tool_calls
+            - stop
+            - length
+            - content_filter
+            - error
+        index:
+          type: number
+        logprobs:
+          $ref: '#/components/schemas/ChatCompletionTokenLogprobs'
+      required:
+        - delta
+        - finish_reason
+        - index
+      description: Streaming completion choice chunk
+    ChatCompletionChunk:
+      type: object
+      properties:
+        id:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChunkChoice'
+        created:
+          type: number
+        model:
+          type: string
+        object:
+          type: string
+          enum:
+            - chat.completion.chunk
+        system_fingerprint:
+          type: string
+          nullable: true
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+      required:
+        - id
+        - choices
+        - created
+        - model
+        - object
+      description: Streaming chat completion chunk
+    ChatCompletionRole:
+      type: string
+      enum:
+        - system
+        - user
+        - assistant
+        - tool
+        - developer
+      description: The role of the message author
+    ChatCompletionContentPartText:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        text:
+          type: string
+      required:
+        - type
+        - text
+      description: Text content part
+    ChatCompletionContentPartImage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - image_url
+        image_url:
+          type: object
+          properties:
+            url:
+              type: string
+              description: 'URL of the image (data: URLs supported)'
+            detail:
+              type: string
+              enum:
+                - auto
+                - low
+                - high
+              description: Image detail level for vision models
+          required:
+            - url
+      required:
+        - type
+        - image_url
+      description: Image content part for vision models
+    ChatCompletionContentPartAudio:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_audio
+        input_audio:
+          type: object
+          properties:
+            data:
+              type: string
+              description: Base64 encoded audio data
+            format:
+              type: string
+              enum:
+                - wav
+                - mp3
+                - flac
+                - m4a
+                - ogg
+                - pcm16
+                - pcm24
+              description: Audio format
+          required:
+            - data
+            - format
+      required:
+        - type
+        - input_audio
+      description: Audio input content part
+    ChatCompletionContentPart:
+      oneOf:
+        - $ref: '#/components/schemas/ChatCompletionContentPartText'
+        - $ref: '#/components/schemas/ChatCompletionContentPartImage'
+        - $ref: '#/components/schemas/ChatCompletionContentPartAudio'
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/ChatCompletionContentPartText'
+          image_url: '#/components/schemas/ChatCompletionContentPartImage'
+          input_audio: '#/components/schemas/ChatCompletionContentPartAudio'
+      description: Content part for chat completion messages
+    ChatCompletionSystemMessageParam:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatCompletionContentPartText'
+          description: System message content
+        name:
+          type: string
+          description: Optional name for the system message
+      required:
+        - role
+        - content
+      description: System message for setting behavior
+    ChatCompletionUserMessageParam:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatCompletionContentPart'
+          description: User message content
+        name:
+          type: string
+          description: Optional name for the user
+      required:
+        - role
+        - content
+      description: User message
+    ChatCompletionAssistantMessageParam:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatCompletionContentPart'
+            - nullable: true
+          description: Assistant message content
+        name:
+          type: string
+          description: Optional name for the assistant
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+          description: Tool calls made by the assistant
+        refusal:
+          type: string
+          nullable: true
+          description: Refusal message if content was refused
+      required:
+        - role
+      description: Assistant message with tool calls and audio support
+    ChatCompletionToolMessageParam:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - tool
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatCompletionContentPart'
+          description: Tool response content
+        tool_call_id:
+          type: string
+          description: ID of the tool call this message responds to
+      required:
+        - role
+        - content
+        - tool_call_id
+      description: Tool response message
+    ChatCompletionMessageParam:
+      oneOf:
+        - $ref: '#/components/schemas/ChatCompletionSystemMessageParam'
+        - $ref: '#/components/schemas/ChatCompletionUserMessageParam'
+        - $ref: '#/components/schemas/ChatCompletionAssistantMessageParam'
+        - $ref: '#/components/schemas/ChatCompletionToolMessageParam'
+      discriminator:
+        propertyName: role
+        mapping:
+          system: '#/components/schemas/ChatCompletionSystemMessageParam'
+          user: '#/components/schemas/ChatCompletionUserMessageParam'
+          assistant: '#/components/schemas/ChatCompletionAssistantMessageParam'
+          tool: '#/components/schemas/ChatCompletionToolMessageParam'
+      description: Chat completion message with role-based discrimination
+    ChatCompletionTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 64
+              description: Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+            description:
+              type: string
+              description: Function description for the model
+            parameters:
+              type: object
+              properties: {}
+              description: Function parameters as JSON Schema object
+            strict:
+              type: boolean
+              nullable: true
+              description: Enable strict schema adherence
+          required:
+            - name
+          description: Function definition for tool calling
+      required:
+        - type
+        - function
+      description: Tool definition for function calling
+    ChatCompletionNamedToolChoice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name to call
+          required:
+            - name
+      required:
+        - type
+        - function
+      description: Named tool choice for specific function
+    ChatCompletionToolChoiceOption:
+      anyOf:
+        - type: string
+          enum:
+            - none
+        - type: string
+          enum:
+            - auto
+        - type: string
+          enum:
+            - required
+        - $ref: '#/components/schemas/ChatCompletionNamedToolChoice'
+      description: Tool choice configuration
+    ChatCompletionStreamOptions:
+      type: object
+      properties:
+        include_usage:
+          type: boolean
+          description: Include usage information in streaming response
+      description: Streaming configuration options
+    ResponseFormatJsonSchemaSchema:
+      type: object
+      properties: {}
+      description: The schema for the response format, described as a JSON Schema object
+    ChatCompletionCreateParams:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionMessageParam'
+          minItems: 1
+          description: List of messages for the conversation
+          example:
+            - role: user
+              content: Hello, how are you?
+        model:
+          type: string
+          description: Model to use for completion
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          description: Frequency penalty (-2.0 to 2.0)
+        logit_bias:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: number
+          description: Token logit bias adjustments
+        logprobs:
+          type: boolean
+          nullable: true
+          description: Return log probabilities
+        top_logprobs:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 20
+          description: Number of top log probabilities to return (0-20)
+        max_completion_tokens:
+          type: number
+          nullable: true
+          minimum: 1
+          description: Maximum tokens in completion
+        max_tokens:
+          type: number
+          nullable: true
+          minimum: 1
+          description: Maximum tokens (deprecated, use max_completion_tokens)
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          description: Presence penalty (-2.0 to 2.0)
+        reasoning:
+          type: object
+          nullable: true
+          properties:
+            enabled:
+              type: boolean
+              description: Enables reasoning with default settings. Only work for some models.
+            effort:
+              type: string
+              nullable: true
+              enum:
+                - high
+                - medium
+                - low
+                - minimal
+              description: OpenAI-style reasoning effort setting
+            max_tokens:
+              type: number
+              nullable: true
+              description: non-OpenAI-style reasoning effort setting
+            exclude:
+              type: boolean
+              default: false
+          description: Reasoning configuration
+        response_format:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - text
+              required:
+                - type
+              description: Default text response format
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - json_object
+              required:
+                - type
+              description: JSON object response format
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - json_schema
+                json_schema:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 64
+                      description: Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+                    description:
+                      type: string
+                      description: Schema description for the model
+                    schema:
+                      $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
+                    strict:
+                      type: boolean
+                      nullable: true
+                      description: Enable strict schema adherence
+                  required:
+                    - name
+              required:
+                - type
+                - json_schema
+              description: JSON Schema response format for structured outputs
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - grammar
+                grammar:
+                  type: string
+                  description: Custom grammar for text generation
+              required:
+                - type
+                - grammar
+              description: Custom grammar response format
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - python
+              required:
+                - type
+              description: Python code response format
+          description: Response format configuration
+        seed:
+          type: integer
+          nullable: true
+          description: Random seed for deterministic outputs
+        stop:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+              maxItems: 4
+            - nullable: true
+          description: Stop sequences (up to 4)
+        stream:
+          type: boolean
+          nullable: true
+          default: false
+          description: Enable streaming response
+        stream_options:
+          allOf:
+            - $ref: '#/components/schemas/ChatCompletionStreamOptions'
+            - nullable: true
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+          default: 1
+          description: Sampling temperature (0-2)
+        tool_choice:
+          $ref: '#/components/schemas/ChatCompletionToolChoiceOption'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTool'
+          description: Available tools for function calling
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+          default: 1
+          description: Nucleus sampling parameter (0-1)
+        user:
+          type: string
+          description: Unique user identifier
+        models:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: Order of models to fallback to for this request
+        reasoning_effort:
+          type: string
+          nullable: true
+          enum:
+            - high
+            - medium
+            - low
+            - minimal
+          description: Reasoning effort
+        provider:
+          type: object
+          nullable: true
+          properties:
+            allow_fallbacks:
+              type: boolean
+              nullable: true
+              description: >
+                Whether to allow backup providers to serve requests
+
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+            require_parameters:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+            data_collection:
+              type: string
+              nullable: true
+              enum:
+                - deny
+                - allow
+              description: >
+                Data collection setting. If no available model provider meets the requirement, your request will return an error.
+
+                - allow: (default) allow providers which store user data non-transiently and may train on it
+
+                - deny: use only providers which do not collect user data.
+
+            order:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                    enum:
+                      - AnyScale
+                      - Cent-ML
+                      - HuggingFace
+                      - Hyperbolic 2
+                      - Lepton
+                      - Lynn 2
+                      - Lynn
+                      - Mancer
+                      - Modal
+                      - OctoAI
+                      - Recursal
+                      - Reflection
+                      - Replicate
+                      - SambaNova 2
+                      - SF Compute
+                      - Together 2
+                      - 01.AI
+                      - AI21
+                      - AionLabs
+                      - Alibaba
+                      - Amazon Bedrock
+                      - Anthropic
+                      - AtlasCloud
+                      - Atoma
+                      - Avian
+                      - Azure
+                      - BaseTen
+                      - Cerebras
+                      - Chutes
+                      - Cloudflare
+                      - Cohere
+                      - CrofAI
+                      - Crusoe
+                      - DeepInfra
+                      - DeepSeek
+                      - Enfer
+                      - Featherless
+                      - Fireworks
+                      - Friendli
+                      - GMICloud
+                      - Google
+                      - Google AI Studio
+                      - Groq
+                      - Hyperbolic
+                      - Inception
+                      - InferenceNet
+                      - Infermatic
+                      - Inflection
+                      - InoCloud
+                      - Kluster
+                      - Lambda
+                      - Liquid
+                      - Mancer 2
+                      - Meta
+                      - Minimax
+                      - Mistral
+                      - Moonshot AI
+                      - Morph
+                      - NCompass
+                      - Nebius
+                      - NextBit
+                      - Nineteen
+                      - Novita
+                      - OpenAI
+                      - OpenInference
+                      - Parasail
+                      - Perplexity
+                      - Phala
+                      - SambaNova
+                      - Stealth
+                      - Switchpoint
+                      - Targon
+                      - Together
+                      - Ubicloud
+                      - Venice
+                      - WandB
+                      - xAI
+                      - Z.AI
+                  - type: string
+              description: >-
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+            only:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                    enum:
+                      - AnyScale
+                      - Cent-ML
+                      - HuggingFace
+                      - Hyperbolic 2
+                      - Lepton
+                      - Lynn 2
+                      - Lynn
+                      - Mancer
+                      - Modal
+                      - OctoAI
+                      - Recursal
+                      - Reflection
+                      - Replicate
+                      - SambaNova 2
+                      - SF Compute
+                      - Together 2
+                      - 01.AI
+                      - AI21
+                      - AionLabs
+                      - Alibaba
+                      - Amazon Bedrock
+                      - Anthropic
+                      - AtlasCloud
+                      - Atoma
+                      - Avian
+                      - Azure
+                      - BaseTen
+                      - Cerebras
+                      - Chutes
+                      - Cloudflare
+                      - Cohere
+                      - CrofAI
+                      - Crusoe
+                      - DeepInfra
+                      - DeepSeek
+                      - Enfer
+                      - Featherless
+                      - Fireworks
+                      - Friendli
+                      - GMICloud
+                      - Google
+                      - Google AI Studio
+                      - Groq
+                      - Hyperbolic
+                      - Inception
+                      - InferenceNet
+                      - Infermatic
+                      - Inflection
+                      - InoCloud
+                      - Kluster
+                      - Lambda
+                      - Liquid
+                      - Mancer 2
+                      - Meta
+                      - Minimax
+                      - Mistral
+                      - Moonshot AI
+                      - Morph
+                      - NCompass
+                      - Nebius
+                      - NextBit
+                      - Nineteen
+                      - Novita
+                      - OpenAI
+                      - OpenInference
+                      - Parasail
+                      - Perplexity
+                      - Phala
+                      - SambaNova
+                      - Stealth
+                      - Switchpoint
+                      - Targon
+                      - Together
+                      - Ubicloud
+                      - Venice
+                      - WandB
+                      - xAI
+                      - Z.AI
+                  - type: string
+              description: >-
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+            ignore:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                    enum:
+                      - AnyScale
+                      - Cent-ML
+                      - HuggingFace
+                      - Hyperbolic 2
+                      - Lepton
+                      - Lynn 2
+                      - Lynn
+                      - Mancer
+                      - Modal
+                      - OctoAI
+                      - Recursal
+                      - Reflection
+                      - Replicate
+                      - SambaNova 2
+                      - SF Compute
+                      - Together 2
+                      - 01.AI
+                      - AI21
+                      - AionLabs
+                      - Alibaba
+                      - Amazon Bedrock
+                      - Anthropic
+                      - AtlasCloud
+                      - Atoma
+                      - Avian
+                      - Azure
+                      - BaseTen
+                      - Cerebras
+                      - Chutes
+                      - Cloudflare
+                      - Cohere
+                      - CrofAI
+                      - Crusoe
+                      - DeepInfra
+                      - DeepSeek
+                      - Enfer
+                      - Featherless
+                      - Fireworks
+                      - Friendli
+                      - GMICloud
+                      - Google
+                      - Google AI Studio
+                      - Groq
+                      - Hyperbolic
+                      - Inception
+                      - InferenceNet
+                      - Infermatic
+                      - Inflection
+                      - InoCloud
+                      - Kluster
+                      - Lambda
+                      - Liquid
+                      - Mancer 2
+                      - Meta
+                      - Minimax
+                      - Mistral
+                      - Moonshot AI
+                      - Morph
+                      - NCompass
+                      - Nebius
+                      - NextBit
+                      - Nineteen
+                      - Novita
+                      - OpenAI
+                      - OpenInference
+                      - Parasail
+                      - Perplexity
+                      - Phala
+                      - SambaNova
+                      - Stealth
+                      - Switchpoint
+                      - Targon
+                      - Together
+                      - Ubicloud
+                      - Venice
+                      - WandB
+                      - xAI
+                      - Z.AI
+                  - type: string
+              description: >-
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+            quantizations:
+              type: array
+              nullable: true
+              items:
+                type: string
+                enum:
+                  - int4
+                  - int8
+                  - fp4
+                  - fp6
+                  - fp8
+                  - fp16
+                  - bf16
+                  - fp32
+                  - unknown
+              description: A list of quantization levels to filter the provider by.
+            sort:
+              type: string
+              nullable: true
+              enum:
+                - price
+                - throughput
+                - latency
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+            max_price:
+              type: object
+              properties:
+                prompt:
+                  anyOf:
+                    - type: number
+                    - type: string
+                    - {}
+                completion:
+                  anyOf:
+                    - type: number
+                    - type: string
+                    - {}
+                image:
+                  anyOf:
+                    - type: number
+                    - type: string
+                    - {}
+                audio:
+                  anyOf:
+                    - type: number
+                    - type: string
+                    - {}
+                request:
+                  anyOf:
+                    - type: number
+                    - type: string
+                    - {}
+              additionalProperties: false
+              description: >-
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+          additionalProperties: false
+          description: When multiple model providers are available, optionally indicate your routing preference.
+        plugins:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - moderation
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - web
+                  max_results:
+                    type: number
+                  search_prompt:
+                    type: string
+                  engine:
+                    type: string
+                    enum:
+                      - native
+                      - exa
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - chain-of-thought
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - file-parser
+                  max_files:
+                    type: number
+                  pdf:
+                    type: object
+                    properties:
+                      engine:
+                        type: string
+                        enum:
+                          - mistral-ocr
+                          - pdf-text
+                          - native
+                required:
+                  - id
+          description: Plugins you want to enable for this request, including their settings.
+      required:
+        - messages
+      description: Chat completion request parameters
+    ChatStreamCompletionCreateParams:
+      allOf:
+        - $ref: "#/components/schemas/ChatCompletionCreateParams"
+        - type: object
+          properties:
+            stream:
+              type: boolean
+              enum:
+                - true
+              default: true
+              description: Enable streaming response
+  parameters: {}
+paths:
+  /chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: Create a chat completion
+      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+      tags:
+        - Chat
+      requestBody:
+        description: Chat completion request parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionCreateParams'
+      responses:
+        '200':
+          description: Successful chat completion response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+                description: Non-streaming response when stream=false
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '401':
+          description: Unauthorized - invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+  /chat/completions#stream:
+    post:
+      operationId: streamChatCompletion
+      summary: Create a chat completion
+      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+      tags:
+        - Chat
+      requestBody:
+        description: Chat completion request parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatStreamCompletionCreateParams'
+      responses:
+        '200':
+          description: Successful chat completion response
+          content:
+            text/event-stream:
+              x-speakeasy-sse-sentinel: '[DONE]'
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ChatCompletionChunk'
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '401':
+          description: Unauthorized - invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionError'
