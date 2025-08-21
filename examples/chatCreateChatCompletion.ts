@@ -34,4 +34,4 @@ async function main() {
   console.log(result.choices[0].message.content);
 }
 
-main().catch(console.error);
+main()
