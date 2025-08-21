@@ -2,7 +2,7 @@
 
 
 <div align="center">
-    <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/aca39d3b-cd32-45a2-b66f-b757edcacbeb" />
+    <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/19d8ad52-cb56-4f87-8bce-9a9c2233ac16" />
     <h1>OpenRouter TypeScript SDK</h1>
     <p>Developer-friendly TypeScript SDK specifically catered to leverage the <strong>OpenRouter</strong> API.</p>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" /></a>
