@@ -1,18 +1,14 @@
-# open-router
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *open-router* API.
 
-<div align="left">
-    <a href="https://www.speakeasy.com/?utm_source=open-router&utm_campaign=typescript"><img src="https://custom-icon-badges.demolab.com/badge/-Built%20By%20Speakeasy-212015?style=for-the-badge&logoColor=FBE331&logo=speakeasy&labelColor=545454" /></a>
-    <a href="https://opensource.org/licenses/MIT">
-        <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
-    </a>
+
+<div align="center">
+    <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/aca39d3b-cd32-45a2-b66f-b757edcacbeb" />
+    <h1>OpenRouter TypeScript SDK</h1>
+    <p>Developer-friendly TypeScript SDK specifically catered to leverage the <strong>OpenRouter</strong> API.</p>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" /></a>
 </div>
 
 
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/sheldon-vaughn-test/sandbox). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
