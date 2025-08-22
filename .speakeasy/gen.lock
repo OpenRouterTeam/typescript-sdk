@@ -3,10 +3,12 @@ id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
   docChecksum: 6f798c05b20e0174a12ebf742dbb933c
   docVersion: 1.0.0
-  speakeasyVersion: 1.606.0
-  generationVersion: 2.686.7
-  releaseVersion: 0.1.1
-  configChecksum: 9c3652dad41b1fb64f97d2f21e79b66f
+  speakeasyVersion: 1.606.2
+  generationVersion: 2.687.1
+  releaseVersion: 0.1.2
+  configChecksum: 9841cb52271fe13ecf53635b80c623c7
+  repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
+  installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
   typescript:
     additionalDependencies: 0.1.0
