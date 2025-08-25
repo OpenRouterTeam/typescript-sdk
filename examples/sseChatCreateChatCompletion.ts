@@ -18,7 +18,7 @@ const openRouter = new OpenRouter({
 });
 
 async function main() {
-  const result = await openRouter.chat.streamChatCompletion({
+  const result = await openRouter.chat.completeStream({
     model: "openai/gpt-3.5-turbo",
     messages: [
       {
