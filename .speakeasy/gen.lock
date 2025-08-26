@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
-  docChecksum: 6f798c05b20e0174a12ebf742dbb933c
+  docChecksum: 36a7cb5013d52318029144e2f7478507
   docVersion: 1.0.0
-  speakeasyVersion: 1.606.2
+  speakeasyVersion: 1.606.4
   generationVersion: 2.687.1
-  releaseVersion: 0.1.2
-  configChecksum: 9841cb52271fe13ecf53635b80c623c7
+  releaseVersion: 0.3.1
+  configChecksum: 8ca151e42ffdb65b3610b37402fc03ce
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
@@ -14,6 +14,7 @@ features:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
     core: 3.21.20
+    customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.0
     enumUnions: 0.1.0
@@ -23,6 +24,7 @@ features:
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
     methodArguments: 0.1.2
+    nameOverrides: 2.81.2
     nullables: 0.1.1
     responseFormat: 0.2.3
     retries: 2.83.0
@@ -224,13 +226,13 @@ generatedFiles:
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/chatCreateChatCompletion.example.ts
+  - examples/chatComplete.example.ts
   - examples/package.json
   - jsr.json
   - package.json
   - src/core.ts
-  - src/funcs/chatCreateChatCompletion.ts
-  - src/funcs/chatStreamChatCompletion.ts
+  - src/funcs/chatComplete.ts
+  - src/funcs/chatCompleteStream.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts

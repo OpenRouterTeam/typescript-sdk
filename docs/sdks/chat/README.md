@@ -7,10 +7,10 @@ Chat completion operations
 
 ### Available Operations
 
-* [createChatCompletion](#createchatcompletion) - Create a chat completion
-* [streamChatCompletion](#streamchatcompletion) - Create a chat completion
+* [complete](#complete) - Create a chat completion
+* [completeStream](#completestream) - Create a chat completion
 
-## createChatCompletion
+## complete
 
 Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
@@ -25,7 +25,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -46,7 +46,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "open-router/core.js";
-import { chatCreateChatCompletion } from "open-router/funcs/chatCreateChatCompletion.js";
+import { chatComplete } from "open-router/funcs/chatComplete.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -55,7 +55,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatCreateChatCompletion(openRouter, {
+  const res = await chatComplete(openRouter, {
     messages: [
       {
         role: "user",
@@ -67,7 +67,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatCreateChatCompletion failed:", res.error);
+    console.log("chatComplete failed:", res.error);
   }
 }
 
@@ -95,7 +95,7 @@ run();
 | errors.ChatCompletionError    | 500                           | application/json              |
 | errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## streamChatCompletion
+## completeStream
 
 Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
@@ -110,7 +110,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.streamChatCompletion({
+  const result = await openRouter.chat.completeStream({
     messages: [
       {
         role: "user",
@@ -134,7 +134,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "open-router/core.js";
-import { chatStreamChatCompletion } from "open-router/funcs/chatStreamChatCompletion.js";
+import { chatCompleteStream } from "open-router/funcs/chatCompleteStream.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -143,7 +143,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatStreamChatCompletion(openRouter, {
+  const res = await chatCompleteStream(openRouter, {
     messages: [
       {
         role: "user",
@@ -158,7 +158,7 @@ async function run() {
     console.log(event);
   }
   } else {
-    console.log("chatStreamChatCompletion failed:", res.error);
+    console.log("chatCompleteStream failed:", res.error);
   }
 }
 

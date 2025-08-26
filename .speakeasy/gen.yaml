@@ -25,7 +25,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.2
+  version: 0.3.1
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -36,7 +36,7 @@ typescript:
   clientServerStatusCodesAsErrors: true
   constFieldsAlwaysOptional: false
   defaultErrorName: OpenRouterDefaultError
-  enableCustomCodeRegions: false
+  enableCustomCodeRegions: true
   enableMCPServer: false
   enableReactQuery: false
   enumFormat: union

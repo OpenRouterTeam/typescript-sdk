@@ -18,8 +18,11 @@ const openRouter = new OpenRouter({
 });
 
 async function main() {
+  const isStreaming = true; // Set to false for non-streaming response
+  
   const result = await openRouter.chat.complete({
     model: "openai/gpt-3.5-turbo",
+    stream: isStreaming,
     messages: [
       {
         role: "user",
@@ -28,10 +31,19 @@ async function main() {
     ],
   });
 
-  console.log("Full response object:");
-  console.log(result);
-  console.log("\nActual message content:");
-  console.log(result.choices[0].message.content);
+  // Logical evaluator to handle response based on stream setting
+  if (isStreaming) {
+    console.log("Streaming response:");
+    for await (const chunk of result) {
+      if (chunk.data?.choices?.[0]?.delta?.content) {
+        process.stdout.write(chunk.data.choices[0].delta.content);
+      }
+    }
+    console.log("\n\nStreaming completed");
+  } else {
+    console.log("Non-streaming response:");
+    console.log(JSON.stringify(result, null, 2));
+  }
 }
 
 main()

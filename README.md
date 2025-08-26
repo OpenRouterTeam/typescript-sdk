@@ -98,7 +98,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -135,7 +135,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -160,8 +160,8 @@ run();
 
 ### [chat](docs/sdks/chat/README.md)
 
-* [createChatCompletion](docs/sdks/chat/README.md#createchatcompletion) - Create a chat completion
-* [streamChatCompletion](docs/sdks/chat/README.md#streamchatcompletion) - Create a chat completion
+* [complete](docs/sdks/chat/README.md#complete) - Create a chat completion
+* [completeStream](docs/sdks/chat/README.md#completestream) - Create a chat completion
 
 
 </details>
@@ -182,8 +182,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [`chatCreateChatCompletion`](docs/sdks/chat/README.md#createchatcompletion) - Create a chat completion
-- [`chatStreamChatCompletion`](docs/sdks/chat/README.md#streamchatcompletion) - Create a chat completion
+- [`chatComplete`](docs/sdks/chat/README.md#complete) - Create a chat completion
+- [`chatCompleteStream`](docs/sdks/chat/README.md#completestream) - Create a chat completion
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -205,7 +205,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.streamChatCompletion({
+  const result = await openRouter.chat.completeStream({
     messages: [
       {
         role: "user",
@@ -242,7 +242,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -288,7 +288,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -330,7 +330,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.chat.createChatCompletion({
+    const result = await openRouter.chat.complete({
       messages: [
         {
           role: "user",
@@ -405,7 +405,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
@@ -433,7 +433,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",

@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "open-router/core.js";
-import { chatCreateChatCompletion } from "open-router/funcs/chatCreateChatCompletion.js";
+import { chatComplete } from "open-router/funcs/chatComplete.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,7 +29,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatCreateChatCompletion(openRouter, {
+  const res = await chatComplete(openRouter, {
     messages: [
       {
         role: "user",
@@ -41,7 +41,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatCreateChatCompletion failed:", res.error);
+    console.log("chatComplete failed:", res.error);
   }
 }
 

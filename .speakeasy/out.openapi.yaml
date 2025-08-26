@@ -1544,6 +1544,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletionError'
+      x-speakeasy-name-override: complete
   /chat/completions#stream:
     post:
       operationId: streamChatCompletion
@@ -1594,3 +1595,4 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletionError'
+      x-speakeasy-name-override: completeStream

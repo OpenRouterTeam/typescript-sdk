@@ -1,21 +1,20 @@
-speakeasyVersion: 1.606.2
+speakeasyVersion: 1.606.4
 sources:
     OpenRouter Chat Completions API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:bf6bc68ff25525216444419ba3574b08569118e93a693d9f1e71f155290af886
-        sourceBlobDigest: sha256:8c017dcce7a7eae1209a1ca75db02a31ef837c5b36736e8e494c8607e3b50c59
+        sourceRevisionDigest: sha256:e71622a945be51370039187beb05ff7e45799cb6f52e104b930163938cd3c50e
+        sourceBlobDigest: sha256:78142a97cdd4cdda52229772dfbee227d9c8fece8a1364ad458e153416933bee
         tags:
             - latest
-            - speakeasy-sdk-regen-1755878981
             - 1.0.0
 targets:
     open-router:
         source: OpenRouter Chat Completions API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:bf6bc68ff25525216444419ba3574b08569118e93a693d9f1e71f155290af886
-        sourceBlobDigest: sha256:8c017dcce7a7eae1209a1ca75db02a31ef837c5b36736e8e494c8607e3b50c59
+        sourceRevisionDigest: sha256:e71622a945be51370039187beb05ff7e45799cb6f52e104b930163938cd3c50e
+        sourceBlobDigest: sha256:78142a97cdd4cdda52229772dfbee227d9c8fece8a1364ad458e153416933bee
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:1970171bfa04192e1a570f4ca4cb002ae4df494258559d8d4cc1347dc2ffdebe
+        codeSamplesRevisionDigest: sha256:3d2039abea301b14aa354d834b8ed4a7569699a4e50294bee30001d016d705d1
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -25,6 +24,7 @@ workflow:
                 - location: .speakeasy/OAS_files/chat-completions-openapi.yaml
             overlays:
                 - location: .speakeasy/OAS_files/overlay.yaml
+                - location: .speakeasy/OAS_files/speakeasy-modifications-overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api

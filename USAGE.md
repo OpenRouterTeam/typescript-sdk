@@ -7,7 +7,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.createChatCompletion({
+  const result = await openRouter.chat.complete({
     messages: [
       {
         role: "user",
