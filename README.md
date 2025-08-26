@@ -188,7 +188,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
 
-<!-- Start Server-sent event streaming [eventstream] -->
+<!-- No Server-sent event streaming [eventstream] -->
 ## Server-sent event streaming
 
 [Server-sent events][mdn-sse] are used to stream content from certain
@@ -224,9 +224,50 @@ run();
 
 ```
 
+You can also pass the `stream` parameter to the `complete` method to control streaming behavior dynamically:
+
+```typescript
+import { OpenRouter } from "open-router";
+
+const openRouter = new OpenRouter({
+  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const isStreaming = true; // Set to false for non-streaming response
+  
+  const result = await openRouter.chat.complete({
+    model: "openai/gpt-3.5-turbo",
+    stream: isStreaming,
+    messages: [
+      {
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+  });
+
+  // Handle response based on stream setting
+  if (isStreaming) {
+    console.log("Streaming response:");
+    for await (const chunk of result) {
+      if (chunk.data?.choices?.[0]?.delta?.content) {
+        process.stdout.write(chunk.data.choices[0].delta.content);
+      }
+    }
+    console.log("\n\nStreaming completed");
+  } else {
+    console.log("Non-streaming response:");
+    console.log(JSON.stringify(result, null, 2));
+  }
+}
+
+run();
+```
+
 [mdn-sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
 [mdn-for-await-of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
-<!-- End Server-sent event streaming [eventstream] -->
+<!-- No Server-sent event streaming [eventstream] -->
 
 <!-- Start Retries [retries] -->
 ## Retries
