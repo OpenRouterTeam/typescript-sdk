@@ -107,7 +107,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();
@@ -144,7 +147,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();
@@ -161,7 +167,6 @@ run();
 ### [chat](docs/sdks/chat/README.md)
 
 * [complete](docs/sdks/chat/README.md#complete) - Create a chat completion
-* [completeStream](docs/sdks/chat/README.md#completestream) - Create a chat completion
 
 
 </details>
@@ -183,7 +188,6 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 <summary>Available standalone functions</summary>
 
 - [`chatComplete`](docs/sdks/chat/README.md#complete) - Create a chat completion
-- [`chatCompleteStream`](docs/sdks/chat/README.md#completestream) - Create a chat completion
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -303,7 +307,10 @@ async function run() {
     },
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();
@@ -338,7 +345,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();
@@ -380,7 +390,10 @@ async function run() {
       ],
     });
 
-    console.log(result);
+    for await (const event of result) {
+      // Handle the event
+      console.log(event);
+    }
   } catch (error) {
     // The base class for HTTP error responses
     if (error instanceof errors.OpenRouterError) {
@@ -455,7 +468,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();
@@ -483,7 +499,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();

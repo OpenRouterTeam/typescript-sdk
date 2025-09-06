@@ -1,4 +1,4 @@
-speakeasyVersion: 1.606.4
+speakeasyVersion: 1.611.0
 sources:
     OpenRouter Chat Completions API:
         sourceNamespace: open-router-chat-completions-api
@@ -13,8 +13,6 @@ targets:
         sourceNamespace: open-router-chat-completions-api
         sourceRevisionDigest: sha256:e71622a945be51370039187beb05ff7e45799cb6f52e104b930163938cd3c50e
         sourceBlobDigest: sha256:78142a97cdd4cdda52229772dfbee227d9c8fece8a1364ad458e153416933bee
-        codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:3d2039abea301b14aa354d834b8ed4a7569699a4e50294bee30001d016d705d1
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -24,7 +22,6 @@ workflow:
                 - location: .speakeasy/OAS_files/chat-completions-openapi.yaml
             overlays:
                 - location: .speakeasy/OAS_files/overlay.yaml
-                - location: .speakeasy/OAS_files/speakeasy-modifications-overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api

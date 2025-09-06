@@ -36,7 +36,7 @@ import {
 /**
  * OpenAI-style reasoning effort setting
  */
-export const ChatCompletionCreateParamsEffort = {
+export const Effort = {
   High: "high",
   Medium: "medium",
   Low: "low",
@@ -45,14 +45,12 @@ export const ChatCompletionCreateParamsEffort = {
 /**
  * OpenAI-style reasoning effort setting
  */
-export type ChatCompletionCreateParamsEffort = ClosedEnum<
-  typeof ChatCompletionCreateParamsEffort
->;
+export type Effort = ClosedEnum<typeof Effort>;
 
 /**
  * Reasoning configuration
  */
-export type ChatCompletionCreateParamsReasoning = {
+export type Reasoning = {
   /**
    * Enables reasoning with default settings. Only work for some models.
    */
@@ -60,7 +58,7 @@ export type ChatCompletionCreateParamsReasoning = {
   /**
    * OpenAI-style reasoning effort setting
    */
-  effort?: ChatCompletionCreateParamsEffort | null | undefined;
+  effort?: Effort | null | undefined;
   /**
    * non-OpenAI-style reasoning effort setting
    */
@@ -68,46 +66,40 @@ export type ChatCompletionCreateParamsReasoning = {
   exclude?: boolean | undefined;
 };
 
-export const ChatCompletionCreateParamsTypePython = {
+export const TypePython = {
   Python: "python",
 } as const;
-export type ChatCompletionCreateParamsTypePython = ClosedEnum<
-  typeof ChatCompletionCreateParamsTypePython
->;
+export type TypePython = ClosedEnum<typeof TypePython>;
 
 /**
  * Python code response format
  */
-export type ChatCompletionCreateParamsResponseFormatPython = {
-  type: ChatCompletionCreateParamsTypePython;
+export type ResponseFormatPython = {
+  type: TypePython;
 };
 
-export const ChatCompletionCreateParamsTypeGrammar = {
+export const TypeGrammar = {
   Grammar: "grammar",
 } as const;
-export type ChatCompletionCreateParamsTypeGrammar = ClosedEnum<
-  typeof ChatCompletionCreateParamsTypeGrammar
->;
+export type TypeGrammar = ClosedEnum<typeof TypeGrammar>;
 
 /**
  * Custom grammar response format
  */
-export type ChatCompletionCreateParamsResponseFormatGrammar = {
-  type: ChatCompletionCreateParamsTypeGrammar;
+export type ResponseFormatGrammar = {
+  type: TypeGrammar;
   /**
    * Custom grammar for text generation
    */
   grammar: string;
 };
 
-export const ChatCompletionCreateParamsTypeJSONSchema = {
+export const TypeJSONSchema = {
   JsonSchema: "json_schema",
 } as const;
-export type ChatCompletionCreateParamsTypeJSONSchema = ClosedEnum<
-  typeof ChatCompletionCreateParamsTypeJSONSchema
->;
+export type TypeJSONSchema = ClosedEnum<typeof TypeJSONSchema>;
 
-export type ChatCompletionCreateParamsJsonSchema = {
+export type JsonSchema = {
   /**
    * Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
    */
@@ -129,23 +121,21 @@ export type ChatCompletionCreateParamsJsonSchema = {
 /**
  * JSON Schema response format for structured outputs
  */
-export type ChatCompletionCreateParamsResponseFormatJSONSchema = {
-  type: ChatCompletionCreateParamsTypeJSONSchema;
-  jsonSchema: ChatCompletionCreateParamsJsonSchema;
+export type ResponseFormatJSONSchema = {
+  type: TypeJSONSchema;
+  jsonSchema: JsonSchema;
 };
 
-export const ChatCompletionCreateParamsTypeJSONObject = {
+export const TypeJSONObject = {
   JsonObject: "json_object",
 } as const;
-export type ChatCompletionCreateParamsTypeJSONObject = ClosedEnum<
-  typeof ChatCompletionCreateParamsTypeJSONObject
->;
+export type TypeJSONObject = ClosedEnum<typeof TypeJSONObject>;
 
 /**
  * JSON object response format
  */
-export type ChatCompletionCreateParamsResponseFormatJSONObject = {
-  type: ChatCompletionCreateParamsTypeJSONObject;
+export type ResponseFormatJSONObject = {
+  type: TypeJSONObject;
 };
 
 export const ChatCompletionCreateParamsTypeText = {
@@ -158,29 +148,29 @@ export type ChatCompletionCreateParamsTypeText = ClosedEnum<
 /**
  * Default text response format
  */
-export type ChatCompletionCreateParamsResponseFormatText = {
+export type ResponseFormatText = {
   type: ChatCompletionCreateParamsTypeText;
 };
 
 /**
  * Response format configuration
  */
-export type ChatCompletionCreateParamsResponseFormatUnion =
-  | ChatCompletionCreateParamsResponseFormatJSONSchema
-  | ChatCompletionCreateParamsResponseFormatGrammar
-  | ChatCompletionCreateParamsResponseFormatText
-  | ChatCompletionCreateParamsResponseFormatJSONObject
-  | ChatCompletionCreateParamsResponseFormatPython;
+export type ResponseFormat =
+  | ResponseFormatJSONSchema
+  | ResponseFormatGrammar
+  | ResponseFormatText
+  | ResponseFormatJSONObject
+  | ResponseFormatPython;
 
 /**
  * Stop sequences (up to 4)
  */
-export type ChatCompletionCreateParamsStop = string | Array<string> | any;
+export type Stop = string | Array<string> | any;
 
 /**
  * Streaming configuration options
  */
-export type ChatCompletionCreateParamsStreamOptions = {
+export type StreamOptions = {
   /**
    * Include usage information in streaming response
    */
@@ -190,7 +180,7 @@ export type ChatCompletionCreateParamsStreamOptions = {
 /**
  * Reasoning effort
  */
-export const ChatCompletionCreateParamsReasoningEffort = {
+export const ReasoningEffort = {
   High: "high",
   Medium: "medium",
   Low: "low",
@@ -199,9 +189,7 @@ export const ChatCompletionCreateParamsReasoningEffort = {
 /**
  * Reasoning effort
  */
-export type ChatCompletionCreateParamsReasoningEffort = ClosedEnum<
-  typeof ChatCompletionCreateParamsReasoningEffort
->;
+export type ReasoningEffort = ClosedEnum<typeof ReasoningEffort>;
 
 /**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.
@@ -210,7 +198,7 @@ export type ChatCompletionCreateParamsReasoningEffort = ClosedEnum<
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export const ChatCompletionCreateParamsDataCollection = {
+export const DataCollection = {
   Deny: "deny",
   Allow: "allow",
 } as const;
@@ -221,11 +209,9 @@ export const ChatCompletionCreateParamsDataCollection = {
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export type ChatCompletionCreateParamsDataCollection = ClosedEnum<
-  typeof ChatCompletionCreateParamsDataCollection
->;
+export type DataCollection = ClosedEnum<typeof DataCollection>;
 
-export const ChatCompletionCreateParamsOrderEnum = {
+export const OrderEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -305,15 +291,11 @@ export const ChatCompletionCreateParamsOrderEnum = {
   XAI: "xAI",
   ZAi: "Z.AI",
 } as const;
-export type ChatCompletionCreateParamsOrderEnum = ClosedEnum<
-  typeof ChatCompletionCreateParamsOrderEnum
->;
+export type OrderEnum = ClosedEnum<typeof OrderEnum>;
 
-export type ChatCompletionCreateParamsOrderUnion =
-  | ChatCompletionCreateParamsOrderEnum
-  | string;
+export type Order = OrderEnum | string;
 
-export const ChatCompletionCreateParamsOnlyEnum = {
+export const OnlyEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -393,15 +375,11 @@ export const ChatCompletionCreateParamsOnlyEnum = {
   XAI: "xAI",
   ZAi: "Z.AI",
 } as const;
-export type ChatCompletionCreateParamsOnlyEnum = ClosedEnum<
-  typeof ChatCompletionCreateParamsOnlyEnum
->;
+export type OnlyEnum = ClosedEnum<typeof OnlyEnum>;
 
-export type ChatCompletionCreateParamsOnlyUnion =
-  | ChatCompletionCreateParamsOnlyEnum
-  | string;
+export type Only = OnlyEnum | string;
 
-export const ChatCompletionCreateParamsIgnoreEnum = {
+export const IgnoreEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -481,15 +459,11 @@ export const ChatCompletionCreateParamsIgnoreEnum = {
   XAI: "xAI",
   ZAi: "Z.AI",
 } as const;
-export type ChatCompletionCreateParamsIgnoreEnum = ClosedEnum<
-  typeof ChatCompletionCreateParamsIgnoreEnum
->;
+export type IgnoreEnum = ClosedEnum<typeof IgnoreEnum>;
 
-export type ChatCompletionCreateParamsIgnoreUnion =
-  | ChatCompletionCreateParamsIgnoreEnum
-  | string;
+export type Ignore = IgnoreEnum | string;
 
-export const ChatCompletionCreateParamsQuantization = {
+export const Quantization = {
   Int4: "int4",
   Int8: "int8",
   Fp4: "fp4",
@@ -500,14 +474,12 @@ export const ChatCompletionCreateParamsQuantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type ChatCompletionCreateParamsQuantization = ClosedEnum<
-  typeof ChatCompletionCreateParamsQuantization
->;
+export type Quantization = ClosedEnum<typeof Quantization>;
 
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export const ChatCompletionCreateParamsSort = {
+export const Sort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
@@ -515,24 +487,22 @@ export const ChatCompletionCreateParamsSort = {
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type ChatCompletionCreateParamsSort = ClosedEnum<
-  typeof ChatCompletionCreateParamsSort
->;
+export type Sort = ClosedEnum<typeof Sort>;
 
-export type ChatCompletionCreateParamsPrompt = number | string | any;
+export type Prompt = number | string | any;
 
-export type ChatCompletionCreateParamsCompletion = number | string | any;
+export type Completion = number | string | any;
 
-export type ChatCompletionCreateParamsImage = number | string | any;
+export type Image = number | string | any;
 
-export type ChatCompletionCreateParamsAudio = number | string | any;
+export type Audio = number | string | any;
 
-export type ChatCompletionCreateParamsRequest = number | string | any;
+export type RequestT = number | string | any;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type ChatCompletionCreateParamsMaxPrice = {
+export type MaxPrice = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -543,7 +513,7 @@ export type ChatCompletionCreateParamsMaxPrice = {
 /**
  * When multiple model providers are available, optionally indicate your routing preference.
  */
-export type ChatCompletionCreateParamsProvider = {
+export type Provider = {
   /**
    * Whether to allow backup providers to serve requests
    *
@@ -563,117 +533,96 @@ export type ChatCompletionCreateParamsProvider = {
    * - allow: (default) allow providers which store user data non-transiently and may train on it
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: ChatCompletionCreateParamsDataCollection | null | undefined;
+  dataCollection?: DataCollection | null | undefined;
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
-  order?:
-    | Array<ChatCompletionCreateParamsOrderEnum | string>
-    | null
-    | undefined;
+  order?: Array<OrderEnum | string> | null | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
-  only?: Array<ChatCompletionCreateParamsOnlyEnum | string> | null | undefined;
+  only?: Array<OnlyEnum | string> | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
-  ignore?:
-    | Array<ChatCompletionCreateParamsIgnoreEnum | string>
-    | null
-    | undefined;
+  ignore?: Array<IgnoreEnum | string> | null | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
-  quantizations?:
-    | Array<ChatCompletionCreateParamsQuantization>
-    | null
-    | undefined;
+  quantizations?: Array<Quantization> | null | undefined;
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: ChatCompletionCreateParamsSort | null | undefined;
+  sort?: Sort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: ChatCompletionCreateParamsMaxPrice | undefined;
+  maxPrice?: MaxPrice | undefined;
 };
 
-export const ChatCompletionCreateParamsIdFileParser = {
+export const IdFileParser = {
   FileParser: "file-parser",
 } as const;
-export type ChatCompletionCreateParamsIdFileParser = ClosedEnum<
-  typeof ChatCompletionCreateParamsIdFileParser
->;
+export type IdFileParser = ClosedEnum<typeof IdFileParser>;
 
-export const ChatCompletionCreateParamsPdfEngine = {
+export const PdfEngine = {
   MistralOcr: "mistral-ocr",
   PdfText: "pdf-text",
   Native: "native",
 } as const;
-export type ChatCompletionCreateParamsPdfEngine = ClosedEnum<
-  typeof ChatCompletionCreateParamsPdfEngine
->;
+export type PdfEngine = ClosedEnum<typeof PdfEngine>;
 
-export type ChatCompletionCreateParamsPdf = {
-  engine?: ChatCompletionCreateParamsPdfEngine | undefined;
+export type Pdf = {
+  engine?: PdfEngine | undefined;
 };
 
-export type ChatCompletionCreateParamsPluginFileParser = {
-  id: ChatCompletionCreateParamsIdFileParser;
+export type PluginFileParser = {
+  id: IdFileParser;
   maxFiles?: number | undefined;
-  pdf?: ChatCompletionCreateParamsPdf | undefined;
+  pdf?: Pdf | undefined;
 };
 
-export const ChatCompletionCreateParamsIdChainOfThought = {
+export const IdChainOfThought = {
   ChainOfThought: "chain-of-thought",
 } as const;
-export type ChatCompletionCreateParamsIdChainOfThought = ClosedEnum<
-  typeof ChatCompletionCreateParamsIdChainOfThought
->;
+export type IdChainOfThought = ClosedEnum<typeof IdChainOfThought>;
 
-export type ChatCompletionCreateParamsPluginChainOfThought = {
-  id: ChatCompletionCreateParamsIdChainOfThought;
+export type PluginChainOfThought = {
+  id: IdChainOfThought;
 };
 
-export const ChatCompletionCreateParamsIdWeb = {
+export const IdWeb = {
   Web: "web",
 } as const;
-export type ChatCompletionCreateParamsIdWeb = ClosedEnum<
-  typeof ChatCompletionCreateParamsIdWeb
->;
+export type IdWeb = ClosedEnum<typeof IdWeb>;
 
-export const ChatCompletionCreateParamsEngine = {
+export const Engine = {
   Native: "native",
   Exa: "exa",
 } as const;
-export type ChatCompletionCreateParamsEngine = ClosedEnum<
-  typeof ChatCompletionCreateParamsEngine
->;
+export type Engine = ClosedEnum<typeof Engine>;
 
-export type ChatCompletionCreateParamsPluginWeb = {
-  id: ChatCompletionCreateParamsIdWeb;
+export type PluginWeb = {
+  id: IdWeb;
   maxResults?: number | undefined;
   searchPrompt?: string | undefined;
-  engine?: ChatCompletionCreateParamsEngine | undefined;
+  engine?: Engine | undefined;
 };
 
-export const ChatCompletionCreateParamsIdModeration = {
+export const IdModeration = {
   Moderation: "moderation",
 } as const;
-export type ChatCompletionCreateParamsIdModeration = ClosedEnum<
-  typeof ChatCompletionCreateParamsIdModeration
->;
+export type IdModeration = ClosedEnum<typeof IdModeration>;
 
-export type ChatCompletionCreateParamsPluginModeration = {
-  id: ChatCompletionCreateParamsIdModeration;
+export type PluginModeration = {
+  id: IdModeration;
 };
 
-export type ChatCompletionCreateParamsPluginUnion =
-  | ChatCompletionCreateParamsPluginModeration
-  | ChatCompletionCreateParamsPluginWeb
-  | ChatCompletionCreateParamsPluginChainOfThought
-  | ChatCompletionCreateParamsPluginFileParser;
+export type Plugin =
+  | PluginModeration
+  | PluginWeb
+  | PluginChainOfThought
+  | PluginFileParser;
 
 /**
  * Chat completion request parameters
@@ -722,16 +671,16 @@ export type ChatCompletionCreateParams = {
   /**
    * Reasoning configuration
    */
-  reasoning?: ChatCompletionCreateParamsReasoning | null | undefined;
+  reasoning?: Reasoning | null | undefined;
   /**
    * Response format configuration
    */
   responseFormat?:
-    | ChatCompletionCreateParamsResponseFormatJSONSchema
-    | ChatCompletionCreateParamsResponseFormatGrammar
-    | ChatCompletionCreateParamsResponseFormatText
-    | ChatCompletionCreateParamsResponseFormatJSONObject
-    | ChatCompletionCreateParamsResponseFormatPython
+    | ResponseFormatJSONSchema
+    | ResponseFormatGrammar
+    | ResponseFormatText
+    | ResponseFormatJSONObject
+    | ResponseFormatPython
     | undefined;
   /**
    * Random seed for deterministic outputs
@@ -745,7 +694,7 @@ export type ChatCompletionCreateParams = {
    * Enable streaming response
    */
   stream?: boolean | null | undefined;
-  streamOptions?: ChatCompletionCreateParamsStreamOptions | null | undefined;
+  streamOptions?: StreamOptions | null | undefined;
   /**
    * Sampling temperature (0-2)
    */
@@ -773,56 +722,48 @@ export type ChatCompletionCreateParams = {
   /**
    * Reasoning effort
    */
-  reasoningEffort?:
-    | ChatCompletionCreateParamsReasoningEffort
-    | null
-    | undefined;
+  reasoningEffort?: ReasoningEffort | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
-  provider?: ChatCompletionCreateParamsProvider | null | undefined;
+  provider?: Provider | null | undefined;
   /**
    * Plugins you want to enable for this request, including their settings.
    */
   plugins?:
     | Array<
-      | ChatCompletionCreateParamsPluginModeration
-      | ChatCompletionCreateParamsPluginWeb
-      | ChatCompletionCreateParamsPluginChainOfThought
-      | ChatCompletionCreateParamsPluginFileParser
+      PluginModeration | PluginWeb | PluginChainOfThought | PluginFileParser
     >
     | undefined;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsEffort$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsEffort
-> = z.nativeEnum(ChatCompletionCreateParamsEffort);
+export const Effort$inboundSchema: z.ZodNativeEnum<typeof Effort> = z
+  .nativeEnum(Effort);
 
 /** @internal */
-export const ChatCompletionCreateParamsEffort$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsEffort
-> = ChatCompletionCreateParamsEffort$inboundSchema;
+export const Effort$outboundSchema: z.ZodNativeEnum<typeof Effort> =
+  Effort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsEffort$ {
-  /** @deprecated use `ChatCompletionCreateParamsEffort$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsEffort$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsEffort$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsEffort$outboundSchema;
+export namespace Effort$ {
+  /** @deprecated use `Effort$inboundSchema` instead. */
+  export const inboundSchema = Effort$inboundSchema;
+  /** @deprecated use `Effort$outboundSchema` instead. */
+  export const outboundSchema = Effort$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsReasoning$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsReasoning,
+export const Reasoning$inboundSchema: z.ZodType<
+  Reasoning,
   z.ZodTypeDef,
   unknown
 > = z.object({
   enabled: z.boolean().optional(),
-  effort: z.nullable(ChatCompletionCreateParamsEffort$inboundSchema).optional(),
+  effort: z.nullable(Effort$inboundSchema).optional(),
   max_tokens: z.nullable(z.number()).optional(),
   exclude: z.boolean().default(false),
 }).transform((v) => {
@@ -832,7 +773,7 @@ export const ChatCompletionCreateParamsReasoning$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsReasoning$Outbound = {
+export type Reasoning$Outbound = {
   enabled?: boolean | undefined;
   effort?: string | null | undefined;
   max_tokens?: number | null | undefined;
@@ -840,14 +781,13 @@ export type ChatCompletionCreateParamsReasoning$Outbound = {
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsReasoning$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsReasoning$Outbound,
+export const Reasoning$outboundSchema: z.ZodType<
+  Reasoning$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsReasoning
+  Reasoning
 > = z.object({
   enabled: z.boolean().optional(),
-  effort: z.nullable(ChatCompletionCreateParamsEffort$outboundSchema)
-    .optional(),
+  effort: z.nullable(Effort$outboundSchema).optional(),
   maxTokens: z.nullable(z.number()).optional(),
   exclude: z.boolean().default(false),
 }).transform((v) => {
@@ -860,251 +800,202 @@ export const ChatCompletionCreateParamsReasoning$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsReasoning$ {
-  /** @deprecated use `ChatCompletionCreateParamsReasoning$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsReasoning$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsReasoning$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsReasoning$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsReasoning$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsReasoning$Outbound;
+export namespace Reasoning$ {
+  /** @deprecated use `Reasoning$inboundSchema` instead. */
+  export const inboundSchema = Reasoning$inboundSchema;
+  /** @deprecated use `Reasoning$outboundSchema` instead. */
+  export const outboundSchema = Reasoning$outboundSchema;
+  /** @deprecated use `Reasoning$Outbound` instead. */
+  export type Outbound = Reasoning$Outbound;
 }
 
-export function chatCompletionCreateParamsReasoningToJSON(
-  chatCompletionCreateParamsReasoning: ChatCompletionCreateParamsReasoning,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsReasoning$outboundSchema.parse(
-      chatCompletionCreateParamsReasoning,
-    ),
-  );
+export function reasoningToJSON(reasoning: Reasoning): string {
+  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
 }
 
-export function chatCompletionCreateParamsReasoningFromJSON(
+export function reasoningFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsReasoning, SDKValidationError> {
+): SafeParseResult<Reasoning, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsReasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsReasoning' from JSON`,
+    (x) => Reasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Reasoning' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsTypePython$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypePython> = z.nativeEnum(
-    ChatCompletionCreateParamsTypePython,
-  );
+export const TypePython$inboundSchema: z.ZodNativeEnum<typeof TypePython> = z
+  .nativeEnum(TypePython);
 
 /** @internal */
-export const ChatCompletionCreateParamsTypePython$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypePython> =
-    ChatCompletionCreateParamsTypePython$inboundSchema;
+export const TypePython$outboundSchema: z.ZodNativeEnum<typeof TypePython> =
+  TypePython$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsTypePython$ {
-  /** @deprecated use `ChatCompletionCreateParamsTypePython$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsTypePython$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsTypePython$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsTypePython$outboundSchema;
+export namespace TypePython$ {
+  /** @deprecated use `TypePython$inboundSchema` instead. */
+  export const inboundSchema = TypePython$inboundSchema;
+  /** @deprecated use `TypePython$outboundSchema` instead. */
+  export const outboundSchema = TypePython$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatPython$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatPython,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: ChatCompletionCreateParamsTypePython$inboundSchema,
-  });
+export const ResponseFormatPython$inboundSchema: z.ZodType<
+  ResponseFormatPython,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: TypePython$inboundSchema,
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsResponseFormatPython$Outbound = {
+export type ResponseFormatPython$Outbound = {
   type: string;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatPython$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatPython$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatPython
-  > = z.object({
-    type: ChatCompletionCreateParamsTypePython$outboundSchema,
-  });
+export const ResponseFormatPython$outboundSchema: z.ZodType<
+  ResponseFormatPython$Outbound,
+  z.ZodTypeDef,
+  ResponseFormatPython
+> = z.object({
+  type: TypePython$outboundSchema,
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsResponseFormatPython$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatPython$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatPython$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatPython$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatPython$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatPython$Outbound` instead. */
-  export type Outbound =
-    ChatCompletionCreateParamsResponseFormatPython$Outbound;
+export namespace ResponseFormatPython$ {
+  /** @deprecated use `ResponseFormatPython$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormatPython$inboundSchema;
+  /** @deprecated use `ResponseFormatPython$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormatPython$outboundSchema;
+  /** @deprecated use `ResponseFormatPython$Outbound` instead. */
+  export type Outbound = ResponseFormatPython$Outbound;
 }
 
-export function chatCompletionCreateParamsResponseFormatPythonToJSON(
-  chatCompletionCreateParamsResponseFormatPython:
-    ChatCompletionCreateParamsResponseFormatPython,
+export function responseFormatPythonToJSON(
+  responseFormatPython: ResponseFormatPython,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatPython$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatPython,
-    ),
+    ResponseFormatPython$outboundSchema.parse(responseFormatPython),
   );
 }
 
-export function chatCompletionCreateParamsResponseFormatPythonFromJSON(
+export function responseFormatPythonFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatPython,
-  SDKValidationError
-> {
+): SafeParseResult<ResponseFormatPython, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatPython$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatPython' from JSON`,
+    (x) => ResponseFormatPython$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormatPython' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeGrammar$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeGrammar> = z.nativeEnum(
-    ChatCompletionCreateParamsTypeGrammar,
-  );
+export const TypeGrammar$inboundSchema: z.ZodNativeEnum<typeof TypeGrammar> = z
+  .nativeEnum(TypeGrammar);
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeGrammar$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeGrammar> =
-    ChatCompletionCreateParamsTypeGrammar$inboundSchema;
+export const TypeGrammar$outboundSchema: z.ZodNativeEnum<typeof TypeGrammar> =
+  TypeGrammar$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsTypeGrammar$ {
-  /** @deprecated use `ChatCompletionCreateParamsTypeGrammar$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsTypeGrammar$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsTypeGrammar$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsTypeGrammar$outboundSchema;
+export namespace TypeGrammar$ {
+  /** @deprecated use `TypeGrammar$inboundSchema` instead. */
+  export const inboundSchema = TypeGrammar$inboundSchema;
+  /** @deprecated use `TypeGrammar$outboundSchema` instead. */
+  export const outboundSchema = TypeGrammar$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatGrammar,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeGrammar$inboundSchema,
-    grammar: z.string(),
-  });
+export const ResponseFormatGrammar$inboundSchema: z.ZodType<
+  ResponseFormatGrammar,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: TypeGrammar$inboundSchema,
+  grammar: z.string(),
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsResponseFormatGrammar$Outbound = {
+export type ResponseFormatGrammar$Outbound = {
   type: string;
   grammar: string;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatGrammar$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatGrammar
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeGrammar$outboundSchema,
-    grammar: z.string(),
-  });
+export const ResponseFormatGrammar$outboundSchema: z.ZodType<
+  ResponseFormatGrammar$Outbound,
+  z.ZodTypeDef,
+  ResponseFormatGrammar
+> = z.object({
+  type: TypeGrammar$outboundSchema,
+  grammar: z.string(),
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsResponseFormatGrammar$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatGrammar$Outbound` instead. */
-  export type Outbound =
-    ChatCompletionCreateParamsResponseFormatGrammar$Outbound;
+export namespace ResponseFormatGrammar$ {
+  /** @deprecated use `ResponseFormatGrammar$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormatGrammar$inboundSchema;
+  /** @deprecated use `ResponseFormatGrammar$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormatGrammar$outboundSchema;
+  /** @deprecated use `ResponseFormatGrammar$Outbound` instead. */
+  export type Outbound = ResponseFormatGrammar$Outbound;
 }
 
-export function chatCompletionCreateParamsResponseFormatGrammarToJSON(
-  chatCompletionCreateParamsResponseFormatGrammar:
-    ChatCompletionCreateParamsResponseFormatGrammar,
+export function responseFormatGrammarToJSON(
+  responseFormatGrammar: ResponseFormatGrammar,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatGrammar,
-    ),
+    ResponseFormatGrammar$outboundSchema.parse(responseFormatGrammar),
   );
 }
 
-export function chatCompletionCreateParamsResponseFormatGrammarFromJSON(
+export function responseFormatGrammarFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatGrammar,
-  SDKValidationError
-> {
+): SafeParseResult<ResponseFormatGrammar, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatGrammar' from JSON`,
+    (x) => ResponseFormatGrammar$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormatGrammar' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeJSONSchema$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeJSONSchema> = z
-    .nativeEnum(ChatCompletionCreateParamsTypeJSONSchema);
+export const TypeJSONSchema$inboundSchema: z.ZodNativeEnum<
+  typeof TypeJSONSchema
+> = z.nativeEnum(TypeJSONSchema);
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeJSONSchema$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeJSONSchema> =
-    ChatCompletionCreateParamsTypeJSONSchema$inboundSchema;
+export const TypeJSONSchema$outboundSchema: z.ZodNativeEnum<
+  typeof TypeJSONSchema
+> = TypeJSONSchema$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsTypeJSONSchema$ {
-  /** @deprecated use `ChatCompletionCreateParamsTypeJSONSchema$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsTypeJSONSchema$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsTypeJSONSchema$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsTypeJSONSchema$outboundSchema;
+export namespace TypeJSONSchema$ {
+  /** @deprecated use `TypeJSONSchema$inboundSchema` instead. */
+  export const inboundSchema = TypeJSONSchema$inboundSchema;
+  /** @deprecated use `TypeJSONSchema$outboundSchema` instead. */
+  export const outboundSchema = TypeJSONSchema$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsJsonSchema$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsJsonSchema,
+export const JsonSchema$inboundSchema: z.ZodType<
+  JsonSchema,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1115,7 +1006,7 @@ export const ChatCompletionCreateParamsJsonSchema$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsJsonSchema$Outbound = {
+export type JsonSchema$Outbound = {
   name: string;
   description?: string | undefined;
   schema?: ResponseFormatJsonSchemaSchema$Outbound | undefined;
@@ -1123,10 +1014,10 @@ export type ChatCompletionCreateParamsJsonSchema$Outbound = {
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsJsonSchema$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsJsonSchema$Outbound,
+export const JsonSchema$outboundSchema: z.ZodType<
+  JsonSchema$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsJsonSchema
+  JsonSchema
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
@@ -1138,209 +1029,166 @@ export const ChatCompletionCreateParamsJsonSchema$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsJsonSchema$ {
-  /** @deprecated use `ChatCompletionCreateParamsJsonSchema$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsJsonSchema$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsJsonSchema$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsJsonSchema$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsJsonSchema$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsJsonSchema$Outbound;
+export namespace JsonSchema$ {
+  /** @deprecated use `JsonSchema$inboundSchema` instead. */
+  export const inboundSchema = JsonSchema$inboundSchema;
+  /** @deprecated use `JsonSchema$outboundSchema` instead. */
+  export const outboundSchema = JsonSchema$outboundSchema;
+  /** @deprecated use `JsonSchema$Outbound` instead. */
+  export type Outbound = JsonSchema$Outbound;
 }
 
-export function chatCompletionCreateParamsJsonSchemaToJSON(
-  chatCompletionCreateParamsJsonSchema: ChatCompletionCreateParamsJsonSchema,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsJsonSchema$outboundSchema.parse(
-      chatCompletionCreateParamsJsonSchema,
-    ),
-  );
+export function jsonSchemaToJSON(jsonSchema: JsonSchema): string {
+  return JSON.stringify(JsonSchema$outboundSchema.parse(jsonSchema));
 }
 
-export function chatCompletionCreateParamsJsonSchemaFromJSON(
+export function jsonSchemaFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsJsonSchema, SDKValidationError> {
+): SafeParseResult<JsonSchema, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsJsonSchema$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsJsonSchema' from JSON`,
+    (x) => JsonSchema$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'JsonSchema' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatJSONSchema,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeJSONSchema$inboundSchema,
-    json_schema: z.lazy(() =>
-      ChatCompletionCreateParamsJsonSchema$inboundSchema
-    ),
-  }).transform((v) => {
-    return remap$(v, {
-      "json_schema": "jsonSchema",
-    });
+export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
+  ResponseFormatJSONSchema,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: TypeJSONSchema$inboundSchema,
+  json_schema: z.lazy(() => JsonSchema$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "json_schema": "jsonSchema",
   });
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound = {
+export type ResponseFormatJSONSchema$Outbound = {
   type: string;
-  json_schema: ChatCompletionCreateParamsJsonSchema$Outbound;
+  json_schema: JsonSchema$Outbound;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatJSONSchema
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeJSONSchema$outboundSchema,
-    jsonSchema: z.lazy(() =>
-      ChatCompletionCreateParamsJsonSchema$outboundSchema
-    ),
-  }).transform((v) => {
-    return remap$(v, {
-      jsonSchema: "json_schema",
-    });
+export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
+  ResponseFormatJSONSchema$Outbound,
+  z.ZodTypeDef,
+  ResponseFormatJSONSchema
+> = z.object({
+  type: TypeJSONSchema$outboundSchema,
+  jsonSchema: z.lazy(() => JsonSchema$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    jsonSchema: "json_schema",
   });
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsResponseFormatJSONSchema$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound` instead. */
-  export type Outbound =
-    ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound;
+export namespace ResponseFormatJSONSchema$ {
+  /** @deprecated use `ResponseFormatJSONSchema$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormatJSONSchema$inboundSchema;
+  /** @deprecated use `ResponseFormatJSONSchema$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormatJSONSchema$outboundSchema;
+  /** @deprecated use `ResponseFormatJSONSchema$Outbound` instead. */
+  export type Outbound = ResponseFormatJSONSchema$Outbound;
 }
 
-export function chatCompletionCreateParamsResponseFormatJSONSchemaToJSON(
-  chatCompletionCreateParamsResponseFormatJSONSchema:
-    ChatCompletionCreateParamsResponseFormatJSONSchema,
+export function responseFormatJSONSchemaToJSON(
+  responseFormatJSONSchema: ResponseFormatJSONSchema,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatJSONSchema,
-    ),
+    ResponseFormatJSONSchema$outboundSchema.parse(responseFormatJSONSchema),
   );
 }
 
-export function chatCompletionCreateParamsResponseFormatJSONSchemaFromJSON(
+export function responseFormatJSONSchemaFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatJSONSchema,
-  SDKValidationError
-> {
+): SafeParseResult<ResponseFormatJSONSchema, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatJSONSchema' from JSON`,
+    (x) => ResponseFormatJSONSchema$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormatJSONSchema' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeJSONObject$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeJSONObject> = z
-    .nativeEnum(ChatCompletionCreateParamsTypeJSONObject);
+export const TypeJSONObject$inboundSchema: z.ZodNativeEnum<
+  typeof TypeJSONObject
+> = z.nativeEnum(TypeJSONObject);
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeJSONObject$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsTypeJSONObject> =
-    ChatCompletionCreateParamsTypeJSONObject$inboundSchema;
+export const TypeJSONObject$outboundSchema: z.ZodNativeEnum<
+  typeof TypeJSONObject
+> = TypeJSONObject$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsTypeJSONObject$ {
-  /** @deprecated use `ChatCompletionCreateParamsTypeJSONObject$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsTypeJSONObject$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsTypeJSONObject$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsTypeJSONObject$outboundSchema;
+export namespace TypeJSONObject$ {
+  /** @deprecated use `TypeJSONObject$inboundSchema` instead. */
+  export const inboundSchema = TypeJSONObject$inboundSchema;
+  /** @deprecated use `TypeJSONObject$outboundSchema` instead. */
+  export const outboundSchema = TypeJSONObject$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatJSONObject,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeJSONObject$inboundSchema,
-  });
+export const ResponseFormatJSONObject$inboundSchema: z.ZodType<
+  ResponseFormatJSONObject,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: TypeJSONObject$inboundSchema,
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsResponseFormatJSONObject$Outbound = {
+export type ResponseFormatJSONObject$Outbound = {
   type: string;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatJSONObject$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatJSONObject
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeJSONObject$outboundSchema,
-  });
+export const ResponseFormatJSONObject$outboundSchema: z.ZodType<
+  ResponseFormatJSONObject$Outbound,
+  z.ZodTypeDef,
+  ResponseFormatJSONObject
+> = z.object({
+  type: TypeJSONObject$outboundSchema,
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsResponseFormatJSONObject$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatJSONObject$Outbound` instead. */
-  export type Outbound =
-    ChatCompletionCreateParamsResponseFormatJSONObject$Outbound;
+export namespace ResponseFormatJSONObject$ {
+  /** @deprecated use `ResponseFormatJSONObject$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormatJSONObject$inboundSchema;
+  /** @deprecated use `ResponseFormatJSONObject$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormatJSONObject$outboundSchema;
+  /** @deprecated use `ResponseFormatJSONObject$Outbound` instead. */
+  export type Outbound = ResponseFormatJSONObject$Outbound;
 }
 
-export function chatCompletionCreateParamsResponseFormatJSONObjectToJSON(
-  chatCompletionCreateParamsResponseFormatJSONObject:
-    ChatCompletionCreateParamsResponseFormatJSONObject,
+export function responseFormatJSONObjectToJSON(
+  responseFormatJSONObject: ResponseFormatJSONObject,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatJSONObject,
-    ),
+    ResponseFormatJSONObject$outboundSchema.parse(responseFormatJSONObject),
   );
 }
 
-export function chatCompletionCreateParamsResponseFormatJSONObjectFromJSON(
+export function responseFormatJSONObjectFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatJSONObject,
-  SDKValidationError
-> {
+): SafeParseResult<ResponseFormatJSONObject, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatJSONObject' from JSON`,
+    (x) => ResponseFormatJSONObject$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormatJSONObject' from JSON`,
   );
 }
 
@@ -1367,216 +1215,161 @@ export namespace ChatCompletionCreateParamsTypeText$ {
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatText$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatText,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeText$inboundSchema,
-  });
+export const ResponseFormatText$inboundSchema: z.ZodType<
+  ResponseFormatText,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ChatCompletionCreateParamsTypeText$inboundSchema,
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsResponseFormatText$Outbound = {
+export type ResponseFormatText$Outbound = {
   type: string;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatText$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatText$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatText
-  > = z.object({
-    type: ChatCompletionCreateParamsTypeText$outboundSchema,
-  });
+export const ResponseFormatText$outboundSchema: z.ZodType<
+  ResponseFormatText$Outbound,
+  z.ZodTypeDef,
+  ResponseFormatText
+> = z.object({
+  type: ChatCompletionCreateParamsTypeText$outboundSchema,
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsResponseFormatText$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatText$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatText$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatText$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatText$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatText$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsResponseFormatText$Outbound;
+export namespace ResponseFormatText$ {
+  /** @deprecated use `ResponseFormatText$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormatText$inboundSchema;
+  /** @deprecated use `ResponseFormatText$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormatText$outboundSchema;
+  /** @deprecated use `ResponseFormatText$Outbound` instead. */
+  export type Outbound = ResponseFormatText$Outbound;
 }
 
-export function chatCompletionCreateParamsResponseFormatTextToJSON(
-  chatCompletionCreateParamsResponseFormatText:
-    ChatCompletionCreateParamsResponseFormatText,
+export function responseFormatTextToJSON(
+  responseFormatText: ResponseFormatText,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatText$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatText,
-    ),
+    ResponseFormatText$outboundSchema.parse(responseFormatText),
   );
 }
 
-export function chatCompletionCreateParamsResponseFormatTextFromJSON(
+export function responseFormatTextFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatText,
-  SDKValidationError
-> {
+): SafeParseResult<ResponseFormatText, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatText$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatText' from JSON`,
+    (x) => ResponseFormatText$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormatText' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsResponseFormatUnion$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatUnion,
-    z.ZodTypeDef,
-    unknown
-  > = z.union([
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatText$inboundSchema),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatPython$inboundSchema),
-  ]);
-
-/** @internal */
-export type ChatCompletionCreateParamsResponseFormatUnion$Outbound =
-  | ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound
-  | ChatCompletionCreateParamsResponseFormatGrammar$Outbound
-  | ChatCompletionCreateParamsResponseFormatText$Outbound
-  | ChatCompletionCreateParamsResponseFormatJSONObject$Outbound
-  | ChatCompletionCreateParamsResponseFormatPython$Outbound;
-
-/** @internal */
-export const ChatCompletionCreateParamsResponseFormatUnion$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsResponseFormatUnion$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsResponseFormatUnion
-  > = z.union([
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema
-    ),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatText$outboundSchema),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatPython$outboundSchema),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsResponseFormatUnion$ {
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsResponseFormatUnion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsResponseFormatUnion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsResponseFormatUnion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsResponseFormatUnion$Outbound;
-}
-
-export function chatCompletionCreateParamsResponseFormatUnionToJSON(
-  chatCompletionCreateParamsResponseFormatUnion:
-    ChatCompletionCreateParamsResponseFormatUnion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsResponseFormatUnion$outboundSchema.parse(
-      chatCompletionCreateParamsResponseFormatUnion,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsResponseFormatUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsResponseFormatUnion,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatCompletionCreateParamsResponseFormatUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsResponseFormatUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsStop$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsStop,
+export const ResponseFormat$inboundSchema: z.ZodType<
+  ResponseFormat,
   z.ZodTypeDef,
   unknown
-> = z.union([z.string(), z.array(z.string()), z.any()]);
+> = z.union([
+  z.lazy(() => ResponseFormatJSONSchema$inboundSchema),
+  z.lazy(() => ResponseFormatGrammar$inboundSchema),
+  z.lazy(() => ResponseFormatText$inboundSchema),
+  z.lazy(() => ResponseFormatJSONObject$inboundSchema),
+  z.lazy(() => ResponseFormatPython$inboundSchema),
+]);
 
 /** @internal */
-export type ChatCompletionCreateParamsStop$Outbound =
-  | string
-  | Array<string>
-  | any;
+export type ResponseFormat$Outbound =
+  | ResponseFormatJSONSchema$Outbound
+  | ResponseFormatGrammar$Outbound
+  | ResponseFormatText$Outbound
+  | ResponseFormatJSONObject$Outbound
+  | ResponseFormatPython$Outbound;
 
 /** @internal */
-export const ChatCompletionCreateParamsStop$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsStop$Outbound,
+export const ResponseFormat$outboundSchema: z.ZodType<
+  ResponseFormat$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsStop
-> = z.union([z.string(), z.array(z.string()), z.any()]);
+  ResponseFormat
+> = z.union([
+  z.lazy(() => ResponseFormatJSONSchema$outboundSchema),
+  z.lazy(() => ResponseFormatGrammar$outboundSchema),
+  z.lazy(() => ResponseFormatText$outboundSchema),
+  z.lazy(() => ResponseFormatJSONObject$outboundSchema),
+  z.lazy(() => ResponseFormatPython$outboundSchema),
+]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsStop$ {
-  /** @deprecated use `ChatCompletionCreateParamsStop$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsStop$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsStop$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsStop$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsStop$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsStop$Outbound;
+export namespace ResponseFormat$ {
+  /** @deprecated use `ResponseFormat$inboundSchema` instead. */
+  export const inboundSchema = ResponseFormat$inboundSchema;
+  /** @deprecated use `ResponseFormat$outboundSchema` instead. */
+  export const outboundSchema = ResponseFormat$outboundSchema;
+  /** @deprecated use `ResponseFormat$Outbound` instead. */
+  export type Outbound = ResponseFormat$Outbound;
 }
 
-export function chatCompletionCreateParamsStopToJSON(
-  chatCompletionCreateParamsStop: ChatCompletionCreateParamsStop,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsStop$outboundSchema.parse(
-      chatCompletionCreateParamsStop,
-    ),
-  );
+export function responseFormatToJSON(responseFormat: ResponseFormat): string {
+  return JSON.stringify(ResponseFormat$outboundSchema.parse(responseFormat));
 }
 
-export function chatCompletionCreateParamsStopFromJSON(
+export function responseFormatFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsStop, SDKValidationError> {
+): SafeParseResult<ResponseFormat, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatCompletionCreateParamsStop$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsStop' from JSON`,
+    (x) => ResponseFormat$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseFormat' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsStreamOptions$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsStreamOptions,
+export const Stop$inboundSchema: z.ZodType<Stop, z.ZodTypeDef, unknown> = z
+  .union([z.string(), z.array(z.string()), z.any()]);
+
+/** @internal */
+export type Stop$Outbound = string | Array<string> | any;
+
+/** @internal */
+export const Stop$outboundSchema: z.ZodType<Stop$Outbound, z.ZodTypeDef, Stop> =
+  z.union([z.string(), z.array(z.string()), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Stop$ {
+  /** @deprecated use `Stop$inboundSchema` instead. */
+  export const inboundSchema = Stop$inboundSchema;
+  /** @deprecated use `Stop$outboundSchema` instead. */
+  export const outboundSchema = Stop$outboundSchema;
+  /** @deprecated use `Stop$Outbound` instead. */
+  export type Outbound = Stop$Outbound;
+}
+
+export function stopToJSON(stop: Stop): string {
+  return JSON.stringify(Stop$outboundSchema.parse(stop));
+}
+
+export function stopFromJSON(
+  jsonString: string,
+): SafeParseResult<Stop, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Stop$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Stop' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamOptions$inboundSchema: z.ZodType<
+  StreamOptions,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1588,15 +1381,15 @@ export const ChatCompletionCreateParamsStreamOptions$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsStreamOptions$Outbound = {
+export type StreamOptions$Outbound = {
   include_usage?: boolean | undefined;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsStreamOptions$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsStreamOptions$Outbound,
+export const StreamOptions$outboundSchema: z.ZodType<
+  StreamOptions$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsStreamOptions
+  StreamOptions
 > = z.object({
   includeUsage: z.boolean().optional(),
 }).transform((v) => {
@@ -1609,623 +1402,501 @@ export const ChatCompletionCreateParamsStreamOptions$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsStreamOptions$ {
-  /** @deprecated use `ChatCompletionCreateParamsStreamOptions$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsStreamOptions$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsStreamOptions$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsStreamOptions$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsStreamOptions$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsStreamOptions$Outbound;
+export namespace StreamOptions$ {
+  /** @deprecated use `StreamOptions$inboundSchema` instead. */
+  export const inboundSchema = StreamOptions$inboundSchema;
+  /** @deprecated use `StreamOptions$outboundSchema` instead. */
+  export const outboundSchema = StreamOptions$outboundSchema;
+  /** @deprecated use `StreamOptions$Outbound` instead. */
+  export type Outbound = StreamOptions$Outbound;
 }
 
-export function chatCompletionCreateParamsStreamOptionsToJSON(
-  chatCompletionCreateParamsStreamOptions:
-    ChatCompletionCreateParamsStreamOptions,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsStreamOptions$outboundSchema.parse(
-      chatCompletionCreateParamsStreamOptions,
-    ),
-  );
+export function streamOptionsToJSON(streamOptions: StreamOptions): string {
+  return JSON.stringify(StreamOptions$outboundSchema.parse(streamOptions));
 }
 
-export function chatCompletionCreateParamsStreamOptionsFromJSON(
+export function streamOptionsFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsStreamOptions,
-  SDKValidationError
-> {
+): SafeParseResult<StreamOptions, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsStreamOptions$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsStreamOptions' from JSON`,
+    (x) => StreamOptions$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamOptions' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsReasoningEffort$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsReasoningEffort> = z
-    .nativeEnum(ChatCompletionCreateParamsReasoningEffort);
+export const ReasoningEffort$inboundSchema: z.ZodNativeEnum<
+  typeof ReasoningEffort
+> = z.nativeEnum(ReasoningEffort);
 
 /** @internal */
-export const ChatCompletionCreateParamsReasoningEffort$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsReasoningEffort> =
-    ChatCompletionCreateParamsReasoningEffort$inboundSchema;
+export const ReasoningEffort$outboundSchema: z.ZodNativeEnum<
+  typeof ReasoningEffort
+> = ReasoningEffort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsReasoningEffort$ {
-  /** @deprecated use `ChatCompletionCreateParamsReasoningEffort$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsReasoningEffort$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsReasoningEffort$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsReasoningEffort$outboundSchema;
+export namespace ReasoningEffort$ {
+  /** @deprecated use `ReasoningEffort$inboundSchema` instead. */
+  export const inboundSchema = ReasoningEffort$inboundSchema;
+  /** @deprecated use `ReasoningEffort$outboundSchema` instead. */
+  export const outboundSchema = ReasoningEffort$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsDataCollection$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsDataCollection> = z
-    .nativeEnum(ChatCompletionCreateParamsDataCollection);
+export const DataCollection$inboundSchema: z.ZodNativeEnum<
+  typeof DataCollection
+> = z.nativeEnum(DataCollection);
 
 /** @internal */
-export const ChatCompletionCreateParamsDataCollection$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsDataCollection> =
-    ChatCompletionCreateParamsDataCollection$inboundSchema;
+export const DataCollection$outboundSchema: z.ZodNativeEnum<
+  typeof DataCollection
+> = DataCollection$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsDataCollection$ {
-  /** @deprecated use `ChatCompletionCreateParamsDataCollection$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsDataCollection$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsDataCollection$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsDataCollection$outboundSchema;
+export namespace DataCollection$ {
+  /** @deprecated use `DataCollection$inboundSchema` instead. */
+  export const inboundSchema = DataCollection$inboundSchema;
+  /** @deprecated use `DataCollection$outboundSchema` instead. */
+  export const outboundSchema = DataCollection$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsOrderEnum$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsOrderEnum
-> = z.nativeEnum(ChatCompletionCreateParamsOrderEnum);
+export const OrderEnum$inboundSchema: z.ZodNativeEnum<typeof OrderEnum> = z
+  .nativeEnum(OrderEnum);
 
 /** @internal */
-export const ChatCompletionCreateParamsOrderEnum$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsOrderEnum> =
-    ChatCompletionCreateParamsOrderEnum$inboundSchema;
+export const OrderEnum$outboundSchema: z.ZodNativeEnum<typeof OrderEnum> =
+  OrderEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsOrderEnum$ {
-  /** @deprecated use `ChatCompletionCreateParamsOrderEnum$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsOrderEnum$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOrderEnum$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsOrderEnum$outboundSchema;
+export namespace OrderEnum$ {
+  /** @deprecated use `OrderEnum$inboundSchema` instead. */
+  export const inboundSchema = OrderEnum$inboundSchema;
+  /** @deprecated use `OrderEnum$outboundSchema` instead. */
+  export const outboundSchema = OrderEnum$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsOrderUnion$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsOrderUnion,
+export const Order$inboundSchema: z.ZodType<Order, z.ZodTypeDef, unknown> = z
+  .union([OrderEnum$inboundSchema, z.string()]);
+
+/** @internal */
+export type Order$Outbound = string | string;
+
+/** @internal */
+export const Order$outboundSchema: z.ZodType<
+  Order$Outbound,
   z.ZodTypeDef,
-  unknown
-> = z.union([ChatCompletionCreateParamsOrderEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type ChatCompletionCreateParamsOrderUnion$Outbound = string | string;
-
-/** @internal */
-export const ChatCompletionCreateParamsOrderUnion$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsOrderUnion$Outbound,
-  z.ZodTypeDef,
-  ChatCompletionCreateParamsOrderUnion
-> = z.union([ChatCompletionCreateParamsOrderEnum$outboundSchema, z.string()]);
+  Order
+> = z.union([OrderEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsOrderUnion$ {
-  /** @deprecated use `ChatCompletionCreateParamsOrderUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsOrderUnion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOrderUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsOrderUnion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOrderUnion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsOrderUnion$Outbound;
+export namespace Order$ {
+  /** @deprecated use `Order$inboundSchema` instead. */
+  export const inboundSchema = Order$inboundSchema;
+  /** @deprecated use `Order$outboundSchema` instead. */
+  export const outboundSchema = Order$outboundSchema;
+  /** @deprecated use `Order$Outbound` instead. */
+  export type Outbound = Order$Outbound;
 }
 
-export function chatCompletionCreateParamsOrderUnionToJSON(
-  chatCompletionCreateParamsOrderUnion: ChatCompletionCreateParamsOrderUnion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsOrderUnion$outboundSchema.parse(
-      chatCompletionCreateParamsOrderUnion,
-    ),
-  );
+export function orderToJSON(order: Order): string {
+  return JSON.stringify(Order$outboundSchema.parse(order));
 }
 
-export function chatCompletionCreateParamsOrderUnionFromJSON(
+export function orderFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsOrderUnion, SDKValidationError> {
+): SafeParseResult<Order, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsOrderUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsOrderUnion' from JSON`,
+    (x) => Order$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Order' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsOnlyEnum$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsOnlyEnum
-> = z.nativeEnum(ChatCompletionCreateParamsOnlyEnum);
+export const OnlyEnum$inboundSchema: z.ZodNativeEnum<typeof OnlyEnum> = z
+  .nativeEnum(OnlyEnum);
 
 /** @internal */
-export const ChatCompletionCreateParamsOnlyEnum$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsOnlyEnum
-> = ChatCompletionCreateParamsOnlyEnum$inboundSchema;
+export const OnlyEnum$outboundSchema: z.ZodNativeEnum<typeof OnlyEnum> =
+  OnlyEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsOnlyEnum$ {
-  /** @deprecated use `ChatCompletionCreateParamsOnlyEnum$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsOnlyEnum$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOnlyEnum$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsOnlyEnum$outboundSchema;
+export namespace OnlyEnum$ {
+  /** @deprecated use `OnlyEnum$inboundSchema` instead. */
+  export const inboundSchema = OnlyEnum$inboundSchema;
+  /** @deprecated use `OnlyEnum$outboundSchema` instead. */
+  export const outboundSchema = OnlyEnum$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsOnlyUnion$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsOnlyUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([ChatCompletionCreateParamsOnlyEnum$inboundSchema, z.string()]);
+export const Only$inboundSchema: z.ZodType<Only, z.ZodTypeDef, unknown> = z
+  .union([OnlyEnum$inboundSchema, z.string()]);
 
 /** @internal */
-export type ChatCompletionCreateParamsOnlyUnion$Outbound = string | string;
+export type Only$Outbound = string | string;
 
 /** @internal */
-export const ChatCompletionCreateParamsOnlyUnion$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsOnlyUnion$Outbound,
-  z.ZodTypeDef,
-  ChatCompletionCreateParamsOnlyUnion
-> = z.union([ChatCompletionCreateParamsOnlyEnum$outboundSchema, z.string()]);
+export const Only$outboundSchema: z.ZodType<Only$Outbound, z.ZodTypeDef, Only> =
+  z.union([OnlyEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsOnlyUnion$ {
-  /** @deprecated use `ChatCompletionCreateParamsOnlyUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsOnlyUnion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOnlyUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsOnlyUnion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsOnlyUnion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsOnlyUnion$Outbound;
+export namespace Only$ {
+  /** @deprecated use `Only$inboundSchema` instead. */
+  export const inboundSchema = Only$inboundSchema;
+  /** @deprecated use `Only$outboundSchema` instead. */
+  export const outboundSchema = Only$outboundSchema;
+  /** @deprecated use `Only$Outbound` instead. */
+  export type Outbound = Only$Outbound;
 }
 
-export function chatCompletionCreateParamsOnlyUnionToJSON(
-  chatCompletionCreateParamsOnlyUnion: ChatCompletionCreateParamsOnlyUnion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsOnlyUnion$outboundSchema.parse(
-      chatCompletionCreateParamsOnlyUnion,
-    ),
-  );
+export function onlyToJSON(only: Only): string {
+  return JSON.stringify(Only$outboundSchema.parse(only));
 }
 
-export function chatCompletionCreateParamsOnlyUnionFromJSON(
+export function onlyFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsOnlyUnion, SDKValidationError> {
+): SafeParseResult<Only, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsOnlyUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsOnlyUnion' from JSON`,
+    (x) => Only$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Only' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsIgnoreEnum$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIgnoreEnum> = z.nativeEnum(
-    ChatCompletionCreateParamsIgnoreEnum,
-  );
+export const IgnoreEnum$inboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> = z
+  .nativeEnum(IgnoreEnum);
 
 /** @internal */
-export const ChatCompletionCreateParamsIgnoreEnum$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIgnoreEnum> =
-    ChatCompletionCreateParamsIgnoreEnum$inboundSchema;
+export const IgnoreEnum$outboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> =
+  IgnoreEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsIgnoreEnum$ {
-  /** @deprecated use `ChatCompletionCreateParamsIgnoreEnum$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsIgnoreEnum$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIgnoreEnum$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsIgnoreEnum$outboundSchema;
+export namespace IgnoreEnum$ {
+  /** @deprecated use `IgnoreEnum$inboundSchema` instead. */
+  export const inboundSchema = IgnoreEnum$inboundSchema;
+  /** @deprecated use `IgnoreEnum$outboundSchema` instead. */
+  export const outboundSchema = IgnoreEnum$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsIgnoreUnion$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsIgnoreUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([ChatCompletionCreateParamsIgnoreEnum$inboundSchema, z.string()]);
+export const Ignore$inboundSchema: z.ZodType<Ignore, z.ZodTypeDef, unknown> = z
+  .union([IgnoreEnum$inboundSchema, z.string()]);
 
 /** @internal */
-export type ChatCompletionCreateParamsIgnoreUnion$Outbound = string | string;
+export type Ignore$Outbound = string | string;
 
 /** @internal */
-export const ChatCompletionCreateParamsIgnoreUnion$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsIgnoreUnion$Outbound,
+export const Ignore$outboundSchema: z.ZodType<
+  Ignore$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsIgnoreUnion
-> = z.union([ChatCompletionCreateParamsIgnoreEnum$outboundSchema, z.string()]);
+  Ignore
+> = z.union([IgnoreEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsIgnoreUnion$ {
-  /** @deprecated use `ChatCompletionCreateParamsIgnoreUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsIgnoreUnion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIgnoreUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsIgnoreUnion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIgnoreUnion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsIgnoreUnion$Outbound;
+export namespace Ignore$ {
+  /** @deprecated use `Ignore$inboundSchema` instead. */
+  export const inboundSchema = Ignore$inboundSchema;
+  /** @deprecated use `Ignore$outboundSchema` instead. */
+  export const outboundSchema = Ignore$outboundSchema;
+  /** @deprecated use `Ignore$Outbound` instead. */
+  export type Outbound = Ignore$Outbound;
 }
 
-export function chatCompletionCreateParamsIgnoreUnionToJSON(
-  chatCompletionCreateParamsIgnoreUnion: ChatCompletionCreateParamsIgnoreUnion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsIgnoreUnion$outboundSchema.parse(
-      chatCompletionCreateParamsIgnoreUnion,
-    ),
-  );
+export function ignoreToJSON(ignore: Ignore): string {
+  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
 }
 
-export function chatCompletionCreateParamsIgnoreUnionFromJSON(
+export function ignoreFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsIgnoreUnion, SDKValidationError> {
+): SafeParseResult<Ignore, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsIgnoreUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsIgnoreUnion' from JSON`,
+    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Ignore' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsQuantization$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsQuantization> = z.nativeEnum(
-    ChatCompletionCreateParamsQuantization,
-  );
+export const Quantization$inboundSchema: z.ZodNativeEnum<typeof Quantization> =
+  z.nativeEnum(Quantization);
 
 /** @internal */
-export const ChatCompletionCreateParamsQuantization$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsQuantization> =
-    ChatCompletionCreateParamsQuantization$inboundSchema;
+export const Quantization$outboundSchema: z.ZodNativeEnum<typeof Quantization> =
+  Quantization$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsQuantization$ {
-  /** @deprecated use `ChatCompletionCreateParamsQuantization$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsQuantization$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsQuantization$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsQuantization$outboundSchema;
+export namespace Quantization$ {
+  /** @deprecated use `Quantization$inboundSchema` instead. */
+  export const inboundSchema = Quantization$inboundSchema;
+  /** @deprecated use `Quantization$outboundSchema` instead. */
+  export const outboundSchema = Quantization$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsSort$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsSort
-> = z.nativeEnum(ChatCompletionCreateParamsSort);
+export const Sort$inboundSchema: z.ZodNativeEnum<typeof Sort> = z.nativeEnum(
+  Sort,
+);
 
 /** @internal */
-export const ChatCompletionCreateParamsSort$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsSort
-> = ChatCompletionCreateParamsSort$inboundSchema;
+export const Sort$outboundSchema: z.ZodNativeEnum<typeof Sort> =
+  Sort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsSort$ {
-  /** @deprecated use `ChatCompletionCreateParamsSort$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsSort$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsSort$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsSort$outboundSchema;
+export namespace Sort$ {
+  /** @deprecated use `Sort$inboundSchema` instead. */
+  export const inboundSchema = Sort$inboundSchema;
+  /** @deprecated use `Sort$outboundSchema` instead. */
+  export const outboundSchema = Sort$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPrompt$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPrompt,
+export const Prompt$inboundSchema: z.ZodType<Prompt, z.ZodTypeDef, unknown> = z
+  .union([z.number(), z.string(), z.any()]);
+
+/** @internal */
+export type Prompt$Outbound = number | string | any;
+
+/** @internal */
+export const Prompt$outboundSchema: z.ZodType<
+  Prompt$Outbound,
+  z.ZodTypeDef,
+  Prompt
+> = z.union([z.number(), z.string(), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Prompt$ {
+  /** @deprecated use `Prompt$inboundSchema` instead. */
+  export const inboundSchema = Prompt$inboundSchema;
+  /** @deprecated use `Prompt$outboundSchema` instead. */
+  export const outboundSchema = Prompt$outboundSchema;
+  /** @deprecated use `Prompt$Outbound` instead. */
+  export type Outbound = Prompt$Outbound;
+}
+
+export function promptToJSON(prompt: Prompt): string {
+  return JSON.stringify(Prompt$outboundSchema.parse(prompt));
+}
+
+export function promptFromJSON(
+  jsonString: string,
+): SafeParseResult<Prompt, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Prompt$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Prompt' from JSON`,
+  );
+}
+
+/** @internal */
+export const Completion$inboundSchema: z.ZodType<
+  Completion,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type ChatCompletionCreateParamsPrompt$Outbound = number | string | any;
+export type Completion$Outbound = number | string | any;
 
 /** @internal */
-export const ChatCompletionCreateParamsPrompt$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPrompt$Outbound,
+export const Completion$outboundSchema: z.ZodType<
+  Completion$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsPrompt
+  Completion
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPrompt$ {
-  /** @deprecated use `ChatCompletionCreateParamsPrompt$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsPrompt$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPrompt$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsPrompt$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPrompt$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPrompt$Outbound;
+export namespace Completion$ {
+  /** @deprecated use `Completion$inboundSchema` instead. */
+  export const inboundSchema = Completion$inboundSchema;
+  /** @deprecated use `Completion$outboundSchema` instead. */
+  export const outboundSchema = Completion$outboundSchema;
+  /** @deprecated use `Completion$Outbound` instead. */
+  export type Outbound = Completion$Outbound;
 }
 
-export function chatCompletionCreateParamsPromptToJSON(
-  chatCompletionCreateParamsPrompt: ChatCompletionCreateParamsPrompt,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsPrompt$outboundSchema.parse(
-      chatCompletionCreateParamsPrompt,
-    ),
-  );
+export function completionToJSON(completion: Completion): string {
+  return JSON.stringify(Completion$outboundSchema.parse(completion));
 }
 
-export function chatCompletionCreateParamsPromptFromJSON(
+export function completionFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsPrompt, SDKValidationError> {
+): SafeParseResult<Completion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatCompletionCreateParamsPrompt$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsPrompt' from JSON`,
+    (x) => Completion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Completion' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsCompletion$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsCompletion,
+export const Image$inboundSchema: z.ZodType<Image, z.ZodTypeDef, unknown> = z
+  .union([z.number(), z.string(), z.any()]);
+
+/** @internal */
+export type Image$Outbound = number | string | any;
+
+/** @internal */
+export const Image$outboundSchema: z.ZodType<
+  Image$Outbound,
+  z.ZodTypeDef,
+  Image
+> = z.union([z.number(), z.string(), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Image$ {
+  /** @deprecated use `Image$inboundSchema` instead. */
+  export const inboundSchema = Image$inboundSchema;
+  /** @deprecated use `Image$outboundSchema` instead. */
+  export const outboundSchema = Image$outboundSchema;
+  /** @deprecated use `Image$Outbound` instead. */
+  export type Outbound = Image$Outbound;
+}
+
+export function imageToJSON(image: Image): string {
+  return JSON.stringify(Image$outboundSchema.parse(image));
+}
+
+export function imageFromJSON(
+  jsonString: string,
+): SafeParseResult<Image, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Image$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Image' from JSON`,
+  );
+}
+
+/** @internal */
+export const Audio$inboundSchema: z.ZodType<Audio, z.ZodTypeDef, unknown> = z
+  .union([z.number(), z.string(), z.any()]);
+
+/** @internal */
+export type Audio$Outbound = number | string | any;
+
+/** @internal */
+export const Audio$outboundSchema: z.ZodType<
+  Audio$Outbound,
+  z.ZodTypeDef,
+  Audio
+> = z.union([z.number(), z.string(), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Audio$ {
+  /** @deprecated use `Audio$inboundSchema` instead. */
+  export const inboundSchema = Audio$inboundSchema;
+  /** @deprecated use `Audio$outboundSchema` instead. */
+  export const outboundSchema = Audio$outboundSchema;
+  /** @deprecated use `Audio$Outbound` instead. */
+  export type Outbound = Audio$Outbound;
+}
+
+export function audioToJSON(audio: Audio): string {
+  return JSON.stringify(Audio$outboundSchema.parse(audio));
+}
+
+export function audioFromJSON(
+  jsonString: string,
+): SafeParseResult<Audio, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Audio$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Audio' from JSON`,
+  );
+}
+
+/** @internal */
+export const RequestT$inboundSchema: z.ZodType<
+  RequestT,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type ChatCompletionCreateParamsCompletion$Outbound =
-  | number
-  | string
-  | any;
+export type RequestT$Outbound = number | string | any;
 
 /** @internal */
-export const ChatCompletionCreateParamsCompletion$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsCompletion$Outbound,
+export const RequestT$outboundSchema: z.ZodType<
+  RequestT$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsCompletion
+  RequestT
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsCompletion$ {
-  /** @deprecated use `ChatCompletionCreateParamsCompletion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsCompletion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsCompletion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsCompletion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsCompletion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsCompletion$Outbound;
+export namespace RequestT$ {
+  /** @deprecated use `RequestT$inboundSchema` instead. */
+  export const inboundSchema = RequestT$inboundSchema;
+  /** @deprecated use `RequestT$outboundSchema` instead. */
+  export const outboundSchema = RequestT$outboundSchema;
+  /** @deprecated use `RequestT$Outbound` instead. */
+  export type Outbound = RequestT$Outbound;
 }
 
-export function chatCompletionCreateParamsCompletionToJSON(
-  chatCompletionCreateParamsCompletion: ChatCompletionCreateParamsCompletion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsCompletion$outboundSchema.parse(
-      chatCompletionCreateParamsCompletion,
-    ),
-  );
+export function requestToJSON(requestT: RequestT): string {
+  return JSON.stringify(RequestT$outboundSchema.parse(requestT));
 }
 
-export function chatCompletionCreateParamsCompletionFromJSON(
+export function requestFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsCompletion, SDKValidationError> {
+): SafeParseResult<RequestT, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsCompletion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsCompletion' from JSON`,
+    (x) => RequestT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RequestT' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsImage$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsImage,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ChatCompletionCreateParamsImage$Outbound = number | string | any;
-
-/** @internal */
-export const ChatCompletionCreateParamsImage$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsImage$Outbound,
-  z.ZodTypeDef,
-  ChatCompletionCreateParamsImage
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsImage$ {
-  /** @deprecated use `ChatCompletionCreateParamsImage$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsImage$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsImage$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsImage$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsImage$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsImage$Outbound;
-}
-
-export function chatCompletionCreateParamsImageToJSON(
-  chatCompletionCreateParamsImage: ChatCompletionCreateParamsImage,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsImage$outboundSchema.parse(
-      chatCompletionCreateParamsImage,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsImageFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsImage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatCompletionCreateParamsImage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsImage' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsAudio$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsAudio,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ChatCompletionCreateParamsAudio$Outbound = number | string | any;
-
-/** @internal */
-export const ChatCompletionCreateParamsAudio$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsAudio$Outbound,
-  z.ZodTypeDef,
-  ChatCompletionCreateParamsAudio
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsAudio$ {
-  /** @deprecated use `ChatCompletionCreateParamsAudio$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsAudio$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsAudio$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsAudio$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsAudio$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsAudio$Outbound;
-}
-
-export function chatCompletionCreateParamsAudioToJSON(
-  chatCompletionCreateParamsAudio: ChatCompletionCreateParamsAudio,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsAudio$outboundSchema.parse(
-      chatCompletionCreateParamsAudio,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsAudioFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsAudio, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatCompletionCreateParamsAudio$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsAudio' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsRequest$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ChatCompletionCreateParamsRequest$Outbound = number | string | any;
-
-/** @internal */
-export const ChatCompletionCreateParamsRequest$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsRequest$Outbound,
-  z.ZodTypeDef,
-  ChatCompletionCreateParamsRequest
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsRequest$ {
-  /** @deprecated use `ChatCompletionCreateParamsRequest$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsRequest$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsRequest$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsRequest$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsRequest$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsRequest$Outbound;
-}
-
-export function chatCompletionCreateParamsRequestToJSON(
-  chatCompletionCreateParamsRequest: ChatCompletionCreateParamsRequest,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsRequest$outboundSchema.parse(
-      chatCompletionCreateParamsRequest,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatCompletionCreateParamsRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsRequest' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsMaxPrice$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsMaxPrice,
+export const MaxPrice$inboundSchema: z.ZodType<
+  MaxPrice,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -2237,7 +1908,7 @@ export const ChatCompletionCreateParamsMaxPrice$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsMaxPrice$Outbound = {
+export type MaxPrice$Outbound = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -2246,10 +1917,10 @@ export type ChatCompletionCreateParamsMaxPrice$Outbound = {
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsMaxPrice$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsMaxPrice$Outbound,
+export const MaxPrice$outboundSchema: z.ZodType<
+  MaxPrice$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsMaxPrice
+  MaxPrice
 > = z.object({
   prompt: z.union([z.number(), z.string(), z.any()]).optional(),
   completion: z.union([z.number(), z.string(), z.any()]).optional(),
@@ -2262,69 +1933,47 @@ export const ChatCompletionCreateParamsMaxPrice$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsMaxPrice$ {
-  /** @deprecated use `ChatCompletionCreateParamsMaxPrice$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsMaxPrice$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsMaxPrice$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsMaxPrice$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsMaxPrice$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsMaxPrice$Outbound;
+export namespace MaxPrice$ {
+  /** @deprecated use `MaxPrice$inboundSchema` instead. */
+  export const inboundSchema = MaxPrice$inboundSchema;
+  /** @deprecated use `MaxPrice$outboundSchema` instead. */
+  export const outboundSchema = MaxPrice$outboundSchema;
+  /** @deprecated use `MaxPrice$Outbound` instead. */
+  export type Outbound = MaxPrice$Outbound;
 }
 
-export function chatCompletionCreateParamsMaxPriceToJSON(
-  chatCompletionCreateParamsMaxPrice: ChatCompletionCreateParamsMaxPrice,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsMaxPrice$outboundSchema.parse(
-      chatCompletionCreateParamsMaxPrice,
-    ),
-  );
+export function maxPriceToJSON(maxPrice: MaxPrice): string {
+  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
 }
 
-export function chatCompletionCreateParamsMaxPriceFromJSON(
+export function maxPriceFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsMaxPrice, SDKValidationError> {
+): SafeParseResult<MaxPrice, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsMaxPrice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsMaxPrice' from JSON`,
+    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MaxPrice' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsProvider$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsProvider,
+export const Provider$inboundSchema: z.ZodType<
+  Provider,
   z.ZodTypeDef,
   unknown
 > = z.object({
   allow_fallbacks: z.nullable(z.boolean()).optional(),
   require_parameters: z.nullable(z.boolean()).optional(),
-  data_collection: z.nullable(
-    ChatCompletionCreateParamsDataCollection$inboundSchema,
-  ).optional(),
-  order: z.nullable(
-    z.array(
-      z.union([ChatCompletionCreateParamsOrderEnum$inboundSchema, z.string()]),
-    ),
-  ).optional(),
-  only: z.nullable(
-    z.array(
-      z.union([ChatCompletionCreateParamsOnlyEnum$inboundSchema, z.string()]),
-    ),
-  ).optional(),
-  ignore: z.nullable(
-    z.array(
-      z.union([ChatCompletionCreateParamsIgnoreEnum$inboundSchema, z.string()]),
-    ),
-  ).optional(),
-  quantizations: z.nullable(
-    z.array(ChatCompletionCreateParamsQuantization$inboundSchema),
-  ).optional(),
-  sort: z.nullable(ChatCompletionCreateParamsSort$inboundSchema).optional(),
-  max_price: z.lazy(() => ChatCompletionCreateParamsMaxPrice$inboundSchema)
+  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
+  order: z.nullable(z.array(z.union([OrderEnum$inboundSchema, z.string()])))
     .optional(),
+  only: z.nullable(z.array(z.union([OnlyEnum$inboundSchema, z.string()])))
+    .optional(),
+  ignore: z.nullable(z.array(z.union([IgnoreEnum$inboundSchema, z.string()])))
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$inboundSchema)).optional(),
+  sort: z.nullable(Sort$inboundSchema).optional(),
+  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "allow_fallbacks": "allowFallbacks",
@@ -2335,7 +1984,7 @@ export const ChatCompletionCreateParamsProvider$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsProvider$Outbound = {
+export type Provider$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
@@ -2344,44 +1993,27 @@ export type ChatCompletionCreateParamsProvider$Outbound = {
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
-  max_price?: ChatCompletionCreateParamsMaxPrice$Outbound | undefined;
+  max_price?: MaxPrice$Outbound | undefined;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsProvider$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsProvider$Outbound,
+export const Provider$outboundSchema: z.ZodType<
+  Provider$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsProvider
+  Provider
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(
-    ChatCompletionCreateParamsDataCollection$outboundSchema,
-  ).optional(),
-  order: z.nullable(
-    z.array(
-      z.union([ChatCompletionCreateParamsOrderEnum$outboundSchema, z.string()]),
-    ),
-  ).optional(),
-  only: z.nullable(
-    z.array(
-      z.union([ChatCompletionCreateParamsOnlyEnum$outboundSchema, z.string()]),
-    ),
-  ).optional(),
-  ignore: z.nullable(
-    z.array(
-      z.union([
-        ChatCompletionCreateParamsIgnoreEnum$outboundSchema,
-        z.string(),
-      ]),
-    ),
-  ).optional(),
-  quantizations: z.nullable(
-    z.array(ChatCompletionCreateParamsQuantization$outboundSchema),
-  ).optional(),
-  sort: z.nullable(ChatCompletionCreateParamsSort$outboundSchema).optional(),
-  maxPrice: z.lazy(() => ChatCompletionCreateParamsMaxPrice$outboundSchema)
+  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  order: z.nullable(z.array(z.union([OrderEnum$outboundSchema, z.string()])))
     .optional(),
+  only: z.nullable(z.array(z.union([OnlyEnum$outboundSchema, z.string()])))
+    .optional(),
+  ignore: z.nullable(z.array(z.union([IgnoreEnum$outboundSchema, z.string()])))
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  sort: z.nullable(Sort$outboundSchema).optional(),
+  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -2395,361 +2027,303 @@ export const ChatCompletionCreateParamsProvider$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsProvider$ {
-  /** @deprecated use `ChatCompletionCreateParamsProvider$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsProvider$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsProvider$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsProvider$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsProvider$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsProvider$Outbound;
+export namespace Provider$ {
+  /** @deprecated use `Provider$inboundSchema` instead. */
+  export const inboundSchema = Provider$inboundSchema;
+  /** @deprecated use `Provider$outboundSchema` instead. */
+  export const outboundSchema = Provider$outboundSchema;
+  /** @deprecated use `Provider$Outbound` instead. */
+  export type Outbound = Provider$Outbound;
 }
 
-export function chatCompletionCreateParamsProviderToJSON(
-  chatCompletionCreateParamsProvider: ChatCompletionCreateParamsProvider,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsProvider$outboundSchema.parse(
-      chatCompletionCreateParamsProvider,
-    ),
-  );
+export function providerToJSON(provider: Provider): string {
+  return JSON.stringify(Provider$outboundSchema.parse(provider));
 }
 
-export function chatCompletionCreateParamsProviderFromJSON(
+export function providerFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsProvider, SDKValidationError> {
+): SafeParseResult<Provider, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsProvider$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsProvider' from JSON`,
+    (x) => Provider$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Provider' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsIdFileParser$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdFileParser> = z.nativeEnum(
-    ChatCompletionCreateParamsIdFileParser,
-  );
+export const IdFileParser$inboundSchema: z.ZodNativeEnum<typeof IdFileParser> =
+  z.nativeEnum(IdFileParser);
 
 /** @internal */
-export const ChatCompletionCreateParamsIdFileParser$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdFileParser> =
-    ChatCompletionCreateParamsIdFileParser$inboundSchema;
+export const IdFileParser$outboundSchema: z.ZodNativeEnum<typeof IdFileParser> =
+  IdFileParser$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsIdFileParser$ {
-  /** @deprecated use `ChatCompletionCreateParamsIdFileParser$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsIdFileParser$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIdFileParser$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsIdFileParser$outboundSchema;
+export namespace IdFileParser$ {
+  /** @deprecated use `IdFileParser$inboundSchema` instead. */
+  export const inboundSchema = IdFileParser$inboundSchema;
+  /** @deprecated use `IdFileParser$outboundSchema` instead. */
+  export const outboundSchema = IdFileParser$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPdfEngine$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsPdfEngine
-> = z.nativeEnum(ChatCompletionCreateParamsPdfEngine);
+export const PdfEngine$inboundSchema: z.ZodNativeEnum<typeof PdfEngine> = z
+  .nativeEnum(PdfEngine);
 
 /** @internal */
-export const ChatCompletionCreateParamsPdfEngine$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsPdfEngine> =
-    ChatCompletionCreateParamsPdfEngine$inboundSchema;
+export const PdfEngine$outboundSchema: z.ZodNativeEnum<typeof PdfEngine> =
+  PdfEngine$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPdfEngine$ {
-  /** @deprecated use `ChatCompletionCreateParamsPdfEngine$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPdfEngine$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPdfEngine$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPdfEngine$outboundSchema;
+export namespace PdfEngine$ {
+  /** @deprecated use `PdfEngine$inboundSchema` instead. */
+  export const inboundSchema = PdfEngine$inboundSchema;
+  /** @deprecated use `PdfEngine$outboundSchema` instead. */
+  export const outboundSchema = PdfEngine$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPdf$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPdf,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  engine: ChatCompletionCreateParamsPdfEngine$inboundSchema.optional(),
-});
+export const Pdf$inboundSchema: z.ZodType<Pdf, z.ZodTypeDef, unknown> = z
+  .object({
+    engine: PdfEngine$inboundSchema.optional(),
+  });
 
 /** @internal */
-export type ChatCompletionCreateParamsPdf$Outbound = {
+export type Pdf$Outbound = {
   engine?: string | undefined;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsPdf$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPdf$Outbound,
+export const Pdf$outboundSchema: z.ZodType<Pdf$Outbound, z.ZodTypeDef, Pdf> = z
+  .object({
+    engine: PdfEngine$outboundSchema.optional(),
+  });
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Pdf$ {
+  /** @deprecated use `Pdf$inboundSchema` instead. */
+  export const inboundSchema = Pdf$inboundSchema;
+  /** @deprecated use `Pdf$outboundSchema` instead. */
+  export const outboundSchema = Pdf$outboundSchema;
+  /** @deprecated use `Pdf$Outbound` instead. */
+  export type Outbound = Pdf$Outbound;
+}
+
+export function pdfToJSON(pdf: Pdf): string {
+  return JSON.stringify(Pdf$outboundSchema.parse(pdf));
+}
+
+export function pdfFromJSON(
+  jsonString: string,
+): SafeParseResult<Pdf, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Pdf$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Pdf' from JSON`,
+  );
+}
+
+/** @internal */
+export const PluginFileParser$inboundSchema: z.ZodType<
+  PluginFileParser,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsPdf
+  unknown
 > = z.object({
-  engine: ChatCompletionCreateParamsPdfEngine$outboundSchema.optional(),
+  id: IdFileParser$inboundSchema,
+  max_files: z.number().optional(),
+  pdf: z.lazy(() => Pdf$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_files": "maxFiles",
+  });
+});
+
+/** @internal */
+export type PluginFileParser$Outbound = {
+  id: string;
+  max_files?: number | undefined;
+  pdf?: Pdf$Outbound | undefined;
+};
+
+/** @internal */
+export const PluginFileParser$outboundSchema: z.ZodType<
+  PluginFileParser$Outbound,
+  z.ZodTypeDef,
+  PluginFileParser
+> = z.object({
+  id: IdFileParser$outboundSchema,
+  maxFiles: z.number().optional(),
+  pdf: z.lazy(() => Pdf$outboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxFiles: "max_files",
+  });
 });
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPdf$ {
-  /** @deprecated use `ChatCompletionCreateParamsPdf$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsPdf$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPdf$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsPdf$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPdf$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPdf$Outbound;
+export namespace PluginFileParser$ {
+  /** @deprecated use `PluginFileParser$inboundSchema` instead. */
+  export const inboundSchema = PluginFileParser$inboundSchema;
+  /** @deprecated use `PluginFileParser$outboundSchema` instead. */
+  export const outboundSchema = PluginFileParser$outboundSchema;
+  /** @deprecated use `PluginFileParser$Outbound` instead. */
+  export type Outbound = PluginFileParser$Outbound;
 }
 
-export function chatCompletionCreateParamsPdfToJSON(
-  chatCompletionCreateParamsPdf: ChatCompletionCreateParamsPdf,
+export function pluginFileParserToJSON(
+  pluginFileParser: PluginFileParser,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsPdf$outboundSchema.parse(
-      chatCompletionCreateParamsPdf,
-    ),
+    PluginFileParser$outboundSchema.parse(pluginFileParser),
   );
 }
 
-export function chatCompletionCreateParamsPdfFromJSON(
+export function pluginFileParserFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsPdf, SDKValidationError> {
+): SafeParseResult<PluginFileParser, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatCompletionCreateParamsPdf$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsPdf' from JSON`,
+    (x) => PluginFileParser$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginFileParser' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginFileParser$inboundSchema:
-  z.ZodType<ChatCompletionCreateParamsPluginFileParser, z.ZodTypeDef, unknown> =
-    z.object({
-      id: ChatCompletionCreateParamsIdFileParser$inboundSchema,
-      max_files: z.number().optional(),
-      pdf: z.lazy(() => ChatCompletionCreateParamsPdf$inboundSchema).optional(),
-    }).transform((v) => {
-      return remap$(v, {
-        "max_files": "maxFiles",
-      });
-    });
+export const IdChainOfThought$inboundSchema: z.ZodNativeEnum<
+  typeof IdChainOfThought
+> = z.nativeEnum(IdChainOfThought);
 
 /** @internal */
-export type ChatCompletionCreateParamsPluginFileParser$Outbound = {
-  id: string;
-  max_files?: number | undefined;
-  pdf?: ChatCompletionCreateParamsPdf$Outbound | undefined;
-};
-
-/** @internal */
-export const ChatCompletionCreateParamsPluginFileParser$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsPluginFileParser$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsPluginFileParser
-  > = z.object({
-    id: ChatCompletionCreateParamsIdFileParser$outboundSchema,
-    maxFiles: z.number().optional(),
-    pdf: z.lazy(() => ChatCompletionCreateParamsPdf$outboundSchema).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      maxFiles: "max_files",
-    });
-  });
+export const IdChainOfThought$outboundSchema: z.ZodNativeEnum<
+  typeof IdChainOfThought
+> = IdChainOfThought$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPluginFileParser$ {
-  /** @deprecated use `ChatCompletionCreateParamsPluginFileParser$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPluginFileParser$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginFileParser$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPluginFileParser$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginFileParser$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPluginFileParser$Outbound;
-}
-
-export function chatCompletionCreateParamsPluginFileParserToJSON(
-  chatCompletionCreateParamsPluginFileParser:
-    ChatCompletionCreateParamsPluginFileParser,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsPluginFileParser$outboundSchema.parse(
-      chatCompletionCreateParamsPluginFileParser,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsPluginFileParserFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsPluginFileParser,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatCompletionCreateParamsPluginFileParser$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsPluginFileParser' from JSON`,
-  );
+export namespace IdChainOfThought$ {
+  /** @deprecated use `IdChainOfThought$inboundSchema` instead. */
+  export const inboundSchema = IdChainOfThought$inboundSchema;
+  /** @deprecated use `IdChainOfThought$outboundSchema` instead. */
+  export const outboundSchema = IdChainOfThought$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsIdChainOfThought$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdChainOfThought> = z
-    .nativeEnum(ChatCompletionCreateParamsIdChainOfThought);
-
-/** @internal */
-export const ChatCompletionCreateParamsIdChainOfThought$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdChainOfThought> =
-    ChatCompletionCreateParamsIdChainOfThought$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsIdChainOfThought$ {
-  /** @deprecated use `ChatCompletionCreateParamsIdChainOfThought$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsIdChainOfThought$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIdChainOfThought$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsIdChainOfThought$outboundSchema;
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsPluginChainOfThought$inboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsPluginChainOfThought,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    id: ChatCompletionCreateParamsIdChainOfThought$inboundSchema,
-  });
-
-/** @internal */
-export type ChatCompletionCreateParamsPluginChainOfThought$Outbound = {
-  id: string;
-};
-
-/** @internal */
-export const ChatCompletionCreateParamsPluginChainOfThought$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsPluginChainOfThought$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsPluginChainOfThought
-  > = z.object({
-    id: ChatCompletionCreateParamsIdChainOfThought$outboundSchema,
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsPluginChainOfThought$ {
-  /** @deprecated use `ChatCompletionCreateParamsPluginChainOfThought$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPluginChainOfThought$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginChainOfThought$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPluginChainOfThought$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginChainOfThought$Outbound` instead. */
-  export type Outbound =
-    ChatCompletionCreateParamsPluginChainOfThought$Outbound;
-}
-
-export function chatCompletionCreateParamsPluginChainOfThoughtToJSON(
-  chatCompletionCreateParamsPluginChainOfThought:
-    ChatCompletionCreateParamsPluginChainOfThought,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsPluginChainOfThought$outboundSchema.parse(
-      chatCompletionCreateParamsPluginChainOfThought,
-    ),
-  );
-}
-
-export function chatCompletionCreateParamsPluginChainOfThoughtFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsPluginChainOfThought,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatCompletionCreateParamsPluginChainOfThought$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsPluginChainOfThought' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsIdWeb$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsIdWeb
-> = z.nativeEnum(ChatCompletionCreateParamsIdWeb);
-
-/** @internal */
-export const ChatCompletionCreateParamsIdWeb$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsIdWeb
-> = ChatCompletionCreateParamsIdWeb$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsIdWeb$ {
-  /** @deprecated use `ChatCompletionCreateParamsIdWeb$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsIdWeb$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIdWeb$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsIdWeb$outboundSchema;
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsEngine$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsEngine
-> = z.nativeEnum(ChatCompletionCreateParamsEngine);
-
-/** @internal */
-export const ChatCompletionCreateParamsEngine$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsEngine
-> = ChatCompletionCreateParamsEngine$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsEngine$ {
-  /** @deprecated use `ChatCompletionCreateParamsEngine$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsEngine$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsEngine$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionCreateParamsEngine$outboundSchema;
-}
-
-/** @internal */
-export const ChatCompletionCreateParamsPluginWeb$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPluginWeb,
+export const PluginChainOfThought$inboundSchema: z.ZodType<
+  PluginChainOfThought,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: ChatCompletionCreateParamsIdWeb$inboundSchema,
+  id: IdChainOfThought$inboundSchema,
+});
+
+/** @internal */
+export type PluginChainOfThought$Outbound = {
+  id: string;
+};
+
+/** @internal */
+export const PluginChainOfThought$outboundSchema: z.ZodType<
+  PluginChainOfThought$Outbound,
+  z.ZodTypeDef,
+  PluginChainOfThought
+> = z.object({
+  id: IdChainOfThought$outboundSchema,
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PluginChainOfThought$ {
+  /** @deprecated use `PluginChainOfThought$inboundSchema` instead. */
+  export const inboundSchema = PluginChainOfThought$inboundSchema;
+  /** @deprecated use `PluginChainOfThought$outboundSchema` instead. */
+  export const outboundSchema = PluginChainOfThought$outboundSchema;
+  /** @deprecated use `PluginChainOfThought$Outbound` instead. */
+  export type Outbound = PluginChainOfThought$Outbound;
+}
+
+export function pluginChainOfThoughtToJSON(
+  pluginChainOfThought: PluginChainOfThought,
+): string {
+  return JSON.stringify(
+    PluginChainOfThought$outboundSchema.parse(pluginChainOfThought),
+  );
+}
+
+export function pluginChainOfThoughtFromJSON(
+  jsonString: string,
+): SafeParseResult<PluginChainOfThought, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PluginChainOfThought$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginChainOfThought' from JSON`,
+  );
+}
+
+/** @internal */
+export const IdWeb$inboundSchema: z.ZodNativeEnum<typeof IdWeb> = z.nativeEnum(
+  IdWeb,
+);
+
+/** @internal */
+export const IdWeb$outboundSchema: z.ZodNativeEnum<typeof IdWeb> =
+  IdWeb$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace IdWeb$ {
+  /** @deprecated use `IdWeb$inboundSchema` instead. */
+  export const inboundSchema = IdWeb$inboundSchema;
+  /** @deprecated use `IdWeb$outboundSchema` instead. */
+  export const outboundSchema = IdWeb$outboundSchema;
+}
+
+/** @internal */
+export const Engine$inboundSchema: z.ZodNativeEnum<typeof Engine> = z
+  .nativeEnum(Engine);
+
+/** @internal */
+export const Engine$outboundSchema: z.ZodNativeEnum<typeof Engine> =
+  Engine$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Engine$ {
+  /** @deprecated use `Engine$inboundSchema` instead. */
+  export const inboundSchema = Engine$inboundSchema;
+  /** @deprecated use `Engine$outboundSchema` instead. */
+  export const outboundSchema = Engine$outboundSchema;
+}
+
+/** @internal */
+export const PluginWeb$inboundSchema: z.ZodType<
+  PluginWeb,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  id: IdWeb$inboundSchema,
   max_results: z.number().optional(),
   search_prompt: z.string().optional(),
-  engine: ChatCompletionCreateParamsEngine$inboundSchema.optional(),
+  engine: Engine$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "max_results": "maxResults",
@@ -2758,7 +2332,7 @@ export const ChatCompletionCreateParamsPluginWeb$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionCreateParamsPluginWeb$Outbound = {
+export type PluginWeb$Outbound = {
   id: string;
   max_results?: number | undefined;
   search_prompt?: string | undefined;
@@ -2766,15 +2340,15 @@ export type ChatCompletionCreateParamsPluginWeb$Outbound = {
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginWeb$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPluginWeb$Outbound,
+export const PluginWeb$outboundSchema: z.ZodType<
+  PluginWeb$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsPluginWeb
+  PluginWeb
 > = z.object({
-  id: ChatCompletionCreateParamsIdWeb$outboundSchema,
+  id: IdWeb$outboundSchema,
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
-  engine: ChatCompletionCreateParamsEngine$outboundSchema.optional(),
+  engine: Engine$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
@@ -2786,190 +2360,154 @@ export const ChatCompletionCreateParamsPluginWeb$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPluginWeb$ {
-  /** @deprecated use `ChatCompletionCreateParamsPluginWeb$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPluginWeb$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginWeb$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPluginWeb$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginWeb$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPluginWeb$Outbound;
+export namespace PluginWeb$ {
+  /** @deprecated use `PluginWeb$inboundSchema` instead. */
+  export const inboundSchema = PluginWeb$inboundSchema;
+  /** @deprecated use `PluginWeb$outboundSchema` instead. */
+  export const outboundSchema = PluginWeb$outboundSchema;
+  /** @deprecated use `PluginWeb$Outbound` instead. */
+  export type Outbound = PluginWeb$Outbound;
 }
 
-export function chatCompletionCreateParamsPluginWebToJSON(
-  chatCompletionCreateParamsPluginWeb: ChatCompletionCreateParamsPluginWeb,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsPluginWeb$outboundSchema.parse(
-      chatCompletionCreateParamsPluginWeb,
-    ),
-  );
+export function pluginWebToJSON(pluginWeb: PluginWeb): string {
+  return JSON.stringify(PluginWeb$outboundSchema.parse(pluginWeb));
 }
 
-export function chatCompletionCreateParamsPluginWebFromJSON(
+export function pluginWebFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsPluginWeb, SDKValidationError> {
+): SafeParseResult<PluginWeb, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsPluginWeb$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsPluginWeb' from JSON`,
+    (x) => PluginWeb$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginWeb' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsIdModeration$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdModeration> = z.nativeEnum(
-    ChatCompletionCreateParamsIdModeration,
-  );
+export const IdModeration$inboundSchema: z.ZodNativeEnum<typeof IdModeration> =
+  z.nativeEnum(IdModeration);
 
 /** @internal */
-export const ChatCompletionCreateParamsIdModeration$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionCreateParamsIdModeration> =
-    ChatCompletionCreateParamsIdModeration$inboundSchema;
+export const IdModeration$outboundSchema: z.ZodNativeEnum<typeof IdModeration> =
+  IdModeration$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsIdModeration$ {
-  /** @deprecated use `ChatCompletionCreateParamsIdModeration$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsIdModeration$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsIdModeration$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsIdModeration$outboundSchema;
+export namespace IdModeration$ {
+  /** @deprecated use `IdModeration$inboundSchema` instead. */
+  export const inboundSchema = IdModeration$inboundSchema;
+  /** @deprecated use `IdModeration$outboundSchema` instead. */
+  export const outboundSchema = IdModeration$outboundSchema;
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginModeration$inboundSchema:
-  z.ZodType<ChatCompletionCreateParamsPluginModeration, z.ZodTypeDef, unknown> =
-    z.object({
-      id: ChatCompletionCreateParamsIdModeration$inboundSchema,
-    });
+export const PluginModeration$inboundSchema: z.ZodType<
+  PluginModeration,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  id: IdModeration$inboundSchema,
+});
 
 /** @internal */
-export type ChatCompletionCreateParamsPluginModeration$Outbound = {
+export type PluginModeration$Outbound = {
   id: string;
 };
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginModeration$outboundSchema:
-  z.ZodType<
-    ChatCompletionCreateParamsPluginModeration$Outbound,
-    z.ZodTypeDef,
-    ChatCompletionCreateParamsPluginModeration
-  > = z.object({
-    id: ChatCompletionCreateParamsIdModeration$outboundSchema,
-  });
+export const PluginModeration$outboundSchema: z.ZodType<
+  PluginModeration$Outbound,
+  z.ZodTypeDef,
+  PluginModeration
+> = z.object({
+  id: IdModeration$outboundSchema,
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPluginModeration$ {
-  /** @deprecated use `ChatCompletionCreateParamsPluginModeration$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPluginModeration$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginModeration$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPluginModeration$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginModeration$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPluginModeration$Outbound;
+export namespace PluginModeration$ {
+  /** @deprecated use `PluginModeration$inboundSchema` instead. */
+  export const inboundSchema = PluginModeration$inboundSchema;
+  /** @deprecated use `PluginModeration$outboundSchema` instead. */
+  export const outboundSchema = PluginModeration$outboundSchema;
+  /** @deprecated use `PluginModeration$Outbound` instead. */
+  export type Outbound = PluginModeration$Outbound;
 }
 
-export function chatCompletionCreateParamsPluginModerationToJSON(
-  chatCompletionCreateParamsPluginModeration:
-    ChatCompletionCreateParamsPluginModeration,
+export function pluginModerationToJSON(
+  pluginModeration: PluginModeration,
 ): string {
   return JSON.stringify(
-    ChatCompletionCreateParamsPluginModeration$outboundSchema.parse(
-      chatCompletionCreateParamsPluginModeration,
-    ),
+    PluginModeration$outboundSchema.parse(pluginModeration),
   );
 }
 
-export function chatCompletionCreateParamsPluginModerationFromJSON(
+export function pluginModerationFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ChatCompletionCreateParamsPluginModeration,
-  SDKValidationError
-> {
+): SafeParseResult<PluginModeration, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsPluginModeration$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatCompletionCreateParamsPluginModeration' from JSON`,
+    (x) => PluginModeration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginModeration' from JSON`,
   );
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginUnion$inboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPluginUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => ChatCompletionCreateParamsPluginModeration$inboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginWeb$inboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginChainOfThought$inboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginFileParser$inboundSchema),
-]);
+export const Plugin$inboundSchema: z.ZodType<Plugin, z.ZodTypeDef, unknown> = z
+  .union([
+    z.lazy(() => PluginModeration$inboundSchema),
+    z.lazy(() => PluginWeb$inboundSchema),
+    z.lazy(() => PluginChainOfThought$inboundSchema),
+    z.lazy(() => PluginFileParser$inboundSchema),
+  ]);
 
 /** @internal */
-export type ChatCompletionCreateParamsPluginUnion$Outbound =
-  | ChatCompletionCreateParamsPluginModeration$Outbound
-  | ChatCompletionCreateParamsPluginWeb$Outbound
-  | ChatCompletionCreateParamsPluginChainOfThought$Outbound
-  | ChatCompletionCreateParamsPluginFileParser$Outbound;
+export type Plugin$Outbound =
+  | PluginModeration$Outbound
+  | PluginWeb$Outbound
+  | PluginChainOfThought$Outbound
+  | PluginFileParser$Outbound;
 
 /** @internal */
-export const ChatCompletionCreateParamsPluginUnion$outboundSchema: z.ZodType<
-  ChatCompletionCreateParamsPluginUnion$Outbound,
+export const Plugin$outboundSchema: z.ZodType<
+  Plugin$Outbound,
   z.ZodTypeDef,
-  ChatCompletionCreateParamsPluginUnion
+  Plugin
 > = z.union([
-  z.lazy(() => ChatCompletionCreateParamsPluginModeration$outboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginWeb$outboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginChainOfThought$outboundSchema),
-  z.lazy(() => ChatCompletionCreateParamsPluginFileParser$outboundSchema),
+  z.lazy(() => PluginModeration$outboundSchema),
+  z.lazy(() => PluginWeb$outboundSchema),
+  z.lazy(() => PluginChainOfThought$outboundSchema),
+  z.lazy(() => PluginFileParser$outboundSchema),
 ]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionCreateParamsPluginUnion$ {
-  /** @deprecated use `ChatCompletionCreateParamsPluginUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionCreateParamsPluginUnion$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsPluginUnion$outboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsPluginUnion$Outbound` instead. */
-  export type Outbound = ChatCompletionCreateParamsPluginUnion$Outbound;
+export namespace Plugin$ {
+  /** @deprecated use `Plugin$inboundSchema` instead. */
+  export const inboundSchema = Plugin$inboundSchema;
+  /** @deprecated use `Plugin$outboundSchema` instead. */
+  export const outboundSchema = Plugin$outboundSchema;
+  /** @deprecated use `Plugin$Outbound` instead. */
+  export type Outbound = Plugin$Outbound;
 }
 
-export function chatCompletionCreateParamsPluginUnionToJSON(
-  chatCompletionCreateParamsPluginUnion: ChatCompletionCreateParamsPluginUnion,
-): string {
-  return JSON.stringify(
-    ChatCompletionCreateParamsPluginUnion$outboundSchema.parse(
-      chatCompletionCreateParamsPluginUnion,
-    ),
-  );
+export function pluginToJSON(plugin: Plugin): string {
+  return JSON.stringify(Plugin$outboundSchema.parse(plugin));
 }
 
-export function chatCompletionCreateParamsPluginUnionFromJSON(
+export function pluginFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionCreateParamsPluginUnion, SDKValidationError> {
+): SafeParseResult<Plugin, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionCreateParamsPluginUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionCreateParamsPluginUnion' from JSON`,
+    (x) => Plugin$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Plugin' from JSON`,
   );
 }
 
@@ -2989,47 +2527,34 @@ export const ChatCompletionCreateParams$inboundSchema: z.ZodType<
   max_tokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presence_penalty: z.nullable(z.number()).optional(),
-  reasoning: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsReasoning$inboundSchema),
-  ).optional(),
+  reasoning: z.nullable(z.lazy(() => Reasoning$inboundSchema)).optional(),
   response_format: z.union([
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONSchema$inboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatGrammar$inboundSchema),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatText$inboundSchema),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONObject$inboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatPython$inboundSchema),
+    z.lazy(() => ResponseFormatJSONSchema$inboundSchema),
+    z.lazy(() => ResponseFormatGrammar$inboundSchema),
+    z.lazy(() => ResponseFormatText$inboundSchema),
+    z.lazy(() => ResponseFormatJSONObject$inboundSchema),
+    z.lazy(() => ResponseFormatPython$inboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
   stream: z.nullable(z.boolean().default(false)),
-  stream_options: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsStreamOptions$inboundSchema),
-  ).optional(),
+  stream_options: z.nullable(z.lazy(() => StreamOptions$inboundSchema))
+    .optional(),
   temperature: z.nullable(z.number().default(1)),
   tool_choice: ChatCompletionToolChoiceOption$inboundSchema.optional(),
   tools: z.array(ChatCompletionTool$inboundSchema).optional(),
   top_p: z.nullable(z.number().default(1)),
   user: z.string().optional(),
   models: z.nullable(z.array(z.string())).optional(),
-  reasoning_effort: z.nullable(
-    ChatCompletionCreateParamsReasoningEffort$inboundSchema,
-  ).optional(),
-  provider: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsProvider$inboundSchema),
-  ).optional(),
+  reasoning_effort: z.nullable(ReasoningEffort$inboundSchema).optional(),
+  provider: z.nullable(z.lazy(() => Provider$inboundSchema)).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => ChatCompletionCreateParamsPluginModeration$inboundSchema),
-      z.lazy(() => ChatCompletionCreateParamsPluginWeb$inboundSchema),
-      z.lazy(() =>
-        ChatCompletionCreateParamsPluginChainOfThought$inboundSchema
-      ),
-      z.lazy(() => ChatCompletionCreateParamsPluginFileParser$inboundSchema),
+      z.lazy(() => PluginModeration$inboundSchema),
+      z.lazy(() => PluginWeb$inboundSchema),
+      z.lazy(() => PluginChainOfThought$inboundSchema),
+      z.lazy(() => PluginFileParser$inboundSchema),
     ]),
   ).optional(),
 }).transform((v) => {
@@ -3060,21 +2585,18 @@ export type ChatCompletionCreateParams$Outbound = {
   max_tokens?: number | null | undefined;
   metadata?: { [k: string]: string } | undefined;
   presence_penalty?: number | null | undefined;
-  reasoning?: ChatCompletionCreateParamsReasoning$Outbound | null | undefined;
+  reasoning?: Reasoning$Outbound | null | undefined;
   response_format?:
-    | ChatCompletionCreateParamsResponseFormatJSONSchema$Outbound
-    | ChatCompletionCreateParamsResponseFormatGrammar$Outbound
-    | ChatCompletionCreateParamsResponseFormatText$Outbound
-    | ChatCompletionCreateParamsResponseFormatJSONObject$Outbound
-    | ChatCompletionCreateParamsResponseFormatPython$Outbound
+    | ResponseFormatJSONSchema$Outbound
+    | ResponseFormatGrammar$Outbound
+    | ResponseFormatText$Outbound
+    | ResponseFormatJSONObject$Outbound
+    | ResponseFormatPython$Outbound
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | any | null | undefined;
   stream: boolean | null;
-  stream_options?:
-    | ChatCompletionCreateParamsStreamOptions$Outbound
-    | null
-    | undefined;
+  stream_options?: StreamOptions$Outbound | null | undefined;
   temperature: number | null;
   tool_choice?: ChatCompletionToolChoiceOption$Outbound | undefined;
   tools?: Array<ChatCompletionTool$Outbound> | undefined;
@@ -3082,13 +2604,13 @@ export type ChatCompletionCreateParams$Outbound = {
   user?: string | undefined;
   models?: Array<string> | null | undefined;
   reasoning_effort?: string | null | undefined;
-  provider?: ChatCompletionCreateParamsProvider$Outbound | null | undefined;
+  provider?: Provider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | ChatCompletionCreateParamsPluginModeration$Outbound
-      | ChatCompletionCreateParamsPluginWeb$Outbound
-      | ChatCompletionCreateParamsPluginChainOfThought$Outbound
-      | ChatCompletionCreateParamsPluginFileParser$Outbound
+      | PluginModeration$Outbound
+      | PluginWeb$Outbound
+      | PluginChainOfThought$Outbound
+      | PluginFileParser$Outbound
     >
     | undefined;
 };
@@ -3109,49 +2631,34 @@ export const ChatCompletionCreateParams$outboundSchema: z.ZodType<
   maxTokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsReasoning$outboundSchema),
-  ).optional(),
+  reasoning: z.nullable(z.lazy(() => Reasoning$outboundSchema)).optional(),
   responseFormat: z.union([
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONSchema$outboundSchema
-    ),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatGrammar$outboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatText$outboundSchema),
-    z.lazy(() =>
-      ChatCompletionCreateParamsResponseFormatJSONObject$outboundSchema
-    ),
-    z.lazy(() => ChatCompletionCreateParamsResponseFormatPython$outboundSchema),
+    z.lazy(() => ResponseFormatJSONSchema$outboundSchema),
+    z.lazy(() => ResponseFormatGrammar$outboundSchema),
+    z.lazy(() => ResponseFormatText$outboundSchema),
+    z.lazy(() => ResponseFormatJSONObject$outboundSchema),
+    z.lazy(() => ResponseFormatPython$outboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
   stream: z.nullable(z.boolean().default(false)),
-  streamOptions: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsStreamOptions$outboundSchema),
-  ).optional(),
+  streamOptions: z.nullable(z.lazy(() => StreamOptions$outboundSchema))
+    .optional(),
   temperature: z.nullable(z.number().default(1)),
   toolChoice: ChatCompletionToolChoiceOption$outboundSchema.optional(),
   tools: z.array(ChatCompletionTool$outboundSchema).optional(),
   topP: z.nullable(z.number().default(1)),
   user: z.string().optional(),
   models: z.nullable(z.array(z.string())).optional(),
-  reasoningEffort: z.nullable(
-    ChatCompletionCreateParamsReasoningEffort$outboundSchema,
-  ).optional(),
-  provider: z.nullable(
-    z.lazy(() => ChatCompletionCreateParamsProvider$outboundSchema),
-  ).optional(),
+  reasoningEffort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => ChatCompletionCreateParamsPluginModeration$outboundSchema),
-      z.lazy(() => ChatCompletionCreateParamsPluginWeb$outboundSchema),
-      z.lazy(() =>
-        ChatCompletionCreateParamsPluginChainOfThought$outboundSchema
-      ),
-      z.lazy(() => ChatCompletionCreateParamsPluginFileParser$outboundSchema),
+      z.lazy(() => PluginModeration$outboundSchema),
+      z.lazy(() => PluginWeb$outboundSchema),
+      z.lazy(() => PluginChainOfThought$outboundSchema),
+      z.lazy(() => PluginFileParser$outboundSchema),
     ]),
   ).optional(),
 }).transform((v) => {

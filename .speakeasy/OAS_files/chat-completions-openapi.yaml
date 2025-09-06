@@ -31,6 +31,12 @@ components:
       scheme: bearer
       description: API key as bearer token in Authorization header
   schemas:
+    ChatCompletionChunkWrapper:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: '#/components/schemas/ChatCompletionChunk'
     ChatCompletionMessageToolCall:
       type: object
       properties:
@@ -1496,6 +1502,8 @@ paths:
   /chat/completions:
     post:
       operationId: createChatCompletion
+      x-speakeasy-group: chat
+      x-speakeasy-name-override: complete
       summary: Create a chat completion
       description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       tags:
@@ -1513,14 +1521,12 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/ChatCompletion'
-                    description: Non-streaming response when stream=false
-                  - $ref: '#/components/schemas/ChatCompletionChunk'
-                    description: Individual chunk in streaming response when stream=true
+                $ref: '#/components/schemas/ChatCompletion'
+                description: Non-streaming response when stream=false
             text/event-stream:
+              x-speakeasy-sse-sentinel: '[DONE]'
               schema:
-                $ref: '#/components/schemas/ChatCompletionChunk'
+                $ref: '#/components/schemas/ChatCompletionChunkWrapper'
         '400':
           description: Bad request - invalid parameters
           content:

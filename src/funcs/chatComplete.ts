@@ -22,8 +22,14 @@ import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
+
+export enum CompleteAcceptEnum {
+  applicationJson = "application/json",
+  textEventStream = "text/event-stream",
+}
 
 /**
  * Create a chat completion
@@ -34,10 +40,10 @@ import { Result } from "../types/fp.js";
 export function chatComplete(
   client: OpenRouterCore,
   request: models.ChatCompletionCreateParams,
-  options?: RequestOptions,
+  options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
 ): APIPromise<
   Result<
-    models.ChatCompletion,
+    operations.CreateChatCompletionResponse,
     | errors.ChatCompletionError
     | OpenRouterError
     | ResponseValidationError
@@ -59,11 +65,11 @@ export function chatComplete(
 async function $do(
   client: OpenRouterCore,
   request: models.ChatCompletionCreateParams,
-  options?: RequestOptions,
+  options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
 ): Promise<
   [
     Result<
-      models.ChatCompletion,
+      operations.CreateChatCompletionResponse,
       | errors.ChatCompletionError
       | OpenRouterError
       | ResponseValidationError
@@ -92,7 +98,8 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/json",
+    Accept: options?.acceptHeaderOverride
+      || "application/json;q=1, text/event-stream;q=0",
   }));
 
   const secConfig = await extractSecurity(client._options.bearerAuth);
@@ -145,7 +152,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.ChatCompletion,
+    operations.CreateChatCompletionResponse,
     | errors.ChatCompletionError
     | OpenRouterError
     | ResponseValidationError
@@ -156,7 +163,8 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.ChatCompletion$inboundSchema),
+    M.json(200, operations.CreateChatCompletionResponse$inboundSchema),
+    M.sse(200, operations.CreateChatCompletionResponse$inboundSchema),
     M.jsonErr([400, 401, 429], errors.ChatCompletionError$inboundSchema),
     M.jsonErr(500, errors.ChatCompletionError$inboundSchema),
     M.fail("4XX"),

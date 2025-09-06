@@ -9,9 +9,19 @@ import { ChatCompletion } from "open-router/models";
 
 let value: ChatCompletion = {
   id: "<id>",
-  choices: [],
-  created: 6764.71,
-  model: "Altima",
+  choices: [
+    {
+      finishReason: "stop",
+      index: 7209.22,
+      message: {
+        role: "assistant",
+        content: "<value>",
+        refusal: "<value>",
+      },
+    },
+  ],
+  created: 4940.1,
+  model: "Accord",
   object: "chat.completion",
 };
 ```

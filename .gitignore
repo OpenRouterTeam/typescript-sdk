@@ -30,3 +30,4 @@
 .env.*.local
 /examples/.env
 /examples/package-lock.json
+/temp
