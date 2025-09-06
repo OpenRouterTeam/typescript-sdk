@@ -5,6 +5,24 @@ Chat completion message with role-based discrimination
 
 ## Supported Types
 
+### `models.ChatCompletionToolMessageParam`
+
+```typescript
+const value: models.ChatCompletionToolMessageParam = {
+  role: "tool",
+  content: [
+    {
+      type: "input_audio",
+      inputAudio: {
+        data: "<value>",
+        format: "pcm24",
+      },
+    },
+  ],
+  toolCallId: "<id>",
+};
+```
+
 ### `models.ChatCompletionSystemMessageParam`
 
 ```typescript
@@ -33,24 +51,6 @@ const value: models.ChatCompletionUserMessageParam = {
 ```typescript
 const value: models.ChatCompletionAssistantMessageParam = {
   role: "assistant",
-};
-```
-
-### `models.ChatCompletionToolMessageParam`
-
-```typescript
-const value: models.ChatCompletionToolMessageParam = {
-  role: "tool",
-  content: [
-    {
-      type: "input_audio",
-      inputAudio: {
-        data: "<value>",
-        format: "pcm24",
-      },
-    },
-  ],
-  toolCallId: "<id>",
 };
 ```
 

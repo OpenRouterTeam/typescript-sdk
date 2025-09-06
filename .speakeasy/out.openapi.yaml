@@ -31,6 +31,12 @@ components:
       scheme: bearer
       description: API key as bearer token in Authorization header
   schemas:
+    ChatCompletionChunkWrapper:
+      type: object
+      required: [data]
+      properties:
+        data:
+          $ref: '#/components/schemas/ChatCompletionChunk'
     ChatCompletionMessageToolCall:
       type: object
       properties:
@@ -1485,22 +1491,13 @@ components:
       required:
         - messages
       description: Chat completion request parameters
-    ChatStreamCompletionCreateParams:
-      allOf:
-        - $ref: "#/components/schemas/ChatCompletionCreateParams"
-        - type: object
-          properties:
-            stream:
-              type: boolean
-              enum:
-                - true
-              default: true
-              description: Enable streaming response
   parameters: {}
 paths:
   /chat/completions:
     post:
       operationId: createChatCompletion
+      x-speakeasy-group: chat
+      x-speakeasy-name-override: complete
       summary: Create a chat completion
       description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       tags:
@@ -1520,57 +1517,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ChatCompletion'
                 description: Non-streaming response when stream=false
-        '400':
-          description: Bad request - invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatCompletionError'
-        '401':
-          description: Unauthorized - invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatCompletionError'
-        '429':
-          description: Too many requests - rate limit exceeded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatCompletionError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatCompletionError'
-      x-speakeasy-name-override: complete
-  /chat/completions#stream:
-    post:
-      operationId: streamChatCompletion
-      summary: Create a chat completion
-      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
-      tags:
-        - Chat
-      requestBody:
-        description: Chat completion request parameters
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChatStreamCompletionCreateParams'
-      responses:
-        '200':
-          description: Successful chat completion response
-          content:
             text/event-stream:
               x-speakeasy-sse-sentinel: '[DONE]'
               schema:
-                type: object
-                required: [data]
-                properties:
-                  data:
-                    $ref: '#/components/schemas/ChatCompletionChunk'
+                $ref: '#/components/schemas/ChatCompletionChunkWrapper'
         '400':
           description: Bad request - invalid parameters
           content:
@@ -1595,4 +1545,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletionError'
-      x-speakeasy-name-override: completeStream

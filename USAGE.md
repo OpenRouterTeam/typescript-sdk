@@ -16,7 +16,10 @@ async function run() {
     ],
   });
 
-  console.log(result);
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
 }
 
 run();

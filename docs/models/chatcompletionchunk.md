@@ -12,12 +12,12 @@ let value: ChatCompletionChunk = {
   choices: [
     {
       delta: {},
-      finishReason: "length",
-      index: 7881.03,
+      finishReason: "stop",
+      index: 4065.76,
     },
   ],
-  created: 6771.54,
-  model: "PT Cruiser",
+  created: 3939.45,
+  model: "Impala",
   object: "chat.completion.chunk",
 };
 ```

@@ -1,19 +1,20 @@
 lockVersion: 2.0.0
 id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
-  docChecksum: 36a7cb5013d52318029144e2f7478507
+  docChecksum: b163f9f41b3d71f314b6facfd6e73920
   docVersion: 1.0.0
-  speakeasyVersion: 1.606.4
-  generationVersion: 2.687.1
-  releaseVersion: 0.3.1
-  configChecksum: 8ca151e42ffdb65b3610b37402fc03ce
+  speakeasyVersion: 1.611.0
+  generationVersion: 2.694.1
+  releaseVersion: 0.5.2
+  configChecksum: 26a6d90117542e88807eeb93978d6ae1
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
   typescript:
+    acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.21.20
+    core: 3.21.22
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.0
@@ -23,6 +24,7 @@ features:
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
+    groups: 2.81.2
     methodArguments: 0.1.2
     nameOverrides: 2.81.2
     nullables: 0.1.1
@@ -43,6 +45,7 @@ generatedFiles:
   - USAGE.md
   - docs/lib/utils/retryconfig.md
   - docs/models/annotationdetail.md
+  - docs/models/audio.md
   - docs/models/chatcompletion.md
   - docs/models/chatcompletionassistantmessageparam.md
   - docs/models/chatcompletionassistantmessageparamcontent.md
@@ -58,6 +61,7 @@ generatedFiles:
   - docs/models/chatcompletionchunkchoicedeltatoolcalltype.md
   - docs/models/chatcompletionchunkchoicefinishreason.md
   - docs/models/chatcompletionchunkobject.md
+  - docs/models/chatcompletionchunkwrapper.md
   - docs/models/chatcompletioncontentpart.md
   - docs/models/chatcompletioncontentpartaudio.md
   - docs/models/chatcompletioncontentpartaudioformat.md
@@ -68,50 +72,6 @@ generatedFiles:
   - docs/models/chatcompletioncontentparttext.md
   - docs/models/chatcompletioncontentparttexttype.md
   - docs/models/chatcompletioncreateparams.md
-  - docs/models/chatcompletioncreateparamsaudio.md
-  - docs/models/chatcompletioncreateparamscompletion.md
-  - docs/models/chatcompletioncreateparamsdatacollection.md
-  - docs/models/chatcompletioncreateparamseffort.md
-  - docs/models/chatcompletioncreateparamsengine.md
-  - docs/models/chatcompletioncreateparamsidchainofthought.md
-  - docs/models/chatcompletioncreateparamsidfileparser.md
-  - docs/models/chatcompletioncreateparamsidmoderation.md
-  - docs/models/chatcompletioncreateparamsidweb.md
-  - docs/models/chatcompletioncreateparamsignoreenum.md
-  - docs/models/chatcompletioncreateparamsignoreunion.md
-  - docs/models/chatcompletioncreateparamsimage.md
-  - docs/models/chatcompletioncreateparamsjsonschema.md
-  - docs/models/chatcompletioncreateparamsmaxprice.md
-  - docs/models/chatcompletioncreateparamsonlyenum.md
-  - docs/models/chatcompletioncreateparamsonlyunion.md
-  - docs/models/chatcompletioncreateparamsorderenum.md
-  - docs/models/chatcompletioncreateparamsorderunion.md
-  - docs/models/chatcompletioncreateparamspdf.md
-  - docs/models/chatcompletioncreateparamspdfengine.md
-  - docs/models/chatcompletioncreateparamspluginchainofthought.md
-  - docs/models/chatcompletioncreateparamspluginfileparser.md
-  - docs/models/chatcompletioncreateparamspluginmoderation.md
-  - docs/models/chatcompletioncreateparamspluginunion.md
-  - docs/models/chatcompletioncreateparamspluginweb.md
-  - docs/models/chatcompletioncreateparamsprompt.md
-  - docs/models/chatcompletioncreateparamsprovider.md
-  - docs/models/chatcompletioncreateparamsquantization.md
-  - docs/models/chatcompletioncreateparamsreasoning.md
-  - docs/models/chatcompletioncreateparamsreasoningeffort.md
-  - docs/models/chatcompletioncreateparamsrequest.md
-  - docs/models/chatcompletioncreateparamsresponseformatgrammar.md
-  - docs/models/chatcompletioncreateparamsresponseformatjsonobject.md
-  - docs/models/chatcompletioncreateparamsresponseformatjsonschema.md
-  - docs/models/chatcompletioncreateparamsresponseformatpython.md
-  - docs/models/chatcompletioncreateparamsresponseformattext.md
-  - docs/models/chatcompletioncreateparamsresponseformatunion.md
-  - docs/models/chatcompletioncreateparamssort.md
-  - docs/models/chatcompletioncreateparamsstop.md
-  - docs/models/chatcompletioncreateparamsstreamoptions.md
-  - docs/models/chatcompletioncreateparamstypegrammar.md
-  - docs/models/chatcompletioncreateparamstypejsonobject.md
-  - docs/models/chatcompletioncreateparamstypejsonschema.md
-  - docs/models/chatcompletioncreateparamstypepython.md
   - docs/models/chatcompletioncreateparamstypetext.md
   - docs/models/chatcompletionmessage.md
   - docs/models/chatcompletionmessageparam.md
@@ -141,69 +101,51 @@ generatedFiles:
   - docs/models/chatcompletionusermessageparam.md
   - docs/models/chatcompletionusermessageparamcontent.md
   - docs/models/chatcompletionusermessageparamrole.md
-  - docs/models/chatstreamcompletioncreateparams.md
-  - docs/models/chatstreamcompletioncreateparamsaudio.md
-  - docs/models/chatstreamcompletioncreateparamscompletion.md
-  - docs/models/chatstreamcompletioncreateparamsdatacollection.md
-  - docs/models/chatstreamcompletioncreateparamseffort.md
-  - docs/models/chatstreamcompletioncreateparamsengine.md
-  - docs/models/chatstreamcompletioncreateparamsidchainofthought.md
-  - docs/models/chatstreamcompletioncreateparamsidfileparser.md
-  - docs/models/chatstreamcompletioncreateparamsidmoderation.md
-  - docs/models/chatstreamcompletioncreateparamsidweb.md
-  - docs/models/chatstreamcompletioncreateparamsignoreenum.md
-  - docs/models/chatstreamcompletioncreateparamsignoreunion.md
-  - docs/models/chatstreamcompletioncreateparamsimage.md
-  - docs/models/chatstreamcompletioncreateparamsjsonschema.md
-  - docs/models/chatstreamcompletioncreateparamsmaxprice.md
-  - docs/models/chatstreamcompletioncreateparamsonlyenum.md
-  - docs/models/chatstreamcompletioncreateparamsonlyunion.md
-  - docs/models/chatstreamcompletioncreateparamsorderenum.md
-  - docs/models/chatstreamcompletioncreateparamsorderunion.md
-  - docs/models/chatstreamcompletioncreateparamspdf.md
-  - docs/models/chatstreamcompletioncreateparamspdfengine.md
-  - docs/models/chatstreamcompletioncreateparamspluginchainofthought.md
-  - docs/models/chatstreamcompletioncreateparamspluginfileparser.md
-  - docs/models/chatstreamcompletioncreateparamspluginmoderation.md
-  - docs/models/chatstreamcompletioncreateparamspluginunion.md
-  - docs/models/chatstreamcompletioncreateparamspluginweb.md
-  - docs/models/chatstreamcompletioncreateparamsprompt.md
-  - docs/models/chatstreamcompletioncreateparamsprovider.md
-  - docs/models/chatstreamcompletioncreateparamsquantization.md
-  - docs/models/chatstreamcompletioncreateparamsreasoning.md
-  - docs/models/chatstreamcompletioncreateparamsreasoningeffort.md
-  - docs/models/chatstreamcompletioncreateparamsrequest.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformatgrammar.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformatjsonobject.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformatjsonschema.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformatpython.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformattext.md
-  - docs/models/chatstreamcompletioncreateparamsresponseformatunion.md
-  - docs/models/chatstreamcompletioncreateparamssort.md
-  - docs/models/chatstreamcompletioncreateparamsstop.md
-  - docs/models/chatstreamcompletioncreateparamsstreamoptions.md
-  - docs/models/chatstreamcompletioncreateparamstypegrammar.md
-  - docs/models/chatstreamcompletioncreateparamstypejsonobject.md
-  - docs/models/chatstreamcompletioncreateparamstypejsonschema.md
-  - docs/models/chatstreamcompletioncreateparamstypepython.md
-  - docs/models/chatstreamcompletioncreateparamstypetext.md
+  - docs/models/completion.md
   - docs/models/completiontokensdetails.md
   - docs/models/completionusage.md
   - docs/models/contentimageurl.md
   - docs/models/contenttext.md
   - docs/models/contenttypeimageurl.md
   - docs/models/contenttypetext.md
+  - docs/models/datacollection.md
   - docs/models/detail.md
+  - docs/models/effort.md
+  - docs/models/engine.md
   - docs/models/errors/chatcompletionerror.md
   - docs/models/errort.md
   - docs/models/fileannotationdetail.md
   - docs/models/fileannotationdetailcontentunion.md
   - docs/models/fileannotationdetailimageurl.md
   - docs/models/filet.md
+  - docs/models/idchainofthought.md
+  - docs/models/idfileparser.md
+  - docs/models/idmoderation.md
+  - docs/models/idweb.md
+  - docs/models/ignore.md
+  - docs/models/ignoreenum.md
+  - docs/models/image.md
   - docs/models/inputaudio.md
-  - docs/models/operations/streamchatcompletionresponsebody.md
+  - docs/models/jsonschema.md
+  - docs/models/maxprice.md
+  - docs/models/only.md
+  - docs/models/onlyenum.md
+  - docs/models/operations/createchatcompletionresponse.md
+  - docs/models/order.md
+  - docs/models/orderenum.md
   - docs/models/parameterst.md
+  - docs/models/pdf.md
+  - docs/models/pdfengine.md
+  - docs/models/plugin.md
+  - docs/models/pluginchainofthought.md
+  - docs/models/pluginfileparser.md
+  - docs/models/pluginmoderation.md
+  - docs/models/pluginweb.md
+  - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
+  - docs/models/provider.md
+  - docs/models/quantization.md
+  - docs/models/reasoning.md
   - docs/models/reasoningdetail.md
   - docs/models/reasoningdetailencrypted.md
   - docs/models/reasoningdetailencryptedformat.md
@@ -214,10 +156,25 @@ generatedFiles:
   - docs/models/reasoningdetailtext.md
   - docs/models/reasoningdetailtextformat.md
   - docs/models/reasoningdetailtexttype.md
+  - docs/models/reasoningeffort.md
+  - docs/models/requestt.md
+  - docs/models/responseformat.md
+  - docs/models/responseformatgrammar.md
+  - docs/models/responseformatjsonobject.md
+  - docs/models/responseformatjsonschema.md
   - docs/models/responseformatjsonschemaschema.md
+  - docs/models/responseformatpython.md
+  - docs/models/responseformattext.md
   - docs/models/security.md
+  - docs/models/sort.md
+  - docs/models/stop.md
+  - docs/models/streamoptions.md
   - docs/models/toplogprob.md
   - docs/models/typefile.md
+  - docs/models/typegrammar.md
+  - docs/models/typejsonobject.md
+  - docs/models/typejsonschema.md
+  - docs/models/typepython.md
   - docs/models/urlcitation.md
   - docs/models/urlcitationannotationdetail.md
   - docs/models/urlcitationannotationdetailtype.md
@@ -226,13 +183,11 @@ generatedFiles:
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/chatComplete.example.ts
   - examples/package.json
   - jsr.json
   - package.json
   - src/core.ts
   - src/funcs/chatComplete.ts
-  - src/funcs/chatCompleteStream.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts
@@ -262,6 +217,7 @@ generatedFiles:
   - src/models/chatcompletionchunkchoice.ts
   - src/models/chatcompletionchunkchoicedelta.ts
   - src/models/chatcompletionchunkchoicedeltatoolcall.ts
+  - src/models/chatcompletionchunkwrapper.ts
   - src/models/chatcompletioncontentpart.ts
   - src/models/chatcompletioncontentpartaudio.ts
   - src/models/chatcompletioncontentpartimage.ts
@@ -279,7 +235,6 @@ generatedFiles:
   - src/models/chatcompletiontoolchoiceoption.ts
   - src/models/chatcompletiontoolmessageparam.ts
   - src/models/chatcompletionusermessageparam.ts
-  - src/models/chatstreamcompletioncreateparams.ts
   - src/models/completionusage.ts
   - src/models/errors/chatcompletionerror.ts
   - src/models/errors/httpclienterrors.ts
@@ -290,8 +245,8 @@ generatedFiles:
   - src/models/errors/sdkvalidationerror.ts
   - src/models/fileannotationdetail.ts
   - src/models/index.ts
+  - src/models/operations/createchatcompletion.ts
   - src/models/operations/index.ts
-  - src/models/operations/streamchatcompletion.ts
   - src/models/reasoningdetail.ts
   - src/models/reasoningdetailencrypted.ts
   - src/models/reasoningdetailsummary.ts
@@ -311,12 +266,23 @@ generatedFiles:
   - src/types/operations.ts
   - src/types/rfcdate.ts
   - src/types/streams.ts
+  - temp/example.ts
   - tsconfig.json
 examples:
   createChatCompletion:
     speakeasy-default-create-chat-completion:
       requestBody:
         application/json: {"messages": [{"role": "user", "content": "Hello, how are you?"}], "stream": false, "temperature": 1, "top_p": 1}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "choices": [], "created": 6977.95, "model": "El Camino", "object": "chat.completion"}
+        "400":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+        "500":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+    speakeasy-default-create-chat-completion-raw:
+      requestBody:
+        text/event-stream: "x-file: example.file"
       responses:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 6977.95, "model": "El Camino", "object": "chat.completion"}
