@@ -3,7 +3,7 @@
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

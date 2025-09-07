@@ -17,7 +17,7 @@ servers:
         default: openrouter.ai
     description: Production server
 security:
-  - BearerAuth: []
+  - ApiKey: []
 tags:
   - name: Chat
     description: Chat completion operations
@@ -26,7 +26,7 @@ externalDocs:
   url: https://openrouter.ai/docs
 components:
   securitySchemes:
-    BearerAuth:
+    ApiKey:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
