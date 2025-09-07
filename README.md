@@ -94,7 +94,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -125,16 +125,16 @@ run();
 
 This SDK supports the following security scheme globally:
 
-| Name         | Type | Scheme      | Environment Variable     |
-| ------------ | ---- | ----------- | ------------------------ |
-| `bearerAuth` | http | HTTP Bearer | `OPENROUTER_BEARER_AUTH` |
+| Name     | Type | Scheme      | Environment Variable |
+| -------- | ---- | ----------- | -------------------- |
+| `apiKey` | http | HTTP Bearer | `OPENROUTER_API_KEY` |
 
-To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK client instance. For example:
+To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -283,7 +283,7 @@ To change the default retry strategy for a single API call, simply provide a ret
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -332,7 +332,7 @@ const openRouter = new OpenRouter({
     },
     retryConnectionErrors: false,
   },
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -376,7 +376,7 @@ import { OpenRouter } from "open-router";
 import * as errors from "open-router/models/errors";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -455,7 +455,7 @@ import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
   providerUrl: "https://ruddy-guacamole.info/",
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -486,7 +486,7 @@ import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
   serverURL: "https://openrouter.ai/api/v1",
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

@@ -18,7 +18,7 @@ Creates a model response for the given chat conversation. Supports both streamin
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -51,7 +51,7 @@ import { chatComplete } from "open-router/funcs/chatComplete.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
