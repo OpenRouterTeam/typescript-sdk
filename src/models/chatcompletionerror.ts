@@ -11,27 +11,27 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Error object structure
  */
 export type ErrorT = {
-  code: string | null;
+  code: number | null;
   message: string;
-  param: string | null;
-  type: string;
+  param?: string | null | undefined;
+  type?: string | undefined;
 };
 
 /** @internal */
 export const ErrorT$inboundSchema: z.ZodType<ErrorT, z.ZodTypeDef, unknown> = z
   .object({
-    code: z.nullable(z.string()),
+    code: z.nullable(z.number()),
     message: z.string(),
-    param: z.nullable(z.string()),
-    type: z.string(),
+    param: z.nullable(z.string()).optional(),
+    type: z.string().optional(),
   });
 
 /** @internal */
 export type ErrorT$Outbound = {
-  code: string | null;
+  code: number | null;
   message: string;
-  param: string | null;
-  type: string;
+  param?: string | null | undefined;
+  type?: string | undefined;
 };
 
 /** @internal */
@@ -40,10 +40,10 @@ export const ErrorT$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ErrorT
 > = z.object({
-  code: z.nullable(z.string()),
+  code: z.nullable(z.number()),
   message: z.string(),
-  param: z.nullable(z.string()),
-  type: z.string(),
+  param: z.nullable(z.string()).optional(),
+  type: z.string().optional(),
 });
 
 /**
