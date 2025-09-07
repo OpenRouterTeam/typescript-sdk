@@ -1,4 +1,4 @@
-speakeasyVersion: 1.611.0
+speakeasyVersion: 1.611.1
 sources:
     OpenRouter Chat Completions API:
         sourceNamespace: open-router-chat-completions-api

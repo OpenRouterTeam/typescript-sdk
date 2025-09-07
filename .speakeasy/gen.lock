@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
-  docChecksum: 94a9004b4eb9d74143f6acdb06982dd9
+  docChecksum: 43ffe8928bc1b697d9993d04b3024a7c
   docVersion: 1.0.0
-  speakeasyVersion: 1.611.0
+  speakeasyVersion: 1.611.1
   generationVersion: 2.694.1
-  releaseVersion: 0.5.3
-  configChecksum: 86f9fc17e898d37ca28f113762f1344a
+  releaseVersion: 0.5.4
+  configChecksum: b79d463e59ce1857adb0434ebe618ccd
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
@@ -277,9 +277,9 @@ examples:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 6977.95, "model": "El Camino", "object": "chat.completion"}
         "400":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": null, "message": "<value>"}}
         "500":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": null, "message": "<value>"}}
     speakeasy-default-create-chat-completion-raw:
       requestBody:
         text/event-stream: "x-file: example.file"

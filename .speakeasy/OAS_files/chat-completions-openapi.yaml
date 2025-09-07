@@ -455,7 +455,7 @@ components:
           type: object
           properties:
             code:
-              type: string
+              type: number
               nullable: true
             message:
               type: string
@@ -467,8 +467,6 @@ components:
           required:
             - code
             - message
-            - param
-            - type
           description: Error object structure
       required:
         - error
