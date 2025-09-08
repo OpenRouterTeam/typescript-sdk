@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
-  docChecksum: 43ffe8928bc1b697d9993d04b3024a7c
+  docChecksum: d3de003db3775b87a1e0382c2e93c40e
   docVersion: 1.0.0
-  speakeasyVersion: 1.611.1
-  generationVersion: 2.694.1
-  releaseVersion: 0.5.4
-  configChecksum: b79d463e59ce1857adb0434ebe618ccd
+  speakeasyVersion: 1.612.0
+  generationVersion: 2.695.0
+  releaseVersion: 0.5.5
+  configChecksum: 2a3028e3758303abb519e6985dbaefea
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:

@@ -439,6 +439,7 @@ components:
         system_fingerprint:
           type: string
           description: System fingerprint
+          nullable: true
         usage:
           $ref: '#/components/schemas/CompletionUsage'
       required:
@@ -576,6 +577,7 @@ components:
             - chat.completion.chunk
         system_fingerprint:
           type: string
+          nullable: true
         usage:
           $ref: '#/components/schemas/CompletionUsage'
       required:
