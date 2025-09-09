@@ -107,10 +107,7 @@ async function run() {
     ],
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();
@@ -147,10 +144,7 @@ async function run() {
     ],
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();
@@ -307,10 +301,7 @@ async function run() {
     },
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();
@@ -345,10 +336,7 @@ async function run() {
     ],
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();
@@ -390,10 +378,7 @@ async function run() {
       ],
     });
 
-    for await (const event of result) {
-      // Handle the event
-      console.log(event);
-    }
+    console.log(result);
   } catch (error) {
     // The base class for HTTP error responses
     if (error instanceof errors.OpenRouterError) {
@@ -468,10 +453,7 @@ async function run() {
     ],
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();
@@ -499,10 +481,7 @@ async function run() {
     ],
   });
 
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
+  console.log(result);
 }
 
 run();

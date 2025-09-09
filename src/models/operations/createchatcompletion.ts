@@ -20,14 +20,18 @@ export const CreateChatCompletionResponse$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   models.ChatCompletion$inboundSchema,
-  z.instanceof(ReadableStream<Uint8Array>).transform(stream => {
-    return new EventStream(stream, rawEvent => {
-      if (rawEvent.data === "[DONE]") return { done: true };
-      return {
-        value: models.ChatCompletionChunkWrapper$inboundSchema.parse(rawEvent),
-      };
-    });
-  }),
+  z
+    .instanceof(ReadableStream<Uint8Array>)
+    .transform(stream => {
+      return new EventStream(stream, rawEvent => {
+        if (rawEvent.data === "[DONE]") return { done: true };
+        return {
+          value: models.ChatCompletionChunkWrapper$inboundSchema.parse(
+            rawEvent,
+          ),
+        };
+      });
+    }),
 ]);
 
 /** @internal */
