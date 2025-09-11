@@ -44,7 +44,10 @@ export function chatComplete(
 ): APIPromise<
   Result<
     operations.CreateChatCompletionResponse,
-    | errors.ChatCompletionError
+    | errors.OpenRouterInvalidRequestError
+    | errors.OpenRouterUnauthorizedError
+    | errors.OpenRouterRateLimitError
+    | errors.OpenRouterServerError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -70,7 +73,10 @@ async function $do(
   [
     Result<
       operations.CreateChatCompletionResponse,
-      | errors.ChatCompletionError
+      | errors.OpenRouterInvalidRequestError
+      | errors.OpenRouterUnauthorizedError
+      | errors.OpenRouterRateLimitError
+      | errors.OpenRouterServerError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -153,7 +159,10 @@ async function $do(
 
   const [result] = await M.match<
     operations.CreateChatCompletionResponse,
-    | errors.ChatCompletionError
+    | errors.OpenRouterInvalidRequestError
+    | errors.OpenRouterUnauthorizedError
+    | errors.OpenRouterRateLimitError
+    | errors.OpenRouterServerError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -165,8 +174,10 @@ async function $do(
   >(
     M.json(200, operations.CreateChatCompletionResponse$inboundSchema),
     M.sse(200, operations.CreateChatCompletionResponse$inboundSchema),
-    M.jsonErr([400, 401, 429], errors.ChatCompletionError$inboundSchema),
-    M.jsonErr(500, errors.ChatCompletionError$inboundSchema),
+    M.jsonErr(400, errors.OpenRouterInvalidRequestError$inboundSchema),
+    M.jsonErr(401, errors.OpenRouterUnauthorizedError$inboundSchema),
+    M.jsonErr(429, errors.OpenRouterRateLimitError$inboundSchema),
+    M.jsonErr(500, errors.OpenRouterServerError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

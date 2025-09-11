@@ -388,8 +388,8 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.ChatCompletionError) {
-        console.log(error.data$.error); // models.ErrorT
+      if (error instanceof errors.OpenRouterInvalidRequestError) {
+        console.log(error.data$.error); // models.OpenRouterInvalidRequestErrorError
       }
     }
   }
@@ -402,7 +402,10 @@ run();
 ### Error Classes
 **Primary errors:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
-  * [`ChatCompletionError`](./src/models/errors/chatcompletionerror.ts): Chat completion error response.
+  * [`OpenRouterInvalidRequestError`](./src/models/errors/openrouterinvalidrequesterror.ts): OpenRouter invalid request error response. Status code `400`.
+  * [`OpenRouterUnauthorizedError`](./src/models/errors/openrouterunauthorizederror.ts): OpenRouter unauthorized error response. Status code `401`.
+  * [`OpenRouterRateLimitError`](./src/models/errors/openrouterratelimiterror.ts): OpenRouter rate limit error response. Status code `429`.
+  * [`OpenRouterServerError`](./src/models/errors/openrouterservererror.ts): OpenRouter server error response. Status code `500`.
 
 <details><summary>Less common errors (6)</summary>
 

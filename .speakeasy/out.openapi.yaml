@@ -449,7 +449,7 @@ components:
         - model
         - object
       description: Chat completion response
-    ChatCompletionError:
+    OpenRouterInvalidRequestError:
       type: object
       properties:
         error:
@@ -471,7 +471,76 @@ components:
           description: Error object structure
       required:
         - error
-      description: Chat completion error response
+      description: OpenRouter invalid request error response
+    OpenRouterUnauthorizedError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: number
+              nullable: true
+            message:
+              type: string
+            param:
+              type: string
+              nullable: true
+            type:
+              type: string
+          required:
+            - code
+            - message
+          description: Error object structure
+      required:
+        - error
+      description: OpenRouter unauthorized error response
+    OpenRouterRateLimitError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: number
+              nullable: true
+            message:
+              type: string
+            param:
+              type: string
+              nullable: true
+            type:
+              type: string
+          required:
+            - code
+            - message
+          description: Error object structure
+      required:
+        - error
+      description: OpenRouter rate limit error response
+    OpenRouterServerError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: number
+              nullable: true
+            message:
+              type: string
+            param:
+              type: string
+              nullable: true
+            type:
+              type: string
+          required:
+            - code
+            - message
+          description: Error object structure
+      required:
+        - error
+      description: OpenRouter server error response
     ChatCompletionChunkChoiceDeltaToolCall:
       type: object
       properties:
@@ -1534,22 +1603,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/OpenRouterInvalidRequestError'
         '401':
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/OpenRouterUnauthorizedError'
         '429':
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/OpenRouterRateLimitError'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/OpenRouterServerError'

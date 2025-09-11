@@ -86,8 +86,10 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ChatCompletionError    | 400, 401, 429                 | application/json              |
-| errors.ChatCompletionError    | 500                           | application/json              |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                           | Status Code                          | Content Type                         |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| errors.OpenRouterInvalidRequestError | 400                                  | application/json                     |
+| errors.OpenRouterUnauthorizedError   | 401                                  | application/json                     |
+| errors.OpenRouterRateLimitError      | 429                                  | application/json                     |
+| errors.OpenRouterServerError         | 500                                  | application/json                     |
+| errors.OpenRouterDefaultError        | 4XX, 5XX                             | \*/\*                                |

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
-  docChecksum: 60e9c36e6a3747ba5ac57ca2e3718059
+  docChecksum: 9e1a9a8efaad4ab9997261a7c64cdcb9
   docVersion: 1.0.0
-  speakeasyVersion: 1.615.0
-  generationVersion: 2.698.0
-  releaseVersion: 0.5.6
-  configChecksum: 7fad29cbc220e318baf294f14fd2fae4
+  speakeasyVersion: 1.615.2
+  generationVersion: 2.698.4
+  releaseVersion: 0.5.8
+  configChecksum: 0d544adabcca7d0be5ede016e0c05dea
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
@@ -20,7 +20,7 @@ features:
     devContainers: 2.90.0
     enumUnions: 0.1.0
     envVarSecurityUsage: 0.1.2
-    globalSecurity: 2.82.13
+    globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
@@ -112,8 +112,10 @@ generatedFiles:
   - docs/models/detail.md
   - docs/models/effort.md
   - docs/models/engine.md
-  - docs/models/errors/chatcompletionerror.md
-  - docs/models/errort.md
+  - docs/models/errors/openrouterinvalidrequesterror.md
+  - docs/models/errors/openrouterratelimiterror.md
+  - docs/models/errors/openrouterservererror.md
+  - docs/models/errors/openrouterunauthorizederror.md
   - docs/models/fileannotationdetail.md
   - docs/models/fileannotationdetailcontentunion.md
   - docs/models/fileannotationdetailimageurl.md
@@ -130,6 +132,10 @@ generatedFiles:
   - docs/models/maxprice.md
   - docs/models/only.md
   - docs/models/onlyenum.md
+  - docs/models/openrouterinvalidrequesterrorerror.md
+  - docs/models/openrouterratelimiterrorerror.md
+  - docs/models/openrouterservererrorerror.md
+  - docs/models/openrouterunauthorizederrorerror.md
   - docs/models/operations/createchatcompletionresponse.md
   - docs/models/order.md
   - docs/models/orderenum.md
@@ -223,7 +229,6 @@ generatedFiles:
   - src/models/chatcompletioncontentpartimage.ts
   - src/models/chatcompletioncontentparttext.ts
   - src/models/chatcompletioncreateparams.ts
-  - src/models/chatcompletionerror.ts
   - src/models/chatcompletionmessage.ts
   - src/models/chatcompletionmessageparam.ts
   - src/models/chatcompletionmessagetoolcall.ts
@@ -236,15 +241,22 @@ generatedFiles:
   - src/models/chatcompletiontoolmessageparam.ts
   - src/models/chatcompletionusermessageparam.ts
   - src/models/completionusage.ts
-  - src/models/errors/chatcompletionerror.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
   - src/models/errors/openrouterdefaulterror.ts
   - src/models/errors/openroutererror.ts
+  - src/models/errors/openrouterinvalidrequesterror.ts
+  - src/models/errors/openrouterratelimiterror.ts
+  - src/models/errors/openrouterservererror.ts
+  - src/models/errors/openrouterunauthorizederror.ts
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
   - src/models/fileannotationdetail.ts
   - src/models/index.ts
+  - src/models/openrouterinvalidrequesterror.ts
+  - src/models/openrouterratelimiterror.ts
+  - src/models/openrouterservererror.ts
+  - src/models/openrouterunauthorizederror.ts
   - src/models/operations/createchatcompletion.ts
   - src/models/operations/index.ts
   - src/models/reasoningdetail.ts
@@ -280,6 +292,10 @@ examples:
           application/json: {"error": {"code": null, "message": "<value>"}}
         "500":
           application/json: {"error": {"code": null, "message": "<value>"}}
+        "401":
+          application/json: {"error": {"code": 6977.95, "message": "<value>"}}
+        "429":
+          application/json: {"error": {"code": 4173.4, "message": "<value>"}}
     speakeasy-default-create-chat-completion-raw:
       requestBody:
         text/event-stream: "x-file: example.file"

@@ -1,14 +1,14 @@
-# ErrorT
+# OpenRouterUnauthorizedErrorError
 
 Error object structure
 
 ## Example Usage
 
 ```typescript
-import { ErrorT } from "open-router/models";
+import { OpenRouterUnauthorizedErrorError } from "open-router/models";
 
-let value: ErrorT = {
-  code: null,
+let value: OpenRouterUnauthorizedErrorError = {
+  code: 7583.19,
   message: "<value>",
 };
 ```
