@@ -6,14 +6,14 @@ sources:
             - location: .speakeasy/in.openapi.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
-            location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api
+            location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
 targets:
     open-router:
         target: typescript
         source: OpenRouter Chat Completions API
         codeSamples:
             registry:
-                location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api-typescript-code-samples
+                location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api-typescript-code-samples
             labelOverride:
                 fixedValue: Typescript (SDK)
             blocking: false

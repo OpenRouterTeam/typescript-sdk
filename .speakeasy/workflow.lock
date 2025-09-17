@@ -1,4 +1,4 @@
-speakeasyVersion: 1.615.2
+speakeasyVersion: 1.617.1
 sources:
     OpenRouter Chat Completions API:
         sourceNamespace: open-router-chat-completions-api
@@ -14,7 +14,7 @@ targets:
         sourceRevisionDigest: sha256:59ae32fd3f41894b467ac0a4a6e377b1d6c963c9907a238f3379670e19160403
         sourceBlobDigest: sha256:091faca19d5f5b1615e6fc4bacc28202e663e07a291fac4a2970f40383efe81f
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:235fc33541cc4a6a66113b9b0ca2d960446f8eaef38c2354937a288e95ed986e
+        codeSamplesRevisionDigest: sha256:b484eed28c43d44a0bb64f46a84ef3431f31139236c6cc76a0516789be4dc843
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -24,14 +24,14 @@ workflow:
                 - location: .speakeasy/in.openapi.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
-                location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api
+                location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
     targets:
         open-router:
             target: typescript
             source: OpenRouter Chat Completions API
             codeSamples:
                 registry:
-                    location: registry.speakeasyapi.dev/sheldon-vaughn-test/sandbox/open-router-chat-completions-api-typescript-code-samples
+                    location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api-typescript-code-samples
                 labelOverride:
                     fixedValue: Typescript (SDK)
                 blocking: false

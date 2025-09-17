@@ -1,14 +1,12 @@
 lockVersion: 2.0.0
-id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
+id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: 9e1a9a8efaad4ab9997261a7c64cdcb9
   docVersion: 1.0.0
-  speakeasyVersion: 1.615.2
-  generationVersion: 2.698.4
-  releaseVersion: 0.5.8
-  configChecksum: 0d544adabcca7d0be5ede016e0c05dea
-  repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
-  installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
+  speakeasyVersion: 1.617.1
+  generationVersion: 2.701.8
+  releaseVersion: 0.1.0
+  configChecksum: 247efce5153de29caba3728a82f00bec
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -31,7 +29,7 @@ features:
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    serverEvents: 0.1.9
+    serverEvents: 0.1.10
     serverEventsSentinels: 0.1.0
     unions: 2.85.11
 generatedFiles:
@@ -289,30 +287,11 @@ examples:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 6977.95, "model": "El Camino", "object": "chat.completion"}
         "400":
-          application/json: {"error": {"code": null, "message": "<value>"}}
-        "500":
-          application/json: {"error": {"code": null, "message": "<value>"}}
+          application/json: {"error": {"code": 8588.53, "message": "<value>"}}
         "401":
-          application/json: {"error": {"code": 6977.95, "message": "<value>"}}
+          application/json: {"error": {"code": 2658.12, "message": "<value>"}}
         "429":
-          application/json: {"error": {"code": 4173.4, "message": "<value>"}}
-    speakeasy-default-create-chat-completion-raw:
-      requestBody:
-        text/event-stream: "x-file: example.file"
-      responses:
-        "200":
-          application/json: {"id": "<id>", "choices": [], "created": 6977.95, "model": "El Camino", "object": "chat.completion"}
-        "400":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": 9110.85, "message": "<value>"}}
         "500":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
-  streamChatCompletion:
-    speakeasy-default-stream-chat-completion:
-      requestBody:
-        application/json: {"messages": [{"role": "user", "content": "Hello, how are you?"}], "stream": true, "temperature": 1, "top_p": 1}
-      responses:
-        "400":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
-        "500":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": null, "message": "<value>"}}
 examplesVersion: 1.0.2

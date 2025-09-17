@@ -2,7 +2,7 @@
 
 {
   "name": "open-router",
-  "version": "0.5.8",
+  "version": "0.1.0",
   "exports": {
     ".": "./src/index.ts",    
     "./models/errors": "./src/models/errors/index.ts",    
