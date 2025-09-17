@@ -3,10 +3,10 @@ id: 53e6e641-e7b6-4f11-8e15-1d930a684b2b
 management:
   docChecksum: 9e1a9a8efaad4ab9997261a7c64cdcb9
   docVersion: 1.0.0
-  speakeasyVersion: 1.615.2
-  generationVersion: 2.698.4
-  releaseVersion: 0.5.8
-  configChecksum: 0d544adabcca7d0be5ede016e0c05dea
+  speakeasyVersion: 1.617.1
+  generationVersion: 2.701.8
+  releaseVersion: 0.5.9
+  configChecksum: 97985463fe54e96ad2bf9651670df3d4
   repoURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk.git
   installationURL: https://github.com/speakeasy-sdks/openrouter-typescript-sdk
 features:
@@ -31,7 +31,7 @@ features:
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    serverEvents: 0.1.9
+    serverEvents: 0.1.10
     serverEventsSentinels: 0.1.0
     unions: 2.85.11
 generatedFiles:
