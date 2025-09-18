@@ -1,10 +1,10 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 9e1a9a8efaad4ab9997261a7c64cdcb9
+  docChecksum: 33b44d263295df7dd1bf5459c847a783
   docVersion: 1.0.0
-  speakeasyVersion: 1.617.1
-  generationVersion: 2.701.8
+  speakeasyVersion: 1.618.1
+  generationVersion: 2.702.0
   releaseVersion: 0.1.0
   configChecksum: 247efce5153de29caba3728a82f00bec
 features:
@@ -26,11 +26,13 @@ features:
     methodArguments: 0.1.2
     nameOverrides: 2.81.2
     nullables: 0.1.1
+    openEnums: 0.1.1
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
     serverEvents: 0.1.10
     serverEventsSentinels: 0.1.0
+    serverIDs: 2.81.2
     unions: 2.85.11
 generatedFiles:
   - .devcontainer/README.md

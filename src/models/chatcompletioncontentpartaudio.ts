@@ -5,7 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -31,7 +36,7 @@ export const ChatCompletionContentPartAudioFormat = {
 /**
  * Audio format
  */
-export type ChatCompletionContentPartAudioFormat = ClosedEnum<
+export type ChatCompletionContentPartAudioFormat = OpenEnum<
   typeof ChatCompletionContentPartAudioFormat
 >;
 
@@ -77,15 +82,25 @@ export namespace ChatCompletionContentPartAudioType$ {
 }
 
 /** @internal */
-export const ChatCompletionContentPartAudioFormat$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionContentPartAudioFormat> = z.nativeEnum(
-    ChatCompletionContentPartAudioFormat,
-  );
+export const ChatCompletionContentPartAudioFormat$inboundSchema: z.ZodType<
+  ChatCompletionContentPartAudioFormat,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ChatCompletionContentPartAudioFormat),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ChatCompletionContentPartAudioFormat$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionContentPartAudioFormat> =
-    ChatCompletionContentPartAudioFormat$inboundSchema;
+export const ChatCompletionContentPartAudioFormat$outboundSchema: z.ZodType<
+  ChatCompletionContentPartAudioFormat,
+  z.ZodTypeDef,
+  ChatCompletionContentPartAudioFormat
+> = z.union([
+  z.nativeEnum(ChatCompletionContentPartAudioFormat),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

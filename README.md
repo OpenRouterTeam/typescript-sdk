@@ -428,9 +428,15 @@ run();
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Server Variables
+### Select Server by Name
 
-The default server `https://{provider_url}/api/v1` contains variables and is set to `https://openrouter.ai/api/v1` by default. To override default values, the following parameters are available when initializing the SDK client instance:
+You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
+
+| Name         | Server                          | Variables      | Description       |
+| ------------ | ------------------------------- | -------------- | ----------------- |
+| `production` | `https://{provider_url}/api/v1` | `provider_url` | Production server |
+
+If the selected server has variables, you may override its default values through the additional parameters made available in the SDK constructor:
 
 | Variable       | Parameter             | Default           | Description |
 | -------------- | --------------------- | ----------------- | ----------- |
@@ -442,6 +448,7 @@ The default server `https://{provider_url}/api/v1` contains variables and is set
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
+  server: "production",
   providerUrl: "https://ruddy-guacamole.info/",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
@@ -465,7 +472,7 @@ run();
 
 ### Override Server URL Per-Client
 
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
+The default server can also be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
 import { OpenRouter } from "open-router";
 

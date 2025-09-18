@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionMessage,
@@ -34,7 +38,7 @@ export const ChatCompletionChoiceFinishReason = {
 /**
  * Reason the completion finished
  */
-export type ChatCompletionChoiceFinishReason = ClosedEnum<
+export type ChatCompletionChoiceFinishReason = OpenEnum<
   typeof ChatCompletionChoiceFinishReason
 >;
 
@@ -61,14 +65,25 @@ export type ChatCompletionChoice = {
 };
 
 /** @internal */
-export const ChatCompletionChoiceFinishReason$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChoiceFinishReason
-> = z.nativeEnum(ChatCompletionChoiceFinishReason);
+export const ChatCompletionChoiceFinishReason$inboundSchema: z.ZodType<
+  ChatCompletionChoiceFinishReason,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ChatCompletionChoiceFinishReason),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ChatCompletionChoiceFinishReason$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChoiceFinishReason
-> = ChatCompletionChoiceFinishReason$inboundSchema;
+export const ChatCompletionChoiceFinishReason$outboundSchema: z.ZodType<
+  ChatCompletionChoiceFinishReason,
+  z.ZodTypeDef,
+  ChatCompletionChoiceFinishReason
+> = z.union([
+  z.nativeEnum(ChatCompletionChoiceFinishReason),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

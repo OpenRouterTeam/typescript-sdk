@@ -15,6 +15,7 @@ servers:
     variables:
       provider_url:
         default: openrouter.ai
+    x-speakeasy-server-id: production
     description: Production server
 security:
   - ApiKey: []
@@ -79,6 +80,7 @@ components:
         format:
           type: string
           nullable: true
+          x-speakeasy-unknown-values: allow
           enum:
             - unknown
             - openai-responses-v1
@@ -105,6 +107,7 @@ components:
         format:
           type: string
           nullable: true
+          x-speakeasy-unknown-values: allow
           enum:
             - unknown
             - openai-responses-v1
@@ -135,6 +138,7 @@ components:
         format:
           type: string
           nullable: true
+          x-speakeasy-unknown-values: allow
           enum:
             - unknown
             - openai-responses-v1
@@ -353,6 +357,7 @@ components:
         finish_reason:
           type: string
           nullable: true
+          x-speakeasy-unknown-values: allow
           enum:
             - tool_calls
             - stop
@@ -612,6 +617,7 @@ components:
         finish_reason:
           type: string
           nullable: true
+          x-speakeasy-unknown-values: allow
           enum:
             - tool_calls
             - stop
@@ -718,6 +724,7 @@ components:
               type: string
               description: Base64 encoded audio data
             format:
+              x-speakeasy-unknown-values: allow
               type: string
               enum:
                 - wav
@@ -1271,7 +1278,6 @@ components:
             only:
               type: array
               nullable: true
-              x-speakeasy-unknown-values: true
               items:
                 anyOf:
                   - type: string
@@ -1361,7 +1367,6 @@ components:
             ignore:
               type: array
               nullable: true
-              x-speakeasy-unknown-values: true
               items:
                 anyOf:
                   - type: string

@@ -8,14 +8,15 @@ import { RetryConfig } from "./retries.js";
 import { Params, pathToFunc } from "./url.js";
 
 /**
+ * Production server
+ */
+export const ServerProduction = "production";
+/**
  * Contains the list of servers available to the SDK
  */
-export const ServerList = [
-  /**
-   * Production server
-   */
-  "https://{provider_url}/api/v1",
-] as const;
+export const ServerList = {
+  [ServerProduction]: "https://{provider_url}/api/v1",
+} as const;
 
 export type SDKOptions = {
   apiKey?: string | (() => Promise<string>) | undefined;
@@ -24,7 +25,7 @@ export type SDKOptions = {
   /**
    * Allows overriding the default server used by the SDK
    */
-  serverIdx?: number | undefined;
+  server?: keyof typeof ServerList | undefined;
   /**
    * Sets the provider_url variable for url substitution
    */
@@ -48,20 +49,18 @@ export type SDKOptions = {
 export function serverURLFromOptions(options: SDKOptions): URL | null {
   let serverURL = options.serverURL;
 
-  const serverParams: Params[] = [
-    {
+  const serverParams: Record<string, Params> = {
+    "production": {
       "provider_url": options.providerUrl ?? "openrouter.ai",
     },
-  ];
+  };
+
   let params: Params = {};
 
   if (!serverURL) {
-    const serverIdx = options.serverIdx ?? 0;
-    if (serverIdx < 0 || serverIdx >= ServerList.length) {
-      throw new Error(`Invalid server index ${serverIdx}`);
-    }
-    serverURL = ServerList[serverIdx] || "";
-    params = serverParams[serverIdx] || {};
+    const server = options.server ?? ServerProduction;
+    serverURL = ServerList[server] || "";
+    params = serverParams[server] || {};
   }
 
   const u = pathToFunc(serverURL)(params);
@@ -72,6 +71,6 @@ export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "1.0.0",
   sdkVersion: "0.1.0",
-  genVersion: "2.701.8",
-  userAgent: "speakeasy-sdk/typescript 0.1.0 2.701.8 1.0.0 open-router",
+  genVersion: "2.702.0",
+  userAgent: "speakeasy-sdk/typescript 0.1.0 2.702.0 1.0.0 open-router",
 } as const;

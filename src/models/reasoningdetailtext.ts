@@ -4,7 +4,12 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -20,7 +25,7 @@ export const ReasoningDetailTextFormat = {
   OpenaiResponsesV1: "openai-responses-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
 } as const;
-export type ReasoningDetailTextFormat = ClosedEnum<
+export type ReasoningDetailTextFormat = OpenEnum<
   typeof ReasoningDetailTextFormat
 >;
 
@@ -58,14 +63,25 @@ export namespace ReasoningDetailTextType$ {
 }
 
 /** @internal */
-export const ReasoningDetailTextFormat$inboundSchema: z.ZodNativeEnum<
-  typeof ReasoningDetailTextFormat
-> = z.nativeEnum(ReasoningDetailTextFormat);
+export const ReasoningDetailTextFormat$inboundSchema: z.ZodType<
+  ReasoningDetailTextFormat,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ReasoningDetailTextFormat),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ReasoningDetailTextFormat$outboundSchema: z.ZodNativeEnum<
-  typeof ReasoningDetailTextFormat
-> = ReasoningDetailTextFormat$inboundSchema;
+export const ReasoningDetailTextFormat$outboundSchema: z.ZodType<
+  ReasoningDetailTextFormat,
+  z.ZodTypeDef,
+  ReasoningDetailTextFormat
+> = z.union([
+  z.nativeEnum(ReasoningDetailTextFormat),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

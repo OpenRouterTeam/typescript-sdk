@@ -4,7 +4,12 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -20,7 +25,7 @@ export const ReasoningDetailSummaryFormat = {
   OpenaiResponsesV1: "openai-responses-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
 } as const;
-export type ReasoningDetailSummaryFormat = ClosedEnum<
+export type ReasoningDetailSummaryFormat = OpenEnum<
   typeof ReasoningDetailSummaryFormat
 >;
 
@@ -57,14 +62,25 @@ export namespace ReasoningDetailSummaryType$ {
 }
 
 /** @internal */
-export const ReasoningDetailSummaryFormat$inboundSchema: z.ZodNativeEnum<
-  typeof ReasoningDetailSummaryFormat
-> = z.nativeEnum(ReasoningDetailSummaryFormat);
+export const ReasoningDetailSummaryFormat$inboundSchema: z.ZodType<
+  ReasoningDetailSummaryFormat,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ReasoningDetailSummaryFormat),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ReasoningDetailSummaryFormat$outboundSchema: z.ZodNativeEnum<
-  typeof ReasoningDetailSummaryFormat
-> = ReasoningDetailSummaryFormat$inboundSchema;
+export const ReasoningDetailSummaryFormat$outboundSchema: z.ZodType<
+  ReasoningDetailSummaryFormat,
+  z.ZodTypeDef,
+  ReasoningDetailSummaryFormat
+> = z.union([
+  z.nativeEnum(ReasoningDetailSummaryFormat),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
