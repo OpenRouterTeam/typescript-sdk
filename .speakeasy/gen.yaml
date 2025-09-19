@@ -33,7 +33,7 @@ typescript:
     devDependencies: {}
     peerDependencies: {}
   additionalPackageJSON: {}
-  author: Speakeasy
+  author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
   constFieldsAlwaysOptional: false

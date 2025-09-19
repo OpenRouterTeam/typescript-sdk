@@ -1,16 +1,16 @@
 workflowVersion: 1.0.0
 speakeasyVersion: latest
 sources:
-    OpenRouter Chat Completions API:
+    OpenRouter API:
         inputs:
             - location: .speakeasy/in.openapi.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
 targets:
-    open-router:
+    openrouter:
         target: typescript
-        source: OpenRouter Chat Completions API
+        source: OpenRouter API
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api-typescript-code-samples
