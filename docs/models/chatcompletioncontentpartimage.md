@@ -1,7 +1,5 @@
 # ChatCompletionContentPartImage
 
-Image content part for vision models
-
 ## Example Usage
 
 ```typescript
@@ -17,7 +15,7 @@ let value: ChatCompletionContentPartImage = {
 
 ## Fields
 
-| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `type`                                                                                               | [models.ChatCompletionContentPartImageType](../models/chatcompletioncontentpartimagetype.md)         | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
-| `imageUrl`                                                                                           | [models.ChatCompletionContentPartImageImageUrl](../models/chatcompletioncontentpartimageimageurl.md) | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `type`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `imageUrl`                               | [models.ImageUrl](../models/imageurl.md) | :heavy_check_mark:                       | N/A                                      |

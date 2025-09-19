@@ -8,92 +8,44 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
-  AnnotationDetail,
-  AnnotationDetail$inboundSchema,
-  AnnotationDetail$Outbound,
-  AnnotationDetail$outboundSchema,
-} from "./annotationdetail.js";
-import {
   ChatCompletionChunkChoiceDeltaToolCall,
   ChatCompletionChunkChoiceDeltaToolCall$inboundSchema,
   ChatCompletionChunkChoiceDeltaToolCall$Outbound,
   ChatCompletionChunkChoiceDeltaToolCall$outboundSchema,
 } from "./chatcompletionchunkchoicedeltatoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ReasoningDetail,
-  ReasoningDetail$inboundSchema,
-  ReasoningDetail$Outbound,
-  ReasoningDetail$outboundSchema,
-} from "./reasoningdetail.js";
 
-/**
- * The role of the message author
- */
-export const ChatCompletionChunkChoiceDeltaRole = {
+export const Role = {
   Assistant: "assistant",
 } as const;
-/**
- * The role of the message author
- */
-export type ChatCompletionChunkChoiceDeltaRole = ClosedEnum<
-  typeof ChatCompletionChunkChoiceDeltaRole
->;
+export type Role = ClosedEnum<typeof Role>;
 
-/**
- * Delta changes in streaming response
- */
 export type ChatCompletionChunkChoiceDelta = {
-  /**
-   * The role of the message author
-   */
-  role?: ChatCompletionChunkChoiceDeltaRole | undefined;
-  /**
-   * Message content delta
-   */
+  role?: Role | undefined;
   content?: string | null | undefined;
-  /**
-   * Reasoning content delta
-   */
   reasoning?: string | null | undefined;
-  /**
-   * Refusal message delta
-   */
   refusal?: string | null | undefined;
-  /**
-   * Tool calls delta
-   */
   toolCalls?: Array<ChatCompletionChunkChoiceDeltaToolCall> | undefined;
-  /**
-   * Reasoning details delta to send reasoning details back to upstream
-   */
-  reasoningDetails?: Array<ReasoningDetail> | undefined;
-  /**
-   * Annotations delta to send annotations back to upstream
-   */
-  annotations?: Array<AnnotationDetail> | undefined;
 };
 
 /** @internal */
-export const ChatCompletionChunkChoiceDeltaRole$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChunkChoiceDeltaRole
-> = z.nativeEnum(ChatCompletionChunkChoiceDeltaRole);
+export const Role$inboundSchema: z.ZodNativeEnum<typeof Role> = z.nativeEnum(
+  Role,
+);
 
 /** @internal */
-export const ChatCompletionChunkChoiceDeltaRole$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChunkChoiceDeltaRole
-> = ChatCompletionChunkChoiceDeltaRole$inboundSchema;
+export const Role$outboundSchema: z.ZodNativeEnum<typeof Role> =
+  Role$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionChunkChoiceDeltaRole$ {
-  /** @deprecated use `ChatCompletionChunkChoiceDeltaRole$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionChunkChoiceDeltaRole$inboundSchema;
-  /** @deprecated use `ChatCompletionChunkChoiceDeltaRole$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionChunkChoiceDeltaRole$outboundSchema;
+export namespace Role$ {
+  /** @deprecated use `Role$inboundSchema` instead. */
+  export const inboundSchema = Role$inboundSchema;
+  /** @deprecated use `Role$outboundSchema` instead. */
+  export const outboundSchema = Role$outboundSchema;
 }
 
 /** @internal */
@@ -102,18 +54,15 @@ export const ChatCompletionChunkChoiceDelta$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionChunkChoiceDeltaRole$inboundSchema.optional(),
+  role: Role$inboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),
   tool_calls: z.array(ChatCompletionChunkChoiceDeltaToolCall$inboundSchema)
     .optional(),
-  reasoning_details: z.array(ReasoningDetail$inboundSchema).optional(),
-  annotations: z.array(AnnotationDetail$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
-    "reasoning_details": "reasoningDetails",
   });
 });
 
@@ -126,8 +75,6 @@ export type ChatCompletionChunkChoiceDelta$Outbound = {
   tool_calls?:
     | Array<ChatCompletionChunkChoiceDeltaToolCall$Outbound>
     | undefined;
-  reasoning_details?: Array<ReasoningDetail$Outbound> | undefined;
-  annotations?: Array<AnnotationDetail$Outbound> | undefined;
 };
 
 /** @internal */
@@ -136,18 +83,15 @@ export const ChatCompletionChunkChoiceDelta$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionChunkChoiceDelta
 > = z.object({
-  role: ChatCompletionChunkChoiceDeltaRole$outboundSchema.optional(),
+  role: Role$outboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),
   toolCalls: z.array(ChatCompletionChunkChoiceDeltaToolCall$outboundSchema)
     .optional(),
-  reasoningDetails: z.array(ReasoningDetail$outboundSchema).optional(),
-  annotations: z.array(AnnotationDetail$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     toolCalls: "tool_calls",
-    reasoningDetails: "reasoning_details",
   });
 });
 

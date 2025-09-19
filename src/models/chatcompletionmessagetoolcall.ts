@@ -4,61 +4,19 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionMessageToolCallType = {
-  Function: "function",
-} as const;
-export type ChatCompletionMessageToolCallType = ClosedEnum<
-  typeof ChatCompletionMessageToolCallType
->;
-
 export type ChatCompletionMessageToolCallFunction = {
-  /**
-   * Function name to call
-   */
   name: string;
-  /**
-   * Function arguments as JSON string
-   */
   arguments: string;
 };
 
-/**
- * Tool call made by the assistant
- */
 export type ChatCompletionMessageToolCall = {
-  /**
-   * Tool call identifier
-   */
   id: string;
-  type: ChatCompletionMessageToolCallType;
+  type: "function";
   function: ChatCompletionMessageToolCallFunction;
 };
-
-/** @internal */
-export const ChatCompletionMessageToolCallType$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionMessageToolCallType
-> = z.nativeEnum(ChatCompletionMessageToolCallType);
-
-/** @internal */
-export const ChatCompletionMessageToolCallType$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionMessageToolCallType
-> = ChatCompletionMessageToolCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionMessageToolCallType$ {
-  /** @deprecated use `ChatCompletionMessageToolCallType$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionMessageToolCallType$inboundSchema;
-  /** @deprecated use `ChatCompletionMessageToolCallType$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionMessageToolCallType$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionMessageToolCallFunction$inboundSchema: z.ZodType<
@@ -129,14 +87,14 @@ export const ChatCompletionMessageToolCall$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  type: ChatCompletionMessageToolCallType$inboundSchema,
+  type: z.literal("function"),
   function: z.lazy(() => ChatCompletionMessageToolCallFunction$inboundSchema),
 });
 
 /** @internal */
 export type ChatCompletionMessageToolCall$Outbound = {
   id: string;
-  type: string;
+  type: "function";
   function: ChatCompletionMessageToolCallFunction$Outbound;
 };
 
@@ -147,7 +105,7 @@ export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
   ChatCompletionMessageToolCall
 > = z.object({
   id: z.string(),
-  type: ChatCompletionMessageToolCallType$outboundSchema,
+  type: z.literal("function"),
   function: z.lazy(() => ChatCompletionMessageToolCallFunction$outboundSchema),
 });
 

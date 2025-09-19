@@ -1,7 +1,5 @@
 # ResponseFormatGrammar
 
-Custom grammar response format
-
 ## Example Usage
 
 ```typescript
@@ -15,7 +13,7 @@ let value: ResponseFormatGrammar = {
 
 ## Fields
 
-| Field                                          | Type                                           | Required                                       | Description                                    |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `type`                                         | [models.TypeGrammar](../models/typegrammar.md) | :heavy_check_mark:                             | N/A                                            |
-| `grammar`                                      | *string*                                       | :heavy_check_mark:                             | Custom grammar for text generation             |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `grammar`          | *string*           | :heavy_check_mark: | N/A                |

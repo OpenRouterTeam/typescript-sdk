@@ -5,14 +5,7 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  AnnotationDetail,
-  AnnotationDetail$inboundSchema,
-  AnnotationDetail$Outbound,
-  AnnotationDetail$outboundSchema,
-} from "./annotationdetail.js";
 import {
   ChatCompletionMessageToolCall,
   ChatCompletionMessageToolCall$inboundSchema,
@@ -20,71 +13,14 @@ import {
   ChatCompletionMessageToolCall$outboundSchema,
 } from "./chatcompletionmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ReasoningDetail,
-  ReasoningDetail$inboundSchema,
-  ReasoningDetail$Outbound,
-  ReasoningDetail$outboundSchema,
-} from "./reasoningdetail.js";
 
-export const ChatCompletionMessageRole = {
-  Assistant: "assistant",
-} as const;
-export type ChatCompletionMessageRole = ClosedEnum<
-  typeof ChatCompletionMessageRole
->;
-
-/**
- * Assistant message in completion response
- */
 export type ChatCompletionMessage = {
-  role: ChatCompletionMessageRole;
-  /**
-   * Message content
-   */
+  role: "assistant";
   content: string | null;
-  /**
-   * Reasoning output
-   */
   reasoning?: string | null | undefined;
-  /**
-   * Refusal message if content was refused
-   */
   refusal: string | null;
-  /**
-   * Tool calls made by the assistant
-   */
   toolCalls?: Array<ChatCompletionMessageToolCall> | undefined;
-  /**
-   * Reasoning details delta to send reasoning details back to upstream
-   */
-  reasoningDetails?: Array<ReasoningDetail> | undefined;
-  /**
-   * Annotations delta to send annotations back to upstream
-   */
-  annotations?: Array<AnnotationDetail> | undefined;
 };
-
-/** @internal */
-export const ChatCompletionMessageRole$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionMessageRole
-> = z.nativeEnum(ChatCompletionMessageRole);
-
-/** @internal */
-export const ChatCompletionMessageRole$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionMessageRole
-> = ChatCompletionMessageRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionMessageRole$ {
-  /** @deprecated use `ChatCompletionMessageRole$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionMessageRole$inboundSchema;
-  /** @deprecated use `ChatCompletionMessageRole$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionMessageRole$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionMessage$inboundSchema: z.ZodType<
@@ -92,29 +28,24 @@ export const ChatCompletionMessage$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionMessageRole$inboundSchema,
+  role: z.literal("assistant"),
   content: z.nullable(z.string()),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()),
   tool_calls: z.array(ChatCompletionMessageToolCall$inboundSchema).optional(),
-  reasoning_details: z.array(ReasoningDetail$inboundSchema).optional(),
-  annotations: z.array(AnnotationDetail$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
-    "reasoning_details": "reasoningDetails",
   });
 });
 
 /** @internal */
 export type ChatCompletionMessage$Outbound = {
-  role: string;
+  role: "assistant";
   content: string | null;
   reasoning?: string | null | undefined;
   refusal: string | null;
   tool_calls?: Array<ChatCompletionMessageToolCall$Outbound> | undefined;
-  reasoning_details?: Array<ReasoningDetail$Outbound> | undefined;
-  annotations?: Array<AnnotationDetail$Outbound> | undefined;
 };
 
 /** @internal */
@@ -123,17 +54,14 @@ export const ChatCompletionMessage$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionMessage
 > = z.object({
-  role: ChatCompletionMessageRole$outboundSchema,
+  role: z.literal("assistant"),
   content: z.nullable(z.string()),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()),
   toolCalls: z.array(ChatCompletionMessageToolCall$outboundSchema).optional(),
-  reasoningDetails: z.array(ReasoningDetail$outboundSchema).optional(),
-  annotations: z.array(AnnotationDetail$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     toolCalls: "tool_calls",
-    reasoningDetails: "reasoning_details",
   });
 });
 

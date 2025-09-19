@@ -5,7 +5,6 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionChunkChoice,
@@ -21,48 +20,88 @@ import {
 } from "./completionusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionChunkObject = {
-  ChatCompletionChunk: "chat.completion.chunk",
-} as const;
-export type ChatCompletionChunkObject = ClosedEnum<
-  typeof ChatCompletionChunkObject
->;
-
-/**
- * Streaming chat completion chunk
- */
-export type ChatCompletionChunk = {
+export type Data = {
   id: string;
   choices: Array<ChatCompletionChunkChoice>;
   created: number;
   model: string;
-  object: ChatCompletionChunkObject;
-  systemFingerprint?: string | null | undefined;
-  /**
-   * Token usage statistics
-   */
+  object: "chat.completion.chunk";
+  systemFingerprint?: string | undefined;
   usage?: CompletionUsage | undefined;
 };
 
-/** @internal */
-export const ChatCompletionChunkObject$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChunkObject
-> = z.nativeEnum(ChatCompletionChunkObject);
+export type ChatCompletionChunk = {
+  data: Data;
+};
 
 /** @internal */
-export const ChatCompletionChunkObject$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionChunkObject
-> = ChatCompletionChunkObject$inboundSchema;
+export const Data$inboundSchema: z.ZodType<Data, z.ZodTypeDef, unknown> = z
+  .object({
+    id: z.string(),
+    choices: z.array(ChatCompletionChunkChoice$inboundSchema),
+    created: z.number(),
+    model: z.string(),
+    object: z.literal("chat.completion.chunk"),
+    system_fingerprint: z.string().optional(),
+    usage: CompletionUsage$inboundSchema.optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "system_fingerprint": "systemFingerprint",
+    });
+  });
+
+/** @internal */
+export type Data$Outbound = {
+  id: string;
+  choices: Array<ChatCompletionChunkChoice$Outbound>;
+  created: number;
+  model: string;
+  object: "chat.completion.chunk";
+  system_fingerprint?: string | undefined;
+  usage?: CompletionUsage$Outbound | undefined;
+};
+
+/** @internal */
+export const Data$outboundSchema: z.ZodType<Data$Outbound, z.ZodTypeDef, Data> =
+  z.object({
+    id: z.string(),
+    choices: z.array(ChatCompletionChunkChoice$outboundSchema),
+    created: z.number(),
+    model: z.string(),
+    object: z.literal("chat.completion.chunk"),
+    systemFingerprint: z.string().optional(),
+    usage: CompletionUsage$outboundSchema.optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      systemFingerprint: "system_fingerprint",
+    });
+  });
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionChunkObject$ {
-  /** @deprecated use `ChatCompletionChunkObject$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionChunkObject$inboundSchema;
-  /** @deprecated use `ChatCompletionChunkObject$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionChunkObject$outboundSchema;
+export namespace Data$ {
+  /** @deprecated use `Data$inboundSchema` instead. */
+  export const inboundSchema = Data$inboundSchema;
+  /** @deprecated use `Data$outboundSchema` instead. */
+  export const outboundSchema = Data$outboundSchema;
+  /** @deprecated use `Data$Outbound` instead. */
+  export type Outbound = Data$Outbound;
+}
+
+export function dataToJSON(data: Data): string {
+  return JSON.stringify(Data$outboundSchema.parse(data));
+}
+
+export function dataFromJSON(
+  jsonString: string,
+): SafeParseResult<Data, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
+  );
 }
 
 /** @internal */
@@ -71,28 +110,22 @@ export const ChatCompletionChunk$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.string(),
-  choices: z.array(ChatCompletionChunkChoice$inboundSchema),
-  created: z.number(),
-  model: z.string(),
-  object: ChatCompletionChunkObject$inboundSchema,
-  system_fingerprint: z.nullable(z.string()).optional(),
-  usage: CompletionUsage$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "system_fingerprint": "systemFingerprint",
-  });
+  data: z.string().transform((v, ctx) => {
+    try {
+      return JSON.parse(v);
+    } catch (err) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `malformed json: ${err}`,
+      });
+      return z.NEVER;
+    }
+  }).pipe(z.lazy(() => Data$inboundSchema)),
 });
 
 /** @internal */
 export type ChatCompletionChunk$Outbound = {
-  id: string;
-  choices: Array<ChatCompletionChunkChoice$Outbound>;
-  created: number;
-  model: string;
-  object: string;
-  system_fingerprint?: string | null | undefined;
-  usage?: CompletionUsage$Outbound | undefined;
+  data: Data$Outbound;
 };
 
 /** @internal */
@@ -101,17 +134,7 @@ export const ChatCompletionChunk$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionChunk
 > = z.object({
-  id: z.string(),
-  choices: z.array(ChatCompletionChunkChoice$outboundSchema),
-  created: z.number(),
-  model: z.string(),
-  object: ChatCompletionChunkObject$outboundSchema,
-  systemFingerprint: z.nullable(z.string()).optional(),
-  usage: CompletionUsage$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    systemFingerprint: "system_fingerprint",
-  });
+  data: z.lazy(() => Data$outboundSchema),
 });
 
 /**

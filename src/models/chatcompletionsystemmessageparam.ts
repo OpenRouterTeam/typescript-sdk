@@ -4,7 +4,6 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionContentPartText,
@@ -14,58 +13,15 @@ import {
 } from "./chatcompletioncontentparttext.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionSystemMessageParamRole = {
-  System: "system",
-} as const;
-export type ChatCompletionSystemMessageParamRole = ClosedEnum<
-  typeof ChatCompletionSystemMessageParamRole
->;
-
-/**
- * System message content
- */
 export type ChatCompletionSystemMessageParamContent =
   | string
   | Array<ChatCompletionContentPartText>;
 
-/**
- * System message for setting behavior
- */
 export type ChatCompletionSystemMessageParam = {
-  role: ChatCompletionSystemMessageParamRole;
-  /**
-   * System message content
-   */
+  role: "system";
   content: string | Array<ChatCompletionContentPartText>;
-  /**
-   * Optional name for the system message
-   */
   name?: string | undefined;
 };
-
-/** @internal */
-export const ChatCompletionSystemMessageParamRole$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionSystemMessageParamRole> = z.nativeEnum(
-    ChatCompletionSystemMessageParamRole,
-  );
-
-/** @internal */
-export const ChatCompletionSystemMessageParamRole$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionSystemMessageParamRole> =
-    ChatCompletionSystemMessageParamRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionSystemMessageParamRole$ {
-  /** @deprecated use `ChatCompletionSystemMessageParamRole$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionSystemMessageParamRole$inboundSchema;
-  /** @deprecated use `ChatCompletionSystemMessageParamRole$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionSystemMessageParamRole$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionSystemMessageParamContent$inboundSchema: z.ZodType<
@@ -137,7 +93,7 @@ export const ChatCompletionSystemMessageParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionSystemMessageParamRole$inboundSchema,
+  role: z.literal("system"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPartText$inboundSchema),
@@ -147,7 +103,7 @@ export const ChatCompletionSystemMessageParam$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionSystemMessageParam$Outbound = {
-  role: string;
+  role: "system";
   content: string | Array<ChatCompletionContentPartText$Outbound>;
   name?: string | undefined;
 };
@@ -158,7 +114,7 @@ export const ChatCompletionSystemMessageParam$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionSystemMessageParam
 > = z.object({
-  role: ChatCompletionSystemMessageParamRole$outboundSchema,
+  role: z.literal("system"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPartText$outboundSchema),

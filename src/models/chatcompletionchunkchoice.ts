@@ -5,11 +5,7 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionChunkChoiceDelta,
@@ -32,46 +28,27 @@ export const ChatCompletionChunkChoiceFinishReason = {
   ContentFilter: "content_filter",
   Error: "error",
 } as const;
-export type ChatCompletionChunkChoiceFinishReason = OpenEnum<
+export type ChatCompletionChunkChoiceFinishReason = ClosedEnum<
   typeof ChatCompletionChunkChoiceFinishReason
 >;
 
-/**
- * Streaming completion choice chunk
- */
 export type ChatCompletionChunkChoice = {
-  /**
-   * Delta changes in streaming response
-   */
   delta: ChatCompletionChunkChoiceDelta;
   finishReason: ChatCompletionChunkChoiceFinishReason | null;
   index: number;
-  /**
-   * Log probabilities for the completion
-   */
   logprobs?: ChatCompletionTokenLogprobs | null | undefined;
 };
 
 /** @internal */
-export const ChatCompletionChunkChoiceFinishReason$inboundSchema: z.ZodType<
-  ChatCompletionChunkChoiceFinishReason,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(ChatCompletionChunkChoiceFinishReason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const ChatCompletionChunkChoiceFinishReason$inboundSchema:
+  z.ZodNativeEnum<typeof ChatCompletionChunkChoiceFinishReason> = z.nativeEnum(
+    ChatCompletionChunkChoiceFinishReason,
+  );
 
 /** @internal */
-export const ChatCompletionChunkChoiceFinishReason$outboundSchema: z.ZodType<
-  ChatCompletionChunkChoiceFinishReason,
-  z.ZodTypeDef,
-  ChatCompletionChunkChoiceFinishReason
-> = z.union([
-  z.nativeEnum(ChatCompletionChunkChoiceFinishReason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const ChatCompletionChunkChoiceFinishReason$outboundSchema:
+  z.ZodNativeEnum<typeof ChatCompletionChunkChoiceFinishReason> =
+    ChatCompletionChunkChoiceFinishReason$inboundSchema;
 
 /**
  * @internal

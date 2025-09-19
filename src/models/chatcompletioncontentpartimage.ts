@@ -9,66 +9,22 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionContentPartImageType = {
-  ImageUrl: "image_url",
-} as const;
-export type ChatCompletionContentPartImageType = ClosedEnum<
-  typeof ChatCompletionContentPartImageType
->;
-
-/**
- * Image detail level for vision models
- */
 export const Detail = {
   Auto: "auto",
   Low: "low",
   High: "high",
 } as const;
-/**
- * Image detail level for vision models
- */
 export type Detail = ClosedEnum<typeof Detail>;
 
-export type ChatCompletionContentPartImageImageUrl = {
-  /**
-   * URL of the image (data: URLs supported)
-   */
+export type ImageUrl = {
   url: string;
-  /**
-   * Image detail level for vision models
-   */
   detail?: Detail | undefined;
 };
 
-/**
- * Image content part for vision models
- */
 export type ChatCompletionContentPartImage = {
-  type: ChatCompletionContentPartImageType;
-  imageUrl: ChatCompletionContentPartImageImageUrl;
+  type: "image_url";
+  imageUrl: ImageUrl;
 };
-
-/** @internal */
-export const ChatCompletionContentPartImageType$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartImageType
-> = z.nativeEnum(ChatCompletionContentPartImageType);
-
-/** @internal */
-export const ChatCompletionContentPartImageType$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartImageType
-> = ChatCompletionContentPartImageType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionContentPartImageType$ {
-  /** @deprecated use `ChatCompletionContentPartImageType$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionContentPartImageType$inboundSchema;
-  /** @deprecated use `ChatCompletionContentPartImageType$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionContentPartImageType$outboundSchema;
-}
 
 /** @internal */
 export const Detail$inboundSchema: z.ZodNativeEnum<typeof Detail> = z
@@ -90,8 +46,8 @@ export namespace Detail$ {
 }
 
 /** @internal */
-export const ChatCompletionContentPartImageImageUrl$inboundSchema: z.ZodType<
-  ChatCompletionContentPartImageImageUrl,
+export const ImageUrl$inboundSchema: z.ZodType<
+  ImageUrl,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -100,16 +56,16 @@ export const ChatCompletionContentPartImageImageUrl$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ChatCompletionContentPartImageImageUrl$Outbound = {
+export type ImageUrl$Outbound = {
   url: string;
   detail?: string | undefined;
 };
 
 /** @internal */
-export const ChatCompletionContentPartImageImageUrl$outboundSchema: z.ZodType<
-  ChatCompletionContentPartImageImageUrl$Outbound,
+export const ImageUrl$outboundSchema: z.ZodType<
+  ImageUrl$Outbound,
   z.ZodTypeDef,
-  ChatCompletionContentPartImageImageUrl
+  ImageUrl
 > = z.object({
   url: z.string(),
   detail: Detail$outboundSchema.optional(),
@@ -119,36 +75,26 @@ export const ChatCompletionContentPartImageImageUrl$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionContentPartImageImageUrl$ {
-  /** @deprecated use `ChatCompletionContentPartImageImageUrl$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionContentPartImageImageUrl$inboundSchema;
-  /** @deprecated use `ChatCompletionContentPartImageImageUrl$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionContentPartImageImageUrl$outboundSchema;
-  /** @deprecated use `ChatCompletionContentPartImageImageUrl$Outbound` instead. */
-  export type Outbound = ChatCompletionContentPartImageImageUrl$Outbound;
+export namespace ImageUrl$ {
+  /** @deprecated use `ImageUrl$inboundSchema` instead. */
+  export const inboundSchema = ImageUrl$inboundSchema;
+  /** @deprecated use `ImageUrl$outboundSchema` instead. */
+  export const outboundSchema = ImageUrl$outboundSchema;
+  /** @deprecated use `ImageUrl$Outbound` instead. */
+  export type Outbound = ImageUrl$Outbound;
 }
 
-export function chatCompletionContentPartImageImageUrlToJSON(
-  chatCompletionContentPartImageImageUrl:
-    ChatCompletionContentPartImageImageUrl,
-): string {
-  return JSON.stringify(
-    ChatCompletionContentPartImageImageUrl$outboundSchema.parse(
-      chatCompletionContentPartImageImageUrl,
-    ),
-  );
+export function imageUrlToJSON(imageUrl: ImageUrl): string {
+  return JSON.stringify(ImageUrl$outboundSchema.parse(imageUrl));
 }
 
-export function chatCompletionContentPartImageImageUrlFromJSON(
+export function imageUrlFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionContentPartImageImageUrl, SDKValidationError> {
+): SafeParseResult<ImageUrl, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatCompletionContentPartImageImageUrl$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionContentPartImageImageUrl' from JSON`,
+    (x) => ImageUrl$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageUrl' from JSON`,
   );
 }
 
@@ -158,8 +104,8 @@ export const ChatCompletionContentPartImage$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ChatCompletionContentPartImageType$inboundSchema,
-  image_url: z.lazy(() => ChatCompletionContentPartImageImageUrl$inboundSchema),
+  type: z.literal("image_url"),
+  image_url: z.lazy(() => ImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",
@@ -168,8 +114,8 @@ export const ChatCompletionContentPartImage$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionContentPartImage$Outbound = {
-  type: string;
-  image_url: ChatCompletionContentPartImageImageUrl$Outbound;
+  type: "image_url";
+  image_url: ImageUrl$Outbound;
 };
 
 /** @internal */
@@ -178,8 +124,8 @@ export const ChatCompletionContentPartImage$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionContentPartImage
 > = z.object({
-  type: ChatCompletionContentPartImageType$outboundSchema,
-  imageUrl: z.lazy(() => ChatCompletionContentPartImageImageUrl$outboundSchema),
+  type: z.literal("image_url"),
+  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",

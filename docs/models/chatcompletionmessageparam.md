@@ -1,7 +1,5 @@
 # ChatCompletionMessageParam
 
-Chat completion message with role-based discrimination
-
 
 ## Supported Types
 

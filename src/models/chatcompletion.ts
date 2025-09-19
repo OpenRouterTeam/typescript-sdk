@@ -5,7 +5,6 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionChoice,
@@ -21,62 +20,15 @@ import {
 } from "./completionusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionObject = {
-  ChatCompletion: "chat.completion",
-} as const;
-export type ChatCompletionObject = ClosedEnum<typeof ChatCompletionObject>;
-
-/**
- * Chat completion response
- */
 export type ChatCompletion = {
-  /**
-   * Unique completion identifier
-   */
   id: string;
-  /**
-   * List of completion choices
-   */
   choices: Array<ChatCompletionChoice>;
-  /**
-   * Unix timestamp of creation
-   */
   created: number;
-  /**
-   * Model used for completion
-   */
   model: string;
-  object: ChatCompletionObject;
-  /**
-   * System fingerprint
-   */
-  systemFingerprint?: string | null | undefined;
-  /**
-   * Token usage statistics
-   */
+  object: "chat.completion";
+  systemFingerprint?: string | undefined;
   usage?: CompletionUsage | undefined;
 };
-
-/** @internal */
-export const ChatCompletionObject$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionObject
-> = z.nativeEnum(ChatCompletionObject);
-
-/** @internal */
-export const ChatCompletionObject$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionObject
-> = ChatCompletionObject$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionObject$ {
-  /** @deprecated use `ChatCompletionObject$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionObject$inboundSchema;
-  /** @deprecated use `ChatCompletionObject$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionObject$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletion$inboundSchema: z.ZodType<
@@ -88,8 +40,8 @@ export const ChatCompletion$inboundSchema: z.ZodType<
   choices: z.array(ChatCompletionChoice$inboundSchema),
   created: z.number(),
   model: z.string(),
-  object: ChatCompletionObject$inboundSchema,
-  system_fingerprint: z.nullable(z.string()).optional(),
+  object: z.literal("chat.completion"),
+  system_fingerprint: z.string().optional(),
   usage: CompletionUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -103,8 +55,8 @@ export type ChatCompletion$Outbound = {
   choices: Array<ChatCompletionChoice$Outbound>;
   created: number;
   model: string;
-  object: string;
-  system_fingerprint?: string | null | undefined;
+  object: "chat.completion";
+  system_fingerprint?: string | undefined;
   usage?: CompletionUsage$Outbound | undefined;
 };
 
@@ -118,8 +70,8 @@ export const ChatCompletion$outboundSchema: z.ZodType<
   choices: z.array(ChatCompletionChoice$outboundSchema),
   created: z.number(),
   model: z.string(),
-  object: ChatCompletionObject$outboundSchema,
-  systemFingerprint: z.nullable(z.string()).optional(),
+  object: z.literal("chat.completion"),
+  systemFingerprint: z.string().optional(),
   usage: CompletionUsage$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {

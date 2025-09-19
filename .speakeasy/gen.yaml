@@ -27,7 +27,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.0
+  version: 0.3.2
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -58,6 +58,7 @@ typescript:
   jsonpath: rfc9535
   maxMethodParams: 0
   methodArguments: infer-optional-args
+  modelPropertyCasing: camel
   moduleFormat: dual
   outputModelSuffix: output
   packageName: open-router

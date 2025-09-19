@@ -8,65 +8,23 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Detailed completion token usage
- */
 export type CompletionTokensDetails = {
-  /**
-   * Tokens used for reasoning
-   */
   reasoningTokens?: number | undefined;
-  /**
-   * Tokens used for audio output
-   */
   audioTokens?: number | undefined;
-  /**
-   * Accepted prediction tokens
-   */
   acceptedPredictionTokens?: number | undefined;
-  /**
-   * Rejected prediction tokens
-   */
   rejectedPredictionTokens?: number | undefined;
 };
 
-/**
- * Detailed prompt token usage
- */
 export type PromptTokensDetails = {
-  /**
-   * Cached prompt tokens
-   */
   cachedTokens?: number | undefined;
-  /**
-   * Audio input tokens
-   */
   audioTokens?: number | undefined;
 };
 
-/**
- * Token usage statistics
- */
 export type CompletionUsage = {
-  /**
-   * Number of tokens in the completion
-   */
   completionTokens: number;
-  /**
-   * Number of tokens in the prompt
-   */
   promptTokens: number;
-  /**
-   * Total number of tokens
-   */
   totalTokens: number;
-  /**
-   * Detailed completion token usage
-   */
   completionTokensDetails?: CompletionTokensDetails | undefined;
-  /**
-   * Detailed prompt token usage
-   */
   promptTokensDetails?: PromptTokensDetails | undefined;
 };
 

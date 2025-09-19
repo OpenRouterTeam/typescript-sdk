@@ -1,7 +1,5 @@
 # Stop
 
-Stop sequences (up to 4)
-
 
 ## Supported Types
 
@@ -18,11 +16,5 @@ const value: string[] = [
   "<value 1>",
   "<value 2>",
 ];
-```
-
-### `any`
-
-```typescript
-const value: any = "<value>";
 ```
 

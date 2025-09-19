@@ -13,7 +13,7 @@ let value: InputAudio = {
 
 ## Fields
 
-| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `data`                                                                                           | *string*                                                                                         | :heavy_check_mark:                                                                               | Base64 encoded audio data                                                                        |
-| `format`                                                                                         | [models.ChatCompletionContentPartAudioFormat](../models/chatcompletioncontentpartaudioformat.md) | :heavy_check_mark:                                                                               | Audio format                                                                                     |
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `data`                               | *string*                             | :heavy_check_mark:                   | N/A                                  |
+| `format`                             | [models.Format](../models/format.md) | :heavy_check_mark:                   | N/A                                  |

@@ -31,9 +31,6 @@ import {
 } from "./chatcompletionusermessageparam.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Chat completion message with role-based discrimination
- */
 export type ChatCompletionMessageParam =
   | (ChatCompletionToolMessageParam & { role: "tool" })
   | (ChatCompletionSystemMessageParam & { role: "system" })

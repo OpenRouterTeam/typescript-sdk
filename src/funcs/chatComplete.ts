@@ -39,15 +39,12 @@ export enum CompleteAcceptEnum {
  */
 export function chatComplete(
   client: OpenRouterCore,
-  request: models.ChatCompletionCreateParams,
+  request?: models.ChatCompletionCreateParams | undefined,
   options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
 ): APIPromise<
   Result<
-    operations.CreateChatCompletionResponse,
-    | errors.OpenRouterInvalidRequestError
-    | errors.OpenRouterUnauthorizedError
-    | errors.OpenRouterRateLimitError
-    | errors.OpenRouterServerError
+    operations.PostChatCompletionsResponse,
+    | errors.ChatCompletionError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -67,16 +64,13 @@ export function chatComplete(
 
 async function $do(
   client: OpenRouterCore,
-  request: models.ChatCompletionCreateParams,
+  request?: models.ChatCompletionCreateParams | undefined,
   options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
 ): Promise<
   [
     Result<
-      operations.CreateChatCompletionResponse,
-      | errors.OpenRouterInvalidRequestError
-      | errors.OpenRouterUnauthorizedError
-      | errors.OpenRouterRateLimitError
-      | errors.OpenRouterServerError
+      operations.PostChatCompletionsResponse,
+      | errors.ChatCompletionError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -91,14 +85,17 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => models.ChatCompletionCreateParams$outboundSchema.parse(value),
+    (value) =>
+      models.ChatCompletionCreateParams$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = payload === undefined
+    ? null
+    : encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/chat/completions")();
 
@@ -108,19 +105,18 @@ async function $do(
       || "application/json;q=1, text/event-stream;q=0",
   }));
 
-  const secConfig = await extractSecurity(client._options.apiKey);
-  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
+  const securityInput = await extractSecurity(client._options.security);
   const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "createChatCompletion",
+    operationID: "post_/chat/completions",
     oAuth2Scopes: [],
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.apiKey,
+    securitySource: client._options.security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -158,11 +154,8 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.CreateChatCompletionResponse,
-    | errors.OpenRouterInvalidRequestError
-    | errors.OpenRouterUnauthorizedError
-    | errors.OpenRouterRateLimitError
-    | errors.OpenRouterServerError
+    operations.PostChatCompletionsResponse,
+    | errors.ChatCompletionError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -172,12 +165,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.CreateChatCompletionResponse$inboundSchema),
-    M.sse(200, operations.CreateChatCompletionResponse$inboundSchema),
-    M.jsonErr(400, errors.OpenRouterInvalidRequestError$inboundSchema),
-    M.jsonErr(401, errors.OpenRouterUnauthorizedError$inboundSchema),
-    M.jsonErr(429, errors.OpenRouterRateLimitError$inboundSchema),
-    M.jsonErr(500, errors.OpenRouterServerError$inboundSchema),
+    M.json(200, operations.PostChatCompletionsResponse$inboundSchema),
+    M.sse(200, operations.PostChatCompletionsResponse$inboundSchema),
+    M.jsonErr([400, 401, 429], errors.ChatCompletionError$inboundSchema),
+    M.jsonErr(500, errors.ChatCompletionError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

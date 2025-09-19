@@ -4,46 +4,13 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionContentPartTextType = {
-  Text: "text",
-} as const;
-export type ChatCompletionContentPartTextType = ClosedEnum<
-  typeof ChatCompletionContentPartTextType
->;
-
-/**
- * Text content part
- */
 export type ChatCompletionContentPartText = {
-  type: ChatCompletionContentPartTextType;
+  type: "text";
   text: string;
 };
-
-/** @internal */
-export const ChatCompletionContentPartTextType$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartTextType
-> = z.nativeEnum(ChatCompletionContentPartTextType);
-
-/** @internal */
-export const ChatCompletionContentPartTextType$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartTextType
-> = ChatCompletionContentPartTextType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionContentPartTextType$ {
-  /** @deprecated use `ChatCompletionContentPartTextType$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionContentPartTextType$inboundSchema;
-  /** @deprecated use `ChatCompletionContentPartTextType$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionContentPartTextType$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionContentPartText$inboundSchema: z.ZodType<
@@ -51,13 +18,13 @@ export const ChatCompletionContentPartText$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ChatCompletionContentPartTextType$inboundSchema,
+  type: z.literal("text"),
   text: z.string(),
 });
 
 /** @internal */
 export type ChatCompletionContentPartText$Outbound = {
-  type: string;
+  type: "text";
   text: string;
 };
 
@@ -67,7 +34,7 @@ export const ChatCompletionContentPartText$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionContentPartText
 > = z.object({
-  type: ChatCompletionContentPartTextType$outboundSchema,
+  type: z.literal("text"),
   text: z.string(),
 });
 

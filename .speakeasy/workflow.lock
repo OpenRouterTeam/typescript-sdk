@@ -1,5 +1,12 @@
-speakeasyVersion: 1.618.1
+speakeasyVersion: 1.621.1
 sources:
+    OpenRouter API:
+        sourceNamespace: open-router-chat-completions-api
+        sourceRevisionDigest: sha256:0d46faf1d91106090731763e816d20a693003987009a703f570df33737ab22c4
+        sourceBlobDigest: sha256:1d70093768387921c6aa35b1768c4001579b6922dd9b9bdd4e9069f01ef0a9ab
+        tags:
+            - latest
+            - 1.0.0
     OpenRouter Chat Completions API:
         sourceNamespace: open-router-chat-completions-api
         sourceRevisionDigest: sha256:7b088028d220a50c1961b445febb8d66b8b448c18553bc14b12f306b5c9c8c14
@@ -15,20 +22,27 @@ targets:
         sourceBlobDigest: sha256:7557fb0b2db5a688f9e901b52c6c7117f12bda8c2bd58ea2b649037f02d1d0be
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
         codeSamplesRevisionDigest: sha256:b1034730c11b74e0ab0d7ff9c5b197a9f778e5a38cb8174c8c93bd48b813d53a
+    openrouter:
+        source: OpenRouter API
+        sourceNamespace: open-router-chat-completions-api
+        sourceRevisionDigest: sha256:0d46faf1d91106090731763e816d20a693003987009a703f570df33737ab22c4
+        sourceBlobDigest: sha256:1d70093768387921c6aa35b1768c4001579b6922dd9b9bdd4e9069f01ef0a9ab
+        codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:bd4911cc3e035e98dadf7407349d4be1d16706a73c066ba288fabfa613bfab6f
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
-        OpenRouter Chat Completions API:
+        OpenRouter API:
             inputs:
                 - location: .speakeasy/in.openapi.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
     targets:
-        open-router:
+        openrouter:
             target: typescript
-            source: OpenRouter Chat Completions API
+            source: OpenRouter API
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api-typescript-code-samples

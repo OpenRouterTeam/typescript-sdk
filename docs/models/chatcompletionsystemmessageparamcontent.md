@@ -1,7 +1,5 @@
 # ChatCompletionSystemMessageParamContent
 
-System message content
-
 
 ## Supported Types
 

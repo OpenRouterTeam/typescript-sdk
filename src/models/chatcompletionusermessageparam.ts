@@ -4,7 +4,6 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionContentPart,
@@ -14,56 +13,15 @@ import {
 } from "./chatcompletioncontentpart.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionUserMessageParamRole = {
-  User: "user",
-} as const;
-export type ChatCompletionUserMessageParamRole = ClosedEnum<
-  typeof ChatCompletionUserMessageParamRole
->;
-
-/**
- * User message content
- */
 export type ChatCompletionUserMessageParamContent =
   | string
   | Array<ChatCompletionContentPart>;
 
-/**
- * User message
- */
 export type ChatCompletionUserMessageParam = {
-  role: ChatCompletionUserMessageParamRole;
-  /**
-   * User message content
-   */
+  role: "user";
   content: string | Array<ChatCompletionContentPart>;
-  /**
-   * Optional name for the user
-   */
   name?: string | undefined;
 };
-
-/** @internal */
-export const ChatCompletionUserMessageParamRole$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionUserMessageParamRole
-> = z.nativeEnum(ChatCompletionUserMessageParamRole);
-
-/** @internal */
-export const ChatCompletionUserMessageParamRole$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionUserMessageParamRole
-> = ChatCompletionUserMessageParamRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionUserMessageParamRole$ {
-  /** @deprecated use `ChatCompletionUserMessageParamRole$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionUserMessageParamRole$inboundSchema;
-  /** @deprecated use `ChatCompletionUserMessageParamRole$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionUserMessageParamRole$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionUserMessageParamContent$inboundSchema: z.ZodType<
@@ -126,7 +84,7 @@ export const ChatCompletionUserMessageParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionUserMessageParamRole$inboundSchema,
+  role: z.literal("user"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPart$inboundSchema),
@@ -136,7 +94,7 @@ export const ChatCompletionUserMessageParam$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionUserMessageParam$Outbound = {
-  role: string;
+  role: "user";
   content: string | Array<ChatCompletionContentPart$Outbound>;
   name?: string | undefined;
 };
@@ -147,7 +105,7 @@ export const ChatCompletionUserMessageParam$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionUserMessageParam
 > = z.object({
-  role: ChatCompletionUserMessageParamRole$outboundSchema,
+  role: z.literal("user"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPart$outboundSchema),

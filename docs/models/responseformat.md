@@ -1,7 +1,5 @@
 # ResponseFormat
 
-Response format configuration
-
 
 ## Supported Types
 

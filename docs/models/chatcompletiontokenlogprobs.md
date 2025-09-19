@@ -1,7 +1,5 @@
 # ChatCompletionTokenLogprobs
 
-Log probabilities for the completion
-
 ## Example Usage
 
 ```typescript
@@ -33,5 +31,5 @@ let value: ChatCompletionTokenLogprobs = {
 
 | Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `content`                                                                      | [models.ChatCompletionTokenLogprob](../models/chatcompletiontokenlogprob.md)[] | :heavy_check_mark:                                                             | Log probabilities for content tokens                                           |
-| `refusal`                                                                      | [models.ChatCompletionTokenLogprob](../models/chatcompletiontokenlogprob.md)[] | :heavy_check_mark:                                                             | Log probabilities for refusal tokens                                           |
+| `content`                                                                      | [models.ChatCompletionTokenLogprob](../models/chatcompletiontokenlogprob.md)[] | :heavy_check_mark:                                                             | N/A                                                                            |
+| `refusal`                                                                      | [models.ChatCompletionTokenLogprob](../models/chatcompletiontokenlogprob.md)[] | :heavy_check_mark:                                                             | N/A                                                                            |

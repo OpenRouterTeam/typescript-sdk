@@ -1,7 +1,5 @@
 # ChatCompletionToolMessageParamContent
 
-Tool response content
-
 
 ## Supported Types
 

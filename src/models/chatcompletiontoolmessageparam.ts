@@ -5,7 +5,6 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionContentPart,
@@ -15,56 +14,15 @@ import {
 } from "./chatcompletioncontentpart.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionToolMessageParamRole = {
-  Tool: "tool",
-} as const;
-export type ChatCompletionToolMessageParamRole = ClosedEnum<
-  typeof ChatCompletionToolMessageParamRole
->;
-
-/**
- * Tool response content
- */
 export type ChatCompletionToolMessageParamContent =
   | string
   | Array<ChatCompletionContentPart>;
 
-/**
- * Tool response message
- */
 export type ChatCompletionToolMessageParam = {
-  role: ChatCompletionToolMessageParamRole;
-  /**
-   * Tool response content
-   */
+  role: "tool";
   content: string | Array<ChatCompletionContentPart>;
-  /**
-   * ID of the tool call this message responds to
-   */
   toolCallId: string;
 };
-
-/** @internal */
-export const ChatCompletionToolMessageParamRole$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionToolMessageParamRole
-> = z.nativeEnum(ChatCompletionToolMessageParamRole);
-
-/** @internal */
-export const ChatCompletionToolMessageParamRole$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionToolMessageParamRole
-> = ChatCompletionToolMessageParamRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionToolMessageParamRole$ {
-  /** @deprecated use `ChatCompletionToolMessageParamRole$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionToolMessageParamRole$inboundSchema;
-  /** @deprecated use `ChatCompletionToolMessageParamRole$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionToolMessageParamRole$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionToolMessageParamContent$inboundSchema: z.ZodType<
@@ -127,7 +85,7 @@ export const ChatCompletionToolMessageParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionToolMessageParamRole$inboundSchema,
+  role: z.literal("tool"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPart$inboundSchema),
@@ -141,7 +99,7 @@ export const ChatCompletionToolMessageParam$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionToolMessageParam$Outbound = {
-  role: string;
+  role: "tool";
   content: string | Array<ChatCompletionContentPart$Outbound>;
   tool_call_id: string;
 };
@@ -152,7 +110,7 @@ export const ChatCompletionToolMessageParam$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionToolMessageParam
 > = z.object({
-  role: ChatCompletionToolMessageParamRole$outboundSchema,
+  role: z.literal("tool"),
   content: z.union([
     z.string(),
     z.array(ChatCompletionContentPart$outboundSchema),

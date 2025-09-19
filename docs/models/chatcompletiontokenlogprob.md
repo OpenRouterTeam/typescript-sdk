@@ -1,7 +1,5 @@
 # ChatCompletionTokenLogprob
 
-Token log probability information
-
 ## Example Usage
 
 ```typescript
@@ -30,7 +28,7 @@ let value: ChatCompletionTokenLogprob = {
 
 | Field                                          | Type                                           | Required                                       | Description                                    |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `token`                                        | *string*                                       | :heavy_check_mark:                             | The token                                      |
-| `logprob`                                      | *number*                                       | :heavy_check_mark:                             | Log probability of the token                   |
-| `bytes`                                        | *number*[]                                     | :heavy_check_mark:                             | UTF-8 bytes of the token                       |
-| `topLogprobs`                                  | [models.TopLogprob](../models/toplogprob.md)[] | :heavy_check_mark:                             | Top alternative tokens with probabilities      |
+| `token`                                        | *string*                                       | :heavy_check_mark:                             | N/A                                            |
+| `logprob`                                      | *number*                                       | :heavy_check_mark:                             | N/A                                            |
+| `bytes`                                        | *number*[]                                     | :heavy_check_mark:                             | N/A                                            |
+| `topLogprobs`                                  | [models.TopLogprob](../models/toplogprob.md)[] | :heavy_check_mark:                             | N/A                                            |

@@ -13,23 +13,18 @@ Creates a model response for the given chat conversation. Supports both streamin
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createChatCompletion" method="post" path="/chat/completions" -->
+<!-- UsageSnippet language="typescript" operationID="post_/chat/completions" method="post" path="/chat/completions" -->
 ```typescript
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.chat.complete();
 
   console.log(result);
 }
@@ -48,18 +43,13 @@ import { chatComplete } from "open-router/funcs/chatComplete.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const res = await chatComplete(openRouter, {
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const res = await chatComplete(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -82,14 +72,12 @@ run();
 
 ### Response
 
-**Promise\<[operations.CreateChatCompletionResponse](../../models/operations/createchatcompletionresponse.md)\>**
+**Promise\<[operations.PostChatCompletionsResponse](../../models/operations/postchatcompletionsresponse.md)\>**
 
 ### Errors
 
-| Error Type                           | Status Code                          | Content Type                         |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| errors.OpenRouterInvalidRequestError | 400                                  | application/json                     |
-| errors.OpenRouterUnauthorizedError   | 401                                  | application/json                     |
-| errors.OpenRouterRateLimitError      | 429                                  | application/json                     |
-| errors.OpenRouterServerError         | 500                                  | application/json                     |
-| errors.OpenRouterDefaultError        | 4XX, 5XX                             | \*/\*                                |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.ChatCompletionError    | 400, 401, 429                 | application/json              |
+| errors.ChatCompletionError    | 500                           | application/json              |
+| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |

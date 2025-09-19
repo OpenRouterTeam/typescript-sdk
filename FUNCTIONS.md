@@ -20,28 +20,23 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "open-router/core.js";
-import { chatComplete } from "open-router/funcs/chatComplete.js";
+import { getCredits } from "open-router/funcs/getCredits.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const res = await chatComplete(openRouter, {
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const res = await getCredits(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatComplete failed:", res.error);
+    console.log("getCredits failed:", res.error);
   }
 }
 

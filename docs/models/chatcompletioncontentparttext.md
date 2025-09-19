@@ -1,7 +1,5 @@
 # ChatCompletionContentPartText
 
-Text content part
-
 ## Example Usage
 
 ```typescript
@@ -15,7 +13,7 @@ let value: ChatCompletionContentPartText = {
 
 ## Fields
 
-| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `type`                                                                                     | [models.ChatCompletionContentPartTextType](../models/chatcompletioncontentparttexttype.md) | :heavy_check_mark:                                                                         | N/A                                                                                        |
-| `text`                                                                                     | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `text`             | *string*           | :heavy_check_mark: | N/A                |

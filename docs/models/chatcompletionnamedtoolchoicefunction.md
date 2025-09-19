@@ -12,6 +12,6 @@ let value: ChatCompletionNamedToolChoiceFunction = {
 
 ## Fields
 
-| Field                 | Type                  | Required              | Description           |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| `name`                | *string*              | :heavy_check_mark:    | Function name to call |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `name`             | *string*           | :heavy_check_mark: | N/A                |

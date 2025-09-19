@@ -1,7 +1,5 @@
 # ChatCompletionAssistantMessageParamContent
 
-Assistant message content
-
 
 ## Supported Types
 
@@ -15,11 +13,5 @@ const value: string = "<value>";
 
 ```typescript
 const value: models.ChatCompletionContentPart[] = [];
-```
-
-### `any`
-
-```typescript
-const value: any = "<value>";
 ```
 

@@ -12,9 +12,9 @@ let value: JsonSchema = {
 
 ## Fields
 
-| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `name`                                                                               | *string*                                                                             | :heavy_check_mark:                                                                   | Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)                       |
-| `description`                                                                        | *string*                                                                             | :heavy_minus_sign:                                                                   | Schema description for the model                                                     |
-| `schema`                                                                             | [models.ResponseFormatJsonSchemaSchema](../models/responseformatjsonschemaschema.md) | :heavy_minus_sign:                                                                   | The schema for the response format, described as a JSON Schema object                |
-| `strict`                                                                             | *boolean*                                                                            | :heavy_minus_sign:                                                                   | Enable strict schema adherence                                                       |
+| Field                 | Type                  | Required              | Description           |
+| --------------------- | --------------------- | --------------------- | --------------------- |
+| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
+| `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
+| `schema`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |

@@ -37,7 +37,7 @@ export class Chat extends ClientSDK {
   async complete(
     request: models.ChatCompletionCreateParams & { stream: true },
     options?: RequestOptions,
-  ): Promise<EventStream<models.ChatCompletionChunkWrapper>>;
+  ): Promise<EventStream<models.ChatCompletionChunk>>;
   // #endregion sdk-class-body
 
   /**
@@ -47,9 +47,9 @@ export class Chat extends ClientSDK {
    * Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
    */
   async complete(
-    request: models.ChatCompletionCreateParams,
+    request?: models.ChatCompletionCreateParams | undefined,
     options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
-  ): Promise<operations.CreateChatCompletionResponse> {
+  ): Promise<operations.PostChatCompletionsResponse> {
     return unwrapAsync(chatComplete(
       this,
       request,

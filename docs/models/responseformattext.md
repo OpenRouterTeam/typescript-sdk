@@ -1,7 +1,5 @@
 # ResponseFormatText
 
-Default text response format
-
 ## Example Usage
 
 ```typescript
@@ -14,6 +12,6 @@ let value: ResponseFormatText = {
 
 ## Fields
 
-| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `type`                                                                                       | [models.ChatCompletionCreateParamsTypeText](../models/chatcompletioncreateparamstypetext.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *string*           | :heavy_check_mark: | N/A                |

@@ -1,7 +1,7 @@
 {
   "name": "open-router",
-  "version": "0.1.0",
-  "author": "Speakeasy",
+  "version": "0.3.2",
+  "author": "OpenRouter",
   "type": "module",
   "tshy": {
     "sourceDialects": [

@@ -1,7 +1,5 @@
 # ChatCompletionContentPart
 
-Content part for chat completion messages
-
 
 ## Supported Types
 

@@ -1,7 +1,5 @@
 # PromptTokensDetails
 
-Detailed prompt token usage
-
 ## Example Usage
 
 ```typescript
@@ -12,7 +10,7 @@ let value: PromptTokensDetails = {};
 
 ## Fields
 
-| Field                | Type                 | Required             | Description          |
-| -------------------- | -------------------- | -------------------- | -------------------- |
-| `cachedTokens`       | *number*             | :heavy_minus_sign:   | Cached prompt tokens |
-| `audioTokens`        | *number*             | :heavy_minus_sign:   | Audio input tokens   |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `cachedTokens`     | *number*           | :heavy_minus_sign: | N/A                |
+| `audioTokens`      | *number*           | :heavy_minus_sign: | N/A                |

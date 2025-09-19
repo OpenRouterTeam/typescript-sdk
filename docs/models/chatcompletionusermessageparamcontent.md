@@ -1,7 +1,5 @@
 # ChatCompletionUserMessageParamContent
 
-User message content
-
 
 ## Supported Types
 

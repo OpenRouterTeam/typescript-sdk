@@ -3,18 +3,13 @@
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }

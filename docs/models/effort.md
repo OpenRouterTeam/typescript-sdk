@@ -1,17 +1,15 @@
 # Effort
 
-OpenAI-style reasoning effort setting
-
 ## Example Usage
 
 ```typescript
 import { Effort } from "open-router/models";
 
-let value: Effort = "medium";
+let value: Effort = "low";
 ```
 
 ## Values
 
 ```typescript
-"high" | "medium" | "low" | "minimal"
+"minimal" | "low" | "medium" | "high"
 ```

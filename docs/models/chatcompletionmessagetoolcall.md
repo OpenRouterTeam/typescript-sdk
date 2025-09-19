@@ -1,7 +1,5 @@
 # ChatCompletionMessageToolCall
 
-Tool call made by the assistant
-
 ## Example Usage
 
 ```typescript
@@ -21,6 +19,6 @@ let value: ChatCompletionMessageToolCall = {
 
 | Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
 | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `id`                                                                                               | *string*                                                                                           | :heavy_check_mark:                                                                                 | Tool call identifier                                                                               |
-| `type`                                                                                             | [models.ChatCompletionMessageToolCallType](../models/chatcompletionmessagetoolcalltype.md)         | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `id`                                                                                               | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `type`                                                                                             | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `function`                                                                                         | [models.ChatCompletionMessageToolCallFunction](../models/chatcompletionmessagetoolcallfunction.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |

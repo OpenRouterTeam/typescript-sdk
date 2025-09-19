@@ -1,7 +1,5 @@
 # ChatCompletionToolMessageParam
 
-Tool response message
-
 ## Example Usage
 
 ```typescript
@@ -24,8 +22,8 @@ let value: ChatCompletionToolMessageParam = {
 
 ## Fields
 
-| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `role`                                                                                       | [models.ChatCompletionToolMessageParamRole](../models/chatcompletiontoolmessageparamrole.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `content`                                                                                    | *models.ChatCompletionToolMessageParamContent*                                               | :heavy_check_mark:                                                                           | Tool response content                                                                        |
-| `toolCallId`                                                                                 | *string*                                                                                     | :heavy_check_mark:                                                                           | ID of the tool call this message responds to                                                 |
+| Field                                          | Type                                           | Required                                       | Description                                    |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `role`                                         | *string*                                       | :heavy_check_mark:                             | N/A                                            |
+| `content`                                      | *models.ChatCompletionToolMessageParamContent* | :heavy_check_mark:                             | N/A                                            |
+| `toolCallId`                                   | *string*                                       | :heavy_check_mark:                             | N/A                                            |

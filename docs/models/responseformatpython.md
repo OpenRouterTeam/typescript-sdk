@@ -1,7 +1,5 @@
 # ResponseFormatPython
 
-Python code response format
-
 ## Example Usage
 
 ```typescript
@@ -14,6 +12,6 @@ let value: ResponseFormatPython = {
 
 ## Fields
 
-| Field                                        | Type                                         | Required                                     | Description                                  |
-| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| `type`                                       | [models.TypePython](../models/typepython.md) | :heavy_check_mark:                           | N/A                                          |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *string*           | :heavy_check_mark: | N/A                |

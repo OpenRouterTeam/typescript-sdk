@@ -5,7 +5,6 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionContentPart,
@@ -21,81 +20,27 @@ import {
 } from "./chatcompletionmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionAssistantMessageParamRole = {
-  Assistant: "assistant",
-} as const;
-export type ChatCompletionAssistantMessageParamRole = ClosedEnum<
-  typeof ChatCompletionAssistantMessageParamRole
->;
-
-/**
- * Assistant message content
- */
 export type ChatCompletionAssistantMessageParamContent =
   | string
-  | Array<ChatCompletionContentPart>
-  | any;
+  | Array<ChatCompletionContentPart>;
 
-/**
- * Assistant message with tool calls and audio support
- */
 export type ChatCompletionAssistantMessageParam = {
-  role: ChatCompletionAssistantMessageParamRole;
-  /**
-   * Assistant message content
-   */
-  content?: string | Array<ChatCompletionContentPart> | any | null | undefined;
-  /**
-   * Optional name for the assistant
-   */
+  role: "assistant";
+  content?: string | Array<ChatCompletionContentPart> | null | undefined;
   name?: string | undefined;
-  /**
-   * Tool calls made by the assistant
-   */
   toolCalls?: Array<ChatCompletionMessageToolCall> | undefined;
-  /**
-   * Refusal message if content was refused
-   */
   refusal?: string | null | undefined;
 };
 
 /** @internal */
-export const ChatCompletionAssistantMessageParamRole$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionAssistantMessageParamRole> = z
-    .nativeEnum(ChatCompletionAssistantMessageParamRole);
-
-/** @internal */
-export const ChatCompletionAssistantMessageParamRole$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionAssistantMessageParamRole> =
-    ChatCompletionAssistantMessageParamRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionAssistantMessageParamRole$ {
-  /** @deprecated use `ChatCompletionAssistantMessageParamRole$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionAssistantMessageParamRole$inboundSchema;
-  /** @deprecated use `ChatCompletionAssistantMessageParamRole$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionAssistantMessageParamRole$outboundSchema;
-}
-
-/** @internal */
 export const ChatCompletionAssistantMessageParamContent$inboundSchema:
   z.ZodType<ChatCompletionAssistantMessageParamContent, z.ZodTypeDef, unknown> =
-    z.union([
-      z.string(),
-      z.array(ChatCompletionContentPart$inboundSchema),
-      z.any(),
-    ]);
+    z.union([z.string(), z.array(ChatCompletionContentPart$inboundSchema)]);
 
 /** @internal */
 export type ChatCompletionAssistantMessageParamContent$Outbound =
   | string
-  | Array<ChatCompletionContentPart$Outbound>
-  | any;
+  | Array<ChatCompletionContentPart$Outbound>;
 
 /** @internal */
 export const ChatCompletionAssistantMessageParamContent$outboundSchema:
@@ -103,11 +48,7 @@ export const ChatCompletionAssistantMessageParamContent$outboundSchema:
     ChatCompletionAssistantMessageParamContent$Outbound,
     z.ZodTypeDef,
     ChatCompletionAssistantMessageParamContent
-  > = z.union([
-    z.string(),
-    z.array(ChatCompletionContentPart$outboundSchema),
-    z.any(),
-  ]);
+  > = z.union([z.string(), z.array(ChatCompletionContentPart$outboundSchema)]);
 
 /**
  * @internal
@@ -157,13 +98,9 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: ChatCompletionAssistantMessageParamRole$inboundSchema,
+  role: z.literal("assistant"),
   content: z.nullable(
-    z.union([
-      z.string(),
-      z.array(ChatCompletionContentPart$inboundSchema),
-      z.any(),
-    ]),
+    z.union([z.string(), z.array(ChatCompletionContentPart$inboundSchema)]),
   ).optional(),
   name: z.string().optional(),
   tool_calls: z.array(ChatCompletionMessageToolCall$inboundSchema).optional(),
@@ -176,11 +113,10 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionAssistantMessageParam$Outbound = {
-  role: string;
+  role: "assistant";
   content?:
     | string
     | Array<ChatCompletionContentPart$Outbound>
-    | any
     | null
     | undefined;
   name?: string | undefined;
@@ -194,13 +130,9 @@ export const ChatCompletionAssistantMessageParam$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionAssistantMessageParam
 > = z.object({
-  role: ChatCompletionAssistantMessageParamRole$outboundSchema,
+  role: z.literal("assistant"),
   content: z.nullable(
-    z.union([
-      z.string(),
-      z.array(ChatCompletionContentPart$outboundSchema),
-      z.any(),
-    ]),
+    z.union([z.string(), z.array(ChatCompletionContentPart$outboundSchema)]),
   ).optional(),
   name: z.string().optional(),
   toolCalls: z.array(ChatCompletionMessageToolCall$outboundSchema).optional(),

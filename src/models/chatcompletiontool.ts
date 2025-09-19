@@ -4,117 +4,20 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionToolType = {
-  Function: "function",
-} as const;
-export type ChatCompletionToolType = ClosedEnum<typeof ChatCompletionToolType>;
-
-/**
- * Function parameters as JSON Schema object
- */
-export type ParametersT = {};
-
-/**
- * Function definition for tool calling
- */
 export type ChatCompletionToolFunction = {
-  /**
-   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
-   */
   name: string;
-  /**
-   * Function description for the model
-   */
   description?: string | undefined;
-  /**
-   * Function parameters as JSON Schema object
-   */
-  parameters?: ParametersT | undefined;
-  /**
-   * Enable strict schema adherence
-   */
+  parameters?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
-/**
- * Tool definition for function calling
- */
 export type ChatCompletionTool = {
-  type: ChatCompletionToolType;
-  /**
-   * Function definition for tool calling
-   */
+  type: "function";
   function: ChatCompletionToolFunction;
 };
-
-/** @internal */
-export const ChatCompletionToolType$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionToolType
-> = z.nativeEnum(ChatCompletionToolType);
-
-/** @internal */
-export const ChatCompletionToolType$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionToolType
-> = ChatCompletionToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionToolType$ {
-  /** @deprecated use `ChatCompletionToolType$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionToolType$inboundSchema;
-  /** @deprecated use `ChatCompletionToolType$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionToolType$outboundSchema;
-}
-
-/** @internal */
-export const ParametersT$inboundSchema: z.ZodType<
-  ParametersT,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
-
-/** @internal */
-export type ParametersT$Outbound = {};
-
-/** @internal */
-export const ParametersT$outboundSchema: z.ZodType<
-  ParametersT$Outbound,
-  z.ZodTypeDef,
-  ParametersT
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ParametersT$ {
-  /** @deprecated use `ParametersT$inboundSchema` instead. */
-  export const inboundSchema = ParametersT$inboundSchema;
-  /** @deprecated use `ParametersT$outboundSchema` instead. */
-  export const outboundSchema = ParametersT$outboundSchema;
-  /** @deprecated use `ParametersT$Outbound` instead. */
-  export type Outbound = ParametersT$Outbound;
-}
-
-export function parametersToJSON(parametersT: ParametersT): string {
-  return JSON.stringify(ParametersT$outboundSchema.parse(parametersT));
-}
-
-export function parametersFromJSON(
-  jsonString: string,
-): SafeParseResult<ParametersT, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ParametersT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ParametersT' from JSON`,
-  );
-}
 
 /** @internal */
 export const ChatCompletionToolFunction$inboundSchema: z.ZodType<
@@ -124,7 +27,7 @@ export const ChatCompletionToolFunction$inboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  parameters: z.lazy(() => ParametersT$inboundSchema).optional(),
+  parameters: z.record(z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
@@ -132,7 +35,7 @@ export const ChatCompletionToolFunction$inboundSchema: z.ZodType<
 export type ChatCompletionToolFunction$Outbound = {
   name: string;
   description?: string | undefined;
-  parameters?: ParametersT$Outbound | undefined;
+  parameters?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -144,7 +47,7 @@ export const ChatCompletionToolFunction$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  parameters: z.lazy(() => ParametersT$outboundSchema).optional(),
+  parameters: z.record(z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
@@ -185,13 +88,13 @@ export const ChatCompletionTool$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ChatCompletionToolType$inboundSchema,
+  type: z.literal("function"),
   function: z.lazy(() => ChatCompletionToolFunction$inboundSchema),
 });
 
 /** @internal */
 export type ChatCompletionTool$Outbound = {
-  type: string;
+  type: "function";
   function: ChatCompletionToolFunction$Outbound;
 };
 
@@ -201,7 +104,7 @@ export const ChatCompletionTool$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionTool
 > = z.object({
-  type: ChatCompletionToolType$outboundSchema,
+  type: z.literal("function"),
   function: z.lazy(() => ChatCompletionToolFunction$outboundSchema),
 });
 

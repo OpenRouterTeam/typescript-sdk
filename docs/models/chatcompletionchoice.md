@@ -1,7 +1,5 @@
 # ChatCompletionChoice
 
-Chat completion choice
-
 ## Example Usage
 
 ```typescript
@@ -22,7 +20,7 @@ let value: ChatCompletionChoice = {
 
 | Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
 | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `finishReason`                                                                           | [models.ChatCompletionChoiceFinishReason](../models/chatcompletionchoicefinishreason.md) | :heavy_check_mark:                                                                       | Reason the completion finished                                                           |
-| `index`                                                                                  | *number*                                                                                 | :heavy_check_mark:                                                                       | Choice index                                                                             |
-| `message`                                                                                | [models.ChatCompletionMessage](../models/chatcompletionmessage.md)                       | :heavy_check_mark:                                                                       | Assistant message in completion response                                                 |
-| `logprobs`                                                                               | [models.ChatCompletionTokenLogprobs](../models/chatcompletiontokenlogprobs.md)           | :heavy_minus_sign:                                                                       | Log probabilities for the completion                                                     |
+| `finishReason`                                                                           | [models.ChatCompletionChoiceFinishReason](../models/chatcompletionchoicefinishreason.md) | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `index`                                                                                  | *number*                                                                                 | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `message`                                                                                | [models.ChatCompletionMessage](../models/chatcompletionmessage.md)                       | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `logprobs`                                                                               | [models.ChatCompletionTokenLogprobs](../models/chatcompletiontokenlogprobs.md)           | :heavy_minus_sign:                                                                       | N/A                                                                                      |

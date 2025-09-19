@@ -1,35 +1,29 @@
 # ChatCompletionChunk
 
-Streaming chat completion chunk
-
 ## Example Usage
 
 ```typescript
 import { ChatCompletionChunk } from "open-router/models";
 
 let value: ChatCompletionChunk = {
-  id: "<id>",
-  choices: [
-    {
-      delta: {},
-      finishReason: "stop",
-      index: 4065.76,
-    },
-  ],
-  created: 3939.45,
-  model: "Impala",
-  object: "chat.completion.chunk",
+  data: {
+    id: "<id>",
+    choices: [
+      {
+        delta: {},
+        finishReason: "content_filter",
+        index: 214.57,
+      },
+    ],
+    created: 3939.45,
+    model: "Impala",
+    object: "chat.completion.chunk",
+  },
 };
 ```
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `id`                                                                         | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `choices`                                                                    | [models.ChatCompletionChunkChoice](../models/chatcompletionchunkchoice.md)[] | :heavy_check_mark:                                                           | N/A                                                                          |
-| `created`                                                                    | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `model`                                                                      | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `object`                                                                     | [models.ChatCompletionChunkObject](../models/chatcompletionchunkobject.md)   | :heavy_check_mark:                                                           | N/A                                                                          |
-| `systemFingerprint`                                                          | *string*                                                                     | :heavy_minus_sign:                                                           | N/A                                                                          |
-| `usage`                                                                      | [models.CompletionUsage](../models/completionusage.md)                       | :heavy_minus_sign:                                                           | Token usage statistics                                                       |
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `data`                           | [models.Data](../models/data.md) | :heavy_check_mark:               | N/A                              |

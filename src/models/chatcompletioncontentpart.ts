@@ -25,9 +25,6 @@ import {
 } from "./chatcompletioncontentparttext.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Content part for chat completion messages
- */
 export type ChatCompletionContentPart =
   | (ChatCompletionContentPartText & { type: "text" })
   | (ChatCompletionContentPartImage & { type: "image_url" })

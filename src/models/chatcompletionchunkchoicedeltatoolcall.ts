@@ -4,81 +4,20 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Tool call type
- */
-export const ChatCompletionChunkChoiceDeltaToolCallType = {
-  Function: "function",
-} as const;
-/**
- * Tool call type
- */
-export type ChatCompletionChunkChoiceDeltaToolCallType = ClosedEnum<
-  typeof ChatCompletionChunkChoiceDeltaToolCallType
->;
-
-/**
- * Function call details
- */
 export type ChatCompletionChunkChoiceDeltaToolCallFunction = {
-  /**
-   * Function name
-   */
   name?: string | undefined;
-  /**
-   * Function arguments as JSON string
-   */
   arguments?: string | undefined;
 };
 
-/**
- * Tool call delta for streaming responses
- */
 export type ChatCompletionChunkChoiceDeltaToolCall = {
-  /**
-   * Tool call index in the array
-   */
   index: number;
-  /**
-   * Tool call identifier
-   */
   id?: string | undefined;
-  /**
-   * Tool call type
-   */
-  type?: ChatCompletionChunkChoiceDeltaToolCallType | undefined;
-  /**
-   * Function call details
-   */
+  type?: "function" | undefined;
   function?: ChatCompletionChunkChoiceDeltaToolCallFunction | undefined;
 };
-
-/** @internal */
-export const ChatCompletionChunkChoiceDeltaToolCallType$inboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionChunkChoiceDeltaToolCallType> = z
-    .nativeEnum(ChatCompletionChunkChoiceDeltaToolCallType);
-
-/** @internal */
-export const ChatCompletionChunkChoiceDeltaToolCallType$outboundSchema:
-  z.ZodNativeEnum<typeof ChatCompletionChunkChoiceDeltaToolCallType> =
-    ChatCompletionChunkChoiceDeltaToolCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionChunkChoiceDeltaToolCallType$ {
-  /** @deprecated use `ChatCompletionChunkChoiceDeltaToolCallType$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionChunkChoiceDeltaToolCallType$inboundSchema;
-  /** @deprecated use `ChatCompletionChunkChoiceDeltaToolCallType$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionChunkChoiceDeltaToolCallType$outboundSchema;
-}
 
 /** @internal */
 export const ChatCompletionChunkChoiceDeltaToolCallFunction$inboundSchema:
@@ -159,7 +98,7 @@ export const ChatCompletionChunkChoiceDeltaToolCall$inboundSchema: z.ZodType<
 > = z.object({
   index: z.number(),
   id: z.string().optional(),
-  type: ChatCompletionChunkChoiceDeltaToolCallType$inboundSchema.optional(),
+  type: z.literal("function").optional(),
   function: z.lazy(() =>
     ChatCompletionChunkChoiceDeltaToolCallFunction$inboundSchema
   ).optional(),
@@ -169,7 +108,7 @@ export const ChatCompletionChunkChoiceDeltaToolCall$inboundSchema: z.ZodType<
 export type ChatCompletionChunkChoiceDeltaToolCall$Outbound = {
   index: number;
   id?: string | undefined;
-  type?: string | undefined;
+  type?: "function" | undefined;
   function?:
     | ChatCompletionChunkChoiceDeltaToolCallFunction$Outbound
     | undefined;
@@ -183,7 +122,7 @@ export const ChatCompletionChunkChoiceDeltaToolCall$outboundSchema: z.ZodType<
 > = z.object({
   index: z.number(),
   id: z.string().optional(),
-  type: ChatCompletionChunkChoiceDeltaToolCallType$outboundSchema.optional(),
+  type: z.literal("function").optional(),
   function: z.lazy(() =>
     ChatCompletionChunkChoiceDeltaToolCallFunction$outboundSchema
   ).optional(),

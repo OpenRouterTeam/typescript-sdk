@@ -1,0 +1,20 @@
+# DataCollection
+
+Data collection setting. If no available model provider meets the requirement, your request will return an error.
+- allow: (default) allow providers which store user data non-transiently and may train on it
+- deny: use only providers which do not collect user data.
+
+
+## Example Usage
+
+```typescript
+import { DataCollection } from "open-router/models/operations";
+
+let value: DataCollection = "deny";
+```
+
+## Values
+
+```typescript
+"deny" | "allow"
+```

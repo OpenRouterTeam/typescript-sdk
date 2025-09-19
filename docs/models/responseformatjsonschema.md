@@ -1,7 +1,5 @@
 # ResponseFormatJSONSchema
 
-JSON Schema response format for structured outputs
-
 ## Example Usage
 
 ```typescript
@@ -17,7 +15,7 @@ let value: ResponseFormatJSONSchema = {
 
 ## Fields
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | [models.TypeJSONSchema](../models/typejsonschema.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `jsonSchema`                                         | [models.JsonSchema](../models/jsonschema.md)         | :heavy_check_mark:                                   | N/A                                                  |
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `jsonSchema`                                 | [models.JsonSchema](../models/jsonschema.md) | :heavy_check_mark:                           | N/A                                          |

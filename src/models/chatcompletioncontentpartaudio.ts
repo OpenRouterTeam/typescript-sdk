@@ -5,26 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatCompletionContentPartAudioType = {
-  InputAudio: "input_audio",
-} as const;
-export type ChatCompletionContentPartAudioType = ClosedEnum<
-  typeof ChatCompletionContentPartAudioType
->;
-
-/**
- * Audio format
- */
-export const ChatCompletionContentPartAudioFormat = {
+export const Format = {
   Wav: "wav",
   Mp3: "mp3",
   Flac: "flac",
@@ -33,86 +18,35 @@ export const ChatCompletionContentPartAudioFormat = {
   Pcm16: "pcm16",
   Pcm24: "pcm24",
 } as const;
-/**
- * Audio format
- */
-export type ChatCompletionContentPartAudioFormat = OpenEnum<
-  typeof ChatCompletionContentPartAudioFormat
->;
+export type Format = ClosedEnum<typeof Format>;
 
 export type InputAudio = {
-  /**
-   * Base64 encoded audio data
-   */
   data: string;
-  /**
-   * Audio format
-   */
-  format: ChatCompletionContentPartAudioFormat;
+  format: Format;
 };
 
-/**
- * Audio input content part
- */
 export type ChatCompletionContentPartAudio = {
-  type: ChatCompletionContentPartAudioType;
+  type: "input_audio";
   inputAudio: InputAudio;
 };
 
 /** @internal */
-export const ChatCompletionContentPartAudioType$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartAudioType
-> = z.nativeEnum(ChatCompletionContentPartAudioType);
+export const Format$inboundSchema: z.ZodNativeEnum<typeof Format> = z
+  .nativeEnum(Format);
 
 /** @internal */
-export const ChatCompletionContentPartAudioType$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionContentPartAudioType
-> = ChatCompletionContentPartAudioType$inboundSchema;
+export const Format$outboundSchema: z.ZodNativeEnum<typeof Format> =
+  Format$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionContentPartAudioType$ {
-  /** @deprecated use `ChatCompletionContentPartAudioType$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionContentPartAudioType$inboundSchema;
-  /** @deprecated use `ChatCompletionContentPartAudioType$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionContentPartAudioType$outboundSchema;
-}
-
-/** @internal */
-export const ChatCompletionContentPartAudioFormat$inboundSchema: z.ZodType<
-  ChatCompletionContentPartAudioFormat,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(ChatCompletionContentPartAudioFormat),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ChatCompletionContentPartAudioFormat$outboundSchema: z.ZodType<
-  ChatCompletionContentPartAudioFormat,
-  z.ZodTypeDef,
-  ChatCompletionContentPartAudioFormat
-> = z.union([
-  z.nativeEnum(ChatCompletionContentPartAudioFormat),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionContentPartAudioFormat$ {
-  /** @deprecated use `ChatCompletionContentPartAudioFormat$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatCompletionContentPartAudioFormat$inboundSchema;
-  /** @deprecated use `ChatCompletionContentPartAudioFormat$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionContentPartAudioFormat$outboundSchema;
+export namespace Format$ {
+  /** @deprecated use `Format$inboundSchema` instead. */
+  export const inboundSchema = Format$inboundSchema;
+  /** @deprecated use `Format$outboundSchema` instead. */
+  export const outboundSchema = Format$outboundSchema;
 }
 
 /** @internal */
@@ -122,7 +56,7 @@ export const InputAudio$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.string(),
-  format: ChatCompletionContentPartAudioFormat$inboundSchema,
+  format: Format$inboundSchema,
 });
 
 /** @internal */
@@ -138,7 +72,7 @@ export const InputAudio$outboundSchema: z.ZodType<
   InputAudio
 > = z.object({
   data: z.string(),
-  format: ChatCompletionContentPartAudioFormat$outboundSchema,
+  format: Format$outboundSchema,
 });
 
 /**
@@ -174,7 +108,7 @@ export const ChatCompletionContentPartAudio$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ChatCompletionContentPartAudioType$inboundSchema,
+  type: z.literal("input_audio"),
   input_audio: z.lazy(() => InputAudio$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -184,7 +118,7 @@ export const ChatCompletionContentPartAudio$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatCompletionContentPartAudio$Outbound = {
-  type: string;
+  type: "input_audio";
   input_audio: InputAudio$Outbound;
 };
 
@@ -194,7 +128,7 @@ export const ChatCompletionContentPartAudio$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionContentPartAudio
 > = z.object({
-  type: ChatCompletionContentPartAudioType$outboundSchema,
+  type: z.literal("input_audio"),
   inputAudio: z.lazy(() => InputAudio$outboundSchema),
 }).transform((v) => {
   return remap$(v, {

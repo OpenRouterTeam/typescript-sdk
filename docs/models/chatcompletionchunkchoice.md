@@ -1,7 +1,5 @@
 # ChatCompletionChunkChoice
 
-Streaming completion choice chunk
-
 ## Example Usage
 
 ```typescript
@@ -18,7 +16,7 @@ let value: ChatCompletionChunkChoice = {
 
 | Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
 | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `delta`                                                                                            | [models.ChatCompletionChunkChoiceDelta](../models/chatcompletionchunkchoicedelta.md)               | :heavy_check_mark:                                                                                 | Delta changes in streaming response                                                                |
+| `delta`                                                                                            | [models.ChatCompletionChunkChoiceDelta](../models/chatcompletionchunkchoicedelta.md)               | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `finishReason`                                                                                     | [models.ChatCompletionChunkChoiceFinishReason](../models/chatcompletionchunkchoicefinishreason.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `index`                                                                                            | *number*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `logprobs`                                                                                         | [models.ChatCompletionTokenLogprobs](../models/chatcompletiontokenlogprobs.md)                     | :heavy_minus_sign:                                                                                 | Log probabilities for the completion                                                               |
+| `logprobs`                                                                                         | [models.ChatCompletionTokenLogprobs](../models/chatcompletiontokenlogprobs.md)                     | :heavy_minus_sign:                                                                                 | N/A                                                                                                |

@@ -1,7 +1,5 @@
 # ChatCompletionContentPartAudio
 
-Audio input content part
-
 ## Example Usage
 
 ```typescript
@@ -18,7 +16,7 @@ let value: ChatCompletionContentPartAudio = {
 
 ## Fields
 
-| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `type`                                                                                       | [models.ChatCompletionContentPartAudioType](../models/chatcompletioncontentpartaudiotype.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `inputAudio`                                                                                 | [models.InputAudio](../models/inputaudio.md)                                                 | :heavy_check_mark:                                                                           | N/A                                                                                          |
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `type`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `inputAudio`                                 | [models.InputAudio](../models/inputaudio.md) | :heavy_check_mark:                           | N/A                                          |

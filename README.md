@@ -13,7 +13,7 @@
 <!-- Start Summary [summary] -->
 ## Summary
 
-OpenRouter Chat Completions API: OpenAI-compatible Chat Completions API with additional OpenRouter features
+OpenRouter API: OpenAI-compatible Chat Completions API with additional OpenRouter features
 
 For more information about the API: [OpenRouter Documentation](https://openrouter.ai/docs)
 <!-- End Summary [summary] -->
@@ -94,18 +94,13 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }
@@ -120,29 +115,25 @@ run();
 
 ### Per-Client Security Schemes
 
-This SDK supports the following security scheme globally:
+This SDK supports the following security schemes globally:
 
-| Name     | Type | Scheme      | Environment Variable |
-| -------- | ---- | ----------- | -------------------- |
-| `apiKey` | http | HTTP Bearer | `OPENROUTER_API_KEY` |
+| Name         | Type   | Scheme      | Environment Variable      |
+| ------------ | ------ | ----------- | ------------------------- |
+| `apiKeyAuth` | apiKey | API key     | `OPENROUTER_API_KEY_AUTH` |
+| `bearerAuth` | http   | HTTP Bearer | `OPENROUTER_BEARER_AUTH`  |
 
-To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
+You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }
@@ -158,10 +149,52 @@ run();
 <details open>
 <summary>Available methods</summary>
 
+### [analytics](docs/sdks/analytics/README.md)
+
+* [getActivity](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+
+### [apiKeys](docs/sdks/apikeys/README.md)
+
+* [getKeys](docs/sdks/apikeys/README.md#getkeys) - List API keys
+* [postKeys](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+* [patchKeysHash](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
+* [deleteKeysHash](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
+* [getKeysHash](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
+* [getKey](docs/sdks/apikeys/README.md#getkey) - Get current API key
+* [getAuthKey](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+
 ### [chat](docs/sdks/chat/README.md)
 
 * [complete](docs/sdks/chat/README.md#complete) - Create a chat completion
 
+### [embeddings](docs/sdks/embeddings/README.md)
+
+* [postEmbeddings](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+
+### [endpoints](docs/sdks/endpoints/README.md)
+
+* [getModelsAuthorSlugEndpoints](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
+* [getEndpointsZdr](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+
+### [generations](docs/sdks/generations/README.md)
+
+* [getGeneration](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+
+### [models](docs/sdks/models/README.md)
+
+* [getModelsCount](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
+* [getModels](docs/sdks/models/README.md#getmodels) - List all models and their properties
+* [getModelsUser](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+
+### [OpenRouter SDK](docs/sdks/openrouter/README.md)
+
+* [getCredits](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
+* [postCreditsCoinbase](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+* [getProviders](docs/sdks/openrouter/README.md#getproviders)
+
+### [parameters](docs/sdks/parameters/README.md)
+
+* [getParametersAuthorSlug](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -181,7 +214,26 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`analyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+- [`apiKeysDeleteKeysHash`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
+- [`apiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+- [`apiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
+- [`apiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
+- [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
+- [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
+- [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`chatComplete`](docs/sdks/chat/README.md#complete) - Create a chat completion
+- [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+- [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+- [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
+- [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+- [`getCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
+- [`getProviders`](docs/sdks/openrouter/README.md#getproviders)
+- [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+- [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
+- [`modelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+- [`parametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+- [`postCreditsCoinbase`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -277,18 +329,13 @@ To change the default retry strategy for a single API call, simply provide a ret
 import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  }, {
+  const result = await openRouter.getCredits({
     retries: {
       strategy: "backoff",
       backoff: {
@@ -323,18 +370,13 @@ const openRouter = new OpenRouter({
     },
     retryConnectionErrors: false,
   },
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }
@@ -364,19 +406,14 @@ import { OpenRouter } from "open-router";
 import * as errors from "open-router/models/errors";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
   try {
-    const result = await openRouter.chat.complete({
-      messages: [
-        {
-          role: "user",
-          content: "Hello, how are you?",
-        },
-      ],
-    });
+    const result = await openRouter.getProviders();
 
     console.log(result);
   } catch (error) {
@@ -388,8 +425,8 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.OpenRouterInvalidRequestError) {
-        console.log(error.data$.error); // models.OpenRouterInvalidRequestErrorError
+      if (error instanceof errors.InternalServerError) {
+        console.log(error.data$.error); // operations.ErrorT
       }
     }
   }
@@ -400,14 +437,10 @@ run();
 ```
 
 ### Error Classes
-**Primary errors:**
+**Primary error:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
-  * [`OpenRouterInvalidRequestError`](./src/models/errors/openrouterinvalidrequesterror.ts): OpenRouter invalid request error response. Status code `400`.
-  * [`OpenRouterUnauthorizedError`](./src/models/errors/openrouterunauthorizederror.ts): OpenRouter unauthorized error response. Status code `401`.
-  * [`OpenRouterRateLimitError`](./src/models/errors/openrouterratelimiterror.ts): OpenRouter rate limit error response. Status code `429`.
-  * [`OpenRouterServerError`](./src/models/errors/openrouterservererror.ts): OpenRouter server error response. Status code `500`.
 
-<details><summary>Less common errors (6)</summary>
+<details><summary>Less common errors (8)</summary>
 
 <br />
 
@@ -420,9 +453,13 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
+* [`ChatCompletionError`](./src/models/errors/chatcompletionerror.ts): Bad request - invalid parameters. Applicable to 1 of 20 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -432,15 +469,9 @@ run();
 
 You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name         | Server                          | Variables      | Description       |
-| ------------ | ------------------------------- | -------------- | ----------------- |
-| `production` | `https://{provider_url}/api/v1` | `provider_url` | Production server |
-
-If the selected server has variables, you may override its default values through the additional parameters made available in the SDK constructor:
-
-| Variable       | Parameter             | Default           | Description |
-| -------------- | --------------------- | ----------------- | ----------- |
-| `provider_url` | `providerUrl: string` | `"openrouter.ai"` |             |
+| Name         | Server                         | Description       |
+| ------------ | ------------------------------ | ----------------- |
+| `production` | `https://openrouter.ai/api/v1` | Production server |
 
 #### Example
 
@@ -449,19 +480,13 @@ import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
   server: "production",
-  providerUrl: "https://ruddy-guacamole.info/",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }
@@ -478,18 +503,13 @@ import { OpenRouter } from "open-router";
 
 const openRouter = new OpenRouter({
   serverURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.complete({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
+  const result = await openRouter.getCredits();
 
   console.log(result);
 }
@@ -544,7 +564,7 @@ httpClient.addHook("requestError", (error, request) => {
   console.groupEnd();
 });
 
-const sdk = new OpenRouter({ httpClient });
+const sdk = new OpenRouter({ httpClient: httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 

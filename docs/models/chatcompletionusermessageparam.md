@@ -1,7 +1,5 @@
 # ChatCompletionUserMessageParam
 
-User message
-
 ## Example Usage
 
 ```typescript
@@ -15,8 +13,8 @@ let value: ChatCompletionUserMessageParam = {
 
 ## Fields
 
-| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `role`                                                                                       | [models.ChatCompletionUserMessageParamRole](../models/chatcompletionusermessageparamrole.md) | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `content`                                                                                    | *models.ChatCompletionUserMessageParamContent*                                               | :heavy_check_mark:                                                                           | User message content                                                                         |
-| `name`                                                                                       | *string*                                                                                     | :heavy_minus_sign:                                                                           | Optional name for the user                                                                   |
+| Field                                          | Type                                           | Required                                       | Description                                    |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `role`                                         | *string*                                       | :heavy_check_mark:                             | N/A                                            |
+| `content`                                      | *models.ChatCompletionUserMessageParamContent* | :heavy_check_mark:                             | N/A                                            |
+| `name`                                         | *string*                                       | :heavy_minus_sign:                             | N/A                                            |

@@ -1,7 +1,5 @@
 # ChatCompletionSystemMessageParam
 
-System message for setting behavior
-
 ## Example Usage
 
 ```typescript
@@ -20,8 +18,8 @@ let value: ChatCompletionSystemMessageParam = {
 
 ## Fields
 
-| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| `role`                                                                                           | [models.ChatCompletionSystemMessageParamRole](../models/chatcompletionsystemmessageparamrole.md) | :heavy_check_mark:                                                                               | N/A                                                                                              |
-| `content`                                                                                        | *models.ChatCompletionSystemMessageParamContent*                                                 | :heavy_check_mark:                                                                               | System message content                                                                           |
-| `name`                                                                                           | *string*                                                                                         | :heavy_minus_sign:                                                                               | Optional name for the system message                                                             |
+| Field                                            | Type                                             | Required                                         | Description                                      |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| `role`                                           | *string*                                         | :heavy_check_mark:                               | N/A                                              |
+| `content`                                        | *models.ChatCompletionSystemMessageParamContent* | :heavy_check_mark:                               | N/A                                              |
+| `name`                                           | *string*                                         | :heavy_minus_sign:                               | N/A                                              |

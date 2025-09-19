@@ -14,147 +14,76 @@ import {
   ChatCompletionMessageParam$outboundSchema,
 } from "./chatcompletionmessageparam.js";
 import {
+  ChatCompletionStreamOptions,
+  ChatCompletionStreamOptions$inboundSchema,
+  ChatCompletionStreamOptions$Outbound,
+  ChatCompletionStreamOptions$outboundSchema,
+} from "./chatcompletionstreamoptions.js";
+import {
   ChatCompletionTool,
   ChatCompletionTool$inboundSchema,
   ChatCompletionTool$Outbound,
   ChatCompletionTool$outboundSchema,
 } from "./chatcompletiontool.js";
-import {
-  ChatCompletionToolChoiceOption,
-  ChatCompletionToolChoiceOption$inboundSchema,
-  ChatCompletionToolChoiceOption$Outbound,
-  ChatCompletionToolChoiceOption$outboundSchema,
-} from "./chatcompletiontoolchoiceoption.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ResponseFormatJsonSchemaSchema,
-  ResponseFormatJsonSchemaSchema$inboundSchema,
-  ResponseFormatJsonSchemaSchema$Outbound,
-  ResponseFormatJsonSchemaSchema$outboundSchema,
-} from "./responseformatjsonschemaschema.js";
 
-/**
- * OpenAI-style reasoning effort setting
- */
 export const Effort = {
-  High: "high",
-  Medium: "medium",
-  Low: "low",
   Minimal: "minimal",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
 } as const;
-/**
- * OpenAI-style reasoning effort setting
- */
 export type Effort = ClosedEnum<typeof Effort>;
 
-/**
- * Reasoning configuration
- */
+export const GenerateSummary = {
+  Auto: "auto",
+  Concise: "concise",
+  Detailed: "detailed",
+} as const;
+export type GenerateSummary = ClosedEnum<typeof GenerateSummary>;
+
+export const Summary = {
+  Auto: "auto",
+  Concise: "concise",
+  Detailed: "detailed",
+} as const;
+export type Summary = ClosedEnum<typeof Summary>;
+
 export type Reasoning = {
-  /**
-   * Enables reasoning with default settings. Only work for some models.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * OpenAI-style reasoning effort setting
-   */
   effort?: Effort | null | undefined;
-  /**
-   * non-OpenAI-style reasoning effort setting
-   */
-  maxTokens?: number | null | undefined;
-  exclude?: boolean | undefined;
+  generateSummary?: GenerateSummary | null | undefined;
+  summary?: Summary | null | undefined;
 };
 
-export const TypePython = {
-  Python: "python",
-} as const;
-export type TypePython = ClosedEnum<typeof TypePython>;
-
-/**
- * Python code response format
- */
 export type ResponseFormatPython = {
-  type: TypePython;
+  type: "python";
 };
 
-export const TypeGrammar = {
-  Grammar: "grammar",
-} as const;
-export type TypeGrammar = ClosedEnum<typeof TypeGrammar>;
-
-/**
- * Custom grammar response format
- */
 export type ResponseFormatGrammar = {
-  type: TypeGrammar;
-  /**
-   * Custom grammar for text generation
-   */
+  type: "grammar";
   grammar: string;
 };
 
-export const TypeJSONSchema = {
-  JsonSchema: "json_schema",
-} as const;
-export type TypeJSONSchema = ClosedEnum<typeof TypeJSONSchema>;
-
 export type JsonSchema = {
-  /**
-   * Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
-   */
   name: string;
-  /**
-   * Schema description for the model
-   */
   description?: string | undefined;
-  /**
-   * The schema for the response format, described as a JSON Schema object
-   */
-  schema?: ResponseFormatJsonSchemaSchema | undefined;
-  /**
-   * Enable strict schema adherence
-   */
+  schema?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
-/**
- * JSON Schema response format for structured outputs
- */
 export type ResponseFormatJSONSchema = {
-  type: TypeJSONSchema;
+  type: "json_schema";
   jsonSchema: JsonSchema;
 };
 
-export const TypeJSONObject = {
-  JsonObject: "json_object",
-} as const;
-export type TypeJSONObject = ClosedEnum<typeof TypeJSONObject>;
-
-/**
- * JSON object response format
- */
 export type ResponseFormatJSONObject = {
-  type: TypeJSONObject;
+  type: "json_object";
 };
 
-export const ChatCompletionCreateParamsTypeText = {
-  Text: "text",
-} as const;
-export type ChatCompletionCreateParamsTypeText = ClosedEnum<
-  typeof ChatCompletionCreateParamsTypeText
->;
-
-/**
- * Default text response format
- */
 export type ResponseFormatText = {
-  type: ChatCompletionCreateParamsTypeText;
+  type: "text";
 };
 
-/**
- * Response format configuration
- */
 export type ResponseFormat =
   | ResponseFormatJSONSchema
   | ResponseFormatGrammar
@@ -162,519 +91,20 @@ export type ResponseFormat =
   | ResponseFormatJSONObject
   | ResponseFormatPython;
 
-/**
- * Stop sequences (up to 4)
- */
-export type Stop = string | Array<string> | any;
+export type Stop = string | Array<string>;
 
-/**
- * Streaming configuration options
- */
-export type StreamOptions = {
-  /**
-   * Include usage information in streaming response
-   */
-  includeUsage?: boolean | undefined;
-};
-
-/**
- * Reasoning effort
- */
-export const ReasoningEffort = {
-  High: "high",
-  Medium: "medium",
-  Low: "low",
-  Minimal: "minimal",
-} as const;
-/**
- * Reasoning effort
- */
-export type ReasoningEffort = ClosedEnum<typeof ReasoningEffort>;
-
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
-} as const;
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export type DataCollection = ClosedEnum<typeof DataCollection>;
-
-export const OrderEnum = {
-  AnyScale: "AnyScale",
-  CentML: "Cent-ML",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Modal: "Modal",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Together2: "Together 2",
-  OneDotAI: "01.AI",
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  AmazonBedrock: "Amazon Bedrock",
-  Anthropic: "Anthropic",
-  AtlasCloud: "AtlasCloud",
-  Atoma: "Atoma",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  CrofAI: "CrofAI",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Enfer: "Enfer",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  InferenceNet: "InferenceNet",
-  Infermatic: "Infermatic",
-  Inflection: "Inflection",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
-  Liquid: "Liquid",
-  Mancer2: "Mancer 2",
-  Meta: "Meta",
-  Minimax: "Minimax",
-  Mistral: "Mistral",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Nineteen: "Nineteen",
-  Novita: "Novita",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  SambaNova: "SambaNova",
-  Stealth: "Stealth",
-  Switchpoint: "Switchpoint",
-  Targon: "Targon",
-  Together: "Together",
-  Ubicloud: "Ubicloud",
-  Venice: "Venice",
-  WandB: "WandB",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-} as const;
-export type OrderEnum = ClosedEnum<typeof OrderEnum>;
-
-export type Order = OrderEnum | string;
-
-export const OnlyEnum = {
-  AnyScale: "AnyScale",
-  CentML: "Cent-ML",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Modal: "Modal",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Together2: "Together 2",
-  OneDotAI: "01.AI",
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  AmazonBedrock: "Amazon Bedrock",
-  Anthropic: "Anthropic",
-  AtlasCloud: "AtlasCloud",
-  Atoma: "Atoma",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  CrofAI: "CrofAI",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Enfer: "Enfer",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  InferenceNet: "InferenceNet",
-  Infermatic: "Infermatic",
-  Inflection: "Inflection",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
-  Liquid: "Liquid",
-  Mancer2: "Mancer 2",
-  Meta: "Meta",
-  Minimax: "Minimax",
-  Mistral: "Mistral",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Nineteen: "Nineteen",
-  Novita: "Novita",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  SambaNova: "SambaNova",
-  Stealth: "Stealth",
-  Switchpoint: "Switchpoint",
-  Targon: "Targon",
-  Together: "Together",
-  Ubicloud: "Ubicloud",
-  Venice: "Venice",
-  WandB: "WandB",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-} as const;
-export type OnlyEnum = ClosedEnum<typeof OnlyEnum>;
-
-export type Only = OnlyEnum | string;
-
-export const IgnoreEnum = {
-  AnyScale: "AnyScale",
-  CentML: "Cent-ML",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Modal: "Modal",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Together2: "Together 2",
-  OneDotAI: "01.AI",
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  AmazonBedrock: "Amazon Bedrock",
-  Anthropic: "Anthropic",
-  AtlasCloud: "AtlasCloud",
-  Atoma: "Atoma",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  CrofAI: "CrofAI",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Enfer: "Enfer",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  InferenceNet: "InferenceNet",
-  Infermatic: "Infermatic",
-  Inflection: "Inflection",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
-  Liquid: "Liquid",
-  Mancer2: "Mancer 2",
-  Meta: "Meta",
-  Minimax: "Minimax",
-  Mistral: "Mistral",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Nineteen: "Nineteen",
-  Novita: "Novita",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  SambaNova: "SambaNova",
-  Stealth: "Stealth",
-  Switchpoint: "Switchpoint",
-  Targon: "Targon",
-  Together: "Together",
-  Ubicloud: "Ubicloud",
-  Venice: "Venice",
-  WandB: "WandB",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-} as const;
-export type IgnoreEnum = ClosedEnum<typeof IgnoreEnum>;
-
-export type Ignore = IgnoreEnum | string;
-
-export const Quantization = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
-} as const;
-export type Quantization = ClosedEnum<typeof Quantization>;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export const Sort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type Sort = ClosedEnum<typeof Sort>;
-
-export type Prompt = number | string | any;
-
-export type Completion = number | string | any;
-
-export type Image = number | string | any;
-
-export type Audio = number | string | any;
-
-export type RequestT = number | string | any;
-
-/**
- * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
- */
-export type MaxPrice = {
-  prompt?: number | string | any | undefined;
-  completion?: number | string | any | undefined;
-  image?: number | string | any | undefined;
-  audio?: number | string | any | undefined;
-  request?: number | string | any | undefined;
-};
-
-/**
- * When multiple model providers are available, optionally indicate your routing preference.
- */
-export type Provider = {
-  /**
-   * Whether to allow backup providers to serve requests
-   *
-   * @remarks
-   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-   */
-  allowFallbacks?: boolean | null | undefined;
-  /**
-   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-   */
-  requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: DataCollection | null | undefined;
-  /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-   */
-  order?: Array<OrderEnum | string> | null | undefined;
-  /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-   */
-  only?: Array<OnlyEnum | string> | null | undefined;
-  /**
-   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-   */
-  ignore?: Array<IgnoreEnum | string> | null | undefined;
-  /**
-   * A list of quantization levels to filter the provider by.
-   */
-  quantizations?: Array<Quantization> | null | undefined;
-  /**
-   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-   */
-  sort?: Sort | null | undefined;
-  /**
-   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-   */
-  maxPrice?: MaxPrice | undefined;
-};
-
-export const IdFileParser = {
-  FileParser: "file-parser",
-} as const;
-export type IdFileParser = ClosedEnum<typeof IdFileParser>;
-
-export const PdfEngine = {
-  MistralOcr: "mistral-ocr",
-  PdfText: "pdf-text",
-  Native: "native",
-} as const;
-export type PdfEngine = ClosedEnum<typeof PdfEngine>;
-
-export type Pdf = {
-  engine?: PdfEngine | undefined;
-};
-
-export type PluginFileParser = {
-  id: IdFileParser;
-  maxFiles?: number | undefined;
-  pdf?: Pdf | undefined;
-};
-
-export const IdChainOfThought = {
-  ChainOfThought: "chain-of-thought",
-} as const;
-export type IdChainOfThought = ClosedEnum<typeof IdChainOfThought>;
-
-export type PluginChainOfThought = {
-  id: IdChainOfThought;
-};
-
-export const IdWeb = {
-  Web: "web",
-} as const;
-export type IdWeb = ClosedEnum<typeof IdWeb>;
-
-export const Engine = {
-  Native: "native",
-  Exa: "exa",
-} as const;
-export type Engine = ClosedEnum<typeof Engine>;
-
-export type PluginWeb = {
-  id: IdWeb;
-  maxResults?: number | undefined;
-  searchPrompt?: string | undefined;
-  engine?: Engine | undefined;
-};
-
-export const IdModeration = {
-  Moderation: "moderation",
-} as const;
-export type IdModeration = ClosedEnum<typeof IdModeration>;
-
-export type PluginModeration = {
-  id: IdModeration;
-};
-
-export type Plugin =
-  | PluginModeration
-  | PluginWeb
-  | PluginChainOfThought
-  | PluginFileParser;
-
-/**
- * Chat completion request parameters
- */
 export type ChatCompletionCreateParams = {
-  /**
-   * List of messages for the conversation
-   */
   messages: Array<ChatCompletionMessageParam>;
-  /**
-   * Model to use for completion
-   */
-  model?: string | undefined;
-  /**
-   * Frequency penalty (-2.0 to 2.0)
-   */
+  model: string;
   frequencyPenalty?: number | null | undefined;
-  /**
-   * Token logit bias adjustments
-   */
   logitBias?: { [k: string]: number } | null | undefined;
-  /**
-   * Return log probabilities
-   */
   logprobs?: boolean | null | undefined;
-  /**
-   * Number of top log probabilities to return (0-20)
-   */
   topLogprobs?: number | null | undefined;
-  /**
-   * Maximum tokens in completion
-   */
   maxCompletionTokens?: number | null | undefined;
-  /**
-   * Maximum tokens (deprecated, use max_completion_tokens)
-   */
   maxTokens?: number | null | undefined;
-  /**
-   * Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
-   */
   metadata?: { [k: string]: string } | undefined;
-  /**
-   * Presence penalty (-2.0 to 2.0)
-   */
   presencePenalty?: number | null | undefined;
-  /**
-   * Reasoning configuration
-   */
-  reasoning?: Reasoning | null | undefined;
-  /**
-   * Response format configuration
-   */
+  reasoning?: Reasoning | undefined;
   responseFormat?:
     | ResponseFormatJSONSchema
     | ResponseFormatGrammar
@@ -682,59 +112,15 @@ export type ChatCompletionCreateParams = {
     | ResponseFormatJSONObject
     | ResponseFormatPython
     | undefined;
-  /**
-   * Random seed for deterministic outputs
-   */
   seed?: number | null | undefined;
-  /**
-   * Stop sequences (up to 4)
-   */
-  stop?: string | Array<string> | any | null | undefined;
-  /**
-   * Enable streaming response
-   */
+  stop?: string | Array<string> | null | undefined;
   stream?: boolean | null | undefined;
-  streamOptions?: StreamOptions | null | undefined;
-  /**
-   * Sampling temperature (0-2)
-   */
+  streamOptions?: ChatCompletionStreamOptions | null | undefined;
   temperature?: number | null | undefined;
-  /**
-   * Tool choice configuration
-   */
-  toolChoice?: ChatCompletionToolChoiceOption | undefined;
-  /**
-   * Available tools for function calling
-   */
+  toolChoice?: any | undefined;
   tools?: Array<ChatCompletionTool> | undefined;
-  /**
-   * Nucleus sampling parameter (0-1)
-   */
   topP?: number | null | undefined;
-  /**
-   * Unique user identifier
-   */
   user?: string | undefined;
-  /**
-   * Order of models to fallback to for this request
-   */
-  models?: Array<string> | null | undefined;
-  /**
-   * Reasoning effort
-   */
-  reasoningEffort?: ReasoningEffort | null | undefined;
-  /**
-   * When multiple model providers are available, optionally indicate your routing preference.
-   */
-  provider?: Provider | null | undefined;
-  /**
-   * Plugins you want to enable for this request, including their settings.
-   */
-  plugins?:
-    | Array<
-      PluginModeration | PluginWeb | PluginChainOfThought | PluginFileParser
-    >
-    | undefined;
 };
 
 /** @internal */
@@ -757,27 +143,65 @@ export namespace Effort$ {
 }
 
 /** @internal */
+export const GenerateSummary$inboundSchema: z.ZodNativeEnum<
+  typeof GenerateSummary
+> = z.nativeEnum(GenerateSummary);
+
+/** @internal */
+export const GenerateSummary$outboundSchema: z.ZodNativeEnum<
+  typeof GenerateSummary
+> = GenerateSummary$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GenerateSummary$ {
+  /** @deprecated use `GenerateSummary$inboundSchema` instead. */
+  export const inboundSchema = GenerateSummary$inboundSchema;
+  /** @deprecated use `GenerateSummary$outboundSchema` instead. */
+  export const outboundSchema = GenerateSummary$outboundSchema;
+}
+
+/** @internal */
+export const Summary$inboundSchema: z.ZodNativeEnum<typeof Summary> = z
+  .nativeEnum(Summary);
+
+/** @internal */
+export const Summary$outboundSchema: z.ZodNativeEnum<typeof Summary> =
+  Summary$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Summary$ {
+  /** @deprecated use `Summary$inboundSchema` instead. */
+  export const inboundSchema = Summary$inboundSchema;
+  /** @deprecated use `Summary$outboundSchema` instead. */
+  export const outboundSchema = Summary$outboundSchema;
+}
+
+/** @internal */
 export const Reasoning$inboundSchema: z.ZodType<
   Reasoning,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  enabled: z.boolean().optional(),
   effort: z.nullable(Effort$inboundSchema).optional(),
-  max_tokens: z.nullable(z.number()).optional(),
-  exclude: z.boolean().default(false),
+  generate_summary: z.nullable(GenerateSummary$inboundSchema).optional(),
+  summary: z.nullable(Summary$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    "max_tokens": "maxTokens",
+    "generate_summary": "generateSummary",
   });
 });
 
 /** @internal */
 export type Reasoning$Outbound = {
-  enabled?: boolean | undefined;
   effort?: string | null | undefined;
-  max_tokens?: number | null | undefined;
-  exclude: boolean;
+  generate_summary?: string | null | undefined;
+  summary?: string | null | undefined;
 };
 
 /** @internal */
@@ -786,13 +210,12 @@ export const Reasoning$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Reasoning
 > = z.object({
-  enabled: z.boolean().optional(),
   effort: z.nullable(Effort$outboundSchema).optional(),
-  maxTokens: z.nullable(z.number()).optional(),
-  exclude: z.boolean().default(false),
+  generateSummary: z.nullable(GenerateSummary$outboundSchema).optional(),
+  summary: z.nullable(Summary$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    maxTokens: "max_tokens",
+    generateSummary: "generate_summary",
   });
 });
 
@@ -824,36 +247,17 @@ export function reasoningFromJSON(
 }
 
 /** @internal */
-export const TypePython$inboundSchema: z.ZodNativeEnum<typeof TypePython> = z
-  .nativeEnum(TypePython);
-
-/** @internal */
-export const TypePython$outboundSchema: z.ZodNativeEnum<typeof TypePython> =
-  TypePython$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypePython$ {
-  /** @deprecated use `TypePython$inboundSchema` instead. */
-  export const inboundSchema = TypePython$inboundSchema;
-  /** @deprecated use `TypePython$outboundSchema` instead. */
-  export const outboundSchema = TypePython$outboundSchema;
-}
-
-/** @internal */
 export const ResponseFormatPython$inboundSchema: z.ZodType<
   ResponseFormatPython,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: TypePython$inboundSchema,
+  type: z.literal("python"),
 });
 
 /** @internal */
 export type ResponseFormatPython$Outbound = {
-  type: string;
+  type: "python";
 };
 
 /** @internal */
@@ -862,7 +266,7 @@ export const ResponseFormatPython$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatPython
 > = z.object({
-  type: TypePython$outboundSchema,
+  type: z.literal("python"),
 });
 
 /**
@@ -897,37 +301,18 @@ export function responseFormatPythonFromJSON(
 }
 
 /** @internal */
-export const TypeGrammar$inboundSchema: z.ZodNativeEnum<typeof TypeGrammar> = z
-  .nativeEnum(TypeGrammar);
-
-/** @internal */
-export const TypeGrammar$outboundSchema: z.ZodNativeEnum<typeof TypeGrammar> =
-  TypeGrammar$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeGrammar$ {
-  /** @deprecated use `TypeGrammar$inboundSchema` instead. */
-  export const inboundSchema = TypeGrammar$inboundSchema;
-  /** @deprecated use `TypeGrammar$outboundSchema` instead. */
-  export const outboundSchema = TypeGrammar$outboundSchema;
-}
-
-/** @internal */
 export const ResponseFormatGrammar$inboundSchema: z.ZodType<
   ResponseFormatGrammar,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: TypeGrammar$inboundSchema,
+  type: z.literal("grammar"),
   grammar: z.string(),
 });
 
 /** @internal */
 export type ResponseFormatGrammar$Outbound = {
-  type: string;
+  type: "grammar";
   grammar: string;
 };
 
@@ -937,7 +322,7 @@ export const ResponseFormatGrammar$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatGrammar
 > = z.object({
-  type: TypeGrammar$outboundSchema,
+  type: z.literal("grammar"),
   grammar: z.string(),
 });
 
@@ -973,27 +358,6 @@ export function responseFormatGrammarFromJSON(
 }
 
 /** @internal */
-export const TypeJSONSchema$inboundSchema: z.ZodNativeEnum<
-  typeof TypeJSONSchema
-> = z.nativeEnum(TypeJSONSchema);
-
-/** @internal */
-export const TypeJSONSchema$outboundSchema: z.ZodNativeEnum<
-  typeof TypeJSONSchema
-> = TypeJSONSchema$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeJSONSchema$ {
-  /** @deprecated use `TypeJSONSchema$inboundSchema` instead. */
-  export const inboundSchema = TypeJSONSchema$inboundSchema;
-  /** @deprecated use `TypeJSONSchema$outboundSchema` instead. */
-  export const outboundSchema = TypeJSONSchema$outboundSchema;
-}
-
-/** @internal */
 export const JsonSchema$inboundSchema: z.ZodType<
   JsonSchema,
   z.ZodTypeDef,
@@ -1001,7 +365,7 @@ export const JsonSchema$inboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  schema: ResponseFormatJsonSchemaSchema$inboundSchema.optional(),
+  schema: z.record(z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
@@ -1009,7 +373,7 @@ export const JsonSchema$inboundSchema: z.ZodType<
 export type JsonSchema$Outbound = {
   name: string;
   description?: string | undefined;
-  schema?: ResponseFormatJsonSchemaSchema$Outbound | undefined;
+  schema?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -1021,7 +385,7 @@ export const JsonSchema$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  schema: ResponseFormatJsonSchemaSchema$outboundSchema.optional(),
+  schema: z.record(z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
@@ -1058,7 +422,7 @@ export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: TypeJSONSchema$inboundSchema,
+  type: z.literal("json_schema"),
   json_schema: z.lazy(() => JsonSchema$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -1068,7 +432,7 @@ export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ResponseFormatJSONSchema$Outbound = {
-  type: string;
+  type: "json_schema";
   json_schema: JsonSchema$Outbound;
 };
 
@@ -1078,7 +442,7 @@ export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatJSONSchema
 > = z.object({
-  type: TypeJSONSchema$outboundSchema,
+  type: z.literal("json_schema"),
   jsonSchema: z.lazy(() => JsonSchema$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -1118,38 +482,17 @@ export function responseFormatJSONSchemaFromJSON(
 }
 
 /** @internal */
-export const TypeJSONObject$inboundSchema: z.ZodNativeEnum<
-  typeof TypeJSONObject
-> = z.nativeEnum(TypeJSONObject);
-
-/** @internal */
-export const TypeJSONObject$outboundSchema: z.ZodNativeEnum<
-  typeof TypeJSONObject
-> = TypeJSONObject$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeJSONObject$ {
-  /** @deprecated use `TypeJSONObject$inboundSchema` instead. */
-  export const inboundSchema = TypeJSONObject$inboundSchema;
-  /** @deprecated use `TypeJSONObject$outboundSchema` instead. */
-  export const outboundSchema = TypeJSONObject$outboundSchema;
-}
-
-/** @internal */
 export const ResponseFormatJSONObject$inboundSchema: z.ZodType<
   ResponseFormatJSONObject,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: TypeJSONObject$inboundSchema,
+  type: z.literal("json_object"),
 });
 
 /** @internal */
 export type ResponseFormatJSONObject$Outbound = {
-  type: string;
+  type: "json_object";
 };
 
 /** @internal */
@@ -1158,7 +501,7 @@ export const ResponseFormatJSONObject$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatJSONObject
 > = z.object({
-  type: TypeJSONObject$outboundSchema,
+  type: z.literal("json_object"),
 });
 
 /**
@@ -1193,39 +536,17 @@ export function responseFormatJSONObjectFromJSON(
 }
 
 /** @internal */
-export const ChatCompletionCreateParamsTypeText$inboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsTypeText
-> = z.nativeEnum(ChatCompletionCreateParamsTypeText);
-
-/** @internal */
-export const ChatCompletionCreateParamsTypeText$outboundSchema: z.ZodNativeEnum<
-  typeof ChatCompletionCreateParamsTypeText
-> = ChatCompletionCreateParamsTypeText$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatCompletionCreateParamsTypeText$ {
-  /** @deprecated use `ChatCompletionCreateParamsTypeText$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionCreateParamsTypeText$inboundSchema;
-  /** @deprecated use `ChatCompletionCreateParamsTypeText$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatCompletionCreateParamsTypeText$outboundSchema;
-}
-
-/** @internal */
 export const ResponseFormatText$inboundSchema: z.ZodType<
   ResponseFormatText,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ChatCompletionCreateParamsTypeText$inboundSchema,
+  type: z.literal("text"),
 });
 
 /** @internal */
 export type ResponseFormatText$Outbound = {
-  type: string;
+  type: "text";
 };
 
 /** @internal */
@@ -1234,7 +555,7 @@ export const ResponseFormatText$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatText
 > = z.object({
-  type: ChatCompletionCreateParamsTypeText$outboundSchema,
+  type: z.literal("text"),
 });
 
 /**
@@ -1331,14 +652,14 @@ export function responseFormatFromJSON(
 
 /** @internal */
 export const Stop$inboundSchema: z.ZodType<Stop, z.ZodTypeDef, unknown> = z
-  .union([z.string(), z.array(z.string()), z.any()]);
+  .union([z.string(), z.array(z.string())]);
 
 /** @internal */
-export type Stop$Outbound = string | Array<string> | any;
+export type Stop$Outbound = string | Array<string>;
 
 /** @internal */
 export const Stop$outboundSchema: z.ZodType<Stop$Outbound, z.ZodTypeDef, Stop> =
-  z.union([z.string(), z.array(z.string()), z.any()]);
+  z.union([z.string(), z.array(z.string())]);
 
 /**
  * @internal
@@ -1368,1157 +689,13 @@ export function stopFromJSON(
 }
 
 /** @internal */
-export const StreamOptions$inboundSchema: z.ZodType<
-  StreamOptions,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  include_usage: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "include_usage": "includeUsage",
-  });
-});
-
-/** @internal */
-export type StreamOptions$Outbound = {
-  include_usage?: boolean | undefined;
-};
-
-/** @internal */
-export const StreamOptions$outboundSchema: z.ZodType<
-  StreamOptions$Outbound,
-  z.ZodTypeDef,
-  StreamOptions
-> = z.object({
-  includeUsage: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    includeUsage: "include_usage",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace StreamOptions$ {
-  /** @deprecated use `StreamOptions$inboundSchema` instead. */
-  export const inboundSchema = StreamOptions$inboundSchema;
-  /** @deprecated use `StreamOptions$outboundSchema` instead. */
-  export const outboundSchema = StreamOptions$outboundSchema;
-  /** @deprecated use `StreamOptions$Outbound` instead. */
-  export type Outbound = StreamOptions$Outbound;
-}
-
-export function streamOptionsToJSON(streamOptions: StreamOptions): string {
-  return JSON.stringify(StreamOptions$outboundSchema.parse(streamOptions));
-}
-
-export function streamOptionsFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamOptions, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamOptions$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamOptions' from JSON`,
-  );
-}
-
-/** @internal */
-export const ReasoningEffort$inboundSchema: z.ZodNativeEnum<
-  typeof ReasoningEffort
-> = z.nativeEnum(ReasoningEffort);
-
-/** @internal */
-export const ReasoningEffort$outboundSchema: z.ZodNativeEnum<
-  typeof ReasoningEffort
-> = ReasoningEffort$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningEffort$ {
-  /** @deprecated use `ReasoningEffort$inboundSchema` instead. */
-  export const inboundSchema = ReasoningEffort$inboundSchema;
-  /** @deprecated use `ReasoningEffort$outboundSchema` instead. */
-  export const outboundSchema = ReasoningEffort$outboundSchema;
-}
-
-/** @internal */
-export const DataCollection$inboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = z.nativeEnum(DataCollection);
-
-/** @internal */
-export const DataCollection$outboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = DataCollection$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DataCollection$ {
-  /** @deprecated use `DataCollection$inboundSchema` instead. */
-  export const inboundSchema = DataCollection$inboundSchema;
-  /** @deprecated use `DataCollection$outboundSchema` instead. */
-  export const outboundSchema = DataCollection$outboundSchema;
-}
-
-/** @internal */
-export const OrderEnum$inboundSchema: z.ZodNativeEnum<typeof OrderEnum> = z
-  .nativeEnum(OrderEnum);
-
-/** @internal */
-export const OrderEnum$outboundSchema: z.ZodNativeEnum<typeof OrderEnum> =
-  OrderEnum$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OrderEnum$ {
-  /** @deprecated use `OrderEnum$inboundSchema` instead. */
-  export const inboundSchema = OrderEnum$inboundSchema;
-  /** @deprecated use `OrderEnum$outboundSchema` instead. */
-  export const outboundSchema = OrderEnum$outboundSchema;
-}
-
-/** @internal */
-export const Order$inboundSchema: z.ZodType<Order, z.ZodTypeDef, unknown> = z
-  .union([OrderEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Order$Outbound = string | string;
-
-/** @internal */
-export const Order$outboundSchema: z.ZodType<
-  Order$Outbound,
-  z.ZodTypeDef,
-  Order
-> = z.union([OrderEnum$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Order$ {
-  /** @deprecated use `Order$inboundSchema` instead. */
-  export const inboundSchema = Order$inboundSchema;
-  /** @deprecated use `Order$outboundSchema` instead. */
-  export const outboundSchema = Order$outboundSchema;
-  /** @deprecated use `Order$Outbound` instead. */
-  export type Outbound = Order$Outbound;
-}
-
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
-}
-
-export function orderFromJSON(
-  jsonString: string,
-): SafeParseResult<Order, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Order$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Order' from JSON`,
-  );
-}
-
-/** @internal */
-export const OnlyEnum$inboundSchema: z.ZodNativeEnum<typeof OnlyEnum> = z
-  .nativeEnum(OnlyEnum);
-
-/** @internal */
-export const OnlyEnum$outboundSchema: z.ZodNativeEnum<typeof OnlyEnum> =
-  OnlyEnum$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OnlyEnum$ {
-  /** @deprecated use `OnlyEnum$inboundSchema` instead. */
-  export const inboundSchema = OnlyEnum$inboundSchema;
-  /** @deprecated use `OnlyEnum$outboundSchema` instead. */
-  export const outboundSchema = OnlyEnum$outboundSchema;
-}
-
-/** @internal */
-export const Only$inboundSchema: z.ZodType<Only, z.ZodTypeDef, unknown> = z
-  .union([OnlyEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Only$Outbound = string | string;
-
-/** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, z.ZodTypeDef, Only> =
-  z.union([OnlyEnum$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Only$ {
-  /** @deprecated use `Only$inboundSchema` instead. */
-  export const inboundSchema = Only$inboundSchema;
-  /** @deprecated use `Only$outboundSchema` instead. */
-  export const outboundSchema = Only$outboundSchema;
-  /** @deprecated use `Only$Outbound` instead. */
-  export type Outbound = Only$Outbound;
-}
-
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
-}
-
-export function onlyFromJSON(
-  jsonString: string,
-): SafeParseResult<Only, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Only$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Only' from JSON`,
-  );
-}
-
-/** @internal */
-export const IgnoreEnum$inboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> = z
-  .nativeEnum(IgnoreEnum);
-
-/** @internal */
-export const IgnoreEnum$outboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> =
-  IgnoreEnum$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IgnoreEnum$ {
-  /** @deprecated use `IgnoreEnum$inboundSchema` instead. */
-  export const inboundSchema = IgnoreEnum$inboundSchema;
-  /** @deprecated use `IgnoreEnum$outboundSchema` instead. */
-  export const outboundSchema = IgnoreEnum$outboundSchema;
-}
-
-/** @internal */
-export const Ignore$inboundSchema: z.ZodType<Ignore, z.ZodTypeDef, unknown> = z
-  .union([IgnoreEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Ignore$Outbound = string | string;
-
-/** @internal */
-export const Ignore$outboundSchema: z.ZodType<
-  Ignore$Outbound,
-  z.ZodTypeDef,
-  Ignore
-> = z.union([IgnoreEnum$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Ignore$ {
-  /** @deprecated use `Ignore$inboundSchema` instead. */
-  export const inboundSchema = Ignore$inboundSchema;
-  /** @deprecated use `Ignore$outboundSchema` instead. */
-  export const outboundSchema = Ignore$outboundSchema;
-  /** @deprecated use `Ignore$Outbound` instead. */
-  export type Outbound = Ignore$Outbound;
-}
-
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
-}
-
-export function ignoreFromJSON(
-  jsonString: string,
-): SafeParseResult<Ignore, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Ignore' from JSON`,
-  );
-}
-
-/** @internal */
-export const Quantization$inboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  z.nativeEnum(Quantization);
-
-/** @internal */
-export const Quantization$outboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  Quantization$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Quantization$ {
-  /** @deprecated use `Quantization$inboundSchema` instead. */
-  export const inboundSchema = Quantization$inboundSchema;
-  /** @deprecated use `Quantization$outboundSchema` instead. */
-  export const outboundSchema = Quantization$outboundSchema;
-}
-
-/** @internal */
-export const Sort$inboundSchema: z.ZodNativeEnum<typeof Sort> = z.nativeEnum(
-  Sort,
-);
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodNativeEnum<typeof Sort> =
-  Sort$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Sort$ {
-  /** @deprecated use `Sort$inboundSchema` instead. */
-  export const inboundSchema = Sort$inboundSchema;
-  /** @deprecated use `Sort$outboundSchema` instead. */
-  export const outboundSchema = Sort$outboundSchema;
-}
-
-/** @internal */
-export const Prompt$inboundSchema: z.ZodType<Prompt, z.ZodTypeDef, unknown> = z
-  .union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Prompt$Outbound = number | string | any;
-
-/** @internal */
-export const Prompt$outboundSchema: z.ZodType<
-  Prompt$Outbound,
-  z.ZodTypeDef,
-  Prompt
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Prompt$ {
-  /** @deprecated use `Prompt$inboundSchema` instead. */
-  export const inboundSchema = Prompt$inboundSchema;
-  /** @deprecated use `Prompt$outboundSchema` instead. */
-  export const outboundSchema = Prompt$outboundSchema;
-  /** @deprecated use `Prompt$Outbound` instead. */
-  export type Outbound = Prompt$Outbound;
-}
-
-export function promptToJSON(prompt: Prompt): string {
-  return JSON.stringify(Prompt$outboundSchema.parse(prompt));
-}
-
-export function promptFromJSON(
-  jsonString: string,
-): SafeParseResult<Prompt, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Prompt$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Prompt' from JSON`,
-  );
-}
-
-/** @internal */
-export const Completion$inboundSchema: z.ZodType<
-  Completion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Completion$Outbound = number | string | any;
-
-/** @internal */
-export const Completion$outboundSchema: z.ZodType<
-  Completion$Outbound,
-  z.ZodTypeDef,
-  Completion
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Completion$ {
-  /** @deprecated use `Completion$inboundSchema` instead. */
-  export const inboundSchema = Completion$inboundSchema;
-  /** @deprecated use `Completion$outboundSchema` instead. */
-  export const outboundSchema = Completion$outboundSchema;
-  /** @deprecated use `Completion$Outbound` instead. */
-  export type Outbound = Completion$Outbound;
-}
-
-export function completionToJSON(completion: Completion): string {
-  return JSON.stringify(Completion$outboundSchema.parse(completion));
-}
-
-export function completionFromJSON(
-  jsonString: string,
-): SafeParseResult<Completion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Completion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Completion' from JSON`,
-  );
-}
-
-/** @internal */
-export const Image$inboundSchema: z.ZodType<Image, z.ZodTypeDef, unknown> = z
-  .union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Image$Outbound = number | string | any;
-
-/** @internal */
-export const Image$outboundSchema: z.ZodType<
-  Image$Outbound,
-  z.ZodTypeDef,
-  Image
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Image$ {
-  /** @deprecated use `Image$inboundSchema` instead. */
-  export const inboundSchema = Image$inboundSchema;
-  /** @deprecated use `Image$outboundSchema` instead. */
-  export const outboundSchema = Image$outboundSchema;
-  /** @deprecated use `Image$Outbound` instead. */
-  export type Outbound = Image$Outbound;
-}
-
-export function imageToJSON(image: Image): string {
-  return JSON.stringify(Image$outboundSchema.parse(image));
-}
-
-export function imageFromJSON(
-  jsonString: string,
-): SafeParseResult<Image, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Image$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Image' from JSON`,
-  );
-}
-
-/** @internal */
-export const Audio$inboundSchema: z.ZodType<Audio, z.ZodTypeDef, unknown> = z
-  .union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Audio$Outbound = number | string | any;
-
-/** @internal */
-export const Audio$outboundSchema: z.ZodType<
-  Audio$Outbound,
-  z.ZodTypeDef,
-  Audio
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Audio$ {
-  /** @deprecated use `Audio$inboundSchema` instead. */
-  export const inboundSchema = Audio$inboundSchema;
-  /** @deprecated use `Audio$outboundSchema` instead. */
-  export const outboundSchema = Audio$outboundSchema;
-  /** @deprecated use `Audio$Outbound` instead. */
-  export type Outbound = Audio$Outbound;
-}
-
-export function audioToJSON(audio: Audio): string {
-  return JSON.stringify(Audio$outboundSchema.parse(audio));
-}
-
-export function audioFromJSON(
-  jsonString: string,
-): SafeParseResult<Audio, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Audio$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Audio' from JSON`,
-  );
-}
-
-/** @internal */
-export const RequestT$inboundSchema: z.ZodType<
-  RequestT,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type RequestT$Outbound = number | string | any;
-
-/** @internal */
-export const RequestT$outboundSchema: z.ZodType<
-  RequestT$Outbound,
-  z.ZodTypeDef,
-  RequestT
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace RequestT$ {
-  /** @deprecated use `RequestT$inboundSchema` instead. */
-  export const inboundSchema = RequestT$inboundSchema;
-  /** @deprecated use `RequestT$outboundSchema` instead. */
-  export const outboundSchema = RequestT$outboundSchema;
-  /** @deprecated use `RequestT$Outbound` instead. */
-  export type Outbound = RequestT$Outbound;
-}
-
-export function requestToJSON(requestT: RequestT): string {
-  return JSON.stringify(RequestT$outboundSchema.parse(requestT));
-}
-
-export function requestFromJSON(
-  jsonString: string,
-): SafeParseResult<RequestT, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => RequestT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RequestT' from JSON`,
-  );
-}
-
-/** @internal */
-export const MaxPrice$inboundSchema: z.ZodType<
-  MaxPrice,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  prompt: z.union([z.number(), z.string(), z.any()]).optional(),
-  completion: z.union([z.number(), z.string(), z.any()]).optional(),
-  image: z.union([z.number(), z.string(), z.any()]).optional(),
-  audio: z.union([z.number(), z.string(), z.any()]).optional(),
-  request: z.union([z.number(), z.string(), z.any()]).optional(),
-});
-
-/** @internal */
-export type MaxPrice$Outbound = {
-  prompt?: number | string | any | undefined;
-  completion?: number | string | any | undefined;
-  image?: number | string | any | undefined;
-  audio?: number | string | any | undefined;
-  request?: number | string | any | undefined;
-};
-
-/** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<
-  MaxPrice$Outbound,
-  z.ZodTypeDef,
-  MaxPrice
-> = z.object({
-  prompt: z.union([z.number(), z.string(), z.any()]).optional(),
-  completion: z.union([z.number(), z.string(), z.any()]).optional(),
-  image: z.union([z.number(), z.string(), z.any()]).optional(),
-  audio: z.union([z.number(), z.string(), z.any()]).optional(),
-  request: z.union([z.number(), z.string(), z.any()]).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace MaxPrice$ {
-  /** @deprecated use `MaxPrice$inboundSchema` instead. */
-  export const inboundSchema = MaxPrice$inboundSchema;
-  /** @deprecated use `MaxPrice$outboundSchema` instead. */
-  export const outboundSchema = MaxPrice$outboundSchema;
-  /** @deprecated use `MaxPrice$Outbound` instead. */
-  export type Outbound = MaxPrice$Outbound;
-}
-
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
-}
-
-export function maxPriceFromJSON(
-  jsonString: string,
-): SafeParseResult<MaxPrice, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'MaxPrice' from JSON`,
-  );
-}
-
-/** @internal */
-export const Provider$inboundSchema: z.ZodType<
-  Provider,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  allow_fallbacks: z.nullable(z.boolean()).optional(),
-  require_parameters: z.nullable(z.boolean()).optional(),
-  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$inboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$inboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$inboundSchema, z.string()])))
-    .optional(),
-  quantizations: z.nullable(z.array(Quantization$inboundSchema)).optional(),
-  sort: z.nullable(Sort$inboundSchema).optional(),
-  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allow_fallbacks": "allowFallbacks",
-    "require_parameters": "requireParameters",
-    "data_collection": "dataCollection",
-    "max_price": "maxPrice",
-  });
-});
-
-/** @internal */
-export type Provider$Outbound = {
-  allow_fallbacks?: boolean | null | undefined;
-  require_parameters?: boolean | null | undefined;
-  data_collection?: string | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
-  ignore?: Array<string | string> | null | undefined;
-  quantizations?: Array<string> | null | undefined;
-  sort?: string | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
-};
-
-/** @internal */
-export const Provider$outboundSchema: z.ZodType<
-  Provider$Outbound,
-  z.ZodTypeDef,
-  Provider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$outboundSchema, z.string()])))
-    .optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(Sort$outboundSchema).optional(),
-  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    maxPrice: "max_price",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Provider$ {
-  /** @deprecated use `Provider$inboundSchema` instead. */
-  export const inboundSchema = Provider$inboundSchema;
-  /** @deprecated use `Provider$outboundSchema` instead. */
-  export const outboundSchema = Provider$outboundSchema;
-  /** @deprecated use `Provider$Outbound` instead. */
-  export type Outbound = Provider$Outbound;
-}
-
-export function providerToJSON(provider: Provider): string {
-  return JSON.stringify(Provider$outboundSchema.parse(provider));
-}
-
-export function providerFromJSON(
-  jsonString: string,
-): SafeParseResult<Provider, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Provider$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Provider' from JSON`,
-  );
-}
-
-/** @internal */
-export const IdFileParser$inboundSchema: z.ZodNativeEnum<typeof IdFileParser> =
-  z.nativeEnum(IdFileParser);
-
-/** @internal */
-export const IdFileParser$outboundSchema: z.ZodNativeEnum<typeof IdFileParser> =
-  IdFileParser$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IdFileParser$ {
-  /** @deprecated use `IdFileParser$inboundSchema` instead. */
-  export const inboundSchema = IdFileParser$inboundSchema;
-  /** @deprecated use `IdFileParser$outboundSchema` instead. */
-  export const outboundSchema = IdFileParser$outboundSchema;
-}
-
-/** @internal */
-export const PdfEngine$inboundSchema: z.ZodNativeEnum<typeof PdfEngine> = z
-  .nativeEnum(PdfEngine);
-
-/** @internal */
-export const PdfEngine$outboundSchema: z.ZodNativeEnum<typeof PdfEngine> =
-  PdfEngine$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PdfEngine$ {
-  /** @deprecated use `PdfEngine$inboundSchema` instead. */
-  export const inboundSchema = PdfEngine$inboundSchema;
-  /** @deprecated use `PdfEngine$outboundSchema` instead. */
-  export const outboundSchema = PdfEngine$outboundSchema;
-}
-
-/** @internal */
-export const Pdf$inboundSchema: z.ZodType<Pdf, z.ZodTypeDef, unknown> = z
-  .object({
-    engine: PdfEngine$inboundSchema.optional(),
-  });
-
-/** @internal */
-export type Pdf$Outbound = {
-  engine?: string | undefined;
-};
-
-/** @internal */
-export const Pdf$outboundSchema: z.ZodType<Pdf$Outbound, z.ZodTypeDef, Pdf> = z
-  .object({
-    engine: PdfEngine$outboundSchema.optional(),
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Pdf$ {
-  /** @deprecated use `Pdf$inboundSchema` instead. */
-  export const inboundSchema = Pdf$inboundSchema;
-  /** @deprecated use `Pdf$outboundSchema` instead. */
-  export const outboundSchema = Pdf$outboundSchema;
-  /** @deprecated use `Pdf$Outbound` instead. */
-  export type Outbound = Pdf$Outbound;
-}
-
-export function pdfToJSON(pdf: Pdf): string {
-  return JSON.stringify(Pdf$outboundSchema.parse(pdf));
-}
-
-export function pdfFromJSON(
-  jsonString: string,
-): SafeParseResult<Pdf, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Pdf$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Pdf' from JSON`,
-  );
-}
-
-/** @internal */
-export const PluginFileParser$inboundSchema: z.ZodType<
-  PluginFileParser,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: IdFileParser$inboundSchema,
-  max_files: z.number().optional(),
-  pdf: z.lazy(() => Pdf$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "max_files": "maxFiles",
-  });
-});
-
-/** @internal */
-export type PluginFileParser$Outbound = {
-  id: string;
-  max_files?: number | undefined;
-  pdf?: Pdf$Outbound | undefined;
-};
-
-/** @internal */
-export const PluginFileParser$outboundSchema: z.ZodType<
-  PluginFileParser$Outbound,
-  z.ZodTypeDef,
-  PluginFileParser
-> = z.object({
-  id: IdFileParser$outboundSchema,
-  maxFiles: z.number().optional(),
-  pdf: z.lazy(() => Pdf$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxFiles: "max_files",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PluginFileParser$ {
-  /** @deprecated use `PluginFileParser$inboundSchema` instead. */
-  export const inboundSchema = PluginFileParser$inboundSchema;
-  /** @deprecated use `PluginFileParser$outboundSchema` instead. */
-  export const outboundSchema = PluginFileParser$outboundSchema;
-  /** @deprecated use `PluginFileParser$Outbound` instead. */
-  export type Outbound = PluginFileParser$Outbound;
-}
-
-export function pluginFileParserToJSON(
-  pluginFileParser: PluginFileParser,
-): string {
-  return JSON.stringify(
-    PluginFileParser$outboundSchema.parse(pluginFileParser),
-  );
-}
-
-export function pluginFileParserFromJSON(
-  jsonString: string,
-): SafeParseResult<PluginFileParser, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PluginFileParser$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PluginFileParser' from JSON`,
-  );
-}
-
-/** @internal */
-export const IdChainOfThought$inboundSchema: z.ZodNativeEnum<
-  typeof IdChainOfThought
-> = z.nativeEnum(IdChainOfThought);
-
-/** @internal */
-export const IdChainOfThought$outboundSchema: z.ZodNativeEnum<
-  typeof IdChainOfThought
-> = IdChainOfThought$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IdChainOfThought$ {
-  /** @deprecated use `IdChainOfThought$inboundSchema` instead. */
-  export const inboundSchema = IdChainOfThought$inboundSchema;
-  /** @deprecated use `IdChainOfThought$outboundSchema` instead. */
-  export const outboundSchema = IdChainOfThought$outboundSchema;
-}
-
-/** @internal */
-export const PluginChainOfThought$inboundSchema: z.ZodType<
-  PluginChainOfThought,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: IdChainOfThought$inboundSchema,
-});
-
-/** @internal */
-export type PluginChainOfThought$Outbound = {
-  id: string;
-};
-
-/** @internal */
-export const PluginChainOfThought$outboundSchema: z.ZodType<
-  PluginChainOfThought$Outbound,
-  z.ZodTypeDef,
-  PluginChainOfThought
-> = z.object({
-  id: IdChainOfThought$outboundSchema,
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PluginChainOfThought$ {
-  /** @deprecated use `PluginChainOfThought$inboundSchema` instead. */
-  export const inboundSchema = PluginChainOfThought$inboundSchema;
-  /** @deprecated use `PluginChainOfThought$outboundSchema` instead. */
-  export const outboundSchema = PluginChainOfThought$outboundSchema;
-  /** @deprecated use `PluginChainOfThought$Outbound` instead. */
-  export type Outbound = PluginChainOfThought$Outbound;
-}
-
-export function pluginChainOfThoughtToJSON(
-  pluginChainOfThought: PluginChainOfThought,
-): string {
-  return JSON.stringify(
-    PluginChainOfThought$outboundSchema.parse(pluginChainOfThought),
-  );
-}
-
-export function pluginChainOfThoughtFromJSON(
-  jsonString: string,
-): SafeParseResult<PluginChainOfThought, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PluginChainOfThought$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PluginChainOfThought' from JSON`,
-  );
-}
-
-/** @internal */
-export const IdWeb$inboundSchema: z.ZodNativeEnum<typeof IdWeb> = z.nativeEnum(
-  IdWeb,
-);
-
-/** @internal */
-export const IdWeb$outboundSchema: z.ZodNativeEnum<typeof IdWeb> =
-  IdWeb$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IdWeb$ {
-  /** @deprecated use `IdWeb$inboundSchema` instead. */
-  export const inboundSchema = IdWeb$inboundSchema;
-  /** @deprecated use `IdWeb$outboundSchema` instead. */
-  export const outboundSchema = IdWeb$outboundSchema;
-}
-
-/** @internal */
-export const Engine$inboundSchema: z.ZodNativeEnum<typeof Engine> = z
-  .nativeEnum(Engine);
-
-/** @internal */
-export const Engine$outboundSchema: z.ZodNativeEnum<typeof Engine> =
-  Engine$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Engine$ {
-  /** @deprecated use `Engine$inboundSchema` instead. */
-  export const inboundSchema = Engine$inboundSchema;
-  /** @deprecated use `Engine$outboundSchema` instead. */
-  export const outboundSchema = Engine$outboundSchema;
-}
-
-/** @internal */
-export const PluginWeb$inboundSchema: z.ZodType<
-  PluginWeb,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: IdWeb$inboundSchema,
-  max_results: z.number().optional(),
-  search_prompt: z.string().optional(),
-  engine: Engine$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "max_results": "maxResults",
-    "search_prompt": "searchPrompt",
-  });
-});
-
-/** @internal */
-export type PluginWeb$Outbound = {
-  id: string;
-  max_results?: number | undefined;
-  search_prompt?: string | undefined;
-  engine?: string | undefined;
-};
-
-/** @internal */
-export const PluginWeb$outboundSchema: z.ZodType<
-  PluginWeb$Outbound,
-  z.ZodTypeDef,
-  PluginWeb
-> = z.object({
-  id: IdWeb$outboundSchema,
-  maxResults: z.number().optional(),
-  searchPrompt: z.string().optional(),
-  engine: Engine$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxResults: "max_results",
-    searchPrompt: "search_prompt",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PluginWeb$ {
-  /** @deprecated use `PluginWeb$inboundSchema` instead. */
-  export const inboundSchema = PluginWeb$inboundSchema;
-  /** @deprecated use `PluginWeb$outboundSchema` instead. */
-  export const outboundSchema = PluginWeb$outboundSchema;
-  /** @deprecated use `PluginWeb$Outbound` instead. */
-  export type Outbound = PluginWeb$Outbound;
-}
-
-export function pluginWebToJSON(pluginWeb: PluginWeb): string {
-  return JSON.stringify(PluginWeb$outboundSchema.parse(pluginWeb));
-}
-
-export function pluginWebFromJSON(
-  jsonString: string,
-): SafeParseResult<PluginWeb, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PluginWeb$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PluginWeb' from JSON`,
-  );
-}
-
-/** @internal */
-export const IdModeration$inboundSchema: z.ZodNativeEnum<typeof IdModeration> =
-  z.nativeEnum(IdModeration);
-
-/** @internal */
-export const IdModeration$outboundSchema: z.ZodNativeEnum<typeof IdModeration> =
-  IdModeration$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IdModeration$ {
-  /** @deprecated use `IdModeration$inboundSchema` instead. */
-  export const inboundSchema = IdModeration$inboundSchema;
-  /** @deprecated use `IdModeration$outboundSchema` instead. */
-  export const outboundSchema = IdModeration$outboundSchema;
-}
-
-/** @internal */
-export const PluginModeration$inboundSchema: z.ZodType<
-  PluginModeration,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: IdModeration$inboundSchema,
-});
-
-/** @internal */
-export type PluginModeration$Outbound = {
-  id: string;
-};
-
-/** @internal */
-export const PluginModeration$outboundSchema: z.ZodType<
-  PluginModeration$Outbound,
-  z.ZodTypeDef,
-  PluginModeration
-> = z.object({
-  id: IdModeration$outboundSchema,
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PluginModeration$ {
-  /** @deprecated use `PluginModeration$inboundSchema` instead. */
-  export const inboundSchema = PluginModeration$inboundSchema;
-  /** @deprecated use `PluginModeration$outboundSchema` instead. */
-  export const outboundSchema = PluginModeration$outboundSchema;
-  /** @deprecated use `PluginModeration$Outbound` instead. */
-  export type Outbound = PluginModeration$Outbound;
-}
-
-export function pluginModerationToJSON(
-  pluginModeration: PluginModeration,
-): string {
-  return JSON.stringify(
-    PluginModeration$outboundSchema.parse(pluginModeration),
-  );
-}
-
-export function pluginModerationFromJSON(
-  jsonString: string,
-): SafeParseResult<PluginModeration, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PluginModeration$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PluginModeration' from JSON`,
-  );
-}
-
-/** @internal */
-export const Plugin$inboundSchema: z.ZodType<Plugin, z.ZodTypeDef, unknown> = z
-  .union([
-    z.lazy(() => PluginModeration$inboundSchema),
-    z.lazy(() => PluginWeb$inboundSchema),
-    z.lazy(() => PluginChainOfThought$inboundSchema),
-    z.lazy(() => PluginFileParser$inboundSchema),
-  ]);
-
-/** @internal */
-export type Plugin$Outbound =
-  | PluginModeration$Outbound
-  | PluginWeb$Outbound
-  | PluginChainOfThought$Outbound
-  | PluginFileParser$Outbound;
-
-/** @internal */
-export const Plugin$outboundSchema: z.ZodType<
-  Plugin$Outbound,
-  z.ZodTypeDef,
-  Plugin
-> = z.union([
-  z.lazy(() => PluginModeration$outboundSchema),
-  z.lazy(() => PluginWeb$outboundSchema),
-  z.lazy(() => PluginChainOfThought$outboundSchema),
-  z.lazy(() => PluginFileParser$outboundSchema),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Plugin$ {
-  /** @deprecated use `Plugin$inboundSchema` instead. */
-  export const inboundSchema = Plugin$inboundSchema;
-  /** @deprecated use `Plugin$outboundSchema` instead. */
-  export const outboundSchema = Plugin$outboundSchema;
-  /** @deprecated use `Plugin$Outbound` instead. */
-  export type Outbound = Plugin$Outbound;
-}
-
-export function pluginToJSON(plugin: Plugin): string {
-  return JSON.stringify(Plugin$outboundSchema.parse(plugin));
-}
-
-export function pluginFromJSON(
-  jsonString: string,
-): SafeParseResult<Plugin, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Plugin$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Plugin' from JSON`,
-  );
-}
-
-/** @internal */
 export const ChatCompletionCreateParams$inboundSchema: z.ZodType<
   ChatCompletionCreateParams,
   z.ZodTypeDef,
   unknown
 > = z.object({
   messages: z.array(ChatCompletionMessageParam$inboundSchema),
-  model: z.string().optional(),
+  model: z.string(),
   frequency_penalty: z.nullable(z.number()).optional(),
   logit_bias: z.nullable(z.record(z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
@@ -2527,7 +704,7 @@ export const ChatCompletionCreateParams$inboundSchema: z.ZodType<
   max_tokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presence_penalty: z.nullable(z.number()).optional(),
-  reasoning: z.nullable(z.lazy(() => Reasoning$inboundSchema)).optional(),
+  reasoning: z.lazy(() => Reasoning$inboundSchema).optional(),
   response_format: z.union([
     z.lazy(() => ResponseFormatJSONSchema$inboundSchema),
     z.lazy(() => ResponseFormatGrammar$inboundSchema),
@@ -2536,27 +713,15 @@ export const ChatCompletionCreateParams$inboundSchema: z.ZodType<
     z.lazy(() => ResponseFormatPython$inboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
-    .optional(),
+  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stream: z.nullable(z.boolean().default(false)),
-  stream_options: z.nullable(z.lazy(() => StreamOptions$inboundSchema))
+  stream_options: z.nullable(ChatCompletionStreamOptions$inboundSchema)
     .optional(),
   temperature: z.nullable(z.number().default(1)),
-  tool_choice: ChatCompletionToolChoiceOption$inboundSchema.optional(),
+  tool_choice: z.any().optional(),
   tools: z.array(ChatCompletionTool$inboundSchema).optional(),
   top_p: z.nullable(z.number().default(1)),
   user: z.string().optional(),
-  models: z.nullable(z.array(z.string())).optional(),
-  reasoning_effort: z.nullable(ReasoningEffort$inboundSchema).optional(),
-  provider: z.nullable(z.lazy(() => Provider$inboundSchema)).optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => PluginModeration$inboundSchema),
-      z.lazy(() => PluginWeb$inboundSchema),
-      z.lazy(() => PluginChainOfThought$inboundSchema),
-      z.lazy(() => PluginFileParser$inboundSchema),
-    ]),
-  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "frequency_penalty": "frequencyPenalty",
@@ -2569,14 +734,13 @@ export const ChatCompletionCreateParams$inboundSchema: z.ZodType<
     "stream_options": "streamOptions",
     "tool_choice": "toolChoice",
     "top_p": "topP",
-    "reasoning_effort": "reasoningEffort",
   });
 });
 
 /** @internal */
 export type ChatCompletionCreateParams$Outbound = {
   messages: Array<ChatCompletionMessageParam$Outbound>;
-  model?: string | undefined;
+  model: string;
   frequency_penalty?: number | null | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
@@ -2585,7 +749,7 @@ export type ChatCompletionCreateParams$Outbound = {
   max_tokens?: number | null | undefined;
   metadata?: { [k: string]: string } | undefined;
   presence_penalty?: number | null | undefined;
-  reasoning?: Reasoning$Outbound | null | undefined;
+  reasoning?: Reasoning$Outbound | undefined;
   response_format?:
     | ResponseFormatJSONSchema$Outbound
     | ResponseFormatGrammar$Outbound
@@ -2594,25 +758,14 @@ export type ChatCompletionCreateParams$Outbound = {
     | ResponseFormatPython$Outbound
     | undefined;
   seed?: number | null | undefined;
-  stop?: string | Array<string> | any | null | undefined;
+  stop?: string | Array<string> | null | undefined;
   stream: boolean | null;
-  stream_options?: StreamOptions$Outbound | null | undefined;
+  stream_options?: ChatCompletionStreamOptions$Outbound | null | undefined;
   temperature: number | null;
-  tool_choice?: ChatCompletionToolChoiceOption$Outbound | undefined;
+  tool_choice?: any | undefined;
   tools?: Array<ChatCompletionTool$Outbound> | undefined;
   top_p: number | null;
   user?: string | undefined;
-  models?: Array<string> | null | undefined;
-  reasoning_effort?: string | null | undefined;
-  provider?: Provider$Outbound | null | undefined;
-  plugins?:
-    | Array<
-      | PluginModeration$Outbound
-      | PluginWeb$Outbound
-      | PluginChainOfThought$Outbound
-      | PluginFileParser$Outbound
-    >
-    | undefined;
 };
 
 /** @internal */
@@ -2622,7 +775,7 @@ export const ChatCompletionCreateParams$outboundSchema: z.ZodType<
   ChatCompletionCreateParams
 > = z.object({
   messages: z.array(ChatCompletionMessageParam$outboundSchema),
-  model: z.string().optional(),
+  model: z.string(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   logitBias: z.nullable(z.record(z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
@@ -2631,7 +784,7 @@ export const ChatCompletionCreateParams$outboundSchema: z.ZodType<
   maxTokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.nullable(z.lazy(() => Reasoning$outboundSchema)).optional(),
+  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
     z.lazy(() => ResponseFormatJSONSchema$outboundSchema),
     z.lazy(() => ResponseFormatGrammar$outboundSchema),
@@ -2640,27 +793,15 @@ export const ChatCompletionCreateParams$outboundSchema: z.ZodType<
     z.lazy(() => ResponseFormatPython$outboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
-    .optional(),
+  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stream: z.nullable(z.boolean().default(false)),
-  streamOptions: z.nullable(z.lazy(() => StreamOptions$outboundSchema))
+  streamOptions: z.nullable(ChatCompletionStreamOptions$outboundSchema)
     .optional(),
   temperature: z.nullable(z.number().default(1)),
-  toolChoice: ChatCompletionToolChoiceOption$outboundSchema.optional(),
+  toolChoice: z.any().optional(),
   tools: z.array(ChatCompletionTool$outboundSchema).optional(),
   topP: z.nullable(z.number().default(1)),
   user: z.string().optional(),
-  models: z.nullable(z.array(z.string())).optional(),
-  reasoningEffort: z.nullable(ReasoningEffort$outboundSchema).optional(),
-  provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => PluginModeration$outboundSchema),
-      z.lazy(() => PluginWeb$outboundSchema),
-      z.lazy(() => PluginChainOfThought$outboundSchema),
-      z.lazy(() => PluginFileParser$outboundSchema),
-    ]),
-  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     frequencyPenalty: "frequency_penalty",
@@ -2673,7 +814,6 @@ export const ChatCompletionCreateParams$outboundSchema: z.ZodType<
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topP: "top_p",
-    reasoningEffort: "reasoning_effort",
   });
 });
 

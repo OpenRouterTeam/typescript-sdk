@@ -13,17 +13,8 @@ import {
 } from "./chatcompletiontokenlogprob.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-/**
- * Log probabilities for the completion
- */
 export type ChatCompletionTokenLogprobs = {
-  /**
-   * Log probabilities for content tokens
-   */
   content: Array<ChatCompletionTokenLogprob> | null;
-  /**
-   * Log probabilities for refusal tokens
-   */
   refusal: Array<ChatCompletionTokenLogprob> | null;
 };
 
