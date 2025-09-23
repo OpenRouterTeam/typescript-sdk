@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:4a5d604c480dd211d7836e31d00fd21c619b9a73eee802622cf6b479f8cbf0b6
         tags:
             - latest
+            - speakeasy-sdk-regen-1758241776
             - 1.0.0
 targets:
     openrouter:
