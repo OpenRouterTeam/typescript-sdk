@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [complete](#complete) - Create a chat completion
+* [generateResponse](#generateresponse) - Create a chat completion
 
-## complete
+## generateResponse
 
 Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
@@ -24,7 +24,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.complete();
+  const result = await openRouter.chat.generateResponse();
 
   console.log(result);
 }
@@ -38,7 +38,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "open-router/core.js";
-import { chatComplete } from "open-router/funcs/chatComplete.js";
+import { chatGenerateResponse } from "open-router/funcs/chatGenerateResponse.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -49,12 +49,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatComplete(openRouter);
+  const res = await chatGenerateResponse(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatComplete failed:", res.error);
+    console.log("chatGenerateResponse failed:", res.error);
   }
 }
 

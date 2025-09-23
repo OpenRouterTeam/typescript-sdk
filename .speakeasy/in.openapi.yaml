@@ -3778,7 +3778,7 @@ paths:
     post:
       summary: Create a chat completion
       x-speakeasy-group: chat
-      x-speakeasy-name-override: complete
+      x-speakeasy-name-override: generateResponse
       description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       tags:
         - Chat

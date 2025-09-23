@@ -165,7 +165,7 @@ run();
 
 ### [chat](docs/sdks/chat/README.md)
 
-* [complete](docs/sdks/chat/README.md#complete) - Create a chat completion
+* [generateResponse](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
 
 ### [embeddings](docs/sdks/embeddings/README.md)
 
@@ -222,7 +222,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
 - [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-- [`chatComplete`](docs/sdks/chat/README.md#complete) - Create a chat completion
+- [`chatGenerateResponse`](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
 - [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
 - [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model

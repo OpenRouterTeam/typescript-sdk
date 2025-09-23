@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 0daeee9a7145df93edfb4f6858f97250
+  docChecksum: 16487e5cb141501449f44345440f952a
   docVersion: 1.0.0
-  speakeasyVersion: 1.621.1
-  generationVersion: 2.708.2
-  releaseVersion: 0.3.2
-  configChecksum: 9ef9869ead10cb1d8cac5ad8a51022fd
+  speakeasyVersion: 1.622.1
+  generationVersion: 2.709.0
+  releaseVersion: 0.3.4
+  configChecksum: d729a0dae86615130fddfbbda17b1d37
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -312,7 +312,7 @@ generatedFiles:
   - src/funcs/apiKeysGetKeysHash.ts
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
-  - src/funcs/chatComplete.ts
+  - src/funcs/chatGenerateResponse.ts
   - src/funcs/embeddingsPostEmbeddings.ts
   - src/funcs/endpointsGetEndpointsZdr.ts
   - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts

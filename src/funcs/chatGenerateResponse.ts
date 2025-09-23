@@ -26,7 +26,7 @@ import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
-export enum CompleteAcceptEnum {
+export enum GenerateResponseAcceptEnum {
   applicationJson = "application/json",
   textEventStream = "text/event-stream",
 }
@@ -37,10 +37,12 @@ export enum CompleteAcceptEnum {
  * @remarks
  * Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
  */
-export function chatComplete(
+export function chatGenerateResponse(
   client: OpenRouterCore,
   request?: models.ChatCompletionCreateParams | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
+  options?: RequestOptions & {
+    acceptHeaderOverride?: GenerateResponseAcceptEnum;
+  },
 ): APIPromise<
   Result<
     operations.PostChatCompletionsResponse,
@@ -65,7 +67,9 @@ export function chatComplete(
 async function $do(
   client: OpenRouterCore,
   request?: models.ChatCompletionCreateParams | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: CompleteAcceptEnum },
+  options?: RequestOptions & {
+    acceptHeaderOverride?: GenerateResponseAcceptEnum;
+  },
 ): Promise<
   [
     Result<
