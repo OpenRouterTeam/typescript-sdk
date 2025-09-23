@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ImageUrl } from "open-router/models";
+import { ImageUrl } from "openrouter/models";
 
 let value: ImageUrl = {
   url: "https://sinful-meal.biz",

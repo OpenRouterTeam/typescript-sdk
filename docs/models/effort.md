@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Effort } from "open-router/models";
+import { Effort } from "openrouter/models";
 
 let value: Effort = "low";
 ```

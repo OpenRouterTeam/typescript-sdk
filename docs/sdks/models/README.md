@@ -17,7 +17,7 @@ Get total count of available models
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/count" method="get" path="/models/count" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -39,8 +39,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { modelsGetModelsCount } from "open-router/funcs/modelsGetModelsCount.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { modelsGetModelsCount } from "openrouter/funcs/modelsGetModelsCount.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -61,6 +61,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useModelsGetModelsCount,
+  useModelsGetModelsCountSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchModelsGetModelsCount,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllModelsGetModelsCount,
+} from "openrouter/react-query/modelsGetModelsCount.js";
 ```
 
 ### Parameters
@@ -89,7 +116,7 @@ List all models and their properties
 
 <!-- UsageSnippet language="typescript" operationID="get_/models" method="get" path="/models" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -111,8 +138,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { modelsGetModels } from "open-router/funcs/modelsGetModels.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { modelsGetModels } from "openrouter/funcs/modelsGetModels.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -133,6 +160,34 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useModelsGetModels,
+  useModelsGetModelsSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchModelsGetModels,
+  
+  // Utilities to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateModelsGetModels,
+  invalidateAllModelsGetModels,
+} from "openrouter/react-query/modelsGetModels.js";
 ```
 
 ### Parameters
@@ -162,7 +217,7 @@ List models filtered by user provider preferences
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/user" method="get" path="/models/user" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -184,8 +239,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { modelsGetModelsUser } from "open-router/funcs/modelsGetModelsUser.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { modelsGetModelsUser } from "openrouter/funcs/modelsGetModelsUser.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -206,6 +261,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useModelsGetModelsUser,
+  useModelsGetModelsUserSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchModelsGetModelsUser,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllModelsGetModelsUser,
+} from "openrouter/react-query/modelsGetModelsUser.js";
 ```
 
 ### Parameters

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsData } from "open-router/models/operations";
+import { GetModelsAuthorSlugEndpointsData } from "openrouter/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsData = {
   id: "openai/gpt-4",

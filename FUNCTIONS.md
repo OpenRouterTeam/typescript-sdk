@@ -19,8 +19,8 @@ specific category of applications.
 ## Example
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { getCredits } from "open-router/funcs/getCredits.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { getCredits } from "openrouter/funcs/getCredits.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

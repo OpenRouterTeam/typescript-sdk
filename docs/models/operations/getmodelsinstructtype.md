@@ -5,7 +5,7 @@ Instruction format type
 ## Example Usage
 
 ```typescript
-import { GetModelsInstructType } from "open-router/models/operations";
+import { GetModelsInstructType } from "openrouter/models/operations";
 
 let value: GetModelsInstructType = "airoboros";
 ```

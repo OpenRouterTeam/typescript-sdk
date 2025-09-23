@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { EncodingFormatBase64 } from "open-router/models/operations";
+import { EncodingFormatBase64 } from "openrouter/models/operations";
 
 let value: EncodingFormatBase64 = "base64";
 ```

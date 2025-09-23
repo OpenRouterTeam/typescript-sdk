@@ -5,7 +5,7 @@ Embedding response
 ## Example Usage
 
 ```typescript
-import { PostEmbeddingsResponseBody } from "open-router/models/operations";
+import { PostEmbeddingsResponseBody } from "openrouter/models/operations";
 
 let value: PostEmbeddingsResponseBody = {
   object: "list",

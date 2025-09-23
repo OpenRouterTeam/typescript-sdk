@@ -5,7 +5,7 @@ API key details
 ## Example Usage
 
 ```typescript
-import { GetKeysHashResponseBody } from "open-router/models/operations";
+import { GetKeysHashResponseBody } from "openrouter/models/operations";
 
 let value: GetKeysHashResponseBody = {
   data: {

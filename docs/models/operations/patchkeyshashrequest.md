@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PatchKeysHashRequest } from "open-router/models/operations";
+import { PatchKeysHashRequest } from "openrouter/models/operations";
 
 let value: PatchKeysHashRequest = {
   hash: "sk-or-v1-abc123def456",

@@ -5,13 +5,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 /**
- * Example usage of the open-router SDK
+ * Example usage of the openrouter SDK
  *
  * To run this example from the examples directory:
  * npm run build && npx tsx getCredits.example.ts
  */
 
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { OrderEnum } from "open-router/models/operations";
+import { OrderEnum } from "openrouter/models/operations";
 
 let value: OrderEnum = "Google AI Studio";
 ```

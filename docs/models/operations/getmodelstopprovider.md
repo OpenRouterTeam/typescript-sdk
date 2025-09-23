@@ -5,7 +5,7 @@ Information about the top provider for this model
 ## Example Usage
 
 ```typescript
-import { GetModelsTopProvider } from "open-router/models/operations";
+import { GetModelsTopProvider } from "openrouter/models/operations";
 
 let value: GetModelsTopProvider = {
   contextLength: 8192,

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Detail } from "open-router/models";
+import { Detail } from "openrouter/models";
 
 let value: Detail = "low";
 ```

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GenerateSummary } from "open-router/models";
+import { GenerateSummary } from "openrouter/models";
 
 let value: GenerateSummary = "detailed";
 ```

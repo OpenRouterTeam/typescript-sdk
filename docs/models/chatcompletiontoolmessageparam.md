@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionToolMessageParam } from "open-router/models";
+import { ChatCompletionToolMessageParam } from "openrouter/models";
 
 let value: ChatCompletionToolMessageParam = {
   role: "tool",

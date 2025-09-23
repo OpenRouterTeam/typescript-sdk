@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsSupportedParameter } from "open-router/models/operations";
+import { GetModelsAuthorSlugEndpointsSupportedParameter } from "openrouter/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsSupportedParameter = "include_reasoning";
 ```

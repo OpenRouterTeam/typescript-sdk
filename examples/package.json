@@ -1,5 +1,5 @@
 {
-  "name": "open-router-examples",
+  "name": "openrouter-examples",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,6 @@
     "tsx": "^4.19.2"
   },
   "dependencies": {
-    "open-router": "file:.."
+    "openrouter": "file:.."
   }
 }

@@ -1,11 +1,11 @@
 {
-  "name": "open-router",
-  "version": "0.3.5",
+  "name": "openrouter",
+  "version": "0.4.0",
   "author": "OpenRouter",
   "type": "module",
   "tshy": {
     "sourceDialects": [
-      "open-router/source"
+      "openrouter/source"
     ],
     "exports": {
       ".": "./src/index.ts",
@@ -14,6 +14,7 @@
       "./models/errors": "./src/models/errors/index.ts",
       "./models": "./src/models/index.ts",
       "./models/operations": "./src/models/operations/index.ts",
+      "./react-query": "./src/react-query/index.ts",
       "./*.js": "./src/*.ts",
       "./*": "./src/*.ts"
     }
@@ -24,9 +25,26 @@
     "build": "tshy",
     "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@tanstack/react-query": "^5",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@tanstack/react-query": "^5.61.4",
+    "@types/react": "^18.3.12",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",
     "tshy": "^2.0.0",
@@ -39,7 +57,7 @@
   "exports": {
     ".": {
       "import": {
-        "open-router/source": "./src/index.ts",
+        "openrouter/source": "./src/index.ts",
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
@@ -51,7 +69,7 @@
     "./package.json": "./package.json",
     "./types": {
       "import": {
-        "open-router/source": "./src/types/index.ts",
+        "openrouter/source": "./src/types/index.ts",
         "types": "./dist/esm/types/index.d.ts",
         "default": "./dist/esm/types/index.js"
       },
@@ -62,7 +80,7 @@
     },
     "./models/errors": {
       "import": {
-        "open-router/source": "./src/models/errors/index.ts",
+        "openrouter/source": "./src/models/errors/index.ts",
         "types": "./dist/esm/models/errors/index.d.ts",
         "default": "./dist/esm/models/errors/index.js"
       },
@@ -73,7 +91,7 @@
     },
     "./models": {
       "import": {
-        "open-router/source": "./src/models/index.ts",
+        "openrouter/source": "./src/models/index.ts",
         "types": "./dist/esm/models/index.d.ts",
         "default": "./dist/esm/models/index.js"
       },
@@ -84,7 +102,7 @@
     },
     "./models/operations": {
       "import": {
-        "open-router/source": "./src/models/operations/index.ts",
+        "openrouter/source": "./src/models/operations/index.ts",
         "types": "./dist/esm/models/operations/index.d.ts",
         "default": "./dist/esm/models/operations/index.js"
       },
@@ -93,9 +111,20 @@
         "default": "./dist/commonjs/models/operations/index.js"
       }
     },
+    "./react-query": {
+      "import": {
+        "openrouter/source": "./src/react-query/index.ts",
+        "types": "./dist/esm/react-query/index.d.ts",
+        "default": "./dist/esm/react-query/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/react-query/index.d.ts",
+        "default": "./dist/commonjs/react-query/index.js"
+      }
+    },
     "./*.js": {
       "import": {
-        "open-router/source": "./src/*.ts",
+        "openrouter/source": "./src/*.ts",
         "types": "./dist/esm/*.d.ts",
         "default": "./dist/esm/*.js"
       },
@@ -106,7 +135,7 @@
     },
     "./*": {
       "import": {
-        "open-router/source": "./src/*.ts",
+        "openrouter/source": "./src/*.ts",
         "types": "./dist/esm/*.d.ts",
         "default": "./dist/esm/*.js"
       },

@@ -5,7 +5,7 @@ Returns the calldata to fulfill the transaction
 ## Example Usage
 
 ```typescript
-import { PostCreditsCoinbaseResponseBody } from "open-router/models/operations";
+import { PostCreditsCoinbaseResponseBody } from "openrouter/models/operations";
 
 let value: PostCreditsCoinbaseResponseBody = {
   data: {

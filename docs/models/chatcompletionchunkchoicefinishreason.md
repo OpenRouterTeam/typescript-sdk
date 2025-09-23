@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionChunkChoiceFinishReason } from "open-router/models";
+import { ChatCompletionChunkChoiceFinishReason } from "openrouter/models";
 
 let value: ChatCompletionChunkChoiceFinishReason = "content_filter";
 ```

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PostEmbeddingsQuantization } from "open-router/models/operations";
+import { PostEmbeddingsQuantization } from "openrouter/models/operations";
 
 let value: PostEmbeddingsQuantization = "fp6";
 ```

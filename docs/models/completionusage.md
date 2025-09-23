@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CompletionUsage } from "open-router/models";
+import { CompletionUsage } from "openrouter/models";
 
 let value: CompletionUsage = {
   completionTokens: 3945.12,

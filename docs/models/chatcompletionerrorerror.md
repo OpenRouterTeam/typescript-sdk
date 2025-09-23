@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionErrorError } from "open-router/models";
+import { ChatCompletionErrorError } from "openrouter/models";
 
 let value: ChatCompletionErrorError = {
   code: "<value>",

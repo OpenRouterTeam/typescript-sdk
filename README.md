@@ -28,6 +28,7 @@ For more information about the API: [OpenRouter Documentation](https://openroute
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Standalone functions](#standalone-functions)
   * [Server-sent event streaming](#server-sent-event-streaming)
+  * [React hooks with TanStack Query](#react-hooks-with-tanstack-query)
   * [Retries](#retries)
   * [Error Handling](#error-handling)
   * [Server Selection](#server-selection)
@@ -52,24 +53,32 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 
 ```bash
 npm add <UNSET>
+# Install optional peer dependencies if you plan to use React hooks
+npm add @tanstack/react-query react react-dom
 ```
 
 ### PNPM
 
 ```bash
 pnpm add <UNSET>
+# Install optional peer dependencies if you plan to use React hooks
+pnpm add @tanstack/react-query react react-dom
 ```
 
 ### Bun
 
 ```bash
 bun add <UNSET>
+# Install optional peer dependencies if you plan to use React hooks
+bun add @tanstack/react-query react react-dom
 ```
 
 ### Yarn
 
 ```bash
 yarn add <UNSET> zod
+# Install optional peer dependencies if you plan to use React hooks
+yarn add @tanstack/react-query react react-dom
 
 # Note that Yarn does not install peer dependencies automatically. You will need
 # to install zod as shown above.
@@ -91,7 +100,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 ### Example
 
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -124,7 +133,7 @@ This SDK supports the following security schemes globally:
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -319,6 +328,52 @@ run();
 [mdn-for-await-of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
 <!-- No Server-sent event streaming [eventstream] -->
 
+<!-- Start React hooks with TanStack Query [react-query] -->
+## React hooks with TanStack Query
+
+React hooks built on [TanStack Query][tanstack-query] are included in this SDK.
+These hooks and the utility functions provided alongside them can be used to
+build rich applications that pull data from the API using one of the most
+popular asynchronous state management library.
+
+[tanstack-query]: https://tanstack.com/query/v5/docs/framework/react/overview
+
+To learn about this feature and how to get started, check
+[REACT_QUERY.md](./REACT_QUERY.md).
+
+> [!WARNING]
+>
+> This feature is currently in **preview** and is subject to breaking changes
+> within the current major version of the SDK as we gather user feedback on it.
+
+<details>
+
+<summary>Available React hooks</summary>
+
+- [`useAnalyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+- [`useApiKeysDeleteKeysHashMutation`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
+- [`useApiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+- [`useApiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
+- [`useApiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
+- [`useApiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
+- [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
+- [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+- [`useChatGenerateResponseMutation`](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
+- [`useEmbeddingsPostEmbeddingsMutation`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+- [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+- [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
+- [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+- [`useGetCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
+- [`useGetProviders`](docs/sdks/openrouter/README.md#getproviders)
+- [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+- [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
+- [`useModelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+- [`useParametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+- [`usePostCreditsCoinbaseMutation`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+
+</details>
+<!-- End React hooks with TanStack Query [react-query] -->
+
 <!-- Start Retries [retries] -->
 ## Retries
 
@@ -326,7 +381,7 @@ Some of the endpoints in this SDK support retries.  If you use the SDK without a
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -357,7 +412,7 @@ run();
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   retryConfig: {
@@ -402,8 +457,8 @@ run();
 
 ### Example
 ```typescript
-import { OpenRouter } from "open-router";
-import * as errors from "open-router/models/errors";
+import { OpenRouter } from "openrouter";
+import * as errors from "openrouter/models/errors";
 
 const openRouter = new OpenRouter({
   security: {
@@ -476,7 +531,7 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   server: "production",
@@ -499,7 +554,7 @@ run();
 
 The default server can also be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   serverURL: "https://openrouter.ai/api/v1",
@@ -537,8 +592,8 @@ custom header and a timeout to requests and how to use the `"requestError"` hook
 to log errors:
 
 ```typescript
-import { OpenRouter } from "open-router";
-import { HTTPClient } from "open-router/lib/http";
+import { OpenRouter } from "openrouter";
+import { HTTPClient } from "openrouter/lib/http";
 
 const httpClient = new HTTPClient({
   // fetcher takes a function that has the same signature as native `fetch`.
@@ -579,7 +634,7 @@ You can pass a logger that matches `console`'s interface as an SDK option.
 > Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
 
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const sdk = new OpenRouter({ debugLogger: console });
 ```

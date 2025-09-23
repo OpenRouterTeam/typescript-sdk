@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Metadata } from "open-router/models/operations";
+import { Metadata } from "openrouter/models/operations";
 
 let value: Metadata = {
   chainId: 5773.31,

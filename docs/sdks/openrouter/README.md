@@ -21,7 +21,7 @@ Get total credits purchased and used for the authenticated user
 
 <!-- UsageSnippet language="typescript" operationID="get_/credits" method="get" path="/credits" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -43,8 +43,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { getCredits } from "open-router/funcs/getCredits.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { getCredits } from "openrouter/funcs/getCredits.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -65,6 +65,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useGetCredits,
+  useGetCreditsSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchGetCredits,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllGetCredits,
+} from "openrouter/react-query/getCredits.js";
 ```
 
 ### Parameters
@@ -93,7 +120,7 @@ Create a Coinbase charge for crypto payment
 
 <!-- UsageSnippet language="typescript" operationID="post_/credits/coinbase" method="post" path="/credits/coinbase" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -115,8 +142,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { postCreditsCoinbase } from "open-router/funcs/postCreditsCoinbase.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { postCreditsCoinbase } from "openrouter/funcs/postCreditsCoinbase.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -137,6 +164,23 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Mutation hook for triggering the API call.
+  usePostCreditsCoinbaseMutation
+} from "openrouter/react-query/postCreditsCoinbase.js";
 ```
 
 ### Parameters
@@ -164,7 +208,7 @@ run();
 
 <!-- UsageSnippet language="typescript" operationID="get_/providers" method="get" path="/providers" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -186,8 +230,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { getProviders } from "open-router/funcs/getProviders.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { getProviders } from "openrouter/funcs/getProviders.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -208,6 +252,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useGetProviders,
+  useGetProvidersSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchGetProviders,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllGetProviders,
+} from "openrouter/react-query/getProviders.js";
 ```
 
 ### Parameters

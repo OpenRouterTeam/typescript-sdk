@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionError } from "open-router/models/errors";
+import { ChatCompletionError } from "openrouter/models/errors";
 
 // No examples available for this model
 ```

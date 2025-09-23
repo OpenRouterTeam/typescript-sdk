@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionNamedToolChoice } from "open-router/models";
+import { ChatCompletionNamedToolChoice } from "openrouter/models";
 
 let value: ChatCompletionNamedToolChoice = {
   type: "function",

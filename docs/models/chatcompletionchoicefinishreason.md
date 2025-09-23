@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionChoiceFinishReason } from "open-router/models";
+import { ChatCompletionChoiceFinishReason } from "openrouter/models";
 
 let value: ChatCompletionChoiceFinishReason = "tool_calls";
 ```

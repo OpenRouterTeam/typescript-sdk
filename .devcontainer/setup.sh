@@ -10,7 +10,7 @@ mkdir samples
 npm install --ignore-scripts
 npm install -g ts-node --ignore-scripts
 npm link
-npm link open-router
+npm link openrouter
 TS_CONFIG_CONTENT=$(cat <<EOL
 {
   "compilerOptions": {

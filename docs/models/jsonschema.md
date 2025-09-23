@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { JsonSchema } from "open-router/models";
+import { JsonSchema } from "openrouter/models";
 
 let value: JsonSchema = {
   name: "<value>",

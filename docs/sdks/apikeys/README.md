@@ -21,7 +21,7 @@ List API keys
 
 <!-- UsageSnippet language="typescript" operationID="get_/keys" method="get" path="/keys" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -43,8 +43,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysGetKeys } from "open-router/funcs/apiKeysGetKeys.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysGetKeys } from "openrouter/funcs/apiKeysGetKeys.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -65,6 +65,34 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useApiKeysGetKeys,
+  useApiKeysGetKeysSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchApiKeysGetKeys,
+  
+  // Utilities to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateApiKeysGetKeys,
+  invalidateAllApiKeysGetKeys,
+} from "openrouter/react-query/apiKeysGetKeys.js";
 ```
 
 ### Parameters
@@ -94,7 +122,7 @@ Create a new API key
 
 <!-- UsageSnippet language="typescript" operationID="post_/keys" method="post" path="/keys" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -120,8 +148,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysPostKeys } from "open-router/funcs/apiKeysPostKeys.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysPostKeys } from "openrouter/funcs/apiKeysPostKeys.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -146,6 +174,23 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Mutation hook for triggering the API call.
+  useApiKeysPostKeysMutation
+} from "openrouter/react-query/apiKeysPostKeys.js";
 ```
 
 ### Parameters
@@ -175,7 +220,7 @@ Update an API key
 
 <!-- UsageSnippet language="typescript" operationID="patch_/keys/{hash}" method="patch" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -205,8 +250,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysPatchKeysHash } from "open-router/funcs/apiKeysPatchKeysHash.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysPatchKeysHash } from "openrouter/funcs/apiKeysPatchKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -237,6 +282,23 @@ async function run() {
 run();
 ```
 
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Mutation hook for triggering the API call.
+  useApiKeysPatchKeysHashMutation
+} from "openrouter/react-query/apiKeysPatchKeysHash.js";
+```
+
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
@@ -264,7 +326,7 @@ Delete an API key
 
 <!-- UsageSnippet language="typescript" operationID="delete_/keys/{hash}" method="delete" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -288,8 +350,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysDeleteKeysHash } from "open-router/funcs/apiKeysDeleteKeysHash.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysDeleteKeysHash } from "openrouter/funcs/apiKeysDeleteKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -312,6 +374,23 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Mutation hook for triggering the API call.
+  useApiKeysDeleteKeysHashMutation
+} from "openrouter/react-query/apiKeysDeleteKeysHash.js";
 ```
 
 ### Parameters
@@ -341,7 +420,7 @@ Get a single API key
 
 <!-- UsageSnippet language="typescript" operationID="get_/keys/{hash}" method="get" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -365,8 +444,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysGetKeysHash } from "open-router/funcs/apiKeysGetKeysHash.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysGetKeysHash } from "openrouter/funcs/apiKeysGetKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -389,6 +468,34 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useApiKeysGetKeysHash,
+  useApiKeysGetKeysHashSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchApiKeysGetKeysHash,
+  
+  // Utilities to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateApiKeysGetKeysHash,
+  invalidateAllApiKeysGetKeysHash,
+} from "openrouter/react-query/apiKeysGetKeysHash.js";
 ```
 
 ### Parameters
@@ -418,7 +525,7 @@ Get information on the API key associated with the current authentication sessio
 
 <!-- UsageSnippet language="typescript" operationID="get_/key" method="get" path="/key" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -440,8 +547,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysGetKey } from "open-router/funcs/apiKeysGetKey.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysGetKey } from "openrouter/funcs/apiKeysGetKey.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -462,6 +569,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useApiKeysGetKey,
+  useApiKeysGetKeySuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchApiKeysGetKey,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllApiKeysGetKey,
+} from "openrouter/react-query/apiKeysGetKey.js";
 ```
 
 ### Parameters
@@ -490,7 +624,7 @@ Get information on the API key associated with the current authentication sessio
 
 <!-- UsageSnippet language="typescript" operationID="get_/auth/key" method="get" path="/auth/key" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -512,8 +646,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { apiKeysGetAuthKey } from "open-router/funcs/apiKeysGetAuthKey.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { apiKeysGetAuthKey } from "openrouter/funcs/apiKeysGetAuthKey.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -534,6 +668,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useApiKeysGetAuthKey,
+  useApiKeysGetAuthKeySuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchApiKeysGetAuthKey,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllApiKeysGetAuthKey,
+} from "openrouter/react-query/apiKeysGetAuthKey.js";
 ```
 
 ### Parameters

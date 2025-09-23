@@ -16,7 +16,7 @@ List all endpoints for a model
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/{author}/{slug}/endpoints" method="get" path="/models/{author}/{slug}/endpoints" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -41,8 +41,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { endpointsGetModelsAuthorSlugEndpoints } from "open-router/funcs/endpointsGetModelsAuthorSlugEndpoints.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { endpointsGetModelsAuthorSlugEndpoints } from "openrouter/funcs/endpointsGetModelsAuthorSlugEndpoints.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -66,6 +66,34 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useEndpointsGetModelsAuthorSlugEndpoints,
+  useEndpointsGetModelsAuthorSlugEndpointsSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchEndpointsGetModelsAuthorSlugEndpoints,
+  
+  // Utilities to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateEndpointsGetModelsAuthorSlugEndpoints,
+  invalidateAllEndpointsGetModelsAuthorSlugEndpoints,
+} from "openrouter/react-query/endpointsGetModelsAuthorSlugEndpoints.js";
 ```
 
 ### Parameters
@@ -95,7 +123,7 @@ Preview the impact of ZDR on the available endpoints
 
 <!-- UsageSnippet language="typescript" operationID="get_/endpoints/zdr" method="get" path="/endpoints/zdr" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -117,8 +145,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { endpointsGetEndpointsZdr } from "open-router/funcs/endpointsGetEndpointsZdr.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { endpointsGetEndpointsZdr } from "openrouter/funcs/endpointsGetEndpointsZdr.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -139,6 +167,33 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useEndpointsGetEndpointsZdr,
+  useEndpointsGetEndpointsZdrSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchEndpointsGetEndpointsZdr,
+  
+  // Utility to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateAllEndpointsGetEndpointsZdr,
+} from "openrouter/react-query/endpointsGetEndpointsZdr.js";
 ```
 
 ### Parameters

@@ -5,7 +5,7 @@ Returns user activity data grouped by endpoint
 ## Example Usage
 
 ```typescript
-import { GetActivityResponseBody } from "open-router/models/operations";
+import { GetActivityResponseBody } from "openrouter/models/operations";
 
 let value: GetActivityResponseBody = {
   data: [],

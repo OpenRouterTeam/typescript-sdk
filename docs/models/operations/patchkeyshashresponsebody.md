@@ -5,7 +5,7 @@ API key updated successfully
 ## Example Usage
 
 ```typescript
-import { PatchKeysHashResponseBody } from "open-router/models/operations";
+import { PatchKeysHashResponseBody } from "openrouter/models/operations";
 
 let value: PatchKeysHashResponseBody = {
   data: {

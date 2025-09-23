@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsOutputModality } from "open-router/models/operations";
+import { GetModelsOutputModality } from "openrouter/models/operations";
 
 let value: GetModelsOutputModality = "embeddings";
 ```

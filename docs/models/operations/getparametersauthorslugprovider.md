@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetParametersAuthorSlugProvider } from "open-router/models/operations";
+import { GetParametersAuthorSlugProvider } from "openrouter/models/operations";
 
 let value: GetParametersAuthorSlugProvider = "Infermatic";
 ```

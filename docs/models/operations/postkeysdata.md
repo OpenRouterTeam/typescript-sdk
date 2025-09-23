@@ -5,7 +5,7 @@ The created API key information
 ## Example Usage
 
 ```typescript
-import { PostKeysData } from "open-router/models/operations";
+import { PostKeysData } from "openrouter/models/operations";
 
 let value: PostKeysData = {
   hash: "sk-or-v1-abc123def456",

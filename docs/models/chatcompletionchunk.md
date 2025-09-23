@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionChunk } from "open-router/models";
+import { ChatCompletionChunk } from "openrouter/models";
 
 let value: ChatCompletionChunk = {
   data: {

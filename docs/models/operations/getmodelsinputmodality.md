@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsInputModality } from "open-router/models/operations";
+import { GetModelsInputModality } from "openrouter/models/operations";
 
 let value: GetModelsInputModality = "audio";
 ```

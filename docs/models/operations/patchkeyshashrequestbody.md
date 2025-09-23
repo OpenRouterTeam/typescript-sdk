@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PatchKeysHashRequestBody } from "open-router/models/operations";
+import { PatchKeysHashRequestBody } from "openrouter/models/operations";
 
 let value: PatchKeysHashRequestBody = {
   name: "Updated API Key Name",

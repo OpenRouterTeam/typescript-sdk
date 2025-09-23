@@ -5,7 +5,7 @@ Internal Server Error
 ## Example Usage
 
 ```typescript
-import { InternalServerError } from "open-router/models/errors";
+import { InternalServerError } from "openrouter/models/errors";
 
 // No examples available for this model
 ```

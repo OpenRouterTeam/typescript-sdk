@@ -5,7 +5,7 @@ Error details
 ## Example Usage
 
 ```typescript
-import { ErrorT } from "open-router/models/operations";
+import { ErrorT } from "openrouter/models/operations";
 
 let value: ErrorT = {
   code: 400,

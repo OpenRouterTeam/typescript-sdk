@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetCreditsData } from "open-router/models/operations";
+import { GetCreditsData } from "openrouter/models/operations";
 
 let value: GetCreditsData = {
   totalCredits: 5107.32,

@@ -5,7 +5,7 @@ Returns the total credits purchased and used
 ## Example Usage
 
 ```typescript
-import { GetCreditsResponseBody } from "open-router/models/operations";
+import { GetCreditsResponseBody } from "openrouter/models/operations";
 
 let value: GetCreditsResponseBody = {
   data: {

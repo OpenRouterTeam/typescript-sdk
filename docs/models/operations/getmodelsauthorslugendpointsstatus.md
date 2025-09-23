@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsStatus } from "open-router/models/operations";
+import { GetModelsAuthorSlugEndpointsStatus } from "openrouter/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsStatus = -2;
 ```

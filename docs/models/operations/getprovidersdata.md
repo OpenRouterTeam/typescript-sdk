@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetProvidersData } from "open-router/models/operations";
+import { GetProvidersData } from "openrouter/models/operations";
 
 let value: GetProvidersData = {
   name: "OpenAI",

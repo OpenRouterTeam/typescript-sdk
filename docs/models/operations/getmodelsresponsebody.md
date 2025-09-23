@@ -5,7 +5,7 @@ Returns a list of models or RSS feed
 ## Example Usage
 
 ```typescript
-import { GetModelsResponseBody } from "open-router/models/operations";
+import { GetModelsResponseBody } from "openrouter/models/operations";
 
 let value: GetModelsResponseBody = {
   data: [],

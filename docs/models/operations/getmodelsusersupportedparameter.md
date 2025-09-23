@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsUserSupportedParameter } from "open-router/models/operations";
+import { GetModelsUserSupportedParameter } from "openrouter/models/operations";
 
 let value: GetModelsUserSupportedParameter = "tool_choice";
 ```

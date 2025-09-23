@@ -5,7 +5,7 @@ Tokenizer type used by the model
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsTokenizer } from "open-router/models/operations";
+import { GetModelsAuthorSlugEndpointsTokenizer } from "openrouter/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsTokenizer = "Media";
 ```

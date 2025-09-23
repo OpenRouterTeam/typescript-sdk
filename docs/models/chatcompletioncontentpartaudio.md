@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionContentPartAudio } from "open-router/models";
+import { ChatCompletionContentPartAudio } from "openrouter/models";
 
 let value: ChatCompletionContentPartAudio = {
   type: "input_audio",

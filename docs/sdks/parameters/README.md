@@ -15,7 +15,7 @@ Get a model's supported parameters and data about which are most popular
 
 <!-- UsageSnippet language="typescript" operationID="get_/parameters/{author}/{slug}" method="get" path="/parameters/{author}/{slug}" -->
 ```typescript
-import { OpenRouter } from "open-router";
+import { OpenRouter } from "openrouter";
 
 const openRouter = new OpenRouter({
   security: {
@@ -40,8 +40,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "open-router/core.js";
-import { parametersGetParametersAuthorSlug } from "open-router/funcs/parametersGetParametersAuthorSlug.js";
+import { OpenRouterCore } from "openrouter/core.js";
+import { parametersGetParametersAuthorSlug } from "openrouter/funcs/parametersGetParametersAuthorSlug.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -65,6 +65,34 @@ async function run() {
 }
 
 run();
+```
+
+### React hooks and utilities
+
+This method can be used in React components through the following hooks and
+associated utilities.
+
+> Check out [this guide][hook-guide] for information about each of the utilities
+> below and how to get started using React hooks.
+
+[hook-guide]: ../../../REACT_QUERY.md
+
+```tsx
+import {
+  // Query hooks for fetching data.
+  useParametersGetParametersAuthorSlug,
+  useParametersGetParametersAuthorSlugSuspense,
+
+  // Utility for prefetching data during server-side rendering and in React
+  // Server Components that will be immediately available to client components
+  // using the hooks.
+  prefetchParametersGetParametersAuthorSlug,
+  
+  // Utilities to invalidate the query cache for this query in response to
+  // mutations and other user actions.
+  invalidateParametersGetParametersAuthorSlug,
+  invalidateAllParametersGetParametersAuthorSlug,
+} from "openrouter/react-query/parametersGetParametersAuthorSlug.js";
 ```
 
 ### Parameters

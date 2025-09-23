@@ -5,8 +5,8 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.622.1
   generationVersion: 2.709.0
-  releaseVersion: 0.3.5
-  configChecksum: 796928532edee27e2e04c633084ba571
+  releaseVersion: 0.4.0
+  configChecksum: 1cfd559dc7e19d42166a840646b5c37e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -26,6 +26,7 @@ features:
     methodArguments: 0.1.2
     nameOverrides: 2.81.2
     nullables: 0.1.1
+    reactQueryHooks: 0.2.3
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
@@ -40,6 +41,7 @@ generatedFiles:
   - .gitattributes
   - .npmignore
   - FUNCTIONS.md
+  - REACT_QUERY.md
   - RUNTIMES.md
   - USAGE.md
   - docs/lib/utils/retryconfig.md
@@ -403,6 +405,29 @@ generatedFiles:
   - src/models/operations/postembeddings.ts
   - src/models/operations/postkeys.ts
   - src/models/security.ts
+  - src/react-query/_context.tsx
+  - src/react-query/_types.ts
+  - src/react-query/analyticsGetActivity.ts
+  - src/react-query/apiKeysDeleteKeysHash.ts
+  - src/react-query/apiKeysGetAuthKey.ts
+  - src/react-query/apiKeysGetKey.ts
+  - src/react-query/apiKeysGetKeys.ts
+  - src/react-query/apiKeysGetKeysHash.ts
+  - src/react-query/apiKeysPatchKeysHash.ts
+  - src/react-query/apiKeysPostKeys.ts
+  - src/react-query/chatGenerateResponse.ts
+  - src/react-query/embeddingsPostEmbeddings.ts
+  - src/react-query/endpointsGetEndpointsZdr.ts
+  - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts
+  - src/react-query/generationsGetGeneration.ts
+  - src/react-query/getCredits.ts
+  - src/react-query/getProviders.ts
+  - src/react-query/index.ts
+  - src/react-query/modelsGetModels.ts
+  - src/react-query/modelsGetModelsCount.ts
+  - src/react-query/modelsGetModelsUser.ts
+  - src/react-query/parametersGetParametersAuthorSlug.ts
+  - src/react-query/postCreditsCoinbase.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/chat.ts

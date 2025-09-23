@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionChunkChoiceDeltaToolCall } from "open-router/models";
+import { ChatCompletionChunkChoiceDeltaToolCall } from "openrouter/models";
 
 let value: ChatCompletionChunkChoiceDeltaToolCall = {
   index: 4920.78,

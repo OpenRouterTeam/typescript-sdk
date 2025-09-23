@@ -5,7 +5,7 @@ Pricing information for the model
 ## Example Usage
 
 ```typescript
-import { GetModelsPricing } from "open-router/models/operations";
+import { GetModelsPricing } from "openrouter/models/operations";
 
 let value: GetModelsPricing = {
   prompt: 8393.16,

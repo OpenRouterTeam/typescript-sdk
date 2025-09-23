@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsRequestRequest } from "open-router/models/operations";
+import { GetModelsRequestRequest } from "openrouter/models/operations";
 
 let value: GetModelsRequestRequest = {};
 ```

@@ -5,7 +5,7 @@ Error response
 ## Example Usage
 
 ```typescript
-import { ErrorResponse } from "open-router/models";
+import { ErrorResponse } from "openrouter/models";
 
 let value: ErrorResponse = {
   error: {

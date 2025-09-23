@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionChunkChoice } from "open-router/models";
+import { ChatCompletionChunkChoice } from "openrouter/models";
 
 let value: ChatCompletionChunkChoice = {
   delta: {},

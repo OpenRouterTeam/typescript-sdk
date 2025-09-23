@@ -5,7 +5,7 @@ The object specifying the maximum price you want to pay for this request. USD pr
 ## Example Usage
 
 ```typescript
-import { MaxPrice } from "open-router/models/operations";
+import { MaxPrice } from "openrouter/models/operations";
 
 let value: MaxPrice = {};
 ```

@@ -5,7 +5,7 @@ Returns the total count of available models
 ## Example Usage
 
 ```typescript
-import { GetModelsCountResponseBody } from "open-router/models/operations";
+import { GetModelsCountResponseBody } from "openrouter/models/operations";
 
 let value: GetModelsCountResponseBody = {
   data: {

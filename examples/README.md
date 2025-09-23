@@ -1,6 +1,6 @@
-# open-router Examples
+# openrouter Examples
 
-This directory contains example scripts demonstrating how to use the open-router SDK.
+This directory contains example scripts demonstrating how to use the openrouter SDK.
 
 ## Prerequisites
 

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Web3Data } from "open-router/models/operations";
+import { Web3Data } from "openrouter/models/operations";
 
 let value: Web3Data = {
   transferIntent: {

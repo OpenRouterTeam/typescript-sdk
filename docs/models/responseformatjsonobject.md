@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ResponseFormatJSONObject } from "open-router/models";
+import { ResponseFormatJSONObject } from "openrouter/models";
 
 let value: ResponseFormatJSONObject = {
   type: "json_object",

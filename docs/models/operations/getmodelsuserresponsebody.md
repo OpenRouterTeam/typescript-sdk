@@ -5,7 +5,7 @@ Returns a list of models filtered by user provider preferences
 ## Example Usage
 
 ```typescript
-import { GetModelsUserResponseBody } from "open-router/models/operations";
+import { GetModelsUserResponseBody } from "openrouter/models/operations";
 
 let value: GetModelsUserResponseBody = {
   data: [],

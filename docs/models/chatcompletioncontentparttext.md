@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionContentPartText } from "open-router/models";
+import { ChatCompletionContentPartText } from "openrouter/models";
 
 let value: ChatCompletionContentPartText = {
   type: "text",
