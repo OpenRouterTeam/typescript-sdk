@@ -18,8 +18,8 @@ your React app at the root or layout component. For example:
 
 ```tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { OpenRouterCore } from "openrouter";
-import { OpenRouterProvider } from "openrouter/react-query";
+import { OpenRouterCore } from "@openrouter/sdk";
+import { OpenRouterProvider } from "@openrouter/sdk/react-query";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
@@ -29,8 +29,8 @@ const openRouter = new OpenRouterCore({
 });
 
 // Retries are handled by the underlying SDK.
-queryClient.setQueryDefaults(["openrouter"], { retry: false });
-queryClient.setMutationDefaults(["openrouter"], { retry: false });
+queryClient.setQueryDefaults(["@openrouter/sdk"], { retry: false });
+queryClient.setMutationDefaults(["@openrouter/sdk"], { retry: false });
 
 export function App() {
   return (
@@ -52,7 +52,7 @@ from TanStack Query.
 [use-query]: https://tanstack.com/query/v5/docs/framework/react/reference/useQuery
 
 ```tsx
-import { useGetCredits } from "openrouter/react-query/getCredits.js";
+import { useGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 
 export function Example() {
   const { data, error, status } = useGetCredits();
@@ -68,7 +68,7 @@ more options provided by the query hooks to control these behaviors.
 
 ```tsx
 import { useState } from "react";
-import { useGetCredits } from "openrouter/react-query/getCredits.js";
+import { useGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 
 export function ExampleWithOptions() {
   const [enabled, setEnabled] = useState(true);
@@ -109,7 +109,7 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "openrouter/react-query/postCreditsCoinbase.js";
+import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
 
 export function Example() {
   const { mutate, status } = usePostCreditsCoinbaseMutation();
@@ -137,7 +137,7 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "openrouter/react-query/postCreditsCoinbase.js";
+import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
 
 export function ExampleWithOptions() {
   const { mutate, status } = usePostCreditsCoinbaseMutation({
@@ -172,9 +172,9 @@ query hook there are two functions that help invalidate cached data:
 
 ```tsx
 import { useQueryClient } from "@tanstack/react-query";
-import { invalidateGetCredits, invalidateAllGetCredits } from "openrouter/react-query/getCredits.js";
+import { invalidateGetCredits, invalidateAllGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 // Replace this with a real mutation
-import { useExampleMutation } from "openrouter/react-query/example.js";
+import { useExampleMutation } from "@openrouter/sdk/react-query/example.js";
 
 export function Example() {
   const { queryClient } = useQueryClient();
@@ -218,9 +218,9 @@ hooks that integrate neatly with React Suspense.
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { OpenRouterCore } from "openrouter";
-import { OpenRouterProvider } from "openrouter/react-query";
-import { useGetCreditsSuspense } from "openrouter/react-query/getCredits.js";
+import { OpenRouterCore } from "@openrouter/sdk";
+import { OpenRouterProvider } from "@openrouter/sdk/react-query";
+import { useGetCreditsSuspense } from "@openrouter/sdk/react-query/getCredits.js";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
@@ -276,8 +276,8 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { OpenRouterCore } from "openrouter";
-import { prefetchGetCredits } from "openrouter/react-query/getCredits.js";
+import { OpenRouterCore } from "@openrouter/sdk";
+import { prefetchGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 
 export default async function Page() {
   const queryClient = new QueryClient();

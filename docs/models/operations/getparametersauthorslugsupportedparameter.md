@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetParametersAuthorSlugSupportedParameter } from "openrouter/models/operations";
+import { GetParametersAuthorSlugSupportedParameter } from "@openrouter/sdk/models/operations";
 
 let value: GetParametersAuthorSlugSupportedParameter = "parallel_tool_calls";
 ```

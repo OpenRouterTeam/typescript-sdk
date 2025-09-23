@@ -6,7 +6,8 @@ management:
   speakeasyVersion: 1.622.2
   generationVersion: 2.711.4
   releaseVersion: 0.0.0-beta.0
-  configChecksum: 1f820324330044d6a48b831014bfba57
+  configChecksum: ad5304d3b5e52b274ee22f4454e04f08
+  published: true
 features:
   typescript:
     acceptHeaders: 2.81.2

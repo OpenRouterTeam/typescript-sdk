@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatGenerationTokenUsage } from "openrouter/models";
+import { ChatGenerationTokenUsage } from "@openrouter/sdk/models";
 
 let value: ChatGenerationTokenUsage = {
   completionTokens: 9399.77,

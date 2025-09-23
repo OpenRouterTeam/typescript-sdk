@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatStreamingChoice } from "openrouter/models";
+import { ChatStreamingChoice } from "@openrouter/sdk/models";
 
 let value: ChatStreamingChoice = {
   delta: {},

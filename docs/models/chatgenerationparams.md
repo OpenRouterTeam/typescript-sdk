@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParams } from "openrouter/models";
+import { ChatGenerationParams } from "@openrouter/sdk/models";
 
 let value: ChatGenerationParams = {
   messages: [

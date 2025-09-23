@@ -5,7 +5,7 @@ Generation data
 ## Example Usage
 
 ```typescript
-import { GetGenerationData } from "openrouter/models/operations";
+import { GetGenerationData } from "@openrouter/sdk/models/operations";
 
 let value: GetGenerationData = {
   id: "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG",

@@ -5,7 +5,7 @@ Returns a list of providers
 ## Example Usage
 
 ```typescript
-import { GetProvidersResponse } from "openrouter/models/operations";
+import { GetProvidersResponse } from "@openrouter/sdk/models/operations";
 
 let value: GetProvidersResponse = {
   data: [

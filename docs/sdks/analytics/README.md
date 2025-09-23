@@ -15,7 +15,7 @@ Returns user activity data grouped by endpoint for the last 30 (completed) UTC d
 
 <!-- UsageSnippet language="typescript" operationID="get_/activity" method="get" path="/activity" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -39,8 +39,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { analyticsGetActivity } from "openrouter/funcs/analyticsGetActivity.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { analyticsGetActivity } from "@openrouter/sdk/funcs/analyticsGetActivity.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -90,7 +90,7 @@ import {
   // mutations and other user actions.
   invalidateAnalyticsGetActivity,
   invalidateAllAnalyticsGetActivity,
-} from "openrouter/react-query/analyticsGetActivity.js";
+} from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 ```
 
 ### Parameters

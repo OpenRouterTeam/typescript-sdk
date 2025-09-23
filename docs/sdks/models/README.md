@@ -17,7 +17,7 @@ Get total count of available models
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/count" method="get" path="/models/count" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -39,8 +39,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { modelsGetModelsCount } from "openrouter/funcs/modelsGetModelsCount.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { modelsGetModelsCount } from "@openrouter/sdk/funcs/modelsGetModelsCount.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -87,7 +87,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllModelsGetModelsCount,
-} from "openrouter/react-query/modelsGetModelsCount.js";
+} from "@openrouter/sdk/react-query/modelsGetModelsCount.js";
 ```
 
 ### Parameters
@@ -116,7 +116,7 @@ List all models and their properties
 
 <!-- UsageSnippet language="typescript" operationID="get_/models" method="get" path="/models" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -138,8 +138,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { modelsGetModels } from "openrouter/funcs/modelsGetModels.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { modelsGetModels } from "@openrouter/sdk/funcs/modelsGetModels.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -187,7 +187,7 @@ import {
   // mutations and other user actions.
   invalidateModelsGetModels,
   invalidateAllModelsGetModels,
-} from "openrouter/react-query/modelsGetModels.js";
+} from "@openrouter/sdk/react-query/modelsGetModels.js";
 ```
 
 ### Parameters
@@ -217,7 +217,7 @@ List models filtered by user provider preferences
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/user" method="get" path="/models/user" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -239,8 +239,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { modelsGetModelsUser } from "openrouter/funcs/modelsGetModelsUser.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { modelsGetModelsUser } from "@openrouter/sdk/funcs/modelsGetModelsUser.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -287,7 +287,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllModelsGetModelsUser,
-} from "openrouter/react-query/modelsGetModelsUser.js";
+} from "@openrouter/sdk/react-query/modelsGetModelsUser.js";
 ```
 
 ### Parameters

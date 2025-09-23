@@ -45,7 +45,7 @@ export function useApiKeysPatchKeysHashMutation(
 }
 
 export function mutationKeyApiKeysPatchKeysHash(): MutationKey {
-  return ["openrouter", "API Keys", "patchKeysHash"];
+  return ["@openrouter/sdk", "API Keys", "patchKeysHash"];
 }
 
 export function buildApiKeysPatchKeysHashMutation(

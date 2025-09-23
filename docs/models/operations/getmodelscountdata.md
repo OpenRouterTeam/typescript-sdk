@@ -5,7 +5,7 @@ Model count data
 ## Example Usage
 
 ```typescript
-import { GetModelsCountData } from "openrouter/models/operations";
+import { GetModelsCountData } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsCountData = {
   count: 150,

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Usage } from "openrouter/models/operations";
+import { Usage } from "@openrouter/sdk/models/operations";
 
 let value: Usage = {
   promptTokens: 9797.96,

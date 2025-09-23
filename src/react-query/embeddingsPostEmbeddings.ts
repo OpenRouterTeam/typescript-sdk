@@ -49,7 +49,7 @@ export function useEmbeddingsPostEmbeddingsMutation(
 }
 
 export function mutationKeyEmbeddingsPostEmbeddings(): MutationKey {
-  return ["openrouter", "Embeddings", "postEmbeddings"];
+  return ["@openrouter/sdk", "Embeddings", "postEmbeddings"];
 }
 
 export function buildEmbeddingsPostEmbeddingsMutation(

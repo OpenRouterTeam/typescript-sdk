@@ -5,7 +5,7 @@ API key details
 ## Example Usage
 
 ```typescript
-import { GetKeyResponseBody } from "openrouter/models/operations";
+import { GetKeyResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetKeyResponseBody = {
   data: {

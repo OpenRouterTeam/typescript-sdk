@@ -87,7 +87,7 @@ export function invalidateAllApiKeysGetKey(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "API Keys", "getKey"],
+    queryKey: ["@openrouter/sdk", "API Keys", "getKey"],
   });
 }
 
@@ -118,5 +118,5 @@ export function buildApiKeysGetKeyQuery(
 }
 
 export function queryKeyApiKeysGetKey(): QueryKey {
-  return ["openrouter", "API Keys", "getKey"];
+  return ["@openrouter/sdk", "API Keys", "getKey"];
 }

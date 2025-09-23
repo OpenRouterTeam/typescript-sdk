@@ -16,7 +16,7 @@ List all endpoints for a model
 
 <!-- UsageSnippet language="typescript" operationID="get_/models/{author}/{slug}/endpoints" method="get" path="/models/{author}/{slug}/endpoints" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -41,8 +41,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { endpointsGetModelsAuthorSlugEndpoints } from "openrouter/funcs/endpointsGetModelsAuthorSlugEndpoints.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { endpointsGetModelsAuthorSlugEndpoints } from "@openrouter/sdk/funcs/endpointsGetModelsAuthorSlugEndpoints.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -93,7 +93,7 @@ import {
   // mutations and other user actions.
   invalidateEndpointsGetModelsAuthorSlugEndpoints,
   invalidateAllEndpointsGetModelsAuthorSlugEndpoints,
-} from "openrouter/react-query/endpointsGetModelsAuthorSlugEndpoints.js";
+} from "@openrouter/sdk/react-query/endpointsGetModelsAuthorSlugEndpoints.js";
 ```
 
 ### Parameters
@@ -123,7 +123,7 @@ Preview the impact of ZDR on the available endpoints
 
 <!-- UsageSnippet language="typescript" operationID="get_/endpoints/zdr" method="get" path="/endpoints/zdr" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -145,8 +145,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { endpointsGetEndpointsZdr } from "openrouter/funcs/endpointsGetEndpointsZdr.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { endpointsGetEndpointsZdr } from "@openrouter/sdk/funcs/endpointsGetEndpointsZdr.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -193,7 +193,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllEndpointsGetEndpointsZdr,
-} from "openrouter/react-query/endpointsGetEndpointsZdr.js";
+} from "@openrouter/sdk/react-query/endpointsGetEndpointsZdr.js";
 ```
 
 ### Parameters

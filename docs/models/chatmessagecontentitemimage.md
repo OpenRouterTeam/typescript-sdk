@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatMessageContentItemImage } from "openrouter/models";
+import { ChatMessageContentItemImage } from "@openrouter/sdk/models";
 
 let value: ChatMessageContentItemImage = {
   type: "image_url",

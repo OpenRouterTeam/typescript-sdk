@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ActivityItem } from "openrouter/models";
+import { ActivityItem } from "@openrouter/sdk/models";
 
 let value: ActivityItem = {
   date: "2025-08-24",

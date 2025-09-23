@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Tool } from "openrouter/models";
+import { Tool } from "@openrouter/sdk/models";
 
 let value: Tool = {
   type: "function",

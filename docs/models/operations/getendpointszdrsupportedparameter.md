@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetEndpointsZdrSupportedParameter } from "openrouter/models/operations";
+import { GetEndpointsZdrSupportedParameter } from "@openrouter/sdk/models/operations";
 
 let value: GetEndpointsZdrSupportedParameter = "logit_bias";
 ```

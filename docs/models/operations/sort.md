@@ -5,7 +5,7 @@ The sorting strategy to use for this request, if "order" is not specified. When 
 ## Example Usage
 
 ```typescript
-import { Sort } from "openrouter/models/operations";
+import { Sort } from "@openrouter/sdk/models/operations";
 
 let value: Sort = "throughput";
 ```

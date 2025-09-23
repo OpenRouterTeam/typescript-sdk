@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatStreamingResponseChunkError } from "openrouter/models";
+import { ChatStreamingResponseChunkError } from "@openrouter/sdk/models";
 
 let value: ChatStreamingResponseChunkError = {
   message: "<value>",

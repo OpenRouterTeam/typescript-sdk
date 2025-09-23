@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PostCreditsCoinbaseRequest } from "openrouter/models/operations";
+import { PostCreditsCoinbaseRequest } from "@openrouter/sdk/models/operations";
 
 let value: PostCreditsCoinbaseRequest = {
   amount: 2428.7,

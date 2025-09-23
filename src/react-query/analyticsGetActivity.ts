@@ -99,7 +99,7 @@ export function invalidateAnalyticsGetActivity(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Analytics", "getActivity", ...queryKeyBase],
+    queryKey: ["@openrouter/sdk", "Analytics", "getActivity", ...queryKeyBase],
   });
 }
 
@@ -109,7 +109,7 @@ export function invalidateAllAnalyticsGetActivity(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Analytics", "getActivity"],
+    queryKey: ["@openrouter/sdk", "Analytics", "getActivity"],
   });
 }
 
@@ -146,5 +146,5 @@ export function buildAnalyticsGetActivityQuery(
 export function queryKeyAnalyticsGetActivity(
   parameters: { date?: string | undefined },
 ): QueryKey {
-  return ["openrouter", "Analytics", "getActivity", parameters];
+  return ["@openrouter/sdk", "Analytics", "getActivity", parameters];
 }

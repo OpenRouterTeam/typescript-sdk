@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Format } from "openrouter/models";
+import { Format } from "@openrouter/sdk/models";
 
 let value: Format = "wav";
 ```

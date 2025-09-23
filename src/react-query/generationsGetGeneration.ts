@@ -94,7 +94,12 @@ export function invalidateGenerationsGetGeneration(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Generations", "getGeneration", ...queryKeyBase],
+    queryKey: [
+      "@openrouter/sdk",
+      "Generations",
+      "getGeneration",
+      ...queryKeyBase,
+    ],
   });
 }
 
@@ -104,7 +109,7 @@ export function invalidateAllGenerationsGetGeneration(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Generations", "getGeneration"],
+    queryKey: ["@openrouter/sdk", "Generations", "getGeneration"],
   });
 }
 
@@ -141,5 +146,5 @@ export function buildGenerationsGetGenerationQuery(
 export function queryKeyGenerationsGetGeneration(
   parameters: { id: string },
 ): QueryKey {
-  return ["openrouter", "Generations", "getGeneration", parameters];
+  return ["@openrouter/sdk", "Generations", "getGeneration", parameters];
 }

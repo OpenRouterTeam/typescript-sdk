@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatMessageContentItemAudio } from "openrouter/models";
+import { ChatMessageContentItemAudio } from "@openrouter/sdk/models";
 
 let value: ChatMessageContentItemAudio = {
   type: "input_audio",

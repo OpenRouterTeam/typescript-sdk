@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsQuantization } from "openrouter/models/operations";
+import { GetModelsAuthorSlugEndpointsQuantization } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsQuantization = "fp16";
 ```

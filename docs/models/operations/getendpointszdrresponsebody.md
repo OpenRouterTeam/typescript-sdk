@@ -5,7 +5,7 @@ Returns a list of endpoints
 ## Example Usage
 
 ```typescript
-import { GetEndpointsZdrResponseBody } from "openrouter/models/operations";
+import { GetEndpointsZdrResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetEndpointsZdrResponseBody = {
   data: [],

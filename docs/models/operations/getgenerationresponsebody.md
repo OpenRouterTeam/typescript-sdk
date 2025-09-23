@@ -5,7 +5,7 @@ Returns the request metadata for this generation
 ## Example Usage
 
 ```typescript
-import { GetGenerationResponseBody } from "openrouter/models/operations";
+import { GetGenerationResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetGenerationResponseBody = {
   data: {

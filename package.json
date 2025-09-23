@@ -1,11 +1,11 @@
 {
-  "name": "openrouter",
+  "name": "@openrouter/sdk",
   "version": "0.0.0-beta.0",
   "author": "OpenRouter",
   "type": "module",
   "tshy": {
     "sourceDialects": [
-      "openrouter/source"
+      "@openrouter/sdk/source"
     ],
     "exports": {
       ".": "./src/index.ts",
@@ -57,7 +57,7 @@
   "exports": {
     ".": {
       "import": {
-        "openrouter/source": "./src/index.ts",
+        "@openrouter/sdk/source": "./src/index.ts",
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
@@ -69,7 +69,7 @@
     "./package.json": "./package.json",
     "./types": {
       "import": {
-        "openrouter/source": "./src/types/index.ts",
+        "@openrouter/sdk/source": "./src/types/index.ts",
         "types": "./dist/esm/types/index.d.ts",
         "default": "./dist/esm/types/index.js"
       },
@@ -80,7 +80,7 @@
     },
     "./models/errors": {
       "import": {
-        "openrouter/source": "./src/models/errors/index.ts",
+        "@openrouter/sdk/source": "./src/models/errors/index.ts",
         "types": "./dist/esm/models/errors/index.d.ts",
         "default": "./dist/esm/models/errors/index.js"
       },
@@ -91,7 +91,7 @@
     },
     "./models": {
       "import": {
-        "openrouter/source": "./src/models/index.ts",
+        "@openrouter/sdk/source": "./src/models/index.ts",
         "types": "./dist/esm/models/index.d.ts",
         "default": "./dist/esm/models/index.js"
       },
@@ -102,7 +102,7 @@
     },
     "./models/operations": {
       "import": {
-        "openrouter/source": "./src/models/operations/index.ts",
+        "@openrouter/sdk/source": "./src/models/operations/index.ts",
         "types": "./dist/esm/models/operations/index.d.ts",
         "default": "./dist/esm/models/operations/index.js"
       },
@@ -113,7 +113,7 @@
     },
     "./react-query": {
       "import": {
-        "openrouter/source": "./src/react-query/index.ts",
+        "@openrouter/sdk/source": "./src/react-query/index.ts",
         "types": "./dist/esm/react-query/index.d.ts",
         "default": "./dist/esm/react-query/index.js"
       },
@@ -124,7 +124,7 @@
     },
     "./*.js": {
       "import": {
-        "openrouter/source": "./src/*.ts",
+        "@openrouter/sdk/source": "./src/*.ts",
         "types": "./dist/esm/*.d.ts",
         "default": "./dist/esm/*.js"
       },
@@ -135,7 +135,7 @@
     },
     "./*": {
       "import": {
-        "openrouter/source": "./src/*.ts",
+        "@openrouter/sdk/source": "./src/*.ts",
         "types": "./dist/esm/*.d.ts",
         "default": "./dist/esm/*.js"
       },

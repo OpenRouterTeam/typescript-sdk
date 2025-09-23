@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PostKeysRequest } from "openrouter/models/operations";
+import { PostKeysRequest } from "@openrouter/sdk/models/operations";
 
 let value: PostKeysRequest = {
   name: "My New API Key",

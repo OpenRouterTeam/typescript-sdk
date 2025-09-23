@@ -15,7 +15,7 @@ Submits an embedding request to the embeddings router
 
 <!-- UsageSnippet language="typescript" operationID="post_/embeddings" method="post" path="/embeddings" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -42,8 +42,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { embeddingsPostEmbeddings } from "openrouter/funcs/embeddingsPostEmbeddings.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { embeddingsPostEmbeddings } from "@openrouter/sdk/funcs/embeddingsPostEmbeddings.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -85,7 +85,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   useEmbeddingsPostEmbeddingsMutation
-} from "openrouter/react-query/embeddingsPostEmbeddings.js";
+} from "@openrouter/sdk/react-query/embeddingsPostEmbeddings.js";
 ```
 
 ### Parameters

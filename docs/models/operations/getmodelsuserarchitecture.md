@@ -5,7 +5,7 @@ Model architecture information
 ## Example Usage
 
 ```typescript
-import { GetModelsUserArchitecture } from "openrouter/models/operations";
+import { GetModelsUserArchitecture } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsUserArchitecture = {
   modality: "text",

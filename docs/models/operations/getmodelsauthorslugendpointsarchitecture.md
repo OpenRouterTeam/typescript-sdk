@@ -5,7 +5,7 @@ Model architecture information
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsArchitecture } from "openrouter/models/operations";
+import { GetModelsAuthorSlugEndpointsArchitecture } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsArchitecture = {
   tokenizer: "GPT",

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetParametersAuthorSlugRequest } from "openrouter/models/operations";
+import { GetParametersAuthorSlugRequest } from "@openrouter/sdk/models/operations";
 
 let value: GetParametersAuthorSlugRequest = {
   author: "<value>",

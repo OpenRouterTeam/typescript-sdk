@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TransferIntent } from "openrouter/models/operations";
+import { TransferIntent } from "@openrouter/sdk/models/operations";
 
 let value: TransferIntent = {
   callData: {

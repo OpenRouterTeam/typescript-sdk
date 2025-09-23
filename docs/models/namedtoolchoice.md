@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { NamedToolChoice } from "openrouter/models";
+import { NamedToolChoice } from "@openrouter/sdk/models";
 
 let value: NamedToolChoice = {
   type: "function",

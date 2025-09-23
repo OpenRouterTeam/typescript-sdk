@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatError } from "openrouter/models/errors";
+import { ChatError } from "@openrouter/sdk/models/errors";
 
 // No examples available for this model
 ```

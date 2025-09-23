@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { DeleteKeysHashRequest } from "openrouter/models/operations";
+import { DeleteKeysHashRequest } from "@openrouter/sdk/models/operations";
 
 let value: DeleteKeysHashRequest = {
   hash: "sk-or-v1-abc123def456",

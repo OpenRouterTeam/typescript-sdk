@@ -7,7 +7,7 @@ Legacy rate limit information about a key. Will always return -1.
 ## Example Usage
 
 ```typescript
-import { GetKeyRateLimit } from "openrouter/models/operations";
+import { GetKeyRateLimit } from "@openrouter/sdk/models/operations";
 
 let value: GetKeyRateLimit = {
   requests: 1000,

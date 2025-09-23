@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatStreamingMessageToolCall } from "openrouter/models";
+import { ChatStreamingMessageToolCall } from "@openrouter/sdk/models";
 
 let value: ChatStreamingMessageToolCall = {
   index: 3974.82,

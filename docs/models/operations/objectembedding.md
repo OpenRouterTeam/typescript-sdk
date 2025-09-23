@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ObjectEmbedding } from "openrouter/models/operations";
+import { ObjectEmbedding } from "@openrouter/sdk/models/operations";
 
 let value: ObjectEmbedding = "embedding";
 ```

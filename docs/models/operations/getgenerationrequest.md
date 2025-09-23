@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetGenerationRequest } from "openrouter/models/operations";
+import { GetGenerationRequest } from "@openrouter/sdk/models/operations";
 
 let value: GetGenerationRequest = {
   id: "<id>",

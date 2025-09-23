@@ -5,7 +5,7 @@ Current API key information
 ## Example Usage
 
 ```typescript
-import { GetAuthKeyData } from "openrouter/models/operations";
+import { GetAuthKeyData } from "@openrouter/sdk/models/operations";
 
 let value: GetAuthKeyData = {
   label: "sk-or-v1-au78b3456789012345678901234567890",

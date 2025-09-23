@@ -5,7 +5,7 @@ The API key information
 ## Example Usage
 
 ```typescript
-import { GetKeysHashData } from "openrouter/models/operations";
+import { GetKeysHashData } from "@openrouter/sdk/models/operations";
 
 let value: GetKeysHashData = {
   hash: "sk-or-v1-abc123def456",

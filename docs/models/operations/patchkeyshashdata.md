@@ -5,7 +5,7 @@ The updated API key information
 ## Example Usage
 
 ```typescript
-import { PatchKeysHashData } from "openrouter/models/operations";
+import { PatchKeysHashData } from "@openrouter/sdk/models/operations";
 
 let value: PatchKeysHashData = {
   hash: "sk-or-v1-abc123def456",

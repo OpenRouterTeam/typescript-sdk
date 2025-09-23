@@ -5,7 +5,7 @@ Tokenizer type used by the model
 ## Example Usage
 
 ```typescript
-import { GetModelsUserTokenizer } from "openrouter/models/operations";
+import { GetModelsUserTokenizer } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsUserTokenizer = "Grok";
 ```

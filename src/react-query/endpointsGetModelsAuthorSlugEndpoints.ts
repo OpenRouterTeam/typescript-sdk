@@ -103,7 +103,7 @@ export function invalidateEndpointsGetModelsAuthorSlugEndpoints(
   return client.invalidateQueries({
     ...filters,
     queryKey: [
-      "openrouter",
+      "@openrouter/sdk",
       "Endpoints",
       "getModelsAuthorSlugEndpoints",
       ...queryKeyBase,
@@ -117,7 +117,7 @@ export function invalidateAllEndpointsGetModelsAuthorSlugEndpoints(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Endpoints", "getModelsAuthorSlugEndpoints"],
+    queryKey: ["@openrouter/sdk", "Endpoints", "getModelsAuthorSlugEndpoints"],
   });
 }
 
@@ -159,7 +159,7 @@ export function queryKeyEndpointsGetModelsAuthorSlugEndpoints(
   slug: string,
 ): QueryKey {
   return [
-    "openrouter",
+    "@openrouter/sdk",
     "Endpoints",
     "getModelsAuthorSlugEndpoints",
     author,

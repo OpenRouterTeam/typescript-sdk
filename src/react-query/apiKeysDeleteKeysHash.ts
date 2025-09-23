@@ -46,7 +46,7 @@ export function useApiKeysDeleteKeysHashMutation(
 }
 
 export function mutationKeyApiKeysDeleteKeysHash(): MutationKey {
-  return ["openrouter", "API Keys", "deleteKeysHash"];
+  return ["@openrouter/sdk", "API Keys", "deleteKeysHash"];
 }
 
 export function buildApiKeysDeleteKeysHashMutation(

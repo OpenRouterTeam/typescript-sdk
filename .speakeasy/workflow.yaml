@@ -11,6 +11,9 @@ targets:
     openrouter:
         target: typescript
         source: OpenRouter API
+        publish:
+            npm:
+                token: $npm_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api-typescript-code-samples

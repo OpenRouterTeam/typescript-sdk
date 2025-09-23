@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PostEmbeddingsRequest } from "openrouter/models/operations";
+import { PostEmbeddingsRequest } from "@openrouter/sdk/models/operations";
 
 let value: PostEmbeddingsRequest = {
   input: [

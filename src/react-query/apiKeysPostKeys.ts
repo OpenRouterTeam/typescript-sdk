@@ -45,7 +45,7 @@ export function useApiKeysPostKeysMutation(
 }
 
 export function mutationKeyApiKeysPostKeys(): MutationKey {
-  return ["openrouter", "API Keys", "postKeys"];
+  return ["@openrouter/sdk", "API Keys", "postKeys"];
 }
 
 export function buildApiKeysPostKeysMutation(

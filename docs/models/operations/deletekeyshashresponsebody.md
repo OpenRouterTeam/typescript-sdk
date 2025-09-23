@@ -5,7 +5,7 @@ API key deleted successfully
 ## Example Usage
 
 ```typescript
-import { DeleteKeysHashResponseBody } from "openrouter/models/operations";
+import { DeleteKeysHashResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: DeleteKeysHashResponseBody = {
   deleted: true,

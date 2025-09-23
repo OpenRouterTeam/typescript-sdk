@@ -47,7 +47,7 @@ export function useChatSendMutation(
 }
 
 export function mutationKeyChatSend(): MutationKey {
-  return ["openrouter", "chat", "send"];
+  return ["@openrouter/sdk", "chat", "send"];
 }
 
 export function buildChatSendMutation(

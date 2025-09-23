@@ -82,7 +82,7 @@ export function invalidateAllEndpointsGetEndpointsZdr(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Endpoints", "getEndpointsZdr"],
+    queryKey: ["@openrouter/sdk", "Endpoints", "getEndpointsZdr"],
   });
 }
 
@@ -115,5 +115,5 @@ export function buildEndpointsGetEndpointsZdrQuery(
 }
 
 export function queryKeyEndpointsGetEndpointsZdr(): QueryKey {
-  return ["openrouter", "Endpoints", "getEndpointsZdr"];
+  return ["@openrouter/sdk", "Endpoints", "getEndpointsZdr"];
 }

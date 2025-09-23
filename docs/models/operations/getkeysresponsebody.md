@@ -5,7 +5,7 @@ List of API keys
 ## Example Usage
 
 ```typescript
-import { GetKeysResponseBody } from "openrouter/models/operations";
+import { GetKeysResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetKeysResponseBody = {
   data: [],

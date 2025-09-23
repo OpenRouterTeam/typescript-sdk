@@ -81,7 +81,7 @@ export function invalidateAllGetCredits(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "getCredits"],
+    queryKey: ["@openrouter/sdk", "getCredits"],
   });
 }
 
@@ -112,5 +112,5 @@ export function buildGetCreditsQuery(
 }
 
 export function queryKeyGetCredits(): QueryKey {
-  return ["openrouter", "getCredits"];
+  return ["@openrouter/sdk", "getCredits"];
 }

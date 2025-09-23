@@ -81,7 +81,7 @@ export function invalidateAllModelsGetModelsCount(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Models", "getModelsCount"],
+    queryKey: ["@openrouter/sdk", "Models", "getModelsCount"],
   });
 }
 
@@ -114,5 +114,5 @@ export function buildModelsGetModelsCountQuery(
 }
 
 export function queryKeyModelsGetModelsCount(): QueryKey {
-  return ["openrouter", "Models", "getModelsCount"];
+  return ["@openrouter/sdk", "Models", "getModelsCount"];
 }

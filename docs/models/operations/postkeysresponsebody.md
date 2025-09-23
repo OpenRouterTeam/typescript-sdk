@@ -5,7 +5,7 @@ API key created successfully
 ## Example Usage
 
 ```typescript
-import { PostKeysResponseBody } from "openrouter/models/operations";
+import { PostKeysResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: PostKeysResponseBody = {
   data: {

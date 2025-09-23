@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ErrorResponseError } from "openrouter/models";
+import { ErrorResponseError } from "@openrouter/sdk/models";
 
 let value: ErrorResponseError = {
   code: 511,

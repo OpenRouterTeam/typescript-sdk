@@ -61,7 +61,7 @@ typescript:
   modelPropertyCasing: camel
   moduleFormat: dual
   outputModelSuffix: output
-  packageName: openrouter
+  packageName: '@openrouter/sdk'
   responseFormat: flat
   sseFlatResponse: false
   templateVersion: v2

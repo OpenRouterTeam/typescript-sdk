@@ -15,7 +15,7 @@ Get request & usage metadata for a generation
 
 <!-- UsageSnippet language="typescript" operationID="get_/generation" method="get" path="/generation" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -39,8 +39,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { generationsGetGeneration } from "openrouter/funcs/generationsGetGeneration.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { generationsGetGeneration } from "@openrouter/sdk/funcs/generationsGetGeneration.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -90,7 +90,7 @@ import {
   // mutations and other user actions.
   invalidateGenerationsGetGeneration,
   invalidateAllGenerationsGetGeneration,
-} from "openrouter/react-query/generationsGetGeneration.js";
+} from "@openrouter/sdk/react-query/generationsGetGeneration.js";
 ```
 
 ### Parameters

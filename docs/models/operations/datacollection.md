@@ -8,7 +8,7 @@ Data collection setting. If no available model provider meets the requirement, y
 ## Example Usage
 
 ```typescript
-import { DataCollection } from "openrouter/models/operations";
+import { DataCollection } from "@openrouter/sdk/models/operations";
 
 let value: DataCollection = "deny";
 ```

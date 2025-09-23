@@ -93,7 +93,7 @@ export function invalidateApiKeysGetKeysHash(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "API Keys", "getKeysHash", ...queryKeyBase],
+    queryKey: ["@openrouter/sdk", "API Keys", "getKeysHash", ...queryKeyBase],
   });
 }
 
@@ -103,7 +103,7 @@ export function invalidateAllApiKeysGetKeysHash(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "API Keys", "getKeysHash"],
+    queryKey: ["@openrouter/sdk", "API Keys", "getKeysHash"],
   });
 }
 
@@ -138,5 +138,5 @@ export function buildApiKeysGetKeysHashQuery(
 }
 
 export function queryKeyApiKeysGetKeysHash(hash: string): QueryKey {
-  return ["openrouter", "API Keys", "getKeysHash", hash];
+  return ["@openrouter/sdk", "API Keys", "getKeysHash", hash];
 }

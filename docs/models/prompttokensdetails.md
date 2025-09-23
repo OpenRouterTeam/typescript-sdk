@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PromptTokensDetails } from "openrouter/models";
+import { PromptTokensDetails } from "@openrouter/sdk/models";
 
 let value: PromptTokensDetails = {};
 ```

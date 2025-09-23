@@ -15,7 +15,7 @@ Sends a request for a model response for the given chat conversation. Supports b
 
 <!-- UsageSnippet language="typescript" operationID="post_/chat/completions" method="post" path="/chat/completions" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -37,8 +37,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { chatSend } from "openrouter/funcs/chatSend.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { chatSend } from "@openrouter/sdk/funcs/chatSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -75,7 +75,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   useChatSendMutation
-} from "openrouter/react-query/chatSend.js";
+} from "@openrouter/sdk/react-query/chatSend.js";
 ```
 
 ### Parameters

@@ -5,7 +5,7 @@ Parameter analytics data
 ## Example Usage
 
 ```typescript
-import { GetParametersAuthorSlugData } from "openrouter/models/operations";
+import { GetParametersAuthorSlugData } from "@openrouter/sdk/models/operations";
 
 let value: GetParametersAuthorSlugData = {
   model: "openai/gpt-4",

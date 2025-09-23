@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ResponseFormatGrammar } from "openrouter/models";
+import { ResponseFormatGrammar } from "@openrouter/sdk/models";
 
 let value: ResponseFormatGrammar = {
   type: "grammar",

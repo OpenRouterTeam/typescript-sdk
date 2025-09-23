@@ -5,7 +5,7 @@ Returns the parameters for the specified model
 ## Example Usage
 
 ```typescript
-import { GetParametersAuthorSlugResponseBody } from "openrouter/models/operations";
+import { GetParametersAuthorSlugResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetParametersAuthorSlugResponseBody = {
   data: {

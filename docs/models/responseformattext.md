@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ResponseFormatText } from "openrouter/models";
+import { ResponseFormatText } from "@openrouter/sdk/models";
 
 let value: ResponseFormatText = {
   type: "text",

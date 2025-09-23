@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatMessageContentItemText } from "openrouter/models";
+import { ChatMessageContentItemText } from "@openrouter/sdk/models";
 
 let value: ChatMessageContentItemText = {
   type: "text",

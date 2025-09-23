@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { InputAudio } from "openrouter/models";
+import { InputAudio } from "@openrouter/sdk/models";
 
 let value: InputAudio = {
   data: "<value>",

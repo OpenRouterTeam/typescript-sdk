@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatErrorError } from "openrouter/models";
+import { ChatErrorError } from "@openrouter/sdk/models";
 
 let value: ChatErrorError = {
   code: "<value>",

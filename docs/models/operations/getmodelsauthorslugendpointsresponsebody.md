@@ -5,7 +5,7 @@ Returns a list of endpoints
 ## Example Usage
 
 ```typescript
-import { GetModelsAuthorSlugEndpointsResponseBody } from "openrouter/models/operations";
+import { GetModelsAuthorSlugEndpointsResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsAuthorSlugEndpointsResponseBody = {
   data: {

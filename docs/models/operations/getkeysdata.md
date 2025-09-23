@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetKeysData } from "openrouter/models/operations";
+import { GetKeysData } from "@openrouter/sdk/models/operations";
 
 let value: GetKeysData = {
   hash: "sk-or-v1-abc123def456",

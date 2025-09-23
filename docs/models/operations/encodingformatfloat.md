@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { EncodingFormatFloat } from "openrouter/models/operations";
+import { EncodingFormatFloat } from "@openrouter/sdk/models/operations";
 
 let value: EncodingFormatFloat = "float";
 ```

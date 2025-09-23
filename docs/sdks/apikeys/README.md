@@ -21,7 +21,7 @@ List API keys
 
 <!-- UsageSnippet language="typescript" operationID="get_/keys" method="get" path="/keys" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -43,8 +43,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysGetKeys } from "openrouter/funcs/apiKeysGetKeys.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysGetKeys } from "@openrouter/sdk/funcs/apiKeysGetKeys.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -92,7 +92,7 @@ import {
   // mutations and other user actions.
   invalidateApiKeysGetKeys,
   invalidateAllApiKeysGetKeys,
-} from "openrouter/react-query/apiKeysGetKeys.js";
+} from "@openrouter/sdk/react-query/apiKeysGetKeys.js";
 ```
 
 ### Parameters
@@ -122,7 +122,7 @@ Create a new API key
 
 <!-- UsageSnippet language="typescript" operationID="post_/keys" method="post" path="/keys" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -148,8 +148,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysPostKeys } from "openrouter/funcs/apiKeysPostKeys.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysPostKeys } from "@openrouter/sdk/funcs/apiKeysPostKeys.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -190,7 +190,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   useApiKeysPostKeysMutation
-} from "openrouter/react-query/apiKeysPostKeys.js";
+} from "@openrouter/sdk/react-query/apiKeysPostKeys.js";
 ```
 
 ### Parameters
@@ -220,7 +220,7 @@ Update an API key
 
 <!-- UsageSnippet language="typescript" operationID="patch_/keys/{hash}" method="patch" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -250,8 +250,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysPatchKeysHash } from "openrouter/funcs/apiKeysPatchKeysHash.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysPatchKeysHash } from "@openrouter/sdk/funcs/apiKeysPatchKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -296,7 +296,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   useApiKeysPatchKeysHashMutation
-} from "openrouter/react-query/apiKeysPatchKeysHash.js";
+} from "@openrouter/sdk/react-query/apiKeysPatchKeysHash.js";
 ```
 
 ### Parameters
@@ -326,7 +326,7 @@ Delete an API key
 
 <!-- UsageSnippet language="typescript" operationID="delete_/keys/{hash}" method="delete" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -350,8 +350,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysDeleteKeysHash } from "openrouter/funcs/apiKeysDeleteKeysHash.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysDeleteKeysHash } from "@openrouter/sdk/funcs/apiKeysDeleteKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -390,7 +390,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   useApiKeysDeleteKeysHashMutation
-} from "openrouter/react-query/apiKeysDeleteKeysHash.js";
+} from "@openrouter/sdk/react-query/apiKeysDeleteKeysHash.js";
 ```
 
 ### Parameters
@@ -420,7 +420,7 @@ Get a single API key
 
 <!-- UsageSnippet language="typescript" operationID="get_/keys/{hash}" method="get" path="/keys/{hash}" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -444,8 +444,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysGetKeysHash } from "openrouter/funcs/apiKeysGetKeysHash.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysGetKeysHash } from "@openrouter/sdk/funcs/apiKeysGetKeysHash.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -495,7 +495,7 @@ import {
   // mutations and other user actions.
   invalidateApiKeysGetKeysHash,
   invalidateAllApiKeysGetKeysHash,
-} from "openrouter/react-query/apiKeysGetKeysHash.js";
+} from "@openrouter/sdk/react-query/apiKeysGetKeysHash.js";
 ```
 
 ### Parameters
@@ -525,7 +525,7 @@ Get information on the API key associated with the current authentication sessio
 
 <!-- UsageSnippet language="typescript" operationID="get_/key" method="get" path="/key" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -547,8 +547,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysGetKey } from "openrouter/funcs/apiKeysGetKey.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysGetKey } from "@openrouter/sdk/funcs/apiKeysGetKey.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -595,7 +595,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllApiKeysGetKey,
-} from "openrouter/react-query/apiKeysGetKey.js";
+} from "@openrouter/sdk/react-query/apiKeysGetKey.js";
 ```
 
 ### Parameters
@@ -624,7 +624,7 @@ Get information on the API key associated with the current authentication sessio
 
 <!-- UsageSnippet language="typescript" operationID="get_/auth/key" method="get" path="/auth/key" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -646,8 +646,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { apiKeysGetAuthKey } from "openrouter/funcs/apiKeysGetAuthKey.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { apiKeysGetAuthKey } from "@openrouter/sdk/funcs/apiKeysGetAuthKey.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -694,7 +694,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllApiKeysGetAuthKey,
-} from "openrouter/react-query/apiKeysGetAuthKey.js";
+} from "@openrouter/sdk/react-query/apiKeysGetAuthKey.js";
 ```
 
 ### Parameters

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetEndpointsZdrPricing } from "openrouter/models/operations";
+import { GetEndpointsZdrPricing } from "@openrouter/sdk/models/operations";
 
 let value: GetEndpointsZdrPricing = {
   prompt: 6539.29,

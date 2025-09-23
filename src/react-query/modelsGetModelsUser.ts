@@ -81,7 +81,7 @@ export function invalidateAllModelsGetModelsUser(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Models", "getModelsUser"],
+    queryKey: ["@openrouter/sdk", "Models", "getModelsUser"],
   });
 }
 
@@ -114,5 +114,5 @@ export function buildModelsGetModelsUserQuery(
 }
 
 export function queryKeyModelsGetModelsUser(): QueryKey {
-  return ["openrouter", "Models", "getModelsUser"];
+  return ["@openrouter/sdk", "Models", "getModelsUser"];
 }

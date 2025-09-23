@@ -114,7 +114,7 @@ export function invalidateParametersGetParametersAuthorSlug(
   return client.invalidateQueries({
     ...filters,
     queryKey: [
-      "openrouter",
+      "@openrouter/sdk",
       "Parameters",
       "getParametersAuthorSlug",
       ...queryKeyBase,
@@ -128,7 +128,7 @@ export function invalidateAllParametersGetParametersAuthorSlug(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Parameters", "getParametersAuthorSlug"],
+    queryKey: ["@openrouter/sdk", "Parameters", "getParametersAuthorSlug"],
   });
 }
 
@@ -174,7 +174,7 @@ export function queryKeyParametersGetParametersAuthorSlug(
   },
 ): QueryKey {
   return [
-    "openrouter",
+    "@openrouter/sdk",
     "Parameters",
     "getParametersAuthorSlug",
     author,

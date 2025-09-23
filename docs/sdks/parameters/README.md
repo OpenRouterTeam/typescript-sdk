@@ -15,7 +15,7 @@ Get a model's supported parameters and data about which are most popular
 
 <!-- UsageSnippet language="typescript" operationID="get_/parameters/{author}/{slug}" method="get" path="/parameters/{author}/{slug}" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -40,8 +40,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { parametersGetParametersAuthorSlug } from "openrouter/funcs/parametersGetParametersAuthorSlug.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { parametersGetParametersAuthorSlug } from "@openrouter/sdk/funcs/parametersGetParametersAuthorSlug.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -92,7 +92,7 @@ import {
   // mutations and other user actions.
   invalidateParametersGetParametersAuthorSlug,
   invalidateAllParametersGetParametersAuthorSlug,
-} from "openrouter/react-query/parametersGetParametersAuthorSlug.js";
+} from "@openrouter/sdk/react-query/parametersGetParametersAuthorSlug.js";
 ```
 
 ### Parameters

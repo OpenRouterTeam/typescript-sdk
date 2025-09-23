@@ -46,7 +46,7 @@ export function usePostCreditsCoinbaseMutation(
 }
 
 export function mutationKeyPostCreditsCoinbase(): MutationKey {
-  return ["openrouter", "postCreditsCoinbase"];
+  return ["@openrouter/sdk", "postCreditsCoinbase"];
 }
 
 export function buildPostCreditsCoinbaseMutation(

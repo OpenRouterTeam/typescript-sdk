@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetModelsSupportedParameter } from "openrouter/models/operations";
+import { GetModelsSupportedParameter } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsSupportedParameter = "repetition_penalty";
 ```

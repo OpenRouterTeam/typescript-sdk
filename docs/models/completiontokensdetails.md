@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CompletionTokensDetails } from "openrouter/models";
+import { CompletionTokensDetails } from "@openrouter/sdk/models";
 
 let value: CompletionTokensDetails = {};
 ```

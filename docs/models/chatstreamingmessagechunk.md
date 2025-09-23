@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatStreamingMessageChunk } from "openrouter/models";
+import { ChatStreamingMessageChunk } from "@openrouter/sdk/models";
 
 let value: ChatStreamingMessageChunk = {};
 ```

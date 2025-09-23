@@ -21,7 +21,7 @@ Get total credits purchased and used for the authenticated user
 
 <!-- UsageSnippet language="typescript" operationID="get_/credits" method="get" path="/credits" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -43,8 +43,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { getCredits } from "openrouter/funcs/getCredits.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -91,7 +91,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllGetCredits,
-} from "openrouter/react-query/getCredits.js";
+} from "@openrouter/sdk/react-query/getCredits.js";
 ```
 
 ### Parameters
@@ -120,7 +120,7 @@ Create a Coinbase charge for crypto payment
 
 <!-- UsageSnippet language="typescript" operationID="post_/credits/coinbase" method="post" path="/credits/coinbase" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -142,8 +142,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { postCreditsCoinbase } from "openrouter/funcs/postCreditsCoinbase.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { postCreditsCoinbase } from "@openrouter/sdk/funcs/postCreditsCoinbase.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -180,7 +180,7 @@ associated utilities.
 import {
   // Mutation hook for triggering the API call.
   usePostCreditsCoinbaseMutation
-} from "openrouter/react-query/postCreditsCoinbase.js";
+} from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
 ```
 
 ### Parameters
@@ -208,7 +208,7 @@ import {
 
 <!-- UsageSnippet language="typescript" operationID="get_/providers" method="get" path="/providers" -->
 ```typescript
-import { OpenRouter } from "openrouter";
+import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
@@ -230,8 +230,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { OpenRouterCore } from "openrouter/core.js";
-import { getProviders } from "openrouter/funcs/getProviders.js";
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { getProviders } from "@openrouter/sdk/funcs/getProviders.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -278,7 +278,7 @@ import {
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
   invalidateAllGetProviders,
-} from "openrouter/react-query/getProviders.js";
+} from "@openrouter/sdk/react-query/getProviders.js";
 ```
 
 ### Parameters

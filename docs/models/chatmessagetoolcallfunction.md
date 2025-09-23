@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatMessageToolCallFunction } from "openrouter/models";
+import { ChatMessageToolCallFunction } from "@openrouter/sdk/models";
 
 let value: ChatMessageToolCallFunction = {
   name: "<value>",

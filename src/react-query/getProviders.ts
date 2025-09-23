@@ -75,7 +75,7 @@ export function invalidateAllGetProviders(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "getProviders"],
+    queryKey: ["@openrouter/sdk", "getProviders"],
   });
 }
 
@@ -106,5 +106,5 @@ export function buildGetProvidersQuery(
 }
 
 export function queryKeyGetProviders(): QueryKey {
-  return ["openrouter", "getProviders"];
+  return ["@openrouter/sdk", "getProviders"];
 }

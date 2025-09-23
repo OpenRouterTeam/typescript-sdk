@@ -112,7 +112,7 @@ export function invalidateModelsGetModels(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Models", "getModels", ...queryKeyBase],
+    queryKey: ["@openrouter/sdk", "Models", "getModels", ...queryKeyBase],
   });
 }
 
@@ -122,7 +122,7 @@ export function invalidateAllModelsGetModels(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["openrouter", "Models", "getModels"],
+    queryKey: ["@openrouter/sdk", "Models", "getModels"],
   });
 }
 
@@ -167,5 +167,5 @@ export function queryKeyModelsGetModels(
     useRssChatLinks?: string | undefined;
   },
 ): QueryKey {
-  return ["openrouter", "Models", "getModels", parameters];
+  return ["@openrouter/sdk", "Models", "getModels", parameters];
 }

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { MessageDeveloper } from "openrouter/models";
+import { MessageDeveloper } from "@openrouter/sdk/models";
 
 let value: MessageDeveloper = {
   role: "developer",

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TopLogprob } from "openrouter/models";
+import { TopLogprob } from "@openrouter/sdk/models";
 
 let value: TopLogprob = {
   token: "<value>",

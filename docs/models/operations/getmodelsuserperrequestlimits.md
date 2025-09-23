@@ -5,7 +5,7 @@ Per-request token limits
 ## Example Usage
 
 ```typescript
-import { GetModelsUserPerRequestLimits } from "openrouter/models/operations";
+import { GetModelsUserPerRequestLimits } from "@openrouter/sdk/models/operations";
 
 let value: GetModelsUserPerRequestLimits = {
   promptTokens: "<value>",

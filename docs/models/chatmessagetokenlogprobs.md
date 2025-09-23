@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatMessageTokenLogprobs } from "openrouter/models";
+import { ChatMessageTokenLogprobs } from "@openrouter/sdk/models";
 
 let value: ChatMessageTokenLogprobs = {
   content: [
