@@ -3,31 +3,21 @@
 
 ## Supported Types
 
-### `models.ChatCompletion`
+### `models.ChatResponse`
 
 ```typescript
-const value: models.ChatCompletion = {
+const value: models.ChatResponse = {
   id: "<id>",
-  choices: [
-    {
-      finishReason: "stop",
-      index: 7209.22,
-      message: {
-        role: "assistant",
-        content: "<value>",
-        refusal: "<value>",
-      },
-    },
-  ],
-  created: 4940.1,
-  model: "Accord",
+  choices: [],
+  created: 9184.01,
+  model: "Focus",
   object: "chat.completion",
 };
 ```
 
-### `EventStream<models.ChatCompletionChunk>`
+### `EventStream<models.ChatStreamingResponseChunk>`
 
 ```typescript
-const value: EventStream<models.ChatCompletionChunk> = ;
+const value: EventStream<models.ChatStreamingResponseChunk> = ;
 ```
 

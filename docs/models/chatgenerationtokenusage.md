@@ -1,0 +1,23 @@
+# ChatGenerationTokenUsage
+
+## Example Usage
+
+```typescript
+import { ChatGenerationTokenUsage } from "openrouter/models";
+
+let value: ChatGenerationTokenUsage = {
+  completionTokens: 9399.77,
+  promptTokens: 9559.6,
+  totalTokens: 7060.03,
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `completionTokens`                                                     | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `promptTokens`                                                         | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `totalTokens`                                                          | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| `completionTokensDetails`                                              | [models.CompletionTokensDetails](../models/completiontokensdetails.md) | :heavy_minus_sign:                                                     | N/A                                                                    |
+| `promptTokensDetails`                                                  | [models.PromptTokensDetails](../models/prompttokensdetails.md)         | :heavy_minus_sign:                                                     | N/A                                                                    |

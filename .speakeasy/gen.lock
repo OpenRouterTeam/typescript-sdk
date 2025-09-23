@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 16487e5cb141501449f44345440f952a
+  docChecksum: 3e3395bf3798c4ad00c1e8abe7800bd5
   docVersion: 1.0.0
-  speakeasyVersion: 1.622.1
-  generationVersion: 2.709.0
-  releaseVersion: 0.4.0
-  configChecksum: 1cfd559dc7e19d42166a840646b5c37e
+  speakeasyVersion: 1.622.2
+  generationVersion: 2.711.4
+  releaseVersion: 0.4.1
+  configChecksum: e62fc4f9f9ea3a7d2662ac3105a39ea6
 features:
   typescript:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.21.23
+    core: 3.21.24
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -46,55 +46,48 @@ generatedFiles:
   - USAGE.md
   - docs/lib/utils/retryconfig.md
   - docs/models/activityitem.md
-  - docs/models/chatcompletion.md
-  - docs/models/chatcompletionassistantmessageparam.md
-  - docs/models/chatcompletionassistantmessageparamcontent.md
-  - docs/models/chatcompletionchoice.md
-  - docs/models/chatcompletionchoicefinishreason.md
-  - docs/models/chatcompletionchunk.md
-  - docs/models/chatcompletionchunkchoice.md
-  - docs/models/chatcompletionchunkchoicedelta.md
-  - docs/models/chatcompletionchunkchoicedeltatoolcall.md
-  - docs/models/chatcompletionchunkchoicedeltatoolcallfunction.md
-  - docs/models/chatcompletionchunkchoicefinishreason.md
-  - docs/models/chatcompletioncontentpart.md
-  - docs/models/chatcompletioncontentpartaudio.md
-  - docs/models/chatcompletioncontentpartimage.md
-  - docs/models/chatcompletioncontentparttext.md
-  - docs/models/chatcompletioncreateparams.md
-  - docs/models/chatcompletionerrorerror.md
-  - docs/models/chatcompletionmessage.md
-  - docs/models/chatcompletionmessageparam.md
-  - docs/models/chatcompletionmessagetoolcall.md
-  - docs/models/chatcompletionmessagetoolcallfunction.md
-  - docs/models/chatcompletionnamedtoolchoice.md
-  - docs/models/chatcompletionnamedtoolchoicefunction.md
-  - docs/models/chatcompletionstreamoptions.md
-  - docs/models/chatcompletionsystemmessageparam.md
-  - docs/models/chatcompletionsystemmessageparamcontent.md
-  - docs/models/chatcompletiontokenlogprob.md
-  - docs/models/chatcompletiontokenlogprobs.md
-  - docs/models/chatcompletiontool.md
-  - docs/models/chatcompletiontoolfunction.md
-  - docs/models/chatcompletiontoolmessageparam.md
-  - docs/models/chatcompletiontoolmessageparamcontent.md
-  - docs/models/chatcompletionusermessageparam.md
-  - docs/models/chatcompletionusermessageparamcontent.md
+  - docs/models/assistantmessage.md
+  - docs/models/assistantmessagecontent.md
+  - docs/models/chaterrorerror.md
+  - docs/models/chatgenerationparams.md
+  - docs/models/chatgenerationtokenusage.md
+  - docs/models/chatmessagecontentitem.md
+  - docs/models/chatmessagecontentitemaudio.md
+  - docs/models/chatmessagecontentitemimage.md
+  - docs/models/chatmessagecontentitemtext.md
+  - docs/models/chatmessagetokenlogprob.md
+  - docs/models/chatmessagetokenlogprobs.md
+  - docs/models/chatmessagetoolcall.md
+  - docs/models/chatmessagetoolcallfunction.md
+  - docs/models/chatresponse.md
+  - docs/models/chatresponsechoice.md
+  - docs/models/chatresponsechoicefinishreason.md
+  - docs/models/chatstreamingchoice.md
+  - docs/models/chatstreamingchoicefinishreason.md
+  - docs/models/chatstreamingmessagechunk.md
+  - docs/models/chatstreamingmessagetoolcall.md
+  - docs/models/chatstreamingmessagetoolcallfunction.md
+  - docs/models/chatstreamingresponsechunk.md
+  - docs/models/chatstreamoptions.md
   - docs/models/code.md
   - docs/models/completiontokensdetails.md
-  - docs/models/completionusage.md
   - docs/models/data.md
   - docs/models/detail.md
   - docs/models/effort.md
   - docs/models/errorresponse.md
   - docs/models/errorresponseerror.md
-  - docs/models/errors/chatcompletionerror.md
+  - docs/models/errors/chaterror.md
   - docs/models/errors/internalservererror.md
   - docs/models/format.md
   - docs/models/generatesummary.md
   - docs/models/imageurl.md
   - docs/models/inputaudio.md
   - docs/models/jsonschema.md
+  - docs/models/message.md
+  - docs/models/messagecontent.md
+  - docs/models/messagedeveloper.md
+  - docs/models/namedtoolchoice.md
+  - docs/models/namedtoolchoicefunction.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
   - docs/models/operations/chainid.md
@@ -288,7 +281,15 @@ generatedFiles:
   - docs/models/security.md
   - docs/models/stop.md
   - docs/models/summary.md
+  - docs/models/systemmessage.md
+  - docs/models/systemmessagecontent.md
+  - docs/models/tool.md
+  - docs/models/toolfunction.md
+  - docs/models/toolresponsemessage.md
+  - docs/models/toolresponsemessagecontent.md
   - docs/models/toplogprob.md
+  - docs/models/usermessage.md
+  - docs/models/usermessagecontent.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
@@ -314,7 +315,7 @@ generatedFiles:
   - src/funcs/apiKeysGetKeysHash.ts
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
-  - src/funcs/chatGenerateResponse.ts
+  - src/funcs/chatSend.ts
   - src/funcs/embeddingsPostEmbeddings.ts
   - src/funcs/endpointsGetEndpointsZdr.ts
   - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts
@@ -348,33 +349,26 @@ generatedFiles:
   - src/lib/security.ts
   - src/lib/url.ts
   - src/models/activityitem.ts
-  - src/models/chatcompletion.ts
-  - src/models/chatcompletionassistantmessageparam.ts
-  - src/models/chatcompletionchoice.ts
-  - src/models/chatcompletionchunk.ts
-  - src/models/chatcompletionchunkchoice.ts
-  - src/models/chatcompletionchunkchoicedelta.ts
-  - src/models/chatcompletionchunkchoicedeltatoolcall.ts
-  - src/models/chatcompletioncontentpart.ts
-  - src/models/chatcompletioncontentpartaudio.ts
-  - src/models/chatcompletioncontentpartimage.ts
-  - src/models/chatcompletioncontentparttext.ts
-  - src/models/chatcompletioncreateparams.ts
-  - src/models/chatcompletionerror.ts
-  - src/models/chatcompletionmessage.ts
-  - src/models/chatcompletionmessageparam.ts
-  - src/models/chatcompletionmessagetoolcall.ts
-  - src/models/chatcompletionnamedtoolchoice.ts
-  - src/models/chatcompletionstreamoptions.ts
-  - src/models/chatcompletionsystemmessageparam.ts
-  - src/models/chatcompletiontokenlogprob.ts
-  - src/models/chatcompletiontokenlogprobs.ts
-  - src/models/chatcompletiontool.ts
-  - src/models/chatcompletiontoolmessageparam.ts
-  - src/models/chatcompletionusermessageparam.ts
-  - src/models/completionusage.ts
+  - src/models/assistantmessage.ts
+  - src/models/chaterror.ts
+  - src/models/chatgenerationparams.ts
+  - src/models/chatgenerationtokenusage.ts
+  - src/models/chatmessagecontentitem.ts
+  - src/models/chatmessagecontentitemaudio.ts
+  - src/models/chatmessagecontentitemimage.ts
+  - src/models/chatmessagecontentitemtext.ts
+  - src/models/chatmessagetokenlogprob.ts
+  - src/models/chatmessagetokenlogprobs.ts
+  - src/models/chatmessagetoolcall.ts
+  - src/models/chatresponse.ts
+  - src/models/chatresponsechoice.ts
+  - src/models/chatstreamingchoice.ts
+  - src/models/chatstreamingmessagechunk.ts
+  - src/models/chatstreamingmessagetoolcall.ts
+  - src/models/chatstreamingresponsechunk.ts
+  - src/models/chatstreamoptions.ts
   - src/models/errorresponse.ts
-  - src/models/errors/chatcompletionerror.ts
+  - src/models/errors/chaterror.ts
   - src/models/errors/getproviders.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
@@ -383,6 +377,8 @@ generatedFiles:
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
   - src/models/index.ts
+  - src/models/message.ts
+  - src/models/namedtoolchoice.ts
   - src/models/operations/deletekeyshash.ts
   - src/models/operations/getactivity.ts
   - src/models/operations/getauthkey.ts
@@ -405,6 +401,10 @@ generatedFiles:
   - src/models/operations/postembeddings.ts
   - src/models/operations/postkeys.ts
   - src/models/security.ts
+  - src/models/systemmessage.ts
+  - src/models/tool.ts
+  - src/models/toolresponsemessage.ts
+  - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
   - src/react-query/analyticsGetActivity.ts
@@ -415,7 +415,7 @@ generatedFiles:
   - src/react-query/apiKeysGetKeysHash.ts
   - src/react-query/apiKeysPatchKeysHash.ts
   - src/react-query/apiKeysPostKeys.ts
-  - src/react-query/chatGenerateResponse.ts
+  - src/react-query/chatSend.ts
   - src/react-query/embeddingsPostEmbeddings.ts
   - src/react-query/endpointsGetEndpointsZdr.ts
   - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts

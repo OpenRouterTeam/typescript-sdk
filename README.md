@@ -76,12 +76,9 @@ bun add @tanstack/react-query react react-dom
 ### Yarn
 
 ```bash
-yarn add <UNSET> zod
+yarn add <UNSET>
 # Install optional peer dependencies if you plan to use React hooks
 yarn add @tanstack/react-query react react-dom
-
-# Note that Yarn does not install peer dependencies automatically. You will need
-# to install zod as shown above.
 ```
 
 > [!NOTE]
@@ -174,7 +171,7 @@ run();
 
 ### [chat](docs/sdks/chat/README.md)
 
-* [generateResponse](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
+* [send](docs/sdks/chat/README.md#send) - Create a chat completion
 
 ### [embeddings](docs/sdks/embeddings/README.md)
 
@@ -231,7 +228,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
 - [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-- [`chatGenerateResponse`](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
+- [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
 - [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
@@ -358,7 +355,7 @@ To learn about this feature and how to get started, check
 - [`useApiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
 - [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-- [`useChatGenerateResponseMutation`](docs/sdks/chat/README.md#generateresponse) - Create a chat completion
+- [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`useEmbeddingsPostEmbeddingsMutation`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
 - [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
@@ -508,7 +505,7 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatCompletionError`](./src/models/errors/chatcompletionerror.ts): Bad request - invalid parameters. Applicable to 1 of 20 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 20 methods.*
 * [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 

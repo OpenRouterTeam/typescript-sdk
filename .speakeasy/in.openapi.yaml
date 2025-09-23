@@ -166,7 +166,7 @@ components:
       required:
         - error
       description: Error response
-    ChatCompletionRole:
+    ChatMessageRole:
       type: string
       enum:
         - system
@@ -174,7 +174,7 @@ components:
         - assistant
         - tool
         - developer
-    ChatCompletionContentPartText:
+    ChatMessageContentItemText:
       type: object
       properties:
         type:
@@ -185,7 +185,7 @@ components:
       required:
         - type
         - text
-    ChatCompletionContentPartImage:
+    ChatMessageContentItemImage:
       type: object
       properties:
         type:
@@ -207,7 +207,7 @@ components:
       required:
         - type
         - image_url
-    ChatCompletionContentPartAudio:
+    ChatMessageContentItemAudio:
       type: object
       properties:
         type:
@@ -234,18 +234,18 @@ components:
       required:
         - type
         - input_audio
-    ChatCompletionContentPart:
+    ChatMessageContentItem:
       oneOf:
-        - $ref: '#/components/schemas/ChatCompletionContentPartText'
-        - $ref: '#/components/schemas/ChatCompletionContentPartImage'
-        - $ref: '#/components/schemas/ChatCompletionContentPartAudio'
+        - $ref: '#/components/schemas/ChatMessageContentItemText'
+        - $ref: '#/components/schemas/ChatMessageContentItemImage'
+        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
       discriminator:
         propertyName: type
         mapping:
-          text: '#/components/schemas/ChatCompletionContentPartText'
-          image_url: '#/components/schemas/ChatCompletionContentPartImage'
-          input_audio: '#/components/schemas/ChatCompletionContentPartAudio'
-    ChatCompletionMessageToolCall:
+          text: '#/components/schemas/ChatMessageContentItemText'
+          image_url: '#/components/schemas/ChatMessageContentItemImage'
+          input_audio: '#/components/schemas/ChatMessageContentItemAudio'
+    ChatMessageToolCall:
       type: object
       properties:
         id:
@@ -267,7 +267,7 @@ components:
         - id
         - type
         - function
-    ChatCompletionTokenLogprob:
+    ChatMessageTokenLogprob:
       type: object
       properties:
         token:
@@ -304,7 +304,7 @@ components:
         - logprob
         - bytes
         - top_logprobs
-    ChatCompletionTokenLogprobs:
+    ChatMessageTokenLogprobs:
       type: object
       properties:
         content:
@@ -312,17 +312,17 @@ components:
             - array
             - 'null'
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
         refusal:
           type:
             - array
             - 'null'
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
       required:
         - content
         - refusal
-    CompletionUsage:
+    ChatGenerationTokenUsage:
       type: object
       properties:
         completion_tokens:
@@ -353,7 +353,7 @@ components:
         - completion_tokens
         - prompt_tokens
         - total_tokens
-    ChatCompletionSystemMessageParam:
+    SystemMessage:
       type: object
       properties:
         role:
@@ -364,13 +364,13 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionContentPartText'
+                $ref: '#/components/schemas/ChatMessageContentItemText'
         name:
           type: string
       required:
         - role
         - content
-    ChatCompletionUserMessageParam:
+    UserMessage:
       type: object
       properties:
         role:
@@ -381,13 +381,13 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionContentPart'
+                $ref: '#/components/schemas/ChatMessageContentItem'
         name:
           type: string
       required:
         - role
         - content
-    ChatCompletionAssistantMessageParam:
+    AssistantMessage:
       type: object
       properties:
         role:
@@ -398,21 +398,25 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionContentPart'
+                $ref: '#/components/schemas/ChatMessageContentItem'
             - type: 'null'
         name:
           type: string
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+            $ref: '#/components/schemas/ChatMessageToolCall'
         refusal:
+          type:
+            - string
+            - 'null'
+        reasoning:
           type:
             - string
             - 'null'
       required:
         - role
-    ChatCompletionToolMessageParam:
+    ToolResponseMessage:
       type: object
       properties:
         role:
@@ -423,27 +427,36 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionContentPart'
+                $ref: '#/components/schemas/ChatMessageContentItem'
         tool_call_id:
           type: string
       required:
         - role
         - content
         - tool_call_id
-    ChatCompletionMessageParam:
+    Message:
       oneOf:
-        - $ref: '#/components/schemas/ChatCompletionSystemMessageParam'
-        - $ref: '#/components/schemas/ChatCompletionUserMessageParam'
-        - $ref: '#/components/schemas/ChatCompletionAssistantMessageParam'
-        - $ref: '#/components/schemas/ChatCompletionToolMessageParam'
-      discriminator:
-        propertyName: role
-        mapping:
-          system: '#/components/schemas/ChatCompletionSystemMessageParam'
-          user: '#/components/schemas/ChatCompletionUserMessageParam'
-          assistant: '#/components/schemas/ChatCompletionAssistantMessageParam'
-          tool: '#/components/schemas/ChatCompletionToolMessageParam'
-    ChatCompletionTool:
+        - $ref: '#/components/schemas/SystemMessage'
+        - $ref: '#/components/schemas/UserMessage'
+        - type: object
+          properties:
+            role:
+              type: string
+              const: developer
+            content:
+              anyOf:
+                - type: string
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/ChatMessageContentItemText'
+            name:
+              type: string
+          required:
+            - role
+            - content
+        - $ref: '#/components/schemas/AssistantMessage'
+        - $ref: '#/components/schemas/ToolResponseMessage'
+    Tool:
       type: object
       properties:
         type:
@@ -469,7 +482,7 @@ components:
       required:
         - type
         - function
-    ChatCompletionNamedToolChoice:
+    NamedToolChoice:
       type: object
       properties:
         type:
@@ -485,7 +498,7 @@ components:
       required:
         - type
         - function
-    ChatCompletionToolChoiceOption:
+    ToolChoiceOption:
       anyOf:
         - type: string
           const: none
@@ -493,19 +506,19 @@ components:
           const: auto
         - type: string
           const: required
-        - $ref: '#/components/schemas/ChatCompletionNamedToolChoice'
-    ChatCompletionStreamOptions:
+        - $ref: '#/components/schemas/NamedToolChoice'
+    ChatStreamOptions:
       type: object
       properties:
         include_usage:
           type: boolean
-    ChatCompletionCreateParams:
+    ChatGenerationParams:
       type: object
       properties:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionMessageParam'
+            $ref: '#/components/schemas/Message'
           minItems: 1
         model:
           anyOf:
@@ -661,7 +674,7 @@ components:
           default: false
         stream_options:
           oneOf:
-            - $ref: '#/components/schemas/ChatCompletionStreamOptions'
+            - $ref: '#/components/schemas/ChatStreamOptions'
             - type: 'null'
         temperature:
           type:
@@ -671,11 +684,11 @@ components:
           maximum: 2
           default: 1
         tool_choice:
-          $ref: '#/components/schemas/ChatCompletionToolChoiceOption'
+          $ref: '#/components/schemas/ToolChoiceOption'
         tools:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionTool'
+            $ref: '#/components/schemas/Tool'
         top_p:
           type:
             - number
@@ -688,33 +701,7 @@ components:
       required:
         - messages
         - model
-    ChatCompletionMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: assistant
-        content:
-          type:
-            - string
-            - 'null'
-        reasoning:
-          type:
-            - string
-            - 'null'
-        refusal:
-          type:
-            - string
-            - 'null'
-        tool_calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatCompletionMessageToolCall'
-      required:
-        - role
-        - content
-        - refusal
-    ChatCompletionChoice:
+    ChatResponseChoice:
       type: object
       properties:
         finish_reason:
@@ -731,16 +718,16 @@ components:
         index:
           type: number
         message:
-          $ref: '#/components/schemas/ChatCompletionMessage'
+          $ref: '#/components/schemas/AssistantMessage'
         logprobs:
           oneOf:
-            - $ref: '#/components/schemas/ChatCompletionTokenLogprobs'
+            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
             - type: 'null'
       required:
         - finish_reason
         - index
         - message
-    ChatCompletion:
+    ChatResponse:
       type: object
       properties:
         id:
@@ -748,7 +735,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionChoice'
+            $ref: '#/components/schemas/ChatResponseChoice'
         created:
           type: number
         model:
@@ -759,14 +746,14 @@ components:
         system_fingerprint:
           type: string
         usage:
-          $ref: '#/components/schemas/CompletionUsage'
+          $ref: '#/components/schemas/ChatGenerationTokenUsage'
       required:
         - id
         - choices
         - created
         - model
         - object
-    ChatCompletionError:
+    ChatError:
       type: object
       properties:
         error:
@@ -791,7 +778,7 @@ components:
             - type
       required:
         - error
-    ChatCompletionChunkChoiceDeltaToolCall:
+    ChatStreamingMessageToolCall:
       type: object
       properties:
         index:
@@ -810,7 +797,7 @@ components:
               type: string
       required:
         - index
-    ChatCompletionChunkChoiceDelta:
+    ChatStreamingMessageChunk:
       type: object
       properties:
         role:
@@ -832,12 +819,12 @@ components:
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionChunkChoiceDeltaToolCall'
-    ChatCompletionChunkChoice:
+            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+    ChatStreamingChoice:
       type: object
       properties:
         delta:
-          $ref: '#/components/schemas/ChatCompletionChunkChoiceDelta'
+          $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
           type:
             - string
@@ -853,13 +840,13 @@ components:
           type: number
         logprobs:
           oneOf:
-            - $ref: '#/components/schemas/ChatCompletionTokenLogprobs'
+            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
             - type: 'null'
       required:
         - delta
         - finish_reason
         - index
-    ChatCompletionChunk:
+    ChatStreamingResponseChunk:
       type: object
       properties:
         data:
@@ -870,7 +857,7 @@ components:
             choices:
               type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionChunkChoice'
+                $ref: '#/components/schemas/ChatStreamingChoice'
             created:
               type: number
             model:
@@ -881,7 +868,7 @@ components:
             system_fingerprint:
               type: string
             usage:
-              $ref: '#/components/schemas/CompletionUsage'
+              $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
             - id
             - choices
@@ -3778,8 +3765,10 @@ paths:
     post:
       summary: Create a chat completion
       x-speakeasy-group: chat
-      x-speakeasy-name-override: generateResponse
-      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+      x-speakeasy-name-override: send
+      description: >-
+        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
+        modes.
       tags:
         - Chat
       requestBody:
@@ -3787,43 +3776,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChatCompletionCreateParams'
+              $ref: '#/components/schemas/ChatGenerationParams'
       responses:
         '200':
           description: Successful chat completion response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletion'
+                $ref: '#/components/schemas/ChatResponse'
                 description: Non-streaming response when stream=false
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/ChatCompletionChunk'
+                $ref: '#/components/schemas/ChatStreamingResponseChunk'
               x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '401':
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '429':
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server

@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [generateResponse](#generateresponse) - Create a chat completion
+* [send](#send) - Create a chat completion
 
-## generateResponse
+## send
 
-Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
 ### Example Usage
 
@@ -24,7 +24,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.generateResponse();
+  const result = await openRouter.chat.send();
 
   console.log(result);
 }
@@ -38,7 +38,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "openrouter/core.js";
-import { chatGenerateResponse } from "openrouter/funcs/chatGenerateResponse.js";
+import { chatSend } from "openrouter/funcs/chatSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -49,12 +49,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatGenerateResponse(openRouter);
+  const res = await chatSend(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatGenerateResponse failed:", res.error);
+    console.log("chatSend failed:", res.error);
   }
 }
 
@@ -74,15 +74,15 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useChatGenerateResponseMutation
-} from "openrouter/react-query/chatGenerateResponse.js";
+  useChatSendMutation
+} from "openrouter/react-query/chatSend.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [models.ChatCompletionCreateParams](../../models/chatcompletioncreateparams.md)                                                                                                | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [models.ChatGenerationParams](../../models/chatgenerationparams.md)                                                                                                            | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -95,6 +95,6 @@ import {
 
 | Error Type                    | Status Code                   | Content Type                  |
 | ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ChatCompletionError    | 400, 401, 429                 | application/json              |
-| errors.ChatCompletionError    | 500                           | application/json              |
+| errors.ChatError              | 400, 401, 429                 | application/json              |
+| errors.ChatError              | 500                           | application/json              |
 | errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |

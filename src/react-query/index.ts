@@ -13,7 +13,7 @@ export * from "./apiKeysGetKeys.js";
 export * from "./apiKeysGetKeysHash.js";
 export * from "./apiKeysPatchKeysHash.js";
 export * from "./apiKeysPostKeys.js";
-export * from "./chatGenerateResponse.js";
+export * from "./chatSend.js";
 export * from "./embeddingsPostEmbeddings.js";
 export * from "./endpointsGetEndpointsZdr.js";
 export * from "./endpointsGetModelsAuthorSlugEndpoints.js";
