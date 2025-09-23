@@ -12,11 +12,13 @@ export class ParametersT extends ClientSDK {
    * Get a model's supported parameters and data about which are most popular
    */
   async getParametersAuthorSlug(
+    security: operations.GetParametersAuthorSlugSecurity,
     request: operations.GetParametersAuthorSlugRequest,
     options?: RequestOptions,
   ): Promise<operations.GetParametersAuthorSlugResponse> {
     return unwrapAsync(parametersGetParametersAuthorSlug(
       this,
+      security,
       request,
       options,
     ));

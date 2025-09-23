@@ -17,6 +17,7 @@ import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
 export type PostCreditsCoinbaseMutationVariables = {
+  security: operations.PostCreditsCoinbaseSecurity;
   request?: operations.PostCreditsCoinbaseRequest | undefined;
   options?: RequestOptions;
 };
@@ -61,6 +62,7 @@ export function buildPostCreditsCoinbaseMutation(
   return {
     mutationKey: mutationKeyPostCreditsCoinbase(),
     mutationFn: function postCreditsCoinbaseMutationFn({
+      security,
       request,
       options,
     }): Promise<PostCreditsCoinbaseMutationData> {
@@ -78,6 +80,7 @@ export function buildPostCreditsCoinbaseMutation(
       };
       return unwrapAsync(postCreditsCoinbase(
         client$,
+        security,
         request,
         mergedOptions,
       ));

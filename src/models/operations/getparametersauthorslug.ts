@@ -10,6 +10,10 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
+export type GetParametersAuthorSlugSecurity = {
+  bearer: string;
+};
+
 export const GetParametersAuthorSlugProvider = {
   Ai21: "AI21",
   AionLabs: "AionLabs",
@@ -141,6 +145,62 @@ export type GetParametersAuthorSlugResponseBody = {
 export type GetParametersAuthorSlugResponse =
   | GetParametersAuthorSlugResponseBody
   | models.ErrorResponse;
+
+/** @internal */
+export const GetParametersAuthorSlugSecurity$inboundSchema: z.ZodType<
+  GetParametersAuthorSlugSecurity,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  bearer: z.string(),
+});
+
+/** @internal */
+export type GetParametersAuthorSlugSecurity$Outbound = {
+  bearer: string;
+};
+
+/** @internal */
+export const GetParametersAuthorSlugSecurity$outboundSchema: z.ZodType<
+  GetParametersAuthorSlugSecurity$Outbound,
+  z.ZodTypeDef,
+  GetParametersAuthorSlugSecurity
+> = z.object({
+  bearer: z.string(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetParametersAuthorSlugSecurity$ {
+  /** @deprecated use `GetParametersAuthorSlugSecurity$inboundSchema` instead. */
+  export const inboundSchema = GetParametersAuthorSlugSecurity$inboundSchema;
+  /** @deprecated use `GetParametersAuthorSlugSecurity$outboundSchema` instead. */
+  export const outboundSchema = GetParametersAuthorSlugSecurity$outboundSchema;
+  /** @deprecated use `GetParametersAuthorSlugSecurity$Outbound` instead. */
+  export type Outbound = GetParametersAuthorSlugSecurity$Outbound;
+}
+
+export function getParametersAuthorSlugSecurityToJSON(
+  getParametersAuthorSlugSecurity: GetParametersAuthorSlugSecurity,
+): string {
+  return JSON.stringify(
+    GetParametersAuthorSlugSecurity$outboundSchema.parse(
+      getParametersAuthorSlugSecurity,
+    ),
+  );
+}
+
+export function getParametersAuthorSlugSecurityFromJSON(
+  jsonString: string,
+): SafeParseResult<GetParametersAuthorSlugSecurity, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetParametersAuthorSlugSecurity$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetParametersAuthorSlugSecurity' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetParametersAuthorSlugProvider$inboundSchema: z.ZodNativeEnum<

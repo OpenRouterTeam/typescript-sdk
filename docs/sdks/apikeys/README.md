@@ -24,9 +24,7 @@ List API keys
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -49,9 +47,7 @@ import { apiKeysGetKeys } from "@openrouter/sdk/funcs/apiKeysGetKeys.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -125,9 +121,7 @@ Create a new API key
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -154,9 +148,7 @@ import { apiKeysPostKeys } from "@openrouter/sdk/funcs/apiKeysPostKeys.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -223,9 +215,7 @@ Update an API key
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -256,9 +246,7 @@ import { apiKeysPatchKeysHash } from "@openrouter/sdk/funcs/apiKeysPatchKeysHash
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -329,9 +317,7 @@ Delete an API key
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -356,9 +342,7 @@ import { apiKeysDeleteKeysHash } from "@openrouter/sdk/funcs/apiKeysDeleteKeysHa
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -423,9 +407,7 @@ Get a single API key
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -450,9 +432,7 @@ import { apiKeysGetKeysHash } from "@openrouter/sdk/funcs/apiKeysGetKeysHash.js"
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -528,9 +508,7 @@ Get information on the API key associated with the current authentication sessio
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -553,9 +531,7 @@ import { apiKeysGetKey } from "@openrouter/sdk/funcs/apiKeysGetKey.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -627,9 +603,7 @@ Get information on the API key associated with the current authentication sessio
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -652,9 +626,7 @@ import { apiKeysGetAuthKey } from "@openrouter/sdk/funcs/apiKeysGetAuthKey.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

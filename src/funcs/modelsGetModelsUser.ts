@@ -6,7 +6,7 @@ import { OpenRouterCore } from "../core.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
+import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -27,6 +27,7 @@ import { Result } from "../types/fp.js";
  */
 export function modelsGetModelsUser(
   client: OpenRouterCore,
+  security: operations.GetModelsUserSecurity,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -43,12 +44,14 @@ export function modelsGetModelsUser(
 > {
   return new APIPromise($do(
     client,
+    security,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
+  security: operations.GetModelsUserSecurity,
   options?: RequestOptions,
 ): Promise<
   [
@@ -72,18 +75,25 @@ async function $do(
     Accept: "application/json",
   }));
 
-  const securityInput = await extractSecurity(client._options.security);
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveSecurity(
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.bearer,
+      },
+    ],
+  );
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "get_/models/user",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.security,
+    securitySource: security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },

@@ -31,7 +31,7 @@ export type Data = {
   created: number;
   model: string;
   object: "chat.completion.chunk";
-  systemFingerprint?: string | undefined;
+  systemFingerprint?: string | null | undefined;
   error?: ChatStreamingResponseChunkError | undefined;
   usage?: ChatGenerationTokenUsage | undefined;
 };
@@ -107,7 +107,7 @@ export const Data$inboundSchema: z.ZodType<Data, z.ZodTypeDef, unknown> = z
     created: z.number(),
     model: z.string(),
     object: z.literal("chat.completion.chunk"),
-    system_fingerprint: z.string().optional(),
+    system_fingerprint: z.nullable(z.string()).optional(),
     error: z.lazy(() => ChatStreamingResponseChunkError$inboundSchema)
       .optional(),
     usage: ChatGenerationTokenUsage$inboundSchema.optional(),
@@ -124,7 +124,7 @@ export type Data$Outbound = {
   created: number;
   model: string;
   object: "chat.completion.chunk";
-  system_fingerprint?: string | undefined;
+  system_fingerprint?: string | null | undefined;
   error?: ChatStreamingResponseChunkError$Outbound | undefined;
   usage?: ChatGenerationTokenUsage$Outbound | undefined;
 };
@@ -137,7 +137,7 @@ export const Data$outboundSchema: z.ZodType<Data$Outbound, z.ZodTypeDef, Data> =
     created: z.number(),
     model: z.string(),
     object: z.literal("chat.completion.chunk"),
-    systemFingerprint: z.string().optional(),
+    systemFingerprint: z.nullable(z.string()).optional(),
     error: z.lazy(() => ChatStreamingResponseChunkError$outboundSchema)
       .optional(),
     usage: ChatGenerationTokenUsage$outboundSchema.optional(),

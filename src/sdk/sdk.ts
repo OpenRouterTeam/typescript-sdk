@@ -74,11 +74,13 @@ export class OpenRouter extends ClientSDK {
    * Create a Coinbase charge for crypto payment
    */
   async postCreditsCoinbase(
+    security: operations.PostCreditsCoinbaseSecurity,
     request?: operations.PostCreditsCoinbaseRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.PostCreditsCoinbaseResponse> {
     return unwrapAsync(postCreditsCoinbase(
       this,
+      security,
       request,
       options,
     ));

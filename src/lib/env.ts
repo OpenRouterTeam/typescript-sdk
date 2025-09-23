@@ -8,14 +8,12 @@ import * as z from "zod";
 
 export interface Env {
   OPENROUTER_API_KEY?: string | undefined;
-  OPENROUTER_BEARER?: string | undefined;
 
   OPENROUTER_DEBUG?: boolean | undefined;
 }
 
 export const envSchema: z.ZodType<Env, z.ZodTypeDef, unknown> = z.object({
   OPENROUTER_API_KEY: z.string().optional(),
-  OPENROUTER_BEARER: z.string().optional(),
 
   OPENROUTER_DEBUG: z.coerce.boolean().optional(),
 });

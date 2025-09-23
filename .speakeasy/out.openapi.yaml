@@ -744,7 +744,9 @@ components:
           type: string
           const: chat.completion
         system_fingerprint:
-          type: string
+          type:
+            - string
+            - 'null'
         usage:
           $ref: '#/components/schemas/ChatGenerationTokenUsage'
       required:
@@ -760,9 +762,10 @@ components:
           type: object
           properties:
             code:
-              type:
-                - string
-                - 'null'
+              anyOf:
+                - type: string
+                - type: number
+                - type: 'null'
             message:
               type: string
             param:
@@ -866,7 +869,9 @@ components:
               type: string
               const: chat.completion.chunk
             system_fingerprint:
-              type: string
+              type:
+                - string
+                - 'null'
             error:
               type: object
               properties:
@@ -889,15 +894,10 @@ components:
         - data
   parameters: {}
   securitySchemes:
-    bearer:
+    apiKey:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
-    apiKey:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: API key with "Bearer " prefix
 paths:
   /activity:
     get:
@@ -3829,7 +3829,6 @@ servers:
     x-speakeasy-server-id: production
 security:
   - apiKey: []
-  - bearer: []
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs

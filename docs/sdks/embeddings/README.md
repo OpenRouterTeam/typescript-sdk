@@ -18,9 +18,7 @@ Submits an embedding request to the embeddings router
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -48,9 +46,7 @@ import { embeddingsPostEmbeddings } from "@openrouter/sdk/funcs/embeddingsPostEm
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

@@ -8,7 +8,7 @@ import { ChatErrorError } from "@openrouter/sdk/models";
 let value: ChatErrorError = {
   code: "<value>",
   message: "<value>",
-  param: null,
+  param: "<value>",
   type: "<value>",
 };
 ```
@@ -17,7 +17,7 @@ let value: ChatErrorError = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `code`             | *string*           | :heavy_check_mark: | N/A                |
+| `code`             | *models.Code*      | :heavy_check_mark: | N/A                |
 | `message`          | *string*           | :heavy_check_mark: | N/A                |
 | `param`            | *string*           | :heavy_check_mark: | N/A                |
 | `type`             | *string*           | :heavy_check_mark: | N/A                |

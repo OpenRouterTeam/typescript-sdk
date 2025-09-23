@@ -19,9 +19,7 @@ List all endpoints for a model
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -47,9 +45,7 @@ import { endpointsGetModelsAuthorSlugEndpoints } from "@openrouter/sdk/funcs/end
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -126,9 +122,7 @@ Preview the impact of ZDR on the available endpoints
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -151,9 +145,7 @@ import { endpointsGetEndpointsZdr } from "@openrouter/sdk/funcs/endpointsGetEndp
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

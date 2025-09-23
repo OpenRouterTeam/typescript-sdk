@@ -32,6 +32,7 @@ export type ParametersGetParametersAuthorSlugQueryData =
  * Get a model's supported parameters and data about which are most popular
  */
 export function useParametersGetParametersAuthorSlug(
+  security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
   options?: QueryHookOptions<ParametersGetParametersAuthorSlugQueryData>,
 ): UseQueryResult<ParametersGetParametersAuthorSlugQueryData, Error> {
@@ -39,6 +40,7 @@ export function useParametersGetParametersAuthorSlug(
   return useQuery({
     ...buildParametersGetParametersAuthorSlugQuery(
       client,
+      security,
       request,
       options,
     ),
@@ -50,6 +52,7 @@ export function useParametersGetParametersAuthorSlug(
  * Get a model's supported parameters and data about which are most popular
  */
 export function useParametersGetParametersAuthorSlugSuspense(
+  security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
   options?: SuspenseQueryHookOptions<
     ParametersGetParametersAuthorSlugQueryData
@@ -59,6 +62,7 @@ export function useParametersGetParametersAuthorSlugSuspense(
   return useSuspenseQuery({
     ...buildParametersGetParametersAuthorSlugQuery(
       client,
+      security,
       request,
       options,
     ),
@@ -69,11 +73,13 @@ export function useParametersGetParametersAuthorSlugSuspense(
 export function prefetchParametersGetParametersAuthorSlug(
   queryClient: QueryClient,
   client$: OpenRouterCore,
+  security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildParametersGetParametersAuthorSlugQuery(
       client$,
+      security,
       request,
     ),
   });
@@ -134,6 +140,7 @@ export function invalidateAllParametersGetParametersAuthorSlug(
 
 export function buildParametersGetParametersAuthorSlugQuery(
   client$: OpenRouterCore,
+  security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
   options?: RequestOptions,
 ): {
@@ -159,6 +166,7 @@ export function buildParametersGetParametersAuthorSlugQuery(
 
       return unwrapAsync(parametersGetParametersAuthorSlug(
         client$,
+        security,
         request,
         mergedOptions,
       ));

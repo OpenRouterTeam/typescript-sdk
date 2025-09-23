@@ -7,12 +7,52 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export type Code = string | number;
+
 export type ChatErrorError = {
-  code: string | null;
+  code: string | number | null;
   message: string;
   param: string | null;
   type: string;
 };
+
+/** @internal */
+export const Code$inboundSchema: z.ZodType<Code, z.ZodTypeDef, unknown> = z
+  .union([z.string(), z.number()]);
+
+/** @internal */
+export type Code$Outbound = string | number;
+
+/** @internal */
+export const Code$outboundSchema: z.ZodType<Code$Outbound, z.ZodTypeDef, Code> =
+  z.union([z.string(), z.number()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Code$ {
+  /** @deprecated use `Code$inboundSchema` instead. */
+  export const inboundSchema = Code$inboundSchema;
+  /** @deprecated use `Code$outboundSchema` instead. */
+  export const outboundSchema = Code$outboundSchema;
+  /** @deprecated use `Code$Outbound` instead. */
+  export type Outbound = Code$Outbound;
+}
+
+export function codeToJSON(code: Code): string {
+  return JSON.stringify(Code$outboundSchema.parse(code));
+}
+
+export function codeFromJSON(
+  jsonString: string,
+): SafeParseResult<Code, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Code$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Code' from JSON`,
+  );
+}
 
 /** @internal */
 export const ChatErrorError$inboundSchema: z.ZodType<
@@ -20,7 +60,7 @@ export const ChatErrorError$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  code: z.nullable(z.string()),
+  code: z.nullable(z.union([z.string(), z.number()])),
   message: z.string(),
   param: z.nullable(z.string()),
   type: z.string(),
@@ -28,7 +68,7 @@ export const ChatErrorError$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatErrorError$Outbound = {
-  code: string | null;
+  code: string | number | null;
   message: string;
   param: string | null;
   type: string;
@@ -40,7 +80,7 @@ export const ChatErrorError$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatErrorError
 > = z.object({
-  code: z.nullable(z.string()),
+  code: z.nullable(z.union([z.string(), z.number()])),
   message: z.string(),
   param: z.nullable(z.string()),
   type: z.string(),

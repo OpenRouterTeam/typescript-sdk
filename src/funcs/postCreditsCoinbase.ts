@@ -8,7 +8,7 @@ import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
+import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -29,6 +29,7 @@ import { Result } from "../types/fp.js";
  */
 export function postCreditsCoinbase(
   client: OpenRouterCore,
+  security: operations.PostCreditsCoinbaseSecurity,
   request?: operations.PostCreditsCoinbaseRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
@@ -46,6 +47,7 @@ export function postCreditsCoinbase(
 > {
   return new APIPromise($do(
     client,
+    security,
     request,
     options,
   ));
@@ -53,6 +55,7 @@ export function postCreditsCoinbase(
 
 async function $do(
   client: OpenRouterCore,
+  security: operations.PostCreditsCoinbaseSecurity,
   request?: operations.PostCreditsCoinbaseRequest | undefined,
   options?: RequestOptions,
 ): Promise<
@@ -94,18 +97,25 @@ async function $do(
     Accept: "application/json",
   }));
 
-  const securityInput = await extractSecurity(client._options.security);
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveSecurity(
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.bearer,
+      },
+    ],
+  );
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "post_/credits/coinbase",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.security,
+    securitySource: security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },

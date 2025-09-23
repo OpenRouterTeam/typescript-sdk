@@ -23,9 +23,7 @@ import { OpenRouterProvider } from "@openrouter/sdk/react-query";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 // Retries are handled by the underlying SDK.
@@ -121,7 +119,9 @@ export function Example() {
 
         // Read form data here...
 
-        mutate();
+        mutate({
+          bearer: process.env["OPENROUTER_BEARER"] ?? "",
+        });
       }}
     >
       {/* Form fields go here... */} 
@@ -224,9 +224,7 @@ import { useGetCreditsSuspense } from "@openrouter/sdk/react-query/getCredits.js
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 export function App() {
@@ -282,9 +280,7 @@ import { prefetchGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 export default async function Page() {
   const queryClient = new QueryClient();
   const openRouter = new OpenRouterCore({
-    security: {
-      apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-    },
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   });
 
   await prefetchGetCredits(openRouter);

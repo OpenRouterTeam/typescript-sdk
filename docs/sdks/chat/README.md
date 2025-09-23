@@ -18,9 +18,7 @@ Sends a request for a model response for the given chat conversation. Supports b
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -43,9 +41,7 @@ import { chatSend } from "@openrouter/sdk/funcs/chatSend.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

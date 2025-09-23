@@ -24,9 +24,7 @@ Get total credits purchased and used for the authenticated user
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -49,9 +47,7 @@ import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -122,14 +118,12 @@ Create a Coinbase charge for crypto payment
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
-const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
-});
+const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.postCreditsCoinbase();
+  const result = await openRouter.postCreditsCoinbase({
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  });
 
   console.log(result);
 }
@@ -147,14 +141,12 @@ import { postCreditsCoinbase } from "@openrouter/sdk/funcs/postCreditsCoinbase.j
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
-const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
-});
+const openRouter = new OpenRouterCore();
 
 async function run() {
-  const res = await postCreditsCoinbase(openRouter);
+  const res = await postCreditsCoinbase(openRouter, {
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -188,6 +180,7 @@ import {
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.PostCreditsCoinbaseRequest](../../models/operations/postcreditscoinbaserequest.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.PostCreditsCoinbaseSecurity](../../models/operations/postcreditscoinbasesecurity.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -211,9 +204,7 @@ import {
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -236,9 +227,7 @@ import { getProviders } from "@openrouter/sdk/funcs/getProviders.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

@@ -85,9 +85,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -106,25 +104,42 @@ run();
 
 ### Per-Client Security Schemes
 
-This SDK supports the following security schemes globally:
+This SDK supports the following security scheme globally:
 
-| Name     | Type   | Scheme      | Environment Variable |
-| -------- | ------ | ----------- | -------------------- |
-| `apiKey` | apiKey | API key     | `OPENROUTER_API_KEY` |
-| `bearer` | http   | HTTP Bearer | `OPENROUTER_BEARER`  |
+| Name     | Type | Scheme      | Environment Variable |
+| -------- | ---- | ----------- | -------------------- |
+| `apiKey` | http | HTTP Bearer | `OPENROUTER_API_KEY` |
 
-You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
+To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.getCredits();
+
+  console.log(result);
+}
+
+run();
+
+```
+
+### Per-Operation Security Schemes
+
+Some operations in this SDK require the security scheme to be specified at the request level. For example:
+```typescript
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter();
+
+async function run() {
+  const result = await openRouter.postCreditsCoinbase({
+    bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  });
 
   console.log(result);
 }
@@ -288,9 +303,7 @@ underlying connection.
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -317,9 +330,7 @@ To change the default retry strategy for a single API call, simply provide a ret
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -358,9 +369,7 @@ const openRouter = new OpenRouter({
     },
     retryConnectionErrors: false,
   },
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -394,9 +403,7 @@ import { OpenRouter } from "@openrouter/sdk";
 import * as errors from "@openrouter/sdk/models/errors";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {

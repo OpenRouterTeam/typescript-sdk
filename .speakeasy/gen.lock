@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 84232fbdd2d267684e96d466dd089ae6
+  docChecksum: d1ed8e0c3d150ef9c912570f5a0752da
   docVersion: 1.0.0
   speakeasyVersion: 1.622.2
   generationVersion: 2.711.4
-  releaseVersion: 0.0.0-beta.2
-  configChecksum: 8cdaeaf188a03d971cb25f6f0714872e
+  releaseVersion: 0.0.0-beta.4
+  configChecksum: 5e75e51e8602d29a1656c3f0fb6ce03f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -24,9 +24,11 @@ features:
     envVarSecurityUsage: 0.1.2
     globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
     groups: 2.81.2
     methodArguments: 0.1.2
+    methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
     reactQueryHooks: 0.2.3
@@ -74,6 +76,7 @@ generatedFiles:
   - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
   - docs/models/code.md
+  - docs/models/codeenum.md
   - docs/models/completiontokensdetails.md
   - docs/models/data.md
   - docs/models/detail.md
@@ -218,6 +221,7 @@ generatedFiles:
   - docs/models/operations/getmodelsuserprompt.md
   - docs/models/operations/getmodelsuserresponse.md
   - docs/models/operations/getmodelsuserresponsebody.md
+  - docs/models/operations/getmodelsusersecurity.md
   - docs/models/operations/getmodelsusersupportedparameter.md
   - docs/models/operations/getmodelsusertokenizer.md
   - docs/models/operations/getmodelsusertopprovider.md
@@ -228,6 +232,7 @@ generatedFiles:
   - docs/models/operations/getparametersauthorslugrequest.md
   - docs/models/operations/getparametersauthorslugresponse.md
   - docs/models/operations/getparametersauthorslugresponsebody.md
+  - docs/models/operations/getparametersauthorslugsecurity.md
   - docs/models/operations/getparametersauthorslugsupportedparameter.md
   - docs/models/operations/getprovidersdata.md
   - docs/models/operations/getprovidersresponse.md
@@ -254,6 +259,7 @@ generatedFiles:
   - docs/models/operations/postcreditscoinbaserequest.md
   - docs/models/operations/postcreditscoinbaseresponse.md
   - docs/models/operations/postcreditscoinbaseresponsebody.md
+  - docs/models/operations/postcreditscoinbasesecurity.md
   - docs/models/operations/postembeddingsaudio.md
   - docs/models/operations/postembeddingscompletion.md
   - docs/models/operations/postembeddingsdata.md

@@ -26,7 +26,7 @@ export type ChatResponse = {
   created: number;
   model: string;
   object: "chat.completion";
-  systemFingerprint?: string | undefined;
+  systemFingerprint?: string | null | undefined;
   usage?: ChatGenerationTokenUsage | undefined;
 };
 
@@ -41,7 +41,7 @@ export const ChatResponse$inboundSchema: z.ZodType<
   created: z.number(),
   model: z.string(),
   object: z.literal("chat.completion"),
-  system_fingerprint: z.string().optional(),
+  system_fingerprint: z.nullable(z.string()).optional(),
   usage: ChatGenerationTokenUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -56,7 +56,7 @@ export type ChatResponse$Outbound = {
   created: number;
   model: string;
   object: "chat.completion";
-  system_fingerprint?: string | undefined;
+  system_fingerprint?: string | null | undefined;
   usage?: ChatGenerationTokenUsage$Outbound | undefined;
 };
 
@@ -71,7 +71,7 @@ export const ChatResponse$outboundSchema: z.ZodType<
   created: z.number(),
   model: z.string(),
   object: z.literal("chat.completion"),
-  systemFingerprint: z.string().optional(),
+  systemFingerprint: z.nullable(z.string()).optional(),
   usage: ChatGenerationTokenUsage$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
