@@ -21,7 +21,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -46,7 +46,7 @@ import { modelsGetModelsCount } from "@openrouter/sdk/funcs/modelsGetModelsCount
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -120,7 +120,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -145,7 +145,7 @@ import { modelsGetModels } from "@openrouter/sdk/funcs/modelsGetModels.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -221,7 +221,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -246,7 +246,7 @@ import { modelsGetModelsUser } from "@openrouter/sdk/funcs/modelsGetModelsUser.j
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 

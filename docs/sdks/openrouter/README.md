@@ -25,7 +25,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -50,7 +50,7 @@ import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -124,7 +124,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -149,7 +149,7 @@ import { postCreditsCoinbase } from "@openrouter/sdk/funcs/postCreditsCoinbase.j
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -212,7 +212,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -237,7 +237,7 @@ import { getProviders } from "@openrouter/sdk/funcs/getProviders.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 

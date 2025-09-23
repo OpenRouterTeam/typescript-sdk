@@ -1,30 +1,17 @@
-# openrouter
+# OpenRouter SDK
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *openrouter* API.
-
-<div align="left">
-    <a href="https://www.speakeasy.com/?utm_source=openrouter&utm_campaign=typescript"><img src="https://www.speakeasy.com/assets/badges/built-by-speakeasy.svg" /></a>
-    <a href="https://opensource.org/licenses/MIT">
-        <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
-    </a>
-</div>
+The [OpenRouter](https://openrouter.ai/) SDK gives access to over 300 large language models on the OpenRouter chat and completion APIs, as well as the rest of our full API. For more information about the API: [OpenRouter Documentation](https://openrouter.ai/docs)
 
 <br /><br />
 > [!IMPORTANT]
 > This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/openrouter/sdk). Delete this section before > publishing to a package manager.
 
-<!-- Start Summary [summary] -->
-## Summary
-
-OpenRouter API: OpenAI-compatible Chat Completions API with additional OpenRouter features
-
-For more information about the API: [OpenRouter Documentation](https://openrouter.ai/docs)
-<!-- End Summary [summary] -->
+<!-- No Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [openrouter](#openrouter)
+* [OpenRouter SDK](#openrouter-sdk)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
@@ -99,7 +86,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -121,10 +108,10 @@ run();
 
 This SDK supports the following security schemes globally:
 
-| Name         | Type   | Scheme      | Environment Variable      |
-| ------------ | ------ | ----------- | ------------------------- |
-| `apiKeyAuth` | apiKey | API key     | `OPENROUTER_API_KEY_AUTH` |
-| `bearer`     | http   | HTTP Bearer | `OPENROUTER_BEARER`       |
+| Name     | Type   | Scheme      | Environment Variable |
+| -------- | ------ | ----------- | -------------------- |
+| `apiKey` | apiKey | API key     | `OPENROUTER_API_KEY` |
+| `bearer` | http   | HTTP Bearer | `OPENROUTER_BEARER`  |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
 ```typescript
@@ -132,7 +119,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -302,7 +289,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -331,7 +318,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -372,7 +359,7 @@ const openRouter = new OpenRouter({
     retryConnectionErrors: false,
   },
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -408,7 +395,7 @@ import * as errors from "@openrouter/sdk/models/errors";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 

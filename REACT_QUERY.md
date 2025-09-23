@@ -24,7 +24,7 @@ import { OpenRouterProvider } from "@openrouter/sdk/react-query";
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -225,7 +225,7 @@ import { useGetCreditsSuspense } from "@openrouter/sdk/react-query/getCredits.js
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -283,7 +283,7 @@ export default async function Page() {
   const queryClient = new QueryClient();
   const openRouter = new OpenRouterCore({
     security: {
-      apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+      apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
     },
   });
 

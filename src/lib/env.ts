@@ -7,14 +7,14 @@ import { dlv } from "./dlv.js";
 import * as z from "zod";
 
 export interface Env {
-  OPENROUTER_API_KEY_AUTH?: string | undefined;
+  OPENROUTER_API_KEY?: string | undefined;
   OPENROUTER_BEARER?: string | undefined;
 
   OPENROUTER_DEBUG?: boolean | undefined;
 }
 
 export const envSchema: z.ZodType<Env, z.ZodTypeDef, unknown> = z.object({
-  OPENROUTER_API_KEY_AUTH: z.string().optional(),
+  OPENROUTER_API_KEY: z.string().optional(),
   OPENROUTER_BEARER: z.string().optional(),
 
   OPENROUTER_DEBUG: z.coerce.boolean().optional(),

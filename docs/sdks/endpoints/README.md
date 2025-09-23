@@ -20,7 +20,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -48,7 +48,7 @@ import { endpointsGetModelsAuthorSlugEndpoints } from "@openrouter/sdk/funcs/end
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -127,7 +127,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
@@ -152,7 +152,7 @@ import { endpointsGetEndpointsZdr } from "@openrouter/sdk/funcs/endpointsGetEndp
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 

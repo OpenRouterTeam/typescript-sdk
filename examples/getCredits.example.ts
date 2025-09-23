@@ -15,7 +15,7 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 

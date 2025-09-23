@@ -893,7 +893,7 @@ components:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
-    apiKeyAuth:
+    apiKey:
       type: apiKey
       in: header
       name: Authorization
@@ -3828,7 +3828,7 @@ servers:
     description: Production server
     x-speakeasy-server-id: production
 security:
-  - apiKeyAuth: []
+  - apiKey: []
   - bearer: []
 externalDocs:
   description: OpenRouter Documentation

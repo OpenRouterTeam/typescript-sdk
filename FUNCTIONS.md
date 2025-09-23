@@ -26,7 +26,7 @@ import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   },
 });
 
