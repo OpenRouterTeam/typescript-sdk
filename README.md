@@ -1,14 +1,17 @@
+# openrouter
 
+Developer-friendly & type-safe Typescript SDK specifically catered to leverage *openrouter* API.
 
-
-<div align="center">
-    <img width="500" height="300" alt="image" src="https://raw.githubusercontent.com/OpenRouterTeam/typescript-sdk/main/assets/logo.svg" />
-    <h1>OpenRouter TypeScript SDK</h1>
-    <p>Developer-friendly TypeScript SDK specifically catered to leverage the <strong>OpenRouter</strong> API.</p>
-    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" /></a>
+<div align="left">
+    <a href="https://www.speakeasy.com/?utm_source=openrouter&utm_campaign=typescript"><img src="https://www.speakeasy.com/assets/badges/built-by-speakeasy.svg" /></a>
+    <a href="https://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
+    </a>
 </div>
 
-
+<br /><br />
+> [!IMPORTANT]
+> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/openrouter/sdk). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
@@ -21,17 +24,17 @@ For more information about the API: [OpenRouter Documentation](https://openroute
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
+* [openrouter](#openrouter)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Standalone functions](#standalone-functions)
-  * [Server-sent event streaming](#server-sent-event-streaming)
   * [React hooks with TanStack Query](#react-hooks-with-tanstack-query)
+  * [Server-sent event streaming](#server-sent-event-streaming)
   * [Retries](#retries)
   * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
   * [Custom HTTP Client](#custom-http-client)
   * [Debugging](#debugging)
 * [Development](#development)
@@ -45,7 +48,6 @@ For more information about the API: [OpenRouter Documentation](https://openroute
 
 > [!TIP]
 > To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
 
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
@@ -126,9 +128,10 @@ This SDK supports the following security schemes globally:
 | Name         | Type   | Scheme      | Environment Variable      |
 | ------------ | ------ | ----------- | ------------------------- |
 | `apiKeyAuth` | apiKey | API key     | `OPENROUTER_API_KEY_AUTH` |
-| `bearerAuth` | http   | HTTP Bearer | `OPENROUTER_BEARER_AUTH`  |
+| `bearer`     | http   | HTTP Bearer | `OPENROUTER_BEARER`       |
 
 You can set the security parameters through the `security` optional parameter when initializing the SDK client instance. The selected scheme will be used by default to authenticate with the API for all operations that support it. For example:
+
 ```typescript
 import { OpenRouter } from "openrouter";
 
@@ -220,110 +223,29 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [`analyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
-- [`apiKeysDeleteKeysHash`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
-- [`apiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
-- [`apiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
-- [`apiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
-- [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
-- [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
-- [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-- [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
-- [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
-- [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
-- [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`getCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`getProviders`](docs/sdks/openrouter/README.md#getproviders)
-- [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
-- [`modelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`parametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`postCreditsCoinbase`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+* [`analyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+* [`apiKeysDeleteKeysHash`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
+* [`apiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+* [`apiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
+* [`apiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
+* [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
+* [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
+* [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+* [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
+* [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+* [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+* [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
+* [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+* [`getCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
+* [`getProviders`](docs/sdks/openrouter/README.md#getproviders)
+* [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+* [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
+* [`modelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+* [`parametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+* [`postCreditsCoinbase`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
-
-<!-- No Server-sent event streaming [eventstream] -->
-## Server-sent event streaming
-
-[Server-sent events][mdn-sse] are used to stream content from certain
-operations. These operations will expose the stream as an async iterable that
-can be consumed using a [`for await...of`][mdn-for-await-of] loop. The loop will
-terminate when the server no longer has any events to send and closes the
-underlying connection.
-
-```typescript
-import { OpenRouter } from "open-router";
-
-const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
-});
-
-async function run() {
-  const result = await openRouter.chat.completeStream({
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
-
-  for await (const event of result) {
-    // Handle the event
-    console.log(event);
-  }
-}
-
-run();
-
-```
-
-You can also pass the `stream` parameter to the `complete` method to control streaming behavior dynamically:
-
-```typescript
-import { OpenRouter } from "open-router";
-
-const openRouter = new OpenRouter({
-  bearerAuth: process.env["OPENROUTER_BEARER_AUTH"] ?? "",
-});
-
-async function run() {
-  const isStreaming = true; // Set to false for non-streaming response
-  
-  const result = await openRouter.chat.complete({
-    model: "openai/gpt-3.5-turbo",
-    stream: isStreaming,
-    messages: [
-      {
-        role: "user",
-        content: "Hello, how are you?",
-      },
-    ],
-  });
-
-  // Handle response based on stream setting
-  if (isStreaming) {
-    console.log("Streaming response:");
-    for await (const chunk of result) {
-      if (chunk.data?.choices?.[0]?.delta?.content) {
-        process.stdout.write(chunk.data.choices[0].delta.content);
-      }
-    }
-    console.log("\n\nStreaming completed");
-  } else {
-    console.log("Non-streaming response:");
-    console.log(JSON.stringify(result, null, 2));
-  }
-}
-
-run();
-```
-
-[mdn-sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
-[mdn-for-await-of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
-<!-- No Server-sent event streaming [eventstream] -->
 
 <!-- Start React hooks with TanStack Query [react-query] -->
 ## React hooks with TanStack Query
@@ -347,29 +269,61 @@ To learn about this feature and how to get started, check
 
 <summary>Available React hooks</summary>
 
-- [`useAnalyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
-- [`useApiKeysDeleteKeysHashMutation`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
-- [`useApiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
-- [`useApiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
-- [`useApiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
-- [`useApiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
-- [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
-- [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-- [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`useEmbeddingsPostEmbeddingsMutation`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
-- [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
-- [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
-- [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`useGetCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`useGetProviders`](docs/sdks/openrouter/README.md#getproviders)
-- [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
-- [`useModelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`useParametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`usePostCreditsCoinbaseMutation`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+* [`useAnalyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+* [`useApiKeysDeleteKeysHashMutation`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
+* [`useApiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+* [`useApiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
+* [`useApiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
+* [`useApiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
+* [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
+* [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+* [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
+* [`useEmbeddingsPostEmbeddingsMutation`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+* [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+* [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
+* [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+* [`useGetCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
+* [`useGetProviders`](docs/sdks/openrouter/README.md#getproviders)
+* [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+* [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
+* [`useModelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+* [`useParametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+* [`usePostCreditsCoinbaseMutation`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 
 </details>
 <!-- End React hooks with TanStack Query [react-query] -->
+
+<!-- Start Server-sent event streaming [eventstream] -->
+## Server-sent event streaming
+
+[Server-sent events][mdn-sse] are used to stream content from certain
+operations. These operations will expose the stream as an async iterable that
+can be consumed using a [`for await...of`][mdn-for-await-of] loop. The loop will
+terminate when the server no longer has any events to send and closes the
+underlying connection.
+
+```typescript
+import { OpenRouter } from "openrouter";
+
+const openRouter = new OpenRouter({
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
+});
+
+async function run() {
+  const result = await openRouter.chat.send();
+
+  console.log(result);
+}
+
+run();
+
+```
+
+[mdn-sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+[mdn-for-await-of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+<!-- End Server-sent event streaming [eventstream] -->
 
 <!-- Start Retries [retries] -->
 ## Retries
@@ -377,6 +331,7 @@ To learn about this feature and how to get started, check
 Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
+
 ```typescript
 import { OpenRouter } from "openrouter";
 
@@ -408,6 +363,7 @@ run();
 ```
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
+
 ```typescript
 import { OpenRouter } from "openrouter";
 
@@ -453,6 +409,7 @@ run();
 | `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
+
 ```typescript
 import { OpenRouter } from "openrouter";
 import * as errors from "openrouter/models/errors";
@@ -489,7 +446,9 @@ run();
 ```
 
 ### Error Classes
+
 **Primary error:**
+
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
 
 <details><summary>Less common errors (8)</summary>
@@ -497,14 +456,15 @@ run();
 <br />
 
 **Network errors:**
+
 * [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
 * [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
 * [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
 * [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
 * [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
-
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
+
 * [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 20 methods.*
 * [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
@@ -514,111 +474,9 @@ run();
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
-<!-- Start Server Selection [server] -->
-## Server Selection
+<!-- No Server Selection [server] -->
 
-### Select Server by Name
-
-You can override the default server globally by passing a server name to the `server: keyof typeof ServerList` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
-
-| Name         | Server                         | Description       |
-| ------------ | ------------------------------ | ----------------- |
-| `production` | `https://openrouter.ai/api/v1` | Production server |
-
-#### Example
-
-```typescript
-import { OpenRouter } from "openrouter";
-
-const openRouter = new OpenRouter({
-  server: "production",
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
-});
-
-async function run() {
-  const result = await openRouter.getCredits();
-
-  console.log(result);
-}
-
-run();
-
-```
-
-### Override Server URL Per-Client
-
-The default server can also be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
-```typescript
-import { OpenRouter } from "openrouter";
-
-const openRouter = new OpenRouter({
-  serverURL: "https://openrouter.ai/api/v1",
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
-});
-
-async function run() {
-  const result = await openRouter.getCredits();
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End Server Selection [server] -->
-
-<!-- Start Custom HTTP Client [http-client] -->
-## Custom HTTP Client
-
-The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
-[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This
-client is a thin wrapper around `fetch` and provides the ability to attach hooks
-around the request lifecycle that can be used to modify the request or handle
-errors and response.
-
-The `HTTPClient` constructor takes an optional `fetcher` argument that can be
-used to integrate a third-party HTTP client or when writing tests to mock out
-the HTTP client and feed in fixtures.
-
-The following example shows how to use the `"beforeRequest"` hook to to add a
-custom header and a timeout to requests and how to use the `"requestError"` hook
-to log errors:
-
-```typescript
-import { OpenRouter } from "openrouter";
-import { HTTPClient } from "openrouter/lib/http";
-
-const httpClient = new HTTPClient({
-  // fetcher takes a function that has the same signature as native `fetch`.
-  fetcher: (request) => {
-    return fetch(request);
-  }
-});
-
-httpClient.addHook("beforeRequest", (request) => {
-  const nextRequest = new Request(request, {
-    signal: request.signal || AbortSignal.timeout(5000)
-  });
-
-  nextRequest.headers.set("x-custom-header", "custom value");
-
-  return nextRequest;
-});
-
-httpClient.addHook("requestError", (error, request) => {
-  console.group("Request Error");
-  console.log("Reason:", `${error}`);
-  console.log("Endpoint:", `${request.method} ${request.url}`);
-  console.groupEnd();
-});
-
-const sdk = new OpenRouter({ httpClient: httpClient });
-```
-<!-- End Custom HTTP Client [http-client] -->
+<!-- No Custom HTTP Client [http-client] -->
 
 <!-- Start Debugging [debug] -->
 ## Debugging
@@ -651,7 +509,5 @@ looking for the latest version.
 
 ## Contributions
 
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
-
-### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=open-router&utm_campaign=typescript)
+While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation.
+We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.

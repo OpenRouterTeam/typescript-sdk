@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 3e3395bf3798c4ad00c1e8abe7800bd5
+  docChecksum: 0565265506e77d2f8173f58638aa099f
   docVersion: 1.0.0
   speakeasyVersion: 1.622.2
   generationVersion: 2.711.4
-  releaseVersion: 0.4.1
-  configChecksum: e62fc4f9f9ea3a7d2662ac3105a39ea6
+  releaseVersion: 0.4.5
+  configChecksum: fd5fc81ac5b41d0d279d025ae0cace2c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -68,6 +68,7 @@ generatedFiles:
   - docs/models/chatstreamingmessagetoolcall.md
   - docs/models/chatstreamingmessagetoolcallfunction.md
   - docs/models/chatstreamingresponsechunk.md
+  - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
   - docs/models/code.md
   - docs/models/completiontokensdetails.md

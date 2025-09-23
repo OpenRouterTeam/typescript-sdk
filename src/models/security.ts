@@ -9,7 +9,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Security = {
   apiKeyAuth?: string | undefined;
-  bearerAuth?: string | undefined;
+  bearer?: string | undefined;
 };
 
 /** @internal */
@@ -19,13 +19,13 @@ export const Security$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   apiKeyAuth: z.string().optional(),
-  bearerAuth: z.string().optional(),
+  bearer: z.string().optional(),
 });
 
 /** @internal */
 export type Security$Outbound = {
   apiKeyAuth?: string | undefined;
-  bearerAuth?: string | undefined;
+  bearer?: string | undefined;
 };
 
 /** @internal */
@@ -35,7 +35,7 @@ export const Security$outboundSchema: z.ZodType<
   Security
 > = z.object({
   apiKeyAuth: z.string().optional(),
-  bearerAuth: z.string().optional(),
+  bearer: z.string().optional(),
 });
 
 /**

@@ -867,6 +867,16 @@ components:
               const: chat.completion.chunk
             system_fingerprint:
               type: string
+            error:
+              type: object
+              properties:
+                message:
+                  type: string
+                code:
+                  type: number
+              required:
+                - message
+                - code
             usage:
               $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
@@ -879,7 +889,7 @@ components:
         - data
   parameters: {}
   securitySchemes:
-    bearerAuth:
+    bearer:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
@@ -956,7 +966,7 @@ paths:
   /credits/coinbase:
     post:
       security:
-        - bearerAuth: []
+        - bearer: []
       description: Create a Coinbase charge for crypto payment
       requestBody:
         content:
@@ -2096,7 +2106,7 @@ paths:
         - Models
       summary: List models filtered by user provider preferences
       security:
-        - bearerAuth: []
+        - bearer: []
       responses:
         '200':
           description: Returns a list of models filtered by user provider preferences
@@ -3009,7 +3019,7 @@ paths:
         - Parameters
       summary: Get a model's supported parameters and data about which are most popular
       security:
-        - bearerAuth: []
+        - bearer: []
       parameters:
         - schema:
             type: string
@@ -3819,7 +3829,7 @@ servers:
     x-speakeasy-server-id: production
 security:
   - apiKeyAuth: []
-  - bearerAuth: []
+  - bearer: []
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
