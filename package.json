@@ -1,6 +1,6 @@
 {
   "name": "openrouter",
-  "version": "0.4.6",
+  "version": "0.0.0-beta.0",
   "author": "OpenRouter",
   "type": "module",
   "tshy": {
