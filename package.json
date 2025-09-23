@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.0.0-beta.1",
+  "version": "0.0.0-beta.2",
   "author": "OpenRouter",
   "type": "module",
   "tshy": {
@@ -20,6 +20,10 @@
     }
   },
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenRouterTeam/typescript-sdk.git"
+  },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tshy",
