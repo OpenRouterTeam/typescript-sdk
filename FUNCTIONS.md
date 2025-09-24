@@ -25,7 +25,9 @@ import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {

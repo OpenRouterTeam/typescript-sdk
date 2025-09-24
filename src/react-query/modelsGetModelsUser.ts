@@ -27,14 +27,12 @@ export type ModelsGetModelsUserQueryData = operations.GetModelsUserResponse;
  * List models filtered by user provider preferences
  */
 export function useModelsGetModelsUser(
-  security: operations.GetModelsUserSecurity,
   options?: QueryHookOptions<ModelsGetModelsUserQueryData>,
 ): UseQueryResult<ModelsGetModelsUserQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
     ...buildModelsGetModelsUserQuery(
       client,
-      security,
       options,
     ),
     ...options,
@@ -45,14 +43,12 @@ export function useModelsGetModelsUser(
  * List models filtered by user provider preferences
  */
 export function useModelsGetModelsUserSuspense(
-  security: operations.GetModelsUserSecurity,
   options?: SuspenseQueryHookOptions<ModelsGetModelsUserQueryData>,
 ): UseSuspenseQueryResult<ModelsGetModelsUserQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
     ...buildModelsGetModelsUserQuery(
       client,
-      security,
       options,
     ),
     ...options,
@@ -62,12 +58,10 @@ export function useModelsGetModelsUserSuspense(
 export function prefetchModelsGetModelsUser(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  security: operations.GetModelsUserSecurity,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildModelsGetModelsUserQuery(
       client$,
-      security,
     ),
   });
 }
@@ -93,7 +87,6 @@ export function invalidateAllModelsGetModelsUser(
 
 export function buildModelsGetModelsUserQuery(
   client$: OpenRouterCore,
-  security: operations.GetModelsUserSecurity,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;
@@ -114,7 +107,6 @@ export function buildModelsGetModelsUserQuery(
 
       return unwrapAsync(modelsGetModelsUser(
         client$,
-        security,
         mergedOptions,
       ));
     },

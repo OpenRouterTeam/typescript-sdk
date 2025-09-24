@@ -23,7 +23,9 @@ import { OpenRouterProvider } from "@openrouter/sdk/react-query";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 // Retries are handled by the underlying SDK.
@@ -107,10 +109,10 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
+import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
 
 export function Example() {
-  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation();
+  const { mutate, status } = usePostCreditsCoinbaseMutation();
 
   return (
     <form
@@ -119,9 +121,7 @@ export function Example() {
 
         // Read form data here...
 
-        mutate({
-          bearer: process.env["OPENROUTER_BEARER"] ?? "",
-        });
+        mutate();
       }}
     >
       {/* Form fields go here... */} 
@@ -137,10 +137,10 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
+import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
 
 export function ExampleWithOptions() {
-  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation({
+  const { mutate, status } = usePostCreditsCoinbaseMutation({
     // TanStack Query options:
     networkMode: "online",
     gcTime: 5 * 60 * 1000, // 5 minutes
@@ -224,7 +224,9 @@ import { useGetCreditsSuspense } from "@openrouter/sdk/react-query/getCredits.js
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 export function App() {
@@ -280,7 +282,9 @@ import { prefetchGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
 export default async function Page() {
   const queryClient = new QueryClient();
   const openRouter = new OpenRouterCore({
-    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+    security: {
+      apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+    },
   });
 
   await prefetchGetCredits(openRouter);

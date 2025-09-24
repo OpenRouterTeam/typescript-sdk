@@ -8,8 +8,9 @@ import { ChatGenerationParams } from "@openrouter/sdk/models";
 let value: ChatGenerationParams = {
   messages: [
     {
-      role: "system",
+      role: "tool",
       content: "<value>",
+      toolCallId: "<id>",
     },
   ],
   model: "Mustang",

@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [send](#send) - Create a chat completion
+* [generateResponse](#generateresponse) - Create a chat completion
 
-## send
+## generateResponse
 
-Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
 
 ### Example Usage
 
@@ -18,11 +18,13 @@ Sends a request for a model response for the given chat conversation. Supports b
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const result = await openRouter.chat.send();
+  const result = await openRouter.chat.generateResponse();
 
   console.log(result);
 }
@@ -36,21 +38,23 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { chatSend } from "@openrouter/sdk/funcs/chatSend.js";
+import { chatGenerateResponse } from "@openrouter/sdk/funcs/chatGenerateResponse.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
-  const res = await chatSend(openRouter);
+  const res = await chatGenerateResponse(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("chatSend failed:", res.error);
+    console.log("chatGenerateResponse failed:", res.error);
   }
 }
 
@@ -70,8 +74,8 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useChatSendMutation
-} from "@openrouter/sdk/react-query/chatSend.js";
+  useChatGenerateResponseMutation
+} from "@openrouter/sdk/react-query/chatGenerateResponse.js";
 ```
 
 ### Parameters
@@ -91,6 +95,6 @@ import {
 
 | Error Type                    | Status Code                   | Content Type                  |
 | ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ChatError              | 400, 401, 429                 | application/json              |
-| errors.ChatError              | 500                           | application/json              |
+| errors.ChatCompletionError    | 400, 401, 429                 | application/json              |
+| errors.ChatCompletionError    | 500                           | application/json              |
 | errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |

@@ -10,8 +10,8 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type PostChatCompletionsResponse =
-  | models.ChatResponse
-  | EventStream<models.ChatStreamingResponseChunk>;
+  | models.ChatCompletion
+  | EventStream<models.ChatCompletionChunk>;
 
 /** @internal */
 export const PostChatCompletionsResponse$inboundSchema: z.ZodType<
@@ -19,16 +19,14 @@ export const PostChatCompletionsResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  models.ChatResponse$inboundSchema,
+  models.ChatCompletion$inboundSchema,
   z
     .instanceof(ReadableStream<Uint8Array>)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
         if (rawEvent.data === "[DONE]") return { done: true };
         return {
-          value: models.ChatStreamingResponseChunk$inboundSchema.parse(
-            rawEvent,
-          ),
+          value: models.ChatCompletionChunk$inboundSchema.parse(rawEvent),
         };
       });
     }),
@@ -36,7 +34,7 @@ export const PostChatCompletionsResponse$inboundSchema: z.ZodType<
 
 /** @internal */
 export type PostChatCompletionsResponse$Outbound =
-  | models.ChatResponse$Outbound
+  | models.ChatCompletion$Outbound
   | never;
 
 /** @internal */
@@ -44,7 +42,7 @@ export const PostChatCompletionsResponse$outboundSchema: z.ZodType<
   PostChatCompletionsResponse$Outbound,
   z.ZodTypeDef,
   PostChatCompletionsResponse
-> = z.union([models.ChatResponse$outboundSchema, z.never()]);
+> = z.union([models.ChatCompletion$outboundSchema, z.never()]);
 
 /**
  * @internal

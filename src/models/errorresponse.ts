@@ -9,7 +9,7 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const CodeEnum = {
+export const Code = {
   OneHundred: 100,
   OneHundredAndOne: 101,
   OneHundredAndTwo: 102,
@@ -81,10 +81,10 @@ export const CodeEnum = {
   FiveHundredAndTwentyNine: 529,
   FiveHundredAndThirty: 530,
 } as const;
-export type CodeEnum = ClosedEnum<typeof CodeEnum>;
+export type Code = ClosedEnum<typeof Code>;
 
 export type ErrorResponseError = {
-  code: CodeEnum;
+  code: Code;
   message: string;
   metadata?: { [k: string]: any | null } | null | undefined;
 };
@@ -98,22 +98,23 @@ export type ErrorResponse = {
 };
 
 /** @internal */
-export const CodeEnum$inboundSchema: z.ZodNativeEnum<typeof CodeEnum> = z
-  .nativeEnum(CodeEnum);
+export const Code$inboundSchema: z.ZodNativeEnum<typeof Code> = z.nativeEnum(
+  Code,
+);
 
 /** @internal */
-export const CodeEnum$outboundSchema: z.ZodNativeEnum<typeof CodeEnum> =
-  CodeEnum$inboundSchema;
+export const Code$outboundSchema: z.ZodNativeEnum<typeof Code> =
+  Code$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace CodeEnum$ {
-  /** @deprecated use `CodeEnum$inboundSchema` instead. */
-  export const inboundSchema = CodeEnum$inboundSchema;
-  /** @deprecated use `CodeEnum$outboundSchema` instead. */
-  export const outboundSchema = CodeEnum$outboundSchema;
+export namespace Code$ {
+  /** @deprecated use `Code$inboundSchema` instead. */
+  export const inboundSchema = Code$inboundSchema;
+  /** @deprecated use `Code$outboundSchema` instead. */
+  export const outboundSchema = Code$outboundSchema;
 }
 
 /** @internal */
@@ -122,7 +123,7 @@ export const ErrorResponseError$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  code: CodeEnum$inboundSchema,
+  code: Code$inboundSchema,
   message: z.string(),
   metadata: z.nullable(z.record(z.nullable(z.any()))).optional(),
 });
@@ -140,7 +141,7 @@ export const ErrorResponseError$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ErrorResponseError
 > = z.object({
-  code: CodeEnum$outboundSchema,
+  code: Code$outboundSchema,
   message: z.string(),
   metadata: z.nullable(z.record(z.nullable(z.any()))).optional(),
 });

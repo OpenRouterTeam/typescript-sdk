@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: a1cf6756d06afbe789def40a522bb8af
+  docChecksum: 80dec9a41e9ab85cde78982024c04754
   docVersion: 1.0.0
-  speakeasyVersion: 1.624.1
-  generationVersion: 2.714.1
-  releaseVersion: 0.0.0-beta.5
-  configChecksum: b84e6447431dce7865acd13a49350f54
+  speakeasyVersion: 1.625.0
+  generationVersion: 2.715.0
+  releaseVersion: 0.0.0-beta.7
+  configChecksum: 22f8698917df78c1ff76ee20c8131282
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -24,11 +24,9 @@ features:
     envVarSecurityUsage: 0.1.2
     globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
-    globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
     groups: 2.81.2
     methodArguments: 0.1.2
-    methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
     reactQueryHooks: 0.2.3
@@ -53,7 +51,18 @@ generatedFiles:
   - docs/models/activityitem.md
   - docs/models/assistantmessage.md
   - docs/models/assistantmessagecontent.md
-  - docs/models/chaterrorerror.md
+  - docs/models/chatcompletion.md
+  - docs/models/chatcompletionchoice.md
+  - docs/models/chatcompletionchoicefinishreason.md
+  - docs/models/chatcompletionchunk.md
+  - docs/models/chatcompletionchunkchoice.md
+  - docs/models/chatcompletionchunkchoicedelta.md
+  - docs/models/chatcompletionchunkchoicedeltatoolcall.md
+  - docs/models/chatcompletionchunkchoicedeltatoolcallfunction.md
+  - docs/models/chatcompletionchunkchoicefinishreason.md
+  - docs/models/chatcompletionerrorerror.md
+  - docs/models/chatcompletionmessage.md
+  - docs/models/chatcompletionmessagecontent.md
   - docs/models/chatgenerationparams.md
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
@@ -64,26 +73,15 @@ generatedFiles:
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
   - docs/models/chatmessagetoolcallfunction.md
-  - docs/models/chatresponse.md
-  - docs/models/chatresponsechoice.md
-  - docs/models/chatresponsechoicefinishreason.md
-  - docs/models/chatstreamingchoice.md
-  - docs/models/chatstreamingchoicefinishreason.md
-  - docs/models/chatstreamingmessagechunk.md
-  - docs/models/chatstreamingmessagetoolcall.md
-  - docs/models/chatstreamingmessagetoolcallfunction.md
-  - docs/models/chatstreamingresponsechunk.md
-  - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
   - docs/models/code.md
-  - docs/models/codeenum.md
   - docs/models/completiontokensdetails.md
   - docs/models/data.md
   - docs/models/detail.md
   - docs/models/effort.md
   - docs/models/errorresponse.md
   - docs/models/errorresponseerror.md
-  - docs/models/errors/chaterror.md
+  - docs/models/errors/chatcompletionerror.md
   - docs/models/errors/internalservererror.md
   - docs/models/format.md
   - docs/models/generatesummary.md
@@ -91,8 +89,6 @@ generatedFiles:
   - docs/models/inputaudio.md
   - docs/models/jsonschema.md
   - docs/models/message.md
-  - docs/models/messagecontent.md
-  - docs/models/messagedeveloper.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/operations/apitype.md
@@ -221,7 +217,6 @@ generatedFiles:
   - docs/models/operations/getmodelsuserprompt.md
   - docs/models/operations/getmodelsuserresponse.md
   - docs/models/operations/getmodelsuserresponsebody.md
-  - docs/models/operations/getmodelsusersecurity.md
   - docs/models/operations/getmodelsusersupportedparameter.md
   - docs/models/operations/getmodelsusertokenizer.md
   - docs/models/operations/getmodelsusertopprovider.md
@@ -232,7 +227,6 @@ generatedFiles:
   - docs/models/operations/getparametersauthorslugrequest.md
   - docs/models/operations/getparametersauthorslugresponse.md
   - docs/models/operations/getparametersauthorslugresponsebody.md
-  - docs/models/operations/getparametersauthorslugsecurity.md
   - docs/models/operations/getparametersauthorslugsupportedparameter.md
   - docs/models/operations/getprovidersdata.md
   - docs/models/operations/getprovidersresponse.md
@@ -254,21 +248,11 @@ generatedFiles:
   - docs/models/operations/patchkeyshashrequestbody.md
   - docs/models/operations/patchkeyshashresponse.md
   - docs/models/operations/patchkeyshashresponsebody.md
-  - docs/models/operations/postauthkeyscodechallengemethod.md
-  - docs/models/operations/postauthkeyscodecodechallengemethod.md
-  - docs/models/operations/postauthkeyscodedata.md
-  - docs/models/operations/postauthkeyscoderequest.md
-  - docs/models/operations/postauthkeyscoderesponse.md
-  - docs/models/operations/postauthkeyscoderesponsebody.md
-  - docs/models/operations/postauthkeysrequest.md
-  - docs/models/operations/postauthkeysresponse.md
-  - docs/models/operations/postauthkeysresponsebody.md
   - docs/models/operations/postchatcompletionsresponse.md
   - docs/models/operations/postcreditscoinbasedata.md
   - docs/models/operations/postcreditscoinbaserequest.md
   - docs/models/operations/postcreditscoinbaseresponse.md
   - docs/models/operations/postcreditscoinbaseresponsebody.md
-  - docs/models/operations/postcreditscoinbasesecurity.md
   - docs/models/operations/postembeddingsaudio.md
   - docs/models/operations/postembeddingscompletion.md
   - docs/models/operations/postembeddingsdata.md
@@ -304,23 +288,20 @@ generatedFiles:
   - docs/models/systemmessagecontent.md
   - docs/models/tool.md
   - docs/models/toolfunction.md
-  - docs/models/toolresponsemessage.md
-  - docs/models/toolresponsemessagecontent.md
+  - docs/models/toolmessage.md
+  - docs/models/toolmessagecontent.md
   - docs/models/toplogprob.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
-  - docs/sdks/credits/README.md
   - docs/sdks/embeddings/README.md
   - docs/sdks/endpoints/README.md
   - docs/sdks/generations/README.md
-  - docs/sdks/model/README.md
   - docs/sdks/models/README.md
-  - docs/sdks/oauth/README.md
   - docs/sdks/openrouter/README.md
-  - docs/sdks/providers/README.md
+  - docs/sdks/parameters/README.md
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
@@ -337,20 +318,18 @@ generatedFiles:
   - src/funcs/apiKeysGetKeysHash.ts
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
-  - src/funcs/chatSend.ts
-  - src/funcs/creditsPostCreditsCoinbase.ts
-  - src/funcs/embeddingsGenerate.ts
+  - src/funcs/chatGenerateResponse.ts
+  - src/funcs/embeddingsPostEmbeddings.ts
   - src/funcs/endpointsGetEndpointsZdr.ts
   - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
   - src/funcs/getCredits.ts
-  - src/funcs/modelGetParametersAuthorSlug.ts
+  - src/funcs/getProviders.ts
   - src/funcs/modelsGetModels.ts
   - src/funcs/modelsGetModelsCount.ts
   - src/funcs/modelsGetModelsUser.ts
-  - src/funcs/oAuthPostAuthKeys.ts
-  - src/funcs/oAuthPostAuthKeysCode.ts
-  - src/funcs/providersGetProviders.ts
+  - src/funcs/parametersGetParametersAuthorSlug.ts
+  - src/funcs/postCreditsCoinbase.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts
@@ -374,7 +353,14 @@ generatedFiles:
   - src/lib/url.ts
   - src/models/activityitem.ts
   - src/models/assistantmessage.ts
-  - src/models/chaterror.ts
+  - src/models/chatcompletion.ts
+  - src/models/chatcompletionchoice.ts
+  - src/models/chatcompletionchunk.ts
+  - src/models/chatcompletionchunkchoice.ts
+  - src/models/chatcompletionchunkchoicedelta.ts
+  - src/models/chatcompletionchunkchoicedeltatoolcall.ts
+  - src/models/chatcompletionerror.ts
+  - src/models/chatcompletionmessage.ts
   - src/models/chatgenerationparams.ts
   - src/models/chatgenerationtokenusage.ts
   - src/models/chatmessagecontentitem.ts
@@ -384,15 +370,9 @@ generatedFiles:
   - src/models/chatmessagetokenlogprob.ts
   - src/models/chatmessagetokenlogprobs.ts
   - src/models/chatmessagetoolcall.ts
-  - src/models/chatresponse.ts
-  - src/models/chatresponsechoice.ts
-  - src/models/chatstreamingchoice.ts
-  - src/models/chatstreamingmessagechunk.ts
-  - src/models/chatstreamingmessagetoolcall.ts
-  - src/models/chatstreamingresponsechunk.ts
   - src/models/chatstreamoptions.ts
   - src/models/errorresponse.ts
-  - src/models/errors/chaterror.ts
+  - src/models/errors/chatcompletionerror.ts
   - src/models/errors/getproviders.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
@@ -420,8 +400,6 @@ generatedFiles:
   - src/models/operations/getproviders.ts
   - src/models/operations/index.ts
   - src/models/operations/patchkeyshash.ts
-  - src/models/operations/postauthkeys.ts
-  - src/models/operations/postauthkeyscode.ts
   - src/models/operations/postchatcompletions.ts
   - src/models/operations/postcreditscoinbase.ts
   - src/models/operations/postembeddings.ts
@@ -429,7 +407,7 @@ generatedFiles:
   - src/models/security.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
-  - src/models/toolresponsemessage.ts
+  - src/models/toolmessage.ts
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
@@ -441,33 +419,28 @@ generatedFiles:
   - src/react-query/apiKeysGetKeysHash.ts
   - src/react-query/apiKeysPatchKeysHash.ts
   - src/react-query/apiKeysPostKeys.ts
-  - src/react-query/chatSend.ts
-  - src/react-query/creditsPostCreditsCoinbase.ts
-  - src/react-query/embeddingsGenerate.ts
+  - src/react-query/chatGenerateResponse.ts
+  - src/react-query/embeddingsPostEmbeddings.ts
   - src/react-query/endpointsGetEndpointsZdr.ts
   - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
   - src/react-query/getCredits.ts
+  - src/react-query/getProviders.ts
   - src/react-query/index.ts
-  - src/react-query/modelGetParametersAuthorSlug.ts
   - src/react-query/modelsGetModels.ts
   - src/react-query/modelsGetModelsCount.ts
   - src/react-query/modelsGetModelsUser.ts
-  - src/react-query/oAuthPostAuthKeys.ts
-  - src/react-query/oAuthPostAuthKeysCode.ts
-  - src/react-query/providersGetProviders.ts
+  - src/react-query/parametersGetParametersAuthorSlug.ts
+  - src/react-query/postCreditsCoinbase.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/chat.ts
-  - src/sdk/credits.ts
   - src/sdk/embeddings.ts
   - src/sdk/endpoints.ts
   - src/sdk/generations.ts
   - src/sdk/index.ts
-  - src/sdk/model.ts
   - src/sdk/models.ts
-  - src/sdk/oauth.ts
-  - src/sdk/providers.ts
+  - src/sdk/parameters.ts
   - src/sdk/sdk.ts
   - src/types/async.ts
   - src/types/blobs.ts
@@ -502,6 +475,8 @@ examples:
           application/json: {"data": {"total_credits": 5452.47, "total_usage": 6368.93}}
         default:
           application/json: {"error": {"code": 413, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 418, "message": "<value>"}}
   post_/credits/coinbase:
     speakeasy-default-post-/credits/coinbase:
       responses:
@@ -509,6 +484,10 @@ examples:
           application/json: {"data": {"id": "<id>", "created_at": "1705058901106", "expires_at": "1742247470320", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 7411.72, "contract_address": "<value>", "sender": "<value>"}}}}}
         default:
           application/json: {"error": {"code": 201, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 102, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 102, "message": "<value>"}}
   get_/providers:
     speakeasy-default-get-/providers:
       responses:
@@ -535,6 +514,10 @@ examples:
           application/json: {"object": "list", "data": [], "model": "Charger"}
         default:
           application/json: {"error": {"code": 404, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 423, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 423, "message": "<value>"}}
   get_/generation:
     speakeasy-default-get-/generation:
       parameters:
@@ -675,6 +658,10 @@ examples:
         "200":
           application/json: {"key": "sk-or-v1-abc123def456ghi789jkl012", "user_id": "or_user_1234567890abcdef"}
         default:
+          application/json: {"error": {"code": 451, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 451, "message": "<value>"}}
+        5XX:
           application/json: {"error": {"code": 451, "message": "<value>"}}
   post_/auth/keys/code:
     speakeasy-default-post-/auth/keys/code:

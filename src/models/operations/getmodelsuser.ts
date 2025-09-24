@@ -10,10 +10,6 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type GetModelsUserSecurity = {
-  bearer: string;
-};
-
 export type GetModelsUserPrompt = number | string | any;
 
 export type GetModelsUserCompletion = number | string | any;
@@ -287,60 +283,6 @@ export type GetModelsUserResponseBody = {
 export type GetModelsUserResponse =
   | GetModelsUserResponseBody
   | models.ErrorResponse;
-
-/** @internal */
-export const GetModelsUserSecurity$inboundSchema: z.ZodType<
-  GetModelsUserSecurity,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  bearer: z.string(),
-});
-
-/** @internal */
-export type GetModelsUserSecurity$Outbound = {
-  bearer: string;
-};
-
-/** @internal */
-export const GetModelsUserSecurity$outboundSchema: z.ZodType<
-  GetModelsUserSecurity$Outbound,
-  z.ZodTypeDef,
-  GetModelsUserSecurity
-> = z.object({
-  bearer: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsUserSecurity$ {
-  /** @deprecated use `GetModelsUserSecurity$inboundSchema` instead. */
-  export const inboundSchema = GetModelsUserSecurity$inboundSchema;
-  /** @deprecated use `GetModelsUserSecurity$outboundSchema` instead. */
-  export const outboundSchema = GetModelsUserSecurity$outboundSchema;
-  /** @deprecated use `GetModelsUserSecurity$Outbound` instead. */
-  export type Outbound = GetModelsUserSecurity$Outbound;
-}
-
-export function getModelsUserSecurityToJSON(
-  getModelsUserSecurity: GetModelsUserSecurity,
-): string {
-  return JSON.stringify(
-    GetModelsUserSecurity$outboundSchema.parse(getModelsUserSecurity),
-  );
-}
-
-export function getModelsUserSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsUserSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsUserSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsUserSecurity' from JSON`,
-  );
-}
 
 /** @internal */
 export const GetModelsUserPrompt$inboundSchema: z.ZodType<

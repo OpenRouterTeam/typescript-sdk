@@ -416,7 +416,7 @@ components:
             - 'null'
       required:
         - role
-    ToolResponseMessage:
+    ToolMessage:
       type: object
       properties:
         role:
@@ -438,24 +438,15 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SystemMessage'
         - $ref: '#/components/schemas/UserMessage'
-        - type: object
-          properties:
-            role:
-              type: string
-              const: developer
-            content:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/ChatMessageContentItemText'
-            name:
-              type: string
-          required:
-            - role
-            - content
         - $ref: '#/components/schemas/AssistantMessage'
-        - $ref: '#/components/schemas/ToolResponseMessage'
+        - $ref: '#/components/schemas/ToolMessage'
+      discriminator:
+        propertyName: role
+        mapping:
+          system: '#/components/schemas/SystemMessage'
+          user: '#/components/schemas/UserMessage'
+          assistant: '#/components/schemas/AssistantMessage'
+          tool: '#/components/schemas/ToolMessage'
     Tool:
       type: object
       properties:
@@ -701,7 +692,36 @@ components:
       required:
         - messages
         - model
-    ChatResponseChoice:
+    ChatCompletionMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          const: assistant
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItem'
+            - type: 'null'
+        name:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessageToolCall'
+        refusal:
+          type:
+            - string
+            - 'null'
+        reasoning:
+          type:
+            - string
+            - 'null'
+      required:
+        - role
+    ChatCompletionChoice:
       type: object
       properties:
         finish_reason:
@@ -718,7 +738,7 @@ components:
         index:
           type: number
         message:
-          $ref: '#/components/schemas/AssistantMessage'
+          $ref: '#/components/schemas/ChatCompletionMessage'
         logprobs:
           oneOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
@@ -727,7 +747,7 @@ components:
         - finish_reason
         - index
         - message
-    ChatResponse:
+    ChatCompletion:
       type: object
       properties:
         id:
@@ -735,7 +755,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatResponseChoice'
+            $ref: '#/components/schemas/ChatCompletionChoice'
         created:
           type: number
         model:
@@ -744,9 +764,7 @@ components:
           type: string
           const: chat.completion
         system_fingerprint:
-          type:
-            - string
-            - 'null'
+          type: string
         usage:
           $ref: '#/components/schemas/ChatGenerationTokenUsage'
       required:
@@ -755,17 +773,16 @@ components:
         - created
         - model
         - object
-    ChatError:
+    ChatCompletionError:
       type: object
       properties:
         error:
           type: object
           properties:
             code:
-              anyOf:
-                - type: string
-                - type: number
-                - type: 'null'
+              type:
+                - string
+                - 'null'
             message:
               type: string
             param:
@@ -781,7 +798,7 @@ components:
             - type
       required:
         - error
-    ChatStreamingMessageToolCall:
+    ChatCompletionChunkChoiceDeltaToolCall:
       type: object
       properties:
         index:
@@ -800,7 +817,7 @@ components:
               type: string
       required:
         - index
-    ChatStreamingMessageChunk:
+    ChatCompletionChunkChoiceDelta:
       type: object
       properties:
         role:
@@ -822,12 +839,12 @@ components:
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
-    ChatStreamingChoice:
+            $ref: '#/components/schemas/ChatCompletionChunkChoiceDeltaToolCall'
+    ChatCompletionChunkChoice:
       type: object
       properties:
         delta:
-          $ref: '#/components/schemas/ChatStreamingMessageChunk'
+          $ref: '#/components/schemas/ChatCompletionChunkChoiceDelta'
         finish_reason:
           type:
             - string
@@ -849,7 +866,7 @@ components:
         - delta
         - finish_reason
         - index
-    ChatStreamingResponseChunk:
+    ChatCompletionChunk:
       type: object
       properties:
         data:
@@ -860,7 +877,7 @@ components:
             choices:
               type: array
               items:
-                $ref: '#/components/schemas/ChatStreamingChoice'
+                $ref: '#/components/schemas/ChatCompletionChunkChoice'
             created:
               type: number
             model:
@@ -869,19 +886,7 @@ components:
               type: string
               const: chat.completion.chunk
             system_fingerprint:
-              type:
-                - string
-                - 'null'
-            error:
-              type: object
-              properties:
-                message:
-                  type: string
-                code:
-                  type: number
-              required:
-                - message
-                - code
+              type: string
             usage:
               $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
@@ -894,10 +899,15 @@ components:
         - data
   parameters: {}
   securitySchemes:
-    apiKey:
+    bearerAuth:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key with "Bearer " prefix
 paths:
   /activity:
     get:
@@ -966,9 +976,7 @@ paths:
   /credits/coinbase:
     post:
       security:
-        - bearer: []
-      tags:
-        - Credits
+        - bearerAuth: []
       description: Create a Coinbase charge for crypto payment
       requestBody:
         content:
@@ -1082,7 +1090,6 @@ paths:
       tags:
         - Embeddings
       summary: Submit an embedding request
-      x-speakeasy-name-override: generate
       description: Submits an embedding request to the embeddings router
       requestBody:
         content:
@@ -2109,7 +2116,7 @@ paths:
         - Models
       summary: List models filtered by user provider preferences
       security:
-        - bearer: []
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a list of models filtered by user provider preferences
@@ -3019,10 +3026,10 @@ paths:
   /parameters/{author}/{slug}:
     get:
       tags:
-        - Model
+        - Parameters
       summary: Get a model's supported parameters and data about which are most popular
       security:
-        - bearer: []
+        - bearerAuth: []
       parameters:
         - schema:
             type: string
@@ -3161,9 +3168,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /providers:
     get:
-      tags:
-        - Providers
-      description: List all available model providers
       responses:
         '200':
           description: Returns a list of providers
@@ -3777,140 +3781,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /auth/keys:
-    post:
-      tags:
-        - OAuth
-      summary: Exchange authorization code for API key
-      description: Exchange an authorization code from the PKCE flow for a user-controlled API key
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: The authorization code received from the OAuth redirect
-                  example: auth_code_abc123def456
-                code_verifier:
-                  type: string
-                  description: The code verifier if code_challenge was used in the authorization request
-                  example: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
-                code_challenge_method:
-                  type: string
-                  enum:
-                    - S256
-                    - plain
-                  description: The method used to generate the code challenge
-                  example: S256
-              required:
-                - code
-      responses:
-        '200':
-          description: Successfully exchanged code for an API key
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  key:
-                    type: string
-                    description: The API key to use for OpenRouter requests
-                    example: sk-or-v1-abc123def456ghi789jkl012
-                  user_id:
-                    type: string
-                    nullable: true
-                    description: User ID associated with the API key
-                    example: or_user_1234567890abcdef
-                required:
-                  - key
-                  - user_id
-        default:
-          description: Error response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /auth/keys/code:
-    post:
-      tags:
-        - OAuth
-      summary: Create authorization code
-      description: Create an authorization code for the PKCE flow to generate a user-controlled API key
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                callback_url:
-                  type: string
-                  format: uri
-                  description: >-
-                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are
-                    allowed.
-                  example: https://myapp.com/auth/callback
-                code_challenge:
-                  type: string
-                  description: PKCE code challenge for enhanced security
-                  example: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
-                code_challenge_method:
-                  type: string
-                  enum:
-                    - S256
-                    - plain
-                  description: The method used to generate the code challenge
-                  example: S256
-                limit:
-                  type: string
-                  description: Credit limit for the API key to be created
-                  example: '100.0'
-              required:
-                - callback_url
-      responses:
-        '200':
-          description: Successfully created authorization code
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        description: The authorization code ID to use in the exchange request
-                        example: auth_code_xyz789
-                      app_id:
-                        type: number
-                        description: The application ID associated with this auth code
-                        example: 12345
-                      created_at:
-                        type: string
-                        description: ISO 8601 timestamp of when the auth code was created
-                        example: '2025-08-24T10:30:00Z'
-                    required:
-                      - id
-                      - app_id
-                      - created_at
-                required:
-                  - data
-        default:
-          description: Error response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
   /chat/completions:
     post:
       summary: Create a chat completion
       x-speakeasy-group: chat
-      x-speakeasy-name-override: send
-      description: >-
-        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
-        modes.
+      x-speakeasy-name-override: generateResponse
+      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       tags:
         - Chat
       requestBody:
@@ -3925,42 +3801,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatResponse'
+                $ref: '#/components/schemas/ChatCompletion'
                 description: Non-streaming response when stream=false
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/ChatStreamingResponseChunk'
+                $ref: '#/components/schemas/ChatCompletionChunk'
               x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
+                $ref: '#/components/schemas/ChatCompletionError'
         '401':
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
+                $ref: '#/components/schemas/ChatCompletionError'
         '429':
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
+                $ref: '#/components/schemas/ChatCompletionError'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
+                $ref: '#/components/schemas/ChatCompletionError'
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server
     x-speakeasy-server-id: production
 security:
-  - apiKey: []
+  - apiKeyAuth: []
+  - bearerAuth: []
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs

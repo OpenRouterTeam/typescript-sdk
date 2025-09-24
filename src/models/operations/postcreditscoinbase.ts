@@ -10,10 +10,6 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type PostCreditsCoinbaseSecurity = {
-  bearer: string;
-};
-
 export const ChainId = {
   One: 1,
   OneHundredAndThirtySeven: 137,
@@ -72,62 +68,6 @@ export type PostCreditsCoinbaseResponseBody = {
 export type PostCreditsCoinbaseResponse =
   | PostCreditsCoinbaseResponseBody
   | models.ErrorResponse;
-
-/** @internal */
-export const PostCreditsCoinbaseSecurity$inboundSchema: z.ZodType<
-  PostCreditsCoinbaseSecurity,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  bearer: z.string(),
-});
-
-/** @internal */
-export type PostCreditsCoinbaseSecurity$Outbound = {
-  bearer: string;
-};
-
-/** @internal */
-export const PostCreditsCoinbaseSecurity$outboundSchema: z.ZodType<
-  PostCreditsCoinbaseSecurity$Outbound,
-  z.ZodTypeDef,
-  PostCreditsCoinbaseSecurity
-> = z.object({
-  bearer: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostCreditsCoinbaseSecurity$ {
-  /** @deprecated use `PostCreditsCoinbaseSecurity$inboundSchema` instead. */
-  export const inboundSchema = PostCreditsCoinbaseSecurity$inboundSchema;
-  /** @deprecated use `PostCreditsCoinbaseSecurity$outboundSchema` instead. */
-  export const outboundSchema = PostCreditsCoinbaseSecurity$outboundSchema;
-  /** @deprecated use `PostCreditsCoinbaseSecurity$Outbound` instead. */
-  export type Outbound = PostCreditsCoinbaseSecurity$Outbound;
-}
-
-export function postCreditsCoinbaseSecurityToJSON(
-  postCreditsCoinbaseSecurity: PostCreditsCoinbaseSecurity,
-): string {
-  return JSON.stringify(
-    PostCreditsCoinbaseSecurity$outboundSchema.parse(
-      postCreditsCoinbaseSecurity,
-    ),
-  );
-}
-
-export function postCreditsCoinbaseSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<PostCreditsCoinbaseSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostCreditsCoinbaseSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostCreditsCoinbaseSecurity' from JSON`,
-  );
-}
 
 /** @internal */
 export const ChainId$inboundSchema: z.ZodNativeEnum<typeof ChainId> = z

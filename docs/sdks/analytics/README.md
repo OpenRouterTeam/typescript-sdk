@@ -18,7 +18,9 @@ Returns user activity data grouped by endpoint for the last 30 (completed) UTC d
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
@@ -43,7 +45,9 @@ import { analyticsGetActivity } from "@openrouter/sdk/funcs/analyticsGetActivity
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  security: {
+    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
+  },
 });
 
 async function run() {
