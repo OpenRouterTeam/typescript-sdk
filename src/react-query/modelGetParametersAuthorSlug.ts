@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { parametersGetParametersAuthorSlug } from "../funcs/parametersGetParametersAuthorSlug.js";
+import { modelGetParametersAuthorSlug } from "../funcs/modelGetParametersAuthorSlug.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -25,20 +25,20 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type ParametersGetParametersAuthorSlugQueryData =
+export type ModelGetParametersAuthorSlugQueryData =
   operations.GetParametersAuthorSlugResponse;
 
 /**
  * Get a model's supported parameters and data about which are most popular
  */
-export function useParametersGetParametersAuthorSlug(
+export function useModelGetParametersAuthorSlug(
   security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
-  options?: QueryHookOptions<ParametersGetParametersAuthorSlugQueryData>,
-): UseQueryResult<ParametersGetParametersAuthorSlugQueryData, Error> {
+  options?: QueryHookOptions<ModelGetParametersAuthorSlugQueryData>,
+): UseQueryResult<ModelGetParametersAuthorSlugQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildParametersGetParametersAuthorSlugQuery(
+    ...buildModelGetParametersAuthorSlugQuery(
       client,
       security,
       request,
@@ -51,16 +51,14 @@ export function useParametersGetParametersAuthorSlug(
 /**
  * Get a model's supported parameters and data about which are most popular
  */
-export function useParametersGetParametersAuthorSlugSuspense(
+export function useModelGetParametersAuthorSlugSuspense(
   security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
-  options?: SuspenseQueryHookOptions<
-    ParametersGetParametersAuthorSlugQueryData
-  >,
-): UseSuspenseQueryResult<ParametersGetParametersAuthorSlugQueryData, Error> {
+  options?: SuspenseQueryHookOptions<ModelGetParametersAuthorSlugQueryData>,
+): UseSuspenseQueryResult<ModelGetParametersAuthorSlugQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildParametersGetParametersAuthorSlugQuery(
+    ...buildModelGetParametersAuthorSlugQuery(
       client,
       security,
       request,
@@ -70,14 +68,14 @@ export function useParametersGetParametersAuthorSlugSuspense(
   });
 }
 
-export function prefetchParametersGetParametersAuthorSlug(
+export function prefetchModelGetParametersAuthorSlug(
   queryClient: QueryClient,
   client$: OpenRouterCore,
   security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildParametersGetParametersAuthorSlugQuery(
+    ...buildModelGetParametersAuthorSlugQuery(
       client$,
       security,
       request,
@@ -85,7 +83,7 @@ export function prefetchParametersGetParametersAuthorSlug(
   });
 }
 
-export function setParametersGetParametersAuthorSlugData(
+export function setModelGetParametersAuthorSlugData(
   client: QueryClient,
   queryKeyBase: [
     author: string,
@@ -94,17 +92,14 @@ export function setParametersGetParametersAuthorSlugData(
       provider?: operations.GetParametersAuthorSlugProvider | undefined;
     },
   ],
-  data: ParametersGetParametersAuthorSlugQueryData,
-): ParametersGetParametersAuthorSlugQueryData | undefined {
-  const key = queryKeyParametersGetParametersAuthorSlug(...queryKeyBase);
+  data: ModelGetParametersAuthorSlugQueryData,
+): ModelGetParametersAuthorSlugQueryData | undefined {
+  const key = queryKeyModelGetParametersAuthorSlug(...queryKeyBase);
 
-  return client.setQueryData<ParametersGetParametersAuthorSlugQueryData>(
-    key,
-    data,
-  );
+  return client.setQueryData<ModelGetParametersAuthorSlugQueryData>(key, data);
 }
 
-export function invalidateParametersGetParametersAuthorSlug(
+export function invalidateModelGetParametersAuthorSlug(
   client: QueryClient,
   queryKeyBase: TupleToPrefixes<
     [
@@ -121,24 +116,24 @@ export function invalidateParametersGetParametersAuthorSlug(
     ...filters,
     queryKey: [
       "@openrouter/sdk",
-      "Parameters",
+      "Model",
       "getParametersAuthorSlug",
       ...queryKeyBase,
     ],
   });
 }
 
-export function invalidateAllParametersGetParametersAuthorSlug(
+export function invalidateAllModelGetParametersAuthorSlug(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Parameters", "getParametersAuthorSlug"],
+    queryKey: ["@openrouter/sdk", "Model", "getParametersAuthorSlug"],
   });
 }
 
-export function buildParametersGetParametersAuthorSlugQuery(
+export function buildModelGetParametersAuthorSlugQuery(
   client$: OpenRouterCore,
   security: operations.GetParametersAuthorSlugSecurity,
   request: operations.GetParametersAuthorSlugRequest,
@@ -147,24 +142,24 @@ export function buildParametersGetParametersAuthorSlugQuery(
   queryKey: QueryKey;
   queryFn: (
     context: QueryFunctionContext,
-  ) => Promise<ParametersGetParametersAuthorSlugQueryData>;
+  ) => Promise<ModelGetParametersAuthorSlugQueryData>;
 } {
   return {
-    queryKey: queryKeyParametersGetParametersAuthorSlug(
+    queryKey: queryKeyModelGetParametersAuthorSlug(
       request.author,
       request.slug,
       { provider: request.provider },
     ),
-    queryFn: async function parametersGetParametersAuthorSlugQueryFn(
+    queryFn: async function modelGetParametersAuthorSlugQueryFn(
       ctx,
-    ): Promise<ParametersGetParametersAuthorSlugQueryData> {
+    ): Promise<ModelGetParametersAuthorSlugQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(parametersGetParametersAuthorSlug(
+      return unwrapAsync(modelGetParametersAuthorSlug(
         client$,
         security,
         request,
@@ -174,7 +169,7 @@ export function buildParametersGetParametersAuthorSlugQuery(
   };
 }
 
-export function queryKeyParametersGetParametersAuthorSlug(
+export function queryKeyModelGetParametersAuthorSlug(
   author: string,
   slug: string,
   parameters: {
@@ -183,7 +178,7 @@ export function queryKeyParametersGetParametersAuthorSlug(
 ): QueryKey {
   return [
     "@openrouter/sdk",
-    "Parameters",
+    "Model",
     "getParametersAuthorSlug",
     author,
     slug,

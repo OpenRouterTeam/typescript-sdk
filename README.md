@@ -137,7 +137,7 @@ import { OpenRouter } from "@openrouter/sdk";
 const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.postCreditsCoinbase({
+  const result = await openRouter.credits.postCreditsCoinbase({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   });
 
@@ -173,9 +173,13 @@ run();
 
 * [send](docs/sdks/chat/README.md#send) - Create a chat completion
 
+### [credits](docs/sdks/credits/README.md)
+
+* [postCreditsCoinbase](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+
 ### [embeddings](docs/sdks/embeddings/README.md)
 
-* [postEmbeddings](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+* [generate](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
 
 ### [endpoints](docs/sdks/endpoints/README.md)
 
@@ -186,21 +190,28 @@ run();
 
 * [getGeneration](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
 
+### [model](docs/sdks/model/README.md)
+
+* [getParametersAuthorSlug](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+
 ### [models](docs/sdks/models/README.md)
 
 * [getModelsCount](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
 * [getModels](docs/sdks/models/README.md#getmodels) - List all models and their properties
 * [getModelsUser](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
 
+### [oAuth](docs/sdks/oauth/README.md)
+
+* [postAuthKeys](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
+* [postAuthKeysCode](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
+
 ### [OpenRouter SDK](docs/sdks/openrouter/README.md)
 
 * [getCredits](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-* [postCreditsCoinbase](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
-* [getProviders](docs/sdks/openrouter/README.md#getproviders)
 
-### [parameters](docs/sdks/parameters/README.md)
+### [providers](docs/sdks/providers/README.md)
 
-* [getParametersAuthorSlug](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+* [getProviders](docs/sdks/providers/README.md#getproviders) - List all available model providers
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -229,17 +240,19 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`embeddingsPostEmbeddings`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+- [`creditsPostCreditsCoinbase`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`embeddingsGenerate`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
 - [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
 - [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
 - [`getCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`getProviders`](docs/sdks/openrouter/README.md#getproviders)
+- [`modelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
 - [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
 - [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
 - [`modelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`parametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`postCreditsCoinbase`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`oAuthPostAuthKeys`](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
+- [`oAuthPostAuthKeysCode`](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
+- [`providersGetProviders`](docs/sdks/providers/README.md#getproviders) - List all available model providers
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -275,17 +288,19 @@ To learn about this feature and how to get started, check
 - [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`useEmbeddingsPostEmbeddingsMutation`](docs/sdks/embeddings/README.md#postembeddings) - Submit an embedding request
+- [`useCreditsPostCreditsCoinbaseMutation`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`useEmbeddingsGenerateMutation`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
 - [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
 - [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
 - [`useGetCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`useGetProviders`](docs/sdks/openrouter/README.md#getproviders)
+- [`useModelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
 - [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
 - [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
 - [`useModelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`useParametersGetParametersAuthorSlug`](docs/sdks/parameters/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`usePostCreditsCoinbaseMutation`](docs/sdks/openrouter/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`useOAuthPostAuthKeysCodeMutation`](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
+- [`useOAuthPostAuthKeysMutation`](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
+- [`useProvidersGetProviders`](docs/sdks/providers/README.md#getproviders) - List all available model providers
 
 </details>
 <!-- End React hooks with TanStack Query [react-query] -->
@@ -408,7 +423,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.getProviders();
+    const result = await openRouter.providers.getProviders();
 
     console.log(result);
   } catch (error) {
@@ -448,8 +463,8 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 20 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 22 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 22 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

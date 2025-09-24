@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Submits an embedding request to the embeddings router
  */
-export function embeddingsPostEmbeddings(
+export function embeddingsGenerate(
   client: OpenRouterCore,
   request?: operations.PostEmbeddingsRequest | undefined,
   options?: RequestOptions,

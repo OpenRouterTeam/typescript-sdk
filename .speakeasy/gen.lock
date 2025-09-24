@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: d1ed8e0c3d150ef9c912570f5a0752da
+  docChecksum: a1cf6756d06afbe789def40a522bb8af
   docVersion: 1.0.0
-  speakeasyVersion: 1.622.2
-  generationVersion: 2.711.4
-  releaseVersion: 0.0.0-beta.4
-  configChecksum: 5e75e51e8602d29a1656c3f0fb6ce03f
+  speakeasyVersion: 1.624.1
+  generationVersion: 2.714.1
+  releaseVersion: 0.0.0-beta.5
+  configChecksum: b84e6447431dce7865acd13a49350f54
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.21.24
+    core: 3.21.25
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -254,6 +254,15 @@ generatedFiles:
   - docs/models/operations/patchkeyshashrequestbody.md
   - docs/models/operations/patchkeyshashresponse.md
   - docs/models/operations/patchkeyshashresponsebody.md
+  - docs/models/operations/postauthkeyscodechallengemethod.md
+  - docs/models/operations/postauthkeyscodecodechallengemethod.md
+  - docs/models/operations/postauthkeyscodedata.md
+  - docs/models/operations/postauthkeyscoderequest.md
+  - docs/models/operations/postauthkeyscoderesponse.md
+  - docs/models/operations/postauthkeyscoderesponsebody.md
+  - docs/models/operations/postauthkeysrequest.md
+  - docs/models/operations/postauthkeysresponse.md
+  - docs/models/operations/postauthkeysresponsebody.md
   - docs/models/operations/postchatcompletionsresponse.md
   - docs/models/operations/postcreditscoinbasedata.md
   - docs/models/operations/postcreditscoinbaserequest.md
@@ -303,12 +312,15 @@ generatedFiles:
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
+  - docs/sdks/credits/README.md
   - docs/sdks/embeddings/README.md
   - docs/sdks/endpoints/README.md
   - docs/sdks/generations/README.md
+  - docs/sdks/model/README.md
   - docs/sdks/models/README.md
+  - docs/sdks/oauth/README.md
   - docs/sdks/openrouter/README.md
-  - docs/sdks/parameters/README.md
+  - docs/sdks/providers/README.md
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
@@ -326,17 +338,19 @@ generatedFiles:
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
   - src/funcs/chatSend.ts
-  - src/funcs/embeddingsPostEmbeddings.ts
+  - src/funcs/creditsPostCreditsCoinbase.ts
+  - src/funcs/embeddingsGenerate.ts
   - src/funcs/endpointsGetEndpointsZdr.ts
   - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
   - src/funcs/getCredits.ts
-  - src/funcs/getProviders.ts
+  - src/funcs/modelGetParametersAuthorSlug.ts
   - src/funcs/modelsGetModels.ts
   - src/funcs/modelsGetModelsCount.ts
   - src/funcs/modelsGetModelsUser.ts
-  - src/funcs/parametersGetParametersAuthorSlug.ts
-  - src/funcs/postCreditsCoinbase.ts
+  - src/funcs/oAuthPostAuthKeys.ts
+  - src/funcs/oAuthPostAuthKeysCode.ts
+  - src/funcs/providersGetProviders.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts
@@ -406,6 +420,8 @@ generatedFiles:
   - src/models/operations/getproviders.ts
   - src/models/operations/index.ts
   - src/models/operations/patchkeyshash.ts
+  - src/models/operations/postauthkeys.ts
+  - src/models/operations/postauthkeyscode.ts
   - src/models/operations/postchatcompletions.ts
   - src/models/operations/postcreditscoinbase.ts
   - src/models/operations/postembeddings.ts
@@ -426,27 +442,32 @@ generatedFiles:
   - src/react-query/apiKeysPatchKeysHash.ts
   - src/react-query/apiKeysPostKeys.ts
   - src/react-query/chatSend.ts
-  - src/react-query/embeddingsPostEmbeddings.ts
+  - src/react-query/creditsPostCreditsCoinbase.ts
+  - src/react-query/embeddingsGenerate.ts
   - src/react-query/endpointsGetEndpointsZdr.ts
   - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
   - src/react-query/getCredits.ts
-  - src/react-query/getProviders.ts
   - src/react-query/index.ts
+  - src/react-query/modelGetParametersAuthorSlug.ts
   - src/react-query/modelsGetModels.ts
   - src/react-query/modelsGetModelsCount.ts
   - src/react-query/modelsGetModelsUser.ts
-  - src/react-query/parametersGetParametersAuthorSlug.ts
-  - src/react-query/postCreditsCoinbase.ts
+  - src/react-query/oAuthPostAuthKeys.ts
+  - src/react-query/oAuthPostAuthKeysCode.ts
+  - src/react-query/providersGetProviders.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/chat.ts
+  - src/sdk/credits.ts
   - src/sdk/embeddings.ts
   - src/sdk/endpoints.ts
   - src/sdk/generations.ts
   - src/sdk/index.ts
+  - src/sdk/model.ts
   - src/sdk/models.ts
-  - src/sdk/parameters.ts
+  - src/sdk/oauth.ts
+  - src/sdk/providers.ts
   - src/sdk/sdk.ts
   - src/types/async.ts
   - src/types/blobs.ts
@@ -457,7 +478,6 @@ generatedFiles:
   - src/types/operations.ts
   - src/types/rfcdate.ts
   - src/types/streams.ts
-  - temp/example.ts
   - tsconfig.json
 examples:
   createChatCompletion:
@@ -647,4 +667,22 @@ examples:
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+  post_/auth/keys:
+    speakeasy-default-post-/auth/keys:
+      requestBody:
+        application/json: {"code": "auth_code_abc123def456", "code_verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", "code_challenge_method": "S256"}
+      responses:
+        "200":
+          application/json: {"key": "sk-or-v1-abc123def456ghi789jkl012", "user_id": "or_user_1234567890abcdef"}
+        default:
+          application/json: {"error": {"code": 451, "message": "<value>"}}
+  post_/auth/keys/code:
+    speakeasy-default-post-/auth/keys/code:
+      requestBody:
+        application/json: {"callback_url": "https://myapp.com/auth/callback", "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "code_challenge_method": "S256", "limit": "100.0"}
+      responses:
+        "200":
+          application/json: {"data": {"id": "auth_code_xyz789", "app_id": 12345, "created_at": "2025-08-24T10:30:00Z"}}
+        default:
+          application/json: {"error": {"code": 202, "message": "<value>"}}
 examplesVersion: 1.0.2

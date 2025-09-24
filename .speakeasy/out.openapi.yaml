@@ -967,6 +967,8 @@ paths:
     post:
       security:
         - bearer: []
+      tags:
+        - Credits
       description: Create a Coinbase charge for crypto payment
       requestBody:
         content:
@@ -1080,6 +1082,7 @@ paths:
       tags:
         - Embeddings
       summary: Submit an embedding request
+      x-speakeasy-name-override: generate
       description: Submits an embedding request to the embeddings router
       requestBody:
         content:
@@ -3016,7 +3019,7 @@ paths:
   /parameters/{author}/{slug}:
     get:
       tags:
-        - Parameters
+        - Model
       summary: Get a model's supported parameters and data about which are most popular
       security:
         - bearer: []
@@ -3158,6 +3161,9 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /providers:
     get:
+      tags:
+        - Providers
+      description: List all available model providers
       responses:
         '200':
           description: Returns a list of providers
@@ -3763,6 +3769,132 @@ paths:
                       - limit_remaining
                       - rate_limit
                     description: Current API key information
+                required:
+                  - data
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/keys:
+    post:
+      tags:
+        - OAuth
+      summary: Exchange authorization code for API key
+      description: Exchange an authorization code from the PKCE flow for a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: The authorization code received from the OAuth redirect
+                  example: auth_code_abc123def456
+                code_verifier:
+                  type: string
+                  description: The code verifier if code_challenge was used in the authorization request
+                  example: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+                code_challenge_method:
+                  type: string
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+              required:
+                - code
+      responses:
+        '200':
+          description: Successfully exchanged code for an API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: The API key to use for OpenRouter requests
+                    example: sk-or-v1-abc123def456ghi789jkl012
+                  user_id:
+                    type: string
+                    nullable: true
+                    description: User ID associated with the API key
+                    example: or_user_1234567890abcdef
+                required:
+                  - key
+                  - user_id
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/keys/code:
+    post:
+      tags:
+        - OAuth
+      summary: Create authorization code
+      description: Create an authorization code for the PKCE flow to generate a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callback_url:
+                  type: string
+                  format: uri
+                  description: >-
+                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are
+                    allowed.
+                  example: https://myapp.com/auth/callback
+                code_challenge:
+                  type: string
+                  description: PKCE code challenge for enhanced security
+                  example: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+                code_challenge_method:
+                  type: string
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+                limit:
+                  type: string
+                  description: Credit limit for the API key to be created
+                  example: '100.0'
+              required:
+                - callback_url
+      responses:
+        '200':
+          description: Successfully created authorization code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The authorization code ID to use in the exchange request
+                        example: auth_code_xyz789
+                      app_id:
+                        type: number
+                        description: The application ID associated with this auth code
+                        example: 12345
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the auth code was created
+                        example: '2025-08-24T10:30:00Z'
+                    required:
+                      - id
+                      - app_id
+                      - created_at
                 required:
                   - data
         default:

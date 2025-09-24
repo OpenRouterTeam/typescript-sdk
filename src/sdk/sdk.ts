@@ -3,24 +3,30 @@
  */
 
 import { getCredits } from "../funcs/getCredits.js";
-import { getProviders } from "../funcs/getProviders.js";
-import { postCreditsCoinbase } from "../funcs/postCreditsCoinbase.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Chat } from "./chat.js";
+import { Credits } from "./credits.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
+import { Model } from "./model.js";
 import { Models } from "./models.js";
-import { ParametersT } from "./parameters.js";
+import { OAuth } from "./oauth.js";
+import { Providers } from "./providers.js";
 
 export class OpenRouter extends ClientSDK {
   private _analytics?: Analytics;
   get analytics(): Analytics {
     return (this._analytics ??= new Analytics(this._options));
+  }
+
+  private _credits?: Credits;
+  get credits(): Credits {
+    return (this._credits ??= new Credits(this._options));
   }
 
   private _embeddings?: Embeddings;
@@ -43,14 +49,24 @@ export class OpenRouter extends ClientSDK {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
-  private _parameters?: ParametersT;
-  get parameters(): ParametersT {
-    return (this._parameters ??= new ParametersT(this._options));
+  private _model?: Model;
+  get model(): Model {
+    return (this._model ??= new Model(this._options));
+  }
+
+  private _providers?: Providers;
+  get providers(): Providers {
+    return (this._providers ??= new Providers(this._options));
   }
 
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
+  }
+
+  private _oAuth?: OAuth;
+  get oAuth(): OAuth {
+    return (this._oAuth ??= new OAuth(this._options));
   }
 
   private _chat?: Chat;
@@ -65,31 +81,6 @@ export class OpenRouter extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.GetCreditsResponse> {
     return unwrapAsync(getCredits(
-      this,
-      options,
-    ));
-  }
-
-  /**
-   * Create a Coinbase charge for crypto payment
-   */
-  async postCreditsCoinbase(
-    security: operations.PostCreditsCoinbaseSecurity,
-    request?: operations.PostCreditsCoinbaseRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<operations.PostCreditsCoinbaseResponse> {
-    return unwrapAsync(postCreditsCoinbase(
-      this,
-      security,
-      request,
-      options,
-    ));
-  }
-
-  async getProviders(
-    options?: RequestOptions,
-  ): Promise<operations.GetProvidersResponse> {
-    return unwrapAsync(getProviders(
       this,
       options,
     ));

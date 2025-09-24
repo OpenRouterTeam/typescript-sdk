@@ -3,12 +3,12 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
+import { encodeJSON } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { resolveSecurity } from "../lib/security.js";
+import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -25,16 +25,18 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Get a model's supported parameters and data about which are most popular
+ * Create authorization code
+ *
+ * @remarks
+ * Create an authorization code for the PKCE flow to generate a user-controlled API key
  */
-export function parametersGetParametersAuthorSlug(
+export function oAuthPostAuthKeysCode(
   client: OpenRouterCore,
-  security: operations.GetParametersAuthorSlugSecurity,
-  request: operations.GetParametersAuthorSlugRequest,
+  request?: operations.PostAuthKeysCodeRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetParametersAuthorSlugResponse,
+    operations.PostAuthKeysCodeResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -47,7 +49,6 @@ export function parametersGetParametersAuthorSlug(
 > {
   return new APIPromise($do(
     client,
-    security,
     request,
     options,
   ));
@@ -55,13 +56,12 @@ export function parametersGetParametersAuthorSlug(
 
 async function $do(
   client: OpenRouterCore,
-  security: operations.GetParametersAuthorSlugSecurity,
-  request: operations.GetParametersAuthorSlugRequest,
+  request?: operations.PostAuthKeysCodeRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.GetParametersAuthorSlugResponse,
+      operations.PostAuthKeysCodeResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -77,55 +77,37 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.GetParametersAuthorSlugRequest$outboundSchema.parse(value),
+      operations.PostAuthKeysCodeRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = null;
+  const body = payload === undefined
+    ? null
+    : encodeJSON("body", payload, { explode: true });
 
-  const pathParams = {
-    author: encodeSimple("author", payload.author, {
-      explode: false,
-      charEncoding: "percent",
-    }),
-    slug: encodeSimple("slug", payload.slug, {
-      explode: false,
-      charEncoding: "percent",
-    }),
-  };
-
-  const path = pathToFunc("/parameters/{author}/{slug}")(pathParams);
-
-  const query = encodeFormQuery({
-    "provider": payload.provider,
-  });
+  const path = pathToFunc("/auth/keys/code")();
 
   const headers = new Headers(compactMap({
+    "Content-Type": "application/json",
     Accept: "application/json",
   }));
 
-  const requestSecurity = resolveSecurity(
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.bearer,
-      },
-    ],
-  );
+  const secConfig = await extractSecurity(client._options.apiKey);
+  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "get_/parameters/{author}/{slug}",
-    oAuth2Scopes: null,
+    operationID: "post_/auth/keys/code",
+    oAuth2Scopes: [],
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: security,
+    securitySource: client._options.apiKey,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -134,11 +116,10 @@ async function $do(
 
   const requestRes = client._createRequest(context, {
     security: requestSecurity,
-    method: "GET",
+    method: "POST",
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
-    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
@@ -160,7 +141,7 @@ async function $do(
   const response = doResult.value;
 
   const [result] = await M.match<
-    operations.GetParametersAuthorSlugResponse,
+    operations.PostAuthKeysCodeResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -170,10 +151,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.GetParametersAuthorSlugResponse$inboundSchema),
+    M.json(200, operations.PostAuthKeysCodeResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
-    M.json("default", operations.GetParametersAuthorSlugResponse$inboundSchema),
+    M.json("default", operations.PostAuthKeysCodeResponse$inboundSchema),
   )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

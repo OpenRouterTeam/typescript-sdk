@@ -8,7 +8,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { embeddingsPostEmbeddings } from "../funcs/embeddingsPostEmbeddings.js";
+import { oAuthPostAuthKeysCode } from "../funcs/oAuthPostAuthKeysCode.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -16,57 +16,57 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export type EmbeddingsPostEmbeddingsMutationVariables = {
-  request?: operations.PostEmbeddingsRequest | undefined;
+export type OAuthPostAuthKeysCodeMutationVariables = {
+  request?: operations.PostAuthKeysCodeRequest | undefined;
   options?: RequestOptions;
 };
 
-export type EmbeddingsPostEmbeddingsMutationData =
-  operations.PostEmbeddingsResponse;
+export type OAuthPostAuthKeysCodeMutationData =
+  operations.PostAuthKeysCodeResponse;
 
 /**
- * Submit an embedding request
+ * Create authorization code
  *
  * @remarks
- * Submits an embedding request to the embeddings router
+ * Create an authorization code for the PKCE flow to generate a user-controlled API key
  */
-export function useEmbeddingsPostEmbeddingsMutation(
+export function useOAuthPostAuthKeysCodeMutation(
   options?: MutationHookOptions<
-    EmbeddingsPostEmbeddingsMutationData,
+    OAuthPostAuthKeysCodeMutationData,
     Error,
-    EmbeddingsPostEmbeddingsMutationVariables
+    OAuthPostAuthKeysCodeMutationVariables
   >,
 ): UseMutationResult<
-  EmbeddingsPostEmbeddingsMutationData,
+  OAuthPostAuthKeysCodeMutationData,
   Error,
-  EmbeddingsPostEmbeddingsMutationVariables
+  OAuthPostAuthKeysCodeMutationVariables
 > {
   const client = useOpenRouterContext();
   return useMutation({
-    ...buildEmbeddingsPostEmbeddingsMutation(client, options),
+    ...buildOAuthPostAuthKeysCodeMutation(client, options),
     ...options,
   });
 }
 
-export function mutationKeyEmbeddingsPostEmbeddings(): MutationKey {
-  return ["@openrouter/sdk", "Embeddings", "postEmbeddings"];
+export function mutationKeyOAuthPostAuthKeysCode(): MutationKey {
+  return ["@openrouter/sdk", "OAuth", "postAuthKeysCode"];
 }
 
-export function buildEmbeddingsPostEmbeddingsMutation(
+export function buildOAuthPostAuthKeysCodeMutation(
   client$: OpenRouterCore,
   hookOptions?: RequestOptions,
 ): {
   mutationKey: MutationKey;
   mutationFn: (
-    variables: EmbeddingsPostEmbeddingsMutationVariables,
-  ) => Promise<EmbeddingsPostEmbeddingsMutationData>;
+    variables: OAuthPostAuthKeysCodeMutationVariables,
+  ) => Promise<OAuthPostAuthKeysCodeMutationData>;
 } {
   return {
-    mutationKey: mutationKeyEmbeddingsPostEmbeddings(),
-    mutationFn: function embeddingsPostEmbeddingsMutationFn({
+    mutationKey: mutationKeyOAuthPostAuthKeysCode(),
+    mutationFn: function oAuthPostAuthKeysCodeMutationFn({
       request,
       options,
-    }): Promise<EmbeddingsPostEmbeddingsMutationData> {
+    }): Promise<OAuthPostAuthKeysCodeMutationData> {
       const mergedOptions = {
         ...hookOptions,
         ...options,
@@ -79,7 +79,7 @@ export function buildEmbeddingsPostEmbeddingsMutation(
           ),
         },
       };
-      return unwrapAsync(embeddingsPostEmbeddings(
+      return unwrapAsync(oAuthPostAuthKeysCode(
         client$,
         request,
         mergedOptions,

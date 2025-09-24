@@ -8,7 +8,7 @@ import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { resolveSecurity } from "../lib/security.js";
+import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -25,16 +25,18 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Coinbase charge for crypto payment
+ * Exchange authorization code for API key
+ *
+ * @remarks
+ * Exchange an authorization code from the PKCE flow for a user-controlled API key
  */
-export function postCreditsCoinbase(
+export function oAuthPostAuthKeys(
   client: OpenRouterCore,
-  security: operations.PostCreditsCoinbaseSecurity,
-  request?: operations.PostCreditsCoinbaseRequest | undefined,
+  request?: operations.PostAuthKeysRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.PostCreditsCoinbaseResponse,
+    operations.PostAuthKeysResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -47,7 +49,6 @@ export function postCreditsCoinbase(
 > {
   return new APIPromise($do(
     client,
-    security,
     request,
     options,
   ));
@@ -55,13 +56,12 @@ export function postCreditsCoinbase(
 
 async function $do(
   client: OpenRouterCore,
-  security: operations.PostCreditsCoinbaseSecurity,
-  request?: operations.PostCreditsCoinbaseRequest | undefined,
+  request?: operations.PostAuthKeysRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.PostCreditsCoinbaseResponse,
+      operations.PostAuthKeysResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -77,9 +77,7 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.PostCreditsCoinbaseRequest$outboundSchema.optional().parse(
-        value,
-      ),
+      operations.PostAuthKeysRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -90,32 +88,26 @@ async function $do(
     ? null
     : encodeJSON("body", payload, { explode: true });
 
-  const path = pathToFunc("/credits/coinbase")();
+  const path = pathToFunc("/auth/keys")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: "application/json",
   }));
 
-  const requestSecurity = resolveSecurity(
-    [
-      {
-        fieldName: "Authorization",
-        type: "apiKey:header",
-        value: security?.bearer,
-      },
-    ],
-  );
+  const secConfig = await extractSecurity(client._options.apiKey);
+  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "post_/credits/coinbase",
-    oAuth2Scopes: null,
+    operationID: "post_/auth/keys",
+    oAuth2Scopes: [],
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: security,
+    securitySource: client._options.apiKey,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -149,7 +141,7 @@ async function $do(
   const response = doResult.value;
 
   const [result] = await M.match<
-    operations.PostCreditsCoinbaseResponse,
+    operations.PostAuthKeysResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -159,10 +151,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.PostCreditsCoinbaseResponse$inboundSchema),
+    M.json(200, operations.PostAuthKeysResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
-    M.json("default", operations.PostCreditsCoinbaseResponse$inboundSchema),
+    M.json("default", operations.PostAuthKeysResponse$inboundSchema),
   )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

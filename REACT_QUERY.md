@@ -107,10 +107,10 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
+import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
 
 export function Example() {
-  const { mutate, status } = usePostCreditsCoinbaseMutation();
+  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation();
 
   return (
     <form
@@ -137,10 +137,10 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
+import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
 
 export function ExampleWithOptions() {
-  const { mutate, status } = usePostCreditsCoinbaseMutation({
+  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation({
     // TanStack Query options:
     networkMode: "online",
     gcTime: 5 * 60 * 1000, // 5 minutes

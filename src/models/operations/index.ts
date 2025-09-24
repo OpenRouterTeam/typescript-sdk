@@ -18,6 +18,8 @@ export * from "./getmodelsuser.js";
 export * from "./getparametersauthorslug.js";
 export * from "./getproviders.js";
 export * from "./patchkeyshash.js";
+export * from "./postauthkeys.js";
+export * from "./postauthkeyscode.js";
 export * from "./postchatcompletions.js";
 export * from "./postcreditscoinbase.js";
 export * from "./postembeddings.js";

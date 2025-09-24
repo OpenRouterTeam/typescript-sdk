@@ -17,7 +17,3 @@ const value: models.ChatResponse = {
 
 ### `EventStream<models.ChatStreamingResponseChunk>`
 
-```typescript
-const value: EventStream<models.ChatStreamingResponseChunk> = ;
-```
-

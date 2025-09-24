@@ -8,7 +8,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { postCreditsCoinbase } from "../funcs/postCreditsCoinbase.js";
+import { embeddingsGenerate } from "../funcs/embeddingsGenerate.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -16,56 +16,56 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export type PostCreditsCoinbaseMutationVariables = {
-  security: operations.PostCreditsCoinbaseSecurity;
-  request?: operations.PostCreditsCoinbaseRequest | undefined;
+export type EmbeddingsGenerateMutationVariables = {
+  request?: operations.PostEmbeddingsRequest | undefined;
   options?: RequestOptions;
 };
 
-export type PostCreditsCoinbaseMutationData =
-  operations.PostCreditsCoinbaseResponse;
+export type EmbeddingsGenerateMutationData = operations.PostEmbeddingsResponse;
 
 /**
- * Create a Coinbase charge for crypto payment
+ * Submit an embedding request
+ *
+ * @remarks
+ * Submits an embedding request to the embeddings router
  */
-export function usePostCreditsCoinbaseMutation(
+export function useEmbeddingsGenerateMutation(
   options?: MutationHookOptions<
-    PostCreditsCoinbaseMutationData,
+    EmbeddingsGenerateMutationData,
     Error,
-    PostCreditsCoinbaseMutationVariables
+    EmbeddingsGenerateMutationVariables
   >,
 ): UseMutationResult<
-  PostCreditsCoinbaseMutationData,
+  EmbeddingsGenerateMutationData,
   Error,
-  PostCreditsCoinbaseMutationVariables
+  EmbeddingsGenerateMutationVariables
 > {
   const client = useOpenRouterContext();
   return useMutation({
-    ...buildPostCreditsCoinbaseMutation(client, options),
+    ...buildEmbeddingsGenerateMutation(client, options),
     ...options,
   });
 }
 
-export function mutationKeyPostCreditsCoinbase(): MutationKey {
-  return ["@openrouter/sdk", "postCreditsCoinbase"];
+export function mutationKeyEmbeddingsGenerate(): MutationKey {
+  return ["@openrouter/sdk", "Embeddings", "generate"];
 }
 
-export function buildPostCreditsCoinbaseMutation(
+export function buildEmbeddingsGenerateMutation(
   client$: OpenRouterCore,
   hookOptions?: RequestOptions,
 ): {
   mutationKey: MutationKey;
   mutationFn: (
-    variables: PostCreditsCoinbaseMutationVariables,
-  ) => Promise<PostCreditsCoinbaseMutationData>;
+    variables: EmbeddingsGenerateMutationVariables,
+  ) => Promise<EmbeddingsGenerateMutationData>;
 } {
   return {
-    mutationKey: mutationKeyPostCreditsCoinbase(),
-    mutationFn: function postCreditsCoinbaseMutationFn({
-      security,
+    mutationKey: mutationKeyEmbeddingsGenerate(),
+    mutationFn: function embeddingsGenerateMutationFn({
       request,
       options,
-    }): Promise<PostCreditsCoinbaseMutationData> {
+    }): Promise<EmbeddingsGenerateMutationData> {
       const mergedOptions = {
         ...hookOptions,
         ...options,
@@ -78,9 +78,8 @@ export function buildPostCreditsCoinbaseMutation(
           ),
         },
       };
-      return unwrapAsync(postCreditsCoinbase(
+      return unwrapAsync(embeddingsGenerate(
         client$,
-        security,
         request,
         mergedOptions,
       ));

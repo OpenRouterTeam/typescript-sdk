@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { getProviders } from "../funcs/getProviders.js";
+import { providersGetProviders } from "../funcs/providersGetProviders.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -21,14 +21,17 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type GetProvidersQueryData = operations.GetProvidersResponse;
+export type ProvidersGetProvidersQueryData = operations.GetProvidersResponse;
 
-export function useGetProviders(
-  options?: QueryHookOptions<GetProvidersQueryData>,
-): UseQueryResult<GetProvidersQueryData, Error> {
+/**
+ * List all available model providers
+ */
+export function useProvidersGetProviders(
+  options?: QueryHookOptions<ProvidersGetProvidersQueryData>,
+): UseQueryResult<ProvidersGetProvidersQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildGetProvidersQuery(
+    ...buildProvidersGetProvidersQuery(
       client,
       options,
     ),
@@ -36,12 +39,15 @@ export function useGetProviders(
   });
 }
 
-export function useGetProvidersSuspense(
-  options?: SuspenseQueryHookOptions<GetProvidersQueryData>,
-): UseSuspenseQueryResult<GetProvidersQueryData, Error> {
+/**
+ * List all available model providers
+ */
+export function useProvidersGetProvidersSuspense(
+  options?: SuspenseQueryHookOptions<ProvidersGetProvidersQueryData>,
+): UseSuspenseQueryResult<ProvidersGetProvidersQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildGetProvidersQuery(
+    ...buildProvidersGetProvidersQuery(
       client,
       options,
     ),
@@ -49,55 +55,57 @@ export function useGetProvidersSuspense(
   });
 }
 
-export function prefetchGetProviders(
+export function prefetchProvidersGetProviders(
   queryClient: QueryClient,
   client$: OpenRouterCore,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildGetProvidersQuery(
+    ...buildProvidersGetProvidersQuery(
       client$,
     ),
   });
 }
 
-export function setGetProvidersData(
+export function setProvidersGetProvidersData(
   client: QueryClient,
-  data: GetProvidersQueryData,
-): GetProvidersQueryData | undefined {
-  const key = queryKeyGetProviders();
+  data: ProvidersGetProvidersQueryData,
+): ProvidersGetProvidersQueryData | undefined {
+  const key = queryKeyProvidersGetProviders();
 
-  return client.setQueryData<GetProvidersQueryData>(key, data);
+  return client.setQueryData<ProvidersGetProvidersQueryData>(key, data);
 }
 
-export function invalidateAllGetProviders(
+export function invalidateAllProvidersGetProviders(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "getProviders"],
+    queryKey: ["@openrouter/sdk", "Providers", "getProviders"],
   });
 }
 
-export function buildGetProvidersQuery(
+export function buildProvidersGetProvidersQuery(
   client$: OpenRouterCore,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;
-  queryFn: (context: QueryFunctionContext) => Promise<GetProvidersQueryData>;
+  queryFn: (
+    context: QueryFunctionContext,
+  ) => Promise<ProvidersGetProvidersQueryData>;
 } {
   return {
-    queryKey: queryKeyGetProviders(),
-    queryFn: async function getProvidersQueryFn(
+    queryKey: queryKeyProvidersGetProviders(),
+    queryFn: async function providersGetProvidersQueryFn(
       ctx,
-    ): Promise<GetProvidersQueryData> {
+    ): Promise<ProvidersGetProvidersQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(getProviders(
+      return unwrapAsync(providersGetProviders(
         client$,
         mergedOptions,
       ));
@@ -105,6 +113,6 @@ export function buildGetProvidersQuery(
   };
 }
 
-export function queryKeyGetProviders(): QueryKey {
-  return ["@openrouter/sdk", "getProviders"];
+export function queryKeyProvidersGetProviders(): QueryKey {
+  return ["@openrouter/sdk", "Providers", "getProviders"];
 }
