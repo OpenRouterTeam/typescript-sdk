@@ -21,6 +21,7 @@ export * from "./patchkeyshash.js";
 export * from "./postauthkeys.js";
 export * from "./postauthkeyscode.js";
 export * from "./postchatcompletions.js";
+export * from "./postcompletions.js";
 export * from "./postcreditscoinbase.js";
 export * from "./postembeddings.js";
 export * from "./postkeys.js";

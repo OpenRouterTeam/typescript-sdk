@@ -7,7 +7,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type Code = string | number;
+export type ChatErrorCode = string | number;
 
 export type ChatErrorError = {
   code: string | number | null;
@@ -17,40 +17,46 @@ export type ChatErrorError = {
 };
 
 /** @internal */
-export const Code$inboundSchema: z.ZodType<Code, z.ZodTypeDef, unknown> = z
-  .union([z.string(), z.number()]);
+export const ChatErrorCode$inboundSchema: z.ZodType<
+  ChatErrorCode,
+  z.ZodTypeDef,
+  unknown
+> = z.union([z.string(), z.number()]);
 
 /** @internal */
-export type Code$Outbound = string | number;
+export type ChatErrorCode$Outbound = string | number;
 
 /** @internal */
-export const Code$outboundSchema: z.ZodType<Code$Outbound, z.ZodTypeDef, Code> =
-  z.union([z.string(), z.number()]);
+export const ChatErrorCode$outboundSchema: z.ZodType<
+  ChatErrorCode$Outbound,
+  z.ZodTypeDef,
+  ChatErrorCode
+> = z.union([z.string(), z.number()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Code$ {
-  /** @deprecated use `Code$inboundSchema` instead. */
-  export const inboundSchema = Code$inboundSchema;
-  /** @deprecated use `Code$outboundSchema` instead. */
-  export const outboundSchema = Code$outboundSchema;
-  /** @deprecated use `Code$Outbound` instead. */
-  export type Outbound = Code$Outbound;
+export namespace ChatErrorCode$ {
+  /** @deprecated use `ChatErrorCode$inboundSchema` instead. */
+  export const inboundSchema = ChatErrorCode$inboundSchema;
+  /** @deprecated use `ChatErrorCode$outboundSchema` instead. */
+  export const outboundSchema = ChatErrorCode$outboundSchema;
+  /** @deprecated use `ChatErrorCode$Outbound` instead. */
+  export type Outbound = ChatErrorCode$Outbound;
 }
 
-export function codeToJSON(code: Code): string {
-  return JSON.stringify(Code$outboundSchema.parse(code));
+export function chatErrorCodeToJSON(chatErrorCode: ChatErrorCode): string {
+  return JSON.stringify(ChatErrorCode$outboundSchema.parse(chatErrorCode));
 }
 
-export function codeFromJSON(
+export function chatErrorCodeFromJSON(
   jsonString: string,
-): SafeParseResult<Code, SDKValidationError> {
+): SafeParseResult<ChatErrorCode, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Code$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Code' from JSON`,
+    (x) => ChatErrorCode$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatErrorCode' from JSON`,
   );
 }
 

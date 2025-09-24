@@ -6,7 +6,6 @@ import * as z from "zod";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type DeleteKeysHashRequest = {
   hash: string;
@@ -15,16 +14,12 @@ export type DeleteKeysHashRequest = {
 /**
  * API key deleted successfully
  */
-export type DeleteKeysHashResponseBody = {
+export type DeleteKeysHashResponse = {
   /**
    * Confirmation that the API key was deleted
    */
   deleted: boolean;
 };
-
-export type DeleteKeysHashResponse =
-  | DeleteKeysHashResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const DeleteKeysHashRequest$inboundSchema: z.ZodType<
@@ -81,83 +76,27 @@ export function deleteKeysHashRequestFromJSON(
 }
 
 /** @internal */
-export const DeleteKeysHashResponseBody$inboundSchema: z.ZodType<
-  DeleteKeysHashResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  deleted: z.boolean(),
-});
-
-/** @internal */
-export type DeleteKeysHashResponseBody$Outbound = {
-  deleted: boolean;
-};
-
-/** @internal */
-export const DeleteKeysHashResponseBody$outboundSchema: z.ZodType<
-  DeleteKeysHashResponseBody$Outbound,
-  z.ZodTypeDef,
-  DeleteKeysHashResponseBody
-> = z.object({
-  deleted: z.boolean(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DeleteKeysHashResponseBody$ {
-  /** @deprecated use `DeleteKeysHashResponseBody$inboundSchema` instead. */
-  export const inboundSchema = DeleteKeysHashResponseBody$inboundSchema;
-  /** @deprecated use `DeleteKeysHashResponseBody$outboundSchema` instead. */
-  export const outboundSchema = DeleteKeysHashResponseBody$outboundSchema;
-  /** @deprecated use `DeleteKeysHashResponseBody$Outbound` instead. */
-  export type Outbound = DeleteKeysHashResponseBody$Outbound;
-}
-
-export function deleteKeysHashResponseBodyToJSON(
-  deleteKeysHashResponseBody: DeleteKeysHashResponseBody,
-): string {
-  return JSON.stringify(
-    DeleteKeysHashResponseBody$outboundSchema.parse(deleteKeysHashResponseBody),
-  );
-}
-
-export function deleteKeysHashResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<DeleteKeysHashResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => DeleteKeysHashResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DeleteKeysHashResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
 export const DeleteKeysHashResponse$inboundSchema: z.ZodType<
   DeleteKeysHashResponse,
   z.ZodTypeDef,
   unknown
-> = z.union([
-  z.lazy(() => DeleteKeysHashResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
+> = z.object({
+  deleted: z.boolean(),
+});
 
 /** @internal */
-export type DeleteKeysHashResponse$Outbound =
-  | DeleteKeysHashResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
+export type DeleteKeysHashResponse$Outbound = {
+  deleted: boolean;
+};
 
 /** @internal */
 export const DeleteKeysHashResponse$outboundSchema: z.ZodType<
   DeleteKeysHashResponse$Outbound,
   z.ZodTypeDef,
   DeleteKeysHashResponse
-> = z.union([
-  z.lazy(() => DeleteKeysHashResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  deleted: z.boolean(),
+});
 
 /**
  * @internal

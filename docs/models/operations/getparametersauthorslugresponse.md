@@ -1,29 +1,22 @@
 # GetParametersAuthorSlugResponse
 
+Returns the parameters for the specified model
 
-## Supported Types
-
-### `operations.GetParametersAuthorSlugResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetParametersAuthorSlugResponseBody = {
+import { GetParametersAuthorSlugResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetParametersAuthorSlugResponse = {
   data: {
     model: "openai/gpt-4",
-    supportedParameters: [
-      "repetition_penalty",
-    ],
+    supportedParameters: [],
   },
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `data`                                                                                           | [operations.GetParametersAuthorSlugData](../../models/operations/getparametersauthorslugdata.md) | :heavy_check_mark:                                                                               | Parameter analytics data                                                                         |

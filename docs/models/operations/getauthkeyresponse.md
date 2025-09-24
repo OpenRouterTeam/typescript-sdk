@@ -1,12 +1,13 @@
 # GetAuthKeyResponse
 
+API key details
 
-## Supported Types
-
-### `operations.GetAuthKeyResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetAuthKeyResponseBody = {
+import { GetAuthKeyResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetAuthKeyResponse = {
   data: {
     label: "sk-or-v1-au78b3456789012345678901234567890",
     limit: 100,
@@ -23,14 +24,8 @@ const value: operations.GetAuthKeyResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `data`                                                                 | [operations.GetAuthKeyData](../../models/operations/getauthkeydata.md) | :heavy_check_mark:                                                     | Current API key information                                            |

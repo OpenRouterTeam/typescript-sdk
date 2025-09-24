@@ -25,7 +25,7 @@ export type ChatStreamingResponseChunkError = {
   code: number;
 };
 
-export type Data = {
+export type ChatStreamingResponseChunkData = {
   id: string;
   choices: Array<ChatStreamingChoice>;
   created: number;
@@ -37,7 +37,7 @@ export type Data = {
 };
 
 export type ChatStreamingResponseChunk = {
-  data: Data;
+  data: ChatStreamingResponseChunkData;
 };
 
 /** @internal */
@@ -100,25 +100,27 @@ export function chatStreamingResponseChunkErrorFromJSON(
 }
 
 /** @internal */
-export const Data$inboundSchema: z.ZodType<Data, z.ZodTypeDef, unknown> = z
-  .object({
-    id: z.string(),
-    choices: z.array(ChatStreamingChoice$inboundSchema),
-    created: z.number(),
-    model: z.string(),
-    object: z.literal("chat.completion.chunk"),
-    system_fingerprint: z.nullable(z.string()).optional(),
-    error: z.lazy(() => ChatStreamingResponseChunkError$inboundSchema)
-      .optional(),
-    usage: ChatGenerationTokenUsage$inboundSchema.optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "system_fingerprint": "systemFingerprint",
-    });
+export const ChatStreamingResponseChunkData$inboundSchema: z.ZodType<
+  ChatStreamingResponseChunkData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  id: z.string(),
+  choices: z.array(ChatStreamingChoice$inboundSchema),
+  created: z.number(),
+  model: z.string(),
+  object: z.literal("chat.completion.chunk"),
+  system_fingerprint: z.nullable(z.string()).optional(),
+  error: z.lazy(() => ChatStreamingResponseChunkError$inboundSchema).optional(),
+  usage: ChatGenerationTokenUsage$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "system_fingerprint": "systemFingerprint",
   });
+});
 
 /** @internal */
-export type Data$Outbound = {
+export type ChatStreamingResponseChunkData$Outbound = {
   id: string;
   choices: Array<ChatStreamingChoice$Outbound>;
   created: number;
@@ -130,47 +132,56 @@ export type Data$Outbound = {
 };
 
 /** @internal */
-export const Data$outboundSchema: z.ZodType<Data$Outbound, z.ZodTypeDef, Data> =
-  z.object({
-    id: z.string(),
-    choices: z.array(ChatStreamingChoice$outboundSchema),
-    created: z.number(),
-    model: z.string(),
-    object: z.literal("chat.completion.chunk"),
-    systemFingerprint: z.nullable(z.string()).optional(),
-    error: z.lazy(() => ChatStreamingResponseChunkError$outboundSchema)
-      .optional(),
-    usage: ChatGenerationTokenUsage$outboundSchema.optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      systemFingerprint: "system_fingerprint",
-    });
+export const ChatStreamingResponseChunkData$outboundSchema: z.ZodType<
+  ChatStreamingResponseChunkData$Outbound,
+  z.ZodTypeDef,
+  ChatStreamingResponseChunkData
+> = z.object({
+  id: z.string(),
+  choices: z.array(ChatStreamingChoice$outboundSchema),
+  created: z.number(),
+  model: z.string(),
+  object: z.literal("chat.completion.chunk"),
+  systemFingerprint: z.nullable(z.string()).optional(),
+  error: z.lazy(() => ChatStreamingResponseChunkError$outboundSchema)
+    .optional(),
+  usage: ChatGenerationTokenUsage$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    systemFingerprint: "system_fingerprint",
   });
+});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Data$ {
-  /** @deprecated use `Data$inboundSchema` instead. */
-  export const inboundSchema = Data$inboundSchema;
-  /** @deprecated use `Data$outboundSchema` instead. */
-  export const outboundSchema = Data$outboundSchema;
-  /** @deprecated use `Data$Outbound` instead. */
-  export type Outbound = Data$Outbound;
+export namespace ChatStreamingResponseChunkData$ {
+  /** @deprecated use `ChatStreamingResponseChunkData$inboundSchema` instead. */
+  export const inboundSchema = ChatStreamingResponseChunkData$inboundSchema;
+  /** @deprecated use `ChatStreamingResponseChunkData$outboundSchema` instead. */
+  export const outboundSchema = ChatStreamingResponseChunkData$outboundSchema;
+  /** @deprecated use `ChatStreamingResponseChunkData$Outbound` instead. */
+  export type Outbound = ChatStreamingResponseChunkData$Outbound;
 }
 
-export function dataToJSON(data: Data): string {
-  return JSON.stringify(Data$outboundSchema.parse(data));
+export function chatStreamingResponseChunkDataToJSON(
+  chatStreamingResponseChunkData: ChatStreamingResponseChunkData,
+): string {
+  return JSON.stringify(
+    ChatStreamingResponseChunkData$outboundSchema.parse(
+      chatStreamingResponseChunkData,
+    ),
+  );
 }
 
-export function dataFromJSON(
+export function chatStreamingResponseChunkDataFromJSON(
   jsonString: string,
-): SafeParseResult<Data, SDKValidationError> {
+): SafeParseResult<ChatStreamingResponseChunkData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Data$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Data' from JSON`,
+    (x) => ChatStreamingResponseChunkData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamingResponseChunkData' from JSON`,
   );
 }
 
@@ -190,12 +201,12 @@ export const ChatStreamingResponseChunk$inboundSchema: z.ZodType<
       });
       return z.NEVER;
     }
-  }).pipe(z.lazy(() => Data$inboundSchema)),
+  }).pipe(z.lazy(() => ChatStreamingResponseChunkData$inboundSchema)),
 });
 
 /** @internal */
 export type ChatStreamingResponseChunk$Outbound = {
-  data: Data$Outbound;
+  data: ChatStreamingResponseChunkData$Outbound;
 };
 
 /** @internal */
@@ -204,7 +215,7 @@ export const ChatStreamingResponseChunk$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatStreamingResponseChunk
 > = z.object({
-  data: z.lazy(() => Data$outboundSchema),
+  data: z.lazy(() => ChatStreamingResponseChunkData$outboundSchema),
 });
 
 /**

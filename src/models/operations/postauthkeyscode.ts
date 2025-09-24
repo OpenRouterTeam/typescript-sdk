@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 /**
  * The method used to generate the code challenge
@@ -61,13 +60,9 @@ export type PostAuthKeysCodeData = {
 /**
  * Successfully created authorization code
  */
-export type PostAuthKeysCodeResponseBody = {
+export type PostAuthKeysCodeResponse = {
   data: PostAuthKeysCodeData;
 };
-
-export type PostAuthKeysCodeResponse =
-  | PostAuthKeysCodeResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const PostAuthKeysCodeCodeChallengeMethod$inboundSchema: z.ZodNativeEnum<
@@ -240,8 +235,8 @@ export function postAuthKeysCodeDataFromJSON(
 }
 
 /** @internal */
-export const PostAuthKeysCodeResponseBody$inboundSchema: z.ZodType<
-  PostAuthKeysCodeResponseBody,
+export const PostAuthKeysCodeResponse$inboundSchema: z.ZodType<
+  PostAuthKeysCodeResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -249,76 +244,18 @@ export const PostAuthKeysCodeResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PostAuthKeysCodeResponseBody$Outbound = {
+export type PostAuthKeysCodeResponse$Outbound = {
   data: PostAuthKeysCodeData$Outbound;
 };
-
-/** @internal */
-export const PostAuthKeysCodeResponseBody$outboundSchema: z.ZodType<
-  PostAuthKeysCodeResponseBody$Outbound,
-  z.ZodTypeDef,
-  PostAuthKeysCodeResponseBody
-> = z.object({
-  data: z.lazy(() => PostAuthKeysCodeData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostAuthKeysCodeResponseBody$ {
-  /** @deprecated use `PostAuthKeysCodeResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PostAuthKeysCodeResponseBody$inboundSchema;
-  /** @deprecated use `PostAuthKeysCodeResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PostAuthKeysCodeResponseBody$outboundSchema;
-  /** @deprecated use `PostAuthKeysCodeResponseBody$Outbound` instead. */
-  export type Outbound = PostAuthKeysCodeResponseBody$Outbound;
-}
-
-export function postAuthKeysCodeResponseBodyToJSON(
-  postAuthKeysCodeResponseBody: PostAuthKeysCodeResponseBody,
-): string {
-  return JSON.stringify(
-    PostAuthKeysCodeResponseBody$outboundSchema.parse(
-      postAuthKeysCodeResponseBody,
-    ),
-  );
-}
-
-export function postAuthKeysCodeResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PostAuthKeysCodeResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostAuthKeysCodeResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostAuthKeysCodeResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PostAuthKeysCodeResponse$inboundSchema: z.ZodType<
-  PostAuthKeysCodeResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PostAuthKeysCodeResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PostAuthKeysCodeResponse$Outbound =
-  | PostAuthKeysCodeResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const PostAuthKeysCodeResponse$outboundSchema: z.ZodType<
   PostAuthKeysCodeResponse$Outbound,
   z.ZodTypeDef,
   PostAuthKeysCodeResponse
-> = z.union([
-  z.lazy(() => PostAuthKeysCodeResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => PostAuthKeysCodeData$outboundSchema),
+});
 
 /**
  * @internal

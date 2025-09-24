@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: OpenRouter API
   version: 1.0.0
-  description: OpenAI-compatible Chat Completions API with additional OpenRouter features
+  description: OpenAI-compatible Chat Completions and Completions API with additional OpenRouter features
   contact:
     name: OpenRouter Support
     url: https://openrouter.ai/docs
@@ -892,6 +892,368 @@ components:
             - object
       required:
         - data
+    CompletionFinishReason:
+      type:
+        - string
+        - 'null'
+      enum:
+        - stop
+        - length
+        - content_filter
+        - null
+    CompletionTokenLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+        logprob:
+          type: number
+        bytes:
+          type:
+            - array
+            - 'null'
+          items:
+            type: number
+      required:
+        - token
+        - logprob
+        - bytes
+    CompletionLogprobs:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            type: string
+        token_logprobs:
+          type: array
+          items:
+            type: number
+        top_logprobs:
+          type:
+            - array
+            - 'null'
+          items:
+            type: object
+            additionalProperties:
+              type: number
+        text_offset:
+          type: array
+          items:
+            type: number
+      required:
+        - tokens
+        - token_logprobs
+        - top_logprobs
+        - text_offset
+    CompletionUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: number
+        completion_tokens:
+          type: number
+        total_tokens:
+          type: number
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
+    CompletionCreateParams:
+      type: object
+      properties:
+        model:
+          anyOf:
+            - type: string
+            - type: string
+        prompt:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            - type: array
+              items:
+                type: number
+            - type: array
+              items:
+                type: array
+                items:
+                  type: number
+        best_of:
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+          maximum: 20
+        echo:
+          type:
+            - boolean
+            - 'null'
+        frequency_penalty:
+          type:
+            - number
+            - 'null'
+          minimum: -2
+          maximum: 2
+        logit_bias:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            type: number
+        logprobs:
+          type:
+            - integer
+            - 'null'
+          minimum: 0
+          maximum: 5
+        max_tokens:
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+        'n':
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+          maximum: 128
+        presence_penalty:
+          type:
+            - number
+            - 'null'
+          minimum: -2
+          maximum: 2
+        seed:
+          type:
+            - integer
+            - 'null'
+        stop:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            - type: 'null'
+        stream:
+          type:
+            - boolean
+            - 'null'
+        stream_options:
+          type:
+            - object
+            - 'null'
+          properties:
+            include_usage:
+              type:
+                - boolean
+                - 'null'
+        suffix:
+          type:
+            - string
+            - 'null'
+        temperature:
+          type:
+            - number
+            - 'null'
+          minimum: 0
+          maximum: 2
+        top_p:
+          type:
+            - number
+            - 'null'
+          minimum: 0
+          maximum: 1
+        user:
+          type: string
+        metadata:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            type: string
+        response_format:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: text
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: json_object
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: json_schema
+                json_schema:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 64
+                    description:
+                      type: string
+                    schema:
+                      type: object
+                      additionalProperties: {}
+                    strict:
+                      type:
+                        - boolean
+                        - 'null'
+                  required:
+                    - name
+              required:
+                - type
+                - json_schema
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: grammar
+                grammar:
+                  type: string
+              required:
+                - type
+                - grammar
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: python
+              required:
+                - type
+            - type: 'null'
+      required:
+        - model
+        - prompt
+    CompletionChoice:
+      type: object
+      properties:
+        text:
+          type: string
+        index:
+          type: number
+        logprobs:
+          oneOf:
+            - $ref: '#/components/schemas/CompletionLogprobs'
+            - type: 'null'
+        finish_reason:
+          $ref: '#/components/schemas/CompletionFinishReason'
+      required:
+        - text
+        - index
+        - logprobs
+        - finish_reason
+    CompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: text_completion
+        created:
+          type: number
+        model:
+          type: string
+        system_fingerprint:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionChoice'
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+    CompletionError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              anyOf:
+                - type: string
+                - type: number
+                - type: 'null'
+            message:
+              type: string
+            param:
+              type:
+                - string
+                - 'null'
+            type:
+              type: string
+          required:
+            - code
+            - message
+            - param
+            - type
+      required:
+        - error
+    CompletionStreamingChoice:
+      type: object
+      properties:
+        text:
+          type: string
+        index:
+          type: number
+        logprobs:
+          oneOf:
+            - $ref: '#/components/schemas/CompletionLogprobs'
+            - type: 'null'
+        finish_reason:
+          $ref: '#/components/schemas/CompletionFinishReason'
+      required:
+        - text
+        - index
+        - logprobs
+        - finish_reason
+    CompletionStreamingResponseChunk:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            object:
+              type: string
+              const: text_completion.chunk
+            created:
+              type: number
+            model:
+              type: string
+            system_fingerprint:
+              type: string
+            choices:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompletionStreamingChoice'
+            usage:
+              $ref: '#/components/schemas/CompletionUsage'
+          required:
+            - id
+            - object
+            - created
+            - model
+            - choices
+      required:
+        - data
   parameters: {}
   securitySchemes:
     apiKey:
@@ -928,7 +1290,13 @@ paths:
                     description: List of activity items
                 required:
                   - data
-        default:
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error Response
           content:
             application/json:
@@ -936,6 +1304,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /credits:
     get:
+      tags:
+        - Credits
       description: Get total credits purchased and used for the authenticated user
       responses:
         '200':
@@ -957,8 +1327,8 @@ paths:
                       - total_usage
                 required:
                   - data
-        default:
-          description: Internal server error
+        4XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -1071,8 +1441,14 @@ paths:
                       - web3_data
                 required:
                   - data
-        default:
+        4XX:
           description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -1551,8 +1927,14 @@ paths:
                   - object
                   - data
                   - model
-        default:
+        4XX:
           description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -1766,8 +2148,14 @@ paths:
                     description: Generation data
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -1797,8 +2185,14 @@ paths:
                     description: Model count data
                 required:
                   - data
-        default:
-          description: Error Response
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -2097,8 +2491,14 @@ paths:
             application/rss+xml:
               schema:
                 type: string
-        default:
-          description: Error Response
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -2375,7 +2775,13 @@ paths:
                     description: List of available models
                 required:
                   - data
-        default:
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error Response
           content:
             application/json:
@@ -2754,8 +3160,14 @@ paths:
                       - endpoints
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -3010,8 +3422,14 @@ paths:
                         - supports_implicit_caching
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -3153,8 +3571,14 @@ paths:
                     description: Parameter analytics data
                 required:
                   - data
-        default:
-          description: Data not found
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -3307,7 +3731,13 @@ paths:
                     description: List of API keys
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3401,7 +3831,13 @@ paths:
                 required:
                   - data
                   - key
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3500,7 +3936,13 @@ paths:
                     description: The updated API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3534,7 +3976,13 @@ paths:
                     example: true
                 required:
                   - deleted
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3609,7 +4057,13 @@ paths:
                     description: The API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3690,7 +4144,13 @@ paths:
                     description: Current API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3771,7 +4231,13 @@ paths:
                     description: Current API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3826,8 +4292,14 @@ paths:
                 required:
                   - key
                   - user_id
-        default:
+        4XX:
           description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -3897,7 +4369,13 @@ paths:
                       - created_at
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3955,6 +4433,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatError'
+  /completions:
+    post:
+      summary: Create a completion
+      x-speakeasy-group: completions
+      x-speakeasy-name-override: generate
+      description: Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
+      tags:
+        - Completions
+      requestBody:
+        description: Completion request parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionCreateParams'
+      responses:
+        '200':
+          description: Successful completion response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResponse'
+                description: Non-streaming response when stream=false
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/CompletionStreamingResponseChunk'
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '401':
+          description: Unauthorized - invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server

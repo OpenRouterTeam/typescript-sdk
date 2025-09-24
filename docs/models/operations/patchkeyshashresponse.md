@@ -1,12 +1,13 @@
 # PatchKeysHashResponse
 
+API key updated successfully
 
-## Supported Types
-
-### `operations.PatchKeysHashResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PatchKeysHashResponseBody = {
+import { PatchKeysHashResponse } from "@openrouter/sdk/models/operations";
+
+let value: PatchKeysHashResponse = {
   data: {
     hash: "sk-or-v1-abc123def456",
     name: "My Production Key",
@@ -20,14 +21,8 @@ const value: operations.PatchKeysHashResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `data`                                                                       | [operations.PatchKeysHashData](../../models/operations/patchkeyshashdata.md) | :heavy_check_mark:                                                           | The updated API key information                                              |

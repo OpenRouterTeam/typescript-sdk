@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type PostCreditsCoinbaseSecurity = {
   bearer: string;
@@ -65,13 +64,9 @@ export type PostCreditsCoinbaseData = {
 /**
  * Returns the calldata to fulfill the transaction
  */
-export type PostCreditsCoinbaseResponseBody = {
+export type PostCreditsCoinbaseResponse = {
   data: PostCreditsCoinbaseData;
 };
-
-export type PostCreditsCoinbaseResponse =
-  | PostCreditsCoinbaseResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const PostCreditsCoinbaseSecurity$inboundSchema: z.ZodType<
@@ -568,8 +563,8 @@ export function postCreditsCoinbaseDataFromJSON(
 }
 
 /** @internal */
-export const PostCreditsCoinbaseResponseBody$inboundSchema: z.ZodType<
-  PostCreditsCoinbaseResponseBody,
+export const PostCreditsCoinbaseResponse$inboundSchema: z.ZodType<
+  PostCreditsCoinbaseResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -577,76 +572,18 @@ export const PostCreditsCoinbaseResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PostCreditsCoinbaseResponseBody$Outbound = {
+export type PostCreditsCoinbaseResponse$Outbound = {
   data: PostCreditsCoinbaseData$Outbound;
 };
-
-/** @internal */
-export const PostCreditsCoinbaseResponseBody$outboundSchema: z.ZodType<
-  PostCreditsCoinbaseResponseBody$Outbound,
-  z.ZodTypeDef,
-  PostCreditsCoinbaseResponseBody
-> = z.object({
-  data: z.lazy(() => PostCreditsCoinbaseData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostCreditsCoinbaseResponseBody$ {
-  /** @deprecated use `PostCreditsCoinbaseResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PostCreditsCoinbaseResponseBody$inboundSchema;
-  /** @deprecated use `PostCreditsCoinbaseResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PostCreditsCoinbaseResponseBody$outboundSchema;
-  /** @deprecated use `PostCreditsCoinbaseResponseBody$Outbound` instead. */
-  export type Outbound = PostCreditsCoinbaseResponseBody$Outbound;
-}
-
-export function postCreditsCoinbaseResponseBodyToJSON(
-  postCreditsCoinbaseResponseBody: PostCreditsCoinbaseResponseBody,
-): string {
-  return JSON.stringify(
-    PostCreditsCoinbaseResponseBody$outboundSchema.parse(
-      postCreditsCoinbaseResponseBody,
-    ),
-  );
-}
-
-export function postCreditsCoinbaseResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PostCreditsCoinbaseResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostCreditsCoinbaseResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostCreditsCoinbaseResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PostCreditsCoinbaseResponse$inboundSchema: z.ZodType<
-  PostCreditsCoinbaseResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PostCreditsCoinbaseResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PostCreditsCoinbaseResponse$Outbound =
-  | PostCreditsCoinbaseResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const PostCreditsCoinbaseResponse$outboundSchema: z.ZodType<
   PostCreditsCoinbaseResponse$Outbound,
   z.ZodTypeDef,
   PostCreditsCoinbaseResponse
-> = z.union([
-  z.lazy(() => PostCreditsCoinbaseResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => PostCreditsCoinbaseData$outboundSchema),
+});
 
 /**
  * @internal

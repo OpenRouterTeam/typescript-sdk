@@ -1,12 +1,13 @@
 # GetModelsAuthorSlugEndpointsResponse
 
+Returns a list of endpoints
 
-## Supported Types
-
-### `operations.GetModelsAuthorSlugEndpointsResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetModelsAuthorSlugEndpointsResponseBody = {
+import { GetModelsAuthorSlugEndpointsResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetModelsAuthorSlugEndpointsResponse = {
   data: {
     id: "openai/gpt-4",
     name: "GPT-4",
@@ -20,39 +21,13 @@ const value: operations.GetModelsAuthorSlugEndpointsResponseBody = {
       inputModalities: [],
       outputModalities: [],
     },
-    endpoints: [
-      {
-        name: "<value>",
-        modelName: "<value>",
-        contextLength: 8400.17,
-        pricing: {
-          prompt: "<value>",
-          completion: "<value>",
-        },
-        providerName: "Featherless",
-        tag: "<value>",
-        quantization: "bf16",
-        maxCompletionTokens: 5927.51,
-        maxPromptTokens: 4247.2,
-        supportedParameters: [
-          "frequency_penalty",
-        ],
-        uptimeLast30m: 2818.25,
-        supportsImplicitCaching: false,
-      },
-    ],
+    endpoints: [],
   },
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                                                      | Type                                                                                                       | Required                                                                                                   | Description                                                                                                |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `data`                                                                                                     | [operations.GetModelsAuthorSlugEndpointsData](../../models/operations/getmodelsauthorslugendpointsdata.md) | :heavy_check_mark:                                                                                         | N/A                                                                                                        |

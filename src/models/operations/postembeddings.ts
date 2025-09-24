@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type Input =
   | string
@@ -446,16 +445,12 @@ export type Usage = {
 /**
  * Embedding response
  */
-export type PostEmbeddingsResponseBody = {
+export type PostEmbeddingsResponse = {
   object: ObjectT;
   data: Array<PostEmbeddingsData>;
   model: string;
   usage?: Usage | undefined;
 };
-
-export type PostEmbeddingsResponse =
-  | PostEmbeddingsResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const Input$inboundSchema: z.ZodType<Input, z.ZodTypeDef, unknown> = z
@@ -1553,8 +1548,8 @@ export function usageFromJSON(
 }
 
 /** @internal */
-export const PostEmbeddingsResponseBody$inboundSchema: z.ZodType<
-  PostEmbeddingsResponseBody,
+export const PostEmbeddingsResponse$inboundSchema: z.ZodType<
+  PostEmbeddingsResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1565,7 +1560,7 @@ export const PostEmbeddingsResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PostEmbeddingsResponseBody$Outbound = {
+export type PostEmbeddingsResponse$Outbound = {
   object: string;
   data: Array<PostEmbeddingsData$Outbound>;
   model: string;
@@ -1573,72 +1568,16 @@ export type PostEmbeddingsResponseBody$Outbound = {
 };
 
 /** @internal */
-export const PostEmbeddingsResponseBody$outboundSchema: z.ZodType<
-  PostEmbeddingsResponseBody$Outbound,
+export const PostEmbeddingsResponse$outboundSchema: z.ZodType<
+  PostEmbeddingsResponse$Outbound,
   z.ZodTypeDef,
-  PostEmbeddingsResponseBody
+  PostEmbeddingsResponse
 > = z.object({
   object: ObjectT$outboundSchema,
   data: z.array(z.lazy(() => PostEmbeddingsData$outboundSchema)),
   model: z.string(),
   usage: z.lazy(() => Usage$outboundSchema).optional(),
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostEmbeddingsResponseBody$ {
-  /** @deprecated use `PostEmbeddingsResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PostEmbeddingsResponseBody$inboundSchema;
-  /** @deprecated use `PostEmbeddingsResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PostEmbeddingsResponseBody$outboundSchema;
-  /** @deprecated use `PostEmbeddingsResponseBody$Outbound` instead. */
-  export type Outbound = PostEmbeddingsResponseBody$Outbound;
-}
-
-export function postEmbeddingsResponseBodyToJSON(
-  postEmbeddingsResponseBody: PostEmbeddingsResponseBody,
-): string {
-  return JSON.stringify(
-    PostEmbeddingsResponseBody$outboundSchema.parse(postEmbeddingsResponseBody),
-  );
-}
-
-export function postEmbeddingsResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PostEmbeddingsResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostEmbeddingsResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostEmbeddingsResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PostEmbeddingsResponse$inboundSchema: z.ZodType<
-  PostEmbeddingsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PostEmbeddingsResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PostEmbeddingsResponse$Outbound =
-  | PostEmbeddingsResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
-
-/** @internal */
-export const PostEmbeddingsResponse$outboundSchema: z.ZodType<
-  PostEmbeddingsResponse$Outbound,
-  z.ZodTypeDef,
-  PostEmbeddingsResponse
-> = z.union([
-  z.lazy(() => PostEmbeddingsResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
 
 /**
  * @internal

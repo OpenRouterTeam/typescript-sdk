@@ -1,12 +1,13 @@
 # GetKeyResponse
 
+API key details
 
-## Supported Types
-
-### `operations.GetKeyResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetKeyResponseBody = {
+import { GetKeyResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetKeyResponse = {
   data: {
     label: "sk-or-v1-au78b3456789012345678901234567890",
     limit: 100,
@@ -23,14 +24,8 @@ const value: operations.GetKeyResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| `data`                                                         | [operations.GetKeyData](../../models/operations/getkeydata.md) | :heavy_check_mark:                                             | Current API key information                                    |

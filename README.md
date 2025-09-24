@@ -89,7 +89,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.getCredits();
+  const result = await openRouter.analytics.getActivity({
+    date: "2025-08-24",
+  });
 
   console.log(result);
 }
@@ -119,7 +121,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.getCredits();
+  const result = await openRouter.analytics.getActivity({
+    date: "2025-08-24",
+  });
 
   console.log(result);
 }
@@ -173,8 +177,13 @@ run();
 
 * [send](docs/sdks/chat/README.md#send) - Create a chat completion
 
+### [completions](docs/sdks/completions/README.md)
+
+* [generate](docs/sdks/completions/README.md#generate) - Create a completion
+
 ### [credits](docs/sdks/credits/README.md)
 
+* [getCredits](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 * [postCreditsCoinbase](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 
 ### [embeddings](docs/sdks/embeddings/README.md)
@@ -205,9 +214,6 @@ run();
 * [postAuthKeys](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
 * [postAuthKeysCode](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
 
-### [OpenRouter SDK](docs/sdks/openrouter/README.md)
-
-* [getCredits](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 
 ### [providers](docs/sdks/providers/README.md)
 
@@ -240,12 +246,13 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
+- [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
+- [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`creditsPostCreditsCoinbase`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 - [`embeddingsGenerate`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
 - [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
 - [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`getCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`modelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
 - [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
 - [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
@@ -288,12 +295,13 @@ To learn about this feature and how to get started, check
 - [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
+- [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
+- [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`useCreditsPostCreditsCoinbaseMutation`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 - [`useEmbeddingsGenerateMutation`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
 - [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
 - [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
 - [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`useGetCredits`](docs/sdks/openrouter/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`useModelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
 - [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
 - [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
@@ -349,7 +357,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.getCredits({
+  const result = await openRouter.analytics.getActivity({
+    date: "2025-08-24",
+  }, {
     retries: {
       strategy: "backoff",
       backoff: {
@@ -388,7 +398,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.getCredits();
+  const result = await openRouter.analytics.getActivity({
+    date: "2025-08-24",
+  });
 
   console.log(result);
 }
@@ -423,7 +435,9 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.providers.getProviders();
+    const result = await openRouter.analytics.getActivity({
+      date: "2025-08-24",
+    });
 
     console.log(result);
   } catch (error) {
@@ -435,8 +449,9 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.InternalServerError) {
-        console.log(error.data$.error); // operations.ErrorT
+      if (error instanceof errors.ErrorResponse) {
+        console.log(error.data$.error); // models.ErrorResponseError
+        console.log(error.data$.userId); // string
       }
     }
   }
@@ -447,10 +462,11 @@ run();
 ```
 
 ### Error Classes
-**Primary error:**
+**Primary errors:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
+  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Error response. *
 
-<details><summary>Less common errors (8)</summary>
+<details><summary>Less common errors (9)</summary>
 
 <br />
 
@@ -463,8 +479,9 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 22 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 22 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 23 methods.*
+* [`CompletionError`](./src/models/errors/completionerror.ts): Bad request - invalid parameters. Applicable to 1 of 23 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 23 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

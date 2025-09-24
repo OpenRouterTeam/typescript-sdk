@@ -7,7 +7,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.getCredits();
+  const result = await openRouter.analytics.getActivity({
+    date: "2025-08-24",
+  });
 
   console.log(result);
 }

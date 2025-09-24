@@ -3,6 +3,8 @@
  */
 
 export * from "./chaterror.js";
+export * from "./completionerror.js";
+export * from "./errorresponse.js";
 export * from "./getproviders.js";
 export * from "./httpclienterrors.js";
 export * from "./openrouterdefaulterror.js";

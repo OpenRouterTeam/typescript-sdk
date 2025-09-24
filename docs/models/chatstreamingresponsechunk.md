@@ -11,11 +11,11 @@ let value: ChatStreamingResponseChunk = {
     choices: [
       {
         delta: {},
-        finishReason: "content_filter",
-        index: 214.57,
+        finishReason: "error",
+        index: 3793.72,
       },
     ],
-    created: 9352.59,
+    created: 932.78,
     model: "Ranchero",
     object: "chat.completion.chunk",
   },
@@ -24,6 +24,6 @@ let value: ChatStreamingResponseChunk = {
 
 ## Fields
 
-| Field                            | Type                             | Required                         | Description                      |
-| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
-| `data`                           | [models.Data](../models/data.md) | :heavy_check_mark:               | N/A                              |
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `data`                                                                               | [models.ChatStreamingResponseChunkData](../models/chatstreamingresponsechunkdata.md) | :heavy_check_mark:                                                                   | N/A                                                                                  |

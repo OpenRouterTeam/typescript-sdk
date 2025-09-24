@@ -6,7 +6,6 @@ import * as z from "zod";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 /**
  * Model count data
@@ -21,16 +20,12 @@ export type GetModelsCountData = {
 /**
  * Returns the total count of available models
  */
-export type GetModelsCountResponseBody = {
+export type GetModelsCountResponse = {
   /**
    * Model count data
    */
   data: GetModelsCountData;
 };
-
-export type GetModelsCountResponse =
-  | GetModelsCountResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetModelsCountData$inboundSchema: z.ZodType<
@@ -87,8 +82,8 @@ export function getModelsCountDataFromJSON(
 }
 
 /** @internal */
-export const GetModelsCountResponseBody$inboundSchema: z.ZodType<
-  GetModelsCountResponseBody,
+export const GetModelsCountResponse$inboundSchema: z.ZodType<
+  GetModelsCountResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -96,74 +91,18 @@ export const GetModelsCountResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetModelsCountResponseBody$Outbound = {
+export type GetModelsCountResponse$Outbound = {
   data: GetModelsCountData$Outbound;
 };
-
-/** @internal */
-export const GetModelsCountResponseBody$outboundSchema: z.ZodType<
-  GetModelsCountResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetModelsCountResponseBody
-> = z.object({
-  data: z.lazy(() => GetModelsCountData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsCountResponseBody$ {
-  /** @deprecated use `GetModelsCountResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetModelsCountResponseBody$inboundSchema;
-  /** @deprecated use `GetModelsCountResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetModelsCountResponseBody$outboundSchema;
-  /** @deprecated use `GetModelsCountResponseBody$Outbound` instead. */
-  export type Outbound = GetModelsCountResponseBody$Outbound;
-}
-
-export function getModelsCountResponseBodyToJSON(
-  getModelsCountResponseBody: GetModelsCountResponseBody,
-): string {
-  return JSON.stringify(
-    GetModelsCountResponseBody$outboundSchema.parse(getModelsCountResponseBody),
-  );
-}
-
-export function getModelsCountResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsCountResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsCountResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsCountResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetModelsCountResponse$inboundSchema: z.ZodType<
-  GetModelsCountResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetModelsCountResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetModelsCountResponse$Outbound =
-  | GetModelsCountResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetModelsCountResponse$outboundSchema: z.ZodType<
   GetModelsCountResponse$Outbound,
   z.ZodTypeDef,
   GetModelsCountResponse
-> = z.union([
-  z.lazy(() => GetModelsCountResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetModelsCountData$outboundSchema),
+});
 
 /**
  * @internal

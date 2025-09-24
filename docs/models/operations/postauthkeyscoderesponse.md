@@ -1,12 +1,13 @@
 # PostAuthKeysCodeResponse
 
+Successfully created authorization code
 
-## Supported Types
-
-### `operations.PostAuthKeysCodeResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PostAuthKeysCodeResponseBody = {
+import { PostAuthKeysCodeResponse } from "@openrouter/sdk/models/operations";
+
+let value: PostAuthKeysCodeResponse = {
   data: {
     id: "auth_code_xyz789",
     appId: 12345,
@@ -15,14 +16,8 @@ const value: operations.PostAuthKeysCodeResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `data`                                                                             | [operations.PostAuthKeysCodeData](../../models/operations/postauthkeyscodedata.md) | :heavy_check_mark:                                                                 | N/A                                                                                |

@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 /**
  * The method used to generate the code challenge
@@ -42,7 +41,7 @@ export type PostAuthKeysRequest = {
 /**
  * Successfully exchanged code for an API key
  */
-export type PostAuthKeysResponseBody = {
+export type PostAuthKeysResponse = {
   /**
    * The API key to use for OpenRouter requests
    */
@@ -52,10 +51,6 @@ export type PostAuthKeysResponseBody = {
    */
   userId: string | null;
 };
-
-export type PostAuthKeysResponse =
-  | PostAuthKeysResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const PostAuthKeysCodeChallengeMethod$inboundSchema: z.ZodNativeEnum<
@@ -151,8 +146,8 @@ export function postAuthKeysRequestFromJSON(
 }
 
 /** @internal */
-export const PostAuthKeysResponseBody$inboundSchema: z.ZodType<
-  PostAuthKeysResponseBody,
+export const PostAuthKeysResponse$inboundSchema: z.ZodType<
+  PostAuthKeysResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -165,16 +160,16 @@ export const PostAuthKeysResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PostAuthKeysResponseBody$Outbound = {
+export type PostAuthKeysResponse$Outbound = {
   key: string;
   user_id: string | null;
 };
 
 /** @internal */
-export const PostAuthKeysResponseBody$outboundSchema: z.ZodType<
-  PostAuthKeysResponseBody$Outbound,
+export const PostAuthKeysResponse$outboundSchema: z.ZodType<
+  PostAuthKeysResponse$Outbound,
   z.ZodTypeDef,
-  PostAuthKeysResponseBody
+  PostAuthKeysResponse
 > = z.object({
   key: z.string(),
   userId: z.nullable(z.string()),
@@ -183,62 +178,6 @@ export const PostAuthKeysResponseBody$outboundSchema: z.ZodType<
     userId: "user_id",
   });
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostAuthKeysResponseBody$ {
-  /** @deprecated use `PostAuthKeysResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PostAuthKeysResponseBody$inboundSchema;
-  /** @deprecated use `PostAuthKeysResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PostAuthKeysResponseBody$outboundSchema;
-  /** @deprecated use `PostAuthKeysResponseBody$Outbound` instead. */
-  export type Outbound = PostAuthKeysResponseBody$Outbound;
-}
-
-export function postAuthKeysResponseBodyToJSON(
-  postAuthKeysResponseBody: PostAuthKeysResponseBody,
-): string {
-  return JSON.stringify(
-    PostAuthKeysResponseBody$outboundSchema.parse(postAuthKeysResponseBody),
-  );
-}
-
-export function postAuthKeysResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PostAuthKeysResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostAuthKeysResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostAuthKeysResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PostAuthKeysResponse$inboundSchema: z.ZodType<
-  PostAuthKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PostAuthKeysResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PostAuthKeysResponse$Outbound =
-  | PostAuthKeysResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
-
-/** @internal */
-export const PostAuthKeysResponse$outboundSchema: z.ZodType<
-  PostAuthKeysResponse$Outbound,
-  z.ZodTypeDef,
-  PostAuthKeysResponse
-> = z.union([
-  z.lazy(() => PostAuthKeysResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
 
 /**
  * @internal

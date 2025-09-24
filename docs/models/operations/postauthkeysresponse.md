@@ -1,25 +1,21 @@
 # PostAuthKeysResponse
 
+Successfully exchanged code for an API key
 
-## Supported Types
-
-### `operations.PostAuthKeysResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PostAuthKeysResponseBody = {
+import { PostAuthKeysResponse } from "@openrouter/sdk/models/operations";
+
+let value: PostAuthKeysResponse = {
   key: "sk-or-v1-abc123def456ghi789jkl012",
   userId: "or_user_1234567890abcdef",
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                      | Type                                       | Required                                   | Description                                | Example                                    |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `key`                                      | *string*                                   | :heavy_check_mark:                         | The API key to use for OpenRouter requests | sk-or-v1-abc123def456ghi789jkl012          |
+| `userId`                                   | *string*                                   | :heavy_check_mark:                         | User ID associated with the API key        | or_user_1234567890abcdef                   |

@@ -1,12 +1,13 @@
 # PostKeysResponse
 
+API key created successfully
 
-## Supported Types
-
-### `operations.PostKeysResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PostKeysResponseBody = {
+import { PostKeysResponse } from "@openrouter/sdk/models/operations";
+
+let value: PostKeysResponse = {
   data: {
     hash: "sk-or-v1-abc123def456",
     name: "My Production Key",
@@ -21,14 +22,9 @@ const value: operations.PostKeysResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `data`                                                             | [operations.PostKeysData](../../models/operations/postkeysdata.md) | :heavy_check_mark:                                                 | The created API key information                                    |                                                                    |
+| `key`                                                              | *string*                                                           | :heavy_check_mark:                                                 | The actual API key string (only shown once)                        | sk-or-v1-abc123def456ghi789jkl012                                  |
