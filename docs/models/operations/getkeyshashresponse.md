@@ -1,12 +1,13 @@
 # GetKeysHashResponse
 
+API key details
 
-## Supported Types
-
-### `operations.GetKeysHashResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetKeysHashResponseBody = {
+import { GetKeysHashResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetKeysHashResponse = {
   data: {
     hash: "sk-or-v1-abc123def456",
     name: "My Production Key",
@@ -20,14 +21,8 @@ const value: operations.GetKeysHashResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `data`                                                                   | [operations.GetKeysHashData](../../models/operations/getkeyshashdata.md) | :heavy_check_mark:                                                       | The API key information                                                  |

@@ -1,24 +1,19 @@
 # DeleteKeysHashResponse
 
+API key deleted successfully
 
-## Supported Types
-
-### `operations.DeleteKeysHashResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.DeleteKeysHashResponseBody = {
+import { DeleteKeysHashResponse } from "@openrouter/sdk/models/operations";
+
+let value: DeleteKeysHashResponse = {
   deleted: true,
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                     | Type                                      | Required                                  | Description                               | Example                                   |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `deleted`                                 | *boolean*                                 | :heavy_check_mark:                        | Confirmation that the API key was deleted | true                                      |

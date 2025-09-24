@@ -1,12 +1,13 @@
 # GetGenerationResponse
 
+Returns the request metadata for this generation
 
-## Supported Types
-
-### `operations.GetGenerationResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetGenerationResponseBody = {
+import { GetGenerationResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetGenerationResponse = {
   data: {
     id: "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG",
     upstreamId: "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946",
@@ -38,19 +39,13 @@ const value: operations.GetGenerationResponseBody = {
     isByok: false,
     nativeFinishReason: "stop",
     externalUser: "user-123",
-    apiType: "embeddings",
+    apiType: null,
   },
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `data`                                                                       | [operations.GetGenerationData](../../models/operations/getgenerationdata.md) | :heavy_check_mark:                                                           | Generation data                                                              |

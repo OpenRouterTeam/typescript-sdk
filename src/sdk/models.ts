@@ -45,10 +45,12 @@ export class Models extends ClientSDK {
    * List models filtered by user provider preferences
    */
   async getModelsUser(
+    security: operations.GetModelsUserSecurity,
     options?: RequestOptions,
   ): Promise<operations.GetModelsUserResponse> {
     return unwrapAsync(modelsGetModelsUser(
       this,
+      security,
       options,
     ));
   }

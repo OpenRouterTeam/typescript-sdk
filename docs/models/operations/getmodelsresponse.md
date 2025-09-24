@@ -17,14 +17,3 @@ const value: operations.GetModelsResponseBody = {
 const value: string = "<value>";
 ```
 
-### `models.ErrorResponse`
-
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-

@@ -6,7 +6,7 @@ import { OpenRouterCore } from "../core.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
+import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -15,6 +15,7 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
+import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -27,10 +28,12 @@ import { Result } from "../types/fp.js";
  */
 export function modelsGetModelsUser(
   client: OpenRouterCore,
+  security: operations.GetModelsUserSecurity,
   options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.GetModelsUserResponse,
+    | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -43,17 +46,20 @@ export function modelsGetModelsUser(
 > {
   return new APIPromise($do(
     client,
+    security,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
+  security: operations.GetModelsUserSecurity,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
       operations.GetModelsUserResponse,
+      | errors.ErrorResponse
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -72,18 +78,25 @@ async function $do(
     Accept: "application/json",
   }));
 
-  const securityInput = await extractSecurity(client._options.security);
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveSecurity(
+    [
+      {
+        fieldName: "Authorization",
+        type: "apiKey:header",
+        value: security?.bearer,
+      },
+    ],
+  );
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "get_/models/user",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.security,
+    securitySource: security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -115,8 +128,13 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     operations.GetModelsUserResponse,
+    | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -127,10 +145,9 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.GetModelsUserResponse$inboundSchema),
-    M.fail("4XX"),
-    M.fail("5XX"),
-    M.json("default", operations.GetModelsUserResponse$inboundSchema),
-  )(response, req);
+    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
+    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

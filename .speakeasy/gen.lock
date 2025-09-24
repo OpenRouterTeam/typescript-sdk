@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 80dec9a41e9ab85cde78982024c04754
+  docChecksum: d08678fef9fb94e26f6c82600c804646
   docVersion: 1.0.0
   speakeasyVersion: 1.625.0
   generationVersion: 2.715.0
-  releaseVersion: 0.0.0-beta.7
-  configChecksum: 22f8698917df78c1ff76ee20c8131282
+  releaseVersion: 0.0.0-beta.8
+  configChecksum: 9830a31b5f855b421793b347a439301b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -24,9 +24,11 @@ features:
     envVarSecurityUsage: 0.1.2
     globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
     groups: 2.81.2
     methodArguments: 0.1.2
+    methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
     reactQueryHooks: 0.2.3
@@ -51,19 +53,17 @@ generatedFiles:
   - docs/models/activityitem.md
   - docs/models/assistantmessage.md
   - docs/models/assistantmessagecontent.md
-  - docs/models/chatcompletion.md
-  - docs/models/chatcompletionchoice.md
-  - docs/models/chatcompletionchoicefinishreason.md
-  - docs/models/chatcompletionchunk.md
-  - docs/models/chatcompletionchunkchoice.md
-  - docs/models/chatcompletionchunkchoicedelta.md
-  - docs/models/chatcompletionchunkchoicedeltatoolcall.md
-  - docs/models/chatcompletionchunkchoicedeltatoolcallfunction.md
-  - docs/models/chatcompletionchunkchoicefinishreason.md
-  - docs/models/chatcompletionerrorerror.md
-  - docs/models/chatcompletionmessage.md
-  - docs/models/chatcompletionmessagecontent.md
+  - docs/models/chaterrorcode.md
+  - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
+  - docs/models/chatgenerationparamsjsonschema.md
+  - docs/models/chatgenerationparamsresponseformatgrammar.md
+  - docs/models/chatgenerationparamsresponseformatjsonobject.md
+  - docs/models/chatgenerationparamsresponseformatjsonschema.md
+  - docs/models/chatgenerationparamsresponseformatpython.md
+  - docs/models/chatgenerationparamsresponseformattext.md
+  - docs/models/chatgenerationparamsresponseformatunion.md
+  - docs/models/chatgenerationparamsstop.md
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
@@ -73,22 +73,53 @@ generatedFiles:
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
   - docs/models/chatmessagetoolcallfunction.md
+  - docs/models/chatresponse.md
+  - docs/models/chatresponsechoice.md
+  - docs/models/chatresponsechoicefinishreason.md
+  - docs/models/chatstreamingchoice.md
+  - docs/models/chatstreamingchoicefinishreason.md
+  - docs/models/chatstreamingmessagechunk.md
+  - docs/models/chatstreamingmessagetoolcall.md
+  - docs/models/chatstreamingmessagetoolcallfunction.md
+  - docs/models/chatstreamingresponsechunk.md
+  - docs/models/chatstreamingresponsechunkdata.md
+  - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
-  - docs/models/code.md
+  - docs/models/codeenum.md
+  - docs/models/completionchoice.md
+  - docs/models/completioncreateparams.md
+  - docs/models/completioncreateparamsjsonschema.md
+  - docs/models/completioncreateparamsresponseformatgrammar.md
+  - docs/models/completioncreateparamsresponseformatjsonobject.md
+  - docs/models/completioncreateparamsresponseformatjsonschema.md
+  - docs/models/completioncreateparamsresponseformatpython.md
+  - docs/models/completioncreateparamsresponseformattext.md
+  - docs/models/completioncreateparamsresponseformatunion.md
+  - docs/models/completioncreateparamsstop.md
+  - docs/models/completionerrorcode.md
+  - docs/models/completionerrorerror.md
+  - docs/models/completionfinishreason.md
+  - docs/models/completionlogprobs.md
+  - docs/models/completionresponse.md
+  - docs/models/completionstreamingchoice.md
+  - docs/models/completionstreamingresponsechunk.md
+  - docs/models/completionstreamingresponsechunkdata.md
   - docs/models/completiontokensdetails.md
-  - docs/models/data.md
+  - docs/models/completionusage.md
   - docs/models/detail.md
   - docs/models/effort.md
-  - docs/models/errorresponse.md
   - docs/models/errorresponseerror.md
-  - docs/models/errors/chatcompletionerror.md
+  - docs/models/errors/chaterror.md
+  - docs/models/errors/completionerror.md
+  - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
   - docs/models/format.md
   - docs/models/generatesummary.md
   - docs/models/imageurl.md
   - docs/models/inputaudio.md
-  - docs/models/jsonschema.md
   - docs/models/message.md
+  - docs/models/messagecontent.md
+  - docs/models/messagedeveloper.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/operations/apitype.md
@@ -97,7 +128,6 @@ generatedFiles:
   - docs/models/operations/datacollection.md
   - docs/models/operations/deletekeyshashrequest.md
   - docs/models/operations/deletekeyshashresponse.md
-  - docs/models/operations/deletekeyshashresponsebody.md
   - docs/models/operations/encodingformat.md
   - docs/models/operations/encodingformatbase64.md
   - docs/models/operations/encodingformatfloat.md
@@ -108,14 +138,11 @@ generatedFiles:
   - docs/models/operations/experimental.md
   - docs/models/operations/getactivityrequest.md
   - docs/models/operations/getactivityresponse.md
-  - docs/models/operations/getactivityresponsebody.md
   - docs/models/operations/getauthkeydata.md
   - docs/models/operations/getauthkeyratelimit.md
   - docs/models/operations/getauthkeyresponse.md
-  - docs/models/operations/getauthkeyresponsebody.md
   - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
-  - docs/models/operations/getcreditsresponsebody.md
   - docs/models/operations/getendpointszdraudio.md
   - docs/models/operations/getendpointszdrcompletion.md
   - docs/models/operations/getendpointszdrdata.md
@@ -130,26 +157,21 @@ generatedFiles:
   - docs/models/operations/getendpointszdrprovidername.md
   - docs/models/operations/getendpointszdrquantization.md
   - docs/models/operations/getendpointszdrresponse.md
-  - docs/models/operations/getendpointszdrresponsebody.md
   - docs/models/operations/getendpointszdrstatus.md
   - docs/models/operations/getendpointszdrsupportedparameter.md
   - docs/models/operations/getendpointszdrwebsearch.md
   - docs/models/operations/getgenerationdata.md
   - docs/models/operations/getgenerationrequest.md
   - docs/models/operations/getgenerationresponse.md
-  - docs/models/operations/getgenerationresponsebody.md
   - docs/models/operations/getkeydata.md
   - docs/models/operations/getkeyratelimit.md
   - docs/models/operations/getkeyresponse.md
-  - docs/models/operations/getkeyresponsebody.md
   - docs/models/operations/getkeysdata.md
   - docs/models/operations/getkeyshashdata.md
   - docs/models/operations/getkeyshashrequest.md
   - docs/models/operations/getkeyshashresponse.md
-  - docs/models/operations/getkeyshashresponsebody.md
   - docs/models/operations/getkeysrequest.md
   - docs/models/operations/getkeysresponse.md
-  - docs/models/operations/getkeysresponsebody.md
   - docs/models/operations/getmodelsarchitecture.md
   - docs/models/operations/getmodelsaudio.md
   - docs/models/operations/getmodelsauthorslugendpointsarchitecture.md
@@ -171,7 +193,6 @@ generatedFiles:
   - docs/models/operations/getmodelsauthorslugendpointsquantization.md
   - docs/models/operations/getmodelsauthorslugendpointsrequestrequest.md
   - docs/models/operations/getmodelsauthorslugendpointsresponse.md
-  - docs/models/operations/getmodelsauthorslugendpointsresponsebody.md
   - docs/models/operations/getmodelsauthorslugendpointsstatus.md
   - docs/models/operations/getmodelsauthorslugendpointssupportedparameter.md
   - docs/models/operations/getmodelsauthorslugendpointstokenizer.md
@@ -179,7 +200,6 @@ generatedFiles:
   - docs/models/operations/getmodelscompletion.md
   - docs/models/operations/getmodelscountdata.md
   - docs/models/operations/getmodelscountresponse.md
-  - docs/models/operations/getmodelscountresponsebody.md
   - docs/models/operations/getmodelsdata.md
   - docs/models/operations/getmodelsimage.md
   - docs/models/operations/getmodelsimageoutput.md
@@ -216,7 +236,7 @@ generatedFiles:
   - docs/models/operations/getmodelsuserpricing.md
   - docs/models/operations/getmodelsuserprompt.md
   - docs/models/operations/getmodelsuserresponse.md
-  - docs/models/operations/getmodelsuserresponsebody.md
+  - docs/models/operations/getmodelsusersecurity.md
   - docs/models/operations/getmodelsusersupportedparameter.md
   - docs/models/operations/getmodelsusertokenizer.md
   - docs/models/operations/getmodelsusertopprovider.md
@@ -226,7 +246,7 @@ generatedFiles:
   - docs/models/operations/getparametersauthorslugprovider.md
   - docs/models/operations/getparametersauthorslugrequest.md
   - docs/models/operations/getparametersauthorslugresponse.md
-  - docs/models/operations/getparametersauthorslugresponsebody.md
+  - docs/models/operations/getparametersauthorslugsecurity.md
   - docs/models/operations/getparametersauthorslugsupportedparameter.md
   - docs/models/operations/getprovidersdata.md
   - docs/models/operations/getprovidersresponse.md
@@ -247,12 +267,19 @@ generatedFiles:
   - docs/models/operations/patchkeyshashrequest.md
   - docs/models/operations/patchkeyshashrequestbody.md
   - docs/models/operations/patchkeyshashresponse.md
-  - docs/models/operations/patchkeyshashresponsebody.md
+  - docs/models/operations/postauthkeyscodechallengemethod.md
+  - docs/models/operations/postauthkeyscodecodechallengemethod.md
+  - docs/models/operations/postauthkeyscodedata.md
+  - docs/models/operations/postauthkeyscoderequest.md
+  - docs/models/operations/postauthkeyscoderesponse.md
+  - docs/models/operations/postauthkeysrequest.md
+  - docs/models/operations/postauthkeysresponse.md
   - docs/models/operations/postchatcompletionsresponse.md
+  - docs/models/operations/postcompletionsresponse.md
   - docs/models/operations/postcreditscoinbasedata.md
   - docs/models/operations/postcreditscoinbaserequest.md
   - docs/models/operations/postcreditscoinbaseresponse.md
-  - docs/models/operations/postcreditscoinbaseresponsebody.md
+  - docs/models/operations/postcreditscoinbasesecurity.md
   - docs/models/operations/postembeddingsaudio.md
   - docs/models/operations/postembeddingscompletion.md
   - docs/models/operations/postembeddingsdata.md
@@ -263,49 +290,46 @@ generatedFiles:
   - docs/models/operations/postembeddingsrequest.md
   - docs/models/operations/postembeddingsrequestunion.md
   - docs/models/operations/postembeddingsresponse.md
-  - docs/models/operations/postembeddingsresponsebody.md
   - docs/models/operations/postkeysdata.md
   - docs/models/operations/postkeysrequest.md
   - docs/models/operations/postkeysresponse.md
-  - docs/models/operations/postkeysresponsebody.md
   - docs/models/operations/sort.md
   - docs/models/operations/transferintent.md
   - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
+  - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
   - docs/models/reasoning.md
-  - docs/models/responseformat.md
-  - docs/models/responseformatgrammar.md
-  - docs/models/responseformatjsonobject.md
-  - docs/models/responseformatjsonschema.md
-  - docs/models/responseformatpython.md
-  - docs/models/responseformattext.md
   - docs/models/role.md
   - docs/models/security.md
-  - docs/models/stop.md
+  - docs/models/streamoptions.md
   - docs/models/summary.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
   - docs/models/tool.md
   - docs/models/toolfunction.md
-  - docs/models/toolmessage.md
-  - docs/models/toolmessagecontent.md
+  - docs/models/toolresponsemessage.md
+  - docs/models/toolresponsemessagecontent.md
   - docs/models/toplogprob.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
+  - docs/sdks/completions/README.md
+  - docs/sdks/credits/README.md
   - docs/sdks/embeddings/README.md
   - docs/sdks/endpoints/README.md
   - docs/sdks/generations/README.md
+  - docs/sdks/model/README.md
   - docs/sdks/models/README.md
+  - docs/sdks/oauth/README.md
   - docs/sdks/openrouter/README.md
-  - docs/sdks/parameters/README.md
+  - docs/sdks/providers/README.md
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/getCredits.example.ts
+  - examples/analyticsGetActivity.example.ts
   - examples/package.json
   - jsr.json
   - package.json
@@ -318,18 +342,21 @@ generatedFiles:
   - src/funcs/apiKeysGetKeysHash.ts
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
-  - src/funcs/chatGenerateResponse.ts
-  - src/funcs/embeddingsPostEmbeddings.ts
+  - src/funcs/chatSend.ts
+  - src/funcs/completionsCreate.ts
+  - src/funcs/creditsGetCredits.ts
+  - src/funcs/creditsPostCreditsCoinbase.ts
+  - src/funcs/embeddingsGenerate.ts
   - src/funcs/endpointsGetEndpointsZdr.ts
   - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
-  - src/funcs/getCredits.ts
-  - src/funcs/getProviders.ts
+  - src/funcs/modelGetParametersAuthorSlug.ts
   - src/funcs/modelsGetModels.ts
   - src/funcs/modelsGetModelsCount.ts
   - src/funcs/modelsGetModelsUser.ts
-  - src/funcs/parametersGetParametersAuthorSlug.ts
-  - src/funcs/postCreditsCoinbase.ts
+  - src/funcs/oAuthPostAuthKeys.ts
+  - src/funcs/oAuthPostAuthKeysCode.ts
+  - src/funcs/providersGetProviders.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts
@@ -353,14 +380,7 @@ generatedFiles:
   - src/lib/url.ts
   - src/models/activityitem.ts
   - src/models/assistantmessage.ts
-  - src/models/chatcompletion.ts
-  - src/models/chatcompletionchoice.ts
-  - src/models/chatcompletionchunk.ts
-  - src/models/chatcompletionchunkchoice.ts
-  - src/models/chatcompletionchunkchoicedelta.ts
-  - src/models/chatcompletionchunkchoicedeltatoolcall.ts
-  - src/models/chatcompletionerror.ts
-  - src/models/chatcompletionmessage.ts
+  - src/models/chaterror.ts
   - src/models/chatgenerationparams.ts
   - src/models/chatgenerationtokenusage.ts
   - src/models/chatmessagecontentitem.ts
@@ -370,9 +390,26 @@ generatedFiles:
   - src/models/chatmessagetokenlogprob.ts
   - src/models/chatmessagetokenlogprobs.ts
   - src/models/chatmessagetoolcall.ts
+  - src/models/chatresponse.ts
+  - src/models/chatresponsechoice.ts
+  - src/models/chatstreamingchoice.ts
+  - src/models/chatstreamingmessagechunk.ts
+  - src/models/chatstreamingmessagetoolcall.ts
+  - src/models/chatstreamingresponsechunk.ts
   - src/models/chatstreamoptions.ts
+  - src/models/completionchoice.ts
+  - src/models/completioncreateparams.ts
+  - src/models/completionerror.ts
+  - src/models/completionfinishreason.ts
+  - src/models/completionlogprobs.ts
+  - src/models/completionresponse.ts
+  - src/models/completionstreamingchoice.ts
+  - src/models/completionstreamingresponsechunk.ts
+  - src/models/completionusage.ts
   - src/models/errorresponse.ts
-  - src/models/errors/chatcompletionerror.ts
+  - src/models/errors/chaterror.ts
+  - src/models/errors/completionerror.ts
+  - src/models/errors/errorresponse.ts
   - src/models/errors/getproviders.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
@@ -400,14 +437,17 @@ generatedFiles:
   - src/models/operations/getproviders.ts
   - src/models/operations/index.ts
   - src/models/operations/patchkeyshash.ts
+  - src/models/operations/postauthkeys.ts
+  - src/models/operations/postauthkeyscode.ts
   - src/models/operations/postchatcompletions.ts
+  - src/models/operations/postcompletions.ts
   - src/models/operations/postcreditscoinbase.ts
   - src/models/operations/postembeddings.ts
   - src/models/operations/postkeys.ts
   - src/models/security.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
-  - src/models/toolmessage.ts
+  - src/models/toolresponsemessage.ts
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
@@ -419,28 +459,35 @@ generatedFiles:
   - src/react-query/apiKeysGetKeysHash.ts
   - src/react-query/apiKeysPatchKeysHash.ts
   - src/react-query/apiKeysPostKeys.ts
-  - src/react-query/chatGenerateResponse.ts
-  - src/react-query/embeddingsPostEmbeddings.ts
+  - src/react-query/chatSend.ts
+  - src/react-query/completionsCreate.ts
+  - src/react-query/creditsGetCredits.ts
+  - src/react-query/creditsPostCreditsCoinbase.ts
+  - src/react-query/embeddingsGenerate.ts
   - src/react-query/endpointsGetEndpointsZdr.ts
   - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
-  - src/react-query/getCredits.ts
-  - src/react-query/getProviders.ts
   - src/react-query/index.ts
+  - src/react-query/modelGetParametersAuthorSlug.ts
   - src/react-query/modelsGetModels.ts
   - src/react-query/modelsGetModelsCount.ts
   - src/react-query/modelsGetModelsUser.ts
-  - src/react-query/parametersGetParametersAuthorSlug.ts
-  - src/react-query/postCreditsCoinbase.ts
+  - src/react-query/oAuthPostAuthKeys.ts
+  - src/react-query/oAuthPostAuthKeysCode.ts
+  - src/react-query/providersGetProviders.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/chat.ts
+  - src/sdk/completions.ts
+  - src/sdk/credits.ts
   - src/sdk/embeddings.ts
   - src/sdk/endpoints.ts
   - src/sdk/generations.ts
   - src/sdk/index.ts
+  - src/sdk/model.ts
   - src/sdk/models.ts
-  - src/sdk/parameters.ts
+  - src/sdk/oauth.ts
+  - src/sdk/providers.ts
   - src/sdk/sdk.ts
   - src/types/async.ts
   - src/types/blobs.ts
@@ -505,6 +552,10 @@ examples:
           application/json: {"data": []}
         default:
           application/json: {"error": {"code": 416, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 300, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 300, "message": "<value>"}}
   post_/embeddings:
     speakeasy-default-post-/embeddings:
       requestBody:
@@ -528,12 +579,20 @@ examples:
           application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
           application/json: {"error": {"code": 501, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 208, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 208, "message": "<value>"}}
   get_/models/count:
     speakeasy-default-get-/models/count:
       responses:
         "200":
           application/json: {"data": {"count": 150}}
         default:
+          application/json: {"error": {"code": 304, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 304, "message": "<value>"}}
+        5XX:
           application/json: {"error": {"code": 304, "message": "<value>"}}
   get_/models:
     speakeasy-default-get-/models:
@@ -543,6 +602,10 @@ examples:
           application/rss+xml: "<value>"
         default:
           application/json: {"error": {"code": 308, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 501, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 501, "message": "<value>"}}
   get_/models/user:
     speakeasy-default-get-/models/user:
       responses:
@@ -550,6 +613,10 @@ examples:
           application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": "<value>"}, "context_length": 8192, "architecture": {"modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": ["tool_choice"]}]}
         default:
           application/json: {"error": {"code": 409, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 524, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 524, "message": "<value>"}}
   get_/models/{author}/{slug}/endpoints:
     speakeasy-default-get-/models/{author}/{slug}/endpoints:
       parameters:
@@ -561,6 +628,10 @@ examples:
           application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "Llama4", "instruct_type": "deepseek-r1", "modality": "text", "input_modalities": [], "output_modalities": ["embeddings"]}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5958.46, "pricing": {"prompt": 1533.15, "completion": "<value>"}, "provider_name": "Lynn", "tag": "<value>", "quantization": "unknown", "max_completion_tokens": 5563.7, "max_prompt_tokens": 5649.14, "supported_parameters": ["presence_penalty"], "uptime_last_30m": 8340.61, "supports_implicit_caching": false}]}}
         default:
           application/json: {"error": {"code": 424, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 426, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 426, "message": "<value>"}}
   get_/endpoints/zdr:
     speakeasy-default-get-/endpoints/zdr:
       responses:
@@ -568,6 +639,10 @@ examples:
           application/json: {"data": []}
         default:
           application/json: {"error": {"code": 408, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 301, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 301, "message": "<value>"}}
   get_/parameters/{author}/{slug}:
     speakeasy-default-get-/parameters/{author}/{slug}:
       parameters:
@@ -579,6 +654,10 @@ examples:
           application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["min_p"]}}
         default:
           application/json: {"error": {"code": 428, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 508, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 508, "message": "<value>"}}
   get_/keys:
     speakeasy-default-get-/keys:
       responses:
@@ -586,6 +665,10 @@ examples:
           application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}]}
         default:
           application/json: {"error": {"code": 411, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 504, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 504, "message": "<value>"}}
   post_/keys:
     speakeasy-default-post-/keys:
       requestBody:
@@ -594,6 +677,10 @@ examples:
         "201":
           application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}, "key": "sk-or-v1-abc123def456ghi789jkl012"}
         default:
+          application/json: {"error": {"code": 511, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 511, "message": "<value>"}}
+        5XX:
           application/json: {"error": {"code": 511, "message": "<value>"}}
   patch_/keys/{hash}:
     speakeasy-default-patch-/keys/{hash}:
@@ -607,6 +694,10 @@ examples:
           application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
         default:
           application/json: {"error": {"code": 526, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 526, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 526, "message": "<value>"}}
   delete_/keys/{hash}:
     speakeasy-default-delete-/keys/{hash}:
       parameters:
@@ -616,6 +707,10 @@ examples:
         "200":
           application/json: {"deleted": true}
         default:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
+        5XX:
           application/json: {"error": {"code": 204, "message": "<value>"}}
   get_/keys/{hash}:
     speakeasy-default-get-/keys/{hash}:
@@ -627,6 +722,10 @@ examples:
           application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
         default:
           application/json: {"error": {"code": 204, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
   get_/key:
     speakeasy-default-get-/key:
       responses:
@@ -634,12 +733,20 @@ examples:
           application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
         default:
           application/json: {"error": {"code": 524, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 524, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 524, "message": "<value>"}}
   get_/auth/key:
     speakeasy-default-get-/auth/key:
       responses:
         "200":
           application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
         default:
+          application/json: {"error": {"code": 525, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 525, "message": "<value>"}}
+        5XX:
           application/json: {"error": {"code": 525, "message": "<value>"}}
   post_/chat/completions:
     speakeasy-default-post-/chat/completions:
@@ -672,4 +779,17 @@ examples:
           application/json: {"data": {"id": "auth_code_xyz789", "app_id": 12345, "created_at": "2025-08-24T10:30:00Z"}}
         default:
           application/json: {"error": {"code": 202, "message": "<value>"}}
+        4XX:
+          application/json: {"error": {"code": 202, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 202, "message": "<value>"}}
+  post_/completions:
+    speakeasy-default-post-/completions:
+      responses:
+        "200":
+          application/json: {"id": "<id>", "object": "text_completion", "created": 5585.22, "model": "Alpine", "choices": []}
+        "400":
+          application/json: {"error": {"code": 7468.55, "message": "<value>", "param": "<value>", "type": "<value>"}}
+        "500":
+          application/json: {"error": {"code": 7468.55, "message": "<value>", "param": "<value>", "type": "<value>"}}
 examplesVersion: 1.0.2

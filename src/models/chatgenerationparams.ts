@@ -55,43 +55,43 @@ export type Reasoning = {
   summary?: Summary | null | undefined;
 };
 
-export type ResponseFormatPython = {
+export type ChatGenerationParamsResponseFormatPython = {
   type: "python";
 };
 
-export type ResponseFormatGrammar = {
+export type ChatGenerationParamsResponseFormatGrammar = {
   type: "grammar";
   grammar: string;
 };
 
-export type JsonSchema = {
+export type ChatGenerationParamsJsonSchema = {
   name: string;
   description?: string | undefined;
   schema?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
 
-export type ResponseFormatJSONSchema = {
+export type ChatGenerationParamsResponseFormatJSONSchema = {
   type: "json_schema";
-  jsonSchema: JsonSchema;
+  jsonSchema: ChatGenerationParamsJsonSchema;
 };
 
-export type ResponseFormatJSONObject = {
+export type ChatGenerationParamsResponseFormatJSONObject = {
   type: "json_object";
 };
 
-export type ResponseFormatText = {
+export type ChatGenerationParamsResponseFormatText = {
   type: "text";
 };
 
-export type ResponseFormat =
-  | ResponseFormatJSONSchema
-  | ResponseFormatGrammar
-  | ResponseFormatText
-  | ResponseFormatJSONObject
-  | ResponseFormatPython;
+export type ChatGenerationParamsResponseFormatUnion =
+  | ChatGenerationParamsResponseFormatJSONSchema
+  | ChatGenerationParamsResponseFormatGrammar
+  | ChatGenerationParamsResponseFormatText
+  | ChatGenerationParamsResponseFormatJSONObject
+  | ChatGenerationParamsResponseFormatPython;
 
-export type Stop = string | Array<string>;
+export type ChatGenerationParamsStop = string | Array<string>;
 
 export type ChatGenerationParams = {
   messages: Array<Message>;
@@ -106,11 +106,11 @@ export type ChatGenerationParams = {
   presencePenalty?: number | null | undefined;
   reasoning?: Reasoning | undefined;
   responseFormat?:
-    | ResponseFormatJSONSchema
-    | ResponseFormatGrammar
-    | ResponseFormatText
-    | ResponseFormatJSONObject
-    | ResponseFormatPython
+    | ChatGenerationParamsResponseFormatJSONSchema
+    | ChatGenerationParamsResponseFormatGrammar
+    | ChatGenerationParamsResponseFormatText
+    | ChatGenerationParamsResponseFormatJSONObject
+    | ChatGenerationParamsResponseFormatPython
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -247,8 +247,8 @@ export function reasoningFromJSON(
 }
 
 /** @internal */
-export const ResponseFormatPython$inboundSchema: z.ZodType<
-  ResponseFormatPython,
+export const ChatGenerationParamsResponseFormatPython$inboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatPython,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -256,15 +256,15 @@ export const ResponseFormatPython$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ResponseFormatPython$Outbound = {
+export type ChatGenerationParamsResponseFormatPython$Outbound = {
   type: "python";
 };
 
 /** @internal */
-export const ResponseFormatPython$outboundSchema: z.ZodType<
-  ResponseFormatPython$Outbound,
+export const ChatGenerationParamsResponseFormatPython$outboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatPython$Outbound,
   z.ZodTypeDef,
-  ResponseFormatPython
+  ChatGenerationParamsResponseFormatPython
 > = z.object({
   type: z.literal("python"),
 });
@@ -273,36 +273,47 @@ export const ResponseFormatPython$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormatPython$ {
-  /** @deprecated use `ResponseFormatPython$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatPython$inboundSchema;
-  /** @deprecated use `ResponseFormatPython$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatPython$outboundSchema;
-  /** @deprecated use `ResponseFormatPython$Outbound` instead. */
-  export type Outbound = ResponseFormatPython$Outbound;
+export namespace ChatGenerationParamsResponseFormatPython$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatPython$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatPython$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatPython$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatPython$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatPython$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatPython$Outbound;
 }
 
-export function responseFormatPythonToJSON(
-  responseFormatPython: ResponseFormatPython,
+export function chatGenerationParamsResponseFormatPythonToJSON(
+  chatGenerationParamsResponseFormatPython:
+    ChatGenerationParamsResponseFormatPython,
 ): string {
   return JSON.stringify(
-    ResponseFormatPython$outboundSchema.parse(responseFormatPython),
+    ChatGenerationParamsResponseFormatPython$outboundSchema.parse(
+      chatGenerationParamsResponseFormatPython,
+    ),
   );
 }
 
-export function responseFormatPythonFromJSON(
+export function chatGenerationParamsResponseFormatPythonFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormatPython, SDKValidationError> {
+): SafeParseResult<
+  ChatGenerationParamsResponseFormatPython,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormatPython$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatPython' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatPython$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatGenerationParamsResponseFormatPython' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseFormatGrammar$inboundSchema: z.ZodType<
-  ResponseFormatGrammar,
+export const ChatGenerationParamsResponseFormatGrammar$inboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatGrammar,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -311,55 +322,67 @@ export const ResponseFormatGrammar$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ResponseFormatGrammar$Outbound = {
+export type ChatGenerationParamsResponseFormatGrammar$Outbound = {
   type: "grammar";
   grammar: string;
 };
 
 /** @internal */
-export const ResponseFormatGrammar$outboundSchema: z.ZodType<
-  ResponseFormatGrammar$Outbound,
-  z.ZodTypeDef,
-  ResponseFormatGrammar
-> = z.object({
-  type: z.literal("grammar"),
-  grammar: z.string(),
-});
+export const ChatGenerationParamsResponseFormatGrammar$outboundSchema:
+  z.ZodType<
+    ChatGenerationParamsResponseFormatGrammar$Outbound,
+    z.ZodTypeDef,
+    ChatGenerationParamsResponseFormatGrammar
+  > = z.object({
+    type: z.literal("grammar"),
+    grammar: z.string(),
+  });
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormatGrammar$ {
-  /** @deprecated use `ResponseFormatGrammar$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatGrammar$inboundSchema;
-  /** @deprecated use `ResponseFormatGrammar$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatGrammar$outboundSchema;
-  /** @deprecated use `ResponseFormatGrammar$Outbound` instead. */
-  export type Outbound = ResponseFormatGrammar$Outbound;
+export namespace ChatGenerationParamsResponseFormatGrammar$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatGrammar$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatGrammar$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatGrammar$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatGrammar$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatGrammar$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatGrammar$Outbound;
 }
 
-export function responseFormatGrammarToJSON(
-  responseFormatGrammar: ResponseFormatGrammar,
+export function chatGenerationParamsResponseFormatGrammarToJSON(
+  chatGenerationParamsResponseFormatGrammar:
+    ChatGenerationParamsResponseFormatGrammar,
 ): string {
   return JSON.stringify(
-    ResponseFormatGrammar$outboundSchema.parse(responseFormatGrammar),
+    ChatGenerationParamsResponseFormatGrammar$outboundSchema.parse(
+      chatGenerationParamsResponseFormatGrammar,
+    ),
   );
 }
 
-export function responseFormatGrammarFromJSON(
+export function chatGenerationParamsResponseFormatGrammarFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormatGrammar, SDKValidationError> {
+): SafeParseResult<
+  ChatGenerationParamsResponseFormatGrammar,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormatGrammar$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatGrammar' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatGrammar$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatGenerationParamsResponseFormatGrammar' from JSON`,
   );
 }
 
 /** @internal */
-export const JsonSchema$inboundSchema: z.ZodType<
-  JsonSchema,
+export const ChatGenerationParamsJsonSchema$inboundSchema: z.ZodType<
+  ChatGenerationParamsJsonSchema,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -370,7 +393,7 @@ export const JsonSchema$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type JsonSchema$Outbound = {
+export type ChatGenerationParamsJsonSchema$Outbound = {
   name: string;
   description?: string | undefined;
   schema?: { [k: string]: any } | undefined;
@@ -378,10 +401,10 @@ export type JsonSchema$Outbound = {
 };
 
 /** @internal */
-export const JsonSchema$outboundSchema: z.ZodType<
-  JsonSchema$Outbound,
+export const ChatGenerationParamsJsonSchema$outboundSchema: z.ZodType<
+  ChatGenerationParamsJsonSchema$Outbound,
   z.ZodTypeDef,
-  JsonSchema
+  ChatGenerationParamsJsonSchema
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
@@ -393,151 +416,183 @@ export const JsonSchema$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace JsonSchema$ {
-  /** @deprecated use `JsonSchema$inboundSchema` instead. */
-  export const inboundSchema = JsonSchema$inboundSchema;
-  /** @deprecated use `JsonSchema$outboundSchema` instead. */
-  export const outboundSchema = JsonSchema$outboundSchema;
-  /** @deprecated use `JsonSchema$Outbound` instead. */
-  export type Outbound = JsonSchema$Outbound;
+export namespace ChatGenerationParamsJsonSchema$ {
+  /** @deprecated use `ChatGenerationParamsJsonSchema$inboundSchema` instead. */
+  export const inboundSchema = ChatGenerationParamsJsonSchema$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsJsonSchema$outboundSchema` instead. */
+  export const outboundSchema = ChatGenerationParamsJsonSchema$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsJsonSchema$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsJsonSchema$Outbound;
 }
 
-export function jsonSchemaToJSON(jsonSchema: JsonSchema): string {
-  return JSON.stringify(JsonSchema$outboundSchema.parse(jsonSchema));
+export function chatGenerationParamsJsonSchemaToJSON(
+  chatGenerationParamsJsonSchema: ChatGenerationParamsJsonSchema,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsJsonSchema$outboundSchema.parse(
+      chatGenerationParamsJsonSchema,
+    ),
+  );
 }
 
-export function jsonSchemaFromJSON(
+export function chatGenerationParamsJsonSchemaFromJSON(
   jsonString: string,
-): SafeParseResult<JsonSchema, SDKValidationError> {
+): SafeParseResult<ChatGenerationParamsJsonSchema, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => JsonSchema$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'JsonSchema' from JSON`,
+    (x) => ChatGenerationParamsJsonSchema$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatGenerationParamsJsonSchema' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
-  ResponseFormatJSONSchema,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  type: z.literal("json_schema"),
-  json_schema: z.lazy(() => JsonSchema$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "json_schema": "jsonSchema",
+export const ChatGenerationParamsResponseFormatJSONSchema$inboundSchema:
+  z.ZodType<
+    ChatGenerationParamsResponseFormatJSONSchema,
+    z.ZodTypeDef,
+    unknown
+  > = z.object({
+    type: z.literal("json_schema"),
+    json_schema: z.lazy(() => ChatGenerationParamsJsonSchema$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "json_schema": "jsonSchema",
+    });
   });
-});
 
 /** @internal */
-export type ResponseFormatJSONSchema$Outbound = {
+export type ChatGenerationParamsResponseFormatJSONSchema$Outbound = {
   type: "json_schema";
-  json_schema: JsonSchema$Outbound;
+  json_schema: ChatGenerationParamsJsonSchema$Outbound;
 };
 
 /** @internal */
-export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
-  ResponseFormatJSONSchema$Outbound,
-  z.ZodTypeDef,
-  ResponseFormatJSONSchema
-> = z.object({
-  type: z.literal("json_schema"),
-  jsonSchema: z.lazy(() => JsonSchema$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    jsonSchema: "json_schema",
+export const ChatGenerationParamsResponseFormatJSONSchema$outboundSchema:
+  z.ZodType<
+    ChatGenerationParamsResponseFormatJSONSchema$Outbound,
+    z.ZodTypeDef,
+    ChatGenerationParamsResponseFormatJSONSchema
+  > = z.object({
+    type: z.literal("json_schema"),
+    jsonSchema: z.lazy(() => ChatGenerationParamsJsonSchema$outboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      jsonSchema: "json_schema",
+    });
   });
-});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormatJSONSchema$ {
-  /** @deprecated use `ResponseFormatJSONSchema$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatJSONSchema$inboundSchema;
-  /** @deprecated use `ResponseFormatJSONSchema$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatJSONSchema$outboundSchema;
-  /** @deprecated use `ResponseFormatJSONSchema$Outbound` instead. */
-  export type Outbound = ResponseFormatJSONSchema$Outbound;
+export namespace ChatGenerationParamsResponseFormatJSONSchema$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONSchema$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatJSONSchema$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONSchema$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatJSONSchema$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONSchema$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatJSONSchema$Outbound;
 }
 
-export function responseFormatJSONSchemaToJSON(
-  responseFormatJSONSchema: ResponseFormatJSONSchema,
+export function chatGenerationParamsResponseFormatJSONSchemaToJSON(
+  chatGenerationParamsResponseFormatJSONSchema:
+    ChatGenerationParamsResponseFormatJSONSchema,
 ): string {
   return JSON.stringify(
-    ResponseFormatJSONSchema$outboundSchema.parse(responseFormatJSONSchema),
+    ChatGenerationParamsResponseFormatJSONSchema$outboundSchema.parse(
+      chatGenerationParamsResponseFormatJSONSchema,
+    ),
   );
 }
 
-export function responseFormatJSONSchemaFromJSON(
+export function chatGenerationParamsResponseFormatJSONSchemaFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormatJSONSchema, SDKValidationError> {
+): SafeParseResult<
+  ChatGenerationParamsResponseFormatJSONSchema,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormatJSONSchema$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatJSONSchema' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatJSONSchema$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatGenerationParamsResponseFormatJSONSchema' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseFormatJSONObject$inboundSchema: z.ZodType<
-  ResponseFormatJSONObject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  type: z.literal("json_object"),
-});
+export const ChatGenerationParamsResponseFormatJSONObject$inboundSchema:
+  z.ZodType<
+    ChatGenerationParamsResponseFormatJSONObject,
+    z.ZodTypeDef,
+    unknown
+  > = z.object({
+    type: z.literal("json_object"),
+  });
 
 /** @internal */
-export type ResponseFormatJSONObject$Outbound = {
+export type ChatGenerationParamsResponseFormatJSONObject$Outbound = {
   type: "json_object";
 };
 
 /** @internal */
-export const ResponseFormatJSONObject$outboundSchema: z.ZodType<
-  ResponseFormatJSONObject$Outbound,
-  z.ZodTypeDef,
-  ResponseFormatJSONObject
-> = z.object({
-  type: z.literal("json_object"),
-});
+export const ChatGenerationParamsResponseFormatJSONObject$outboundSchema:
+  z.ZodType<
+    ChatGenerationParamsResponseFormatJSONObject$Outbound,
+    z.ZodTypeDef,
+    ChatGenerationParamsResponseFormatJSONObject
+  > = z.object({
+    type: z.literal("json_object"),
+  });
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormatJSONObject$ {
-  /** @deprecated use `ResponseFormatJSONObject$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatJSONObject$inboundSchema;
-  /** @deprecated use `ResponseFormatJSONObject$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatJSONObject$outboundSchema;
-  /** @deprecated use `ResponseFormatJSONObject$Outbound` instead. */
-  export type Outbound = ResponseFormatJSONObject$Outbound;
+export namespace ChatGenerationParamsResponseFormatJSONObject$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatJSONObject$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatJSONObject$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatJSONObject$Outbound;
 }
 
-export function responseFormatJSONObjectToJSON(
-  responseFormatJSONObject: ResponseFormatJSONObject,
+export function chatGenerationParamsResponseFormatJSONObjectToJSON(
+  chatGenerationParamsResponseFormatJSONObject:
+    ChatGenerationParamsResponseFormatJSONObject,
 ): string {
   return JSON.stringify(
-    ResponseFormatJSONObject$outboundSchema.parse(responseFormatJSONObject),
+    ChatGenerationParamsResponseFormatJSONObject$outboundSchema.parse(
+      chatGenerationParamsResponseFormatJSONObject,
+    ),
   );
 }
 
-export function responseFormatJSONObjectFromJSON(
+export function chatGenerationParamsResponseFormatJSONObjectFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormatJSONObject, SDKValidationError> {
+): SafeParseResult<
+  ChatGenerationParamsResponseFormatJSONObject,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormatJSONObject$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatJSONObject' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatJSONObject$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatGenerationParamsResponseFormatJSONObject' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseFormatText$inboundSchema: z.ZodType<
-  ResponseFormatText,
+export const ChatGenerationParamsResponseFormatText$inboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatText,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -545,15 +600,15 @@ export const ResponseFormatText$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ResponseFormatText$Outbound = {
+export type ChatGenerationParamsResponseFormatText$Outbound = {
   type: "text";
 };
 
 /** @internal */
-export const ResponseFormatText$outboundSchema: z.ZodType<
-  ResponseFormatText$Outbound,
+export const ChatGenerationParamsResponseFormatText$outboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatText$Outbound,
   z.ZodTypeDef,
-  ResponseFormatText
+  ChatGenerationParamsResponseFormatText
 > = z.object({
   type: z.literal("text"),
 });
@@ -562,129 +617,160 @@ export const ResponseFormatText$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormatText$ {
-  /** @deprecated use `ResponseFormatText$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatText$inboundSchema;
-  /** @deprecated use `ResponseFormatText$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatText$outboundSchema;
-  /** @deprecated use `ResponseFormatText$Outbound` instead. */
-  export type Outbound = ResponseFormatText$Outbound;
+export namespace ChatGenerationParamsResponseFormatText$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatText$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatText$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatText$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatText$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatText$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatText$Outbound;
 }
 
-export function responseFormatTextToJSON(
-  responseFormatText: ResponseFormatText,
+export function chatGenerationParamsResponseFormatTextToJSON(
+  chatGenerationParamsResponseFormatText:
+    ChatGenerationParamsResponseFormatText,
 ): string {
   return JSON.stringify(
-    ResponseFormatText$outboundSchema.parse(responseFormatText),
+    ChatGenerationParamsResponseFormatText$outboundSchema.parse(
+      chatGenerationParamsResponseFormatText,
+    ),
   );
 }
 
-export function responseFormatTextFromJSON(
+export function chatGenerationParamsResponseFormatTextFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormatText, SDKValidationError> {
+): SafeParseResult<ChatGenerationParamsResponseFormatText, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormatText$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatText' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatText$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatGenerationParamsResponseFormatText' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseFormat$inboundSchema: z.ZodType<
-  ResponseFormat,
+export const ChatGenerationParamsResponseFormatUnion$inboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatUnion,
   z.ZodTypeDef,
   unknown
 > = z.union([
-  z.lazy(() => ResponseFormatJSONSchema$inboundSchema),
-  z.lazy(() => ResponseFormatGrammar$inboundSchema),
-  z.lazy(() => ResponseFormatText$inboundSchema),
-  z.lazy(() => ResponseFormatJSONObject$inboundSchema),
-  z.lazy(() => ResponseFormatPython$inboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatJSONSchema$inboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatGrammar$inboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatText$inboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$inboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatPython$inboundSchema),
 ]);
 
 /** @internal */
-export type ResponseFormat$Outbound =
-  | ResponseFormatJSONSchema$Outbound
-  | ResponseFormatGrammar$Outbound
-  | ResponseFormatText$Outbound
-  | ResponseFormatJSONObject$Outbound
-  | ResponseFormatPython$Outbound;
+export type ChatGenerationParamsResponseFormatUnion$Outbound =
+  | ChatGenerationParamsResponseFormatJSONSchema$Outbound
+  | ChatGenerationParamsResponseFormatGrammar$Outbound
+  | ChatGenerationParamsResponseFormatText$Outbound
+  | ChatGenerationParamsResponseFormatJSONObject$Outbound
+  | ChatGenerationParamsResponseFormatPython$Outbound;
 
 /** @internal */
-export const ResponseFormat$outboundSchema: z.ZodType<
-  ResponseFormat$Outbound,
+export const ChatGenerationParamsResponseFormatUnion$outboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatUnion$Outbound,
   z.ZodTypeDef,
-  ResponseFormat
+  ChatGenerationParamsResponseFormatUnion
 > = z.union([
-  z.lazy(() => ResponseFormatJSONSchema$outboundSchema),
-  z.lazy(() => ResponseFormatGrammar$outboundSchema),
-  z.lazy(() => ResponseFormatText$outboundSchema),
-  z.lazy(() => ResponseFormatJSONObject$outboundSchema),
-  z.lazy(() => ResponseFormatPython$outboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatJSONSchema$outboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatGrammar$outboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+  z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
 ]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponseFormat$ {
-  /** @deprecated use `ResponseFormat$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormat$inboundSchema;
-  /** @deprecated use `ResponseFormat$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormat$outboundSchema;
-  /** @deprecated use `ResponseFormat$Outbound` instead. */
-  export type Outbound = ResponseFormat$Outbound;
+export namespace ChatGenerationParamsResponseFormatUnion$ {
+  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatGenerationParamsResponseFormatUnion$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatGenerationParamsResponseFormatUnion$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsResponseFormatUnion$Outbound;
 }
 
-export function responseFormatToJSON(responseFormat: ResponseFormat): string {
-  return JSON.stringify(ResponseFormat$outboundSchema.parse(responseFormat));
+export function chatGenerationParamsResponseFormatUnionToJSON(
+  chatGenerationParamsResponseFormatUnion:
+    ChatGenerationParamsResponseFormatUnion,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsResponseFormatUnion$outboundSchema.parse(
+      chatGenerationParamsResponseFormatUnion,
+    ),
+  );
 }
 
-export function responseFormatFromJSON(
+export function chatGenerationParamsResponseFormatUnionFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseFormat, SDKValidationError> {
+): SafeParseResult<
+  ChatGenerationParamsResponseFormatUnion,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ResponseFormat$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormat' from JSON`,
+    (x) =>
+      ChatGenerationParamsResponseFormatUnion$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatGenerationParamsResponseFormatUnion' from JSON`,
   );
 }
 
 /** @internal */
-export const Stop$inboundSchema: z.ZodType<Stop, z.ZodTypeDef, unknown> = z
-  .union([z.string(), z.array(z.string())]);
+export const ChatGenerationParamsStop$inboundSchema: z.ZodType<
+  ChatGenerationParamsStop,
+  z.ZodTypeDef,
+  unknown
+> = z.union([z.string(), z.array(z.string())]);
 
 /** @internal */
-export type Stop$Outbound = string | Array<string>;
+export type ChatGenerationParamsStop$Outbound = string | Array<string>;
 
 /** @internal */
-export const Stop$outboundSchema: z.ZodType<Stop$Outbound, z.ZodTypeDef, Stop> =
-  z.union([z.string(), z.array(z.string())]);
+export const ChatGenerationParamsStop$outboundSchema: z.ZodType<
+  ChatGenerationParamsStop$Outbound,
+  z.ZodTypeDef,
+  ChatGenerationParamsStop
+> = z.union([z.string(), z.array(z.string())]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Stop$ {
-  /** @deprecated use `Stop$inboundSchema` instead. */
-  export const inboundSchema = Stop$inboundSchema;
-  /** @deprecated use `Stop$outboundSchema` instead. */
-  export const outboundSchema = Stop$outboundSchema;
-  /** @deprecated use `Stop$Outbound` instead. */
-  export type Outbound = Stop$Outbound;
+export namespace ChatGenerationParamsStop$ {
+  /** @deprecated use `ChatGenerationParamsStop$inboundSchema` instead. */
+  export const inboundSchema = ChatGenerationParamsStop$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsStop$outboundSchema` instead. */
+  export const outboundSchema = ChatGenerationParamsStop$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsStop$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsStop$Outbound;
 }
 
-export function stopToJSON(stop: Stop): string {
-  return JSON.stringify(Stop$outboundSchema.parse(stop));
+export function chatGenerationParamsStopToJSON(
+  chatGenerationParamsStop: ChatGenerationParamsStop,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsStop$outboundSchema.parse(chatGenerationParamsStop),
+  );
 }
 
-export function stopFromJSON(
+export function chatGenerationParamsStopFromJSON(
   jsonString: string,
-): SafeParseResult<Stop, SDKValidationError> {
+): SafeParseResult<ChatGenerationParamsStop, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Stop$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Stop' from JSON`,
+    (x) => ChatGenerationParamsStop$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatGenerationParamsStop' from JSON`,
   );
 }
 
@@ -706,11 +792,11 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
   presence_penalty: z.nullable(z.number()).optional(),
   reasoning: z.lazy(() => Reasoning$inboundSchema).optional(),
   response_format: z.union([
-    z.lazy(() => ResponseFormatJSONSchema$inboundSchema),
-    z.lazy(() => ResponseFormatGrammar$inboundSchema),
-    z.lazy(() => ResponseFormatText$inboundSchema),
-    z.lazy(() => ResponseFormatJSONObject$inboundSchema),
-    z.lazy(() => ResponseFormatPython$inboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatJSONSchema$inboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatGrammar$inboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatText$inboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$inboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatPython$inboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
@@ -750,11 +836,11 @@ export type ChatGenerationParams$Outbound = {
   presence_penalty?: number | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
-    | ResponseFormatJSONSchema$Outbound
-    | ResponseFormatGrammar$Outbound
-    | ResponseFormatText$Outbound
-    | ResponseFormatJSONObject$Outbound
-    | ResponseFormatPython$Outbound
+    | ChatGenerationParamsResponseFormatJSONSchema$Outbound
+    | ChatGenerationParamsResponseFormatGrammar$Outbound
+    | ChatGenerationParamsResponseFormatText$Outbound
+    | ChatGenerationParamsResponseFormatJSONObject$Outbound
+    | ChatGenerationParamsResponseFormatPython$Outbound
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -785,11 +871,11 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   presencePenalty: z.nullable(z.number()).optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
-    z.lazy(() => ResponseFormatJSONSchema$outboundSchema),
-    z.lazy(() => ResponseFormatGrammar$outboundSchema),
-    z.lazy(() => ResponseFormatText$outboundSchema),
-    z.lazy(() => ResponseFormatJSONObject$outboundSchema),
-    z.lazy(() => ResponseFormatPython$outboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatJSONSchema$outboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatGrammar$outboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+    z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),

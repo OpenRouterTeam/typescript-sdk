@@ -15,16 +15,12 @@ export type GetActivityRequest = {
 /**
  * Returns user activity data grouped by endpoint
  */
-export type GetActivityResponseBody = {
+export type GetActivityResponse = {
   /**
    * List of activity items
    */
   data: Array<models.ActivityItem>;
 };
-
-export type GetActivityResponse =
-  | GetActivityResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetActivityRequest$inboundSchema: z.ZodType<
@@ -81,8 +77,8 @@ export function getActivityRequestFromJSON(
 }
 
 /** @internal */
-export const GetActivityResponseBody$inboundSchema: z.ZodType<
-  GetActivityResponseBody,
+export const GetActivityResponse$inboundSchema: z.ZodType<
+  GetActivityResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -90,74 +86,18 @@ export const GetActivityResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetActivityResponseBody$Outbound = {
+export type GetActivityResponse$Outbound = {
   data: Array<models.ActivityItem$Outbound>;
 };
-
-/** @internal */
-export const GetActivityResponseBody$outboundSchema: z.ZodType<
-  GetActivityResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetActivityResponseBody
-> = z.object({
-  data: z.array(models.ActivityItem$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetActivityResponseBody$ {
-  /** @deprecated use `GetActivityResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetActivityResponseBody$inboundSchema;
-  /** @deprecated use `GetActivityResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetActivityResponseBody$outboundSchema;
-  /** @deprecated use `GetActivityResponseBody$Outbound` instead. */
-  export type Outbound = GetActivityResponseBody$Outbound;
-}
-
-export function getActivityResponseBodyToJSON(
-  getActivityResponseBody: GetActivityResponseBody,
-): string {
-  return JSON.stringify(
-    GetActivityResponseBody$outboundSchema.parse(getActivityResponseBody),
-  );
-}
-
-export function getActivityResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetActivityResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetActivityResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetActivityResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetActivityResponse$inboundSchema: z.ZodType<
-  GetActivityResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetActivityResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetActivityResponse$Outbound =
-  | GetActivityResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetActivityResponse$outboundSchema: z.ZodType<
   GetActivityResponse$Outbound,
   z.ZodTypeDef,
   GetActivityResponse
-> = z.union([
-  z.lazy(() => GetActivityResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.array(models.ActivityItem$outboundSchema),
+});
 
 /**
  * @internal

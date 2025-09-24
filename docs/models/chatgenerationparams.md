@@ -8,9 +8,8 @@ import { ChatGenerationParams } from "@openrouter/sdk/models";
 let value: ChatGenerationParams = {
   messages: [
     {
-      role: "tool",
+      role: "system",
       content: "<value>",
-      toolCallId: "<id>",
     },
   ],
   model: "Mustang",
@@ -32,9 +31,9 @@ let value: ChatGenerationParams = {
 | `metadata`                                                 | Record<string, *string*>                                   | :heavy_minus_sign:                                         | N/A                                                        |
 | `presencePenalty`                                          | *number*                                                   | :heavy_minus_sign:                                         | N/A                                                        |
 | `reasoning`                                                | [models.Reasoning](../models/reasoning.md)                 | :heavy_minus_sign:                                         | N/A                                                        |
-| `responseFormat`                                           | *models.ResponseFormat*                                    | :heavy_minus_sign:                                         | N/A                                                        |
+| `responseFormat`                                           | *models.ChatGenerationParamsResponseFormatUnion*           | :heavy_minus_sign:                                         | N/A                                                        |
 | `seed`                                                     | *number*                                                   | :heavy_minus_sign:                                         | N/A                                                        |
-| `stop`                                                     | *models.Stop*                                              | :heavy_minus_sign:                                         | N/A                                                        |
+| `stop`                                                     | *models.ChatGenerationParamsStop*                          | :heavy_minus_sign:                                         | N/A                                                        |
 | `stream`                                                   | *boolean*                                                  | :heavy_minus_sign:                                         | N/A                                                        |
 | `streamOptions`                                            | [models.ChatStreamOptions](../models/chatstreamoptions.md) | :heavy_minus_sign:                                         | N/A                                                        |
 | `temperature`                                              | *number*                                                   | :heavy_minus_sign:                                         | N/A                                                        |

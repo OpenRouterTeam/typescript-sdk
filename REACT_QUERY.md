@@ -23,9 +23,7 @@ import { OpenRouterProvider } from "@openrouter/sdk/react-query";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 // Retries are handled by the underlying SDK.
@@ -52,10 +50,12 @@ from TanStack Query.
 [use-query]: https://tanstack.com/query/v5/docs/framework/react/reference/useQuery
 
 ```tsx
-import { useGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
+import { useAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 
 export function Example() {
-  const { data, error, status } = useGetCredits();
+  const { data, error, status } = useAnalyticsGetActivity({
+    date: "2025-08-24",
+  });
 
   // Render the UI here...
 }
@@ -68,11 +68,14 @@ more options provided by the query hooks to control these behaviors.
 
 ```tsx
 import { useState } from "react";
-import { useGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
+import { useAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 
 export function ExampleWithOptions() {
   const [enabled, setEnabled] = useState(true);
-  const { data, error, status } = useGetCredits(
+  const { data, error, status } = useAnalyticsGetActivity(
+    {
+      date: "2025-08-24",
+    },
     {
       // TanStack Query options:
       enabled,
@@ -109,10 +112,10 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
+import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
 
 export function Example() {
-  const { mutate, status } = usePostCreditsCoinbaseMutation();
+  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation();
 
   return (
     <form
@@ -121,7 +124,9 @@ export function Example() {
 
         // Read form data here...
 
-        mutate();
+        mutate({
+          bearer: process.env["OPENROUTER_BEARER"] ?? "",
+        });
       }}
     >
       {/* Form fields go here... */} 
@@ -137,10 +142,10 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { usePostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/postCreditsCoinbase.js";
+import { useCreditsPostCreditsCoinbaseMutation } from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
 
 export function ExampleWithOptions() {
-  const { mutate, status } = usePostCreditsCoinbaseMutation({
+  const { mutate, status } = useCreditsPostCreditsCoinbaseMutation({
     // TanStack Query options:
     networkMode: "online",
     gcTime: 5 * 60 * 1000, // 5 minutes
@@ -172,7 +177,7 @@ query hook there are two functions that help invalidate cached data:
 
 ```tsx
 import { useQueryClient } from "@tanstack/react-query";
-import { invalidateGetCredits, invalidateAllGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
+import { invalidateAnalyticsGetActivity, invalidateAllAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 // Replace this with a real mutation
 import { useExampleMutation } from "@openrouter/sdk/react-query/example.js";
 
@@ -190,9 +195,9 @@ export function Example() {
         mutate(formData, {
           onSuccess: () => {
             // Invalidate a single cache entry:
-            invalidateGetCredits(queryClient, /* ... arguments ... */);
+            invalidateAnalyticsGetActivity(queryClient, /* ... arguments ... */);
             // OR, invalidate all cache entries for the query targets:
-            invalidateAllGetCredits(queryClient);
+            invalidateAllAnalyticsGetActivity(queryClient);
           },
         });
       }}
@@ -220,13 +225,11 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { OpenRouterCore } from "@openrouter/sdk";
 import { OpenRouterProvider } from "@openrouter/sdk/react-query";
-import { useGetCreditsSuspense } from "@openrouter/sdk/react-query/getCredits.js";
+import { useAnalyticsGetActivitySuspense } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 export function App() {
@@ -257,7 +260,9 @@ export function App() {
 }
 
 function Example() {
-  const { data } = useGetCreditsSuspense();
+  const { data } = useAnalyticsGetActivitySuspense({
+    date: "2025-08-24",
+  });
 
   // Render the UI here...
 }
@@ -277,17 +282,17 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "@openrouter/sdk";
-import { prefetchGetCredits } from "@openrouter/sdk/react-query/getCredits.js";
+import { prefetchAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
 
 export default async function Page() {
   const queryClient = new QueryClient();
   const openRouter = new OpenRouterCore({
-    security: {
-      apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-    },
+    apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   });
 
-  await prefetchGetCredits(openRouter);
+  await prefetchAnalyticsGetActivity(queryClient, openRouter, {
+    date: "2025-08-24",
+  });
 
   return (
     // HydrationBoundary is a Client Component, so hydration will happen there.

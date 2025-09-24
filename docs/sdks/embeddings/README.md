@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [postEmbeddings](#postembeddings) - Submit an embedding request
+* [generate](#generate) - Submit an embedding request
 
-## postEmbeddings
+## generate
 
 Submits an embedding request to the embeddings router
 
@@ -18,13 +18,11 @@ Submits an embedding request to the embeddings router
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await openRouter.embeddings.postEmbeddings({
+  const result = await openRouter.embeddings.generate({
     input: [],
     provider: {
       zdr: true,
@@ -43,18 +41,16 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { embeddingsPostEmbeddings } from "@openrouter/sdk/funcs/embeddingsPostEmbeddings.js";
+import { embeddingsGenerate } from "@openrouter/sdk/funcs/embeddingsGenerate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await embeddingsPostEmbeddings(openRouter, {
+  const res = await embeddingsGenerate(openRouter, {
     input: [],
     provider: {
       zdr: true,
@@ -64,7 +60,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("embeddingsPostEmbeddings failed:", res.error);
+    console.log("embeddingsGenerate failed:", res.error);
   }
 }
 
@@ -84,8 +80,8 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useEmbeddingsPostEmbeddingsMutation
-} from "@openrouter/sdk/react-query/embeddingsPostEmbeddings.js";
+  useEmbeddingsGenerateMutation
+} from "@openrouter/sdk/react-query/embeddingsGenerate.js";
 ```
 
 ### Parameters
@@ -103,6 +99,7 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |

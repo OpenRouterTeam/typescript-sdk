@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetModelsAuthorSlugEndpointsRequestRequest = {
   author: string;
@@ -357,13 +356,9 @@ export type GetModelsAuthorSlugEndpointsData = {
 /**
  * Returns a list of endpoints
  */
-export type GetModelsAuthorSlugEndpointsResponseBody = {
+export type GetModelsAuthorSlugEndpointsResponse = {
   data: GetModelsAuthorSlugEndpointsData;
 };
-
-export type GetModelsAuthorSlugEndpointsResponse =
-  | GetModelsAuthorSlugEndpointsResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetModelsAuthorSlugEndpointsRequestRequest$inboundSchema:
@@ -1665,8 +1660,8 @@ export function getModelsAuthorSlugEndpointsDataFromJSON(
 }
 
 /** @internal */
-export const GetModelsAuthorSlugEndpointsResponseBody$inboundSchema: z.ZodType<
-  GetModelsAuthorSlugEndpointsResponseBody,
+export const GetModelsAuthorSlugEndpointsResponse$inboundSchema: z.ZodType<
+  GetModelsAuthorSlugEndpointsResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1674,85 +1669,18 @@ export const GetModelsAuthorSlugEndpointsResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetModelsAuthorSlugEndpointsResponseBody$Outbound = {
+export type GetModelsAuthorSlugEndpointsResponse$Outbound = {
   data: GetModelsAuthorSlugEndpointsData$Outbound;
 };
-
-/** @internal */
-export const GetModelsAuthorSlugEndpointsResponseBody$outboundSchema: z.ZodType<
-  GetModelsAuthorSlugEndpointsResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetModelsAuthorSlugEndpointsResponseBody
-> = z.object({
-  data: z.lazy(() => GetModelsAuthorSlugEndpointsData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsAuthorSlugEndpointsResponseBody$ {
-  /** @deprecated use `GetModelsAuthorSlugEndpointsResponseBody$inboundSchema` instead. */
-  export const inboundSchema =
-    GetModelsAuthorSlugEndpointsResponseBody$inboundSchema;
-  /** @deprecated use `GetModelsAuthorSlugEndpointsResponseBody$outboundSchema` instead. */
-  export const outboundSchema =
-    GetModelsAuthorSlugEndpointsResponseBody$outboundSchema;
-  /** @deprecated use `GetModelsAuthorSlugEndpointsResponseBody$Outbound` instead. */
-  export type Outbound = GetModelsAuthorSlugEndpointsResponseBody$Outbound;
-}
-
-export function getModelsAuthorSlugEndpointsResponseBodyToJSON(
-  getModelsAuthorSlugEndpointsResponseBody:
-    GetModelsAuthorSlugEndpointsResponseBody,
-): string {
-  return JSON.stringify(
-    GetModelsAuthorSlugEndpointsResponseBody$outboundSchema.parse(
-      getModelsAuthorSlugEndpointsResponseBody,
-    ),
-  );
-}
-
-export function getModelsAuthorSlugEndpointsResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  GetModelsAuthorSlugEndpointsResponseBody,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      GetModelsAuthorSlugEndpointsResponseBody$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'GetModelsAuthorSlugEndpointsResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetModelsAuthorSlugEndpointsResponse$inboundSchema: z.ZodType<
-  GetModelsAuthorSlugEndpointsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetModelsAuthorSlugEndpointsResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetModelsAuthorSlugEndpointsResponse$Outbound =
-  | GetModelsAuthorSlugEndpointsResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetModelsAuthorSlugEndpointsResponse$outboundSchema: z.ZodType<
   GetModelsAuthorSlugEndpointsResponse$Outbound,
   z.ZodTypeDef,
   GetModelsAuthorSlugEndpointsResponse
-> = z.union([
-  z.lazy(() => GetModelsAuthorSlugEndpointsResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetModelsAuthorSlugEndpointsData$outboundSchema),
+});
 
 /**
  * @internal

@@ -7,7 +7,6 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type PostKeysRequest = {
   /**
@@ -65,7 +64,7 @@ export type PostKeysData = {
 /**
  * API key created successfully
  */
-export type PostKeysResponseBody = {
+export type PostKeysResponse = {
   /**
    * The created API key information
    */
@@ -75,8 +74,6 @@ export type PostKeysResponseBody = {
    */
   key: string;
 };
-
-export type PostKeysResponse = PostKeysResponseBody | models.ErrorResponse;
 
 /** @internal */
 export const PostKeysRequest$inboundSchema: z.ZodType<
@@ -226,8 +223,8 @@ export function postKeysDataFromJSON(
 }
 
 /** @internal */
-export const PostKeysResponseBody$inboundSchema: z.ZodType<
-  PostKeysResponseBody,
+export const PostKeysResponse$inboundSchema: z.ZodType<
+  PostKeysResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -236,76 +233,20 @@ export const PostKeysResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PostKeysResponseBody$Outbound = {
+export type PostKeysResponse$Outbound = {
   data: PostKeysData$Outbound;
   key: string;
 };
-
-/** @internal */
-export const PostKeysResponseBody$outboundSchema: z.ZodType<
-  PostKeysResponseBody$Outbound,
-  z.ZodTypeDef,
-  PostKeysResponseBody
-> = z.object({
-  data: z.lazy(() => PostKeysData$outboundSchema),
-  key: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PostKeysResponseBody$ {
-  /** @deprecated use `PostKeysResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PostKeysResponseBody$inboundSchema;
-  /** @deprecated use `PostKeysResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PostKeysResponseBody$outboundSchema;
-  /** @deprecated use `PostKeysResponseBody$Outbound` instead. */
-  export type Outbound = PostKeysResponseBody$Outbound;
-}
-
-export function postKeysResponseBodyToJSON(
-  postKeysResponseBody: PostKeysResponseBody,
-): string {
-  return JSON.stringify(
-    PostKeysResponseBody$outboundSchema.parse(postKeysResponseBody),
-  );
-}
-
-export function postKeysResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PostKeysResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PostKeysResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PostKeysResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PostKeysResponse$inboundSchema: z.ZodType<
-  PostKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PostKeysResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PostKeysResponse$Outbound =
-  | PostKeysResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const PostKeysResponse$outboundSchema: z.ZodType<
   PostKeysResponse$Outbound,
   z.ZodTypeDef,
   PostKeysResponse
-> = z.union([
-  z.lazy(() => PostKeysResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => PostKeysData$outboundSchema),
+  key: z.string(),
+});
 
 /**
  * @internal

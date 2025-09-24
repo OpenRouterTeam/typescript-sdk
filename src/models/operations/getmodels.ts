@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetModelsRequestRequest = {
   category?: string | undefined;
@@ -283,10 +282,7 @@ export type GetModelsResponseBody = {
   data: Array<GetModelsData>;
 };
 
-export type GetModelsResponse =
-  | GetModelsResponseBody
-  | models.ErrorResponse
-  | string;
+export type GetModelsResponse = GetModelsResponseBody | string;
 
 /** @internal */
 export const GetModelsRequestRequest$inboundSchema: z.ZodType<
@@ -1472,16 +1468,11 @@ export const GetModelsResponse$inboundSchema: z.ZodType<
   GetModelsResponse,
   z.ZodTypeDef,
   unknown
-> = z.union([
-  z.lazy(() => GetModelsResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-  z.string(),
-]);
+> = z.union([z.lazy(() => GetModelsResponseBody$inboundSchema), z.string()]);
 
 /** @internal */
 export type GetModelsResponse$Outbound =
   | GetModelsResponseBody$Outbound
-  | models.ErrorResponse$Outbound
   | string;
 
 /** @internal */
@@ -1489,11 +1480,7 @@ export const GetModelsResponse$outboundSchema: z.ZodType<
   GetModelsResponse$Outbound,
   z.ZodTypeDef,
   GetModelsResponse
-> = z.union([
-  z.lazy(() => GetModelsResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-  z.string(),
-]);
+> = z.union([z.lazy(() => GetModelsResponseBody$outboundSchema), z.string()]);
 
 /**
  * @internal

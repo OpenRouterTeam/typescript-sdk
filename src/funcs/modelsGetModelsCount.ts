@@ -15,6 +15,7 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
+import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -31,6 +32,7 @@ export function modelsGetModelsCount(
 ): APIPromise<
   Result<
     operations.GetModelsCountResponse,
+    | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -54,6 +56,7 @@ async function $do(
   [
     Result<
       operations.GetModelsCountResponse,
+      | errors.ErrorResponse
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -72,7 +75,8 @@ async function $do(
     Accept: "application/json",
   }));
 
-  const securityInput = await extractSecurity(client._options.security);
+  const secConfig = await extractSecurity(client._options.apiKey);
+  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
   const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
@@ -83,7 +87,7 @@ async function $do(
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.security,
+    securitySource: client._options.apiKey,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -115,8 +119,13 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     operations.GetModelsCountResponse,
+    | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -127,10 +136,9 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.GetModelsCountResponse$inboundSchema),
-    M.fail("4XX"),
-    M.fail("5XX"),
-    M.json("default", operations.GetModelsCountResponse$inboundSchema),
-  )(response, req);
+    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
+    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

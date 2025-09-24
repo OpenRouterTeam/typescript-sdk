@@ -20,23 +20,23 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { getCredits } from "@openrouter/sdk/funcs/getCredits.js";
+import { analyticsGetActivity } from "@openrouter/sdk/funcs/analyticsGetActivity.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
-  security: {
-    apiKeyAuth: process.env["OPENROUTER_API_KEY_AUTH"] ?? "",
-  },
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await getCredits(openRouter);
+  const res = await analyticsGetActivity(openRouter, {
+    date: "2025-08-24",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("getCredits failed:", res.error);
+    console.log("analyticsGetActivity failed:", res.error);
   }
 }
 

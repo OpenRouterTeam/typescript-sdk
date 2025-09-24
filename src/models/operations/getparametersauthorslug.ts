@@ -8,7 +8,10 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+
+export type GetParametersAuthorSlugSecurity = {
+  bearer: string;
+};
 
 export const GetParametersAuthorSlugProvider = {
   Ai21: "AI21",
@@ -131,16 +134,68 @@ export type GetParametersAuthorSlugData = {
 /**
  * Returns the parameters for the specified model
  */
-export type GetParametersAuthorSlugResponseBody = {
+export type GetParametersAuthorSlugResponse = {
   /**
    * Parameter analytics data
    */
   data: GetParametersAuthorSlugData;
 };
 
-export type GetParametersAuthorSlugResponse =
-  | GetParametersAuthorSlugResponseBody
-  | models.ErrorResponse;
+/** @internal */
+export const GetParametersAuthorSlugSecurity$inboundSchema: z.ZodType<
+  GetParametersAuthorSlugSecurity,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  bearer: z.string(),
+});
+
+/** @internal */
+export type GetParametersAuthorSlugSecurity$Outbound = {
+  bearer: string;
+};
+
+/** @internal */
+export const GetParametersAuthorSlugSecurity$outboundSchema: z.ZodType<
+  GetParametersAuthorSlugSecurity$Outbound,
+  z.ZodTypeDef,
+  GetParametersAuthorSlugSecurity
+> = z.object({
+  bearer: z.string(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetParametersAuthorSlugSecurity$ {
+  /** @deprecated use `GetParametersAuthorSlugSecurity$inboundSchema` instead. */
+  export const inboundSchema = GetParametersAuthorSlugSecurity$inboundSchema;
+  /** @deprecated use `GetParametersAuthorSlugSecurity$outboundSchema` instead. */
+  export const outboundSchema = GetParametersAuthorSlugSecurity$outboundSchema;
+  /** @deprecated use `GetParametersAuthorSlugSecurity$Outbound` instead. */
+  export type Outbound = GetParametersAuthorSlugSecurity$Outbound;
+}
+
+export function getParametersAuthorSlugSecurityToJSON(
+  getParametersAuthorSlugSecurity: GetParametersAuthorSlugSecurity,
+): string {
+  return JSON.stringify(
+    GetParametersAuthorSlugSecurity$outboundSchema.parse(
+      getParametersAuthorSlugSecurity,
+    ),
+  );
+}
+
+export function getParametersAuthorSlugSecurityFromJSON(
+  jsonString: string,
+): SafeParseResult<GetParametersAuthorSlugSecurity, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetParametersAuthorSlugSecurity$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetParametersAuthorSlugSecurity' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetParametersAuthorSlugProvider$inboundSchema: z.ZodNativeEnum<
@@ -320,8 +375,8 @@ export function getParametersAuthorSlugDataFromJSON(
 }
 
 /** @internal */
-export const GetParametersAuthorSlugResponseBody$inboundSchema: z.ZodType<
-  GetParametersAuthorSlugResponseBody,
+export const GetParametersAuthorSlugResponse$inboundSchema: z.ZodType<
+  GetParametersAuthorSlugResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -329,79 +384,18 @@ export const GetParametersAuthorSlugResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetParametersAuthorSlugResponseBody$Outbound = {
+export type GetParametersAuthorSlugResponse$Outbound = {
   data: GetParametersAuthorSlugData$Outbound;
 };
-
-/** @internal */
-export const GetParametersAuthorSlugResponseBody$outboundSchema: z.ZodType<
-  GetParametersAuthorSlugResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetParametersAuthorSlugResponseBody
-> = z.object({
-  data: z.lazy(() => GetParametersAuthorSlugData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersAuthorSlugResponseBody$ {
-  /** @deprecated use `GetParametersAuthorSlugResponseBody$inboundSchema` instead. */
-  export const inboundSchema =
-    GetParametersAuthorSlugResponseBody$inboundSchema;
-  /** @deprecated use `GetParametersAuthorSlugResponseBody$outboundSchema` instead. */
-  export const outboundSchema =
-    GetParametersAuthorSlugResponseBody$outboundSchema;
-  /** @deprecated use `GetParametersAuthorSlugResponseBody$Outbound` instead. */
-  export type Outbound = GetParametersAuthorSlugResponseBody$Outbound;
-}
-
-export function getParametersAuthorSlugResponseBodyToJSON(
-  getParametersAuthorSlugResponseBody: GetParametersAuthorSlugResponseBody,
-): string {
-  return JSON.stringify(
-    GetParametersAuthorSlugResponseBody$outboundSchema.parse(
-      getParametersAuthorSlugResponseBody,
-    ),
-  );
-}
-
-export function getParametersAuthorSlugResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetParametersAuthorSlugResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      GetParametersAuthorSlugResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetParametersAuthorSlugResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetParametersAuthorSlugResponse$inboundSchema: z.ZodType<
-  GetParametersAuthorSlugResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetParametersAuthorSlugResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetParametersAuthorSlugResponse$Outbound =
-  | GetParametersAuthorSlugResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetParametersAuthorSlugResponse$outboundSchema: z.ZodType<
   GetParametersAuthorSlugResponse$Outbound,
   z.ZodTypeDef,
   GetParametersAuthorSlugResponse
-> = z.union([
-  z.lazy(() => GetParametersAuthorSlugResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetParametersAuthorSlugData$outboundSchema),
+});
 
 /**
  * @internal

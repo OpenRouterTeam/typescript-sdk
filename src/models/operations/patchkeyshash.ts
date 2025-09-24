@@ -7,7 +7,6 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type PatchKeysHashRequestBody = {
   /**
@@ -74,16 +73,12 @@ export type PatchKeysHashData = {
 /**
  * API key updated successfully
  */
-export type PatchKeysHashResponseBody = {
+export type PatchKeysHashResponse = {
   /**
    * The updated API key information
    */
   data: PatchKeysHashData;
 };
-
-export type PatchKeysHashResponse =
-  | PatchKeysHashResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const PatchKeysHashRequestBody$inboundSchema: z.ZodType<
@@ -307,8 +302,8 @@ export function patchKeysHashDataFromJSON(
 }
 
 /** @internal */
-export const PatchKeysHashResponseBody$inboundSchema: z.ZodType<
-  PatchKeysHashResponseBody,
+export const PatchKeysHashResponse$inboundSchema: z.ZodType<
+  PatchKeysHashResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -316,74 +311,18 @@ export const PatchKeysHashResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type PatchKeysHashResponseBody$Outbound = {
+export type PatchKeysHashResponse$Outbound = {
   data: PatchKeysHashData$Outbound;
 };
-
-/** @internal */
-export const PatchKeysHashResponseBody$outboundSchema: z.ZodType<
-  PatchKeysHashResponseBody$Outbound,
-  z.ZodTypeDef,
-  PatchKeysHashResponseBody
-> = z.object({
-  data: z.lazy(() => PatchKeysHashData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PatchKeysHashResponseBody$ {
-  /** @deprecated use `PatchKeysHashResponseBody$inboundSchema` instead. */
-  export const inboundSchema = PatchKeysHashResponseBody$inboundSchema;
-  /** @deprecated use `PatchKeysHashResponseBody$outboundSchema` instead. */
-  export const outboundSchema = PatchKeysHashResponseBody$outboundSchema;
-  /** @deprecated use `PatchKeysHashResponseBody$Outbound` instead. */
-  export type Outbound = PatchKeysHashResponseBody$Outbound;
-}
-
-export function patchKeysHashResponseBodyToJSON(
-  patchKeysHashResponseBody: PatchKeysHashResponseBody,
-): string {
-  return JSON.stringify(
-    PatchKeysHashResponseBody$outboundSchema.parse(patchKeysHashResponseBody),
-  );
-}
-
-export function patchKeysHashResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<PatchKeysHashResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => PatchKeysHashResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PatchKeysHashResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const PatchKeysHashResponse$inboundSchema: z.ZodType<
-  PatchKeysHashResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => PatchKeysHashResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type PatchKeysHashResponse$Outbound =
-  | PatchKeysHashResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const PatchKeysHashResponse$outboundSchema: z.ZodType<
   PatchKeysHashResponse$Outbound,
   z.ZodTypeDef,
   PatchKeysHashResponse
-> = z.union([
-  z.lazy(() => PatchKeysHashResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => PatchKeysHashData$outboundSchema),
+});
 
 /**
  * @internal

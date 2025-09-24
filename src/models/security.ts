@@ -8,8 +8,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Security = {
-  apiKeyAuth?: string | undefined;
-  bearerAuth?: string | undefined;
+  apiKey?: string | undefined;
 };
 
 /** @internal */
@@ -18,14 +17,12 @@ export const Security$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  apiKeyAuth: z.string().optional(),
-  bearerAuth: z.string().optional(),
+  apiKey: z.string().optional(),
 });
 
 /** @internal */
 export type Security$Outbound = {
-  apiKeyAuth?: string | undefined;
-  bearerAuth?: string | undefined;
+  apiKey?: string | undefined;
 };
 
 /** @internal */
@@ -34,8 +31,7 @@ export const Security$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Security
 > = z.object({
-  apiKeyAuth: z.string().optional(),
-  bearerAuth: z.string().optional(),
+  apiKey: z.string().optional(),
 });
 
 /**

@@ -8,7 +8,10 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+
+export type GetModelsUserSecurity = {
+  bearer: string;
+};
 
 export type GetModelsUserPrompt = number | string | any;
 
@@ -273,16 +276,66 @@ export type GetModelsUserData = {
 /**
  * Returns a list of models filtered by user provider preferences
  */
-export type GetModelsUserResponseBody = {
+export type GetModelsUserResponse = {
   /**
    * List of available models
    */
   data: Array<GetModelsUserData>;
 };
 
-export type GetModelsUserResponse =
-  | GetModelsUserResponseBody
-  | models.ErrorResponse;
+/** @internal */
+export const GetModelsUserSecurity$inboundSchema: z.ZodType<
+  GetModelsUserSecurity,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  bearer: z.string(),
+});
+
+/** @internal */
+export type GetModelsUserSecurity$Outbound = {
+  bearer: string;
+};
+
+/** @internal */
+export const GetModelsUserSecurity$outboundSchema: z.ZodType<
+  GetModelsUserSecurity$Outbound,
+  z.ZodTypeDef,
+  GetModelsUserSecurity
+> = z.object({
+  bearer: z.string(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetModelsUserSecurity$ {
+  /** @deprecated use `GetModelsUserSecurity$inboundSchema` instead. */
+  export const inboundSchema = GetModelsUserSecurity$inboundSchema;
+  /** @deprecated use `GetModelsUserSecurity$outboundSchema` instead. */
+  export const outboundSchema = GetModelsUserSecurity$outboundSchema;
+  /** @deprecated use `GetModelsUserSecurity$Outbound` instead. */
+  export type Outbound = GetModelsUserSecurity$Outbound;
+}
+
+export function getModelsUserSecurityToJSON(
+  getModelsUserSecurity: GetModelsUserSecurity,
+): string {
+  return JSON.stringify(
+    GetModelsUserSecurity$outboundSchema.parse(getModelsUserSecurity),
+  );
+}
+
+export function getModelsUserSecurityFromJSON(
+  jsonString: string,
+): SafeParseResult<GetModelsUserSecurity, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetModelsUserSecurity$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetModelsUserSecurity' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetModelsUserPrompt$inboundSchema: z.ZodType<
@@ -1359,8 +1412,8 @@ export function getModelsUserDataFromJSON(
 }
 
 /** @internal */
-export const GetModelsUserResponseBody$inboundSchema: z.ZodType<
-  GetModelsUserResponseBody,
+export const GetModelsUserResponse$inboundSchema: z.ZodType<
+  GetModelsUserResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1368,74 +1421,18 @@ export const GetModelsUserResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetModelsUserResponseBody$Outbound = {
+export type GetModelsUserResponse$Outbound = {
   data: Array<GetModelsUserData$Outbound>;
 };
-
-/** @internal */
-export const GetModelsUserResponseBody$outboundSchema: z.ZodType<
-  GetModelsUserResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetModelsUserResponseBody
-> = z.object({
-  data: z.array(z.lazy(() => GetModelsUserData$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsUserResponseBody$ {
-  /** @deprecated use `GetModelsUserResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetModelsUserResponseBody$inboundSchema;
-  /** @deprecated use `GetModelsUserResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetModelsUserResponseBody$outboundSchema;
-  /** @deprecated use `GetModelsUserResponseBody$Outbound` instead. */
-  export type Outbound = GetModelsUserResponseBody$Outbound;
-}
-
-export function getModelsUserResponseBodyToJSON(
-  getModelsUserResponseBody: GetModelsUserResponseBody,
-): string {
-  return JSON.stringify(
-    GetModelsUserResponseBody$outboundSchema.parse(getModelsUserResponseBody),
-  );
-}
-
-export function getModelsUserResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsUserResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsUserResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsUserResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetModelsUserResponse$inboundSchema: z.ZodType<
-  GetModelsUserResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetModelsUserResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetModelsUserResponse$Outbound =
-  | GetModelsUserResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetModelsUserResponse$outboundSchema: z.ZodType<
   GetModelsUserResponse$Outbound,
   z.ZodTypeDef,
   GetModelsUserResponse
-> = z.union([
-  z.lazy(() => GetModelsUserResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.array(z.lazy(() => GetModelsUserData$outboundSchema)),
+});
 
 /**
  * @internal

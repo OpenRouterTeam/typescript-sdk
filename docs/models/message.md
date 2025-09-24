@@ -3,16 +3,6 @@
 
 ## Supported Types
 
-### `models.ToolMessage`
-
-```typescript
-const value: models.ToolMessage = {
-  role: "tool",
-  content: [],
-  toolCallId: "<id>",
-};
-```
-
 ### `models.SystemMessage`
 
 ```typescript
@@ -31,11 +21,30 @@ const value: models.UserMessage = {
 };
 ```
 
+### `models.MessageDeveloper`
+
+```typescript
+const value: models.MessageDeveloper = {
+  role: "developer",
+  content: [],
+};
+```
+
 ### `models.AssistantMessage`
 
 ```typescript
 const value: models.AssistantMessage = {
   role: "assistant",
+};
+```
+
+### `models.ToolResponseMessage`
+
+```typescript
+const value: models.ToolResponseMessage = {
+  role: "tool",
+  content: [],
+  toolCallId: "<id>",
 };
 ```
 

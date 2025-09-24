@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: OpenRouter API
   version: 1.0.0
-  description: OpenAI-compatible Chat Completions API with additional OpenRouter features
+  description: OpenAI-compatible Chat Completions and Completions API with additional OpenRouter features
   contact:
     name: OpenRouter Support
     url: https://openrouter.ai/docs
@@ -416,7 +416,7 @@ components:
             - 'null'
       required:
         - role
-    ToolMessage:
+    ToolResponseMessage:
       type: object
       properties:
         role:
@@ -438,15 +438,24 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SystemMessage'
         - $ref: '#/components/schemas/UserMessage'
+        - type: object
+          properties:
+            role:
+              type: string
+              const: developer
+            content:
+              anyOf:
+                - type: string
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/ChatMessageContentItemText'
+            name:
+              type: string
+          required:
+            - role
+            - content
         - $ref: '#/components/schemas/AssistantMessage'
-        - $ref: '#/components/schemas/ToolMessage'
-      discriminator:
-        propertyName: role
-        mapping:
-          system: '#/components/schemas/SystemMessage'
-          user: '#/components/schemas/UserMessage'
-          assistant: '#/components/schemas/AssistantMessage'
-          tool: '#/components/schemas/ToolMessage'
+        - $ref: '#/components/schemas/ToolResponseMessage'
     Tool:
       type: object
       properties:
@@ -692,36 +701,7 @@ components:
       required:
         - messages
         - model
-    ChatCompletionMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: assistant
-        content:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
-            - type: 'null'
-        name:
-          type: string
-        tool_calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessageToolCall'
-        refusal:
-          type:
-            - string
-            - 'null'
-        reasoning:
-          type:
-            - string
-            - 'null'
-      required:
-        - role
-    ChatCompletionChoice:
+    ChatResponseChoice:
       type: object
       properties:
         finish_reason:
@@ -738,7 +718,7 @@ components:
         index:
           type: number
         message:
-          $ref: '#/components/schemas/ChatCompletionMessage'
+          $ref: '#/components/schemas/AssistantMessage'
         logprobs:
           oneOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
@@ -747,7 +727,7 @@ components:
         - finish_reason
         - index
         - message
-    ChatCompletion:
+    ChatResponse:
       type: object
       properties:
         id:
@@ -755,7 +735,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionChoice'
+            $ref: '#/components/schemas/ChatResponseChoice'
         created:
           type: number
         model:
@@ -764,7 +744,9 @@ components:
           type: string
           const: chat.completion
         system_fingerprint:
-          type: string
+          type:
+            - string
+            - 'null'
         usage:
           $ref: '#/components/schemas/ChatGenerationTokenUsage'
       required:
@@ -773,16 +755,17 @@ components:
         - created
         - model
         - object
-    ChatCompletionError:
+    ChatError:
       type: object
       properties:
         error:
           type: object
           properties:
             code:
-              type:
-                - string
-                - 'null'
+              anyOf:
+                - type: string
+                - type: number
+                - type: 'null'
             message:
               type: string
             param:
@@ -798,7 +781,7 @@ components:
             - type
       required:
         - error
-    ChatCompletionChunkChoiceDeltaToolCall:
+    ChatStreamingMessageToolCall:
       type: object
       properties:
         index:
@@ -817,7 +800,7 @@ components:
               type: string
       required:
         - index
-    ChatCompletionChunkChoiceDelta:
+    ChatStreamingMessageChunk:
       type: object
       properties:
         role:
@@ -839,12 +822,12 @@ components:
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionChunkChoiceDeltaToolCall'
-    ChatCompletionChunkChoice:
+            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+    ChatStreamingChoice:
       type: object
       properties:
         delta:
-          $ref: '#/components/schemas/ChatCompletionChunkChoiceDelta'
+          $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
           type:
             - string
@@ -866,7 +849,7 @@ components:
         - delta
         - finish_reason
         - index
-    ChatCompletionChunk:
+    ChatStreamingResponseChunk:
       type: object
       properties:
         data:
@@ -877,7 +860,7 @@ components:
             choices:
               type: array
               items:
-                $ref: '#/components/schemas/ChatCompletionChunkChoice'
+                $ref: '#/components/schemas/ChatStreamingChoice'
             created:
               type: number
             model:
@@ -886,7 +869,19 @@ components:
               type: string
               const: chat.completion.chunk
             system_fingerprint:
-              type: string
+              type:
+                - string
+                - 'null'
+            error:
+              type: object
+              properties:
+                message:
+                  type: string
+                code:
+                  type: number
+              required:
+                - message
+                - code
             usage:
               $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
@@ -897,17 +892,374 @@ components:
             - object
       required:
         - data
+    CompletionFinishReason:
+      type:
+        - string
+        - 'null'
+      enum:
+        - stop
+        - length
+        - content_filter
+        - null
+    CompletionTokenLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+        logprob:
+          type: number
+        bytes:
+          type:
+            - array
+            - 'null'
+          items:
+            type: number
+      required:
+        - token
+        - logprob
+        - bytes
+    CompletionLogprobs:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            type: string
+        token_logprobs:
+          type: array
+          items:
+            type: number
+        top_logprobs:
+          type:
+            - array
+            - 'null'
+          items:
+            type: object
+            additionalProperties:
+              type: number
+        text_offset:
+          type: array
+          items:
+            type: number
+      required:
+        - tokens
+        - token_logprobs
+        - top_logprobs
+        - text_offset
+    CompletionUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: number
+        completion_tokens:
+          type: number
+        total_tokens:
+          type: number
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
+    CompletionCreateParams:
+      type: object
+      properties:
+        model:
+          anyOf:
+            - type: string
+            - type: string
+        prompt:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            - type: array
+              items:
+                type: number
+            - type: array
+              items:
+                type: array
+                items:
+                  type: number
+        best_of:
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+          maximum: 20
+        echo:
+          type:
+            - boolean
+            - 'null'
+        frequency_penalty:
+          type:
+            - number
+            - 'null'
+          minimum: -2
+          maximum: 2
+        logit_bias:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            type: number
+        logprobs:
+          type:
+            - integer
+            - 'null'
+          minimum: 0
+          maximum: 5
+        max_tokens:
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+        'n':
+          type:
+            - integer
+            - 'null'
+          minimum: 1
+          maximum: 128
+        presence_penalty:
+          type:
+            - number
+            - 'null'
+          minimum: -2
+          maximum: 2
+        seed:
+          type:
+            - integer
+            - 'null'
+        stop:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            - type: 'null'
+        stream:
+          type:
+            - boolean
+            - 'null'
+        stream_options:
+          type:
+            - object
+            - 'null'
+          properties:
+            include_usage:
+              type:
+                - boolean
+                - 'null'
+        suffix:
+          type:
+            - string
+            - 'null'
+        temperature:
+          type:
+            - number
+            - 'null'
+          minimum: 0
+          maximum: 2
+        top_p:
+          type:
+            - number
+            - 'null'
+          minimum: 0
+          maximum: 1
+        user:
+          type: string
+        metadata:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            type: string
+        response_format:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: text
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: json_object
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: json_schema
+                json_schema:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 64
+                    description:
+                      type: string
+                    schema:
+                      type: object
+                      additionalProperties: {}
+                    strict:
+                      type:
+                        - boolean
+                        - 'null'
+                  required:
+                    - name
+              required:
+                - type
+                - json_schema
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: grammar
+                grammar:
+                  type: string
+              required:
+                - type
+                - grammar
+            - type: object
+              properties:
+                type:
+                  type: string
+                  const: python
+              required:
+                - type
+            - type: 'null'
+      required:
+        - model
+        - prompt
+    CompletionChoice:
+      type: object
+      properties:
+        text:
+          type: string
+        index:
+          type: number
+        logprobs:
+          oneOf:
+            - $ref: '#/components/schemas/CompletionLogprobs'
+            - type: 'null'
+        finish_reason:
+          $ref: '#/components/schemas/CompletionFinishReason'
+      required:
+        - text
+        - index
+        - logprobs
+        - finish_reason
+    CompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: text_completion
+        created:
+          type: number
+        model:
+          type: string
+        system_fingerprint:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionChoice'
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+    CompletionError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              anyOf:
+                - type: string
+                - type: number
+                - type: 'null'
+            message:
+              type: string
+            param:
+              type:
+                - string
+                - 'null'
+            type:
+              type: string
+          required:
+            - code
+            - message
+            - param
+            - type
+      required:
+        - error
+    CompletionStreamingChoice:
+      type: object
+      properties:
+        text:
+          type: string
+        index:
+          type: number
+        logprobs:
+          oneOf:
+            - $ref: '#/components/schemas/CompletionLogprobs'
+            - type: 'null'
+        finish_reason:
+          $ref: '#/components/schemas/CompletionFinishReason'
+      required:
+        - text
+        - index
+        - logprobs
+        - finish_reason
+    CompletionStreamingResponseChunk:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            object:
+              type: string
+              const: text_completion.chunk
+            created:
+              type: number
+            model:
+              type: string
+            system_fingerprint:
+              type: string
+            choices:
+              type: array
+              items:
+                $ref: '#/components/schemas/CompletionStreamingChoice'
+            usage:
+              $ref: '#/components/schemas/CompletionUsage'
+          required:
+            - id
+            - object
+            - created
+            - model
+            - choices
+      required:
+        - data
   parameters: {}
   securitySchemes:
-    bearerAuth:
+    apiKey:
       type: http
       scheme: bearer
       description: API key as bearer token in Authorization header
-    apiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: API key with "Bearer " prefix
 paths:
   /activity:
     get:
@@ -938,7 +1290,13 @@ paths:
                     description: List of activity items
                 required:
                   - data
-        default:
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error Response
           content:
             application/json:
@@ -946,6 +1304,8 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
   /credits:
     get:
+      tags:
+        - Credits
       description: Get total credits purchased and used for the authenticated user
       responses:
         '200':
@@ -967,8 +1327,8 @@ paths:
                       - total_usage
                 required:
                   - data
-        default:
-          description: Internal server error
+        4XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -976,7 +1336,9 @@ paths:
   /credits/coinbase:
     post:
       security:
-        - bearerAuth: []
+        - bearer: []
+      tags:
+        - Credits
       description: Create a Coinbase charge for crypto payment
       requestBody:
         content:
@@ -1079,8 +1441,14 @@ paths:
                       - web3_data
                 required:
                   - data
-        default:
+        4XX:
           description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -1090,6 +1458,7 @@ paths:
       tags:
         - Embeddings
       summary: Submit an embedding request
+      x-speakeasy-name-override: generate
       description: Submits an embedding request to the embeddings router
       requestBody:
         content:
@@ -1558,8 +1927,14 @@ paths:
                   - object
                   - data
                   - model
-        default:
+        4XX:
           description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
           content:
             application/json:
               schema:
@@ -1773,8 +2148,14 @@ paths:
                     description: Generation data
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -1804,8 +2185,14 @@ paths:
                     description: Model count data
                 required:
                   - data
-        default:
-          description: Error Response
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -2104,8 +2491,14 @@ paths:
             application/rss+xml:
               schema:
                 type: string
-        default:
-          description: Error Response
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -2116,7 +2509,7 @@ paths:
         - Models
       summary: List models filtered by user provider preferences
       security:
-        - bearerAuth: []
+        - bearer: []
       responses:
         '200':
           description: Returns a list of models filtered by user provider preferences
@@ -2382,7 +2775,13 @@ paths:
                     description: List of available models
                 required:
                   - data
-        default:
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error Response
           content:
             application/json:
@@ -2761,8 +3160,14 @@ paths:
                       - endpoints
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -3017,8 +3422,14 @@ paths:
                         - supports_implicit_caching
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
@@ -3026,10 +3437,10 @@ paths:
   /parameters/{author}/{slug}:
     get:
       tags:
-        - Parameters
+        - Model
       summary: Get a model's supported parameters and data about which are most popular
       security:
-        - bearerAuth: []
+        - bearer: []
       parameters:
         - schema:
             type: string
@@ -3160,14 +3571,23 @@ paths:
                     description: Parameter analytics data
                 required:
                   - data
-        default:
-          description: Data not found
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
   /providers:
     get:
+      tags:
+        - Providers
+      description: List all available model providers
       responses:
         '200':
           description: Returns a list of providers
@@ -3311,7 +3731,13 @@ paths:
                     description: List of API keys
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3405,7 +3831,13 @@ paths:
                 required:
                   - data
                   - key
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3504,7 +3936,13 @@ paths:
                     description: The updated API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3538,7 +3976,13 @@ paths:
                     example: true
                 required:
                   - deleted
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3613,7 +4057,13 @@ paths:
                     description: The API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3694,7 +4144,13 @@ paths:
                     description: Current API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3775,7 +4231,151 @@ paths:
                     description: Current API key information
                 required:
                   - data
-        default:
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/keys:
+    post:
+      tags:
+        - OAuth
+      summary: Exchange authorization code for API key
+      description: Exchange an authorization code from the PKCE flow for a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: The authorization code received from the OAuth redirect
+                  example: auth_code_abc123def456
+                code_verifier:
+                  type: string
+                  description: The code verifier if code_challenge was used in the authorization request
+                  example: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+                code_challenge_method:
+                  type: string
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+              required:
+                - code
+      responses:
+        '200':
+          description: Successfully exchanged code for an API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: The API key to use for OpenRouter requests
+                    example: sk-or-v1-abc123def456ghi789jkl012
+                  user_id:
+                    type: string
+                    nullable: true
+                    description: User ID associated with the API key
+                    example: or_user_1234567890abcdef
+                required:
+                  - key
+                  - user_id
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/keys/code:
+    post:
+      tags:
+        - OAuth
+      summary: Create authorization code
+      description: Create an authorization code for the PKCE flow to generate a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callback_url:
+                  type: string
+                  format: uri
+                  description: >-
+                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are
+                    allowed.
+                  example: https://myapp.com/auth/callback
+                code_challenge:
+                  type: string
+                  description: PKCE code challenge for enhanced security
+                  example: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+                code_challenge_method:
+                  type: string
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+                limit:
+                  type: string
+                  description: Credit limit for the API key to be created
+                  example: '100.0'
+              required:
+                - callback_url
+      responses:
+        '200':
+          description: Successfully created authorization code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The authorization code ID to use in the exchange request
+                        example: auth_code_xyz789
+                      app_id:
+                        type: number
+                        description: The application ID associated with this auth code
+                        example: 12345
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the auth code was created
+                        example: '2025-08-24T10:30:00Z'
+                    required:
+                      - id
+                      - app_id
+                      - created_at
+                required:
+                  - data
+        4XX:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error response
           content:
             application/json:
@@ -3785,8 +4385,10 @@ paths:
     post:
       summary: Create a chat completion
       x-speakeasy-group: chat
-      x-speakeasy-name-override: generateResponse
-      description: Creates a model response for the given chat conversation. Supports both streaming and non-streaming modes.
+      x-speakeasy-name-override: send
+      description: >-
+        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
+        modes.
       tags:
         - Chat
       requestBody:
@@ -3801,43 +4403,92 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletion'
+                $ref: '#/components/schemas/ChatResponse'
                 description: Non-streaming response when stream=false
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/ChatCompletionChunk'
+                $ref: '#/components/schemas/ChatStreamingResponseChunk'
               x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '401':
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '429':
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatCompletionError'
+                $ref: '#/components/schemas/ChatError'
+  /completions:
+    post:
+      summary: Create a completion
+      x-speakeasy-group: completions
+      x-speakeasy-name-override: create
+      description: Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
+      tags:
+        - Completions
+      requestBody:
+        description: Completion request parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionCreateParams'
+      responses:
+        '200':
+          description: Successful completion response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResponse'
+                description: Non-streaming response when stream=false
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/CompletionStreamingResponseChunk'
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '401':
+          description: Unauthorized - invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '429':
+          description: Too many requests - rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionError'
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server
     x-speakeasy-server-id: production
 security:
-  - apiKeyAuth: []
-  - bearerAuth: []
+  - apiKey: []
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs

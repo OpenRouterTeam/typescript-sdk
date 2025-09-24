@@ -1,36 +1,24 @@
 # PostEmbeddingsResponse
 
+Embedding response
 
-## Supported Types
-
-### `operations.PostEmbeddingsResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PostEmbeddingsResponseBody = {
+import { PostEmbeddingsResponse } from "@openrouter/sdk/models/operations";
+
+let value: PostEmbeddingsResponse = {
   object: "list",
-  data: [
-    {
-      object: "embedding",
-      embedding: [
-        5753.03,
-        2255.62,
-        3982.28,
-      ],
-      index: 9702.93,
-    },
-  ],
-  model: "CTS",
+  data: [],
+  model: "LeBaron",
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `object`                                                                         | [operations.ObjectT](../../models/operations/objectt.md)                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `data`                                                                           | [operations.PostEmbeddingsData](../../models/operations/postembeddingsdata.md)[] | :heavy_check_mark:                                                               | N/A                                                                              |
+| `model`                                                                          | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| `usage`                                                                          | [operations.Usage](../../models/operations/usage.md)                             | :heavy_minus_sign:                                                               | N/A                                                                              |

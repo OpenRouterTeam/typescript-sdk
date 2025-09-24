@@ -8,7 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetEndpointsZdrPrompt = number | string | any;
 
@@ -207,13 +206,9 @@ export type GetEndpointsZdrData = {
 /**
  * Returns a list of endpoints
  */
-export type GetEndpointsZdrResponseBody = {
+export type GetEndpointsZdrResponse = {
   data: Array<GetEndpointsZdrData>;
 };
-
-export type GetEndpointsZdrResponse =
-  | GetEndpointsZdrResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetEndpointsZdrPrompt$inboundSchema: z.ZodType<
@@ -1060,8 +1055,8 @@ export function getEndpointsZdrDataFromJSON(
 }
 
 /** @internal */
-export const GetEndpointsZdrResponseBody$inboundSchema: z.ZodType<
-  GetEndpointsZdrResponseBody,
+export const GetEndpointsZdrResponse$inboundSchema: z.ZodType<
+  GetEndpointsZdrResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1069,76 +1064,18 @@ export const GetEndpointsZdrResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetEndpointsZdrResponseBody$Outbound = {
+export type GetEndpointsZdrResponse$Outbound = {
   data: Array<GetEndpointsZdrData$Outbound>;
 };
-
-/** @internal */
-export const GetEndpointsZdrResponseBody$outboundSchema: z.ZodType<
-  GetEndpointsZdrResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetEndpointsZdrResponseBody
-> = z.object({
-  data: z.array(z.lazy(() => GetEndpointsZdrData$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetEndpointsZdrResponseBody$ {
-  /** @deprecated use `GetEndpointsZdrResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetEndpointsZdrResponseBody$inboundSchema;
-  /** @deprecated use `GetEndpointsZdrResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetEndpointsZdrResponseBody$outboundSchema;
-  /** @deprecated use `GetEndpointsZdrResponseBody$Outbound` instead. */
-  export type Outbound = GetEndpointsZdrResponseBody$Outbound;
-}
-
-export function getEndpointsZdrResponseBodyToJSON(
-  getEndpointsZdrResponseBody: GetEndpointsZdrResponseBody,
-): string {
-  return JSON.stringify(
-    GetEndpointsZdrResponseBody$outboundSchema.parse(
-      getEndpointsZdrResponseBody,
-    ),
-  );
-}
-
-export function getEndpointsZdrResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetEndpointsZdrResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetEndpointsZdrResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetEndpointsZdrResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetEndpointsZdrResponse$inboundSchema: z.ZodType<
-  GetEndpointsZdrResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetEndpointsZdrResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetEndpointsZdrResponse$Outbound =
-  | GetEndpointsZdrResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetEndpointsZdrResponse$outboundSchema: z.ZodType<
   GetEndpointsZdrResponse$Outbound,
   z.ZodTypeDef,
   GetEndpointsZdrResponse
-> = z.union([
-  z.lazy(() => GetEndpointsZdrResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.array(z.lazy(() => GetEndpointsZdrData$outboundSchema)),
+});
 
 /**
  * @internal

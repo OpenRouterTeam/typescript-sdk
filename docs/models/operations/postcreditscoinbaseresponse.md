@@ -1,16 +1,17 @@
 # PostCreditsCoinbaseResponse
 
+Returns the calldata to fulfill the transaction
 
-## Supported Types
-
-### `operations.PostCreditsCoinbaseResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.PostCreditsCoinbaseResponseBody = {
+import { PostCreditsCoinbaseResponse } from "@openrouter/sdk/models/operations";
+
+let value: PostCreditsCoinbaseResponse = {
   data: {
     id: "<id>",
-    createdAt: "1706145010107",
-    expiresAt: "1745893256492",
+    createdAt: "1717165424779",
+    expiresAt: "1760656352168",
     web3Data: {
       transferIntent: {
         callData: {
@@ -36,14 +37,8 @@ const value: operations.PostCreditsCoinbaseResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `data`                                                                                   | [operations.PostCreditsCoinbaseData](../../models/operations/postcreditscoinbasedata.md) | :heavy_check_mark:                                                                       | N/A                                                                                      |

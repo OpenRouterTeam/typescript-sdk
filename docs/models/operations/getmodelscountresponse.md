@@ -1,26 +1,21 @@
 # GetModelsCountResponse
 
+Returns the total count of available models
 
-## Supported Types
-
-### `operations.GetModelsCountResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetModelsCountResponseBody = {
+import { GetModelsCountResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetModelsCountResponse = {
   data: {
     count: 150,
   },
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 451,
-    message: "<value>",
-  },
-};
-```
-
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `data`                                                                         | [operations.GetModelsCountData](../../models/operations/getmodelscountdata.md) | :heavy_check_mark:                                                             | Model count data                                                               |

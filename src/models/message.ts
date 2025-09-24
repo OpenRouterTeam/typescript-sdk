@@ -11,6 +11,12 @@ import {
   AssistantMessage$Outbound,
   AssistantMessage$outboundSchema,
 } from "./assistantmessage.js";
+import {
+  ChatMessageContentItemText,
+  ChatMessageContentItemText$inboundSchema,
+  ChatMessageContentItemText$Outbound,
+  ChatMessageContentItemText$outboundSchema,
+} from "./chatmessagecontentitemtext.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   SystemMessage,
@@ -19,11 +25,11 @@ import {
   SystemMessage$outboundSchema,
 } from "./systemmessage.js";
 import {
-  ToolMessage,
-  ToolMessage$inboundSchema,
-  ToolMessage$Outbound,
-  ToolMessage$outboundSchema,
-} from "./toolmessage.js";
+  ToolResponseMessage,
+  ToolResponseMessage$inboundSchema,
+  ToolResponseMessage$Outbound,
+  ToolResponseMessage$outboundSchema,
+} from "./toolresponsemessage.js";
 import {
   UserMessage,
   UserMessage$inboundSchema,
@@ -31,43 +37,150 @@ import {
   UserMessage$outboundSchema,
 } from "./usermessage.js";
 
+export type MessageContent = string | Array<ChatMessageContentItemText>;
+
+export type MessageDeveloper = {
+  role: "developer";
+  content: string | Array<ChatMessageContentItemText>;
+  name?: string | undefined;
+};
+
 export type Message =
-  | (ToolMessage & { role: "tool" })
-  | (SystemMessage & { role: "system" })
-  | (UserMessage & { role: "user" })
-  | (AssistantMessage & { role: "assistant" });
+  | ToolResponseMessage
+  | SystemMessage
+  | UserMessage
+  | MessageDeveloper
+  | AssistantMessage;
+
+/** @internal */
+export const MessageContent$inboundSchema: z.ZodType<
+  MessageContent,
+  z.ZodTypeDef,
+  unknown
+> = z.union([z.string(), z.array(ChatMessageContentItemText$inboundSchema)]);
+
+/** @internal */
+export type MessageContent$Outbound =
+  | string
+  | Array<ChatMessageContentItemText$Outbound>;
+
+/** @internal */
+export const MessageContent$outboundSchema: z.ZodType<
+  MessageContent$Outbound,
+  z.ZodTypeDef,
+  MessageContent
+> = z.union([z.string(), z.array(ChatMessageContentItemText$outboundSchema)]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace MessageContent$ {
+  /** @deprecated use `MessageContent$inboundSchema` instead. */
+  export const inboundSchema = MessageContent$inboundSchema;
+  /** @deprecated use `MessageContent$outboundSchema` instead. */
+  export const outboundSchema = MessageContent$outboundSchema;
+  /** @deprecated use `MessageContent$Outbound` instead. */
+  export type Outbound = MessageContent$Outbound;
+}
+
+export function messageContentToJSON(messageContent: MessageContent): string {
+  return JSON.stringify(MessageContent$outboundSchema.parse(messageContent));
+}
+
+export function messageContentFromJSON(
+  jsonString: string,
+): SafeParseResult<MessageContent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => MessageContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MessageContent' from JSON`,
+  );
+}
+
+/** @internal */
+export const MessageDeveloper$inboundSchema: z.ZodType<
+  MessageDeveloper,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  role: z.literal("developer"),
+  content: z.union([
+    z.string(),
+    z.array(ChatMessageContentItemText$inboundSchema),
+  ]),
+  name: z.string().optional(),
+});
+
+/** @internal */
+export type MessageDeveloper$Outbound = {
+  role: "developer";
+  content: string | Array<ChatMessageContentItemText$Outbound>;
+  name?: string | undefined;
+};
+
+/** @internal */
+export const MessageDeveloper$outboundSchema: z.ZodType<
+  MessageDeveloper$Outbound,
+  z.ZodTypeDef,
+  MessageDeveloper
+> = z.object({
+  role: z.literal("developer"),
+  content: z.union([
+    z.string(),
+    z.array(ChatMessageContentItemText$outboundSchema),
+  ]),
+  name: z.string().optional(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace MessageDeveloper$ {
+  /** @deprecated use `MessageDeveloper$inboundSchema` instead. */
+  export const inboundSchema = MessageDeveloper$inboundSchema;
+  /** @deprecated use `MessageDeveloper$outboundSchema` instead. */
+  export const outboundSchema = MessageDeveloper$outboundSchema;
+  /** @deprecated use `MessageDeveloper$Outbound` instead. */
+  export type Outbound = MessageDeveloper$Outbound;
+}
+
+export function messageDeveloperToJSON(
+  messageDeveloper: MessageDeveloper,
+): string {
+  return JSON.stringify(
+    MessageDeveloper$outboundSchema.parse(messageDeveloper),
+  );
+}
+
+export function messageDeveloperFromJSON(
+  jsonString: string,
+): SafeParseResult<MessageDeveloper, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => MessageDeveloper$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MessageDeveloper' from JSON`,
+  );
+}
 
 /** @internal */
 export const Message$inboundSchema: z.ZodType<Message, z.ZodTypeDef, unknown> =
   z.union([
-    ToolMessage$inboundSchema.and(
-      z.object({ role: z.literal("tool") }).transform((v) => ({
-        role: v.role,
-      })),
-    ),
-    SystemMessage$inboundSchema.and(
-      z.object({ role: z.literal("system") }).transform((v) => ({
-        role: v.role,
-      })),
-    ),
-    UserMessage$inboundSchema.and(
-      z.object({ role: z.literal("user") }).transform((v) => ({
-        role: v.role,
-      })),
-    ),
-    AssistantMessage$inboundSchema.and(
-      z.object({ role: z.literal("assistant") }).transform((v) => ({
-        role: v.role,
-      })),
-    ),
+    ToolResponseMessage$inboundSchema,
+    SystemMessage$inboundSchema,
+    UserMessage$inboundSchema,
+    z.lazy(() => MessageDeveloper$inboundSchema),
+    AssistantMessage$inboundSchema,
   ]);
 
 /** @internal */
 export type Message$Outbound =
-  | (ToolMessage$Outbound & { role: "tool" })
-  | (SystemMessage$Outbound & { role: "system" })
-  | (UserMessage$Outbound & { role: "user" })
-  | (AssistantMessage$Outbound & { role: "assistant" });
+  | ToolResponseMessage$Outbound
+  | SystemMessage$Outbound
+  | UserMessage$Outbound
+  | MessageDeveloper$Outbound
+  | AssistantMessage$Outbound;
 
 /** @internal */
 export const Message$outboundSchema: z.ZodType<
@@ -75,22 +188,11 @@ export const Message$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Message
 > = z.union([
-  ToolMessage$outboundSchema.and(
-    z.object({ role: z.literal("tool") }).transform((v) => ({ role: v.role })),
-  ),
-  SystemMessage$outboundSchema.and(
-    z.object({ role: z.literal("system") }).transform((v) => ({
-      role: v.role,
-    })),
-  ),
-  UserMessage$outboundSchema.and(
-    z.object({ role: z.literal("user") }).transform((v) => ({ role: v.role })),
-  ),
-  AssistantMessage$outboundSchema.and(
-    z.object({ role: z.literal("assistant") }).transform((v) => ({
-      role: v.role,
-    })),
-  ),
+  ToolResponseMessage$outboundSchema,
+  SystemMessage$outboundSchema,
+  UserMessage$outboundSchema,
+  z.lazy(() => MessageDeveloper$outboundSchema),
+  AssistantMessage$outboundSchema,
 ]);
 
 /**
