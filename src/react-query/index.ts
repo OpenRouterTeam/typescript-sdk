@@ -14,7 +14,7 @@ export * from "./apiKeysGetKeysHash.js";
 export * from "./apiKeysPatchKeysHash.js";
 export * from "./apiKeysPostKeys.js";
 export * from "./chatSend.js";
-export * from "./completionsCreate.js";
+export * from "./completionsGenerate.js";
 export * from "./creditsGetCredits.js";
 export * from "./creditsPostCreditsCoinbase.js";
 export * from "./embeddingsGenerate.js";

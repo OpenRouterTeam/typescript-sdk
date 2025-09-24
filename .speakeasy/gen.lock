@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: d08678fef9fb94e26f6c82600c804646
+  docChecksum: 6caab3217d0cc46c1f1e557a1b70296f
   docVersion: 1.0.0
   speakeasyVersion: 1.625.0
   generationVersion: 2.715.0
-  releaseVersion: 0.0.0-beta.8
-  configChecksum: 9830a31b5f855b421793b347a439301b
+  releaseVersion: 0.0.0-beta.9
+  configChecksum: 0e85f6d7efc7250844fdce719584ade8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -343,7 +343,7 @@ generatedFiles:
   - src/funcs/apiKeysPatchKeysHash.ts
   - src/funcs/apiKeysPostKeys.ts
   - src/funcs/chatSend.ts
-  - src/funcs/completionsCreate.ts
+  - src/funcs/completionsGenerate.ts
   - src/funcs/creditsGetCredits.ts
   - src/funcs/creditsPostCreditsCoinbase.ts
   - src/funcs/embeddingsGenerate.ts
@@ -460,7 +460,7 @@ generatedFiles:
   - src/react-query/apiKeysPatchKeysHash.ts
   - src/react-query/apiKeysPostKeys.ts
   - src/react-query/chatSend.ts
-  - src/react-query/completionsCreate.ts
+  - src/react-query/completionsGenerate.ts
   - src/react-query/creditsGetCredits.ts
   - src/react-query/creditsPostCreditsCoinbase.ts
   - src/react-query/embeddingsGenerate.ts

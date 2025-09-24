@@ -4437,7 +4437,7 @@ paths:
     post:
       summary: Create a completion
       x-speakeasy-group: completions
-      x-speakeasy-name-override: create
+      x-speakeasy-name-override: generate
       description: Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
       tags:
         - Completions

@@ -3,15 +3,15 @@
  */
 
 import {
-  completionsCreate,
-  CreateAcceptEnum,
-} from "../funcs/completionsCreate.js";
+  completionsGenerate,
+  GenerateAcceptEnum,
+} from "../funcs/completionsGenerate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
-export { CreateAcceptEnum } from "../funcs/completionsCreate.js";
+export { GenerateAcceptEnum } from "../funcs/completionsGenerate.js";
 
 export class Completions extends ClientSDK {
   /**
@@ -20,11 +20,11 @@ export class Completions extends ClientSDK {
    * @remarks
    * Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
    */
-  async create(
+  async generate(
     request?: models.CompletionCreateParams | undefined,
-    options?: RequestOptions & { acceptHeaderOverride?: CreateAcceptEnum },
+    options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
   ): Promise<operations.PostCompletionsResponse> {
-    return unwrapAsync(completionsCreate(
+    return unwrapAsync(completionsGenerate(
       this,
       request,
       options,

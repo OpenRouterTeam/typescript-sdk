@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [create](#create) - Create a completion
+* [generate](#generate) - Create a completion
 
-## create
+## generate
 
 Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
 
@@ -22,7 +22,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.completions.create();
+  const result = await openRouter.completions.generate();
 
   console.log(result);
 }
@@ -36,7 +36,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { completionsCreate } from "@openrouter/sdk/funcs/completionsCreate.js";
+import { completionsGenerate } from "@openrouter/sdk/funcs/completionsGenerate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -45,12 +45,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await completionsCreate(openRouter);
+  const res = await completionsGenerate(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("completionsCreate failed:", res.error);
+    console.log("completionsGenerate failed:", res.error);
   }
 }
 
@@ -70,8 +70,8 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useCompletionsCreateMutation
-} from "@openrouter/sdk/react-query/completionsCreate.js";
+  useCompletionsGenerateMutation
+} from "@openrouter/sdk/react-query/completionsGenerate.js";
 ```
 
 ### Parameters

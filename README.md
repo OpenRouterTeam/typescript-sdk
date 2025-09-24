@@ -179,7 +179,7 @@ run();
 
 ### [completions](docs/sdks/completions/README.md)
 
-* [create](docs/sdks/completions/README.md#create) - Create a completion
+* [generate](docs/sdks/completions/README.md#generate) - Create a completion
 
 ### [credits](docs/sdks/credits/README.md)
 
@@ -246,7 +246,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`completionsCreate`](docs/sdks/completions/README.md#create) - Create a completion
+- [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
 - [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`creditsPostCreditsCoinbase`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 - [`embeddingsGenerate`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
@@ -295,7 +295,7 @@ To learn about this feature and how to get started, check
 - [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
 - [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`useCompletionsCreateMutation`](docs/sdks/completions/README.md#create) - Create a completion
+- [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
 - [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
 - [`useCreditsPostCreditsCoinbaseMutation`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
 - [`useEmbeddingsGenerateMutation`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request

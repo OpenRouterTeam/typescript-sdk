@@ -26,7 +26,7 @@ import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
-export enum CreateAcceptEnum {
+export enum GenerateAcceptEnum {
   applicationJson = "application/json",
   textEventStream = "text/event-stream",
 }
@@ -37,10 +37,10 @@ export enum CreateAcceptEnum {
  * @remarks
  * Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
  */
-export function completionsCreate(
+export function completionsGenerate(
   client: OpenRouterCore,
   request?: models.CompletionCreateParams | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: CreateAcceptEnum },
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
 ): APIPromise<
   Result<
     operations.PostCompletionsResponse,
@@ -65,7 +65,7 @@ export function completionsCreate(
 async function $do(
   client: OpenRouterCore,
   request?: models.CompletionCreateParams | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: CreateAcceptEnum },
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
 ): Promise<
   [
     Result<

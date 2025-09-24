@@ -9,9 +9,9 @@ import {
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
 import {
-  completionsCreate,
-  CreateAcceptEnum,
-} from "../funcs/completionsCreate.js";
+  completionsGenerate,
+  GenerateAcceptEnum,
+} from "../funcs/completionsGenerate.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -20,14 +20,15 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export { CreateAcceptEnum } from "../funcs/completionsCreate.js";
+export { GenerateAcceptEnum } from "../funcs/completionsGenerate.js";
 
-export type CompletionsCreateMutationVariables = {
+export type CompletionsGenerateMutationVariables = {
   request?: models.CompletionCreateParams | undefined;
-  options?: RequestOptions & { acceptHeaderOverride?: CreateAcceptEnum };
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum };
 };
 
-export type CompletionsCreateMutationData = operations.PostCompletionsResponse;
+export type CompletionsGenerateMutationData =
+  operations.PostCompletionsResponse;
 
 /**
  * Create a completion
@@ -35,43 +36,43 @@ export type CompletionsCreateMutationData = operations.PostCompletionsResponse;
  * @remarks
  * Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
  */
-export function useCompletionsCreateMutation(
+export function useCompletionsGenerateMutation(
   options?: MutationHookOptions<
-    CompletionsCreateMutationData,
+    CompletionsGenerateMutationData,
     Error,
-    CompletionsCreateMutationVariables
+    CompletionsGenerateMutationVariables
   >,
 ): UseMutationResult<
-  CompletionsCreateMutationData,
+  CompletionsGenerateMutationData,
   Error,
-  CompletionsCreateMutationVariables
+  CompletionsGenerateMutationVariables
 > {
   const client = useOpenRouterContext();
   return useMutation({
-    ...buildCompletionsCreateMutation(client, options),
+    ...buildCompletionsGenerateMutation(client, options),
     ...options,
   });
 }
 
-export function mutationKeyCompletionsCreate(): MutationKey {
-  return ["@openrouter/sdk", "completions", "create"];
+export function mutationKeyCompletionsGenerate(): MutationKey {
+  return ["@openrouter/sdk", "completions", "generate"];
 }
 
-export function buildCompletionsCreateMutation(
+export function buildCompletionsGenerateMutation(
   client$: OpenRouterCore,
   hookOptions?: RequestOptions,
 ): {
   mutationKey: MutationKey;
   mutationFn: (
-    variables: CompletionsCreateMutationVariables,
-  ) => Promise<CompletionsCreateMutationData>;
+    variables: CompletionsGenerateMutationVariables,
+  ) => Promise<CompletionsGenerateMutationData>;
 } {
   return {
-    mutationKey: mutationKeyCompletionsCreate(),
-    mutationFn: function completionsCreateMutationFn({
+    mutationKey: mutationKeyCompletionsGenerate(),
+    mutationFn: function completionsGenerateMutationFn({
       request,
       options,
-    }): Promise<CompletionsCreateMutationData> {
+    }): Promise<CompletionsGenerateMutationData> {
       const mergedOptions = {
         ...hookOptions,
         ...options,
@@ -84,7 +85,7 @@ export function buildCompletionsCreateMutation(
           ),
         },
       };
-      return unwrapAsync(completionsCreate(
+      return unwrapAsync(completionsGenerate(
         client$,
         request,
         mergedOptions,
