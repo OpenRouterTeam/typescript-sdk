@@ -23,7 +23,7 @@ import { MutationHookOptions } from "./_types.js";
 export { GenerateAcceptEnum } from "../funcs/completionsGenerate.js";
 
 export type CompletionsGenerateMutationVariables = {
-  request?: models.CompletionCreateParams | undefined;
+  request: models.CompletionCreateParams;
   options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum };
 };
 

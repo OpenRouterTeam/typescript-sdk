@@ -54,6 +54,7 @@ typescript:
       operations: models/operations
       shared: models
       webhooks: models/webhooks
+  inferSSEOverload: true
   inputModelSuffix: input
   jsonpath: rfc9535
   maxMethodParams: 0

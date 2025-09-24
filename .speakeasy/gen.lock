@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 6caab3217d0cc46c1f1e557a1b70296f
+  docChecksum: e66646d7060ca74f7c7b640236a23a1f
   docVersion: 1.0.0
   speakeasyVersion: 1.625.0
   generationVersion: 2.715.0
   releaseVersion: 0.0.0-beta.9
-  configChecksum: 0e85f6d7efc7250844fdce719584ade8
+  configChecksum: 1219219dff4e3155f4ca7e78584acea9
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -750,6 +750,8 @@ examples:
           application/json: {"error": {"code": 525, "message": "<value>"}}
   post_/chat/completions:
     speakeasy-default-post-/chat/completions:
+      requestBody:
+        application/json: {"messages": [], "model": "Grand Cherokee", "stream": false, "temperature": 1, "top_p": 1}
       responses:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 5828.67, "model": "Model X", "object": "chat.completion"}
@@ -785,6 +787,8 @@ examples:
           application/json: {"error": {"code": 202, "message": "<value>"}}
   post_/completions:
     speakeasy-default-post-/completions:
+      requestBody:
+        application/json: {"model": "Grand Caravan", "prompt": "<value>"}
       responses:
         "200":
           application/json: {"id": "<id>", "object": "text_completion", "created": 5585.22, "model": "Alpine", "choices": []}

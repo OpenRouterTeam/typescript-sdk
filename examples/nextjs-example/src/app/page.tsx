@@ -5,18 +5,27 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { OAUTH_CALLBACK_URL } from "@/lib/config";
-import { ExternalLink, Key, MessageSquare, Zap } from "lucide-react";
+import {
+  getOAuthKeyUrl,
+  OPENROUTER_KEY_LOCALSTORAGE_KEY,
+  OPENROUTER_USER_ID_LOCALSTORAGE_KEY,
+} from "@/lib/config";
+import {
+  ArrowRightIcon,
+  ExternalLink,
+  Key,
+  MessageSquare,
+  Zap,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { OpenRouterCore } from "@openrouter/sdk/core";
 import { oAuthPostAuthKeys } from "@openrouter/sdk/funcs/oAuthPostAuthKeys";
 import { useRouter } from "next/navigation";
-
-const OPENROUTER_AUTH_URL = new URL("https://openrouter.ai/auth");
-OPENROUTER_AUTH_URL.searchParams.append("callback_url", OAUTH_CALLBACK_URL);
+import Link from "next/link";
 
 export default function Page({ searchParams }: PageProps<"/">) {
   const [connectionState, setConnectionState] = useState<
@@ -25,7 +34,7 @@ export default function Page({ searchParams }: PageProps<"/">) {
   const [code, setCode] = useState<string>();
 
   useEffect(() => {
-    if (localStorage.getItem("openrouter_key"))
+    if (localStorage.getItem(OPENROUTER_KEY_LOCALSTORAGE_KEY))
       return setConnectionState("connected");
 
     searchParams.then((p) => {
@@ -43,6 +52,8 @@ export default function Page({ searchParams }: PageProps<"/">) {
       return <InitializingPageContent />;
     case "connecting":
       return <ConnectingPageContent code={code!} />;
+    case "connected":
+      return <ConnectedPageContent />;
     default:
       return <DisconnectedPageContent />;
   }
@@ -72,14 +83,17 @@ function ConnectingPageContent(props: { code: string }) {
     if (!result.ok) return;
 
     if ("key" in result.value) {
-      localStorage.setItem("openrouter_key", result.value.key);
+      localStorage.setItem(OPENROUTER_KEY_LOCALSTORAGE_KEY, result.value.key);
     }
 
     if (result.value.userId) {
-      localStorage.setItem("openrouter_user_id", result.value.userId);
+      localStorage.setItem(
+        OPENROUTER_USER_ID_LOCALSTORAGE_KEY,
+        result.value.userId,
+      );
     }
 
-    router.push("/");
+    router.push("/chat");
   });
 
   return (
@@ -97,16 +111,16 @@ function ConnectingPageContent(props: { code: string }) {
   );
 }
 
-function DisconnectedPageContent() {
+function ConnectedPageContent() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <MessageSquare className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold text-balance">AI Chat</h1>
+          <h1 className="text-3xl font-bold text-balance">ACME Chat</h1>
         </div>
         <p className="text-muted-foreground text-lg text-balance">
-          Connect your OpenRouter account to start chatting with AI models
+          Connect your OpenRouter account to start chatting with AI models.
         </p>
       </div>
 
@@ -119,6 +133,45 @@ function DisconnectedPageContent() {
           <CardDescription>
             Securely connect your OpenRouter account to access multiple AI
             models through a single API
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          You are connected to OpenRouter!
+        </CardContent>
+        <CardFooter className="flex justify-end">
+          <Link href="/chat">
+            <Button>
+              Go to Chat
+              <ArrowRightIcon className="h-4 w-4 mr-2" />
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
+
+function DisconnectedPageContent() {
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <MessageSquare className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold text-balance">ACME Chat</h1>
+        </div>
+        <p className="text-muted-foreground text-lg text-balance">
+          Connect your OpenRouter account to start chatting with AI models
+        </p>
+      </div>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Key className="h-5 w-5 text-primary" />
+            <CardTitle>OpenRouter Integration Demo</CardTitle>
+          </div>
+          <CardDescription>
+            This app demonstrates how to connect to OpenRouter using OAuth 2.0.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -153,11 +206,7 @@ function DisconnectedPageContent() {
               </div>
             </div>
 
-            <a
-              href={OPENROUTER_AUTH_URL.toString()}
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={getOAuthKeyUrl()} target="_blank" rel="noreferrer">
               <Button className="w-full" size="lg">
                 <>
                   <ExternalLink className="h-4 w-4 mr-2" />
@@ -165,13 +214,6 @@ function DisconnectedPageContent() {
                 </>
               </Button>
             </a>
-
-            <p className="text-xs text-muted-foreground text-center mt-2">
-              By connecting, you agree to OpenRouter&apos;s terms of service and
-              privacy policy.
-              <br />
-              Your API key will be securely stored and encrypted.
-            </p>
           </div>
         </CardContent>
       </Card>

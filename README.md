@@ -330,7 +330,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.send();
+  const result = await openRouter.chat.send({
+    messages: [],
+    model: "Grand Cherokee",
+  });
 
   console.log(result);
 }

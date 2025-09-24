@@ -22,7 +22,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.chat.send();
+  const result = await openRouter.chat.send({
+    messages: [],
+    model: "Grand Cherokee",
+  });
 
   console.log(result);
 }
@@ -45,7 +48,10 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await chatSend(openRouter);
+  const res = await chatSend(openRouter, {
+    messages: [],
+    model: "Grand Cherokee",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);

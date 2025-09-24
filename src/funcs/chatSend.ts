@@ -4,6 +4,7 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
+import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -39,7 +40,61 @@ export enum SendAcceptEnum {
  */
 export function chatSend(
   client: OpenRouterCore,
-  request?: models.ChatGenerationParams | undefined,
+  request: models.ChatGenerationParams & { stream?: false },
+  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+): APIPromise<
+  Result<
+    models.ChatResponse,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams & { stream: true },
+  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+): APIPromise<
+  Result<
+    EventStream<models.ChatStreamingResponseChunk>,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams,
+  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+): APIPromise<
+  Result<
+    operations.PostChatCompletionsResponse,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams,
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
 ): APIPromise<
   Result<
@@ -64,7 +119,7 @@ export function chatSend(
 
 async function $do(
   client: OpenRouterCore,
-  request?: models.ChatGenerationParams | undefined,
+  request: models.ChatGenerationParams,
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
 ): Promise<
   [
@@ -85,17 +140,14 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      models.ChatGenerationParams$outboundSchema.optional().parse(value),
+    (value) => models.ChatGenerationParams$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/chat/completions")();
 
