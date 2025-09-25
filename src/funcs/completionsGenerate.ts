@@ -4,6 +4,7 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
+import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -39,7 +40,61 @@ export enum GenerateAcceptEnum {
  */
 export function completionsGenerate(
   client: OpenRouterCore,
-  request?: models.CompletionCreateParams | undefined,
+  request: models.CompletionCreateParams & { stream?: false },
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+): APIPromise<
+  Result<
+    models.CompletionResponse,
+    | errors.CompletionError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function completionsGenerate(
+  client: OpenRouterCore,
+  request: models.CompletionCreateParams & { stream: true },
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+): APIPromise<
+  Result<
+    EventStream<models.CompletionStreamingResponseChunk>,
+    | errors.CompletionError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function completionsGenerate(
+  client: OpenRouterCore,
+  request: models.CompletionCreateParams,
+  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+): APIPromise<
+  Result<
+    operations.PostCompletionsResponse,
+    | errors.CompletionError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function completionsGenerate(
+  client: OpenRouterCore,
+  request: models.CompletionCreateParams,
   options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
 ): APIPromise<
   Result<
@@ -64,7 +119,7 @@ export function completionsGenerate(
 
 async function $do(
   client: OpenRouterCore,
-  request?: models.CompletionCreateParams | undefined,
+  request: models.CompletionCreateParams,
   options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
 ): Promise<
   [
@@ -85,17 +140,14 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      models.CompletionCreateParams$outboundSchema.optional().parse(value),
+    (value) => models.CompletionCreateParams$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/completions")();
 

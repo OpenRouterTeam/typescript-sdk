@@ -13,7 +13,7 @@ export type InternalServerErrorData = {
   /**
    * Error details
    */
-  error: operations.ErrorT;
+  error: operations.GetProvidersError;
 };
 
 /**
@@ -23,7 +23,7 @@ export class InternalServerError extends OpenRouterError {
   /**
    * Error details
    */
-  error: operations.ErrorT;
+  error: operations.GetProvidersError;
 
   /** The original data that was passed to this error instance. */
   data$: InternalServerErrorData;
@@ -48,7 +48,7 @@ export const InternalServerError$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  error: z.lazy(() => operations.ErrorT$inboundSchema),
+  error: z.lazy(() => operations.GetProvidersError$inboundSchema),
   request$: z.instanceof(Request),
   response$: z.instanceof(Response),
   body$: z.string(),
@@ -63,7 +63,7 @@ export const InternalServerError$inboundSchema: z.ZodType<
 
 /** @internal */
 export type InternalServerError$Outbound = {
-  error: operations.ErrorT$Outbound;
+  error: operations.GetProvidersError$Outbound;
 };
 
 /** @internal */
@@ -74,7 +74,7 @@ export const InternalServerError$outboundSchema: z.ZodType<
 > = z.instanceof(InternalServerError)
   .transform(v => v.data$)
   .pipe(z.object({
-    error: z.lazy(() => operations.ErrorT$outboundSchema),
+    error: z.lazy(() => operations.GetProvidersError$outboundSchema),
   }));
 
 /**

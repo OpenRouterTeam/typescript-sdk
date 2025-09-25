@@ -6,6 +6,7 @@ import {
   completionsGenerate,
   GenerateAcceptEnum,
 } from "../funcs/completionsGenerate.js";
+import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -21,7 +22,19 @@ export class Completions extends ClientSDK {
    * Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
    */
   async generate(
-    request?: models.CompletionCreateParams | undefined,
+    request: models.CompletionCreateParams & { stream?: false | undefined },
+    options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+  ): Promise<models.CompletionResponse>;
+  async generate(
+    request: models.CompletionCreateParams & { stream: true },
+    options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+  ): Promise<EventStream<models.CompletionStreamingResponseChunk>>;
+  async generate(
+    request: models.CompletionCreateParams,
+    options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+  ): Promise<operations.PostCompletionsResponse>;
+  async generate(
+    request: models.CompletionCreateParams,
     options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
   ): Promise<operations.PostCompletionsResponse> {
     return unwrapAsync(completionsGenerate(

@@ -12,6 +12,6 @@ import { InternalServerError } from "@openrouter/sdk/models/errors";
 
 ## Fields
 
-| Field                                                  | Type                                                   | Required                                               | Description                                            |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `error`                                                | [operations.ErrorT](../../models/operations/errort.md) | :heavy_check_mark:                                     | Error details                                          |
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `error`                                                                      | [operations.GetProvidersError](../../models/operations/getproviderserror.md) | :heavy_check_mark:                                                           | Error details                                                                |

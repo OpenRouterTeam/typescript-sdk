@@ -5,6 +5,7 @@
 export { OpenRouterProvider, useOpenRouterContext } from "./_context.js";
 export * from "./_types.js";
 
+export * from "./alphaResponsesSend2.js";
 export * from "./analyticsGetActivity.js";
 export * from "./apiKeysDeleteKeysHash.js";
 export * from "./apiKeysGetAuthKey.js";

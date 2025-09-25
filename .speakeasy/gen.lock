@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 6caab3217d0cc46c1f1e557a1b70296f
+  docChecksum: 5bee9acdb78aa0b06a7e89f1415b1ed5
   docVersion: 1.0.0
-  speakeasyVersion: 1.625.0
-  generationVersion: 2.715.0
-  releaseVersion: 0.0.0-beta.9
-  configChecksum: 0e85f6d7efc7250844fdce719584ade8
+  speakeasyVersion: 1.628.7
+  generationVersion: 2.716.9
+  releaseVersion: 0.0.0-beta.17
+  configChecksum: 9acbad68aee0e492d65547ce0433dbd6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -38,7 +38,7 @@ features:
     serverEvents: 0.1.10
     serverEventsSentinels: 0.1.0
     serverIDs: 2.81.2
-    unions: 2.85.11
+    unions: 2.85.12
 generatedFiles:
   - .devcontainer/README.md
   - .devcontainer/devcontainer.json
@@ -122,20 +122,59 @@ generatedFiles:
   - docs/models/messagedeveloper.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
+  - docs/models/operations/annotationfilecitationrequest1.md
+  - docs/models/operations/annotationfilecitationrequest2.md
+  - docs/models/operations/annotationfilepathrequest1.md
+  - docs/models/operations/annotationfilepathrequest2.md
+  - docs/models/operations/annotationrequestunion1.md
+  - docs/models/operations/annotationrequestunion2.md
+  - docs/models/operations/annotationurlcitationrequest1.md
+  - docs/models/operations/annotationurlcitationrequest2.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
   - docs/models/operations/chainid.md
-  - docs/models/operations/datacollection.md
+  - docs/models/operations/code.md
+  - docs/models/operations/contentinputfilerequest1.md
+  - docs/models/operations/contentinputfilerequest2.md
+  - docs/models/operations/contentinputimagerequest1.md
+  - docs/models/operations/contentinputimagerequest2.md
+  - docs/models/operations/contentinputtextrequest1.md
+  - docs/models/operations/contentinputtextrequest2.md
+  - docs/models/operations/contentoutputtextrequest1.md
+  - docs/models/operations/contentoutputtextrequest2.md
+  - docs/models/operations/contentreasoningtextrequest.md
+  - docs/models/operations/contentrefusalrequest1.md
+  - docs/models/operations/contentrefusalrequest2.md
+  - docs/models/operations/contentrequestunion1.md
+  - docs/models/operations/contentrequestunion2.md
+  - docs/models/operations/contentrequestunion3.md
+  - docs/models/operations/contentrequestunion4.md
+  - docs/models/operations/contentrequestunion5.md
   - docs/models/operations/deletekeyshashrequest.md
   - docs/models/operations/deletekeyshashresponse.md
+  - docs/models/operations/effortrequest.md
+  - docs/models/operations/effortresponse.md
   - docs/models/operations/encodingformat.md
   - docs/models/operations/encodingformatbase64.md
   - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/endpoint.md
   - docs/models/operations/endpointsgetendpointszdrrequest.md
   - docs/models/operations/endpointsgetmodelsauthorslugendpointsrequest.md
-  - docs/models/operations/errort.md
-  - docs/models/operations/experimental.md
+  - docs/models/operations/engine.md
+  - docs/models/operations/filtersrequest1.md
+  - docs/models/operations/filtersrequest2.md
+  - docs/models/operations/filtersresponse1.md
+  - docs/models/operations/filtersresponse2.md
+  - docs/models/operations/formatjsonobjectrequest.md
+  - docs/models/operations/formatjsonobjectresponse.md
+  - docs/models/operations/formatjsonschemarequest.md
+  - docs/models/operations/formatjsonschemaresponse.md
+  - docs/models/operations/formatrequestunion.md
+  - docs/models/operations/formatresponseunion.md
+  - docs/models/operations/formattextrequest.md
+  - docs/models/operations/formattextresponse.md
+  - docs/models/operations/formattyperequest.md
+  - docs/models/operations/formattyperesponse.md
   - docs/models/operations/getactivityrequest.md
   - docs/models/operations/getactivityresponse.md
   - docs/models/operations/getauthkeydata.md
@@ -249,24 +288,242 @@ generatedFiles:
   - docs/models/operations/getparametersauthorslugsecurity.md
   - docs/models/operations/getparametersauthorslugsupportedparameter.md
   - docs/models/operations/getprovidersdata.md
+  - docs/models/operations/getproviderserror.md
   - docs/models/operations/getprovidersresponse.md
-  - docs/models/operations/ignore.md
-  - docs/models/operations/ignoreenum.md
-  - docs/models/operations/input.md
-  - docs/models/operations/maxprice.md
+  - docs/models/operations/idchainofthought.md
+  - docs/models/operations/idfileparser.md
+  - docs/models/operations/idmoderation.md
+  - docs/models/operations/idweb.md
+  - docs/models/operations/include.md
+  - docs/models/operations/incompletedetails.md
+  - docs/models/operations/inputassistant1.md
+  - docs/models/operations/inputassistant2.md
+  - docs/models/operations/inputdetail1.md
+  - docs/models/operations/inputdetail2.md
+  - docs/models/operations/inputfilesearchcall.md
+  - docs/models/operations/inputformat.md
+  - docs/models/operations/inputfunctioncall1.md
+  - docs/models/operations/inputfunctioncall2.md
+  - docs/models/operations/inputfunctioncalloutput.md
+  - docs/models/operations/inputimagegenerationcall1.md
+  - docs/models/operations/inputimagegenerationcall2.md
+  - docs/models/operations/inputmessage1.md
+  - docs/models/operations/inputmessage2.md
+  - docs/models/operations/inputreasoning.md
+  - docs/models/operations/inputsummary.md
+  - docs/models/operations/inputtokensdetails.md
+  - docs/models/operations/inputtypefilecitation1.md
+  - docs/models/operations/inputtypefilecitation2.md
+  - docs/models/operations/inputtypefilepath1.md
+  - docs/models/operations/inputtypefilepath2.md
+  - docs/models/operations/inputtypefilesearchcall.md
+  - docs/models/operations/inputtypefunctioncall1.md
+  - docs/models/operations/inputtypefunctioncall2.md
+  - docs/models/operations/inputtypefunctioncalloutput.md
+  - docs/models/operations/inputtypeimagegenerationcall1.md
+  - docs/models/operations/inputtypeimagegenerationcall2.md
+  - docs/models/operations/inputtypeinputfile1.md
+  - docs/models/operations/inputtypeinputfile2.md
+  - docs/models/operations/inputtypeinputimage1.md
+  - docs/models/operations/inputtypeinputimage2.md
+  - docs/models/operations/inputtypeinputtext1.md
+  - docs/models/operations/inputtypeinputtext2.md
+  - docs/models/operations/inputtypemessage1.md
+  - docs/models/operations/inputtypemessage2.md
+  - docs/models/operations/inputtypemessage3.md
+  - docs/models/operations/inputtypemessage4.md
+  - docs/models/operations/inputtypeoutputtext1.md
+  - docs/models/operations/inputtypeoutputtext2.md
+  - docs/models/operations/inputtypereasoning.md
+  - docs/models/operations/inputtypereasoningtext.md
+  - docs/models/operations/inputtyperefusal1.md
+  - docs/models/operations/inputtyperefusal2.md
+  - docs/models/operations/inputtypesummarytext.md
+  - docs/models/operations/inputtypeurlcitation1.md
+  - docs/models/operations/inputtypeurlcitation2.md
+  - docs/models/operations/inputtypewebsearchcall.md
+  - docs/models/operations/inputwebsearchcall.md
+  - docs/models/operations/instructionsannotationfilecitation1.md
+  - docs/models/operations/instructionsannotationfilecitation2.md
+  - docs/models/operations/instructionsannotationfilepath1.md
+  - docs/models/operations/instructionsannotationfilepath2.md
+  - docs/models/operations/instructionsannotationunion1.md
+  - docs/models/operations/instructionsannotationunion2.md
+  - docs/models/operations/instructionsannotationurlcitation1.md
+  - docs/models/operations/instructionsannotationurlcitation2.md
+  - docs/models/operations/instructionsassistant1.md
+  - docs/models/operations/instructionsassistant2.md
+  - docs/models/operations/instructionscontentinputfile1.md
+  - docs/models/operations/instructionscontentinputfile2.md
+  - docs/models/operations/instructionscontentinputimage1.md
+  - docs/models/operations/instructionscontentinputimage2.md
+  - docs/models/operations/instructionscontentinputtext1.md
+  - docs/models/operations/instructionscontentinputtext2.md
+  - docs/models/operations/instructionscontentoutputtext1.md
+  - docs/models/operations/instructionscontentoutputtext2.md
+  - docs/models/operations/instructionscontentreasoningtext.md
+  - docs/models/operations/instructionscontentrefusal1.md
+  - docs/models/operations/instructionscontentrefusal2.md
+  - docs/models/operations/instructionscontentunion1.md
+  - docs/models/operations/instructionscontentunion2.md
+  - docs/models/operations/instructionscontentunion3.md
+  - docs/models/operations/instructionscontentunion4.md
+  - docs/models/operations/instructionscontentunion5.md
+  - docs/models/operations/instructionsdetail1.md
+  - docs/models/operations/instructionsdetail2.md
+  - docs/models/operations/instructionsfilesearchcall.md
+  - docs/models/operations/instructionsformat.md
+  - docs/models/operations/instructionsfunctioncall1.md
+  - docs/models/operations/instructionsfunctioncall2.md
+  - docs/models/operations/instructionsfunctioncalloutput.md
+  - docs/models/operations/instructionsimagegenerationcall1.md
+  - docs/models/operations/instructionsimagegenerationcall2.md
+  - docs/models/operations/instructionsmessage1.md
+  - docs/models/operations/instructionsmessage2.md
+  - docs/models/operations/instructionsreasoning.md
+  - docs/models/operations/instructionsroleassistant1.md
+  - docs/models/operations/instructionsroleassistant2.md
+  - docs/models/operations/instructionsroleassistant3.md
+  - docs/models/operations/instructionsroledeveloper1.md
+  - docs/models/operations/instructionsroledeveloper2.md
+  - docs/models/operations/instructionsrolesystem1.md
+  - docs/models/operations/instructionsrolesystem2.md
+  - docs/models/operations/instructionsroleunion1.md
+  - docs/models/operations/instructionsroleunion2.md
+  - docs/models/operations/instructionsroleuser1.md
+  - docs/models/operations/instructionsroleuser2.md
+  - docs/models/operations/instructionsstatuscompleted1.md
+  - docs/models/operations/instructionsstatuscompleted2.md
+  - docs/models/operations/instructionsstatusenum1.md
+  - docs/models/operations/instructionsstatusenum2.md
+  - docs/models/operations/instructionsstatusenum3.md
+  - docs/models/operations/instructionsstatusenum4.md
+  - docs/models/operations/instructionsstatusenum5.md
+  - docs/models/operations/instructionsstatusenum6.md
+  - docs/models/operations/instructionsstatusincomplete1.md
+  - docs/models/operations/instructionsstatusincomplete2.md
+  - docs/models/operations/instructionsstatusinprogress1.md
+  - docs/models/operations/instructionsstatusinprogress2.md
+  - docs/models/operations/instructionsstatusunion1.md
+  - docs/models/operations/instructionsstatusunion2.md
+  - docs/models/operations/instructionssummary.md
+  - docs/models/operations/instructionstypefilecitation1.md
+  - docs/models/operations/instructionstypefilecitation2.md
+  - docs/models/operations/instructionstypefilepath1.md
+  - docs/models/operations/instructionstypefilepath2.md
+  - docs/models/operations/instructionstypefilesearchcall.md
+  - docs/models/operations/instructionstypefunctioncall1.md
+  - docs/models/operations/instructionstypefunctioncall2.md
+  - docs/models/operations/instructionstypefunctioncalloutput.md
+  - docs/models/operations/instructionstypeimagegenerationcall1.md
+  - docs/models/operations/instructionstypeimagegenerationcall2.md
+  - docs/models/operations/instructionstypeinputfile1.md
+  - docs/models/operations/instructionstypeinputfile2.md
+  - docs/models/operations/instructionstypeinputimage1.md
+  - docs/models/operations/instructionstypeinputimage2.md
+  - docs/models/operations/instructionstypeinputtext1.md
+  - docs/models/operations/instructionstypeinputtext2.md
+  - docs/models/operations/instructionstypemessage1.md
+  - docs/models/operations/instructionstypemessage2.md
+  - docs/models/operations/instructionstypemessage3.md
+  - docs/models/operations/instructionstypemessage4.md
+  - docs/models/operations/instructionstypeoutputtext1.md
+  - docs/models/operations/instructionstypeoutputtext2.md
+  - docs/models/operations/instructionstypereasoning.md
+  - docs/models/operations/instructionstypereasoningtext.md
+  - docs/models/operations/instructionstyperefusal1.md
+  - docs/models/operations/instructionstyperefusal2.md
+  - docs/models/operations/instructionstypesummarytext.md
+  - docs/models/operations/instructionstypeurlcitation1.md
+  - docs/models/operations/instructionstypeurlcitation2.md
+  - docs/models/operations/instructionstypewebsearchcall.md
+  - docs/models/operations/instructionsunion1.md
+  - docs/models/operations/instructionsunion2.md
+  - docs/models/operations/instructionsunion3.md
+  - docs/models/operations/instructionswebsearchcall.md
   - docs/models/operations/metadata.md
   - docs/models/operations/modelsgetmodelsrequest.md
   - docs/models/operations/modelsgetmodelsuserrequest.md
   - docs/models/operations/objectembedding.md
-  - docs/models/operations/objectt.md
-  - docs/models/operations/only.md
-  - docs/models/operations/onlyenum.md
-  - docs/models/operations/order.md
-  - docs/models/operations/orderenum.md
+  - docs/models/operations/output.md
+  - docs/models/operations/outputannotationfilecitation.md
+  - docs/models/operations/outputannotationfilepath.md
+  - docs/models/operations/outputannotationunion.md
+  - docs/models/operations/outputannotationurlcitation.md
+  - docs/models/operations/outputassistant.md
+  - docs/models/operations/outputcontentoutputtext.md
+  - docs/models/operations/outputcontentreasoningtext.md
+  - docs/models/operations/outputcontentrefusal.md
+  - docs/models/operations/outputcontentunion.md
+  - docs/models/operations/outputfilesearchcall.md
+  - docs/models/operations/outputformat.md
+  - docs/models/operations/outputfunctioncall.md
+  - docs/models/operations/outputimagegenerationcall.md
+  - docs/models/operations/outputreasoning.md
+  - docs/models/operations/outputrole.md
+  - docs/models/operations/outputstatuscompleted.md
+  - docs/models/operations/outputstatusenum1.md
+  - docs/models/operations/outputstatusenum2.md
+  - docs/models/operations/outputstatusenum3.md
+  - docs/models/operations/outputstatusincomplete.md
+  - docs/models/operations/outputstatusinprogress.md
+  - docs/models/operations/outputstatusunion.md
+  - docs/models/operations/outputsummary.md
+  - docs/models/operations/outputtokensdetails.md
+  - docs/models/operations/outputtypefilecitation.md
+  - docs/models/operations/outputtypefilepath.md
+  - docs/models/operations/outputtypefilesearchcall.md
+  - docs/models/operations/outputtypefunctioncall.md
+  - docs/models/operations/outputtypeimagegenerationcall.md
+  - docs/models/operations/outputtypemessage.md
+  - docs/models/operations/outputtypeoutputtext.md
+  - docs/models/operations/outputtypereasoning.md
+  - docs/models/operations/outputtypereasoningtext.md
+  - docs/models/operations/outputtyperefusal.md
+  - docs/models/operations/outputtypesummarytext.md
+  - docs/models/operations/outputtypeurlcitation.md
+  - docs/models/operations/outputtypewebsearchcall.md
+  - docs/models/operations/outputwebsearchcall.md
   - docs/models/operations/patchkeyshashdata.md
   - docs/models/operations/patchkeyshashrequest.md
   - docs/models/operations/patchkeyshashrequestbody.md
   - docs/models/operations/patchkeyshashresponse.md
+  - docs/models/operations/pdf.md
+  - docs/models/operations/pdfengine.md
+  - docs/models/operations/plugin.md
+  - docs/models/operations/pluginchainofthought.md
+  - docs/models/operations/pluginfileparser.md
+  - docs/models/operations/pluginmoderation.md
+  - docs/models/operations/pluginweb.md
+  - docs/models/operations/postapialpharesponsesaudio.md
+  - docs/models/operations/postapialpharesponsescompletion.md
+  - docs/models/operations/postapialpharesponsesdatacollection.md
+  - docs/models/operations/postapialpharesponseserror.md
+  - docs/models/operations/postapialpharesponsesexperimental.md
+  - docs/models/operations/postapialpharesponsesignoreenum.md
+  - docs/models/operations/postapialpharesponsesignoreunion.md
+  - docs/models/operations/postapialpharesponsesimage.md
+  - docs/models/operations/postapialpharesponsesinputunion1.md
+  - docs/models/operations/postapialpharesponsesinputunion2.md
+  - docs/models/operations/postapialpharesponsesinputunion3.md
+  - docs/models/operations/postapialpharesponsesmaxprice.md
+  - docs/models/operations/postapialpharesponsesmaxpriceprompt.md
+  - docs/models/operations/postapialpharesponsesobject.md
+  - docs/models/operations/postapialpharesponsesonlyenum.md
+  - docs/models/operations/postapialpharesponsesonlyunion.md
+  - docs/models/operations/postapialpharesponsesorderenum.md
+  - docs/models/operations/postapialpharesponsesorderunion.md
+  - docs/models/operations/postapialpharesponsespromptrequest.md
+  - docs/models/operations/postapialpharesponsespromptresponse.md
+  - docs/models/operations/postapialpharesponsesprovider.md
+  - docs/models/operations/postapialpharesponsesquantization.md
+  - docs/models/operations/postapialpharesponsesrequest.md
+  - docs/models/operations/postapialpharesponsesrequestunion.md
+  - docs/models/operations/postapialpharesponsesresponse.md
+  - docs/models/operations/postapialpharesponsesresponsebody.md
+  - docs/models/operations/postapialpharesponsessort.md
+  - docs/models/operations/postapialpharesponsesstatusresponseenum.md
+  - docs/models/operations/postapialpharesponsesusage.md
   - docs/models/operations/postauthkeyscodechallengemethod.md
   - docs/models/operations/postauthkeyscodecodechallengemethod.md
   - docs/models/operations/postauthkeyscodedata.md
@@ -283,19 +540,160 @@ generatedFiles:
   - docs/models/operations/postembeddingsaudio.md
   - docs/models/operations/postembeddingscompletion.md
   - docs/models/operations/postembeddingsdata.md
+  - docs/models/operations/postembeddingsdatacollection.md
+  - docs/models/operations/postembeddingsexperimental.md
+  - docs/models/operations/postembeddingsignoreenum.md
+  - docs/models/operations/postembeddingsignoreunion.md
   - docs/models/operations/postembeddingsimage.md
+  - docs/models/operations/postembeddingsinput.md
+  - docs/models/operations/postembeddingsmaxprice.md
+  - docs/models/operations/postembeddingsobject.md
+  - docs/models/operations/postembeddingsonlyenum.md
+  - docs/models/operations/postembeddingsonlyunion.md
+  - docs/models/operations/postembeddingsorderenum.md
+  - docs/models/operations/postembeddingsorderunion.md
   - docs/models/operations/postembeddingsprompt.md
   - docs/models/operations/postembeddingsprovider.md
   - docs/models/operations/postembeddingsquantization.md
   - docs/models/operations/postembeddingsrequest.md
   - docs/models/operations/postembeddingsrequestunion.md
   - docs/models/operations/postembeddingsresponse.md
+  - docs/models/operations/postembeddingssort.md
+  - docs/models/operations/postembeddingsusage.md
   - docs/models/operations/postkeysdata.md
   - docs/models/operations/postkeysrequest.md
   - docs/models/operations/postkeysresponse.md
-  - docs/models/operations/sort.md
+  - docs/models/operations/reason.md
+  - docs/models/operations/reasoningrequest.md
+  - docs/models/operations/reasoningresponse.md
+  - docs/models/operations/roleassistantrequest1.md
+  - docs/models/operations/roleassistantrequest2.md
+  - docs/models/operations/roleassistantrequest3.md
+  - docs/models/operations/roledeveloperrequest1.md
+  - docs/models/operations/roledeveloperrequest2.md
+  - docs/models/operations/rolerequestunion1.md
+  - docs/models/operations/rolerequestunion2.md
+  - docs/models/operations/rolesystemrequest1.md
+  - docs/models/operations/rolesystemrequest2.md
+  - docs/models/operations/roleuserrequest1.md
+  - docs/models/operations/roleuserrequest2.md
+  - docs/models/operations/searchcontextsizerequest1.md
+  - docs/models/operations/searchcontextsizerequest2.md
+  - docs/models/operations/searchcontextsizerequest3.md
+  - docs/models/operations/searchcontextsizerequest4.md
+  - docs/models/operations/searchcontextsizeresponse1.md
+  - docs/models/operations/searchcontextsizeresponse2.md
+  - docs/models/operations/searchcontextsizeresponse3.md
+  - docs/models/operations/searchcontextsizeresponse4.md
+  - docs/models/operations/servicetierrequest.md
+  - docs/models/operations/servicetierresponse.md
+  - docs/models/operations/statuscompletedrequest1.md
+  - docs/models/operations/statuscompletedrequest2.md
+  - docs/models/operations/statusincompleterequest1.md
+  - docs/models/operations/statusincompleterequest2.md
+  - docs/models/operations/statusinprogressrequest1.md
+  - docs/models/operations/statusinprogressrequest2.md
+  - docs/models/operations/statusrequestenum1.md
+  - docs/models/operations/statusrequestenum2.md
+  - docs/models/operations/statusrequestenum3.md
+  - docs/models/operations/statusrequestenum4.md
+  - docs/models/operations/statusrequestenum5.md
+  - docs/models/operations/statusrequestenum6.md
+  - docs/models/operations/statusrequestunion1.md
+  - docs/models/operations/statusrequestunion2.md
+  - docs/models/operations/summaryrequestenum.md
+  - docs/models/operations/summaryresponseenum.md
+  - docs/models/operations/textrequest.md
+  - docs/models/operations/textresponse.md
+  - docs/models/operations/toolchoiceautorequest.md
+  - docs/models/operations/toolchoiceautoresponse.md
+  - docs/models/operations/toolchoicefunctionrequest.md
+  - docs/models/operations/toolchoicefunctionresponse.md
+  - docs/models/operations/toolchoicenonerequest.md
+  - docs/models/operations/toolchoicenoneresponse.md
+  - docs/models/operations/toolchoicerequest.md
+  - docs/models/operations/toolchoicerequestunion.md
+  - docs/models/operations/toolchoicerequiredrequest.md
+  - docs/models/operations/toolchoicerequiredresponse.md
+  - docs/models/operations/toolchoiceresponse.md
+  - docs/models/operations/toolchoiceresponseunion.md
+  - docs/models/operations/toolchoicetypefunctionrequest.md
+  - docs/models/operations/toolchoicetypefunctionresponse.md
+  - docs/models/operations/toolchoicetypewebsearchpreview20250311request.md
+  - docs/models/operations/toolchoicetypewebsearchpreview20250311response.md
+  - docs/models/operations/toolchoicetypewebsearchpreviewrequest.md
+  - docs/models/operations/toolchoicetypewebsearchpreviewresponse.md
+  - docs/models/operations/toolfunctionrequest.md
+  - docs/models/operations/toolfunctionresponse.md
+  - docs/models/operations/toolrequestunion.md
+  - docs/models/operations/toolresponseunion.md
+  - docs/models/operations/tooltypefunctionrequest.md
+  - docs/models/operations/tooltypefunctionresponse.md
+  - docs/models/operations/tooltypewebsearchpreview20250311request.md
+  - docs/models/operations/tooltypewebsearchpreview20250311response.md
+  - docs/models/operations/tooltypewebsearchpreviewrequest.md
+  - docs/models/operations/tooltypewebsearchpreviewresponse.md
+  - docs/models/operations/toolwebsearch20250826request.md
+  - docs/models/operations/toolwebsearch20250826response.md
+  - docs/models/operations/toolwebsearchpreview20250311request.md
+  - docs/models/operations/toolwebsearchpreview20250311response.md
+  - docs/models/operations/toolwebsearchpreviewrequest.md
+  - docs/models/operations/toolwebsearchpreviewresponse.md
+  - docs/models/operations/toolwebsearchrequest.md
+  - docs/models/operations/toolwebsearchresponse.md
   - docs/models/operations/transferintent.md
-  - docs/models/operations/usage.md
+  - docs/models/operations/truncationrequest.md
+  - docs/models/operations/truncationresponse.md
+  - docs/models/operations/typeapproximaterequest1.md
+  - docs/models/operations/typeapproximaterequest2.md
+  - docs/models/operations/typeapproximaterequest3.md
+  - docs/models/operations/typeapproximaterequest4.md
+  - docs/models/operations/typeapproximateresponse1.md
+  - docs/models/operations/typeapproximateresponse2.md
+  - docs/models/operations/typeapproximateresponse3.md
+  - docs/models/operations/typeapproximateresponse4.md
+  - docs/models/operations/typecodeinterpreterrequest.md
+  - docs/models/operations/typecodeinterpreterresponse.md
+  - docs/models/operations/typecomputerusepreviewrequest.md
+  - docs/models/operations/typecomputerusepreviewresponse.md
+  - docs/models/operations/typefilesearchrequest.md
+  - docs/models/operations/typefilesearchresponse.md
+  - docs/models/operations/typejsonobjectrequest.md
+  - docs/models/operations/typejsonobjectresponse.md
+  - docs/models/operations/typejsonschemarequest.md
+  - docs/models/operations/typejsonschemaresponse.md
+  - docs/models/operations/typerequestunion.md
+  - docs/models/operations/typeresponseunion.md
+  - docs/models/operations/typewebsearch20250826request.md
+  - docs/models/operations/typewebsearch20250826response.md
+  - docs/models/operations/typewebsearchrequest.md
+  - docs/models/operations/typewebsearchresponse.md
+  - docs/models/operations/userlocationrequest1.md
+  - docs/models/operations/userlocationrequest2.md
+  - docs/models/operations/userlocationrequest3.md
+  - docs/models/operations/userlocationrequest4.md
+  - docs/models/operations/userlocationresponse1.md
+  - docs/models/operations/userlocationresponse2.md
+  - docs/models/operations/userlocationresponse3.md
+  - docs/models/operations/userlocationresponse4.md
+  - docs/models/operations/variablesdetailrequest.md
+  - docs/models/operations/variablesdetailresponse.md
+  - docs/models/operations/variablesinputfilerequest.md
+  - docs/models/operations/variablesinputfileresponse.md
+  - docs/models/operations/variablesinputimagerequest.md
+  - docs/models/operations/variablesinputimageresponse.md
+  - docs/models/operations/variablesinputtextrequest.md
+  - docs/models/operations/variablesinputtextresponse.md
+  - docs/models/operations/variablesrequestunion.md
+  - docs/models/operations/variablesresponseunion.md
+  - docs/models/operations/variablestypeinputfilerequest.md
+  - docs/models/operations/variablestypeinputfileresponse.md
+  - docs/models/operations/variablestypeinputimagerequest.md
+  - docs/models/operations/variablestypeinputimageresponse.md
+  - docs/models/operations/variablestypeinputtextrequest.md
+  - docs/models/operations/variablestypeinputtextresponse.md
+  - docs/models/operations/verbosityrequest.md
+  - docs/models/operations/verbosityresponse.md
   - docs/models/operations/web3data.md
   - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
@@ -313,6 +711,7 @@ generatedFiles:
   - docs/models/toplogprob.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
+  - docs/sdks/alpha/README.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
@@ -326,14 +725,16 @@ generatedFiles:
   - docs/sdks/oauth/README.md
   - docs/sdks/openrouter/README.md
   - docs/sdks/providers/README.md
+  - docs/sdks/responses/README.md
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/analyticsGetActivity.example.ts
+  - examples/alphaResponsesSend2.example.ts
   - examples/package.json
   - jsr.json
   - package.json
   - src/core.ts
+  - src/funcs/alphaResponsesSend2.ts
   - src/funcs/analyticsGetActivity.ts
   - src/funcs/apiKeysDeleteKeysHash.ts
   - src/funcs/apiKeysGetAuthKey.ts
@@ -437,6 +838,7 @@ generatedFiles:
   - src/models/operations/getproviders.ts
   - src/models/operations/index.ts
   - src/models/operations/patchkeyshash.ts
+  - src/models/operations/postapialpharesponses.ts
   - src/models/operations/postauthkeys.ts
   - src/models/operations/postauthkeyscode.ts
   - src/models/operations/postchatcompletions.ts
@@ -451,6 +853,7 @@ generatedFiles:
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
+  - src/react-query/alphaResponsesSend2.ts
   - src/react-query/analyticsGetActivity.ts
   - src/react-query/apiKeysDeleteKeysHash.ts
   - src/react-query/apiKeysGetAuthKey.ts
@@ -475,6 +878,7 @@ generatedFiles:
   - src/react-query/oAuthPostAuthKeys.ts
   - src/react-query/oAuthPostAuthKeysCode.ts
   - src/react-query/providersGetProviders.ts
+  - src/sdk/alpha.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/chat.ts
@@ -488,6 +892,7 @@ generatedFiles:
   - src/sdk/models.ts
   - src/sdk/oauth.ts
   - src/sdk/providers.ts
+  - src/sdk/responses.ts
   - src/sdk/sdk.ts
   - src/types/async.ts
   - src/types/blobs.ts
@@ -750,6 +1155,8 @@ examples:
           application/json: {"error": {"code": 525, "message": "<value>"}}
   post_/chat/completions:
     speakeasy-default-post-/chat/completions:
+      requestBody:
+        application/json: {"messages": [], "model": "Grand Cherokee", "stream": false, "temperature": 1, "top_p": 1}
       responses:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 5828.67, "model": "Model X", "object": "chat.completion"}
@@ -785,6 +1192,8 @@ examples:
           application/json: {"error": {"code": 202, "message": "<value>"}}
   post_/completions:
     speakeasy-default-post-/completions:
+      requestBody:
+        application/json: {"model": "Grand Caravan", "prompt": "<value>"}
       responses:
         "200":
           application/json: {"id": "<id>", "object": "text_completion", "created": 5585.22, "model": "Alpine", "choices": []}
@@ -792,4 +1201,26 @@ examples:
           application/json: {"error": {"code": 7468.55, "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
           application/json: {"error": {"code": 7468.55, "message": "<value>", "param": "<value>", "type": "<value>"}}
+  post_/api/alpha/responses:
+    speakeasy-default-post-/api/alpha/responses:
+      requestBody:
+        application/json: {"provider": {"zdr": true}}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "object": "response", "created_at": 2466.57, "model": "Alpine", "output": [{"type": "image_generation_call", "id": "<id>", "result": "<value>", "status": "failed"}], "error": {"code": "server_error", "message": "<value>"}, "incomplete_details": null, "temperature": 7573.78, "top_p": 6240.47, "instructions": null, "metadata": {"key": "<value>"}, "tools": [{"type": "web_search"}], "tool_choice": "auto", "parallel_tool_calls": false}
+        4XX:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 204, "message": "<value>"}}
+  send:
+    speakeasy-default-send:
+      requestBody:
+        application/json: {"provider": {"zdr": true}}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "object": "response", "created_at": 1026.55, "model": "Mustang", "output": [], "error": {"code": "server_error", "message": "<value>"}, "incomplete_details": {}, "temperature": null, "top_p": 2916.16, "instructions": [{"role": "system", "content": "<value>"}], "metadata": {"key": "<value>"}, "tools": [{"type": "function", "name": "<value>", "parameters": {"key": "<value>"}}], "tool_choice": {"type": "function", "name": "<value>"}, "parallel_tool_calls": false}
+        4XX:
+          application/json: {"error": {"code": 417, "message": "<value>"}}
+        5XX:
+          application/json: {"error": {"code": 417, "message": "<value>"}}
 examplesVersion: 1.0.2

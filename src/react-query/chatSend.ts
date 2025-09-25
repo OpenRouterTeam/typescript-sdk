@@ -20,7 +20,7 @@ import { MutationHookOptions } from "./_types.js";
 export { SendAcceptEnum } from "../funcs/chatSend.js";
 
 export type ChatSendMutationVariables = {
-  request?: models.ChatGenerationParams | undefined;
+  request: models.ChatGenerationParams;
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum };
 };
 
