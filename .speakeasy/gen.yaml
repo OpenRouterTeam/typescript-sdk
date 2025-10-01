@@ -40,6 +40,7 @@ typescript:
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
+  acceptHeaderEnum: false
   enableReactQuery: true
   enumFormat: union
   envVarPrefix: OPENROUTER
