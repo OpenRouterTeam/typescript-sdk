@@ -12,6 +12,65 @@ info:
     url: https://opensource.org/licenses/MIT
 components:
   schemas:
+    ActivityItem:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date of the activity (YYYY-MM-DD format)
+          example: "2025-08-24"
+        model:
+          type: string
+          description: Model slug (e.g., "openai/gpt-4.1")
+          example: openai/gpt-4.1
+        model_permaslug:
+          type: string
+          description: Model permaslug (e.g., "openai/gpt-4.1-2025-04-14")
+          example: openai/gpt-4.1-2025-04-14
+        endpoint_id:
+          type: string
+          description: Unique identifier for the endpoint
+          example: 550e8400-e29b-41d4-a716-446655440000
+        provider_name:
+          type: string
+          description: Name of the provider serving this endpoint
+          example: OpenAI
+        usage:
+          type: number
+          description: Total cost in USD (OpenRouter credits spent)
+          example: 0.015
+        byok_usage_inference:
+          type: number
+          description: BYOK inference cost in USD (external credits spent)
+          example: 0.012
+        requests:
+          type: number
+          description: Number of requests made
+          example: 5
+        prompt_tokens:
+          type: number
+          description: Total prompt tokens used
+          example: 50
+        completion_tokens:
+          type: number
+          description: Total completion tokens generated
+          example: 125
+        reasoning_tokens:
+          type: number
+          description: Total reasoning tokens used
+          example: 25
+      required:
+        - date
+        - model
+        - model_permaslug
+        - endpoint_id
+        - provider_name
+        - usage
+        - byok_usage_inference
+        - requests
+        - prompt_tokens
+        - completion_tokens
+        - reasoning_tokens
     ErrorResponse:
       type: object
       properties:

@@ -28,6 +28,7 @@ generation:
     skipResponseBodyAssertions: false
 typescript:
   version: 0.0.0-beta.17
+  acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -40,7 +41,6 @@ typescript:
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
-  acceptHeaderEnum: false
   enableReactQuery: true
   enumFormat: union
   envVarPrefix: OPENROUTER

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: e66646d7060ca74f7c7b640236a23a1f
+  docChecksum: c3de00a9cb23746c91fbe566ef9ddee1
   docVersion: 1.0.0
-  speakeasyVersion: 1.625.0
-  generationVersion: 2.715.0
-  releaseVersion: 0.0.0-beta.9
-  configChecksum: 1219219dff4e3155f4ca7e78584acea9
+  speakeasyVersion: 1.631.5
+  generationVersion: 2.716.16
+  releaseVersion: 0.0.0-beta.17
+  configChecksum: 11cb9118cd68f28c2624bb207beaa3a2
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1224,3 +1224,8 @@ examples:
         5XX:
           application/json: {"error": {"code": 417, "message": "<value>"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes Detected:
+  * `openrouter.chat.send()`:  `request` **Changed** **Breaking** :warning:
+  * `openrouter.completions.generate()`:  `request` **Changed** **Breaking** :warning:
+  * `openrouter.alpha.responses.send2()`: **Added**
