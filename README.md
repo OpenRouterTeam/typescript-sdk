@@ -343,10 +343,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
-    },
+  const result = await openRouter.chat.send({
+    messages: [],
+    model: "Grand Cherokee",
   });
 
   console.log(result);

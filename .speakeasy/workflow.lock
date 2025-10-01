@@ -11,10 +11,8 @@ targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:06754e3c8e0ca4d23bb83f1c93f60805fc28705fd02513cedf3e6261beaed9df
-        sourceBlobDigest: sha256:c634520a7bc97f631ceb17d1d7a5c64ecb91a4a19bfe031bbfb0e8e10fb7ceb4
-        codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:97307073f07e613d2df5b4133d7f845701960366a6d8d8be4c3db9c60e0aa0e3
+        sourceRevisionDigest: sha256:e2497b74e3e2a59b13a9e4a0f9e6d3fa00060a447501bad7686cec9ed1e42231
+        sourceBlobDigest: sha256:483d707e5bf53082cef851ad2e60f5171a393c32acf1ba84cda9c7dc4c2ff2fb
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
