@@ -12,8 +12,7 @@ dotenv.config();
  */
 
 import { OpenRouter } from "@openrouter/sdk";
-import type { EventStream } from "@openrouter/sdk/lib/event-streams.js";
-import type { ChatStreamingResponseChunk } from "@openrouter/sdk/models/index.js";
+
 
 if (!process.env["OPENROUTER_API_KEY"]) {
   throw new Error("Missing OPENROUTER_API_KEY environment variable");
@@ -62,8 +61,7 @@ async function streamingExample() {
   });
 
   if (result && typeof result === "object" && Symbol.asyncIterator in result) {
-    const stream = result as EventStream<ChatStreamingResponseChunk>;
-
+    const stream = result
     console.log("Streaming response:");
     let fullContent = "";
 

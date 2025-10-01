@@ -9,7 +9,7 @@ import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
-export type Input =
+export type PostEmbeddingsInput =
   | string
   | Array<string>
   | Array<number>
@@ -22,7 +22,7 @@ export type Input =
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export const DataCollection = {
+export const PostEmbeddingsDataCollection = {
   Deny: "deny",
   Allow: "allow",
 } as const;
@@ -33,9 +33,11 @@ export const DataCollection = {
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export type DataCollection = ClosedEnum<typeof DataCollection>;
+export type PostEmbeddingsDataCollection = ClosedEnum<
+  typeof PostEmbeddingsDataCollection
+>;
 
-export const OrderEnum = {
+export const PostEmbeddingsOrderEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -118,11 +120,13 @@ export const OrderEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type OrderEnum = ClosedEnum<typeof OrderEnum>;
+export type PostEmbeddingsOrderEnum = ClosedEnum<
+  typeof PostEmbeddingsOrderEnum
+>;
 
-export type Order = OrderEnum | string;
+export type PostEmbeddingsOrderUnion = PostEmbeddingsOrderEnum | string;
 
-export const OnlyEnum = {
+export const PostEmbeddingsOnlyEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -205,11 +209,11 @@ export const OnlyEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type OnlyEnum = ClosedEnum<typeof OnlyEnum>;
+export type PostEmbeddingsOnlyEnum = ClosedEnum<typeof PostEmbeddingsOnlyEnum>;
 
-export type Only = OnlyEnum | string;
+export type PostEmbeddingsOnlyUnion = PostEmbeddingsOnlyEnum | string;
 
-export const IgnoreEnum = {
+export const PostEmbeddingsIgnoreEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -292,9 +296,11 @@ export const IgnoreEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type IgnoreEnum = ClosedEnum<typeof IgnoreEnum>;
+export type PostEmbeddingsIgnoreEnum = ClosedEnum<
+  typeof PostEmbeddingsIgnoreEnum
+>;
 
-export type Ignore = IgnoreEnum | string;
+export type PostEmbeddingsIgnoreUnion = PostEmbeddingsIgnoreEnum | string;
 
 export const PostEmbeddingsQuantization = {
   Int4: "int4",
@@ -314,7 +320,7 @@ export type PostEmbeddingsQuantization = ClosedEnum<
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export const Sort = {
+export const PostEmbeddingsSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
@@ -322,7 +328,7 @@ export const Sort = {
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type Sort = ClosedEnum<typeof Sort>;
+export type PostEmbeddingsSort = ClosedEnum<typeof PostEmbeddingsSort>;
 
 export type PostEmbeddingsPrompt = number | string | any;
 
@@ -337,7 +343,7 @@ export type PostEmbeddingsRequestUnion = number | string | any;
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type MaxPrice = {
+export type PostEmbeddingsMaxPrice = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -345,7 +351,7 @@ export type MaxPrice = {
   request?: number | string | any | undefined;
 };
 
-export type Experimental = {};
+export type PostEmbeddingsExperimental = {};
 
 export type PostEmbeddingsProvider = {
   /**
@@ -367,7 +373,7 @@ export type PostEmbeddingsProvider = {
    * - allow: (default) allow providers which store user data non-transiently and may train on it
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: PostEmbeddingsDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -375,15 +381,15 @@ export type PostEmbeddingsProvider = {
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
-  order?: Array<OrderEnum | string> | null | undefined;
+  order?: Array<PostEmbeddingsOrderEnum | string> | null | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
-  only?: Array<OnlyEnum | string> | null | undefined;
+  only?: Array<PostEmbeddingsOnlyEnum | string> | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
-  ignore?: Array<IgnoreEnum | string> | null | undefined;
+  ignore?: Array<PostEmbeddingsIgnoreEnum | string> | null | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
@@ -391,12 +397,12 @@ export type PostEmbeddingsProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: PostEmbeddingsSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: MaxPrice | undefined;
-  experimental?: Experimental | null | undefined;
+  maxPrice?: PostEmbeddingsMaxPrice | undefined;
+  experimental?: PostEmbeddingsExperimental | null | undefined;
 };
 
 export const EncodingFormatBase64 = {
@@ -420,10 +426,10 @@ export type PostEmbeddingsRequest = {
   user?: string | undefined;
 };
 
-export const ObjectT = {
+export const PostEmbeddingsObject = {
   List: "list",
 } as const;
-export type ObjectT = ClosedEnum<typeof ObjectT>;
+export type PostEmbeddingsObject = ClosedEnum<typeof PostEmbeddingsObject>;
 
 export const ObjectEmbedding = {
   Embedding: "embedding",
@@ -436,7 +442,7 @@ export type PostEmbeddingsData = {
   index: number;
 };
 
-export type Usage = {
+export type PostEmbeddingsUsage = {
   promptTokens: number;
   totalTokens: number;
   cost?: number | undefined;
@@ -446,33 +452,36 @@ export type Usage = {
  * Embedding response
  */
 export type PostEmbeddingsResponse = {
-  object: ObjectT;
+  object: PostEmbeddingsObject;
   data: Array<PostEmbeddingsData>;
   model: string;
-  usage?: Usage | undefined;
+  usage?: PostEmbeddingsUsage | undefined;
 };
 
 /** @internal */
-export const Input$inboundSchema: z.ZodType<Input, z.ZodTypeDef, unknown> = z
-  .union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]);
+export const PostEmbeddingsInput$inboundSchema: z.ZodType<
+  PostEmbeddingsInput,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.array(z.number()),
+  z.array(z.array(z.number())),
+]);
 
 /** @internal */
-export type Input$Outbound =
+export type PostEmbeddingsInput$Outbound =
   | string
   | Array<string>
   | Array<number>
   | Array<Array<number>>;
 
 /** @internal */
-export const Input$outboundSchema: z.ZodType<
-  Input$Outbound,
+export const PostEmbeddingsInput$outboundSchema: z.ZodType<
+  PostEmbeddingsInput$Outbound,
   z.ZodTypeDef,
-  Input
+  PostEmbeddingsInput
 > = z.union([
   z.string(),
   z.array(z.string()),
@@ -484,224 +493,258 @@ export const Input$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Input$ {
-  /** @deprecated use `Input$inboundSchema` instead. */
-  export const inboundSchema = Input$inboundSchema;
-  /** @deprecated use `Input$outboundSchema` instead. */
-  export const outboundSchema = Input$outboundSchema;
-  /** @deprecated use `Input$Outbound` instead. */
-  export type Outbound = Input$Outbound;
+export namespace PostEmbeddingsInput$ {
+  /** @deprecated use `PostEmbeddingsInput$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsInput$inboundSchema;
+  /** @deprecated use `PostEmbeddingsInput$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsInput$outboundSchema;
+  /** @deprecated use `PostEmbeddingsInput$Outbound` instead. */
+  export type Outbound = PostEmbeddingsInput$Outbound;
 }
 
-export function inputToJSON(input: Input): string {
-  return JSON.stringify(Input$outboundSchema.parse(input));
+export function postEmbeddingsInputToJSON(
+  postEmbeddingsInput: PostEmbeddingsInput,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsInput$outboundSchema.parse(postEmbeddingsInput),
+  );
 }
 
-export function inputFromJSON(
+export function postEmbeddingsInputFromJSON(
   jsonString: string,
-): SafeParseResult<Input, SDKValidationError> {
+): SafeParseResult<PostEmbeddingsInput, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Input$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Input' from JSON`,
+    (x) => PostEmbeddingsInput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsInput' from JSON`,
   );
 }
 
 /** @internal */
-export const DataCollection$inboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = z.nativeEnum(DataCollection);
+export const PostEmbeddingsDataCollection$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsDataCollection
+> = z.nativeEnum(PostEmbeddingsDataCollection);
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = DataCollection$inboundSchema;
+export const PostEmbeddingsDataCollection$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsDataCollection
+> = PostEmbeddingsDataCollection$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace DataCollection$ {
-  /** @deprecated use `DataCollection$inboundSchema` instead. */
-  export const inboundSchema = DataCollection$inboundSchema;
-  /** @deprecated use `DataCollection$outboundSchema` instead. */
-  export const outboundSchema = DataCollection$outboundSchema;
+export namespace PostEmbeddingsDataCollection$ {
+  /** @deprecated use `PostEmbeddingsDataCollection$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsDataCollection$inboundSchema;
+  /** @deprecated use `PostEmbeddingsDataCollection$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsDataCollection$outboundSchema;
 }
 
 /** @internal */
-export const OrderEnum$inboundSchema: z.ZodNativeEnum<typeof OrderEnum> = z
-  .nativeEnum(OrderEnum);
+export const PostEmbeddingsOrderEnum$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsOrderEnum
+> = z.nativeEnum(PostEmbeddingsOrderEnum);
 
 /** @internal */
-export const OrderEnum$outboundSchema: z.ZodNativeEnum<typeof OrderEnum> =
-  OrderEnum$inboundSchema;
+export const PostEmbeddingsOrderEnum$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsOrderEnum
+> = PostEmbeddingsOrderEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OrderEnum$ {
-  /** @deprecated use `OrderEnum$inboundSchema` instead. */
-  export const inboundSchema = OrderEnum$inboundSchema;
-  /** @deprecated use `OrderEnum$outboundSchema` instead. */
-  export const outboundSchema = OrderEnum$outboundSchema;
+export namespace PostEmbeddingsOrderEnum$ {
+  /** @deprecated use `PostEmbeddingsOrderEnum$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsOrderEnum$inboundSchema;
+  /** @deprecated use `PostEmbeddingsOrderEnum$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsOrderEnum$outboundSchema;
 }
 
 /** @internal */
-export const Order$inboundSchema: z.ZodType<Order, z.ZodTypeDef, unknown> = z
-  .union([OrderEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Order$Outbound = string | string;
-
-/** @internal */
-export const Order$outboundSchema: z.ZodType<
-  Order$Outbound,
+export const PostEmbeddingsOrderUnion$inboundSchema: z.ZodType<
+  PostEmbeddingsOrderUnion,
   z.ZodTypeDef,
-  Order
-> = z.union([OrderEnum$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Order$ {
-  /** @deprecated use `Order$inboundSchema` instead. */
-  export const inboundSchema = Order$inboundSchema;
-  /** @deprecated use `Order$outboundSchema` instead. */
-  export const outboundSchema = Order$outboundSchema;
-  /** @deprecated use `Order$Outbound` instead. */
-  export type Outbound = Order$Outbound;
-}
-
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
-}
-
-export function orderFromJSON(
-  jsonString: string,
-): SafeParseResult<Order, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Order$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Order' from JSON`,
-  );
-}
+  unknown
+> = z.union([PostEmbeddingsOrderEnum$inboundSchema, z.string()]);
 
 /** @internal */
-export const OnlyEnum$inboundSchema: z.ZodNativeEnum<typeof OnlyEnum> = z
-  .nativeEnum(OnlyEnum);
+export type PostEmbeddingsOrderUnion$Outbound = string | string;
 
 /** @internal */
-export const OnlyEnum$outboundSchema: z.ZodNativeEnum<typeof OnlyEnum> =
-  OnlyEnum$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OnlyEnum$ {
-  /** @deprecated use `OnlyEnum$inboundSchema` instead. */
-  export const inboundSchema = OnlyEnum$inboundSchema;
-  /** @deprecated use `OnlyEnum$outboundSchema` instead. */
-  export const outboundSchema = OnlyEnum$outboundSchema;
-}
-
-/** @internal */
-export const Only$inboundSchema: z.ZodType<Only, z.ZodTypeDef, unknown> = z
-  .union([OnlyEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Only$Outbound = string | string;
-
-/** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, z.ZodTypeDef, Only> =
-  z.union([OnlyEnum$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Only$ {
-  /** @deprecated use `Only$inboundSchema` instead. */
-  export const inboundSchema = Only$inboundSchema;
-  /** @deprecated use `Only$outboundSchema` instead. */
-  export const outboundSchema = Only$outboundSchema;
-  /** @deprecated use `Only$Outbound` instead. */
-  export type Outbound = Only$Outbound;
-}
-
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
-}
-
-export function onlyFromJSON(
-  jsonString: string,
-): SafeParseResult<Only, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Only$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Only' from JSON`,
-  );
-}
-
-/** @internal */
-export const IgnoreEnum$inboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> = z
-  .nativeEnum(IgnoreEnum);
-
-/** @internal */
-export const IgnoreEnum$outboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> =
-  IgnoreEnum$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace IgnoreEnum$ {
-  /** @deprecated use `IgnoreEnum$inboundSchema` instead. */
-  export const inboundSchema = IgnoreEnum$inboundSchema;
-  /** @deprecated use `IgnoreEnum$outboundSchema` instead. */
-  export const outboundSchema = IgnoreEnum$outboundSchema;
-}
-
-/** @internal */
-export const Ignore$inboundSchema: z.ZodType<Ignore, z.ZodTypeDef, unknown> = z
-  .union([IgnoreEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Ignore$Outbound = string | string;
-
-/** @internal */
-export const Ignore$outboundSchema: z.ZodType<
-  Ignore$Outbound,
+export const PostEmbeddingsOrderUnion$outboundSchema: z.ZodType<
+  PostEmbeddingsOrderUnion$Outbound,
   z.ZodTypeDef,
-  Ignore
-> = z.union([IgnoreEnum$outboundSchema, z.string()]);
+  PostEmbeddingsOrderUnion
+> = z.union([PostEmbeddingsOrderEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Ignore$ {
-  /** @deprecated use `Ignore$inboundSchema` instead. */
-  export const inboundSchema = Ignore$inboundSchema;
-  /** @deprecated use `Ignore$outboundSchema` instead. */
-  export const outboundSchema = Ignore$outboundSchema;
-  /** @deprecated use `Ignore$Outbound` instead. */
-  export type Outbound = Ignore$Outbound;
+export namespace PostEmbeddingsOrderUnion$ {
+  /** @deprecated use `PostEmbeddingsOrderUnion$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsOrderUnion$inboundSchema;
+  /** @deprecated use `PostEmbeddingsOrderUnion$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsOrderUnion$outboundSchema;
+  /** @deprecated use `PostEmbeddingsOrderUnion$Outbound` instead. */
+  export type Outbound = PostEmbeddingsOrderUnion$Outbound;
 }
 
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
+export function postEmbeddingsOrderUnionToJSON(
+  postEmbeddingsOrderUnion: PostEmbeddingsOrderUnion,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsOrderUnion$outboundSchema.parse(postEmbeddingsOrderUnion),
+  );
 }
 
-export function ignoreFromJSON(
+export function postEmbeddingsOrderUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Ignore, SDKValidationError> {
+): SafeParseResult<PostEmbeddingsOrderUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Ignore' from JSON`,
+    (x) => PostEmbeddingsOrderUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsOrderUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const PostEmbeddingsOnlyEnum$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsOnlyEnum
+> = z.nativeEnum(PostEmbeddingsOnlyEnum);
+
+/** @internal */
+export const PostEmbeddingsOnlyEnum$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsOnlyEnum
+> = PostEmbeddingsOnlyEnum$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PostEmbeddingsOnlyEnum$ {
+  /** @deprecated use `PostEmbeddingsOnlyEnum$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsOnlyEnum$inboundSchema;
+  /** @deprecated use `PostEmbeddingsOnlyEnum$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsOnlyEnum$outboundSchema;
+}
+
+/** @internal */
+export const PostEmbeddingsOnlyUnion$inboundSchema: z.ZodType<
+  PostEmbeddingsOnlyUnion,
+  z.ZodTypeDef,
+  unknown
+> = z.union([PostEmbeddingsOnlyEnum$inboundSchema, z.string()]);
+
+/** @internal */
+export type PostEmbeddingsOnlyUnion$Outbound = string | string;
+
+/** @internal */
+export const PostEmbeddingsOnlyUnion$outboundSchema: z.ZodType<
+  PostEmbeddingsOnlyUnion$Outbound,
+  z.ZodTypeDef,
+  PostEmbeddingsOnlyUnion
+> = z.union([PostEmbeddingsOnlyEnum$outboundSchema, z.string()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PostEmbeddingsOnlyUnion$ {
+  /** @deprecated use `PostEmbeddingsOnlyUnion$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsOnlyUnion$inboundSchema;
+  /** @deprecated use `PostEmbeddingsOnlyUnion$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsOnlyUnion$outboundSchema;
+  /** @deprecated use `PostEmbeddingsOnlyUnion$Outbound` instead. */
+  export type Outbound = PostEmbeddingsOnlyUnion$Outbound;
+}
+
+export function postEmbeddingsOnlyUnionToJSON(
+  postEmbeddingsOnlyUnion: PostEmbeddingsOnlyUnion,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsOnlyUnion$outboundSchema.parse(postEmbeddingsOnlyUnion),
+  );
+}
+
+export function postEmbeddingsOnlyUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<PostEmbeddingsOnlyUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PostEmbeddingsOnlyUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsOnlyUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const PostEmbeddingsIgnoreEnum$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsIgnoreEnum
+> = z.nativeEnum(PostEmbeddingsIgnoreEnum);
+
+/** @internal */
+export const PostEmbeddingsIgnoreEnum$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsIgnoreEnum
+> = PostEmbeddingsIgnoreEnum$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PostEmbeddingsIgnoreEnum$ {
+  /** @deprecated use `PostEmbeddingsIgnoreEnum$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsIgnoreEnum$inboundSchema;
+  /** @deprecated use `PostEmbeddingsIgnoreEnum$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsIgnoreEnum$outboundSchema;
+}
+
+/** @internal */
+export const PostEmbeddingsIgnoreUnion$inboundSchema: z.ZodType<
+  PostEmbeddingsIgnoreUnion,
+  z.ZodTypeDef,
+  unknown
+> = z.union([PostEmbeddingsIgnoreEnum$inboundSchema, z.string()]);
+
+/** @internal */
+export type PostEmbeddingsIgnoreUnion$Outbound = string | string;
+
+/** @internal */
+export const PostEmbeddingsIgnoreUnion$outboundSchema: z.ZodType<
+  PostEmbeddingsIgnoreUnion$Outbound,
+  z.ZodTypeDef,
+  PostEmbeddingsIgnoreUnion
+> = z.union([PostEmbeddingsIgnoreEnum$outboundSchema, z.string()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PostEmbeddingsIgnoreUnion$ {
+  /** @deprecated use `PostEmbeddingsIgnoreUnion$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsIgnoreUnion$inboundSchema;
+  /** @deprecated use `PostEmbeddingsIgnoreUnion$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsIgnoreUnion$outboundSchema;
+  /** @deprecated use `PostEmbeddingsIgnoreUnion$Outbound` instead. */
+  export type Outbound = PostEmbeddingsIgnoreUnion$Outbound;
+}
+
+export function postEmbeddingsIgnoreUnionToJSON(
+  postEmbeddingsIgnoreUnion: PostEmbeddingsIgnoreUnion,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsIgnoreUnion$outboundSchema.parse(postEmbeddingsIgnoreUnion),
+  );
+}
+
+export function postEmbeddingsIgnoreUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<PostEmbeddingsIgnoreUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PostEmbeddingsIgnoreUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsIgnoreUnion' from JSON`,
   );
 }
 
@@ -727,23 +770,24 @@ export namespace PostEmbeddingsQuantization$ {
 }
 
 /** @internal */
-export const Sort$inboundSchema: z.ZodNativeEnum<typeof Sort> = z.nativeEnum(
-  Sort,
-);
+export const PostEmbeddingsSort$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsSort
+> = z.nativeEnum(PostEmbeddingsSort);
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodNativeEnum<typeof Sort> =
-  Sort$inboundSchema;
+export const PostEmbeddingsSort$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsSort
+> = PostEmbeddingsSort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Sort$ {
-  /** @deprecated use `Sort$inboundSchema` instead. */
-  export const inboundSchema = Sort$inboundSchema;
-  /** @deprecated use `Sort$outboundSchema` instead. */
-  export const outboundSchema = Sort$outboundSchema;
+export namespace PostEmbeddingsSort$ {
+  /** @deprecated use `PostEmbeddingsSort$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsSort$inboundSchema;
+  /** @deprecated use `PostEmbeddingsSort$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsSort$outboundSchema;
 }
 
 /** @internal */
@@ -987,8 +1031,8 @@ export function postEmbeddingsRequestUnionFromJSON(
 }
 
 /** @internal */
-export const MaxPrice$inboundSchema: z.ZodType<
-  MaxPrice,
+export const PostEmbeddingsMaxPrice$inboundSchema: z.ZodType<
+  PostEmbeddingsMaxPrice,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -1000,7 +1044,7 @@ export const MaxPrice$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type MaxPrice$Outbound = {
+export type PostEmbeddingsMaxPrice$Outbound = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -1009,10 +1053,10 @@ export type MaxPrice$Outbound = {
 };
 
 /** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<
-  MaxPrice$Outbound,
+export const PostEmbeddingsMaxPrice$outboundSchema: z.ZodType<
+  PostEmbeddingsMaxPrice$Outbound,
   z.ZodTypeDef,
-  MaxPrice
+  PostEmbeddingsMaxPrice
 > = z.object({
   prompt: z.union([z.number(), z.string(), z.any()]).optional(),
   completion: z.union([z.number(), z.string(), z.any()]).optional(),
@@ -1025,70 +1069,78 @@ export const MaxPrice$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace MaxPrice$ {
-  /** @deprecated use `MaxPrice$inboundSchema` instead. */
-  export const inboundSchema = MaxPrice$inboundSchema;
-  /** @deprecated use `MaxPrice$outboundSchema` instead. */
-  export const outboundSchema = MaxPrice$outboundSchema;
-  /** @deprecated use `MaxPrice$Outbound` instead. */
-  export type Outbound = MaxPrice$Outbound;
+export namespace PostEmbeddingsMaxPrice$ {
+  /** @deprecated use `PostEmbeddingsMaxPrice$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsMaxPrice$inboundSchema;
+  /** @deprecated use `PostEmbeddingsMaxPrice$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsMaxPrice$outboundSchema;
+  /** @deprecated use `PostEmbeddingsMaxPrice$Outbound` instead. */
+  export type Outbound = PostEmbeddingsMaxPrice$Outbound;
 }
 
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+export function postEmbeddingsMaxPriceToJSON(
+  postEmbeddingsMaxPrice: PostEmbeddingsMaxPrice,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsMaxPrice$outboundSchema.parse(postEmbeddingsMaxPrice),
+  );
 }
 
-export function maxPriceFromJSON(
+export function postEmbeddingsMaxPriceFromJSON(
   jsonString: string,
-): SafeParseResult<MaxPrice, SDKValidationError> {
+): SafeParseResult<PostEmbeddingsMaxPrice, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'MaxPrice' from JSON`,
+    (x) => PostEmbeddingsMaxPrice$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsMaxPrice' from JSON`,
   );
 }
 
 /** @internal */
-export const Experimental$inboundSchema: z.ZodType<
-  Experimental,
+export const PostEmbeddingsExperimental$inboundSchema: z.ZodType<
+  PostEmbeddingsExperimental,
   z.ZodTypeDef,
   unknown
 > = z.object({});
 
 /** @internal */
-export type Experimental$Outbound = {};
+export type PostEmbeddingsExperimental$Outbound = {};
 
 /** @internal */
-export const Experimental$outboundSchema: z.ZodType<
-  Experimental$Outbound,
+export const PostEmbeddingsExperimental$outboundSchema: z.ZodType<
+  PostEmbeddingsExperimental$Outbound,
   z.ZodTypeDef,
-  Experimental
+  PostEmbeddingsExperimental
 > = z.object({});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Experimental$ {
-  /** @deprecated use `Experimental$inboundSchema` instead. */
-  export const inboundSchema = Experimental$inboundSchema;
-  /** @deprecated use `Experimental$outboundSchema` instead. */
-  export const outboundSchema = Experimental$outboundSchema;
-  /** @deprecated use `Experimental$Outbound` instead. */
-  export type Outbound = Experimental$Outbound;
+export namespace PostEmbeddingsExperimental$ {
+  /** @deprecated use `PostEmbeddingsExperimental$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsExperimental$inboundSchema;
+  /** @deprecated use `PostEmbeddingsExperimental$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsExperimental$outboundSchema;
+  /** @deprecated use `PostEmbeddingsExperimental$Outbound` instead. */
+  export type Outbound = PostEmbeddingsExperimental$Outbound;
 }
 
-export function experimentalToJSON(experimental: Experimental): string {
-  return JSON.stringify(Experimental$outboundSchema.parse(experimental));
+export function postEmbeddingsExperimentalToJSON(
+  postEmbeddingsExperimental: PostEmbeddingsExperimental,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsExperimental$outboundSchema.parse(postEmbeddingsExperimental),
+  );
 }
 
-export function experimentalFromJSON(
+export function postEmbeddingsExperimentalFromJSON(
   jsonString: string,
-): SafeParseResult<Experimental, SDKValidationError> {
+): SafeParseResult<PostEmbeddingsExperimental, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Experimental$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Experimental' from JSON`,
+    (x) => PostEmbeddingsExperimental$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsExperimental' from JSON`,
   );
 }
 
@@ -1100,19 +1152,25 @@ export const PostEmbeddingsProvider$inboundSchema: z.ZodType<
 > = z.object({
   allow_fallbacks: z.nullable(z.boolean()).optional(),
   require_parameters: z.nullable(z.boolean()).optional(),
-  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
+  data_collection: z.nullable(PostEmbeddingsDataCollection$inboundSchema)
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$inboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$inboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$inboundSchema, z.string()])))
-    .optional(),
+  order: z.nullable(
+    z.array(z.union([PostEmbeddingsOrderEnum$inboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(
+    z.array(z.union([PostEmbeddingsOnlyEnum$inboundSchema, z.string()])),
+  ).optional(),
+  ignore: z.nullable(
+    z.array(z.union([PostEmbeddingsIgnoreEnum$inboundSchema, z.string()])),
+  ).optional(),
   quantizations: z.nullable(z.array(PostEmbeddingsQuantization$inboundSchema))
     .optional(),
-  sort: z.nullable(Sort$inboundSchema).optional(),
-  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$inboundSchema)).optional(),
+  sort: z.nullable(PostEmbeddingsSort$inboundSchema).optional(),
+  max_price: z.lazy(() => PostEmbeddingsMaxPrice$inboundSchema).optional(),
+  experimental: z.nullable(
+    z.lazy(() => PostEmbeddingsExperimental$inboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "allow_fallbacks": "allowFallbacks",
@@ -1133,8 +1191,8 @@ export type PostEmbeddingsProvider$Outbound = {
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
-  experimental?: Experimental$Outbound | null | undefined;
+  max_price?: PostEmbeddingsMaxPrice$Outbound | undefined;
+  experimental?: PostEmbeddingsExperimental$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -1145,20 +1203,25 @@ export const PostEmbeddingsProvider$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(PostEmbeddingsDataCollection$outboundSchema)
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$outboundSchema, z.string()])))
-    .optional(),
+  order: z.nullable(
+    z.array(z.union([PostEmbeddingsOrderEnum$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(
+    z.array(z.union([PostEmbeddingsOnlyEnum$outboundSchema, z.string()])),
+  ).optional(),
+  ignore: z.nullable(
+    z.array(z.union([PostEmbeddingsIgnoreEnum$outboundSchema, z.string()])),
+  ).optional(),
   quantizations: z.nullable(z.array(PostEmbeddingsQuantization$outboundSchema))
     .optional(),
-  sort: z.nullable(Sort$outboundSchema).optional(),
-  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))
-    .optional(),
+  sort: z.nullable(PostEmbeddingsSort$outboundSchema).optional(),
+  maxPrice: z.lazy(() => PostEmbeddingsMaxPrice$outboundSchema).optional(),
+  experimental: z.nullable(
+    z.lazy(() => PostEmbeddingsExperimental$outboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -1385,22 +1448,24 @@ export function postEmbeddingsRequestFromJSON(
 }
 
 /** @internal */
-export const ObjectT$inboundSchema: z.ZodNativeEnum<typeof ObjectT> = z
-  .nativeEnum(ObjectT);
+export const PostEmbeddingsObject$inboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsObject
+> = z.nativeEnum(PostEmbeddingsObject);
 
 /** @internal */
-export const ObjectT$outboundSchema: z.ZodNativeEnum<typeof ObjectT> =
-  ObjectT$inboundSchema;
+export const PostEmbeddingsObject$outboundSchema: z.ZodNativeEnum<
+  typeof PostEmbeddingsObject
+> = PostEmbeddingsObject$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ObjectT$ {
-  /** @deprecated use `ObjectT$inboundSchema` instead. */
-  export const inboundSchema = ObjectT$inboundSchema;
-  /** @deprecated use `ObjectT$outboundSchema` instead. */
-  export const outboundSchema = ObjectT$outboundSchema;
+export namespace PostEmbeddingsObject$ {
+  /** @deprecated use `PostEmbeddingsObject$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsObject$inboundSchema;
+  /** @deprecated use `PostEmbeddingsObject$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsObject$outboundSchema;
 }
 
 /** @internal */
@@ -1485,30 +1550,33 @@ export function postEmbeddingsDataFromJSON(
 }
 
 /** @internal */
-export const Usage$inboundSchema: z.ZodType<Usage, z.ZodTypeDef, unknown> = z
-  .object({
-    prompt_tokens: z.number(),
-    total_tokens: z.number(),
-    cost: z.number().optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "prompt_tokens": "promptTokens",
-      "total_tokens": "totalTokens",
-    });
+export const PostEmbeddingsUsage$inboundSchema: z.ZodType<
+  PostEmbeddingsUsage,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  prompt_tokens: z.number(),
+  total_tokens: z.number(),
+  cost: z.number().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "prompt_tokens": "promptTokens",
+    "total_tokens": "totalTokens",
   });
+});
 
 /** @internal */
-export type Usage$Outbound = {
+export type PostEmbeddingsUsage$Outbound = {
   prompt_tokens: number;
   total_tokens: number;
   cost?: number | undefined;
 };
 
 /** @internal */
-export const Usage$outboundSchema: z.ZodType<
-  Usage$Outbound,
+export const PostEmbeddingsUsage$outboundSchema: z.ZodType<
+  PostEmbeddingsUsage$Outbound,
   z.ZodTypeDef,
-  Usage
+  PostEmbeddingsUsage
 > = z.object({
   promptTokens: z.number(),
   totalTokens: z.number(),
@@ -1524,26 +1592,30 @@ export const Usage$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Usage$ {
-  /** @deprecated use `Usage$inboundSchema` instead. */
-  export const inboundSchema = Usage$inboundSchema;
-  /** @deprecated use `Usage$outboundSchema` instead. */
-  export const outboundSchema = Usage$outboundSchema;
-  /** @deprecated use `Usage$Outbound` instead. */
-  export type Outbound = Usage$Outbound;
+export namespace PostEmbeddingsUsage$ {
+  /** @deprecated use `PostEmbeddingsUsage$inboundSchema` instead. */
+  export const inboundSchema = PostEmbeddingsUsage$inboundSchema;
+  /** @deprecated use `PostEmbeddingsUsage$outboundSchema` instead. */
+  export const outboundSchema = PostEmbeddingsUsage$outboundSchema;
+  /** @deprecated use `PostEmbeddingsUsage$Outbound` instead. */
+  export type Outbound = PostEmbeddingsUsage$Outbound;
 }
 
-export function usageToJSON(usage: Usage): string {
-  return JSON.stringify(Usage$outboundSchema.parse(usage));
+export function postEmbeddingsUsageToJSON(
+  postEmbeddingsUsage: PostEmbeddingsUsage,
+): string {
+  return JSON.stringify(
+    PostEmbeddingsUsage$outboundSchema.parse(postEmbeddingsUsage),
+  );
 }
 
-export function usageFromJSON(
+export function postEmbeddingsUsageFromJSON(
   jsonString: string,
-): SafeParseResult<Usage, SDKValidationError> {
+): SafeParseResult<PostEmbeddingsUsage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Usage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Usage' from JSON`,
+    (x) => PostEmbeddingsUsage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PostEmbeddingsUsage' from JSON`,
   );
 }
 
@@ -1553,10 +1625,10 @@ export const PostEmbeddingsResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  object: ObjectT$inboundSchema,
+  object: PostEmbeddingsObject$inboundSchema,
   data: z.array(z.lazy(() => PostEmbeddingsData$inboundSchema)),
   model: z.string(),
-  usage: z.lazy(() => Usage$inboundSchema).optional(),
+  usage: z.lazy(() => PostEmbeddingsUsage$inboundSchema).optional(),
 });
 
 /** @internal */
@@ -1564,7 +1636,7 @@ export type PostEmbeddingsResponse$Outbound = {
   object: string;
   data: Array<PostEmbeddingsData$Outbound>;
   model: string;
-  usage?: Usage$Outbound | undefined;
+  usage?: PostEmbeddingsUsage$Outbound | undefined;
 };
 
 /** @internal */
@@ -1573,10 +1645,10 @@ export const PostEmbeddingsResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   PostEmbeddingsResponse
 > = z.object({
-  object: ObjectT$outboundSchema,
+  object: PostEmbeddingsObject$outboundSchema,
   data: z.array(z.lazy(() => PostEmbeddingsData$outboundSchema)),
   model: z.string(),
-  usage: z.lazy(() => Usage$outboundSchema).optional(),
+  usage: z.lazy(() => PostEmbeddingsUsage$outboundSchema).optional(),
 });
 
 /**

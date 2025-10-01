@@ -11,7 +11,7 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 /**
  * Error details
  */
-export type ErrorT = {
+export type GetProvidersError = {
   /**
    * Error code
    */
@@ -53,23 +53,26 @@ export type GetProvidersResponse = {
 };
 
 /** @internal */
-export const ErrorT$inboundSchema: z.ZodType<ErrorT, z.ZodTypeDef, unknown> = z
-  .object({
-    code: z.number(),
-    message: z.string(),
-  });
+export const GetProvidersError$inboundSchema: z.ZodType<
+  GetProvidersError,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  code: z.number(),
+  message: z.string(),
+});
 
 /** @internal */
-export type ErrorT$Outbound = {
+export type GetProvidersError$Outbound = {
   code: number;
   message: string;
 };
 
 /** @internal */
-export const ErrorT$outboundSchema: z.ZodType<
-  ErrorT$Outbound,
+export const GetProvidersError$outboundSchema: z.ZodType<
+  GetProvidersError$Outbound,
   z.ZodTypeDef,
-  ErrorT
+  GetProvidersError
 > = z.object({
   code: z.number(),
   message: z.string(),
@@ -79,26 +82,30 @@ export const ErrorT$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ErrorT$ {
-  /** @deprecated use `ErrorT$inboundSchema` instead. */
-  export const inboundSchema = ErrorT$inboundSchema;
-  /** @deprecated use `ErrorT$outboundSchema` instead. */
-  export const outboundSchema = ErrorT$outboundSchema;
-  /** @deprecated use `ErrorT$Outbound` instead. */
-  export type Outbound = ErrorT$Outbound;
+export namespace GetProvidersError$ {
+  /** @deprecated use `GetProvidersError$inboundSchema` instead. */
+  export const inboundSchema = GetProvidersError$inboundSchema;
+  /** @deprecated use `GetProvidersError$outboundSchema` instead. */
+  export const outboundSchema = GetProvidersError$outboundSchema;
+  /** @deprecated use `GetProvidersError$Outbound` instead. */
+  export type Outbound = GetProvidersError$Outbound;
 }
 
-export function errorToJSON(errorT: ErrorT): string {
-  return JSON.stringify(ErrorT$outboundSchema.parse(errorT));
+export function getProvidersErrorToJSON(
+  getProvidersError: GetProvidersError,
+): string {
+  return JSON.stringify(
+    GetProvidersError$outboundSchema.parse(getProvidersError),
+  );
 }
 
-export function errorFromJSON(
+export function getProvidersErrorFromJSON(
   jsonString: string,
-): SafeParseResult<ErrorT, SDKValidationError> {
+): SafeParseResult<GetProvidersError, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ErrorT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ErrorT' from JSON`,
+    (x) => GetProvidersError$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetProvidersError' from JSON`,
   );
 }
 

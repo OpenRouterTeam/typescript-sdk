@@ -89,8 +89,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getActivity({
-    date: "2025-08-24",
+  const result = await openRouter.alpha.responses.send2({
+    provider: {
+      zdr: true,
+    },
   });
 
   console.log(result);
@@ -121,8 +123,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getActivity({
-    date: "2025-08-24",
+  const result = await openRouter.alpha.responses.send2({
+    provider: {
+      zdr: true,
+    },
   });
 
   console.log(result);
@@ -158,6 +162,13 @@ run();
 
 <details open>
 <summary>Available methods</summary>
+
+### [alpha](docs/sdks/alpha/README.md)
+
+
+#### [alpha.responses](docs/sdks/responses/README.md)
+
+* [send2](docs/sdks/responses/README.md#send2) - Submit a response request
 
 ### [analytics](docs/sdks/analytics/README.md)
 
@@ -237,6 +248,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
+- [`alphaResponsesSend2`](docs/sdks/responses/README.md#send2) - Submit a response request
 - [`analyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
 - [`apiKeysDeleteKeysHash`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
 - [`apiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
@@ -286,6 +298,7 @@ To learn about this feature and how to get started, check
 
 <summary>Available React hooks</summary>
 
+- [`useAlphaResponsesSend2Mutation`](docs/sdks/responses/README.md#send2) - Submit a response request
 - [`useAnalyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
 - [`useApiKeysDeleteKeysHashMutation`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
 - [`useApiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
@@ -360,8 +373,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getActivity({
-    date: "2025-08-24",
+  const result = await openRouter.alpha.responses.send2({
+    provider: {
+      zdr: true,
+    },
   }, {
     retries: {
       strategy: "backoff",
@@ -401,8 +416,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getActivity({
-    date: "2025-08-24",
+  const result = await openRouter.alpha.responses.send2({
+    provider: {
+      zdr: true,
+    },
   });
 
   console.log(result);
@@ -438,8 +455,10 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.analytics.getActivity({
-      date: "2025-08-24",
+    const result = await openRouter.alpha.responses.send2({
+      provider: {
+        zdr: true,
+      },
     });
 
     console.log(result);
@@ -482,9 +501,9 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 23 methods.*
-* [`CompletionError`](./src/models/errors/completionerror.ts): Bad request - invalid parameters. Applicable to 1 of 23 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 23 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 24 methods.*
+* [`CompletionError`](./src/models/errors/completionerror.ts): Bad request - invalid parameters. Applicable to 1 of 24 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 24 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

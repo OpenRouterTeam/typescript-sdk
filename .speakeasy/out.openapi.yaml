@@ -12,65 +12,6 @@ info:
     url: https://opensource.org/licenses/MIT
 components:
   schemas:
-    ActivityItem:
-      type: object
-      properties:
-        date:
-          type: string
-          description: Date of the activity (YYYY-MM-DD format)
-          example: "2025-08-24"
-        model:
-          type: string
-          description: Model slug (e.g., "openai/gpt-4.1")
-          example: openai/gpt-4.1
-        model_permaslug:
-          type: string
-          description: Model permaslug (e.g., "openai/gpt-4.1-2025-04-14")
-          example: openai/gpt-4.1-2025-04-14
-        endpoint_id:
-          type: string
-          description: Unique identifier for the endpoint
-          example: 550e8400-e29b-41d4-a716-446655440000
-        provider_name:
-          type: string
-          description: Name of the provider serving this endpoint
-          example: OpenAI
-        usage:
-          type: number
-          description: Total cost in USD (OpenRouter credits spent)
-          example: 0.015
-        byok_usage_inference:
-          type: number
-          description: BYOK inference cost in USD (external credits spent)
-          example: 0.012
-        requests:
-          type: number
-          description: Number of requests made
-          example: 5
-        prompt_tokens:
-          type: number
-          description: Total prompt tokens used
-          example: 50
-        completion_tokens:
-          type: number
-          description: Total completion tokens generated
-          example: 125
-        reasoning_tokens:
-          type: number
-          description: Total reasoning tokens used
-          example: 25
-      required:
-        - date
-        - model
-        - model_permaslug
-        - endpoint_id
-        - provider_name
-        - usage
-        - byok_usage_inference
-        - requests
-        - prompt_tokens
-        - completion_tokens
-        - reasoning_tokens
     ErrorResponse:
       type: object
       properties:
@@ -166,6 +107,65 @@ components:
       required:
         - error
       description: Error response
+    ActivityItem:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date of the activity (YYYY-MM-DD format)
+          example: '2025-08-24'
+        model:
+          type: string
+          description: Model slug (e.g., "openai/gpt-4.1")
+          example: openai/gpt-4.1
+        model_permaslug:
+          type: string
+          description: Model permaslug (e.g., "openai/gpt-4.1-2025-04-14")
+          example: openai/gpt-4.1-2025-04-14
+        endpoint_id:
+          type: string
+          description: Unique identifier for the endpoint
+          example: 550e8400-e29b-41d4-a716-446655440000
+        provider_name:
+          type: string
+          description: Name of the provider serving this endpoint
+          example: OpenAI
+        usage:
+          type: number
+          description: Total cost in USD (OpenRouter credits spent)
+          example: 0.015
+        byok_usage_inference:
+          type: number
+          description: BYOK inference cost in USD (external credits spent)
+          example: 0.012
+        requests:
+          type: number
+          description: Number of requests made
+          example: 5
+        prompt_tokens:
+          type: number
+          description: Total prompt tokens used
+          example: 50
+        completion_tokens:
+          type: number
+          description: Total completion tokens generated
+          example: 125
+        reasoning_tokens:
+          type: number
+          description: Total reasoning tokens used
+          example: 25
+      required:
+        - date
+        - model
+        - model_permaslug
+        - endpoint_id
+        - provider_name
+        - usage
+        - byok_usage_inference
+        - requests
+        - prompt_tokens
+        - completion_tokens
+        - reasoning_tokens
     ChatMessageRole:
       type: string
       enum:
@@ -1261,6 +1261,2843 @@ components:
       scheme: bearer
       description: API key as bearer token in Authorization header
 paths:
+  /api/alpha/responses:
+    post:
+      tags:
+        - alpha.responses
+      x-speakeasy-name-override: send2
+      summary: Submit a response request
+      description: Submits a request to the Responses API (beta)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  anyOf:
+                    - type: string
+                    - type: array
+                      items:
+                        anyOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - message
+                              role:
+                                anyOf:
+                                  - type: string
+                                    enum:
+                                      - user
+                                  - type: string
+                                    enum:
+                                      - system
+                                  - type: string
+                                    enum:
+                                      - assistant
+                                  - type: string
+                                    enum:
+                                      - developer
+                              content:
+                                anyOf:
+                                  - type: array
+                                    items:
+                                      oneOf:
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - input_text
+                                            text:
+                                              type: string
+                                          required:
+                                            - type
+                                            - text
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - input_image
+                                            detail:
+                                              type: string
+                                              enum:
+                                                - auto
+                                                - high
+                                                - low
+                                            image_url:
+                                              type: string
+                                              nullable: true
+                                          required:
+                                            - type
+                                            - detail
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - input_file
+                                            file_id:
+                                              type: string
+                                              nullable: true
+                                            file_data:
+                                              type: string
+                                            filename:
+                                              type: string
+                                            file_url:
+                                              type: string
+                                          required:
+                                            - type
+                                  - type: string
+                            required:
+                              - role
+                              - content
+                          - type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                                enum:
+                                  - message
+                              role:
+                                anyOf:
+                                  - type: string
+                                    enum:
+                                      - user
+                                  - type: string
+                                    enum:
+                                      - system
+                                  - type: string
+                                    enum:
+                                      - developer
+                              content:
+                                type: array
+                                items:
+                                  oneOf:
+                                    - type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - input_text
+                                        text:
+                                          type: string
+                                      required:
+                                        - type
+                                        - text
+                                    - type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - input_image
+                                        detail:
+                                          type: string
+                                          enum:
+                                            - auto
+                                            - high
+                                            - low
+                                        image_url:
+                                          type: string
+                                          nullable: true
+                                      required:
+                                        - type
+                                        - detail
+                                    - type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - input_file
+                                        file_id:
+                                          type: string
+                                          nullable: true
+                                        file_data:
+                                          type: string
+                                        filename:
+                                          type: string
+                                        file_url:
+                                          type: string
+                                      required:
+                                        - type
+                            required:
+                              - id
+                              - role
+                              - content
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - function_call
+                              call_id:
+                                type: string
+                              name:
+                                type: string
+                              arguments:
+                                type: string
+                              id:
+                                type: string
+                              status:
+                                type: string
+                                enum:
+                                  - in_progress
+                                  - completed
+                                  - incomplete
+                            required:
+                              - type
+                              - call_id
+                              - name
+                              - arguments
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - function_call_output
+                              id:
+                                type: string
+                              call_id:
+                                type: string
+                              output:
+                                type: string
+                              status:
+                                type: string
+                                enum:
+                                  - in_progress
+                                  - completed
+                                  - incomplete
+                            required:
+                              - type
+                              - id
+                              - call_id
+                              - output
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - image_generation_call
+                              id:
+                                type: string
+                              result:
+                                type: string
+                                nullable: true
+                              status:
+                                type: string
+                                enum:
+                                  - in_progress
+                                  - completed
+                                  - generating
+                                  - failed
+                            required:
+                              - type
+                              - id
+                              - result
+                              - status
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - message
+                              id:
+                                type: string
+                              status:
+                                anyOf:
+                                  - type: string
+                                    enum:
+                                      - completed
+                                  - type: string
+                                    enum:
+                                      - incomplete
+                                  - type: string
+                                    enum:
+                                      - in_progress
+                              role:
+                                type: string
+                                enum:
+                                  - assistant
+                              content:
+                                type: array
+                                items:
+                                  anyOf:
+                                    - type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - output_text
+                                        text:
+                                          type: string
+                                        annotations:
+                                          type: array
+                                          items:
+                                            anyOf:
+                                              - type: object
+                                                properties:
+                                                  type:
+                                                    type: string
+                                                    enum:
+                                                      - file_citation
+                                                  file_id:
+                                                    type: string
+                                                  filename:
+                                                    type: string
+                                                  index:
+                                                    type: number
+                                                required:
+                                                  - type
+                                                  - file_id
+                                                  - filename
+                                                  - index
+                                              - type: object
+                                                properties:
+                                                  type:
+                                                    type: string
+                                                    enum:
+                                                      - url_citation
+                                                  end_index:
+                                                    type: number
+                                                  start_index:
+                                                    type: number
+                                                  title:
+                                                    type: string
+                                                  url:
+                                                    type: string
+                                                required:
+                                                  - type
+                                                  - end_index
+                                                  - start_index
+                                                  - title
+                                                  - url
+                                              - type: object
+                                                properties:
+                                                  type:
+                                                    type: string
+                                                    enum:
+                                                      - file_path
+                                                  file_id:
+                                                    type: string
+                                                  index:
+                                                    type: number
+                                                required:
+                                                  - type
+                                                  - file_id
+                                                  - index
+                                      required:
+                                        - type
+                                        - text
+                                        - annotations
+                                    - type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - refusal
+                                        refusal:
+                                          type: string
+                                      required:
+                                        - type
+                                        - refusal
+                            required:
+                              - type
+                              - id
+                              - status
+                              - role
+                              - content
+                          - oneOf:
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - message
+                                  id:
+                                    type: string
+                                  status:
+                                    anyOf:
+                                      - type: string
+                                        enum:
+                                          - completed
+                                      - type: string
+                                        enum:
+                                          - incomplete
+                                      - type: string
+                                        enum:
+                                          - in_progress
+                                  role:
+                                    type: string
+                                    enum:
+                                      - assistant
+                                  content:
+                                    type: array
+                                    items:
+                                      anyOf:
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - output_text
+                                            text:
+                                              type: string
+                                            annotations:
+                                              type: array
+                                              items:
+                                                anyOf:
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - file_citation
+                                                      file_id:
+                                                        type: string
+                                                      filename:
+                                                        type: string
+                                                      index:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - file_id
+                                                      - filename
+                                                      - index
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - url_citation
+                                                      end_index:
+                                                        type: number
+                                                      start_index:
+                                                        type: number
+                                                      title:
+                                                        type: string
+                                                      url:
+                                                        type: string
+                                                    required:
+                                                      - type
+                                                      - end_index
+                                                      - start_index
+                                                      - title
+                                                      - url
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - file_path
+                                                      file_id:
+                                                        type: string
+                                                      index:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - file_id
+                                                      - index
+                                          required:
+                                            - type
+                                            - text
+                                            - annotations
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - refusal
+                                            refusal:
+                                              type: string
+                                          required:
+                                            - type
+                                            - refusal
+                                required:
+                                  - type
+                                  - id
+                                  - status
+                                  - role
+                                  - content
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - reasoning
+                                  id:
+                                    type: string
+                                  content:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - reasoning_text
+                                        text:
+                                          type: string
+                                      required:
+                                        - type
+                                        - text
+                                  summary:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - summary_text
+                                        text:
+                                          type: string
+                                      required:
+                                        - type
+                                        - text
+                                  encrypted_content:
+                                    type: string
+                                    nullable: true
+                                  signature:
+                                    type: string
+                                    nullable: true
+                                  format:
+                                    type: string
+                                    nullable: true
+                                    enum:
+                                      - unknown
+                                      - openai-responses-v1
+                                      - anthropic-claude-v1
+                                required:
+                                  - type
+                                  - id
+                                  - summary
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - function_call
+                                  id:
+                                    type: string
+                                  name:
+                                    type: string
+                                  arguments:
+                                    type: string
+                                  call_id:
+                                    type: string
+                                required:
+                                  - type
+                                  - name
+                                  - arguments
+                                  - call_id
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - web_search_call
+                                  id:
+                                    type: string
+                                  status:
+                                    type: string
+                                    enum:
+                                      - completed
+                                      - searching
+                                      - in_progress
+                                      - failed
+                                required:
+                                  - type
+                                  - id
+                                  - status
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - file_search_call
+                                  id:
+                                    type: string
+                                  queries:
+                                    type: array
+                                    items:
+                                      type: string
+                                  status:
+                                    type: string
+                                    enum:
+                                      - completed
+                                      - searching
+                                      - in_progress
+                                      - failed
+                                required:
+                                  - type
+                                  - id
+                                  - queries
+                                  - status
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - image_generation_call
+                                  id:
+                                    type: string
+                                  result:
+                                    type: string
+                                    nullable: true
+                                  status:
+                                    type: string
+                                    enum:
+                                      - in_progress
+                                      - completed
+                                      - generating
+                                      - failed
+                                required:
+                                  - type
+                                  - id
+                                  - result
+                                  - status
+                instructions:
+                  type: string
+                  nullable: true
+                metadata:
+                  type: object
+                  nullable: true
+                  additionalProperties:
+                    type: string
+                    maxLength: 512
+                tools:
+                  type: array
+                  items:
+                    oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - function
+                          name:
+                            type: string
+                          description:
+                            type: string
+                            nullable: true
+                          strict:
+                            type: boolean
+                            nullable: true
+                          parameters:
+                            type: object
+                            nullable: true
+                            additionalProperties:
+                              nullable: true
+                        required:
+                          - type
+                          - name
+                          - parameters
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search_preview
+                          search_context_size:
+                            type: string
+                            enum:
+                              - low
+                              - medium
+                              - high
+                          user_location:
+                            type: object
+                            nullable: true
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - approximate
+                              city:
+                                type: string
+                                nullable: true
+                              country:
+                                type: string
+                                nullable: true
+                              region:
+                                type: string
+                                nullable: true
+                              timezone:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                        required:
+                          - type
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search_preview_2025_03_11
+                          search_context_size:
+                            type: string
+                            enum:
+                              - low
+                              - medium
+                              - high
+                          user_location:
+                            type: object
+                            nullable: true
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - approximate
+                              city:
+                                type: string
+                                nullable: true
+                              country:
+                                type: string
+                                nullable: true
+                              region:
+                                type: string
+                                nullable: true
+                              timezone:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                        required:
+                          - type
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search
+                          filters:
+                            type: object
+                            nullable: true
+                            properties:
+                              allowed_domains:
+                                type: array
+                                nullable: true
+                                items:
+                                  type: string
+                          search_context_size:
+                            type: string
+                            enum:
+                              - low
+                              - medium
+                              - high
+                          user_location:
+                            type: object
+                            nullable: true
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - approximate
+                              city:
+                                type: string
+                                nullable: true
+                              country:
+                                type: string
+                                nullable: true
+                              region:
+                                type: string
+                                nullable: true
+                              timezone:
+                                type: string
+                                nullable: true
+                        required:
+                          - type
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search_2025_08_26
+                          filters:
+                            type: object
+                            nullable: true
+                            properties:
+                              allowed_domains:
+                                type: array
+                                nullable: true
+                                items:
+                                  type: string
+                          search_context_size:
+                            type: string
+                            enum:
+                              - low
+                              - medium
+                              - high
+                          user_location:
+                            type: object
+                            nullable: true
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - approximate
+                              city:
+                                type: string
+                                nullable: true
+                              country:
+                                type: string
+                                nullable: true
+                              region:
+                                type: string
+                                nullable: true
+                              timezone:
+                                type: string
+                                nullable: true
+                        required:
+                          - type
+                tool_choice:
+                  anyOf:
+                    - type: string
+                      enum:
+                        - auto
+                    - type: string
+                      enum:
+                        - none
+                    - type: string
+                      enum:
+                        - required
+                    - type: object
+                      properties:
+                        type:
+                          anyOf:
+                            - type: string
+                              enum:
+                                - file_search
+                            - type: string
+                              enum:
+                                - web_search_preview
+                            - type: string
+                              enum:
+                                - web_search_preview_2025_03_11
+                            - type: string
+                              enum:
+                                - computer_use_preview
+                            - type: string
+                              enum:
+                                - code_interpreter
+                      required:
+                        - type
+                    - type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                            - function
+                        name:
+                          type: string
+                      required:
+                        - type
+                        - name
+                parallel_tool_calls:
+                  type: boolean
+                  nullable: true
+                model:
+                  type: string
+                models:
+                  type: array
+                  items:
+                    type: string
+                text:
+                  type: object
+                  properties:
+                    format:
+                      anyOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - text
+                          required:
+                            - type
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - json_object
+                          required:
+                            - type
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - json_schema
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            strict:
+                              type: boolean
+                              nullable: true
+                            schema:
+                              type: object
+                              additionalProperties:
+                                nullable: true
+                          required:
+                            - type
+                            - name
+                            - schema
+                    verbosity:
+                      type: string
+                      nullable: true
+                      enum:
+                        - high
+                        - low
+                        - medium
+                reasoning:
+                  type: object
+                  nullable: true
+                  properties:
+                    effort:
+                      type: string
+                      nullable: true
+                      enum:
+                        - high
+                        - medium
+                        - low
+                        - minimal
+                    summary:
+                      type: string
+                      nullable: true
+                      enum:
+                        - auto
+                        - concise
+                        - detailed
+                max_output_tokens:
+                  type: number
+                  nullable: true
+                temperature:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                  maximum: 2
+                top_p:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                top_k:
+                  type: number
+                prompt_cache_key:
+                  type: string
+                previous_response_id:
+                  type: string
+                  nullable: true
+                prompt:
+                  type: object
+                  nullable: true
+                  properties:
+                    id:
+                      type: string
+                    variables:
+                      type: object
+                      nullable: true
+                      additionalProperties:
+                        oneOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - input_text
+                              text:
+                                type: string
+                            required:
+                              - type
+                              - text
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - input_image
+                              detail:
+                                type: string
+                                enum:
+                                  - auto
+                                  - high
+                                  - low
+                              image_url:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                              - detail
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - input_file
+                              file_id:
+                                type: string
+                                nullable: true
+                              file_data:
+                                type: string
+                              filename:
+                                type: string
+                              file_url:
+                                type: string
+                            required:
+                              - type
+                  required:
+                    - id
+                include:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                    enum:
+                      - file_search_call.results
+                      - message.input_image.image_url
+                      - computer_call_output.output.image_url
+                      - reasoning.encrypted_content
+                      - code_interpreter_call.outputs
+                background:
+                  type: boolean
+                  nullable: true
+                safety_identifier:
+                  type: string
+                store:
+                  type: boolean
+                  nullable: true
+                service_tier:
+                  type: string
+                  nullable: true
+                  enum:
+                    - auto
+                    - default
+                    - flex
+                    - priority
+                    - scale
+                truncation:
+                  type: string
+                  nullable: true
+                  enum:
+                    - auto
+                    - disabled
+                stream:
+                  type: boolean
+                  nullable: true
+                provider:
+                  type: object
+                  nullable: true
+                  properties:
+                    allow_fallbacks:
+                      type: boolean
+                      nullable: true
+                      description: >
+                        Whether to allow backup providers to serve requests
+
+                        - true: (default) when the primary provider (or your custom providers in "order") is
+                        unavailable, use the next best provider.
+
+                        - false: use only the primary/custom provider, and return the upstream error if it's
+                        unavailable.
+                    require_parameters:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to filter providers to only those that support the parameters you've provided. If this
+                        setting is omitted or set to false, then providers will receive only the parameters they
+                        support, and ignore the rest.
+                    data_collection:
+                      type: string
+                      nullable: true
+                      enum:
+                        - deny
+                        - allow
+                      description: >
+                        Data collection setting. If no available model provider meets the requirement, your request will
+                        return an error.
+
+                        - allow: (default) allow providers which store user data non-transiently and may train on it
+
+                        - deny: use only providers which do not collect user data.
+                    zdr:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only
+                        endpoints that do not retain prompts will be used.
+                      example: true
+                    order:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - type: string
+                            enum:
+                              - AnyScale
+                              - Cent-ML
+                              - HuggingFace
+                              - Hyperbolic 2
+                              - Lepton
+                              - Lynn 2
+                              - Lynn
+                              - Mancer
+                              - Modal
+                              - OctoAI
+                              - Recursal
+                              - Reflection
+                              - Replicate
+                              - SambaNova 2
+                              - SF Compute
+                              - Together 2
+                              - 01.AI
+                              - AI21
+                              - AionLabs
+                              - Alibaba
+                              - Amazon Bedrock
+                              - Anthropic
+                              - AtlasCloud
+                              - Atoma
+                              - Avian
+                              - Azure
+                              - BaseTen
+                              - Cerebras
+                              - Chutes
+                              - Cloudflare
+                              - Cohere
+                              - CrofAI
+                              - Crusoe
+                              - DeepInfra
+                              - DeepSeek
+                              - Enfer
+                              - Featherless
+                              - Fireworks
+                              - Friendli
+                              - GMICloud
+                              - Google
+                              - Google AI Studio
+                              - Groq
+                              - Hyperbolic
+                              - Inception
+                              - InferenceNet
+                              - Infermatic
+                              - Inflection
+                              - InoCloud
+                              - Kluster
+                              - Lambda
+                              - Liquid
+                              - Mancer 2
+                              - Meta
+                              - Minimax
+                              - Mistral
+                              - Moonshot AI
+                              - Morph
+                              - NCompass
+                              - Nebius
+                              - NextBit
+                              - Nineteen
+                              - Novita
+                              - Nvidia
+                              - OpenAI
+                              - OpenInference
+                              - Parasail
+                              - Perplexity
+                              - Phala
+                              - SambaNova
+                              - SiliconFlow
+                              - Stealth
+                              - Switchpoint
+                              - Targon
+                              - Together
+                              - Ubicloud
+                              - Venice
+                              - WandB
+                              - xAI
+                              - Z.AI
+                              - FakeProvider
+                          - type: string
+                      description: >-
+                        An ordered list of provider slugs. The router will attempt to use the first provider in the
+                        subset of this list that supports your requested model, and fall back to the next if it is
+                        unavailable. If no providers are available, the request will fail with an error message.
+                    only:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - type: string
+                            enum:
+                              - AnyScale
+                              - Cent-ML
+                              - HuggingFace
+                              - Hyperbolic 2
+                              - Lepton
+                              - Lynn 2
+                              - Lynn
+                              - Mancer
+                              - Modal
+                              - OctoAI
+                              - Recursal
+                              - Reflection
+                              - Replicate
+                              - SambaNova 2
+                              - SF Compute
+                              - Together 2
+                              - 01.AI
+                              - AI21
+                              - AionLabs
+                              - Alibaba
+                              - Amazon Bedrock
+                              - Anthropic
+                              - AtlasCloud
+                              - Atoma
+                              - Avian
+                              - Azure
+                              - BaseTen
+                              - Cerebras
+                              - Chutes
+                              - Cloudflare
+                              - Cohere
+                              - CrofAI
+                              - Crusoe
+                              - DeepInfra
+                              - DeepSeek
+                              - Enfer
+                              - Featherless
+                              - Fireworks
+                              - Friendli
+                              - GMICloud
+                              - Google
+                              - Google AI Studio
+                              - Groq
+                              - Hyperbolic
+                              - Inception
+                              - InferenceNet
+                              - Infermatic
+                              - Inflection
+                              - InoCloud
+                              - Kluster
+                              - Lambda
+                              - Liquid
+                              - Mancer 2
+                              - Meta
+                              - Minimax
+                              - Mistral
+                              - Moonshot AI
+                              - Morph
+                              - NCompass
+                              - Nebius
+                              - NextBit
+                              - Nineteen
+                              - Novita
+                              - Nvidia
+                              - OpenAI
+                              - OpenInference
+                              - Parasail
+                              - Perplexity
+                              - Phala
+                              - SambaNova
+                              - SiliconFlow
+                              - Stealth
+                              - Switchpoint
+                              - Targon
+                              - Together
+                              - Ubicloud
+                              - Venice
+                              - WandB
+                              - xAI
+                              - Z.AI
+                              - FakeProvider
+                          - type: string
+                      description: >-
+                        List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
+                        provider settings for this request.
+                    ignore:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - type: string
+                            enum:
+                              - AnyScale
+                              - Cent-ML
+                              - HuggingFace
+                              - Hyperbolic 2
+                              - Lepton
+                              - Lynn 2
+                              - Lynn
+                              - Mancer
+                              - Modal
+                              - OctoAI
+                              - Recursal
+                              - Reflection
+                              - Replicate
+                              - SambaNova 2
+                              - SF Compute
+                              - Together 2
+                              - 01.AI
+                              - AI21
+                              - AionLabs
+                              - Alibaba
+                              - Amazon Bedrock
+                              - Anthropic
+                              - AtlasCloud
+                              - Atoma
+                              - Avian
+                              - Azure
+                              - BaseTen
+                              - Cerebras
+                              - Chutes
+                              - Cloudflare
+                              - Cohere
+                              - CrofAI
+                              - Crusoe
+                              - DeepInfra
+                              - DeepSeek
+                              - Enfer
+                              - Featherless
+                              - Fireworks
+                              - Friendli
+                              - GMICloud
+                              - Google
+                              - Google AI Studio
+                              - Groq
+                              - Hyperbolic
+                              - Inception
+                              - InferenceNet
+                              - Infermatic
+                              - Inflection
+                              - InoCloud
+                              - Kluster
+                              - Lambda
+                              - Liquid
+                              - Mancer 2
+                              - Meta
+                              - Minimax
+                              - Mistral
+                              - Moonshot AI
+                              - Morph
+                              - NCompass
+                              - Nebius
+                              - NextBit
+                              - Nineteen
+                              - Novita
+                              - Nvidia
+                              - OpenAI
+                              - OpenInference
+                              - Parasail
+                              - Perplexity
+                              - Phala
+                              - SambaNova
+                              - SiliconFlow
+                              - Stealth
+                              - Switchpoint
+                              - Targon
+                              - Together
+                              - Ubicloud
+                              - Venice
+                              - WandB
+                              - xAI
+                              - Z.AI
+                              - FakeProvider
+                          - type: string
+                      description: >-
+                        List of provider slugs to ignore. If provided, this list is merged with your account-wide
+                        ignored provider settings for this request.
+                    quantizations:
+                      type: array
+                      nullable: true
+                      items:
+                        type: string
+                        enum:
+                          - int4
+                          - int8
+                          - fp4
+                          - fp6
+                          - fp8
+                          - fp16
+                          - bf16
+                          - fp32
+                          - unknown
+                      description: A list of quantization levels to filter the provider by.
+                    sort:
+                      type: string
+                      nullable: true
+                      enum:
+                        - price
+                        - throughput
+                        - latency
+                      description: >-
+                        The sorting strategy to use for this request, if "order" is not specified. When set, no load
+                        balancing is performed.
+                    max_price:
+                      type: object
+                      properties:
+                        prompt:
+                          anyOf:
+                            - type: number
+                            - type: string
+                            - {}
+                        completion:
+                          anyOf:
+                            - type: number
+                            - type: string
+                            - {}
+                        image:
+                          anyOf:
+                            - type: number
+                            - type: string
+                            - {}
+                        audio:
+                          anyOf:
+                            - type: number
+                            - type: string
+                            - {}
+                        request:
+                          anyOf:
+                            - type: number
+                            - type: string
+                            - {}
+                      additionalProperties: false
+                      description: >-
+                        The object specifying the maximum price you want to pay for this request. USD price per million
+                        tokens, for prompt and completion.
+                    experimental:
+                      type: object
+                      nullable: true
+                      properties: {}
+                  additionalProperties: false
+                  description: When multiple model providers are available, optionally indicate your routing preference.
+                plugins:
+                  type: array
+                  items:
+                    oneOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            enum:
+                              - moderation
+                        required:
+                          - id
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            enum:
+                              - web
+                          max_results:
+                            type: number
+                          search_prompt:
+                            type: string
+                          engine:
+                            type: string
+                            enum:
+                              - native
+                              - exa
+                        required:
+                          - id
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            enum:
+                              - chain-of-thought
+                        required:
+                          - id
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            enum:
+                              - file-parser
+                          max_files:
+                            type: number
+                          pdf:
+                            type: object
+                            properties:
+                              engine:
+                                type: string
+                                enum:
+                                  - mistral-ocr
+                                  - pdf-text
+                                  - native
+                        required:
+                          - id
+                  description: Plugins you want to enable for this request, including their settings.
+                user:
+                  type: string
+                  maxLength: 128
+                  description: >-
+                    A unique identifier representing your end-user, which helps distinguish between different users of
+                    your app. This allows your app to identify specific users in case of abuse reports, preventing your
+                    entire app from being affected by the actions of individual users. Maximum of 128 characters.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  object:
+                    type: string
+                    enum:
+                      - response
+                  created_at:
+                    type: number
+                  model:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - completed
+                      - incomplete
+                      - in_progress
+                      - failed
+                      - cancelled
+                      - queued
+                  output:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - message
+                            id:
+                              type: string
+                            status:
+                              anyOf:
+                                - type: string
+                                  enum:
+                                    - completed
+                                - type: string
+                                  enum:
+                                    - incomplete
+                                - type: string
+                                  enum:
+                                    - in_progress
+                            role:
+                              type: string
+                              enum:
+                                - assistant
+                            content:
+                              type: array
+                              items:
+                                anyOf:
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - output_text
+                                      text:
+                                        type: string
+                                      annotations:
+                                        type: array
+                                        items:
+                                          anyOf:
+                                            - type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  enum:
+                                                    - file_citation
+                                                file_id:
+                                                  type: string
+                                                filename:
+                                                  type: string
+                                                index:
+                                                  type: number
+                                              required:
+                                                - type
+                                                - file_id
+                                                - filename
+                                                - index
+                                            - type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  enum:
+                                                    - url_citation
+                                                end_index:
+                                                  type: number
+                                                start_index:
+                                                  type: number
+                                                title:
+                                                  type: string
+                                                url:
+                                                  type: string
+                                              required:
+                                                - type
+                                                - end_index
+                                                - start_index
+                                                - title
+                                                - url
+                                            - type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  enum:
+                                                    - file_path
+                                                file_id:
+                                                  type: string
+                                                index:
+                                                  type: number
+                                              required:
+                                                - type
+                                                - file_id
+                                                - index
+                                    required:
+                                      - type
+                                      - text
+                                      - annotations
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - refusal
+                                      refusal:
+                                        type: string
+                                    required:
+                                      - type
+                                      - refusal
+                          required:
+                            - type
+                            - id
+                            - status
+                            - role
+                            - content
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - reasoning
+                            id:
+                              type: string
+                            content:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - reasoning_text
+                                  text:
+                                    type: string
+                                required:
+                                  - type
+                                  - text
+                            summary:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - summary_text
+                                  text:
+                                    type: string
+                                required:
+                                  - type
+                                  - text
+                            encrypted_content:
+                              type: string
+                              nullable: true
+                            signature:
+                              type: string
+                              nullable: true
+                            format:
+                              type: string
+                              nullable: true
+                              enum:
+                                - unknown
+                                - openai-responses-v1
+                                - anthropic-claude-v1
+                          required:
+                            - type
+                            - id
+                            - summary
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - function_call
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            arguments:
+                              type: string
+                            call_id:
+                              type: string
+                          required:
+                            - type
+                            - name
+                            - arguments
+                            - call_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_call
+                            id:
+                              type: string
+                            status:
+                              type: string
+                              enum:
+                                - completed
+                                - searching
+                                - in_progress
+                                - failed
+                          required:
+                            - type
+                            - id
+                            - status
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - file_search_call
+                            id:
+                              type: string
+                            queries:
+                              type: array
+                              items:
+                                type: string
+                            status:
+                              type: string
+                              enum:
+                                - completed
+                                - searching
+                                - in_progress
+                                - failed
+                          required:
+                            - type
+                            - id
+                            - queries
+                            - status
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - image_generation_call
+                            id:
+                              type: string
+                            result:
+                              type: string
+                              nullable: true
+                            status:
+                              type: string
+                              enum:
+                                - in_progress
+                                - completed
+                                - generating
+                                - failed
+                          required:
+                            - type
+                            - id
+                            - result
+                            - status
+                  user:
+                    type: string
+                    nullable: true
+                  output_text:
+                    type: string
+                  prompt_cache_key:
+                    type: string
+                    nullable: true
+                  safety_identifier:
+                    type: string
+                    nullable: true
+                  error:
+                    type: object
+                    nullable: true
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - server_error
+                          - rate_limit_exceeded
+                          - invalid_prompt
+                      message:
+                        type: string
+                    required:
+                      - code
+                      - message
+                  incomplete_details:
+                    type: object
+                    nullable: true
+                    properties:
+                      reason:
+                        type: string
+                        enum:
+                          - max_output_tokens
+                          - content_filter
+                  usage:
+                    type: object
+                    properties:
+                      input_tokens:
+                        type: number
+                      input_tokens_details:
+                        type: object
+                        properties:
+                          cached_tokens:
+                            type: number
+                        required:
+                          - cached_tokens
+                      output_tokens:
+                        type: number
+                      output_tokens_details:
+                        type: object
+                        properties:
+                          reasoning_tokens:
+                            type: number
+                        required:
+                          - reasoning_tokens
+                      total_tokens:
+                        type: number
+                    required:
+                      - input_tokens
+                      - input_tokens_details
+                      - output_tokens
+                      - output_tokens_details
+                      - total_tokens
+                  max_tool_calls:
+                    type: number
+                    nullable: true
+                  top_logprobs:
+                    type: number
+                  max_output_tokens:
+                    type: number
+                    nullable: true
+                  temperature:
+                    type: number
+                    nullable: true
+                  top_p:
+                    type: number
+                    nullable: true
+                  instructions:
+                    anyOf:
+                      - type: string
+                      - type: array
+                        items:
+                          anyOf:
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - message
+                                role:
+                                  anyOf:
+                                    - type: string
+                                      enum:
+                                        - user
+                                    - type: string
+                                      enum:
+                                        - system
+                                    - type: string
+                                      enum:
+                                        - assistant
+                                    - type: string
+                                      enum:
+                                        - developer
+                                content:
+                                  anyOf:
+                                    - type: array
+                                      items:
+                                        oneOf:
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - input_text
+                                              text:
+                                                type: string
+                                            required:
+                                              - type
+                                              - text
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - input_image
+                                              detail:
+                                                type: string
+                                                enum:
+                                                  - auto
+                                                  - high
+                                                  - low
+                                              image_url:
+                                                type: string
+                                                nullable: true
+                                            required:
+                                              - type
+                                              - detail
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - input_file
+                                              file_id:
+                                                type: string
+                                                nullable: true
+                                              file_data:
+                                                type: string
+                                              filename:
+                                                type: string
+                                              file_url:
+                                                type: string
+                                            required:
+                                              - type
+                                    - type: string
+                              required:
+                                - role
+                                - content
+                            - type: object
+                              properties:
+                                id:
+                                  type: string
+                                type:
+                                  type: string
+                                  enum:
+                                    - message
+                                role:
+                                  anyOf:
+                                    - type: string
+                                      enum:
+                                        - user
+                                    - type: string
+                                      enum:
+                                        - system
+                                    - type: string
+                                      enum:
+                                        - developer
+                                content:
+                                  type: array
+                                  items:
+                                    oneOf:
+                                      - type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - input_text
+                                          text:
+                                            type: string
+                                        required:
+                                          - type
+                                          - text
+                                      - type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - input_image
+                                          detail:
+                                            type: string
+                                            enum:
+                                              - auto
+                                              - high
+                                              - low
+                                          image_url:
+                                            type: string
+                                            nullable: true
+                                        required:
+                                          - type
+                                          - detail
+                                      - type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - input_file
+                                          file_id:
+                                            type: string
+                                            nullable: true
+                                          file_data:
+                                            type: string
+                                          filename:
+                                            type: string
+                                          file_url:
+                                            type: string
+                                        required:
+                                          - type
+                              required:
+                                - id
+                                - role
+                                - content
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - function_call
+                                call_id:
+                                  type: string
+                                name:
+                                  type: string
+                                arguments:
+                                  type: string
+                                id:
+                                  type: string
+                                status:
+                                  type: string
+                                  enum:
+                                    - in_progress
+                                    - completed
+                                    - incomplete
+                              required:
+                                - type
+                                - call_id
+                                - name
+                                - arguments
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - function_call_output
+                                id:
+                                  type: string
+                                call_id:
+                                  type: string
+                                output:
+                                  type: string
+                                status:
+                                  type: string
+                                  enum:
+                                    - in_progress
+                                    - completed
+                                    - incomplete
+                              required:
+                                - type
+                                - id
+                                - call_id
+                                - output
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - image_generation_call
+                                id:
+                                  type: string
+                                result:
+                                  type: string
+                                  nullable: true
+                                status:
+                                  type: string
+                                  enum:
+                                    - in_progress
+                                    - completed
+                                    - generating
+                                    - failed
+                              required:
+                                - type
+                                - id
+                                - result
+                                - status
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - message
+                                id:
+                                  type: string
+                                status:
+                                  anyOf:
+                                    - type: string
+                                      enum:
+                                        - completed
+                                    - type: string
+                                      enum:
+                                        - incomplete
+                                    - type: string
+                                      enum:
+                                        - in_progress
+                                role:
+                                  type: string
+                                  enum:
+                                    - assistant
+                                content:
+                                  type: array
+                                  items:
+                                    anyOf:
+                                      - type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - output_text
+                                          text:
+                                            type: string
+                                          annotations:
+                                            type: array
+                                            items:
+                                              anyOf:
+                                                - type: object
+                                                  properties:
+                                                    type:
+                                                      type: string
+                                                      enum:
+                                                        - file_citation
+                                                    file_id:
+                                                      type: string
+                                                    filename:
+                                                      type: string
+                                                    index:
+                                                      type: number
+                                                  required:
+                                                    - type
+                                                    - file_id
+                                                    - filename
+                                                    - index
+                                                - type: object
+                                                  properties:
+                                                    type:
+                                                      type: string
+                                                      enum:
+                                                        - url_citation
+                                                    end_index:
+                                                      type: number
+                                                    start_index:
+                                                      type: number
+                                                    title:
+                                                      type: string
+                                                    url:
+                                                      type: string
+                                                  required:
+                                                    - type
+                                                    - end_index
+                                                    - start_index
+                                                    - title
+                                                    - url
+                                                - type: object
+                                                  properties:
+                                                    type:
+                                                      type: string
+                                                      enum:
+                                                        - file_path
+                                                    file_id:
+                                                      type: string
+                                                    index:
+                                                      type: number
+                                                  required:
+                                                    - type
+                                                    - file_id
+                                                    - index
+                                        required:
+                                          - type
+                                          - text
+                                          - annotations
+                                      - type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - refusal
+                                          refusal:
+                                            type: string
+                                        required:
+                                          - type
+                                          - refusal
+                              required:
+                                - type
+                                - id
+                                - status
+                                - role
+                                - content
+                            - oneOf:
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - message
+                                    id:
+                                      type: string
+                                    status:
+                                      anyOf:
+                                        - type: string
+                                          enum:
+                                            - completed
+                                        - type: string
+                                          enum:
+                                            - incomplete
+                                        - type: string
+                                          enum:
+                                            - in_progress
+                                    role:
+                                      type: string
+                                      enum:
+                                        - assistant
+                                    content:
+                                      type: array
+                                      items:
+                                        anyOf:
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - output_text
+                                              text:
+                                                type: string
+                                              annotations:
+                                                type: array
+                                                items:
+                                                  anyOf:
+                                                    - type: object
+                                                      properties:
+                                                        type:
+                                                          type: string
+                                                          enum:
+                                                            - file_citation
+                                                        file_id:
+                                                          type: string
+                                                        filename:
+                                                          type: string
+                                                        index:
+                                                          type: number
+                                                      required:
+                                                        - type
+                                                        - file_id
+                                                        - filename
+                                                        - index
+                                                    - type: object
+                                                      properties:
+                                                        type:
+                                                          type: string
+                                                          enum:
+                                                            - url_citation
+                                                        end_index:
+                                                          type: number
+                                                        start_index:
+                                                          type: number
+                                                        title:
+                                                          type: string
+                                                        url:
+                                                          type: string
+                                                      required:
+                                                        - type
+                                                        - end_index
+                                                        - start_index
+                                                        - title
+                                                        - url
+                                                    - type: object
+                                                      properties:
+                                                        type:
+                                                          type: string
+                                                          enum:
+                                                            - file_path
+                                                        file_id:
+                                                          type: string
+                                                        index:
+                                                          type: number
+                                                      required:
+                                                        - type
+                                                        - file_id
+                                                        - index
+                                            required:
+                                              - type
+                                              - text
+                                              - annotations
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - refusal
+                                              refusal:
+                                                type: string
+                                            required:
+                                              - type
+                                              - refusal
+                                  required:
+                                    - type
+                                    - id
+                                    - status
+                                    - role
+                                    - content
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - reasoning
+                                    id:
+                                      type: string
+                                    content:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - reasoning_text
+                                          text:
+                                            type: string
+                                        required:
+                                          - type
+                                          - text
+                                    summary:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            enum:
+                                              - summary_text
+                                          text:
+                                            type: string
+                                        required:
+                                          - type
+                                          - text
+                                    encrypted_content:
+                                      type: string
+                                      nullable: true
+                                    signature:
+                                      type: string
+                                      nullable: true
+                                    format:
+                                      type: string
+                                      nullable: true
+                                      enum:
+                                        - unknown
+                                        - openai-responses-v1
+                                        - anthropic-claude-v1
+                                  required:
+                                    - type
+                                    - id
+                                    - summary
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - function_call
+                                    id:
+                                      type: string
+                                    name:
+                                      type: string
+                                    arguments:
+                                      type: string
+                                    call_id:
+                                      type: string
+                                  required:
+                                    - type
+                                    - name
+                                    - arguments
+                                    - call_id
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - web_search_call
+                                    id:
+                                      type: string
+                                    status:
+                                      type: string
+                                      enum:
+                                        - completed
+                                        - searching
+                                        - in_progress
+                                        - failed
+                                  required:
+                                    - type
+                                    - id
+                                    - status
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - file_search_call
+                                    id:
+                                      type: string
+                                    queries:
+                                      type: array
+                                      items:
+                                        type: string
+                                    status:
+                                      type: string
+                                      enum:
+                                        - completed
+                                        - searching
+                                        - in_progress
+                                        - failed
+                                  required:
+                                    - type
+                                    - id
+                                    - queries
+                                    - status
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - image_generation_call
+                                    id:
+                                      type: string
+                                    result:
+                                      type: string
+                                      nullable: true
+                                    status:
+                                      type: string
+                                      enum:
+                                        - in_progress
+                                        - completed
+                                        - generating
+                                        - failed
+                                  required:
+                                    - type
+                                    - id
+                                    - result
+                                    - status
+                      - nullable: true
+                  metadata:
+                    type: object
+                    nullable: true
+                    additionalProperties:
+                      type: string
+                      maxLength: 512
+                  tools:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - function
+                            name:
+                              type: string
+                            description:
+                              type: string
+                              nullable: true
+                            strict:
+                              type: boolean
+                              nullable: true
+                            parameters:
+                              type: object
+                              nullable: true
+                              additionalProperties:
+                                nullable: true
+                          required:
+                            - type
+                            - name
+                            - parameters
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_preview
+                            search_context_size:
+                              type: string
+                              enum:
+                                - low
+                                - medium
+                                - high
+                            user_location:
+                              type: object
+                              nullable: true
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - approximate
+                                city:
+                                  type: string
+                                  nullable: true
+                                country:
+                                  type: string
+                                  nullable: true
+                                region:
+                                  type: string
+                                  nullable: true
+                                timezone:
+                                  type: string
+                                  nullable: true
+                              required:
+                                - type
+                          required:
+                            - type
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_preview_2025_03_11
+                            search_context_size:
+                              type: string
+                              enum:
+                                - low
+                                - medium
+                                - high
+                            user_location:
+                              type: object
+                              nullable: true
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - approximate
+                                city:
+                                  type: string
+                                  nullable: true
+                                country:
+                                  type: string
+                                  nullable: true
+                                region:
+                                  type: string
+                                  nullable: true
+                                timezone:
+                                  type: string
+                                  nullable: true
+                              required:
+                                - type
+                          required:
+                            - type
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search
+                            filters:
+                              type: object
+                              nullable: true
+                              properties:
+                                allowed_domains:
+                                  type: array
+                                  nullable: true
+                                  items:
+                                    type: string
+                            search_context_size:
+                              type: string
+                              enum:
+                                - low
+                                - medium
+                                - high
+                            user_location:
+                              type: object
+                              nullable: true
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - approximate
+                                city:
+                                  type: string
+                                  nullable: true
+                                country:
+                                  type: string
+                                  nullable: true
+                                region:
+                                  type: string
+                                  nullable: true
+                                timezone:
+                                  type: string
+                                  nullable: true
+                          required:
+                            - type
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_2025_08_26
+                            filters:
+                              type: object
+                              nullable: true
+                              properties:
+                                allowed_domains:
+                                  type: array
+                                  nullable: true
+                                  items:
+                                    type: string
+                            search_context_size:
+                              type: string
+                              enum:
+                                - low
+                                - medium
+                                - high
+                            user_location:
+                              type: object
+                              nullable: true
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - approximate
+                                city:
+                                  type: string
+                                  nullable: true
+                                country:
+                                  type: string
+                                  nullable: true
+                                region:
+                                  type: string
+                                  nullable: true
+                                timezone:
+                                  type: string
+                                  nullable: true
+                          required:
+                            - type
+                  tool_choice:
+                    anyOf:
+                      - type: string
+                        enum:
+                          - auto
+                      - type: string
+                        enum:
+                          - none
+                      - type: string
+                        enum:
+                          - required
+                      - type: object
+                        properties:
+                          type:
+                            anyOf:
+                              - type: string
+                                enum:
+                                  - file_search
+                              - type: string
+                                enum:
+                                  - web_search_preview
+                              - type: string
+                                enum:
+                                  - web_search_preview_2025_03_11
+                              - type: string
+                                enum:
+                                  - computer_use_preview
+                              - type: string
+                                enum:
+                                  - code_interpreter
+                        required:
+                          - type
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - function
+                          name:
+                            type: string
+                        required:
+                          - type
+                          - name
+                  parallel_tool_calls:
+                    type: boolean
+                  prompt:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        type: string
+                      variables:
+                        type: object
+                        nullable: true
+                        additionalProperties:
+                          oneOf:
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - input_text
+                                text:
+                                  type: string
+                              required:
+                                - type
+                                - text
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - input_image
+                                detail:
+                                  type: string
+                                  enum:
+                                    - auto
+                                    - high
+                                    - low
+                                image_url:
+                                  type: string
+                                  nullable: true
+                              required:
+                                - type
+                                - detail
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - input_file
+                                file_id:
+                                  type: string
+                                  nullable: true
+                                file_data:
+                                  type: string
+                                filename:
+                                  type: string
+                                file_url:
+                                  type: string
+                              required:
+                                - type
+                    required:
+                      - id
+                  background:
+                    type: boolean
+                    nullable: true
+                  previous_response_id:
+                    type: string
+                    nullable: true
+                  reasoning:
+                    type: object
+                    nullable: true
+                    properties:
+                      effort:
+                        type: string
+                        nullable: true
+                        enum:
+                          - high
+                          - medium
+                          - low
+                          - minimal
+                      summary:
+                        type: string
+                        nullable: true
+                        enum:
+                          - auto
+                          - concise
+                          - detailed
+                  service_tier:
+                    type: string
+                    nullable: true
+                    enum:
+                      - auto
+                      - default
+                      - flex
+                      - priority
+                      - scale
+                  store:
+                    type: boolean
+                  truncation:
+                    type: string
+                    nullable: true
+                    enum:
+                      - auto
+                      - disabled
+                  text:
+                    type: object
+                    properties:
+                      format:
+                        anyOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - text
+                            required:
+                              - type
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - json_object
+                            required:
+                              - type
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - json_schema
+                              name:
+                                type: string
+                              description:
+                                type: string
+                              strict:
+                                type: boolean
+                                nullable: true
+                              schema:
+                                type: object
+                                additionalProperties:
+                                  nullable: true
+                            required:
+                              - type
+                              - name
+                              - schema
+                      verbosity:
+                        type: string
+                        nullable: true
+                        enum:
+                          - high
+                          - low
+                          - medium
+                required:
+                  - id
+                  - object
+                  - created_at
+                  - model
+                  - output
+                  - error
+                  - incomplete_details
+                  - temperature
+                  - top_p
+                  - instructions
+                  - metadata
+                  - tools
+                  - tool_choice
+                  - parallel_tool_calls
+            text/event-stream:
+              schema:
+                nullable: true
+        4XX:
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /activity:
     get:
       tags:
@@ -4393,6 +7230,7 @@ paths:
       tags:
         - Chat
       requestBody:
+        required: true
         description: Chat completion request parameters
         required: true
         content:
@@ -4495,3 +7333,4 @@ security:
 externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
+x-fern-base-path: /

@@ -7,8 +7,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getActivity({
-    date: "2025-08-24",
+  const result = await openRouter.alpha.responses.send2({
+    provider: {
+      zdr: true,
+    },
   });
 
   console.log(result);

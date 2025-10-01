@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { analyticsGetActivity } from "@openrouter/sdk/funcs/analyticsGetActivity.js";
+import { alphaResponsesSend2 } from "@openrouter/sdk/funcs/alphaResponsesSend2.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,14 +29,16 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await analyticsGetActivity(openRouter, {
-    date: "2025-08-24",
+  const res = await alphaResponsesSend2(openRouter, {
+    provider: {
+      zdr: true,
+    },
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("analyticsGetActivity failed:", res.error);
+    console.log("alphaResponsesSend2 failed:", res.error);
   }
 }
 
