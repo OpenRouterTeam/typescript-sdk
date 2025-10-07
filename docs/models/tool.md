@@ -9,6 +9,13 @@ let value: Tool = {
   type: "function",
   function: {
     name: "<value>",
+    description: "mealy ew industrialize colossal",
+    parameters: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+    strict: false,
   },
 };
 ```

@@ -27,13 +27,15 @@ import {
   Tool$outboundSchema,
 } from "./tool.js";
 
-export const Effort = {
+export const ChatGenerationParamsEffort = {
   Minimal: "minimal",
   Low: "low",
   Medium: "medium",
   High: "high",
 } as const;
-export type Effort = ClosedEnum<typeof Effort>;
+export type ChatGenerationParamsEffort = ClosedEnum<
+  typeof ChatGenerationParamsEffort
+>;
 
 export const GenerateSummary = {
   Auto: "auto",
@@ -42,17 +44,17 @@ export const GenerateSummary = {
 } as const;
 export type GenerateSummary = ClosedEnum<typeof GenerateSummary>;
 
-export const Summary = {
+export const SummaryEnum = {
   Auto: "auto",
   Concise: "concise",
   Detailed: "detailed",
 } as const;
-export type Summary = ClosedEnum<typeof Summary>;
+export type SummaryEnum = ClosedEnum<typeof SummaryEnum>;
 
 export type Reasoning = {
-  effort?: Effort | null | undefined;
+  effort?: ChatGenerationParamsEffort | null | undefined;
   generateSummary?: GenerateSummary | null | undefined;
-  summary?: Summary | null | undefined;
+  summary?: SummaryEnum | null | undefined;
 };
 
 export type ChatGenerationParamsResponseFormatPython = {
@@ -124,22 +126,24 @@ export type ChatGenerationParams = {
 };
 
 /** @internal */
-export const Effort$inboundSchema: z.ZodNativeEnum<typeof Effort> = z
-  .nativeEnum(Effort);
+export const ChatGenerationParamsEffort$inboundSchema: z.ZodNativeEnum<
+  typeof ChatGenerationParamsEffort
+> = z.nativeEnum(ChatGenerationParamsEffort);
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodNativeEnum<typeof Effort> =
-  Effort$inboundSchema;
+export const ChatGenerationParamsEffort$outboundSchema: z.ZodNativeEnum<
+  typeof ChatGenerationParamsEffort
+> = ChatGenerationParamsEffort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Effort$ {
-  /** @deprecated use `Effort$inboundSchema` instead. */
-  export const inboundSchema = Effort$inboundSchema;
-  /** @deprecated use `Effort$outboundSchema` instead. */
-  export const outboundSchema = Effort$outboundSchema;
+export namespace ChatGenerationParamsEffort$ {
+  /** @deprecated use `ChatGenerationParamsEffort$inboundSchema` instead. */
+  export const inboundSchema = ChatGenerationParamsEffort$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsEffort$outboundSchema` instead. */
+  export const outboundSchema = ChatGenerationParamsEffort$outboundSchema;
 }
 
 /** @internal */
@@ -164,22 +168,22 @@ export namespace GenerateSummary$ {
 }
 
 /** @internal */
-export const Summary$inboundSchema: z.ZodNativeEnum<typeof Summary> = z
-  .nativeEnum(Summary);
+export const SummaryEnum$inboundSchema: z.ZodNativeEnum<typeof SummaryEnum> = z
+  .nativeEnum(SummaryEnum);
 
 /** @internal */
-export const Summary$outboundSchema: z.ZodNativeEnum<typeof Summary> =
-  Summary$inboundSchema;
+export const SummaryEnum$outboundSchema: z.ZodNativeEnum<typeof SummaryEnum> =
+  SummaryEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Summary$ {
-  /** @deprecated use `Summary$inboundSchema` instead. */
-  export const inboundSchema = Summary$inboundSchema;
-  /** @deprecated use `Summary$outboundSchema` instead. */
-  export const outboundSchema = Summary$outboundSchema;
+export namespace SummaryEnum$ {
+  /** @deprecated use `SummaryEnum$inboundSchema` instead. */
+  export const inboundSchema = SummaryEnum$inboundSchema;
+  /** @deprecated use `SummaryEnum$outboundSchema` instead. */
+  export const outboundSchema = SummaryEnum$outboundSchema;
 }
 
 /** @internal */
@@ -188,9 +192,9 @@ export const Reasoning$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  effort: z.nullable(Effort$inboundSchema).optional(),
+  effort: z.nullable(ChatGenerationParamsEffort$inboundSchema).optional(),
   generate_summary: z.nullable(GenerateSummary$inboundSchema).optional(),
-  summary: z.nullable(Summary$inboundSchema).optional(),
+  summary: z.nullable(SummaryEnum$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "generate_summary": "generateSummary",
@@ -210,9 +214,9 @@ export const Reasoning$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Reasoning
 > = z.object({
-  effort: z.nullable(Effort$outboundSchema).optional(),
+  effort: z.nullable(ChatGenerationParamsEffort$outboundSchema).optional(),
   generateSummary: z.nullable(GenerateSummary$outboundSchema).optional(),
-  summary: z.nullable(Summary$outboundSchema).optional(),
+  summary: z.nullable(SummaryEnum$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     generateSummary: "generate_summary",

@@ -26,6 +26,13 @@ const value: models.CompletionCreateParamsResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
     name: "<value>",
+    description: "athletic decent scuttle among excluding react",
+    schema: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+    strict: false,
   },
 };
 ```

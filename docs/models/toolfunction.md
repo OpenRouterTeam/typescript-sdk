@@ -7,6 +7,13 @@ import { ToolFunction } from "@openrouter/sdk/models";
 
 let value: ToolFunction = {
   name: "<value>",
+  description: "culminate whereas ick",
+  parameters: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  strict: null,
 };
 ```
 

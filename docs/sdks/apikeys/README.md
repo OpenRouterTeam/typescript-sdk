@@ -3,23 +3,24 @@
 
 ## Overview
 
+API key management endpoints
+
 ### Available Operations
 
-* [getKeys](#getkeys) - List API keys
-* [postKeys](#postkeys) - Create a new API key
-* [patchKeysHash](#patchkeyshash) - Update an API key
-* [deleteKeysHash](#deletekeyshash) - Delete an API key
-* [getKeysHash](#getkeyshash) - Get a single API key
-* [getKey](#getkey) - Get current API key
-* [getAuthKey](#getauthkey) - Get current API key
+* [list](#list) - List API keys
+* [create](#create) - Create a new API key
+* [update](#update) - Update an API key
+* [delete](#delete) - Delete an API key
+* [get](#get) - Get a single API key
+* [getCurrentKeyMetadata](#getcurrentkeymetadata) - Get current API key
 
-## getKeys
+## list
 
 List API keys
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/keys" method="get" path="/keys" -->
+<!-- UsageSnippet language="typescript" operationID="listApiKeys" method="get" path="/keys" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -28,7 +29,10 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.getKeys();
+  const result = await openRouter.apiKeys.list({
+    includeDisabled: "false",
+    offset: "0",
+  });
 
   console.log(result);
 }
@@ -42,7 +46,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysGetKeys } from "@openrouter/sdk/funcs/apiKeysGetKeys.js";
+import { apiKeysList } from "@openrouter/sdk/funcs/apiKeysList.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -51,12 +55,15 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysGetKeys(openRouter);
+  const res = await apiKeysList(openRouter, {
+    includeDisabled: "false",
+    offset: "0",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysGetKeys failed:", res.error);
+    console.log("apiKeysList failed:", res.error);
   }
 }
 
@@ -76,33 +83,33 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useApiKeysGetKeys,
-  useApiKeysGetKeysSuspense,
+  useApiKeysList,
+  useApiKeysListSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchApiKeysGetKeys,
+  prefetchApiKeysList,
   
   // Utilities to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateApiKeysGetKeys,
-  invalidateAllApiKeysGetKeys,
-} from "@openrouter/sdk/react-query/apiKeysGetKeys.js";
+  invalidateApiKeysList,
+  invalidateAllApiKeysList,
+} from "@openrouter/sdk/react-query/apiKeysList.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetKeysRequest](../../models/operations/getkeysrequest.md)                                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ListApiKeysRequest](../../models/operations/listapikeysrequest.md)                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetKeysResponse](../../models/operations/getkeysresponse.md)\>**
+**Promise\<[operations.ListApiKeysResponse](../../models/operations/listapikeysresponse.md)\>**
 
 ### Errors
 
@@ -111,13 +118,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## postKeys
+## create
 
 Create a new API key
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="post_/keys" method="post" path="/keys" -->
+<!-- UsageSnippet language="typescript" operationID="create" method="post" path="/keys" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -126,7 +133,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.postKeys({
+  const result = await openRouter.apiKeys.create({
     name: "My New API Key",
     limit: 50,
     includeByokInLimit: true,
@@ -144,7 +151,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysPostKeys } from "@openrouter/sdk/funcs/apiKeysPostKeys.js";
+import { apiKeysCreate } from "@openrouter/sdk/funcs/apiKeysCreate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -153,7 +160,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysPostKeys(openRouter, {
+  const res = await apiKeysCreate(openRouter, {
     name: "My New API Key",
     limit: 50,
     includeByokInLimit: true,
@@ -162,7 +169,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysPostKeys failed:", res.error);
+    console.log("apiKeysCreate failed:", res.error);
   }
 }
 
@@ -182,22 +189,22 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useApiKeysPostKeysMutation
-} from "@openrouter/sdk/react-query/apiKeysPostKeys.js";
+  useApiKeysCreateMutation
+} from "@openrouter/sdk/react-query/apiKeysCreate.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostKeysRequest](../../models/operations/postkeysrequest.md)                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.CreateRequest](../../models/operations/createrequest.md)                                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostKeysResponse](../../models/operations/postkeysresponse.md)\>**
+**Promise\<[operations.CreateResponse](../../models/operations/createresponse.md)\>**
 
 ### Errors
 
@@ -206,13 +213,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## patchKeysHash
+## update
 
 Update an API key
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="patch_/keys/{hash}" method="patch" path="/keys/{hash}" -->
+<!-- UsageSnippet language="typescript" operationID="update" method="patch" path="/keys/{hash}" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -221,7 +228,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.patchKeysHash({
+  const result = await openRouter.apiKeys.update({
     hash: "sk-or-v1-abc123def456",
     requestBody: {
       name: "Updated API Key Name",
@@ -243,7 +250,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysPatchKeysHash } from "@openrouter/sdk/funcs/apiKeysPatchKeysHash.js";
+import { apiKeysUpdate } from "@openrouter/sdk/funcs/apiKeysUpdate.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -252,7 +259,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysPatchKeysHash(openRouter, {
+  const res = await apiKeysUpdate(openRouter, {
     hash: "sk-or-v1-abc123def456",
     requestBody: {
       name: "Updated API Key Name",
@@ -265,7 +272,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysPatchKeysHash failed:", res.error);
+    console.log("apiKeysUpdate failed:", res.error);
   }
 }
 
@@ -285,22 +292,22 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useApiKeysPatchKeysHashMutation
-} from "@openrouter/sdk/react-query/apiKeysPatchKeysHash.js";
+  useApiKeysUpdateMutation
+} from "@openrouter/sdk/react-query/apiKeysUpdate.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PatchKeysHashRequest](../../models/operations/patchkeyshashrequest.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.UpdateRequest](../../models/operations/updaterequest.md)                                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PatchKeysHashResponse](../../models/operations/patchkeyshashresponse.md)\>**
+**Promise\<[operations.UpdateResponse](../../models/operations/updateresponse.md)\>**
 
 ### Errors
 
@@ -309,13 +316,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## deleteKeysHash
+## delete
 
 Delete an API key
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="delete_/keys/{hash}" method="delete" path="/keys/{hash}" -->
+<!-- UsageSnippet language="typescript" operationID="delete" method="delete" path="/keys/{hash}" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -324,7 +331,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.deleteKeysHash({
+  const result = await openRouter.apiKeys.delete({
     hash: "sk-or-v1-abc123def456",
   });
 
@@ -340,7 +347,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysDeleteKeysHash } from "@openrouter/sdk/funcs/apiKeysDeleteKeysHash.js";
+import { apiKeysDelete } from "@openrouter/sdk/funcs/apiKeysDelete.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -349,14 +356,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysDeleteKeysHash(openRouter, {
+  const res = await apiKeysDelete(openRouter, {
     hash: "sk-or-v1-abc123def456",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysDeleteKeysHash failed:", res.error);
+    console.log("apiKeysDelete failed:", res.error);
   }
 }
 
@@ -376,22 +383,22 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useApiKeysDeleteKeysHashMutation
-} from "@openrouter/sdk/react-query/apiKeysDeleteKeysHash.js";
+  useApiKeysDeleteMutation
+} from "@openrouter/sdk/react-query/apiKeysDelete.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.DeleteKeysHashRequest](../../models/operations/deletekeyshashrequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.DeleteRequest](../../models/operations/deleterequest.md)                                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.DeleteKeysHashResponse](../../models/operations/deletekeyshashresponse.md)\>**
+**Promise\<[operations.DeleteResponse](../../models/operations/deleteresponse.md)\>**
 
 ### Errors
 
@@ -400,13 +407,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## getKeysHash
+## get
 
 Get a single API key
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/keys/{hash}" method="get" path="/keys/{hash}" -->
+<!-- UsageSnippet language="typescript" operationID="getApiKey" method="get" path="/keys/{hash}" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -415,7 +422,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.getKeysHash({
+  const result = await openRouter.apiKeys.get({
     hash: "sk-or-v1-abc123def456",
   });
 
@@ -431,7 +438,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysGetKeysHash } from "@openrouter/sdk/funcs/apiKeysGetKeysHash.js";
+import { apiKeysGet } from "@openrouter/sdk/funcs/apiKeysGet.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -440,14 +447,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysGetKeysHash(openRouter, {
+  const res = await apiKeysGet(openRouter, {
     hash: "sk-or-v1-abc123def456",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysGetKeysHash failed:", res.error);
+    console.log("apiKeysGet failed:", res.error);
   }
 }
 
@@ -467,33 +474,33 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useApiKeysGetKeysHash,
-  useApiKeysGetKeysHashSuspense,
+  useApiKeysGet,
+  useApiKeysGetSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchApiKeysGetKeysHash,
+  prefetchApiKeysGet,
   
   // Utilities to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateApiKeysGetKeysHash,
-  invalidateAllApiKeysGetKeysHash,
-} from "@openrouter/sdk/react-query/apiKeysGetKeysHash.js";
+  invalidateApiKeysGet,
+  invalidateAllApiKeysGet,
+} from "@openrouter/sdk/react-query/apiKeysGet.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetKeysHashRequest](../../models/operations/getkeyshashrequest.md)                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.GetApiKeyRequest](../../models/operations/getapikeyrequest.md)                                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetKeysHashResponse](../../models/operations/getkeyshashresponse.md)\>**
+**Promise\<[operations.GetApiKeyResponse](../../models/operations/getapikeyresponse.md)\>**
 
 ### Errors
 
@@ -502,13 +509,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## getKey
+## getCurrentKeyMetadata
 
 Get information on the API key associated with the current authentication session
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/key" method="get" path="/key" -->
+<!-- UsageSnippet language="typescript" operationID="getCurrentKey" method="get" path="/key" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -517,7 +524,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.getKey();
+  const result = await openRouter.apiKeys.getCurrentKeyMetadata();
 
   console.log(result);
 }
@@ -531,7 +538,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysGetKey } from "@openrouter/sdk/funcs/apiKeysGetKey.js";
+import { apiKeysGetCurrentKeyMetadata } from "@openrouter/sdk/funcs/apiKeysGetCurrentKeyMetadata.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -540,12 +547,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysGetKey(openRouter);
+  const res = await apiKeysGetCurrentKeyMetadata(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("apiKeysGetKey failed:", res.error);
+    console.log("apiKeysGetCurrentKeyMetadata failed:", res.error);
   }
 }
 
@@ -565,18 +572,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useApiKeysGetKey,
-  useApiKeysGetKeySuspense,
+  useApiKeysGetCurrentKeyMetadata,
+  useApiKeysGetCurrentKeyMetadataSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchApiKeysGetKey,
+  prefetchApiKeysGetCurrentKeyMetadata,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllApiKeysGetKey,
-} from "@openrouter/sdk/react-query/apiKeysGetKey.js";
+  invalidateAllApiKeysGetCurrentKeyMetadata,
+} from "@openrouter/sdk/react-query/apiKeysGetCurrentKeyMetadata.js";
 ```
 
 ### Parameters
@@ -589,103 +596,7 @@ import {
 
 ### Response
 
-**Promise\<[operations.GetKeyResponse](../../models/operations/getkeyresponse.md)\>**
-
-### Errors
-
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
-
-## getAuthKey
-
-Get information on the API key associated with the current authentication session
-
-### Example Usage
-
-<!-- UsageSnippet language="typescript" operationID="get_/auth/key" method="get" path="/auth/key" -->
-```typescript
-import { OpenRouter } from "@openrouter/sdk";
-
-const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-});
-
-async function run() {
-  const result = await openRouter.apiKeys.getAuthKey();
-
-  console.log(result);
-}
-
-run();
-```
-
-### Standalone function
-
-The standalone function version of this method:
-
-```typescript
-import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { apiKeysGetAuthKey } from "@openrouter/sdk/funcs/apiKeysGetAuthKey.js";
-
-// Use `OpenRouterCore` for best tree-shaking performance.
-// You can create one instance of it to use across an application.
-const openRouter = new OpenRouterCore({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-});
-
-async function run() {
-  const res = await apiKeysGetAuthKey(openRouter);
-  if (res.ok) {
-    const { value: result } = res;
-    console.log(result);
-  } else {
-    console.log("apiKeysGetAuthKey failed:", res.error);
-  }
-}
-
-run();
-```
-
-### React hooks and utilities
-
-This method can be used in React components through the following hooks and
-associated utilities.
-
-> Check out [this guide][hook-guide] for information about each of the utilities
-> below and how to get started using React hooks.
-
-[hook-guide]: ../../../REACT_QUERY.md
-
-```tsx
-import {
-  // Query hooks for fetching data.
-  useApiKeysGetAuthKey,
-  useApiKeysGetAuthKeySuspense,
-
-  // Utility for prefetching data during server-side rendering and in React
-  // Server Components that will be immediately available to client components
-  // using the hooks.
-  prefetchApiKeysGetAuthKey,
-  
-  // Utility to invalidate the query cache for this query in response to
-  // mutations and other user actions.
-  invalidateAllApiKeysGetAuthKey,
-} from "@openrouter/sdk/react-query/apiKeysGetAuthKey.js";
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-### Response
-
-**Promise\<[operations.GetAuthKeyResponse](../../models/operations/getauthkeyresponse.md)\>**
+**Promise\<[operations.GetCurrentKeyResponse](../../models/operations/getcurrentkeyresponse.md)\>**
 
 ### Errors
 

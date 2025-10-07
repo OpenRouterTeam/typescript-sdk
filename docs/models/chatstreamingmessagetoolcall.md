@@ -7,6 +7,11 @@ import { ChatStreamingMessageToolCall } from "@openrouter/sdk/models";
 
 let value: ChatStreamingMessageToolCall = {
   index: 3974.82,
+  id: "<id>",
+  function: {
+    name: "<value>",
+    arguments: "<value>",
+  },
 };
 ```
 

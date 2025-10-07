@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { alphaResponsesSend2 } from "@openrouter/sdk/funcs/alphaResponsesSend2.js";
+import { betaResponsesSendRequest } from "@openrouter/sdk/funcs/betaResponsesSendRequest.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,16 +29,80 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await alphaResponsesSend2(openRouter, {
-    provider: {
-      zdr: true,
+  const res = await betaResponsesSendRequest(openRouter, {
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description: "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("alphaResponsesSend2 failed:", res.error);
+    console.log("betaResponsesSendRequest failed:", res.error);
   }
 }
 

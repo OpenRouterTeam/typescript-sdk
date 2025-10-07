@@ -8,7 +8,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type Prompt =
+export type CompletionCreateParamsPrompt =
   | string
   | Array<string>
   | Array<number>
@@ -87,26 +87,29 @@ export type CompletionCreateParams = {
 };
 
 /** @internal */
-export const Prompt$inboundSchema: z.ZodType<Prompt, z.ZodTypeDef, unknown> = z
-  .union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]);
+export const CompletionCreateParamsPrompt$inboundSchema: z.ZodType<
+  CompletionCreateParamsPrompt,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.array(z.number()),
+  z.array(z.array(z.number())),
+]);
 
 /** @internal */
-export type Prompt$Outbound =
+export type CompletionCreateParamsPrompt$Outbound =
   | string
   | Array<string>
   | Array<number>
   | Array<Array<number>>;
 
 /** @internal */
-export const Prompt$outboundSchema: z.ZodType<
-  Prompt$Outbound,
+export const CompletionCreateParamsPrompt$outboundSchema: z.ZodType<
+  CompletionCreateParamsPrompt$Outbound,
   z.ZodTypeDef,
-  Prompt
+  CompletionCreateParamsPrompt
 > = z.union([
   z.string(),
   z.array(z.string()),
@@ -118,26 +121,32 @@ export const Prompt$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Prompt$ {
-  /** @deprecated use `Prompt$inboundSchema` instead. */
-  export const inboundSchema = Prompt$inboundSchema;
-  /** @deprecated use `Prompt$outboundSchema` instead. */
-  export const outboundSchema = Prompt$outboundSchema;
-  /** @deprecated use `Prompt$Outbound` instead. */
-  export type Outbound = Prompt$Outbound;
+export namespace CompletionCreateParamsPrompt$ {
+  /** @deprecated use `CompletionCreateParamsPrompt$inboundSchema` instead. */
+  export const inboundSchema = CompletionCreateParamsPrompt$inboundSchema;
+  /** @deprecated use `CompletionCreateParamsPrompt$outboundSchema` instead. */
+  export const outboundSchema = CompletionCreateParamsPrompt$outboundSchema;
+  /** @deprecated use `CompletionCreateParamsPrompt$Outbound` instead. */
+  export type Outbound = CompletionCreateParamsPrompt$Outbound;
 }
 
-export function promptToJSON(prompt: Prompt): string {
-  return JSON.stringify(Prompt$outboundSchema.parse(prompt));
+export function completionCreateParamsPromptToJSON(
+  completionCreateParamsPrompt: CompletionCreateParamsPrompt,
+): string {
+  return JSON.stringify(
+    CompletionCreateParamsPrompt$outboundSchema.parse(
+      completionCreateParamsPrompt,
+    ),
+  );
 }
 
-export function promptFromJSON(
+export function completionCreateParamsPromptFromJSON(
   jsonString: string,
-): SafeParseResult<Prompt, SDKValidationError> {
+): SafeParseResult<CompletionCreateParamsPrompt, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Prompt$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Prompt' from JSON`,
+    (x) => CompletionCreateParamsPrompt$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CompletionCreateParamsPrompt' from JSON`,
   );
 }
 

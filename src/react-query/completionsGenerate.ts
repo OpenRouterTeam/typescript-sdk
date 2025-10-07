@@ -8,27 +8,20 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import {
-  completionsGenerate,
-  GenerateAcceptEnum,
-} from "../funcs/completionsGenerate.js";
+import { completionsGenerate } from "../funcs/completionsGenerate.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export { GenerateAcceptEnum } from "../funcs/completionsGenerate.js";
-
 export type CompletionsGenerateMutationVariables = {
   request: models.CompletionCreateParams;
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum };
+  options?: RequestOptions;
 };
 
-export type CompletionsGenerateMutationData =
-  operations.PostCompletionsResponse;
+export type CompletionsGenerateMutationData = models.CompletionResponse;
 
 /**
  * Create a completion

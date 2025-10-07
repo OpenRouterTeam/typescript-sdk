@@ -4,7 +4,6 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -23,14 +22,8 @@ import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
-
-export enum GenerateAcceptEnum {
-  applicationJson = "application/json",
-  textEventStream = "text/event-stream",
-}
 
 /**
  * Create a completion
@@ -40,66 +33,12 @@ export enum GenerateAcceptEnum {
  */
 export function completionsGenerate(
   client: OpenRouterCore,
-  request: models.CompletionCreateParams & { stream?: false },
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+  request: models.CompletionCreateParams,
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     models.CompletionResponse,
-    | errors.CompletionError
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function completionsGenerate(
-  client: OpenRouterCore,
-  request: models.CompletionCreateParams & { stream: true },
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
-): APIPromise<
-  Result<
-    EventStream<models.CompletionStreamingResponseChunk>,
-    | errors.CompletionError
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function completionsGenerate(
-  client: OpenRouterCore,
-  request: models.CompletionCreateParams,
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
-): APIPromise<
-  Result<
-    operations.PostCompletionsResponse,
-    | errors.CompletionError
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function completionsGenerate(
-  client: OpenRouterCore,
-  request: models.CompletionCreateParams,
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
-): APIPromise<
-  Result<
-    operations.PostCompletionsResponse,
-    | errors.CompletionError
+    | errors.ChatError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -120,12 +59,12 @@ export function completionsGenerate(
 async function $do(
   client: OpenRouterCore,
   request: models.CompletionCreateParams,
-  options?: RequestOptions & { acceptHeaderOverride?: GenerateAcceptEnum },
+  options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.PostCompletionsResponse,
-      | errors.CompletionError
+      models.CompletionResponse,
+      | errors.ChatError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -153,8 +92,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: options?.acceptHeaderOverride
-      || "application/json;q=1, text/event-stream;q=0",
+    Accept: "application/json",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -164,8 +102,8 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "post_/completions",
-    oAuth2Scopes: [],
+    operationID: "createCompletions",
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
@@ -207,8 +145,8 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.PostCompletionsResponse,
-    | errors.CompletionError
+    models.CompletionResponse,
+    | errors.ChatError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -218,10 +156,9 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.PostCompletionsResponse$inboundSchema),
-    M.sse(200, operations.PostCompletionsResponse$inboundSchema),
-    M.jsonErr([400, 401, 429], errors.CompletionError$inboundSchema),
-    M.jsonErr(500, errors.CompletionError$inboundSchema),
+    M.json(200, models.CompletionResponse$inboundSchema),
+    M.jsonErr([400, 401, 429], errors.ChatError$inboundSchema),
+    M.jsonErr(500, errors.ChatError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

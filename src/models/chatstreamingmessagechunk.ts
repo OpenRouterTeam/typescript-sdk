@@ -15,13 +15,15 @@ import {
 } from "./chatstreamingmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Role = {
+export const ChatStreamingMessageChunkRole = {
   Assistant: "assistant",
 } as const;
-export type Role = ClosedEnum<typeof Role>;
+export type ChatStreamingMessageChunkRole = ClosedEnum<
+  typeof ChatStreamingMessageChunkRole
+>;
 
 export type ChatStreamingMessageChunk = {
-  role?: Role | undefined;
+  role?: ChatStreamingMessageChunkRole | undefined;
   content?: string | null | undefined;
   reasoning?: string | null | undefined;
   refusal?: string | null | undefined;
@@ -29,23 +31,24 @@ export type ChatStreamingMessageChunk = {
 };
 
 /** @internal */
-export const Role$inboundSchema: z.ZodNativeEnum<typeof Role> = z.nativeEnum(
-  Role,
-);
+export const ChatStreamingMessageChunkRole$inboundSchema: z.ZodNativeEnum<
+  typeof ChatStreamingMessageChunkRole
+> = z.nativeEnum(ChatStreamingMessageChunkRole);
 
 /** @internal */
-export const Role$outboundSchema: z.ZodNativeEnum<typeof Role> =
-  Role$inboundSchema;
+export const ChatStreamingMessageChunkRole$outboundSchema: z.ZodNativeEnum<
+  typeof ChatStreamingMessageChunkRole
+> = ChatStreamingMessageChunkRole$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Role$ {
-  /** @deprecated use `Role$inboundSchema` instead. */
-  export const inboundSchema = Role$inboundSchema;
-  /** @deprecated use `Role$outboundSchema` instead. */
-  export const outboundSchema = Role$outboundSchema;
+export namespace ChatStreamingMessageChunkRole$ {
+  /** @deprecated use `ChatStreamingMessageChunkRole$inboundSchema` instead. */
+  export const inboundSchema = ChatStreamingMessageChunkRole$inboundSchema;
+  /** @deprecated use `ChatStreamingMessageChunkRole$outboundSchema` instead. */
+  export const outboundSchema = ChatStreamingMessageChunkRole$outboundSchema;
 }
 
 /** @internal */
@@ -54,7 +57,7 @@ export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: Role$inboundSchema.optional(),
+  role: ChatStreamingMessageChunkRole$inboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),
@@ -80,7 +83,7 @@ export const ChatStreamingMessageChunk$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatStreamingMessageChunk
 > = z.object({
-  role: Role$outboundSchema.optional(),
+  role: ChatStreamingMessageChunkRole$outboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),

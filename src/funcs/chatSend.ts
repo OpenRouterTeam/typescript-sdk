@@ -80,7 +80,7 @@ export function chatSend(
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
 ): APIPromise<
   Result<
-    operations.PostChatCompletionsResponse,
+    operations.SendChatCompletionRequestResponse,
     | errors.ChatError
     | OpenRouterError
     | ResponseValidationError
@@ -98,7 +98,7 @@ export function chatSend(
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
 ): APIPromise<
   Result<
-    operations.PostChatCompletionsResponse,
+    operations.SendChatCompletionRequestResponse,
     | errors.ChatError
     | OpenRouterError
     | ResponseValidationError
@@ -124,7 +124,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.PostChatCompletionsResponse,
+      operations.SendChatCompletionRequestResponse,
       | errors.ChatError
       | OpenRouterError
       | ResponseValidationError
@@ -164,8 +164,8 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "post_/chat/completions",
-    oAuth2Scopes: [],
+    operationID: "sendChatCompletionRequest",
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
@@ -207,7 +207,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.PostChatCompletionsResponse,
+    operations.SendChatCompletionRequestResponse,
     | errors.ChatError
     | OpenRouterError
     | ResponseValidationError
@@ -218,8 +218,8 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.PostChatCompletionsResponse$inboundSchema),
-    M.sse(200, operations.PostChatCompletionsResponse$inboundSchema),
+    M.json(200, operations.SendChatCompletionRequestResponse$inboundSchema),
+    M.sse(200, operations.SendChatCompletionRequestResponse$inboundSchema),
     M.jsonErr([400, 401, 429], errors.ChatError$inboundSchema),
     M.jsonErr(500, errors.ChatError$inboundSchema),
     M.fail("4XX"),

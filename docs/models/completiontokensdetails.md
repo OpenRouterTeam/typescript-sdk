@@ -5,7 +5,12 @@
 ```typescript
 import { CompletionTokensDetails } from "@openrouter/sdk/models";
 
-let value: CompletionTokensDetails = {};
+let value: CompletionTokensDetails = {
+  reasoningTokens: 5235.84,
+  audioTokens: 971.85,
+  acceptedPredictionTokens: 6899.68,
+  rejectedPredictionTokens: 17.79,
+};
 ```
 
 ## Fields

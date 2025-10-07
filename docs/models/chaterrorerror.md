@@ -15,9 +15,9 @@ let value: ChatErrorError = {
 
 ## Fields
 
-| Field                  | Type                   | Required               | Description            |
-| ---------------------- | ---------------------- | ---------------------- | ---------------------- |
-| `code`                 | *models.ChatErrorCode* | :heavy_check_mark:     | N/A                    |
-| `message`              | *string*               | :heavy_check_mark:     | N/A                    |
-| `param`                | *string*               | :heavy_check_mark:     | N/A                    |
-| `type`                 | *string*               | :heavy_check_mark:     | N/A                    |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `code`             | *models.Code*      | :heavy_check_mark: | N/A                |
+| `message`          | *string*           | :heavy_check_mark: | N/A                |
+| `param`            | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *string*           | :heavy_check_mark: | N/A                |

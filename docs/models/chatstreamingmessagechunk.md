@@ -5,14 +5,29 @@
 ```typescript
 import { ChatStreamingMessageChunk } from "@openrouter/sdk/models";
 
-let value: ChatStreamingMessageChunk = {};
+let value: ChatStreamingMessageChunk = {
+  role: "assistant",
+  content: "<value>",
+  reasoning: "<value>",
+  refusal: "<value>",
+  toolCalls: [
+    {
+      index: 5916.2,
+      id: "<id>",
+      function: {
+        name: "<value>",
+        arguments: "<value>",
+      },
+    },
+  ],
+};
 ```
 
 ## Fields
 
 | Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `role`                                                                             | [models.Role](../models/role.md)                                                   | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| `role`                                                                             | [models.ChatStreamingMessageChunkRole](../models/chatstreamingmessagechunkrole.md) | :heavy_minus_sign:                                                                 | N/A                                                                                |
 | `content`                                                                          | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
 | `reasoning`                                                                        | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |
 | `refusal`                                                                          | *string*                                                                           | :heavy_minus_sign:                                                                 | N/A                                                                                |

@@ -7,6 +7,13 @@ import { CompletionCreateParamsJsonSchema } from "@openrouter/sdk/models";
 
 let value: CompletionCreateParamsJsonSchema = {
   name: "<value>",
+  description: "outside carelessly hearten rejoin gosh boo um abaft",
+  schema: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  strict: true,
 };
 ```
 

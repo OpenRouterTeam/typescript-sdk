@@ -17,11 +17,11 @@ import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
 export type EmbeddingsGenerateMutationVariables = {
-  request?: operations.PostEmbeddingsRequest | undefined;
+  request: operations.GenerateRequest;
   options?: RequestOptions;
 };
 
-export type EmbeddingsGenerateMutationData = operations.PostEmbeddingsResponse;
+export type EmbeddingsGenerateMutationData = operations.GenerateResponse;
 
 /**
  * Submit an embedding request

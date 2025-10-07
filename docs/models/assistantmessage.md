@@ -7,6 +7,20 @@ import { AssistantMessage } from "@openrouter/sdk/models";
 
 let value: AssistantMessage = {
   role: "assistant",
+  content: "<value>",
+  name: "<value>",
+  toolCalls: [
+    {
+      id: "<id>",
+      type: "function",
+      function: {
+        name: "<value>",
+        arguments: "<value>",
+      },
+    },
+  ],
+  refusal: "<value>",
+  reasoning: "<value>",
 };
 ```
 

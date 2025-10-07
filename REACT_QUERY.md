@@ -50,10 +50,10 @@ from TanStack Query.
 [use-query]: https://tanstack.com/query/v5/docs/framework/react/reference/useQuery
 
 ```tsx
-import { useAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
+import { useAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 
 export function Example() {
-  const { data, error, status } = useAnalyticsGetActivity({
+  const { data, error, status } = useAnalyticsGetUserActivity({
     date: "2025-08-24",
   });
 
@@ -68,11 +68,11 @@ more options provided by the query hooks to control these behaviors.
 
 ```tsx
 import { useState } from "react";
-import { useAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
+import { useAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 
 export function ExampleWithOptions() {
   const [enabled, setEnabled] = useState(true);
-  const { data, error, status } = useAnalyticsGetActivity(
+  const { data, error, status } = useAnalyticsGetUserActivity(
     {
       date: "2025-08-24",
     },
@@ -112,10 +112,10 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { useAlphaResponsesSend2Mutation } from "@openrouter/sdk/react-query/alphaResponsesSend2.js";
+import { useBetaResponsesSendRequestMutation } from "@openrouter/sdk/react-query/betaResponsesSendRequest.js";
 
 export function Example() {
-  const { mutate, status } = useAlphaResponsesSend2Mutation();
+  const { mutate, status } = useBetaResponsesSendRequestMutation();
 
   return (
     <form
@@ -125,9 +125,73 @@ export function Example() {
         // Read form data here...
 
         mutate({
-          provider: {
-            zdr: true,
+          input: "Hello, how can I help you today?",
+          instructions: "<value>",
+          metadata: {
+            "user_id": "user-123",
+            "session_id": "session-abc",
           },
+          tools: [
+            {
+              type: "function",
+              function: {
+                name: "<value>",
+                description: "petal righteously sans athwart down front tuxedo overfeed",
+                parameters: {
+                  "key": "<value>",
+                },
+                strict: false,
+              },
+            },
+          ],
+          toolChoice: "auto",
+          parallelToolCalls: true,
+          model: "Fortwo",
+          models: [
+            "<value 1>",
+            "<value 2>",
+          ],
+          text: {
+            format: {
+              type: "text",
+            },
+            verbosity: "medium",
+          },
+          reasoning: {
+            effort: "medium",
+            summary: "auto",
+          },
+          maxOutputTokens: 6181.51,
+          temperature: 8715.21,
+          topP: 3848.26,
+          topK: 2241.14,
+          promptCacheKey: "<value>",
+          previousResponseId: "<id>",
+          prompt: {
+            id: "prompt-123",
+            variables: {
+              "user_name": {
+                type: "input_text",
+                text: "John",
+              },
+            },
+          },
+          include: [
+            "file_search_call.results",
+          ],
+          background: false,
+          safetyIdentifier: "<value>",
+          store: false,
+          serviceTier: "scale",
+          truncation: "auto",
+          stream: null,
+          provider: null,
+          plugins: [
+            {
+              id: "chain-of-thought",
+            },
+          ],
+          user: "Ilene51",
         });
       }}
     >
@@ -144,10 +208,10 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { useAlphaResponsesSend2Mutation } from "@openrouter/sdk/react-query/alphaResponsesSend2.js";
+import { useBetaResponsesSendRequestMutation } from "@openrouter/sdk/react-query/betaResponsesSendRequest.js";
 
 export function ExampleWithOptions() {
-  const { mutate, status } = useAlphaResponsesSend2Mutation({
+  const { mutate, status } = useBetaResponsesSendRequestMutation({
     // TanStack Query options:
     networkMode: "online",
     gcTime: 5 * 60 * 1000, // 5 minutes
@@ -179,7 +243,7 @@ query hook there are two functions that help invalidate cached data:
 
 ```tsx
 import { useQueryClient } from "@tanstack/react-query";
-import { invalidateAnalyticsGetActivity, invalidateAllAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
+import { invalidateAnalyticsGetUserActivity, invalidateAllAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 // Replace this with a real mutation
 import { useExampleMutation } from "@openrouter/sdk/react-query/example.js";
 
@@ -197,9 +261,9 @@ export function Example() {
         mutate(formData, {
           onSuccess: () => {
             // Invalidate a single cache entry:
-            invalidateAnalyticsGetActivity(queryClient, /* ... arguments ... */);
+            invalidateAnalyticsGetUserActivity(queryClient, /* ... arguments ... */);
             // OR, invalidate all cache entries for the query targets:
-            invalidateAllAnalyticsGetActivity(queryClient);
+            invalidateAllAnalyticsGetUserActivity(queryClient);
           },
         });
       }}
@@ -227,7 +291,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { OpenRouterCore } from "@openrouter/sdk";
 import { OpenRouterProvider } from "@openrouter/sdk/react-query";
-import { useAnalyticsGetActivitySuspense } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
+import { useAnalyticsGetUserActivitySuspense } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 
 const queryClient = new QueryClient();
 const openRouter = new OpenRouterCore({
@@ -262,7 +326,7 @@ export function App() {
 }
 
 function Example() {
-  const { data } = useAnalyticsGetActivitySuspense({
+  const { data } = useAnalyticsGetUserActivitySuspense({
     date: "2025-08-24",
   });
 
@@ -284,7 +348,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "@openrouter/sdk";
-import { prefetchAnalyticsGetActivity } from "@openrouter/sdk/react-query/analyticsGetActivity.js";
+import { prefetchAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 
 export default async function Page() {
   const queryClient = new QueryClient();
@@ -292,7 +356,7 @@ export default async function Page() {
     apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   });
 
-  await prefetchAnalyticsGetActivity(queryClient, openRouter, {
+  await prefetchAnalyticsGetUserActivity(queryClient, openRouter, {
     date: "2025-08-24",
   });
 

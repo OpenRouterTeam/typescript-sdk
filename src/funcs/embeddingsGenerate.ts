@@ -33,11 +33,11 @@ import { Result } from "../types/fp.js";
  */
 export function embeddingsGenerate(
   client: OpenRouterCore,
-  request?: operations.PostEmbeddingsRequest | undefined,
+  request: operations.GenerateRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.PostEmbeddingsResponse,
+    operations.GenerateResponse,
     | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
@@ -58,12 +58,12 @@ export function embeddingsGenerate(
 
 async function $do(
   client: OpenRouterCore,
-  request?: operations.PostEmbeddingsRequest | undefined,
+  request: operations.GenerateRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.PostEmbeddingsResponse,
+      operations.GenerateResponse,
       | errors.ErrorResponse
       | OpenRouterError
       | ResponseValidationError
@@ -79,17 +79,14 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.PostEmbeddingsRequest$outboundSchema.optional().parse(value),
+    (value) => operations.GenerateRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = payload === undefined
-    ? null
-    : encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload, { explode: true });
 
   const path = pathToFunc("/embeddings")();
 
@@ -105,8 +102,8 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "post_/embeddings",
-    oAuth2Scopes: [],
+    operationID: "generate",
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
@@ -148,7 +145,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.PostEmbeddingsResponse,
+    operations.GenerateResponse,
     | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError
@@ -159,7 +156,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.PostEmbeddingsResponse$inboundSchema),
+    M.json(200, operations.GenerateResponse$inboundSchema),
     M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
     M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
   )(response, req, { extraFields: responseFields });

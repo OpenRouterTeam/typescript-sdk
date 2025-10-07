@@ -8,6 +8,7 @@ import { MessageDeveloper } from "@openrouter/sdk/models";
 let value: MessageDeveloper = {
   role: "developer",
   content: [],
+  name: "<value>",
 };
 ```
 

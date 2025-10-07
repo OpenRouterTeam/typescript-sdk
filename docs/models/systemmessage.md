@@ -8,6 +8,7 @@ import { SystemMessage } from "@openrouter/sdk/models";
 let value: SystemMessage = {
   role: "system",
   content: [],
+  name: "<value>",
 };
 ```
 

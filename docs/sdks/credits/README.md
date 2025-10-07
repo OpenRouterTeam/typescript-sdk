@@ -3,18 +3,20 @@
 
 ## Overview
 
+Credit management endpoints
+
 ### Available Operations
 
-* [getCredits](#getcredits) - Get total credits purchased and used for the authenticated user
-* [postCreditsCoinbase](#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+* [get](#get) - Get total credits purchased and used for the authenticated user
+* [addCoinbaseCharge](#addcoinbasecharge) - Create a Coinbase charge for crypto payment
 
-## getCredits
+## get
 
 Get total credits purchased and used for the authenticated user
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/credits" method="get" path="/credits" -->
+<!-- UsageSnippet language="typescript" operationID="getCredits" method="get" path="/credits" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -23,7 +25,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.credits.getCredits();
+  const result = await openRouter.credits.get();
 
   console.log(result);
 }
@@ -37,7 +39,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { creditsGetCredits } from "@openrouter/sdk/funcs/creditsGetCredits.js";
+import { creditsGet } from "@openrouter/sdk/funcs/creditsGet.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -46,12 +48,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await creditsGetCredits(openRouter);
+  const res = await creditsGet(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("creditsGetCredits failed:", res.error);
+    console.log("creditsGet failed:", res.error);
   }
 }
 
@@ -71,18 +73,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useCreditsGetCredits,
-  useCreditsGetCreditsSuspense,
+  useCreditsGet,
+  useCreditsGetSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchCreditsGetCredits,
+  prefetchCreditsGet,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllCreditsGetCredits,
-} from "@openrouter/sdk/react-query/creditsGetCredits.js";
+  invalidateAllCreditsGet,
+} from "@openrouter/sdk/react-query/creditsGet.js";
 ```
 
 ### Parameters
@@ -104,21 +106,25 @@ import {
 | errors.ErrorResponse          | 4XX                           | application/json              |
 | errors.OpenRouterDefaultError | 5XX                           | \*/\*                         |
 
-## postCreditsCoinbase
+## addCoinbaseCharge
 
 Create a Coinbase charge for crypto payment
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="post_/credits/coinbase" method="post" path="/credits/coinbase" -->
+<!-- UsageSnippet language="typescript" operationID="addCoinbaseCharge" method="post" path="/credits/coinbase" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.credits.postCreditsCoinbase({
+  const result = await openRouter.credits.addCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    amount: 4821.17,
+    sender: "<value>",
+    chainId: 1,
   });
 
   console.log(result);
@@ -133,21 +139,25 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { creditsPostCreditsCoinbase } from "@openrouter/sdk/funcs/creditsPostCreditsCoinbase.js";
+import { creditsAddCoinbaseCharge } from "@openrouter/sdk/funcs/creditsAddCoinbaseCharge.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore();
 
 async function run() {
-  const res = await creditsPostCreditsCoinbase(openRouter, {
+  const res = await creditsAddCoinbaseCharge(openRouter, {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    amount: 4821.17,
+    sender: "<value>",
+    chainId: 1,
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("creditsPostCreditsCoinbase failed:", res.error);
+    console.log("creditsAddCoinbaseCharge failed:", res.error);
   }
 }
 
@@ -167,23 +177,23 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useCreditsPostCreditsCoinbaseMutation
-} from "@openrouter/sdk/react-query/creditsPostCreditsCoinbase.js";
+  useCreditsAddCoinbaseChargeMutation
+} from "@openrouter/sdk/react-query/creditsAddCoinbaseCharge.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostCreditsCoinbaseRequest](../../models/operations/postcreditscoinbaserequest.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `security`                                                                                                                                                                     | [operations.PostCreditsCoinbaseSecurity](../../models/operations/postcreditscoinbasesecurity.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
+| `request`                                                                                                                                                                      | [operations.AddCoinbaseChargeRequest](../../models/operations/addcoinbasechargerequest.md)                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `security`                                                                                                                                                                     | [operations.AddCoinbaseChargeSecurity](../../models/operations/addcoinbasechargesecurity.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostCreditsCoinbaseResponse](../../models/operations/postcreditscoinbaseresponse.md)\>**
+**Promise\<[operations.AddCoinbaseChargeResponse](../../models/operations/addcoinbasechargeresponse.md)\>**
 
 ### Errors
 

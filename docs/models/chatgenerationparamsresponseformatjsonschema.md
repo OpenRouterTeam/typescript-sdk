@@ -9,6 +9,12 @@ let value: ChatGenerationParamsResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
     name: "<value>",
+    description: "consequently alert unnaturally until and orientate ski gray",
+    schema: {
+      "key": "<value>",
+      "key1": "<value>",
+    },
+    strict: false,
   },
 };
 ```

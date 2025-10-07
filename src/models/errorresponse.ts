@@ -8,7 +8,7 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const CodeEnum = {
+export const ErrorResponseCode = {
   OneHundred: 100,
   OneHundredAndOne: 101,
   OneHundredAndTwo: 102,
@@ -80,31 +80,33 @@ export const CodeEnum = {
   FiveHundredAndTwentyNine: 529,
   FiveHundredAndThirty: 530,
 } as const;
-export type CodeEnum = ClosedEnum<typeof CodeEnum>;
+export type ErrorResponseCode = ClosedEnum<typeof ErrorResponseCode>;
 
 export type ErrorResponseError = {
-  code: CodeEnum;
+  code: ErrorResponseCode;
   message: string;
   metadata?: { [k: string]: any | null } | null | undefined;
 };
 
 /** @internal */
-export const CodeEnum$inboundSchema: z.ZodNativeEnum<typeof CodeEnum> = z
-  .nativeEnum(CodeEnum);
+export const ErrorResponseCode$inboundSchema: z.ZodNativeEnum<
+  typeof ErrorResponseCode
+> = z.nativeEnum(ErrorResponseCode);
 
 /** @internal */
-export const CodeEnum$outboundSchema: z.ZodNativeEnum<typeof CodeEnum> =
-  CodeEnum$inboundSchema;
+export const ErrorResponseCode$outboundSchema: z.ZodNativeEnum<
+  typeof ErrorResponseCode
+> = ErrorResponseCode$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace CodeEnum$ {
-  /** @deprecated use `CodeEnum$inboundSchema` instead. */
-  export const inboundSchema = CodeEnum$inboundSchema;
-  /** @deprecated use `CodeEnum$outboundSchema` instead. */
-  export const outboundSchema = CodeEnum$outboundSchema;
+export namespace ErrorResponseCode$ {
+  /** @deprecated use `ErrorResponseCode$inboundSchema` instead. */
+  export const inboundSchema = ErrorResponseCode$inboundSchema;
+  /** @deprecated use `ErrorResponseCode$outboundSchema` instead. */
+  export const outboundSchema = ErrorResponseCode$outboundSchema;
 }
 
 /** @internal */
@@ -113,7 +115,7 @@ export const ErrorResponseError$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  code: CodeEnum$inboundSchema,
+  code: ErrorResponseCode$inboundSchema,
   message: z.string(),
   metadata: z.nullable(z.record(z.nullable(z.any()))).optional(),
 });
@@ -131,7 +133,7 @@ export const ErrorResponseError$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ErrorResponseError
 > = z.object({
-  code: CodeEnum$outboundSchema,
+  code: ErrorResponseCode$outboundSchema,
   message: z.string(),
   metadata: z.nullable(z.record(z.nullable(z.any()))).optional(),
 });

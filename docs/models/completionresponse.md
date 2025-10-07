@@ -8,9 +8,15 @@ import { CompletionResponse } from "@openrouter/sdk/models";
 let value: CompletionResponse = {
   id: "<id>",
   object: "text_completion",
-  created: 8282.61,
-  model: "V90",
+  created: 7985.17,
+  model: "Taurus",
+  systemFingerprint: "<value>",
   choices: [],
+  usage: {
+    promptTokens: 4161.82,
+    completionTokens: 8658.7,
+    totalTokens: 8891.62,
+  },
 };
 ```
 

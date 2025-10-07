@@ -15,9 +15,9 @@ export class Embeddings extends ClientSDK {
    * Submits an embedding request to the embeddings router
    */
   async generate(
-    request?: operations.PostEmbeddingsRequest | undefined,
+    request: operations.GenerateRequest,
     options?: RequestOptions,
-  ): Promise<operations.PostEmbeddingsResponse> {
+  ): Promise<operations.GenerateResponse> {
     return unwrapAsync(embeddingsGenerate(
       this,
       request,

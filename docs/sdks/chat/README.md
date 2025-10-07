@@ -13,7 +13,7 @@ Sends a request for a model response for the given chat conversation. Supports b
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="post_/chat/completions" method="post" path="/chat/completions" -->
+<!-- UsageSnippet language="typescript" operationID="sendChatCompletionRequest" method="post" path="/chat/completions" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -24,7 +24,51 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.chat.send({
     messages: [],
-    model: "Grand Cherokee",
+    model: "Charger",
+    frequencyPenalty: 8689.88,
+    logitBias: {
+      "key": 4876.54,
+      "key1": 7346.88,
+    },
+    logprobs: false,
+    topLogprobs: 2140.15,
+    maxCompletionTokens: 89.43,
+    maxTokens: 7392.4,
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+    presencePenalty: 9132.54,
+    reasoning: {
+      effort: "medium",
+      generateSummary: "concise",
+      summary: null,
+    },
+    responseFormat: {
+      type: "grammar",
+      grammar: "<value>",
+    },
+    seed: null,
+    stop: [],
+    streamOptions: {
+      includeUsage: true,
+    },
+    toolChoice: "<value>",
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description: "pro even bank rewarding ha modulo aboard mentor",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: null,
+        },
+      },
+    ],
+    user: "Francesco.Bartell",
   });
 
   console.log(result);
@@ -50,7 +94,51 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await chatSend(openRouter, {
     messages: [],
-    model: "Grand Cherokee",
+    model: "Charger",
+    frequencyPenalty: 8689.88,
+    logitBias: {
+      "key": 4876.54,
+      "key1": 7346.88,
+    },
+    logprobs: false,
+    topLogprobs: 2140.15,
+    maxCompletionTokens: 89.43,
+    maxTokens: 7392.4,
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+    presencePenalty: 9132.54,
+    reasoning: {
+      effort: "medium",
+      generateSummary: "concise",
+      summary: null,
+    },
+    responseFormat: {
+      type: "grammar",
+      grammar: "<value>",
+    },
+    seed: null,
+    stop: [],
+    streamOptions: {
+      includeUsage: true,
+    },
+    toolChoice: "<value>",
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description: "pro even bank rewarding ha modulo aboard mentor",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: null,
+        },
+      },
+    ],
+    user: "Francesco.Bartell",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -91,7 +179,7 @@ import {
 
 ### Response
 
-**Promise\<[operations.PostChatCompletionsResponse](../../models/operations/postchatcompletionsresponse.md)\>**
+**Promise\<[operations.SendChatCompletionRequestResponse](../../models/operations/sendchatcompletionrequestresponse.md)\>**
 
 ### Errors
 

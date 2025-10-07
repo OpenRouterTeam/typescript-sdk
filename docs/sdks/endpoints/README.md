@@ -3,18 +3,20 @@
 
 ## Overview
 
+Endpoint information
+
 ### Available Operations
 
-* [getModelsAuthorSlugEndpoints](#getmodelsauthorslugendpoints) - List all endpoints for a model
-* [getEndpointsZdr](#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+* [list](#list) - List all endpoints for a model
+* [previewZDR](#previewzdr) - Preview the impact of ZDR on the available endpoints
 
-## getModelsAuthorSlugEndpoints
+## list
 
 List all endpoints for a model
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/models/{author}/{slug}/endpoints" method="get" path="/models/{author}/{slug}/endpoints" -->
+<!-- UsageSnippet language="typescript" operationID="list" method="get" path="/models/{author}/{slug}/endpoints" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -23,7 +25,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.endpoints.getModelsAuthorSlugEndpoints({
+  const result = await openRouter.endpoints.list({
     author: "<value>",
     slug: "<value>",
   });
@@ -40,7 +42,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endpointsGetModelsAuthorSlugEndpoints } from "@openrouter/sdk/funcs/endpointsGetModelsAuthorSlugEndpoints.js";
+import { endpointsList } from "@openrouter/sdk/funcs/endpointsList.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -49,7 +51,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endpointsGetModelsAuthorSlugEndpoints(openRouter, {
+  const res = await endpointsList(openRouter, {
     author: "<value>",
     slug: "<value>",
   });
@@ -57,7 +59,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endpointsGetModelsAuthorSlugEndpoints failed:", res.error);
+    console.log("endpointsList failed:", res.error);
   }
 }
 
@@ -77,33 +79,33 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useEndpointsGetModelsAuthorSlugEndpoints,
-  useEndpointsGetModelsAuthorSlugEndpointsSuspense,
+  useEndpointsList,
+  useEndpointsListSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchEndpointsGetModelsAuthorSlugEndpoints,
+  prefetchEndpointsList,
   
   // Utilities to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateEndpointsGetModelsAuthorSlugEndpoints,
-  invalidateAllEndpointsGetModelsAuthorSlugEndpoints,
-} from "@openrouter/sdk/react-query/endpointsGetModelsAuthorSlugEndpoints.js";
+  invalidateEndpointsList,
+  invalidateAllEndpointsList,
+} from "@openrouter/sdk/react-query/endpointsList.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetModelsAuthorSlugEndpointsRequestRequest](../../models/operations/getmodelsauthorslugendpointsrequestrequest.md)                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ListRequestRequest](../../models/operations/listrequestrequest.md)                                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetModelsAuthorSlugEndpointsResponse](../../models/operations/getmodelsauthorslugendpointsresponse.md)\>**
+**Promise\<[operations.ListResponse](../../models/operations/listresponse.md)\>**
 
 ### Errors
 
@@ -112,13 +114,13 @@ import {
 | errors.ErrorResponse | 4XX                  | application/json     |
 | errors.ErrorResponse | 5XX                  | application/json     |
 
-## getEndpointsZdr
+## previewZDR
 
 Preview the impact of ZDR on the available endpoints
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/endpoints/zdr" method="get" path="/endpoints/zdr" -->
+<!-- UsageSnippet language="typescript" operationID="previewZDR" method="get" path="/endpoints/zdr" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -127,7 +129,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.endpoints.getEndpointsZdr();
+  const result = await openRouter.endpoints.previewZDR();
 
   console.log(result);
 }
@@ -141,7 +143,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endpointsGetEndpointsZdr } from "@openrouter/sdk/funcs/endpointsGetEndpointsZdr.js";
+import { endpointsPreviewZDR } from "@openrouter/sdk/funcs/endpointsPreviewZDR.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -150,12 +152,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endpointsGetEndpointsZdr(openRouter);
+  const res = await endpointsPreviewZDR(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endpointsGetEndpointsZdr failed:", res.error);
+    console.log("endpointsPreviewZDR failed:", res.error);
   }
 }
 
@@ -175,18 +177,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useEndpointsGetEndpointsZdr,
-  useEndpointsGetEndpointsZdrSuspense,
+  useEndpointsPreviewZDR,
+  useEndpointsPreviewZDRSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchEndpointsGetEndpointsZdr,
+  prefetchEndpointsPreviewZDR,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllEndpointsGetEndpointsZdr,
-} from "@openrouter/sdk/react-query/endpointsGetEndpointsZdr.js";
+  invalidateAllEndpointsPreviewZDR,
+} from "@openrouter/sdk/react-query/endpointsPreviewZDR.js";
 ```
 
 ### Parameters
@@ -199,7 +201,7 @@ import {
 
 ### Response
 
-**Promise\<[operations.GetEndpointsZdrResponse](../../models/operations/getendpointszdrresponse.md)\>**
+**Promise\<[operations.PreviewZDRResponse](../../models/operations/previewzdrresponse.md)\>**
 
 ### Errors
 

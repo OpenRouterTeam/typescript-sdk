@@ -3,10 +3,9 @@
  */
 
 export * from "./chaterror.js";
-export * from "./completionerror.js";
 export * from "./errorresponse.js";
-export * from "./getproviders.js";
 export * from "./httpclienterrors.js";
+export * from "./listproviders.js";
 export * from "./openrouterdefaulterror.js";
 export * from "./openroutererror.js";
 export * from "./responsevalidationerror.js";

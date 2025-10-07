@@ -6,7 +6,7 @@ generation:
   sdkClassName: OpenRouter
   maintainOpenAPIOrder: true
   usageSnippets:
-    optionalPropertyRendering: withExample
+    optionalPropertyRendering: always
     sdkInitStyle: constructor
   useClassNamesForArrayFields: true
   fixes:
@@ -27,7 +27,8 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.0-beta.17
+  version: 0.0.0-beta.32
+  acceptHeaderEnum: true
   additionalDependencies:
     dependencies: {}
     devDependencies: {}

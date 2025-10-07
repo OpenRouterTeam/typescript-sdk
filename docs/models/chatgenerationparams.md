@@ -10,9 +10,61 @@ let value: ChatGenerationParams = {
     {
       role: "system",
       content: "<value>",
+      name: "<value>",
     },
   ],
   model: "Mustang",
+  frequencyPenalty: 7589.96,
+  logitBias: {
+    "key": 847.22,
+    "key1": 4831.07,
+    "key2": 1268.36,
+  },
+  logprobs: true,
+  topLogprobs: 1190.39,
+  maxCompletionTokens: 4025.63,
+  maxTokens: 6504,
+  metadata: {
+    "key": "<value>",
+  },
+  presencePenalty: 7597.29,
+  reasoning: {
+    effort: "minimal",
+    generateSummary: "detailed",
+    summary: null,
+  },
+  responseFormat: {
+    type: "json_object",
+  },
+  seed: 814447,
+  stop: [
+    "<value 1>",
+  ],
+  streamOptions: {
+    includeUsage: false,
+  },
+  toolChoice: {
+    type: "function",
+    function: {
+      name: "<value>",
+    },
+  },
+  tools: [
+    {
+      type: "function",
+      function: {
+        name: "<value>",
+        description: "mealy ew industrialize colossal",
+        parameters: {
+          "key": "<value>",
+          "key1": "<value>",
+          "key2": "<value>",
+        },
+        strict: false,
+      },
+    },
+  ],
+  user: "Antonia_Harber35",
 };
 ```
 

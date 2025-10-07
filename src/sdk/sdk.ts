@@ -3,9 +3,9 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
-import { Alpha } from "./alpha.js";
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
+import { Beta } from "./beta.js";
 import { Chat } from "./chat.js";
 import { Completions } from "./completions.js";
 import { Credits } from "./credits.js";
@@ -18,9 +18,9 @@ import { OAuth } from "./oauth.js";
 import { Providers } from "./providers.js";
 
 export class OpenRouter extends ClientSDK {
-  private _alpha?: Alpha;
-  get alpha(): Alpha {
-    return (this._alpha ??= new Alpha(this._options));
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   private _analytics?: Analytics;

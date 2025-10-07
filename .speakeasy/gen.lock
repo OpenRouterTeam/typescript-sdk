@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 5bee9acdb78aa0b06a7e89f1415b1ed5
+  docChecksum: 293caf804b472092049eadc7ac35015f
   docVersion: 1.0.0
-  speakeasyVersion: 1.628.7
-  generationVersion: 2.716.9
-  releaseVersion: 0.0.0-beta.17
-  configChecksum: 9acbad68aee0e492d65547ce0433dbd6
+  speakeasyVersion: 1.636.0
+  generationVersion: 2.723.2
+  releaseVersion: 0.0.0-beta.32
+  configChecksum: 168fc0ff2e77ffbd25b408881924be20
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.21.25
+    core: 3.21.26
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -26,7 +26,7 @@ features:
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.82.5
-    groups: 2.81.2
+    groups: 2.81.3
     methodArguments: 0.1.2
     methodSecurity: 2.82.6
     nameOverrides: 2.81.2
@@ -38,7 +38,7 @@ features:
     serverEvents: 0.1.10
     serverEventsSentinels: 0.1.0
     serverIDs: 2.81.2
-    unions: 2.85.12
+    unions: 2.86.0
 generatedFiles:
   - .devcontainer/README.md
   - .devcontainer/devcontainer.json
@@ -51,11 +51,13 @@ generatedFiles:
   - USAGE.md
   - docs/lib/utils/retryconfig.md
   - docs/models/activityitem.md
+  - docs/models/annotation.md
   - docs/models/assistantmessage.md
   - docs/models/assistantmessagecontent.md
-  - docs/models/chaterrorcode.md
+  - docs/models/audio.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
+  - docs/models/chatgenerationparamseffort.md
   - docs/models/chatgenerationparamsjsonschema.md
   - docs/models/chatgenerationparamsresponseformatgrammar.md
   - docs/models/chatgenerationparamsresponseformatjsonobject.md
@@ -67,6 +69,7 @@ generatedFiles:
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
+  - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagetokenlogprob.md
@@ -79,16 +82,18 @@ generatedFiles:
   - docs/models/chatstreamingchoice.md
   - docs/models/chatstreamingchoicefinishreason.md
   - docs/models/chatstreamingmessagechunk.md
+  - docs/models/chatstreamingmessagechunkrole.md
   - docs/models/chatstreamingmessagetoolcall.md
   - docs/models/chatstreamingmessagetoolcallfunction.md
   - docs/models/chatstreamingresponsechunk.md
-  - docs/models/chatstreamingresponsechunkdata.md
   - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
-  - docs/models/codeenum.md
+  - docs/models/code.md
+  - docs/models/completion.md
   - docs/models/completionchoice.md
   - docs/models/completioncreateparams.md
   - docs/models/completioncreateparamsjsonschema.md
+  - docs/models/completioncreateparamsprompt.md
   - docs/models/completioncreateparamsresponseformatgrammar.md
   - docs/models/completioncreateparamsresponseformatjsonobject.md
   - docs/models/completioncreateparamsresponseformatjsonschema.md
@@ -96,622 +101,447 @@ generatedFiles:
   - docs/models/completioncreateparamsresponseformattext.md
   - docs/models/completioncreateparamsresponseformatunion.md
   - docs/models/completioncreateparamsstop.md
-  - docs/models/completionerrorcode.md
-  - docs/models/completionerrorerror.md
   - docs/models/completionfinishreason.md
   - docs/models/completionlogprobs.md
   - docs/models/completionresponse.md
-  - docs/models/completionstreamingchoice.md
-  - docs/models/completionstreamingresponsechunk.md
-  - docs/models/completionstreamingresponsechunkdata.md
   - docs/models/completiontokensdetails.md
   - docs/models/completionusage.md
+  - docs/models/data.md
+  - docs/models/datacollection.md
   - docs/models/detail.md
-  - docs/models/effort.md
+  - docs/models/engine.md
+  - docs/models/errorfailed.md
+  - docs/models/errorresponsecode.md
   - docs/models/errorresponseerror.md
   - docs/models/errors/chaterror.md
-  - docs/models/errors/completionerror.md
   - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
-  - docs/models/format.md
+  - docs/models/experimental.md
   - docs/models/generatesummary.md
+  - docs/models/idchainofthought.md
+  - docs/models/idfileparser.md
+  - docs/models/idmoderation.md
+  - docs/models/idweb.md
+  - docs/models/ignore.md
+  - docs/models/ignoreenum.md
+  - docs/models/image.md
   - docs/models/imageurl.md
+  - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
+  - docs/models/instructions.md
+  - docs/models/itemassistant.md
+  - docs/models/itemfilesearchcall.md
+  - docs/models/itemfunctioncall1.md
+  - docs/models/itemfunctioncall2.md
+  - docs/models/itemimagegenerationcall.md
+  - docs/models/itemmessage.md
+  - docs/models/itemreasoning1.md
+  - docs/models/itemreasoning2.md
+  - docs/models/itemstatusenum1.md
+  - docs/models/itemstatusenum2.md
+  - docs/models/itemstatusenum3.md
+  - docs/models/itemstatusenum4.md
+  - docs/models/itemtypefilesearchcall.md
+  - docs/models/itemtypefunctioncall1.md
+  - docs/models/itemtypefunctioncall2.md
+  - docs/models/itemtypeimagegenerationcall.md
+  - docs/models/itemtypemessage1.md
+  - docs/models/itemtypemessage2.md
+  - docs/models/itemtypereasoning1.md
+  - docs/models/itemtypereasoning2.md
+  - docs/models/itemtypesummarytext1.md
+  - docs/models/itemtypesummarytext2.md
+  - docs/models/itemtypewebsearchcall1.md
+  - docs/models/itemtypewebsearchcall2.md
+  - docs/models/itemunion1.md
+  - docs/models/itemunion2.md
+  - docs/models/itemwebsearchcall1.md
+  - docs/models/itemwebsearchcall2.md
+  - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
-  - docs/models/operations/annotationfilecitationrequest1.md
-  - docs/models/operations/annotationfilecitationrequest2.md
-  - docs/models/operations/annotationfilepathrequest1.md
-  - docs/models/operations/annotationfilepathrequest2.md
-  - docs/models/operations/annotationrequestunion1.md
-  - docs/models/operations/annotationrequestunion2.md
-  - docs/models/operations/annotationurlcitationrequest1.md
-  - docs/models/operations/annotationurlcitationrequest2.md
+  - docs/models/objectt.md
+  - docs/models/only.md
+  - docs/models/onlyenum.md
+  - docs/models/openairesponsesrequest.md
+  - docs/models/openairesponsesrequestprompt.md
+  - docs/models/openairesponsesrequestservicetier.md
+  - docs/models/openairesponsesrequesttruncation.md
+  - docs/models/operations/addcoinbasechargedata.md
+  - docs/models/operations/addcoinbasechargerequest.md
+  - docs/models/operations/addcoinbasechargeresponse.md
+  - docs/models/operations/addcoinbasechargesecurity.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
   - docs/models/operations/chainid.md
-  - docs/models/operations/code.md
-  - docs/models/operations/contentinputfilerequest1.md
-  - docs/models/operations/contentinputfilerequest2.md
-  - docs/models/operations/contentinputimagerequest1.md
-  - docs/models/operations/contentinputimagerequest2.md
-  - docs/models/operations/contentinputtextrequest1.md
-  - docs/models/operations/contentinputtextrequest2.md
-  - docs/models/operations/contentoutputtextrequest1.md
-  - docs/models/operations/contentoutputtextrequest2.md
-  - docs/models/operations/contentreasoningtextrequest.md
-  - docs/models/operations/contentrefusalrequest1.md
-  - docs/models/operations/contentrefusalrequest2.md
-  - docs/models/operations/contentrequestunion1.md
-  - docs/models/operations/contentrequestunion2.md
-  - docs/models/operations/contentrequestunion3.md
-  - docs/models/operations/contentrequestunion4.md
-  - docs/models/operations/contentrequestunion5.md
-  - docs/models/operations/deletekeyshashrequest.md
-  - docs/models/operations/deletekeyshashresponse.md
-  - docs/models/operations/effortrequest.md
-  - docs/models/operations/effortresponse.md
+  - docs/models/operations/createauthorizationcodecodechallengemethod.md
+  - docs/models/operations/createauthorizationcodedata.md
+  - docs/models/operations/createauthorizationcoderequest.md
+  - docs/models/operations/createauthorizationcoderesponse.md
+  - docs/models/operations/createdata.md
+  - docs/models/operations/createrequest.md
+  - docs/models/operations/createresponse.md
+  - docs/models/operations/datacollection.md
+  - docs/models/operations/deleterequest.md
+  - docs/models/operations/deleteresponse.md
   - docs/models/operations/encodingformat.md
   - docs/models/operations/encodingformatbase64.md
   - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/endpoint.md
-  - docs/models/operations/endpointsgetendpointszdrrequest.md
-  - docs/models/operations/endpointsgetmodelsauthorslugendpointsrequest.md
-  - docs/models/operations/engine.md
-  - docs/models/operations/filtersrequest1.md
-  - docs/models/operations/filtersrequest2.md
-  - docs/models/operations/filtersresponse1.md
-  - docs/models/operations/filtersresponse2.md
-  - docs/models/operations/formatjsonobjectrequest.md
-  - docs/models/operations/formatjsonobjectresponse.md
-  - docs/models/operations/formatjsonschemarequest.md
-  - docs/models/operations/formatjsonschemaresponse.md
-  - docs/models/operations/formatrequestunion.md
-  - docs/models/operations/formatresponseunion.md
-  - docs/models/operations/formattextrequest.md
-  - docs/models/operations/formattextresponse.md
-  - docs/models/operations/formattyperequest.md
-  - docs/models/operations/formattyperesponse.md
-  - docs/models/operations/getactivityrequest.md
-  - docs/models/operations/getactivityresponse.md
-  - docs/models/operations/getauthkeydata.md
-  - docs/models/operations/getauthkeyratelimit.md
-  - docs/models/operations/getauthkeyresponse.md
+  - docs/models/operations/endpointslistrequest.md
+  - docs/models/operations/endpointspreviewzdrrequest.md
+  - docs/models/operations/errort.md
+  - docs/models/operations/exchangeauthorizationcodecodechallengemethod.md
+  - docs/models/operations/exchangeauthorizationcoderequest.md
+  - docs/models/operations/exchangeauthorizationcoderesponse.md
+  - docs/models/operations/experimental.md
+  - docs/models/operations/generateaudio.md
+  - docs/models/operations/generatecompletion.md
+  - docs/models/operations/generatedata.md
+  - docs/models/operations/generateimage.md
+  - docs/models/operations/generateprompt.md
+  - docs/models/operations/generateprovider.md
+  - docs/models/operations/generatequantization.md
+  - docs/models/operations/generaterequest.md
+  - docs/models/operations/generaterequestunion.md
+  - docs/models/operations/generateresponse.md
+  - docs/models/operations/getapikeydata.md
+  - docs/models/operations/getapikeyrequest.md
+  - docs/models/operations/getapikeyresponse.md
+  - docs/models/operations/getcountdata.md
+  - docs/models/operations/getcountresponse.md
   - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
-  - docs/models/operations/getendpointszdraudio.md
-  - docs/models/operations/getendpointszdrcompletion.md
-  - docs/models/operations/getendpointszdrdata.md
-  - docs/models/operations/getendpointszdrimage.md
-  - docs/models/operations/getendpointszdrimageoutput.md
-  - docs/models/operations/getendpointszdrinputaudiocache.md
-  - docs/models/operations/getendpointszdrinputcacheread.md
-  - docs/models/operations/getendpointszdrinputcachewrite.md
-  - docs/models/operations/getendpointszdrinternalreasoning.md
-  - docs/models/operations/getendpointszdrpricing.md
-  - docs/models/operations/getendpointszdrprompt.md
-  - docs/models/operations/getendpointszdrprovidername.md
-  - docs/models/operations/getendpointszdrquantization.md
-  - docs/models/operations/getendpointszdrresponse.md
-  - docs/models/operations/getendpointszdrstatus.md
-  - docs/models/operations/getendpointszdrsupportedparameter.md
-  - docs/models/operations/getendpointszdrwebsearch.md
-  - docs/models/operations/getgenerationdata.md
-  - docs/models/operations/getgenerationrequest.md
-  - docs/models/operations/getgenerationresponse.md
-  - docs/models/operations/getkeydata.md
-  - docs/models/operations/getkeyratelimit.md
-  - docs/models/operations/getkeyresponse.md
-  - docs/models/operations/getkeysdata.md
-  - docs/models/operations/getkeyshashdata.md
-  - docs/models/operations/getkeyshashrequest.md
-  - docs/models/operations/getkeyshashresponse.md
-  - docs/models/operations/getkeysrequest.md
-  - docs/models/operations/getkeysresponse.md
-  - docs/models/operations/getmodelsarchitecture.md
-  - docs/models/operations/getmodelsaudio.md
-  - docs/models/operations/getmodelsauthorslugendpointsarchitecture.md
-  - docs/models/operations/getmodelsauthorslugendpointsaudio.md
-  - docs/models/operations/getmodelsauthorslugendpointscompletion.md
-  - docs/models/operations/getmodelsauthorslugendpointsdata.md
-  - docs/models/operations/getmodelsauthorslugendpointsimage.md
-  - docs/models/operations/getmodelsauthorslugendpointsimageoutput.md
-  - docs/models/operations/getmodelsauthorslugendpointsinputaudiocache.md
-  - docs/models/operations/getmodelsauthorslugendpointsinputcacheread.md
-  - docs/models/operations/getmodelsauthorslugendpointsinputcachewrite.md
-  - docs/models/operations/getmodelsauthorslugendpointsinputmodality.md
-  - docs/models/operations/getmodelsauthorslugendpointsinstructtype.md
-  - docs/models/operations/getmodelsauthorslugendpointsinternalreasoning.md
-  - docs/models/operations/getmodelsauthorslugendpointsoutputmodality.md
-  - docs/models/operations/getmodelsauthorslugendpointspricing.md
-  - docs/models/operations/getmodelsauthorslugendpointsprompt.md
-  - docs/models/operations/getmodelsauthorslugendpointsprovidername.md
-  - docs/models/operations/getmodelsauthorslugendpointsquantization.md
-  - docs/models/operations/getmodelsauthorslugendpointsrequestrequest.md
-  - docs/models/operations/getmodelsauthorslugendpointsresponse.md
-  - docs/models/operations/getmodelsauthorslugendpointsstatus.md
-  - docs/models/operations/getmodelsauthorslugendpointssupportedparameter.md
-  - docs/models/operations/getmodelsauthorslugendpointstokenizer.md
-  - docs/models/operations/getmodelsauthorslugendpointswebsearch.md
-  - docs/models/operations/getmodelscompletion.md
-  - docs/models/operations/getmodelscountdata.md
-  - docs/models/operations/getmodelscountresponse.md
-  - docs/models/operations/getmodelsdata.md
-  - docs/models/operations/getmodelsimage.md
-  - docs/models/operations/getmodelsimageoutput.md
-  - docs/models/operations/getmodelsinputaudiocache.md
-  - docs/models/operations/getmodelsinputcacheread.md
-  - docs/models/operations/getmodelsinputcachewrite.md
-  - docs/models/operations/getmodelsinputmodality.md
-  - docs/models/operations/getmodelsinstructtype.md
-  - docs/models/operations/getmodelsinternalreasoning.md
-  - docs/models/operations/getmodelsoutputmodality.md
-  - docs/models/operations/getmodelsperrequestlimits.md
-  - docs/models/operations/getmodelspricing.md
-  - docs/models/operations/getmodelsprompt.md
-  - docs/models/operations/getmodelsrequestrequest.md
-  - docs/models/operations/getmodelsresponse.md
-  - docs/models/operations/getmodelsresponsebody.md
-  - docs/models/operations/getmodelssupportedparameter.md
-  - docs/models/operations/getmodelstokenizer.md
-  - docs/models/operations/getmodelstopprovider.md
-  - docs/models/operations/getmodelsuserarchitecture.md
-  - docs/models/operations/getmodelsuseraudio.md
-  - docs/models/operations/getmodelsusercompletion.md
-  - docs/models/operations/getmodelsuserdata.md
-  - docs/models/operations/getmodelsuserimage.md
-  - docs/models/operations/getmodelsuserimageoutput.md
-  - docs/models/operations/getmodelsuserinputaudiocache.md
-  - docs/models/operations/getmodelsuserinputcacheread.md
-  - docs/models/operations/getmodelsuserinputcachewrite.md
-  - docs/models/operations/getmodelsuserinputmodality.md
-  - docs/models/operations/getmodelsuserinstructtype.md
-  - docs/models/operations/getmodelsuserinternalreasoning.md
-  - docs/models/operations/getmodelsuseroutputmodality.md
-  - docs/models/operations/getmodelsuserperrequestlimits.md
-  - docs/models/operations/getmodelsuserpricing.md
-  - docs/models/operations/getmodelsuserprompt.md
-  - docs/models/operations/getmodelsuserresponse.md
-  - docs/models/operations/getmodelsusersecurity.md
-  - docs/models/operations/getmodelsusersupportedparameter.md
-  - docs/models/operations/getmodelsusertokenizer.md
-  - docs/models/operations/getmodelsusertopprovider.md
-  - docs/models/operations/getmodelsuserwebsearch.md
-  - docs/models/operations/getmodelswebsearch.md
-  - docs/models/operations/getparametersauthorslugdata.md
-  - docs/models/operations/getparametersauthorslugprovider.md
-  - docs/models/operations/getparametersauthorslugrequest.md
-  - docs/models/operations/getparametersauthorslugresponse.md
-  - docs/models/operations/getparametersauthorslugsecurity.md
-  - docs/models/operations/getparametersauthorslugsupportedparameter.md
-  - docs/models/operations/getprovidersdata.md
-  - docs/models/operations/getproviderserror.md
-  - docs/models/operations/getprovidersresponse.md
-  - docs/models/operations/idchainofthought.md
-  - docs/models/operations/idfileparser.md
-  - docs/models/operations/idmoderation.md
-  - docs/models/operations/idweb.md
-  - docs/models/operations/include.md
-  - docs/models/operations/incompletedetails.md
-  - docs/models/operations/inputassistant1.md
-  - docs/models/operations/inputassistant2.md
-  - docs/models/operations/inputdetail1.md
-  - docs/models/operations/inputdetail2.md
-  - docs/models/operations/inputfilesearchcall.md
-  - docs/models/operations/inputformat.md
-  - docs/models/operations/inputfunctioncall1.md
-  - docs/models/operations/inputfunctioncall2.md
-  - docs/models/operations/inputfunctioncalloutput.md
-  - docs/models/operations/inputimagegenerationcall1.md
-  - docs/models/operations/inputimagegenerationcall2.md
-  - docs/models/operations/inputmessage1.md
-  - docs/models/operations/inputmessage2.md
-  - docs/models/operations/inputreasoning.md
-  - docs/models/operations/inputsummary.md
-  - docs/models/operations/inputtokensdetails.md
-  - docs/models/operations/inputtypefilecitation1.md
-  - docs/models/operations/inputtypefilecitation2.md
-  - docs/models/operations/inputtypefilepath1.md
-  - docs/models/operations/inputtypefilepath2.md
-  - docs/models/operations/inputtypefilesearchcall.md
-  - docs/models/operations/inputtypefunctioncall1.md
-  - docs/models/operations/inputtypefunctioncall2.md
-  - docs/models/operations/inputtypefunctioncalloutput.md
-  - docs/models/operations/inputtypeimagegenerationcall1.md
-  - docs/models/operations/inputtypeimagegenerationcall2.md
-  - docs/models/operations/inputtypeinputfile1.md
-  - docs/models/operations/inputtypeinputfile2.md
-  - docs/models/operations/inputtypeinputimage1.md
-  - docs/models/operations/inputtypeinputimage2.md
-  - docs/models/operations/inputtypeinputtext1.md
-  - docs/models/operations/inputtypeinputtext2.md
-  - docs/models/operations/inputtypemessage1.md
-  - docs/models/operations/inputtypemessage2.md
-  - docs/models/operations/inputtypemessage3.md
-  - docs/models/operations/inputtypemessage4.md
-  - docs/models/operations/inputtypeoutputtext1.md
-  - docs/models/operations/inputtypeoutputtext2.md
-  - docs/models/operations/inputtypereasoning.md
-  - docs/models/operations/inputtypereasoningtext.md
-  - docs/models/operations/inputtyperefusal1.md
-  - docs/models/operations/inputtyperefusal2.md
-  - docs/models/operations/inputtypesummarytext.md
-  - docs/models/operations/inputtypeurlcitation1.md
-  - docs/models/operations/inputtypeurlcitation2.md
-  - docs/models/operations/inputtypewebsearchcall.md
-  - docs/models/operations/inputwebsearchcall.md
-  - docs/models/operations/instructionsannotationfilecitation1.md
-  - docs/models/operations/instructionsannotationfilecitation2.md
-  - docs/models/operations/instructionsannotationfilepath1.md
-  - docs/models/operations/instructionsannotationfilepath2.md
-  - docs/models/operations/instructionsannotationunion1.md
-  - docs/models/operations/instructionsannotationunion2.md
-  - docs/models/operations/instructionsannotationurlcitation1.md
-  - docs/models/operations/instructionsannotationurlcitation2.md
-  - docs/models/operations/instructionsassistant1.md
-  - docs/models/operations/instructionsassistant2.md
-  - docs/models/operations/instructionscontentinputfile1.md
-  - docs/models/operations/instructionscontentinputfile2.md
-  - docs/models/operations/instructionscontentinputimage1.md
-  - docs/models/operations/instructionscontentinputimage2.md
-  - docs/models/operations/instructionscontentinputtext1.md
-  - docs/models/operations/instructionscontentinputtext2.md
-  - docs/models/operations/instructionscontentoutputtext1.md
-  - docs/models/operations/instructionscontentoutputtext2.md
-  - docs/models/operations/instructionscontentreasoningtext.md
-  - docs/models/operations/instructionscontentrefusal1.md
-  - docs/models/operations/instructionscontentrefusal2.md
-  - docs/models/operations/instructionscontentunion1.md
-  - docs/models/operations/instructionscontentunion2.md
-  - docs/models/operations/instructionscontentunion3.md
-  - docs/models/operations/instructionscontentunion4.md
-  - docs/models/operations/instructionscontentunion5.md
-  - docs/models/operations/instructionsdetail1.md
-  - docs/models/operations/instructionsdetail2.md
-  - docs/models/operations/instructionsfilesearchcall.md
-  - docs/models/operations/instructionsformat.md
-  - docs/models/operations/instructionsfunctioncall1.md
-  - docs/models/operations/instructionsfunctioncall2.md
-  - docs/models/operations/instructionsfunctioncalloutput.md
-  - docs/models/operations/instructionsimagegenerationcall1.md
-  - docs/models/operations/instructionsimagegenerationcall2.md
-  - docs/models/operations/instructionsmessage1.md
-  - docs/models/operations/instructionsmessage2.md
-  - docs/models/operations/instructionsreasoning.md
-  - docs/models/operations/instructionsroleassistant1.md
-  - docs/models/operations/instructionsroleassistant2.md
-  - docs/models/operations/instructionsroleassistant3.md
-  - docs/models/operations/instructionsroledeveloper1.md
-  - docs/models/operations/instructionsroledeveloper2.md
-  - docs/models/operations/instructionsrolesystem1.md
-  - docs/models/operations/instructionsrolesystem2.md
-  - docs/models/operations/instructionsroleunion1.md
-  - docs/models/operations/instructionsroleunion2.md
-  - docs/models/operations/instructionsroleuser1.md
-  - docs/models/operations/instructionsroleuser2.md
-  - docs/models/operations/instructionsstatuscompleted1.md
-  - docs/models/operations/instructionsstatuscompleted2.md
-  - docs/models/operations/instructionsstatusenum1.md
-  - docs/models/operations/instructionsstatusenum2.md
-  - docs/models/operations/instructionsstatusenum3.md
-  - docs/models/operations/instructionsstatusenum4.md
-  - docs/models/operations/instructionsstatusenum5.md
-  - docs/models/operations/instructionsstatusenum6.md
-  - docs/models/operations/instructionsstatusincomplete1.md
-  - docs/models/operations/instructionsstatusincomplete2.md
-  - docs/models/operations/instructionsstatusinprogress1.md
-  - docs/models/operations/instructionsstatusinprogress2.md
-  - docs/models/operations/instructionsstatusunion1.md
-  - docs/models/operations/instructionsstatusunion2.md
-  - docs/models/operations/instructionssummary.md
-  - docs/models/operations/instructionstypefilecitation1.md
-  - docs/models/operations/instructionstypefilecitation2.md
-  - docs/models/operations/instructionstypefilepath1.md
-  - docs/models/operations/instructionstypefilepath2.md
-  - docs/models/operations/instructionstypefilesearchcall.md
-  - docs/models/operations/instructionstypefunctioncall1.md
-  - docs/models/operations/instructionstypefunctioncall2.md
-  - docs/models/operations/instructionstypefunctioncalloutput.md
-  - docs/models/operations/instructionstypeimagegenerationcall1.md
-  - docs/models/operations/instructionstypeimagegenerationcall2.md
-  - docs/models/operations/instructionstypeinputfile1.md
-  - docs/models/operations/instructionstypeinputfile2.md
-  - docs/models/operations/instructionstypeinputimage1.md
-  - docs/models/operations/instructionstypeinputimage2.md
-  - docs/models/operations/instructionstypeinputtext1.md
-  - docs/models/operations/instructionstypeinputtext2.md
-  - docs/models/operations/instructionstypemessage1.md
-  - docs/models/operations/instructionstypemessage2.md
-  - docs/models/operations/instructionstypemessage3.md
-  - docs/models/operations/instructionstypemessage4.md
-  - docs/models/operations/instructionstypeoutputtext1.md
-  - docs/models/operations/instructionstypeoutputtext2.md
-  - docs/models/operations/instructionstypereasoning.md
-  - docs/models/operations/instructionstypereasoningtext.md
-  - docs/models/operations/instructionstyperefusal1.md
-  - docs/models/operations/instructionstyperefusal2.md
-  - docs/models/operations/instructionstypesummarytext.md
-  - docs/models/operations/instructionstypeurlcitation1.md
-  - docs/models/operations/instructionstypeurlcitation2.md
-  - docs/models/operations/instructionstypewebsearchcall.md
-  - docs/models/operations/instructionsunion1.md
-  - docs/models/operations/instructionsunion2.md
-  - docs/models/operations/instructionsunion3.md
-  - docs/models/operations/instructionswebsearchcall.md
+  - docs/models/operations/getcurrentkeydata.md
+  - docs/models/operations/getcurrentkeyresponse.md
+  - docs/models/operations/getmetadatadata.md
+  - docs/models/operations/getmetadatarequest.md
+  - docs/models/operations/getmetadataresponse.md
+  - docs/models/operations/getparametersdata.md
+  - docs/models/operations/getparametersprovider.md
+  - docs/models/operations/getparametersrequest.md
+  - docs/models/operations/getparametersresponse.md
+  - docs/models/operations/getparameterssecurity.md
+  - docs/models/operations/getparameterssupportedparameter.md
+  - docs/models/operations/getuseractivityrequest.md
+  - docs/models/operations/getuseractivityresponse.md
+  - docs/models/operations/ignore.md
+  - docs/models/operations/ignoreenum.md
+  - docs/models/operations/input.md
+  - docs/models/operations/listapikeysdata.md
+  - docs/models/operations/listapikeysrequest.md
+  - docs/models/operations/listapikeysresponse.md
+  - docs/models/operations/listarchitecture.md
+  - docs/models/operations/listaudio.md
+  - docs/models/operations/listcompletion.md
+  - docs/models/operations/listdata.md
+  - docs/models/operations/listimage.md
+  - docs/models/operations/listimageoutput.md
+  - docs/models/operations/listinputaudiocache.md
+  - docs/models/operations/listinputcacheread.md
+  - docs/models/operations/listinputcachewrite.md
+  - docs/models/operations/listinputmodality.md
+  - docs/models/operations/listinstructtype.md
+  - docs/models/operations/listinternalreasoning.md
+  - docs/models/operations/listmodelsarchitecture.md
+  - docs/models/operations/listmodelsaudio.md
+  - docs/models/operations/listmodelscompletion.md
+  - docs/models/operations/listmodelsdata.md
+  - docs/models/operations/listmodelsdefaultparameters.md
+  - docs/models/operations/listmodelsimage.md
+  - docs/models/operations/listmodelsimageoutput.md
+  - docs/models/operations/listmodelsinputaudiocache.md
+  - docs/models/operations/listmodelsinputcacheread.md
+  - docs/models/operations/listmodelsinputcachewrite.md
+  - docs/models/operations/listmodelsinputmodality.md
+  - docs/models/operations/listmodelsinstructtype.md
+  - docs/models/operations/listmodelsinternalreasoning.md
+  - docs/models/operations/listmodelsoutputmodality.md
+  - docs/models/operations/listmodelsperrequestlimits.md
+  - docs/models/operations/listmodelspricing.md
+  - docs/models/operations/listmodelsprompt.md
+  - docs/models/operations/listmodelsrequestrequest.md
+  - docs/models/operations/listmodelsresponse.md
+  - docs/models/operations/listmodelsresponsebody.md
+  - docs/models/operations/listmodelssupportedparameter.md
+  - docs/models/operations/listmodelstokenizer.md
+  - docs/models/operations/listmodelstopprovider.md
+  - docs/models/operations/listmodelswebsearch.md
+  - docs/models/operations/listoutputmodality.md
+  - docs/models/operations/listpricing.md
+  - docs/models/operations/listprompt.md
+  - docs/models/operations/listprovidername.md
+  - docs/models/operations/listprovidersdata.md
+  - docs/models/operations/listprovidersresponse.md
+  - docs/models/operations/listquantization.md
+  - docs/models/operations/listrequestrequest.md
+  - docs/models/operations/listresponse.md
+  - docs/models/operations/liststatus.md
+  - docs/models/operations/listsupportedparameter.md
+  - docs/models/operations/listtokenizer.md
+  - docs/models/operations/listusermodelsarchitecture.md
+  - docs/models/operations/listusermodelsaudio.md
+  - docs/models/operations/listusermodelscompletion.md
+  - docs/models/operations/listusermodelsdata.md
+  - docs/models/operations/listusermodelsdefaultparameters.md
+  - docs/models/operations/listusermodelsimage.md
+  - docs/models/operations/listusermodelsimageoutput.md
+  - docs/models/operations/listusermodelsinputaudiocache.md
+  - docs/models/operations/listusermodelsinputcacheread.md
+  - docs/models/operations/listusermodelsinputcachewrite.md
+  - docs/models/operations/listusermodelsinputmodality.md
+  - docs/models/operations/listusermodelsinstructtype.md
+  - docs/models/operations/listusermodelsinternalreasoning.md
+  - docs/models/operations/listusermodelsoutputmodality.md
+  - docs/models/operations/listusermodelsperrequestlimits.md
+  - docs/models/operations/listusermodelspricing.md
+  - docs/models/operations/listusermodelsprompt.md
+  - docs/models/operations/listusermodelsresponse.md
+  - docs/models/operations/listusermodelssecurity.md
+  - docs/models/operations/listusermodelssupportedparameter.md
+  - docs/models/operations/listusermodelstokenizer.md
+  - docs/models/operations/listusermodelstopprovider.md
+  - docs/models/operations/listusermodelswebsearch.md
+  - docs/models/operations/listwebsearch.md
+  - docs/models/operations/maxprice.md
   - docs/models/operations/metadata.md
-  - docs/models/operations/modelsgetmodelsrequest.md
-  - docs/models/operations/modelsgetmodelsuserrequest.md
+  - docs/models/operations/modelslistmodelsrequest.md
+  - docs/models/operations/modelslistusermodelsrequest.md
   - docs/models/operations/objectembedding.md
-  - docs/models/operations/output.md
-  - docs/models/operations/outputannotationfilecitation.md
-  - docs/models/operations/outputannotationfilepath.md
-  - docs/models/operations/outputannotationunion.md
-  - docs/models/operations/outputannotationurlcitation.md
-  - docs/models/operations/outputassistant.md
-  - docs/models/operations/outputcontentoutputtext.md
-  - docs/models/operations/outputcontentreasoningtext.md
-  - docs/models/operations/outputcontentrefusal.md
-  - docs/models/operations/outputcontentunion.md
-  - docs/models/operations/outputfilesearchcall.md
-  - docs/models/operations/outputformat.md
-  - docs/models/operations/outputfunctioncall.md
-  - docs/models/operations/outputimagegenerationcall.md
-  - docs/models/operations/outputreasoning.md
-  - docs/models/operations/outputrole.md
-  - docs/models/operations/outputstatuscompleted.md
-  - docs/models/operations/outputstatusenum1.md
-  - docs/models/operations/outputstatusenum2.md
-  - docs/models/operations/outputstatusenum3.md
-  - docs/models/operations/outputstatusincomplete.md
-  - docs/models/operations/outputstatusinprogress.md
-  - docs/models/operations/outputstatusunion.md
-  - docs/models/operations/outputsummary.md
-  - docs/models/operations/outputtokensdetails.md
-  - docs/models/operations/outputtypefilecitation.md
-  - docs/models/operations/outputtypefilepath.md
-  - docs/models/operations/outputtypefilesearchcall.md
-  - docs/models/operations/outputtypefunctioncall.md
-  - docs/models/operations/outputtypeimagegenerationcall.md
-  - docs/models/operations/outputtypemessage.md
-  - docs/models/operations/outputtypeoutputtext.md
-  - docs/models/operations/outputtypereasoning.md
-  - docs/models/operations/outputtypereasoningtext.md
-  - docs/models/operations/outputtyperefusal.md
-  - docs/models/operations/outputtypesummarytext.md
-  - docs/models/operations/outputtypeurlcitation.md
-  - docs/models/operations/outputtypewebsearchcall.md
-  - docs/models/operations/outputwebsearchcall.md
-  - docs/models/operations/patchkeyshashdata.md
-  - docs/models/operations/patchkeyshashrequest.md
-  - docs/models/operations/patchkeyshashrequestbody.md
-  - docs/models/operations/patchkeyshashresponse.md
-  - docs/models/operations/pdf.md
-  - docs/models/operations/pdfengine.md
-  - docs/models/operations/plugin.md
-  - docs/models/operations/pluginchainofthought.md
-  - docs/models/operations/pluginfileparser.md
-  - docs/models/operations/pluginmoderation.md
-  - docs/models/operations/pluginweb.md
-  - docs/models/operations/postapialpharesponsesaudio.md
-  - docs/models/operations/postapialpharesponsescompletion.md
-  - docs/models/operations/postapialpharesponsesdatacollection.md
-  - docs/models/operations/postapialpharesponseserror.md
-  - docs/models/operations/postapialpharesponsesexperimental.md
-  - docs/models/operations/postapialpharesponsesignoreenum.md
-  - docs/models/operations/postapialpharesponsesignoreunion.md
-  - docs/models/operations/postapialpharesponsesimage.md
-  - docs/models/operations/postapialpharesponsesinputunion1.md
-  - docs/models/operations/postapialpharesponsesinputunion2.md
-  - docs/models/operations/postapialpharesponsesinputunion3.md
-  - docs/models/operations/postapialpharesponsesmaxprice.md
-  - docs/models/operations/postapialpharesponsesmaxpriceprompt.md
-  - docs/models/operations/postapialpharesponsesobject.md
-  - docs/models/operations/postapialpharesponsesonlyenum.md
-  - docs/models/operations/postapialpharesponsesonlyunion.md
-  - docs/models/operations/postapialpharesponsesorderenum.md
-  - docs/models/operations/postapialpharesponsesorderunion.md
-  - docs/models/operations/postapialpharesponsespromptrequest.md
-  - docs/models/operations/postapialpharesponsespromptresponse.md
-  - docs/models/operations/postapialpharesponsesprovider.md
-  - docs/models/operations/postapialpharesponsesquantization.md
-  - docs/models/operations/postapialpharesponsesrequest.md
-  - docs/models/operations/postapialpharesponsesrequestunion.md
-  - docs/models/operations/postapialpharesponsesresponse.md
-  - docs/models/operations/postapialpharesponsesresponsebody.md
-  - docs/models/operations/postapialpharesponsessort.md
-  - docs/models/operations/postapialpharesponsesstatusresponseenum.md
-  - docs/models/operations/postapialpharesponsesusage.md
-  - docs/models/operations/postauthkeyscodechallengemethod.md
-  - docs/models/operations/postauthkeyscodecodechallengemethod.md
-  - docs/models/operations/postauthkeyscodedata.md
-  - docs/models/operations/postauthkeyscoderequest.md
-  - docs/models/operations/postauthkeyscoderesponse.md
-  - docs/models/operations/postauthkeysrequest.md
-  - docs/models/operations/postauthkeysresponse.md
-  - docs/models/operations/postchatcompletionsresponse.md
-  - docs/models/operations/postcompletionsresponse.md
-  - docs/models/operations/postcreditscoinbasedata.md
-  - docs/models/operations/postcreditscoinbaserequest.md
-  - docs/models/operations/postcreditscoinbaseresponse.md
-  - docs/models/operations/postcreditscoinbasesecurity.md
-  - docs/models/operations/postembeddingsaudio.md
-  - docs/models/operations/postembeddingscompletion.md
-  - docs/models/operations/postembeddingsdata.md
-  - docs/models/operations/postembeddingsdatacollection.md
-  - docs/models/operations/postembeddingsexperimental.md
-  - docs/models/operations/postembeddingsignoreenum.md
-  - docs/models/operations/postembeddingsignoreunion.md
-  - docs/models/operations/postembeddingsimage.md
-  - docs/models/operations/postembeddingsinput.md
-  - docs/models/operations/postembeddingsmaxprice.md
-  - docs/models/operations/postembeddingsobject.md
-  - docs/models/operations/postembeddingsonlyenum.md
-  - docs/models/operations/postembeddingsonlyunion.md
-  - docs/models/operations/postembeddingsorderenum.md
-  - docs/models/operations/postembeddingsorderunion.md
-  - docs/models/operations/postembeddingsprompt.md
-  - docs/models/operations/postembeddingsprovider.md
-  - docs/models/operations/postembeddingsquantization.md
-  - docs/models/operations/postembeddingsrequest.md
-  - docs/models/operations/postembeddingsrequestunion.md
-  - docs/models/operations/postembeddingsresponse.md
-  - docs/models/operations/postembeddingssort.md
-  - docs/models/operations/postembeddingsusage.md
-  - docs/models/operations/postkeysdata.md
-  - docs/models/operations/postkeysrequest.md
-  - docs/models/operations/postkeysresponse.md
-  - docs/models/operations/reason.md
-  - docs/models/operations/reasoningrequest.md
-  - docs/models/operations/reasoningresponse.md
-  - docs/models/operations/roleassistantrequest1.md
-  - docs/models/operations/roleassistantrequest2.md
-  - docs/models/operations/roleassistantrequest3.md
-  - docs/models/operations/roledeveloperrequest1.md
-  - docs/models/operations/roledeveloperrequest2.md
-  - docs/models/operations/rolerequestunion1.md
-  - docs/models/operations/rolerequestunion2.md
-  - docs/models/operations/rolesystemrequest1.md
-  - docs/models/operations/rolesystemrequest2.md
-  - docs/models/operations/roleuserrequest1.md
-  - docs/models/operations/roleuserrequest2.md
-  - docs/models/operations/searchcontextsizerequest1.md
-  - docs/models/operations/searchcontextsizerequest2.md
-  - docs/models/operations/searchcontextsizerequest3.md
-  - docs/models/operations/searchcontextsizerequest4.md
-  - docs/models/operations/searchcontextsizeresponse1.md
-  - docs/models/operations/searchcontextsizeresponse2.md
-  - docs/models/operations/searchcontextsizeresponse3.md
-  - docs/models/operations/searchcontextsizeresponse4.md
-  - docs/models/operations/servicetierrequest.md
-  - docs/models/operations/servicetierresponse.md
-  - docs/models/operations/statuscompletedrequest1.md
-  - docs/models/operations/statuscompletedrequest2.md
-  - docs/models/operations/statusincompleterequest1.md
-  - docs/models/operations/statusincompleterequest2.md
-  - docs/models/operations/statusinprogressrequest1.md
-  - docs/models/operations/statusinprogressrequest2.md
-  - docs/models/operations/statusrequestenum1.md
-  - docs/models/operations/statusrequestenum2.md
-  - docs/models/operations/statusrequestenum3.md
-  - docs/models/operations/statusrequestenum4.md
-  - docs/models/operations/statusrequestenum5.md
-  - docs/models/operations/statusrequestenum6.md
-  - docs/models/operations/statusrequestunion1.md
-  - docs/models/operations/statusrequestunion2.md
-  - docs/models/operations/summaryrequestenum.md
-  - docs/models/operations/summaryresponseenum.md
-  - docs/models/operations/textrequest.md
-  - docs/models/operations/textresponse.md
-  - docs/models/operations/toolchoiceautorequest.md
-  - docs/models/operations/toolchoiceautoresponse.md
-  - docs/models/operations/toolchoicefunctionrequest.md
-  - docs/models/operations/toolchoicefunctionresponse.md
-  - docs/models/operations/toolchoicenonerequest.md
-  - docs/models/operations/toolchoicenoneresponse.md
-  - docs/models/operations/toolchoicerequest.md
-  - docs/models/operations/toolchoicerequestunion.md
-  - docs/models/operations/toolchoicerequiredrequest.md
-  - docs/models/operations/toolchoicerequiredresponse.md
-  - docs/models/operations/toolchoiceresponse.md
-  - docs/models/operations/toolchoiceresponseunion.md
-  - docs/models/operations/toolchoicetypefunctionrequest.md
-  - docs/models/operations/toolchoicetypefunctionresponse.md
-  - docs/models/operations/toolchoicetypewebsearchpreview20250311request.md
-  - docs/models/operations/toolchoicetypewebsearchpreview20250311response.md
-  - docs/models/operations/toolchoicetypewebsearchpreviewrequest.md
-  - docs/models/operations/toolchoicetypewebsearchpreviewresponse.md
-  - docs/models/operations/toolfunctionrequest.md
-  - docs/models/operations/toolfunctionresponse.md
-  - docs/models/operations/toolrequestunion.md
-  - docs/models/operations/toolresponseunion.md
-  - docs/models/operations/tooltypefunctionrequest.md
-  - docs/models/operations/tooltypefunctionresponse.md
-  - docs/models/operations/tooltypewebsearchpreview20250311request.md
-  - docs/models/operations/tooltypewebsearchpreview20250311response.md
-  - docs/models/operations/tooltypewebsearchpreviewrequest.md
-  - docs/models/operations/tooltypewebsearchpreviewresponse.md
-  - docs/models/operations/toolwebsearch20250826request.md
-  - docs/models/operations/toolwebsearch20250826response.md
-  - docs/models/operations/toolwebsearchpreview20250311request.md
-  - docs/models/operations/toolwebsearchpreview20250311response.md
-  - docs/models/operations/toolwebsearchpreviewrequest.md
-  - docs/models/operations/toolwebsearchpreviewresponse.md
-  - docs/models/operations/toolwebsearchrequest.md
-  - docs/models/operations/toolwebsearchresponse.md
+  - docs/models/operations/objectt.md
+  - docs/models/operations/only.md
+  - docs/models/operations/onlyenum.md
+  - docs/models/operations/order.md
+  - docs/models/operations/orderenum.md
+  - docs/models/operations/previewzdraudio.md
+  - docs/models/operations/previewzdrcompletion.md
+  - docs/models/operations/previewzdrdata.md
+  - docs/models/operations/previewzdrimage.md
+  - docs/models/operations/previewzdrimageoutput.md
+  - docs/models/operations/previewzdrinputaudiocache.md
+  - docs/models/operations/previewzdrinputcacheread.md
+  - docs/models/operations/previewzdrinputcachewrite.md
+  - docs/models/operations/previewzdrinternalreasoning.md
+  - docs/models/operations/previewzdrpricing.md
+  - docs/models/operations/previewzdrprompt.md
+  - docs/models/operations/previewzdrprovidername.md
+  - docs/models/operations/previewzdrquantization.md
+  - docs/models/operations/previewzdrresponse.md
+  - docs/models/operations/previewzdrstatus.md
+  - docs/models/operations/previewzdrsupportedparameter.md
+  - docs/models/operations/previewzdrwebsearch.md
+  - docs/models/operations/ratelimit.md
+  - docs/models/operations/sendchatcompletionrequestresponse.md
+  - docs/models/operations/sendresponsesrequestresponse.md
+  - docs/models/operations/sendresponsesrequestresponsebody.md
+  - docs/models/operations/sort.md
   - docs/models/operations/transferintent.md
-  - docs/models/operations/truncationrequest.md
-  - docs/models/operations/truncationresponse.md
-  - docs/models/operations/typeapproximaterequest1.md
-  - docs/models/operations/typeapproximaterequest2.md
-  - docs/models/operations/typeapproximaterequest3.md
-  - docs/models/operations/typeapproximaterequest4.md
-  - docs/models/operations/typeapproximateresponse1.md
-  - docs/models/operations/typeapproximateresponse2.md
-  - docs/models/operations/typeapproximateresponse3.md
-  - docs/models/operations/typeapproximateresponse4.md
-  - docs/models/operations/typecodeinterpreterrequest.md
-  - docs/models/operations/typecodeinterpreterresponse.md
-  - docs/models/operations/typecomputerusepreviewrequest.md
-  - docs/models/operations/typecomputerusepreviewresponse.md
-  - docs/models/operations/typefilesearchrequest.md
-  - docs/models/operations/typefilesearchresponse.md
-  - docs/models/operations/typejsonobjectrequest.md
-  - docs/models/operations/typejsonobjectresponse.md
-  - docs/models/operations/typejsonschemarequest.md
-  - docs/models/operations/typejsonschemaresponse.md
-  - docs/models/operations/typerequestunion.md
-  - docs/models/operations/typeresponseunion.md
-  - docs/models/operations/typewebsearch20250826request.md
-  - docs/models/operations/typewebsearch20250826response.md
-  - docs/models/operations/typewebsearchrequest.md
-  - docs/models/operations/typewebsearchresponse.md
-  - docs/models/operations/userlocationrequest1.md
-  - docs/models/operations/userlocationrequest2.md
-  - docs/models/operations/userlocationrequest3.md
-  - docs/models/operations/userlocationrequest4.md
-  - docs/models/operations/userlocationresponse1.md
-  - docs/models/operations/userlocationresponse2.md
-  - docs/models/operations/userlocationresponse3.md
-  - docs/models/operations/userlocationresponse4.md
-  - docs/models/operations/variablesdetailrequest.md
-  - docs/models/operations/variablesdetailresponse.md
-  - docs/models/operations/variablesinputfilerequest.md
-  - docs/models/operations/variablesinputfileresponse.md
-  - docs/models/operations/variablesinputimagerequest.md
-  - docs/models/operations/variablesinputimageresponse.md
-  - docs/models/operations/variablesinputtextrequest.md
-  - docs/models/operations/variablesinputtextresponse.md
-  - docs/models/operations/variablesrequestunion.md
-  - docs/models/operations/variablesresponseunion.md
-  - docs/models/operations/variablestypeinputfilerequest.md
-  - docs/models/operations/variablestypeinputfileresponse.md
-  - docs/models/operations/variablestypeinputimagerequest.md
-  - docs/models/operations/variablestypeinputimageresponse.md
-  - docs/models/operations/variablestypeinputtextrequest.md
-  - docs/models/operations/variablestypeinputtextresponse.md
-  - docs/models/operations/verbosityrequest.md
-  - docs/models/operations/verbosityresponse.md
+  - docs/models/operations/updatedata.md
+  - docs/models/operations/updaterequest.md
+  - docs/models/operations/updaterequestbody.md
+  - docs/models/operations/updateresponse.md
+  - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
-  - docs/models/prompt.md
+  - docs/models/order.md
+  - docs/models/orderenum.md
+  - docs/models/pdf.md
+  - docs/models/pdfengine.md
+  - docs/models/plugin.md
+  - docs/models/pluginchainofthought.md
+  - docs/models/pluginfileparser.md
+  - docs/models/pluginmoderation.md
+  - docs/models/pluginweb.md
   - docs/models/prompttokensdetails.md
+  - docs/models/provider.md
+  - docs/models/quantization.md
   - docs/models/reasoning.md
-  - docs/models/role.md
+  - docs/models/requestt.md
+  - docs/models/response1.md
+  - docs/models/response2.md
+  - docs/models/responseeasyinputmessage.md
+  - docs/models/responseeasyinputmessagetype.md
+  - docs/models/responsefailed.md
+  - docs/models/responseformatjsonobject.md
+  - docs/models/responseformatjsonobjecttype.md
+  - docs/models/responseformatjsonschema.md
+  - docs/models/responseformatjsonschematype.md
+  - docs/models/responseformattext.md
+  - docs/models/responseformattextconfig.md
+  - docs/models/responseformattexttype.md
+  - docs/models/responsefunctioncalloutputitem.md
+  - docs/models/responsefunctioncalloutputitemtype.md
+  - docs/models/responsefunctioncallstatus.md
+  - docs/models/responsefunctiontoolcall.md
+  - docs/models/responsefunctiontoolcalltype.md
+  - docs/models/responseimagegenerationcallstatus.md
+  - docs/models/responseincludable.md
+  - docs/models/responseinput.md
+  - docs/models/responseinputcontent.md
+  - docs/models/responseinputfile.md
+  - docs/models/responseinputfiletype.md
+  - docs/models/responseinputimage.md
+  - docs/models/responseinputimagedetail.md
+  - docs/models/responseinputimagetype.md
+  - docs/models/responseinputitem.md
+  - docs/models/responseinputmessagecontentunion.md
+  - docs/models/responseinputmessageitem.md
+  - docs/models/responseinputmessageitemrole.md
+  - docs/models/responseinputmessageitemroledeveloper.md
+  - docs/models/responseinputmessageitemrolesystem.md
+  - docs/models/responseinputmessageitemroleuser.md
+  - docs/models/responseinputmessageitemtype.md
+  - docs/models/responseinputmessagerole.md
+  - docs/models/responseinputmessageroleassistant.md
+  - docs/models/responseinputmessageroledeveloper.md
+  - docs/models/responseinputmessagerolesystem.md
+  - docs/models/responseinputmessageroleuser.md
+  - docs/models/responseinputtext.md
+  - docs/models/responseinputtexttype.md
+  - docs/models/responseprompt.md
+  - docs/models/responsereasoningconfig.md
+  - docs/models/responsereasoningconfigeffort.md
+  - docs/models/responsereasoningsummarymode.md
+  - docs/models/responsesannotation.md
+  - docs/models/responsesannotationfilecitation.md
+  - docs/models/responsesannotationfilecitationtype.md
+  - docs/models/responsesannotationfilepath.md
+  - docs/models/responsesannotationfilepathtype.md
+  - docs/models/responsesannotationurlcitation.md
+  - docs/models/responsesannotationurlcitationtype.md
+  - docs/models/responsesimagegenerationcall.md
+  - docs/models/responsesimagegenerationcalltype.md
+  - docs/models/responsesincompletedetails.md
+  - docs/models/responsesincompletedetailsreason.md
+  - docs/models/responsesinputtokensdetails.md
+  - docs/models/responsesmessagecontent.md
+  - docs/models/responsesmessagestatus.md
+  - docs/models/responsesmessagestatuscompleted.md
+  - docs/models/responsesmessagestatusincomplete.md
+  - docs/models/responsesmessagestatusinprogress.md
+  - docs/models/responsesnonstreamingresponse.md
+  - docs/models/responsesnonstreamingresponsecode.md
+  - docs/models/responsesnonstreamingresponseerror.md
+  - docs/models/responsesnonstreamingresponseservicetier.md
+  - docs/models/responsesnonstreamingresponsestatus.md
+  - docs/models/responsesnonstreamingresponsetruncation.md
+  - docs/models/responsesoutputitem.md
+  - docs/models/responsesoutputitemfilesearchcall.md
+  - docs/models/responsesoutputitemfilesearchcallstatus.md
+  - docs/models/responsesoutputitemfilesearchcalltype.md
+  - docs/models/responsesoutputitemfunctioncall.md
+  - docs/models/responsesoutputitemfunctioncalltype.md
+  - docs/models/responsesoutputitemreasoning.md
+  - docs/models/responsesoutputitemreasoningformat.md
+  - docs/models/responsesoutputitemreasoningtype.md
+  - docs/models/responsesoutputmessage.md
+  - docs/models/responsesoutputmessagerole.md
+  - docs/models/responsesoutputmessagetype.md
+  - docs/models/responsesoutputtext.md
+  - docs/models/responsesoutputtexttype.md
+  - docs/models/responsesoutputtokensdetails.md
+  - docs/models/responsesreasoningsummarytext.md
+  - docs/models/responsesreasoningsummarytexttype.md
+  - docs/models/responsesreasoningtextcontent.md
+  - docs/models/responsesreasoningtextcontenttype.md
+  - docs/models/responsesrefusalcontent.md
+  - docs/models/responsesrefusalcontenttype.md
+  - docs/models/responsesstreamchunk.md
+  - docs/models/responsesstreamchunkerror.md
+  - docs/models/responsesstreamchunkerror1.md
+  - docs/models/responsesstreamchunkerror2.md
+  - docs/models/responsesstreamchunkreason.md
+  - docs/models/responsesstreamchunkresponsecreated.md
+  - docs/models/responsesstreamchunkresponseerror.md
+  - docs/models/responsesstreamchunkresponsefailed.md
+  - docs/models/responsesstreamchunkresponsefilesearchcallcompleted.md
+  - docs/models/responsesstreamchunkresponsefilesearchcallinprogress.md
+  - docs/models/responsesstreamchunkresponsefilesearchcallsearching.md
+  - docs/models/responsesstreamchunkresponsefunctioncallargumentsdelta.md
+  - docs/models/responsesstreamchunkresponsefunctioncallargumentsdone.md
+  - docs/models/responsesstreamchunkresponseimagegenerationcallcompleted.md
+  - docs/models/responsesstreamchunkresponseimagegenerationcallgenerating.md
+  - docs/models/responsesstreamchunkresponseimagegenerationcallinprogress.md
+  - docs/models/responsesstreamchunkresponseimagegenerationcallpartialimage.md
+  - docs/models/responsesstreamchunkresponseoutputitemadded.md
+  - docs/models/responsesstreamchunkresponseoutputitemdone.md
+  - docs/models/responsesstreamchunkresponseoutputtextannotationadded.md
+  - docs/models/responsesstreamchunkresponseoutputtextdelta.md
+  - docs/models/responsesstreamchunkresponsereasoningsummarytextdelta.md
+  - docs/models/responsesstreamchunkresponserefusaldelta.md
+  - docs/models/responsesstreamchunkresponserefusaldone.md
+  - docs/models/responsesstreamchunkresponsewebsearchcallcompleted.md
+  - docs/models/responsesstreamchunkresponsewebsearchcallinprogress.md
+  - docs/models/responsesstreamchunkresponsewebsearchcallsearching.md
+  - docs/models/responsesstreamchunkrole.md
+  - docs/models/responsesstreamchunksummary1.md
+  - docs/models/responsesstreamchunksummary2.md
+  - docs/models/responsesstreamchunktype.md
+  - docs/models/responsesstreamchunktypeurlcitation.md
+  - docs/models/responsesstreamchunkunion.md
+  - docs/models/responsesusage.md
+  - docs/models/responseswebsearchcalloutput.md
+  - docs/models/responseswebsearchcalloutputstatus.md
+  - docs/models/responseswebsearchcalloutputtype.md
+  - docs/models/responsetextconfig.md
+  - docs/models/responsetextverbosity.md
+  - docs/models/result.md
   - docs/models/security.md
+  - docs/models/sort.md
+  - docs/models/status.md
+  - docs/models/statuscompleted.md
+  - docs/models/statusfailed.md
+  - docs/models/statusincomplete.md
+  - docs/models/statusinprogress.md
   - docs/models/streamoptions.md
-  - docs/models/summary.md
+  - docs/models/summaryenum.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
   - docs/models/tool.md
+  - docs/models/toolchoice.md
+  - docs/models/toolchoiceauto.md
+  - docs/models/toolchoicefunction.md
+  - docs/models/toolchoicefunctiontype.md
+  - docs/models/toolchoicenone.md
+  - docs/models/toolchoicerequired.md
+  - docs/models/toolchoicetypes.md
+  - docs/models/toolchoicetypeunion.md
+  - docs/models/toolchoicetypeunioncodeinterpreter.md
+  - docs/models/toolchoicetypeunioncomputerusepreview.md
+  - docs/models/toolchoicetypeunionfilesearch.md
+  - docs/models/toolchoicetypeunionwebsearchpreview.md
+  - docs/models/toolchoicetypeunionwebsearchpreview20250311.md
   - docs/models/toolfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
   - docs/models/toplogprob.md
+  - docs/models/typeerror.md
+  - docs/models/typeresponsecreated.md
+  - docs/models/typeresponseerror.md
+  - docs/models/typeresponsefailed.md
+  - docs/models/typeresponsefilesearchcallcompleted.md
+  - docs/models/typeresponsefilesearchcallinprogress.md
+  - docs/models/typeresponsefilesearchcallsearching.md
+  - docs/models/typeresponsefunctioncallargumentsdelta.md
+  - docs/models/typeresponsefunctioncallargumentsdone.md
+  - docs/models/typeresponseimagegenerationcallcompleted.md
+  - docs/models/typeresponseimagegenerationcallgenerating.md
+  - docs/models/typeresponseimagegenerationcallinprogress.md
+  - docs/models/typeresponseimagegenerationcallpartialimage.md
+  - docs/models/typeresponseoutputitemadded.md
+  - docs/models/typeresponseoutputitemdone.md
+  - docs/models/typeresponseoutputtextannotationadded.md
+  - docs/models/typeresponseoutputtextdelta.md
+  - docs/models/typeresponsereasoningsummarytextdelta.md
+  - docs/models/typeresponserefusaldelta.md
+  - docs/models/typeresponserefusaldone.md
+  - docs/models/typeresponsewebsearchcallcompleted.md
+  - docs/models/typeresponsewebsearchcallinprogress.md
+  - docs/models/typeresponsewebsearchcallsearching.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
-  - docs/sdks/alpha/README.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
   - docs/sdks/chat/README.md
@@ -723,41 +553,39 @@ generatedFiles:
   - docs/sdks/model/README.md
   - docs/sdks/models/README.md
   - docs/sdks/oauth/README.md
-  - docs/sdks/openrouter/README.md
   - docs/sdks/providers/README.md
   - docs/sdks/responses/README.md
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/alphaResponsesSend2.example.ts
+  - examples/betaResponsesSendRequest.example.ts
   - examples/package.json
   - jsr.json
   - package.json
   - src/core.ts
-  - src/funcs/alphaResponsesSend2.ts
-  - src/funcs/analyticsGetActivity.ts
-  - src/funcs/apiKeysDeleteKeysHash.ts
-  - src/funcs/apiKeysGetAuthKey.ts
-  - src/funcs/apiKeysGetKey.ts
-  - src/funcs/apiKeysGetKeys.ts
-  - src/funcs/apiKeysGetKeysHash.ts
-  - src/funcs/apiKeysPatchKeysHash.ts
-  - src/funcs/apiKeysPostKeys.ts
+  - src/funcs/analyticsGetUserActivity.ts
+  - src/funcs/apiKeysCreate.ts
+  - src/funcs/apiKeysDelete.ts
+  - src/funcs/apiKeysGet.ts
+  - src/funcs/apiKeysGetCurrentKeyMetadata.ts
+  - src/funcs/apiKeysList.ts
+  - src/funcs/apiKeysUpdate.ts
+  - src/funcs/betaResponsesSendRequest.ts
   - src/funcs/chatSend.ts
   - src/funcs/completionsGenerate.ts
-  - src/funcs/creditsGetCredits.ts
-  - src/funcs/creditsPostCreditsCoinbase.ts
+  - src/funcs/creditsAddCoinbaseCharge.ts
+  - src/funcs/creditsGet.ts
   - src/funcs/embeddingsGenerate.ts
-  - src/funcs/endpointsGetEndpointsZdr.ts
-  - src/funcs/endpointsGetModelsAuthorSlugEndpoints.ts
-  - src/funcs/generationsGetGeneration.ts
-  - src/funcs/modelGetParametersAuthorSlug.ts
-  - src/funcs/modelsGetModels.ts
-  - src/funcs/modelsGetModelsCount.ts
-  - src/funcs/modelsGetModelsUser.ts
-  - src/funcs/oAuthPostAuthKeys.ts
-  - src/funcs/oAuthPostAuthKeysCode.ts
-  - src/funcs/providersGetProviders.ts
+  - src/funcs/endpointsList.ts
+  - src/funcs/endpointsPreviewZDR.ts
+  - src/funcs/generationsGetMetadata.ts
+  - src/funcs/modelGetParameters.ts
+  - src/funcs/modelsGetCount.ts
+  - src/funcs/modelsList.ts
+  - src/funcs/modelsListUserModels.ts
+  - src/funcs/oAuthCreateAuthorizationCode.ts
+  - src/funcs/oAuthExchangeAuthorizationCode.ts
+  - src/funcs/providersList.ts
   - src/hooks/hooks.ts
   - src/hooks/index.ts
   - src/hooks/types.ts
@@ -800,20 +628,16 @@ generatedFiles:
   - src/models/chatstreamoptions.ts
   - src/models/completionchoice.ts
   - src/models/completioncreateparams.ts
-  - src/models/completionerror.ts
   - src/models/completionfinishreason.ts
   - src/models/completionlogprobs.ts
   - src/models/completionresponse.ts
-  - src/models/completionstreamingchoice.ts
-  - src/models/completionstreamingresponsechunk.ts
   - src/models/completionusage.ts
   - src/models/errorresponse.ts
   - src/models/errors/chaterror.ts
-  - src/models/errors/completionerror.ts
   - src/models/errors/errorresponse.ts
-  - src/models/errors/getproviders.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
+  - src/models/errors/listproviders.ts
   - src/models/errors/openrouterdefaulterror.ts
   - src/models/errors/openroutererror.ts
   - src/models/errors/responsevalidationerror.ts
@@ -821,66 +645,117 @@ generatedFiles:
   - src/models/index.ts
   - src/models/message.ts
   - src/models/namedtoolchoice.ts
-  - src/models/operations/deletekeyshash.ts
-  - src/models/operations/getactivity.ts
-  - src/models/operations/getauthkey.ts
+  - src/models/openairesponsesrequest.ts
+  - src/models/operations/addcoinbasecharge.ts
+  - src/models/operations/create.ts
+  - src/models/operations/createauthorizationcode.ts
+  - src/models/operations/delete.ts
+  - src/models/operations/exchangeauthorizationcode.ts
+  - src/models/operations/generate.ts
+  - src/models/operations/getapikey.ts
+  - src/models/operations/getcount.ts
   - src/models/operations/getcredits.ts
-  - src/models/operations/getendpointszdr.ts
-  - src/models/operations/getgeneration.ts
-  - src/models/operations/getkey.ts
-  - src/models/operations/getkeys.ts
-  - src/models/operations/getkeyshash.ts
-  - src/models/operations/getmodels.ts
-  - src/models/operations/getmodelsauthorslugendpoints.ts
-  - src/models/operations/getmodelscount.ts
-  - src/models/operations/getmodelsuser.ts
-  - src/models/operations/getparametersauthorslug.ts
-  - src/models/operations/getproviders.ts
+  - src/models/operations/getcurrentkey.ts
+  - src/models/operations/getmetadata.ts
+  - src/models/operations/getparameters.ts
+  - src/models/operations/getuseractivity.ts
   - src/models/operations/index.ts
-  - src/models/operations/patchkeyshash.ts
-  - src/models/operations/postapialpharesponses.ts
-  - src/models/operations/postauthkeys.ts
-  - src/models/operations/postauthkeyscode.ts
-  - src/models/operations/postchatcompletions.ts
-  - src/models/operations/postcompletions.ts
-  - src/models/operations/postcreditscoinbase.ts
-  - src/models/operations/postembeddings.ts
-  - src/models/operations/postkeys.ts
+  - src/models/operations/list.ts
+  - src/models/operations/listapikeys.ts
+  - src/models/operations/listmodels.ts
+  - src/models/operations/listproviders.ts
+  - src/models/operations/listusermodels.ts
+  - src/models/operations/previewzdr.ts
+  - src/models/operations/sendchatcompletionrequest.ts
+  - src/models/operations/sendresponsesrequest.ts
+  - src/models/operations/update.ts
+  - src/models/responseeasyinputmessage.ts
+  - src/models/responseformatjsonobject.ts
+  - src/models/responseformatjsonschema.ts
+  - src/models/responseformattext.ts
+  - src/models/responseformattextconfig.ts
+  - src/models/responsefunctioncalloutputitem.ts
+  - src/models/responsefunctioncallstatus.ts
+  - src/models/responsefunctiontoolcall.ts
+  - src/models/responseimagegenerationcallstatus.ts
+  - src/models/responseincludable.ts
+  - src/models/responseinput.ts
+  - src/models/responseinputcontent.ts
+  - src/models/responseinputfile.ts
+  - src/models/responseinputimage.ts
+  - src/models/responseinputimagedetail.ts
+  - src/models/responseinputitem.ts
+  - src/models/responseinputmessagecontentunion.ts
+  - src/models/responseinputmessageitem.ts
+  - src/models/responseinputmessageitemrole.ts
+  - src/models/responseinputmessagerole.ts
+  - src/models/responseinputtext.ts
+  - src/models/responseprompt.ts
+  - src/models/responsereasoningconfig.ts
+  - src/models/responsereasoningsummarymode.ts
+  - src/models/responsesannotation.ts
+  - src/models/responsesannotationfilecitation.ts
+  - src/models/responsesannotationfilepath.ts
+  - src/models/responsesannotationurlcitation.ts
+  - src/models/responsesimagegenerationcall.ts
+  - src/models/responsesincompletedetails.ts
+  - src/models/responsesinputtokensdetails.ts
+  - src/models/responsesmessagecontent.ts
+  - src/models/responsesmessagestatus.ts
+  - src/models/responsesnonstreamingresponse.ts
+  - src/models/responsesoutputitem.ts
+  - src/models/responsesoutputitemfilesearchcall.ts
+  - src/models/responsesoutputitemfunctioncall.ts
+  - src/models/responsesoutputitemreasoning.ts
+  - src/models/responsesoutputmessage.ts
+  - src/models/responsesoutputtext.ts
+  - src/models/responsesoutputtokensdetails.ts
+  - src/models/responsesreasoningsummarytext.ts
+  - src/models/responsesreasoningtextcontent.ts
+  - src/models/responsesrefusalcontent.ts
+  - src/models/responsesstreamchunkunion.ts
+  - src/models/responsesusage.ts
+  - src/models/responseswebsearchcalloutput.ts
+  - src/models/responsetextconfig.ts
+  - src/models/responsetextverbosity.ts
   - src/models/security.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
+  - src/models/toolchoice.ts
+  - src/models/toolchoicefunction.ts
+  - src/models/toolchoicetypes.ts
+  - src/models/toolchoicetypeunion.ts
   - src/models/toolresponsemessage.ts
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
-  - src/react-query/alphaResponsesSend2.ts
-  - src/react-query/analyticsGetActivity.ts
-  - src/react-query/apiKeysDeleteKeysHash.ts
-  - src/react-query/apiKeysGetAuthKey.ts
-  - src/react-query/apiKeysGetKey.ts
-  - src/react-query/apiKeysGetKeys.ts
-  - src/react-query/apiKeysGetKeysHash.ts
-  - src/react-query/apiKeysPatchKeysHash.ts
-  - src/react-query/apiKeysPostKeys.ts
+  - src/react-query/analyticsGetUserActivity.ts
+  - src/react-query/apiKeysCreate.ts
+  - src/react-query/apiKeysDelete.ts
+  - src/react-query/apiKeysGet.ts
+  - src/react-query/apiKeysGetCurrentKeyMetadata.ts
+  - src/react-query/apiKeysList.ts
+  - src/react-query/apiKeysUpdate.ts
+  - src/react-query/betaResponsesSendRequest.ts
   - src/react-query/chatSend.ts
   - src/react-query/completionsGenerate.ts
-  - src/react-query/creditsGetCredits.ts
-  - src/react-query/creditsPostCreditsCoinbase.ts
+  - src/react-query/creditsAddCoinbaseCharge.ts
+  - src/react-query/creditsGet.ts
   - src/react-query/embeddingsGenerate.ts
-  - src/react-query/endpointsGetEndpointsZdr.ts
-  - src/react-query/endpointsGetModelsAuthorSlugEndpoints.ts
-  - src/react-query/generationsGetGeneration.ts
+  - src/react-query/endpointsList.ts
+  - src/react-query/endpointsPreviewZDR.ts
+  - src/react-query/generationsGetMetadata.ts
   - src/react-query/index.ts
-  - src/react-query/modelGetParametersAuthorSlug.ts
-  - src/react-query/modelsGetModels.ts
-  - src/react-query/modelsGetModelsCount.ts
-  - src/react-query/modelsGetModelsUser.ts
-  - src/react-query/oAuthPostAuthKeys.ts
-  - src/react-query/oAuthPostAuthKeysCode.ts
-  - src/react-query/providersGetProviders.ts
-  - src/sdk/alpha.ts
+  - src/react-query/modelGetParameters.ts
+  - src/react-query/modelsGetCount.ts
+  - src/react-query/modelsList.ts
+  - src/react-query/modelsListUserModels.ts
+  - src/react-query/oAuthCreateAuthorizationCode.ts
+  - src/react-query/oAuthExchangeAuthorizationCode.ts
+  - src/react-query/providersList.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
+  - src/sdk/beta.ts
   - src/sdk/chat.ts
   - src/sdk/completions.ts
   - src/sdk/credits.ts
@@ -928,18 +803,20 @@ examples:
         default:
           application/json: {"error": {"code": 413, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 418, "message": "<value>"}}
+          application/json: {"error": {"code": 418, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   post_/credits/coinbase:
     speakeasy-default-post-/credits/coinbase:
+      requestBody:
+        application/json: {"amount": 287.06, "sender": "<value>", "chain_id": 1}
       responses:
         "200":
           application/json: {"data": {"id": "<id>", "created_at": "1705058901106", "expires_at": "1742247470320", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 7411.72, "contract_address": "<value>", "sender": "<value>"}}}}}
         default:
           application/json: {"error": {"code": 201, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 102, "message": "<value>"}}
+          application/json: {"error": {"code": 102, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 102, "message": "<value>"}}
+          application/json: {"error": {"code": 102, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
   get_/providers:
     speakeasy-default-get-/providers:
       responses:
@@ -958,22 +835,22 @@ examples:
         default:
           application/json: {"error": {"code": 416, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 300, "message": "<value>"}}
+          application/json: {"error": {"code": 300, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 300, "message": "<value>"}}
+          application/json: {"error": {"code": 300, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   post_/embeddings:
     speakeasy-default-post-/embeddings:
       requestBody:
-        application/json: {"input": [], "provider": {"zdr": true}}
+        application/json: {"input": [], "model": "Grand Cherokee", "models": ["<value 1>"], "provider": {"allow_fallbacks": null, "require_parameters": true, "data_collection": "allow", "zdr": true, "order": ["<value>"], "only": ["<value>"], "ignore": ["AionLabs"], "quantizations": ["fp16"], "sort": "price", "max_price": {"prompt": "<value>", "completion": "<value>", "image": "https://picsum.photos/seed/fBlU9/863/2551", "audio": "<value>", "request": "<value>"}, "experimental": {}}, "encoding_format": "base64", "user": "Cheyenne_Howell"}
       responses:
         "200":
-          application/json: {"object": "list", "data": [], "model": "Charger"}
+          application/json: {"object": "list", "data": [], "model": "Charger", "usage": {"prompt_tokens": 5195.89, "total_tokens": 8967.73, "cost": 9770.63}}
         default:
           application/json: {"error": {"code": 404, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 423, "message": "<value>"}}
+          application/json: {"error": {"code": 423, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 423, "message": "<value>"}}
+          application/json: {"error": {"code": 423, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/generation:
     speakeasy-default-get-/generation:
       parameters:
@@ -985,9 +862,9 @@ examples:
         default:
           application/json: {"error": {"code": 501, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 208, "message": "<value>"}}
+          application/json: {"error": {"code": 208, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 208, "message": "<value>"}}
+          application/json: {"error": {"code": 208, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/models/count:
     speakeasy-default-get-/models/count:
       responses:
@@ -996,32 +873,38 @@ examples:
         default:
           application/json: {"error": {"code": 304, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 304, "message": "<value>"}}
+          application/json: {"error": {"code": 304, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 304, "message": "<value>"}}
+          application/json: {"error": {"code": 304, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/models:
     speakeasy-default-get-/models:
+      parameters:
+        query:
+          category: "<value>"
+          supported_parameters: "<value>"
+          use_rss: "<value>"
+          use_rss_chat_links: "<value>"
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": 8687.52}, "context_length": 8192, "architecture": {"modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": []}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": 8687.52, "request": "<value>", "image": "https://loremflickr.com/1059/3475?lock=4360467031648304", "image_output": "<value>", "audio": 2816.19, "input_audio_cache": "<value>", "web_search": 5627.19, "internal_reasoning": "<value>", "input_cache_read": 7937.77, "input_cache_write": "<value>", "discount": 9207}, "context_length": 8192, "architecture": {"tokenizer": "Yi", "instruct_type": "code-llama", "modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": []}]}
           application/rss+xml: "<value>"
         default:
           application/json: {"error": {"code": 308, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 501, "message": "<value>"}}
+          application/json: {"error": {"code": 501, "message": "<value>", "metadata": null}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 501, "message": "<value>"}}
+          application/json: {"error": {"code": 501, "message": "<value>", "metadata": null}, "user_id": "<id>"}
   get_/models/user:
     speakeasy-default-get-/models/user:
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": "<value>"}, "context_length": 8192, "architecture": {"modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": ["tool_choice"]}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://loremflickr.com/3718/599?lock=1611962399787242", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 6049.22, "internal_reasoning": "<value>", "input_cache_read": 692.3, "input_cache_write": "<value>", "discount": 9712.4}, "context_length": 8192, "architecture": {"tokenizer": "Router", "instruct_type": "neural", "modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": ["tool_choice"]}]}
         default:
           application/json: {"error": {"code": 409, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 524, "message": "<value>"}}
+          application/json: {"error": {"code": 524, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 524, "message": "<value>"}}
+          application/json: {"error": {"code": 524, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/models/{author}/{slug}/endpoints:
     speakeasy-default-get-/models/{author}/{slug}/endpoints:
       parameters:
@@ -1030,13 +913,13 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "Llama4", "instruct_type": "deepseek-r1", "modality": "text", "input_modalities": [], "output_modalities": ["embeddings"]}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5958.46, "pricing": {"prompt": 1533.15, "completion": "<value>"}, "provider_name": "Lynn", "tag": "<value>", "quantization": "unknown", "max_completion_tokens": 5563.7, "max_prompt_tokens": 5649.14, "supported_parameters": ["presence_penalty"], "uptime_last_30m": 8340.61, "supports_implicit_caching": false}]}}
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "Llama4", "instruct_type": "deepseek-r1", "modality": "text", "input_modalities": [], "output_modalities": ["embeddings"]}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5958.46, "pricing": {"prompt": 1533.15, "completion": "<value>", "request": "<value>", "image": "https://loremflickr.com/876/3375?lock=5553223669080670", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 1533.15, "internal_reasoning": "<value>", "input_cache_read": 1236.04, "input_cache_write": "<value>", "discount": 4243.11}, "provider_name": "Lynn", "tag": "<value>", "quantization": "unknown", "max_completion_tokens": 5563.7, "max_prompt_tokens": 5649.14, "supported_parameters": ["presence_penalty"], "status": -3, "uptime_last_30m": 8340.61, "supports_implicit_caching": false}]}}
         default:
           application/json: {"error": {"code": 424, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 426, "message": "<value>"}}
+          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 426, "message": "<value>"}}
+          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/endpoints/zdr:
     speakeasy-default-get-/endpoints/zdr:
       responses:
@@ -1045,35 +928,41 @@ examples:
         default:
           application/json: {"error": {"code": 408, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 301, "message": "<value>"}}
+          application/json: {"error": {"code": 301, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 301, "message": "<value>"}}
+          application/json: {"error": {"code": 301, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/parameters/{author}/{slug}:
     speakeasy-default-get-/parameters/{author}/{slug}:
       parameters:
         path:
           author: "<value>"
           slug: "<value>"
+        query:
+          provider: "SiliconFlow"
       responses:
         "200":
           application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["min_p"]}}
         default:
           application/json: {"error": {"code": 428, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 508, "message": "<value>"}}
+          application/json: {"error": {"code": 508, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 508, "message": "<value>"}}
+          application/json: {"error": {"code": 508, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   get_/keys:
     speakeasy-default-get-/keys:
+      parameters:
+        query:
+          include_disabled: "<value>"
+          offset: "<value>"
       responses:
         "200":
           application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}]}
         default:
           application/json: {"error": {"code": 411, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 504, "message": "<value>"}}
+          application/json: {"error": {"code": 504, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 504, "message": "<value>"}}
+          application/json: {"error": {"code": 504, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   post_/keys:
     speakeasy-default-post-/keys:
       requestBody:
@@ -1084,9 +973,9 @@ examples:
         default:
           application/json: {"error": {"code": 511, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 511, "message": "<value>"}}
+          application/json: {"error": {"code": 511, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 511, "message": "<value>"}}
+          application/json: {"error": {"code": 511, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   patch_/keys/{hash}:
     speakeasy-default-patch-/keys/{hash}:
       parameters:
@@ -1100,9 +989,9 @@ examples:
         default:
           application/json: {"error": {"code": 526, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 526, "message": "<value>"}}
+          application/json: {"error": {"code": 526, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 526, "message": "<value>"}}
+          application/json: {"error": {"code": 526, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   delete_/keys/{hash}:
     speakeasy-default-delete-/keys/{hash}:
       parameters:
@@ -1114,9 +1003,9 @@ examples:
         default:
           application/json: {"error": {"code": 204, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   get_/keys/{hash}:
     speakeasy-default-get-/keys/{hash}:
       parameters:
@@ -1128,9 +1017,9 @@ examples:
         default:
           application/json: {"error": {"code": 204, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
   get_/key:
     speakeasy-default-get-/key:
       responses:
@@ -1139,9 +1028,9 @@ examples:
         default:
           application/json: {"error": {"code": 524, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 524, "message": "<value>"}}
+          application/json: {"error": {"code": 524, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 524, "message": "<value>"}}
+          application/json: {"error": {"code": 524, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   get_/auth/key:
     speakeasy-default-get-/auth/key:
       responses:
@@ -1150,16 +1039,16 @@ examples:
         default:
           application/json: {"error": {"code": 525, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 525, "message": "<value>"}}
+          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
         5XX:
-          application/json: {"error": {"code": 525, "message": "<value>"}}
+          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
   post_/chat/completions:
     speakeasy-default-post-/chat/completions:
       requestBody:
-        application/json: {"messages": [], "model": "Grand Cherokee", "stream": false, "temperature": 1, "top_p": 1}
+        application/json: {"messages": [], "model": "Grand Cherokee", "frequency_penalty": 5828.67, "logit_bias": {"key": 8477.28, "key1": 786.72}, "logprobs": true, "top_logprobs": 5437.39, "max_completion_tokens": 6372.55, "max_tokens": null, "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "presence_penalty": 7586.19, "reasoning": {"effort": "medium", "generate_summary": "concise", "summary": "auto"}, "response_format": {"type": "grammar", "grammar": "<value>"}, "seed": 804875, "stop": "<value>", "stream": false, "stream_options": {"include_usage": false}, "temperature": 1, "tool_choice": {"type": "function", "function": {"name": "<value>"}}, "tools": [{"type": "function", "function": {"name": "<value>", "description": "rightfully surge whose mentor meh immediate", "parameters": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "strict": true}}], "top_p": 1, "user": "Cielo8"}
       responses:
         "200":
-          application/json: {"id": "<id>", "choices": [], "created": 5828.67, "model": "Model X", "object": "chat.completion"}
+          application/json: {"id": "<id>", "choices": [], "created": 5828.67, "model": "Model X", "object": "chat.completion", "system_fingerprint": "<value>", "usage": {"completion_tokens": 5242.22, "prompt_tokens": 7740.08, "total_tokens": 1907.39, "completion_tokens_details": {"reasoning_tokens": 3681.3, "audio_tokens": 7928.56, "accepted_prediction_tokens": 459.61, "rejected_prediction_tokens": 6231.28}, "prompt_tokens_details": {"cached_tokens": 534.02, "audio_tokens": 7676.52}}}
         "400":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
@@ -1174,9 +1063,9 @@ examples:
         default:
           application/json: {"error": {"code": 451, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 451, "message": "<value>"}}
+          application/json: {"error": {"code": 451, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 451, "message": "<value>"}}
+          application/json: {"error": {"code": 451, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   post_/auth/keys/code:
     speakeasy-default-post-/auth/keys/code:
       requestBody:
@@ -1187,16 +1076,16 @@ examples:
         default:
           application/json: {"error": {"code": 202, "message": "<value>"}}
         4XX:
-          application/json: {"error": {"code": 202, "message": "<value>"}}
+          application/json: {"error": {"code": 202, "message": "<value>", "metadata": null}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 202, "message": "<value>"}}
+          application/json: {"error": {"code": 202, "message": "<value>", "metadata": null}, "user_id": "<id>"}
   post_/completions:
     speakeasy-default-post-/completions:
       requestBody:
-        application/json: {"model": "Grand Caravan", "prompt": "<value>"}
+        application/json: {"model": "Grand Caravan", "prompt": "<value>", "best_of": 129195, "echo": false, "frequency_penalty": 7468.55, "logit_bias": {"key": 9959.54}, "logprobs": 382720, "max_tokens": 885533, "n": 151801, "presence_penalty": 2096.19, "seed": 586955, "stop": ["<value 1>"], "stream": true, "stream_options": {"include_usage": false}, "suffix": "<value>", "temperature": null, "top_p": 8983.72, "user": "Arjun56", "metadata": {"key": "<value>", "key1": "<value>"}, "response_format": {"type": "json_schema", "json_schema": {"name": "<value>", "description": "lest thin huzzah deeply evenly far", "schema": {"key": "<value>", "key1": "<value>"}, "strict": null}}}
       responses:
         "200":
-          application/json: {"id": "<id>", "object": "text_completion", "created": 5585.22, "model": "Alpine", "choices": []}
+          application/json: {"id": "<id>", "object": "text_completion", "created": 5585.22, "model": "Alpine", "system_fingerprint": "<value>", "choices": [], "usage": {"prompt_tokens": 1831.51, "completion_tokens": 6966.94, "total_tokens": 6062.54}}
         "400":
           application/json: {"error": {"code": 7468.55, "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
@@ -1204,23 +1093,292 @@ examples:
   post_/api/alpha/responses:
     speakeasy-default-post-/api/alpha/responses:
       requestBody:
-        application/json: {"provider": {"zdr": true}}
+        application/json: {"input": [], "instructions": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "tools": [{"type": "web_search_2025_08_26", "filters": {"allowed_domains": ["<value 1>"]}, "search_context_size": "low", "user_location": {"type": "approximate", "city": "New Ashleehaven", "country": "Lesotho", "region": "<value>", "timezone": "Asia/Tokyo"}}], "tool_choice": "required", "parallel_tool_calls": true, "model": "Malibu", "models": ["<value 1>"], "text": {"format": {"type": "json_object"}, "verbosity": null}, "reasoning": {"effort": "low", "summary": "concise"}, "max_output_tokens": 9073.23, "temperature": 3955.62, "top_p": 583.58, "top_k": 2827.55, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "<id>", "variables": {"key": {"type": "input_file", "file_id": "<id>", "file_data": "<value>", "filename": "example.file", "file_url": "https://interesting-charm.net/"}}}, "include": ["reasoning.encrypted_content"], "background": true, "safety_identifier": "<value>", "store": true, "service_tier": "scale", "truncation": "disabled", "stream": true, "provider": {"allow_fallbacks": false, "require_parameters": true, "data_collection": "allow", "zdr": true, "order": ["<value>"], "only": ["<value>"], "ignore": ["Modal"], "quantizations": ["fp8"], "sort": null, "max_price": {"prompt": 5897, "completion": 6205.64, "image": "https://loremflickr.com/3949/3636?lock=3036246643782697", "audio": 7236.65, "request": 1995.85}, "experimental": {}}, "plugins": [{"id": "moderation"}], "user": "Ashleigh21"}
       responses:
         "200":
-          application/json: {"id": "<id>", "object": "response", "created_at": 2466.57, "model": "Alpine", "output": [{"type": "image_generation_call", "id": "<id>", "result": "<value>", "status": "failed"}], "error": {"code": "server_error", "message": "<value>"}, "incomplete_details": null, "temperature": 7573.78, "top_p": 6240.47, "instructions": null, "metadata": {"key": "<value>"}, "tools": [{"type": "web_search"}], "tool_choice": "auto", "parallel_tool_calls": false}
+          application/json: {"id": "<id>", "object": "response", "created_at": 2466.57, "model": "Alpine", "status": "cancelled", "output": [{"type": "image_generation_call", "id": "<id>", "result": "<value>", "status": "failed"}], "user": "Darion_Rippin", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": {"code": "server_error", "message": "<value>"}, "incomplete_details": null, "usage": {"input_tokens": 205.89, "input_tokens_details": {"cached_tokens": 6133.67}, "output_tokens": 926.25, "output_tokens_details": {"reasoning_tokens": 4219.68}, "total_tokens": 5865}, "max_tool_calls": 4614.09, "top_logprobs": 3651.6, "max_output_tokens": 8157.67, "temperature": 7573.78, "top_p": 6240.47, "instructions": null, "metadata": {"key": "<value>"}, "tools": [{"type": "web_search", "filters": {"allowed_domains": ["<value 1>"]}, "search_context_size": "high", "user_location": {"type": "approximate", "city": "Walkerboro", "country": "Isle of Man", "region": "<value>", "timezone": "America/Danmarkshavn"}}], "tool_choice": "auto", "parallel_tool_calls": false, "prompt": null, "background": null, "previous_response_id": "<id>", "reasoning": {"effort": "medium", "summary": "detailed"}, "service_tier": "priority", "store": false, "truncation": "disabled", "text": {"format": {"type": "json_schema", "name": "<value>", "description": "cross-contamination um whoever supposing seriously handy elementary psst mid oh", "strict": false, "schema": {"key": "<value>"}}, "verbosity": "high"}}
+          text/event-stream: null
         4XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 204, "message": "<value>"}}
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   send:
     speakeasy-default-send:
       requestBody:
-        application/json: {"provider": {"zdr": true}}
+        application/json: {"input": "Hello, how can I help you today?", "instructions": "<value>", "metadata": {"user_id": "user-123", "session_id": "session-abc"}, "tools": [{"type": "function", "function": {"name": "<value>", "description": "ravioli ah soap short quarrelsomely", "parameters": {"key": "<value>"}, "strict": true}}], "tool_choice": "auto", "parallel_tool_calls": false, "model": "Grand Caravan", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto"}, "max_output_tokens": 4886.16, "temperature": null, "top_p": 9044.06, "top_k": 4416.14, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "include": ["file_search_call.results"], "background": true, "safety_identifier": "<value>", "store": false, "service_tier": "flex", "truncation": "disabled", "stream": false, "provider": {"allow_fallbacks": false, "require_parameters": true, "data_collection": "allow", "zdr": true, "order": ["Venice"], "only": ["Minimax"], "ignore": ["DeepSeek"], "quantizations": ["unknown"], "sort": "throughput", "max_price": {"prompt": "<value>", "completion": 8418.17, "image": 7119.62, "audio": 7586.89, "request": 4896.65}, "experimental": {}}, "plugins": [{"id": "chain-of-thought"}], "user": "Eunice_Weber"}
       responses:
         "200":
-          application/json: {"id": "<id>", "object": "response", "created_at": 1026.55, "model": "Mustang", "output": [], "error": {"code": "server_error", "message": "<value>"}, "incomplete_details": {}, "temperature": null, "top_p": 2916.16, "instructions": [{"role": "system", "content": "<value>"}], "metadata": {"key": "<value>"}, "tools": [{"type": "function", "name": "<value>", "parameters": {"key": "<value>"}}], "tool_choice": {"type": "function", "name": "<value>"}, "parallel_tool_calls": false}
+          application/json: {"id": "resp_001", "object": "response", "created_at": 1234567890, "model": "gpt-4", "status": "completed", "output": [{"type": "message", "id": "msg_001", "status": "completed", "role": "assistant", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": null, "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 8, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 18}, "max_tool_calls": 3205.62, "top_logprobs": 236.83, "max_output_tokens": 1000, "temperature": 0.7, "top_p": 1, "instructions": null, "metadata": {}, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "background": true, "previous_response_id": "<id>", "reasoning": {"effort": "medium", "summary": "auto"}, "service_tier": null, "store": false, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
         4XX:
-          application/json: {"error": {"code": 417, "message": "<value>"}}
+          application/json: {"error": {"code": 417, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
-          application/json: {"error": {"code": 417, "message": "<value>"}}
+          application/json: {"error": {"code": 417, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  getUserActivity:
+    speakeasy-default-get-user-activity:
+      parameters:
+        query:
+          date: "2025-08-24"
+      responses:
+        "200":
+          application/json: {"data": [{"date": "2025-08-24", "model": "openai/gpt-4.1", "model_permaslug": "openai/gpt-4.1-2025-04-14", "endpoint_id": "550e8400-e29b-41d4-a716-446655440000", "provider_name": "OpenAI", "usage": 0.015, "byok_usage_inference": 0.012, "requests": 5, "prompt_tokens": 50, "completion_tokens": 125, "reasoning_tokens": 25}]}
+        4XX:
+          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  getCredits:
+    speakeasy-default-get-credits:
+      responses:
+        "200":
+          application/json: {"data": {"total_credits": 1683.62, "total_usage": 2963.62}}
+        4XX:
+          application/json: {"error": {"code": 101, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+  addCoinbaseCharge:
+    speakeasy-default-add-coinbase-charge:
+      requestBody:
+        application/json: {"amount": 4821.17, "sender": "<value>", "chain_id": 1}
+      responses:
+        "200":
+          application/json: {"data": {"id": "<id>", "created_at": "1715956788825", "expires_at": "1751817824737", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 3721.65, "contract_address": "<value>", "sender": "<value>"}}}}}
+        4XX:
+          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+  generate:
+    speakeasy-default-generate:
+      requestBody:
+        application/json: {"input": ["<value 1>", "<value 2>"], "model": "Malibu", "models": ["<value 1>", "<value 2>", "<value 3>"], "provider": {"allow_fallbacks": true, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["Lambda"], "only": ["<value>"], "ignore": null, "quantizations": ["bf16"], "sort": "throughput", "max_price": {"prompt": "<value>", "completion": 1014.86, "image": "https://loremflickr.com/1953/2511?lock=5056249632066692", "audio": "<value>", "request": "<value>"}, "experimental": {}}, "encoding_format": "float", "user": "Donato3"}
+      responses:
+        "200":
+          application/json: {"object": "list", "data": [{"object": "embedding", "embedding": [7785.41, 5137.77], "index": 8654.74}], "model": "Explorer", "usage": {"prompt_tokens": 1041.75, "total_tokens": 1508.51, "cost": 7467.82}}
+        4XX:
+          application/json: {"error": {"code": 520, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 520, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  getMetadata:
+    speakeasy-default-get-metadata:
+      parameters:
+        query:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
+        4XX:
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 204, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  getCount:
+    speakeasy-default-get-count:
+      responses:
+        "200":
+          application/json: {"data": {"count": 150}}
+        4XX:
+          application/json: {"error": {"code": 401, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 401, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  listModels:
+    speakeasy-default-list-models:
+      parameters:
+        query:
+          category: "<value>"
+          supported_parameters: "<value>"
+          use_rss: "<value>"
+          use_rss_chat_links: "<value>"
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": 5243.25, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 1914, "internal_reasoning": 579.8, "input_cache_read": 752.9, "input_cache_write": 580.05, "discount": 6840.83}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "phi3", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+          application/rss+xml: "<value>"
+        4XX:
+          application/json: {"error": {"code": 425, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+        5XX:
+          application/json: {"error": {"code": 425, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+  listUserModels:
+    speakeasy-default-list-user-models:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/lSNiEzd/2336/2231", "image_output": "<value>", "audio": 1588.92, "input_audio_cache": 5768.64, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": 4442.74, "input_cache_write": "<value>", "discount": 4799.95}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "claude", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+        4XX:
+          application/json: {"error": {"code": 418, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 418, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  list:
+    speakeasy-default-list:
+      parameters:
+        path:
+          author: "<value>"
+          slug: "<value>"
+      responses:
+        "200":
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI GPT-4", "model_name": "gpt-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/pJRcbCIEOq/347/2939", "image_output": "<value>", "audio": 5739.83, "input_audio_cache": 9758.17, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9615.63}, "provider_name": "OpenAI", "tag": "featured", "quantization": null, "max_completion_tokens": 4096, "max_prompt_tokens": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "status": -1, "uptime_last_30m": 0.99, "supports_implicit_caching": true}]}}
+        4XX:
+          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  previewZDR:
+    speakeasy-default-preview-ZDR:
+      responses:
+        "200":
+          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 6951.94, "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://loremflickr.com/2171/1012?lock=1976973374583634", "image_output": 1734.86, "audio": 1678.84, "input_audio_cache": 289.49, "web_search": "<value>", "internal_reasoning": 7147.04, "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9729.16}, "provider_name": "NextBit", "tag": "<value>", "quantization": "int8", "max_completion_tokens": 7825.26, "max_prompt_tokens": 7373.51, "supported_parameters": ["top_k"], "status": -1, "uptime_last_30m": 3173.05, "supports_implicit_caching": false}]}
+        4XX:
+          application/json: {"error": {"code": 510, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 510, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  getParameters:
+    speakeasy-default-get-parameters:
+      parameters:
+        path:
+          author: "<value>"
+          slug: "<value>"
+        query:
+          provider: "Google AI Studio"
+      responses:
+        "200":
+          application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"]}}
+        4XX:
+          application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+  listProviders:
+    speakeasy-default-list-providers:
+      responses:
+        "200":
+          application/json: {"data": [{"name": "OpenAI", "slug": "openai", "privacy_policy_url": "https://openai.com/privacy", "terms_of_service_url": "https://openai.com/terms", "status_page_url": "https://status.openai.com"}]}
+        "500":
+          application/json: {"error": {"code": 400, "message": "Bad Request"}}
+  listApiKeys:
+    speakeasy-default-list-api-keys:
+      parameters:
+        query:
+          include_disabled: "false"
+          offset: "0"
+      responses:
+        "200":
+          application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}, {"hash": "sk-or-v1-xyz789ghi012", "name": "My Development Key", "label": "Development API Key", "disabled": false, "limit": 50, "usage": 10, "created_at": "2025-08-20T08:00:00Z", "updated_at": null}]}
+        4XX:
+          application/json: {"error": {"code": 305, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 305, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  create:
+    speakeasy-default-create:
+      requestBody:
+        application/json: {"name": "My New API Key", "limit": 50, "include_byok_in_limit": true}
+      responses:
+        "201":
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My New API Key", "label": "Production API Key", "disabled": false, "limit": 50, "usage": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "sk-or-v1-abc123def456ghi789jkl012"}
+        4XX:
+          application/json: {"error": {"code": 206, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 206, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  update:
+    speakeasy-default-update:
+      parameters:
+        path:
+          hash: "sk-or-v1-abc123def456"
+      requestBody:
+        application/json: {"name": "Updated API Key Name", "disabled": false, "limit": 75, "include_byok_in_limit": true}
+      responses:
+        "200":
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "Updated API Key Name", "label": "Production API Key", "disabled": false, "limit": 75, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
+        4XX:
+          application/json: {"error": {"code": 424, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 424, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  delete:
+    speakeasy-default-delete:
+      parameters:
+        path:
+          hash: "sk-or-v1-abc123def456"
+      responses:
+        "200":
+          application/json: {"deleted": true}
+        4XX:
+          application/json: {"error": {"code": 203, "message": "<value>", "metadata": null}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 203, "message": "<value>", "metadata": null}, "user_id": "<id>"}
+  getApiKey:
+    speakeasy-default-get-api-key:
+      parameters:
+        path:
+          hash: "sk-or-v1-abc123def456"
+      responses:
+        "200":
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
+        4XX:
+          application/json: {"error": {"code": 428, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 428, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  getCurrentKey:
+    speakeasy-default-get-current-key:
+      responses:
+        "200":
+          application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
+        4XX:
+          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+  exchangeAuthorizationCode:
+    speakeasy-default-exchange-authorization-code:
+      requestBody:
+        application/json: {"code": "auth_code_abc123def456", "code_verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", "code_challenge_method": "S256"}
+      responses:
+        "200":
+          application/json: {"key": "sk-or-v1-abc123def456ghi789jkl012", "user_id": "or_user_1234567890abcdef"}
+        4XX:
+          application/json: {"error": {"code": 100, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 100, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  createAuthorizationCode:
+    speakeasy-default-create-authorization-code:
+      requestBody:
+        application/json: {"callback_url": "https://myapp.com/auth/callback", "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "code_challenge_method": "S256", "limit": 100}
+      responses:
+        "200":
+          application/json: {"data": {"id": "auth_code_xyz789", "app_id": 12345, "created_at": "2025-08-24T10:30:00Z"}}
+        4XX:
+          application/json: {"error": {"code": 417, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 417, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  createChatCompletions:
+    speakeasy-default-create-chat-completions:
+      requestBody:
+        application/json: {"messages": [], "model": "Civic", "frequency_penalty": 3319.9, "logit_bias": {"key": 3222.08, "key1": 8277.92, "key2": 6037.07}, "logprobs": false, "top_logprobs": 4930.36, "max_completion_tokens": 7320.99, "max_tokens": 7020.38, "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "presence_penalty": 5375.8, "reasoning": {"effort": null, "generate_summary": "detailed", "summary": null}, "response_format": {"type": "text"}, "seed": 956602, "stop": "<value>", "stream": false, "stream_options": {"include_usage": true}, "temperature": 1, "tool_choice": "<value>", "tools": [{"type": "function", "function": {"name": "<value>", "description": "fellow wavy simple after", "parameters": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "strict": true}}], "top_p": 1, "user": "Gage.Cronin"}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "choices": [{"finish_reason": "error", "index": 1790.94, "message": {"role": "assistant", "content": [], "name": "<value>", "tool_calls": [{"id": "<id>", "type": "function", "function": {"name": "<value>", "arguments": "<value>"}}], "refusal": "<value>", "reasoning": "<value>"}, "logprobs": {"content": null, "refusal": []}}], "created": 3147.25, "model": "2", "object": "chat.completion", "system_fingerprint": "<value>", "usage": {"completion_tokens": 9590.23, "prompt_tokens": 2631.8, "total_tokens": 7908.25, "completion_tokens_details": {"reasoning_tokens": 7841.69, "audio_tokens": 4442.81, "accepted_prediction_tokens": 9674.71, "rejected_prediction_tokens": 4637.29}, "prompt_tokens_details": {"cached_tokens": 9671.36, "audio_tokens": 3868.78}}}
+        "400":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+        "500":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+  createCompletions:
+    speakeasy-default-create-completions:
+      requestBody:
+        application/json: {"model": "Model T", "prompt": "<value>", "best_of": 163488, "echo": true, "frequency_penalty": 27.55, "logit_bias": {"key": 9064.25, "key1": 7698.06, "key2": 6481.8}, "logprobs": 482258, "max_tokens": null, "n": 629532, "presence_penalty": 5430.28, "seed": 853393, "stop": ["<value 1>", "<value 2>"], "stream": true, "stream_options": {"include_usage": false}, "suffix": "<value>", "temperature": null, "top_p": 5229.98, "user": "Anita53", "metadata": {"key": "<value>", "key1": "<value>"}, "response_format": {"type": "text"}}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "object": "text_completion", "created": 2021.59, "model": "Jetta", "system_fingerprint": "<value>", "choices": [], "usage": {"prompt_tokens": 8379.72, "completion_tokens": 7782.47, "total_tokens": 4749.16}}
+        "400":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+        "500":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+  sendResponsesRequest:
+    speakeasy-default-send-responses-request:
+      requestBody:
+        application/json: {"input": "Hello, how can I help you today?", "instructions": "<value>", "metadata": {"user_id": "user-123", "session_id": "session-abc"}, "tools": [{"type": "function", "function": {"name": "<value>", "description": "petal righteously sans athwart down front tuxedo overfeed", "parameters": {"key": "<value>"}, "strict": false}}], "tool_choice": "auto", "parallel_tool_calls": true, "model": "Fortwo", "models": ["<value 1>", "<value 2>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto"}, "max_output_tokens": 6181.51, "temperature": 8715.21, "top_p": 3848.26, "top_k": 2241.14, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "include": ["file_search_call.results"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "scale", "truncation": "auto", "stream": null, "provider": null, "plugins": [{"id": "chain-of-thought"}], "user": "Ilene51"}
+      responses:
+        "200":
+          application/json: {"id": "resp_001", "object": "response", "created_at": 1234567890, "model": "gpt-4", "status": "completed", "output": [{"type": "message", "id": "msg_001", "status": "completed", "role": "assistant", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alex.Hermiston11", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": null, "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 8, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 18}, "max_tool_calls": 1639.51, "top_logprobs": 5802.7, "max_output_tokens": 1000, "temperature": 0.7, "top_p": 1, "instructions": null, "metadata": {}, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "medium", "summary": "auto"}, "service_tier": "default", "store": true, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+        4XX:
+          application/json: {"error": {"code": 522, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        5XX:
+          application/json: {"error": {"code": 522, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+  sendChatCompletionRequest:
+    speakeasy-default-send-chat-completion-request:
+      requestBody:
+        application/json: {"messages": [], "model": "Charger", "frequency_penalty": 8689.88, "logit_bias": {"key": 4876.54, "key1": 7346.88}, "logprobs": false, "top_logprobs": 2140.15, "max_completion_tokens": 89.43, "max_tokens": 7392.4, "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "presence_penalty": 9132.54, "reasoning": {"effort": "medium", "generate_summary": "concise", "summary": null}, "response_format": {"type": "grammar", "grammar": "<value>"}, "seed": null, "stop": [], "stream": false, "stream_options": {"include_usage": true}, "temperature": 1, "tool_choice": "<value>", "tools": [{"type": "function", "function": {"name": "<value>", "description": "pro even bank rewarding ha modulo aboard mentor", "parameters": {"key": "<value>"}, "strict": null}}], "top_p": 1, "user": "Francesco.Bartell"}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "choices": [], "created": 2736.96, "model": "Impala", "object": "chat.completion", "system_fingerprint": "<value>", "usage": {"completion_tokens": 1508.33, "prompt_tokens": 8882.56, "total_tokens": 6462.52, "completion_tokens_details": {"reasoning_tokens": 29.52, "audio_tokens": 2712.88, "accepted_prediction_tokens": 9343.84, "rejected_prediction_tokens": 3891.43}, "prompt_tokens_details": {"cached_tokens": 8011.45, "audio_tokens": 6106.12}}}
+        "400":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+        "500":
+          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
 examplesVersion: 1.0.2

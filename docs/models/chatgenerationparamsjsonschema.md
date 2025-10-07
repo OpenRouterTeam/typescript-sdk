@@ -7,6 +7,12 @@ import { ChatGenerationParamsJsonSchema } from "@openrouter/sdk/models";
 
 let value: ChatGenerationParamsJsonSchema = {
   name: "<value>",
+  description: "striking elevator inasmuch zowie chip subdued",
+  schema: {
+    "key": "<value>",
+    "key1": "<value>",
+  },
+  strict: false,
 };
 ```
 

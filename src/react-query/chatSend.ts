@@ -24,7 +24,7 @@ export type ChatSendMutationVariables = {
   options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum };
 };
 
-export type ChatSendMutationData = operations.PostChatCompletionsResponse;
+export type ChatSendMutationData = operations.SendChatCompletionRequestResponse;
 
 /**
  * Create a chat completion

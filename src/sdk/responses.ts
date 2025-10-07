@@ -3,15 +3,16 @@
  */
 
 import {
-  alphaResponsesSend2,
-  Send2AcceptEnum,
-} from "../funcs/alphaResponsesSend2.js";
+  betaResponsesSendRequest,
+  SendRequestAcceptEnum,
+} from "../funcs/betaResponsesSendRequest.js";
 import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
-export { Send2AcceptEnum } from "../funcs/alphaResponsesSend2.js";
+export { SendRequestAcceptEnum } from "../funcs/betaResponsesSendRequest.js";
 
 export class Responses extends ClientSDK {
   /**
@@ -20,25 +21,23 @@ export class Responses extends ClientSDK {
    * @remarks
    * Submits a request to the Responses API (beta)
    */
-  async send2(
-    request: operations.PostApiAlphaResponsesRequest & {
-      stream?: false | undefined;
-    },
-    options?: RequestOptions & { acceptHeaderOverride?: Send2AcceptEnum },
-  ): Promise<operations.PostApiAlphaResponsesResponseBody>;
-  async send2(
-    request: operations.PostApiAlphaResponsesRequest & { stream: true },
-    options?: RequestOptions & { acceptHeaderOverride?: Send2AcceptEnum },
-  ): Promise<EventStream<any>>;
-  async send2(
-    request: operations.PostApiAlphaResponsesRequest,
-    options?: RequestOptions & { acceptHeaderOverride?: Send2AcceptEnum },
-  ): Promise<operations.PostApiAlphaResponsesResponse>;
-  async send2(
-    request: operations.PostApiAlphaResponsesRequest,
-    options?: RequestOptions & { acceptHeaderOverride?: Send2AcceptEnum },
-  ): Promise<operations.PostApiAlphaResponsesResponse> {
-    return unwrapAsync(alphaResponsesSend2(
+  async sendRequest(
+    request: models.OpenAIResponsesRequest & { stream?: false | undefined },
+    options?: RequestOptions & { acceptHeaderOverride?: SendRequestAcceptEnum },
+  ): Promise<models.ResponsesNonStreamingResponse>;
+  async sendRequest(
+    request: models.OpenAIResponsesRequest & { stream: true },
+    options?: RequestOptions & { acceptHeaderOverride?: SendRequestAcceptEnum },
+  ): Promise<EventStream<operations.SendResponsesRequestResponseBody>>;
+  async sendRequest(
+    request: models.OpenAIResponsesRequest,
+    options?: RequestOptions & { acceptHeaderOverride?: SendRequestAcceptEnum },
+  ): Promise<operations.SendResponsesRequestResponse>;
+  async sendRequest(
+    request: models.OpenAIResponsesRequest,
+    options?: RequestOptions & { acceptHeaderOverride?: SendRequestAcceptEnum },
+  ): Promise<operations.SendResponsesRequestResponse> {
+    return unwrapAsync(betaResponsesSendRequest(
       this,
       request,
       options,

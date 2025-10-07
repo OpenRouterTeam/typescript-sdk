@@ -89,10 +89,75 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
+  const result = await openRouter.beta.responses.sendRequest({
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description:
+            "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   });
 
   console.log(result);
@@ -123,10 +188,75 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
+  const result = await openRouter.beta.responses.sendRequest({
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description:
+            "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   });
 
   console.log(result);
@@ -145,8 +275,12 @@ import { OpenRouter } from "@openrouter/sdk";
 const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.credits.postCreditsCoinbase({
+  const result = await openRouter.credits.addCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
+  }, {
+    amount: 4821.17,
+    sender: "<value>",
+    chainId: 1,
   });
 
   console.log(result);
@@ -163,26 +297,22 @@ run();
 <details open>
 <summary>Available methods</summary>
 
-### [alpha](docs/sdks/alpha/README.md)
-
-
-#### [alpha.responses](docs/sdks/responses/README.md)
-
-* [send2](docs/sdks/responses/README.md#send2) - Submit a response request
-
 ### [analytics](docs/sdks/analytics/README.md)
 
-* [getActivity](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
+* [getUserActivity](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
 
 ### [apiKeys](docs/sdks/apikeys/README.md)
 
-* [getKeys](docs/sdks/apikeys/README.md#getkeys) - List API keys
-* [postKeys](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
-* [patchKeysHash](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
-* [deleteKeysHash](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
-* [getKeysHash](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
-* [getKey](docs/sdks/apikeys/README.md#getkey) - Get current API key
-* [getAuthKey](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
+* [list](docs/sdks/apikeys/README.md#list) - List API keys
+* [create](docs/sdks/apikeys/README.md#create) - Create a new API key
+* [update](docs/sdks/apikeys/README.md#update) - Update an API key
+* [delete](docs/sdks/apikeys/README.md#delete) - Delete an API key
+* [get](docs/sdks/apikeys/README.md#get) - Get a single API key
+* [getCurrentKeyMetadata](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
+
+#### [beta.responses](docs/sdks/responses/README.md)
+
+* [sendRequest](docs/sdks/responses/README.md#sendrequest) - Submit a response request
 
 ### [chat](docs/sdks/chat/README.md)
 
@@ -194,8 +324,8 @@ run();
 
 ### [credits](docs/sdks/credits/README.md)
 
-* [getCredits](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-* [postCreditsCoinbase](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+* [get](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
+* [addCoinbaseCharge](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
 
 ### [embeddings](docs/sdks/embeddings/README.md)
 
@@ -203,32 +333,31 @@ run();
 
 ### [endpoints](docs/sdks/endpoints/README.md)
 
-* [getModelsAuthorSlugEndpoints](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
-* [getEndpointsZdr](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
+* [list](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
+* [previewZDR](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
 
 ### [generations](docs/sdks/generations/README.md)
 
-* [getGeneration](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+* [getMetadata](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
 
 ### [model](docs/sdks/model/README.md)
 
-* [getParametersAuthorSlug](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
+* [getParameters](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 
 ### [models](docs/sdks/models/README.md)
 
-* [getModelsCount](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
-* [getModels](docs/sdks/models/README.md#getmodels) - List all models and their properties
-* [getModelsUser](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
+* [getCount](docs/sdks/models/README.md#getcount) - Get total count of available models
+* [list](docs/sdks/models/README.md#list) - List all models and their properties
+* [listUserModels](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
 
 ### [oAuth](docs/sdks/oauth/README.md)
 
-* [postAuthKeys](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
-* [postAuthKeysCode](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
-
+* [exchangeAuthorizationCode](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
+* [createAuthorizationCode](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
 
 ### [providers](docs/sdks/providers/README.md)
 
-* [getProviders](docs/sdks/providers/README.md#getproviders) - List all available model providers
+* [list](docs/sdks/providers/README.md#list) - List all available model providers
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -248,30 +377,29 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [`alphaResponsesSend2`](docs/sdks/responses/README.md#send2) - Submit a response request
-- [`analyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
-- [`apiKeysDeleteKeysHash`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
-- [`apiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
-- [`apiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
-- [`apiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
-- [`apiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
-- [`apiKeysPatchKeysHash`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
-- [`apiKeysPostKeys`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+- [`analyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
+- [`apiKeysCreate`](docs/sdks/apikeys/README.md#create) - Create a new API key
+- [`apiKeysDelete`](docs/sdks/apikeys/README.md#delete) - Delete an API key
+- [`apiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
+- [`apiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
+- [`apiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
+- [`apiKeysUpdate`](docs/sdks/apikeys/README.md#update) - Update an API key
+- [`betaResponsesSendRequest`](docs/sdks/responses/README.md#sendrequest) - Submit a response request
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`creditsPostCreditsCoinbase`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`creditsAddCoinbaseCharge`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
+- [`creditsGet`](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
 - [`embeddingsGenerate`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
-- [`endpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
-- [`endpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
-- [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`modelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`modelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
-- [`modelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`oAuthPostAuthKeys`](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
-- [`oAuthPostAuthKeysCode`](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
-- [`providersGetProviders`](docs/sdks/providers/README.md#getproviders) - List all available model providers
+- [`endpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
+- [`endpointsPreviewZDR`](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
+- [`generationsGetMetadata`](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
+- [`modelGetParameters`](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+- [`modelsGetCount`](docs/sdks/models/README.md#getcount) - Get total count of available models
+- [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+- [`modelsListUserModels`](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
+- [`oAuthCreateAuthorizationCode`](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
+- [`oAuthExchangeAuthorizationCode`](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
+- [`providersList`](docs/sdks/providers/README.md#list) - List all available model providers
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -298,30 +426,29 @@ To learn about this feature and how to get started, check
 
 <summary>Available React hooks</summary>
 
-- [`useAlphaResponsesSend2Mutation`](docs/sdks/responses/README.md#send2) - Submit a response request
-- [`useAnalyticsGetActivity`](docs/sdks/analytics/README.md#getactivity) - Get user activity grouped by endpoint
-- [`useApiKeysDeleteKeysHashMutation`](docs/sdks/apikeys/README.md#deletekeyshash) - Delete an API key
-- [`useApiKeysGetAuthKey`](docs/sdks/apikeys/README.md#getauthkey) - Get current API key
-- [`useApiKeysGetKey`](docs/sdks/apikeys/README.md#getkey) - Get current API key
-- [`useApiKeysGetKeys`](docs/sdks/apikeys/README.md#getkeys) - List API keys
-- [`useApiKeysGetKeysHash`](docs/sdks/apikeys/README.md#getkeyshash) - Get a single API key
-- [`useApiKeysPatchKeysHashMutation`](docs/sdks/apikeys/README.md#patchkeyshash) - Update an API key
-- [`useApiKeysPostKeysMutation`](docs/sdks/apikeys/README.md#postkeys) - Create a new API key
+- [`useAnalyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
+- [`useApiKeysCreateMutation`](docs/sdks/apikeys/README.md#create) - Create a new API key
+- [`useApiKeysDeleteMutation`](docs/sdks/apikeys/README.md#delete) - Delete an API key
+- [`useApiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
+- [`useApiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
+- [`useApiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
+- [`useApiKeysUpdateMutation`](docs/sdks/apikeys/README.md#update) - Update an API key
+- [`useBetaResponsesSendRequestMutation`](docs/sdks/responses/README.md#sendrequest) - Submit a response request
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get total credits purchased and used for the authenticated user
-- [`useCreditsPostCreditsCoinbaseMutation`](docs/sdks/credits/README.md#postcreditscoinbase) - Create a Coinbase charge for crypto payment
+- [`useCreditsAddCoinbaseChargeMutation`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
+- [`useCreditsGet`](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
 - [`useEmbeddingsGenerateMutation`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
-- [`useEndpointsGetEndpointsZdr`](docs/sdks/endpoints/README.md#getendpointszdr) - Preview the impact of ZDR on the available endpoints
-- [`useEndpointsGetModelsAuthorSlugEndpoints`](docs/sdks/endpoints/README.md#getmodelsauthorslugendpoints) - List all endpoints for a model
-- [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`useModelGetParametersAuthorSlug`](docs/sdks/model/README.md#getparametersauthorslug) - Get a model's supported parameters and data about which are most popular
-- [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`useModelsGetModelsCount`](docs/sdks/models/README.md#getmodelscount) - Get total count of available models
-- [`useModelsGetModelsUser`](docs/sdks/models/README.md#getmodelsuser) - List models filtered by user provider preferences
-- [`useOAuthPostAuthKeysCodeMutation`](docs/sdks/oauth/README.md#postauthkeyscode) - Create authorization code
-- [`useOAuthPostAuthKeysMutation`](docs/sdks/oauth/README.md#postauthkeys) - Exchange authorization code for API key
-- [`useProvidersGetProviders`](docs/sdks/providers/README.md#getproviders) - List all available model providers
+- [`useEndpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
+- [`useEndpointsPreviewZDR`](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
+- [`useGenerationsGetMetadata`](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
+- [`useModelGetParameters`](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+- [`useModelsGetCount`](docs/sdks/models/README.md#getcount) - Get total count of available models
+- [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+- [`useModelsListUserModels`](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
+- [`useOAuthCreateAuthorizationCodeMutation`](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
+- [`useOAuthExchangeAuthorizationCodeMutation`](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
+- [`useProvidersList`](docs/sdks/providers/README.md#list) - List all available model providers
 
 </details>
 <!-- End React hooks with TanStack Query [react-query] -->
@@ -343,10 +470,75 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
+  const result = await openRouter.beta.responses.sendRequest({
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description:
+            "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   });
 
   console.log(result);
@@ -374,10 +566,75 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
+  const result = await openRouter.beta.responses.sendRequest({
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description:
+            "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   }, {
     retries: {
       strategy: "backoff",
@@ -417,10 +674,75 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.alpha.responses.send2({
-    provider: {
-      zdr: true,
+  const result = await openRouter.beta.responses.sendRequest({
+    input: "Hello, how can I help you today?",
+    instructions: "<value>",
+    metadata: {
+      "user_id": "user-123",
+      "session_id": "session-abc",
     },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "<value>",
+          description:
+            "petal righteously sans athwart down front tuxedo overfeed",
+          parameters: {
+            "key": "<value>",
+          },
+          strict: false,
+        },
+      },
+    ],
+    toolChoice: "auto",
+    parallelToolCalls: true,
+    model: "Fortwo",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "medium",
+      summary: "auto",
+    },
+    maxOutputTokens: 6181.51,
+    temperature: 8715.21,
+    topP: 3848.26,
+    topK: 2241.14,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "prompt-123",
+      variables: {
+        "user_name": {
+          type: "input_text",
+          text: "John",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "scale",
+    truncation: "auto",
+    stream: null,
+    provider: null,
+    plugins: [
+      {
+        id: "chain-of-thought",
+      },
+    ],
+    user: "Ilene51",
   });
 
   console.log(result);
@@ -456,10 +778,75 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.alpha.responses.send2({
-      provider: {
-        zdr: true,
+    const result = await openRouter.beta.responses.sendRequest({
+      input: "Hello, how can I help you today?",
+      instructions: "<value>",
+      metadata: {
+        "user_id": "user-123",
+        "session_id": "session-abc",
       },
+      tools: [
+        {
+          type: "function",
+          function: {
+            name: "<value>",
+            description:
+              "petal righteously sans athwart down front tuxedo overfeed",
+            parameters: {
+              "key": "<value>",
+            },
+            strict: false,
+          },
+        },
+      ],
+      toolChoice: "auto",
+      parallelToolCalls: true,
+      model: "Fortwo",
+      models: [
+        "<value 1>",
+        "<value 2>",
+      ],
+      text: {
+        format: {
+          type: "text",
+        },
+        verbosity: "medium",
+      },
+      reasoning: {
+        effort: "medium",
+        summary: "auto",
+      },
+      maxOutputTokens: 6181.51,
+      temperature: 8715.21,
+      topP: 3848.26,
+      topK: 2241.14,
+      promptCacheKey: "<value>",
+      previousResponseId: "<id>",
+      prompt: {
+        id: "prompt-123",
+        variables: {
+          "user_name": {
+            type: "input_text",
+            text: "John",
+          },
+        },
+      },
+      include: [
+        "file_search_call.results",
+      ],
+      background: false,
+      safetyIdentifier: "<value>",
+      store: false,
+      serviceTier: "scale",
+      truncation: "auto",
+      stream: null,
+      provider: null,
+      plugins: [
+        {
+          id: "chain-of-thought",
+        },
+      ],
+      user: "Ilene51",
     });
 
     console.log(result);
@@ -489,7 +876,7 @@ run();
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
   * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Error response. *
 
-<details><summary>Less common errors (9)</summary>
+<details><summary>Less common errors (8)</summary>
 
 <br />
 
@@ -502,9 +889,8 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 1 of 24 methods.*
-* [`CompletionError`](./src/models/errors/completionerror.ts): Bad request - invalid parameters. Applicable to 1 of 24 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 24 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 23 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 23 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

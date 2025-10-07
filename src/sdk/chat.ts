@@ -29,11 +29,11 @@ export class Chat extends ClientSDK {
   async send(
     request: models.ChatGenerationParams,
     options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
-  ): Promise<operations.PostChatCompletionsResponse>;
+  ): Promise<operations.SendChatCompletionRequestResponse>;
   async send(
     request: models.ChatGenerationParams,
     options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
-  ): Promise<operations.PostChatCompletionsResponse> {
+  ): Promise<operations.SendChatCompletionRequestResponse> {
     return unwrapAsync(chatSend(
       this,
       request,

@@ -3,17 +3,19 @@
 
 ## Overview
 
+Provider information endpoints
+
 ### Available Operations
 
-* [getProviders](#getproviders) - List all available model providers
+* [list](#list) - List all available model providers
 
-## getProviders
+## list
 
 List all available model providers
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_/providers" method="get" path="/providers" -->
+<!-- UsageSnippet language="typescript" operationID="listProviders" method="get" path="/providers" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -22,7 +24,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.providers.getProviders();
+  const result = await openRouter.providers.list();
 
   console.log(result);
 }
@@ -36,7 +38,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { providersGetProviders } from "@openrouter/sdk/funcs/providersGetProviders.js";
+import { providersList } from "@openrouter/sdk/funcs/providersList.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -45,12 +47,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await providersGetProviders(openRouter);
+  const res = await providersList(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("providersGetProviders failed:", res.error);
+    console.log("providersList failed:", res.error);
   }
 }
 
@@ -70,18 +72,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useProvidersGetProviders,
-  useProvidersGetProvidersSuspense,
+  useProvidersList,
+  useProvidersListSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchProvidersGetProviders,
+  prefetchProvidersList,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllProvidersGetProviders,
-} from "@openrouter/sdk/react-query/providersGetProviders.js";
+  invalidateAllProvidersList,
+} from "@openrouter/sdk/react-query/providersList.js";
 ```
 
 ### Parameters
@@ -94,7 +96,7 @@ import {
 
 ### Response
 
-**Promise\<[operations.GetProvidersResponse](../../models/operations/getprovidersresponse.md)\>**
+**Promise\<[operations.ListProvidersResponse](../../models/operations/listprovidersresponse.md)\>**
 
 ### Errors
 

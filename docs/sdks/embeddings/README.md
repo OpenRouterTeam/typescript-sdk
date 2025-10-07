@@ -3,6 +3,8 @@
 
 ## Overview
 
+Text embedding endpoints
+
 ### Available Operations
 
 * [generate](#generate) - Submit an embedding request
@@ -13,7 +15,7 @@ Submits an embedding request to the embeddings router
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="post_/embeddings" method="post" path="/embeddings" -->
+<!-- UsageSnippet language="typescript" operationID="generate" method="post" path="/embeddings" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -23,10 +25,43 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.embeddings.generate({
-    input: [],
+    input: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    model: "Malibu",
+    models: [
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
+    ],
     provider: {
+      allowFallbacks: true,
+      requireParameters: true,
+      dataCollection: "deny",
       zdr: true,
+      order: [
+        "Lambda",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: null,
+      quantizations: [
+        "bf16",
+      ],
+      sort: "throughput",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 1014.86,
+        image: "https://loremflickr.com/1953/2511?lock=5056249632066692",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
     },
+    encodingFormat: "float",
+    user: "Donato3",
   });
 
   console.log(result);
@@ -51,10 +86,43 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await embeddingsGenerate(openRouter, {
-    input: [],
+    input: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    model: "Malibu",
+    models: [
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
+    ],
     provider: {
+      allowFallbacks: true,
+      requireParameters: true,
+      dataCollection: "deny",
       zdr: true,
+      order: [
+        "Lambda",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: null,
+      quantizations: [
+        "bf16",
+      ],
+      sort: "throughput",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 1014.86,
+        image: "https://loremflickr.com/1953/2511?lock=5056249632066692",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
     },
+    encodingFormat: "float",
+    user: "Donato3",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -88,14 +156,14 @@ import {
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PostEmbeddingsRequest](../../models/operations/postembeddingsrequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.GenerateRequest](../../models/operations/generaterequest.md)                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PostEmbeddingsResponse](../../models/operations/postembeddingsresponse.md)\>**
+**Promise\<[operations.GenerateResponse](../../models/operations/generateresponse.md)\>**
 
 ### Errors
 

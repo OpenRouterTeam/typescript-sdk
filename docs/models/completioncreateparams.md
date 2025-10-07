@@ -8,6 +8,45 @@ import { CompletionCreateParams } from "@openrouter/sdk/models";
 let value: CompletionCreateParams = {
   model: "Model Y",
   prompt: "<value>",
+  bestOf: 276224,
+  echo: true,
+  frequencyPenalty: 1322.75,
+  logitBias: {
+    "key": 108.11,
+    "key1": 9552.79,
+  },
+  logprobs: null,
+  maxTokens: 775190,
+  n: 622592,
+  presencePenalty: null,
+  seed: 672410,
+  stop: [],
+  stream: true,
+  streamOptions: {
+    includeUsage: true,
+  },
+  suffix: "<value>",
+  temperature: 6791.47,
+  topP: 7646.79,
+  user: "Martin.Greenfelder",
+  metadata: {
+    "key": "<value>",
+    "key1": "<value>",
+    "key2": "<value>",
+  },
+  responseFormat: {
+    type: "json_schema",
+    jsonSchema: {
+      name: "<value>",
+      description: "athletic decent scuttle among excluding react",
+      schema: {
+        "key": "<value>",
+        "key1": "<value>",
+        "key2": "<value>",
+      },
+      strict: false,
+    },
+  },
 };
 ```
 
@@ -16,7 +55,7 @@ let value: CompletionCreateParams = {
 | Field                                              | Type                                               | Required                                           | Description                                        |
 | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
 | `model`                                            | *string*                                           | :heavy_check_mark:                                 | N/A                                                |
-| `prompt`                                           | *models.Prompt*                                    | :heavy_check_mark:                                 | N/A                                                |
+| `prompt`                                           | *models.CompletionCreateParamsPrompt*              | :heavy_check_mark:                                 | N/A                                                |
 | `bestOf`                                           | *number*                                           | :heavy_minus_sign:                                 | N/A                                                |
 | `echo`                                             | *boolean*                                          | :heavy_minus_sign:                                 | N/A                                                |
 | `frequencyPenalty`                                 | *number*                                           | :heavy_minus_sign:                                 | N/A                                                |
