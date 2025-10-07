@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 293caf804b472092049eadc7ac35015f
+  docChecksum: d6cc7cb0a0fb4ac0755703209e8504c9
   docVersion: 1.0.0
   speakeasyVersion: 1.636.0
   generationVersion: 2.723.2
-  releaseVersion: 0.0.0-beta.32
-  configChecksum: 168fc0ff2e77ffbd25b408881924be20
+  releaseVersion: 0.0.0-beta.33
+  configChecksum: 048a9cf8bd5ad4e474af68255323537f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -52,9 +52,9 @@ generatedFiles:
   - docs/lib/utils/retryconfig.md
   - docs/models/activityitem.md
   - docs/models/annotation.md
+  - docs/models/architecture.md
   - docs/models/assistantmessage.md
   - docs/models/assistantmessagecontent.md
-  - docs/models/audio.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
   - docs/models/chatgenerationparamseffort.md
@@ -89,7 +89,6 @@ generatedFiles:
   - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
   - docs/models/code.md
-  - docs/models/completion.md
   - docs/models/completionchoice.md
   - docs/models/completioncreateparams.md
   - docs/models/completioncreateparamsjsonschema.md
@@ -106,9 +105,27 @@ generatedFiles:
   - docs/models/completionresponse.md
   - docs/models/completiontokensdetails.md
   - docs/models/completionusage.md
+  - docs/models/costdetails.md
   - docs/models/data.md
   - docs/models/datacollection.md
+  - docs/models/defaultparameters.md
   - docs/models/detail.md
+  - docs/models/endpointslist.md
+  - docs/models/endpointslistaudio.md
+  - docs/models/endpointslistcompletion.md
+  - docs/models/endpointslistimage.md
+  - docs/models/endpointslistimageoutput.md
+  - docs/models/endpointslistinputaudiocache.md
+  - docs/models/endpointslistinputcacheread.md
+  - docs/models/endpointslistinputcachewrite.md
+  - docs/models/endpointslistinternalreasoning.md
+  - docs/models/endpointslistpricing.md
+  - docs/models/endpointslistprompt.md
+  - docs/models/endpointslistquantization.md
+  - docs/models/endpointslistrequest.md
+  - docs/models/endpointsliststatus.md
+  - docs/models/endpointslistsupportedparameter.md
+  - docs/models/endpointslistwebsearch.md
   - docs/models/engine.md
   - docs/models/errorfailed.md
   - docs/models/errorresponsecode.md
@@ -124,11 +141,12 @@ generatedFiles:
   - docs/models/idweb.md
   - docs/models/ignore.md
   - docs/models/ignoreenum.md
-  - docs/models/image.md
   - docs/models/imageurl.md
   - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
+  - docs/models/inputmodality.md
   - docs/models/instructions.md
+  - docs/models/instructtype.md
   - docs/models/itemassistant.md
   - docs/models/itemfilesearchcall.md
   - docs/models/itemfunctioncall1.md
@@ -157,17 +175,37 @@ generatedFiles:
   - docs/models/itemunion2.md
   - docs/models/itemwebsearchcall1.md
   - docs/models/itemwebsearchcall2.md
+  - docs/models/keyinfo.md
   - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
+  - docs/models/modelslist.md
+  - docs/models/modelslistaudio.md
+  - docs/models/modelslistcompletion.md
+  - docs/models/modelslistimage.md
+  - docs/models/modelslistimageoutput.md
+  - docs/models/modelslistinputaudiocache.md
+  - docs/models/modelslistinputcacheread.md
+  - docs/models/modelslistinputcachewrite.md
+  - docs/models/modelslistinternalreasoning.md
+  - docs/models/modelslistpricing.md
+  - docs/models/modelslistprompt.md
+  - docs/models/modelslistrequest.md
+  - docs/models/modelslistsupportedparameter.md
+  - docs/models/modelslistwebsearch.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/objectt.md
   - docs/models/only.md
   - docs/models/onlyenum.md
   - docs/models/openairesponsesrequest.md
+  - docs/models/openairesponsesrequestaudio.md
+  - docs/models/openairesponsesrequestcompletion.md
+  - docs/models/openairesponsesrequestimage.md
   - docs/models/openairesponsesrequestprompt.md
+  - docs/models/openairesponsesrequestquantization.md
+  - docs/models/openairesponsesrequestrequest.md
   - docs/models/openairesponsesrequestservicetier.md
   - docs/models/openairesponsesrequesttruncation.md
   - docs/models/operations/addcoinbasechargedata.md
@@ -175,6 +213,7 @@ generatedFiles:
   - docs/models/operations/addcoinbasechargeresponse.md
   - docs/models/operations/addcoinbasechargesecurity.md
   - docs/models/operations/apitype.md
+  - docs/models/operations/architecture.md
   - docs/models/operations/calldata.md
   - docs/models/operations/chainid.md
   - docs/models/operations/createauthorizationcodecodechallengemethod.md
@@ -190,8 +229,6 @@ generatedFiles:
   - docs/models/operations/encodingformat.md
   - docs/models/operations/encodingformatbase64.md
   - docs/models/operations/encodingformatfloat.md
-  - docs/models/operations/endpoint.md
-  - docs/models/operations/endpointslistrequest.md
   - docs/models/operations/endpointspreviewzdrrequest.md
   - docs/models/operations/errort.md
   - docs/models/operations/exchangeauthorizationcodecodechallengemethod.md
@@ -215,7 +252,6 @@ generatedFiles:
   - docs/models/operations/getcountresponse.md
   - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
-  - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
   - docs/models/operations/getmetadatadata.md
   - docs/models/operations/getmetadatarequest.md
@@ -230,114 +266,52 @@ generatedFiles:
   - docs/models/operations/getuseractivityresponse.md
   - docs/models/operations/ignore.md
   - docs/models/operations/ignoreenum.md
+  - docs/models/operations/imageoutput.md
   - docs/models/operations/input.md
+  - docs/models/operations/inputaudiocache.md
+  - docs/models/operations/inputcacheread.md
+  - docs/models/operations/inputcachewrite.md
+  - docs/models/operations/inputmodality.md
+  - docs/models/operations/instructtype.md
+  - docs/models/operations/internalreasoning.md
   - docs/models/operations/listapikeysdata.md
   - docs/models/operations/listapikeysrequest.md
   - docs/models/operations/listapikeysresponse.md
-  - docs/models/operations/listarchitecture.md
-  - docs/models/operations/listaudio.md
-  - docs/models/operations/listcompletion.md
   - docs/models/operations/listdata.md
-  - docs/models/operations/listimage.md
-  - docs/models/operations/listimageoutput.md
-  - docs/models/operations/listinputaudiocache.md
-  - docs/models/operations/listinputcacheread.md
-  - docs/models/operations/listinputcachewrite.md
-  - docs/models/operations/listinputmodality.md
-  - docs/models/operations/listinstructtype.md
-  - docs/models/operations/listinternalreasoning.md
-  - docs/models/operations/listmodelsarchitecture.md
-  - docs/models/operations/listmodelsaudio.md
-  - docs/models/operations/listmodelscompletion.md
-  - docs/models/operations/listmodelsdata.md
-  - docs/models/operations/listmodelsdefaultparameters.md
-  - docs/models/operations/listmodelsimage.md
-  - docs/models/operations/listmodelsimageoutput.md
-  - docs/models/operations/listmodelsinputaudiocache.md
-  - docs/models/operations/listmodelsinputcacheread.md
-  - docs/models/operations/listmodelsinputcachewrite.md
-  - docs/models/operations/listmodelsinputmodality.md
-  - docs/models/operations/listmodelsinstructtype.md
-  - docs/models/operations/listmodelsinternalreasoning.md
-  - docs/models/operations/listmodelsoutputmodality.md
-  - docs/models/operations/listmodelsperrequestlimits.md
-  - docs/models/operations/listmodelspricing.md
-  - docs/models/operations/listmodelsprompt.md
-  - docs/models/operations/listmodelsrequestrequest.md
+  - docs/models/operations/listmodelsrequest.md
   - docs/models/operations/listmodelsresponse.md
   - docs/models/operations/listmodelsresponsebody.md
-  - docs/models/operations/listmodelssupportedparameter.md
-  - docs/models/operations/listmodelstokenizer.md
-  - docs/models/operations/listmodelstopprovider.md
-  - docs/models/operations/listmodelswebsearch.md
-  - docs/models/operations/listoutputmodality.md
-  - docs/models/operations/listpricing.md
-  - docs/models/operations/listprompt.md
-  - docs/models/operations/listprovidername.md
   - docs/models/operations/listprovidersdata.md
   - docs/models/operations/listprovidersresponse.md
-  - docs/models/operations/listquantization.md
-  - docs/models/operations/listrequestrequest.md
+  - docs/models/operations/listrequest.md
   - docs/models/operations/listresponse.md
-  - docs/models/operations/liststatus.md
-  - docs/models/operations/listsupportedparameter.md
-  - docs/models/operations/listtokenizer.md
-  - docs/models/operations/listusermodelsarchitecture.md
-  - docs/models/operations/listusermodelsaudio.md
-  - docs/models/operations/listusermodelscompletion.md
-  - docs/models/operations/listusermodelsdata.md
-  - docs/models/operations/listusermodelsdefaultparameters.md
-  - docs/models/operations/listusermodelsimage.md
-  - docs/models/operations/listusermodelsimageoutput.md
-  - docs/models/operations/listusermodelsinputaudiocache.md
-  - docs/models/operations/listusermodelsinputcacheread.md
-  - docs/models/operations/listusermodelsinputcachewrite.md
-  - docs/models/operations/listusermodelsinputmodality.md
-  - docs/models/operations/listusermodelsinstructtype.md
-  - docs/models/operations/listusermodelsinternalreasoning.md
-  - docs/models/operations/listusermodelsoutputmodality.md
-  - docs/models/operations/listusermodelsperrequestlimits.md
-  - docs/models/operations/listusermodelspricing.md
-  - docs/models/operations/listusermodelsprompt.md
   - docs/models/operations/listusermodelsresponse.md
   - docs/models/operations/listusermodelssecurity.md
-  - docs/models/operations/listusermodelssupportedparameter.md
-  - docs/models/operations/listusermodelstokenizer.md
-  - docs/models/operations/listusermodelstopprovider.md
-  - docs/models/operations/listusermodelswebsearch.md
-  - docs/models/operations/listwebsearch.md
   - docs/models/operations/maxprice.md
   - docs/models/operations/metadata.md
-  - docs/models/operations/modelslistmodelsrequest.md
-  - docs/models/operations/modelslistusermodelsrequest.md
   - docs/models/operations/objectembedding.md
   - docs/models/operations/objectt.md
   - docs/models/operations/only.md
   - docs/models/operations/onlyenum.md
   - docs/models/operations/order.md
   - docs/models/operations/orderenum.md
+  - docs/models/operations/outputmodality.md
   - docs/models/operations/previewzdraudio.md
   - docs/models/operations/previewzdrcompletion.md
   - docs/models/operations/previewzdrdata.md
   - docs/models/operations/previewzdrimage.md
-  - docs/models/operations/previewzdrimageoutput.md
-  - docs/models/operations/previewzdrinputaudiocache.md
-  - docs/models/operations/previewzdrinputcacheread.md
-  - docs/models/operations/previewzdrinputcachewrite.md
-  - docs/models/operations/previewzdrinternalreasoning.md
-  - docs/models/operations/previewzdrpricing.md
   - docs/models/operations/previewzdrprompt.md
-  - docs/models/operations/previewzdrprovidername.md
   - docs/models/operations/previewzdrquantization.md
   - docs/models/operations/previewzdrresponse.md
-  - docs/models/operations/previewzdrstatus.md
   - docs/models/operations/previewzdrsupportedparameter.md
-  - docs/models/operations/previewzdrwebsearch.md
-  - docs/models/operations/ratelimit.md
+  - docs/models/operations/pricing.md
+  - docs/models/operations/providername.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
   - docs/models/operations/sendresponsesrequestresponse.md
   - docs/models/operations/sendresponsesrequestresponsebody.md
   - docs/models/operations/sort.md
+  - docs/models/operations/status.md
+  - docs/models/operations/tokenizer.md
   - docs/models/operations/transferintent.md
   - docs/models/operations/updatedata.md
   - docs/models/operations/updaterequest.md
@@ -345,10 +319,13 @@ generatedFiles:
   - docs/models/operations/updateresponse.md
   - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
+  - docs/models/operations/websearch.md
   - docs/models/order.md
   - docs/models/orderenum.md
+  - docs/models/outputmodality.md
   - docs/models/pdf.md
   - docs/models/pdfengine.md
+  - docs/models/perrequestlimits.md
   - docs/models/plugin.md
   - docs/models/pluginchainofthought.md
   - docs/models/pluginfileparser.md
@@ -356,9 +333,9 @@ generatedFiles:
   - docs/models/pluginweb.md
   - docs/models/prompttokensdetails.md
   - docs/models/provider.md
-  - docs/models/quantization.md
+  - docs/models/providername.md
+  - docs/models/ratelimit.md
   - docs/models/reasoning.md
-  - docs/models/requestt.md
   - docs/models/response1.md
   - docs/models/response2.md
   - docs/models/responseeasyinputmessage.md
@@ -499,6 +476,7 @@ generatedFiles:
   - docs/models/summaryenum.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
+  - docs/models/tokenizer.md
   - docs/models/tool.md
   - docs/models/toolchoice.md
   - docs/models/toolchoiceauto.md
@@ -517,6 +495,7 @@ generatedFiles:
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
   - docs/models/toplogprob.md
+  - docs/models/topprovider.md
   - docs/models/typeerror.md
   - docs/models/typeresponsecreated.md
   - docs/models/typeresponseerror.md
@@ -632,6 +611,7 @@ generatedFiles:
   - src/models/completionlogprobs.ts
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
+  - src/models/endpointslist.ts
   - src/models/errorresponse.ts
   - src/models/errors/chaterror.ts
   - src/models/errors/errorresponse.ts
@@ -643,7 +623,9 @@ generatedFiles:
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
   - src/models/index.ts
+  - src/models/keyinfo.ts
   - src/models/message.ts
+  - src/models/modelslist.ts
   - src/models/namedtoolchoice.ts
   - src/models/openairesponsesrequest.ts
   - src/models/operations/addcoinbasecharge.ts
@@ -1310,7 +1292,7 @@ examples:
     speakeasy-default-get-current-key:
       responses:
         "200":
-          application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
+          application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "usage_daily": 5, "usage_weekly": 15, "usage_monthly": 25.5, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
         4XX:
           application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1362,10 +1344,10 @@ examples:
   sendResponsesRequest:
     speakeasy-default-send-responses-request:
       requestBody:
-        application/json: {"input": "Hello, how can I help you today?", "instructions": "<value>", "metadata": {"user_id": "user-123", "session_id": "session-abc"}, "tools": [{"type": "function", "function": {"name": "<value>", "description": "petal righteously sans athwart down front tuxedo overfeed", "parameters": {"key": "<value>"}, "strict": false}}], "tool_choice": "auto", "parallel_tool_calls": true, "model": "Fortwo", "models": ["<value 1>", "<value 2>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto"}, "max_output_tokens": 6181.51, "temperature": 8715.21, "top_p": 3848.26, "top_k": 2241.14, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "include": ["file_search_call.results"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "scale", "truncation": "auto", "stream": null, "provider": null, "plugins": [{"id": "chain-of-thought"}], "user": "Ilene51"}
+        application/json: {"input": "Hello, how can I help you today?", "instructions": "<value>", "metadata": {"user_id": "user-123", "session_id": "session-abc"}, "tools": [{"type": "function", "function": {"name": "<value>", "description": "petal righteously sans athwart down front tuxedo overfeed", "parameters": {"key": "<value>"}, "strict": false}}], "tool_choice": "auto", "parallel_tool_calls": true, "model": "Fortwo", "models": ["<value 1>", "<value 2>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto", "max_tokens": 6520.65, "enabled": false}, "max_output_tokens": 6181.51, "temperature": 8715.21, "top_p": 3848.26, "top_k": 2241.14, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "include": ["file_search_call.results"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "scale", "truncation": "auto", "stream": null, "provider": null, "plugins": [{"id": "chain-of-thought"}], "user": "Ilene51"}
       responses:
         "200":
-          application/json: {"id": "resp_001", "object": "response", "created_at": 1234567890, "model": "gpt-4", "status": "completed", "output": [{"type": "message", "id": "msg_001", "status": "completed", "role": "assistant", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alex.Hermiston11", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": null, "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 8, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 18}, "max_tool_calls": 1639.51, "top_logprobs": 5802.7, "max_output_tokens": 1000, "temperature": 0.7, "top_p": 1, "instructions": null, "metadata": {}, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "medium", "summary": "auto"}, "service_tier": "default", "store": true, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+          application/json: {"id": "resp_001", "object": "response", "created_at": 1234567890, "model": "gpt-4", "status": "completed", "output": [{"type": "message", "id": "msg_001", "status": "completed", "role": "assistant", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alex.Hermiston11", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": null, "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 8, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 18, "cost": 7782.07, "is_byok": false, "cost_details": {"upstream_inference_cost": 6612.28, "upstream_inference_input_cost": 7382.89, "upstream_inference_output_cost": 1653.97}}, "max_tool_calls": 1639.51, "top_logprobs": 5802.7, "max_output_tokens": 1000, "temperature": 0.7, "top_p": 1, "instructions": null, "metadata": {}, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-123", "variables": {"user_name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "medium", "summary": "auto", "max_tokens": 5674.12, "enabled": true}, "service_tier": "default", "store": true, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
         4XX:
           application/json: {"error": {"code": 522, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1382,8 +1364,3 @@ examples:
         "500":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes Detected:
-  * `openrouter.chat.send()`:  `request` **Changed** **Breaking** :warning:
-  * `openrouter.completions.generate()`:  `request` **Changed** **Breaking** :warning:
-  * `openrouter.alpha.responses.send2()`: **Added**

@@ -43,9 +43,16 @@ const value: models.ResponsesNonStreamingResponse = {
       reasoningTokens: 0,
     },
     totalTokens: 18,
+    cost: 3102.21,
+    isByok: true,
+    costDetails: {
+      upstreamInferenceCost: 1509.42,
+      upstreamInferenceInputCost: 6579.23,
+      upstreamInferenceOutputCost: 1082.47,
+    },
   },
-  maxToolCalls: 3102.21,
-  topLogprobs: 384.09,
+  maxToolCalls: 3951.08,
+  topLogprobs: 5080.07,
   maxOutputTokens: 1000,
   temperature: 0.7,
   topP: 1,
@@ -68,10 +75,12 @@ const value: models.ResponsesNonStreamingResponse = {
   reasoning: {
     effort: "medium",
     summary: "auto",
+    maxTokens: 9872.5,
+    enabled: true,
   },
   serviceTier: "scale",
   store: true,
-  truncation: "auto",
+  truncation: "disabled",
   text: {
     format: {
       type: "text",

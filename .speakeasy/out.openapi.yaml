@@ -456,6 +456,26 @@ components:
           $ref: '#/components/schemas/ResponsesOutputTokensDetails'
         total_tokens:
           type: number
+        cost:
+          type: number
+          nullable: true
+          description: Cost of the completion
+        is_byok:
+          type: boolean
+          description: Whether a request was made using a Bring Your Own Key configuration
+        cost_details:
+          type: object
+          properties:
+            upstream_inference_cost:
+              type: number
+              nullable: true
+            upstream_inference_input_cost:
+              type: number
+            upstream_inference_output_cost:
+              type: number
+          required:
+            - upstream_inference_input_cost
+            - upstream_inference_output_cost
       required:
         - input_tokens
         - input_tokens_details
@@ -846,6 +866,12 @@ components:
             - minimal
         summary:
           $ref: '#/components/schemas/ResponseReasoningSummaryMode'
+        max_tokens:
+          type: number
+          nullable: true
+        enabled:
+          type: boolean
+          nullable: true
       description: Reasoning configuration for Responses API
       example:
         effort: medium
@@ -2501,6 +2527,702 @@ components:
         - prompt_tokens
         - completion_tokens
         - reasoning_tokens
+    ModelsList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Unique identifier for the model
+            example: openai/gpt-4
+          canonical_slug:
+            type: string
+            description: Canonical slug for the model
+            example: openai/gpt-4
+          hugging_face_id:
+            type: string
+            nullable: true
+            description: Hugging Face model identifier, if applicable
+            example: microsoft/DialoGPT-medium
+          name:
+            type: string
+            description: Display name of the model
+            example: GPT-4
+          created:
+            type: number
+            description: Unix timestamp of when the model was created
+            example: 1692901234
+          description:
+            type: string
+            description: Description of the model
+            example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+          pricing:
+            type: object
+            properties:
+              prompt:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              completion:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              request:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              image:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              image_output:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              audio:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_audio_cache:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              web_search:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              internal_reasoning:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_cache_read:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_cache_write:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              discount:
+                type: number
+            required:
+              - prompt
+              - completion
+            additionalProperties: false
+            description: Pricing information for the model
+          context_length:
+            type: number
+            nullable: true
+            description: Maximum context length in tokens
+            example: 8192
+          architecture:
+            type: object
+            properties:
+              tokenizer:
+                type: string
+                enum:
+                  - Router
+                  - Media
+                  - Other
+                  - GPT
+                  - Claude
+                  - Gemini
+                  - Grok
+                  - Cohere
+                  - Nova
+                  - Qwen
+                  - Yi
+                  - DeepSeek
+                  - Mistral
+                  - Llama2
+                  - Llama3
+                  - Llama4
+                  - PaLM
+                  - RWKV
+                  - Qwen3
+                description: Tokenizer type used by the model
+              instruct_type:
+                type: string
+                nullable: true
+                enum:
+                  - none
+                  - airoboros
+                  - alpaca
+                  - alpaca-modif
+                  - chatml
+                  - claude
+                  - code-llama
+                  - gemma
+                  - llama2
+                  - llama3
+                  - mistral
+                  - nemotron
+                  - neural
+                  - openchat
+                  - phi3
+                  - rwkv
+                  - vicuna
+                  - zephyr
+                  - deepseek-r1
+                  - deepseek-v3.1
+                  - qwq
+                  - qwen3
+                description: Instruction format type
+              modality:
+                type: string
+                nullable: true
+                description: Primary modality of the model
+                example: text
+              input_modalities:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - text
+                    - image
+                    - file
+                    - audio
+                description: Supported input modalities
+              output_modalities:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - text
+                    - image
+                    - embeddings
+                description: Supported output modalities
+            required:
+              - modality
+              - input_modalities
+              - output_modalities
+            description: Model architecture information
+          top_provider:
+            type: object
+            properties:
+              context_length:
+                type: number
+                nullable: true
+                description: Context length from the top provider
+                example: 8192
+              max_completion_tokens:
+                type: number
+                nullable: true
+                description: Maximum completion tokens from the top provider
+                example: 4096
+              is_moderated:
+                type: boolean
+                description: Whether the top provider moderates content
+                example: true
+            required:
+              - is_moderated
+            description: Information about the top provider for this model
+          per_request_limits:
+            type: object
+            nullable: true
+            properties:
+              prompt_tokens:
+                description: Maximum prompt tokens per request
+              completion_tokens:
+                description: Maximum completion tokens per request
+            required:
+              - prompt_tokens
+              - completion_tokens
+            description: Per-request token limits
+          supported_parameters:
+            type: array
+            items:
+              type: string
+              enum:
+                - temperature
+                - top_p
+                - top_k
+                - min_p
+                - top_a
+                - frequency_penalty
+                - presence_penalty
+                - repetition_penalty
+                - max_tokens
+                - logit_bias
+                - logprobs
+                - top_logprobs
+                - seed
+                - response_format
+                - structured_outputs
+                - stop
+                - tools
+                - tool_choice
+                - parallel_tool_calls
+                - include_reasoning
+                - reasoning
+                - web_search_options
+                - verbosity
+            description: List of supported parameters for this model
+          default_parameters:
+            type: object
+            nullable: true
+            properties:
+              temperature:
+                type: number
+                nullable: true
+                minimum: 0
+                maximum: 2
+              top_p:
+                type: number
+                nullable: true
+                minimum: 0
+                maximum: 1
+              frequency_penalty:
+                type: number
+                nullable: true
+                minimum: -2
+                maximum: 2
+            additionalProperties: false
+            description: Default parameters for this model
+        required:
+          - id
+          - canonical_slug
+          - name
+          - created
+          - pricing
+          - context_length
+          - architecture
+          - top_provider
+          - per_request_limits
+          - supported_parameters
+          - default_parameters
+      description: List of available models
+      example:
+        - id: openai/gpt-4
+          canonical_slug: openai/gpt-4
+          hugging_face_id: null
+          name: GPT-4
+          created: 1692901234
+          description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+          pricing:
+            prompt: '0.00003'
+            completion: '0.00006'
+          context_length: 8192
+          architecture:
+            tokenizer: GPT
+            instruct_type: chatcompletion
+            modality: text
+            input_modalities:
+              - text
+              - image
+            output_modalities:
+              - text
+          top_provider:
+            context_length: 8192
+            max_completion_tokens: 4096
+            is_moderated: true
+          per_request_limits: null
+          supported_parameters:
+            - temperature
+            - max_tokens
+            - top_p
+            - frequency_penalty
+            - presence_penalty
+          default_parameters: null
+    EndpointsList:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          model_name:
+            type: string
+          context_length:
+            type: number
+          pricing:
+            type: object
+            properties:
+              prompt:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              completion:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              request:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              image:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              image_output:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              audio:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_audio_cache:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              web_search:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              internal_reasoning:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_cache_read:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              input_cache_write:
+                anyOf:
+                  - type: number
+                  - type: string
+                  - {}
+              discount:
+                type: number
+            required:
+              - prompt
+              - completion
+            additionalProperties: false
+          provider_name:
+            type: string
+            enum:
+              - AnyScale
+              - Cent-ML
+              - HuggingFace
+              - Hyperbolic 2
+              - Lepton
+              - Lynn 2
+              - Lynn
+              - Mancer
+              - Modal
+              - OctoAI
+              - Recursal
+              - Reflection
+              - Replicate
+              - SambaNova 2
+              - SF Compute
+              - Together 2
+              - 01.AI
+              - AI21
+              - AionLabs
+              - Alibaba
+              - Amazon Bedrock
+              - Anthropic
+              - AtlasCloud
+              - Atoma
+              - Avian
+              - Azure
+              - BaseTen
+              - Cerebras
+              - Chutes
+              - Cloudflare
+              - Cohere
+              - CrofAI
+              - Crusoe
+              - DeepInfra
+              - DeepSeek
+              - Enfer
+              - Featherless
+              - Fireworks
+              - Friendli
+              - GMICloud
+              - Google
+              - Google AI Studio
+              - Groq
+              - Hyperbolic
+              - Inception
+              - InferenceNet
+              - Infermatic
+              - Inflection
+              - InoCloud
+              - Kluster
+              - Lambda
+              - Liquid
+              - Mancer 2
+              - Meta
+              - Minimax
+              - Mistral
+              - Moonshot AI
+              - Morph
+              - NCompass
+              - Nebius
+              - NextBit
+              - Nineteen
+              - Novita
+              - Nvidia
+              - OpenAI
+              - OpenInference
+              - Parasail
+              - Perplexity
+              - Phala
+              - Relace
+              - SambaNova
+              - SiliconFlow
+              - Stealth
+              - Switchpoint
+              - Targon
+              - Together
+              - Ubicloud
+              - Venice
+              - WandB
+              - xAI
+              - Z.AI
+              - FakeProvider
+          tag:
+            type: string
+          quantization:
+            type: string
+            nullable: true
+            enum:
+              - int4
+              - int8
+              - fp4
+              - fp6
+              - fp8
+              - fp16
+              - bf16
+              - fp32
+              - unknown
+          max_completion_tokens:
+            type: number
+            nullable: true
+          max_prompt_tokens:
+            type: number
+            nullable: true
+          supported_parameters:
+            type: array
+            items:
+              type: string
+              enum:
+                - temperature
+                - top_p
+                - top_k
+                - min_p
+                - top_a
+                - frequency_penalty
+                - presence_penalty
+                - repetition_penalty
+                - max_tokens
+                - logit_bias
+                - logprobs
+                - top_logprobs
+                - seed
+                - response_format
+                - structured_outputs
+                - stop
+                - tools
+                - tool_choice
+                - parallel_tool_calls
+                - include_reasoning
+                - reasoning
+                - web_search_options
+                - verbosity
+          status:
+            type: integer
+            enum:
+              - 0
+              - -1
+              - -2
+              - -3
+              - -5
+              - -10
+          uptime_last_30m:
+            type: number
+            nullable: true
+          supports_implicit_caching:
+            type: boolean
+        required:
+          - name
+          - model_name
+          - context_length
+          - pricing
+          - provider_name
+          - tag
+          - quantization
+          - max_completion_tokens
+          - max_prompt_tokens
+          - supported_parameters
+          - uptime_last_30m
+          - supports_implicit_caching
+      description: List of available endpoints for this model
+      example:
+        - name: OpenAI GPT-4
+          model_name: gpt-4
+          context_length: 8192
+          pricing:
+            prompt: '0.00003'
+            completion: '0.00006'
+          provider_name: OpenAI
+          tag: featured
+          quantization: null
+          max_completion_tokens: 4096
+          max_prompt_tokens: null
+          supported_parameters:
+            - temperature
+            - max_tokens
+            - top_p
+            - frequency_penalty
+            - presence_penalty
+          status: active
+          uptime_last_30m: 0.99
+          supports_implicit_caching: true
+    KeyInfo:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Human-readable label for the API key
+          example: sk-or-v1-au78b3456789012345678901234567890
+        limit:
+          type: number
+          nullable: true
+          description: Spending limit for the API key in USD
+          example: 100
+        usage:
+          type: number
+          description: Current OpenRouter credit usage for the API key in USD
+          example: 25.5
+        usage_daily:
+          type: number
+          description: Current OpenRouter daily usage for the API key in USD
+          example: 25.5
+        usage_weekly:
+          type: number
+          description: Current OpenRouter weekly usage for the API key in USD
+          example: 25.5
+        usage_monthly:
+          type: number
+          description: Current OpenRouter monthly usage for the API key in USD
+          example: 25.5
+        byok_usage:
+          type: number
+          description: Current external BYOK credit usage for the API key in USD
+          example: 17.38
+        byok_usage_daily:
+          type: number
+          description: Current external BYOK daily usage for the API key in USD
+          example: 17.38
+        byok_usage_weekly:
+          type: number
+          description: Current external BYOK weekly usage for the API key in USD
+          example: 17.38
+        byok_usage_monthly:
+          type: number
+          description: Current external BYOK monthly usage for the API key in USD
+          example: 17.38
+        is_free_tier:
+          type: boolean
+          description: Whether this is a free tier API key
+          example: false
+        is_provisioning_key:
+          type: boolean
+          description: Whether this is a provisioning key
+          example: false
+        limit_remaining:
+          type: number
+          nullable: true
+          description: Remaining spending limit in USD
+          example: 74.5
+        limit_reset:
+          type: string
+          nullable: true
+          description: Type of limit reset for the API key
+          example: monthly
+        include_byok_in_limit:
+          type: boolean
+          description: Whether to include external BYOK usage in the credit limit
+          example: false
+        rate_limit:
+          type: object
+          properties:
+            requests:
+              type: number
+              description: Number of requests allowed per interval
+              example: 1000
+            interval:
+              type: string
+              description: Rate limit interval
+              example: 1h
+            note:
+              type: string
+              description: Note about the rate limit
+              example: This field is deprecated and safe to ignore.
+          required:
+            - requests
+            - interval
+            - note
+          description: Legacy rate limit information about a key. Will always return -1.
+          deprecated: true
+          example:
+            requests: 1000
+            interval: 1h
+            note: This field is deprecated and safe to ignore.
+      required:
+        - label
+        - limit
+        - usage
+        - usage_daily
+        - usage_weekly
+        - usage_monthly
+        - byok_usage
+        - byok_usage_daily
+        - byok_usage_weekly
+        - byok_usage_monthly
+        - is_free_tier
+        - is_provisioning_key
+        - limit_remaining
+        - limit_reset
+        - include_byok_in_limit
+        - rate_limit
+      description: Current API key information
+      example:
+        label: sk-or-v1-au78b3456789012345678901234567890
+        limit: 100
+        usage: 25.5
+        usage_daily: 5
+        usage_weekly: 15
+        usage_monthly: 25.5
+        byok_usage: 0
+        byok_usage_daily: 0
+        byok_usage_weekly: 0
+        byok_usage_monthly: 0
+        is_free_tier: false
+        is_provisioning_key: false
+        limit_remaining: 74.5
+        limit_reset: monthly
+        include_byok_in_limit: false
+        rate_limit:
+          requests: 1000
+          interval: 1h
+          note: This field is deprecated and safe to ignore.
     ChatMessageContentItemText:
       type: object
       properties:
@@ -2563,15 +3285,15 @@ components:
         - input_audio
     ChatMessageContentItem:
       oneOf:
-        - $ref: "#/components/schemas/ChatMessageContentItemText"
-        - $ref: "#/components/schemas/ChatMessageContentItemImage"
-        - $ref: "#/components/schemas/ChatMessageContentItemAudio"
+        - $ref: '#/components/schemas/ChatMessageContentItemText'
+        - $ref: '#/components/schemas/ChatMessageContentItemImage'
+        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
       discriminator:
         propertyName: type
         mapping:
-          text: "#/components/schemas/ChatMessageContentItemText"
-          image_url: "#/components/schemas/ChatMessageContentItemImage"
-          input_audio: "#/components/schemas/ChatMessageContentItemAudio"
+          text: '#/components/schemas/ChatMessageContentItemText'
+          image_url: '#/components/schemas/ChatMessageContentItemImage'
+          input_audio: '#/components/schemas/ChatMessageContentItemAudio'
     ChatMessageToolCall:
       type: object
       properties:
@@ -2604,7 +3326,7 @@ components:
         bytes:
           type:
             - array
-            - "null"
+            - 'null'
           items:
             type: number
         top_logprobs:
@@ -2619,7 +3341,7 @@ components:
               bytes:
                 type:
                   - array
-                  - "null"
+                  - 'null'
                 items:
                   type: number
             required:
@@ -2637,15 +3359,15 @@ components:
         content:
           type:
             - array
-            - "null"
+            - 'null'
           items:
-            $ref: "#/components/schemas/ChatMessageTokenLogprob"
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
         refusal:
           type:
             - array
-            - "null"
+            - 'null'
           items:
-            $ref: "#/components/schemas/ChatMessageTokenLogprob"
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
       required:
         - content
         - refusal
@@ -2691,7 +3413,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: "#/components/schemas/ChatMessageContentItemText"
+                $ref: '#/components/schemas/ChatMessageContentItemText'
         name:
           type: string
       required:
@@ -2708,7 +3430,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: "#/components/schemas/ChatMessageContentItem"
+                $ref: '#/components/schemas/ChatMessageContentItem'
         name:
           type: string
       required:
@@ -2725,22 +3447,22 @@ components:
             - type: string
             - type: array
               items:
-                $ref: "#/components/schemas/ChatMessageContentItem"
-            - type: "null"
+                $ref: '#/components/schemas/ChatMessageContentItem'
+            - type: 'null'
         name:
           type: string
         tool_calls:
           type: array
           items:
-            $ref: "#/components/schemas/ChatMessageToolCall"
+            $ref: '#/components/schemas/ChatMessageToolCall'
         refusal:
           type:
             - string
-            - "null"
+            - 'null'
         reasoning:
           type:
             - string
-            - "null"
+            - 'null'
       required:
         - role
     ToolResponseMessage:
@@ -2754,7 +3476,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: "#/components/schemas/ChatMessageContentItem"
+                $ref: '#/components/schemas/ChatMessageContentItem'
         tool_call_id:
           type: string
       required:
@@ -2763,8 +3485,8 @@ components:
         - tool_call_id
     Message:
       oneOf:
-        - $ref: "#/components/schemas/SystemMessage"
-        - $ref: "#/components/schemas/UserMessage"
+        - $ref: '#/components/schemas/SystemMessage'
+        - $ref: '#/components/schemas/UserMessage'
         - type: object
           properties:
             role:
@@ -2775,7 +3497,7 @@ components:
                 - type: string
                 - type: array
                   items:
-                    $ref: "#/components/schemas/ChatMessageContentItemText"
+                    $ref: '#/components/schemas/ChatMessageContentItemText'
             name:
               type: string
           required:
@@ -2807,7 +3529,7 @@ components:
           const: auto
         - type: string
           const: required
-        - $ref: "#/components/schemas/NamedToolChoice"
+        - $ref: '#/components/schemas/NamedToolChoice'
     ChatStreamOptions:
       type: object
       properties:
@@ -2819,41 +3541,41 @@ components:
         messages:
           type: array
           items:
-            $ref: "#/components/schemas/Message"
+            $ref: '#/components/schemas/Message'
           minItems: 1
         model:
           type: string
         frequency_penalty:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: -2
           maximum: 2
         logit_bias:
           type:
             - object
-            - "null"
+            - 'null'
           additionalProperties:
             type: number
         logprobs:
           type:
             - boolean
-            - "null"
+            - 'null'
         top_logprobs:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 20
         max_completion_tokens:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 1
         max_tokens:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 1
         metadata:
           type: object
@@ -2862,7 +3584,7 @@ components:
         presence_penalty:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: -2
           maximum: 2
         reasoning:
@@ -2871,7 +3593,7 @@ components:
             effort:
               type:
                 - string
-                - "null"
+                - 'null'
               enum:
                 - minimal
                 - low
@@ -2881,7 +3603,7 @@ components:
             generate_summary:
               type:
                 - string
-                - "null"
+                - 'null'
               enum:
                 - auto
                 - concise
@@ -2890,7 +3612,7 @@ components:
             summary:
               type:
                 - string
-                - "null"
+                - 'null'
               enum:
                 - auto
                 - concise
@@ -2931,7 +3653,7 @@ components:
                     strict:
                       type:
                         - boolean
-                        - "null"
+                        - 'null'
                   required:
                     - name
               required:
@@ -2957,7 +3679,7 @@ components:
         seed:
           type:
             - integer
-            - "null"
+            - 'null'
         stop:
           anyOf:
             - type: string
@@ -2965,33 +3687,33 @@ components:
               items:
                 type: string
               maxItems: 4
-            - type: "null"
+            - type: 'null'
         stream:
           type:
             - boolean
-            - "null"
+            - 'null'
           default: false
         stream_options:
           oneOf:
-            - $ref: "#/components/schemas/ChatStreamOptions"
-            - type: "null"
+            - $ref: '#/components/schemas/ChatStreamOptions'
+            - type: 'null'
         temperature:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 2
           default: 1
         tool_choice:
-          $ref: "#/components/schemas/ToolChoiceOption"
+          $ref: '#/components/schemas/ToolChoiceOption'
         tools:
           type: array
           items:
-            $ref: "#/components/schemas/Tool"
+            $ref: '#/components/schemas/Tool'
         top_p:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 1
           default: 1
@@ -3006,7 +3728,7 @@ components:
         finish_reason:
           type:
             - string
-            - "null"
+            - 'null'
           enum:
             - tool_calls
             - stop
@@ -3017,11 +3739,11 @@ components:
         index:
           type: number
         message:
-          $ref: "#/components/schemas/AssistantMessage"
+          $ref: '#/components/schemas/AssistantMessage'
         logprobs:
           oneOf:
-            - $ref: "#/components/schemas/ChatMessageTokenLogprobs"
-            - type: "null"
+            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+            - type: 'null'
       required:
         - finish_reason
         - index
@@ -3034,7 +3756,7 @@ components:
         choices:
           type: array
           items:
-            $ref: "#/components/schemas/ChatResponseChoice"
+            $ref: '#/components/schemas/ChatResponseChoice'
         created:
           type: number
         model:
@@ -3045,9 +3767,9 @@ components:
         system_fingerprint:
           type:
             - string
-            - "null"
+            - 'null'
         usage:
-          $ref: "#/components/schemas/ChatGenerationTokenUsage"
+          $ref: '#/components/schemas/ChatGenerationTokenUsage'
       required:
         - id
         - choices
@@ -3064,13 +3786,13 @@ components:
               anyOf:
                 - type: string
                 - type: number
-                - type: "null"
+                - type: 'null'
             message:
               type: string
             param:
               type:
                 - string
-                - "null"
+                - 'null'
             type:
               type: string
           required:
@@ -3109,28 +3831,28 @@ components:
         content:
           type:
             - string
-            - "null"
+            - 'null'
         reasoning:
           type:
             - string
-            - "null"
+            - 'null'
         refusal:
           type:
             - string
-            - "null"
+            - 'null'
         tool_calls:
           type: array
           items:
-            $ref: "#/components/schemas/ChatStreamingMessageToolCall"
+            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
     ChatStreamingChoice:
       type: object
       properties:
         delta:
-          $ref: "#/components/schemas/ChatStreamingMessageChunk"
+          $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
           type:
             - string
-            - "null"
+            - 'null'
           enum:
             - tool_calls
             - stop
@@ -3142,8 +3864,8 @@ components:
           type: number
         logprobs:
           oneOf:
-            - $ref: "#/components/schemas/ChatMessageTokenLogprobs"
-            - type: "null"
+            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+            - type: 'null'
       required:
         - delta
         - finish_reason
@@ -3159,7 +3881,7 @@ components:
             choices:
               type: array
               items:
-                $ref: "#/components/schemas/ChatStreamingChoice"
+                $ref: '#/components/schemas/ChatStreamingChoice'
             created:
               type: number
             model:
@@ -3170,7 +3892,7 @@ components:
             system_fingerprint:
               type:
                 - string
-                - "null"
+                - 'null'
             error:
               type: object
               properties:
@@ -3182,7 +3904,7 @@ components:
                 - message
                 - code
             usage:
-              $ref: "#/components/schemas/ChatGenerationTokenUsage"
+              $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
             - id
             - choices
@@ -3194,7 +3916,7 @@ components:
     CompletionFinishReason:
       type:
         - string
-        - "null"
+        - 'null'
       enum:
         - stop
         - length
@@ -3214,7 +3936,7 @@ components:
         top_logprobs:
           type:
             - array
-            - "null"
+            - 'null'
           items:
             type: object
             additionalProperties:
@@ -3263,86 +3985,86 @@ components:
         best_of:
           type:
             - integer
-            - "null"
+            - 'null'
           minimum: 1
           maximum: 20
         echo:
           type:
             - boolean
-            - "null"
+            - 'null'
         frequency_penalty:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: -2
           maximum: 2
         logit_bias:
           type:
             - object
-            - "null"
+            - 'null'
           additionalProperties:
             type: number
         logprobs:
           type:
             - integer
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 5
         max_tokens:
           type:
             - integer
-            - "null"
+            - 'null'
           minimum: 1
-        "n":
+        'n':
           type:
             - integer
-            - "null"
+            - 'null'
           minimum: 1
           maximum: 128
         presence_penalty:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: -2
           maximum: 2
         seed:
           type:
             - integer
-            - "null"
+            - 'null'
         stop:
           anyOf:
             - type: string
             - type: array
               items:
                 type: string
-            - type: "null"
+            - type: 'null'
         stream:
           type:
             - boolean
-            - "null"
+            - 'null'
         stream_options:
           type:
             - object
-            - "null"
+            - 'null'
           properties:
             include_usage:
               type:
                 - boolean
-                - "null"
+                - 'null'
         suffix:
           type:
             - string
-            - "null"
+            - 'null'
         temperature:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 2
         top_p:
           type:
             - number
-            - "null"
+            - 'null'
           minimum: 0
           maximum: 1
         user:
@@ -3350,7 +4072,7 @@ components:
         metadata:
           type:
             - object
-            - "null"
+            - 'null'
           additionalProperties:
             type: string
         response_format:
@@ -3388,7 +4110,7 @@ components:
                     strict:
                       type:
                         - boolean
-                        - "null"
+                        - 'null'
                   required:
                     - name
               required:
@@ -3411,7 +4133,7 @@ components:
                   const: python
               required:
                 - type
-            - type: "null"
+            - type: 'null'
       required:
         - model
         - prompt
@@ -3424,10 +4146,10 @@ components:
           type: number
         logprobs:
           oneOf:
-            - $ref: "#/components/schemas/CompletionLogprobs"
-            - type: "null"
+            - $ref: '#/components/schemas/CompletionLogprobs'
+            - type: 'null'
         finish_reason:
-          $ref: "#/components/schemas/CompletionFinishReason"
+          $ref: '#/components/schemas/CompletionFinishReason'
       required:
         - text
         - index
@@ -3450,9 +4172,9 @@ components:
         choices:
           type: array
           items:
-            $ref: "#/components/schemas/CompletionChoice"
+            $ref: '#/components/schemas/CompletionChoice'
         usage:
-          $ref: "#/components/schemas/CompletionUsage"
+          $ref: '#/components/schemas/CompletionUsage'
       required:
         - id
         - object
@@ -3524,12 +4246,12 @@ paths:
         - schema:
             type: string
             description: Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
-            example: "2025-08-24"
+            example: '2025-08-24'
           required: false
           name: date
           in: query
       responses:
-        "200":
+        '200':
           description: Returns user activity data grouped by endpoint
           content:
             application/json:
@@ -3539,7 +4261,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/ActivityItem"
+                      $ref: '#/components/schemas/ActivityItem'
                     description: List of activity items
                     example:
                       - date: '2025-08-24'
@@ -3560,13 +4282,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /credits:
     get:
       operationId: getCredits
@@ -3575,7 +4297,7 @@ paths:
         - Credits
       description: Get total credits purchased and used for the authenticated user
       responses:
-        "200":
+        '200':
           description: Returns the total credits purchased and used
           content:
             application/json:
@@ -3599,7 +4321,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /credits/coinbase:
     post:
       security:
@@ -3629,7 +4351,7 @@ paths:
                 - chain_id
         required: true
       responses:
-        "200":
+        '200':
           description: Returns the calldata to fulfill the transaction
           content:
             application/json:
@@ -3715,13 +4437,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /embeddings:
     post:
       operationId: generate
@@ -4152,7 +4874,7 @@ paths:
                 - input
         required: true
       responses:
-        "200":
+        '200':
           description: Embedding response
           content:
             application/json:
@@ -4205,13 +4927,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /generation:
     get:
       operationId: getMetadata
@@ -4226,7 +4948,7 @@ paths:
           name: id
           in: query
       responses:
-        "200":
+        '200':
           description: Returns the request metadata for this generation
           content:
             application/json:
@@ -4262,7 +4984,7 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the generation was created
-                        example: "2024-07-15T23:33:19.433273+00:00"
+                        example: '2024-07-15T23:33:19.433273+00:00'
                       model:
                         type: string
                         description: Model used for the generation
@@ -4460,13 +5182,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /models/count:
     get:
       operationId: getCount
@@ -4474,7 +5196,7 @@ paths:
         - Models
       summary: Get total count of available models
       responses:
-        "200":
+        '200':
           description: Returns the total count of available models
           content:
             application/json:
@@ -4500,13 +5222,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /models:
     get:
       operationId: listModels
@@ -4536,7 +5258,7 @@ paths:
           name: use_rss_chat_links
           in: query
       responses:
-        "200":
+        '200':
           description: Returns a list of models or RSS feed
           content:
             application/json:
@@ -4544,314 +5266,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          description: Unique identifier for the model
-                          example: openai/gpt-4
-                        canonical_slug:
-                          type: string
-                          description: Canonical slug for the model
-                          example: openai/gpt-4
-                        hugging_face_id:
-                          type: string
-                          nullable: true
-                          description: Hugging Face model identifier, if applicable
-                          example: microsoft/DialoGPT-medium
-                        name:
-                          type: string
-                          description: Display name of the model
-                          example: GPT-4
-                        created:
-                          type: number
-                          description: Unix timestamp of when the model was created
-                          example: 1692901234
-                        description:
-                          type: string
-                          description: Description of the model
-                          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-                        pricing:
-                          type: object
-                          properties:
-                            prompt:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            completion:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            request:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            image:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            image_output:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            audio:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_audio_cache:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            web_search:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            internal_reasoning:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_cache_read:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_cache_write:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            discount:
-                              type: number
-                          required:
-                            - prompt
-                            - completion
-                          additionalProperties: false
-                          description: Pricing information for the model
-                        context_length:
-                          type: number
-                          nullable: true
-                          description: Maximum context length in tokens
-                          example: 8192
-                        architecture:
-                          type: object
-                          properties:
-                            tokenizer:
-                              type: string
-                              enum:
-                                - Router
-                                - Media
-                                - Other
-                                - GPT
-                                - Claude
-                                - Gemini
-                                - Grok
-                                - Cohere
-                                - Nova
-                                - Qwen
-                                - Yi
-                                - DeepSeek
-                                - Mistral
-                                - Llama2
-                                - Llama3
-                                - Llama4
-                                - PaLM
-                                - RWKV
-                                - Qwen3
-                              description: Tokenizer type used by the model
-                            instruct_type:
-                              type: string
-                              nullable: true
-                              enum:
-                                - none
-                                - airoboros
-                                - alpaca
-                                - alpaca-modif
-                                - chatml
-                                - claude
-                                - code-llama
-                                - gemma
-                                - llama2
-                                - llama3
-                                - mistral
-                                - nemotron
-                                - neural
-                                - openchat
-                                - phi3
-                                - rwkv
-                                - vicuna
-                                - zephyr
-                                - deepseek-r1
-                                - deepseek-v3.1
-                                - qwq
-                                - qwen3
-                              description: Instruction format type
-                            modality:
-                              type: string
-                              nullable: true
-                              description: Primary modality of the model
-                              example: text
-                            input_modalities:
-                              type: array
-                              items:
-                                type: string
-                                enum:
-                                  - text
-                                  - image
-                                  - file
-                                  - audio
-                              description: Supported input modalities
-                            output_modalities:
-                              type: array
-                              items:
-                                type: string
-                                enum:
-                                  - text
-                                  - image
-                                  - embeddings
-                              description: Supported output modalities
-                          required:
-                            - modality
-                            - input_modalities
-                            - output_modalities
-                          description: Model architecture information
-                        top_provider:
-                          type: object
-                          properties:
-                            context_length:
-                              type: number
-                              nullable: true
-                              description: Context length from the top provider
-                              example: 8192
-                            max_completion_tokens:
-                              type: number
-                              nullable: true
-                              description: Maximum completion tokens from the top provider
-                              example: 4096
-                            is_moderated:
-                              type: boolean
-                              description: Whether the top provider moderates content
-                              example: true
-                          required:
-                            - is_moderated
-                          description: Information about the top provider for this model
-                        per_request_limits:
-                          type: object
-                          nullable: true
-                          properties:
-                            prompt_tokens:
-                              description: Maximum prompt tokens per request
-                            completion_tokens:
-                              description: Maximum completion tokens per request
-                          required:
-                            - prompt_tokens
-                            - completion_tokens
-                          description: Per-request token limits
-                        supported_parameters:
-                          type: array
-                          items:
-                            type: string
-                            enum:
-                              - temperature
-                              - top_p
-                              - top_k
-                              - min_p
-                              - top_a
-                              - frequency_penalty
-                              - presence_penalty
-                              - repetition_penalty
-                              - max_tokens
-                              - logit_bias
-                              - logprobs
-                              - top_logprobs
-                              - seed
-                              - response_format
-                              - structured_outputs
-                              - stop
-                              - tools
-                              - tool_choice
-                              - parallel_tool_calls
-                              - include_reasoning
-                              - reasoning
-                              - web_search_options
-                              - verbosity
-                          description: List of supported parameters for this model
-                        default_parameters:
-                          type: object
-                          nullable: true
-                          properties:
-                            temperature:
-                              type: number
-                              nullable: true
-                              minimum: 0
-                              maximum: 2
-                            top_p:
-                              type: number
-                              nullable: true
-                              minimum: 0
-                              maximum: 1
-                            frequency_penalty:
-                              type: number
-                              nullable: true
-                              minimum: -2
-                              maximum: 2
-                          additionalProperties: false
-                          description: Default parameters for this model
-                      required:
-                        - id
-                        - canonical_slug
-                        - name
-                        - created
-                        - pricing
-                        - context_length
-                        - architecture
-                        - top_provider
-                        - per_request_limits
-                        - supported_parameters
-                        - default_parameters
-                    description: List of available models
-                    example:
-                      - id: openai/gpt-4
-                        canonical_slug: openai/gpt-4
-                        hugging_face_id: null
-                        name: GPT-4
-                        created: 1692901234
-                        description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-                        pricing:
-                          prompt: '0.00003'
-                          completion: '0.00006'
-                        context_length: 8192
-                        architecture:
-                          tokenizer: GPT
-                          instruct_type: chatcompletion
-                          modality: text
-                          input_modalities:
-                            - text
-                            - image
-                          output_modalities:
-                            - text
-                        top_provider:
-                          context_length: 8192
-                          max_completion_tokens: 4096
-                          is_moderated: true
-                        per_request_limits: null
-                        supported_parameters:
-                          - temperature
-                          - max_tokens
-                          - top_p
-                          - frequency_penalty
-                          - presence_penalty
-                        default_parameters: null
+                    $ref: '#/components/schemas/ModelsList'
                 required:
                   - data
             application/rss+xml:
@@ -4862,13 +5277,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /models/user:
     get:
       operationId: listUserModels
@@ -4878,7 +5293,7 @@ paths:
       security:
         - bearer: []
       responses:
-        "200":
+        '200':
           description: Returns a list of models filtered by user provider preferences
           content:
             application/json:
@@ -4886,314 +5301,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          description: Unique identifier for the model
-                          example: openai/gpt-4
-                        canonical_slug:
-                          type: string
-                          description: Canonical slug for the model
-                          example: openai/gpt-4
-                        hugging_face_id:
-                          type: string
-                          nullable: true
-                          description: Hugging Face model identifier, if applicable
-                          example: microsoft/DialoGPT-medium
-                        name:
-                          type: string
-                          description: Display name of the model
-                          example: GPT-4
-                        created:
-                          type: number
-                          description: Unix timestamp of when the model was created
-                          example: 1692901234
-                        description:
-                          type: string
-                          description: Description of the model
-                          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-                        pricing:
-                          type: object
-                          properties:
-                            prompt:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            completion:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            request:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            image:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            image_output:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            audio:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_audio_cache:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            web_search:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            internal_reasoning:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_cache_read:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            input_cache_write:
-                              anyOf:
-                                - type: number
-                                - type: string
-                                - {}
-                            discount:
-                              type: number
-                          required:
-                            - prompt
-                            - completion
-                          additionalProperties: false
-                          description: Pricing information for the model
-                        context_length:
-                          type: number
-                          nullable: true
-                          description: Maximum context length in tokens
-                          example: 8192
-                        architecture:
-                          type: object
-                          properties:
-                            tokenizer:
-                              type: string
-                              enum:
-                                - Router
-                                - Media
-                                - Other
-                                - GPT
-                                - Claude
-                                - Gemini
-                                - Grok
-                                - Cohere
-                                - Nova
-                                - Qwen
-                                - Yi
-                                - DeepSeek
-                                - Mistral
-                                - Llama2
-                                - Llama3
-                                - Llama4
-                                - PaLM
-                                - RWKV
-                                - Qwen3
-                              description: Tokenizer type used by the model
-                            instruct_type:
-                              type: string
-                              nullable: true
-                              enum:
-                                - none
-                                - airoboros
-                                - alpaca
-                                - alpaca-modif
-                                - chatml
-                                - claude
-                                - code-llama
-                                - gemma
-                                - llama2
-                                - llama3
-                                - mistral
-                                - nemotron
-                                - neural
-                                - openchat
-                                - phi3
-                                - rwkv
-                                - vicuna
-                                - zephyr
-                                - deepseek-r1
-                                - deepseek-v3.1
-                                - qwq
-                                - qwen3
-                              description: Instruction format type
-                            modality:
-                              type: string
-                              nullable: true
-                              description: Primary modality of the model
-                              example: text
-                            input_modalities:
-                              type: array
-                              items:
-                                type: string
-                                enum:
-                                  - text
-                                  - image
-                                  - file
-                                  - audio
-                              description: Supported input modalities
-                            output_modalities:
-                              type: array
-                              items:
-                                type: string
-                                enum:
-                                  - text
-                                  - image
-                                  - embeddings
-                              description: Supported output modalities
-                          required:
-                            - modality
-                            - input_modalities
-                            - output_modalities
-                          description: Model architecture information
-                        top_provider:
-                          type: object
-                          properties:
-                            context_length:
-                              type: number
-                              nullable: true
-                              description: Context length from the top provider
-                              example: 8192
-                            max_completion_tokens:
-                              type: number
-                              nullable: true
-                              description: Maximum completion tokens from the top provider
-                              example: 4096
-                            is_moderated:
-                              type: boolean
-                              description: Whether the top provider moderates content
-                              example: true
-                          required:
-                            - is_moderated
-                          description: Information about the top provider for this model
-                        per_request_limits:
-                          type: object
-                          nullable: true
-                          properties:
-                            prompt_tokens:
-                              description: Maximum prompt tokens per request
-                            completion_tokens:
-                              description: Maximum completion tokens per request
-                          required:
-                            - prompt_tokens
-                            - completion_tokens
-                          description: Per-request token limits
-                        supported_parameters:
-                          type: array
-                          items:
-                            type: string
-                            enum:
-                              - temperature
-                              - top_p
-                              - top_k
-                              - min_p
-                              - top_a
-                              - frequency_penalty
-                              - presence_penalty
-                              - repetition_penalty
-                              - max_tokens
-                              - logit_bias
-                              - logprobs
-                              - top_logprobs
-                              - seed
-                              - response_format
-                              - structured_outputs
-                              - stop
-                              - tools
-                              - tool_choice
-                              - parallel_tool_calls
-                              - include_reasoning
-                              - reasoning
-                              - web_search_options
-                              - verbosity
-                          description: List of supported parameters for this model
-                        default_parameters:
-                          type: object
-                          nullable: true
-                          properties:
-                            temperature:
-                              type: number
-                              nullable: true
-                              minimum: 0
-                              maximum: 2
-                            top_p:
-                              type: number
-                              nullable: true
-                              minimum: 0
-                              maximum: 1
-                            frequency_penalty:
-                              type: number
-                              nullable: true
-                              minimum: -2
-                              maximum: 2
-                          additionalProperties: false
-                          description: Default parameters for this model
-                      required:
-                        - id
-                        - canonical_slug
-                        - name
-                        - created
-                        - pricing
-                        - context_length
-                        - architecture
-                        - top_provider
-                        - per_request_limits
-                        - supported_parameters
-                        - default_parameters
-                    description: List of available models
-                    example:
-                      - id: openai/gpt-4
-                        canonical_slug: openai/gpt-4
-                        hugging_face_id: null
-                        name: GPT-4
-                        created: 1692901234
-                        description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-                        pricing:
-                          prompt: '0.00003'
-                          completion: '0.00006'
-                        context_length: 8192
-                        architecture:
-                          tokenizer: GPT
-                          instruct_type: chatcompletion
-                          modality: text
-                          input_modalities:
-                            - text
-                            - image
-                          output_modalities:
-                            - text
-                        top_provider:
-                          context_length: 8192
-                          max_completion_tokens: 4096
-                          is_moderated: true
-                        per_request_limits: null
-                        supported_parameters:
-                          - temperature
-                          - max_tokens
-                          - top_p
-                          - frequency_penalty
-                          - presence_penalty
-                        default_parameters: null
+                    $ref: '#/components/schemas/ModelsList'
                 required:
                   - data
         4XX:
@@ -5201,13 +5309,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /models/{author}/{slug}/endpoints:
     get:
       operationId: list
@@ -5226,7 +5334,7 @@ paths:
           name: slug
           in: path
       responses:
-        "200":
+        '200':
           description: Returns a list of endpoints
           content:
             application/json:
@@ -5354,263 +5462,7 @@ paths:
                           output_modalities:
                             - text
                       endpoints:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                            model_name:
-                              type: string
-                            context_length:
-                              type: number
-                            pricing:
-                              type: object
-                              properties:
-                                prompt:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                completion:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                request:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                image:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                image_output:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                audio:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                input_audio_cache:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                web_search:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                internal_reasoning:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                input_cache_read:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                input_cache_write:
-                                  anyOf:
-                                    - type: number
-                                    - type: string
-                                    - {}
-                                discount:
-                                  type: number
-                              required:
-                                - prompt
-                                - completion
-                              additionalProperties: false
-                            provider_name:
-                              type: string
-                              enum:
-                                - AnyScale
-                                - Cent-ML
-                                - HuggingFace
-                                - Hyperbolic 2
-                                - Lepton
-                                - Lynn 2
-                                - Lynn
-                                - Mancer
-                                - Modal
-                                - OctoAI
-                                - Recursal
-                                - Reflection
-                                - Replicate
-                                - SambaNova 2
-                                - SF Compute
-                                - Together 2
-                                - 01.AI
-                                - AI21
-                                - AionLabs
-                                - Alibaba
-                                - Amazon Bedrock
-                                - Anthropic
-                                - AtlasCloud
-                                - Atoma
-                                - Avian
-                                - Azure
-                                - BaseTen
-                                - Cerebras
-                                - Chutes
-                                - Cloudflare
-                                - Cohere
-                                - CrofAI
-                                - Crusoe
-                                - DeepInfra
-                                - DeepSeek
-                                - Enfer
-                                - Featherless
-                                - Fireworks
-                                - Friendli
-                                - GMICloud
-                                - Google
-                                - Google AI Studio
-                                - Groq
-                                - Hyperbolic
-                                - Inception
-                                - InferenceNet
-                                - Infermatic
-                                - Inflection
-                                - InoCloud
-                                - Kluster
-                                - Lambda
-                                - Liquid
-                                - Mancer 2
-                                - Meta
-                                - Minimax
-                                - Mistral
-                                - Moonshot AI
-                                - Morph
-                                - NCompass
-                                - Nebius
-                                - NextBit
-                                - Nineteen
-                                - Novita
-                                - Nvidia
-                                - OpenAI
-                                - OpenInference
-                                - Parasail
-                                - Perplexity
-                                - Phala
-                                - Relace
-                                - SambaNova
-                                - SiliconFlow
-                                - Stealth
-                                - Switchpoint
-                                - Targon
-                                - Together
-                                - Ubicloud
-                                - Venice
-                                - WandB
-                                - xAI
-                                - Z.AI
-                                - FakeProvider
-                            tag:
-                              type: string
-                            quantization:
-                              type: string
-                              nullable: true
-                              enum:
-                                - int4
-                                - int8
-                                - fp4
-                                - fp6
-                                - fp8
-                                - fp16
-                                - bf16
-                                - fp32
-                                - unknown
-                            max_completion_tokens:
-                              type: number
-                              nullable: true
-                            max_prompt_tokens:
-                              type: number
-                              nullable: true
-                            supported_parameters:
-                              type: array
-                              items:
-                                type: string
-                                enum:
-                                  - temperature
-                                  - top_p
-                                  - top_k
-                                  - min_p
-                                  - top_a
-                                  - frequency_penalty
-                                  - presence_penalty
-                                  - repetition_penalty
-                                  - max_tokens
-                                  - logit_bias
-                                  - logprobs
-                                  - top_logprobs
-                                  - seed
-                                  - response_format
-                                  - structured_outputs
-                                  - stop
-                                  - tools
-                                  - tool_choice
-                                  - parallel_tool_calls
-                                  - include_reasoning
-                                  - reasoning
-                                  - web_search_options
-                                  - verbosity
-                            status:
-                              type: integer
-                              enum:
-                                - 0
-                                - -1
-                                - -2
-                                - -3
-                                - -5
-                                - -10
-                            uptime_last_30m:
-                              type: number
-                              nullable: true
-                            supports_implicit_caching:
-                              type: boolean
-                          required:
-                            - name
-                            - model_name
-                            - context_length
-                            - pricing
-                            - provider_name
-                            - tag
-                            - quantization
-                            - max_completion_tokens
-                            - max_prompt_tokens
-                            - supported_parameters
-                            - uptime_last_30m
-                            - supports_implicit_caching
-                        description: List of available endpoints for this model
-                        example:
-                          - name: OpenAI GPT-4
-                            model_name: gpt-4
-                            context_length: 8192
-                            pricing:
-                              prompt: '0.00003'
-                              completion: '0.00006'
-                            provider_name: OpenAI
-                            tag: featured
-                            quantization: null
-                            max_completion_tokens: 4096
-                            max_prompt_tokens: null
-                            supported_parameters:
-                              - temperature
-                              - max_tokens
-                              - top_p
-                              - frequency_penalty
-                              - presence_penalty
-                            status: active
-                            uptime_last_30m: 0.99
-                            supports_implicit_caching: true
+                        $ref: '#/components/schemas/EndpointsList'
                     required:
                       - id
                       - name
@@ -5625,13 +5477,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /endpoints/zdr:
     get:
       operationId: previewZDR
@@ -5639,7 +5491,7 @@ paths:
         - Endpoints
       summary: Preview the impact of ZDR on the available endpoints
       responses:
-        "200":
+        '200':
           description: Returns a list of endpoints
           content:
             application/json:
@@ -5889,13 +5741,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /parameters/{author}/{slug}:
     get:
       operationId: getParameters
@@ -5986,7 +5838,7 @@ paths:
           name: provider
           in: query
       responses:
-        "200":
+        '200':
           description: Returns the parameters for the specified model
           content:
             application/json:
@@ -6054,13 +5906,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /providers:
     get:
       operationId: listProviders
@@ -6069,7 +5921,7 @@ paths:
         - Providers
       description: List all available model providers
       responses:
-        "200":
+        '200':
           description: Returns a list of providers
           content:
             application/json:
@@ -6110,7 +5962,7 @@ paths:
                         - privacy_policy_url
                 required:
                   - data
-        "500":
+        '500':
           description: Internal Server Error
           content:
             application/json:
@@ -6160,7 +6012,7 @@ paths:
           name: offset
           in: query
       responses:
-        "200":
+        '200':
           description: List of API keys
           content:
             application/json:
@@ -6200,12 +6052,12 @@ paths:
                         created_at:
                           type: string
                           description: ISO 8601 timestamp of when the API key was created
-                          example: "2025-08-24T10:30:00Z"
+                          example: '2025-08-24T10:30:00Z'
                         updated_at:
                           type: string
                           nullable: true
                           description: ISO 8601 timestamp of when the API key was last updated
-                          example: "2025-08-24T15:45:00Z"
+                          example: '2025-08-24T15:45:00Z'
                       required:
                         - hash
                         - name
@@ -6240,13 +6092,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: create
       tags:
@@ -6276,7 +6128,7 @@ paths:
                 - name
         required: true
       responses:
-        "201":
+        '201':
           description: API key created successfully
           content:
             application/json:
@@ -6314,12 +6166,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: "2025-08-24T10:30:00Z"
+                        example: '2025-08-24T10:30:00Z'
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: "2025-08-24T15:45:00Z"
+                        example: '2025-08-24T15:45:00Z'
                     required:
                       - hash
                       - name
@@ -6351,13 +6203,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /keys/{hash}:
     patch:
       operationId: update
@@ -6397,7 +6249,7 @@ paths:
                   example: true
         required: true
       responses:
-        "200":
+        '200':
           description: API key updated successfully
           content:
             application/json:
@@ -6435,12 +6287,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: "2025-08-24T10:30:00Z"
+                        example: '2025-08-24T10:30:00Z'
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: "2025-08-24T15:45:00Z"
+                        example: '2025-08-24T15:45:00Z'
                     required:
                       - hash
                       - name
@@ -6467,13 +6319,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: delete
       tags:
@@ -6488,7 +6340,7 @@ paths:
           name: hash
           in: path
       responses:
-        "200":
+        '200':
           description: API key deleted successfully
           content:
             application/json:
@@ -6506,13 +6358,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     get:
       operationId: getApiKey
       x-speakeasy-name-override: get
@@ -6528,7 +6380,7 @@ paths:
           name: hash
           in: path
       responses:
-        "200":
+        '200':
           description: API key details
           content:
             application/json:
@@ -6566,12 +6418,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: "2025-08-24T10:30:00Z"
+                        example: '2025-08-24T10:30:00Z'
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: "2025-08-24T15:45:00Z"
+                        example: '2025-08-24T15:45:00Z'
                     required:
                       - hash
                       - name
@@ -6598,13 +6450,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /key:
     get:
       operationId: getCurrentKey
@@ -6614,7 +6466,7 @@ paths:
       summary: Get current API key
       description: Get information on the API key associated with the current authentication session
       responses:
-        "200":
+        '200':
           description: API key details
           content:
             application/json:
@@ -6622,79 +6474,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: object
-                    properties:
-                      label:
-                        type: string
-                        description: Human-readable label for the API key
-                        example: sk-or-v1-au78b3456789012345678901234567890
-                      limit:
-                        type: number
-                        nullable: true
-                        description: Spending limit for the API key in USD
-                        example: 100
-                      usage:
-                        type: number
-                        description: Current usage of the API key in USD
-                        example: 25.5
-                      is_free_tier:
-                        type: boolean
-                        description: Whether this is a free tier API key
-                        example: false
-                      is_provisioning_key:
-                        type: boolean
-                        description: Whether this is a provisioning key
-                        example: false
-                      limit_remaining:
-                        type: number
-                        nullable: true
-                        description: Remaining spending limit in USD
-                        example: 74.5
-                      rate_limit:
-                        type: object
-                        properties:
-                          requests:
-                            type: number
-                            description: Number of requests allowed per interval
-                            example: 1000
-                          interval:
-                            type: string
-                            description: Rate limit interval
-                            example: 1h
-                          note:
-                            type: string
-                            description: Note about the rate limit
-                            example: This field is deprecated and safe to ignore.
-                        required:
-                          - requests
-                          - interval
-                          - note
-                        description: Legacy rate limit information about a key. Will always return -1.
-                        deprecated: true
-                        example:
-                          requests: 1000
-                          interval: 1h
-                          note: This field is deprecated and safe to ignore.
-                    required:
-                      - label
-                      - limit
-                      - usage
-                      - is_free_tier
-                      - is_provisioning_key
-                      - limit_remaining
-                      - rate_limit
-                    description: Current API key information
-                    example:
-                      label: sk-or-v1-au78b3456789012345678901234567890
-                      limit: 100
-                      usage: 25.5
-                      is_free_tier: false
-                      is_provisioning_key: false
-                      limit_remaining: 74.5
-                      rate_limit:
-                        requests: 1000
-                        interval: 1h
-                        note: This field is deprecated and safe to ignore.
+                    $ref: '#/components/schemas/KeyInfo'
                 required:
                   - data
         4XX:
@@ -6702,13 +6482,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /auth/keys:
     post:
       operationId: exchangeAuthorizationCode
@@ -6741,7 +6521,7 @@ paths:
                 - code
         required: true
       responses:
-        "200":
+        '200':
           description: Successfully exchanged code for an API key
           content:
             application/json:
@@ -6765,13 +6545,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /auth/keys/code:
     post:
       operationId: createAuthorizationCode
@@ -6811,7 +6591,7 @@ paths:
                 - callback_url
         required: true
       responses:
-        "200":
+        '200':
           description: Successfully created authorization code
           content:
             application/json:
@@ -6832,7 +6612,7 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the auth code was created
-                        example: "2025-08-24T10:30:00Z"
+                        example: '2025-08-24T10:30:00Z'
                     required:
                       - id
                       - app_id
@@ -6849,13 +6629,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
   /chat/completions:
     post:
       summary: Create a chat completion
@@ -6871,13 +6651,12 @@ paths:
       requestBody:
         required: true
         description: Chat completion request parameters
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChatGenerationParams"
+              $ref: '#/components/schemas/ChatGenerationParams'
       responses:
-        "200":
+        '200':
           description: Successful chat completion response
           content:
             application/json:
@@ -6886,32 +6665,32 @@ paths:
                 description: Chat completion response
             text/event-stream:
               schema:
-                $ref: "#/components/schemas/ChatStreamingResponseChunk"
-              x-speakeasy-sse-sentinel: "[DONE]"
-        "400":
+                $ref: '#/components/schemas/ChatStreamingResponseChunk'
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatError"
-        "401":
+                $ref: '#/components/schemas/ChatError'
+        '401':
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatError"
-        "429":
+                $ref: '#/components/schemas/ChatError'
+        '429':
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatError"
-        "500":
+                $ref: '#/components/schemas/ChatError'
+        '500':
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatError"
+                $ref: '#/components/schemas/ChatError'
   /completions:
     post:
       summary: Create a completion
@@ -6927,9 +6706,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompletionCreateParams"
+              $ref: '#/components/schemas/CompletionCreateParams'
       responses:
-        "200":
+        '200':
           description: Successful completion response
           content:
             application/json:

@@ -31,7 +31,7 @@ export type EndpointsListQueryData = operations.ListResponse;
  * List all endpoints for a model
  */
 export function useEndpointsList(
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
   options?: QueryHookOptions<EndpointsListQueryData>,
 ): UseQueryResult<EndpointsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -49,7 +49,7 @@ export function useEndpointsList(
  * List all endpoints for a model
  */
 export function useEndpointsListSuspense(
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
   options?: SuspenseQueryHookOptions<EndpointsListQueryData>,
 ): UseSuspenseQueryResult<EndpointsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -66,7 +66,7 @@ export function useEndpointsListSuspense(
 export function prefetchEndpointsList(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildEndpointsListQuery(
@@ -109,7 +109,7 @@ export function invalidateAllEndpointsList(
 
 export function buildEndpointsListQuery(
   client$: OpenRouterCore,
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;

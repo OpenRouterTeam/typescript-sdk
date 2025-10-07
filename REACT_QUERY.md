@@ -160,6 +160,8 @@ export function Example() {
           reasoning: {
             effort: "medium",
             summary: "auto",
+            maxTokens: 6520.65,
+            enabled: false,
           },
           maxOutputTokens: 6181.51,
           temperature: 8715.21,

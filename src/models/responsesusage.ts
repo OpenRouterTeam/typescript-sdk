@@ -20,6 +20,12 @@ import {
   ResponsesOutputTokensDetails$outboundSchema,
 } from "./responsesoutputtokensdetails.js";
 
+export type CostDetails = {
+  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceInputCost: number;
+  upstreamInferenceOutputCost: number;
+};
+
 /**
  * Token usage statistics for Responses API
  */
@@ -35,7 +41,84 @@ export type ResponsesUsage = {
    */
   outputTokensDetails: ResponsesOutputTokensDetails;
   totalTokens: number;
+  /**
+   * Cost of the completion
+   */
+  cost?: number | null | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
+  costDetails?: CostDetails | undefined;
 };
+
+/** @internal */
+export const CostDetails$inboundSchema: z.ZodType<
+  CostDetails,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_input_cost: z.number(),
+  upstream_inference_output_cost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_input_cost": "upstreamInferenceInputCost",
+    "upstream_inference_output_cost": "upstreamInferenceOutputCost",
+  });
+});
+
+/** @internal */
+export type CostDetails$Outbound = {
+  upstream_inference_cost?: number | null | undefined;
+  upstream_inference_input_cost: number;
+  upstream_inference_output_cost: number;
+};
+
+/** @internal */
+export const CostDetails$outboundSchema: z.ZodType<
+  CostDetails$Outbound,
+  z.ZodTypeDef,
+  CostDetails
+> = z.object({
+  upstreamInferenceCost: z.nullable(z.number()).optional(),
+  upstreamInferenceInputCost: z.number(),
+  upstreamInferenceOutputCost: z.number(),
+}).transform((v) => {
+  return remap$(v, {
+    upstreamInferenceCost: "upstream_inference_cost",
+    upstreamInferenceInputCost: "upstream_inference_input_cost",
+    upstreamInferenceOutputCost: "upstream_inference_output_cost",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace CostDetails$ {
+  /** @deprecated use `CostDetails$inboundSchema` instead. */
+  export const inboundSchema = CostDetails$inboundSchema;
+  /** @deprecated use `CostDetails$outboundSchema` instead. */
+  export const outboundSchema = CostDetails$outboundSchema;
+  /** @deprecated use `CostDetails$Outbound` instead. */
+  export type Outbound = CostDetails$Outbound;
+}
+
+export function costDetailsToJSON(costDetails: CostDetails): string {
+  return JSON.stringify(CostDetails$outboundSchema.parse(costDetails));
+}
+
+export function costDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<CostDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CostDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CostDetails' from JSON`,
+  );
+}
 
 /** @internal */
 export const ResponsesUsage$inboundSchema: z.ZodType<
@@ -48,6 +131,9 @@ export const ResponsesUsage$inboundSchema: z.ZodType<
   output_tokens: z.number(),
   output_tokens_details: ResponsesOutputTokensDetails$inboundSchema,
   total_tokens: z.number(),
+  cost: z.nullable(z.number()).optional(),
+  is_byok: z.boolean().optional(),
+  cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "input_tokens": "inputTokens",
@@ -55,6 +141,8 @@ export const ResponsesUsage$inboundSchema: z.ZodType<
     "output_tokens": "outputTokens",
     "output_tokens_details": "outputTokensDetails",
     "total_tokens": "totalTokens",
+    "is_byok": "isByok",
+    "cost_details": "costDetails",
   });
 });
 
@@ -65,6 +153,9 @@ export type ResponsesUsage$Outbound = {
   output_tokens: number;
   output_tokens_details: ResponsesOutputTokensDetails$Outbound;
   total_tokens: number;
+  cost?: number | null | undefined;
+  is_byok?: boolean | undefined;
+  cost_details?: CostDetails$Outbound | undefined;
 };
 
 /** @internal */
@@ -78,6 +169,9 @@ export const ResponsesUsage$outboundSchema: z.ZodType<
   outputTokens: z.number(),
   outputTokensDetails: ResponsesOutputTokensDetails$outboundSchema,
   totalTokens: z.number(),
+  cost: z.nullable(z.number()).optional(),
+  isByok: z.boolean().optional(),
+  costDetails: z.lazy(() => CostDetails$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     inputTokens: "input_tokens",
@@ -85,6 +179,8 @@ export const ResponsesUsage$outboundSchema: z.ZodType<
     outputTokens: "output_tokens",
     outputTokensDetails: "output_tokens_details",
     totalTokens: "total_tokens",
+    isByok: "is_byok",
+    costDetails: "cost_details",
   });
 });
 

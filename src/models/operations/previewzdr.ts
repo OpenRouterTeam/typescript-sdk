@@ -17,21 +17,21 @@ export type EndpointsPreviewZDRRequest = number | string | any;
 
 export type PreviewZDRImage = number | string | any;
 
-export type PreviewZDRImageOutput = number | string | any;
+export type ImageOutput = number | string | any;
 
 export type PreviewZDRAudio = number | string | any;
 
-export type PreviewZDRInputAudioCache = number | string | any;
+export type InputAudioCache = number | string | any;
 
-export type PreviewZDRWebSearch = number | string | any;
+export type WebSearch = number | string | any;
 
-export type PreviewZDRInternalReasoning = number | string | any;
+export type InternalReasoning = number | string | any;
 
-export type PreviewZDRInputCacheRead = number | string | any;
+export type InputCacheRead = number | string | any;
 
-export type PreviewZDRInputCacheWrite = number | string | any;
+export type InputCacheWrite = number | string | any;
 
-export type PreviewZDRPricing = {
+export type Pricing = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   request?: number | string | any | undefined;
@@ -46,7 +46,7 @@ export type PreviewZDRPricing = {
   discount?: number | undefined;
 };
 
-export const PreviewZDRProviderName = {
+export const ProviderName = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -130,7 +130,7 @@ export const PreviewZDRProviderName = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type PreviewZDRProviderName = ClosedEnum<typeof PreviewZDRProviderName>;
+export type ProviderName = ClosedEnum<typeof ProviderName>;
 
 export const PreviewZDRQuantization = {
   Int4: "int4",
@@ -174,7 +174,7 @@ export type PreviewZDRSupportedParameter = ClosedEnum<
   typeof PreviewZDRSupportedParameter
 >;
 
-export const PreviewZDRStatus = {
+export const Status = {
   Zero: 0,
   Minus1: -1,
   Minus2: -2,
@@ -182,20 +182,20 @@ export const PreviewZDRStatus = {
   Minus5: -5,
   Minus10: -10,
 } as const;
-export type PreviewZDRStatus = ClosedEnum<typeof PreviewZDRStatus>;
+export type Status = ClosedEnum<typeof Status>;
 
 export type PreviewZDRData = {
   name: string;
   modelName: string;
   contextLength: number;
-  pricing: PreviewZDRPricing;
-  providerName: PreviewZDRProviderName;
+  pricing: Pricing;
+  providerName: ProviderName;
   tag: string;
   quantization: PreviewZDRQuantization | null;
   maxCompletionTokens: number | null;
   maxPromptTokens: number | null;
   supportedParameters: Array<PreviewZDRSupportedParameter>;
-  status?: PreviewZDRStatus | undefined;
+  status?: Status | undefined;
   uptimeLast30m: number | null;
   supportsImplicitCaching: boolean;
 };
@@ -398,50 +398,46 @@ export function previewZDRImageFromJSON(
 }
 
 /** @internal */
-export const PreviewZDRImageOutput$inboundSchema: z.ZodType<
-  PreviewZDRImageOutput,
+export const ImageOutput$inboundSchema: z.ZodType<
+  ImageOutput,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRImageOutput$Outbound = number | string | any;
+export type ImageOutput$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRImageOutput$outboundSchema: z.ZodType<
-  PreviewZDRImageOutput$Outbound,
+export const ImageOutput$outboundSchema: z.ZodType<
+  ImageOutput$Outbound,
   z.ZodTypeDef,
-  PreviewZDRImageOutput
+  ImageOutput
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRImageOutput$ {
-  /** @deprecated use `PreviewZDRImageOutput$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRImageOutput$inboundSchema;
-  /** @deprecated use `PreviewZDRImageOutput$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRImageOutput$outboundSchema;
-  /** @deprecated use `PreviewZDRImageOutput$Outbound` instead. */
-  export type Outbound = PreviewZDRImageOutput$Outbound;
+export namespace ImageOutput$ {
+  /** @deprecated use `ImageOutput$inboundSchema` instead. */
+  export const inboundSchema = ImageOutput$inboundSchema;
+  /** @deprecated use `ImageOutput$outboundSchema` instead. */
+  export const outboundSchema = ImageOutput$outboundSchema;
+  /** @deprecated use `ImageOutput$Outbound` instead. */
+  export type Outbound = ImageOutput$Outbound;
 }
 
-export function previewZDRImageOutputToJSON(
-  previewZDRImageOutput: PreviewZDRImageOutput,
-): string {
-  return JSON.stringify(
-    PreviewZDRImageOutput$outboundSchema.parse(previewZDRImageOutput),
-  );
+export function imageOutputToJSON(imageOutput: ImageOutput): string {
+  return JSON.stringify(ImageOutput$outboundSchema.parse(imageOutput));
 }
 
-export function previewZDRImageOutputFromJSON(
+export function imageOutputFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRImageOutput, SDKValidationError> {
+): SafeParseResult<ImageOutput, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRImageOutput$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRImageOutput' from JSON`,
+    (x) => ImageOutput$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ImageOutput' from JSON`,
   );
 }
 
@@ -492,278 +488,261 @@ export function previewZDRAudioFromJSON(
 }
 
 /** @internal */
-export const PreviewZDRInputAudioCache$inboundSchema: z.ZodType<
-  PreviewZDRInputAudioCache,
+export const InputAudioCache$inboundSchema: z.ZodType<
+  InputAudioCache,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRInputAudioCache$Outbound = number | string | any;
+export type InputAudioCache$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRInputAudioCache$outboundSchema: z.ZodType<
-  PreviewZDRInputAudioCache$Outbound,
+export const InputAudioCache$outboundSchema: z.ZodType<
+  InputAudioCache$Outbound,
   z.ZodTypeDef,
-  PreviewZDRInputAudioCache
+  InputAudioCache
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRInputAudioCache$ {
-  /** @deprecated use `PreviewZDRInputAudioCache$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRInputAudioCache$inboundSchema;
-  /** @deprecated use `PreviewZDRInputAudioCache$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRInputAudioCache$outboundSchema;
-  /** @deprecated use `PreviewZDRInputAudioCache$Outbound` instead. */
-  export type Outbound = PreviewZDRInputAudioCache$Outbound;
+export namespace InputAudioCache$ {
+  /** @deprecated use `InputAudioCache$inboundSchema` instead. */
+  export const inboundSchema = InputAudioCache$inboundSchema;
+  /** @deprecated use `InputAudioCache$outboundSchema` instead. */
+  export const outboundSchema = InputAudioCache$outboundSchema;
+  /** @deprecated use `InputAudioCache$Outbound` instead. */
+  export type Outbound = InputAudioCache$Outbound;
 }
 
-export function previewZDRInputAudioCacheToJSON(
-  previewZDRInputAudioCache: PreviewZDRInputAudioCache,
+export function inputAudioCacheToJSON(
+  inputAudioCache: InputAudioCache,
 ): string {
-  return JSON.stringify(
-    PreviewZDRInputAudioCache$outboundSchema.parse(previewZDRInputAudioCache),
-  );
+  return JSON.stringify(InputAudioCache$outboundSchema.parse(inputAudioCache));
 }
 
-export function previewZDRInputAudioCacheFromJSON(
+export function inputAudioCacheFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRInputAudioCache, SDKValidationError> {
+): SafeParseResult<InputAudioCache, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRInputAudioCache$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRInputAudioCache' from JSON`,
+    (x) => InputAudioCache$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputAudioCache' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRWebSearch$inboundSchema: z.ZodType<
-  PreviewZDRWebSearch,
+export const WebSearch$inboundSchema: z.ZodType<
+  WebSearch,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRWebSearch$Outbound = number | string | any;
+export type WebSearch$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRWebSearch$outboundSchema: z.ZodType<
-  PreviewZDRWebSearch$Outbound,
+export const WebSearch$outboundSchema: z.ZodType<
+  WebSearch$Outbound,
   z.ZodTypeDef,
-  PreviewZDRWebSearch
+  WebSearch
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRWebSearch$ {
-  /** @deprecated use `PreviewZDRWebSearch$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRWebSearch$inboundSchema;
-  /** @deprecated use `PreviewZDRWebSearch$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRWebSearch$outboundSchema;
-  /** @deprecated use `PreviewZDRWebSearch$Outbound` instead. */
-  export type Outbound = PreviewZDRWebSearch$Outbound;
+export namespace WebSearch$ {
+  /** @deprecated use `WebSearch$inboundSchema` instead. */
+  export const inboundSchema = WebSearch$inboundSchema;
+  /** @deprecated use `WebSearch$outboundSchema` instead. */
+  export const outboundSchema = WebSearch$outboundSchema;
+  /** @deprecated use `WebSearch$Outbound` instead. */
+  export type Outbound = WebSearch$Outbound;
 }
 
-export function previewZDRWebSearchToJSON(
-  previewZDRWebSearch: PreviewZDRWebSearch,
-): string {
-  return JSON.stringify(
-    PreviewZDRWebSearch$outboundSchema.parse(previewZDRWebSearch),
-  );
+export function webSearchToJSON(webSearch: WebSearch): string {
+  return JSON.stringify(WebSearch$outboundSchema.parse(webSearch));
 }
 
-export function previewZDRWebSearchFromJSON(
+export function webSearchFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRWebSearch, SDKValidationError> {
+): SafeParseResult<WebSearch, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRWebSearch$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRWebSearch' from JSON`,
+    (x) => WebSearch$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearch' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRInternalReasoning$inboundSchema: z.ZodType<
-  PreviewZDRInternalReasoning,
+export const InternalReasoning$inboundSchema: z.ZodType<
+  InternalReasoning,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRInternalReasoning$Outbound = number | string | any;
+export type InternalReasoning$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRInternalReasoning$outboundSchema: z.ZodType<
-  PreviewZDRInternalReasoning$Outbound,
+export const InternalReasoning$outboundSchema: z.ZodType<
+  InternalReasoning$Outbound,
   z.ZodTypeDef,
-  PreviewZDRInternalReasoning
+  InternalReasoning
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRInternalReasoning$ {
-  /** @deprecated use `PreviewZDRInternalReasoning$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRInternalReasoning$inboundSchema;
-  /** @deprecated use `PreviewZDRInternalReasoning$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRInternalReasoning$outboundSchema;
-  /** @deprecated use `PreviewZDRInternalReasoning$Outbound` instead. */
-  export type Outbound = PreviewZDRInternalReasoning$Outbound;
+export namespace InternalReasoning$ {
+  /** @deprecated use `InternalReasoning$inboundSchema` instead. */
+  export const inboundSchema = InternalReasoning$inboundSchema;
+  /** @deprecated use `InternalReasoning$outboundSchema` instead. */
+  export const outboundSchema = InternalReasoning$outboundSchema;
+  /** @deprecated use `InternalReasoning$Outbound` instead. */
+  export type Outbound = InternalReasoning$Outbound;
 }
 
-export function previewZDRInternalReasoningToJSON(
-  previewZDRInternalReasoning: PreviewZDRInternalReasoning,
+export function internalReasoningToJSON(
+  internalReasoning: InternalReasoning,
 ): string {
   return JSON.stringify(
-    PreviewZDRInternalReasoning$outboundSchema.parse(
-      previewZDRInternalReasoning,
-    ),
+    InternalReasoning$outboundSchema.parse(internalReasoning),
   );
 }
 
-export function previewZDRInternalReasoningFromJSON(
+export function internalReasoningFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRInternalReasoning, SDKValidationError> {
+): SafeParseResult<InternalReasoning, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRInternalReasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRInternalReasoning' from JSON`,
+    (x) => InternalReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InternalReasoning' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRInputCacheRead$inboundSchema: z.ZodType<
-  PreviewZDRInputCacheRead,
+export const InputCacheRead$inboundSchema: z.ZodType<
+  InputCacheRead,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRInputCacheRead$Outbound = number | string | any;
+export type InputCacheRead$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRInputCacheRead$outboundSchema: z.ZodType<
-  PreviewZDRInputCacheRead$Outbound,
+export const InputCacheRead$outboundSchema: z.ZodType<
+  InputCacheRead$Outbound,
   z.ZodTypeDef,
-  PreviewZDRInputCacheRead
+  InputCacheRead
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRInputCacheRead$ {
-  /** @deprecated use `PreviewZDRInputCacheRead$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRInputCacheRead$inboundSchema;
-  /** @deprecated use `PreviewZDRInputCacheRead$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRInputCacheRead$outboundSchema;
-  /** @deprecated use `PreviewZDRInputCacheRead$Outbound` instead. */
-  export type Outbound = PreviewZDRInputCacheRead$Outbound;
+export namespace InputCacheRead$ {
+  /** @deprecated use `InputCacheRead$inboundSchema` instead. */
+  export const inboundSchema = InputCacheRead$inboundSchema;
+  /** @deprecated use `InputCacheRead$outboundSchema` instead. */
+  export const outboundSchema = InputCacheRead$outboundSchema;
+  /** @deprecated use `InputCacheRead$Outbound` instead. */
+  export type Outbound = InputCacheRead$Outbound;
 }
 
-export function previewZDRInputCacheReadToJSON(
-  previewZDRInputCacheRead: PreviewZDRInputCacheRead,
-): string {
-  return JSON.stringify(
-    PreviewZDRInputCacheRead$outboundSchema.parse(previewZDRInputCacheRead),
-  );
+export function inputCacheReadToJSON(inputCacheRead: InputCacheRead): string {
+  return JSON.stringify(InputCacheRead$outboundSchema.parse(inputCacheRead));
 }
 
-export function previewZDRInputCacheReadFromJSON(
+export function inputCacheReadFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRInputCacheRead, SDKValidationError> {
+): SafeParseResult<InputCacheRead, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRInputCacheRead$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRInputCacheRead' from JSON`,
+    (x) => InputCacheRead$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputCacheRead' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRInputCacheWrite$inboundSchema: z.ZodType<
-  PreviewZDRInputCacheWrite,
+export const InputCacheWrite$inboundSchema: z.ZodType<
+  InputCacheWrite,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type PreviewZDRInputCacheWrite$Outbound = number | string | any;
+export type InputCacheWrite$Outbound = number | string | any;
 
 /** @internal */
-export const PreviewZDRInputCacheWrite$outboundSchema: z.ZodType<
-  PreviewZDRInputCacheWrite$Outbound,
+export const InputCacheWrite$outboundSchema: z.ZodType<
+  InputCacheWrite$Outbound,
   z.ZodTypeDef,
-  PreviewZDRInputCacheWrite
+  InputCacheWrite
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRInputCacheWrite$ {
-  /** @deprecated use `PreviewZDRInputCacheWrite$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRInputCacheWrite$inboundSchema;
-  /** @deprecated use `PreviewZDRInputCacheWrite$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRInputCacheWrite$outboundSchema;
-  /** @deprecated use `PreviewZDRInputCacheWrite$Outbound` instead. */
-  export type Outbound = PreviewZDRInputCacheWrite$Outbound;
+export namespace InputCacheWrite$ {
+  /** @deprecated use `InputCacheWrite$inboundSchema` instead. */
+  export const inboundSchema = InputCacheWrite$inboundSchema;
+  /** @deprecated use `InputCacheWrite$outboundSchema` instead. */
+  export const outboundSchema = InputCacheWrite$outboundSchema;
+  /** @deprecated use `InputCacheWrite$Outbound` instead. */
+  export type Outbound = InputCacheWrite$Outbound;
 }
 
-export function previewZDRInputCacheWriteToJSON(
-  previewZDRInputCacheWrite: PreviewZDRInputCacheWrite,
+export function inputCacheWriteToJSON(
+  inputCacheWrite: InputCacheWrite,
 ): string {
-  return JSON.stringify(
-    PreviewZDRInputCacheWrite$outboundSchema.parse(previewZDRInputCacheWrite),
-  );
+  return JSON.stringify(InputCacheWrite$outboundSchema.parse(inputCacheWrite));
 }
 
-export function previewZDRInputCacheWriteFromJSON(
+export function inputCacheWriteFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRInputCacheWrite, SDKValidationError> {
+): SafeParseResult<InputCacheWrite, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRInputCacheWrite$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRInputCacheWrite' from JSON`,
+    (x) => InputCacheWrite$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InputCacheWrite' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRPricing$inboundSchema: z.ZodType<
-  PreviewZDRPricing,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  prompt: z.union([z.number(), z.string(), z.any()]).optional(),
-  completion: z.union([z.number(), z.string(), z.any()]).optional(),
-  request: z.union([z.number(), z.string(), z.any()]).optional(),
-  image: z.union([z.number(), z.string(), z.any()]).optional(),
-  image_output: z.union([z.number(), z.string(), z.any()]).optional(),
-  audio: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_audio_cache: z.union([z.number(), z.string(), z.any()]).optional(),
-  web_search: z.union([z.number(), z.string(), z.any()]).optional(),
-  internal_reasoning: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_cache_read: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_cache_write: z.union([z.number(), z.string(), z.any()]).optional(),
-  discount: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "image_output": "imageOutput",
-    "input_audio_cache": "inputAudioCache",
-    "web_search": "webSearch",
-    "internal_reasoning": "internalReasoning",
-    "input_cache_read": "inputCacheRead",
-    "input_cache_write": "inputCacheWrite",
+export const Pricing$inboundSchema: z.ZodType<Pricing, z.ZodTypeDef, unknown> =
+  z.object({
+    prompt: z.union([z.number(), z.string(), z.any()]).optional(),
+    completion: z.union([z.number(), z.string(), z.any()]).optional(),
+    request: z.union([z.number(), z.string(), z.any()]).optional(),
+    image: z.union([z.number(), z.string(), z.any()]).optional(),
+    image_output: z.union([z.number(), z.string(), z.any()]).optional(),
+    audio: z.union([z.number(), z.string(), z.any()]).optional(),
+    input_audio_cache: z.union([z.number(), z.string(), z.any()]).optional(),
+    web_search: z.union([z.number(), z.string(), z.any()]).optional(),
+    internal_reasoning: z.union([z.number(), z.string(), z.any()]).optional(),
+    input_cache_read: z.union([z.number(), z.string(), z.any()]).optional(),
+    input_cache_write: z.union([z.number(), z.string(), z.any()]).optional(),
+    discount: z.number().optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "image_output": "imageOutput",
+      "input_audio_cache": "inputAudioCache",
+      "web_search": "webSearch",
+      "internal_reasoning": "internalReasoning",
+      "input_cache_read": "inputCacheRead",
+      "input_cache_write": "inputCacheWrite",
+    });
   });
-});
 
 /** @internal */
-export type PreviewZDRPricing$Outbound = {
+export type Pricing$Outbound = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   request?: number | string | any | undefined;
@@ -779,10 +758,10 @@ export type PreviewZDRPricing$Outbound = {
 };
 
 /** @internal */
-export const PreviewZDRPricing$outboundSchema: z.ZodType<
-  PreviewZDRPricing$Outbound,
+export const Pricing$outboundSchema: z.ZodType<
+  Pricing$Outbound,
   z.ZodTypeDef,
-  PreviewZDRPricing
+  Pricing
 > = z.object({
   prompt: z.union([z.number(), z.string(), z.any()]).optional(),
   completion: z.union([z.number(), z.string(), z.any()]).optional(),
@@ -811,52 +790,46 @@ export const PreviewZDRPricing$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRPricing$ {
-  /** @deprecated use `PreviewZDRPricing$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRPricing$inboundSchema;
-  /** @deprecated use `PreviewZDRPricing$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRPricing$outboundSchema;
-  /** @deprecated use `PreviewZDRPricing$Outbound` instead. */
-  export type Outbound = PreviewZDRPricing$Outbound;
+export namespace Pricing$ {
+  /** @deprecated use `Pricing$inboundSchema` instead. */
+  export const inboundSchema = Pricing$inboundSchema;
+  /** @deprecated use `Pricing$outboundSchema` instead. */
+  export const outboundSchema = Pricing$outboundSchema;
+  /** @deprecated use `Pricing$Outbound` instead. */
+  export type Outbound = Pricing$Outbound;
 }
 
-export function previewZDRPricingToJSON(
-  previewZDRPricing: PreviewZDRPricing,
-): string {
-  return JSON.stringify(
-    PreviewZDRPricing$outboundSchema.parse(previewZDRPricing),
-  );
+export function pricingToJSON(pricing: Pricing): string {
+  return JSON.stringify(Pricing$outboundSchema.parse(pricing));
 }
 
-export function previewZDRPricingFromJSON(
+export function pricingFromJSON(
   jsonString: string,
-): SafeParseResult<PreviewZDRPricing, SDKValidationError> {
+): SafeParseResult<Pricing, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PreviewZDRPricing$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PreviewZDRPricing' from JSON`,
+    (x) => Pricing$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Pricing' from JSON`,
   );
 }
 
 /** @internal */
-export const PreviewZDRProviderName$inboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRProviderName
-> = z.nativeEnum(PreviewZDRProviderName);
+export const ProviderName$inboundSchema: z.ZodNativeEnum<typeof ProviderName> =
+  z.nativeEnum(ProviderName);
 
 /** @internal */
-export const PreviewZDRProviderName$outboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRProviderName
-> = PreviewZDRProviderName$inboundSchema;
+export const ProviderName$outboundSchema: z.ZodNativeEnum<typeof ProviderName> =
+  ProviderName$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRProviderName$ {
-  /** @deprecated use `PreviewZDRProviderName$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRProviderName$inboundSchema;
-  /** @deprecated use `PreviewZDRProviderName$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRProviderName$outboundSchema;
+export namespace ProviderName$ {
+  /** @deprecated use `ProviderName$inboundSchema` instead. */
+  export const inboundSchema = ProviderName$inboundSchema;
+  /** @deprecated use `ProviderName$outboundSchema` instead. */
+  export const outboundSchema = ProviderName$outboundSchema;
 }
 
 /** @internal */
@@ -902,24 +875,22 @@ export namespace PreviewZDRSupportedParameter$ {
 }
 
 /** @internal */
-export const PreviewZDRStatus$inboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRStatus
-> = z.nativeEnum(PreviewZDRStatus);
+export const Status$inboundSchema: z.ZodNativeEnum<typeof Status> = z
+  .nativeEnum(Status);
 
 /** @internal */
-export const PreviewZDRStatus$outboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRStatus
-> = PreviewZDRStatus$inboundSchema;
+export const Status$outboundSchema: z.ZodNativeEnum<typeof Status> =
+  Status$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace PreviewZDRStatus$ {
-  /** @deprecated use `PreviewZDRStatus$inboundSchema` instead. */
-  export const inboundSchema = PreviewZDRStatus$inboundSchema;
-  /** @deprecated use `PreviewZDRStatus$outboundSchema` instead. */
-  export const outboundSchema = PreviewZDRStatus$outboundSchema;
+export namespace Status$ {
+  /** @deprecated use `Status$inboundSchema` instead. */
+  export const inboundSchema = Status$inboundSchema;
+  /** @deprecated use `Status$outboundSchema` instead. */
+  export const outboundSchema = Status$outboundSchema;
 }
 
 /** @internal */
@@ -931,14 +902,14 @@ export const PreviewZDRData$inboundSchema: z.ZodType<
   name: z.string(),
   model_name: z.string(),
   context_length: z.number(),
-  pricing: z.lazy(() => PreviewZDRPricing$inboundSchema),
-  provider_name: PreviewZDRProviderName$inboundSchema,
+  pricing: z.lazy(() => Pricing$inboundSchema),
+  provider_name: ProviderName$inboundSchema,
   tag: z.string(),
   quantization: z.nullable(PreviewZDRQuantization$inboundSchema),
   max_completion_tokens: z.nullable(z.number()),
   max_prompt_tokens: z.nullable(z.number()),
   supported_parameters: z.array(PreviewZDRSupportedParameter$inboundSchema),
-  status: PreviewZDRStatus$inboundSchema.optional(),
+  status: Status$inboundSchema.optional(),
   uptime_last_30m: z.nullable(z.number()),
   supports_implicit_caching: z.boolean(),
 }).transform((v) => {
@@ -959,7 +930,7 @@ export type PreviewZDRData$Outbound = {
   name: string;
   model_name: string;
   context_length: number;
-  pricing: PreviewZDRPricing$Outbound;
+  pricing: Pricing$Outbound;
   provider_name: string;
   tag: string;
   quantization: string | null;
@@ -980,14 +951,14 @@ export const PreviewZDRData$outboundSchema: z.ZodType<
   name: z.string(),
   modelName: z.string(),
   contextLength: z.number(),
-  pricing: z.lazy(() => PreviewZDRPricing$outboundSchema),
-  providerName: PreviewZDRProviderName$outboundSchema,
+  pricing: z.lazy(() => Pricing$outboundSchema),
+  providerName: ProviderName$outboundSchema,
   tag: z.string(),
   quantization: z.nullable(PreviewZDRQuantization$outboundSchema),
   maxCompletionTokens: z.nullable(z.number()),
   maxPromptTokens: z.nullable(z.number()),
   supportedParameters: z.array(PreviewZDRSupportedParameter$outboundSchema),
-  status: PreviewZDRStatus$outboundSchema.optional(),
+  status: Status$outboundSchema.optional(),
   uptimeLast30m: z.nullable(z.number()),
   supportsImplicitCaching: z.boolean(),
 }).transform((v) => {

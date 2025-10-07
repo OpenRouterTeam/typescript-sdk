@@ -44,11 +44,13 @@ let value: OpenAIResponsesRequest = {
   reasoning: {
     effort: "medium",
     summary: "auto",
+    maxTokens: 1692.87,
+    enabled: false,
   },
-  maxOutputTokens: 1692.87,
-  temperature: 9213.1,
-  topP: 1235.46,
-  topK: 475.98,
+  maxOutputTokens: 1235.46,
+  temperature: null,
+  topP: 9836.54,
+  topK: 5353.14,
   promptCacheKey: "<value>",
   previousResponseId: "<id>",
   prompt: {
@@ -63,19 +65,45 @@ let value: OpenAIResponsesRequest = {
   include: [
     "file_search_call.results",
   ],
-  background: false,
+  background: true,
   safetyIdentifier: "<value>",
-  store: true,
-  serviceTier: "default",
+  store: false,
+  serviceTier: "scale",
   truncation: "auto",
-  stream: false,
-  provider: null,
+  stream: null,
+  provider: {
+    allowFallbacks: false,
+    requireParameters: false,
+    dataCollection: "allow",
+    zdr: true,
+    order: [
+      "Fireworks",
+    ],
+    only: [
+      "<value>",
+    ],
+    ignore: [
+      "Nvidia",
+    ],
+    quantizations: [
+      "int4",
+    ],
+    sort: "latency",
+    maxPrice: {
+      prompt: "<value>",
+      completion: "<value>",
+      image: "https://picsum.photos/seed/8smhy/1881/1994",
+      audio: "<value>",
+      request: "<value>",
+    },
+    experimental: {},
+  },
   plugins: [
     {
-      id: "moderation",
+      id: "chain-of-thought",
     },
   ],
-  user: "Hershel_Marquardt55",
+  user: "Edward_Leannon26",
 };
 ```
 

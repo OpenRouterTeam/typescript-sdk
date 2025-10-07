@@ -19,6 +19,13 @@ let value: Response1 = {
       reasoningTokens: 64,
     },
     totalTokens: 384,
+    cost: 7038.69,
+    isByok: false,
+    costDetails: {
+      upstreamInferenceCost: 1509.42,
+      upstreamInferenceInputCost: 6579.23,
+      upstreamInferenceOutputCost: 1082.47,
+    },
   },
 };
 ```

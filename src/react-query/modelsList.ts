@@ -33,7 +33,7 @@ export type ModelsListQueryData = operations.ListModelsResponse;
  * List all models and their properties
  */
 export function useModelsList(
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
   options?: QueryHookOptions<ModelsListQueryData>,
 ): UseQueryResult<ModelsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -51,7 +51,7 @@ export function useModelsList(
  * List all models and their properties
  */
 export function useModelsListSuspense(
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
   options?: SuspenseQueryHookOptions<ModelsListQueryData>,
 ): UseSuspenseQueryResult<ModelsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -68,7 +68,7 @@ export function useModelsListSuspense(
 export function prefetchModelsList(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildModelsListQuery(
@@ -125,7 +125,7 @@ export function invalidateAllModelsList(
 
 export function buildModelsListQuery(
   client$: OpenRouterCore,
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
   options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
 ): {
   queryKey: QueryKey;

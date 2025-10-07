@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  */
 export function endpointsList(
   client: OpenRouterCore,
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -55,7 +55,7 @@ export function endpointsList(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.ListRequestRequest,
+  request: operations.ListRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -76,7 +76,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.ListRequestRequest$outboundSchema.parse(value),
+    (value) => operations.ListRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {

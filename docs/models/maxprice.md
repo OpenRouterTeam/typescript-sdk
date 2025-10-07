@@ -18,10 +18,10 @@ let value: MaxPrice = {
 
 ## Fields
 
-| Field                                 | Type                                  | Required                              | Description                           |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| `prompt`                              | *models.OpenAIResponsesRequestPrompt* | :heavy_minus_sign:                    | N/A                                   |
-| `completion`                          | *models.Completion*                   | :heavy_minus_sign:                    | N/A                                   |
-| `image`                               | *models.Image*                        | :heavy_minus_sign:                    | N/A                                   |
-| `audio`                               | *models.Audio*                        | :heavy_minus_sign:                    | N/A                                   |
-| `request`                             | *models.RequestT*                     | :heavy_minus_sign:                    | N/A                                   |
+| Field                                     | Type                                      | Required                                  | Description                               |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `prompt`                                  | *models.OpenAIResponsesRequestPrompt*     | :heavy_minus_sign:                        | N/A                                       |
+| `completion`                              | *models.OpenAIResponsesRequestCompletion* | :heavy_minus_sign:                        | N/A                                       |
+| `image`                                   | *models.OpenAIResponsesRequestImage*      | :heavy_minus_sign:                        | N/A                                       |
+| `audio`                                   | *models.OpenAIResponsesRequestAudio*      | :heavy_minus_sign:                        | N/A                                       |
+| `request`                                 | *models.OpenAIResponsesRequestRequest*    | :heavy_minus_sign:                        | N/A                                       |

@@ -35,7 +35,7 @@ export enum ListAcceptEnum {
  */
 export function modelsList(
   client: OpenRouterCore,
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
   options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
 ): APIPromise<
   Result<
@@ -60,7 +60,7 @@ export function modelsList(
 
 async function $do(
   client: OpenRouterCore,
-  request?: operations.ListModelsRequestRequest | undefined,
+  request?: operations.ListModelsRequest | undefined,
   options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
 ): Promise<
   [
@@ -82,9 +82,7 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.ListModelsRequestRequest$outboundSchema.optional().parse(
-        value,
-      ),
+      operations.ListModelsRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {

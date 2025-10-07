@@ -8,8 +8,9 @@ import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
-export type ListRequestRequest = {
+export type ListRequest = {
   author: string;
   slug: string;
 };
@@ -17,7 +18,7 @@ export type ListRequestRequest = {
 /**
  * Tokenizer type used by the model
  */
-export const ListTokenizer = {
+export const Tokenizer = {
   Router: "Router",
   Media: "Media",
   Other: "Other",
@@ -41,12 +42,12 @@ export const ListTokenizer = {
 /**
  * Tokenizer type used by the model
  */
-export type ListTokenizer = ClosedEnum<typeof ListTokenizer>;
+export type Tokenizer = ClosedEnum<typeof Tokenizer>;
 
 /**
  * Instruction format type
  */
-export const ListInstructType = {
+export const InstructType = {
   None: "none",
   Airoboros: "airoboros",
   Alpaca: "alpaca",
@@ -73,35 +74,35 @@ export const ListInstructType = {
 /**
  * Instruction format type
  */
-export type ListInstructType = ClosedEnum<typeof ListInstructType>;
+export type InstructType = ClosedEnum<typeof InstructType>;
 
-export const ListInputModality = {
+export const InputModality = {
   Text: "text",
   Image: "image",
   File: "file",
   Audio: "audio",
 } as const;
-export type ListInputModality = ClosedEnum<typeof ListInputModality>;
+export type InputModality = ClosedEnum<typeof InputModality>;
 
-export const ListOutputModality = {
+export const OutputModality = {
   Text: "text",
   Image: "image",
   Embeddings: "embeddings",
 } as const;
-export type ListOutputModality = ClosedEnum<typeof ListOutputModality>;
+export type OutputModality = ClosedEnum<typeof OutputModality>;
 
 /**
  * Model architecture information
  */
-export type ListArchitecture = {
+export type Architecture = {
   /**
    * Tokenizer type used by the model
    */
-  tokenizer: ListTokenizer | null;
+  tokenizer: Tokenizer | null;
   /**
    * Instruction format type
    */
-  instructType: ListInstructType | null;
+  instructType: InstructType | null;
   /**
    * Primary modality of the model
    */
@@ -109,200 +110,11 @@ export type ListArchitecture = {
   /**
    * Supported input modalities
    */
-  inputModalities: Array<ListInputModality>;
+  inputModalities: Array<InputModality>;
   /**
    * Supported output modalities
    */
-  outputModalities: Array<ListOutputModality>;
-};
-
-export type ListPrompt = number | string | any;
-
-export type ListCompletion = number | string | any;
-
-export type EndpointsListRequest = number | string | any;
-
-export type ListImage = number | string | any;
-
-export type ListImageOutput = number | string | any;
-
-export type ListAudio = number | string | any;
-
-export type ListInputAudioCache = number | string | any;
-
-export type ListWebSearch = number | string | any;
-
-export type ListInternalReasoning = number | string | any;
-
-export type ListInputCacheRead = number | string | any;
-
-export type ListInputCacheWrite = number | string | any;
-
-export type ListPricing = {
-  prompt?: number | string | any | undefined;
-  completion?: number | string | any | undefined;
-  request?: number | string | any | undefined;
-  image?: number | string | any | undefined;
-  imageOutput?: number | string | any | undefined;
-  audio?: number | string | any | undefined;
-  inputAudioCache?: number | string | any | undefined;
-  webSearch?: number | string | any | undefined;
-  internalReasoning?: number | string | any | undefined;
-  inputCacheRead?: number | string | any | undefined;
-  inputCacheWrite?: number | string | any | undefined;
-  discount?: number | undefined;
-};
-
-export const ListProviderName = {
-  AnyScale: "AnyScale",
-  CentML: "Cent-ML",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Modal: "Modal",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Together2: "Together 2",
-  OneDotAI: "01.AI",
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  AmazonBedrock: "Amazon Bedrock",
-  Anthropic: "Anthropic",
-  AtlasCloud: "AtlasCloud",
-  Atoma: "Atoma",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  CrofAI: "CrofAI",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Enfer: "Enfer",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  InferenceNet: "InferenceNet",
-  Infermatic: "Infermatic",
-  Inflection: "Inflection",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
-  Liquid: "Liquid",
-  Mancer2: "Mancer 2",
-  Meta: "Meta",
-  Minimax: "Minimax",
-  Mistral: "Mistral",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Nineteen: "Nineteen",
-  Novita: "Novita",
-  Nvidia: "Nvidia",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  Relace: "Relace",
-  SambaNova: "SambaNova",
-  SiliconFlow: "SiliconFlow",
-  Stealth: "Stealth",
-  Switchpoint: "Switchpoint",
-  Targon: "Targon",
-  Together: "Together",
-  Ubicloud: "Ubicloud",
-  Venice: "Venice",
-  WandB: "WandB",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-  FakeProvider: "FakeProvider",
-} as const;
-export type ListProviderName = ClosedEnum<typeof ListProviderName>;
-
-export const ListQuantization = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
-} as const;
-export type ListQuantization = ClosedEnum<typeof ListQuantization>;
-
-export const ListSupportedParameter = {
-  Temperature: "temperature",
-  TopP: "top_p",
-  TopK: "top_k",
-  MinP: "min_p",
-  TopA: "top_a",
-  FrequencyPenalty: "frequency_penalty",
-  PresencePenalty: "presence_penalty",
-  RepetitionPenalty: "repetition_penalty",
-  MaxTokens: "max_tokens",
-  LogitBias: "logit_bias",
-  Logprobs: "logprobs",
-  TopLogprobs: "top_logprobs",
-  Seed: "seed",
-  ResponseFormat: "response_format",
-  StructuredOutputs: "structured_outputs",
-  Stop: "stop",
-  Tools: "tools",
-  ToolChoice: "tool_choice",
-  ParallelToolCalls: "parallel_tool_calls",
-  IncludeReasoning: "include_reasoning",
-  Reasoning: "reasoning",
-  WebSearchOptions: "web_search_options",
-  Verbosity: "verbosity",
-} as const;
-export type ListSupportedParameter = ClosedEnum<typeof ListSupportedParameter>;
-
-export const ListStatus = {
-  Zero: 0,
-  Minus1: -1,
-  Minus2: -2,
-  Minus3: -3,
-  Minus5: -5,
-  Minus10: -10,
-} as const;
-export type ListStatus = ClosedEnum<typeof ListStatus>;
-
-export type Endpoint = {
-  name: string;
-  modelName: string;
-  contextLength: number;
-  pricing: ListPricing;
-  providerName: ListProviderName;
-  tag: string;
-  quantization: ListQuantization | null;
-  maxCompletionTokens: number | null;
-  maxPromptTokens: number | null;
-  supportedParameters: Array<ListSupportedParameter>;
-  status?: ListStatus | undefined;
-  uptimeLast30m: number | null;
-  supportsImplicitCaching: boolean;
+  outputModalities: Array<OutputModality>;
 };
 
 export type ListData = {
@@ -325,11 +137,11 @@ export type ListData = {
   /**
    * Model architecture information
    */
-  architecture: ListArchitecture;
+  architecture: Architecture;
   /**
    * List of available endpoints for this model
    */
-  endpoints: Array<Endpoint>;
+  endpoints: Array<models.EndpointsList>;
 };
 
 /**
@@ -340,8 +152,8 @@ export type ListResponse = {
 };
 
 /** @internal */
-export const ListRequestRequest$inboundSchema: z.ZodType<
-  ListRequestRequest,
+export const ListRequest$inboundSchema: z.ZodType<
+  ListRequest,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -350,16 +162,16 @@ export const ListRequestRequest$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ListRequestRequest$Outbound = {
+export type ListRequest$Outbound = {
   author: string;
   slug: string;
 };
 
 /** @internal */
-export const ListRequestRequest$outboundSchema: z.ZodType<
-  ListRequestRequest$Outbound,
+export const ListRequest$outboundSchema: z.ZodType<
+  ListRequest$Outbound,
   z.ZodTypeDef,
-  ListRequestRequest
+  ListRequest
 > = z.object({
   author: z.string(),
   slug: z.string(),
@@ -369,128 +181,120 @@ export const ListRequestRequest$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListRequestRequest$ {
-  /** @deprecated use `ListRequestRequest$inboundSchema` instead. */
-  export const inboundSchema = ListRequestRequest$inboundSchema;
-  /** @deprecated use `ListRequestRequest$outboundSchema` instead. */
-  export const outboundSchema = ListRequestRequest$outboundSchema;
-  /** @deprecated use `ListRequestRequest$Outbound` instead. */
-  export type Outbound = ListRequestRequest$Outbound;
+export namespace ListRequest$ {
+  /** @deprecated use `ListRequest$inboundSchema` instead. */
+  export const inboundSchema = ListRequest$inboundSchema;
+  /** @deprecated use `ListRequest$outboundSchema` instead. */
+  export const outboundSchema = ListRequest$outboundSchema;
+  /** @deprecated use `ListRequest$Outbound` instead. */
+  export type Outbound = ListRequest$Outbound;
 }
 
-export function listRequestRequestToJSON(
-  listRequestRequest: ListRequestRequest,
-): string {
-  return JSON.stringify(
-    ListRequestRequest$outboundSchema.parse(listRequestRequest),
-  );
+export function listRequestToJSON(listRequest: ListRequest): string {
+  return JSON.stringify(ListRequest$outboundSchema.parse(listRequest));
 }
 
-export function listRequestRequestFromJSON(
+export function listRequestFromJSON(
   jsonString: string,
-): SafeParseResult<ListRequestRequest, SDKValidationError> {
+): SafeParseResult<ListRequest, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ListRequestRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListRequestRequest' from JSON`,
+    (x) => ListRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListRequest' from JSON`,
   );
 }
 
 /** @internal */
-export const ListTokenizer$inboundSchema: z.ZodNativeEnum<
-  typeof ListTokenizer
-> = z.nativeEnum(ListTokenizer);
+export const Tokenizer$inboundSchema: z.ZodNativeEnum<typeof Tokenizer> = z
+  .nativeEnum(Tokenizer);
 
 /** @internal */
-export const ListTokenizer$outboundSchema: z.ZodNativeEnum<
-  typeof ListTokenizer
-> = ListTokenizer$inboundSchema;
+export const Tokenizer$outboundSchema: z.ZodNativeEnum<typeof Tokenizer> =
+  Tokenizer$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListTokenizer$ {
-  /** @deprecated use `ListTokenizer$inboundSchema` instead. */
-  export const inboundSchema = ListTokenizer$inboundSchema;
-  /** @deprecated use `ListTokenizer$outboundSchema` instead. */
-  export const outboundSchema = ListTokenizer$outboundSchema;
+export namespace Tokenizer$ {
+  /** @deprecated use `Tokenizer$inboundSchema` instead. */
+  export const inboundSchema = Tokenizer$inboundSchema;
+  /** @deprecated use `Tokenizer$outboundSchema` instead. */
+  export const outboundSchema = Tokenizer$outboundSchema;
 }
 
 /** @internal */
-export const ListInstructType$inboundSchema: z.ZodNativeEnum<
-  typeof ListInstructType
-> = z.nativeEnum(ListInstructType);
+export const InstructType$inboundSchema: z.ZodNativeEnum<typeof InstructType> =
+  z.nativeEnum(InstructType);
 
 /** @internal */
-export const ListInstructType$outboundSchema: z.ZodNativeEnum<
-  typeof ListInstructType
-> = ListInstructType$inboundSchema;
+export const InstructType$outboundSchema: z.ZodNativeEnum<typeof InstructType> =
+  InstructType$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListInstructType$ {
-  /** @deprecated use `ListInstructType$inboundSchema` instead. */
-  export const inboundSchema = ListInstructType$inboundSchema;
-  /** @deprecated use `ListInstructType$outboundSchema` instead. */
-  export const outboundSchema = ListInstructType$outboundSchema;
+export namespace InstructType$ {
+  /** @deprecated use `InstructType$inboundSchema` instead. */
+  export const inboundSchema = InstructType$inboundSchema;
+  /** @deprecated use `InstructType$outboundSchema` instead. */
+  export const outboundSchema = InstructType$outboundSchema;
 }
 
 /** @internal */
-export const ListInputModality$inboundSchema: z.ZodNativeEnum<
-  typeof ListInputModality
-> = z.nativeEnum(ListInputModality);
+export const InputModality$inboundSchema: z.ZodNativeEnum<
+  typeof InputModality
+> = z.nativeEnum(InputModality);
 
 /** @internal */
-export const ListInputModality$outboundSchema: z.ZodNativeEnum<
-  typeof ListInputModality
-> = ListInputModality$inboundSchema;
+export const InputModality$outboundSchema: z.ZodNativeEnum<
+  typeof InputModality
+> = InputModality$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListInputModality$ {
-  /** @deprecated use `ListInputModality$inboundSchema` instead. */
-  export const inboundSchema = ListInputModality$inboundSchema;
-  /** @deprecated use `ListInputModality$outboundSchema` instead. */
-  export const outboundSchema = ListInputModality$outboundSchema;
+export namespace InputModality$ {
+  /** @deprecated use `InputModality$inboundSchema` instead. */
+  export const inboundSchema = InputModality$inboundSchema;
+  /** @deprecated use `InputModality$outboundSchema` instead. */
+  export const outboundSchema = InputModality$outboundSchema;
 }
 
 /** @internal */
-export const ListOutputModality$inboundSchema: z.ZodNativeEnum<
-  typeof ListOutputModality
-> = z.nativeEnum(ListOutputModality);
+export const OutputModality$inboundSchema: z.ZodNativeEnum<
+  typeof OutputModality
+> = z.nativeEnum(OutputModality);
 
 /** @internal */
-export const ListOutputModality$outboundSchema: z.ZodNativeEnum<
-  typeof ListOutputModality
-> = ListOutputModality$inboundSchema;
+export const OutputModality$outboundSchema: z.ZodNativeEnum<
+  typeof OutputModality
+> = OutputModality$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListOutputModality$ {
-  /** @deprecated use `ListOutputModality$inboundSchema` instead. */
-  export const inboundSchema = ListOutputModality$inboundSchema;
-  /** @deprecated use `ListOutputModality$outboundSchema` instead. */
-  export const outboundSchema = ListOutputModality$outboundSchema;
+export namespace OutputModality$ {
+  /** @deprecated use `OutputModality$inboundSchema` instead. */
+  export const inboundSchema = OutputModality$inboundSchema;
+  /** @deprecated use `OutputModality$outboundSchema` instead. */
+  export const outboundSchema = OutputModality$outboundSchema;
 }
 
 /** @internal */
-export const ListArchitecture$inboundSchema: z.ZodType<
-  ListArchitecture,
+export const Architecture$inboundSchema: z.ZodType<
+  Architecture,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  tokenizer: z.nullable(ListTokenizer$inboundSchema),
-  instruct_type: z.nullable(ListInstructType$inboundSchema),
+  tokenizer: z.nullable(Tokenizer$inboundSchema),
+  instruct_type: z.nullable(InstructType$inboundSchema),
   modality: z.nullable(z.string()),
-  input_modalities: z.array(ListInputModality$inboundSchema),
-  output_modalities: z.array(ListOutputModality$inboundSchema),
+  input_modalities: z.array(InputModality$inboundSchema),
+  output_modalities: z.array(OutputModality$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "instruct_type": "instructType",
@@ -500,7 +304,7 @@ export const ListArchitecture$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ListArchitecture$Outbound = {
+export type Architecture$Outbound = {
   tokenizer: string | null;
   instruct_type: string | null;
   modality: string | null;
@@ -509,16 +313,16 @@ export type ListArchitecture$Outbound = {
 };
 
 /** @internal */
-export const ListArchitecture$outboundSchema: z.ZodType<
-  ListArchitecture$Outbound,
+export const Architecture$outboundSchema: z.ZodType<
+  Architecture$Outbound,
   z.ZodTypeDef,
-  ListArchitecture
+  Architecture
 > = z.object({
-  tokenizer: z.nullable(ListTokenizer$outboundSchema),
-  instructType: z.nullable(ListInstructType$outboundSchema),
+  tokenizer: z.nullable(Tokenizer$outboundSchema),
+  instructType: z.nullable(InstructType$outboundSchema),
   modality: z.nullable(z.string()),
-  inputModalities: z.array(ListInputModality$outboundSchema),
-  outputModalities: z.array(ListOutputModality$outboundSchema),
+  inputModalities: z.array(InputModality$outboundSchema),
+  outputModalities: z.array(OutputModality$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     instructType: "instruct_type",
@@ -531,827 +335,26 @@ export const ListArchitecture$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ListArchitecture$ {
-  /** @deprecated use `ListArchitecture$inboundSchema` instead. */
-  export const inboundSchema = ListArchitecture$inboundSchema;
-  /** @deprecated use `ListArchitecture$outboundSchema` instead. */
-  export const outboundSchema = ListArchitecture$outboundSchema;
-  /** @deprecated use `ListArchitecture$Outbound` instead. */
-  export type Outbound = ListArchitecture$Outbound;
+export namespace Architecture$ {
+  /** @deprecated use `Architecture$inboundSchema` instead. */
+  export const inboundSchema = Architecture$inboundSchema;
+  /** @deprecated use `Architecture$outboundSchema` instead. */
+  export const outboundSchema = Architecture$outboundSchema;
+  /** @deprecated use `Architecture$Outbound` instead. */
+  export type Outbound = Architecture$Outbound;
 }
 
-export function listArchitectureToJSON(
-  listArchitecture: ListArchitecture,
-): string {
-  return JSON.stringify(
-    ListArchitecture$outboundSchema.parse(listArchitecture),
-  );
+export function architectureToJSON(architecture: Architecture): string {
+  return JSON.stringify(Architecture$outboundSchema.parse(architecture));
 }
 
-export function listArchitectureFromJSON(
+export function architectureFromJSON(
   jsonString: string,
-): SafeParseResult<ListArchitecture, SDKValidationError> {
+): SafeParseResult<Architecture, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ListArchitecture$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListArchitecture' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListPrompt$inboundSchema: z.ZodType<
-  ListPrompt,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListPrompt$Outbound = number | string | any;
-
-/** @internal */
-export const ListPrompt$outboundSchema: z.ZodType<
-  ListPrompt$Outbound,
-  z.ZodTypeDef,
-  ListPrompt
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListPrompt$ {
-  /** @deprecated use `ListPrompt$inboundSchema` instead. */
-  export const inboundSchema = ListPrompt$inboundSchema;
-  /** @deprecated use `ListPrompt$outboundSchema` instead. */
-  export const outboundSchema = ListPrompt$outboundSchema;
-  /** @deprecated use `ListPrompt$Outbound` instead. */
-  export type Outbound = ListPrompt$Outbound;
-}
-
-export function listPromptToJSON(listPrompt: ListPrompt): string {
-  return JSON.stringify(ListPrompt$outboundSchema.parse(listPrompt));
-}
-
-export function listPromptFromJSON(
-  jsonString: string,
-): SafeParseResult<ListPrompt, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListPrompt$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListPrompt' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListCompletion$inboundSchema: z.ZodType<
-  ListCompletion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListCompletion$Outbound = number | string | any;
-
-/** @internal */
-export const ListCompletion$outboundSchema: z.ZodType<
-  ListCompletion$Outbound,
-  z.ZodTypeDef,
-  ListCompletion
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListCompletion$ {
-  /** @deprecated use `ListCompletion$inboundSchema` instead. */
-  export const inboundSchema = ListCompletion$inboundSchema;
-  /** @deprecated use `ListCompletion$outboundSchema` instead. */
-  export const outboundSchema = ListCompletion$outboundSchema;
-  /** @deprecated use `ListCompletion$Outbound` instead. */
-  export type Outbound = ListCompletion$Outbound;
-}
-
-export function listCompletionToJSON(listCompletion: ListCompletion): string {
-  return JSON.stringify(ListCompletion$outboundSchema.parse(listCompletion));
-}
-
-export function listCompletionFromJSON(
-  jsonString: string,
-): SafeParseResult<ListCompletion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListCompletion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListCompletion' from JSON`,
-  );
-}
-
-/** @internal */
-export const EndpointsListRequest$inboundSchema: z.ZodType<
-  EndpointsListRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type EndpointsListRequest$Outbound = number | string | any;
-
-/** @internal */
-export const EndpointsListRequest$outboundSchema: z.ZodType<
-  EndpointsListRequest$Outbound,
-  z.ZodTypeDef,
-  EndpointsListRequest
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EndpointsListRequest$ {
-  /** @deprecated use `EndpointsListRequest$inboundSchema` instead. */
-  export const inboundSchema = EndpointsListRequest$inboundSchema;
-  /** @deprecated use `EndpointsListRequest$outboundSchema` instead. */
-  export const outboundSchema = EndpointsListRequest$outboundSchema;
-  /** @deprecated use `EndpointsListRequest$Outbound` instead. */
-  export type Outbound = EndpointsListRequest$Outbound;
-}
-
-export function endpointsListRequestToJSON(
-  endpointsListRequest: EndpointsListRequest,
-): string {
-  return JSON.stringify(
-    EndpointsListRequest$outboundSchema.parse(endpointsListRequest),
-  );
-}
-
-export function endpointsListRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<EndpointsListRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => EndpointsListRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'EndpointsListRequest' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListImage$inboundSchema: z.ZodType<
-  ListImage,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListImage$Outbound = number | string | any;
-
-/** @internal */
-export const ListImage$outboundSchema: z.ZodType<
-  ListImage$Outbound,
-  z.ZodTypeDef,
-  ListImage
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListImage$ {
-  /** @deprecated use `ListImage$inboundSchema` instead. */
-  export const inboundSchema = ListImage$inboundSchema;
-  /** @deprecated use `ListImage$outboundSchema` instead. */
-  export const outboundSchema = ListImage$outboundSchema;
-  /** @deprecated use `ListImage$Outbound` instead. */
-  export type Outbound = ListImage$Outbound;
-}
-
-export function listImageToJSON(listImage: ListImage): string {
-  return JSON.stringify(ListImage$outboundSchema.parse(listImage));
-}
-
-export function listImageFromJSON(
-  jsonString: string,
-): SafeParseResult<ListImage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListImage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListImage' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListImageOutput$inboundSchema: z.ZodType<
-  ListImageOutput,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListImageOutput$Outbound = number | string | any;
-
-/** @internal */
-export const ListImageOutput$outboundSchema: z.ZodType<
-  ListImageOutput$Outbound,
-  z.ZodTypeDef,
-  ListImageOutput
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListImageOutput$ {
-  /** @deprecated use `ListImageOutput$inboundSchema` instead. */
-  export const inboundSchema = ListImageOutput$inboundSchema;
-  /** @deprecated use `ListImageOutput$outboundSchema` instead. */
-  export const outboundSchema = ListImageOutput$outboundSchema;
-  /** @deprecated use `ListImageOutput$Outbound` instead. */
-  export type Outbound = ListImageOutput$Outbound;
-}
-
-export function listImageOutputToJSON(
-  listImageOutput: ListImageOutput,
-): string {
-  return JSON.stringify(ListImageOutput$outboundSchema.parse(listImageOutput));
-}
-
-export function listImageOutputFromJSON(
-  jsonString: string,
-): SafeParseResult<ListImageOutput, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListImageOutput$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListImageOutput' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListAudio$inboundSchema: z.ZodType<
-  ListAudio,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListAudio$Outbound = number | string | any;
-
-/** @internal */
-export const ListAudio$outboundSchema: z.ZodType<
-  ListAudio$Outbound,
-  z.ZodTypeDef,
-  ListAudio
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListAudio$ {
-  /** @deprecated use `ListAudio$inboundSchema` instead. */
-  export const inboundSchema = ListAudio$inboundSchema;
-  /** @deprecated use `ListAudio$outboundSchema` instead. */
-  export const outboundSchema = ListAudio$outboundSchema;
-  /** @deprecated use `ListAudio$Outbound` instead. */
-  export type Outbound = ListAudio$Outbound;
-}
-
-export function listAudioToJSON(listAudio: ListAudio): string {
-  return JSON.stringify(ListAudio$outboundSchema.parse(listAudio));
-}
-
-export function listAudioFromJSON(
-  jsonString: string,
-): SafeParseResult<ListAudio, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListAudio$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListAudio' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListInputAudioCache$inboundSchema: z.ZodType<
-  ListInputAudioCache,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListInputAudioCache$Outbound = number | string | any;
-
-/** @internal */
-export const ListInputAudioCache$outboundSchema: z.ZodType<
-  ListInputAudioCache$Outbound,
-  z.ZodTypeDef,
-  ListInputAudioCache
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListInputAudioCache$ {
-  /** @deprecated use `ListInputAudioCache$inboundSchema` instead. */
-  export const inboundSchema = ListInputAudioCache$inboundSchema;
-  /** @deprecated use `ListInputAudioCache$outboundSchema` instead. */
-  export const outboundSchema = ListInputAudioCache$outboundSchema;
-  /** @deprecated use `ListInputAudioCache$Outbound` instead. */
-  export type Outbound = ListInputAudioCache$Outbound;
-}
-
-export function listInputAudioCacheToJSON(
-  listInputAudioCache: ListInputAudioCache,
-): string {
-  return JSON.stringify(
-    ListInputAudioCache$outboundSchema.parse(listInputAudioCache),
-  );
-}
-
-export function listInputAudioCacheFromJSON(
-  jsonString: string,
-): SafeParseResult<ListInputAudioCache, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListInputAudioCache$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListInputAudioCache' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListWebSearch$inboundSchema: z.ZodType<
-  ListWebSearch,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListWebSearch$Outbound = number | string | any;
-
-/** @internal */
-export const ListWebSearch$outboundSchema: z.ZodType<
-  ListWebSearch$Outbound,
-  z.ZodTypeDef,
-  ListWebSearch
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListWebSearch$ {
-  /** @deprecated use `ListWebSearch$inboundSchema` instead. */
-  export const inboundSchema = ListWebSearch$inboundSchema;
-  /** @deprecated use `ListWebSearch$outboundSchema` instead. */
-  export const outboundSchema = ListWebSearch$outboundSchema;
-  /** @deprecated use `ListWebSearch$Outbound` instead. */
-  export type Outbound = ListWebSearch$Outbound;
-}
-
-export function listWebSearchToJSON(listWebSearch: ListWebSearch): string {
-  return JSON.stringify(ListWebSearch$outboundSchema.parse(listWebSearch));
-}
-
-export function listWebSearchFromJSON(
-  jsonString: string,
-): SafeParseResult<ListWebSearch, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListWebSearch$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListWebSearch' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListInternalReasoning$inboundSchema: z.ZodType<
-  ListInternalReasoning,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListInternalReasoning$Outbound = number | string | any;
-
-/** @internal */
-export const ListInternalReasoning$outboundSchema: z.ZodType<
-  ListInternalReasoning$Outbound,
-  z.ZodTypeDef,
-  ListInternalReasoning
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListInternalReasoning$ {
-  /** @deprecated use `ListInternalReasoning$inboundSchema` instead. */
-  export const inboundSchema = ListInternalReasoning$inboundSchema;
-  /** @deprecated use `ListInternalReasoning$outboundSchema` instead. */
-  export const outboundSchema = ListInternalReasoning$outboundSchema;
-  /** @deprecated use `ListInternalReasoning$Outbound` instead. */
-  export type Outbound = ListInternalReasoning$Outbound;
-}
-
-export function listInternalReasoningToJSON(
-  listInternalReasoning: ListInternalReasoning,
-): string {
-  return JSON.stringify(
-    ListInternalReasoning$outboundSchema.parse(listInternalReasoning),
-  );
-}
-
-export function listInternalReasoningFromJSON(
-  jsonString: string,
-): SafeParseResult<ListInternalReasoning, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListInternalReasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListInternalReasoning' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListInputCacheRead$inboundSchema: z.ZodType<
-  ListInputCacheRead,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListInputCacheRead$Outbound = number | string | any;
-
-/** @internal */
-export const ListInputCacheRead$outboundSchema: z.ZodType<
-  ListInputCacheRead$Outbound,
-  z.ZodTypeDef,
-  ListInputCacheRead
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListInputCacheRead$ {
-  /** @deprecated use `ListInputCacheRead$inboundSchema` instead. */
-  export const inboundSchema = ListInputCacheRead$inboundSchema;
-  /** @deprecated use `ListInputCacheRead$outboundSchema` instead. */
-  export const outboundSchema = ListInputCacheRead$outboundSchema;
-  /** @deprecated use `ListInputCacheRead$Outbound` instead. */
-  export type Outbound = ListInputCacheRead$Outbound;
-}
-
-export function listInputCacheReadToJSON(
-  listInputCacheRead: ListInputCacheRead,
-): string {
-  return JSON.stringify(
-    ListInputCacheRead$outboundSchema.parse(listInputCacheRead),
-  );
-}
-
-export function listInputCacheReadFromJSON(
-  jsonString: string,
-): SafeParseResult<ListInputCacheRead, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListInputCacheRead$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListInputCacheRead' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListInputCacheWrite$inboundSchema: z.ZodType<
-  ListInputCacheWrite,
-  z.ZodTypeDef,
-  unknown
-> = z.union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type ListInputCacheWrite$Outbound = number | string | any;
-
-/** @internal */
-export const ListInputCacheWrite$outboundSchema: z.ZodType<
-  ListInputCacheWrite$Outbound,
-  z.ZodTypeDef,
-  ListInputCacheWrite
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListInputCacheWrite$ {
-  /** @deprecated use `ListInputCacheWrite$inboundSchema` instead. */
-  export const inboundSchema = ListInputCacheWrite$inboundSchema;
-  /** @deprecated use `ListInputCacheWrite$outboundSchema` instead. */
-  export const outboundSchema = ListInputCacheWrite$outboundSchema;
-  /** @deprecated use `ListInputCacheWrite$Outbound` instead. */
-  export type Outbound = ListInputCacheWrite$Outbound;
-}
-
-export function listInputCacheWriteToJSON(
-  listInputCacheWrite: ListInputCacheWrite,
-): string {
-  return JSON.stringify(
-    ListInputCacheWrite$outboundSchema.parse(listInputCacheWrite),
-  );
-}
-
-export function listInputCacheWriteFromJSON(
-  jsonString: string,
-): SafeParseResult<ListInputCacheWrite, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListInputCacheWrite$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListInputCacheWrite' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListPricing$inboundSchema: z.ZodType<
-  ListPricing,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  prompt: z.union([z.number(), z.string(), z.any()]).optional(),
-  completion: z.union([z.number(), z.string(), z.any()]).optional(),
-  request: z.union([z.number(), z.string(), z.any()]).optional(),
-  image: z.union([z.number(), z.string(), z.any()]).optional(),
-  image_output: z.union([z.number(), z.string(), z.any()]).optional(),
-  audio: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_audio_cache: z.union([z.number(), z.string(), z.any()]).optional(),
-  web_search: z.union([z.number(), z.string(), z.any()]).optional(),
-  internal_reasoning: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_cache_read: z.union([z.number(), z.string(), z.any()]).optional(),
-  input_cache_write: z.union([z.number(), z.string(), z.any()]).optional(),
-  discount: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "image_output": "imageOutput",
-    "input_audio_cache": "inputAudioCache",
-    "web_search": "webSearch",
-    "internal_reasoning": "internalReasoning",
-    "input_cache_read": "inputCacheRead",
-    "input_cache_write": "inputCacheWrite",
-  });
-});
-
-/** @internal */
-export type ListPricing$Outbound = {
-  prompt?: number | string | any | undefined;
-  completion?: number | string | any | undefined;
-  request?: number | string | any | undefined;
-  image?: number | string | any | undefined;
-  image_output?: number | string | any | undefined;
-  audio?: number | string | any | undefined;
-  input_audio_cache?: number | string | any | undefined;
-  web_search?: number | string | any | undefined;
-  internal_reasoning?: number | string | any | undefined;
-  input_cache_read?: number | string | any | undefined;
-  input_cache_write?: number | string | any | undefined;
-  discount?: number | undefined;
-};
-
-/** @internal */
-export const ListPricing$outboundSchema: z.ZodType<
-  ListPricing$Outbound,
-  z.ZodTypeDef,
-  ListPricing
-> = z.object({
-  prompt: z.union([z.number(), z.string(), z.any()]).optional(),
-  completion: z.union([z.number(), z.string(), z.any()]).optional(),
-  request: z.union([z.number(), z.string(), z.any()]).optional(),
-  image: z.union([z.number(), z.string(), z.any()]).optional(),
-  imageOutput: z.union([z.number(), z.string(), z.any()]).optional(),
-  audio: z.union([z.number(), z.string(), z.any()]).optional(),
-  inputAudioCache: z.union([z.number(), z.string(), z.any()]).optional(),
-  webSearch: z.union([z.number(), z.string(), z.any()]).optional(),
-  internalReasoning: z.union([z.number(), z.string(), z.any()]).optional(),
-  inputCacheRead: z.union([z.number(), z.string(), z.any()]).optional(),
-  inputCacheWrite: z.union([z.number(), z.string(), z.any()]).optional(),
-  discount: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    imageOutput: "image_output",
-    inputAudioCache: "input_audio_cache",
-    webSearch: "web_search",
-    internalReasoning: "internal_reasoning",
-    inputCacheRead: "input_cache_read",
-    inputCacheWrite: "input_cache_write",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListPricing$ {
-  /** @deprecated use `ListPricing$inboundSchema` instead. */
-  export const inboundSchema = ListPricing$inboundSchema;
-  /** @deprecated use `ListPricing$outboundSchema` instead. */
-  export const outboundSchema = ListPricing$outboundSchema;
-  /** @deprecated use `ListPricing$Outbound` instead. */
-  export type Outbound = ListPricing$Outbound;
-}
-
-export function listPricingToJSON(listPricing: ListPricing): string {
-  return JSON.stringify(ListPricing$outboundSchema.parse(listPricing));
-}
-
-export function listPricingFromJSON(
-  jsonString: string,
-): SafeParseResult<ListPricing, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListPricing$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListPricing' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListProviderName$inboundSchema: z.ZodNativeEnum<
-  typeof ListProviderName
-> = z.nativeEnum(ListProviderName);
-
-/** @internal */
-export const ListProviderName$outboundSchema: z.ZodNativeEnum<
-  typeof ListProviderName
-> = ListProviderName$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListProviderName$ {
-  /** @deprecated use `ListProviderName$inboundSchema` instead. */
-  export const inboundSchema = ListProviderName$inboundSchema;
-  /** @deprecated use `ListProviderName$outboundSchema` instead. */
-  export const outboundSchema = ListProviderName$outboundSchema;
-}
-
-/** @internal */
-export const ListQuantization$inboundSchema: z.ZodNativeEnum<
-  typeof ListQuantization
-> = z.nativeEnum(ListQuantization);
-
-/** @internal */
-export const ListQuantization$outboundSchema: z.ZodNativeEnum<
-  typeof ListQuantization
-> = ListQuantization$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListQuantization$ {
-  /** @deprecated use `ListQuantization$inboundSchema` instead. */
-  export const inboundSchema = ListQuantization$inboundSchema;
-  /** @deprecated use `ListQuantization$outboundSchema` instead. */
-  export const outboundSchema = ListQuantization$outboundSchema;
-}
-
-/** @internal */
-export const ListSupportedParameter$inboundSchema: z.ZodNativeEnum<
-  typeof ListSupportedParameter
-> = z.nativeEnum(ListSupportedParameter);
-
-/** @internal */
-export const ListSupportedParameter$outboundSchema: z.ZodNativeEnum<
-  typeof ListSupportedParameter
-> = ListSupportedParameter$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListSupportedParameter$ {
-  /** @deprecated use `ListSupportedParameter$inboundSchema` instead. */
-  export const inboundSchema = ListSupportedParameter$inboundSchema;
-  /** @deprecated use `ListSupportedParameter$outboundSchema` instead. */
-  export const outboundSchema = ListSupportedParameter$outboundSchema;
-}
-
-/** @internal */
-export const ListStatus$inboundSchema: z.ZodNativeEnum<typeof ListStatus> = z
-  .nativeEnum(ListStatus);
-
-/** @internal */
-export const ListStatus$outboundSchema: z.ZodNativeEnum<typeof ListStatus> =
-  ListStatus$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListStatus$ {
-  /** @deprecated use `ListStatus$inboundSchema` instead. */
-  export const inboundSchema = ListStatus$inboundSchema;
-  /** @deprecated use `ListStatus$outboundSchema` instead. */
-  export const outboundSchema = ListStatus$outboundSchema;
-}
-
-/** @internal */
-export const Endpoint$inboundSchema: z.ZodType<
-  Endpoint,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  name: z.string(),
-  model_name: z.string(),
-  context_length: z.number(),
-  pricing: z.lazy(() => ListPricing$inboundSchema),
-  provider_name: ListProviderName$inboundSchema,
-  tag: z.string(),
-  quantization: z.nullable(ListQuantization$inboundSchema),
-  max_completion_tokens: z.nullable(z.number()),
-  max_prompt_tokens: z.nullable(z.number()),
-  supported_parameters: z.array(ListSupportedParameter$inboundSchema),
-  status: ListStatus$inboundSchema.optional(),
-  uptime_last_30m: z.nullable(z.number()),
-  supports_implicit_caching: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    "model_name": "modelName",
-    "context_length": "contextLength",
-    "provider_name": "providerName",
-    "max_completion_tokens": "maxCompletionTokens",
-    "max_prompt_tokens": "maxPromptTokens",
-    "supported_parameters": "supportedParameters",
-    "uptime_last_30m": "uptimeLast30m",
-    "supports_implicit_caching": "supportsImplicitCaching",
-  });
-});
-
-/** @internal */
-export type Endpoint$Outbound = {
-  name: string;
-  model_name: string;
-  context_length: number;
-  pricing: ListPricing$Outbound;
-  provider_name: string;
-  tag: string;
-  quantization: string | null;
-  max_completion_tokens: number | null;
-  max_prompt_tokens: number | null;
-  supported_parameters: Array<string>;
-  status?: number | undefined;
-  uptime_last_30m: number | null;
-  supports_implicit_caching: boolean;
-};
-
-/** @internal */
-export const Endpoint$outboundSchema: z.ZodType<
-  Endpoint$Outbound,
-  z.ZodTypeDef,
-  Endpoint
-> = z.object({
-  name: z.string(),
-  modelName: z.string(),
-  contextLength: z.number(),
-  pricing: z.lazy(() => ListPricing$outboundSchema),
-  providerName: ListProviderName$outboundSchema,
-  tag: z.string(),
-  quantization: z.nullable(ListQuantization$outboundSchema),
-  maxCompletionTokens: z.nullable(z.number()),
-  maxPromptTokens: z.nullable(z.number()),
-  supportedParameters: z.array(ListSupportedParameter$outboundSchema),
-  status: ListStatus$outboundSchema.optional(),
-  uptimeLast30m: z.nullable(z.number()),
-  supportsImplicitCaching: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    modelName: "model_name",
-    contextLength: "context_length",
-    providerName: "provider_name",
-    maxCompletionTokens: "max_completion_tokens",
-    maxPromptTokens: "max_prompt_tokens",
-    supportedParameters: "supported_parameters",
-    uptimeLast30m: "uptime_last_30m",
-    supportsImplicitCaching: "supports_implicit_caching",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Endpoint$ {
-  /** @deprecated use `Endpoint$inboundSchema` instead. */
-  export const inboundSchema = Endpoint$inboundSchema;
-  /** @deprecated use `Endpoint$outboundSchema` instead. */
-  export const outboundSchema = Endpoint$outboundSchema;
-  /** @deprecated use `Endpoint$Outbound` instead. */
-  export type Outbound = Endpoint$Outbound;
-}
-
-export function endpointToJSON(endpoint: Endpoint): string {
-  return JSON.stringify(Endpoint$outboundSchema.parse(endpoint));
-}
-
-export function endpointFromJSON(
-  jsonString: string,
-): SafeParseResult<Endpoint, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Endpoint$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Endpoint' from JSON`,
+    (x) => Architecture$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Architecture' from JSON`,
   );
 }
 
@@ -1365,8 +368,8 @@ export const ListData$inboundSchema: z.ZodType<
   name: z.string(),
   created: z.number(),
   description: z.string(),
-  architecture: z.lazy(() => ListArchitecture$inboundSchema),
-  endpoints: z.array(z.lazy(() => Endpoint$inboundSchema)),
+  architecture: z.lazy(() => Architecture$inboundSchema),
+  endpoints: z.array(models.EndpointsList$inboundSchema),
 });
 
 /** @internal */
@@ -1375,8 +378,8 @@ export type ListData$Outbound = {
   name: string;
   created: number;
   description: string;
-  architecture: ListArchitecture$Outbound;
-  endpoints: Array<Endpoint$Outbound>;
+  architecture: Architecture$Outbound;
+  endpoints: Array<models.EndpointsList$Outbound>;
 };
 
 /** @internal */
@@ -1389,8 +392,8 @@ export const ListData$outboundSchema: z.ZodType<
   name: z.string(),
   created: z.number(),
   description: z.string(),
-  architecture: z.lazy(() => ListArchitecture$outboundSchema),
-  endpoints: z.array(z.lazy(() => Endpoint$outboundSchema)),
+  architecture: z.lazy(() => Architecture$outboundSchema),
+  endpoints: z.array(models.EndpointsList$outboundSchema),
 });
 
 /**

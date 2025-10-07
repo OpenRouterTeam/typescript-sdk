@@ -28,7 +28,7 @@ export class Models extends ClientSDK {
    * List all models and their properties
    */
   async list(
-    request?: operations.ListModelsRequestRequest | undefined,
+    request?: operations.ListModelsRequest | undefined,
     options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
   ): Promise<operations.ListModelsResponse> {
     return unwrapAsync(modelsList(

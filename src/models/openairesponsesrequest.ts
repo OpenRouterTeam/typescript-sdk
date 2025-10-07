@@ -353,7 +353,7 @@ export type IgnoreEnum = ClosedEnum<typeof IgnoreEnum>;
 
 export type Ignore = IgnoreEnum | string;
 
-export const Quantization = {
+export const OpenAIResponsesRequestQuantization = {
   Int4: "int4",
   Int8: "int8",
   Fp4: "fp4",
@@ -364,7 +364,9 @@ export const Quantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type Quantization = ClosedEnum<typeof Quantization>;
+export type OpenAIResponsesRequestQuantization = ClosedEnum<
+  typeof OpenAIResponsesRequestQuantization
+>;
 
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
@@ -381,13 +383,13 @@ export type Sort = ClosedEnum<typeof Sort>;
 
 export type OpenAIResponsesRequestPrompt = number | string | any;
 
-export type Completion = number | string | any;
+export type OpenAIResponsesRequestCompletion = number | string | any;
 
-export type Image = number | string | any;
+export type OpenAIResponsesRequestImage = number | string | any;
 
-export type Audio = number | string | any;
+export type OpenAIResponsesRequestAudio = number | string | any;
 
-export type RequestT = number | string | any;
+export type OpenAIResponsesRequestRequest = number | string | any;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -445,7 +447,7 @@ export type Provider = {
   /**
    * A list of quantization levels to filter the provider by.
    */
-  quantizations?: Array<Quantization> | null | undefined;
+  quantizations?: Array<OpenAIResponsesRequestQuantization> | null | undefined;
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
@@ -827,22 +829,25 @@ export function ignoreFromJSON(
 }
 
 /** @internal */
-export const Quantization$inboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  z.nativeEnum(Quantization);
+export const OpenAIResponsesRequestQuantization$inboundSchema: z.ZodNativeEnum<
+  typeof OpenAIResponsesRequestQuantization
+> = z.nativeEnum(OpenAIResponsesRequestQuantization);
 
 /** @internal */
-export const Quantization$outboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  Quantization$inboundSchema;
+export const OpenAIResponsesRequestQuantization$outboundSchema: z.ZodNativeEnum<
+  typeof OpenAIResponsesRequestQuantization
+> = OpenAIResponsesRequestQuantization$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Quantization$ {
-  /** @deprecated use `Quantization$inboundSchema` instead. */
-  export const inboundSchema = Quantization$inboundSchema;
-  /** @deprecated use `Quantization$outboundSchema` instead. */
-  export const outboundSchema = Quantization$outboundSchema;
+export namespace OpenAIResponsesRequestQuantization$ {
+  /** @deprecated use `OpenAIResponsesRequestQuantization$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesRequestQuantization$inboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestQuantization$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenAIResponsesRequestQuantization$outboundSchema;
 }
 
 /** @internal */
@@ -916,172 +921,202 @@ export function openAIResponsesRequestPromptFromJSON(
 }
 
 /** @internal */
-export const Completion$inboundSchema: z.ZodType<
-  Completion,
+export const OpenAIResponsesRequestCompletion$inboundSchema: z.ZodType<
+  OpenAIResponsesRequestCompletion,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type Completion$Outbound = number | string | any;
+export type OpenAIResponsesRequestCompletion$Outbound = number | string | any;
 
 /** @internal */
-export const Completion$outboundSchema: z.ZodType<
-  Completion$Outbound,
+export const OpenAIResponsesRequestCompletion$outboundSchema: z.ZodType<
+  OpenAIResponsesRequestCompletion$Outbound,
   z.ZodTypeDef,
-  Completion
+  OpenAIResponsesRequestCompletion
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Completion$ {
-  /** @deprecated use `Completion$inboundSchema` instead. */
-  export const inboundSchema = Completion$inboundSchema;
-  /** @deprecated use `Completion$outboundSchema` instead. */
-  export const outboundSchema = Completion$outboundSchema;
-  /** @deprecated use `Completion$Outbound` instead. */
-  export type Outbound = Completion$Outbound;
+export namespace OpenAIResponsesRequestCompletion$ {
+  /** @deprecated use `OpenAIResponsesRequestCompletion$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesRequestCompletion$inboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestCompletion$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesRequestCompletion$outboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestCompletion$Outbound` instead. */
+  export type Outbound = OpenAIResponsesRequestCompletion$Outbound;
 }
 
-export function completionToJSON(completion: Completion): string {
-  return JSON.stringify(Completion$outboundSchema.parse(completion));
+export function openAIResponsesRequestCompletionToJSON(
+  openAIResponsesRequestCompletion: OpenAIResponsesRequestCompletion,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesRequestCompletion$outboundSchema.parse(
+      openAIResponsesRequestCompletion,
+    ),
+  );
 }
 
-export function completionFromJSON(
+export function openAIResponsesRequestCompletionFromJSON(
   jsonString: string,
-): SafeParseResult<Completion, SDKValidationError> {
+): SafeParseResult<OpenAIResponsesRequestCompletion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Completion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Completion' from JSON`,
+    (x) => OpenAIResponsesRequestCompletion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesRequestCompletion' from JSON`,
   );
 }
 
 /** @internal */
-export const Image$inboundSchema: z.ZodType<Image, z.ZodTypeDef, unknown> = z
-  .union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Image$Outbound = number | string | any;
-
-/** @internal */
-export const Image$outboundSchema: z.ZodType<
-  Image$Outbound,
-  z.ZodTypeDef,
-  Image
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Image$ {
-  /** @deprecated use `Image$inboundSchema` instead. */
-  export const inboundSchema = Image$inboundSchema;
-  /** @deprecated use `Image$outboundSchema` instead. */
-  export const outboundSchema = Image$outboundSchema;
-  /** @deprecated use `Image$Outbound` instead. */
-  export type Outbound = Image$Outbound;
-}
-
-export function imageToJSON(image: Image): string {
-  return JSON.stringify(Image$outboundSchema.parse(image));
-}
-
-export function imageFromJSON(
-  jsonString: string,
-): SafeParseResult<Image, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Image$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Image' from JSON`,
-  );
-}
-
-/** @internal */
-export const Audio$inboundSchema: z.ZodType<Audio, z.ZodTypeDef, unknown> = z
-  .union([z.number(), z.string(), z.any()]);
-
-/** @internal */
-export type Audio$Outbound = number | string | any;
-
-/** @internal */
-export const Audio$outboundSchema: z.ZodType<
-  Audio$Outbound,
-  z.ZodTypeDef,
-  Audio
-> = z.union([z.number(), z.string(), z.any()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Audio$ {
-  /** @deprecated use `Audio$inboundSchema` instead. */
-  export const inboundSchema = Audio$inboundSchema;
-  /** @deprecated use `Audio$outboundSchema` instead. */
-  export const outboundSchema = Audio$outboundSchema;
-  /** @deprecated use `Audio$Outbound` instead. */
-  export type Outbound = Audio$Outbound;
-}
-
-export function audioToJSON(audio: Audio): string {
-  return JSON.stringify(Audio$outboundSchema.parse(audio));
-}
-
-export function audioFromJSON(
-  jsonString: string,
-): SafeParseResult<Audio, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Audio$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Audio' from JSON`,
-  );
-}
-
-/** @internal */
-export const RequestT$inboundSchema: z.ZodType<
-  RequestT,
+export const OpenAIResponsesRequestImage$inboundSchema: z.ZodType<
+  OpenAIResponsesRequestImage,
   z.ZodTypeDef,
   unknown
 > = z.union([z.number(), z.string(), z.any()]);
 
 /** @internal */
-export type RequestT$Outbound = number | string | any;
+export type OpenAIResponsesRequestImage$Outbound = number | string | any;
 
 /** @internal */
-export const RequestT$outboundSchema: z.ZodType<
-  RequestT$Outbound,
+export const OpenAIResponsesRequestImage$outboundSchema: z.ZodType<
+  OpenAIResponsesRequestImage$Outbound,
   z.ZodTypeDef,
-  RequestT
+  OpenAIResponsesRequestImage
 > = z.union([z.number(), z.string(), z.any()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RequestT$ {
-  /** @deprecated use `RequestT$inboundSchema` instead. */
-  export const inboundSchema = RequestT$inboundSchema;
-  /** @deprecated use `RequestT$outboundSchema` instead. */
-  export const outboundSchema = RequestT$outboundSchema;
-  /** @deprecated use `RequestT$Outbound` instead. */
-  export type Outbound = RequestT$Outbound;
+export namespace OpenAIResponsesRequestImage$ {
+  /** @deprecated use `OpenAIResponsesRequestImage$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesRequestImage$inboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestImage$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesRequestImage$outboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestImage$Outbound` instead. */
+  export type Outbound = OpenAIResponsesRequestImage$Outbound;
 }
 
-export function requestToJSON(requestT: RequestT): string {
-  return JSON.stringify(RequestT$outboundSchema.parse(requestT));
+export function openAIResponsesRequestImageToJSON(
+  openAIResponsesRequestImage: OpenAIResponsesRequestImage,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesRequestImage$outboundSchema.parse(
+      openAIResponsesRequestImage,
+    ),
+  );
 }
 
-export function requestFromJSON(
+export function openAIResponsesRequestImageFromJSON(
   jsonString: string,
-): SafeParseResult<RequestT, SDKValidationError> {
+): SafeParseResult<OpenAIResponsesRequestImage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => RequestT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RequestT' from JSON`,
+    (x) => OpenAIResponsesRequestImage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesRequestImage' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenAIResponsesRequestAudio$inboundSchema: z.ZodType<
+  OpenAIResponsesRequestAudio,
+  z.ZodTypeDef,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+/** @internal */
+export type OpenAIResponsesRequestAudio$Outbound = number | string | any;
+
+/** @internal */
+export const OpenAIResponsesRequestAudio$outboundSchema: z.ZodType<
+  OpenAIResponsesRequestAudio$Outbound,
+  z.ZodTypeDef,
+  OpenAIResponsesRequestAudio
+> = z.union([z.number(), z.string(), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenAIResponsesRequestAudio$ {
+  /** @deprecated use `OpenAIResponsesRequestAudio$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesRequestAudio$inboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestAudio$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesRequestAudio$outboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestAudio$Outbound` instead. */
+  export type Outbound = OpenAIResponsesRequestAudio$Outbound;
+}
+
+export function openAIResponsesRequestAudioToJSON(
+  openAIResponsesRequestAudio: OpenAIResponsesRequestAudio,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesRequestAudio$outboundSchema.parse(
+      openAIResponsesRequestAudio,
+    ),
+  );
+}
+
+export function openAIResponsesRequestAudioFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenAIResponsesRequestAudio, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenAIResponsesRequestAudio$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesRequestAudio' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenAIResponsesRequestRequest$inboundSchema: z.ZodType<
+  OpenAIResponsesRequestRequest,
+  z.ZodTypeDef,
+  unknown
+> = z.union([z.number(), z.string(), z.any()]);
+
+/** @internal */
+export type OpenAIResponsesRequestRequest$Outbound = number | string | any;
+
+/** @internal */
+export const OpenAIResponsesRequestRequest$outboundSchema: z.ZodType<
+  OpenAIResponsesRequestRequest$Outbound,
+  z.ZodTypeDef,
+  OpenAIResponsesRequestRequest
+> = z.union([z.number(), z.string(), z.any()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenAIResponsesRequestRequest$ {
+  /** @deprecated use `OpenAIResponsesRequestRequest$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesRequestRequest$inboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestRequest$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesRequestRequest$outboundSchema;
+  /** @deprecated use `OpenAIResponsesRequestRequest$Outbound` instead. */
+  export type Outbound = OpenAIResponsesRequestRequest$Outbound;
+}
+
+export function openAIResponsesRequestRequestToJSON(
+  openAIResponsesRequestRequest: OpenAIResponsesRequestRequest,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesRequestRequest$outboundSchema.parse(
+      openAIResponsesRequestRequest,
+    ),
+  );
+}
+
+export function openAIResponsesRequestRequestFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenAIResponsesRequestRequest, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenAIResponsesRequestRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesRequestRequest' from JSON`,
   );
 }
 
@@ -1207,7 +1242,9 @@ export const Provider$inboundSchema: z.ZodType<
     .optional(),
   ignore: z.nullable(z.array(z.union([IgnoreEnum$inboundSchema, z.string()])))
     .optional(),
-  quantizations: z.nullable(z.array(Quantization$inboundSchema)).optional(),
+  quantizations: z.nullable(
+    z.array(OpenAIResponsesRequestQuantization$inboundSchema),
+  ).optional(),
   sort: z.nullable(Sort$inboundSchema).optional(),
   max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
   experimental: z.nullable(z.lazy(() => Experimental$inboundSchema)).optional(),
@@ -1251,7 +1288,9 @@ export const Provider$outboundSchema: z.ZodType<
     .optional(),
   ignore: z.nullable(z.array(z.union([IgnoreEnum$outboundSchema, z.string()])))
     .optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  quantizations: z.nullable(
+    z.array(OpenAIResponsesRequestQuantization$outboundSchema),
+  ).optional(),
   sort: z.nullable(Sort$outboundSchema).optional(),
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
   experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))

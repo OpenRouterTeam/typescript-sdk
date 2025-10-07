@@ -13,7 +13,7 @@ export class Endpoints extends ClientSDK {
    * List all endpoints for a model
    */
   async list(
-    request: operations.ListRequestRequest,
+    request: operations.ListRequest,
     options?: RequestOptions,
   ): Promise<operations.ListResponse> {
     return unwrapAsync(endpointsList(

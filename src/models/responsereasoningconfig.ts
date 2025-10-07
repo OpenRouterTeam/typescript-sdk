@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
@@ -29,6 +30,8 @@ export type ResponseReasoningConfigEffort = ClosedEnum<
 export type ResponseReasoningConfig = {
   effort?: ResponseReasoningConfigEffort | null | undefined;
   summary?: ResponseReasoningSummaryMode | null | undefined;
+  maxTokens?: number | null | undefined;
+  enabled?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -60,12 +63,20 @@ export const ResponseReasoningConfig$inboundSchema: z.ZodType<
 > = z.object({
   effort: z.nullable(ResponseReasoningConfigEffort$inboundSchema).optional(),
   summary: z.nullable(ResponseReasoningSummaryMode$inboundSchema).optional(),
+  max_tokens: z.nullable(z.number()).optional(),
+  enabled: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_tokens": "maxTokens",
+  });
 });
 
 /** @internal */
 export type ResponseReasoningConfig$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
+  max_tokens?: number | null | undefined;
+  enabled?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -76,6 +87,12 @@ export const ResponseReasoningConfig$outboundSchema: z.ZodType<
 > = z.object({
   effort: z.nullable(ResponseReasoningConfigEffort$outboundSchema).optional(),
   summary: z.nullable(ResponseReasoningSummaryMode$outboundSchema).optional(),
+  maxTokens: z.nullable(z.number()).optional(),
+  enabled: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
 });
 
 /**

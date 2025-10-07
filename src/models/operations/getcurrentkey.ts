@@ -3,66 +3,10 @@
  */
 
 import * as z from "zod";
-import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-
-/**
- * Legacy rate limit information about a key. Will always return -1.
- *
- * @deprecated class: This will be removed in a future release, please migrate away from it as soon as possible.
- */
-export type RateLimit = {
-  /**
-   * Number of requests allowed per interval
-   */
-  requests: number;
-  /**
-   * Rate limit interval
-   */
-  interval: string;
-  /**
-   * Note about the rate limit
-   */
-  note: string;
-};
-
-/**
- * Current API key information
- */
-export type GetCurrentKeyData = {
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Current usage of the API key in USD
-   */
-  usage: number;
-  /**
-   * Whether this is a free tier API key
-   */
-  isFreeTier: boolean;
-  /**
-   * Whether this is a provisioning key
-   */
-  isProvisioningKey: boolean;
-  /**
-   * Remaining spending limit in USD
-   */
-  limitRemaining: number | null;
-  /**
-   * Legacy rate limit information about a key. Will always return -1.
-   *
-   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
-   */
-  rateLimit: RateLimit;
-};
+import * as models from "../index.js";
 
 /**
  * API key details
@@ -71,150 +15,8 @@ export type GetCurrentKeyResponse = {
   /**
    * Current API key information
    */
-  data: GetCurrentKeyData;
+  data: models.KeyInfo;
 };
-
-/** @internal */
-export const RateLimit$inboundSchema: z.ZodType<
-  RateLimit,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  requests: z.number(),
-  interval: z.string(),
-  note: z.string(),
-});
-
-/** @internal */
-export type RateLimit$Outbound = {
-  requests: number;
-  interval: string;
-  note: string;
-};
-
-/** @internal */
-export const RateLimit$outboundSchema: z.ZodType<
-  RateLimit$Outbound,
-  z.ZodTypeDef,
-  RateLimit
-> = z.object({
-  requests: z.number(),
-  interval: z.string(),
-  note: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace RateLimit$ {
-  /** @deprecated use `RateLimit$inboundSchema` instead. */
-  export const inboundSchema = RateLimit$inboundSchema;
-  /** @deprecated use `RateLimit$outboundSchema` instead. */
-  export const outboundSchema = RateLimit$outboundSchema;
-  /** @deprecated use `RateLimit$Outbound` instead. */
-  export type Outbound = RateLimit$Outbound;
-}
-
-export function rateLimitToJSON(rateLimit: RateLimit): string {
-  return JSON.stringify(RateLimit$outboundSchema.parse(rateLimit));
-}
-
-export function rateLimitFromJSON(
-  jsonString: string,
-): SafeParseResult<RateLimit, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => RateLimit$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RateLimit' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetCurrentKeyData$inboundSchema: z.ZodType<
-  GetCurrentKeyData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  label: z.string(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  is_free_tier: z.boolean(),
-  is_provisioning_key: z.boolean(),
-  limit_remaining: z.nullable(z.number()),
-  rate_limit: z.lazy(() => RateLimit$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "is_free_tier": "isFreeTier",
-    "is_provisioning_key": "isProvisioningKey",
-    "limit_remaining": "limitRemaining",
-    "rate_limit": "rateLimit",
-  });
-});
-
-/** @internal */
-export type GetCurrentKeyData$Outbound = {
-  label: string;
-  limit: number | null;
-  usage: number;
-  is_free_tier: boolean;
-  is_provisioning_key: boolean;
-  limit_remaining: number | null;
-  rate_limit: RateLimit$Outbound;
-};
-
-/** @internal */
-export const GetCurrentKeyData$outboundSchema: z.ZodType<
-  GetCurrentKeyData$Outbound,
-  z.ZodTypeDef,
-  GetCurrentKeyData
-> = z.object({
-  label: z.string(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  isFreeTier: z.boolean(),
-  isProvisioningKey: z.boolean(),
-  limitRemaining: z.nullable(z.number()),
-  rateLimit: z.lazy(() => RateLimit$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    isFreeTier: "is_free_tier",
-    isProvisioningKey: "is_provisioning_key",
-    limitRemaining: "limit_remaining",
-    rateLimit: "rate_limit",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetCurrentKeyData$ {
-  /** @deprecated use `GetCurrentKeyData$inboundSchema` instead. */
-  export const inboundSchema = GetCurrentKeyData$inboundSchema;
-  /** @deprecated use `GetCurrentKeyData$outboundSchema` instead. */
-  export const outboundSchema = GetCurrentKeyData$outboundSchema;
-  /** @deprecated use `GetCurrentKeyData$Outbound` instead. */
-  export type Outbound = GetCurrentKeyData$Outbound;
-}
-
-export function getCurrentKeyDataToJSON(
-  getCurrentKeyData: GetCurrentKeyData,
-): string {
-  return JSON.stringify(
-    GetCurrentKeyData$outboundSchema.parse(getCurrentKeyData),
-  );
-}
-
-export function getCurrentKeyDataFromJSON(
-  jsonString: string,
-): SafeParseResult<GetCurrentKeyData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetCurrentKeyData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetCurrentKeyData' from JSON`,
-  );
-}
 
 /** @internal */
 export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
@@ -222,12 +24,12 @@ export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.lazy(() => GetCurrentKeyData$inboundSchema),
+  data: models.KeyInfo$inboundSchema,
 });
 
 /** @internal */
 export type GetCurrentKeyResponse$Outbound = {
-  data: GetCurrentKeyData$Outbound;
+  data: models.KeyInfo$Outbound;
 };
 
 /** @internal */
@@ -236,7 +38,7 @@ export const GetCurrentKeyResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   GetCurrentKeyResponse
 > = z.object({
-  data: z.lazy(() => GetCurrentKeyData$outboundSchema),
+  data: models.KeyInfo$outboundSchema,
 });
 
 /**
