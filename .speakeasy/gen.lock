@@ -1382,3 +1382,8 @@ examples:
         "500":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes Detected:
+  * `openrouter.chat.send()`:  `request` **Changed** **Breaking** :warning:
+  * `openrouter.completions.generate()`:  `request` **Changed** **Breaking** :warning:
+  * `openrouter.alpha.responses.send2()`: **Added**

@@ -2563,15 +2563,15 @@ components:
         - input_audio
     ChatMessageContentItem:
       oneOf:
-        - $ref: '#/components/schemas/ChatMessageContentItemText'
-        - $ref: '#/components/schemas/ChatMessageContentItemImage'
-        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+        - $ref: "#/components/schemas/ChatMessageContentItemText"
+        - $ref: "#/components/schemas/ChatMessageContentItemImage"
+        - $ref: "#/components/schemas/ChatMessageContentItemAudio"
       discriminator:
         propertyName: type
         mapping:
-          text: '#/components/schemas/ChatMessageContentItemText'
-          image_url: '#/components/schemas/ChatMessageContentItemImage'
-          input_audio: '#/components/schemas/ChatMessageContentItemAudio'
+          text: "#/components/schemas/ChatMessageContentItemText"
+          image_url: "#/components/schemas/ChatMessageContentItemImage"
+          input_audio: "#/components/schemas/ChatMessageContentItemAudio"
     ChatMessageToolCall:
       type: object
       properties:
@@ -2604,7 +2604,7 @@ components:
         bytes:
           type:
             - array
-            - 'null'
+            - "null"
           items:
             type: number
         top_logprobs:
@@ -2619,7 +2619,7 @@ components:
               bytes:
                 type:
                   - array
-                  - 'null'
+                  - "null"
                 items:
                   type: number
             required:
@@ -2637,15 +2637,15 @@ components:
         content:
           type:
             - array
-            - 'null'
+            - "null"
           items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            $ref: "#/components/schemas/ChatMessageTokenLogprob"
         refusal:
           type:
             - array
-            - 'null'
+            - "null"
           items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            $ref: "#/components/schemas/ChatMessageTokenLogprob"
       required:
         - content
         - refusal
@@ -2691,7 +2691,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItemText'
+                $ref: "#/components/schemas/ChatMessageContentItemText"
         name:
           type: string
       required:
@@ -2708,7 +2708,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+                $ref: "#/components/schemas/ChatMessageContentItem"
         name:
           type: string
       required:
@@ -2725,22 +2725,22 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
-            - type: 'null'
+                $ref: "#/components/schemas/ChatMessageContentItem"
+            - type: "null"
         name:
           type: string
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatMessageToolCall'
+            $ref: "#/components/schemas/ChatMessageToolCall"
         refusal:
           type:
             - string
-            - 'null'
+            - "null"
         reasoning:
           type:
             - string
-            - 'null'
+            - "null"
       required:
         - role
     ToolResponseMessage:
@@ -2754,7 +2754,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+                $ref: "#/components/schemas/ChatMessageContentItem"
         tool_call_id:
           type: string
       required:
@@ -2763,8 +2763,8 @@ components:
         - tool_call_id
     Message:
       oneOf:
-        - $ref: '#/components/schemas/SystemMessage'
-        - $ref: '#/components/schemas/UserMessage'
+        - $ref: "#/components/schemas/SystemMessage"
+        - $ref: "#/components/schemas/UserMessage"
         - type: object
           properties:
             role:
@@ -2775,7 +2775,7 @@ components:
                 - type: string
                 - type: array
                   items:
-                    $ref: '#/components/schemas/ChatMessageContentItemText'
+                    $ref: "#/components/schemas/ChatMessageContentItemText"
             name:
               type: string
           required:
@@ -2807,7 +2807,7 @@ components:
           const: auto
         - type: string
           const: required
-        - $ref: '#/components/schemas/NamedToolChoice'
+        - $ref: "#/components/schemas/NamedToolChoice"
     ChatStreamOptions:
       type: object
       properties:
@@ -2819,41 +2819,41 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/Message'
+            $ref: "#/components/schemas/Message"
           minItems: 1
         model:
           type: string
         frequency_penalty:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: -2
           maximum: 2
         logit_bias:
           type:
             - object
-            - 'null'
+            - "null"
           additionalProperties:
             type: number
         logprobs:
           type:
             - boolean
-            - 'null'
+            - "null"
         top_logprobs:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 20
         max_completion_tokens:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 1
         max_tokens:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 1
         metadata:
           type: object
@@ -2862,7 +2862,7 @@ components:
         presence_penalty:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: -2
           maximum: 2
         reasoning:
@@ -2871,7 +2871,7 @@ components:
             effort:
               type:
                 - string
-                - 'null'
+                - "null"
               enum:
                 - minimal
                 - low
@@ -2881,7 +2881,7 @@ components:
             generate_summary:
               type:
                 - string
-                - 'null'
+                - "null"
               enum:
                 - auto
                 - concise
@@ -2890,7 +2890,7 @@ components:
             summary:
               type:
                 - string
-                - 'null'
+                - "null"
               enum:
                 - auto
                 - concise
@@ -2931,7 +2931,7 @@ components:
                     strict:
                       type:
                         - boolean
-                        - 'null'
+                        - "null"
                   required:
                     - name
               required:
@@ -2957,7 +2957,7 @@ components:
         seed:
           type:
             - integer
-            - 'null'
+            - "null"
         stop:
           anyOf:
             - type: string
@@ -2965,33 +2965,33 @@ components:
               items:
                 type: string
               maxItems: 4
-            - type: 'null'
+            - type: "null"
         stream:
           type:
             - boolean
-            - 'null'
+            - "null"
           default: false
         stream_options:
           oneOf:
-            - $ref: '#/components/schemas/ChatStreamOptions'
-            - type: 'null'
+            - $ref: "#/components/schemas/ChatStreamOptions"
+            - type: "null"
         temperature:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 2
           default: 1
         tool_choice:
-          $ref: '#/components/schemas/ToolChoiceOption'
+          $ref: "#/components/schemas/ToolChoiceOption"
         tools:
           type: array
           items:
-            $ref: '#/components/schemas/Tool'
+            $ref: "#/components/schemas/Tool"
         top_p:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 1
           default: 1
@@ -3006,7 +3006,7 @@ components:
         finish_reason:
           type:
             - string
-            - 'null'
+            - "null"
           enum:
             - tool_calls
             - stop
@@ -3017,11 +3017,11 @@ components:
         index:
           type: number
         message:
-          $ref: '#/components/schemas/AssistantMessage'
+          $ref: "#/components/schemas/AssistantMessage"
         logprobs:
           oneOf:
-            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
-            - type: 'null'
+            - $ref: "#/components/schemas/ChatMessageTokenLogprobs"
+            - type: "null"
       required:
         - finish_reason
         - index
@@ -3034,7 +3034,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatResponseChoice'
+            $ref: "#/components/schemas/ChatResponseChoice"
         created:
           type: number
         model:
@@ -3045,9 +3045,9 @@ components:
         system_fingerprint:
           type:
             - string
-            - 'null'
+            - "null"
         usage:
-          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+          $ref: "#/components/schemas/ChatGenerationTokenUsage"
       required:
         - id
         - choices
@@ -3064,13 +3064,13 @@ components:
               anyOf:
                 - type: string
                 - type: number
-                - type: 'null'
+                - type: "null"
             message:
               type: string
             param:
               type:
                 - string
-                - 'null'
+                - "null"
             type:
               type: string
           required:
@@ -3109,28 +3109,28 @@ components:
         content:
           type:
             - string
-            - 'null'
+            - "null"
         reasoning:
           type:
             - string
-            - 'null'
+            - "null"
         refusal:
           type:
             - string
-            - 'null'
+            - "null"
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+            $ref: "#/components/schemas/ChatStreamingMessageToolCall"
     ChatStreamingChoice:
       type: object
       properties:
         delta:
-          $ref: '#/components/schemas/ChatStreamingMessageChunk'
+          $ref: "#/components/schemas/ChatStreamingMessageChunk"
         finish_reason:
           type:
             - string
-            - 'null'
+            - "null"
           enum:
             - tool_calls
             - stop
@@ -3142,8 +3142,8 @@ components:
           type: number
         logprobs:
           oneOf:
-            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
-            - type: 'null'
+            - $ref: "#/components/schemas/ChatMessageTokenLogprobs"
+            - type: "null"
       required:
         - delta
         - finish_reason
@@ -3159,7 +3159,7 @@ components:
             choices:
               type: array
               items:
-                $ref: '#/components/schemas/ChatStreamingChoice'
+                $ref: "#/components/schemas/ChatStreamingChoice"
             created:
               type: number
             model:
@@ -3170,7 +3170,7 @@ components:
             system_fingerprint:
               type:
                 - string
-                - 'null'
+                - "null"
             error:
               type: object
               properties:
@@ -3182,7 +3182,7 @@ components:
                 - message
                 - code
             usage:
-              $ref: '#/components/schemas/ChatGenerationTokenUsage'
+              $ref: "#/components/schemas/ChatGenerationTokenUsage"
           required:
             - id
             - choices
@@ -3194,7 +3194,7 @@ components:
     CompletionFinishReason:
       type:
         - string
-        - 'null'
+        - "null"
       enum:
         - stop
         - length
@@ -3214,7 +3214,7 @@ components:
         top_logprobs:
           type:
             - array
-            - 'null'
+            - "null"
           items:
             type: object
             additionalProperties:
@@ -3263,86 +3263,86 @@ components:
         best_of:
           type:
             - integer
-            - 'null'
+            - "null"
           minimum: 1
           maximum: 20
         echo:
           type:
             - boolean
-            - 'null'
+            - "null"
         frequency_penalty:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: -2
           maximum: 2
         logit_bias:
           type:
             - object
-            - 'null'
+            - "null"
           additionalProperties:
             type: number
         logprobs:
           type:
             - integer
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 5
         max_tokens:
           type:
             - integer
-            - 'null'
+            - "null"
           minimum: 1
-        'n':
+        "n":
           type:
             - integer
-            - 'null'
+            - "null"
           minimum: 1
           maximum: 128
         presence_penalty:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: -2
           maximum: 2
         seed:
           type:
             - integer
-            - 'null'
+            - "null"
         stop:
           anyOf:
             - type: string
             - type: array
               items:
                 type: string
-            - type: 'null'
+            - type: "null"
         stream:
           type:
             - boolean
-            - 'null'
+            - "null"
         stream_options:
           type:
             - object
-            - 'null'
+            - "null"
           properties:
             include_usage:
               type:
                 - boolean
-                - 'null'
+                - "null"
         suffix:
           type:
             - string
-            - 'null'
+            - "null"
         temperature:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 2
         top_p:
           type:
             - number
-            - 'null'
+            - "null"
           minimum: 0
           maximum: 1
         user:
@@ -3350,7 +3350,7 @@ components:
         metadata:
           type:
             - object
-            - 'null'
+            - "null"
           additionalProperties:
             type: string
         response_format:
@@ -3388,7 +3388,7 @@ components:
                     strict:
                       type:
                         - boolean
-                        - 'null'
+                        - "null"
                   required:
                     - name
               required:
@@ -3411,7 +3411,7 @@ components:
                   const: python
               required:
                 - type
-            - type: 'null'
+            - type: "null"
       required:
         - model
         - prompt
@@ -3424,10 +3424,10 @@ components:
           type: number
         logprobs:
           oneOf:
-            - $ref: '#/components/schemas/CompletionLogprobs'
-            - type: 'null'
+            - $ref: "#/components/schemas/CompletionLogprobs"
+            - type: "null"
         finish_reason:
-          $ref: '#/components/schemas/CompletionFinishReason'
+          $ref: "#/components/schemas/CompletionFinishReason"
       required:
         - text
         - index
@@ -3450,9 +3450,9 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/CompletionChoice'
+            $ref: "#/components/schemas/CompletionChoice"
         usage:
-          $ref: '#/components/schemas/CompletionUsage'
+          $ref: "#/components/schemas/CompletionUsage"
       required:
         - id
         - object
@@ -3524,12 +3524,12 @@ paths:
         - schema:
             type: string
             description: Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
-            example: '2025-08-24'
+            example: "2025-08-24"
           required: false
           name: date
           in: query
       responses:
-        '200':
+        "200":
           description: Returns user activity data grouped by endpoint
           content:
             application/json:
@@ -3539,7 +3539,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ActivityItem'
+                      $ref: "#/components/schemas/ActivityItem"
                     description: List of activity items
                     example:
                       - date: '2025-08-24'
@@ -3560,13 +3560,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /credits:
     get:
       operationId: getCredits
@@ -3575,7 +3575,7 @@ paths:
         - Credits
       description: Get total credits purchased and used for the authenticated user
       responses:
-        '200':
+        "200":
           description: Returns the total credits purchased and used
           content:
             application/json:
@@ -3599,7 +3599,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /credits/coinbase:
     post:
       security:
@@ -3629,7 +3629,7 @@ paths:
                 - chain_id
         required: true
       responses:
-        '200':
+        "200":
           description: Returns the calldata to fulfill the transaction
           content:
             application/json:
@@ -3715,13 +3715,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /embeddings:
     post:
       operationId: generate
@@ -4152,7 +4152,7 @@ paths:
                 - input
         required: true
       responses:
-        '200':
+        "200":
           description: Embedding response
           content:
             application/json:
@@ -4205,13 +4205,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /generation:
     get:
       operationId: getMetadata
@@ -4226,7 +4226,7 @@ paths:
           name: id
           in: query
       responses:
-        '200':
+        "200":
           description: Returns the request metadata for this generation
           content:
             application/json:
@@ -4262,7 +4262,7 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the generation was created
-                        example: '2024-07-15T23:33:19.433273+00:00'
+                        example: "2024-07-15T23:33:19.433273+00:00"
                       model:
                         type: string
                         description: Model used for the generation
@@ -4460,13 +4460,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /models/count:
     get:
       operationId: getCount
@@ -4474,7 +4474,7 @@ paths:
         - Models
       summary: Get total count of available models
       responses:
-        '200':
+        "200":
           description: Returns the total count of available models
           content:
             application/json:
@@ -4500,13 +4500,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /models:
     get:
       operationId: listModels
@@ -4536,7 +4536,7 @@ paths:
           name: use_rss_chat_links
           in: query
       responses:
-        '200':
+        "200":
           description: Returns a list of models or RSS feed
           content:
             application/json:
@@ -4862,13 +4862,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /models/user:
     get:
       operationId: listUserModels
@@ -4878,7 +4878,7 @@ paths:
       security:
         - bearer: []
       responses:
-        '200':
+        "200":
           description: Returns a list of models filtered by user provider preferences
           content:
             application/json:
@@ -5201,13 +5201,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /models/{author}/{slug}/endpoints:
     get:
       operationId: list
@@ -5226,7 +5226,7 @@ paths:
           name: slug
           in: path
       responses:
-        '200':
+        "200":
           description: Returns a list of endpoints
           content:
             application/json:
@@ -5625,13 +5625,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /endpoints/zdr:
     get:
       operationId: previewZDR
@@ -5639,7 +5639,7 @@ paths:
         - Endpoints
       summary: Preview the impact of ZDR on the available endpoints
       responses:
-        '200':
+        "200":
           description: Returns a list of endpoints
           content:
             application/json:
@@ -5889,13 +5889,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /parameters/{author}/{slug}:
     get:
       operationId: getParameters
@@ -5986,7 +5986,7 @@ paths:
           name: provider
           in: query
       responses:
-        '200':
+        "200":
           description: Returns the parameters for the specified model
           content:
             application/json:
@@ -6054,13 +6054,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /providers:
     get:
       operationId: listProviders
@@ -6069,7 +6069,7 @@ paths:
         - Providers
       description: List all available model providers
       responses:
-        '200':
+        "200":
           description: Returns a list of providers
           content:
             application/json:
@@ -6110,7 +6110,7 @@ paths:
                         - privacy_policy_url
                 required:
                   - data
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -6160,7 +6160,7 @@ paths:
           name: offset
           in: query
       responses:
-        '200':
+        "200":
           description: List of API keys
           content:
             application/json:
@@ -6200,12 +6200,12 @@ paths:
                         created_at:
                           type: string
                           description: ISO 8601 timestamp of when the API key was created
-                          example: '2025-08-24T10:30:00Z'
+                          example: "2025-08-24T10:30:00Z"
                         updated_at:
                           type: string
                           nullable: true
                           description: ISO 8601 timestamp of when the API key was last updated
-                          example: '2025-08-24T15:45:00Z'
+                          example: "2025-08-24T15:45:00Z"
                       required:
                         - hash
                         - name
@@ -6240,13 +6240,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: create
       tags:
@@ -6276,7 +6276,7 @@ paths:
                 - name
         required: true
       responses:
-        '201':
+        "201":
           description: API key created successfully
           content:
             application/json:
@@ -6314,12 +6314,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: '2025-08-24T10:30:00Z'
+                        example: "2025-08-24T10:30:00Z"
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: '2025-08-24T15:45:00Z'
+                        example: "2025-08-24T15:45:00Z"
                     required:
                       - hash
                       - name
@@ -6351,13 +6351,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /keys/{hash}:
     patch:
       operationId: update
@@ -6397,7 +6397,7 @@ paths:
                   example: true
         required: true
       responses:
-        '200':
+        "200":
           description: API key updated successfully
           content:
             application/json:
@@ -6435,12 +6435,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: '2025-08-24T10:30:00Z'
+                        example: "2025-08-24T10:30:00Z"
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: '2025-08-24T15:45:00Z'
+                        example: "2025-08-24T15:45:00Z"
                     required:
                       - hash
                       - name
@@ -6467,13 +6467,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: delete
       tags:
@@ -6488,7 +6488,7 @@ paths:
           name: hash
           in: path
       responses:
-        '200':
+        "200":
           description: API key deleted successfully
           content:
             application/json:
@@ -6506,13 +6506,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
     get:
       operationId: getApiKey
       x-speakeasy-name-override: get
@@ -6528,7 +6528,7 @@ paths:
           name: hash
           in: path
       responses:
-        '200':
+        "200":
           description: API key details
           content:
             application/json:
@@ -6566,12 +6566,12 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the API key was created
-                        example: '2025-08-24T10:30:00Z'
+                        example: "2025-08-24T10:30:00Z"
                       updated_at:
                         type: string
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
-                        example: '2025-08-24T15:45:00Z'
+                        example: "2025-08-24T15:45:00Z"
                     required:
                       - hash
                       - name
@@ -6598,13 +6598,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /key:
     get:
       operationId: getCurrentKey
@@ -6614,7 +6614,7 @@ paths:
       summary: Get current API key
       description: Get information on the API key associated with the current authentication session
       responses:
-        '200':
+        "200":
           description: API key details
           content:
             application/json:
@@ -6702,13 +6702,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /auth/keys:
     post:
       operationId: exchangeAuthorizationCode
@@ -6741,7 +6741,7 @@ paths:
                 - code
         required: true
       responses:
-        '200':
+        "200":
           description: Successfully exchanged code for an API key
           content:
             application/json:
@@ -6765,13 +6765,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Server error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /auth/keys/code:
     post:
       operationId: createAuthorizationCode
@@ -6811,7 +6811,7 @@ paths:
                 - callback_url
         required: true
       responses:
-        '200':
+        "200":
           description: Successfully created authorization code
           content:
             application/json:
@@ -6832,7 +6832,7 @@ paths:
                       created_at:
                         type: string
                         description: ISO 8601 timestamp of when the auth code was created
-                        example: '2025-08-24T10:30:00Z'
+                        example: "2025-08-24T10:30:00Z"
                     required:
                       - id
                       - app_id
@@ -6849,13 +6849,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         5XX:
           description: Error response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
   /chat/completions:
     post:
       summary: Create a chat completion
@@ -6871,12 +6871,13 @@ paths:
       requestBody:
         required: true
         description: Chat completion request parameters
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChatGenerationParams'
+              $ref: "#/components/schemas/ChatGenerationParams"
       responses:
-        '200':
+        "200":
           description: Successful chat completion response
           content:
             application/json:
@@ -6885,32 +6886,32 @@ paths:
                 description: Chat completion response
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/ChatStreamingResponseChunk'
-              x-speakeasy-sse-sentinel: '[DONE]'
-        '400':
+                $ref: "#/components/schemas/ChatStreamingResponseChunk"
+              x-speakeasy-sse-sentinel: "[DONE]"
+        "400":
           description: Bad request - invalid parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
-        '401':
+                $ref: "#/components/schemas/ChatError"
+        "401":
           description: Unauthorized - invalid API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
-        '429':
+                $ref: "#/components/schemas/ChatError"
+        "429":
           description: Too many requests - rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
-        '500':
+                $ref: "#/components/schemas/ChatError"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatError'
+                $ref: "#/components/schemas/ChatError"
   /completions:
     post:
       summary: Create a completion
@@ -6926,9 +6927,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompletionCreateParams'
+              $ref: "#/components/schemas/CompletionCreateParams"
       responses:
-        '200':
+        "200":
           description: Successful completion response
           content:
             application/json:
