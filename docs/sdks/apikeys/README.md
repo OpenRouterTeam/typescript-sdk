@@ -136,6 +136,7 @@ async function run() {
   const result = await openRouter.apiKeys.create({
     name: "My New API Key",
     limit: 50,
+    limitReset: "monthly",
     includeByokInLimit: true,
   });
 
@@ -163,6 +164,7 @@ async function run() {
   const res = await apiKeysCreate(openRouter, {
     name: "My New API Key",
     limit: 50,
+    limitReset: "monthly",
     includeByokInLimit: true,
   });
   if (res.ok) {
@@ -234,6 +236,7 @@ async function run() {
       name: "Updated API Key Name",
       disabled: false,
       limit: 75,
+      limitReset: "daily",
       includeByokInLimit: true,
     },
   });
@@ -265,6 +268,7 @@ async function run() {
       name: "Updated API Key Name",
       disabled: false,
       limit: 75,
+      limitReset: "daily",
       includeByokInLimit: true,
     },
   });

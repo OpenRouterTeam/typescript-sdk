@@ -31,6 +31,7 @@ export type ResponsesOutputItemReasoningType = ClosedEnum<
 export const ResponsesOutputItemReasoningFormat = {
   Unknown: "unknown",
   OpenaiResponsesV1: "openai-responses-v1",
+  XaiResponsesV1: "xai-responses-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
 } as const;
 export type ResponsesOutputItemReasoningFormat = ClosedEnum<

@@ -7,45 +7,11 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListApiKeysRequest = {
   includeDisabled?: string | undefined;
   offset?: string | undefined;
-};
-
-export type ListApiKeysData = {
-  /**
-   * Unique hash identifier for the API key
-   */
-  hash: string;
-  /**
-   * Name of the API key
-   */
-  name: string;
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Whether the API key is disabled
-   */
-  disabled: boolean;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Current usage of the API key in USD
-   */
-  usage: number;
-  /**
-   * ISO 8601 timestamp of when the API key was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the API key was last updated
-   */
-  updatedAt: string | null;
 };
 
 /**
@@ -55,7 +21,7 @@ export type ListApiKeysResponse = {
   /**
    * List of API keys
    */
-  data: Array<ListApiKeysData>;
+  data: Array<models.ListAPIKeysData>;
 };
 
 /** @internal */
@@ -124,100 +90,17 @@ export function listApiKeysRequestFromJSON(
 }
 
 /** @internal */
-export const ListApiKeysData$inboundSchema: z.ZodType<
-  ListApiKeysData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-/** @internal */
-export type ListApiKeysData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  usage: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const ListApiKeysData$outboundSchema: z.ZodType<
-  ListApiKeysData$Outbound,
-  z.ZodTypeDef,
-  ListApiKeysData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListApiKeysData$ {
-  /** @deprecated use `ListApiKeysData$inboundSchema` instead. */
-  export const inboundSchema = ListApiKeysData$inboundSchema;
-  /** @deprecated use `ListApiKeysData$outboundSchema` instead. */
-  export const outboundSchema = ListApiKeysData$outboundSchema;
-  /** @deprecated use `ListApiKeysData$Outbound` instead. */
-  export type Outbound = ListApiKeysData$Outbound;
-}
-
-export function listApiKeysDataToJSON(
-  listApiKeysData: ListApiKeysData,
-): string {
-  return JSON.stringify(ListApiKeysData$outboundSchema.parse(listApiKeysData));
-}
-
-export function listApiKeysDataFromJSON(
-  jsonString: string,
-): SafeParseResult<ListApiKeysData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListApiKeysData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListApiKeysData' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListApiKeysResponse$inboundSchema: z.ZodType<
   ListApiKeysResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.array(z.lazy(() => ListApiKeysData$inboundSchema)),
+  data: z.array(models.ListAPIKeysData$inboundSchema),
 });
 
 /** @internal */
 export type ListApiKeysResponse$Outbound = {
-  data: Array<ListApiKeysData$Outbound>;
+  data: Array<models.ListAPIKeysData$Outbound>;
 };
 
 /** @internal */
@@ -226,7 +109,7 @@ export const ListApiKeysResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ListApiKeysResponse
 > = z.object({
-  data: z.array(z.lazy(() => ListApiKeysData$outboundSchema)),
+  data: z.array(models.ListAPIKeysData$outboundSchema),
 });
 
 /**

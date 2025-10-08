@@ -22,8 +22,8 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
-import type { ResponsesNonStreamingResponse } from "../models/responsesnonstreamingresponse.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -39,7 +39,7 @@ export function betaResponsesSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ResponsesNonStreamingResponse,
+    models.ResponsesNonStreamingResponse,
     | errors.ErrorResponse
     | OpenRouterError
     | ResponseValidationError

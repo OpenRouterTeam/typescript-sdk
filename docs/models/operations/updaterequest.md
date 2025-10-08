@@ -11,6 +11,7 @@ let value: UpdateRequest = {
     name: "Updated API Key Name",
     disabled: false,
     limit: 75,
+    limitReset: "daily",
     includeByokInLimit: true,
   },
 };

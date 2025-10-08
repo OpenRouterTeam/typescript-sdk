@@ -5,8 +5,8 @@
 import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
 import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
-import type { ResponsesNonStreamingResponse } from "../models/responsesnonstreamingresponse.js";
 import { unwrapAsync } from "../types/fp.js";
 
 export class Responses extends ClientSDK {
@@ -21,7 +21,7 @@ export class Responses extends ClientSDK {
       stream?: false | undefined;
     },
     options?: RequestOptions,
-  ): Promise<ResponsesNonStreamingResponse>;
+  ): Promise<models.ResponsesNonStreamingResponse>;
   async send(
     request: operations.SendResponsesRequestRequest & { stream: true },
     options?: RequestOptions,

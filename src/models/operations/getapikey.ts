@@ -3,51 +3,13 @@
  */
 
 import * as z from "zod";
-import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetApiKeyRequest = {
   hash: string;
-};
-
-/**
- * The API key information
- */
-export type GetApiKeyData = {
-  /**
-   * Unique hash identifier for the API key
-   */
-  hash: string;
-  /**
-   * Name of the API key
-   */
-  name: string;
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Whether the API key is disabled
-   */
-  disabled: boolean;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Current usage of the API key in USD
-   */
-  usage: number;
-  /**
-   * ISO 8601 timestamp of when the API key was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the API key was last updated
-   */
-  updatedAt: string | null;
 };
 
 /**
@@ -57,7 +19,7 @@ export type GetApiKeyResponse = {
   /**
    * The API key information
    */
-  data: GetApiKeyData;
+  data: models.GetAPIKeyData;
 };
 
 /** @internal */
@@ -115,98 +77,17 @@ export function getApiKeyRequestFromJSON(
 }
 
 /** @internal */
-export const GetApiKeyData$inboundSchema: z.ZodType<
-  GetApiKeyData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-/** @internal */
-export type GetApiKeyData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  usage: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const GetApiKeyData$outboundSchema: z.ZodType<
-  GetApiKeyData$Outbound,
-  z.ZodTypeDef,
-  GetApiKeyData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetApiKeyData$ {
-  /** @deprecated use `GetApiKeyData$inboundSchema` instead. */
-  export const inboundSchema = GetApiKeyData$inboundSchema;
-  /** @deprecated use `GetApiKeyData$outboundSchema` instead. */
-  export const outboundSchema = GetApiKeyData$outboundSchema;
-  /** @deprecated use `GetApiKeyData$Outbound` instead. */
-  export type Outbound = GetApiKeyData$Outbound;
-}
-
-export function getApiKeyDataToJSON(getApiKeyData: GetApiKeyData): string {
-  return JSON.stringify(GetApiKeyData$outboundSchema.parse(getApiKeyData));
-}
-
-export function getApiKeyDataFromJSON(
-  jsonString: string,
-): SafeParseResult<GetApiKeyData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetApiKeyData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetApiKeyData' from JSON`,
-  );
-}
-
-/** @internal */
 export const GetApiKeyResponse$inboundSchema: z.ZodType<
   GetApiKeyResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.lazy(() => GetApiKeyData$inboundSchema),
+  data: models.GetAPIKeyData$inboundSchema,
 });
 
 /** @internal */
 export type GetApiKeyResponse$Outbound = {
-  data: GetApiKeyData$Outbound;
+  data: models.GetAPIKeyData$Outbound;
 };
 
 /** @internal */
@@ -215,7 +96,7 @@ export const GetApiKeyResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   GetApiKeyResponse
 > = z.object({
-  data: z.lazy(() => GetApiKeyData$outboundSchema),
+  data: models.GetAPIKeyData$outboundSchema,
 });
 
 /**

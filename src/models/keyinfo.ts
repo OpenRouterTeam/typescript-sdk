@@ -41,35 +41,35 @@ export type KeyInfo = {
    */
   limit: number | null;
   /**
-   * Current OpenRouter credit usage for the API key in USD
+   * Total OpenRouter credit usage (in USD) for the API key
    */
   usage: number;
   /**
-   * Current OpenRouter daily usage for the API key in USD
+   * OpenRouter credit usage (in USD) for the current UTC day
    */
   usageDaily: number;
   /**
-   * Current OpenRouter weekly usage for the API key in USD
+   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
   usageWeekly: number;
   /**
-   * Current OpenRouter monthly usage for the API key in USD
+   * OpenRouter credit usage (in USD) for the current UTC month
    */
   usageMonthly: number;
   /**
-   * Current external BYOK credit usage for the API key in USD
+   * Total external BYOK usage (in USD) for the API key
    */
   byokUsage: number;
   /**
-   * Current external BYOK daily usage for the API key in USD
+   * External BYOK usage (in USD) for the current UTC day
    */
   byokUsageDaily: number;
   /**
-   * Current external BYOK weekly usage for the API key in USD
+   * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
    */
   byokUsageWeekly: number;
   /**
-   * Current external BYOK monthly usage for the API key in USD
+   * External BYOK usage (in USD) for current UTC month
    */
   byokUsageMonthly: number;
   /**

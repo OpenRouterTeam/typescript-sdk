@@ -5,8 +5,23 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
+
+/**
+ * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+ */
+export const UpdateLimitReset = {
+  Daily: "daily",
+  Weekly: "weekly",
+  Monthly: "monthly",
+} as const;
+/**
+ * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+ */
+export type UpdateLimitReset = ClosedEnum<typeof UpdateLimitReset>;
 
 export type UpdateRequestBody = {
   /**
@@ -22,6 +37,10 @@ export type UpdateRequestBody = {
    */
   limit?: number | null | undefined;
   /**
+   * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+   */
+  limitReset?: UpdateLimitReset | null | undefined;
+  /**
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
@@ -33,52 +52,35 @@ export type UpdateRequest = {
 };
 
 /**
- * The updated API key information
- */
-export type UpdateData = {
-  /**
-   * Unique hash identifier for the API key
-   */
-  hash: string;
-  /**
-   * Name of the API key
-   */
-  name: string;
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Whether the API key is disabled
-   */
-  disabled: boolean;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Current usage of the API key in USD
-   */
-  usage: number;
-  /**
-   * ISO 8601 timestamp of when the API key was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the API key was last updated
-   */
-  updatedAt: string | null;
-};
-
-/**
  * API key updated successfully
  */
 export type UpdateResponse = {
   /**
    * The updated API key information
    */
-  data: UpdateData;
+  data: models.UpdateAPIKeyData;
 };
+
+/** @internal */
+export const UpdateLimitReset$inboundSchema: z.ZodNativeEnum<
+  typeof UpdateLimitReset
+> = z.nativeEnum(UpdateLimitReset);
+
+/** @internal */
+export const UpdateLimitReset$outboundSchema: z.ZodNativeEnum<
+  typeof UpdateLimitReset
+> = UpdateLimitReset$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace UpdateLimitReset$ {
+  /** @deprecated use `UpdateLimitReset$inboundSchema` instead. */
+  export const inboundSchema = UpdateLimitReset$inboundSchema;
+  /** @deprecated use `UpdateLimitReset$outboundSchema` instead. */
+  export const outboundSchema = UpdateLimitReset$outboundSchema;
+}
 
 /** @internal */
 export const UpdateRequestBody$inboundSchema: z.ZodType<
@@ -89,9 +91,11 @@ export const UpdateRequestBody$inboundSchema: z.ZodType<
   name: z.string().optional(),
   disabled: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
+  limit_reset: z.nullable(UpdateLimitReset$inboundSchema).optional(),
   include_byok_in_limit: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "limit_reset": "limitReset",
     "include_byok_in_limit": "includeByokInLimit",
   });
 });
@@ -101,6 +105,7 @@ export type UpdateRequestBody$Outbound = {
   name?: string | undefined;
   disabled?: boolean | undefined;
   limit?: number | null | undefined;
+  limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
 };
 
@@ -113,9 +118,11 @@ export const UpdateRequestBody$outboundSchema: z.ZodType<
   name: z.string().optional(),
   disabled: z.boolean().optional(),
   limit: z.nullable(z.number()).optional(),
+  limitReset: z.nullable(UpdateLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
   });
 });
@@ -213,98 +220,17 @@ export function updateRequestFromJSON(
 }
 
 /** @internal */
-export const UpdateData$inboundSchema: z.ZodType<
-  UpdateData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-/** @internal */
-export type UpdateData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  usage: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const UpdateData$outboundSchema: z.ZodType<
-  UpdateData$Outbound,
-  z.ZodTypeDef,
-  UpdateData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace UpdateData$ {
-  /** @deprecated use `UpdateData$inboundSchema` instead. */
-  export const inboundSchema = UpdateData$inboundSchema;
-  /** @deprecated use `UpdateData$outboundSchema` instead. */
-  export const outboundSchema = UpdateData$outboundSchema;
-  /** @deprecated use `UpdateData$Outbound` instead. */
-  export type Outbound = UpdateData$Outbound;
-}
-
-export function updateDataToJSON(updateData: UpdateData): string {
-  return JSON.stringify(UpdateData$outboundSchema.parse(updateData));
-}
-
-export function updateDataFromJSON(
-  jsonString: string,
-): SafeParseResult<UpdateData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => UpdateData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UpdateData' from JSON`,
-  );
-}
-
-/** @internal */
 export const UpdateResponse$inboundSchema: z.ZodType<
   UpdateResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.lazy(() => UpdateData$inboundSchema),
+  data: models.UpdateAPIKeyData$inboundSchema,
 });
 
 /** @internal */
 export type UpdateResponse$Outbound = {
-  data: UpdateData$Outbound;
+  data: models.UpdateAPIKeyData$Outbound;
 };
 
 /** @internal */
@@ -313,7 +239,7 @@ export const UpdateResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   UpdateResponse
 > = z.object({
-  data: z.lazy(() => UpdateData$outboundSchema),
+  data: models.UpdateAPIKeyData$outboundSchema,
 });
 
 /**

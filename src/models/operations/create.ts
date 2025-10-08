@@ -5,8 +5,23 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
+
+/**
+ * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+ */
+export const CreateLimitReset = {
+  Daily: "daily",
+  Weekly: "weekly",
+  Monthly: "monthly",
+} as const;
+/**
+ * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+ */
+export type CreateLimitReset = ClosedEnum<typeof CreateLimitReset>;
 
 export type CreateRequest = {
   /**
@@ -18,47 +33,13 @@ export type CreateRequest = {
    */
   limit?: number | null | undefined;
   /**
+   * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+   */
+  limitReset?: CreateLimitReset | null | undefined;
+  /**
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
-};
-
-/**
- * The created API key information
- */
-export type CreateData = {
-  /**
-   * Unique hash identifier for the API key
-   */
-  hash: string;
-  /**
-   * Name of the API key
-   */
-  name: string;
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Whether the API key is disabled
-   */
-  disabled: boolean;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Current usage of the API key in USD
-   */
-  usage: number;
-  /**
-   * ISO 8601 timestamp of when the API key was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the API key was last updated
-   */
-  updatedAt: string | null;
 };
 
 /**
@@ -68,12 +49,33 @@ export type CreateResponse = {
   /**
    * The created API key information
    */
-  data: CreateData;
+  data: models.CreateAPIKeyData;
   /**
    * The actual API key string (only shown once)
    */
   key: string;
 };
+
+/** @internal */
+export const CreateLimitReset$inboundSchema: z.ZodNativeEnum<
+  typeof CreateLimitReset
+> = z.nativeEnum(CreateLimitReset);
+
+/** @internal */
+export const CreateLimitReset$outboundSchema: z.ZodNativeEnum<
+  typeof CreateLimitReset
+> = CreateLimitReset$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace CreateLimitReset$ {
+  /** @deprecated use `CreateLimitReset$inboundSchema` instead. */
+  export const inboundSchema = CreateLimitReset$inboundSchema;
+  /** @deprecated use `CreateLimitReset$outboundSchema` instead. */
+  export const outboundSchema = CreateLimitReset$outboundSchema;
+}
 
 /** @internal */
 export const CreateRequest$inboundSchema: z.ZodType<
@@ -83,9 +85,11 @@ export const CreateRequest$inboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   limit: z.nullable(z.number()).optional(),
+  limit_reset: z.nullable(CreateLimitReset$inboundSchema).optional(),
   include_byok_in_limit: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "limit_reset": "limitReset",
     "include_byok_in_limit": "includeByokInLimit",
   });
 });
@@ -94,6 +98,7 @@ export const CreateRequest$inboundSchema: z.ZodType<
 export type CreateRequest$Outbound = {
   name: string;
   limit?: number | null | undefined;
+  limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
 };
 
@@ -105,9 +110,11 @@ export const CreateRequest$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   limit: z.nullable(z.number()).optional(),
+  limitReset: z.nullable(CreateLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
   });
 });
@@ -140,99 +147,18 @@ export function createRequestFromJSON(
 }
 
 /** @internal */
-export const CreateData$inboundSchema: z.ZodType<
-  CreateData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-/** @internal */
-export type CreateData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  usage: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const CreateData$outboundSchema: z.ZodType<
-  CreateData$Outbound,
-  z.ZodTypeDef,
-  CreateData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateData$ {
-  /** @deprecated use `CreateData$inboundSchema` instead. */
-  export const inboundSchema = CreateData$inboundSchema;
-  /** @deprecated use `CreateData$outboundSchema` instead. */
-  export const outboundSchema = CreateData$outboundSchema;
-  /** @deprecated use `CreateData$Outbound` instead. */
-  export type Outbound = CreateData$Outbound;
-}
-
-export function createDataToJSON(createData: CreateData): string {
-  return JSON.stringify(CreateData$outboundSchema.parse(createData));
-}
-
-export function createDataFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateData' from JSON`,
-  );
-}
-
-/** @internal */
 export const CreateResponse$inboundSchema: z.ZodType<
   CreateResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  data: z.lazy(() => CreateData$inboundSchema),
+  data: models.CreateAPIKeyData$inboundSchema,
   key: z.string(),
 });
 
 /** @internal */
 export type CreateResponse$Outbound = {
-  data: CreateData$Outbound;
+  data: models.CreateAPIKeyData$Outbound;
   key: string;
 };
 
@@ -242,7 +168,7 @@ export const CreateResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   CreateResponse
 > = z.object({
-  data: z.lazy(() => CreateData$outboundSchema),
+  data: models.CreateAPIKeyData$outboundSchema,
   key: z.string(),
 });
 

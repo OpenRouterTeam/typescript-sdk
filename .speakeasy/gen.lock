@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 20599e0dbcba30101bfaed784fd404d4
+  docChecksum: 7b223cbfdfb0125942774277070f7573
   docVersion: 1.0.0
-  speakeasyVersion: 1.636.0
-  generationVersion: 2.723.2
-  releaseVersion: 0.0.0-beta.37
-  configChecksum: c8056264700451197917c463edf9c06c
+  speakeasyVersion: 1.636.2
+  generationVersion: 2.723.8
+  releaseVersion: 0.0.0-beta.38
+  configChecksum: f01dbb000ab200e49a61999f65cc4fd7
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -35,7 +35,7 @@ features:
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    serverEvents: 0.1.10
+    serverEvents: 0.1.11
     serverEventsSentinels: 0.1.0
     serverIDs: 2.81.2
     unions: 2.86.0
@@ -106,6 +106,7 @@ generatedFiles:
   - docs/models/completiontokensdetails.md
   - docs/models/completionusage.md
   - docs/models/costdetails.md
+  - docs/models/createapikeydata.md
   - docs/models/data.md
   - docs/models/defaultparameters.md
   - docs/models/detail.md
@@ -131,6 +132,7 @@ generatedFiles:
   - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
   - docs/models/generatesummary.md
+  - docs/models/getapikeydata.md
   - docs/models/imageurl.md
   - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
@@ -166,6 +168,7 @@ generatedFiles:
   - docs/models/itemwebsearchcall1.md
   - docs/models/itemwebsearchcall2.md
   - docs/models/keyinfo.md
+  - docs/models/listapikeysdata.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
@@ -198,7 +201,7 @@ generatedFiles:
   - docs/models/operations/createauthorizationcodedata.md
   - docs/models/operations/createauthorizationcoderequest.md
   - docs/models/operations/createauthorizationcoderesponse.md
-  - docs/models/operations/createdata.md
+  - docs/models/operations/createlimitreset.md
   - docs/models/operations/createrequest.md
   - docs/models/operations/createresponse.md
   - docs/models/operations/deleterequest.md
@@ -232,7 +235,6 @@ generatedFiles:
   - docs/models/operations/generaterequestunion.md
   - docs/models/operations/generateresponse.md
   - docs/models/operations/generatesort.md
-  - docs/models/operations/getapikeydata.md
   - docs/models/operations/getapikeyrequest.md
   - docs/models/operations/getapikeyresponse.md
   - docs/models/operations/getcountdata.md
@@ -263,7 +265,6 @@ generatedFiles:
   - docs/models/operations/inputmodality.md
   - docs/models/operations/instructtype.md
   - docs/models/operations/internalreasoning.md
-  - docs/models/operations/listapikeysdata.md
   - docs/models/operations/listapikeysrequest.md
   - docs/models/operations/listapikeysresponse.md
   - docs/models/operations/listdata.md
@@ -323,7 +324,7 @@ generatedFiles:
   - docs/models/operations/tokenizer.md
   - docs/models/operations/transferintent.md
   - docs/models/operations/truncation.md
-  - docs/models/operations/updatedata.md
+  - docs/models/operations/updatelimitreset.md
   - docs/models/operations/updaterequest.md
   - docs/models/operations/updaterequestbody.md
   - docs/models/operations/updateresponse.md
@@ -519,6 +520,7 @@ generatedFiles:
   - docs/models/typeresponsewebsearchcallcompleted.md
   - docs/models/typeresponsewebsearchcallinprogress.md
   - docs/models/typeresponsewebsearchcallsearching.md
+  - docs/models/updateapikeydata.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/sdks/analytics/README.md
@@ -611,6 +613,7 @@ generatedFiles:
   - src/models/completionlogprobs.ts
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
+  - src/models/createapikeydata.ts
   - src/models/endpointslist.ts
   - src/models/errorresponse.ts
   - src/models/errors/chaterror.ts
@@ -622,8 +625,10 @@ generatedFiles:
   - src/models/errors/openroutererror.ts
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
+  - src/models/getapikeydata.ts
   - src/models/index.ts
   - src/models/keyinfo.ts
+  - src/models/listapikeysdata.ts
   - src/models/message.ts
   - src/models/modelslist.ts
   - src/models/namedtoolchoice.ts
@@ -705,6 +710,7 @@ generatedFiles:
   - src/models/toolchoicetypeunion.ts
   - src/models/toolchoiceunion.ts
   - src/models/toolresponsemessage.ts
+  - src/models/updateapikeydata.ts
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
@@ -1231,7 +1237,7 @@ examples:
           offset: "0"
       responses:
         "200":
-          application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}, {"hash": "sk-or-v1-xyz789ghi012", "name": "My Development Key", "label": "Development API Key", "disabled": false, "limit": 50, "usage": 10, "created_at": "2025-08-20T08:00:00Z", "updated_at": null}]}
+          application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 5, "usage_weekly": 15, "usage_monthly": 25.5, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}, {"hash": "sk-or-v1-xyz789ghi012", "name": "My Development Key", "label": "Development API Key", "disabled": false, "limit": 50, "limit_remaining": 40, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 10, "usage_daily": 2, "usage_weekly": 7, "usage_monthly": 10, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-20T08:00:00Z", "updated_at": null}]}
         4XX:
           application/json: {"error": {"code": 305, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1239,10 +1245,10 @@ examples:
   create:
     speakeasy-default-create:
       requestBody:
-        application/json: {"name": "My New API Key", "limit": 50, "include_byok_in_limit": true}
+        application/json: {"name": "My New API Key", "limit": 50, "limit_reset": "monthly", "include_byok_in_limit": true}
       responses:
         "201":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My New API Key", "label": "Production API Key", "disabled": false, "limit": 50, "usage": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "sk-or-v1-abc123def456ghi789jkl012"}
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My New API Key", "label": "Production API Key", "disabled": false, "limit": 50, "limit_remaining": 50, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 0, "usage_daily": 0, "usage_weekly": 0, "usage_monthly": 0, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "sk-or-v1-abc123def456ghi789jkl012"}
         4XX:
           application/json: {"error": {"code": 206, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1253,10 +1259,10 @@ examples:
         path:
           hash: "sk-or-v1-abc123def456"
       requestBody:
-        application/json: {"name": "Updated API Key Name", "disabled": false, "limit": 75, "include_byok_in_limit": true}
+        application/json: {"name": "Updated API Key Name", "disabled": false, "limit": 75, "limit_reset": "daily", "include_byok_in_limit": true}
       responses:
         "200":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "Updated API Key Name", "label": "Production API Key", "disabled": false, "limit": 75, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "Updated API Key Name", "label": "Production API Key", "disabled": false, "limit": 75, "limit_remaining": 49.5, "limit_reset": "daily", "include_byok_in_limit": true, "usage": 25.5, "usage_daily": 5, "usage_weekly": 15, "usage_monthly": 25.5, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
         4XX:
           application/json: {"error": {"code": 424, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1280,7 +1286,7 @@ examples:
           hash: "sk-or-v1-abc123def456"
       responses:
         "200":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "usage": 25.5, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
+          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 5, "usage_weekly": 15, "usage_monthly": 25.5, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
         4XX:
           application/json: {"error": {"code": 428, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
