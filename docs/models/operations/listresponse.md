@@ -57,7 +57,7 @@ let value: ListResponse = {
           "frequency_penalty",
           "presence_penalty",
         ],
-        status: -5,
+        status: 0,
         uptimeLast30m: 0.99,
         supportsImplicitCaching: true,
       },

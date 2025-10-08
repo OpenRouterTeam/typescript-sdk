@@ -12,7 +12,7 @@ export * from "./apiKeysGet.js";
 export * from "./apiKeysGetCurrentKeyMetadata.js";
 export * from "./apiKeysList.js";
 export * from "./apiKeysUpdate.js";
-export * from "./betaResponsesSendRequest.js";
+export * from "./betaResponsesSend.js";
 export * from "./chatSend.js";
 export * from "./completionsGenerate.js";
 export * from "./creditsAddCoinbaseCharge.js";

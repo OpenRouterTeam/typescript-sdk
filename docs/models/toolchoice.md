@@ -1,42 +1,19 @@
 # ToolChoice
 
-Tool choice configuration
+Tool choice by type
 
-
-## Supported Types
-
-### `models.ToolChoiceAuto`
+## Example Usage
 
 ```typescript
-const value: models.ToolChoiceAuto = "auto";
-```
+import { ToolChoice } from "@openrouter/sdk/models";
 
-### `models.ToolChoiceNone`
-
-```typescript
-const value: models.ToolChoiceNone = "none";
-```
-
-### `models.ToolChoiceRequired`
-
-```typescript
-const value: models.ToolChoiceRequired = "required";
-```
-
-### `models.ToolChoiceTypes`
-
-```typescript
-const value: models.ToolChoiceTypes = {
+let value: ToolChoice = {
   type: "file_search",
 };
 ```
 
-### `models.ToolChoiceFunction`
+## Fields
 
-```typescript
-const value: models.ToolChoiceFunction = {
-  type: "function",
-  name: "<value>",
-};
-```
-
+| Field                        | Type                         | Required                     | Description                  | Example                      |
+| ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
+| `type`                       | *models.ToolChoiceTypeUnion* | :heavy_check_mark:           | N/A                          | file_search                  |

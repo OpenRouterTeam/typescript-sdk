@@ -89,7 +89,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -190,7 +190,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -316,7 +316,7 @@ run();
 
 #### [beta.responses](docs/sdks/responses/README.md)
 
-* [sendRequest](docs/sdks/responses/README.md#sendrequest) - Submit a response request
+* [send](docs/sdks/responses/README.md#send) - Submit a response request
 
 ### [chat](docs/sdks/chat/README.md)
 
@@ -388,7 +388,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
 - [`apiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
 - [`apiKeysUpdate`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`betaResponsesSendRequest`](docs/sdks/responses/README.md#sendrequest) - Submit a response request
+- [`betaResponsesSend`](docs/sdks/responses/README.md#send) - Submit a response request
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
 - [`creditsAddCoinbaseCharge`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
@@ -437,7 +437,7 @@ To learn about this feature and how to get started, check
 - [`useApiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
 - [`useApiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
 - [`useApiKeysUpdateMutation`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`useBetaResponsesSendRequestMutation`](docs/sdks/responses/README.md#sendrequest) - Submit a response request
+- [`useBetaResponsesSendMutation`](docs/sdks/responses/README.md#send) - Submit a response request
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
 - [`useCreditsAddCoinbaseChargeMutation`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
@@ -474,7 +474,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -572,7 +572,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -682,7 +682,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -788,7 +788,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.beta.responses.sendRequest({
+    const result = await openRouter.beta.responses.send({
       input: "Hello, how can I help you today?",
       instructions: "<value>",
       metadata: {

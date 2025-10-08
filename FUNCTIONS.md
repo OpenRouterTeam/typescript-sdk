@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { betaResponsesSendRequest } from "@openrouter/sdk/funcs/betaResponsesSendRequest.js";
+import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,7 +29,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await betaResponsesSendRequest(openRouter, {
+  const res = await betaResponsesSend(openRouter, {
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -104,7 +104,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("betaResponsesSendRequest failed:", res.error);
+    console.log("betaResponsesSend failed:", res.error);
   }
 }
 

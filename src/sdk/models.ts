@@ -3,13 +3,11 @@
  */
 
 import { modelsGetCount } from "../funcs/modelsGetCount.js";
-import { ListAcceptEnum, modelsList } from "../funcs/modelsList.js";
+import { modelsList } from "../funcs/modelsList.js";
 import { modelsListUserModels } from "../funcs/modelsListUserModels.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-
-export { ListAcceptEnum } from "../funcs/modelsList.js";
 
 export class Models extends ClientSDK {
   /**
@@ -29,7 +27,7 @@ export class Models extends ClientSDK {
    */
   async list(
     request?: operations.ListModelsRequest | undefined,
-    options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
+    options?: RequestOptions,
   ): Promise<operations.ListModelsResponse> {
     return unwrapAsync(modelsList(
       this,

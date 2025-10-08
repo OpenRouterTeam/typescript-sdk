@@ -8,7 +8,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { chatSend, SendAcceptEnum } from "../funcs/chatSend.js";
+import { chatSend } from "../funcs/chatSend.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -17,11 +17,9 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export { SendAcceptEnum } from "../funcs/chatSend.js";
-
 export type ChatSendMutationVariables = {
   request: models.ChatGenerationParams;
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum };
+  options?: RequestOptions;
 };
 
 export type ChatSendMutationData = operations.SendChatCompletionRequestResponse;

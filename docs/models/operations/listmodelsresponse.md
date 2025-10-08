@@ -33,7 +33,7 @@ const value: operations.ListModelsResponseBody = {
       contextLength: 8192,
       architecture: {
         tokenizer: "GPT",
-        instructType: "deepseek-v3.1",
+        instructType: "chatml",
         modality: "text",
         inputModalities: [
           "text",

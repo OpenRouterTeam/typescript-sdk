@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { ListAcceptEnum, modelsList } from "../funcs/modelsList.js";
+import { modelsList } from "../funcs/modelsList.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -24,8 +24,6 @@ import {
   SuspenseQueryHookOptions,
   TupleToPrefixes,
 } from "./_types.js";
-
-export { ListAcceptEnum } from "../funcs/modelsList.js";
 
 export type ModelsListQueryData = operations.ListModelsResponse;
 
@@ -126,7 +124,7 @@ export function invalidateAllModelsList(
 export function buildModelsListQuery(
   client$: OpenRouterCore,
   request?: operations.ListModelsRequest | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
+  options?: RequestOptions,
 ): {
   queryKey: QueryKey;
   queryFn: (context: QueryFunctionContext) => Promise<ModelsListQueryData>;

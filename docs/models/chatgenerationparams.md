@@ -54,11 +54,11 @@ let value: ChatGenerationParams = {
       type: "function",
       function: {
         name: "<value>",
-        description: "mealy ew industrialize colossal",
+        description:
+          "rural toward while since midst finally tributary consequently underneath till",
         parameters: {
           "key": "<value>",
           "key1": "<value>",
-          "key2": "<value>",
         },
         strict: false,
       },

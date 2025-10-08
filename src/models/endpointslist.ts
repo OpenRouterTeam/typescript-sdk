@@ -132,7 +132,7 @@ export const ProviderName = {
 } as const;
 export type ProviderName = ClosedEnum<typeof ProviderName>;
 
-export const EndpointsListQuantization = {
+export const Quantization = {
   Int4: "int4",
   Int8: "int8",
   Fp4: "fp4",
@@ -143,9 +143,7 @@ export const EndpointsListQuantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type EndpointsListQuantization = ClosedEnum<
-  typeof EndpointsListQuantization
->;
+export type Quantization = ClosedEnum<typeof Quantization>;
 
 export const EndpointsListSupportedParameter = {
   Temperature: "temperature",
@@ -193,7 +191,7 @@ export type EndpointsList = {
   pricing: EndpointsListPricing;
   providerName: ProviderName;
   tag: string;
-  quantization: EndpointsListQuantization | null;
+  quantization: Quantization | null;
   maxCompletionTokens: number | null;
   maxPromptTokens: number | null;
   supportedParameters: Array<EndpointsListSupportedParameter>;
@@ -863,24 +861,22 @@ export namespace ProviderName$ {
 }
 
 /** @internal */
-export const EndpointsListQuantization$inboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListQuantization
-> = z.nativeEnum(EndpointsListQuantization);
+export const Quantization$inboundSchema: z.ZodNativeEnum<typeof Quantization> =
+  z.nativeEnum(Quantization);
 
 /** @internal */
-export const EndpointsListQuantization$outboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListQuantization
-> = EndpointsListQuantization$inboundSchema;
+export const Quantization$outboundSchema: z.ZodNativeEnum<typeof Quantization> =
+  Quantization$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace EndpointsListQuantization$ {
-  /** @deprecated use `EndpointsListQuantization$inboundSchema` instead. */
-  export const inboundSchema = EndpointsListQuantization$inboundSchema;
-  /** @deprecated use `EndpointsListQuantization$outboundSchema` instead. */
-  export const outboundSchema = EndpointsListQuantization$outboundSchema;
+export namespace Quantization$ {
+  /** @deprecated use `Quantization$inboundSchema` instead. */
+  export const inboundSchema = Quantization$inboundSchema;
+  /** @deprecated use `Quantization$outboundSchema` instead. */
+  export const outboundSchema = Quantization$outboundSchema;
 }
 
 /** @internal */
@@ -937,7 +933,7 @@ export const EndpointsList$inboundSchema: z.ZodType<
   pricing: z.lazy(() => EndpointsListPricing$inboundSchema),
   provider_name: ProviderName$inboundSchema,
   tag: z.string(),
-  quantization: z.nullable(EndpointsListQuantization$inboundSchema),
+  quantization: z.nullable(Quantization$inboundSchema),
   max_completion_tokens: z.nullable(z.number()),
   max_prompt_tokens: z.nullable(z.number()),
   supported_parameters: z.array(EndpointsListSupportedParameter$inboundSchema),
@@ -986,7 +982,7 @@ export const EndpointsList$outboundSchema: z.ZodType<
   pricing: z.lazy(() => EndpointsListPricing$outboundSchema),
   providerName: ProviderName$outboundSchema,
   tag: z.string(),
-  quantization: z.nullable(EndpointsListQuantization$outboundSchema),
+  quantization: z.nullable(Quantization$outboundSchema),
   maxCompletionTokens: z.nullable(z.number()),
   maxPromptTokens: z.nullable(z.number()),
   supportedParameters: z.array(EndpointsListSupportedParameter$outboundSchema),

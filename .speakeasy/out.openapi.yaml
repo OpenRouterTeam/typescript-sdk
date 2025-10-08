@@ -820,8 +820,21 @@ components:
         - type: string
           enum:
             - required
-        - $ref: '#/components/schemas/ToolChoiceTypes'
-        - $ref: '#/components/schemas/ToolChoiceFunction'
+        - allOf:
+            - $ref: '#/components/schemas/ToolChoiceTypes'
+            - type: object
+              properties: {}
+          description: Tool choice by type
+          example:
+            type: file_search
+        - allOf:
+            - $ref: '#/components/schemas/ToolChoiceFunction'
+            - type: object
+              properties: {}
+          description: Specific function tool choice
+          example:
+            type: function
+            name: get_weather
       description: Tool choice configuration
       example: auto
     ResponsePrompt:
@@ -2817,7 +2830,7 @@ components:
           context_length: 8192
           architecture:
             tokenizer: GPT
-            instruct_type: chatcompletion
+            instruct_type: chatml
             modality: text
             input_modalities:
               - text
@@ -3091,7 +3104,7 @@ components:
             - top_p
             - frequency_penalty
             - presence_penalty
-          status: active
+          status: 0
           uptime_last_30m: 0.99
           supports_implicit_caching: true
     KeyInfo:
@@ -4195,7 +4208,7 @@ paths:
   /api/alpha/responses:
     post:
       operationId: sendResponsesRequest
-      x-speakeasy-name-override: sendRequest
+      x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
       tags:
         - beta.responses
@@ -4206,7 +4219,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpenAIResponsesRequest'
+              allOf:
+                - $ref: '#/components/schemas/OpenAIResponsesRequest'
+                - type: object
+                  properties: {}
+              description: Request schema for OpenAI-compatible Responses API
       responses:
         '200':
           description: Successful response

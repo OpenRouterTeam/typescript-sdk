@@ -22,7 +22,7 @@ export type Input =
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export const DataCollection = {
+export const GenerateDataCollection = {
   Deny: "deny",
   Allow: "allow",
 } as const;
@@ -33,9 +33,9 @@ export const DataCollection = {
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export type DataCollection = ClosedEnum<typeof DataCollection>;
+export type GenerateDataCollection = ClosedEnum<typeof GenerateDataCollection>;
 
-export const OrderEnum = {
+export const GenerateOrderEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -119,11 +119,11 @@ export const OrderEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type OrderEnum = ClosedEnum<typeof OrderEnum>;
+export type GenerateOrderEnum = ClosedEnum<typeof GenerateOrderEnum>;
 
-export type Order = OrderEnum | string;
+export type GenerateOrderUnion = GenerateOrderEnum | string;
 
-export const OnlyEnum = {
+export const GenerateOnlyEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -207,11 +207,11 @@ export const OnlyEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type OnlyEnum = ClosedEnum<typeof OnlyEnum>;
+export type GenerateOnlyEnum = ClosedEnum<typeof GenerateOnlyEnum>;
 
-export type Only = OnlyEnum | string;
+export type GenerateOnlyUnion = GenerateOnlyEnum | string;
 
-export const IgnoreEnum = {
+export const GenerateIgnoreEnum = {
   AnyScale: "AnyScale",
   CentML: "Cent-ML",
   HuggingFace: "HuggingFace",
@@ -295,9 +295,9 @@ export const IgnoreEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type IgnoreEnum = ClosedEnum<typeof IgnoreEnum>;
+export type GenerateIgnoreEnum = ClosedEnum<typeof GenerateIgnoreEnum>;
 
-export type Ignore = IgnoreEnum | string;
+export type GenerateIgnoreUnion = GenerateIgnoreEnum | string;
 
 export const GenerateQuantization = {
   Int4: "int4",
@@ -315,7 +315,7 @@ export type GenerateQuantization = ClosedEnum<typeof GenerateQuantization>;
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export const Sort = {
+export const GenerateSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
@@ -323,7 +323,7 @@ export const Sort = {
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type Sort = ClosedEnum<typeof Sort>;
+export type GenerateSort = ClosedEnum<typeof GenerateSort>;
 
 export type GeneratePrompt = number | string | any;
 
@@ -338,7 +338,7 @@ export type GenerateRequestUnion = number | string | any;
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type MaxPrice = {
+export type GenerateMaxPrice = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -346,7 +346,7 @@ export type MaxPrice = {
   request?: number | string | any | undefined;
 };
 
-export type Experimental = {};
+export type GenerateExperimental = {};
 
 export type GenerateProvider = {
   /**
@@ -368,7 +368,7 @@ export type GenerateProvider = {
    * - allow: (default) allow providers which store user data non-transiently and may train on it
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: GenerateDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -376,15 +376,15 @@ export type GenerateProvider = {
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
-  order?: Array<OrderEnum | string> | null | undefined;
+  order?: Array<GenerateOrderEnum | string> | null | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
-  only?: Array<OnlyEnum | string> | null | undefined;
+  only?: Array<GenerateOnlyEnum | string> | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
-  ignore?: Array<IgnoreEnum | string> | null | undefined;
+  ignore?: Array<GenerateIgnoreEnum | string> | null | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
@@ -392,12 +392,12 @@ export type GenerateProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: GenerateSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: MaxPrice | undefined;
-  experimental?: Experimental | null | undefined;
+  maxPrice?: GenerateMaxPrice | undefined;
+  experimental?: GenerateExperimental | null | undefined;
 };
 
 export const EncodingFormatBase64 = {
@@ -509,200 +509,230 @@ export function inputFromJSON(
 }
 
 /** @internal */
-export const DataCollection$inboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = z.nativeEnum(DataCollection);
+export const GenerateDataCollection$inboundSchema: z.ZodNativeEnum<
+  typeof GenerateDataCollection
+> = z.nativeEnum(GenerateDataCollection);
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodNativeEnum<
-  typeof DataCollection
-> = DataCollection$inboundSchema;
+export const GenerateDataCollection$outboundSchema: z.ZodNativeEnum<
+  typeof GenerateDataCollection
+> = GenerateDataCollection$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace DataCollection$ {
-  /** @deprecated use `DataCollection$inboundSchema` instead. */
-  export const inboundSchema = DataCollection$inboundSchema;
-  /** @deprecated use `DataCollection$outboundSchema` instead. */
-  export const outboundSchema = DataCollection$outboundSchema;
+export namespace GenerateDataCollection$ {
+  /** @deprecated use `GenerateDataCollection$inboundSchema` instead. */
+  export const inboundSchema = GenerateDataCollection$inboundSchema;
+  /** @deprecated use `GenerateDataCollection$outboundSchema` instead. */
+  export const outboundSchema = GenerateDataCollection$outboundSchema;
 }
 
 /** @internal */
-export const OrderEnum$inboundSchema: z.ZodNativeEnum<typeof OrderEnum> = z
-  .nativeEnum(OrderEnum);
+export const GenerateOrderEnum$inboundSchema: z.ZodNativeEnum<
+  typeof GenerateOrderEnum
+> = z.nativeEnum(GenerateOrderEnum);
 
 /** @internal */
-export const OrderEnum$outboundSchema: z.ZodNativeEnum<typeof OrderEnum> =
-  OrderEnum$inboundSchema;
+export const GenerateOrderEnum$outboundSchema: z.ZodNativeEnum<
+  typeof GenerateOrderEnum
+> = GenerateOrderEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OrderEnum$ {
-  /** @deprecated use `OrderEnum$inboundSchema` instead. */
-  export const inboundSchema = OrderEnum$inboundSchema;
-  /** @deprecated use `OrderEnum$outboundSchema` instead. */
-  export const outboundSchema = OrderEnum$outboundSchema;
+export namespace GenerateOrderEnum$ {
+  /** @deprecated use `GenerateOrderEnum$inboundSchema` instead. */
+  export const inboundSchema = GenerateOrderEnum$inboundSchema;
+  /** @deprecated use `GenerateOrderEnum$outboundSchema` instead. */
+  export const outboundSchema = GenerateOrderEnum$outboundSchema;
 }
 
 /** @internal */
-export const Order$inboundSchema: z.ZodType<Order, z.ZodTypeDef, unknown> = z
-  .union([OrderEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Order$Outbound = string | string;
-
-/** @internal */
-export const Order$outboundSchema: z.ZodType<
-  Order$Outbound,
+export const GenerateOrderUnion$inboundSchema: z.ZodType<
+  GenerateOrderUnion,
   z.ZodTypeDef,
-  Order
-> = z.union([OrderEnum$outboundSchema, z.string()]);
+  unknown
+> = z.union([GenerateOrderEnum$inboundSchema, z.string()]);
+
+/** @internal */
+export type GenerateOrderUnion$Outbound = string | string;
+
+/** @internal */
+export const GenerateOrderUnion$outboundSchema: z.ZodType<
+  GenerateOrderUnion$Outbound,
+  z.ZodTypeDef,
+  GenerateOrderUnion
+> = z.union([GenerateOrderEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Order$ {
-  /** @deprecated use `Order$inboundSchema` instead. */
-  export const inboundSchema = Order$inboundSchema;
-  /** @deprecated use `Order$outboundSchema` instead. */
-  export const outboundSchema = Order$outboundSchema;
-  /** @deprecated use `Order$Outbound` instead. */
-  export type Outbound = Order$Outbound;
+export namespace GenerateOrderUnion$ {
+  /** @deprecated use `GenerateOrderUnion$inboundSchema` instead. */
+  export const inboundSchema = GenerateOrderUnion$inboundSchema;
+  /** @deprecated use `GenerateOrderUnion$outboundSchema` instead. */
+  export const outboundSchema = GenerateOrderUnion$outboundSchema;
+  /** @deprecated use `GenerateOrderUnion$Outbound` instead. */
+  export type Outbound = GenerateOrderUnion$Outbound;
 }
 
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
+export function generateOrderUnionToJSON(
+  generateOrderUnion: GenerateOrderUnion,
+): string {
+  return JSON.stringify(
+    GenerateOrderUnion$outboundSchema.parse(generateOrderUnion),
+  );
 }
 
-export function orderFromJSON(
+export function generateOrderUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Order, SDKValidationError> {
+): SafeParseResult<GenerateOrderUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Order$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Order' from JSON`,
+    (x) => GenerateOrderUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerateOrderUnion' from JSON`,
   );
 }
 
 /** @internal */
-export const OnlyEnum$inboundSchema: z.ZodNativeEnum<typeof OnlyEnum> = z
-  .nativeEnum(OnlyEnum);
+export const GenerateOnlyEnum$inboundSchema: z.ZodNativeEnum<
+  typeof GenerateOnlyEnum
+> = z.nativeEnum(GenerateOnlyEnum);
 
 /** @internal */
-export const OnlyEnum$outboundSchema: z.ZodNativeEnum<typeof OnlyEnum> =
-  OnlyEnum$inboundSchema;
+export const GenerateOnlyEnum$outboundSchema: z.ZodNativeEnum<
+  typeof GenerateOnlyEnum
+> = GenerateOnlyEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OnlyEnum$ {
-  /** @deprecated use `OnlyEnum$inboundSchema` instead. */
-  export const inboundSchema = OnlyEnum$inboundSchema;
-  /** @deprecated use `OnlyEnum$outboundSchema` instead. */
-  export const outboundSchema = OnlyEnum$outboundSchema;
+export namespace GenerateOnlyEnum$ {
+  /** @deprecated use `GenerateOnlyEnum$inboundSchema` instead. */
+  export const inboundSchema = GenerateOnlyEnum$inboundSchema;
+  /** @deprecated use `GenerateOnlyEnum$outboundSchema` instead. */
+  export const outboundSchema = GenerateOnlyEnum$outboundSchema;
 }
 
 /** @internal */
-export const Only$inboundSchema: z.ZodType<Only, z.ZodTypeDef, unknown> = z
-  .union([OnlyEnum$inboundSchema, z.string()]);
+export const GenerateOnlyUnion$inboundSchema: z.ZodType<
+  GenerateOnlyUnion,
+  z.ZodTypeDef,
+  unknown
+> = z.union([GenerateOnlyEnum$inboundSchema, z.string()]);
 
 /** @internal */
-export type Only$Outbound = string | string;
+export type GenerateOnlyUnion$Outbound = string | string;
 
 /** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, z.ZodTypeDef, Only> =
-  z.union([OnlyEnum$outboundSchema, z.string()]);
+export const GenerateOnlyUnion$outboundSchema: z.ZodType<
+  GenerateOnlyUnion$Outbound,
+  z.ZodTypeDef,
+  GenerateOnlyUnion
+> = z.union([GenerateOnlyEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Only$ {
-  /** @deprecated use `Only$inboundSchema` instead. */
-  export const inboundSchema = Only$inboundSchema;
-  /** @deprecated use `Only$outboundSchema` instead. */
-  export const outboundSchema = Only$outboundSchema;
-  /** @deprecated use `Only$Outbound` instead. */
-  export type Outbound = Only$Outbound;
+export namespace GenerateOnlyUnion$ {
+  /** @deprecated use `GenerateOnlyUnion$inboundSchema` instead. */
+  export const inboundSchema = GenerateOnlyUnion$inboundSchema;
+  /** @deprecated use `GenerateOnlyUnion$outboundSchema` instead. */
+  export const outboundSchema = GenerateOnlyUnion$outboundSchema;
+  /** @deprecated use `GenerateOnlyUnion$Outbound` instead. */
+  export type Outbound = GenerateOnlyUnion$Outbound;
 }
 
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
+export function generateOnlyUnionToJSON(
+  generateOnlyUnion: GenerateOnlyUnion,
+): string {
+  return JSON.stringify(
+    GenerateOnlyUnion$outboundSchema.parse(generateOnlyUnion),
+  );
 }
 
-export function onlyFromJSON(
+export function generateOnlyUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Only, SDKValidationError> {
+): SafeParseResult<GenerateOnlyUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Only$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Only' from JSON`,
+    (x) => GenerateOnlyUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerateOnlyUnion' from JSON`,
   );
 }
 
 /** @internal */
-export const IgnoreEnum$inboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> = z
-  .nativeEnum(IgnoreEnum);
+export const GenerateIgnoreEnum$inboundSchema: z.ZodNativeEnum<
+  typeof GenerateIgnoreEnum
+> = z.nativeEnum(GenerateIgnoreEnum);
 
 /** @internal */
-export const IgnoreEnum$outboundSchema: z.ZodNativeEnum<typeof IgnoreEnum> =
-  IgnoreEnum$inboundSchema;
+export const GenerateIgnoreEnum$outboundSchema: z.ZodNativeEnum<
+  typeof GenerateIgnoreEnum
+> = GenerateIgnoreEnum$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace IgnoreEnum$ {
-  /** @deprecated use `IgnoreEnum$inboundSchema` instead. */
-  export const inboundSchema = IgnoreEnum$inboundSchema;
-  /** @deprecated use `IgnoreEnum$outboundSchema` instead. */
-  export const outboundSchema = IgnoreEnum$outboundSchema;
+export namespace GenerateIgnoreEnum$ {
+  /** @deprecated use `GenerateIgnoreEnum$inboundSchema` instead. */
+  export const inboundSchema = GenerateIgnoreEnum$inboundSchema;
+  /** @deprecated use `GenerateIgnoreEnum$outboundSchema` instead. */
+  export const outboundSchema = GenerateIgnoreEnum$outboundSchema;
 }
 
 /** @internal */
-export const Ignore$inboundSchema: z.ZodType<Ignore, z.ZodTypeDef, unknown> = z
-  .union([IgnoreEnum$inboundSchema, z.string()]);
-
-/** @internal */
-export type Ignore$Outbound = string | string;
-
-/** @internal */
-export const Ignore$outboundSchema: z.ZodType<
-  Ignore$Outbound,
+export const GenerateIgnoreUnion$inboundSchema: z.ZodType<
+  GenerateIgnoreUnion,
   z.ZodTypeDef,
-  Ignore
-> = z.union([IgnoreEnum$outboundSchema, z.string()]);
+  unknown
+> = z.union([GenerateIgnoreEnum$inboundSchema, z.string()]);
+
+/** @internal */
+export type GenerateIgnoreUnion$Outbound = string | string;
+
+/** @internal */
+export const GenerateIgnoreUnion$outboundSchema: z.ZodType<
+  GenerateIgnoreUnion$Outbound,
+  z.ZodTypeDef,
+  GenerateIgnoreUnion
+> = z.union([GenerateIgnoreEnum$outboundSchema, z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Ignore$ {
-  /** @deprecated use `Ignore$inboundSchema` instead. */
-  export const inboundSchema = Ignore$inboundSchema;
-  /** @deprecated use `Ignore$outboundSchema` instead. */
-  export const outboundSchema = Ignore$outboundSchema;
-  /** @deprecated use `Ignore$Outbound` instead. */
-  export type Outbound = Ignore$Outbound;
+export namespace GenerateIgnoreUnion$ {
+  /** @deprecated use `GenerateIgnoreUnion$inboundSchema` instead. */
+  export const inboundSchema = GenerateIgnoreUnion$inboundSchema;
+  /** @deprecated use `GenerateIgnoreUnion$outboundSchema` instead. */
+  export const outboundSchema = GenerateIgnoreUnion$outboundSchema;
+  /** @deprecated use `GenerateIgnoreUnion$Outbound` instead. */
+  export type Outbound = GenerateIgnoreUnion$Outbound;
 }
 
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
+export function generateIgnoreUnionToJSON(
+  generateIgnoreUnion: GenerateIgnoreUnion,
+): string {
+  return JSON.stringify(
+    GenerateIgnoreUnion$outboundSchema.parse(generateIgnoreUnion),
+  );
 }
 
-export function ignoreFromJSON(
+export function generateIgnoreUnionFromJSON(
   jsonString: string,
-): SafeParseResult<Ignore, SDKValidationError> {
+): SafeParseResult<GenerateIgnoreUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Ignore' from JSON`,
+    (x) => GenerateIgnoreUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerateIgnoreUnion' from JSON`,
   );
 }
 
@@ -728,23 +758,22 @@ export namespace GenerateQuantization$ {
 }
 
 /** @internal */
-export const Sort$inboundSchema: z.ZodNativeEnum<typeof Sort> = z.nativeEnum(
-  Sort,
-);
+export const GenerateSort$inboundSchema: z.ZodNativeEnum<typeof GenerateSort> =
+  z.nativeEnum(GenerateSort);
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodNativeEnum<typeof Sort> =
-  Sort$inboundSchema;
+export const GenerateSort$outboundSchema: z.ZodNativeEnum<typeof GenerateSort> =
+  GenerateSort$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Sort$ {
-  /** @deprecated use `Sort$inboundSchema` instead. */
-  export const inboundSchema = Sort$inboundSchema;
-  /** @deprecated use `Sort$outboundSchema` instead. */
-  export const outboundSchema = Sort$outboundSchema;
+export namespace GenerateSort$ {
+  /** @deprecated use `GenerateSort$inboundSchema` instead. */
+  export const inboundSchema = GenerateSort$inboundSchema;
+  /** @deprecated use `GenerateSort$outboundSchema` instead. */
+  export const outboundSchema = GenerateSort$outboundSchema;
 }
 
 /** @internal */
@@ -976,8 +1005,8 @@ export function generateRequestUnionFromJSON(
 }
 
 /** @internal */
-export const MaxPrice$inboundSchema: z.ZodType<
-  MaxPrice,
+export const GenerateMaxPrice$inboundSchema: z.ZodType<
+  GenerateMaxPrice,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -989,7 +1018,7 @@ export const MaxPrice$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type MaxPrice$Outbound = {
+export type GenerateMaxPrice$Outbound = {
   prompt?: number | string | any | undefined;
   completion?: number | string | any | undefined;
   image?: number | string | any | undefined;
@@ -998,10 +1027,10 @@ export type MaxPrice$Outbound = {
 };
 
 /** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<
-  MaxPrice$Outbound,
+export const GenerateMaxPrice$outboundSchema: z.ZodType<
+  GenerateMaxPrice$Outbound,
   z.ZodTypeDef,
-  MaxPrice
+  GenerateMaxPrice
 > = z.object({
   prompt: z.union([z.number(), z.string(), z.any()]).optional(),
   completion: z.union([z.number(), z.string(), z.any()]).optional(),
@@ -1014,70 +1043,78 @@ export const MaxPrice$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace MaxPrice$ {
-  /** @deprecated use `MaxPrice$inboundSchema` instead. */
-  export const inboundSchema = MaxPrice$inboundSchema;
-  /** @deprecated use `MaxPrice$outboundSchema` instead. */
-  export const outboundSchema = MaxPrice$outboundSchema;
-  /** @deprecated use `MaxPrice$Outbound` instead. */
-  export type Outbound = MaxPrice$Outbound;
+export namespace GenerateMaxPrice$ {
+  /** @deprecated use `GenerateMaxPrice$inboundSchema` instead. */
+  export const inboundSchema = GenerateMaxPrice$inboundSchema;
+  /** @deprecated use `GenerateMaxPrice$outboundSchema` instead. */
+  export const outboundSchema = GenerateMaxPrice$outboundSchema;
+  /** @deprecated use `GenerateMaxPrice$Outbound` instead. */
+  export type Outbound = GenerateMaxPrice$Outbound;
 }
 
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+export function generateMaxPriceToJSON(
+  generateMaxPrice: GenerateMaxPrice,
+): string {
+  return JSON.stringify(
+    GenerateMaxPrice$outboundSchema.parse(generateMaxPrice),
+  );
 }
 
-export function maxPriceFromJSON(
+export function generateMaxPriceFromJSON(
   jsonString: string,
-): SafeParseResult<MaxPrice, SDKValidationError> {
+): SafeParseResult<GenerateMaxPrice, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'MaxPrice' from JSON`,
+    (x) => GenerateMaxPrice$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerateMaxPrice' from JSON`,
   );
 }
 
 /** @internal */
-export const Experimental$inboundSchema: z.ZodType<
-  Experimental,
+export const GenerateExperimental$inboundSchema: z.ZodType<
+  GenerateExperimental,
   z.ZodTypeDef,
   unknown
 > = z.object({});
 
 /** @internal */
-export type Experimental$Outbound = {};
+export type GenerateExperimental$Outbound = {};
 
 /** @internal */
-export const Experimental$outboundSchema: z.ZodType<
-  Experimental$Outbound,
+export const GenerateExperimental$outboundSchema: z.ZodType<
+  GenerateExperimental$Outbound,
   z.ZodTypeDef,
-  Experimental
+  GenerateExperimental
 > = z.object({});
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Experimental$ {
-  /** @deprecated use `Experimental$inboundSchema` instead. */
-  export const inboundSchema = Experimental$inboundSchema;
-  /** @deprecated use `Experimental$outboundSchema` instead. */
-  export const outboundSchema = Experimental$outboundSchema;
-  /** @deprecated use `Experimental$Outbound` instead. */
-  export type Outbound = Experimental$Outbound;
+export namespace GenerateExperimental$ {
+  /** @deprecated use `GenerateExperimental$inboundSchema` instead. */
+  export const inboundSchema = GenerateExperimental$inboundSchema;
+  /** @deprecated use `GenerateExperimental$outboundSchema` instead. */
+  export const outboundSchema = GenerateExperimental$outboundSchema;
+  /** @deprecated use `GenerateExperimental$Outbound` instead. */
+  export type Outbound = GenerateExperimental$Outbound;
 }
 
-export function experimentalToJSON(experimental: Experimental): string {
-  return JSON.stringify(Experimental$outboundSchema.parse(experimental));
+export function generateExperimentalToJSON(
+  generateExperimental: GenerateExperimental,
+): string {
+  return JSON.stringify(
+    GenerateExperimental$outboundSchema.parse(generateExperimental),
+  );
 }
 
-export function experimentalFromJSON(
+export function generateExperimentalFromJSON(
   jsonString: string,
-): SafeParseResult<Experimental, SDKValidationError> {
+): SafeParseResult<GenerateExperimental, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Experimental$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Experimental' from JSON`,
+    (x) => GenerateExperimental$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GenerateExperimental' from JSON`,
   );
 }
 
@@ -1089,19 +1126,23 @@ export const GenerateProvider$inboundSchema: z.ZodType<
 > = z.object({
   allow_fallbacks: z.nullable(z.boolean()).optional(),
   require_parameters: z.nullable(z.boolean()).optional(),
-  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
+  data_collection: z.nullable(GenerateDataCollection$inboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$inboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$inboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$inboundSchema, z.string()])))
-    .optional(),
+  order: z.nullable(
+    z.array(z.union([GenerateOrderEnum$inboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(
+    z.array(z.union([GenerateOnlyEnum$inboundSchema, z.string()])),
+  ).optional(),
+  ignore: z.nullable(
+    z.array(z.union([GenerateIgnoreEnum$inboundSchema, z.string()])),
+  ).optional(),
   quantizations: z.nullable(z.array(GenerateQuantization$inboundSchema))
     .optional(),
-  sort: z.nullable(Sort$inboundSchema).optional(),
-  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$inboundSchema)).optional(),
+  sort: z.nullable(GenerateSort$inboundSchema).optional(),
+  max_price: z.lazy(() => GenerateMaxPrice$inboundSchema).optional(),
+  experimental: z.nullable(z.lazy(() => GenerateExperimental$inboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "allow_fallbacks": "allowFallbacks",
@@ -1122,8 +1163,8 @@ export type GenerateProvider$Outbound = {
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
-  experimental?: Experimental$Outbound | null | undefined;
+  max_price?: GenerateMaxPrice$Outbound | undefined;
+  experimental?: GenerateExperimental$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -1134,19 +1175,22 @@ export const GenerateProvider$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(GenerateDataCollection$outboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([OrderEnum$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([OnlyEnum$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(z.array(z.union([IgnoreEnum$outboundSchema, z.string()])))
-    .optional(),
+  order: z.nullable(
+    z.array(z.union([GenerateOrderEnum$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(
+    z.array(z.union([GenerateOnlyEnum$outboundSchema, z.string()])),
+  ).optional(),
+  ignore: z.nullable(
+    z.array(z.union([GenerateIgnoreEnum$outboundSchema, z.string()])),
+  ).optional(),
   quantizations: z.nullable(z.array(GenerateQuantization$outboundSchema))
     .optional(),
-  sort: z.nullable(Sort$outboundSchema).optional(),
-  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))
+  sort: z.nullable(GenerateSort$outboundSchema).optional(),
+  maxPrice: z.lazy(() => GenerateMaxPrice$outboundSchema).optional(),
+  experimental: z.nullable(z.lazy(() => GenerateExperimental$outboundSchema))
     .optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -112,10 +112,10 @@ Query.
 [use-mutation]: https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
 
 ```tsx
-import { useBetaResponsesSendRequestMutation } from "@openrouter/sdk/react-query/betaResponsesSendRequest.js";
+import { useBetaResponsesSendMutation } from "@openrouter/sdk/react-query/betaResponsesSend.js";
 
 export function Example() {
-  const { mutate, status } = useBetaResponsesSendRequestMutation();
+  const { mutate, status } = useBetaResponsesSendMutation();
 
   return (
     <form
@@ -210,10 +210,10 @@ Since the underlying SDK handles request timeouts and retries, there are a few
 more options provided by the mutation hooks to control these behaviors.
 
 ```tsx
-import { useBetaResponsesSendRequestMutation } from "@openrouter/sdk/react-query/betaResponsesSendRequest.js";
+import { useBetaResponsesSendMutation } from "@openrouter/sdk/react-query/betaResponsesSend.js";
 
 export function ExampleWithOptions() {
-  const { mutate, status } = useBetaResponsesSendRequestMutation({
+  const { mutate, status } = useBetaResponsesSendMutation({
     // TanStack Query options:
     networkMode: "online",
     gcTime: 5 * 60 * 1000, // 5 minutes

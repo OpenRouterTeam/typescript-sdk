@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: d6cc7cb0a0fb4ac0755703209e8504c9
+  docChecksum: 20599e0dbcba30101bfaed784fd404d4
   docVersion: 1.0.0
   speakeasyVersion: 1.636.0
   generationVersion: 2.723.2
-  releaseVersion: 0.0.0-beta.33
-  configChecksum: 048a9cf8bd5ad4e474af68255323537f
+  releaseVersion: 0.0.0-beta.37
+  configChecksum: c8056264700451197917c463edf9c06c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -107,7 +107,6 @@ generatedFiles:
   - docs/models/completionusage.md
   - docs/models/costdetails.md
   - docs/models/data.md
-  - docs/models/datacollection.md
   - docs/models/defaultparameters.md
   - docs/models/detail.md
   - docs/models/endpointslist.md
@@ -121,26 +120,17 @@ generatedFiles:
   - docs/models/endpointslistinternalreasoning.md
   - docs/models/endpointslistpricing.md
   - docs/models/endpointslistprompt.md
-  - docs/models/endpointslistquantization.md
   - docs/models/endpointslistrequest.md
   - docs/models/endpointsliststatus.md
   - docs/models/endpointslistsupportedparameter.md
   - docs/models/endpointslistwebsearch.md
-  - docs/models/engine.md
   - docs/models/errorfailed.md
   - docs/models/errorresponsecode.md
   - docs/models/errorresponseerror.md
   - docs/models/errors/chaterror.md
   - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
-  - docs/models/experimental.md
   - docs/models/generatesummary.md
-  - docs/models/idchainofthought.md
-  - docs/models/idfileparser.md
-  - docs/models/idmoderation.md
-  - docs/models/idweb.md
-  - docs/models/ignore.md
-  - docs/models/ignoreenum.md
   - docs/models/imageurl.md
   - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
@@ -176,7 +166,6 @@ generatedFiles:
   - docs/models/itemwebsearchcall1.md
   - docs/models/itemwebsearchcall2.md
   - docs/models/keyinfo.md
-  - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
@@ -197,17 +186,6 @@ generatedFiles:
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/objectt.md
-  - docs/models/only.md
-  - docs/models/onlyenum.md
-  - docs/models/openairesponsesrequest.md
-  - docs/models/openairesponsesrequestaudio.md
-  - docs/models/openairesponsesrequestcompletion.md
-  - docs/models/openairesponsesrequestimage.md
-  - docs/models/openairesponsesrequestprompt.md
-  - docs/models/openairesponsesrequestquantization.md
-  - docs/models/openairesponsesrequestrequest.md
-  - docs/models/openairesponsesrequestservicetier.md
-  - docs/models/openairesponsesrequesttruncation.md
   - docs/models/operations/addcoinbasechargedata.md
   - docs/models/operations/addcoinbasechargerequest.md
   - docs/models/operations/addcoinbasechargeresponse.md
@@ -223,28 +201,37 @@ generatedFiles:
   - docs/models/operations/createdata.md
   - docs/models/operations/createrequest.md
   - docs/models/operations/createresponse.md
-  - docs/models/operations/datacollection.md
   - docs/models/operations/deleterequest.md
   - docs/models/operations/deleteresponse.md
   - docs/models/operations/encodingformat.md
   - docs/models/operations/encodingformatbase64.md
   - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/endpointspreviewzdrrequest.md
+  - docs/models/operations/engine.md
   - docs/models/operations/errort.md
   - docs/models/operations/exchangeauthorizationcodecodechallengemethod.md
   - docs/models/operations/exchangeauthorizationcoderequest.md
   - docs/models/operations/exchangeauthorizationcoderesponse.md
-  - docs/models/operations/experimental.md
   - docs/models/operations/generateaudio.md
   - docs/models/operations/generatecompletion.md
   - docs/models/operations/generatedata.md
+  - docs/models/operations/generatedatacollection.md
+  - docs/models/operations/generateexperimental.md
+  - docs/models/operations/generateignoreenum.md
+  - docs/models/operations/generateignoreunion.md
   - docs/models/operations/generateimage.md
+  - docs/models/operations/generatemaxprice.md
+  - docs/models/operations/generateonlyenum.md
+  - docs/models/operations/generateonlyunion.md
+  - docs/models/operations/generateorderenum.md
+  - docs/models/operations/generateorderunion.md
   - docs/models/operations/generateprompt.md
   - docs/models/operations/generateprovider.md
   - docs/models/operations/generatequantization.md
   - docs/models/operations/generaterequest.md
   - docs/models/operations/generaterequestunion.md
   - docs/models/operations/generateresponse.md
+  - docs/models/operations/generatesort.md
   - docs/models/operations/getapikeydata.md
   - docs/models/operations/getapikeyrequest.md
   - docs/models/operations/getapikeyresponse.md
@@ -264,8 +251,10 @@ generatedFiles:
   - docs/models/operations/getparameterssupportedparameter.md
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
-  - docs/models/operations/ignore.md
-  - docs/models/operations/ignoreenum.md
+  - docs/models/operations/idchainofthought.md
+  - docs/models/operations/idfileparser.md
+  - docs/models/operations/idmoderation.md
+  - docs/models/operations/idweb.md
   - docs/models/operations/imageoutput.md
   - docs/models/operations/input.md
   - docs/models/operations/inputaudiocache.md
@@ -287,15 +276,17 @@ generatedFiles:
   - docs/models/operations/listresponse.md
   - docs/models/operations/listusermodelsresponse.md
   - docs/models/operations/listusermodelssecurity.md
-  - docs/models/operations/maxprice.md
   - docs/models/operations/metadata.md
   - docs/models/operations/objectembedding.md
   - docs/models/operations/objectt.md
-  - docs/models/operations/only.md
-  - docs/models/operations/onlyenum.md
-  - docs/models/operations/order.md
-  - docs/models/operations/orderenum.md
   - docs/models/operations/outputmodality.md
+  - docs/models/operations/pdf.md
+  - docs/models/operations/pdfengine.md
+  - docs/models/operations/plugin.md
+  - docs/models/operations/pluginchainofthought.md
+  - docs/models/operations/pluginfileparser.md
+  - docs/models/operations/pluginmoderation.md
+  - docs/models/operations/pluginweb.md
   - docs/models/operations/previewzdraudio.md
   - docs/models/operations/previewzdrcompletion.md
   - docs/models/operations/previewzdrdata.md
@@ -307,12 +298,31 @@ generatedFiles:
   - docs/models/operations/pricing.md
   - docs/models/operations/providername.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
+  - docs/models/operations/sendresponsesrequestaudio.md
+  - docs/models/operations/sendresponsesrequestcompletion.md
+  - docs/models/operations/sendresponsesrequestdatacollection.md
+  - docs/models/operations/sendresponsesrequestexperimental.md
+  - docs/models/operations/sendresponsesrequestignoreenum.md
+  - docs/models/operations/sendresponsesrequestignoreunion.md
+  - docs/models/operations/sendresponsesrequestimage.md
+  - docs/models/operations/sendresponsesrequestmaxprice.md
+  - docs/models/operations/sendresponsesrequestonlyenum.md
+  - docs/models/operations/sendresponsesrequestonlyunion.md
+  - docs/models/operations/sendresponsesrequestorderenum.md
+  - docs/models/operations/sendresponsesrequestorderunion.md
+  - docs/models/operations/sendresponsesrequestprompt.md
+  - docs/models/operations/sendresponsesrequestprovider.md
+  - docs/models/operations/sendresponsesrequestquantization.md
+  - docs/models/operations/sendresponsesrequestrequest.md
+  - docs/models/operations/sendresponsesrequestrequestunion.md
   - docs/models/operations/sendresponsesrequestresponse.md
   - docs/models/operations/sendresponsesrequestresponsebody.md
-  - docs/models/operations/sort.md
+  - docs/models/operations/sendresponsesrequestsort.md
+  - docs/models/operations/servicetier.md
   - docs/models/operations/status.md
   - docs/models/operations/tokenizer.md
   - docs/models/operations/transferintent.md
+  - docs/models/operations/truncation.md
   - docs/models/operations/updatedata.md
   - docs/models/operations/updaterequest.md
   - docs/models/operations/updaterequestbody.md
@@ -320,20 +330,11 @@ generatedFiles:
   - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
   - docs/models/operations/websearch.md
-  - docs/models/order.md
-  - docs/models/orderenum.md
   - docs/models/outputmodality.md
-  - docs/models/pdf.md
-  - docs/models/pdfengine.md
   - docs/models/perrequestlimits.md
-  - docs/models/plugin.md
-  - docs/models/pluginchainofthought.md
-  - docs/models/pluginfileparser.md
-  - docs/models/pluginmoderation.md
-  - docs/models/pluginweb.md
   - docs/models/prompttokensdetails.md
-  - docs/models/provider.md
   - docs/models/providername.md
+  - docs/models/quantization.md
   - docs/models/ratelimit.md
   - docs/models/reasoning.md
   - docs/models/response1.md
@@ -401,9 +402,7 @@ generatedFiles:
   - docs/models/responsesnonstreamingresponse.md
   - docs/models/responsesnonstreamingresponsecode.md
   - docs/models/responsesnonstreamingresponseerror.md
-  - docs/models/responsesnonstreamingresponseservicetier.md
   - docs/models/responsesnonstreamingresponsestatus.md
-  - docs/models/responsesnonstreamingresponsetruncation.md
   - docs/models/responsesoutputitem.md
   - docs/models/responsesoutputitemfilesearchcall.md
   - docs/models/responsesoutputitemfilesearchcallstatus.md
@@ -466,7 +465,7 @@ generatedFiles:
   - docs/models/responsetextverbosity.md
   - docs/models/result.md
   - docs/models/security.md
-  - docs/models/sort.md
+  - docs/models/servicetier.md
   - docs/models/status.md
   - docs/models/statuscompleted.md
   - docs/models/statusfailed.md
@@ -481,21 +480,22 @@ generatedFiles:
   - docs/models/toolchoice.md
   - docs/models/toolchoiceauto.md
   - docs/models/toolchoicefunction.md
-  - docs/models/toolchoicefunctiontype.md
   - docs/models/toolchoicenone.md
   - docs/models/toolchoicerequired.md
-  - docs/models/toolchoicetypes.md
+  - docs/models/toolchoicetype.md
   - docs/models/toolchoicetypeunion.md
   - docs/models/toolchoicetypeunioncodeinterpreter.md
   - docs/models/toolchoicetypeunioncomputerusepreview.md
   - docs/models/toolchoicetypeunionfilesearch.md
   - docs/models/toolchoicetypeunionwebsearchpreview.md
   - docs/models/toolchoicetypeunionwebsearchpreview20250311.md
+  - docs/models/toolchoiceunion.md
   - docs/models/toolfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
   - docs/models/toplogprob.md
   - docs/models/topprovider.md
+  - docs/models/truncation.md
   - docs/models/typeerror.md
   - docs/models/typeresponsecreated.md
   - docs/models/typeresponseerror.md
@@ -537,7 +537,7 @@ generatedFiles:
   - eslint.config.mjs
   - examples/.env.template
   - examples/README.md
-  - examples/betaResponsesSendRequest.example.ts
+  - examples/betaResponsesSend.example.ts
   - examples/package.json
   - jsr.json
   - package.json
@@ -549,7 +549,7 @@ generatedFiles:
   - src/funcs/apiKeysGetCurrentKeyMetadata.ts
   - src/funcs/apiKeysList.ts
   - src/funcs/apiKeysUpdate.ts
-  - src/funcs/betaResponsesSendRequest.ts
+  - src/funcs/betaResponsesSend.ts
   - src/funcs/chatSend.ts
   - src/funcs/completionsGenerate.ts
   - src/funcs/creditsAddCoinbaseCharge.ts
@@ -627,7 +627,6 @@ generatedFiles:
   - src/models/message.ts
   - src/models/modelslist.ts
   - src/models/namedtoolchoice.ts
-  - src/models/openairesponsesrequest.ts
   - src/models/operations/addcoinbasecharge.ts
   - src/models/operations/create.ts
   - src/models/operations/createauthorizationcode.ts
@@ -703,10 +702,8 @@ generatedFiles:
   - src/models/security.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
-  - src/models/toolchoice.ts
-  - src/models/toolchoicefunction.ts
-  - src/models/toolchoicetypes.ts
   - src/models/toolchoicetypeunion.ts
+  - src/models/toolchoiceunion.ts
   - src/models/toolresponsemessage.ts
   - src/models/usermessage.ts
   - src/react-query/_context.tsx
@@ -718,7 +715,7 @@ generatedFiles:
   - src/react-query/apiKeysGetCurrentKeyMetadata.ts
   - src/react-query/apiKeysList.ts
   - src/react-query/apiKeysUpdate.ts
-  - src/react-query/betaResponsesSendRequest.ts
+  - src/react-query/betaResponsesSend.ts
   - src/react-query/chatSend.ts
   - src/react-query/completionsGenerate.ts
   - src/react-query/creditsAddCoinbaseCharge.ts
@@ -1167,7 +1164,7 @@ examples:
           use_rss_chat_links: "<value>"
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": 5243.25, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 1914, "internal_reasoning": 579.8, "input_cache_read": 752.9, "input_cache_write": 580.05, "discount": 6840.83}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "phi3", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": 5243.25, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 1914, "internal_reasoning": 579.8, "input_cache_read": 752.9, "input_cache_write": 580.05, "discount": 6840.83}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
           application/rss+xml: "<value>"
         4XX:
           application/json: {"error": {"code": 425, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
@@ -1177,7 +1174,7 @@ examples:
     speakeasy-default-list-user-models:
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/lSNiEzd/2336/2231", "image_output": "<value>", "audio": 1588.92, "input_audio_cache": 5768.64, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": 4442.74, "input_cache_write": "<value>", "discount": 4799.95}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "claude", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": null, "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/lSNiEzd/2336/2231", "image_output": "<value>", "audio": 1588.92, "input_audio_cache": 5768.64, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": 4442.74, "input_cache_write": "<value>", "discount": 4799.95}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
         4XX:
           application/json: {"error": {"code": 418, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
@@ -1190,7 +1187,7 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI GPT-4", "model_name": "gpt-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/pJRcbCIEOq/347/2939", "image_output": "<value>", "audio": 5739.83, "input_audio_cache": 9758.17, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9615.63}, "provider_name": "OpenAI", "tag": "featured", "quantization": null, "max_completion_tokens": 4096, "max_prompt_tokens": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "status": -1, "uptime_last_30m": 0.99, "supports_implicit_caching": true}]}}
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": ["text", "image"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI GPT-4", "model_name": "gpt-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "<value>", "image": "https://picsum.photos/seed/pJRcbCIEOq/347/2939", "image_output": "<value>", "audio": 5739.83, "input_audio_cache": 9758.17, "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9615.63}, "provider_name": "OpenAI", "tag": "featured", "quantization": null, "max_completion_tokens": 4096, "max_prompt_tokens": null, "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"], "status": 0, "uptime_last_30m": 0.99, "supports_implicit_caching": true}]}}
         4XX:
           application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:

@@ -27,11 +27,6 @@ import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
-export enum SendAcceptEnum {
-  applicationJson = "application/json",
-  textEventStream = "text/event-stream",
-}
-
 /**
  * Create a chat completion
  *
@@ -41,7 +36,7 @@ export enum SendAcceptEnum {
 export function chatSend(
   client: OpenRouterCore,
   request: models.ChatGenerationParams & { stream?: false },
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     models.ChatResponse,
@@ -59,7 +54,7 @@ export function chatSend(
 export function chatSend(
   client: OpenRouterCore,
   request: models.ChatGenerationParams & { stream: true },
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     EventStream<models.ChatStreamingResponseChunk>,
@@ -77,7 +72,7 @@ export function chatSend(
 export function chatSend(
   client: OpenRouterCore,
   request: models.ChatGenerationParams,
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.SendChatCompletionRequestResponse,
@@ -95,7 +90,7 @@ export function chatSend(
 export function chatSend(
   client: OpenRouterCore,
   request: models.ChatGenerationParams,
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.SendChatCompletionRequestResponse,
@@ -120,7 +115,7 @@ export function chatSend(
 async function $do(
   client: OpenRouterCore,
   request: models.ChatGenerationParams,
-  options?: RequestOptions & { acceptHeaderOverride?: SendAcceptEnum },
+  options?: RequestOptions,
 ): Promise<
   [
     Result<
@@ -153,8 +148,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: options?.acceptHeaderOverride
-      || "application/json;q=1, text/event-stream;q=0",
+    Accept: "application/json;q=1",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

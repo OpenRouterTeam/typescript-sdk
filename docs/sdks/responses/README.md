@@ -7,9 +7,9 @@ beta.responses endpoints
 
 ### Available Operations
 
-* [sendRequest](#sendrequest) - Submit a response request
+* [send](#send) - Submit a response request
 
-## sendRequest
+## send
 
 Submits a request to the Responses API (beta)
 
@@ -24,7 +24,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -108,7 +108,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { betaResponsesSendRequest } from "@openrouter/sdk/funcs/betaResponsesSendRequest.js";
+import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -117,7 +117,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await betaResponsesSendRequest(openRouter, {
+  const res = await betaResponsesSend(openRouter, {
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
@@ -192,7 +192,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("betaResponsesSendRequest failed:", res.error);
+    console.log("betaResponsesSend failed:", res.error);
   }
 }
 
@@ -212,15 +212,15 @@ associated utilities.
 ```tsx
 import {
   // Mutation hook for triggering the API call.
-  useBetaResponsesSendRequestMutation
-} from "@openrouter/sdk/react-query/betaResponsesSendRequest.js";
+  useBetaResponsesSendMutation
+} from "@openrouter/sdk/react-query/betaResponsesSend.js";
 ```
 
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [models.OpenAIResponsesRequest](../../models/openairesponsesrequest.md)                                                                                                        | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.SendResponsesRequestRequest](../../models/operations/sendresponsesrequestrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |

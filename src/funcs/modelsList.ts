@@ -25,18 +25,13 @@ import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
-export enum ListAcceptEnum {
-  applicationJson = "application/json",
-  applicationRssPlusXml = "application/rss+xml",
-}
-
 /**
  * List all models and their properties
  */
 export function modelsList(
   client: OpenRouterCore,
   request?: operations.ListModelsRequest | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
+  options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.ListModelsResponse,
@@ -61,7 +56,7 @@ export function modelsList(
 async function $do(
   client: OpenRouterCore,
   request?: operations.ListModelsRequest | undefined,
-  options?: RequestOptions & { acceptHeaderOverride?: ListAcceptEnum },
+  options?: RequestOptions,
 ): Promise<
   [
     Result<
@@ -101,8 +96,7 @@ async function $do(
   });
 
   const headers = new Headers(compactMap({
-    Accept: options?.acceptHeaderOverride
-      || "application/json;q=1, application/rss+xml;q=0",
+    Accept: "application/json;q=1",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

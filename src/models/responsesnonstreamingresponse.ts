@@ -57,11 +57,11 @@ import {
   Tool$outboundSchema,
 } from "./tool.js";
 import {
-  ToolChoice,
-  ToolChoice$inboundSchema,
-  ToolChoice$Outbound,
-  ToolChoice$outboundSchema,
-} from "./toolchoice.js";
+  ToolChoiceUnion,
+  ToolChoiceUnion$inboundSchema,
+  ToolChoiceUnion$Outbound,
+  ToolChoiceUnion$outboundSchema,
+} from "./toolchoiceunion.js";
 
 export const ObjectT = {
   Response: "response",
@@ -96,24 +96,20 @@ export type ResponsesNonStreamingResponseError = {
 
 export type Instructions = string | Array<ResponseInputItem> | any;
 
-export const ResponsesNonStreamingResponseServiceTier = {
+export const ServiceTier = {
   Auto: "auto",
   Default: "default",
   Flex: "flex",
   Priority: "priority",
   Scale: "scale",
 } as const;
-export type ResponsesNonStreamingResponseServiceTier = ClosedEnum<
-  typeof ResponsesNonStreamingResponseServiceTier
->;
+export type ServiceTier = ClosedEnum<typeof ServiceTier>;
 
-export const ResponsesNonStreamingResponseTruncation = {
+export const Truncation = {
   Auto: "auto",
   Disabled: "disabled",
 } as const;
-export type ResponsesNonStreamingResponseTruncation = ClosedEnum<
-  typeof ResponsesNonStreamingResponseTruncation
->;
+export type Truncation = ClosedEnum<typeof Truncation>;
 
 /**
  * Non-streaming response from Responses API
@@ -152,7 +148,7 @@ export type ResponsesNonStreamingResponse = {
   /**
    * Tool choice configuration
    */
-  toolChoice: ToolChoice;
+  toolChoice: ToolChoiceUnion;
   parallelToolCalls: boolean;
   /**
    * Prompt configuration with variables
@@ -164,9 +160,9 @@ export type ResponsesNonStreamingResponse = {
    * Reasoning configuration for Responses API
    */
   reasoning?: ResponseReasoningConfig | null | undefined;
-  serviceTier?: ResponsesNonStreamingResponseServiceTier | null | undefined;
+  serviceTier?: ServiceTier | null | undefined;
   store?: boolean | undefined;
-  truncation?: ResponsesNonStreamingResponseTruncation | null | undefined;
+  truncation?: Truncation | null | undefined;
   /**
    * Text configuration for Responses API
    */
@@ -346,49 +342,41 @@ export function instructionsFromJSON(
 }
 
 /** @internal */
-export const ResponsesNonStreamingResponseServiceTier$inboundSchema:
-  z.ZodNativeEnum<typeof ResponsesNonStreamingResponseServiceTier> = z
-    .nativeEnum(ResponsesNonStreamingResponseServiceTier);
+export const ServiceTier$inboundSchema: z.ZodNativeEnum<typeof ServiceTier> = z
+  .nativeEnum(ServiceTier);
 
 /** @internal */
-export const ResponsesNonStreamingResponseServiceTier$outboundSchema:
-  z.ZodNativeEnum<typeof ResponsesNonStreamingResponseServiceTier> =
-    ResponsesNonStreamingResponseServiceTier$inboundSchema;
+export const ServiceTier$outboundSchema: z.ZodNativeEnum<typeof ServiceTier> =
+  ServiceTier$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponsesNonStreamingResponseServiceTier$ {
-  /** @deprecated use `ResponsesNonStreamingResponseServiceTier$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesNonStreamingResponseServiceTier$inboundSchema;
-  /** @deprecated use `ResponsesNonStreamingResponseServiceTier$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesNonStreamingResponseServiceTier$outboundSchema;
+export namespace ServiceTier$ {
+  /** @deprecated use `ServiceTier$inboundSchema` instead. */
+  export const inboundSchema = ServiceTier$inboundSchema;
+  /** @deprecated use `ServiceTier$outboundSchema` instead. */
+  export const outboundSchema = ServiceTier$outboundSchema;
 }
 
 /** @internal */
-export const ResponsesNonStreamingResponseTruncation$inboundSchema:
-  z.ZodNativeEnum<typeof ResponsesNonStreamingResponseTruncation> = z
-    .nativeEnum(ResponsesNonStreamingResponseTruncation);
+export const Truncation$inboundSchema: z.ZodNativeEnum<typeof Truncation> = z
+  .nativeEnum(Truncation);
 
 /** @internal */
-export const ResponsesNonStreamingResponseTruncation$outboundSchema:
-  z.ZodNativeEnum<typeof ResponsesNonStreamingResponseTruncation> =
-    ResponsesNonStreamingResponseTruncation$inboundSchema;
+export const Truncation$outboundSchema: z.ZodNativeEnum<typeof Truncation> =
+  Truncation$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponsesNonStreamingResponseTruncation$ {
-  /** @deprecated use `ResponsesNonStreamingResponseTruncation$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesNonStreamingResponseTruncation$inboundSchema;
-  /** @deprecated use `ResponsesNonStreamingResponseTruncation$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesNonStreamingResponseTruncation$outboundSchema;
+export namespace Truncation$ {
+  /** @deprecated use `Truncation$inboundSchema` instead. */
+  export const inboundSchema = Truncation$inboundSchema;
+  /** @deprecated use `Truncation$outboundSchema` instead. */
+  export const outboundSchema = Truncation$outboundSchema;
 }
 
 /** @internal */
@@ -422,18 +410,15 @@ export const ResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   ).optional(),
   metadata: z.nullable(z.record(z.string())),
   tools: z.array(Tool$inboundSchema),
-  tool_choice: ToolChoice$inboundSchema,
+  tool_choice: ToolChoiceUnion$inboundSchema,
   parallel_tool_calls: z.boolean(),
   prompt: z.nullable(ResponsePrompt$inboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
   previous_response_id: z.nullable(z.string()).optional(),
   reasoning: z.nullable(ResponseReasoningConfig$inboundSchema).optional(),
-  service_tier: z.nullable(
-    ResponsesNonStreamingResponseServiceTier$inboundSchema,
-  ).optional(),
+  service_tier: z.nullable(ServiceTier$inboundSchema).optional(),
   store: z.boolean().optional(),
-  truncation: z.nullable(ResponsesNonStreamingResponseTruncation$inboundSchema)
-    .optional(),
+  truncation: z.nullable(Truncation$inboundSchema).optional(),
   text: ResponseTextConfig$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -481,7 +466,7 @@ export type ResponsesNonStreamingResponse$Outbound = {
     | undefined;
   metadata: { [k: string]: string } | null;
   tools: Array<Tool$Outbound>;
-  tool_choice: ToolChoice$Outbound;
+  tool_choice: ToolChoiceUnion$Outbound;
   parallel_tool_calls: boolean;
   prompt?: ResponsePrompt$Outbound | null | undefined;
   background?: boolean | null | undefined;
@@ -524,18 +509,15 @@ export const ResponsesNonStreamingResponse$outboundSchema: z.ZodType<
   ).optional(),
   metadata: z.nullable(z.record(z.string())),
   tools: z.array(Tool$outboundSchema),
-  toolChoice: ToolChoice$outboundSchema,
+  toolChoice: ToolChoiceUnion$outboundSchema,
   parallelToolCalls: z.boolean(),
   prompt: z.nullable(ResponsePrompt$outboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
   previousResponseId: z.nullable(z.string()).optional(),
   reasoning: z.nullable(ResponseReasoningConfig$outboundSchema).optional(),
-  serviceTier: z.nullable(
-    ResponsesNonStreamingResponseServiceTier$outboundSchema,
-  ).optional(),
+  serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
   store: z.boolean().optional(),
-  truncation: z.nullable(ResponsesNonStreamingResponseTruncation$outboundSchema)
-    .optional(),
+  truncation: z.nullable(Truncation$outboundSchema).optional(),
   text: ResponseTextConfig$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {

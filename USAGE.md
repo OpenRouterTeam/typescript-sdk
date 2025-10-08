@@ -7,7 +7,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.sendRequest({
+  const result = await openRouter.beta.responses.send({
     input: "Hello, how can I help you today?",
     instructions: "<value>",
     metadata: {
