@@ -6,6 +6,7 @@ import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
 import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
+import * as models from "../models/index.js";
 import type { ResponsesNonStreamingResponse } from "../models/responsesnonstreamingresponse.js";
 import { unwrapAsync } from "../types/fp.js";
 
