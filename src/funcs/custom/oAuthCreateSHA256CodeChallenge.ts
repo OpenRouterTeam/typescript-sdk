@@ -1,7 +1,7 @@
 import z from "zod/v3";
 import { Result } from "../../types/fp.js";
 
-const CreateSHA256CodeChallengeSchema = z.object({
+const CreateSHA256CodeChallengeRequestSchema = z.object({
   /**
    * If not provided, a random code verifier will be generated.
    * If provided, must be 43-128 characters and contain only unreserved
@@ -18,11 +18,11 @@ const CreateSHA256CodeChallengeSchema = z.object({
     .optional(),
 });
 
-type CreateSHA256CodeChallenge = z.infer<
-  typeof CreateSHA256CodeChallengeSchema
+export type CreateSHA256CodeChallengeRequest = z.infer<
+  typeof CreateSHA256CodeChallengeRequestSchema
 >;
 
-type CreateSHA256CodeChallengeResponse = {
+export type CreateSHA256CodeChallengeResponse = {
   codeChallenge: string;
   codeVerifier: string;
 };
@@ -64,9 +64,9 @@ function generateCodeVerifier(): string {
  * @see {@link https://datatracker.ietf.org/doc/html/rfc7636}
  */
 export async function oAuthCreateSHA256CodeChallenge(
-  params: CreateSHA256CodeChallenge = {},
+  params: CreateSHA256CodeChallengeRequest = {},
 ): Promise<Result<CreateSHA256CodeChallengeResponse>> {
-  const parsedParams = CreateSHA256CodeChallengeSchema.safeParse(params);
+  const parsedParams = CreateSHA256CodeChallengeRequestSchema.safeParse(params);
   if (!parsedParams.success) return { ok: false, error: parsedParams.error };
 
   const { codeVerifier = generateCodeVerifier() } = parsedParams.data;

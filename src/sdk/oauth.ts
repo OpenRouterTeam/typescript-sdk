@@ -8,6 +8,18 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
+// #region imports
+import {
+  oAuthCreateAuthorizationUrl,
+  CreateAuthorizationUrlRequest,
+} from "../funcs/custom/oAuthCreateAuthorizationUrl.js";
+import {
+  CreateSHA256CodeChallengeRequest,
+  CreateSHA256CodeChallengeResponse,
+  oAuthCreateSHA256CodeChallenge,
+} from "../funcs/custom/oAuthCreateSHA256CodeChallenge.js";
+// #endregion imports
+
 export class OAuth extends ClientSDK {
   /**
    * Exchange authorization code for API key
@@ -19,11 +31,7 @@ export class OAuth extends ClientSDK {
     request: operations.ExchangeAuthorizationCodeRequest,
     options?: RequestOptions,
   ): Promise<operations.ExchangeAuthorizationCodeResponse> {
-    return unwrapAsync(oAuthExchangeAuthorizationCode(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(oAuthExchangeAuthorizationCode(this, request, options));
   }
 
   /**
@@ -36,10 +44,55 @@ export class OAuth extends ClientSDK {
     request: operations.CreateAuthorizationCodeRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateAuthorizationCodeResponse> {
-    return unwrapAsync(oAuthCreateAuthorizationCode(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(oAuthCreateAuthorizationCode(this, request, options));
   }
+
+  // #region sdk-class-body
+  /**
+   * Generate a OAuth2 authorization URL
+   *
+   * @remarks
+   * Generates a URL to redirect users to for authorizing your application. The
+   * URL includes the provided callback URL and, if applicable, the code
+   * challenge parameters for PKCE.
+   *
+   * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
+   */
+  async createAuthorizationUrl(
+    request: CreateAuthorizationUrlRequest,
+  ): Promise<string> {
+    const result = oAuthCreateAuthorizationUrl(this, request);
+
+    if (!result.ok) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
+  /**
+   * Generate a SHA-256 code challenge for PKCE
+   *
+   * @remarks
+   * Generates a SHA-256 code challenge and corresponding code verifier for use
+   * in the PKCE extension to OAuth2. If no code verifier is provided, a random
+   * one will be generated according to RFC 7636 (32 random bytes, base64url
+   * encoded). If a code verifier is provided, it must be 43-128 characters and
+   * contain only unreserved characters [A-Za-z0-9-._~].
+   *
+   * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
+   * @see {@link https://datatracker.ietf.org/doc/html/rfc7636}
+   */
+  async createSHA256CodeChallenge(
+    request: CreateSHA256CodeChallengeRequest = {},
+  ): Promise<CreateSHA256CodeChallengeResponse> {
+    const result = await oAuthCreateSHA256CodeChallenge(request);
+
+    if (!result.ok) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+  // #endregion sdk-class-body
 }

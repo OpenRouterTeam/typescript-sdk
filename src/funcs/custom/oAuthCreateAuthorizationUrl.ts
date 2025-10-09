@@ -16,7 +16,7 @@ const CreateAuthorizationurlParamsSchema = z.union([
   CreateAuthorizationUrlBaseSchema,
 ]);
 
-type CreateAuthorizationUrlParams = z.infer<
+export type CreateAuthorizationUrlRequest = z.infer<
   typeof CreateAuthorizationurlParamsSchema
 >;
 
@@ -32,7 +32,7 @@ type CreateAuthorizationUrlParams = z.infer<
  */
 export function oAuthCreateAuthorizationUrl(
   client: OpenRouterCore,
-  params: CreateAuthorizationUrlParams,
+  params: CreateAuthorizationUrlRequest,
 ): Result<string> {
   const parsedParams = CreateAuthorizationurlParamsSchema.safeParse(params);
   if (!parsedParams.success) return { ok: false, error: parsedParams.error };
