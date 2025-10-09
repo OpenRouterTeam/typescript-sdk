@@ -51,10 +51,7 @@ export function oAuthCreateAuthorizationUrl(
   );
 
   if ("codeChallengeMethod" in parsedParams.data) {
-    authURL.searchParams.set(
-      "code_challenge",
-      parsedParams.data.codeChallenge,
-    );
+    authURL.searchParams.set("code_challenge", parsedParams.data.codeChallenge);
     authURL.searchParams.set(
       "code_challenge_method",
       parsedParams.data.codeChallengeMethod,
