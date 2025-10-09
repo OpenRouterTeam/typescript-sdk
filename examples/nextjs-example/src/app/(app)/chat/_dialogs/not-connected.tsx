@@ -8,7 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getOAuthKeyUrl } from "@/lib/config";
+import { OAUTH_CALLBACK_URL, OPENROUTER_CODE_VERIFIER_KEY } from "@/lib/config";
+import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
 import { ExternalLink } from "lucide-react";
 
 interface NotConnectedDialogProps {
@@ -16,6 +17,22 @@ interface NotConnectedDialogProps {
 }
 
 export function NotConnectedDialog({ open }: NotConnectedDialogProps) {
+  const { client } = useOpenRouter();
+
+  const handleGotoOAuth = async () => {
+    const { codeChallenge, codeVerifier } =
+      await client.oAuth.createSHA256CodeChallenge();
+
+    const url = await client.oAuth.createAuthorizationUrl({
+      codeChallenge,
+      callbackUrl: OAUTH_CALLBACK_URL,
+      codeChallengeMethod: "S256",
+    });
+
+    localStorage.setItem(OPENROUTER_CODE_VERIFIER_KEY, codeVerifier);
+    window.location.href = url;
+  };
+
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent
@@ -39,19 +56,12 @@ export function NotConnectedDialog({ open }: NotConnectedDialogProps) {
             Claude, and more. Authentication is required to make API calls.
           </p>
 
-          <Button asChild className="w-full">
-            <a
-              href={getOAuthKeyUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Connect to OpenRouter
-            </a>
+          <Button onClick={handleGotoOAuth} className="w-full">
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Connect to OpenRouter
           </Button>
         </div>
       </DialogContent>
     </Dialog>
   );
 }
-
