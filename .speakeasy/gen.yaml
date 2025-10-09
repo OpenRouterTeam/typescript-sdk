@@ -31,8 +31,7 @@ typescript:
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
-    devDependencies:
-      vitest: ^3.2.4
+    devDependencies: {}
     peerDependencies: {}
   additionalPackageJSON: {}
   author: OpenRouter
