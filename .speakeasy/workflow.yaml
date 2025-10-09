@@ -4,6 +4,8 @@ sources:
     OpenRouter API:
         inputs:
             - location: .speakeasy/in.openapi.yaml
+        overlays:
+            - location: .speakeasy/overlays/open-enums.overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
