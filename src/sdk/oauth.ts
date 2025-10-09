@@ -7,11 +7,10 @@ import { oAuthExchangeAuthorizationCode } from "../funcs/oAuthExchangeAuthorizat
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-
 // #region imports
 import {
-  oAuthCreateAuthorizationUrl,
   CreateAuthorizationUrlRequest,
+  oAuthCreateAuthorizationUrl,
 } from "../funcs/custom/oAuthCreateAuthorizationUrl.js";
 import {
   CreateSHA256CodeChallengeRequest,
@@ -21,32 +20,6 @@ import {
 // #endregion imports
 
 export class OAuth extends ClientSDK {
-  /**
-   * Exchange authorization code for API key
-   *
-   * @remarks
-   * Exchange an authorization code from the PKCE flow for a user-controlled API key
-   */
-  async exchangeAuthorizationCode(
-    request: operations.ExchangeAuthorizationCodeRequest,
-    options?: RequestOptions,
-  ): Promise<operations.ExchangeAuthorizationCodeResponse> {
-    return unwrapAsync(oAuthExchangeAuthorizationCode(this, request, options));
-  }
-
-  /**
-   * Create authorization code
-   *
-   * @remarks
-   * Create an authorization code for the PKCE flow to generate a user-controlled API key
-   */
-  async createAuthorizationCode(
-    request: operations.CreateAuthorizationCodeRequest,
-    options?: RequestOptions,
-  ): Promise<operations.CreateAuthorizationCodeResponse> {
-    return unwrapAsync(oAuthCreateAuthorizationCode(this, request, options));
-  }
-
   // #region sdk-class-body
   /**
    * Generate a OAuth2 authorization URL
@@ -95,4 +68,38 @@ export class OAuth extends ClientSDK {
     return result.value;
   }
   // #endregion sdk-class-body
+
+  /**
+   * Exchange authorization code for API key
+   *
+   * @remarks
+   * Exchange an authorization code from the PKCE flow for a user-controlled API key
+   */
+  async exchangeAuthorizationCode(
+    request: operations.ExchangeAuthorizationCodeRequest,
+    options?: RequestOptions,
+  ): Promise<operations.ExchangeAuthorizationCodeResponse> {
+    return unwrapAsync(oAuthExchangeAuthorizationCode(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Create authorization code
+   *
+   * @remarks
+   * Create an authorization code for the PKCE flow to generate a user-controlled API key
+   */
+  async createAuthorizationCode(
+    request: operations.CreateAuthorizationCodeRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateAuthorizationCodeResponse> {
+    return unwrapAsync(oAuthCreateAuthorizationCode(
+      this,
+      request,
+      options,
+    ));
+  }
 }
