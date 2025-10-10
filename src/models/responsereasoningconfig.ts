@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -20,7 +24,7 @@ export const ResponseReasoningConfigEffort = {
   Low: "low",
   Minimal: "minimal",
 } as const;
-export type ResponseReasoningConfigEffort = ClosedEnum<
+export type ResponseReasoningConfigEffort = OpenEnum<
   typeof ResponseReasoningConfigEffort
 >;
 
@@ -35,14 +39,25 @@ export type ResponseReasoningConfig = {
 };
 
 /** @internal */
-export const ResponseReasoningConfigEffort$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseReasoningConfigEffort
-> = z.nativeEnum(ResponseReasoningConfigEffort);
+export const ResponseReasoningConfigEffort$inboundSchema: z.ZodType<
+  ResponseReasoningConfigEffort,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseReasoningConfigEffort),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseReasoningConfigEffort$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseReasoningConfigEffort
-> = ResponseReasoningConfigEffort$inboundSchema;
+export const ResponseReasoningConfigEffort$outboundSchema: z.ZodType<
+  ResponseReasoningConfigEffort,
+  z.ZodTypeDef,
+  ResponseReasoningConfigEffort
+> = z.union([
+  z.nativeEnum(ResponseReasoningConfigEffort),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

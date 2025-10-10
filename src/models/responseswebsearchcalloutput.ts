@@ -4,7 +4,12 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -21,7 +26,7 @@ export const ResponsesWebSearchCallOutputStatus = {
   InProgress: "in_progress",
   Failed: "failed",
 } as const;
-export type ResponsesWebSearchCallOutputStatus = ClosedEnum<
+export type ResponsesWebSearchCallOutputStatus = OpenEnum<
   typeof ResponsesWebSearchCallOutputStatus
 >;
 
@@ -56,14 +61,25 @@ export namespace ResponsesWebSearchCallOutputType$ {
 }
 
 /** @internal */
-export const ResponsesWebSearchCallOutputStatus$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesWebSearchCallOutputStatus
-> = z.nativeEnum(ResponsesWebSearchCallOutputStatus);
+export const ResponsesWebSearchCallOutputStatus$inboundSchema: z.ZodType<
+  ResponsesWebSearchCallOutputStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesWebSearchCallOutputStatus),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesWebSearchCallOutputStatus$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesWebSearchCallOutputStatus
-> = ResponsesWebSearchCallOutputStatus$inboundSchema;
+export const ResponsesWebSearchCallOutputStatus$outboundSchema: z.ZodType<
+  ResponsesWebSearchCallOutputStatus,
+  z.ZodTypeDef,
+  ResponsesWebSearchCallOutputStatus
+> = z.union([
+  z.nativeEnum(ResponsesWebSearchCallOutputStatus),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

@@ -3,24 +3,39 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const CompletionFinishReason = {
   Stop: "stop",
   Length: "length",
   ContentFilter: "content_filter",
 } as const;
-export type CompletionFinishReason = ClosedEnum<typeof CompletionFinishReason>;
+export type CompletionFinishReason = OpenEnum<typeof CompletionFinishReason>;
 
 /** @internal */
-export const CompletionFinishReason$inboundSchema: z.ZodNativeEnum<
-  typeof CompletionFinishReason
-> = z.nativeEnum(CompletionFinishReason);
+export const CompletionFinishReason$inboundSchema: z.ZodType<
+  CompletionFinishReason,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(CompletionFinishReason),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const CompletionFinishReason$outboundSchema: z.ZodNativeEnum<
-  typeof CompletionFinishReason
-> = CompletionFinishReason$inboundSchema;
+export const CompletionFinishReason$outboundSchema: z.ZodType<
+  CompletionFinishReason,
+  z.ZodTypeDef,
+  CompletionFinishReason
+> = z.union([
+  z.nativeEnum(CompletionFinishReason),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

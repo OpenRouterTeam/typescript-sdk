@@ -3,24 +3,39 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const ResponseTextVerbosity = {
   High: "high",
   Low: "low",
   Medium: "medium",
 } as const;
-export type ResponseTextVerbosity = ClosedEnum<typeof ResponseTextVerbosity>;
+export type ResponseTextVerbosity = OpenEnum<typeof ResponseTextVerbosity>;
 
 /** @internal */
-export const ResponseTextVerbosity$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseTextVerbosity
-> = z.nativeEnum(ResponseTextVerbosity);
+export const ResponseTextVerbosity$inboundSchema: z.ZodType<
+  ResponseTextVerbosity,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseTextVerbosity),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseTextVerbosity$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseTextVerbosity
-> = ResponseTextVerbosity$inboundSchema;
+export const ResponseTextVerbosity$outboundSchema: z.ZodType<
+  ResponseTextVerbosity,
+  z.ZodTypeDef,
+  ResponseTextVerbosity
+> = z.union([
+  z.nativeEnum(ResponseTextVerbosity),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -42,7 +46,7 @@ export const Tokenizer = {
 /**
  * Tokenizer type used by the model
  */
-export type Tokenizer = ClosedEnum<typeof Tokenizer>;
+export type Tokenizer = OpenEnum<typeof Tokenizer>;
 
 /**
  * Instruction format type
@@ -74,7 +78,7 @@ export const InstructType = {
 /**
  * Instruction format type
  */
-export type InstructType = ClosedEnum<typeof InstructType>;
+export type InstructType = OpenEnum<typeof InstructType>;
 
 export const InputModality = {
   Text: "text",
@@ -82,14 +86,14 @@ export const InputModality = {
   File: "file",
   Audio: "audio",
 } as const;
-export type InputModality = ClosedEnum<typeof InputModality>;
+export type InputModality = OpenEnum<typeof InputModality>;
 
 export const OutputModality = {
   Text: "text",
   Image: "image",
   Embeddings: "embeddings",
 } as const;
-export type OutputModality = ClosedEnum<typeof OutputModality>;
+export type OutputModality = OpenEnum<typeof OutputModality>;
 
 /**
  * Model architecture information
@@ -205,12 +209,25 @@ export function listRequestFromJSON(
 }
 
 /** @internal */
-export const Tokenizer$inboundSchema: z.ZodNativeEnum<typeof Tokenizer> = z
-  .nativeEnum(Tokenizer);
+export const Tokenizer$inboundSchema: z.ZodType<
+  Tokenizer,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(Tokenizer),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Tokenizer$outboundSchema: z.ZodNativeEnum<typeof Tokenizer> =
-  Tokenizer$inboundSchema;
+export const Tokenizer$outboundSchema: z.ZodType<
+  Tokenizer,
+  z.ZodTypeDef,
+  Tokenizer
+> = z.union([
+  z.nativeEnum(Tokenizer),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -224,12 +241,25 @@ export namespace Tokenizer$ {
 }
 
 /** @internal */
-export const InstructType$inboundSchema: z.ZodNativeEnum<typeof InstructType> =
-  z.nativeEnum(InstructType);
+export const InstructType$inboundSchema: z.ZodType<
+  InstructType,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(InstructType),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const InstructType$outboundSchema: z.ZodNativeEnum<typeof InstructType> =
-  InstructType$inboundSchema;
+export const InstructType$outboundSchema: z.ZodType<
+  InstructType,
+  z.ZodTypeDef,
+  InstructType
+> = z.union([
+  z.nativeEnum(InstructType),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -243,14 +273,25 @@ export namespace InstructType$ {
 }
 
 /** @internal */
-export const InputModality$inboundSchema: z.ZodNativeEnum<
-  typeof InputModality
-> = z.nativeEnum(InputModality);
+export const InputModality$inboundSchema: z.ZodType<
+  InputModality,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(InputModality),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const InputModality$outboundSchema: z.ZodNativeEnum<
-  typeof InputModality
-> = InputModality$inboundSchema;
+export const InputModality$outboundSchema: z.ZodType<
+  InputModality,
+  z.ZodTypeDef,
+  InputModality
+> = z.union([
+  z.nativeEnum(InputModality),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -264,14 +305,25 @@ export namespace InputModality$ {
 }
 
 /** @internal */
-export const OutputModality$inboundSchema: z.ZodNativeEnum<
-  typeof OutputModality
-> = z.nativeEnum(OutputModality);
+export const OutputModality$inboundSchema: z.ZodType<
+  OutputModality,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(OutputModality),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const OutputModality$outboundSchema: z.ZodNativeEnum<
-  typeof OutputModality
-> = OutputModality$inboundSchema;
+export const OutputModality$outboundSchema: z.ZodType<
+  OutputModality,
+  z.ZodTypeDef,
+  OutputModality
+> = z.union([
+  z.nativeEnum(OutputModality),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

@@ -96,7 +96,7 @@ async function $do(
   });
 
   const headers = new Headers(compactMap({
-    Accept: "application/json;q=1",
+    Accept: "application/json;q=1, application/rss+xml;q=0",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

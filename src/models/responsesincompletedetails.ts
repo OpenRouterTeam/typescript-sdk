@@ -4,7 +4,11 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -12,7 +16,7 @@ export const ResponsesIncompleteDetailsReason = {
   MaxOutputTokens: "max_output_tokens",
   ContentFilter: "content_filter",
 } as const;
-export type ResponsesIncompleteDetailsReason = ClosedEnum<
+export type ResponsesIncompleteDetailsReason = OpenEnum<
   typeof ResponsesIncompleteDetailsReason
 >;
 
@@ -24,14 +28,25 @@ export type ResponsesIncompleteDetails = {
 };
 
 /** @internal */
-export const ResponsesIncompleteDetailsReason$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesIncompleteDetailsReason
-> = z.nativeEnum(ResponsesIncompleteDetailsReason);
+export const ResponsesIncompleteDetailsReason$inboundSchema: z.ZodType<
+  ResponsesIncompleteDetailsReason,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesIncompleteDetailsReason),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesIncompleteDetailsReason$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesIncompleteDetailsReason
-> = ResponsesIncompleteDetailsReason$inboundSchema;
+export const ResponsesIncompleteDetailsReason$outboundSchema: z.ZodType<
+  ResponsesIncompleteDetailsReason,
+  z.ZodTypeDef,
+  ResponsesIncompleteDetailsReason
+> = z.union([
+  z.nativeEnum(ResponsesIncompleteDetailsReason),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

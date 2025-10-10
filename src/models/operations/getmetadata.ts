@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -23,7 +27,7 @@ export const ApiType = {
 /**
  * Type of API used for the generation
  */
-export type ApiType = ClosedEnum<typeof ApiType>;
+export type ApiType = OpenEnum<typeof ApiType>;
 
 /**
  * Generation data
@@ -220,12 +224,19 @@ export function getMetadataRequestFromJSON(
 }
 
 /** @internal */
-export const ApiType$inboundSchema: z.ZodNativeEnum<typeof ApiType> = z
-  .nativeEnum(ApiType);
+export const ApiType$inboundSchema: z.ZodType<ApiType, z.ZodTypeDef, unknown> =
+  z
+    .union([
+      z.nativeEnum(ApiType),
+      z.string().transform(catchUnrecognizedEnum),
+    ]);
 
 /** @internal */
-export const ApiType$outboundSchema: z.ZodNativeEnum<typeof ApiType> =
-  ApiType$inboundSchema;
+export const ApiType$outboundSchema: z.ZodType<ApiType, z.ZodTypeDef, ApiType> =
+  z.union([
+    z.nativeEnum(ApiType),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
 
 /**
  * @internal

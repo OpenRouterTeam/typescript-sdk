@@ -3,7 +3,11 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const ResponseImageGenerationCallStatus = {
   InProgress: "in_progress",
@@ -11,19 +15,30 @@ export const ResponseImageGenerationCallStatus = {
   Generating: "generating",
   Failed: "failed",
 } as const;
-export type ResponseImageGenerationCallStatus = ClosedEnum<
+export type ResponseImageGenerationCallStatus = OpenEnum<
   typeof ResponseImageGenerationCallStatus
 >;
 
 /** @internal */
-export const ResponseImageGenerationCallStatus$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseImageGenerationCallStatus
-> = z.nativeEnum(ResponseImageGenerationCallStatus);
+export const ResponseImageGenerationCallStatus$inboundSchema: z.ZodType<
+  ResponseImageGenerationCallStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseImageGenerationCallStatus),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseImageGenerationCallStatus$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseImageGenerationCallStatus
-> = ResponseImageGenerationCallStatus$inboundSchema;
+export const ResponseImageGenerationCallStatus$outboundSchema: z.ZodType<
+  ResponseImageGenerationCallStatus,
+  z.ZodTypeDef,
+  ResponseImageGenerationCallStatus
+> = z.union([
+  z.nativeEnum(ResponseImageGenerationCallStatus),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

@@ -5,7 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -76,7 +81,7 @@ export const ResponsesNonStreamingResponseStatus = {
   Cancelled: "cancelled",
   Queued: "queued",
 } as const;
-export type ResponsesNonStreamingResponseStatus = ClosedEnum<
+export type ResponsesNonStreamingResponseStatus = OpenEnum<
   typeof ResponsesNonStreamingResponseStatus
 >;
 
@@ -85,7 +90,7 @@ export const ResponsesNonStreamingResponseCode = {
   RateLimitExceeded: "rate_limit_exceeded",
   InvalidPrompt: "invalid_prompt",
 } as const;
-export type ResponsesNonStreamingResponseCode = ClosedEnum<
+export type ResponsesNonStreamingResponseCode = OpenEnum<
   typeof ResponsesNonStreamingResponseCode
 >;
 
@@ -103,13 +108,13 @@ export const ServiceTier = {
   Priority: "priority",
   Scale: "scale",
 } as const;
-export type ServiceTier = ClosedEnum<typeof ServiceTier>;
+export type ServiceTier = OpenEnum<typeof ServiceTier>;
 
 export const Truncation = {
   Auto: "auto",
   Disabled: "disabled",
 } as const;
-export type Truncation = ClosedEnum<typeof Truncation>;
+export type Truncation = OpenEnum<typeof Truncation>;
 
 /**
  * Non-streaming response from Responses API
@@ -189,14 +194,25 @@ export namespace ObjectT$ {
 }
 
 /** @internal */
-export const ResponsesNonStreamingResponseStatus$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesNonStreamingResponseStatus
-> = z.nativeEnum(ResponsesNonStreamingResponseStatus);
+export const ResponsesNonStreamingResponseStatus$inboundSchema: z.ZodType<
+  ResponsesNonStreamingResponseStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesNonStreamingResponseStatus),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesNonStreamingResponseStatus$outboundSchema:
-  z.ZodNativeEnum<typeof ResponsesNonStreamingResponseStatus> =
-    ResponsesNonStreamingResponseStatus$inboundSchema;
+export const ResponsesNonStreamingResponseStatus$outboundSchema: z.ZodType<
+  ResponsesNonStreamingResponseStatus,
+  z.ZodTypeDef,
+  ResponsesNonStreamingResponseStatus
+> = z.union([
+  z.nativeEnum(ResponsesNonStreamingResponseStatus),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -212,14 +228,25 @@ export namespace ResponsesNonStreamingResponseStatus$ {
 }
 
 /** @internal */
-export const ResponsesNonStreamingResponseCode$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesNonStreamingResponseCode
-> = z.nativeEnum(ResponsesNonStreamingResponseCode);
+export const ResponsesNonStreamingResponseCode$inboundSchema: z.ZodType<
+  ResponsesNonStreamingResponseCode,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesNonStreamingResponseCode),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesNonStreamingResponseCode$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesNonStreamingResponseCode
-> = ResponsesNonStreamingResponseCode$inboundSchema;
+export const ResponsesNonStreamingResponseCode$outboundSchema: z.ZodType<
+  ResponsesNonStreamingResponseCode,
+  z.ZodTypeDef,
+  ResponsesNonStreamingResponseCode
+> = z.union([
+  z.nativeEnum(ResponsesNonStreamingResponseCode),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -342,12 +369,25 @@ export function instructionsFromJSON(
 }
 
 /** @internal */
-export const ServiceTier$inboundSchema: z.ZodNativeEnum<typeof ServiceTier> = z
-  .nativeEnum(ServiceTier);
+export const ServiceTier$inboundSchema: z.ZodType<
+  ServiceTier,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ServiceTier),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodNativeEnum<typeof ServiceTier> =
-  ServiceTier$inboundSchema;
+export const ServiceTier$outboundSchema: z.ZodType<
+  ServiceTier,
+  z.ZodTypeDef,
+  ServiceTier
+> = z.union([
+  z.nativeEnum(ServiceTier),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -361,12 +401,25 @@ export namespace ServiceTier$ {
 }
 
 /** @internal */
-export const Truncation$inboundSchema: z.ZodNativeEnum<typeof Truncation> = z
-  .nativeEnum(Truncation);
+export const Truncation$inboundSchema: z.ZodType<
+  Truncation,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(Truncation),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Truncation$outboundSchema: z.ZodNativeEnum<typeof Truncation> =
-  Truncation$inboundSchema;
+export const Truncation$outboundSchema: z.ZodType<
+  Truncation,
+  z.ZodTypeDef,
+  Truncation
+> = z.union([
+  z.nativeEnum(Truncation),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

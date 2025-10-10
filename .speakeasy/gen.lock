@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 7b223cbfdfb0125942774277070f7573
+  docChecksum: 4b7a232a756ae447e9236cd29e051bca
   docVersion: 1.0.0
-  speakeasyVersion: 1.636.2
-  generationVersion: 2.723.8
-  releaseVersion: 0.0.0-beta.38
-  configChecksum: 45ac5e4bc0f54b03301449edf0dacc02
+  speakeasyVersion: 1.636.3
+  generationVersion: 2.723.11
+  releaseVersion: 0.0.0-beta.39
+  configChecksum: e8142d1e45ca9baae5716dc9d115c2d3
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -31,11 +31,12 @@ features:
     methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
+    openEnums: 0.1.1
     reactQueryHooks: 0.2.3
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    serverEvents: 0.1.11
+    serverEvents: 0.1.12
     serverEventsSentinels: 0.1.0
     serverIDs: 2.81.2
     unions: 2.86.0

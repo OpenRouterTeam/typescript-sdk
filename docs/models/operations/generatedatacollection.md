@@ -15,6 +15,8 @@ let value: GenerateDataCollection = "allow";
 
 ## Values
 
+This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
+
 ```typescript
-"deny" | "allow"
+"deny" | "allow" | Unrecognized<string>
 ```

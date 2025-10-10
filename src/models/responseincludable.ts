@@ -3,7 +3,11 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 /**
  * Includable fields for response
@@ -18,17 +22,28 @@ export const ResponseIncludable = {
 /**
  * Includable fields for response
  */
-export type ResponseIncludable = ClosedEnum<typeof ResponseIncludable>;
+export type ResponseIncludable = OpenEnum<typeof ResponseIncludable>;
 
 /** @internal */
-export const ResponseIncludable$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseIncludable
-> = z.nativeEnum(ResponseIncludable);
+export const ResponseIncludable$inboundSchema: z.ZodType<
+  ResponseIncludable,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseIncludable),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseIncludable$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseIncludable
-> = ResponseIncludable$inboundSchema;
+export const ResponseIncludable$outboundSchema: z.ZodType<
+  ResponseIncludable,
+  z.ZodTypeDef,
+  ResponseIncludable
+> = z.union([
+  z.nativeEnum(ResponseIncludable),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

@@ -3,26 +3,41 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const ResponseFunctionCallStatus = {
   InProgress: "in_progress",
   Completed: "completed",
   Incomplete: "incomplete",
 } as const;
-export type ResponseFunctionCallStatus = ClosedEnum<
+export type ResponseFunctionCallStatus = OpenEnum<
   typeof ResponseFunctionCallStatus
 >;
 
 /** @internal */
-export const ResponseFunctionCallStatus$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseFunctionCallStatus
-> = z.nativeEnum(ResponseFunctionCallStatus);
+export const ResponseFunctionCallStatus$inboundSchema: z.ZodType<
+  ResponseFunctionCallStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseFunctionCallStatus),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseFunctionCallStatus$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseFunctionCallStatus
-> = ResponseFunctionCallStatus$inboundSchema;
+export const ResponseFunctionCallStatus$outboundSchema: z.ZodType<
+  ResponseFunctionCallStatus,
+  z.ZodTypeDef,
+  ResponseFunctionCallStatus
+> = z.union([
+  z.nativeEnum(ResponseFunctionCallStatus),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

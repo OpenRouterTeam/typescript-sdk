@@ -4,7 +4,11 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -80,7 +84,7 @@ export const ErrorResponseCode = {
   FiveHundredAndTwentyNine: 529,
   FiveHundredAndThirty: 530,
 } as const;
-export type ErrorResponseCode = ClosedEnum<typeof ErrorResponseCode>;
+export type ErrorResponseCode = OpenEnum<typeof ErrorResponseCode>;
 
 export type ErrorResponseError = {
   code: ErrorResponseCode;
@@ -89,14 +93,25 @@ export type ErrorResponseError = {
 };
 
 /** @internal */
-export const ErrorResponseCode$inboundSchema: z.ZodNativeEnum<
-  typeof ErrorResponseCode
-> = z.nativeEnum(ErrorResponseCode);
+export const ErrorResponseCode$inboundSchema: z.ZodType<
+  ErrorResponseCode,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ErrorResponseCode),
+    z.number().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ErrorResponseCode$outboundSchema: z.ZodNativeEnum<
-  typeof ErrorResponseCode
-> = ErrorResponseCode$inboundSchema;
+export const ErrorResponseCode$outboundSchema: z.ZodType<
+  ErrorResponseCode,
+  z.ZodTypeDef,
+  ErrorResponseCode
+> = z.union([
+  z.nativeEnum(ErrorResponseCode),
+  z.number().and(z.custom<Unrecognized<number>>()),
+]);
 
 /**
  * @internal

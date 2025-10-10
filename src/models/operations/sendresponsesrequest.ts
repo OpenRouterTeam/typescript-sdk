@@ -6,7 +6,12 @@ import * as z from "zod";
 import { EventStream } from "../../lib/event-streams.js";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -18,13 +23,13 @@ export const ServiceTier = {
   Priority: "priority",
   Scale: "scale",
 } as const;
-export type ServiceTier = ClosedEnum<typeof ServiceTier>;
+export type ServiceTier = OpenEnum<typeof ServiceTier>;
 
 export const Truncation = {
   Auto: "auto",
   Disabled: "disabled",
 } as const;
-export type Truncation = ClosedEnum<typeof Truncation>;
+export type Truncation = OpenEnum<typeof Truncation>;
 
 /**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.
@@ -44,7 +49,7 @@ export const SendResponsesRequestDataCollection = {
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export type SendResponsesRequestDataCollection = ClosedEnum<
+export type SendResponsesRequestDataCollection = OpenEnum<
   typeof SendResponsesRequestDataCollection
 >;
 
@@ -132,7 +137,7 @@ export const SendResponsesRequestOrderEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type SendResponsesRequestOrderEnum = ClosedEnum<
+export type SendResponsesRequestOrderEnum = OpenEnum<
   typeof SendResponsesRequestOrderEnum
 >;
 
@@ -224,7 +229,7 @@ export const SendResponsesRequestOnlyEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type SendResponsesRequestOnlyEnum = ClosedEnum<
+export type SendResponsesRequestOnlyEnum = OpenEnum<
   typeof SendResponsesRequestOnlyEnum
 >;
 
@@ -316,7 +321,7 @@ export const SendResponsesRequestIgnoreEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type SendResponsesRequestIgnoreEnum = ClosedEnum<
+export type SendResponsesRequestIgnoreEnum = OpenEnum<
   typeof SendResponsesRequestIgnoreEnum
 >;
 
@@ -335,7 +340,7 @@ export const SendResponsesRequestQuantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type SendResponsesRequestQuantization = ClosedEnum<
+export type SendResponsesRequestQuantization = OpenEnum<
   typeof SendResponsesRequestQuantization
 >;
 
@@ -350,7 +355,7 @@ export const SendResponsesRequestSort = {
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type SendResponsesRequestSort = ClosedEnum<
+export type SendResponsesRequestSort = OpenEnum<
   typeof SendResponsesRequestSort
 >;
 
@@ -442,7 +447,7 @@ export const PdfEngine = {
   PdfText: "pdf-text",
   Native: "native",
 } as const;
-export type PdfEngine = ClosedEnum<typeof PdfEngine>;
+export type PdfEngine = OpenEnum<typeof PdfEngine>;
 
 export type Pdf = {
   engine?: PdfEngine | undefined;
@@ -472,7 +477,7 @@ export const Engine = {
   Native: "native",
   Exa: "exa",
 } as const;
-export type Engine = ClosedEnum<typeof Engine>;
+export type Engine = OpenEnum<typeof Engine>;
 
 export type PluginWeb = {
   id: IdWeb;
@@ -575,12 +580,25 @@ export type SendResponsesRequestResponse =
   | EventStream<SendResponsesRequestResponseBody>;
 
 /** @internal */
-export const ServiceTier$inboundSchema: z.ZodNativeEnum<typeof ServiceTier> = z
-  .nativeEnum(ServiceTier);
+export const ServiceTier$inboundSchema: z.ZodType<
+  ServiceTier,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ServiceTier),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodNativeEnum<typeof ServiceTier> =
-  ServiceTier$inboundSchema;
+export const ServiceTier$outboundSchema: z.ZodType<
+  ServiceTier,
+  z.ZodTypeDef,
+  ServiceTier
+> = z.union([
+  z.nativeEnum(ServiceTier),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -594,12 +612,25 @@ export namespace ServiceTier$ {
 }
 
 /** @internal */
-export const Truncation$inboundSchema: z.ZodNativeEnum<typeof Truncation> = z
-  .nativeEnum(Truncation);
+export const Truncation$inboundSchema: z.ZodType<
+  Truncation,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(Truncation),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Truncation$outboundSchema: z.ZodNativeEnum<typeof Truncation> =
-  Truncation$inboundSchema;
+export const Truncation$outboundSchema: z.ZodType<
+  Truncation,
+  z.ZodTypeDef,
+  Truncation
+> = z.union([
+  z.nativeEnum(Truncation),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -613,14 +644,25 @@ export namespace Truncation$ {
 }
 
 /** @internal */
-export const SendResponsesRequestDataCollection$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestDataCollection
-> = z.nativeEnum(SendResponsesRequestDataCollection);
+export const SendResponsesRequestDataCollection$inboundSchema: z.ZodType<
+  SendResponsesRequestDataCollection,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestDataCollection),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestDataCollection$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestDataCollection
-> = SendResponsesRequestDataCollection$inboundSchema;
+export const SendResponsesRequestDataCollection$outboundSchema: z.ZodType<
+  SendResponsesRequestDataCollection,
+  z.ZodTypeDef,
+  SendResponsesRequestDataCollection
+> = z.union([
+  z.nativeEnum(SendResponsesRequestDataCollection),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -635,14 +677,25 @@ export namespace SendResponsesRequestDataCollection$ {
 }
 
 /** @internal */
-export const SendResponsesRequestOrderEnum$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestOrderEnum
-> = z.nativeEnum(SendResponsesRequestOrderEnum);
+export const SendResponsesRequestOrderEnum$inboundSchema: z.ZodType<
+  SendResponsesRequestOrderEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestOrderEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestOrderEnum$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestOrderEnum
-> = SendResponsesRequestOrderEnum$inboundSchema;
+export const SendResponsesRequestOrderEnum$outboundSchema: z.ZodType<
+  SendResponsesRequestOrderEnum,
+  z.ZodTypeDef,
+  SendResponsesRequestOrderEnum
+> = z.union([
+  z.nativeEnum(SendResponsesRequestOrderEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -706,14 +759,25 @@ export function sendResponsesRequestOrderUnionFromJSON(
 }
 
 /** @internal */
-export const SendResponsesRequestOnlyEnum$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestOnlyEnum
-> = z.nativeEnum(SendResponsesRequestOnlyEnum);
+export const SendResponsesRequestOnlyEnum$inboundSchema: z.ZodType<
+  SendResponsesRequestOnlyEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestOnlyEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestOnlyEnum$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestOnlyEnum
-> = SendResponsesRequestOnlyEnum$inboundSchema;
+export const SendResponsesRequestOnlyEnum$outboundSchema: z.ZodType<
+  SendResponsesRequestOnlyEnum,
+  z.ZodTypeDef,
+  SendResponsesRequestOnlyEnum
+> = z.union([
+  z.nativeEnum(SendResponsesRequestOnlyEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -777,14 +841,25 @@ export function sendResponsesRequestOnlyUnionFromJSON(
 }
 
 /** @internal */
-export const SendResponsesRequestIgnoreEnum$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestIgnoreEnum
-> = z.nativeEnum(SendResponsesRequestIgnoreEnum);
+export const SendResponsesRequestIgnoreEnum$inboundSchema: z.ZodType<
+  SendResponsesRequestIgnoreEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestIgnoreEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestIgnoreEnum$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestIgnoreEnum
-> = SendResponsesRequestIgnoreEnum$inboundSchema;
+export const SendResponsesRequestIgnoreEnum$outboundSchema: z.ZodType<
+  SendResponsesRequestIgnoreEnum,
+  z.ZodTypeDef,
+  SendResponsesRequestIgnoreEnum
+> = z.union([
+  z.nativeEnum(SendResponsesRequestIgnoreEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -848,14 +923,25 @@ export function sendResponsesRequestIgnoreUnionFromJSON(
 }
 
 /** @internal */
-export const SendResponsesRequestQuantization$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestQuantization
-> = z.nativeEnum(SendResponsesRequestQuantization);
+export const SendResponsesRequestQuantization$inboundSchema: z.ZodType<
+  SendResponsesRequestQuantization,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestQuantization),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestQuantization$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestQuantization
-> = SendResponsesRequestQuantization$inboundSchema;
+export const SendResponsesRequestQuantization$outboundSchema: z.ZodType<
+  SendResponsesRequestQuantization,
+  z.ZodTypeDef,
+  SendResponsesRequestQuantization
+> = z.union([
+  z.nativeEnum(SendResponsesRequestQuantization),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -869,14 +955,25 @@ export namespace SendResponsesRequestQuantization$ {
 }
 
 /** @internal */
-export const SendResponsesRequestSort$inboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestSort
-> = z.nativeEnum(SendResponsesRequestSort);
+export const SendResponsesRequestSort$inboundSchema: z.ZodType<
+  SendResponsesRequestSort,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SendResponsesRequestSort),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SendResponsesRequestSort$outboundSchema: z.ZodNativeEnum<
-  typeof SendResponsesRequestSort
-> = SendResponsesRequestSort$inboundSchema;
+export const SendResponsesRequestSort$outboundSchema: z.ZodType<
+  SendResponsesRequestSort,
+  z.ZodTypeDef,
+  SendResponsesRequestSort
+> = z.union([
+  z.nativeEnum(SendResponsesRequestSort),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -1401,12 +1498,25 @@ export namespace IdFileParser$ {
 }
 
 /** @internal */
-export const PdfEngine$inboundSchema: z.ZodNativeEnum<typeof PdfEngine> = z
-  .nativeEnum(PdfEngine);
+export const PdfEngine$inboundSchema: z.ZodType<
+  PdfEngine,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(PdfEngine),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const PdfEngine$outboundSchema: z.ZodNativeEnum<typeof PdfEngine> =
-  PdfEngine$inboundSchema;
+export const PdfEngine$outboundSchema: z.ZodType<
+  PdfEngine,
+  z.ZodTypeDef,
+  PdfEngine
+> = z.union([
+  z.nativeEnum(PdfEngine),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -1627,12 +1737,18 @@ export namespace IdWeb$ {
 }
 
 /** @internal */
-export const Engine$inboundSchema: z.ZodNativeEnum<typeof Engine> = z
-  .nativeEnum(Engine);
+export const Engine$inboundSchema: z.ZodType<Engine, z.ZodTypeDef, unknown> = z
+  .union([
+    z.nativeEnum(Engine),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Engine$outboundSchema: z.ZodNativeEnum<typeof Engine> =
-  Engine$inboundSchema;
+export const Engine$outboundSchema: z.ZodType<Engine, z.ZodTypeDef, Engine> = z
+  .union([
+    z.nativeEnum(Engine),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
 
 /**
  * @internal

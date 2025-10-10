@@ -253,6 +253,7 @@ components:
             - openai-responses-v1
             - xai-responses-v1
             - anthropic-claude-v1
+          x-speakeasy-unknown-values: allow
       required:
         - type
         - id
@@ -310,6 +311,7 @@ components:
             - searching
             - in_progress
             - failed
+          x-speakeasy-unknown-values: allow
       required:
         - type
         - id
@@ -339,6 +341,7 @@ components:
             - searching
             - in_progress
             - failed
+          x-speakeasy-unknown-values: allow
       required:
         - type
         - id
@@ -360,6 +363,7 @@ components:
         - generating
         - failed
       example: completed
+      x-speakeasy-unknown-values: allow
     ResponsesImageGenerationCall:
       type: object
       properties:
@@ -421,6 +425,7 @@ components:
           enum:
             - max_output_tokens
             - content_filter
+          x-speakeasy-unknown-values: allow
       description: Details about why response was incomplete
       example:
         reason: max_output_tokens
@@ -530,6 +535,7 @@ components:
         - high
         - low
       example: auto
+      x-speakeasy-unknown-values: allow
     ResponseInputImage:
       type: object
       properties:
@@ -660,6 +666,7 @@ components:
         - completed
         - incomplete
       example: completed
+      x-speakeasy-unknown-values: allow
     ResponseFunctionToolCall:
       type: object
       properties:
@@ -866,6 +873,7 @@ components:
         - concise
         - detailed
       example: auto
+      x-speakeasy-unknown-values: allow
     ResponseReasoningConfig:
       type: object
       nullable: true
@@ -878,6 +886,7 @@ components:
             - medium
             - low
             - minimal
+          x-speakeasy-unknown-values: allow
         summary:
           $ref: '#/components/schemas/ResponseReasoningSummaryMode'
         max_tokens:
@@ -967,6 +976,7 @@ components:
         - low
         - medium
       example: medium
+      x-speakeasy-unknown-values: allow
     ResponseTextConfig:
       type: object
       properties:
@@ -1001,6 +1011,7 @@ components:
             - failed
             - cancelled
             - queued
+          x-speakeasy-unknown-values: allow
         output:
           type: array
           items:
@@ -1026,6 +1037,7 @@ components:
                 - server_error
                 - rate_limit_exceeded
                 - invalid_prompt
+              x-speakeasy-unknown-values: allow
             message:
               type: string
           required:
@@ -1085,6 +1097,7 @@ components:
             - flex
             - priority
             - scale
+          x-speakeasy-unknown-values: allow
         store:
           type: boolean
         truncation:
@@ -1093,6 +1106,7 @@ components:
           enum:
             - auto
             - disabled
+          x-speakeasy-unknown-values: allow
         text:
           $ref: '#/components/schemas/ResponseTextConfig'
       required:
@@ -1167,6 +1181,7 @@ components:
               enum:
                 - response.completed
                 - response.incomplete
+              x-speakeasy-unknown-values: allow
             response:
               type: object
               properties:
@@ -1313,6 +1328,7 @@ components:
                         - searching
                         - in_progress
                         - failed
+                      x-speakeasy-unknown-values: allow
                   required:
                     - type
                     - id
@@ -1336,6 +1352,7 @@ components:
                         - searching
                         - in_progress
                         - failed
+                      x-speakeasy-unknown-values: allow
                   required:
                     - type
                     - id
@@ -1445,6 +1462,7 @@ components:
                         - completed
                         - generating
                         - failed
+                      x-speakeasy-unknown-values: allow
                   required:
                     - type
                     - id
@@ -1463,6 +1481,7 @@ components:
                         - in_progress
                         - completed
                         - searching
+                      x-speakeasy-unknown-values: allow
                   required:
                     - type
                     - id
@@ -1917,6 +1936,7 @@ components:
                 - 526
                 - 529
                 - 530
+              x-speakeasy-unknown-values: allow
             message:
               type: string
             metadata:
@@ -1951,6 +1971,7 @@ components:
         - code_interpreter_call.outputs
       description: Includable fields for response
       example: file_search_call.results
+      x-speakeasy-unknown-values: allow
     OpenAIResponsesRequest:
       type: object
       properties:
@@ -2023,12 +2044,14 @@ components:
             - flex
             - priority
             - scale
+          x-speakeasy-unknown-values: allow
         truncation:
           type: string
           nullable: true
           enum:
             - auto
             - disabled
+          x-speakeasy-unknown-values: allow
         stream:
           type: boolean
           nullable: true
@@ -2042,17 +2065,15 @@ components:
               description: >
                 Whether to allow backup providers to serve requests
 
-                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use
-                the next best provider.
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
 
                 - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
             require_parameters:
               type: boolean
               nullable: true
               description: >-
-                Whether to filter providers to only those that support the parameters you've provided. If this setting
-                is omitted or set to false, then providers will receive only the parameters they support, and ignore the
-                rest.
+                Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
             data_collection:
               type: string
               nullable: true
@@ -2060,18 +2081,18 @@ components:
                 - deny
                 - allow
               description: >
-                Data collection setting. If no available model provider meets the requirement, your request will return
-                an error.
+                Data collection setting. If no available model provider meets the requirement, your request will return an error.
 
                 - allow: (default) allow providers which store user data non-transiently and may train on it
 
                 - deny: use only providers which do not collect user data.
+
+              x-speakeasy-unknown-values: allow
             zdr:
               type: boolean
               nullable: true
               description: >-
-                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that
-                do not retain prompts will be used.
+                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
               example: true
             order:
               type: array
@@ -2162,11 +2183,10 @@ components:
                       - xAI
                       - Z.AI
                       - FakeProvider
+                    x-speakeasy-unknown-values: allow
                   - type: string
               description: >-
-                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of
-                this list that supports your requested model, and fall back to the next if it is unavailable. If no
-                providers are available, the request will fail with an error message.
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
             only:
               type: array
               nullable: true
@@ -2256,10 +2276,10 @@ components:
                       - xAI
                       - Z.AI
                       - FakeProvider
+                    x-speakeasy-unknown-values: allow
                   - type: string
               description: >-
-                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                provider settings for this request.
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
             ignore:
               type: array
               nullable: true
@@ -2349,10 +2369,10 @@ components:
                       - xAI
                       - Z.AI
                       - FakeProvider
+                    x-speakeasy-unknown-values: allow
                   - type: string
               description: >-
-                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
-                provider settings for this request.
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
             quantizations:
               type: array
               nullable: true
@@ -2368,6 +2388,7 @@ components:
                   - bf16
                   - fp32
                   - unknown
+                x-speakeasy-unknown-values: allow
               description: A list of quantization levels to filter the provider by.
             sort:
               type: string
@@ -2377,8 +2398,8 @@ components:
                 - throughput
                 - latency
               description: >-
-                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
-                is performed.
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+              x-speakeasy-unknown-values: allow
             max_price:
               type: object
               properties:
@@ -2409,8 +2430,7 @@ components:
                     - {}
               additionalProperties: false
               description: >-
-                The object specifying the maximum price you want to pay for this request. USD price per million tokens,
-                for prompt and completion.
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
             experimental:
               type: object
               nullable: true
@@ -2444,6 +2464,7 @@ components:
                     enum:
                       - native
                       - exa
+                    x-speakeasy-unknown-values: allow
                 required:
                   - id
               - type: object
@@ -2471,6 +2492,7 @@ components:
                           - mistral-ocr
                           - pdf-text
                           - native
+                        x-speakeasy-unknown-values: allow
                 required:
                   - id
           description: Plugins you want to enable for this request, including their settings.
@@ -2478,9 +2500,7 @@ components:
           type: string
           maxLength: 128
           description: >-
-            A unique identifier representing your end-user, which helps distinguish between different users of your app.
-            This allows your app to identify specific users in case of abuse reports, preventing your entire app from
-            being affected by the actions of individual users. Maximum of 128 characters.
+            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
       description: Request schema for OpenAI-compatible Responses API
     ActivityItem:
       type: object
@@ -2667,6 +2687,7 @@ components:
                   - RWKV
                   - Qwen3
                 description: Tokenizer type used by the model
+                x-speakeasy-unknown-values: allow
               instruct_type:
                 type: string
                 nullable: true
@@ -2694,6 +2715,7 @@ components:
                   - qwq
                   - qwen3
                 description: Instruction format type
+                x-speakeasy-unknown-values: allow
               modality:
                 type: string
                 nullable: true
@@ -2708,6 +2730,7 @@ components:
                     - image
                     - file
                     - audio
+                  x-speakeasy-unknown-values: allow
                 description: Supported input modalities
               output_modalities:
                 type: array
@@ -2717,6 +2740,7 @@ components:
                     - text
                     - image
                     - embeddings
+                  x-speakeasy-unknown-values: allow
                 description: Supported output modalities
             required:
               - modality
@@ -2783,6 +2807,7 @@ components:
                 - reasoning
                 - web_search_options
                 - verbosity
+              x-speakeasy-unknown-values: allow
             description: List of supported parameters for this model
           default_parameters:
             type: object
@@ -3010,6 +3035,7 @@ components:
               - xAI
               - Z.AI
               - FakeProvider
+            x-speakeasy-unknown-values: allow
           tag:
             type: string
           quantization:
@@ -3025,6 +3051,7 @@ components:
               - bf16
               - fp32
               - unknown
+            x-speakeasy-unknown-values: allow
           max_completion_tokens:
             type: number
             nullable: true
@@ -3059,6 +3086,7 @@ components:
                 - reasoning
                 - web_search_options
                 - verbosity
+              x-speakeasy-unknown-values: allow
           status:
             type: integer
             enum:
@@ -3068,6 +3096,7 @@ components:
               - -3
               - -5
               - -10
+            x-speakeasy-unknown-values: allow
           uptime_last_30m:
             type: number
             nullable: true
@@ -3757,6 +3786,7 @@ components:
                 - auto
                 - low
                 - high
+              x-speakeasy-unknown-values: allow
           required:
             - url
       required:
@@ -3783,6 +3813,7 @@ components:
                 - ogg
                 - pcm16
                 - pcm24
+              x-speakeasy-unknown-values: allow
           required:
             - data
             - format
@@ -4106,6 +4137,7 @@ components:
                 - medium
                 - high
                 - null
+              x-speakeasy-unknown-values: allow
             generate_summary:
               type:
                 - string
@@ -4115,6 +4147,7 @@ components:
                 - concise
                 - detailed
                 - null
+              x-speakeasy-unknown-values: allow
             summary:
               type:
                 - string
@@ -4124,6 +4157,7 @@ components:
                 - concise
                 - detailed
                 - null
+              x-speakeasy-unknown-values: allow
         response_format:
           oneOf:
             - type: object
@@ -4242,6 +4276,7 @@ components:
             - content_filter
             - error
             - null
+          x-speakeasy-unknown-values: allow
         index:
           type: number
         message:
@@ -4366,6 +4401,7 @@ components:
             - content_filter
             - error
             - null
+          x-speakeasy-unknown-values: allow
         index:
           type: number
         logprobs:
@@ -4428,6 +4464,7 @@ components:
         - length
         - content_filter
         - null
+      x-speakeasy-unknown-values: allow
     CompletionLogprobs:
       type: object
       properties:
@@ -4855,6 +4892,7 @@ paths:
                     - 1
                     - 137
                     - 8453
+                  x-speakeasy-unknown-values: allow
               required:
                 - amount
                 - sender
@@ -4996,18 +5034,15 @@ paths:
                       description: >
                         Whether to allow backup providers to serve requests
 
-                        - true: (default) when the primary provider (or your custom providers in "order") is
-                        unavailable, use the next best provider.
+                        - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
 
-                        - false: use only the primary/custom provider, and return the upstream error if it's
-                        unavailable.
+                        - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
                     require_parameters:
                       type: boolean
                       nullable: true
                       description: >-
-                        Whether to filter providers to only those that support the parameters you've provided. If this
-                        setting is omitted or set to false, then providers will receive only the parameters they
-                        support, and ignore the rest.
+                        Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
                     data_collection:
                       type: string
                       nullable: true
@@ -5015,18 +5050,18 @@ paths:
                         - deny
                         - allow
                       description: >
-                        Data collection setting. If no available model provider meets the requirement, your request will
-                        return an error.
+                        Data collection setting. If no available model provider meets the requirement, your request will return an error.
 
                         - allow: (default) allow providers which store user data non-transiently and may train on it
 
                         - deny: use only providers which do not collect user data.
+
+                      x-speakeasy-unknown-values: allow
                     zdr:
                       type: boolean
                       nullable: true
                       description: >-
-                        Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only
-                        endpoints that do not retain prompts will be used.
+                        Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
                       example: true
                     order:
                       type: array
@@ -5117,11 +5152,10 @@ paths:
                               - xAI
                               - Z.AI
                               - FakeProvider
+                            x-speakeasy-unknown-values: allow
                           - type: string
                       description: >-
-                        An ordered list of provider slugs. The router will attempt to use the first provider in the
-                        subset of this list that supports your requested model, and fall back to the next if it is
-                        unavailable. If no providers are available, the request will fail with an error message.
+                        An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
                     only:
                       type: array
                       nullable: true
@@ -5211,10 +5245,10 @@ paths:
                               - xAI
                               - Z.AI
                               - FakeProvider
+                            x-speakeasy-unknown-values: allow
                           - type: string
                       description: >-
-                        List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                        provider settings for this request.
+                        List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
                     ignore:
                       type: array
                       nullable: true
@@ -5304,10 +5338,10 @@ paths:
                               - xAI
                               - Z.AI
                               - FakeProvider
+                            x-speakeasy-unknown-values: allow
                           - type: string
                       description: >-
-                        List of provider slugs to ignore. If provided, this list is merged with your account-wide
-                        ignored provider settings for this request.
+                        List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
                     quantizations:
                       type: array
                       nullable: true
@@ -5323,6 +5357,7 @@ paths:
                           - bf16
                           - fp32
                           - unknown
+                        x-speakeasy-unknown-values: allow
                       description: A list of quantization levels to filter the provider by.
                     sort:
                       type: string
@@ -5332,8 +5367,8 @@ paths:
                         - throughput
                         - latency
                       description: >-
-                        The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                        balancing is performed.
+                        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+                      x-speakeasy-unknown-values: allow
                     max_price:
                       type: object
                       properties:
@@ -5364,8 +5399,7 @@ paths:
                             - {}
                       additionalProperties: false
                       description: >-
-                        The object specifying the maximum price you want to pay for this request. USD price per million
-                        tokens, for prompt and completion.
+                        The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
                     experimental:
                       type: object
                       nullable: true
@@ -5620,6 +5654,7 @@ paths:
                           - embeddings
                         description: Type of API used for the generation
                         example: completions
+                        x-speakeasy-unknown-values: allow
                     required:
                       - id
                       - upstream_id
@@ -5898,6 +5933,7 @@ paths:
                               - Qwen3
                             description: Tokenizer type used by the model
                             example: GPT
+                            x-speakeasy-unknown-values: allow
                           instruct_type:
                             type: string
                             nullable: true
@@ -5926,6 +5962,7 @@ paths:
                               - qwen3
                             description: Instruction format type
                             example: chatml
+                            x-speakeasy-unknown-values: allow
                           modality:
                             type: string
                             nullable: true
@@ -5940,6 +5977,7 @@ paths:
                                 - image
                                 - file
                                 - audio
+                              x-speakeasy-unknown-values: allow
                             description: Supported input modalities
                             example:
                               - text
@@ -5952,6 +5990,7 @@ paths:
                                 - text
                                 - image
                                 - embeddings
+                              x-speakeasy-unknown-values: allow
                             description: Supported output modalities
                             example:
                               - text
@@ -6168,6 +6207,7 @@ paths:
                             - xAI
                             - Z.AI
                             - FakeProvider
+                          x-speakeasy-unknown-values: allow
                         tag:
                           type: string
                         quantization:
@@ -6183,6 +6223,7 @@ paths:
                             - bf16
                             - fp32
                             - unknown
+                          x-speakeasy-unknown-values: allow
                         max_completion_tokens:
                           type: number
                           nullable: true
@@ -6217,6 +6258,7 @@ paths:
                               - reasoning
                               - web_search_options
                               - verbosity
+                            x-speakeasy-unknown-values: allow
                         status:
                           type: integer
                           enum:
@@ -6226,6 +6268,7 @@ paths:
                             - -3
                             - -5
                             - -10
+                          x-speakeasy-unknown-values: allow
                         uptime_last_30m:
                           type: number
                           nullable: true
@@ -6344,6 +6387,7 @@ paths:
               - xAI
               - Z.AI
               - FakeProvider
+            x-speakeasy-unknown-values: allow
           required: false
           name: provider
           in: query
@@ -6390,6 +6434,7 @@ paths:
                             - reasoning
                             - web_search_options
                             - verbosity
+                          x-speakeasy-unknown-values: allow
                         description: List of parameters supported by this model
                         example:
                           - temperature
@@ -6574,9 +6619,9 @@ paths:
                     - weekly
                     - monthly
                   description: >-
-                    Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen
-                    automatically at midnight UTC, and weeks are Monday through Sunday.
+                    Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
                   example: monthly
+                  x-speakeasy-unknown-values: allow
                 include_byok_in_limit:
                   type: boolean
                   description: Whether to include BYOK usage in the limit
@@ -6654,9 +6699,9 @@ paths:
                     - weekly
                     - monthly
                   description: >-
-                    New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen
-                    automatically at midnight UTC, and weeks are Monday through Sunday.
+                    New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
                   example: daily
+                  x-speakeasy-unknown-values: allow
                 include_byok_in_limit:
                   type: boolean
                   description: Whether to include BYOK usage in the limit
@@ -6823,6 +6868,7 @@ paths:
                     - plain
                   description: The method used to generate the code challenge
                   example: S256
+                  x-speakeasy-unknown-values: allow
               required:
                 - code
         required: true
@@ -6875,8 +6921,7 @@ paths:
                   type: string
                   format: uri
                   description: >-
-                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are
-                    allowed.
+                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
                   example: https://myapp.com/auth/callback
                 code_challenge:
                   type: string
@@ -6889,6 +6934,7 @@ paths:
                     - plain
                   description: The method used to generate the code challenge
                   example: S256
+                  x-speakeasy-unknown-values: allow
                 limit:
                   type: number
                   description: Credit limit for the API key to be created
@@ -6950,8 +6996,7 @@ paths:
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
       description: >-
-        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
-        modes.
+        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
       tags:
         - Chat
       requestBody:

@@ -10,6 +10,8 @@ let value: OutputModality = "image";
 
 ## Values
 
+This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
+
 ```typescript
-"text" | "image" | "embeddings"
+"text" | "image" | "embeddings" | Unrecognized<string>
 ```
