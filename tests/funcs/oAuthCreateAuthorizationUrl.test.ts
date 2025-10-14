@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { OpenRouterCore } from "../../core.js";
-import { oAuthCreateAuthorizationUrl } from "./oAuthCreateAuthorizationUrl.js";
+import { OpenRouterCore } from "../../src/core";
+import { oAuthCreateAuthorizationUrl } from "../../src/funcs/oAuthCreateAuthorizationUrl";
 
 describe("oAuthCreateAuthorizationUrl", () => {
   const createMockClient = (serverURL?: string) => {

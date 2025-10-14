@@ -1,5 +1,5 @@
 import z from "zod/v3";
-import { Result } from "../../types/fp.js";
+import { Result } from "../types/fp.js";
 
 const CreateSHA256CodeChallengeRequestSchema = z.object({
   /**

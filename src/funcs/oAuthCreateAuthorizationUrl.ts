@@ -1,7 +1,7 @@
 import z from "zod/v3";
-import { OpenRouterCore } from "../../core.js";
-import { serverURLFromOptions } from "../../lib/config.js";
-import { Result } from "../../types/fp.js";
+import { OpenRouterCore } from "../core.js";
+import { serverURLFromOptions } from "../lib/config.js";
+import { Result } from "../types/fp.js";
 
 const CreateAuthorizationUrlBaseSchema = z.object({
   callbackUrl: z.union([z.string().url(), z.instanceof(URL)]),

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { oAuthCreateSHA256CodeChallenge } from "./oAuthCreateSHA256CodeChallenge.js";
+import { oAuthCreateSHA256CodeChallenge } from "../../src/funcs/oAuthCreateSHA256CodeChallenge";
 
 describe("oAuthCreateSHA256CodeChallenge", () => {
   it("should generate code challenge from provided code verifier", async () => {
@@ -101,7 +101,9 @@ describe("oAuthCreateSHA256CodeChallenge", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error).toBeDefined();
-      expect((result.error as Error).message).toContain("at least 43 characters");
+      expect((result.error as Error).message).toContain(
+        "at least 43 characters",
+      );
     }
   });
 
@@ -113,7 +115,9 @@ describe("oAuthCreateSHA256CodeChallenge", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error).toBeDefined();
-      expect((result.error as Error).message).toContain("at least 43 characters");
+      expect((result.error as Error).message).toContain(
+        "at least 43 characters",
+      );
     }
   });
 
@@ -126,7 +130,9 @@ describe("oAuthCreateSHA256CodeChallenge", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error).toBeDefined();
-      expect((result.error as Error).message).toContain("at most 128 characters");
+      expect((result.error as Error).message).toContain(
+        "at most 128 characters",
+      );
     }
   });
 
@@ -170,7 +176,9 @@ describe("oAuthCreateSHA256CodeChallenge", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error).toBeDefined();
-      expect((result.error as Error).message).toContain("unreserved characters");
+      expect((result.error as Error).message).toContain(
+        "unreserved characters",
+      );
     }
   });
 
@@ -183,7 +191,9 @@ describe("oAuthCreateSHA256CodeChallenge", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.error).toBeDefined();
-      expect((result.error as Error).message).toContain("unreserved characters");
+      expect((result.error as Error).message).toContain(
+        "unreserved characters",
+      );
     }
   });
 });

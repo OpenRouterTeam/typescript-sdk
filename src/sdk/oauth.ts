@@ -11,12 +11,12 @@ import { unwrapAsync } from "../types/fp.js";
 import {
   CreateAuthorizationUrlRequest,
   oAuthCreateAuthorizationUrl,
-} from "../funcs/custom/oAuthCreateAuthorizationUrl.js";
+} from "../funcs/oAuthCreateAuthorizationUrl.js";
 import {
   CreateSHA256CodeChallengeRequest,
   CreateSHA256CodeChallengeResponse,
   oAuthCreateSHA256CodeChallenge,
-} from "../funcs/custom/oAuthCreateSHA256CodeChallenge.js";
+} from "../funcs/oAuthCreateSHA256CodeChallenge.js";
 // #endregion imports
 
 export class OAuth extends ClientSDK {
