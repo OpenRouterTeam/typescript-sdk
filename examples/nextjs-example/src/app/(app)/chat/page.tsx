@@ -2,7 +2,6 @@
 
 import type React from "react";
 
-import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,12 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageSquare, Send, Settings, User, Bot } from "lucide-react";
-import { OpenRouterCore } from "@openrouter/sdk/core";
-import { chatSend, SendAcceptEnum } from "@openrouter/sdk/funcs/chatSend";
-import { OPENROUTER_KEY_LOCALSTORAGE_KEY } from "@/lib/config";
+import { useApiKey } from "@/lib/hooks/use-api-key";
+import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
 import { Message as OpenRouterMessageRequest } from "@openrouter/sdk/models";
-import useLocalStorage from "@/lib/hooks/use-local-storage";
+import { Bot, MessageSquare, Send, Settings, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { NotConnectedDialog } from "./_dialogs/not-connected";
 
 type Message = OpenRouterMessageRequest & {
@@ -27,9 +25,8 @@ type Message = OpenRouterMessageRequest & {
 };
 
 export default function Page() {
-  const { value: apiKey, isPending: isApiKeyPending } = useLocalStorage<
-    string | null
-  >(OPENROUTER_KEY_LOCALSTORAGE_KEY, null);
+  const { client: openRouter } = useOpenRouter();
+  const [apiKey] = useApiKey();
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -39,10 +36,11 @@ export default function Page() {
         "Hello! I'm your AI assistant powered by OpenRouter. I can help you with a wide variety of tasks. What would you like to know or discuss today?",
     },
   ]);
-  const [input, setInput] = useState("");
   const [selectedModel, setSelectedModel] = useState("gpt-4");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,6 +51,9 @@ export default function Page() {
   }, [messages]);
 
   const handleSend = async () => {
+    const input = inputRef.current?.value;
+    if (!input) return;
+
     setIsLoading(true);
 
     if (!input.trim() || isLoading) return;
@@ -72,7 +73,7 @@ export default function Page() {
     ];
 
     setMessages(updatedMessages);
-    setInput("");
+    inputRef.current!.value = "";
 
     // Add an empty assistant message to stream into
     const assistantMessage: Message = {
@@ -88,27 +89,16 @@ export default function Page() {
       throw new Error("API key is required but not present.");
     }
 
-    const openRouter = new OpenRouterCore({ apiKey });
-
-    const result = await chatSend(
-      openRouter,
-      {
-        model: "openai/gpt-4o",
-        maxTokens: 1000,
-        messages: updatedMessages,
-        stream: true,
-      },
-      { acceptHeaderOverride: SendAcceptEnum.textEventStream },
-    );
-
-    if (!result.ok) {
-      alert("Error: " + result.error.message);
-      return setIsLoading(false);
-    }
+    const result = await openRouter.chat.send({
+      model: "openai/gpt-4o",
+      maxTokens: 1000,
+      messages: updatedMessages,
+      stream: true,
+    });
 
     // Stream chunks into the latest message
     const chunks: string[] = [];
-    for await (const chunk of result.value) {
+    for await (const chunk of result) {
       chunks.push(chunk.data.choices[0].delta.content || "");
       setMessages((prev) => {
         const newMessages = [...prev];
@@ -134,7 +124,7 @@ export default function Page() {
 
   return (
     <>
-      <NotConnectedDialog open={!isApiKeyPending && apiKey === null} />
+      <NotConnectedDialog open={!apiKey} />
       <div className="flex flex-col h-screen bg-background">
         {/* Header */}
         <div className="border-b border-border bg-card">
@@ -221,18 +211,13 @@ export default function Page() {
         <div className="border-border bg-card p-4 max-w-4xl mx-auto w-full">
           <div className="flex gap-2">
             <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              ref={inputRef}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
               className="flex-1"
               disabled={isLoading}
             />
-            <Button
-              onClick={handleSend}
-              disabled={!input.trim() || isLoading}
-              size="icon"
-            >
+            <Button onClick={handleSend} disabled={isLoading} size="icon">
               <Send className="h-4 w-4" />
             </Button>
           </div>

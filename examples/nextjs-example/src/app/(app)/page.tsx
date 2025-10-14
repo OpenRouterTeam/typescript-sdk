@@ -10,10 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  getOAuthKeyUrl,
+  OAUTH_CALLBACK_URL,
+  OPENROUTER_CODE_VERIFIER_KEY,
   OPENROUTER_KEY_LOCALSTORAGE_KEY,
-  OPENROUTER_USER_ID_LOCALSTORAGE_KEY,
 } from "@/lib/config";
+import { useApiKey } from "@/lib/hooks/use-api-key";
+import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
 import {
   ArrowRightIcon,
   ExternalLink,
@@ -21,11 +23,9 @@ import {
   MessageSquare,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { OpenRouterCore } from "@openrouter/sdk/core";
-import { oAuthPostAuthKeys } from "@openrouter/sdk/funcs/oAuthPostAuthKeys";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Page({ searchParams }: PageProps<"/">) {
   const [connectionState, setConnectionState] = useState<
@@ -77,24 +77,45 @@ function InitializingPageContent() {
 
 function ConnectingPageContent(props: { code: string }) {
   const router = useRouter();
-  const openRouter = new OpenRouterCore();
+  const { client: openRouter } = useOpenRouter();
+  const [, setApiKey] = useApiKey();
 
-  oAuthPostAuthKeys(openRouter, { code: props.code }).then((result) => {
-    if (!result.ok) return;
+  useEffect(() => {
+    const exchangeCode = async () => {
+      const codeVerifier = localStorage.getItem(OPENROUTER_CODE_VERIFIER_KEY);
 
-    if ("key" in result.value) {
-      localStorage.setItem(OPENROUTER_KEY_LOCALSTORAGE_KEY, result.value.key);
-    }
+      if (!codeVerifier) {
+        console.error("Code verifier not found in localStorage");
+        router.push("/?error=missing_verifier");
+        return;
+      }
 
-    if (result.value.userId) {
-      localStorage.setItem(
-        OPENROUTER_USER_ID_LOCALSTORAGE_KEY,
-        result.value.userId,
-      );
-    }
+      try {
+        // Exchange the authorization code for an API key using PKCE
+        const result = await openRouter.oAuth.exchangeAuthorizationCode({
+          code: props.code,
+          codeVerifier,
+          codeChallengeMethod: "S256",
+        });
 
-    router.push("/chat");
-  });
+        // Store the key and user ID
+        if (result.key) {
+          setApiKey(result.key);
+        }
+
+        // Clean up the code verifier
+        localStorage.removeItem(OPENROUTER_CODE_VERIFIER_KEY);
+
+        // Redirect to chat
+        router.push("/chat");
+      } catch (error) {
+        console.error("Failed to exchange authorization code:", error);
+        router.push("/?error=exchange_failed");
+      }
+    };
+
+    exchangeCode();
+  }, [props.code, router]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -152,6 +173,33 @@ function ConnectedPageContent() {
 }
 
 function DisconnectedPageContent() {
+  const [authUrl, setAuthUrl] = useState<string | null>(null);
+  const { client: openRouter } = useOpenRouter();
+
+  useEffect(() => {
+    const generateAuthUrl = async () => {
+      // Generate PKCE code challenge
+      const challenge = await openRouter.oAuth.createSHA256CodeChallenge();
+
+      // Store the code verifier for later use in the callback
+      localStorage.setItem(
+        OPENROUTER_CODE_VERIFIER_KEY,
+        challenge.codeVerifier,
+      );
+
+      // Generate authorization URL with PKCE
+      const url = await openRouter.oAuth.createAuthorizationUrl({
+        callbackUrl: OAUTH_CALLBACK_URL,
+        codeChallenge: challenge.codeChallenge,
+        codeChallengeMethod: "S256",
+      });
+
+      setAuthUrl(url);
+    };
+
+    generateAuthUrl();
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="text-center mb-8">
@@ -171,7 +219,8 @@ function DisconnectedPageContent() {
             <CardTitle>OpenRouter Integration Demo</CardTitle>
           </div>
           <CardDescription>
-            This app demonstrates how to connect to OpenRouter using OAuth 2.0.
+            This app demonstrates how to connect to OpenRouter using OAuth 2.0
+            with PKCE for enhanced security.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -191,7 +240,7 @@ function DisconnectedPageContent() {
                 <div>
                   <p className="font-medium text-sm">Secure OAuth</p>
                   <p className="text-xs text-muted-foreground">
-                    Safe authentication flow
+                    Safe authentication with PKCE
                   </p>
                 </div>
               </div>
@@ -206,14 +255,20 @@ function DisconnectedPageContent() {
               </div>
             </div>
 
-            <a href={getOAuthKeyUrl()} target="_blank" rel="noreferrer">
-              <Button className="w-full" size="lg">
-                <>
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Connect OpenRouter Account
-                </>
+            {authUrl ? (
+              <a href={authUrl} rel="noreferrer">
+                <Button className="w-full" size="lg">
+                  <>
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Connect OpenRouter Account
+                  </>
+                </Button>
+              </a>
+            ) : (
+              <Button className="w-full" size="lg" disabled>
+                Generating authorization URL...
               </Button>
-            </a>
+            )}
           </div>
         </CardContent>
       </Card>
