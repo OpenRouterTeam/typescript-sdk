@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -14,7 +18,7 @@ export const Detail = {
   Low: "low",
   High: "high",
 } as const;
-export type Detail = ClosedEnum<typeof Detail>;
+export type Detail = OpenEnum<typeof Detail>;
 
 export type ImageUrl = {
   url: string;
@@ -27,12 +31,18 @@ export type ChatMessageContentItemImage = {
 };
 
 /** @internal */
-export const Detail$inboundSchema: z.ZodNativeEnum<typeof Detail> = z
-  .nativeEnum(Detail);
+export const Detail$inboundSchema: z.ZodType<Detail, z.ZodTypeDef, unknown> = z
+  .union([
+    z.nativeEnum(Detail),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Detail$outboundSchema: z.ZodNativeEnum<typeof Detail> =
-  Detail$inboundSchema;
+export const Detail$outboundSchema: z.ZodType<Detail, z.ZodTypeDef, Detail> = z
+  .union([
+    z.nativeEnum(Detail),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
 
 /**
  * @internal

@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -21,7 +25,7 @@ export const CreateLimitReset = {
 /**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
-export type CreateLimitReset = ClosedEnum<typeof CreateLimitReset>;
+export type CreateLimitReset = OpenEnum<typeof CreateLimitReset>;
 
 export type CreateRequest = {
   /**
@@ -57,14 +61,25 @@ export type CreateResponse = {
 };
 
 /** @internal */
-export const CreateLimitReset$inboundSchema: z.ZodNativeEnum<
-  typeof CreateLimitReset
-> = z.nativeEnum(CreateLimitReset);
+export const CreateLimitReset$inboundSchema: z.ZodType<
+  CreateLimitReset,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(CreateLimitReset),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const CreateLimitReset$outboundSchema: z.ZodNativeEnum<
-  typeof CreateLimitReset
-> = CreateLimitReset$inboundSchema;
+export const CreateLimitReset$outboundSchema: z.ZodType<
+  CreateLimitReset,
+  z.ZodTypeDef,
+  CreateLimitReset
+> = z.union([
+  z.nativeEnum(CreateLimitReset),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

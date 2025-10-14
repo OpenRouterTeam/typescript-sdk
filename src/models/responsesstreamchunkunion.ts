@@ -5,7 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -333,7 +338,7 @@ export const ItemStatusEnum4 = {
   Completed: "completed",
   Searching: "searching",
 } as const;
-export type ItemStatusEnum4 = ClosedEnum<typeof ItemStatusEnum4>;
+export type ItemStatusEnum4 = OpenEnum<typeof ItemStatusEnum4>;
 
 export type ItemWebSearchCall2 = {
   type: ItemTypeWebSearchCall2;
@@ -354,7 +359,7 @@ export const ItemStatusEnum3 = {
   Generating: "generating",
   Failed: "failed",
 } as const;
-export type ItemStatusEnum3 = ClosedEnum<typeof ItemStatusEnum3>;
+export type ItemStatusEnum3 = OpenEnum<typeof ItemStatusEnum3>;
 
 export type ItemImageGenerationCall = {
   type: ItemTypeImageGenerationCall;
@@ -456,7 +461,7 @@ export const ItemStatusEnum2 = {
   InProgress: "in_progress",
   Failed: "failed",
 } as const;
-export type ItemStatusEnum2 = ClosedEnum<typeof ItemStatusEnum2>;
+export type ItemStatusEnum2 = OpenEnum<typeof ItemStatusEnum2>;
 
 export type ItemFileSearchCall = {
   type: ItemTypeFileSearchCall;
@@ -476,7 +481,7 @@ export const ItemStatusEnum1 = {
   InProgress: "in_progress",
   Failed: "failed",
 } as const;
-export type ItemStatusEnum1 = ClosedEnum<typeof ItemStatusEnum1>;
+export type ItemStatusEnum1 = OpenEnum<typeof ItemStatusEnum1>;
 
 export type ItemWebSearchCall1 = {
   type: ItemTypeWebSearchCall1;
@@ -595,7 +600,7 @@ export const ResponsesStreamChunkType = {
   ResponseCompleted: "response.completed",
   ResponseIncomplete: "response.incomplete",
 } as const;
-export type ResponsesStreamChunkType = ClosedEnum<
+export type ResponsesStreamChunkType = OpenEnum<
   typeof ResponsesStreamChunkType
 >;
 
@@ -603,7 +608,7 @@ export const ResponsesStreamChunkReason = {
   MaxOutputTokens: "max_output_tokens",
   ContentFilter: "content_filter",
 } as const;
-export type ResponsesStreamChunkReason = ClosedEnum<
+export type ResponsesStreamChunkReason = OpenEnum<
   typeof ResponsesStreamChunkReason
 >;
 
@@ -3015,14 +3020,25 @@ export namespace ItemTypeWebSearchCall2$ {
 }
 
 /** @internal */
-export const ItemStatusEnum4$inboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum4
-> = z.nativeEnum(ItemStatusEnum4);
+export const ItemStatusEnum4$inboundSchema: z.ZodType<
+  ItemStatusEnum4,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ItemStatusEnum4),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ItemStatusEnum4$outboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum4
-> = ItemStatusEnum4$inboundSchema;
+export const ItemStatusEnum4$outboundSchema: z.ZodType<
+  ItemStatusEnum4,
+  z.ZodTypeDef,
+  ItemStatusEnum4
+> = z.union([
+  z.nativeEnum(ItemStatusEnum4),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -3117,14 +3133,25 @@ export namespace ItemTypeImageGenerationCall$ {
 }
 
 /** @internal */
-export const ItemStatusEnum3$inboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum3
-> = z.nativeEnum(ItemStatusEnum3);
+export const ItemStatusEnum3$inboundSchema: z.ZodType<
+  ItemStatusEnum3,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ItemStatusEnum3),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ItemStatusEnum3$outboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum3
-> = ItemStatusEnum3$inboundSchema;
+export const ItemStatusEnum3$outboundSchema: z.ZodType<
+  ItemStatusEnum3,
+  z.ZodTypeDef,
+  ItemStatusEnum3
+> = z.union([
+  z.nativeEnum(ItemStatusEnum3),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -3837,14 +3864,25 @@ export namespace ItemTypeFileSearchCall$ {
 }
 
 /** @internal */
-export const ItemStatusEnum2$inboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum2
-> = z.nativeEnum(ItemStatusEnum2);
+export const ItemStatusEnum2$inboundSchema: z.ZodType<
+  ItemStatusEnum2,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ItemStatusEnum2),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ItemStatusEnum2$outboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum2
-> = ItemStatusEnum2$inboundSchema;
+export const ItemStatusEnum2$outboundSchema: z.ZodType<
+  ItemStatusEnum2,
+  z.ZodTypeDef,
+  ItemStatusEnum2
+> = z.union([
+  z.nativeEnum(ItemStatusEnum2),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -3942,14 +3980,25 @@ export namespace ItemTypeWebSearchCall1$ {
 }
 
 /** @internal */
-export const ItemStatusEnum1$inboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum1
-> = z.nativeEnum(ItemStatusEnum1);
+export const ItemStatusEnum1$inboundSchema: z.ZodType<
+  ItemStatusEnum1,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ItemStatusEnum1),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ItemStatusEnum1$outboundSchema: z.ZodNativeEnum<
-  typeof ItemStatusEnum1
-> = ItemStatusEnum1$inboundSchema;
+export const ItemStatusEnum1$outboundSchema: z.ZodType<
+  ItemStatusEnum1,
+  z.ZodTypeDef,
+  ItemStatusEnum1
+> = z.union([
+  z.nativeEnum(ItemStatusEnum1),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -4818,14 +4867,25 @@ export function responsesStreamChunkResponseCreatedFromJSON(
 }
 
 /** @internal */
-export const ResponsesStreamChunkType$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesStreamChunkType
-> = z.nativeEnum(ResponsesStreamChunkType);
+export const ResponsesStreamChunkType$inboundSchema: z.ZodType<
+  ResponsesStreamChunkType,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesStreamChunkType),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesStreamChunkType$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesStreamChunkType
-> = ResponsesStreamChunkType$inboundSchema;
+export const ResponsesStreamChunkType$outboundSchema: z.ZodType<
+  ResponsesStreamChunkType,
+  z.ZodTypeDef,
+  ResponsesStreamChunkType
+> = z.union([
+  z.nativeEnum(ResponsesStreamChunkType),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -4839,14 +4899,25 @@ export namespace ResponsesStreamChunkType$ {
 }
 
 /** @internal */
-export const ResponsesStreamChunkReason$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesStreamChunkReason
-> = z.nativeEnum(ResponsesStreamChunkReason);
+export const ResponsesStreamChunkReason$inboundSchema: z.ZodType<
+  ResponsesStreamChunkReason,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesStreamChunkReason),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesStreamChunkReason$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesStreamChunkReason
-> = ResponsesStreamChunkReason$inboundSchema;
+export const ResponsesStreamChunkReason$outboundSchema: z.ZodType<
+  ResponsesStreamChunkReason,
+  z.ZodTypeDef,
+  ResponsesStreamChunkReason
+> = z.union([
+  z.nativeEnum(ResponsesStreamChunkReason),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

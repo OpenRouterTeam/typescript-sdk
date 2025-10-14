@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -19,7 +23,7 @@ export const CreateAuthorizationCodeCodeChallengeMethod = {
 /**
  * The method used to generate the code challenge
  */
-export type CreateAuthorizationCodeCodeChallengeMethod = ClosedEnum<
+export type CreateAuthorizationCodeCodeChallengeMethod = OpenEnum<
   typeof CreateAuthorizationCodeCodeChallengeMethod
 >;
 
@@ -72,13 +76,23 @@ export type CreateAuthorizationCodeResponse = {
 
 /** @internal */
 export const CreateAuthorizationCodeCodeChallengeMethod$inboundSchema:
-  z.ZodNativeEnum<typeof CreateAuthorizationCodeCodeChallengeMethod> = z
-    .nativeEnum(CreateAuthorizationCodeCodeChallengeMethod);
+  z.ZodType<CreateAuthorizationCodeCodeChallengeMethod, z.ZodTypeDef, unknown> =
+    z
+      .union([
+        z.nativeEnum(CreateAuthorizationCodeCodeChallengeMethod),
+        z.string().transform(catchUnrecognizedEnum),
+      ]);
 
 /** @internal */
 export const CreateAuthorizationCodeCodeChallengeMethod$outboundSchema:
-  z.ZodNativeEnum<typeof CreateAuthorizationCodeCodeChallengeMethod> =
-    CreateAuthorizationCodeCodeChallengeMethod$inboundSchema;
+  z.ZodType<
+    CreateAuthorizationCodeCodeChallengeMethod,
+    z.ZodTypeDef,
+    CreateAuthorizationCodeCodeChallengeMethod
+  > = z.union([
+    z.nativeEnum(CreateAuthorizationCodeCodeChallengeMethod),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
 
 /**
  * @internal

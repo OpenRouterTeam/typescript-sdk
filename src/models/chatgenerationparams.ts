@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatStreamOptions,
@@ -33,7 +37,7 @@ export const ChatGenerationParamsEffort = {
   Medium: "medium",
   High: "high",
 } as const;
-export type ChatGenerationParamsEffort = ClosedEnum<
+export type ChatGenerationParamsEffort = OpenEnum<
   typeof ChatGenerationParamsEffort
 >;
 
@@ -42,14 +46,14 @@ export const GenerateSummary = {
   Concise: "concise",
   Detailed: "detailed",
 } as const;
-export type GenerateSummary = ClosedEnum<typeof GenerateSummary>;
+export type GenerateSummary = OpenEnum<typeof GenerateSummary>;
 
 export const SummaryEnum = {
   Auto: "auto",
   Concise: "concise",
   Detailed: "detailed",
 } as const;
-export type SummaryEnum = ClosedEnum<typeof SummaryEnum>;
+export type SummaryEnum = OpenEnum<typeof SummaryEnum>;
 
 export type Reasoning = {
   effort?: ChatGenerationParamsEffort | null | undefined;
@@ -126,14 +130,25 @@ export type ChatGenerationParams = {
 };
 
 /** @internal */
-export const ChatGenerationParamsEffort$inboundSchema: z.ZodNativeEnum<
-  typeof ChatGenerationParamsEffort
-> = z.nativeEnum(ChatGenerationParamsEffort);
+export const ChatGenerationParamsEffort$inboundSchema: z.ZodType<
+  ChatGenerationParamsEffort,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ChatGenerationParamsEffort),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ChatGenerationParamsEffort$outboundSchema: z.ZodNativeEnum<
-  typeof ChatGenerationParamsEffort
-> = ChatGenerationParamsEffort$inboundSchema;
+export const ChatGenerationParamsEffort$outboundSchema: z.ZodType<
+  ChatGenerationParamsEffort,
+  z.ZodTypeDef,
+  ChatGenerationParamsEffort
+> = z.union([
+  z.nativeEnum(ChatGenerationParamsEffort),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -147,14 +162,25 @@ export namespace ChatGenerationParamsEffort$ {
 }
 
 /** @internal */
-export const GenerateSummary$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateSummary
-> = z.nativeEnum(GenerateSummary);
+export const GenerateSummary$inboundSchema: z.ZodType<
+  GenerateSummary,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateSummary),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateSummary$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateSummary
-> = GenerateSummary$inboundSchema;
+export const GenerateSummary$outboundSchema: z.ZodType<
+  GenerateSummary,
+  z.ZodTypeDef,
+  GenerateSummary
+> = z.union([
+  z.nativeEnum(GenerateSummary),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -168,12 +194,25 @@ export namespace GenerateSummary$ {
 }
 
 /** @internal */
-export const SummaryEnum$inboundSchema: z.ZodNativeEnum<typeof SummaryEnum> = z
-  .nativeEnum(SummaryEnum);
+export const SummaryEnum$inboundSchema: z.ZodType<
+  SummaryEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(SummaryEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const SummaryEnum$outboundSchema: z.ZodNativeEnum<typeof SummaryEnum> =
-  SummaryEnum$inboundSchema;
+export const SummaryEnum$outboundSchema: z.ZodType<
+  SummaryEnum,
+  z.ZodTypeDef,
+  SummaryEnum
+> = z.union([
+  z.nativeEnum(SummaryEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

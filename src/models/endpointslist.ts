@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -130,7 +134,7 @@ export const ProviderName = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type ProviderName = ClosedEnum<typeof ProviderName>;
+export type ProviderName = OpenEnum<typeof ProviderName>;
 
 export const Quantization = {
   Int4: "int4",
@@ -143,7 +147,7 @@ export const Quantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type Quantization = ClosedEnum<typeof Quantization>;
+export type Quantization = OpenEnum<typeof Quantization>;
 
 export const EndpointsListSupportedParameter = {
   Temperature: "temperature",
@@ -170,7 +174,7 @@ export const EndpointsListSupportedParameter = {
   WebSearchOptions: "web_search_options",
   Verbosity: "verbosity",
 } as const;
-export type EndpointsListSupportedParameter = ClosedEnum<
+export type EndpointsListSupportedParameter = OpenEnum<
   typeof EndpointsListSupportedParameter
 >;
 
@@ -182,7 +186,7 @@ export const EndpointsListStatus = {
   Minus5: -5,
   Minus10: -10,
 } as const;
-export type EndpointsListStatus = ClosedEnum<typeof EndpointsListStatus>;
+export type EndpointsListStatus = OpenEnum<typeof EndpointsListStatus>;
 
 export type EndpointsList = {
   name: string;
@@ -842,12 +846,25 @@ export function endpointsListPricingFromJSON(
 }
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodNativeEnum<typeof ProviderName> =
-  z.nativeEnum(ProviderName);
+export const ProviderName$inboundSchema: z.ZodType<
+  ProviderName,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ProviderName),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ProviderName$outboundSchema: z.ZodNativeEnum<typeof ProviderName> =
-  ProviderName$inboundSchema;
+export const ProviderName$outboundSchema: z.ZodType<
+  ProviderName,
+  z.ZodTypeDef,
+  ProviderName
+> = z.union([
+  z.nativeEnum(ProviderName),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -861,12 +878,25 @@ export namespace ProviderName$ {
 }
 
 /** @internal */
-export const Quantization$inboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  z.nativeEnum(Quantization);
+export const Quantization$inboundSchema: z.ZodType<
+  Quantization,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(Quantization),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Quantization$outboundSchema: z.ZodNativeEnum<typeof Quantization> =
-  Quantization$inboundSchema;
+export const Quantization$outboundSchema: z.ZodType<
+  Quantization,
+  z.ZodTypeDef,
+  Quantization
+> = z.union([
+  z.nativeEnum(Quantization),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -880,14 +910,25 @@ export namespace Quantization$ {
 }
 
 /** @internal */
-export const EndpointsListSupportedParameter$inboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListSupportedParameter
-> = z.nativeEnum(EndpointsListSupportedParameter);
+export const EndpointsListSupportedParameter$inboundSchema: z.ZodType<
+  EndpointsListSupportedParameter,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(EndpointsListSupportedParameter),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const EndpointsListSupportedParameter$outboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListSupportedParameter
-> = EndpointsListSupportedParameter$inboundSchema;
+export const EndpointsListSupportedParameter$outboundSchema: z.ZodType<
+  EndpointsListSupportedParameter,
+  z.ZodTypeDef,
+  EndpointsListSupportedParameter
+> = z.union([
+  z.nativeEnum(EndpointsListSupportedParameter),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -901,14 +942,25 @@ export namespace EndpointsListSupportedParameter$ {
 }
 
 /** @internal */
-export const EndpointsListStatus$inboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListStatus
-> = z.nativeEnum(EndpointsListStatus);
+export const EndpointsListStatus$inboundSchema: z.ZodType<
+  EndpointsListStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(EndpointsListStatus),
+    z.number().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const EndpointsListStatus$outboundSchema: z.ZodNativeEnum<
-  typeof EndpointsListStatus
-> = EndpointsListStatus$inboundSchema;
+export const EndpointsListStatus$outboundSchema: z.ZodType<
+  EndpointsListStatus,
+  z.ZodTypeDef,
+  EndpointsListStatus
+> = z.union([
+  z.nativeEnum(EndpointsListStatus),
+  z.number().and(z.custom<Unrecognized<number>>()),
+]);
 
 /**
  * @internal

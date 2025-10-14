@@ -3,26 +3,41 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const ResponseInputImageDetail = {
   Auto: "auto",
   High: "high",
   Low: "low",
 } as const;
-export type ResponseInputImageDetail = ClosedEnum<
+export type ResponseInputImageDetail = OpenEnum<
   typeof ResponseInputImageDetail
 >;
 
 /** @internal */
-export const ResponseInputImageDetail$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseInputImageDetail
-> = z.nativeEnum(ResponseInputImageDetail);
+export const ResponseInputImageDetail$inboundSchema: z.ZodType<
+  ResponseInputImageDetail,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseInputImageDetail),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseInputImageDetail$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseInputImageDetail
-> = ResponseInputImageDetail$inboundSchema;
+export const ResponseInputImageDetail$outboundSchema: z.ZodType<
+  ResponseInputImageDetail,
+  z.ZodTypeDef,
+  ResponseInputImageDetail
+> = z.union([
+  z.nativeEnum(ResponseInputImageDetail),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

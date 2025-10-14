@@ -3,26 +3,41 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 
 export const ResponseReasoningSummaryMode = {
   Auto: "auto",
   Concise: "concise",
   Detailed: "detailed",
 } as const;
-export type ResponseReasoningSummaryMode = ClosedEnum<
+export type ResponseReasoningSummaryMode = OpenEnum<
   typeof ResponseReasoningSummaryMode
 >;
 
 /** @internal */
-export const ResponseReasoningSummaryMode$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseReasoningSummaryMode
-> = z.nativeEnum(ResponseReasoningSummaryMode);
+export const ResponseReasoningSummaryMode$inboundSchema: z.ZodType<
+  ResponseReasoningSummaryMode,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponseReasoningSummaryMode),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponseReasoningSummaryMode$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseReasoningSummaryMode
-> = ResponseReasoningSummaryMode$inboundSchema;
+export const ResponseReasoningSummaryMode$outboundSchema: z.ZodType<
+  ResponseReasoningSummaryMode,
+  z.ZodTypeDef,
+  ResponseReasoningSummaryMode
+> = z.union([
+  z.nativeEnum(ResponseReasoningSummaryMode),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

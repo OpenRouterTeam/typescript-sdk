@@ -4,7 +4,12 @@
 
 import * as z from "zod";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -21,7 +26,7 @@ export const ResponsesOutputItemFileSearchCallStatus = {
   InProgress: "in_progress",
   Failed: "failed",
 } as const;
-export type ResponsesOutputItemFileSearchCallStatus = ClosedEnum<
+export type ResponsesOutputItemFileSearchCallStatus = OpenEnum<
   typeof ResponsesOutputItemFileSearchCallStatus
 >;
 
@@ -60,14 +65,25 @@ export namespace ResponsesOutputItemFileSearchCallType$ {
 }
 
 /** @internal */
-export const ResponsesOutputItemFileSearchCallStatus$inboundSchema:
-  z.ZodNativeEnum<typeof ResponsesOutputItemFileSearchCallStatus> = z
-    .nativeEnum(ResponsesOutputItemFileSearchCallStatus);
+export const ResponsesOutputItemFileSearchCallStatus$inboundSchema: z.ZodType<
+  ResponsesOutputItemFileSearchCallStatus,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesOutputItemFileSearchCallStatus),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesOutputItemFileSearchCallStatus$outboundSchema:
-  z.ZodNativeEnum<typeof ResponsesOutputItemFileSearchCallStatus> =
-    ResponsesOutputItemFileSearchCallStatus$inboundSchema;
+export const ResponsesOutputItemFileSearchCallStatus$outboundSchema: z.ZodType<
+  ResponsesOutputItemFileSearchCallStatus,
+  z.ZodTypeDef,
+  ResponsesOutputItemFileSearchCallStatus
+> = z.union([
+  z.nativeEnum(ResponsesOutputItemFileSearchCallStatus),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

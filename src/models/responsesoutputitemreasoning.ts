@@ -5,7 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -34,7 +39,7 @@ export const ResponsesOutputItemReasoningFormat = {
   XaiResponsesV1: "xai-responses-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
 } as const;
-export type ResponsesOutputItemReasoningFormat = ClosedEnum<
+export type ResponsesOutputItemReasoningFormat = OpenEnum<
   typeof ResponsesOutputItemReasoningFormat
 >;
 
@@ -73,14 +78,25 @@ export namespace ResponsesOutputItemReasoningType$ {
 }
 
 /** @internal */
-export const ResponsesOutputItemReasoningFormat$inboundSchema: z.ZodNativeEnum<
-  typeof ResponsesOutputItemReasoningFormat
-> = z.nativeEnum(ResponsesOutputItemReasoningFormat);
+export const ResponsesOutputItemReasoningFormat$inboundSchema: z.ZodType<
+  ResponsesOutputItemReasoningFormat,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ResponsesOutputItemReasoningFormat),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ResponsesOutputItemReasoningFormat$outboundSchema: z.ZodNativeEnum<
-  typeof ResponsesOutputItemReasoningFormat
-> = ResponsesOutputItemReasoningFormat$inboundSchema;
+export const ResponsesOutputItemReasoningFormat$outboundSchema: z.ZodType<
+  ResponsesOutputItemReasoningFormat,
+  z.ZodTypeDef,
+  ResponsesOutputItemReasoningFormat
+> = z.union([
+  z.nativeEnum(ResponsesOutputItemReasoningFormat),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

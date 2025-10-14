@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -79,7 +83,7 @@ export const GetParametersProvider = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type GetParametersProvider = ClosedEnum<typeof GetParametersProvider>;
+export type GetParametersProvider = OpenEnum<typeof GetParametersProvider>;
 
 export type GetParametersRequest = {
   author: string;
@@ -112,7 +116,7 @@ export const GetParametersSupportedParameter = {
   WebSearchOptions: "web_search_options",
   Verbosity: "verbosity",
 } as const;
-export type GetParametersSupportedParameter = ClosedEnum<
+export type GetParametersSupportedParameter = OpenEnum<
   typeof GetParametersSupportedParameter
 >;
 
@@ -195,14 +199,25 @@ export function getParametersSecurityFromJSON(
 }
 
 /** @internal */
-export const GetParametersProvider$inboundSchema: z.ZodNativeEnum<
-  typeof GetParametersProvider
-> = z.nativeEnum(GetParametersProvider);
+export const GetParametersProvider$inboundSchema: z.ZodType<
+  GetParametersProvider,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GetParametersProvider),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GetParametersProvider$outboundSchema: z.ZodNativeEnum<
-  typeof GetParametersProvider
-> = GetParametersProvider$inboundSchema;
+export const GetParametersProvider$outboundSchema: z.ZodType<
+  GetParametersProvider,
+  z.ZodTypeDef,
+  GetParametersProvider
+> = z.union([
+  z.nativeEnum(GetParametersProvider),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -276,14 +291,25 @@ export function getParametersRequestFromJSON(
 }
 
 /** @internal */
-export const GetParametersSupportedParameter$inboundSchema: z.ZodNativeEnum<
-  typeof GetParametersSupportedParameter
-> = z.nativeEnum(GetParametersSupportedParameter);
+export const GetParametersSupportedParameter$inboundSchema: z.ZodType<
+  GetParametersSupportedParameter,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GetParametersSupportedParameter),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GetParametersSupportedParameter$outboundSchema: z.ZodNativeEnum<
-  typeof GetParametersSupportedParameter
-> = GetParametersSupportedParameter$inboundSchema;
+export const GetParametersSupportedParameter$outboundSchema: z.ZodType<
+  GetParametersSupportedParameter,
+  z.ZodTypeDef,
+  GetParametersSupportedParameter
+> = z.union([
+  z.nativeEnum(GetParametersSupportedParameter),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

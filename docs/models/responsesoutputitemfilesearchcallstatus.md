@@ -10,6 +10,8 @@ let value: ResponsesOutputItemFileSearchCallStatus = "failed";
 
 ## Values
 
+This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
+
 ```typescript
-"completed" | "searching" | "in_progress" | "failed"
+"completed" | "searching" | "in_progress" | "failed" | Unrecognized<string>
 ```

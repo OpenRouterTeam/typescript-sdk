@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -18,7 +22,7 @@ export const ChainId = {
   OneHundredAndThirtySeven: 137,
   EightThousandFourHundredAndFiftyThree: 8453,
 } as const;
-export type ChainId = ClosedEnum<typeof ChainId>;
+export type ChainId = OpenEnum<typeof ChainId>;
 
 export type AddCoinbaseChargeRequest = {
   amount: number;
@@ -123,12 +127,19 @@ export function addCoinbaseChargeSecurityFromJSON(
 }
 
 /** @internal */
-export const ChainId$inboundSchema: z.ZodNativeEnum<typeof ChainId> = z
-  .nativeEnum(ChainId);
+export const ChainId$inboundSchema: z.ZodType<ChainId, z.ZodTypeDef, unknown> =
+  z
+    .union([
+      z.nativeEnum(ChainId),
+      z.number().transform(catchUnrecognizedEnum),
+    ]);
 
 /** @internal */
-export const ChainId$outboundSchema: z.ZodNativeEnum<typeof ChainId> =
-  ChainId$inboundSchema;
+export const ChainId$outboundSchema: z.ZodType<ChainId, z.ZodTypeDef, ChainId> =
+  z.union([
+    z.nativeEnum(ChainId),
+    z.number().and(z.custom<Unrecognized<number>>()),
+  ]);
 
 /**
  * @internal

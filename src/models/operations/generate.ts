@@ -5,7 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -33,7 +38,7 @@ export const GenerateDataCollection = {
  * - allow: (default) allow providers which store user data non-transiently and may train on it
  * - deny: use only providers which do not collect user data.
  */
-export type GenerateDataCollection = ClosedEnum<typeof GenerateDataCollection>;
+export type GenerateDataCollection = OpenEnum<typeof GenerateDataCollection>;
 
 export const GenerateOrderEnum = {
   AnyScale: "AnyScale",
@@ -119,7 +124,7 @@ export const GenerateOrderEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type GenerateOrderEnum = ClosedEnum<typeof GenerateOrderEnum>;
+export type GenerateOrderEnum = OpenEnum<typeof GenerateOrderEnum>;
 
 export type GenerateOrderUnion = GenerateOrderEnum | string;
 
@@ -207,7 +212,7 @@ export const GenerateOnlyEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type GenerateOnlyEnum = ClosedEnum<typeof GenerateOnlyEnum>;
+export type GenerateOnlyEnum = OpenEnum<typeof GenerateOnlyEnum>;
 
 export type GenerateOnlyUnion = GenerateOnlyEnum | string;
 
@@ -295,7 +300,7 @@ export const GenerateIgnoreEnum = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type GenerateIgnoreEnum = ClosedEnum<typeof GenerateIgnoreEnum>;
+export type GenerateIgnoreEnum = OpenEnum<typeof GenerateIgnoreEnum>;
 
 export type GenerateIgnoreUnion = GenerateIgnoreEnum | string;
 
@@ -310,7 +315,7 @@ export const GenerateQuantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type GenerateQuantization = ClosedEnum<typeof GenerateQuantization>;
+export type GenerateQuantization = OpenEnum<typeof GenerateQuantization>;
 
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
@@ -323,7 +328,7 @@ export const GenerateSort = {
 /**
  * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
  */
-export type GenerateSort = ClosedEnum<typeof GenerateSort>;
+export type GenerateSort = OpenEnum<typeof GenerateSort>;
 
 export type GeneratePrompt = number | string | any;
 
@@ -509,14 +514,25 @@ export function inputFromJSON(
 }
 
 /** @internal */
-export const GenerateDataCollection$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateDataCollection
-> = z.nativeEnum(GenerateDataCollection);
+export const GenerateDataCollection$inboundSchema: z.ZodType<
+  GenerateDataCollection,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateDataCollection),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateDataCollection$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateDataCollection
-> = GenerateDataCollection$inboundSchema;
+export const GenerateDataCollection$outboundSchema: z.ZodType<
+  GenerateDataCollection,
+  z.ZodTypeDef,
+  GenerateDataCollection
+> = z.union([
+  z.nativeEnum(GenerateDataCollection),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -530,14 +546,25 @@ export namespace GenerateDataCollection$ {
 }
 
 /** @internal */
-export const GenerateOrderEnum$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateOrderEnum
-> = z.nativeEnum(GenerateOrderEnum);
+export const GenerateOrderEnum$inboundSchema: z.ZodType<
+  GenerateOrderEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateOrderEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateOrderEnum$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateOrderEnum
-> = GenerateOrderEnum$inboundSchema;
+export const GenerateOrderEnum$outboundSchema: z.ZodType<
+  GenerateOrderEnum,
+  z.ZodTypeDef,
+  GenerateOrderEnum
+> = z.union([
+  z.nativeEnum(GenerateOrderEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -599,14 +626,25 @@ export function generateOrderUnionFromJSON(
 }
 
 /** @internal */
-export const GenerateOnlyEnum$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateOnlyEnum
-> = z.nativeEnum(GenerateOnlyEnum);
+export const GenerateOnlyEnum$inboundSchema: z.ZodType<
+  GenerateOnlyEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateOnlyEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateOnlyEnum$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateOnlyEnum
-> = GenerateOnlyEnum$inboundSchema;
+export const GenerateOnlyEnum$outboundSchema: z.ZodType<
+  GenerateOnlyEnum,
+  z.ZodTypeDef,
+  GenerateOnlyEnum
+> = z.union([
+  z.nativeEnum(GenerateOnlyEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -668,14 +706,25 @@ export function generateOnlyUnionFromJSON(
 }
 
 /** @internal */
-export const GenerateIgnoreEnum$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateIgnoreEnum
-> = z.nativeEnum(GenerateIgnoreEnum);
+export const GenerateIgnoreEnum$inboundSchema: z.ZodType<
+  GenerateIgnoreEnum,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateIgnoreEnum),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateIgnoreEnum$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateIgnoreEnum
-> = GenerateIgnoreEnum$inboundSchema;
+export const GenerateIgnoreEnum$outboundSchema: z.ZodType<
+  GenerateIgnoreEnum,
+  z.ZodTypeDef,
+  GenerateIgnoreEnum
+> = z.union([
+  z.nativeEnum(GenerateIgnoreEnum),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -737,14 +786,25 @@ export function generateIgnoreUnionFromJSON(
 }
 
 /** @internal */
-export const GenerateQuantization$inboundSchema: z.ZodNativeEnum<
-  typeof GenerateQuantization
-> = z.nativeEnum(GenerateQuantization);
+export const GenerateQuantization$inboundSchema: z.ZodType<
+  GenerateQuantization,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateQuantization),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateQuantization$outboundSchema: z.ZodNativeEnum<
-  typeof GenerateQuantization
-> = GenerateQuantization$inboundSchema;
+export const GenerateQuantization$outboundSchema: z.ZodType<
+  GenerateQuantization,
+  z.ZodTypeDef,
+  GenerateQuantization
+> = z.union([
+  z.nativeEnum(GenerateQuantization),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -758,12 +818,25 @@ export namespace GenerateQuantization$ {
 }
 
 /** @internal */
-export const GenerateSort$inboundSchema: z.ZodNativeEnum<typeof GenerateSort> =
-  z.nativeEnum(GenerateSort);
+export const GenerateSort$inboundSchema: z.ZodType<
+  GenerateSort,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(GenerateSort),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const GenerateSort$outboundSchema: z.ZodNativeEnum<typeof GenerateSort> =
-  GenerateSort$inboundSchema;
+export const GenerateSort$outboundSchema: z.ZodType<
+  GenerateSort,
+  z.ZodTypeDef,
+  GenerateSort
+> = z.union([
+  z.nativeEnum(GenerateSort),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal

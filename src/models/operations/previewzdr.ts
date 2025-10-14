@@ -5,7 +5,11 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum } from "../../types/enums.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -130,7 +134,7 @@ export const ProviderName = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type ProviderName = ClosedEnum<typeof ProviderName>;
+export type ProviderName = OpenEnum<typeof ProviderName>;
 
 export const PreviewZDRQuantization = {
   Int4: "int4",
@@ -143,7 +147,7 @@ export const PreviewZDRQuantization = {
   Fp32: "fp32",
   Unknown: "unknown",
 } as const;
-export type PreviewZDRQuantization = ClosedEnum<typeof PreviewZDRQuantization>;
+export type PreviewZDRQuantization = OpenEnum<typeof PreviewZDRQuantization>;
 
 export const PreviewZDRSupportedParameter = {
   Temperature: "temperature",
@@ -170,7 +174,7 @@ export const PreviewZDRSupportedParameter = {
   WebSearchOptions: "web_search_options",
   Verbosity: "verbosity",
 } as const;
-export type PreviewZDRSupportedParameter = ClosedEnum<
+export type PreviewZDRSupportedParameter = OpenEnum<
   typeof PreviewZDRSupportedParameter
 >;
 
@@ -182,7 +186,7 @@ export const Status = {
   Minus5: -5,
   Minus10: -10,
 } as const;
-export type Status = ClosedEnum<typeof Status>;
+export type Status = OpenEnum<typeof Status>;
 
 export type PreviewZDRData = {
   name: string;
@@ -814,12 +818,25 @@ export function pricingFromJSON(
 }
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodNativeEnum<typeof ProviderName> =
-  z.nativeEnum(ProviderName);
+export const ProviderName$inboundSchema: z.ZodType<
+  ProviderName,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(ProviderName),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const ProviderName$outboundSchema: z.ZodNativeEnum<typeof ProviderName> =
-  ProviderName$inboundSchema;
+export const ProviderName$outboundSchema: z.ZodType<
+  ProviderName,
+  z.ZodTypeDef,
+  ProviderName
+> = z.union([
+  z.nativeEnum(ProviderName),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -833,14 +850,25 @@ export namespace ProviderName$ {
 }
 
 /** @internal */
-export const PreviewZDRQuantization$inboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRQuantization
-> = z.nativeEnum(PreviewZDRQuantization);
+export const PreviewZDRQuantization$inboundSchema: z.ZodType<
+  PreviewZDRQuantization,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(PreviewZDRQuantization),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const PreviewZDRQuantization$outboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRQuantization
-> = PreviewZDRQuantization$inboundSchema;
+export const PreviewZDRQuantization$outboundSchema: z.ZodType<
+  PreviewZDRQuantization,
+  z.ZodTypeDef,
+  PreviewZDRQuantization
+> = z.union([
+  z.nativeEnum(PreviewZDRQuantization),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -854,14 +882,25 @@ export namespace PreviewZDRQuantization$ {
 }
 
 /** @internal */
-export const PreviewZDRSupportedParameter$inboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRSupportedParameter
-> = z.nativeEnum(PreviewZDRSupportedParameter);
+export const PreviewZDRSupportedParameter$inboundSchema: z.ZodType<
+  PreviewZDRSupportedParameter,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(PreviewZDRSupportedParameter),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const PreviewZDRSupportedParameter$outboundSchema: z.ZodNativeEnum<
-  typeof PreviewZDRSupportedParameter
-> = PreviewZDRSupportedParameter$inboundSchema;
+export const PreviewZDRSupportedParameter$outboundSchema: z.ZodType<
+  PreviewZDRSupportedParameter,
+  z.ZodTypeDef,
+  PreviewZDRSupportedParameter
+> = z.union([
+  z.nativeEnum(PreviewZDRSupportedParameter),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
@@ -875,12 +914,18 @@ export namespace PreviewZDRSupportedParameter$ {
 }
 
 /** @internal */
-export const Status$inboundSchema: z.ZodNativeEnum<typeof Status> = z
-  .nativeEnum(Status);
+export const Status$inboundSchema: z.ZodType<Status, z.ZodTypeDef, unknown> = z
+  .union([
+    z.nativeEnum(Status),
+    z.number().transform(catchUnrecognizedEnum),
+  ]);
 
 /** @internal */
-export const Status$outboundSchema: z.ZodNativeEnum<typeof Status> =
-  Status$inboundSchema;
+export const Status$outboundSchema: z.ZodType<Status, z.ZodTypeDef, Status> = z
+  .union([
+    z.nativeEnum(Status),
+    z.number().and(z.custom<Unrecognized<number>>()),
+  ]);
 
 /**
  * @internal
