@@ -8,14 +8,14 @@ import { GetParametersRequest } from "@openrouter/sdk/models/operations";
 let value: GetParametersRequest = {
   author: "<value>",
   slug: "<value>",
-  provider: "Fireworks",
+  provider: "Featherless",
 };
 ```
 
 ## Fields
 
-| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `author`                                                                             | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
-| `slug`                                                                               | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
-| `provider`                                                                           | [operations.GetParametersProvider](../../models/operations/getparametersprovider.md) | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `author`                                                   | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |
+| `slug`                                                     | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |
+| `provider`                                                 | [operations.Provider](../../models/operations/provider.md) | :heavy_minus_sign:                                         | N/A                                                        |

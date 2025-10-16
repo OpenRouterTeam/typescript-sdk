@@ -5,11 +5,6 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AssistantMessage,
@@ -18,6 +13,11 @@ import {
   AssistantMessage$outboundSchema,
 } from "./assistantmessage.js";
 import {
+  ChatCompletionFinishReason,
+  ChatCompletionFinishReason$inboundSchema,
+  ChatCompletionFinishReason$outboundSchema,
+} from "./chatcompletionfinishreason.js";
+import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
   ChatMessageTokenLogprobs$Outbound,
@@ -25,55 +25,12 @@ import {
 } from "./chatmessagetokenlogprobs.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatResponseChoiceFinishReason = {
-  ToolCalls: "tool_calls",
-  Stop: "stop",
-  Length: "length",
-  ContentFilter: "content_filter",
-  Error: "error",
-} as const;
-export type ChatResponseChoiceFinishReason = OpenEnum<
-  typeof ChatResponseChoiceFinishReason
->;
-
 export type ChatResponseChoice = {
-  finishReason: ChatResponseChoiceFinishReason | null;
+  finishReason: ChatCompletionFinishReason | null;
   index: number;
   message: AssistantMessage;
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
-
-/** @internal */
-export const ChatResponseChoiceFinishReason$inboundSchema: z.ZodType<
-  ChatResponseChoiceFinishReason,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(ChatResponseChoiceFinishReason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ChatResponseChoiceFinishReason$outboundSchema: z.ZodType<
-  ChatResponseChoiceFinishReason,
-  z.ZodTypeDef,
-  ChatResponseChoiceFinishReason
-> = z.union([
-  z.nativeEnum(ChatResponseChoiceFinishReason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatResponseChoiceFinishReason$ {
-  /** @deprecated use `ChatResponseChoiceFinishReason$inboundSchema` instead. */
-  export const inboundSchema = ChatResponseChoiceFinishReason$inboundSchema;
-  /** @deprecated use `ChatResponseChoiceFinishReason$outboundSchema` instead. */
-  export const outboundSchema = ChatResponseChoiceFinishReason$outboundSchema;
-}
 
 /** @internal */
 export const ChatResponseChoice$inboundSchema: z.ZodType<
@@ -81,7 +38,7 @@ export const ChatResponseChoice$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  finish_reason: z.nullable(ChatResponseChoiceFinishReason$inboundSchema),
+  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
   index: z.number(),
   message: AssistantMessage$inboundSchema,
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
@@ -105,7 +62,7 @@ export const ChatResponseChoice$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatResponseChoice
 > = z.object({
-  finishReason: z.nullable(ChatResponseChoiceFinishReason$outboundSchema),
+  finishReason: z.nullable(ChatCompletionFinishReason$outboundSchema),
   index: z.number(),
   message: AssistantMessage$outboundSchema,
   logprobs: z.nullable(ChatMessageTokenLogprobs$outboundSchema).optional(),

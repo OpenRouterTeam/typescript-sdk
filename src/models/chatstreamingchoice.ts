@@ -5,12 +5,12 @@
 import * as z from "zod";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  ChatCompletionFinishReason,
+  ChatCompletionFinishReason$inboundSchema,
+  ChatCompletionFinishReason$outboundSchema,
+} from "./chatcompletionfinishreason.js";
 import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
@@ -25,55 +25,12 @@ import {
 } from "./chatstreamingmessagechunk.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatStreamingChoiceFinishReason = {
-  ToolCalls: "tool_calls",
-  Stop: "stop",
-  Length: "length",
-  ContentFilter: "content_filter",
-  Error: "error",
-} as const;
-export type ChatStreamingChoiceFinishReason = OpenEnum<
-  typeof ChatStreamingChoiceFinishReason
->;
-
 export type ChatStreamingChoice = {
   delta: ChatStreamingMessageChunk;
-  finishReason: ChatStreamingChoiceFinishReason | null;
+  finishReason: ChatCompletionFinishReason | null;
   index: number;
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
-
-/** @internal */
-export const ChatStreamingChoiceFinishReason$inboundSchema: z.ZodType<
-  ChatStreamingChoiceFinishReason,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(ChatStreamingChoiceFinishReason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ChatStreamingChoiceFinishReason$outboundSchema: z.ZodType<
-  ChatStreamingChoiceFinishReason,
-  z.ZodTypeDef,
-  ChatStreamingChoiceFinishReason
-> = z.union([
-  z.nativeEnum(ChatStreamingChoiceFinishReason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingChoiceFinishReason$ {
-  /** @deprecated use `ChatStreamingChoiceFinishReason$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingChoiceFinishReason$inboundSchema;
-  /** @deprecated use `ChatStreamingChoiceFinishReason$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingChoiceFinishReason$outboundSchema;
-}
 
 /** @internal */
 export const ChatStreamingChoice$inboundSchema: z.ZodType<
@@ -82,7 +39,7 @@ export const ChatStreamingChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: ChatStreamingMessageChunk$inboundSchema,
-  finish_reason: z.nullable(ChatStreamingChoiceFinishReason$inboundSchema),
+  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
   index: z.number(),
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {
@@ -106,7 +63,7 @@ export const ChatStreamingChoice$outboundSchema: z.ZodType<
   ChatStreamingChoice
 > = z.object({
   delta: ChatStreamingMessageChunk$outboundSchema,
-  finishReason: z.nullable(ChatStreamingChoiceFinishReason$outboundSchema),
+  finishReason: z.nullable(ChatCompletionFinishReason$outboundSchema),
   index: z.number(),
   logprobs: z.nullable(ChatMessageTokenLogprobs$outboundSchema).optional(),
 }).transform((v) => {

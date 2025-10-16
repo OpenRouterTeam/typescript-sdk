@@ -13,16 +13,18 @@ import {
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Detail = {
+export const ChatMessageContentItemImageDetail = {
   Auto: "auto",
   Low: "low",
   High: "high",
 } as const;
-export type Detail = OpenEnum<typeof Detail>;
+export type ChatMessageContentItemImageDetail = OpenEnum<
+  typeof ChatMessageContentItemImageDetail
+>;
 
 export type ImageUrl = {
   url: string;
-  detail?: Detail | undefined;
+  detail?: ChatMessageContentItemImageDetail | undefined;
 };
 
 export type ChatMessageContentItemImage = {
@@ -31,28 +33,36 @@ export type ChatMessageContentItemImage = {
 };
 
 /** @internal */
-export const Detail$inboundSchema: z.ZodType<Detail, z.ZodTypeDef, unknown> = z
+export const ChatMessageContentItemImageDetail$inboundSchema: z.ZodType<
+  ChatMessageContentItemImageDetail,
+  z.ZodTypeDef,
+  unknown
+> = z
   .union([
-    z.nativeEnum(Detail),
+    z.nativeEnum(ChatMessageContentItemImageDetail),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const Detail$outboundSchema: z.ZodType<Detail, z.ZodTypeDef, Detail> = z
-  .union([
-    z.nativeEnum(Detail),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export const ChatMessageContentItemImageDetail$outboundSchema: z.ZodType<
+  ChatMessageContentItemImageDetail,
+  z.ZodTypeDef,
+  ChatMessageContentItemImageDetail
+> = z.union([
+  z.nativeEnum(ChatMessageContentItemImageDetail),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Detail$ {
-  /** @deprecated use `Detail$inboundSchema` instead. */
-  export const inboundSchema = Detail$inboundSchema;
-  /** @deprecated use `Detail$outboundSchema` instead. */
-  export const outboundSchema = Detail$outboundSchema;
+export namespace ChatMessageContentItemImageDetail$ {
+  /** @deprecated use `ChatMessageContentItemImageDetail$inboundSchema` instead. */
+  export const inboundSchema = ChatMessageContentItemImageDetail$inboundSchema;
+  /** @deprecated use `ChatMessageContentItemImageDetail$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatMessageContentItemImageDetail$outboundSchema;
 }
 
 /** @internal */
@@ -62,7 +72,7 @@ export const ImageUrl$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   url: z.string(),
-  detail: Detail$inboundSchema.optional(),
+  detail: ChatMessageContentItemImageDetail$inboundSchema.optional(),
 });
 
 /** @internal */
@@ -78,7 +88,7 @@ export const ImageUrl$outboundSchema: z.ZodType<
   ImageUrl
 > = z.object({
   url: z.string(),
-  detail: Detail$outboundSchema.optional(),
+  detail: ChatMessageContentItemImageDetail$outboundSchema.optional(),
 });
 
 /**

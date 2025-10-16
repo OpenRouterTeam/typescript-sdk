@@ -1,7 +1,5 @@
 # ResponsesOutputItemFunctionCall
 
-Function call output item
-
 ## Example Usage
 
 ```typescript
@@ -20,7 +18,7 @@ let value: ResponsesOutputItemFunctionCall = {
 
 | Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    |
 | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `type`                                                                                         | [models.ResponsesOutputItemFunctionCallType](../models/responsesoutputitemfunctioncalltype.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
+| `type`                                                                                         | [models.ResponsesOutputItemTypeFunctionCall](../models/responsesoutputitemtypefunctioncall.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |
 | `id`                                                                                           | *string*                                                                                       | :heavy_minus_sign:                                                                             | N/A                                                                                            |
 | `name`                                                                                         | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |
 | `arguments`                                                                                    | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |

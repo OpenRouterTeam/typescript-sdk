@@ -1,22 +1,31 @@
 # GetCreditsResponse
 
-Returns the total credits purchased and used
 
-## Example Usage
+## Supported Types
+
+### `operations.GetCreditsResponseBody`
 
 ```typescript
-import { GetCreditsResponse } from "@openrouter/sdk/models/operations";
-
-let value: GetCreditsResponse = {
+const value: operations.GetCreditsResponseBody = {
   data: {
-    totalCredits: 2840.87,
-    totalUsage: 7061.42,
+    totalCredits: 3929.68,
+    totalUsage: 9534.38,
   },
 };
 ```
 
-## Fields
+### `models.ErrorResponse`
 
-| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `data`                                                                 | [operations.GetCreditsData](../../models/operations/getcreditsdata.md) | :heavy_check_mark:                                                     | N/A                                                                    |
+```typescript
+const value: models.ErrorResponse = {
+  error: {
+    code: 451,
+    message: "<value>",
+    metadata: {
+      "key": "<value>",
+    },
+  },
+  userId: "<id>",
+};
+```
+

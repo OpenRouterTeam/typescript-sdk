@@ -17,7 +17,6 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
-import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -30,12 +29,11 @@ import { Result } from "../types/fp.js";
  */
 export function apiKeysList(
   client: OpenRouterCore,
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.ListApiKeysResponse,
-    | errors.ErrorResponse
+    operations.ListResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -55,13 +53,12 @@ export function apiKeysList(
 
 async function $do(
   client: OpenRouterCore,
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.ListApiKeysResponse,
-      | errors.ErrorResponse
+      operations.ListResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -76,8 +73,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.ListApiKeysRequest$outboundSchema.optional().parse(value),
+    (value) => operations.ListRequest$outboundSchema.optional().parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -104,7 +100,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "listApiKeys",
+    operationID: "list",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -143,13 +139,8 @@ async function $do(
   }
   const response = doResult.value;
 
-  const responseFields = {
-    HttpMeta: { Response: response, Request: req },
-  };
-
   const [result] = await M.match<
-    operations.ListApiKeysResponse,
-    | errors.ErrorResponse
+    operations.ListResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -159,10 +150,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.ListApiKeysResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
-  )(response, req, { extraFields: responseFields });
+    M.json(200, operations.ListResponse$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
+    M.json("default", operations.ListResponse$inboundSchema),
+  )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

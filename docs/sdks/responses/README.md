@@ -7,15 +7,15 @@ beta.responses endpoints
 
 ### Available Operations
 
-* [send](#send) - Submit a response request
+* [send](#send) - Create a response
 
 ## send
 
-Submits a request to the Responses API (beta)
+Creates a streaming or non-streaming response using OpenResponses API format
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="sendResponsesRequest" method="post" path="/api/alpha/responses" -->
+<!-- UsageSnippet language="typescript" operationID="createApiAlphaResponses" method="post" path="/api/alpha/responses" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -25,31 +25,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description: "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -60,40 +68,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);
@@ -118,31 +156,39 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await betaResponsesSend(openRouter, {
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description: "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -153,40 +199,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -220,18 +296,17 @@ import {
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.SendResponsesRequestRequest](../../models/operations/sendresponsesrequestrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [models.OpenResponsesRequest](../../models/openresponsesrequest.md)                                                                                                            | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.SendResponsesRequestResponse](../../models/operations/sendresponsesrequestresponse.md)\>**
+**Promise\<[operations.CreateApiAlphaResponsesResponse](../../models/operations/createapialpharesponsesresponse.md)\>**
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |

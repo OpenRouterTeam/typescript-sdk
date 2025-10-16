@@ -7,7 +7,7 @@ Type of API used for the generation
 ```typescript
 import { ApiType } from "@openrouter/sdk/models/operations";
 
-let value: ApiType = "completions";
+let value: ApiType = "embeddings";
 ```
 
 ## Values

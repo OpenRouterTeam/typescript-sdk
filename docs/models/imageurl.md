@@ -13,7 +13,7 @@ let value: ImageUrl = {
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `url`                                | *string*                             | :heavy_check_mark:                   | N/A                                  |
-| `detail`                             | [models.Detail](../models/detail.md) | :heavy_minus_sign:                   | N/A                                  |
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `url`                                                                                      | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `detail`                                                                                   | [models.ChatMessageContentItemImageDetail](../models/chatmessagecontentitemimagedetail.md) | :heavy_minus_sign:                                                                         | N/A                                                                                        |

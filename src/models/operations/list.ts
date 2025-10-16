@@ -5,155 +5,101 @@
 import * as z from "zod";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type ListRequest = {
-  author: string;
-  slug: string;
-};
-
-/**
- * Tokenizer type used by the model
- */
-export const Tokenizer = {
-  Router: "Router",
-  Media: "Media",
-  Other: "Other",
-  Gpt: "GPT",
-  Claude: "Claude",
-  Gemini: "Gemini",
-  Grok: "Grok",
-  Cohere: "Cohere",
-  Nova: "Nova",
-  Qwen: "Qwen",
-  Yi: "Yi",
-  DeepSeek: "DeepSeek",
-  Mistral: "Mistral",
-  Llama2: "Llama2",
-  Llama3: "Llama3",
-  Llama4: "Llama4",
-  PaLM: "PaLM",
-  Rwkv: "RWKV",
-  Qwen3: "Qwen3",
-} as const;
-/**
- * Tokenizer type used by the model
- */
-export type Tokenizer = OpenEnum<typeof Tokenizer>;
-
-/**
- * Instruction format type
- */
-export const InstructType = {
-  None: "none",
-  Airoboros: "airoboros",
-  Alpaca: "alpaca",
-  AlpacaModif: "alpaca-modif",
-  Chatml: "chatml",
-  Claude: "claude",
-  CodeLlama: "code-llama",
-  Gemma: "gemma",
-  Llama2: "llama2",
-  Llama3: "llama3",
-  Mistral: "mistral",
-  Nemotron: "nemotron",
-  Neural: "neural",
-  Openchat: "openchat",
-  Phi3: "phi3",
-  Rwkv: "rwkv",
-  Vicuna: "vicuna",
-  Zephyr: "zephyr",
-  DeepseekR1: "deepseek-r1",
-  DeepseekV31: "deepseek-v3.1",
-  Qwq: "qwq",
-  Qwen3: "qwen3",
-} as const;
-/**
- * Instruction format type
- */
-export type InstructType = OpenEnum<typeof InstructType>;
-
-export const InputModality = {
-  Text: "text",
-  Image: "image",
-  File: "file",
-  Audio: "audio",
-} as const;
-export type InputModality = OpenEnum<typeof InputModality>;
-
-export const OutputModality = {
-  Text: "text",
-  Image: "image",
-  Embeddings: "embeddings",
-} as const;
-export type OutputModality = OpenEnum<typeof OutputModality>;
-
-/**
- * Model architecture information
- */
-export type Architecture = {
-  /**
-   * Tokenizer type used by the model
-   */
-  tokenizer: Tokenizer | null;
-  /**
-   * Instruction format type
-   */
-  instructType: InstructType | null;
-  /**
-   * Primary modality of the model
-   */
-  modality: string | null;
-  /**
-   * Supported input modalities
-   */
-  inputModalities: Array<InputModality>;
-  /**
-   * Supported output modalities
-   */
-  outputModalities: Array<OutputModality>;
+  includeDisabled?: string | undefined;
+  offset?: string | undefined;
 };
 
 export type ListData = {
   /**
-   * Unique identifier for the model
+   * Unique hash identifier for the API key
    */
-  id: string;
+  hash: string;
   /**
-   * Display name of the model
+   * Name of the API key
    */
   name: string;
   /**
-   * Unix timestamp of when the model was created
+   * Human-readable label for the API key
    */
-  created: number;
+  label: string;
   /**
-   * Description of the model
+   * Whether the API key is disabled
    */
-  description: string;
+  disabled: boolean;
   /**
-   * Model architecture information
+   * Spending limit for the API key in USD
    */
-  architecture: Architecture;
+  limit: number | null;
   /**
-   * List of available endpoints for this model
+   * Remaining spending limit in USD
    */
-  endpoints: Array<models.EndpointsList>;
+  limitRemaining: number | null;
+  /**
+   * Type of limit reset for the API key
+   */
+  limitReset: string | null;
+  /**
+   * Whether to include external BYOK usage in the credit limit
+   */
+  includeByokInLimit: boolean;
+  /**
+   * Total OpenRouter credit usage (in USD) for the API key
+   */
+  usage: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC day
+   */
+  usageDaily: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  usageWeekly: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC month
+   */
+  usageMonthly: number;
+  /**
+   * Total external BYOK usage (in USD) for the API key
+   */
+  byokUsage: number;
+  /**
+   * External BYOK usage (in USD) for the current UTC day
+   */
+  byokUsageDaily: number;
+  /**
+   * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  byokUsageWeekly: number;
+  /**
+   * External BYOK usage (in USD) for current UTC month
+   */
+  byokUsageMonthly: number;
+  /**
+   * ISO 8601 timestamp of when the API key was created
+   */
+  createdAt: string;
+  /**
+   * ISO 8601 timestamp of when the API key was last updated
+   */
+  updatedAt: string | null;
 };
 
 /**
- * Returns a list of endpoints
+ * List of API keys
  */
-export type ListResponse = {
-  data: ListData;
+export type ListResponseBody = {
+  /**
+   * List of API keys
+   */
+  data: Array<ListData>;
 };
+
+export type ListResponse = ListResponseBody | models.ErrorResponse;
 
 /** @internal */
 export const ListRequest$inboundSchema: z.ZodType<
@@ -161,14 +107,18 @@ export const ListRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  author: z.string(),
-  slug: z.string(),
+  include_disabled: z.string().optional(),
+  offset: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "include_disabled": "includeDisabled",
+  });
 });
 
 /** @internal */
 export type ListRequest$Outbound = {
-  author: string;
-  slug: string;
+  include_disabled?: string | undefined;
+  offset?: string | undefined;
 };
 
 /** @internal */
@@ -177,8 +127,12 @@ export const ListRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ListRequest
 > = z.object({
-  author: z.string(),
-  slug: z.string(),
+  includeDisabled: z.string().optional(),
+  offset: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    includeDisabled: "include_disabled",
+  });
 });
 
 /**
@@ -209,229 +163,66 @@ export function listRequestFromJSON(
 }
 
 /** @internal */
-export const Tokenizer$inboundSchema: z.ZodType<
-  Tokenizer,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(Tokenizer),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Tokenizer$outboundSchema: z.ZodType<
-  Tokenizer,
-  z.ZodTypeDef,
-  Tokenizer
-> = z.union([
-  z.nativeEnum(Tokenizer),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Tokenizer$ {
-  /** @deprecated use `Tokenizer$inboundSchema` instead. */
-  export const inboundSchema = Tokenizer$inboundSchema;
-  /** @deprecated use `Tokenizer$outboundSchema` instead. */
-  export const outboundSchema = Tokenizer$outboundSchema;
-}
-
-/** @internal */
-export const InstructType$inboundSchema: z.ZodType<
-  InstructType,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(InstructType),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const InstructType$outboundSchema: z.ZodType<
-  InstructType,
-  z.ZodTypeDef,
-  InstructType
-> = z.union([
-  z.nativeEnum(InstructType),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InstructType$ {
-  /** @deprecated use `InstructType$inboundSchema` instead. */
-  export const inboundSchema = InstructType$inboundSchema;
-  /** @deprecated use `InstructType$outboundSchema` instead. */
-  export const outboundSchema = InstructType$outboundSchema;
-}
-
-/** @internal */
-export const InputModality$inboundSchema: z.ZodType<
-  InputModality,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(InputModality),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const InputModality$outboundSchema: z.ZodType<
-  InputModality,
-  z.ZodTypeDef,
-  InputModality
-> = z.union([
-  z.nativeEnum(InputModality),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InputModality$ {
-  /** @deprecated use `InputModality$inboundSchema` instead. */
-  export const inboundSchema = InputModality$inboundSchema;
-  /** @deprecated use `InputModality$outboundSchema` instead. */
-  export const outboundSchema = InputModality$outboundSchema;
-}
-
-/** @internal */
-export const OutputModality$inboundSchema: z.ZodType<
-  OutputModality,
-  z.ZodTypeDef,
-  unknown
-> = z
-  .union([
-    z.nativeEnum(OutputModality),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const OutputModality$outboundSchema: z.ZodType<
-  OutputModality,
-  z.ZodTypeDef,
-  OutputModality
-> = z.union([
-  z.nativeEnum(OutputModality),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputModality$ {
-  /** @deprecated use `OutputModality$inboundSchema` instead. */
-  export const inboundSchema = OutputModality$inboundSchema;
-  /** @deprecated use `OutputModality$outboundSchema` instead. */
-  export const outboundSchema = OutputModality$outboundSchema;
-}
-
-/** @internal */
-export const Architecture$inboundSchema: z.ZodType<
-  Architecture,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  tokenizer: z.nullable(Tokenizer$inboundSchema),
-  instruct_type: z.nullable(InstructType$inboundSchema),
-  modality: z.nullable(z.string()),
-  input_modalities: z.array(InputModality$inboundSchema),
-  output_modalities: z.array(OutputModality$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "instruct_type": "instructType",
-    "input_modalities": "inputModalities",
-    "output_modalities": "outputModalities",
-  });
-});
-
-/** @internal */
-export type Architecture$Outbound = {
-  tokenizer: string | null;
-  instruct_type: string | null;
-  modality: string | null;
-  input_modalities: Array<string>;
-  output_modalities: Array<string>;
-};
-
-/** @internal */
-export const Architecture$outboundSchema: z.ZodType<
-  Architecture$Outbound,
-  z.ZodTypeDef,
-  Architecture
-> = z.object({
-  tokenizer: z.nullable(Tokenizer$outboundSchema),
-  instructType: z.nullable(InstructType$outboundSchema),
-  modality: z.nullable(z.string()),
-  inputModalities: z.array(InputModality$outboundSchema),
-  outputModalities: z.array(OutputModality$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    instructType: "instruct_type",
-    inputModalities: "input_modalities",
-    outputModalities: "output_modalities",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Architecture$ {
-  /** @deprecated use `Architecture$inboundSchema` instead. */
-  export const inboundSchema = Architecture$inboundSchema;
-  /** @deprecated use `Architecture$outboundSchema` instead. */
-  export const outboundSchema = Architecture$outboundSchema;
-  /** @deprecated use `Architecture$Outbound` instead. */
-  export type Outbound = Architecture$Outbound;
-}
-
-export function architectureToJSON(architecture: Architecture): string {
-  return JSON.stringify(Architecture$outboundSchema.parse(architecture));
-}
-
-export function architectureFromJSON(
-  jsonString: string,
-): SafeParseResult<Architecture, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Architecture$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Architecture' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListData$inboundSchema: z.ZodType<
   ListData,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.string(),
+  hash: z.string(),
   name: z.string(),
-  created: z.number(),
-  description: z.string(),
-  architecture: z.lazy(() => Architecture$inboundSchema),
-  endpoints: z.array(models.EndpointsList$inboundSchema),
+  label: z.string(),
+  disabled: z.boolean(),
+  limit: z.nullable(z.number()),
+  limit_remaining: z.nullable(z.number()),
+  limit_reset: z.nullable(z.string()),
+  include_byok_in_limit: z.boolean(),
+  usage: z.number(),
+  usage_daily: z.number(),
+  usage_weekly: z.number(),
+  usage_monthly: z.number(),
+  byok_usage: z.number(),
+  byok_usage_daily: z.number(),
+  byok_usage_weekly: z.number(),
+  byok_usage_monthly: z.number(),
+  created_at: z.string(),
+  updated_at: z.nullable(z.string()),
+}).transform((v) => {
+  return remap$(v, {
+    "limit_remaining": "limitRemaining",
+    "limit_reset": "limitReset",
+    "include_byok_in_limit": "includeByokInLimit",
+    "usage_daily": "usageDaily",
+    "usage_weekly": "usageWeekly",
+    "usage_monthly": "usageMonthly",
+    "byok_usage": "byokUsage",
+    "byok_usage_daily": "byokUsageDaily",
+    "byok_usage_weekly": "byokUsageWeekly",
+    "byok_usage_monthly": "byokUsageMonthly",
+    "created_at": "createdAt",
+    "updated_at": "updatedAt",
+  });
 });
 
 /** @internal */
 export type ListData$Outbound = {
-  id: string;
+  hash: string;
   name: string;
-  created: number;
-  description: string;
-  architecture: Architecture$Outbound;
-  endpoints: Array<models.EndpointsList$Outbound>;
+  label: string;
+  disabled: boolean;
+  limit: number | null;
+  limit_remaining: number | null;
+  limit_reset: string | null;
+  include_byok_in_limit: boolean;
+  usage: number;
+  usage_daily: number;
+  usage_weekly: number;
+  usage_monthly: number;
+  byok_usage: number;
+  byok_usage_daily: number;
+  byok_usage_weekly: number;
+  byok_usage_monthly: number;
+  created_at: string;
+  updated_at: string | null;
 };
 
 /** @internal */
@@ -440,12 +231,39 @@ export const ListData$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ListData
 > = z.object({
-  id: z.string(),
+  hash: z.string(),
   name: z.string(),
-  created: z.number(),
-  description: z.string(),
-  architecture: z.lazy(() => Architecture$outboundSchema),
-  endpoints: z.array(models.EndpointsList$outboundSchema),
+  label: z.string(),
+  disabled: z.boolean(),
+  limit: z.nullable(z.number()),
+  limitRemaining: z.nullable(z.number()),
+  limitReset: z.nullable(z.string()),
+  includeByokInLimit: z.boolean(),
+  usage: z.number(),
+  usageDaily: z.number(),
+  usageWeekly: z.number(),
+  usageMonthly: z.number(),
+  byokUsage: z.number(),
+  byokUsageDaily: z.number(),
+  byokUsageWeekly: z.number(),
+  byokUsageMonthly: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.nullable(z.string()),
+}).transform((v) => {
+  return remap$(v, {
+    limitRemaining: "limit_remaining",
+    limitReset: "limit_reset",
+    includeByokInLimit: "include_byok_in_limit",
+    usageDaily: "usage_daily",
+    usageWeekly: "usage_weekly",
+    usageMonthly: "usage_monthly",
+    byokUsage: "byok_usage",
+    byokUsageDaily: "byok_usage_daily",
+    byokUsageWeekly: "byok_usage_weekly",
+    byokUsageMonthly: "byok_usage_monthly",
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  });
 });
 
 /**
@@ -476,27 +294,83 @@ export function listDataFromJSON(
 }
 
 /** @internal */
+export const ListResponseBody$inboundSchema: z.ZodType<
+  ListResponseBody,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.array(z.lazy(() => ListData$inboundSchema)),
+});
+
+/** @internal */
+export type ListResponseBody$Outbound = {
+  data: Array<ListData$Outbound>;
+};
+
+/** @internal */
+export const ListResponseBody$outboundSchema: z.ZodType<
+  ListResponseBody$Outbound,
+  z.ZodTypeDef,
+  ListResponseBody
+> = z.object({
+  data: z.array(z.lazy(() => ListData$outboundSchema)),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ListResponseBody$ {
+  /** @deprecated use `ListResponseBody$inboundSchema` instead. */
+  export const inboundSchema = ListResponseBody$inboundSchema;
+  /** @deprecated use `ListResponseBody$outboundSchema` instead. */
+  export const outboundSchema = ListResponseBody$outboundSchema;
+  /** @deprecated use `ListResponseBody$Outbound` instead. */
+  export type Outbound = ListResponseBody$Outbound;
+}
+
+export function listResponseBodyToJSON(
+  listResponseBody: ListResponseBody,
+): string {
+  return JSON.stringify(
+    ListResponseBody$outboundSchema.parse(listResponseBody),
+  );
+}
+
+export function listResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListResponse$inboundSchema: z.ZodType<
   ListResponse,
   z.ZodTypeDef,
   unknown
-> = z.object({
-  data: z.lazy(() => ListData$inboundSchema),
-});
+> = z.union([
+  z.lazy(() => ListResponseBody$inboundSchema),
+  models.ErrorResponse$inboundSchema,
+]);
 
 /** @internal */
-export type ListResponse$Outbound = {
-  data: ListData$Outbound;
-};
+export type ListResponse$Outbound =
+  | ListResponseBody$Outbound
+  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const ListResponse$outboundSchema: z.ZodType<
   ListResponse$Outbound,
   z.ZodTypeDef,
   ListResponse
-> = z.object({
-  data: z.lazy(() => ListData$outboundSchema),
-});
+> = z.union([
+  z.lazy(() => ListResponseBody$outboundSchema),
+  models.ErrorResponse$outboundSchema,
+]);
 
 /**
  * @internal

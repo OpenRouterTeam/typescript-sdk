@@ -30,41 +30,37 @@ let value: ChatGenerationParams = {
   presencePenalty: 7597.29,
   reasoning: {
     effort: "minimal",
-    generateSummary: "detailed",
-    summary: null,
+    summary: "detailed",
   },
   responseFormat: {
-    type: "json_object",
+    type: "text",
   },
-  seed: 814447,
+  seed: 493978,
   stop: [
     "<value 1>",
+    "<value 2>",
   ],
   streamOptions: {
-    includeUsage: false,
+    includeUsage: true,
   },
-  toolChoice: {
-    type: "function",
-    function: {
-      name: "<value>",
-    },
-  },
+  toolChoice: "<value>",
   tools: [
     {
       type: "function",
       function: {
         name: "<value>",
         description:
-          "rural toward while since midst finally tributary consequently underneath till",
+          "consequently abaft as uh-huh drat video imagineer for gadzooks",
         parameters: {
           "key": "<value>",
           "key1": "<value>",
+          "key2": "<value>",
         },
         strict: false,
       },
     },
   ],
-  user: "Antonia_Harber35",
+  user: "Presley54",
 };
 ```
 

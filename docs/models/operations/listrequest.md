@@ -6,8 +6,8 @@
 import { ListRequest } from "@openrouter/sdk/models/operations";
 
 let value: ListRequest = {
-  author: "<value>",
-  slug: "<value>",
+  includeDisabled: "<value>",
+  offset: "<value>",
 };
 ```
 
@@ -15,5 +15,5 @@ let value: ListRequest = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `author`           | *string*           | :heavy_check_mark: | N/A                |
-| `slug`             | *string*           | :heavy_check_mark: | N/A                |
+| `includeDisabled`  | *string*           | :heavy_minus_sign: | N/A                |
+| `offset`           | *string*           | :heavy_minus_sign: | N/A                |

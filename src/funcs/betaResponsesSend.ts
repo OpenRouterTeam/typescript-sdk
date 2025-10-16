@@ -4,7 +4,6 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -18,7 +17,6 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
-import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -28,73 +26,18 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Submit a response request
+ * Create a response
  *
  * @remarks
- * Submits a request to the Responses API (beta)
+ * Creates a streaming or non-streaming response using OpenResponses API format
  */
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: operations.SendResponsesRequestRequest & { stream?: false },
+  request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.ResponsesNonStreamingResponse,
-    | errors.ErrorResponse
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function betaResponsesSend(
-  client: OpenRouterCore,
-  request: operations.SendResponsesRequestRequest & { stream: true },
-  options?: RequestOptions,
-): APIPromise<
-  Result<
-    EventStream<operations.SendResponsesRequestResponseBody>,
-    | errors.ErrorResponse
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function betaResponsesSend(
-  client: OpenRouterCore,
-  request: operations.SendResponsesRequestRequest,
-  options?: RequestOptions,
-): APIPromise<
-  Result<
-    operations.SendResponsesRequestResponse,
-    | errors.ErrorResponse
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
-  >
->;
-export function betaResponsesSend(
-  client: OpenRouterCore,
-  request: operations.SendResponsesRequestRequest,
-  options?: RequestOptions,
-): APIPromise<
-  Result<
-    operations.SendResponsesRequestResponse,
-    | errors.ErrorResponse
+    operations.CreateApiAlphaResponsesResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -114,13 +57,12 @@ export function betaResponsesSend(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.SendResponsesRequestRequest,
+  request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.SendResponsesRequestResponse,
-      | errors.ErrorResponse
+      operations.CreateApiAlphaResponsesResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -135,8 +77,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      operations.SendResponsesRequestRequest$outboundSchema.parse(value),
+    (value) => models.OpenResponsesRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -149,7 +90,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: request?.stream ? "text/event-stream" : "application/json",
+    Accept: "application/json;q=1, text/event-stream;q=0",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -159,7 +100,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "sendResponsesRequest",
+    operationID: "createApiAlphaResponses",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -197,13 +138,8 @@ async function $do(
   }
   const response = doResult.value;
 
-  const responseFields = {
-    HttpMeta: { Response: response, Request: req },
-  };
-
   const [result] = await M.match<
-    operations.SendResponsesRequestResponse,
-    | errors.ErrorResponse
+    operations.CreateApiAlphaResponsesResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -213,11 +149,12 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.SendResponsesRequestResponse$inboundSchema),
-    M.sse(200, operations.SendResponsesRequestResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
-  )(response, req, { extraFields: responseFields });
+    M.json(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
+    M.sse(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
+    M.json("default", operations.CreateApiAlphaResponsesResponse$inboundSchema),
+  )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

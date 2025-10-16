@@ -42,7 +42,6 @@ async function run() {
     presencePenalty: 9132.54,
     reasoning: {
       effort: "medium",
-      generateSummary: "concise",
       summary: null,
     },
     responseFormat: {
@@ -112,7 +111,6 @@ async function run() {
     presencePenalty: 9132.54,
     reasoning: {
       effort: "medium",
-      generateSummary: "concise",
       summary: null,
     },
     responseFormat: {

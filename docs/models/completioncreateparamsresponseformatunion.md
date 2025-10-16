@@ -19,14 +19,14 @@ const value: models.CompletionCreateParamsResponseFormatJSONObject = {
 };
 ```
 
-### `models.CompletionCreateParamsResponseFormatJSONSchema`
+### `models.ResponseFormatJSONSchema`
 
 ```typescript
-const value: models.CompletionCreateParamsResponseFormatJSONSchema = {
+const value: models.ResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
     name: "<value>",
-    description: "athletic decent scuttle among excluding react",
+    description: "circa or and",
     schema: {
       "key": "<value>",
       "key1": "<value>",
@@ -37,10 +37,10 @@ const value: models.CompletionCreateParamsResponseFormatJSONSchema = {
 };
 ```
 
-### `models.CompletionCreateParamsResponseFormatGrammar`
+### `models.ResponseFormatTextGrammar`
 
 ```typescript
-const value: models.CompletionCreateParamsResponseFormatGrammar = {
+const value: models.ResponseFormatTextGrammar = {
   type: "grammar",
   grammar: "<value>",
 };

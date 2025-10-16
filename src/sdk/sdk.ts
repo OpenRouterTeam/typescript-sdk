@@ -9,12 +9,10 @@ import { Beta } from "./beta.js";
 import { Chat } from "./chat.js";
 import { Completions } from "./completions.js";
 import { Credits } from "./credits.js";
-import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
-import { Model } from "./model.js";
 import { Models } from "./models.js";
-import { OAuth } from "./oauth.js";
+import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 
 export class OpenRouter extends ClientSDK {
@@ -33,11 +31,6 @@ export class OpenRouter extends ClientSDK {
     return (this._credits ??= new Credits(this._options));
   }
 
-  private _embeddings?: Embeddings;
-  get embeddings(): Embeddings {
-    return (this._embeddings ??= new Embeddings(this._options));
-  }
-
   private _generations?: Generations;
   get generations(): Generations {
     return (this._generations ??= new Generations(this._options));
@@ -53,9 +46,9 @@ export class OpenRouter extends ClientSDK {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
-  private _model?: Model;
-  get model(): Model {
-    return (this._model ??= new Model(this._options));
+  private _parameters?: ParametersT;
+  get parameters(): ParametersT {
+    return (this._parameters ??= new ParametersT(this._options));
   }
 
   private _providers?: Providers;
@@ -66,11 +59,6 @@ export class OpenRouter extends ClientSDK {
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
-  }
-
-  private _oAuth?: OAuth;
-  get oAuth(): OAuth {
-    return (this._oAuth ??= new OAuth(this._options));
   }
 
   private _chat?: Chat;

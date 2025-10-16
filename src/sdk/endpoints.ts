@@ -3,7 +3,7 @@
  */
 
 import { endpointsList } from "../funcs/endpointsList.js";
-import { endpointsPreviewZDR } from "../funcs/endpointsPreviewZDR.js";
+import { endpointsListZdrEndpoints } from "../funcs/endpointsListZdrEndpoints.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -13,9 +13,9 @@ export class Endpoints extends ClientSDK {
    * List all endpoints for a model
    */
   async list(
-    request: operations.ListRequest,
+    request: operations.ListEndpointsRequest,
     options?: RequestOptions,
-  ): Promise<operations.ListResponse> {
+  ): Promise<operations.ListEndpointsResponse> {
     return unwrapAsync(endpointsList(
       this,
       request,
@@ -26,10 +26,10 @@ export class Endpoints extends ClientSDK {
   /**
    * Preview the impact of ZDR on the available endpoints
    */
-  async previewZDR(
+  async listZdrEndpoints(
     options?: RequestOptions,
-  ): Promise<operations.PreviewZDRResponse> {
-    return unwrapAsync(endpointsPreviewZDR(
+  ): Promise<operations.ListEndpointsZdrResponse> {
+    return unwrapAsync(endpointsListZdrEndpoints(
       this,
       options,
     ));

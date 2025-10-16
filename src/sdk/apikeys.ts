@@ -17,9 +17,9 @@ export class APIKeys extends ClientSDK {
    * List API keys
    */
   async list(
-    request?: operations.ListApiKeysRequest | undefined,
+    request?: operations.ListRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListApiKeysResponse> {
+  ): Promise<operations.ListResponse> {
     return unwrapAsync(apiKeysList(
       this,
       request,
@@ -31,9 +31,9 @@ export class APIKeys extends ClientSDK {
    * Create a new API key
    */
   async create(
-    request: operations.CreateRequest,
+    request: operations.CreateKeysRequest,
     options?: RequestOptions,
-  ): Promise<operations.CreateResponse> {
+  ): Promise<operations.CreateKeysResponse> {
     return unwrapAsync(apiKeysCreate(
       this,
       request,
@@ -45,9 +45,9 @@ export class APIKeys extends ClientSDK {
    * Update an API key
    */
   async update(
-    request: operations.UpdateRequest,
+    request: operations.UpdateKeysRequest,
     options?: RequestOptions,
-  ): Promise<operations.UpdateResponse> {
+  ): Promise<operations.UpdateKeysResponse> {
     return unwrapAsync(apiKeysUpdate(
       this,
       request,
@@ -59,9 +59,9 @@ export class APIKeys extends ClientSDK {
    * Delete an API key
    */
   async delete(
-    request: operations.DeleteRequest,
+    request: operations.DeleteKeysRequest,
     options?: RequestOptions,
-  ): Promise<operations.DeleteResponse> {
+  ): Promise<operations.DeleteKeysResponse> {
     return unwrapAsync(apiKeysDelete(
       this,
       request,
@@ -73,9 +73,9 @@ export class APIKeys extends ClientSDK {
    * Get a single API key
    */
   async get(
-    request: operations.GetApiKeyRequest,
+    request: operations.GetKeyRequest,
     options?: RequestOptions,
-  ): Promise<operations.GetApiKeyResponse> {
+  ): Promise<operations.GetKeyResponse> {
     return unwrapAsync(apiKeysGet(
       this,
       request,

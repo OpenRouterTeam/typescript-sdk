@@ -12,6 +12,6 @@ import { InternalServerError } from "@openrouter/sdk/models/errors";
 
 ## Fields
 
-| Field                                                  | Type                                                   | Required                                               | Description                                            | Example                                                |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `error`                                                | [operations.ErrorT](../../models/operations/errort.md) | :heavy_check_mark:                                     | Error details                                          | {<br/>"code": 400,<br/>"message": "Bad Request"<br/>}  |
+| Field                                                  | Type                                                   | Required                                               | Description                                            |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `error`                                                | [operations.ErrorT](../../models/operations/errort.md) | :heavy_check_mark:                                     | Error details                                          |

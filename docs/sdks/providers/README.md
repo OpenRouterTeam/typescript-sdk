@@ -7,11 +7,11 @@ Provider information endpoints
 
 ### Available Operations
 
-* [list](#list) - List all available model providers
+* [list](#list) - List all providers
 
 ## list
 
-List all available model providers
+List all providers
 
 ### Example Usage
 

@@ -8,32 +8,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -44,40 +51,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);

@@ -90,32 +90,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -126,40 +133,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);
@@ -191,32 +228,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -227,40 +271,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);
@@ -279,10 +353,10 @@ import { OpenRouter } from "@openrouter/sdk";
 const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.credits.addCoinbaseCharge({
+  const result = await openRouter.credits.createCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   }, {
-    amount: 4821.17,
+    amount: 711.16,
     sender: "<value>",
     chainId: 1,
   });
@@ -316,7 +390,7 @@ run();
 
 #### [beta.responses](docs/sdks/responses/README.md)
 
-* [send](docs/sdks/responses/README.md#send) - Submit a response request
+* [send](docs/sdks/responses/README.md#send) - Create a response
 
 ### [chat](docs/sdks/chat/README.md)
 
@@ -328,40 +402,31 @@ run();
 
 ### [credits](docs/sdks/credits/README.md)
 
-* [get](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
-* [addCoinbaseCharge](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
-
-### [embeddings](docs/sdks/embeddings/README.md)
-
-* [generate](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
+* [getCredits](docs/sdks/credits/README.md#getcredits) - Get remaining credits
+* [createCoinbaseCharge](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
 
 ### [endpoints](docs/sdks/endpoints/README.md)
 
 * [list](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
-* [previewZDR](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
+* [listZdrEndpoints](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
 
 ### [generations](docs/sdks/generations/README.md)
 
-* [getMetadata](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
-
-### [model](docs/sdks/model/README.md)
-
-* [getParameters](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+* [getGeneration](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
 
 ### [models](docs/sdks/models/README.md)
 
-* [getCount](docs/sdks/models/README.md#getcount) - Get total count of available models
-* [list](docs/sdks/models/README.md#list) - List all models and their properties
-* [listUserModels](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
+* [listModelsCount](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
+* [getModels](docs/sdks/models/README.md#getmodels) - List all models and their properties
+* [listModelsUser](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
 
-### [oAuth](docs/sdks/oauth/README.md)
+### [parameters](docs/sdks/parameters/README.md)
 
-* [exchangeAuthorizationCode](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
-* [createAuthorizationCode](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
+* [getParameters](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 
 ### [providers](docs/sdks/providers/README.md)
 
-* [list](docs/sdks/providers/README.md#list) - List all available model providers
+* [list](docs/sdks/providers/README.md#list) - List all providers
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -388,22 +453,19 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`apiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
 - [`apiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
 - [`apiKeysUpdate`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`betaResponsesSend`](docs/sdks/responses/README.md#send) - Submit a response request
+- [`betaResponsesSend`](docs/sdks/responses/README.md#send) - Create a response
 - [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`creditsAddCoinbaseCharge`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
-- [`creditsGet`](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
-- [`embeddingsGenerate`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
+- [`creditsCreateCoinbaseCharge`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
+- [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
 - [`endpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
-- [`endpointsPreviewZDR`](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
-- [`generationsGetMetadata`](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
-- [`modelGetParameters`](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
-- [`modelsGetCount`](docs/sdks/models/README.md#getcount) - Get total count of available models
-- [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
-- [`modelsListUserModels`](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
-- [`oAuthCreateAuthorizationCode`](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
-- [`oAuthExchangeAuthorizationCode`](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
-- [`providersList`](docs/sdks/providers/README.md#list) - List all available model providers
+- [`endpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
+- [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+- [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+- [`modelsListModelsCount`](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
+- [`modelsListModelsUser`](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
+- [`parametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+- [`providersList`](docs/sdks/providers/README.md#list) - List all providers
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -437,22 +499,19 @@ To learn about this feature and how to get started, check
 - [`useApiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
 - [`useApiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
 - [`useApiKeysUpdateMutation`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`useBetaResponsesSendMutation`](docs/sdks/responses/README.md#send) - Submit a response request
+- [`useBetaResponsesSendMutation`](docs/sdks/responses/README.md#send) - Create a response
 - [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
 - [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`useCreditsAddCoinbaseChargeMutation`](docs/sdks/credits/README.md#addcoinbasecharge) - Create a Coinbase charge for crypto payment
-- [`useCreditsGet`](docs/sdks/credits/README.md#get) - Get total credits purchased and used for the authenticated user
-- [`useEmbeddingsGenerateMutation`](docs/sdks/embeddings/README.md#generate) - Submit an embedding request
+- [`useCreditsCreateCoinbaseChargeMutation`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
+- [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
 - [`useEndpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
-- [`useEndpointsPreviewZDR`](docs/sdks/endpoints/README.md#previewzdr) - Preview the impact of ZDR on the available endpoints
-- [`useGenerationsGetMetadata`](docs/sdks/generations/README.md#getmetadata) - Get request & usage metadata for a generation
-- [`useModelGetParameters`](docs/sdks/model/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
-- [`useModelsGetCount`](docs/sdks/models/README.md#getcount) - Get total count of available models
-- [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
-- [`useModelsListUserModels`](docs/sdks/models/README.md#listusermodels) - List models filtered by user provider preferences
-- [`useOAuthCreateAuthorizationCodeMutation`](docs/sdks/oauth/README.md#createauthorizationcode) - Create authorization code
-- [`useOAuthExchangeAuthorizationCodeMutation`](docs/sdks/oauth/README.md#exchangeauthorizationcode) - Exchange authorization code for API key
-- [`useProvidersList`](docs/sdks/providers/README.md#list) - List all available model providers
+- [`useEndpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
+- [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+- [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
+- [`useModelsListModelsCount`](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
+- [`useModelsListModelsUser`](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
+- [`useParametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+- [`useProvidersList`](docs/sdks/providers/README.md#list) - List all providers
 
 </details>
 <!-- End React hooks with TanStack Query [react-query] -->
@@ -475,32 +534,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -511,40 +577,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);
@@ -573,32 +669,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -609,40 +712,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   }, {
     retries: {
       strategy: "backoff",
@@ -683,32 +816,39 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    input: "Hello, how can I help you today?",
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
     instructions: "<value>",
     metadata: {
-      "user_id": "user-123",
-      "session_id": "session-abc",
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
     },
     tools: [
       {
         type: "function",
-        function: {
-          name: "<value>",
-          description:
-            "petal righteously sans athwart down front tuxedo overfeed",
-          parameters: {
-            "key": "<value>",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
           },
-          strict: false,
         },
       },
     ],
     toolChoice: "auto",
-    parallelToolCalls: true,
-    model: "Fortwo",
+    parallelToolCalls: false,
+    model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -719,40 +859,70 @@ async function run() {
     reasoning: {
       effort: "medium",
       summary: "auto",
-      maxTokens: 6520.65,
-      enabled: false,
+      maxTokens: 6415.05,
+      enabled: true,
     },
-    maxOutputTokens: 6181.51,
-    temperature: 8715.21,
-    topP: 3848.26,
-    topK: 2241.14,
+    maxOutputTokens: 5270.85,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 5913.88,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
-      id: "prompt-123",
+      id: "prompt-abc123",
       variables: {
-        "user_name": {
+        "name": {
           type: "input_text",
           text: "John",
         },
       },
     },
     include: [
-      "file_search_call.results",
+      "message.input_image.image_url",
     ],
     background: false,
     safetyIdentifier: "<value>",
     store: false,
     serviceTier: "scale",
-    truncation: "auto",
-    stream: null,
-    provider: null,
+    truncation: "disabled",
+    stream: false,
+    provider: {
+      allowFallbacks: false,
+      requireParameters: true,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "Moonshot AI",
+      ],
+      only: [
+        "<value>",
+      ],
+      ignore: [
+        "<value>",
+      ],
+      quantizations: [
+        "bf16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "<value>",
+        completion: 4351.98,
+        image: "https://loremflickr.com/916/1698?lock=7420998995259402",
+        audio: "<value>",
+        request: "<value>",
+      },
+      experimental: {},
+    },
     plugins: [
       {
-        id: "chain-of-thought",
+        id: "file-parser",
+        maxFiles: 3555.38,
+        pdf: {
+          engine: "pdf-text",
+        },
       },
     ],
-    user: "Ilene51",
+    user: "Parker.OKeefe",
   });
 
   console.log(result);
@@ -788,78 +958,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.beta.responses.send({
-      input: "Hello, how can I help you today?",
-      instructions: "<value>",
-      metadata: {
-        "user_id": "user-123",
-        "session_id": "session-abc",
-      },
-      tools: [
-        {
-          type: "function",
-          function: {
-            name: "<value>",
-            description:
-              "petal righteously sans athwart down front tuxedo overfeed",
-            parameters: {
-              "key": "<value>",
-            },
-            strict: false,
-          },
-        },
-      ],
-      toolChoice: "auto",
-      parallelToolCalls: true,
-      model: "Fortwo",
-      models: [
-        "<value 1>",
-        "<value 2>",
-      ],
-      text: {
-        format: {
-          type: "text",
-        },
-        verbosity: "medium",
-      },
-      reasoning: {
-        effort: "medium",
-        summary: "auto",
-        maxTokens: 6520.65,
-        enabled: false,
-      },
-      maxOutputTokens: 6181.51,
-      temperature: 8715.21,
-      topP: 3848.26,
-      topK: 2241.14,
-      promptCacheKey: "<value>",
-      previousResponseId: "<id>",
-      prompt: {
-        id: "prompt-123",
-        variables: {
-          "user_name": {
-            type: "input_text",
-            text: "John",
-          },
-        },
-      },
-      include: [
-        "file_search_call.results",
-      ],
-      background: false,
-      safetyIdentifier: "<value>",
-      store: false,
-      serviceTier: "scale",
-      truncation: "auto",
-      stream: null,
-      provider: null,
-      plugins: [
-        {
-          id: "chain-of-thought",
-        },
-      ],
-      user: "Ilene51",
-    });
+    const result = await openRouter.providers.list();
 
     console.log(result);
   } catch (error) {
@@ -871,9 +970,8 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.ErrorResponse) {
-        console.log(error.data$.error); // models.ErrorResponseError
-        console.log(error.data$.userId); // string
+      if (error instanceof errors.InternalServerError) {
+        console.log(error.data$.error); // operations.ErrorT
       }
     }
   }
@@ -884,9 +982,8 @@ run();
 ```
 
 ### Error Classes
-**Primary errors:**
+**Primary error:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Error response. *
 
 <details><summary>Less common errors (8)</summary>
 
@@ -901,8 +998,8 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 23 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 23 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 20 methods.*
+* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

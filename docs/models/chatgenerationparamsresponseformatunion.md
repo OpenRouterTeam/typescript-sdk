@@ -19,27 +19,28 @@ const value: models.ChatGenerationParamsResponseFormatJSONObject = {
 };
 ```
 
-### `models.ChatGenerationParamsResponseFormatJSONSchema`
+### `models.ResponseFormatJSONSchema`
 
 ```typescript
-const value: models.ChatGenerationParamsResponseFormatJSONSchema = {
+const value: models.ResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
     name: "<value>",
-    description: "consequently alert unnaturally until and orientate ski gray",
+    description: "circa or and",
     schema: {
       "key": "<value>",
       "key1": "<value>",
+      "key2": "<value>",
     },
     strict: false,
   },
 };
 ```
 
-### `models.ChatGenerationParamsResponseFormatGrammar`
+### `models.ResponseFormatTextGrammar`
 
 ```typescript
-const value: models.ChatGenerationParamsResponseFormatGrammar = {
+const value: models.ResponseFormatTextGrammar = {
   type: "grammar",
   grammar: "<value>",
 };

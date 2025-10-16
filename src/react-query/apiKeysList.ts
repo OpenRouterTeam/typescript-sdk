@@ -25,13 +25,13 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type ApiKeysListQueryData = operations.ListApiKeysResponse;
+export type ApiKeysListQueryData = operations.ListResponse;
 
 /**
  * List API keys
  */
 export function useApiKeysList(
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
   options?: QueryHookOptions<ApiKeysListQueryData>,
 ): UseQueryResult<ApiKeysListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -49,7 +49,7 @@ export function useApiKeysList(
  * List API keys
  */
 export function useApiKeysListSuspense(
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
   options?: SuspenseQueryHookOptions<ApiKeysListQueryData>,
 ): UseSuspenseQueryResult<ApiKeysListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -66,7 +66,7 @@ export function useApiKeysListSuspense(
 export function prefetchApiKeysList(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildApiKeysListQuery(
@@ -119,7 +119,7 @@ export function invalidateAllApiKeysList(
 
 export function buildApiKeysListQuery(
   client$: OpenRouterCore,
-  request?: operations.ListApiKeysRequest | undefined,
+  request?: operations.ListRequest | undefined,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;

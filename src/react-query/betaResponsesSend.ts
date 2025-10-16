@@ -11,24 +11,25 @@ import { OpenRouterCore } from "../core.js";
 import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
 export type BetaResponsesSendMutationVariables = {
-  request: operations.SendResponsesRequestRequest;
+  request: models.OpenResponsesRequest;
   options?: RequestOptions;
 };
 
 export type BetaResponsesSendMutationData =
-  operations.SendResponsesRequestResponse;
+  operations.CreateApiAlphaResponsesResponse;
 
 /**
- * Submit a response request
+ * Create a response
  *
  * @remarks
- * Submits a request to the Responses API (beta)
+ * Creates a streaming or non-streaming response using OpenResponses API format
  */
 export function useBetaResponsesSendMutation(
   options?: MutationHookOptions<

@@ -1,7 +1,5 @@
 # ResponsesOutputItemReasoning
 
-Reasoning output item
-
 ## Example Usage
 
 ```typescript
@@ -19,23 +17,19 @@ let value: ResponsesOutputItemReasoning = {
   summary: [
     {
       type: "summary_text",
-      text: "Based on the analysis, the answer is...",
+      text: "<value>",
     },
   ],
   encryptedContent: "<value>",
-  signature: "<value>",
-  format: "unknown",
 };
 ```
 
 ## Fields
 
-| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `type`                                                                                       | [models.ResponsesOutputItemReasoningType](../models/responsesoutputitemreasoningtype.md)     | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `id`                                                                                         | *string*                                                                                     | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `content`                                                                                    | [models.ResponsesReasoningTextContent](../models/responsesreasoningtextcontent.md)[]         | :heavy_minus_sign:                                                                           | N/A                                                                                          |
-| `summary`                                                                                    | [models.ResponsesReasoningSummaryText](../models/responsesreasoningsummarytext.md)[]         | :heavy_check_mark:                                                                           | N/A                                                                                          |
-| `encryptedContent`                                                                           | *string*                                                                                     | :heavy_minus_sign:                                                                           | N/A                                                                                          |
-| `signature`                                                                                  | *string*                                                                                     | :heavy_minus_sign:                                                                           | N/A                                                                                          |
-| `format`                                                                                     | [models.ResponsesOutputItemReasoningFormat](../models/responsesoutputitemreasoningformat.md) | :heavy_minus_sign:                                                                           | N/A                                                                                          |
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `type`                                                                                   | [models.ResponsesOutputItemTypeReasoning](../models/responsesoutputitemtypereasoning.md) | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `id`                                                                                     | *string*                                                                                 | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `content`                                                                                | [models.ReasoningTextContent](../models/reasoningtextcontent.md)[]                       | :heavy_minus_sign:                                                                       | N/A                                                                                      |
+| `summary`                                                                                | [models.ReasoningSummaryText](../models/reasoningsummarytext.md)[]                       | :heavy_check_mark:                                                                       | N/A                                                                                      |
+| `encryptedContent`                                                                       | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |

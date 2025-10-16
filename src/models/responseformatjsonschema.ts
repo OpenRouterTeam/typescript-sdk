@@ -3,49 +3,21 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  JSONSchemaConfig,
+  JSONSchemaConfig$inboundSchema,
+  JSONSchemaConfig$Outbound,
+  JSONSchemaConfig$outboundSchema,
+} from "./jsonschemaconfig.js";
 
-export const ResponseFormatJSONSchemaType = {
-  JsonSchema: "json_schema",
-} as const;
-export type ResponseFormatJSONSchemaType = ClosedEnum<
-  typeof ResponseFormatJSONSchemaType
->;
-
-/**
- * JSON Schema response format
- */
 export type ResponseFormatJSONSchema = {
-  type: ResponseFormatJSONSchemaType;
-  name: string;
-  description?: string | undefined;
-  strict?: boolean | null | undefined;
-  schema: { [k: string]: any | null };
+  type: "json_schema";
+  jsonSchema: JSONSchemaConfig;
 };
-
-/** @internal */
-export const ResponseFormatJSONSchemaType$inboundSchema: z.ZodNativeEnum<
-  typeof ResponseFormatJSONSchemaType
-> = z.nativeEnum(ResponseFormatJSONSchemaType);
-
-/** @internal */
-export const ResponseFormatJSONSchemaType$outboundSchema: z.ZodNativeEnum<
-  typeof ResponseFormatJSONSchemaType
-> = ResponseFormatJSONSchemaType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseFormatJSONSchemaType$ {
-  /** @deprecated use `ResponseFormatJSONSchemaType$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatJSONSchemaType$inboundSchema;
-  /** @deprecated use `ResponseFormatJSONSchemaType$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatJSONSchemaType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
@@ -53,20 +25,18 @@ export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ResponseFormatJSONSchemaType$inboundSchema,
-  name: z.string(),
-  description: z.string().optional(),
-  strict: z.nullable(z.boolean()).optional(),
-  schema: z.record(z.nullable(z.any())),
+  type: z.literal("json_schema"),
+  json_schema: JSONSchemaConfig$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "json_schema": "jsonSchema",
+  });
 });
 
 /** @internal */
 export type ResponseFormatJSONSchema$Outbound = {
-  type: string;
-  name: string;
-  description?: string | undefined;
-  strict?: boolean | null | undefined;
-  schema: { [k: string]: any | null };
+  type: "json_schema";
+  json_schema: JSONSchemaConfig$Outbound;
 };
 
 /** @internal */
@@ -75,11 +45,12 @@ export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponseFormatJSONSchema
 > = z.object({
-  type: ResponseFormatJSONSchemaType$outboundSchema,
-  name: z.string(),
-  description: z.string().optional(),
-  strict: z.nullable(z.boolean()).optional(),
-  schema: z.record(z.nullable(z.any())),
+  type: z.literal("json_schema"),
+  jsonSchema: JSONSchemaConfig$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    jsonSchema: "json_schema",
+  });
 });
 
 /**

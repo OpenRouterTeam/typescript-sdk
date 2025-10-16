@@ -7,6 +7,18 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ResponseFormatJSONSchema,
+  ResponseFormatJSONSchema$inboundSchema,
+  ResponseFormatJSONSchema$Outbound,
+  ResponseFormatJSONSchema$outboundSchema,
+} from "./responseformatjsonschema.js";
+import {
+  ResponseFormatTextGrammar,
+  ResponseFormatTextGrammar$inboundSchema,
+  ResponseFormatTextGrammar$Outbound,
+  ResponseFormatTextGrammar$outboundSchema,
+} from "./responseformattextgrammar.js";
 
 export type CompletionCreateParamsPrompt =
   | string
@@ -24,23 +36,6 @@ export type CompletionCreateParamsResponseFormatPython = {
   type: "python";
 };
 
-export type CompletionCreateParamsResponseFormatGrammar = {
-  type: "grammar";
-  grammar: string;
-};
-
-export type CompletionCreateParamsJsonSchema = {
-  name: string;
-  description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
-  strict?: boolean | null | undefined;
-};
-
-export type CompletionCreateParamsResponseFormatJSONSchema = {
-  type: "json_schema";
-  jsonSchema: CompletionCreateParamsJsonSchema;
-};
-
 export type CompletionCreateParamsResponseFormatJSONObject = {
   type: "json_object";
 };
@@ -50,8 +45,8 @@ export type CompletionCreateParamsResponseFormatText = {
 };
 
 export type CompletionCreateParamsResponseFormatUnion =
-  | CompletionCreateParamsResponseFormatJSONSchema
-  | CompletionCreateParamsResponseFormatGrammar
+  | ResponseFormatJSONSchema
+  | ResponseFormatTextGrammar
   | CompletionCreateParamsResponseFormatText
   | CompletionCreateParamsResponseFormatJSONObject
   | CompletionCreateParamsResponseFormatPython;
@@ -77,8 +72,8 @@ export type CompletionCreateParams = {
   user?: string | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   responseFormat?:
-    | CompletionCreateParamsResponseFormatJSONSchema
-    | CompletionCreateParamsResponseFormatGrammar
+    | ResponseFormatJSONSchema
+    | ResponseFormatTextGrammar
     | CompletionCreateParamsResponseFormatText
     | CompletionCreateParamsResponseFormatJSONObject
     | CompletionCreateParamsResponseFormatPython
@@ -321,220 +316,6 @@ export function completionCreateParamsResponseFormatPythonFromJSON(
 }
 
 /** @internal */
-export const CompletionCreateParamsResponseFormatGrammar$inboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatGrammar,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: z.literal("grammar"),
-    grammar: z.string(),
-  });
-
-/** @internal */
-export type CompletionCreateParamsResponseFormatGrammar$Outbound = {
-  type: "grammar";
-  grammar: string;
-};
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatGrammar$outboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatGrammar$Outbound,
-    z.ZodTypeDef,
-    CompletionCreateParamsResponseFormatGrammar
-  > = z.object({
-    type: z.literal("grammar"),
-    grammar: z.string(),
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatGrammar$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatGrammar$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatGrammar$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatGrammar$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatGrammar$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatGrammar$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsResponseFormatGrammar$Outbound;
-}
-
-export function completionCreateParamsResponseFormatGrammarToJSON(
-  completionCreateParamsResponseFormatGrammar:
-    CompletionCreateParamsResponseFormatGrammar,
-): string {
-  return JSON.stringify(
-    CompletionCreateParamsResponseFormatGrammar$outboundSchema.parse(
-      completionCreateParamsResponseFormatGrammar,
-    ),
-  );
-}
-
-export function completionCreateParamsResponseFormatGrammarFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatGrammar,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatGrammar$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatGrammar' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsJsonSchema$inboundSchema: z.ZodType<
-  CompletionCreateParamsJsonSchema,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  name: z.string(),
-  description: z.string().optional(),
-  schema: z.record(z.any()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
-});
-
-/** @internal */
-export type CompletionCreateParamsJsonSchema$Outbound = {
-  name: string;
-  description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
-  strict?: boolean | null | undefined;
-};
-
-/** @internal */
-export const CompletionCreateParamsJsonSchema$outboundSchema: z.ZodType<
-  CompletionCreateParamsJsonSchema$Outbound,
-  z.ZodTypeDef,
-  CompletionCreateParamsJsonSchema
-> = z.object({
-  name: z.string(),
-  description: z.string().optional(),
-  schema: z.record(z.any()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsJsonSchema$ {
-  /** @deprecated use `CompletionCreateParamsJsonSchema$inboundSchema` instead. */
-  export const inboundSchema = CompletionCreateParamsJsonSchema$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsJsonSchema$outboundSchema` instead. */
-  export const outboundSchema = CompletionCreateParamsJsonSchema$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsJsonSchema$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsJsonSchema$Outbound;
-}
-
-export function completionCreateParamsJsonSchemaToJSON(
-  completionCreateParamsJsonSchema: CompletionCreateParamsJsonSchema,
-): string {
-  return JSON.stringify(
-    CompletionCreateParamsJsonSchema$outboundSchema.parse(
-      completionCreateParamsJsonSchema,
-    ),
-  );
-}
-
-export function completionCreateParamsJsonSchemaFromJSON(
-  jsonString: string,
-): SafeParseResult<CompletionCreateParamsJsonSchema, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CompletionCreateParamsJsonSchema$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CompletionCreateParamsJsonSchema' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatJSONSchema$inboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatJSONSchema,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type: z.literal("json_schema"),
-    json_schema: z.lazy(() => CompletionCreateParamsJsonSchema$inboundSchema),
-  }).transform((v) => {
-    return remap$(v, {
-      "json_schema": "jsonSchema",
-    });
-  });
-
-/** @internal */
-export type CompletionCreateParamsResponseFormatJSONSchema$Outbound = {
-  type: "json_schema";
-  json_schema: CompletionCreateParamsJsonSchema$Outbound;
-};
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatJSONSchema$outboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatJSONSchema$Outbound,
-    z.ZodTypeDef,
-    CompletionCreateParamsResponseFormatJSONSchema
-  > = z.object({
-    type: z.literal("json_schema"),
-    jsonSchema: z.lazy(() => CompletionCreateParamsJsonSchema$outboundSchema),
-  }).transform((v) => {
-    return remap$(v, {
-      jsonSchema: "json_schema",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatJSONSchema$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONSchema$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatJSONSchema$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONSchema$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatJSONSchema$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONSchema$Outbound` instead. */
-  export type Outbound =
-    CompletionCreateParamsResponseFormatJSONSchema$Outbound;
-}
-
-export function completionCreateParamsResponseFormatJSONSchemaToJSON(
-  completionCreateParamsResponseFormatJSONSchema:
-    CompletionCreateParamsResponseFormatJSONSchema,
-): string {
-  return JSON.stringify(
-    CompletionCreateParamsResponseFormatJSONSchema$outboundSchema.parse(
-      completionCreateParamsResponseFormatJSONSchema,
-    ),
-  );
-}
-
-export function completionCreateParamsResponseFormatJSONSchemaFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatJSONSchema,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatJSONSchema$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatJSONSchema' from JSON`,
-  );
-}
-
-/** @internal */
 export const CompletionCreateParamsResponseFormatJSONObject$inboundSchema:
   z.ZodType<
     CompletionCreateParamsResponseFormatJSONObject,
@@ -673,8 +454,8 @@ export const CompletionCreateParamsResponseFormatUnion$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  z.lazy(() => CompletionCreateParamsResponseFormatJSONSchema$inboundSchema),
-  z.lazy(() => CompletionCreateParamsResponseFormatGrammar$inboundSchema),
+  ResponseFormatJSONSchema$inboundSchema,
+  ResponseFormatTextGrammar$inboundSchema,
   z.lazy(() => CompletionCreateParamsResponseFormatText$inboundSchema),
   z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$inboundSchema),
   z.lazy(() => CompletionCreateParamsResponseFormatPython$inboundSchema),
@@ -682,8 +463,8 @@ export const CompletionCreateParamsResponseFormatUnion$inboundSchema: z.ZodType<
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatUnion$Outbound =
-  | CompletionCreateParamsResponseFormatJSONSchema$Outbound
-  | CompletionCreateParamsResponseFormatGrammar$Outbound
+  | ResponseFormatJSONSchema$Outbound
+  | ResponseFormatTextGrammar$Outbound
   | CompletionCreateParamsResponseFormatText$Outbound
   | CompletionCreateParamsResponseFormatJSONObject$Outbound
   | CompletionCreateParamsResponseFormatPython$Outbound;
@@ -695,8 +476,8 @@ export const CompletionCreateParamsResponseFormatUnion$outboundSchema:
     z.ZodTypeDef,
     CompletionCreateParamsResponseFormatUnion
   > = z.union([
-    z.lazy(() => CompletionCreateParamsResponseFormatJSONSchema$outboundSchema),
-    z.lazy(() => CompletionCreateParamsResponseFormatGrammar$outboundSchema),
+    ResponseFormatJSONSchema$outboundSchema,
+    ResponseFormatTextGrammar$outboundSchema,
     z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
     z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$outboundSchema),
     z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
@@ -777,10 +558,8 @@ export const CompletionCreateParams$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string())).optional(),
   response_format: z.nullable(
     z.union([
-      z.lazy(() =>
-        CompletionCreateParamsResponseFormatJSONSchema$inboundSchema
-      ),
-      z.lazy(() => CompletionCreateParamsResponseFormatGrammar$inboundSchema),
+      ResponseFormatJSONSchema$inboundSchema,
+      ResponseFormatTextGrammar$inboundSchema,
       z.lazy(() => CompletionCreateParamsResponseFormatText$inboundSchema),
       z.lazy(() =>
         CompletionCreateParamsResponseFormatJSONObject$inboundSchema
@@ -823,8 +602,8 @@ export type CompletionCreateParams$Outbound = {
   user?: string | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   response_format?:
-    | CompletionCreateParamsResponseFormatJSONSchema$Outbound
-    | CompletionCreateParamsResponseFormatGrammar$Outbound
+    | ResponseFormatJSONSchema$Outbound
+    | ResponseFormatTextGrammar$Outbound
     | CompletionCreateParamsResponseFormatText$Outbound
     | CompletionCreateParamsResponseFormatJSONObject$Outbound
     | CompletionCreateParamsResponseFormatPython$Outbound
@@ -865,10 +644,8 @@ export const CompletionCreateParams$outboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string())).optional(),
   responseFormat: z.nullable(
     z.union([
-      z.lazy(() =>
-        CompletionCreateParamsResponseFormatJSONSchema$outboundSchema
-      ),
-      z.lazy(() => CompletionCreateParamsResponseFormatGrammar$outboundSchema),
+      ResponseFormatJSONSchema$outboundSchema,
+      ResponseFormatTextGrammar$outboundSchema,
       z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
       z.lazy(() =>
         CompletionCreateParamsResponseFormatJSONObject$outboundSchema

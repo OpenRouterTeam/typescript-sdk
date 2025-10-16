@@ -17,7 +17,6 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
-import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -30,12 +29,11 @@ import { Result } from "../types/fp.js";
  */
 export function apiKeysUpdate(
   client: OpenRouterCore,
-  request: operations.UpdateRequest,
+  request: operations.UpdateKeysRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.UpdateResponse,
-    | errors.ErrorResponse
+    operations.UpdateKeysResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -55,13 +53,12 @@ export function apiKeysUpdate(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.UpdateRequest,
+  request: operations.UpdateKeysRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.UpdateResponse,
-      | errors.ErrorResponse
+      operations.UpdateKeysResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -76,7 +73,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.UpdateRequest$outboundSchema.parse(value),
+    (value) => operations.UpdateKeysRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -106,7 +103,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "update",
+    operationID: "updateKeys",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -144,13 +141,8 @@ async function $do(
   }
   const response = doResult.value;
 
-  const responseFields = {
-    HttpMeta: { Response: response, Request: req },
-  };
-
   const [result] = await M.match<
-    operations.UpdateResponse,
-    | errors.ErrorResponse
+    operations.UpdateKeysResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -160,10 +152,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.UpdateResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
-  )(response, req, { extraFields: responseFields });
+    M.json(200, operations.UpdateKeysResponse$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
+    M.json("default", operations.UpdateKeysResponse$inboundSchema),
+  )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

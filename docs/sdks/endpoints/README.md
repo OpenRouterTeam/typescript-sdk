@@ -8,7 +8,7 @@ Endpoint information
 ### Available Operations
 
 * [list](#list) - List all endpoints for a model
-* [previewZDR](#previewzdr) - Preview the impact of ZDR on the available endpoints
+* [listZdrEndpoints](#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
 
 ## list
 
@@ -16,7 +16,7 @@ List all endpoints for a model
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="list" method="get" path="/models/{author}/{slug}/endpoints" -->
+<!-- UsageSnippet language="typescript" operationID="listEndpoints" method="get" path="/models/{author}/{slug}/endpoints" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -98,29 +98,28 @@ import {
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.ListRequest](../../models/operations/listrequest.md)                                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.ListEndpointsRequest](../../models/operations/listendpointsrequest.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListResponse](../../models/operations/listresponse.md)\>**
+**Promise\<[operations.ListEndpointsResponse](../../models/operations/listendpointsresponse.md)\>**
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## previewZDR
+## listZdrEndpoints
 
 Preview the impact of ZDR on the available endpoints
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="previewZDR" method="get" path="/endpoints/zdr" -->
+<!-- UsageSnippet language="typescript" operationID="listEndpointsZdr" method="get" path="/endpoints/zdr" -->
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -129,7 +128,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.endpoints.previewZDR();
+  const result = await openRouter.endpoints.listZdrEndpoints();
 
   console.log(result);
 }
@@ -143,7 +142,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { endpointsPreviewZDR } from "@openrouter/sdk/funcs/endpointsPreviewZDR.js";
+import { endpointsListZdrEndpoints } from "@openrouter/sdk/funcs/endpointsListZdrEndpoints.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -152,12 +151,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await endpointsPreviewZDR(openRouter);
+  const res = await endpointsListZdrEndpoints(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("endpointsPreviewZDR failed:", res.error);
+    console.log("endpointsListZdrEndpoints failed:", res.error);
   }
 }
 
@@ -177,18 +176,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useEndpointsPreviewZDR,
-  useEndpointsPreviewZDRSuspense,
+  useEndpointsListZdrEndpoints,
+  useEndpointsListZdrEndpointsSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchEndpointsPreviewZDR,
+  prefetchEndpointsListZdrEndpoints,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllEndpointsPreviewZDR,
-} from "@openrouter/sdk/react-query/endpointsPreviewZDR.js";
+  invalidateAllEndpointsListZdrEndpoints,
+} from "@openrouter/sdk/react-query/endpointsListZdrEndpoints.js";
 ```
 
 ### Parameters
@@ -201,11 +200,10 @@ import {
 
 ### Response
 
-**Promise\<[operations.PreviewZDRResponse](../../models/operations/previewzdrresponse.md)\>**
+**Promise\<[operations.ListEndpointsZdrResponse](../../models/operations/listendpointszdrresponse.md)\>**
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |

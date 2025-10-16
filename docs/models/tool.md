@@ -10,10 +10,11 @@ let value: Tool = {
   function: {
     name: "<value>",
     description:
-      "rural toward while since midst finally tributary consequently underneath till",
+      "consequently abaft as uh-huh drat video imagineer for gadzooks",
     parameters: {
       "key": "<value>",
       "key1": "<value>",
+      "key2": "<value>",
     },
     strict: false,
   },

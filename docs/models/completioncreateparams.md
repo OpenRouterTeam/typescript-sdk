@@ -38,7 +38,7 @@ let value: CompletionCreateParams = {
     type: "json_schema",
     jsonSchema: {
       name: "<value>",
-      description: "athletic decent scuttle among excluding react",
+      description: "circa or and",
       schema: {
         "key": "<value>",
         "key1": "<value>",

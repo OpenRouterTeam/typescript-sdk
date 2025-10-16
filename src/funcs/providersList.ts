@@ -24,7 +24,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all available model providers
+ * List all providers
  */
 export function providersList(
   client: OpenRouterCore,

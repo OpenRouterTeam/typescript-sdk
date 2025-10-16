@@ -8,7 +8,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type TopLogprob = {
+export type ChatMessageTokenLogprobTopLogprob = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
@@ -18,12 +18,12 @@ export type ChatMessageTokenLogprob = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
-  topLogprobs: Array<TopLogprob>;
+  topLogprobs: Array<ChatMessageTokenLogprobTopLogprob>;
 };
 
 /** @internal */
-export const TopLogprob$inboundSchema: z.ZodType<
-  TopLogprob,
+export const ChatMessageTokenLogprobTopLogprob$inboundSchema: z.ZodType<
+  ChatMessageTokenLogprobTopLogprob,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -33,17 +33,17 @@ export const TopLogprob$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type TopLogprob$Outbound = {
+export type ChatMessageTokenLogprobTopLogprob$Outbound = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
 };
 
 /** @internal */
-export const TopLogprob$outboundSchema: z.ZodType<
-  TopLogprob$Outbound,
+export const ChatMessageTokenLogprobTopLogprob$outboundSchema: z.ZodType<
+  ChatMessageTokenLogprobTopLogprob$Outbound,
   z.ZodTypeDef,
-  TopLogprob
+  ChatMessageTokenLogprobTopLogprob
 > = z.object({
   token: z.string(),
   logprob: z.number(),
@@ -54,26 +54,33 @@ export const TopLogprob$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace TopLogprob$ {
-  /** @deprecated use `TopLogprob$inboundSchema` instead. */
-  export const inboundSchema = TopLogprob$inboundSchema;
-  /** @deprecated use `TopLogprob$outboundSchema` instead. */
-  export const outboundSchema = TopLogprob$outboundSchema;
-  /** @deprecated use `TopLogprob$Outbound` instead. */
-  export type Outbound = TopLogprob$Outbound;
+export namespace ChatMessageTokenLogprobTopLogprob$ {
+  /** @deprecated use `ChatMessageTokenLogprobTopLogprob$inboundSchema` instead. */
+  export const inboundSchema = ChatMessageTokenLogprobTopLogprob$inboundSchema;
+  /** @deprecated use `ChatMessageTokenLogprobTopLogprob$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatMessageTokenLogprobTopLogprob$outboundSchema;
+  /** @deprecated use `ChatMessageTokenLogprobTopLogprob$Outbound` instead. */
+  export type Outbound = ChatMessageTokenLogprobTopLogprob$Outbound;
 }
 
-export function topLogprobToJSON(topLogprob: TopLogprob): string {
-  return JSON.stringify(TopLogprob$outboundSchema.parse(topLogprob));
+export function chatMessageTokenLogprobTopLogprobToJSON(
+  chatMessageTokenLogprobTopLogprob: ChatMessageTokenLogprobTopLogprob,
+): string {
+  return JSON.stringify(
+    ChatMessageTokenLogprobTopLogprob$outboundSchema.parse(
+      chatMessageTokenLogprobTopLogprob,
+    ),
+  );
 }
 
-export function topLogprobFromJSON(
+export function chatMessageTokenLogprobTopLogprobFromJSON(
   jsonString: string,
-): SafeParseResult<TopLogprob, SDKValidationError> {
+): SafeParseResult<ChatMessageTokenLogprobTopLogprob, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => TopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TopLogprob' from JSON`,
+    (x) => ChatMessageTokenLogprobTopLogprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatMessageTokenLogprobTopLogprob' from JSON`,
   );
 }
 
@@ -86,7 +93,9 @@ export const ChatMessageTokenLogprob$inboundSchema: z.ZodType<
   token: z.string(),
   logprob: z.number(),
   bytes: z.nullable(z.array(z.number())),
-  top_logprobs: z.array(z.lazy(() => TopLogprob$inboundSchema)),
+  top_logprobs: z.array(
+    z.lazy(() => ChatMessageTokenLogprobTopLogprob$inboundSchema),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
@@ -98,7 +107,7 @@ export type ChatMessageTokenLogprob$Outbound = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
-  top_logprobs: Array<TopLogprob$Outbound>;
+  top_logprobs: Array<ChatMessageTokenLogprobTopLogprob$Outbound>;
 };
 
 /** @internal */
@@ -110,7 +119,9 @@ export const ChatMessageTokenLogprob$outboundSchema: z.ZodType<
   token: z.string(),
   logprob: z.number(),
   bytes: z.nullable(z.array(z.number())),
-  topLogprobs: z.array(z.lazy(() => TopLogprob$outboundSchema)),
+  topLogprobs: z.array(
+    z.lazy(() => ChatMessageTokenLogprobTopLogprob$outboundSchema),
+  ),
 }).transform((v) => {
   return remap$(v, {
     topLogprobs: "top_logprobs",

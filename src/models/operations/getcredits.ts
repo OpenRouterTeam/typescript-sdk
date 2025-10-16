@@ -7,6 +7,7 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetCreditsData = {
   totalCredits: number;
@@ -16,9 +17,11 @@ export type GetCreditsData = {
 /**
  * Returns the total credits purchased and used
  */
-export type GetCreditsResponse = {
+export type GetCreditsResponseBody = {
   data: GetCreditsData;
 };
+
+export type GetCreditsResponse = GetCreditsResponseBody | models.ErrorResponse;
 
 /** @internal */
 export const GetCreditsData$inboundSchema: z.ZodType<
@@ -84,8 +87,8 @@ export function getCreditsDataFromJSON(
 }
 
 /** @internal */
-export const GetCreditsResponse$inboundSchema: z.ZodType<
-  GetCreditsResponse,
+export const GetCreditsResponseBody$inboundSchema: z.ZodType<
+  GetCreditsResponseBody,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -93,18 +96,74 @@ export const GetCreditsResponse$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetCreditsResponse$Outbound = {
+export type GetCreditsResponseBody$Outbound = {
   data: GetCreditsData$Outbound;
 };
+
+/** @internal */
+export const GetCreditsResponseBody$outboundSchema: z.ZodType<
+  GetCreditsResponseBody$Outbound,
+  z.ZodTypeDef,
+  GetCreditsResponseBody
+> = z.object({
+  data: z.lazy(() => GetCreditsData$outboundSchema),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetCreditsResponseBody$ {
+  /** @deprecated use `GetCreditsResponseBody$inboundSchema` instead. */
+  export const inboundSchema = GetCreditsResponseBody$inboundSchema;
+  /** @deprecated use `GetCreditsResponseBody$outboundSchema` instead. */
+  export const outboundSchema = GetCreditsResponseBody$outboundSchema;
+  /** @deprecated use `GetCreditsResponseBody$Outbound` instead. */
+  export type Outbound = GetCreditsResponseBody$Outbound;
+}
+
+export function getCreditsResponseBodyToJSON(
+  getCreditsResponseBody: GetCreditsResponseBody,
+): string {
+  return JSON.stringify(
+    GetCreditsResponseBody$outboundSchema.parse(getCreditsResponseBody),
+  );
+}
+
+export function getCreditsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<GetCreditsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetCreditsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetCreditsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const GetCreditsResponse$inboundSchema: z.ZodType<
+  GetCreditsResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  z.lazy(() => GetCreditsResponseBody$inboundSchema),
+  models.ErrorResponse$inboundSchema,
+]);
+
+/** @internal */
+export type GetCreditsResponse$Outbound =
+  | GetCreditsResponseBody$Outbound
+  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetCreditsResponse$outboundSchema: z.ZodType<
   GetCreditsResponse$Outbound,
   z.ZodTypeDef,
   GetCreditsResponse
-> = z.object({
-  data: z.lazy(() => GetCreditsData$outboundSchema),
-});
+> = z.union([
+  z.lazy(() => GetCreditsResponseBody$outboundSchema),
+  models.ErrorResponse$outboundSchema,
+]);
 
 /**
  * @internal

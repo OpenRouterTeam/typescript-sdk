@@ -25,13 +25,13 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type EndpointsListQueryData = operations.ListResponse;
+export type EndpointsListQueryData = operations.ListEndpointsResponse;
 
 /**
  * List all endpoints for a model
  */
 export function useEndpointsList(
-  request: operations.ListRequest,
+  request: operations.ListEndpointsRequest,
   options?: QueryHookOptions<EndpointsListQueryData>,
 ): UseQueryResult<EndpointsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -49,7 +49,7 @@ export function useEndpointsList(
  * List all endpoints for a model
  */
 export function useEndpointsListSuspense(
-  request: operations.ListRequest,
+  request: operations.ListEndpointsRequest,
   options?: SuspenseQueryHookOptions<EndpointsListQueryData>,
 ): UseSuspenseQueryResult<EndpointsListQueryData, Error> {
   const client = useOpenRouterContext();
@@ -66,7 +66,7 @@ export function useEndpointsListSuspense(
 export function prefetchEndpointsList(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  request: operations.ListRequest,
+  request: operations.ListEndpointsRequest,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildEndpointsListQuery(
@@ -109,7 +109,7 @@ export function invalidateAllEndpointsList(
 
 export function buildEndpointsListQuery(
   client$: OpenRouterCore,
-  request: operations.ListRequest,
+  request: operations.ListEndpointsRequest,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;

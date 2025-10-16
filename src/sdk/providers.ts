@@ -9,7 +9,7 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Providers extends ClientSDK {
   /**
-   * List all available model providers
+   * List all providers
    */
   async list(
     options?: RequestOptions,

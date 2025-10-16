@@ -17,11 +17,11 @@ import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
 export type ApiKeysUpdateMutationVariables = {
-  request: operations.UpdateRequest;
+  request: operations.UpdateKeysRequest;
   options?: RequestOptions;
 };
 
-export type ApiKeysUpdateMutationData = operations.UpdateResponse;
+export type ApiKeysUpdateMutationData = operations.UpdateKeysResponse;
 
 /**
  * Update an API key

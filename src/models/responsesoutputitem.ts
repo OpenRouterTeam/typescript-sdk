@@ -3,56 +3,940 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ResponsesImageGenerationCall,
-  ResponsesImageGenerationCall$inboundSchema,
-  ResponsesImageGenerationCall$Outbound,
-  ResponsesImageGenerationCall$outboundSchema,
-} from "./responsesimagegenerationcall.js";
+  ImageGenerationStatus,
+  ImageGenerationStatus$inboundSchema,
+  ImageGenerationStatus$outboundSchema,
+} from "./imagegenerationstatus.js";
 import {
-  ResponsesOutputItemFileSearchCall,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
-  ResponsesOutputItemFileSearchCall$Outbound,
-  ResponsesOutputItemFileSearchCall$outboundSchema,
-} from "./responsesoutputitemfilesearchcall.js";
+  OutputTextContent,
+  OutputTextContent$inboundSchema,
+  OutputTextContent$Outbound,
+  OutputTextContent$outboundSchema,
+} from "./outputtextcontent.js";
 import {
-  ResponsesOutputItemFunctionCall,
-  ResponsesOutputItemFunctionCall$inboundSchema,
-  ResponsesOutputItemFunctionCall$Outbound,
-  ResponsesOutputItemFunctionCall$outboundSchema,
-} from "./responsesoutputitemfunctioncall.js";
+  ReasoningSummaryText,
+  ReasoningSummaryText$inboundSchema,
+  ReasoningSummaryText$Outbound,
+  ReasoningSummaryText$outboundSchema,
+} from "./reasoningsummarytext.js";
 import {
-  ResponsesOutputItemReasoning,
-  ResponsesOutputItemReasoning$inboundSchema,
-  ResponsesOutputItemReasoning$Outbound,
-  ResponsesOutputItemReasoning$outboundSchema,
-} from "./responsesoutputitemreasoning.js";
+  ReasoningTextContent,
+  ReasoningTextContent$inboundSchema,
+  ReasoningTextContent$Outbound,
+  ReasoningTextContent$outboundSchema,
+} from "./reasoningtextcontent.js";
 import {
-  ResponsesOutputMessage,
-  ResponsesOutputMessage$inboundSchema,
-  ResponsesOutputMessage$Outbound,
-  ResponsesOutputMessage$outboundSchema,
-} from "./responsesoutputmessage.js";
+  RefusalContent,
+  RefusalContent$inboundSchema,
+  RefusalContent$Outbound,
+  RefusalContent$outboundSchema,
+} from "./refusalcontent.js";
 import {
-  ResponsesWebSearchCallOutput,
-  ResponsesWebSearchCallOutput$inboundSchema,
-  ResponsesWebSearchCallOutput$Outbound,
-  ResponsesWebSearchCallOutput$outboundSchema,
-} from "./responseswebsearchcalloutput.js";
+  WebSearchStatus,
+  WebSearchStatus$inboundSchema,
+  WebSearchStatus$outboundSchema,
+} from "./websearchstatus.js";
+
+export const ResponsesOutputItemTypeImageGenerationCall = {
+  ImageGenerationCall: "image_generation_call",
+} as const;
+export type ResponsesOutputItemTypeImageGenerationCall = ClosedEnum<
+  typeof ResponsesOutputItemTypeImageGenerationCall
+>;
+
+export type ResponsesOutputItemImageGenerationCall = {
+  type: ResponsesOutputItemTypeImageGenerationCall;
+  id: string;
+  result: string | null;
+  status: ImageGenerationStatus;
+};
+
+export const ResponsesOutputItemTypeFileSearchCall = {
+  FileSearchCall: "file_search_call",
+} as const;
+export type ResponsesOutputItemTypeFileSearchCall = ClosedEnum<
+  typeof ResponsesOutputItemTypeFileSearchCall
+>;
+
+export type ResponsesOutputItemFileSearchCall = {
+  type: ResponsesOutputItemTypeFileSearchCall;
+  id: string;
+  queries: Array<string>;
+  status: WebSearchStatus;
+};
+
+export const ResponsesOutputItemTypeWebSearchCall = {
+  WebSearchCall: "web_search_call",
+} as const;
+export type ResponsesOutputItemTypeWebSearchCall = ClosedEnum<
+  typeof ResponsesOutputItemTypeWebSearchCall
+>;
+
+export type ResponsesOutputItemWebSearchCall = {
+  type: ResponsesOutputItemTypeWebSearchCall;
+  id: string;
+  status: WebSearchStatus;
+};
+
+export const ResponsesOutputItemTypeFunctionCall = {
+  FunctionCall: "function_call",
+} as const;
+export type ResponsesOutputItemTypeFunctionCall = ClosedEnum<
+  typeof ResponsesOutputItemTypeFunctionCall
+>;
+
+export type ResponsesOutputItemFunctionCall = {
+  type: ResponsesOutputItemTypeFunctionCall;
+  id?: string | undefined;
+  name: string;
+  arguments: string;
+  callId: string;
+};
+
+export const ResponsesOutputItemTypeReasoning = {
+  Reasoning: "reasoning",
+} as const;
+export type ResponsesOutputItemTypeReasoning = ClosedEnum<
+  typeof ResponsesOutputItemTypeReasoning
+>;
+
+export type ResponsesOutputItemReasoning = {
+  type: ResponsesOutputItemTypeReasoning;
+  id: string;
+  content?: Array<ReasoningTextContent> | undefined;
+  summary: Array<ReasoningSummaryText>;
+  encryptedContent?: string | null | undefined;
+};
+
+export const ResponsesOutputItemRole = {
+  Assistant: "assistant",
+} as const;
+export type ResponsesOutputItemRole = ClosedEnum<
+  typeof ResponsesOutputItemRole
+>;
+
+export const ResponsesOutputItemTypeMessage = {
+  Message: "message",
+} as const;
+export type ResponsesOutputItemTypeMessage = ClosedEnum<
+  typeof ResponsesOutputItemTypeMessage
+>;
+
+export const ResponsesOutputItemStatusInProgress = {
+  InProgress: "in_progress",
+} as const;
+export type ResponsesOutputItemStatusInProgress = ClosedEnum<
+  typeof ResponsesOutputItemStatusInProgress
+>;
+
+export const ResponsesOutputItemStatusIncomplete = {
+  Incomplete: "incomplete",
+} as const;
+export type ResponsesOutputItemStatusIncomplete = ClosedEnum<
+  typeof ResponsesOutputItemStatusIncomplete
+>;
+
+export const ResponsesOutputItemStatusCompleted = {
+  Completed: "completed",
+} as const;
+export type ResponsesOutputItemStatusCompleted = ClosedEnum<
+  typeof ResponsesOutputItemStatusCompleted
+>;
+
+export type ResponsesOutputItemStatusUnion =
+  | ResponsesOutputItemStatusCompleted
+  | ResponsesOutputItemStatusIncomplete
+  | ResponsesOutputItemStatusInProgress;
+
+export type ResponsesOutputItemContent = OutputTextContent | RefusalContent;
+
+export type ResponsesOutputItemMessage = {
+  id: string;
+  role: ResponsesOutputItemRole;
+  type: ResponsesOutputItemTypeMessage;
+  status:
+    | ResponsesOutputItemStatusCompleted
+    | ResponsesOutputItemStatusIncomplete
+    | ResponsesOutputItemStatusInProgress;
+  content: Array<OutputTextContent | RefusalContent>;
+};
 
 /**
- * Output item in Responses API
+ * An output item from the response
  */
 export type ResponsesOutputItem =
-  | (ResponsesOutputMessage & { type: "message" })
-  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
-  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
-  | (ResponsesImageGenerationCall & { type: "image_generation_call" })
-  | (ResponsesOutputItemReasoning & { type: "reasoning" })
-  | (ResponsesWebSearchCallOutput & { type: "web_search_call" });
+  | ResponsesOutputItemMessage
+  | ResponsesOutputItemFunctionCall
+  | ResponsesOutputItemFileSearchCall
+  | ResponsesOutputItemImageGenerationCall
+  | ResponsesOutputItemReasoning
+  | ResponsesOutputItemWebSearchCall;
+
+/** @internal */
+export const ResponsesOutputItemTypeImageGenerationCall$inboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeImageGenerationCall> = z
+    .nativeEnum(ResponsesOutputItemTypeImageGenerationCall);
+
+/** @internal */
+export const ResponsesOutputItemTypeImageGenerationCall$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeImageGenerationCall> =
+    ResponsesOutputItemTypeImageGenerationCall$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeImageGenerationCall$ {
+  /** @deprecated use `ResponsesOutputItemTypeImageGenerationCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemTypeImageGenerationCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeImageGenerationCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemTypeImageGenerationCall$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemImageGenerationCall$inboundSchema: z.ZodType<
+  ResponsesOutputItemImageGenerationCall,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ResponsesOutputItemTypeImageGenerationCall$inboundSchema,
+  id: z.string(),
+  result: z.nullable(z.string()),
+  status: ImageGenerationStatus$inboundSchema,
+});
+
+/** @internal */
+export type ResponsesOutputItemImageGenerationCall$Outbound = {
+  type: string;
+  id: string;
+  result: string | null;
+  status: string;
+};
+
+/** @internal */
+export const ResponsesOutputItemImageGenerationCall$outboundSchema: z.ZodType<
+  ResponsesOutputItemImageGenerationCall$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemImageGenerationCall
+> = z.object({
+  type: ResponsesOutputItemTypeImageGenerationCall$outboundSchema,
+  id: z.string(),
+  result: z.nullable(z.string()),
+  status: ImageGenerationStatus$outboundSchema,
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemImageGenerationCall$ {
+  /** @deprecated use `ResponsesOutputItemImageGenerationCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemImageGenerationCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemImageGenerationCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemImageGenerationCall$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemImageGenerationCall$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemImageGenerationCall$Outbound;
+}
+
+export function responsesOutputItemImageGenerationCallToJSON(
+  responsesOutputItemImageGenerationCall:
+    ResponsesOutputItemImageGenerationCall,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemImageGenerationCall$outboundSchema.parse(
+      responsesOutputItemImageGenerationCall,
+    ),
+  );
+}
+
+export function responsesOutputItemImageGenerationCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemImageGenerationCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ResponsesOutputItemImageGenerationCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemImageGenerationCall' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemTypeFileSearchCall$inboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeFileSearchCall> = z.nativeEnum(
+    ResponsesOutputItemTypeFileSearchCall,
+  );
+
+/** @internal */
+export const ResponsesOutputItemTypeFileSearchCall$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeFileSearchCall> =
+    ResponsesOutputItemTypeFileSearchCall$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeFileSearchCall$ {
+  /** @deprecated use `ResponsesOutputItemTypeFileSearchCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemTypeFileSearchCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeFileSearchCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemTypeFileSearchCall$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemFileSearchCall$inboundSchema: z.ZodType<
+  ResponsesOutputItemFileSearchCall,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ResponsesOutputItemTypeFileSearchCall$inboundSchema,
+  id: z.string(),
+  queries: z.array(z.string()),
+  status: WebSearchStatus$inboundSchema,
+});
+
+/** @internal */
+export type ResponsesOutputItemFileSearchCall$Outbound = {
+  type: string;
+  id: string;
+  queries: Array<string>;
+  status: string;
+};
+
+/** @internal */
+export const ResponsesOutputItemFileSearchCall$outboundSchema: z.ZodType<
+  ResponsesOutputItemFileSearchCall$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemFileSearchCall
+> = z.object({
+  type: ResponsesOutputItemTypeFileSearchCall$outboundSchema,
+  id: z.string(),
+  queries: z.array(z.string()),
+  status: WebSearchStatus$outboundSchema,
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFileSearchCall$ {
+  /** @deprecated use `ResponsesOutputItemFileSearchCall$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemFileSearchCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFileSearchCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemFileSearchCall$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemFileSearchCall$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemFileSearchCall$Outbound;
+}
+
+export function responsesOutputItemFileSearchCallToJSON(
+  responsesOutputItemFileSearchCall: ResponsesOutputItemFileSearchCall,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemFileSearchCall$outboundSchema.parse(
+      responsesOutputItemFileSearchCall,
+    ),
+  );
+}
+
+export function responsesOutputItemFileSearchCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemFileSearchCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemFileSearchCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemFileSearchCall' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemTypeWebSearchCall$inboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeWebSearchCall> = z.nativeEnum(
+    ResponsesOutputItemTypeWebSearchCall,
+  );
+
+/** @internal */
+export const ResponsesOutputItemTypeWebSearchCall$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeWebSearchCall> =
+    ResponsesOutputItemTypeWebSearchCall$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeWebSearchCall$ {
+  /** @deprecated use `ResponsesOutputItemTypeWebSearchCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemTypeWebSearchCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeWebSearchCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemTypeWebSearchCall$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemWebSearchCall$inboundSchema: z.ZodType<
+  ResponsesOutputItemWebSearchCall,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ResponsesOutputItemTypeWebSearchCall$inboundSchema,
+  id: z.string(),
+  status: WebSearchStatus$inboundSchema,
+});
+
+/** @internal */
+export type ResponsesOutputItemWebSearchCall$Outbound = {
+  type: string;
+  id: string;
+  status: string;
+};
+
+/** @internal */
+export const ResponsesOutputItemWebSearchCall$outboundSchema: z.ZodType<
+  ResponsesOutputItemWebSearchCall$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemWebSearchCall
+> = z.object({
+  type: ResponsesOutputItemTypeWebSearchCall$outboundSchema,
+  id: z.string(),
+  status: WebSearchStatus$outboundSchema,
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemWebSearchCall$ {
+  /** @deprecated use `ResponsesOutputItemWebSearchCall$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemWebSearchCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemWebSearchCall$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemWebSearchCall$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemWebSearchCall$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemWebSearchCall$Outbound;
+}
+
+export function responsesOutputItemWebSearchCallToJSON(
+  responsesOutputItemWebSearchCall: ResponsesOutputItemWebSearchCall,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemWebSearchCall$outboundSchema.parse(
+      responsesOutputItemWebSearchCall,
+    ),
+  );
+}
+
+export function responsesOutputItemWebSearchCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemWebSearchCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemWebSearchCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemWebSearchCall' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemTypeFunctionCall$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemTypeFunctionCall
+> = z.nativeEnum(ResponsesOutputItemTypeFunctionCall);
+
+/** @internal */
+export const ResponsesOutputItemTypeFunctionCall$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemTypeFunctionCall> =
+    ResponsesOutputItemTypeFunctionCall$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeFunctionCall$ {
+  /** @deprecated use `ResponsesOutputItemTypeFunctionCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemTypeFunctionCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeFunctionCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemTypeFunctionCall$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemFunctionCall$inboundSchema: z.ZodType<
+  ResponsesOutputItemFunctionCall,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ResponsesOutputItemTypeFunctionCall$inboundSchema,
+  id: z.string().optional(),
+  name: z.string(),
+  arguments: z.string(),
+  call_id: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
+
+/** @internal */
+export type ResponsesOutputItemFunctionCall$Outbound = {
+  type: string;
+  id?: string | undefined;
+  name: string;
+  arguments: string;
+  call_id: string;
+};
+
+/** @internal */
+export const ResponsesOutputItemFunctionCall$outboundSchema: z.ZodType<
+  ResponsesOutputItemFunctionCall$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemFunctionCall
+> = z.object({
+  type: ResponsesOutputItemTypeFunctionCall$outboundSchema,
+  id: z.string().optional(),
+  name: z.string(),
+  arguments: z.string(),
+  callId: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFunctionCall$ {
+  /** @deprecated use `ResponsesOutputItemFunctionCall$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemFunctionCall$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCall$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemFunctionCall$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCall$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemFunctionCall$Outbound;
+}
+
+export function responsesOutputItemFunctionCallToJSON(
+  responsesOutputItemFunctionCall: ResponsesOutputItemFunctionCall,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemFunctionCall$outboundSchema.parse(
+      responsesOutputItemFunctionCall,
+    ),
+  );
+}
+
+export function responsesOutputItemFunctionCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemFunctionCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemFunctionCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemFunctionCall' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemTypeReasoning$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemTypeReasoning
+> = z.nativeEnum(ResponsesOutputItemTypeReasoning);
+
+/** @internal */
+export const ResponsesOutputItemTypeReasoning$outboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemTypeReasoning
+> = ResponsesOutputItemTypeReasoning$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeReasoning$ {
+  /** @deprecated use `ResponsesOutputItemTypeReasoning$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemTypeReasoning$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeReasoning$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemTypeReasoning$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
+  ResponsesOutputItemReasoning,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  type: ResponsesOutputItemTypeReasoning$inboundSchema,
+  id: z.string(),
+  content: z.array(ReasoningTextContent$inboundSchema).optional(),
+  summary: z.array(ReasoningSummaryText$inboundSchema),
+  encrypted_content: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "encrypted_content": "encryptedContent",
+  });
+});
+
+/** @internal */
+export type ResponsesOutputItemReasoning$Outbound = {
+  type: string;
+  id: string;
+  content?: Array<ReasoningTextContent$Outbound> | undefined;
+  summary: Array<ReasoningSummaryText$Outbound>;
+  encrypted_content?: string | null | undefined;
+};
+
+/** @internal */
+export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
+  ResponsesOutputItemReasoning$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemReasoning
+> = z.object({
+  type: ResponsesOutputItemTypeReasoning$outboundSchema,
+  id: z.string(),
+  content: z.array(ReasoningTextContent$outboundSchema).optional(),
+  summary: z.array(ReasoningSummaryText$outboundSchema),
+  encryptedContent: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    encryptedContent: "encrypted_content",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemReasoning$ {
+  /** @deprecated use `ResponsesOutputItemReasoning$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemReasoning$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoning$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemReasoning$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoning$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemReasoning$Outbound;
+}
+
+export function responsesOutputItemReasoningToJSON(
+  responsesOutputItemReasoning: ResponsesOutputItemReasoning,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemReasoning$outboundSchema.parse(
+      responsesOutputItemReasoning,
+    ),
+  );
+}
+
+export function responsesOutputItemReasoningFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemReasoning, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemReasoning' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemRole$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemRole
+> = z.nativeEnum(ResponsesOutputItemRole);
+
+/** @internal */
+export const ResponsesOutputItemRole$outboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemRole
+> = ResponsesOutputItemRole$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemRole$ {
+  /** @deprecated use `ResponsesOutputItemRole$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemRole$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemRole$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemRole$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemTypeMessage$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemTypeMessage
+> = z.nativeEnum(ResponsesOutputItemTypeMessage);
+
+/** @internal */
+export const ResponsesOutputItemTypeMessage$outboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemTypeMessage
+> = ResponsesOutputItemTypeMessage$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemTypeMessage$ {
+  /** @deprecated use `ResponsesOutputItemTypeMessage$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemTypeMessage$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemTypeMessage$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemTypeMessage$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemStatusInProgress$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemStatusInProgress
+> = z.nativeEnum(ResponsesOutputItemStatusInProgress);
+
+/** @internal */
+export const ResponsesOutputItemStatusInProgress$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemStatusInProgress> =
+    ResponsesOutputItemStatusInProgress$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemStatusInProgress$ {
+  /** @deprecated use `ResponsesOutputItemStatusInProgress$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemStatusInProgress$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemStatusInProgress$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemStatusInProgress$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemStatusIncomplete$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemStatusIncomplete
+> = z.nativeEnum(ResponsesOutputItemStatusIncomplete);
+
+/** @internal */
+export const ResponsesOutputItemStatusIncomplete$outboundSchema:
+  z.ZodNativeEnum<typeof ResponsesOutputItemStatusIncomplete> =
+    ResponsesOutputItemStatusIncomplete$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemStatusIncomplete$ {
+  /** @deprecated use `ResponsesOutputItemStatusIncomplete$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemStatusIncomplete$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemStatusIncomplete$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemStatusIncomplete$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemStatusCompleted$inboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemStatusCompleted
+> = z.nativeEnum(ResponsesOutputItemStatusCompleted);
+
+/** @internal */
+export const ResponsesOutputItemStatusCompleted$outboundSchema: z.ZodNativeEnum<
+  typeof ResponsesOutputItemStatusCompleted
+> = ResponsesOutputItemStatusCompleted$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemStatusCompleted$ {
+  /** @deprecated use `ResponsesOutputItemStatusCompleted$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemStatusCompleted$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemStatusCompleted$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemStatusCompleted$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemStatusUnion$inboundSchema: z.ZodType<
+  ResponsesOutputItemStatusUnion,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  ResponsesOutputItemStatusCompleted$inboundSchema,
+  ResponsesOutputItemStatusIncomplete$inboundSchema,
+  ResponsesOutputItemStatusInProgress$inboundSchema,
+]);
+
+/** @internal */
+export type ResponsesOutputItemStatusUnion$Outbound = string | string | string;
+
+/** @internal */
+export const ResponsesOutputItemStatusUnion$outboundSchema: z.ZodType<
+  ResponsesOutputItemStatusUnion$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemStatusUnion
+> = z.union([
+  ResponsesOutputItemStatusCompleted$outboundSchema,
+  ResponsesOutputItemStatusIncomplete$outboundSchema,
+  ResponsesOutputItemStatusInProgress$outboundSchema,
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemStatusUnion$ {
+  /** @deprecated use `ResponsesOutputItemStatusUnion$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemStatusUnion$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemStatusUnion$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemStatusUnion$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemStatusUnion$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemStatusUnion$Outbound;
+}
+
+export function responsesOutputItemStatusUnionToJSON(
+  responsesOutputItemStatusUnion: ResponsesOutputItemStatusUnion,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemStatusUnion$outboundSchema.parse(
+      responsesOutputItemStatusUnion,
+    ),
+  );
+}
+
+export function responsesOutputItemStatusUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemStatusUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemStatusUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemStatusUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemContent$inboundSchema: z.ZodType<
+  ResponsesOutputItemContent,
+  z.ZodTypeDef,
+  unknown
+> = z.union([OutputTextContent$inboundSchema, RefusalContent$inboundSchema]);
+
+/** @internal */
+export type ResponsesOutputItemContent$Outbound =
+  | OutputTextContent$Outbound
+  | RefusalContent$Outbound;
+
+/** @internal */
+export const ResponsesOutputItemContent$outboundSchema: z.ZodType<
+  ResponsesOutputItemContent$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemContent
+> = z.union([OutputTextContent$outboundSchema, RefusalContent$outboundSchema]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemContent$ {
+  /** @deprecated use `ResponsesOutputItemContent$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemContent$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemContent$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemContent$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemContent$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemContent$Outbound;
+}
+
+export function responsesOutputItemContentToJSON(
+  responsesOutputItemContent: ResponsesOutputItemContent,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemContent$outboundSchema.parse(responsesOutputItemContent),
+  );
+}
+
+export function responsesOutputItemContentFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemContent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemContent' from JSON`,
+  );
+}
+
+/** @internal */
+export const ResponsesOutputItemMessage$inboundSchema: z.ZodType<
+  ResponsesOutputItemMessage,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  id: z.string(),
+  role: ResponsesOutputItemRole$inboundSchema,
+  type: ResponsesOutputItemTypeMessage$inboundSchema,
+  status: z.union([
+    ResponsesOutputItemStatusCompleted$inboundSchema,
+    ResponsesOutputItemStatusIncomplete$inboundSchema,
+    ResponsesOutputItemStatusInProgress$inboundSchema,
+  ]),
+  content: z.array(
+    z.union([OutputTextContent$inboundSchema, RefusalContent$inboundSchema]),
+  ),
+});
+
+/** @internal */
+export type ResponsesOutputItemMessage$Outbound = {
+  id: string;
+  role: string;
+  type: string;
+  status: string | string | string;
+  content: Array<OutputTextContent$Outbound | RefusalContent$Outbound>;
+};
+
+/** @internal */
+export const ResponsesOutputItemMessage$outboundSchema: z.ZodType<
+  ResponsesOutputItemMessage$Outbound,
+  z.ZodTypeDef,
+  ResponsesOutputItemMessage
+> = z.object({
+  id: z.string(),
+  role: ResponsesOutputItemRole$outboundSchema,
+  type: ResponsesOutputItemTypeMessage$outboundSchema,
+  status: z.union([
+    ResponsesOutputItemStatusCompleted$outboundSchema,
+    ResponsesOutputItemStatusIncomplete$outboundSchema,
+    ResponsesOutputItemStatusInProgress$outboundSchema,
+  ]),
+  content: z.array(
+    z.union([OutputTextContent$outboundSchema, RefusalContent$outboundSchema]),
+  ),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemMessage$ {
+  /** @deprecated use `ResponsesOutputItemMessage$inboundSchema` instead. */
+  export const inboundSchema = ResponsesOutputItemMessage$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemMessage$outboundSchema` instead. */
+  export const outboundSchema = ResponsesOutputItemMessage$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemMessage$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemMessage$Outbound;
+}
+
+export function responsesOutputItemMessageToJSON(
+  responsesOutputItemMessage: ResponsesOutputItemMessage,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemMessage$outboundSchema.parse(responsesOutputItemMessage),
+  );
+}
+
+export function responsesOutputItemMessageFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputItemMessage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputItemMessage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputItemMessage' from JSON`,
+  );
+}
 
 /** @internal */
 export const ResponsesOutputItem$inboundSchema: z.ZodType<
@@ -60,46 +944,22 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ResponsesOutputMessage$inboundSchema.and(
-    z.object({ type: z.literal("message") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemFunctionCall$inboundSchema.and(
-    z.object({ type: z.literal("function_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemFileSearchCall$inboundSchema.and(
-    z.object({ type: z.literal("file_search_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesImageGenerationCall$inboundSchema.and(
-    z.object({ type: z.literal("image_generation_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemReasoning$inboundSchema.and(
-    z.object({ type: z.literal("reasoning") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesWebSearchCallOutput$inboundSchema.and(
-    z.object({ type: z.literal("web_search_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
+  z.lazy(() => ResponsesOutputItemMessage$inboundSchema),
+  z.lazy(() => ResponsesOutputItemFunctionCall$inboundSchema),
+  z.lazy(() => ResponsesOutputItemFileSearchCall$inboundSchema),
+  z.lazy(() => ResponsesOutputItemImageGenerationCall$inboundSchema),
+  z.lazy(() => ResponsesOutputItemReasoning$inboundSchema),
+  z.lazy(() => ResponsesOutputItemWebSearchCall$inboundSchema),
 ]);
 
 /** @internal */
 export type ResponsesOutputItem$Outbound =
-  | (ResponsesOutputMessage$Outbound & { type: "message" })
-  | (ResponsesOutputItemFunctionCall$Outbound & { type: "function_call" })
-  | (ResponsesOutputItemFileSearchCall$Outbound & { type: "file_search_call" })
-  | (ResponsesImageGenerationCall$Outbound & { type: "image_generation_call" })
-  | (ResponsesOutputItemReasoning$Outbound & { type: "reasoning" })
-  | (ResponsesWebSearchCallOutput$Outbound & { type: "web_search_call" });
+  | ResponsesOutputItemMessage$Outbound
+  | ResponsesOutputItemFunctionCall$Outbound
+  | ResponsesOutputItemFileSearchCall$Outbound
+  | ResponsesOutputItemImageGenerationCall$Outbound
+  | ResponsesOutputItemReasoning$Outbound
+  | ResponsesOutputItemWebSearchCall$Outbound;
 
 /** @internal */
 export const ResponsesOutputItem$outboundSchema: z.ZodType<
@@ -107,36 +967,12 @@ export const ResponsesOutputItem$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponsesOutputItem
 > = z.union([
-  ResponsesOutputMessage$outboundSchema.and(
-    z.object({ type: z.literal("message") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemFunctionCall$outboundSchema.and(
-    z.object({ type: z.literal("function_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemFileSearchCall$outboundSchema.and(
-    z.object({ type: z.literal("file_search_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesImageGenerationCall$outboundSchema.and(
-    z.object({ type: z.literal("image_generation_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesOutputItemReasoning$outboundSchema.and(
-    z.object({ type: z.literal("reasoning") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponsesWebSearchCallOutput$outboundSchema.and(
-    z.object({ type: z.literal("web_search_call") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
+  z.lazy(() => ResponsesOutputItemMessage$outboundSchema),
+  z.lazy(() => ResponsesOutputItemFunctionCall$outboundSchema),
+  z.lazy(() => ResponsesOutputItemFileSearchCall$outboundSchema),
+  z.lazy(() => ResponsesOutputItemImageGenerationCall$outboundSchema),
+  z.lazy(() => ResponsesOutputItemReasoning$outboundSchema),
+  z.lazy(() => ResponsesOutputItemWebSearchCall$outboundSchema),
 ]);
 
 /**

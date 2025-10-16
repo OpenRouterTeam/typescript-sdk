@@ -24,7 +24,7 @@ import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 export type ProvidersListQueryData = operations.ListProvidersResponse;
 
 /**
- * List all available model providers
+ * List all providers
  */
 export function useProvidersList(
   options?: QueryHookOptions<ProvidersListQueryData>,
@@ -40,7 +40,7 @@ export function useProvidersList(
 }
 
 /**
- * List all available model providers
+ * List all providers
  */
 export function useProvidersListSuspense(
   options?: SuspenseQueryHookOptions<ProvidersListQueryData>,

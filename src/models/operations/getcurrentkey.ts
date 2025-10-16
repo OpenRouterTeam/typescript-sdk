@@ -3,43 +3,383 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 /**
+ * Legacy rate limit information about a key. Will always return -1.
+ *
+ * @deprecated class: This will be removed in a future release, please migrate away from it as soon as possible.
+ */
+export type RateLimit = {
+  /**
+   * Number of requests allowed per interval
+   */
+  requests: number;
+  /**
+   * Rate limit interval
+   */
+  interval: string;
+  /**
+   * Note about the rate limit
+   */
+  note: string;
+};
+
+/**
+ * Current API key information
+ */
+export type GetCurrentKeyData = {
+  /**
+   * Human-readable label for the API key
+   */
+  label: string;
+  /**
+   * Spending limit for the API key in USD
+   */
+  limit: number | null;
+  /**
+   * Total OpenRouter credit usage (in USD) for the API key
+   */
+  usage: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC day
+   */
+  usageDaily: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  usageWeekly: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC month
+   */
+  usageMonthly: number;
+  /**
+   * Total external BYOK usage (in USD) for the API key
+   */
+  byokUsage: number;
+  /**
+   * External BYOK usage (in USD) for the current UTC day
+   */
+  byokUsageDaily: number;
+  /**
+   * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  byokUsageWeekly: number;
+  /**
+   * External BYOK usage (in USD) for current UTC month
+   */
+  byokUsageMonthly: number;
+  /**
+   * Whether this is a free tier API key
+   */
+  isFreeTier: boolean;
+  /**
+   * Whether this is a provisioning key
+   */
+  isProvisioningKey: boolean;
+  /**
+   * Remaining spending limit in USD
+   */
+  limitRemaining: number | null;
+  /**
+   * Type of limit reset for the API key
+   */
+  limitReset: string | null;
+  /**
+   * Whether to include external BYOK usage in the credit limit
+   */
+  includeByokInLimit: boolean;
+  /**
+   * Legacy rate limit information about a key. Will always return -1.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
+  rateLimit: RateLimit;
+};
+
+/**
  * API key details
  */
-export type GetCurrentKeyResponse = {
+export type GetCurrentKeyResponseBody = {
   /**
    * Current API key information
    */
-  data: models.KeyInfo;
+  data: GetCurrentKeyData;
 };
+
+export type GetCurrentKeyResponse =
+  | GetCurrentKeyResponseBody
+  | models.ErrorResponse;
+
+/** @internal */
+export const RateLimit$inboundSchema: z.ZodType<
+  RateLimit,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  requests: z.number(),
+  interval: z.string(),
+  note: z.string(),
+});
+
+/** @internal */
+export type RateLimit$Outbound = {
+  requests: number;
+  interval: string;
+  note: string;
+};
+
+/** @internal */
+export const RateLimit$outboundSchema: z.ZodType<
+  RateLimit$Outbound,
+  z.ZodTypeDef,
+  RateLimit
+> = z.object({
+  requests: z.number(),
+  interval: z.string(),
+  note: z.string(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace RateLimit$ {
+  /** @deprecated use `RateLimit$inboundSchema` instead. */
+  export const inboundSchema = RateLimit$inboundSchema;
+  /** @deprecated use `RateLimit$outboundSchema` instead. */
+  export const outboundSchema = RateLimit$outboundSchema;
+  /** @deprecated use `RateLimit$Outbound` instead. */
+  export type Outbound = RateLimit$Outbound;
+}
+
+export function rateLimitToJSON(rateLimit: RateLimit): string {
+  return JSON.stringify(RateLimit$outboundSchema.parse(rateLimit));
+}
+
+export function rateLimitFromJSON(
+  jsonString: string,
+): SafeParseResult<RateLimit, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => RateLimit$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RateLimit' from JSON`,
+  );
+}
+
+/** @internal */
+export const GetCurrentKeyData$inboundSchema: z.ZodType<
+  GetCurrentKeyData,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  label: z.string(),
+  limit: z.nullable(z.number()),
+  usage: z.number(),
+  usage_daily: z.number(),
+  usage_weekly: z.number(),
+  usage_monthly: z.number(),
+  byok_usage: z.number(),
+  byok_usage_daily: z.number(),
+  byok_usage_weekly: z.number(),
+  byok_usage_monthly: z.number(),
+  is_free_tier: z.boolean(),
+  is_provisioning_key: z.boolean(),
+  limit_remaining: z.nullable(z.number()),
+  limit_reset: z.nullable(z.string()),
+  include_byok_in_limit: z.boolean(),
+  rate_limit: z.lazy(() => RateLimit$inboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    "usage_daily": "usageDaily",
+    "usage_weekly": "usageWeekly",
+    "usage_monthly": "usageMonthly",
+    "byok_usage": "byokUsage",
+    "byok_usage_daily": "byokUsageDaily",
+    "byok_usage_weekly": "byokUsageWeekly",
+    "byok_usage_monthly": "byokUsageMonthly",
+    "is_free_tier": "isFreeTier",
+    "is_provisioning_key": "isProvisioningKey",
+    "limit_remaining": "limitRemaining",
+    "limit_reset": "limitReset",
+    "include_byok_in_limit": "includeByokInLimit",
+    "rate_limit": "rateLimit",
+  });
+});
+
+/** @internal */
+export type GetCurrentKeyData$Outbound = {
+  label: string;
+  limit: number | null;
+  usage: number;
+  usage_daily: number;
+  usage_weekly: number;
+  usage_monthly: number;
+  byok_usage: number;
+  byok_usage_daily: number;
+  byok_usage_weekly: number;
+  byok_usage_monthly: number;
+  is_free_tier: boolean;
+  is_provisioning_key: boolean;
+  limit_remaining: number | null;
+  limit_reset: string | null;
+  include_byok_in_limit: boolean;
+  rate_limit: RateLimit$Outbound;
+};
+
+/** @internal */
+export const GetCurrentKeyData$outboundSchema: z.ZodType<
+  GetCurrentKeyData$Outbound,
+  z.ZodTypeDef,
+  GetCurrentKeyData
+> = z.object({
+  label: z.string(),
+  limit: z.nullable(z.number()),
+  usage: z.number(),
+  usageDaily: z.number(),
+  usageWeekly: z.number(),
+  usageMonthly: z.number(),
+  byokUsage: z.number(),
+  byokUsageDaily: z.number(),
+  byokUsageWeekly: z.number(),
+  byokUsageMonthly: z.number(),
+  isFreeTier: z.boolean(),
+  isProvisioningKey: z.boolean(),
+  limitRemaining: z.nullable(z.number()),
+  limitReset: z.nullable(z.string()),
+  includeByokInLimit: z.boolean(),
+  rateLimit: z.lazy(() => RateLimit$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    usageDaily: "usage_daily",
+    usageWeekly: "usage_weekly",
+    usageMonthly: "usage_monthly",
+    byokUsage: "byok_usage",
+    byokUsageDaily: "byok_usage_daily",
+    byokUsageWeekly: "byok_usage_weekly",
+    byokUsageMonthly: "byok_usage_monthly",
+    isFreeTier: "is_free_tier",
+    isProvisioningKey: "is_provisioning_key",
+    limitRemaining: "limit_remaining",
+    limitReset: "limit_reset",
+    includeByokInLimit: "include_byok_in_limit",
+    rateLimit: "rate_limit",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetCurrentKeyData$ {
+  /** @deprecated use `GetCurrentKeyData$inboundSchema` instead. */
+  export const inboundSchema = GetCurrentKeyData$inboundSchema;
+  /** @deprecated use `GetCurrentKeyData$outboundSchema` instead. */
+  export const outboundSchema = GetCurrentKeyData$outboundSchema;
+  /** @deprecated use `GetCurrentKeyData$Outbound` instead. */
+  export type Outbound = GetCurrentKeyData$Outbound;
+}
+
+export function getCurrentKeyDataToJSON(
+  getCurrentKeyData: GetCurrentKeyData,
+): string {
+  return JSON.stringify(
+    GetCurrentKeyData$outboundSchema.parse(getCurrentKeyData),
+  );
+}
+
+export function getCurrentKeyDataFromJSON(
+  jsonString: string,
+): SafeParseResult<GetCurrentKeyData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetCurrentKeyData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetCurrentKeyData' from JSON`,
+  );
+}
+
+/** @internal */
+export const GetCurrentKeyResponseBody$inboundSchema: z.ZodType<
+  GetCurrentKeyResponseBody,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  data: z.lazy(() => GetCurrentKeyData$inboundSchema),
+});
+
+/** @internal */
+export type GetCurrentKeyResponseBody$Outbound = {
+  data: GetCurrentKeyData$Outbound;
+};
+
+/** @internal */
+export const GetCurrentKeyResponseBody$outboundSchema: z.ZodType<
+  GetCurrentKeyResponseBody$Outbound,
+  z.ZodTypeDef,
+  GetCurrentKeyResponseBody
+> = z.object({
+  data: z.lazy(() => GetCurrentKeyData$outboundSchema),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace GetCurrentKeyResponseBody$ {
+  /** @deprecated use `GetCurrentKeyResponseBody$inboundSchema` instead. */
+  export const inboundSchema = GetCurrentKeyResponseBody$inboundSchema;
+  /** @deprecated use `GetCurrentKeyResponseBody$outboundSchema` instead. */
+  export const outboundSchema = GetCurrentKeyResponseBody$outboundSchema;
+  /** @deprecated use `GetCurrentKeyResponseBody$Outbound` instead. */
+  export type Outbound = GetCurrentKeyResponseBody$Outbound;
+}
+
+export function getCurrentKeyResponseBodyToJSON(
+  getCurrentKeyResponseBody: GetCurrentKeyResponseBody,
+): string {
+  return JSON.stringify(
+    GetCurrentKeyResponseBody$outboundSchema.parse(getCurrentKeyResponseBody),
+  );
+}
+
+export function getCurrentKeyResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<GetCurrentKeyResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetCurrentKeyResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetCurrentKeyResponseBody' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
   GetCurrentKeyResponse,
   z.ZodTypeDef,
   unknown
-> = z.object({
-  data: models.KeyInfo$inboundSchema,
-});
+> = z.union([
+  z.lazy(() => GetCurrentKeyResponseBody$inboundSchema),
+  models.ErrorResponse$inboundSchema,
+]);
 
 /** @internal */
-export type GetCurrentKeyResponse$Outbound = {
-  data: models.KeyInfo$Outbound;
-};
+export type GetCurrentKeyResponse$Outbound =
+  | GetCurrentKeyResponseBody$Outbound
+  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetCurrentKeyResponse$outboundSchema: z.ZodType<
   GetCurrentKeyResponse$Outbound,
   z.ZodTypeDef,
   GetCurrentKeyResponse
-> = z.object({
-  data: models.KeyInfo$outboundSchema,
-});
+> = z.union([
+  z.lazy(() => GetCurrentKeyResponseBody$outboundSchema),
+  models.ErrorResponse$outboundSchema,
+]);
 
 /**
  * @internal

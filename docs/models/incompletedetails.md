@@ -1,7 +1,5 @@
 # IncompleteDetails
 
-Details about why response was incomplete
-
 ## Example Usage
 
 ```typescript
@@ -14,6 +12,6 @@ let value: IncompleteDetails = {
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `reason`                                                                     | [models.ResponsesStreamChunkReason](../models/responsesstreamchunkreason.md) | :heavy_check_mark:                                                           | N/A                                                                          |
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `reason`                             | [models.Reason](../models/reason.md) | :heavy_minus_sign:                   | N/A                                  |

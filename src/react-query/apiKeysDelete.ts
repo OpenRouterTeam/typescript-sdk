@@ -17,11 +17,11 @@ import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
 export type ApiKeysDeleteMutationVariables = {
-  request: operations.DeleteRequest;
+  request: operations.DeleteKeysRequest;
   options?: RequestOptions;
 };
 
-export type ApiKeysDeleteMutationData = operations.DeleteResponse;
+export type ApiKeysDeleteMutationData = operations.DeleteKeysResponse;
 
 /**
  * Delete an API key

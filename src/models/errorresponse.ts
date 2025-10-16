@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import {
   catchUnrecognizedEnum,
@@ -90,6 +91,14 @@ export type ErrorResponseError = {
   code: ErrorResponseCode;
   message: string;
   metadata?: { [k: string]: any | null } | null | undefined;
+};
+
+/**
+ * Error response
+ */
+export type ErrorResponse = {
+  error: ErrorResponseError;
+  userId?: string | null | undefined;
 };
 
 /** @internal */
@@ -181,5 +190,66 @@ export function errorResponseErrorFromJSON(
     jsonString,
     (x) => ErrorResponseError$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ErrorResponseError' from JSON`,
+  );
+}
+
+/** @internal */
+export const ErrorResponse$inboundSchema: z.ZodType<
+  ErrorResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  error: z.lazy(() => ErrorResponseError$inboundSchema),
+  user_id: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "user_id": "userId",
+  });
+});
+
+/** @internal */
+export type ErrorResponse$Outbound = {
+  error: ErrorResponseError$Outbound;
+  user_id?: string | null | undefined;
+};
+
+/** @internal */
+export const ErrorResponse$outboundSchema: z.ZodType<
+  ErrorResponse$Outbound,
+  z.ZodTypeDef,
+  ErrorResponse
+> = z.object({
+  error: z.lazy(() => ErrorResponseError$outboundSchema),
+  userId: z.nullable(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    userId: "user_id",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ErrorResponse$ {
+  /** @deprecated use `ErrorResponse$inboundSchema` instead. */
+  export const inboundSchema = ErrorResponse$inboundSchema;
+  /** @deprecated use `ErrorResponse$outboundSchema` instead. */
+  export const outboundSchema = ErrorResponse$outboundSchema;
+  /** @deprecated use `ErrorResponse$Outbound` instead. */
+  export type Outbound = ErrorResponse$Outbound;
+}
+
+export function errorResponseToJSON(errorResponse: ErrorResponse): string {
+  return JSON.stringify(ErrorResponse$outboundSchema.parse(errorResponse));
+}
+
+export function errorResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ErrorResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ErrorResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ErrorResponse' from JSON`,
   );
 }

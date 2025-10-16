@@ -25,13 +25,13 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type ApiKeysGetQueryData = operations.GetApiKeyResponse;
+export type ApiKeysGetQueryData = operations.GetKeyResponse;
 
 /**
  * Get a single API key
  */
 export function useApiKeysGet(
-  request: operations.GetApiKeyRequest,
+  request: operations.GetKeyRequest,
   options?: QueryHookOptions<ApiKeysGetQueryData>,
 ): UseQueryResult<ApiKeysGetQueryData, Error> {
   const client = useOpenRouterContext();
@@ -49,7 +49,7 @@ export function useApiKeysGet(
  * Get a single API key
  */
 export function useApiKeysGetSuspense(
-  request: operations.GetApiKeyRequest,
+  request: operations.GetKeyRequest,
   options?: SuspenseQueryHookOptions<ApiKeysGetQueryData>,
 ): UseSuspenseQueryResult<ApiKeysGetQueryData, Error> {
   const client = useOpenRouterContext();
@@ -66,7 +66,7 @@ export function useApiKeysGetSuspense(
 export function prefetchApiKeysGet(
   queryClient: QueryClient,
   client$: OpenRouterCore,
-  request: operations.GetApiKeyRequest,
+  request: operations.GetKeyRequest,
 ): Promise<void> {
   return queryClient.prefetchQuery({
     ...buildApiKeysGetQuery(
@@ -109,7 +109,7 @@ export function invalidateAllApiKeysGet(
 
 export function buildApiKeysGetQuery(
   client$: OpenRouterCore,
-  request: operations.GetApiKeyRequest,
+  request: operations.GetKeyRequest,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;

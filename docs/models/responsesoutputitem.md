@@ -1,24 +1,19 @@
 # ResponsesOutputItem
 
-Output item in Responses API
+An output item from the response
 
 
 ## Supported Types
 
-### `models.ResponsesOutputMessage`
+### `models.ResponsesOutputItemMessage`
 
 ```typescript
-const value: models.ResponsesOutputMessage = {
-  type: "message",
+const value: models.ResponsesOutputItemMessage = {
   id: "<id>",
-  status: "completed",
   role: "assistant",
-  content: [
-    {
-      type: "refusal",
-      refusal: "<value>",
-    },
-  ],
+  type: "message",
+  status: "in_progress",
+  content: [],
 };
 ```
 
@@ -37,12 +32,10 @@ const value: models.ResponsesOutputItemReasoning = {
   summary: [
     {
       type: "summary_text",
-      text: "Based on the analysis, the answer is...",
+      text: "<value>",
     },
   ],
   encryptedContent: "<value>",
-  signature: "<value>",
-  format: "unknown",
 };
 ```
 
@@ -58,13 +51,13 @@ const value: models.ResponsesOutputItemFunctionCall = {
 };
 ```
 
-### `models.ResponsesWebSearchCallOutput`
+### `models.ResponsesOutputItemWebSearchCall`
 
 ```typescript
-const value: models.ResponsesWebSearchCallOutput = {
+const value: models.ResponsesOutputItemWebSearchCall = {
   type: "web_search_call",
   id: "<id>",
-  status: "in_progress",
+  status: "completed",
 };
 ```
 
@@ -76,20 +69,19 @@ const value: models.ResponsesOutputItemFileSearchCall = {
   id: "<id>",
   queries: [
     "<value 1>",
-    "<value 2>",
   ],
-  status: "searching",
+  status: "failed",
 };
 ```
 
-### `models.ResponsesImageGenerationCall`
+### `models.ResponsesOutputItemImageGenerationCall`
 
 ```typescript
-const value: models.ResponsesImageGenerationCall = {
+const value: models.ResponsesOutputItemImageGenerationCall = {
   type: "image_generation_call",
   id: "<id>",
-  result: "<value>",
-  status: "completed",
+  result: null,
+  status: "generating",
 };
 ```
 
