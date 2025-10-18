@@ -12,7 +12,7 @@ info:
     url: https://opensource.org/licenses/MIT
 components:
   schemas:
-    FileCitation:
+    FileCitationAnnotation:
       type: object
       properties:
         type:
@@ -35,7 +35,7 @@ components:
         file_id: file-abc123
         filename: research_paper.pdf
         index: 0
-    URLCitation:
+    URLCitationAnnotation:
       type: object
       properties:
         type:
@@ -62,7 +62,7 @@ components:
         end_index: 42
         title: OpenRouter Documentation
         url: https://openrouter.ai/docs
-    FilePath:
+    FilePathAnnotation:
       type: object
       properties:
         type:
@@ -81,12 +81,7 @@ components:
         type: file_path
         file_id: file-xyz789
         index: 0
-    OpenAIResponsesAnnotation:
-      anyOf:
-        - $ref: '#/components/schemas/FileCitation'
-        - $ref: '#/components/schemas/URLCitation'
-        - $ref: '#/components/schemas/FilePath'
-    ResponseOutputText:
+    OutputTextContent:
       type: object
       properties:
         type:
@@ -98,7 +93,10 @@ components:
         annotations:
           type: array
           items:
-            $ref: '#/components/schemas/OpenAIResponsesAnnotation'
+            anyOf:
+              - $ref: '#/components/schemas/FileCitationAnnotation'
+              - $ref: '#/components/schemas/URLCitationAnnotation'
+              - $ref: '#/components/schemas/FilePathAnnotation'
       required:
         - type
         - text
@@ -111,7 +109,7 @@ components:
             end_index: 42
             title: Paris - Wikipedia
             url: https://en.wikipedia.org/wiki/Paris
-    OpenAIResponsesRefusalContent:
+    RefusalContent:
       type: object
       properties:
         type:
@@ -154,12 +152,13 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/ResponseOutputText'
-              - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+              - $ref: '#/components/schemas/OutputTextContent'
+              - $ref: '#/components/schemas/RefusalContent'
       required:
         - id
         - role
         - type
+        - status
         - content
       example:
         id: msg-abc123
@@ -169,21 +168,6 @@ components:
         content:
           - type: output_text
             text: Hello! How can I help you today?
-    OpenResponsesOutputMessage:
-      allOf:
-        - $ref: '#/components/schemas/OutputMessage'
-        - type: object
-          properties: {}
-      description: An output message item
-      example:
-        id: msg-123
-        type: message
-        role: assistant
-        status: completed
-        content:
-          - type: output_text
-            text: Hello! How can I help you?
-            annotations: []
     ReasoningTextContent:
       type: object
       properties:
@@ -234,17 +218,6 @@ components:
         encrypted_content:
           type: string
           nullable: true
-        status:
-          anyOf:
-            - type: string
-              enum:
-                - completed
-            - type: string
-              enum:
-                - incomplete
-            - type: string
-              enum:
-                - in_progress
       required:
         - type
         - id
@@ -255,22 +228,6 @@ components:
         summary:
           - type: summary_text
             text: Analyzed the problem using first principles
-    OpenResponsesOutputItemReasoning:
-      allOf:
-        - $ref: '#/components/schemas/OutputItemReasoning'
-        - type: object
-          properties: {}
-      description: An output item containing reasoning
-      example:
-        id: reasoning-123
-        type: reasoning
-        status: completed
-        summary:
-          - type: summary_text
-            text: Analyzed the problem and found the optimal solution.
-        content:
-          - type: reasoning_text
-            text: First, we analyze the problem...
     OutputItemFunctionCall:
       type: object
       properties:
@@ -286,17 +243,6 @@ components:
           type: string
         call_id:
           type: string
-        status:
-          anyOf:
-            - type: string
-              enum:
-                - completed
-            - type: string
-              enum:
-                - incomplete
-            - type: string
-              enum:
-                - in_progress
       required:
         - type
         - name
@@ -398,8 +344,28 @@ components:
         status: completed
     ResponsesOutputItem:
       anyOf:
-        - $ref: '#/components/schemas/OpenResponsesOutputMessage'
-        - $ref: '#/components/schemas/OpenResponsesOutputItemReasoning'
+        - allOf:
+            - $ref: '#/components/schemas/OutputMessage'
+            - type: object
+              properties: {}
+          example:
+            id: msg-abc123
+            role: assistant
+            type: message
+            status: completed
+            content:
+              - type: output_text
+                text: Hello! How can I help you today?
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemReasoning'
+            - type: object
+              properties: {}
+          example:
+            type: reasoning
+            id: reasoning-abc123
+            summary:
+              - type: summary_text
+                text: Analyzed the problem using first principles
         - allOf:
             - $ref: '#/components/schemas/OutputItemFunctionCall'
             - type: object
@@ -457,21 +423,6 @@ components:
             - server_error
             - rate_limit_exceeded
             - invalid_prompt
-            - vector_store_timeout
-            - invalid_image
-            - invalid_image_format
-            - invalid_base64_image
-            - invalid_image_url
-            - image_too_large
-            - image_too_small
-            - image_parse_error
-            - image_content_policy_violation
-            - invalid_image_mode
-            - image_file_too_large
-            - unsupported_image_media_type
-            - empty_image_file
-            - failed_to_download_image
-            - image_file_not_found
           x-speakeasy-unknown-values: allow
         message:
           type: string
@@ -482,7 +433,90 @@ components:
       example:
         code: rate_limit_exceeded
         message: Rate limit exceeded. Please try again later.
-    ResponseInputText:
+    ResponsesUsage:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+        input_tokens_details:
+          type: object
+          properties:
+            cached_tokens:
+              type: number
+          required:
+            - cached_tokens
+        output_tokens:
+          type: number
+        output_tokens_details:
+          type: object
+          properties:
+            reasoning_tokens:
+              type: number
+          required:
+            - reasoning_tokens
+        total_tokens:
+          type: number
+        cost:
+          type: number
+          nullable: true
+          description: Cost of the completion
+        is_byok:
+          type: boolean
+          description: Whether a request was made using a Bring Your Own Key configuration
+        cost_details:
+          type: object
+          properties:
+            upstream_inference_cost:
+              type: number
+              nullable: true
+            upstream_inference_input_cost:
+              type: number
+            upstream_inference_output_cost:
+              type: number
+          required:
+            - upstream_inference_input_cost
+            - upstream_inference_output_cost
+      required:
+        - input_tokens
+        - input_tokens_details
+        - output_tokens
+        - output_tokens_details
+        - total_tokens
+      description: Token usage information for the response
+      example:
+        input_tokens: 10
+        output_tokens: 25
+        total_tokens: 35
+        input_tokens_details:
+          cached_tokens: 0
+        output_tokens_details:
+          reasoning_tokens: 0
+        cost: 0.0012
+    OpenResponsesReasoning:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemReasoning'
+        - type: object
+          properties:
+            signature:
+              type: string
+              nullable: true
+            format:
+              type: string
+              nullable: true
+              enum:
+                - unknown
+                - openai-responses-v1
+                - xai-responses-v1
+                - anthropic-claude-v1
+              x-speakeasy-unknown-values: allow
+      description: Reasoning output item with signature and format extensions
+      example:
+        type: reasoning
+        id: reasoning-abc123
+        summary:
+          - type: summary_text
+            text: Step by step analysis
+    OpenResponsesInputText:
       type: object
       properties:
         type:
@@ -498,7 +532,7 @@ components:
       example:
         type: input_text
         text: Hello, how can I help you?
-    ResponseInputImage:
+    OpenResponsesInputImage:
       type: object
       properties:
         type:
@@ -523,7 +557,7 @@ components:
         type: input_image
         detail: auto
         image_url: https://example.com/image.jpg
-    ResponseInputFile:
+    OpenResponsesInputFile:
       type: object
       properties:
         type:
@@ -546,6 +580,91 @@ components:
         type: input_file
         file_id: file-abc123
         filename: document.pdf
+    OpenResponsesInputContent:
+      oneOf:
+        - $ref: '#/components/schemas/OpenResponsesInputText'
+        - $ref: '#/components/schemas/OpenResponsesInputImage'
+        - $ref: '#/components/schemas/OpenResponsesInputFile'
+      discriminator:
+        propertyName: type
+        mapping:
+          input_text: '#/components/schemas/OpenResponsesInputText'
+          input_image: '#/components/schemas/OpenResponsesInputImage'
+          input_file: '#/components/schemas/OpenResponsesInputFile'
+      description: Content item in a response input message
+      example:
+        type: input_text
+        text: Hello, how can I help you?
+    OpenResponsesEasyInputMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          anyOf:
+            - type: string
+              enum:
+                - user
+            - type: string
+              enum:
+                - system
+            - type: string
+              enum:
+                - assistant
+            - type: string
+              enum:
+                - developer
+        content:
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/OpenResponsesInputContent'
+            - type: string
+      required:
+        - role
+        - content
+      description: Simplified input message format that accepts string or array content
+      example:
+        role: user
+        content: What is the weather today?
+    OpenResponsesInputMessageItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          anyOf:
+            - type: string
+              enum:
+                - user
+            - type: string
+              enum:
+                - system
+            - type: string
+              enum:
+                - developer
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenResponsesInputContent'
+      required:
+        - id
+        - role
+        - content
+      description: Input message item with structured content array
+      example:
+        id: msg-abc123
+        type: message
+        role: user
+        content:
+          - type: input_text
+            text: What is the weather today?
     ToolCallStatus:
       type: string
       enum:
@@ -554,6 +673,146 @@ components:
         - incomplete
       example: completed
       x-speakeasy-unknown-values: allow
+    OpenResponsesFunctionToolCall:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function_call
+        call_id:
+          type: string
+        name:
+          type: string
+        arguments:
+          type: string
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+      required:
+        - type
+        - call_id
+        - name
+        - arguments
+        - id
+      description: A function call initiated by the model
+      example:
+        id: call-abc123
+        type: function_call
+        call_id: call-abc123
+        name: get_weather
+        arguments: '{"location":"San Francisco"}'
+        status: completed
+    OpenResponsesFunctionCallOutput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function_call_output
+        id:
+          type: string
+        call_id:
+          type: string
+        output:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+      required:
+        - type
+        - id
+        - call_id
+        - output
+      description: The output from a function call execution
+      example:
+        type: function_call_output
+        id: output-abc123
+        call_id: call-abc123
+        output: '{"temperature":72,"conditions":"sunny"}'
+        status: completed
+    OpenResponsesInputItem:
+      anyOf:
+        - $ref: '#/components/schemas/OpenResponsesReasoning'
+        - $ref: '#/components/schemas/OpenResponsesEasyInputMessage'
+        - $ref: '#/components/schemas/OpenResponsesInputMessageItem'
+        - $ref: '#/components/schemas/OpenResponsesFunctionToolCall'
+        - $ref: '#/components/schemas/OpenResponsesFunctionCallOutput'
+        - allOf:
+            - $ref: '#/components/schemas/OutputMessage'
+            - type: object
+              properties: {}
+          example:
+            id: msg-abc123
+            role: assistant
+            type: message
+            status: completed
+            content:
+              - type: output_text
+                text: Hello! How can I help you today?
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemReasoning'
+            - type: object
+              properties: {}
+          example:
+            type: reasoning
+            id: reasoning-abc123
+            summary:
+              - type: summary_text
+                text: Analyzed the problem using first principles
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemFunctionCall'
+            - type: object
+              properties: {}
+          example:
+            type: function_call
+            id: call-abc123
+            name: get_weather
+            arguments: '{"location":"San Francisco","unit":"celsius"}'
+            call_id: call-abc123
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemWebSearchCall'
+            - type: object
+              properties: {}
+          example:
+            type: web_search_call
+            id: search-abc123
+            status: completed
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemFileSearchCall'
+            - type: object
+              properties: {}
+          example:
+            type: file_search_call
+            id: filesearch-abc123
+            queries:
+              - machine learning algorithms
+              - neural networks
+            status: completed
+        - allOf:
+            - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+            - type: object
+              properties: {}
+          example:
+            type: image_generation_call
+            id: imagegen-abc123
+            result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+            status: completed
+      description: An item in the input array for a response request
+      example:
+        role: user
+        content: What is the weather today?
+    OpenResponsesInput:
+      anyOf:
+        - type: string
+        - type: array
+          items:
+            $ref: '#/components/schemas/OpenResponsesInputItem'
+        - nullable: true
+      description: Input for a response request - can be a string or array of items
+      example:
+        - role: user
+          content: What is the weather today?
     OpenResponsesRequestMetadata:
       type: object
       nullable: true
@@ -734,7 +993,118 @@ components:
         filters:
           allowed_domains:
             - example.com
-    OpenAIResponsesPrompt:
+    OpenResponsesToolUnion:
+      oneOf:
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesFunctionTool'
+            - type: object
+              properties: {}
+          description: Function tool definition
+          example:
+            type: function
+            name: get_weather
+            description: Get the current weather in a location
+            parameters:
+              type: object
+              properties:
+                location:
+                  type: string
+                  description: The city and state
+                unit:
+                  type: string
+                  enum:
+                    - celsius
+                    - fahrenheit
+                  x-speakeasy-unknown-values: allow
+              required:
+                - location
+        - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
+        - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
+        - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
+        - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
+      description: Union of all supported tool definitions
+      example:
+        type: function
+        name: get_weather
+        description: Get the current weather in a location
+        parameters:
+          type: object
+          properties:
+            location:
+              type: string
+              description: The city and state
+            unit:
+              type: string
+              enum:
+                - celsius
+                - fahrenheit
+              x-speakeasy-unknown-values: allow
+          required:
+            - location
+    ToolChoiceTypes:
+      type: object
+      properties:
+        type:
+          anyOf:
+            - type: string
+              enum:
+                - file_search
+            - type: string
+              enum:
+                - web_search_preview
+            - type: string
+              enum:
+                - web_search_preview_2025_03_11
+            - type: string
+              enum:
+                - computer_use_preview
+            - type: string
+              enum:
+                - code_interpreter
+      required:
+        - type
+      description: Force the model to call a tool of a specific type
+      example:
+        type: web_search_preview
+    ToolChoiceFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        name:
+          type: string
+      required:
+        - type
+        - name
+      description: Force the model to call a specific function
+      example:
+        type: function
+        name: get_weather
+    OpenResponsesToolChoice:
+      anyOf:
+        - type: string
+          enum:
+            - auto
+        - type: string
+          enum:
+            - none
+        - type: string
+          enum:
+            - required
+        - $ref: '#/components/schemas/ToolChoiceTypes'
+        - allOf:
+            - $ref: '#/components/schemas/ToolChoiceFunction'
+            - type: object
+              properties: {}
+          description: Force the model to call a specific function
+          example:
+            type: function
+            name: get_weather
+      description: Controls which tool the model should call
+      example: auto
+    OpenResponsesPrompt:
       type: object
       nullable: true
       properties:
@@ -744,18 +1114,16 @@ components:
           type: object
           nullable: true
           additionalProperties:
-            oneOf:
-              - $ref: '#/components/schemas/ResponseInputText'
-              - $ref: '#/components/schemas/ResponseInputImage'
-              - $ref: '#/components/schemas/ResponseInputFile'
-            discriminator:
-              propertyName: type
-              mapping:
-                input_text: '#/components/schemas/ResponseInputText'
-                input_image: '#/components/schemas/ResponseInputImage'
-                input_file: '#/components/schemas/ResponseInputFile'
+            $ref: '#/components/schemas/OpenResponsesInputContent'
       required:
         - id
+      description: Prompt template with variables for the response
+      example:
+        id: prompt-abc123
+        variables:
+          name:
+            type: input_text
+            text: John
     ReasoningSummaryVerbosity:
       type: string
       enum:
@@ -763,7 +1131,32 @@ components:
         - concise
         - detailed
       x-speakeasy-unknown-values: allow
-    ResponsesFormatText:
+    OpenResponsesReasoningConfig:
+      type: object
+      nullable: true
+      properties:
+        effort:
+          type: string
+          nullable: true
+          enum:
+            - high
+            - medium
+            - low
+            - minimal
+          x-speakeasy-unknown-values: allow
+        summary:
+          $ref: '#/components/schemas/ReasoningSummaryVerbosity'
+        max_tokens:
+          type: number
+          nullable: true
+        enabled:
+          type: boolean
+          nullable: true
+      description: Configuration for reasoning mode in the response
+      example:
+        summary: auto
+        enabled: true
+    OpenResponsesFormatText:
       type: object
       properties:
         type:
@@ -775,7 +1168,7 @@ components:
       description: Plain text response format
       example:
         type: text
-    ResponsesFormatJSONObject:
+    OpenResponsesFormatJSONObject:
       type: object
       properties:
         type:
@@ -787,7 +1180,7 @@ components:
       description: JSON object response format
       example:
         type: json_object
-    ResponsesFormatTextJSONSchemaConfig:
+    OpenResponsesFormatJSONSchema:
       type: object
       properties:
         type:
@@ -823,19 +1216,19 @@ components:
               type: number
           required:
             - name
-    ResponseFormatTextConfig:
+    OpenResponsesFormatTextConfig:
       anyOf:
-        - $ref: '#/components/schemas/ResponsesFormatText'
-        - $ref: '#/components/schemas/ResponsesFormatJSONObject'
-        - $ref: '#/components/schemas/ResponsesFormatTextJSONSchemaConfig'
+        - $ref: '#/components/schemas/OpenResponsesFormatText'
+        - $ref: '#/components/schemas/OpenResponsesFormatJSONObject'
+        - $ref: '#/components/schemas/OpenResponsesFormatJSONSchema'
       description: Text response format configuration
       example:
         type: text
-    ResponseTextConfig:
+    OpenResponsesTextConfig:
       type: object
       properties:
         format:
-          $ref: '#/components/schemas/ResponseFormatTextConfig'
+          $ref: '#/components/schemas/OpenResponsesFormatTextConfig'
         verbosity:
           type: string
           nullable: true
@@ -900,34 +1293,7 @@ components:
                 - content_filter
               x-speakeasy-unknown-values: allow
         usage:
-          type: object
-          properties:
-            input_tokens:
-              type: number
-            input_tokens_details:
-              type: object
-              properties:
-                cached_tokens:
-                  type: number
-              required:
-                - cached_tokens
-            output_tokens:
-              type: number
-            output_tokens_details:
-              type: object
-              properties:
-                reasoning_tokens:
-                  type: number
-              required:
-                - reasoning_tokens
-            total_tokens:
-              type: number
-          required:
-            - input_tokens
-            - input_tokens_details
-            - output_tokens
-            - output_tokens_details
-            - total_tokens
+          $ref: '#/components/schemas/ResponsesUsage'
         max_tool_calls:
           type: number
           nullable: true
@@ -943,199 +1309,19 @@ components:
           type: number
           nullable: true
         instructions:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                anyOf:
-                  - type: object
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - message
-                      role:
-                        anyOf:
-                          - type: string
-                            enum:
-                              - user
-                          - type: string
-                            enum:
-                              - system
-                          - type: string
-                            enum:
-                              - assistant
-                          - type: string
-                            enum:
-                              - developer
-                      content:
-                        anyOf:
-                          - type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                          - type: string
-                    required:
-                      - role
-                      - content
-                  - type: object
-                    properties:
-                      id:
-                        type: string
-                      type:
-                        type: string
-                        enum:
-                          - message
-                      role:
-                        anyOf:
-                          - type: string
-                            enum:
-                              - user
-                          - type: string
-                            enum:
-                              - system
-                          - type: string
-                            enum:
-                              - developer
-                      content:
-                        type: array
-                        items:
-                          oneOf:
-                            - $ref: '#/components/schemas/ResponseInputText'
-                            - $ref: '#/components/schemas/ResponseInputImage'
-                            - $ref: '#/components/schemas/ResponseInputFile'
-                          discriminator:
-                            propertyName: type
-                            mapping:
-                              input_text: '#/components/schemas/ResponseInputText'
-                              input_image: '#/components/schemas/ResponseInputImage'
-                              input_file: '#/components/schemas/ResponseInputFile'
-                    required:
-                      - id
-                      - role
-                      - content
-                  - type: object
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - function_call_output
-                      id:
-                        type: string
-                      call_id:
-                        type: string
-                      output:
-                        type: string
-                      status:
-                        $ref: '#/components/schemas/ToolCallStatus'
-                    required:
-                      - type
-                      - id
-                      - call_id
-                      - output
-                  - type: object
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - function_call
-                      call_id:
-                        type: string
-                      name:
-                        type: string
-                      arguments:
-                        type: string
-                      id:
-                        type: string
-                      status:
-                        $ref: '#/components/schemas/ToolCallStatus'
-                    required:
-                      - type
-                      - call_id
-                      - name
-                      - arguments
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                  - $ref: '#/components/schemas/OutputMessage'
-            - nullable: true
+          $ref: '#/components/schemas/OpenResponsesInput'
         metadata:
           $ref: '#/components/schemas/OpenResponsesRequestMetadata'
         tools:
           type: array
           items:
-            oneOf:
-              - allOf:
-                  - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                  - type: object
-                    properties: {}
-                description: Function tool definition
-                example:
-                  type: function
-                  name: get_weather
-                  description: Get the current weather in a location
-                  parameters:
-                    type: object
-                    properties:
-                      location:
-                        type: string
-                        description: The city and state
-                      unit:
-                        type: string
-                        enum:
-                          - celsius
-                          - fahrenheit
-                        x-speakeasy-unknown-values: allow
-                    required:
-                      - location
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
+            $ref: '#/components/schemas/OpenResponsesToolUnion'
         tool_choice:
-          anyOf:
-            - type: string
-              enum:
-                - auto
-            - type: string
-              enum:
-                - none
-            - type: string
-              enum:
-                - required
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - function
-                name:
-                  type: string
-              required:
-                - type
-                - name
-            - type: object
-              properties:
-                type:
-                  anyOf:
-                    - type: string
-                      enum:
-                        - web_search_preview_2025_03_11
-                    - type: string
-                      enum:
-                        - web_search_preview
-              required:
-                - type
+          $ref: '#/components/schemas/OpenResponsesToolChoice'
         parallel_tool_calls:
           type: boolean
         prompt:
-          $ref: '#/components/schemas/OpenAIResponsesPrompt'
+          $ref: '#/components/schemas/OpenResponsesPrompt'
         background:
           type: boolean
           nullable: true
@@ -1143,20 +1329,7 @@ components:
           type: string
           nullable: true
         reasoning:
-          type: object
-          nullable: true
-          properties:
-            effort:
-              type: string
-              nullable: true
-              enum:
-                - high
-                - medium
-                - low
-                - minimal
-              x-speakeasy-unknown-values: allow
-            summary:
-              $ref: '#/components/schemas/ReasoningSummaryVerbosity'
+          $ref: '#/components/schemas/OpenResponsesReasoningConfig'
         service_tier:
           type: string
           nullable: true
@@ -1177,9 +1350,8 @@ components:
             - disabled
           x-speakeasy-unknown-values: allow
         text:
-          $ref: '#/components/schemas/ResponseTextConfig'
+          $ref: '#/components/schemas/OpenResponsesTextConfig'
       required:
-        - id
         - object
         - created_at
         - model
@@ -1235,364 +1407,7 @@ components:
           enum:
             - response.created
         response:
-          type: object
-          properties:
-            id:
-              type: string
-            object:
-              type: string
-              enum:
-                - response
-            created_at:
-              type: number
-            model:
-              type: string
-            status:
-              type: string
-              enum:
-                - completed
-                - incomplete
-                - in_progress
-                - failed
-                - cancelled
-                - queued
-              x-speakeasy-unknown-values: allow
-            output:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/OutputMessage'
-                  - $ref: '#/components/schemas/OutputItemReasoning'
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    message: '#/components/schemas/OutputMessage'
-                    reasoning: '#/components/schemas/OutputItemReasoning'
-                    function_call: '#/components/schemas/OutputItemFunctionCall'
-                    web_search_call: '#/components/schemas/OutputItemWebSearchCall'
-                    file_search_call: '#/components/schemas/OutputItemFileSearchCall'
-                    image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
-            user:
-              type: string
-              nullable: true
-            output_text:
-              type: string
-            prompt_cache_key:
-              type: string
-              nullable: true
-            safety_identifier:
-              type: string
-              nullable: true
-            error:
-              $ref: '#/components/schemas/ResponsesErrorField'
-            incomplete_details:
-              type: object
-              nullable: true
-              properties:
-                reason:
-                  type: string
-                  enum:
-                    - max_output_tokens
-                    - content_filter
-                  x-speakeasy-unknown-values: allow
-            usage:
-              type: object
-              properties:
-                input_tokens:
-                  type: number
-                input_tokens_details:
-                  type: object
-                  properties:
-                    cached_tokens:
-                      type: number
-                  required:
-                    - cached_tokens
-                output_tokens:
-                  type: number
-                output_tokens_details:
-                  type: object
-                  properties:
-                    reasoning_tokens:
-                      type: number
-                  required:
-                    - reasoning_tokens
-                total_tokens:
-                  type: number
-              required:
-                - input_tokens
-                - input_tokens_details
-                - output_tokens
-                - output_tokens_details
-                - total_tokens
-            max_tool_calls:
-              type: number
-              nullable: true
-            top_logprobs:
-              type: number
-            max_output_tokens:
-              type: number
-              nullable: true
-            temperature:
-              type: number
-              nullable: true
-            top_p:
-              type: number
-              nullable: true
-            instructions:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    anyOf:
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - assistant
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            anyOf:
-                              - type: array
-                                items:
-                                  oneOf:
-                                    - $ref: '#/components/schemas/ResponseInputText'
-                                    - $ref: '#/components/schemas/ResponseInputImage'
-                                    - $ref: '#/components/schemas/ResponseInputFile'
-                                  discriminator:
-                                    propertyName: type
-                                    mapping:
-                                      input_text: '#/components/schemas/ResponseInputText'
-                                      input_image: '#/components/schemas/ResponseInputImage'
-                                      input_file: '#/components/schemas/ResponseInputFile'
-                              - type: string
-                        required:
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                        required:
-                          - id
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call_output
-                          id:
-                            type: string
-                          call_id:
-                            type: string
-                          output:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - id
-                          - call_id
-                          - output
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call
-                          call_id:
-                            type: string
-                          name:
-                            type: string
-                          arguments:
-                            type: string
-                          id:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - call_id
-                          - name
-                          - arguments
-                      - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                      - $ref: '#/components/schemas/OutputMessage'
-                - nullable: true
-            metadata:
-              $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-            tools:
-              type: array
-              items:
-                oneOf:
-                  - allOf:
-                      - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                      - type: object
-                        properties: {}
-                    description: Function tool definition
-                    example:
-                      type: function
-                      name: get_weather
-                      description: Get the current weather in a location
-                      parameters:
-                        type: object
-                        properties:
-                          location:
-                            type: string
-                            description: The city and state
-                          unit:
-                            type: string
-                            enum:
-                              - celsius
-                              - fahrenheit
-                            x-speakeasy-unknown-values: allow
-                        required:
-                          - location
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-            tool_choice:
-              anyOf:
-                - type: string
-                  enum:
-                    - auto
-                - type: string
-                  enum:
-                    - none
-                - type: string
-                  enum:
-                    - required
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                        - function
-                    name:
-                      type: string
-                  required:
-                    - type
-                    - name
-                - type: object
-                  properties:
-                    type:
-                      anyOf:
-                        - type: string
-                          enum:
-                            - web_search_preview_2025_03_11
-                        - type: string
-                          enum:
-                            - web_search_preview
-                  required:
-                    - type
-            parallel_tool_calls:
-              type: boolean
-            prompt:
-              $ref: '#/components/schemas/OpenAIResponsesPrompt'
-            background:
-              type: boolean
-              nullable: true
-            previous_response_id:
-              type: string
-              nullable: true
-            reasoning:
-              type: object
-              nullable: true
-              properties:
-                effort:
-                  type: string
-                  nullable: true
-                  enum:
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                  x-speakeasy-unknown-values: allow
-                summary:
-                  $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-            service_tier:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - default
-                - flex
-                - priority
-                - scale
-              x-speakeasy-unknown-values: allow
-            store:
-              type: boolean
-            truncation:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - disabled
-              x-speakeasy-unknown-values: allow
-            text:
-              $ref: '#/components/schemas/ResponseTextConfig'
-          required:
-            - id
-            - object
-            - created_at
-            - model
-            - output
-            - error
-            - incomplete_details
-            - temperature
-            - top_p
-            - instructions
-            - metadata
-            - tools
-            - tool_choice
-            - parallel_tool_calls
+          $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
         sequence_number:
           type: number
       required:
@@ -1628,364 +1443,7 @@ components:
           enum:
             - response.in_progress
         response:
-          type: object
-          properties:
-            id:
-              type: string
-            object:
-              type: string
-              enum:
-                - response
-            created_at:
-              type: number
-            model:
-              type: string
-            status:
-              type: string
-              enum:
-                - completed
-                - incomplete
-                - in_progress
-                - failed
-                - cancelled
-                - queued
-              x-speakeasy-unknown-values: allow
-            output:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/OutputMessage'
-                  - $ref: '#/components/schemas/OutputItemReasoning'
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    message: '#/components/schemas/OutputMessage'
-                    reasoning: '#/components/schemas/OutputItemReasoning'
-                    function_call: '#/components/schemas/OutputItemFunctionCall'
-                    web_search_call: '#/components/schemas/OutputItemWebSearchCall'
-                    file_search_call: '#/components/schemas/OutputItemFileSearchCall'
-                    image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
-            user:
-              type: string
-              nullable: true
-            output_text:
-              type: string
-            prompt_cache_key:
-              type: string
-              nullable: true
-            safety_identifier:
-              type: string
-              nullable: true
-            error:
-              $ref: '#/components/schemas/ResponsesErrorField'
-            incomplete_details:
-              type: object
-              nullable: true
-              properties:
-                reason:
-                  type: string
-                  enum:
-                    - max_output_tokens
-                    - content_filter
-                  x-speakeasy-unknown-values: allow
-            usage:
-              type: object
-              properties:
-                input_tokens:
-                  type: number
-                input_tokens_details:
-                  type: object
-                  properties:
-                    cached_tokens:
-                      type: number
-                  required:
-                    - cached_tokens
-                output_tokens:
-                  type: number
-                output_tokens_details:
-                  type: object
-                  properties:
-                    reasoning_tokens:
-                      type: number
-                  required:
-                    - reasoning_tokens
-                total_tokens:
-                  type: number
-              required:
-                - input_tokens
-                - input_tokens_details
-                - output_tokens
-                - output_tokens_details
-                - total_tokens
-            max_tool_calls:
-              type: number
-              nullable: true
-            top_logprobs:
-              type: number
-            max_output_tokens:
-              type: number
-              nullable: true
-            temperature:
-              type: number
-              nullable: true
-            top_p:
-              type: number
-              nullable: true
-            instructions:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    anyOf:
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - assistant
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            anyOf:
-                              - type: array
-                                items:
-                                  oneOf:
-                                    - $ref: '#/components/schemas/ResponseInputText'
-                                    - $ref: '#/components/schemas/ResponseInputImage'
-                                    - $ref: '#/components/schemas/ResponseInputFile'
-                                  discriminator:
-                                    propertyName: type
-                                    mapping:
-                                      input_text: '#/components/schemas/ResponseInputText'
-                                      input_image: '#/components/schemas/ResponseInputImage'
-                                      input_file: '#/components/schemas/ResponseInputFile'
-                              - type: string
-                        required:
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                        required:
-                          - id
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call_output
-                          id:
-                            type: string
-                          call_id:
-                            type: string
-                          output:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - id
-                          - call_id
-                          - output
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call
-                          call_id:
-                            type: string
-                          name:
-                            type: string
-                          arguments:
-                            type: string
-                          id:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - call_id
-                          - name
-                          - arguments
-                      - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                      - $ref: '#/components/schemas/OutputMessage'
-                - nullable: true
-            metadata:
-              $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-            tools:
-              type: array
-              items:
-                oneOf:
-                  - allOf:
-                      - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                      - type: object
-                        properties: {}
-                    description: Function tool definition
-                    example:
-                      type: function
-                      name: get_weather
-                      description: Get the current weather in a location
-                      parameters:
-                        type: object
-                        properties:
-                          location:
-                            type: string
-                            description: The city and state
-                          unit:
-                            type: string
-                            enum:
-                              - celsius
-                              - fahrenheit
-                            x-speakeasy-unknown-values: allow
-                        required:
-                          - location
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-            tool_choice:
-              anyOf:
-                - type: string
-                  enum:
-                    - auto
-                - type: string
-                  enum:
-                    - none
-                - type: string
-                  enum:
-                    - required
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                        - function
-                    name:
-                      type: string
-                  required:
-                    - type
-                    - name
-                - type: object
-                  properties:
-                    type:
-                      anyOf:
-                        - type: string
-                          enum:
-                            - web_search_preview_2025_03_11
-                        - type: string
-                          enum:
-                            - web_search_preview
-                  required:
-                    - type
-            parallel_tool_calls:
-              type: boolean
-            prompt:
-              $ref: '#/components/schemas/OpenAIResponsesPrompt'
-            background:
-              type: boolean
-              nullable: true
-            previous_response_id:
-              type: string
-              nullable: true
-            reasoning:
-              type: object
-              nullable: true
-              properties:
-                effort:
-                  type: string
-                  nullable: true
-                  enum:
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                  x-speakeasy-unknown-values: allow
-                summary:
-                  $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-            service_tier:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - default
-                - flex
-                - priority
-                - scale
-              x-speakeasy-unknown-values: allow
-            store:
-              type: boolean
-            truncation:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - disabled
-              x-speakeasy-unknown-values: allow
-            text:
-              $ref: '#/components/schemas/ResponseTextConfig'
-          required:
-            - id
-            - object
-            - created_at
-            - model
-            - output
-            - error
-            - incomplete_details
-            - temperature
-            - top_p
-            - instructions
-            - metadata
-            - tools
-            - tool_choice
-            - parallel_tool_calls
+          $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
         sequence_number:
           type: number
       required:
@@ -2021,364 +1479,7 @@ components:
           enum:
             - response.completed
         response:
-          type: object
-          properties:
-            id:
-              type: string
-            object:
-              type: string
-              enum:
-                - response
-            created_at:
-              type: number
-            model:
-              type: string
-            status:
-              type: string
-              enum:
-                - completed
-                - incomplete
-                - in_progress
-                - failed
-                - cancelled
-                - queued
-              x-speakeasy-unknown-values: allow
-            output:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/OutputMessage'
-                  - $ref: '#/components/schemas/OutputItemReasoning'
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    message: '#/components/schemas/OutputMessage'
-                    reasoning: '#/components/schemas/OutputItemReasoning'
-                    function_call: '#/components/schemas/OutputItemFunctionCall'
-                    web_search_call: '#/components/schemas/OutputItemWebSearchCall'
-                    file_search_call: '#/components/schemas/OutputItemFileSearchCall'
-                    image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
-            user:
-              type: string
-              nullable: true
-            output_text:
-              type: string
-            prompt_cache_key:
-              type: string
-              nullable: true
-            safety_identifier:
-              type: string
-              nullable: true
-            error:
-              $ref: '#/components/schemas/ResponsesErrorField'
-            incomplete_details:
-              type: object
-              nullable: true
-              properties:
-                reason:
-                  type: string
-                  enum:
-                    - max_output_tokens
-                    - content_filter
-                  x-speakeasy-unknown-values: allow
-            usage:
-              type: object
-              properties:
-                input_tokens:
-                  type: number
-                input_tokens_details:
-                  type: object
-                  properties:
-                    cached_tokens:
-                      type: number
-                  required:
-                    - cached_tokens
-                output_tokens:
-                  type: number
-                output_tokens_details:
-                  type: object
-                  properties:
-                    reasoning_tokens:
-                      type: number
-                  required:
-                    - reasoning_tokens
-                total_tokens:
-                  type: number
-              required:
-                - input_tokens
-                - input_tokens_details
-                - output_tokens
-                - output_tokens_details
-                - total_tokens
-            max_tool_calls:
-              type: number
-              nullable: true
-            top_logprobs:
-              type: number
-            max_output_tokens:
-              type: number
-              nullable: true
-            temperature:
-              type: number
-              nullable: true
-            top_p:
-              type: number
-              nullable: true
-            instructions:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    anyOf:
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - assistant
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            anyOf:
-                              - type: array
-                                items:
-                                  oneOf:
-                                    - $ref: '#/components/schemas/ResponseInputText'
-                                    - $ref: '#/components/schemas/ResponseInputImage'
-                                    - $ref: '#/components/schemas/ResponseInputFile'
-                                  discriminator:
-                                    propertyName: type
-                                    mapping:
-                                      input_text: '#/components/schemas/ResponseInputText'
-                                      input_image: '#/components/schemas/ResponseInputImage'
-                                      input_file: '#/components/schemas/ResponseInputFile'
-                              - type: string
-                        required:
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                        required:
-                          - id
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call_output
-                          id:
-                            type: string
-                          call_id:
-                            type: string
-                          output:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - id
-                          - call_id
-                          - output
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call
-                          call_id:
-                            type: string
-                          name:
-                            type: string
-                          arguments:
-                            type: string
-                          id:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - call_id
-                          - name
-                          - arguments
-                      - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                      - $ref: '#/components/schemas/OutputMessage'
-                - nullable: true
-            metadata:
-              $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-            tools:
-              type: array
-              items:
-                oneOf:
-                  - allOf:
-                      - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                      - type: object
-                        properties: {}
-                    description: Function tool definition
-                    example:
-                      type: function
-                      name: get_weather
-                      description: Get the current weather in a location
-                      parameters:
-                        type: object
-                        properties:
-                          location:
-                            type: string
-                            description: The city and state
-                          unit:
-                            type: string
-                            enum:
-                              - celsius
-                              - fahrenheit
-                            x-speakeasy-unknown-values: allow
-                        required:
-                          - location
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-            tool_choice:
-              anyOf:
-                - type: string
-                  enum:
-                    - auto
-                - type: string
-                  enum:
-                    - none
-                - type: string
-                  enum:
-                    - required
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                        - function
-                    name:
-                      type: string
-                  required:
-                    - type
-                    - name
-                - type: object
-                  properties:
-                    type:
-                      anyOf:
-                        - type: string
-                          enum:
-                            - web_search_preview_2025_03_11
-                        - type: string
-                          enum:
-                            - web_search_preview
-                  required:
-                    - type
-            parallel_tool_calls:
-              type: boolean
-            prompt:
-              $ref: '#/components/schemas/OpenAIResponsesPrompt'
-            background:
-              type: boolean
-              nullable: true
-            previous_response_id:
-              type: string
-              nullable: true
-            reasoning:
-              type: object
-              nullable: true
-              properties:
-                effort:
-                  type: string
-                  nullable: true
-                  enum:
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                  x-speakeasy-unknown-values: allow
-                summary:
-                  $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-            service_tier:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - default
-                - flex
-                - priority
-                - scale
-              x-speakeasy-unknown-values: allow
-            store:
-              type: boolean
-            truncation:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - disabled
-              x-speakeasy-unknown-values: allow
-            text:
-              $ref: '#/components/schemas/ResponseTextConfig'
-          required:
-            - id
-            - object
-            - created_at
-            - model
-            - output
-            - error
-            - incomplete_details
-            - temperature
-            - top_p
-            - instructions
-            - metadata
-            - tools
-            - tool_choice
-            - parallel_tool_calls
+          $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
         sequence_number:
           type: number
       required:
@@ -2422,364 +1523,7 @@ components:
           enum:
             - response.incomplete
         response:
-          type: object
-          properties:
-            id:
-              type: string
-            object:
-              type: string
-              enum:
-                - response
-            created_at:
-              type: number
-            model:
-              type: string
-            status:
-              type: string
-              enum:
-                - completed
-                - incomplete
-                - in_progress
-                - failed
-                - cancelled
-                - queued
-              x-speakeasy-unknown-values: allow
-            output:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/OutputMessage'
-                  - $ref: '#/components/schemas/OutputItemReasoning'
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    message: '#/components/schemas/OutputMessage'
-                    reasoning: '#/components/schemas/OutputItemReasoning'
-                    function_call: '#/components/schemas/OutputItemFunctionCall'
-                    web_search_call: '#/components/schemas/OutputItemWebSearchCall'
-                    file_search_call: '#/components/schemas/OutputItemFileSearchCall'
-                    image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
-            user:
-              type: string
-              nullable: true
-            output_text:
-              type: string
-            prompt_cache_key:
-              type: string
-              nullable: true
-            safety_identifier:
-              type: string
-              nullable: true
-            error:
-              $ref: '#/components/schemas/ResponsesErrorField'
-            incomplete_details:
-              type: object
-              nullable: true
-              properties:
-                reason:
-                  type: string
-                  enum:
-                    - max_output_tokens
-                    - content_filter
-                  x-speakeasy-unknown-values: allow
-            usage:
-              type: object
-              properties:
-                input_tokens:
-                  type: number
-                input_tokens_details:
-                  type: object
-                  properties:
-                    cached_tokens:
-                      type: number
-                  required:
-                    - cached_tokens
-                output_tokens:
-                  type: number
-                output_tokens_details:
-                  type: object
-                  properties:
-                    reasoning_tokens:
-                      type: number
-                  required:
-                    - reasoning_tokens
-                total_tokens:
-                  type: number
-              required:
-                - input_tokens
-                - input_tokens_details
-                - output_tokens
-                - output_tokens_details
-                - total_tokens
-            max_tool_calls:
-              type: number
-              nullable: true
-            top_logprobs:
-              type: number
-            max_output_tokens:
-              type: number
-              nullable: true
-            temperature:
-              type: number
-              nullable: true
-            top_p:
-              type: number
-              nullable: true
-            instructions:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    anyOf:
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - assistant
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            anyOf:
-                              - type: array
-                                items:
-                                  oneOf:
-                                    - $ref: '#/components/schemas/ResponseInputText'
-                                    - $ref: '#/components/schemas/ResponseInputImage'
-                                    - $ref: '#/components/schemas/ResponseInputFile'
-                                  discriminator:
-                                    propertyName: type
-                                    mapping:
-                                      input_text: '#/components/schemas/ResponseInputText'
-                                      input_image: '#/components/schemas/ResponseInputImage'
-                                      input_file: '#/components/schemas/ResponseInputFile'
-                              - type: string
-                        required:
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                        required:
-                          - id
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call_output
-                          id:
-                            type: string
-                          call_id:
-                            type: string
-                          output:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - id
-                          - call_id
-                          - output
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call
-                          call_id:
-                            type: string
-                          name:
-                            type: string
-                          arguments:
-                            type: string
-                          id:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - call_id
-                          - name
-                          - arguments
-                      - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                      - $ref: '#/components/schemas/OutputMessage'
-                - nullable: true
-            metadata:
-              $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-            tools:
-              type: array
-              items:
-                oneOf:
-                  - allOf:
-                      - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                      - type: object
-                        properties: {}
-                    description: Function tool definition
-                    example:
-                      type: function
-                      name: get_weather
-                      description: Get the current weather in a location
-                      parameters:
-                        type: object
-                        properties:
-                          location:
-                            type: string
-                            description: The city and state
-                          unit:
-                            type: string
-                            enum:
-                              - celsius
-                              - fahrenheit
-                            x-speakeasy-unknown-values: allow
-                        required:
-                          - location
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-            tool_choice:
-              anyOf:
-                - type: string
-                  enum:
-                    - auto
-                - type: string
-                  enum:
-                    - none
-                - type: string
-                  enum:
-                    - required
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                        - function
-                    name:
-                      type: string
-                  required:
-                    - type
-                    - name
-                - type: object
-                  properties:
-                    type:
-                      anyOf:
-                        - type: string
-                          enum:
-                            - web_search_preview_2025_03_11
-                        - type: string
-                          enum:
-                            - web_search_preview
-                  required:
-                    - type
-            parallel_tool_calls:
-              type: boolean
-            prompt:
-              $ref: '#/components/schemas/OpenAIResponsesPrompt'
-            background:
-              type: boolean
-              nullable: true
-            previous_response_id:
-              type: string
-              nullable: true
-            reasoning:
-              type: object
-              nullable: true
-              properties:
-                effort:
-                  type: string
-                  nullable: true
-                  enum:
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                  x-speakeasy-unknown-values: allow
-                summary:
-                  $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-            service_tier:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - default
-                - flex
-                - priority
-                - scale
-              x-speakeasy-unknown-values: allow
-            store:
-              type: boolean
-            truncation:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - disabled
-              x-speakeasy-unknown-values: allow
-            text:
-              $ref: '#/components/schemas/ResponseTextConfig'
-          required:
-            - id
-            - object
-            - created_at
-            - model
-            - output
-            - error
-            - incomplete_details
-            - temperature
-            - top_p
-            - instructions
-            - metadata
-            - tools
-            - tool_choice
-            - parallel_tool_calls
+          $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
         sequence_number:
           type: number
       required:
@@ -2815,364 +1559,7 @@ components:
           enum:
             - response.failed
         response:
-          type: object
-          properties:
-            id:
-              type: string
-            object:
-              type: string
-              enum:
-                - response
-            created_at:
-              type: number
-            model:
-              type: string
-            status:
-              type: string
-              enum:
-                - completed
-                - incomplete
-                - in_progress
-                - failed
-                - cancelled
-                - queued
-              x-speakeasy-unknown-values: allow
-            output:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/OutputMessage'
-                  - $ref: '#/components/schemas/OutputItemReasoning'
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    message: '#/components/schemas/OutputMessage'
-                    reasoning: '#/components/schemas/OutputItemReasoning'
-                    function_call: '#/components/schemas/OutputItemFunctionCall'
-                    web_search_call: '#/components/schemas/OutputItemWebSearchCall'
-                    file_search_call: '#/components/schemas/OutputItemFileSearchCall'
-                    image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
-            user:
-              type: string
-              nullable: true
-            output_text:
-              type: string
-            prompt_cache_key:
-              type: string
-              nullable: true
-            safety_identifier:
-              type: string
-              nullable: true
-            error:
-              $ref: '#/components/schemas/ResponsesErrorField'
-            incomplete_details:
-              type: object
-              nullable: true
-              properties:
-                reason:
-                  type: string
-                  enum:
-                    - max_output_tokens
-                    - content_filter
-                  x-speakeasy-unknown-values: allow
-            usage:
-              type: object
-              properties:
-                input_tokens:
-                  type: number
-                input_tokens_details:
-                  type: object
-                  properties:
-                    cached_tokens:
-                      type: number
-                  required:
-                    - cached_tokens
-                output_tokens:
-                  type: number
-                output_tokens_details:
-                  type: object
-                  properties:
-                    reasoning_tokens:
-                      type: number
-                  required:
-                    - reasoning_tokens
-                total_tokens:
-                  type: number
-              required:
-                - input_tokens
-                - input_tokens_details
-                - output_tokens
-                - output_tokens_details
-                - total_tokens
-            max_tool_calls:
-              type: number
-              nullable: true
-            top_logprobs:
-              type: number
-            max_output_tokens:
-              type: number
-              nullable: true
-            temperature:
-              type: number
-              nullable: true
-            top_p:
-              type: number
-              nullable: true
-            instructions:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    anyOf:
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - assistant
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            anyOf:
-                              - type: array
-                                items:
-                                  oneOf:
-                                    - $ref: '#/components/schemas/ResponseInputText'
-                                    - $ref: '#/components/schemas/ResponseInputImage'
-                                    - $ref: '#/components/schemas/ResponseInputFile'
-                                  discriminator:
-                                    propertyName: type
-                                    mapping:
-                                      input_text: '#/components/schemas/ResponseInputText'
-                                      input_image: '#/components/schemas/ResponseInputImage'
-                                      input_file: '#/components/schemas/ResponseInputFile'
-                              - type: string
-                        required:
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          id:
-                            type: string
-                          type:
-                            type: string
-                            enum:
-                              - message
-                          role:
-                            anyOf:
-                              - type: string
-                                enum:
-                                  - user
-                              - type: string
-                                enum:
-                                  - system
-                              - type: string
-                                enum:
-                                  - developer
-                          content:
-                            type: array
-                            items:
-                              oneOf:
-                                - $ref: '#/components/schemas/ResponseInputText'
-                                - $ref: '#/components/schemas/ResponseInputImage'
-                                - $ref: '#/components/schemas/ResponseInputFile'
-                              discriminator:
-                                propertyName: type
-                                mapping:
-                                  input_text: '#/components/schemas/ResponseInputText'
-                                  input_image: '#/components/schemas/ResponseInputImage'
-                                  input_file: '#/components/schemas/ResponseInputFile'
-                        required:
-                          - id
-                          - role
-                          - content
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call_output
-                          id:
-                            type: string
-                          call_id:
-                            type: string
-                          output:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - id
-                          - call_id
-                          - output
-                      - type: object
-                        properties:
-                          type:
-                            type: string
-                            enum:
-                              - function_call
-                          call_id:
-                            type: string
-                          name:
-                            type: string
-                          arguments:
-                            type: string
-                          id:
-                            type: string
-                          status:
-                            $ref: '#/components/schemas/ToolCallStatus'
-                        required:
-                          - type
-                          - call_id
-                          - name
-                          - arguments
-                      - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                      - $ref: '#/components/schemas/OutputMessage'
-                - nullable: true
-            metadata:
-              $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-            tools:
-              type: array
-              items:
-                oneOf:
-                  - allOf:
-                      - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                      - type: object
-                        properties: {}
-                    description: Function tool definition
-                    example:
-                      type: function
-                      name: get_weather
-                      description: Get the current weather in a location
-                      parameters:
-                        type: object
-                        properties:
-                          location:
-                            type: string
-                            description: The city and state
-                          unit:
-                            type: string
-                            enum:
-                              - celsius
-                              - fahrenheit
-                            x-speakeasy-unknown-values: allow
-                        required:
-                          - location
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-                  - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-            tool_choice:
-              anyOf:
-                - type: string
-                  enum:
-                    - auto
-                - type: string
-                  enum:
-                    - none
-                - type: string
-                  enum:
-                    - required
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      enum:
-                        - function
-                    name:
-                      type: string
-                  required:
-                    - type
-                    - name
-                - type: object
-                  properties:
-                    type:
-                      anyOf:
-                        - type: string
-                          enum:
-                            - web_search_preview_2025_03_11
-                        - type: string
-                          enum:
-                            - web_search_preview
-                  required:
-                    - type
-            parallel_tool_calls:
-              type: boolean
-            prompt:
-              $ref: '#/components/schemas/OpenAIResponsesPrompt'
-            background:
-              type: boolean
-              nullable: true
-            previous_response_id:
-              type: string
-              nullable: true
-            reasoning:
-              type: object
-              nullable: true
-              properties:
-                effort:
-                  type: string
-                  nullable: true
-                  enum:
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                  x-speakeasy-unknown-values: allow
-                summary:
-                  $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-            service_tier:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - default
-                - flex
-                - priority
-                - scale
-              x-speakeasy-unknown-values: allow
-            store:
-              type: boolean
-            truncation:
-              type: string
-              nullable: true
-              enum:
-                - auto
-                - disabled
-              x-speakeasy-unknown-values: allow
-            text:
-              $ref: '#/components/schemas/ResponseTextConfig'
-          required:
-            - id
-            - object
-            - created_at
-            - model
-            - output
-            - error
-            - incomplete_details
-            - temperature
-            - top_p
-            - instructions
-            - metadata
-            - tools
-            - tool_choice
-            - parallel_tool_calls
+          $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
         sequence_number:
           type: number
       required:
@@ -3200,7 +1587,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 3
-    OpenAIResponsesErrorEvent:
+    OpenResponsesErrorEvent:
       type: object
       properties:
         type:
@@ -3223,18 +1610,6 @@ components:
         - message
         - param
         - sequence_number
-      description: Event emitted when an error occurs during streaming
-      example:
-        type: error
-        code: rate_limit_exceeded
-        message: Rate limit exceeded. Please try again later.
-        param: null
-        sequence_number: 2
-    OpenResponsesErrorEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesErrorEvent'
-        - type: object
-          properties: {}
       description: Event emitted when an error occurs during streaming
       example:
         type: error
@@ -3333,6 +1708,28 @@ components:
               text: Hello! How can I help you?
               annotations: []
         sequence_number: 8
+    OpenResponsesOutputText:
+      allOf:
+        - $ref: '#/components/schemas/OutputTextContent'
+        - type: object
+          properties: {}
+      example:
+        type: output_text
+        text: The capital of France is Paris.
+        annotations:
+          - type: url_citation
+            start_index: 0
+            end_index: 42
+            title: Paris - Wikipedia
+            url: https://en.wikipedia.org/wiki/Paris
+    OpenResponsesRefusalContent:
+      allOf:
+        - $ref: '#/components/schemas/RefusalContent'
+        - type: object
+          properties: {}
+      example:
+        type: refusal
+        refusal: I'm sorry, I cannot assist with that request
     OpenResponsesContentPartAddedEvent:
       type: object
       properties:
@@ -3348,8 +1745,8 @@ components:
           type: number
         part:
           anyOf:
-            - $ref: '#/components/schemas/ResponseOutputText'
-            - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+            - $ref: '#/components/schemas/OpenResponsesOutputText'
+            - $ref: '#/components/schemas/OpenResponsesRefusalContent'
         sequence_number:
           type: number
       required:
@@ -3385,8 +1782,8 @@ components:
           type: number
         part:
           anyOf:
-            - $ref: '#/components/schemas/ResponseOutputText'
-            - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+            - $ref: '#/components/schemas/OpenResponsesOutputText'
+            - $ref: '#/components/schemas/OpenResponsesRefusalContent'
         sequence_number:
           type: number
       required:
@@ -3428,7 +1825,14 @@ components:
         top_logprobs:
           type: array
           items:
-            $ref: '#/components/schemas/OpenResponsesTopLogprobs'
+            allOf:
+              - $ref: '#/components/schemas/OpenResponsesTopLogprobs'
+              - type: object
+                properties: {}
+            description: Alternative token with its log probability
+            example:
+              token: hello
+              logprob: -0.5
       required:
         - logprob
         - token
@@ -3597,7 +2001,10 @@ components:
         annotation_index:
           type: number
         annotation:
-          $ref: '#/components/schemas/OpenAIResponsesAnnotation'
+          anyOf:
+            - $ref: '#/components/schemas/FileCitationAnnotation'
+            - $ref: '#/components/schemas/URLCitationAnnotation'
+            - $ref: '#/components/schemas/FilePathAnnotation'
       required:
         - type
         - output_index
@@ -3680,7 +2087,7 @@ components:
         name: get_weather
         arguments: '{"city": "San Francisco", "units": "celsius"}'
         sequence_number: 6
-    OpenAIResponsesReasoningDeltaEvent:
+    OpenResponsesReasoningDeltaEvent:
       type: object
       properties:
         type:
@@ -3712,20 +2119,7 @@ components:
         content_index: 0
         delta: First, we need
         sequence_number: 4
-    OpenResponsesReasoningDeltaEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningDeltaEvent'
-        - type: object
-          properties: {}
-      description: Event emitted when reasoning text delta is streamed
-      example:
-        type: response.reasoning_text.delta
-        output_index: 0
-        item_id: item-1
-        content_index: 0
-        delta: First, we need
-        sequence_number: 4
-    OpenAIResponsesReasoningDoneEvent:
+    OpenResponsesReasoningDoneEvent:
       type: object
       properties:
         type:
@@ -3757,20 +2151,7 @@ components:
         content_index: 0
         text: First, we need to identify the key components and then combine them logically.
         sequence_number: 6
-    OpenResponsesReasoningDoneEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningDoneEvent'
-        - type: object
-          properties: {}
-      description: Event emitted when reasoning text streaming is complete
-      example:
-        type: response.reasoning_text.done
-        output_index: 0
-        item_id: item-1
-        content_index: 0
-        text: First, we need to identify the key components and then combine them logically.
-        sequence_number: 6
-    OpenAIResponsesReasoningSummaryPartAddedEvent:
+    OpenResponsesReasoningSummaryPartAddedEventSchema:
       type: object
       properties:
         type:
@@ -3794,21 +2175,6 @@ components:
         - summary_index
         - part
         - sequence_number
-      description: Event emitted when a reasoning summary part is added
-      example:
-        type: response.reasoning_summary_part.added
-        output_index: 0
-        item_id: item-1
-        summary_index: 0
-        part:
-          type: summary_text
-          text: ''
-        sequence_number: 3
-    OpenResponsesReasoningSummaryPartAddedEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryPartAddedEvent'
-        - type: object
-          properties: {}
       description: Event emitted when a reasoning summary part is added
       example:
         type: response.reasoning_summary_part.added
@@ -3853,7 +2219,7 @@ components:
           type: summary_text
           text: Analyzing the problem step by step to find the optimal solution.
         sequence_number: 7
-    OpenAIResponsesReasoningSummaryTextDeltaEvent:
+    OpenResponsesReasoningSummaryTextDeltaEvent:
       type: object
       properties:
         type:
@@ -3885,20 +2251,7 @@ components:
         summary_index: 0
         delta: Analyzing
         sequence_number: 4
-    OpenResponsesReasoningSummaryTextDeltaEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryTextDeltaEvent'
-        - type: object
-          properties: {}
-      description: Event emitted when reasoning summary text delta is streamed
-      example:
-        type: response.reasoning_summary_text.delta
-        item_id: item-1
-        output_index: 0
-        summary_index: 0
-        delta: Analyzing
-        sequence_number: 4
-    OpenAIResponsesReasoningSummaryTextDoneEvent:
+    OpenResponsesReasoningSummaryTextDoneEvent:
       type: object
       properties:
         type:
@@ -3930,20 +2283,7 @@ components:
         summary_index: 0
         text: Analyzing the problem step by step to find the optimal solution.
         sequence_number: 6
-    OpenResponsesReasoningSummaryTextDoneEvent:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryTextDoneEvent'
-        - type: object
-          properties: {}
-      description: Event emitted when reasoning summary text streaming is complete
-      example:
-        type: response.reasoning_summary_text.done
-        item_id: item-1
-        output_index: 0
-        summary_index: 0
-        text: Analyzing the problem step by step to find the optimal solution.
-        sequence_number: 6
-    OpenAIResponsesImageGenCallInProgress:
+    OpenResponsesImageGenCallInProgress:
       type: object
       properties:
         type:
@@ -3961,18 +2301,12 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallInProgress:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesImageGenCallInProgress'
-        - type: object
-          properties: {}
-      description: Image generation call in progress
       example:
         type: response.image_generation_call.in_progress
+        item_id: item-abc123
         output_index: 0
         sequence_number: 1
-        item_id: call-123
-    OpenAIResponsesImageGenCallGenerating:
+    OpenResponsesImageGenCallGenerating:
       type: object
       properties:
         type:
@@ -3990,18 +2324,12 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallGenerating:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesImageGenCallGenerating'
-        - type: object
-          properties: {}
-      description: Image generation call is generating
       example:
         type: response.image_generation_call.generating
+        item_id: item-abc123
         output_index: 0
         sequence_number: 2
-        item_id: call-123
-    OpenAIResponsesImageGenCallPartialImage:
+    OpenResponsesImageGenCallPartialImage:
       type: object
       properties:
         type:
@@ -4025,20 +2353,14 @@ components:
         - sequence_number
         - partial_image_b64
         - partial_image_index
-    OpenResponsesImageGenCallPartialImage:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesImageGenCallPartialImage'
-        - type: object
-          properties: {}
-      description: Image generation call with partial image
       example:
         type: response.image_generation_call.partial_image
+        item_id: item-abc123
         output_index: 0
         sequence_number: 3
-        item_id: call-123
-        partial_image_b64: base64encodedimage...
+        partial_image_b64: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ
         partial_image_index: 0
-    OpenAIResponsesImageGenCallCompleted:
+    OpenResponsesImageGenCallCompleted:
       type: object
       properties:
         type:
@@ -4056,25 +2378,17 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallCompleted:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesImageGenCallCompleted'
-        - type: object
-          properties: {}
-      description: Image generation call completed
       example:
         type: response.image_generation_call.completed
+        item_id: item-abc123
         output_index: 0
         sequence_number: 4
-        item_id: call-123
     OpenResponsesStreamEvent:
       oneOf:
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesCreatedEvent'
             - type: object
-              properties:
-                response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+              properties: {}
           description: Event emitted when a response is created
           example:
             type: response.created
@@ -4099,9 +2413,7 @@ components:
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesInProgressEvent'
             - type: object
-              properties:
-                response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+              properties: {}
           description: Event emitted when a response is in progress
           example:
             type: response.in_progress
@@ -4126,9 +2438,7 @@ components:
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesCompletedEvent'
             - type: object
-              properties:
-                response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+              properties: {}
           description: Event emitted when a response has completed successfully
           example:
             type: response.completed
@@ -4161,9 +2471,7 @@ components:
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesIncompleteEvent'
             - type: object
-              properties:
-                response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+              properties: {}
           description: Event emitted when a response is incomplete
           example:
             type: response.incomplete
@@ -4188,9 +2496,7 @@ components:
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesFailedEvent'
             - type: object
-              properties:
-                response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+              properties: {}
           description: Event emitted when a response has failed
           example:
             type: response.failed
@@ -4212,7 +2518,17 @@ components:
               top_p: null
               max_output_tokens: null
             sequence_number: 3
-        - $ref: '#/components/schemas/OpenResponsesErrorEvent'
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesErrorEvent'
+            - type: object
+              properties: {}
+          description: Event emitted when an error occurs during streaming
+          example:
+            type: error
+            code: rate_limit_exceeded
+            message: Rate limit exceeded. Please try again later.
+            param: null
+            sequence_number: 2
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesOutputItemAddedEvent'
             - type: object
@@ -4256,9 +2572,9 @@ components:
               properties:
                 part:
                   anyOf:
-                    - $ref: '#/components/schemas/ResponseOutputText'
+                    - $ref: '#/components/schemas/OpenResponsesOutputText'
                     - $ref: '#/components/schemas/ReasoningTextContent'
-                    - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+                    - $ref: '#/components/schemas/OpenResponsesRefusalContent'
           description: Event emitted when a new content part is added to an output item
           example:
             type: response.content_part.added
@@ -4276,9 +2592,9 @@ components:
               properties:
                 part:
                   anyOf:
-                    - $ref: '#/components/schemas/ResponseOutputText'
+                    - $ref: '#/components/schemas/OpenResponsesOutputText'
                     - $ref: '#/components/schemas/ReasoningTextContent'
-                    - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+                    - $ref: '#/components/schemas/OpenResponsesRefusalContent'
           description: Event emitted when a content part is complete
           example:
             type: response.content_part.done
@@ -4381,9 +2697,44 @@ components:
             name: get_weather
             arguments: '{"city": "San Francisco", "units": "celsius"}'
             sequence_number: 6
-        - $ref: '#/components/schemas/OpenResponsesReasoningDeltaEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningDoneEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryPartAddedEvent'
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesReasoningDeltaEvent'
+            - type: object
+              properties: {}
+          description: Event emitted when reasoning text delta is streamed
+          example:
+            type: response.reasoning_text.delta
+            output_index: 0
+            item_id: item-1
+            content_index: 0
+            delta: First, we need
+            sequence_number: 4
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesReasoningDoneEvent'
+            - type: object
+              properties: {}
+          description: Event emitted when reasoning text streaming is complete
+          example:
+            type: response.reasoning_text.done
+            output_index: 0
+            item_id: item-1
+            content_index: 0
+            text: First, we need to identify the key components and then combine them logically.
+            sequence_number: 6
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesReasoningSummaryPartAddedEventSchema'
+            - type: object
+              properties: {}
+          description: Event emitted when a reasoning summary part is added
+          example:
+            type: response.reasoning_summary_part.added
+            output_index: 0
+            item_id: item-1
+            summary_index: 0
+            part:
+              type: summary_text
+              text: ''
+            sequence_number: 3
         - allOf:
             - $ref: '#/components/schemas/OpenResponsesReasoningSummaryPartDoneEvent'
             - type: object
@@ -4398,12 +2749,68 @@ components:
               type: summary_text
               text: Analyzing the problem step by step to find the optimal solution.
             sequence_number: 7
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDeltaEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDoneEvent'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallInProgress'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallGenerating'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallPartialImage'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallCompleted'
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDeltaEvent'
+            - type: object
+              properties: {}
+          description: Event emitted when reasoning summary text delta is streamed
+          example:
+            type: response.reasoning_summary_text.delta
+            item_id: item-1
+            output_index: 0
+            summary_index: 0
+            delta: Analyzing
+            sequence_number: 4
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDoneEvent'
+            - type: object
+              properties: {}
+          description: Event emitted when reasoning summary text streaming is complete
+          example:
+            type: response.reasoning_summary_text.done
+            item_id: item-1
+            output_index: 0
+            summary_index: 0
+            text: Analyzing the problem step by step to find the optimal solution.
+            sequence_number: 6
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesImageGenCallInProgress'
+            - type: object
+              properties: {}
+          example:
+            type: response.image_generation_call.in_progress
+            item_id: item-abc123
+            output_index: 0
+            sequence_number: 1
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesImageGenCallGenerating'
+            - type: object
+              properties: {}
+          example:
+            type: response.image_generation_call.generating
+            item_id: item-abc123
+            output_index: 0
+            sequence_number: 2
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesImageGenCallPartialImage'
+            - type: object
+              properties: {}
+          example:
+            type: response.image_generation_call.partial_image
+            item_id: item-abc123
+            output_index: 0
+            sequence_number: 3
+            partial_image_b64: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ
+            partial_image_index: 0
+        - allOf:
+            - $ref: '#/components/schemas/OpenResponsesImageGenCallCompleted'
+            - type: object
+              properties: {}
+          example:
+            type: response.image_generation_call.completed
+            item_id: item-abc123
+            output_index: 0
+            sequence_number: 4
       description: Union of all possible event types emitted during response streaming
       example:
         type: response.created
@@ -4529,254 +2936,7 @@ components:
             field: temperature
             reason: Must be between 0 and 2
         user_id: user-abc123
-    OpenResponsesReasoning:
-      allOf:
-        - $ref: '#/components/schemas/OutputItemReasoning'
-        - type: object
-          properties:
-            signature:
-              type: string
-              nullable: true
-            format:
-              type: string
-              nullable: true
-              enum:
-                - unknown
-                - openai-responses-v1
-                - xai-responses-v1
-                - anthropic-claude-v1
-              x-speakeasy-unknown-values: allow
-      description: Reasoning output item with signature and format extensions
-      example:
-        type: reasoning
-        id: reasoning-abc123
-        summary:
-          - type: summary_text
-            text: Step by step analysis
-    OpenResponsesEasyInputMessage:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - message
-        role:
-          anyOf:
-            - type: string
-              enum:
-                - user
-            - type: string
-              enum:
-                - system
-            - type: string
-              enum:
-                - assistant
-            - type: string
-              enum:
-                - developer
-        content:
-          anyOf:
-            - type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/ResponseInputText'
-                  - $ref: '#/components/schemas/ResponseInputImage'
-                  - $ref: '#/components/schemas/ResponseInputFile'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    input_text: '#/components/schemas/ResponseInputText'
-                    input_image: '#/components/schemas/ResponseInputImage'
-                    input_file: '#/components/schemas/ResponseInputFile'
-            - type: string
-      required:
-        - role
-        - content
-    OpenResponsesInputMessageItem:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-            - message
-        role:
-          anyOf:
-            - type: string
-              enum:
-                - user
-            - type: string
-              enum:
-                - system
-            - type: string
-              enum:
-                - developer
-        content:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/ResponseInputText'
-              - $ref: '#/components/schemas/ResponseInputImage'
-              - $ref: '#/components/schemas/ResponseInputFile'
-            discriminator:
-              propertyName: type
-              mapping:
-                input_text: '#/components/schemas/ResponseInputText'
-                input_image: '#/components/schemas/ResponseInputImage'
-                input_file: '#/components/schemas/ResponseInputFile'
-      required:
-        - role
-        - content
-    OpenResponsesFunctionToolCall:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - function_call
-        call_id:
-          type: string
-        name:
-          type: string
-        arguments:
-          type: string
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-      required:
-        - type
-        - call_id
-        - name
-        - arguments
-        - id
-      description: A function call initiated by the model
-      example:
-        id: call-abc123
-        type: function_call
-        call_id: call-abc123
-        name: get_weather
-        arguments: '{"location":"San Francisco"}'
-        status: completed
-    OpenResponsesFunctionCallOutput:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - function_call_output
-        id:
-          type: string
-        call_id:
-          type: string
-        output:
-          type: string
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-      required:
-        - type
-        - id
-        - call_id
-        - output
-      description: The output from a function call execution
-      example:
-        type: function_call_output
-        id: output-abc123
-        call_id: call-abc123
-        output: '{"temperature":72,"conditions":"sunny"}'
-        status: completed
-    OpenResponsesInput:
-      anyOf:
-        - type: string
-        - type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/OpenResponsesReasoning'
-              - $ref: '#/components/schemas/OpenResponsesEasyInputMessage'
-              - $ref: '#/components/schemas/OpenResponsesInputMessageItem'
-              - $ref: '#/components/schemas/OpenResponsesFunctionToolCall'
-              - $ref: '#/components/schemas/OpenResponsesFunctionCallOutput'
-              - $ref: '#/components/schemas/OpenResponsesOutputMessage'
-              - $ref: '#/components/schemas/OpenResponsesOutputItemReasoning'
-              - allOf:
-                  - $ref: '#/components/schemas/OutputItemFunctionCall'
-                  - type: object
-                    properties: {}
-                example:
-                  type: function_call
-                  id: call-abc123
-                  name: get_weather
-                  arguments: '{"location":"San Francisco","unit":"celsius"}'
-                  call_id: call-abc123
-              - allOf:
-                  - $ref: '#/components/schemas/OutputItemWebSearchCall'
-                  - type: object
-                    properties: {}
-                example:
-                  type: web_search_call
-                  id: search-abc123
-                  status: completed
-              - allOf:
-                  - $ref: '#/components/schemas/OutputItemFileSearchCall'
-                  - type: object
-                    properties: {}
-                example:
-                  type: file_search_call
-                  id: filesearch-abc123
-                  queries:
-                    - machine learning algorithms
-                    - neural networks
-                  status: completed
-              - allOf:
-                  - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                  - type: object
-                    properties: {}
-                example:
-                  type: image_generation_call
-                  id: imagegen-abc123
-                  result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
-                  status: completed
-      description: Input for a response request - can be a string or array of items
-      example:
-        - role: user
-          content: What is the weather today?
-    OpenResponsesResponseText:
-      allOf:
-        - $ref: '#/components/schemas/ResponseTextConfig'
-        - type: object
-          properties: {}
-      description: Text output configuration including format and verbosity
-      example:
-        format:
-          type: text
-        verbosity: medium
-    OpenResponsesReasoningConfig:
-      type: object
-      nullable: true
-      properties:
-        effort:
-          type: string
-          nullable: true
-          enum:
-            - high
-            - medium
-            - low
-            - minimal
-          x-speakeasy-unknown-values: allow
-        summary:
-          $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-        max_tokens:
-          type: number
-          nullable: true
-        enabled:
-          type: boolean
-          nullable: true
-      description: Configuration for reasoning mode in the response
-      example:
-        summary: auto
-        enabled: true
-    OpenAIResponsesIncludable:
+    OpenResponsesIncludable:
       type: string
       enum:
         - file_search_call.results
@@ -4784,19 +2944,21 @@ components:
         - computer_call_output.output.image_url
         - reasoning.encrypted_content
         - code_interpreter_call.outputs
+      description: Fields to include in the response that would normally be omitted
+      example: message.input_image.image_url
       x-speakeasy-unknown-values: allow
-    ServiceTier:
+    OpenResponsesServiceTier:
       type: string
       nullable: true
       enum:
         - auto
         - default
         - flex
-        - scale
         - priority
+        - scale
       example: auto
       x-speakeasy-unknown-values: allow
-    Truncation:
+    OpenResponsesTruncation:
       type: string
       nullable: true
       enum:
@@ -4938,7 +3100,13 @@ components:
       type: object
       properties:
         input:
-          $ref: '#/components/schemas/OpenResponsesInput'
+          allOf:
+            - $ref: '#/components/schemas/OpenResponsesInput'
+            - anyOf:
+                - type: string
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/OpenResponsesInputItem'
         instructions:
           type: string
           nullable: true
@@ -4947,68 +3115,9 @@ components:
         tools:
           type: array
           items:
-            oneOf:
-              - allOf:
-                  - $ref: '#/components/schemas/OpenResponsesFunctionTool'
-                  - type: object
-                    properties: {}
-                description: Function tool definition
-                example:
-                  type: function
-                  name: get_weather
-                  description: Get the current weather in a location
-                  parameters:
-                    type: object
-                    properties:
-                      location:
-                        type: string
-                        description: The city and state
-                      unit:
-                        type: string
-                        enum:
-                          - celsius
-                          - fahrenheit
-                        x-speakeasy-unknown-values: allow
-                    required:
-                      - location
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
+            $ref: '#/components/schemas/OpenResponsesToolUnion'
         tool_choice:
-          anyOf:
-            - type: string
-              enum:
-                - auto
-            - type: string
-              enum:
-                - none
-            - type: string
-              enum:
-                - required
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - function
-                name:
-                  type: string
-              required:
-                - type
-                - name
-            - type: object
-              properties:
-                type:
-                  anyOf:
-                    - type: string
-                      enum:
-                        - web_search_preview_2025_03_11
-                    - type: string
-                      enum:
-                        - web_search_preview
-              required:
-                - type
+          $ref: '#/components/schemas/OpenResponsesToolChoice'
         parallel_tool_calls:
           type: boolean
           nullable: true
@@ -5019,7 +3128,7 @@ components:
           items:
             type: string
         text:
-          $ref: '#/components/schemas/OpenResponsesResponseText'
+          $ref: '#/components/schemas/OpenResponsesTextConfig'
         reasoning:
           $ref: '#/components/schemas/OpenResponsesReasoningConfig'
         max_output_tokens:
@@ -5043,12 +3152,12 @@ components:
           type: string
           nullable: true
         prompt:
-          $ref: '#/components/schemas/OpenAIResponsesPrompt'
+          $ref: '#/components/schemas/OpenResponsesPrompt'
         include:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/OpenAIResponsesIncludable'
+            $ref: '#/components/schemas/OpenResponsesIncludable'
         background:
           type: boolean
           nullable: true
@@ -5059,9 +3168,9 @@ components:
           type: boolean
           nullable: true
         service_tier:
-          $ref: '#/components/schemas/ServiceTier'
+          $ref: '#/components/schemas/OpenResponsesServiceTier'
         truncation:
-          $ref: '#/components/schemas/Truncation'
+          $ref: '#/components/schemas/OpenResponsesTruncation'
         stream:
           type: boolean
           nullable: true

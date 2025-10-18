@@ -19,22 +19,16 @@ import {
 } from "./datacollection.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OpenAIResponsesIncludable,
-  OpenAIResponsesIncludable$inboundSchema,
-  OpenAIResponsesIncludable$outboundSchema,
-} from "./openairesponsesincludable.js";
+  OpenResponsesIncludable,
+  OpenResponsesIncludable$inboundSchema,
+  OpenResponsesIncludable$outboundSchema,
+} from "./openresponsesincludable.js";
 import {
-  OpenAIResponsesPrompt,
-  OpenAIResponsesPrompt$inboundSchema,
-  OpenAIResponsesPrompt$Outbound,
-  OpenAIResponsesPrompt$outboundSchema,
-} from "./openairesponsesprompt.js";
-import {
-  OpenResponsesInputUnion,
-  OpenResponsesInputUnion$inboundSchema,
-  OpenResponsesInputUnion$Outbound,
-  OpenResponsesInputUnion$outboundSchema,
-} from "./openresponsesinputunion.js";
+  OpenResponsesPrompt,
+  OpenResponsesPrompt$inboundSchema,
+  OpenResponsesPrompt$Outbound,
+  OpenResponsesPrompt$outboundSchema,
+} from "./openresponsesprompt.js";
 import {
   OpenResponsesReasoningConfig,
   OpenResponsesReasoningConfig$inboundSchema,
@@ -42,35 +36,33 @@ import {
   OpenResponsesReasoningConfig$outboundSchema,
 } from "./openresponsesreasoningconfig.js";
 import {
-  OpenResponsesResponseText,
-  OpenResponsesResponseText$inboundSchema,
-  OpenResponsesResponseText$Outbound,
-  OpenResponsesResponseText$outboundSchema,
-} from "./openresponsesresponsetext.js";
+  OpenResponsesServiceTier,
+  OpenResponsesServiceTier$inboundSchema,
+  OpenResponsesServiceTier$outboundSchema,
+} from "./openresponsesservicetier.js";
 import {
-  OpenResponsesWebSearch20250826Tool,
-  OpenResponsesWebSearch20250826Tool$inboundSchema,
-  OpenResponsesWebSearch20250826Tool$Outbound,
-  OpenResponsesWebSearch20250826Tool$outboundSchema,
-} from "./openresponseswebsearch20250826tool.js";
+  OpenResponsesTextConfig,
+  OpenResponsesTextConfig$inboundSchema,
+  OpenResponsesTextConfig$Outbound,
+  OpenResponsesTextConfig$outboundSchema,
+} from "./openresponsestextconfig.js";
 import {
-  OpenResponsesWebSearchPreview20250311Tool,
-  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
-  OpenResponsesWebSearchPreview20250311Tool$Outbound,
-  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-} from "./openresponseswebsearchpreview20250311tool.js";
+  OpenResponsesToolChoice,
+  OpenResponsesToolChoice$inboundSchema,
+  OpenResponsesToolChoice$Outbound,
+  OpenResponsesToolChoice$outboundSchema,
+} from "./openresponsestoolchoice.js";
 import {
-  OpenResponsesWebSearchPreviewTool,
-  OpenResponsesWebSearchPreviewTool$inboundSchema,
-  OpenResponsesWebSearchPreviewTool$Outbound,
-  OpenResponsesWebSearchPreviewTool$outboundSchema,
-} from "./openresponseswebsearchpreviewtool.js";
+  OpenResponsesToolUnion,
+  OpenResponsesToolUnion$inboundSchema,
+  OpenResponsesToolUnion$Outbound,
+  OpenResponsesToolUnion$outboundSchema,
+} from "./openresponsestoolunion.js";
 import {
-  OpenResponsesWebSearchTool,
-  OpenResponsesWebSearchTool$inboundSchema,
-  OpenResponsesWebSearchTool$Outbound,
-  OpenResponsesWebSearchTool$outboundSchema,
-} from "./openresponseswebsearchtool.js";
+  OpenResponsesTruncation,
+  OpenResponsesTruncation$inboundSchema,
+  OpenResponsesTruncation$outboundSchema,
+} from "./openresponsestruncation.js";
 import {
   ProviderName,
   ProviderName$inboundSchema,
@@ -86,105 +78,6 @@ import {
   Quantization$inboundSchema,
   Quantization$outboundSchema,
 } from "./quantization.js";
-import {
-  ServiceTier,
-  ServiceTier$inboundSchema,
-  ServiceTier$outboundSchema,
-} from "./servicetier.js";
-import {
-  Truncation,
-  Truncation$inboundSchema,
-  Truncation$outboundSchema,
-} from "./truncation.js";
-
-export const OpenResponsesRequestToolType = {
-  Function: "function",
-} as const;
-export type OpenResponsesRequestToolType = ClosedEnum<
-  typeof OpenResponsesRequestToolType
->;
-
-/**
- * Function tool definition
- */
-export type OpenResponsesRequestToolFunction = {
-  type: OpenResponsesRequestToolType;
-  name: string;
-  description?: string | null | undefined;
-  strict?: boolean | null | undefined;
-  parameters: { [k: string]: any | null } | null;
-};
-
-export type OpenResponsesRequestToolUnion =
-  | OpenResponsesRequestToolFunction
-  | OpenResponsesWebSearchPreviewTool
-  | OpenResponsesWebSearchPreview20250311Tool
-  | OpenResponsesWebSearchTool
-  | OpenResponsesWebSearch20250826Tool;
-
-export const OpenResponsesRequestTypeWebSearchPreview = {
-  WebSearchPreview: "web_search_preview",
-} as const;
-export type OpenResponsesRequestTypeWebSearchPreview = ClosedEnum<
-  typeof OpenResponsesRequestTypeWebSearchPreview
->;
-
-export const OpenResponsesRequestTypeWebSearchPreview20250311 = {
-  WebSearchPreview20250311: "web_search_preview_2025_03_11",
-} as const;
-export type OpenResponsesRequestTypeWebSearchPreview20250311 = ClosedEnum<
-  typeof OpenResponsesRequestTypeWebSearchPreview20250311
->;
-
-export type OpenResponsesRequestTypeUnion =
-  | OpenResponsesRequestTypeWebSearchPreview20250311
-  | OpenResponsesRequestTypeWebSearchPreview;
-
-export type OpenResponsesRequestToolChoice = {
-  type:
-    | OpenResponsesRequestTypeWebSearchPreview20250311
-    | OpenResponsesRequestTypeWebSearchPreview;
-};
-
-export const OpenResponsesRequestToolChoiceTypeFunction = {
-  Function: "function",
-} as const;
-export type OpenResponsesRequestToolChoiceTypeFunction = ClosedEnum<
-  typeof OpenResponsesRequestToolChoiceTypeFunction
->;
-
-export type OpenResponsesRequestToolChoiceFunction = {
-  type: OpenResponsesRequestToolChoiceTypeFunction;
-  name: string;
-};
-
-export const OpenResponsesRequestToolChoiceRequired = {
-  Required: "required",
-} as const;
-export type OpenResponsesRequestToolChoiceRequired = ClosedEnum<
-  typeof OpenResponsesRequestToolChoiceRequired
->;
-
-export const OpenResponsesRequestToolChoiceNone = {
-  None: "none",
-} as const;
-export type OpenResponsesRequestToolChoiceNone = ClosedEnum<
-  typeof OpenResponsesRequestToolChoiceNone
->;
-
-export const OpenResponsesRequestToolChoiceAuto = {
-  Auto: "auto",
-} as const;
-export type OpenResponsesRequestToolChoiceAuto = ClosedEnum<
-  typeof OpenResponsesRequestToolChoiceAuto
->;
-
-export type OpenResponsesRequestToolChoiceUnion =
-  | OpenResponsesRequestToolChoiceFunction
-  | OpenResponsesRequestToolChoice
-  | OpenResponsesRequestToolChoiceAuto
-  | OpenResponsesRequestToolChoiceNone
-  | OpenResponsesRequestToolChoiceRequired;
 
 export type Order = ProviderName | string;
 
@@ -325,38 +218,24 @@ export type Plugin = PluginModeration | PluginWeb | PluginFileParser;
  * Request schema for Responses endpoint
  */
 export type OpenResponsesRequest = {
-  /**
-   * Input for a response request - can be a string or array of items
-   */
-  input?: OpenResponsesInputUnion | undefined;
+  input?: any | null | undefined;
   instructions?: string | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
   metadata?: { [k: string]: string } | null | undefined;
-  tools?:
-    | Array<
-      | OpenResponsesRequestToolFunction
-      | OpenResponsesWebSearchPreviewTool
-      | OpenResponsesWebSearchPreview20250311Tool
-      | OpenResponsesWebSearchTool
-      | OpenResponsesWebSearch20250826Tool
-    >
-    | undefined;
-  toolChoice?:
-    | OpenResponsesRequestToolChoiceFunction
-    | OpenResponsesRequestToolChoice
-    | OpenResponsesRequestToolChoiceAuto
-    | OpenResponsesRequestToolChoiceNone
-    | OpenResponsesRequestToolChoiceRequired
-    | undefined;
+  tools?: Array<OpenResponsesToolUnion> | undefined;
+  /**
+   * Controls which tool the model should call
+   */
+  toolChoice?: OpenResponsesToolChoice | undefined;
   parallelToolCalls?: boolean | null | undefined;
   model?: string | undefined;
   models?: Array<string> | undefined;
   /**
    * Text output configuration including format and verbosity
    */
-  text?: OpenResponsesResponseText | undefined;
+  text?: OpenResponsesTextConfig | undefined;
   /**
    * Configuration for reasoning mode in the response
    */
@@ -367,13 +246,16 @@ export type OpenResponsesRequest = {
   topK?: number | undefined;
   promptCacheKey?: string | null | undefined;
   previousResponseId?: string | null | undefined;
-  prompt?: OpenAIResponsesPrompt | null | undefined;
-  include?: Array<OpenAIResponsesIncludable> | null | undefined;
+  /**
+   * Prompt template with variables for the response
+   */
+  prompt?: OpenResponsesPrompt | null | undefined;
+  include?: Array<OpenResponsesIncludable> | null | undefined;
   background?: boolean | null | undefined;
   safetyIdentifier?: string | null | undefined;
   store?: boolean | null | undefined;
-  serviceTier?: ServiceTier | null | undefined;
-  truncation?: Truncation | null | undefined;
+  serviceTier?: OpenResponsesServiceTier | null | undefined;
+  truncation?: OpenResponsesTruncation | null | undefined;
   stream?: boolean | null | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
@@ -388,550 +270,6 @@ export type OpenResponsesRequest = {
    */
   user?: string | undefined;
 };
-
-/** @internal */
-export const OpenResponsesRequestToolType$inboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolType
-> = z.nativeEnum(OpenResponsesRequestToolType);
-
-/** @internal */
-export const OpenResponsesRequestToolType$outboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolType
-> = OpenResponsesRequestToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolType$ {
-  /** @deprecated use `OpenResponsesRequestToolType$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolType$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolType$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesRequestToolType$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestToolFunction$inboundSchema: z.ZodType<
-  OpenResponsesRequestToolFunction,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  type: OpenResponsesRequestToolType$inboundSchema,
-  name: z.string(),
-  description: z.nullable(z.string()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
-  parameters: z.nullable(z.record(z.nullable(z.any()))),
-});
-
-/** @internal */
-export type OpenResponsesRequestToolFunction$Outbound = {
-  type: string;
-  name: string;
-  description?: string | null | undefined;
-  strict?: boolean | null | undefined;
-  parameters: { [k: string]: any | null } | null;
-};
-
-/** @internal */
-export const OpenResponsesRequestToolFunction$outboundSchema: z.ZodType<
-  OpenResponsesRequestToolFunction$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestToolFunction
-> = z.object({
-  type: OpenResponsesRequestToolType$outboundSchema,
-  name: z.string(),
-  description: z.nullable(z.string()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
-  parameters: z.nullable(z.record(z.nullable(z.any()))),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolFunction$ {
-  /** @deprecated use `OpenResponsesRequestToolFunction$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolFunction$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolFunction$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesRequestToolFunction$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolFunction$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestToolFunction$Outbound;
-}
-
-export function openResponsesRequestToolFunctionToJSON(
-  openResponsesRequestToolFunction: OpenResponsesRequestToolFunction,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestToolFunction$outboundSchema.parse(
-      openResponsesRequestToolFunction,
-    ),
-  );
-}
-
-export function openResponsesRequestToolFunctionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestToolFunction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesRequestToolFunction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestToolFunction' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesRequestToolUnion$inboundSchema: z.ZodType<
-  OpenResponsesRequestToolUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => OpenResponsesRequestToolFunction$inboundSchema),
-  OpenResponsesWebSearchPreviewTool$inboundSchema,
-  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
-  OpenResponsesWebSearchTool$inboundSchema,
-  OpenResponsesWebSearch20250826Tool$inboundSchema,
-]);
-
-/** @internal */
-export type OpenResponsesRequestToolUnion$Outbound =
-  | OpenResponsesRequestToolFunction$Outbound
-  | OpenResponsesWebSearchPreviewTool$Outbound
-  | OpenResponsesWebSearchPreview20250311Tool$Outbound
-  | OpenResponsesWebSearchTool$Outbound
-  | OpenResponsesWebSearch20250826Tool$Outbound;
-
-/** @internal */
-export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
-  OpenResponsesRequestToolUnion$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestToolUnion
-> = z.union([
-  z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
-  OpenResponsesWebSearchPreviewTool$outboundSchema,
-  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-  OpenResponsesWebSearchTool$outboundSchema,
-  OpenResponsesWebSearch20250826Tool$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolUnion$ {
-  /** @deprecated use `OpenResponsesRequestToolUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolUnion$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesRequestToolUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestToolUnion$Outbound;
-}
-
-export function openResponsesRequestToolUnionToJSON(
-  openResponsesRequestToolUnion: OpenResponsesRequestToolUnion,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestToolUnion$outboundSchema.parse(
-      openResponsesRequestToolUnion,
-    ),
-  );
-}
-
-export function openResponsesRequestToolUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestToolUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesRequestToolUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestToolUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesRequestTypeWebSearchPreview$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestTypeWebSearchPreview> = z
-    .nativeEnum(OpenResponsesRequestTypeWebSearchPreview);
-
-/** @internal */
-export const OpenResponsesRequestTypeWebSearchPreview$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestTypeWebSearchPreview> =
-    OpenResponsesRequestTypeWebSearchPreview$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestTypeWebSearchPreview$ {
-  /** @deprecated use `OpenResponsesRequestTypeWebSearchPreview$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestTypeWebSearchPreview$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestTypeWebSearchPreview$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestTypeWebSearchPreview$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestTypeWebSearchPreview20250311> = z
-    .nativeEnum(OpenResponsesRequestTypeWebSearchPreview20250311);
-
-/** @internal */
-export const OpenResponsesRequestTypeWebSearchPreview20250311$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestTypeWebSearchPreview20250311> =
-    OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestTypeWebSearchPreview20250311$ {
-  /** @deprecated use `OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestTypeWebSearchPreview20250311$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestTypeWebSearchPreview20250311$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestTypeUnion$inboundSchema: z.ZodType<
-  OpenResponsesRequestTypeUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema,
-  OpenResponsesRequestTypeWebSearchPreview$inboundSchema,
-]);
-
-/** @internal */
-export type OpenResponsesRequestTypeUnion$Outbound = string | string;
-
-/** @internal */
-export const OpenResponsesRequestTypeUnion$outboundSchema: z.ZodType<
-  OpenResponsesRequestTypeUnion$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestTypeUnion
-> = z.union([
-  OpenResponsesRequestTypeWebSearchPreview20250311$outboundSchema,
-  OpenResponsesRequestTypeWebSearchPreview$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestTypeUnion$ {
-  /** @deprecated use `OpenResponsesRequestTypeUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestTypeUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestTypeUnion$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesRequestTypeUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestTypeUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestTypeUnion$Outbound;
-}
-
-export function openResponsesRequestTypeUnionToJSON(
-  openResponsesRequestTypeUnion: OpenResponsesRequestTypeUnion,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestTypeUnion$outboundSchema.parse(
-      openResponsesRequestTypeUnion,
-    ),
-  );
-}
-
-export function openResponsesRequestTypeUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestTypeUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesRequestTypeUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestTypeUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoice$inboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoice,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  type: z.union([
-    OpenResponsesRequestTypeWebSearchPreview20250311$inboundSchema,
-    OpenResponsesRequestTypeWebSearchPreview$inboundSchema,
-  ]),
-});
-
-/** @internal */
-export type OpenResponsesRequestToolChoice$Outbound = {
-  type: string | string;
-};
-
-/** @internal */
-export const OpenResponsesRequestToolChoice$outboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoice$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestToolChoice
-> = z.object({
-  type: z.union([
-    OpenResponsesRequestTypeWebSearchPreview20250311$outboundSchema,
-    OpenResponsesRequestTypeWebSearchPreview$outboundSchema,
-  ]),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoice$ {
-  /** @deprecated use `OpenResponsesRequestToolChoice$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolChoice$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoice$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesRequestToolChoice$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoice$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestToolChoice$Outbound;
-}
-
-export function openResponsesRequestToolChoiceToJSON(
-  openResponsesRequestToolChoice: OpenResponsesRequestToolChoice,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestToolChoice$outboundSchema.parse(
-      openResponsesRequestToolChoice,
-    ),
-  );
-}
-
-export function openResponsesRequestToolChoiceFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestToolChoice, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesRequestToolChoice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestToolChoice' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceTypeFunction$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestToolChoiceTypeFunction> = z
-    .nativeEnum(OpenResponsesRequestToolChoiceTypeFunction);
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceTypeFunction$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestToolChoiceTypeFunction> =
-    OpenResponsesRequestToolChoiceTypeFunction$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceTypeFunction$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceTypeFunction$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestToolChoiceTypeFunction$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceTypeFunction$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceTypeFunction$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceFunction$inboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoiceFunction,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  type: OpenResponsesRequestToolChoiceTypeFunction$inboundSchema,
-  name: z.string(),
-});
-
-/** @internal */
-export type OpenResponsesRequestToolChoiceFunction$Outbound = {
-  type: string;
-  name: string;
-};
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceFunction$outboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoiceFunction$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestToolChoiceFunction
-> = z.object({
-  type: OpenResponsesRequestToolChoiceTypeFunction$outboundSchema,
-  name: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceFunction$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceFunction$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestToolChoiceFunction$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceFunction$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceFunction$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceFunction$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestToolChoiceFunction$Outbound;
-}
-
-export function openResponsesRequestToolChoiceFunctionToJSON(
-  openResponsesRequestToolChoiceFunction:
-    OpenResponsesRequestToolChoiceFunction,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestToolChoiceFunction$outboundSchema.parse(
-      openResponsesRequestToolChoiceFunction,
-    ),
-  );
-}
-
-export function openResponsesRequestToolChoiceFunctionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestToolChoiceFunction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesRequestToolChoiceFunction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestToolChoiceFunction' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceRequired$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestToolChoiceRequired> = z.nativeEnum(
-    OpenResponsesRequestToolChoiceRequired,
-  );
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceRequired$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesRequestToolChoiceRequired> =
-    OpenResponsesRequestToolChoiceRequired$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceRequired$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceRequired$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestToolChoiceRequired$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceRequired$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceRequired$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceNone$inboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolChoiceNone
-> = z.nativeEnum(OpenResponsesRequestToolChoiceNone);
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceNone$outboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolChoiceNone
-> = OpenResponsesRequestToolChoiceNone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceNone$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceNone$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolChoiceNone$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceNone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceNone$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceAuto$inboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolChoiceAuto
-> = z.nativeEnum(OpenResponsesRequestToolChoiceAuto);
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceAuto$outboundSchema: z.ZodNativeEnum<
-  typeof OpenResponsesRequestToolChoiceAuto
-> = OpenResponsesRequestToolChoiceAuto$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceAuto$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceAuto$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesRequestToolChoiceAuto$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceAuto$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceAuto$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceUnion$inboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoiceUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => OpenResponsesRequestToolChoiceFunction$inboundSchema),
-  z.lazy(() => OpenResponsesRequestToolChoice$inboundSchema),
-  OpenResponsesRequestToolChoiceAuto$inboundSchema,
-  OpenResponsesRequestToolChoiceNone$inboundSchema,
-  OpenResponsesRequestToolChoiceRequired$inboundSchema,
-]);
-
-/** @internal */
-export type OpenResponsesRequestToolChoiceUnion$Outbound =
-  | OpenResponsesRequestToolChoiceFunction$Outbound
-  | OpenResponsesRequestToolChoice$Outbound
-  | string
-  | string
-  | string;
-
-/** @internal */
-export const OpenResponsesRequestToolChoiceUnion$outboundSchema: z.ZodType<
-  OpenResponsesRequestToolChoiceUnion$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesRequestToolChoiceUnion
-> = z.union([
-  z.lazy(() => OpenResponsesRequestToolChoiceFunction$outboundSchema),
-  z.lazy(() => OpenResponsesRequestToolChoice$outboundSchema),
-  OpenResponsesRequestToolChoiceAuto$outboundSchema,
-  OpenResponsesRequestToolChoiceNone$outboundSchema,
-  OpenResponsesRequestToolChoiceRequired$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesRequestToolChoiceUnion$ {
-  /** @deprecated use `OpenResponsesRequestToolChoiceUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesRequestToolChoiceUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesRequestToolChoiceUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesRequestToolChoiceUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesRequestToolChoiceUnion$Outbound;
-}
-
-export function openResponsesRequestToolChoiceUnionToJSON(
-  openResponsesRequestToolChoiceUnion: OpenResponsesRequestToolChoiceUnion,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestToolChoiceUnion$outboundSchema.parse(
-      openResponsesRequestToolChoiceUnion,
-    ),
-  );
-}
-
-export function openResponsesRequestToolChoiceUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesRequestToolChoiceUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesRequestToolChoiceUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesRequestToolChoiceUnion' from JSON`,
-  );
-}
 
 /** @internal */
 export const Order$inboundSchema: z.ZodType<Order, z.ZodTypeDef, unknown> = z
@@ -1913,29 +1251,15 @@ export const OpenResponsesRequest$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  input: OpenResponsesInputUnion$inboundSchema.optional(),
+  input: z.nullable(z.any()).optional(),
   instructions: z.nullable(z.string()).optional(),
   metadata: z.nullable(z.record(z.string())).optional(),
-  tools: z.array(
-    z.union([
-      z.lazy(() => OpenResponsesRequestToolFunction$inboundSchema),
-      OpenResponsesWebSearchPreviewTool$inboundSchema,
-      OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
-      OpenResponsesWebSearchTool$inboundSchema,
-      OpenResponsesWebSearch20250826Tool$inboundSchema,
-    ]),
-  ).optional(),
-  tool_choice: z.union([
-    z.lazy(() => OpenResponsesRequestToolChoiceFunction$inboundSchema),
-    z.lazy(() => OpenResponsesRequestToolChoice$inboundSchema),
-    OpenResponsesRequestToolChoiceAuto$inboundSchema,
-    OpenResponsesRequestToolChoiceNone$inboundSchema,
-    OpenResponsesRequestToolChoiceRequired$inboundSchema,
-  ]).optional(),
+  tools: z.array(OpenResponsesToolUnion$inboundSchema).optional(),
+  tool_choice: OpenResponsesToolChoice$inboundSchema.optional(),
   parallel_tool_calls: z.nullable(z.boolean()).optional(),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
-  text: OpenResponsesResponseText$inboundSchema.optional(),
+  text: OpenResponsesTextConfig$inboundSchema.optional(),
   reasoning: z.nullable(OpenResponsesReasoningConfig$inboundSchema).optional(),
   max_output_tokens: z.nullable(z.number()).optional(),
   temperature: z.nullable(z.number()).optional(),
@@ -1943,14 +1267,14 @@ export const OpenResponsesRequest$inboundSchema: z.ZodType<
   top_k: z.number().optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
   previous_response_id: z.nullable(z.string()).optional(),
-  prompt: z.nullable(OpenAIResponsesPrompt$inboundSchema).optional(),
-  include: z.nullable(z.array(OpenAIResponsesIncludable$inboundSchema))
+  prompt: z.nullable(OpenResponsesPrompt$inboundSchema).optional(),
+  include: z.nullable(z.array(OpenResponsesIncludable$inboundSchema))
     .optional(),
   background: z.nullable(z.boolean()).optional(),
   safety_identifier: z.nullable(z.string()).optional(),
   store: z.nullable(z.boolean()).optional(),
-  service_tier: z.nullable(ServiceTier$inboundSchema).optional(),
-  truncation: z.nullable(Truncation$inboundSchema).optional(),
+  service_tier: z.nullable(OpenResponsesServiceTier$inboundSchema).optional(),
+  truncation: z.nullable(OpenResponsesTruncation$inboundSchema).optional(),
   stream: z.nullable(z.boolean()).optional(),
   provider: z.nullable(z.lazy(() => Provider$inboundSchema)).optional(),
   plugins: z.array(
@@ -1977,29 +1301,15 @@ export const OpenResponsesRequest$inboundSchema: z.ZodType<
 
 /** @internal */
 export type OpenResponsesRequest$Outbound = {
-  input?: OpenResponsesInputUnion$Outbound | undefined;
+  input?: any | null | undefined;
   instructions?: string | null | undefined;
   metadata?: { [k: string]: string } | null | undefined;
-  tools?:
-    | Array<
-      | OpenResponsesRequestToolFunction$Outbound
-      | OpenResponsesWebSearchPreviewTool$Outbound
-      | OpenResponsesWebSearchPreview20250311Tool$Outbound
-      | OpenResponsesWebSearchTool$Outbound
-      | OpenResponsesWebSearch20250826Tool$Outbound
-    >
-    | undefined;
-  tool_choice?:
-    | OpenResponsesRequestToolChoiceFunction$Outbound
-    | OpenResponsesRequestToolChoice$Outbound
-    | string
-    | string
-    | string
-    | undefined;
+  tools?: Array<OpenResponsesToolUnion$Outbound> | undefined;
+  tool_choice?: OpenResponsesToolChoice$Outbound | undefined;
   parallel_tool_calls?: boolean | null | undefined;
   model?: string | undefined;
   models?: Array<string> | undefined;
-  text?: OpenResponsesResponseText$Outbound | undefined;
+  text?: OpenResponsesTextConfig$Outbound | undefined;
   reasoning?: OpenResponsesReasoningConfig$Outbound | null | undefined;
   max_output_tokens?: number | null | undefined;
   temperature?: number | null | undefined;
@@ -2007,7 +1317,7 @@ export type OpenResponsesRequest$Outbound = {
   top_k?: number | undefined;
   prompt_cache_key?: string | null | undefined;
   previous_response_id?: string | null | undefined;
-  prompt?: OpenAIResponsesPrompt$Outbound | null | undefined;
+  prompt?: OpenResponsesPrompt$Outbound | null | undefined;
   include?: Array<string> | null | undefined;
   background?: boolean | null | undefined;
   safety_identifier?: string | null | undefined;
@@ -2030,29 +1340,15 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   OpenResponsesRequest
 > = z.object({
-  input: OpenResponsesInputUnion$outboundSchema.optional(),
+  input: z.nullable(z.any()).optional(),
   instructions: z.nullable(z.string()).optional(),
   metadata: z.nullable(z.record(z.string())).optional(),
-  tools: z.array(
-    z.union([
-      z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
-      OpenResponsesWebSearchPreviewTool$outboundSchema,
-      OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-      OpenResponsesWebSearchTool$outboundSchema,
-      OpenResponsesWebSearch20250826Tool$outboundSchema,
-    ]),
-  ).optional(),
-  toolChoice: z.union([
-    z.lazy(() => OpenResponsesRequestToolChoiceFunction$outboundSchema),
-    z.lazy(() => OpenResponsesRequestToolChoice$outboundSchema),
-    OpenResponsesRequestToolChoiceAuto$outboundSchema,
-    OpenResponsesRequestToolChoiceNone$outboundSchema,
-    OpenResponsesRequestToolChoiceRequired$outboundSchema,
-  ]).optional(),
+  tools: z.array(OpenResponsesToolUnion$outboundSchema).optional(),
+  toolChoice: OpenResponsesToolChoice$outboundSchema.optional(),
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
-  text: OpenResponsesResponseText$outboundSchema.optional(),
+  text: OpenResponsesTextConfig$outboundSchema.optional(),
   reasoning: z.nullable(OpenResponsesReasoningConfig$outboundSchema).optional(),
   maxOutputTokens: z.nullable(z.number()).optional(),
   temperature: z.nullable(z.number()).optional(),
@@ -2060,14 +1356,14 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   topK: z.number().optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   previousResponseId: z.nullable(z.string()).optional(),
-  prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
-  include: z.nullable(z.array(OpenAIResponsesIncludable$outboundSchema))
+  prompt: z.nullable(OpenResponsesPrompt$outboundSchema).optional(),
+  include: z.nullable(z.array(OpenResponsesIncludable$outboundSchema))
     .optional(),
   background: z.nullable(z.boolean()).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
   store: z.nullable(z.boolean()).optional(),
-  serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
-  truncation: z.nullable(Truncation$outboundSchema).optional(),
+  serviceTier: z.nullable(OpenResponsesServiceTier$outboundSchema).optional(),
+  truncation: z.nullable(OpenResponsesTruncation$outboundSchema).optional(),
   stream: z.nullable(z.boolean()).optional(),
   provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
   plugins: z.array(

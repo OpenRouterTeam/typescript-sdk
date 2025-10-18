@@ -11,7 +11,9 @@ let value: OpenResponsesWebSearch20250826Tool = {
   type: "web_search_2025_08_26",
   filters: {
     allowedDomains: [
-      "example.com",
+      "<value 1>",
+      "<value 2>",
+      "<value 3>",
     ],
   },
   searchContextSize: "medium",

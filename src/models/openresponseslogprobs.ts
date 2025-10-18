@@ -7,12 +7,14 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenResponsesTopLogprobs,
-  OpenResponsesTopLogprobs$inboundSchema,
-  OpenResponsesTopLogprobs$Outbound,
-  OpenResponsesTopLogprobs$outboundSchema,
-} from "./openresponsestoplogprobs.js";
+
+/**
+ * Alternative token with its log probability
+ */
+export type OpenResponsesLogProbsTopLogprob = {
+  token?: string | undefined;
+  logprob?: number | undefined;
+};
 
 /**
  * Log probability information for a token
@@ -20,8 +22,67 @@ import {
 export type OpenResponsesLogProbs = {
   logprob: number;
   token: string;
-  topLogprobs?: Array<OpenResponsesTopLogprobs> | undefined;
+  topLogprobs?: Array<OpenResponsesLogProbsTopLogprob> | undefined;
 };
+
+/** @internal */
+export const OpenResponsesLogProbsTopLogprob$inboundSchema: z.ZodType<
+  OpenResponsesLogProbsTopLogprob,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  token: z.string().optional(),
+  logprob: z.number().optional(),
+});
+
+/** @internal */
+export type OpenResponsesLogProbsTopLogprob$Outbound = {
+  token?: string | undefined;
+  logprob?: number | undefined;
+};
+
+/** @internal */
+export const OpenResponsesLogProbsTopLogprob$outboundSchema: z.ZodType<
+  OpenResponsesLogProbsTopLogprob$Outbound,
+  z.ZodTypeDef,
+  OpenResponsesLogProbsTopLogprob
+> = z.object({
+  token: z.string().optional(),
+  logprob: z.number().optional(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenResponsesLogProbsTopLogprob$ {
+  /** @deprecated use `OpenResponsesLogProbsTopLogprob$inboundSchema` instead. */
+  export const inboundSchema = OpenResponsesLogProbsTopLogprob$inboundSchema;
+  /** @deprecated use `OpenResponsesLogProbsTopLogprob$outboundSchema` instead. */
+  export const outboundSchema = OpenResponsesLogProbsTopLogprob$outboundSchema;
+  /** @deprecated use `OpenResponsesLogProbsTopLogprob$Outbound` instead. */
+  export type Outbound = OpenResponsesLogProbsTopLogprob$Outbound;
+}
+
+export function openResponsesLogProbsTopLogprobToJSON(
+  openResponsesLogProbsTopLogprob: OpenResponsesLogProbsTopLogprob,
+): string {
+  return JSON.stringify(
+    OpenResponsesLogProbsTopLogprob$outboundSchema.parse(
+      openResponsesLogProbsTopLogprob,
+    ),
+  );
+}
+
+export function openResponsesLogProbsTopLogprobFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesLogProbsTopLogprob, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesLogProbsTopLogprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesLogProbsTopLogprob' from JSON`,
+  );
+}
 
 /** @internal */
 export const OpenResponsesLogProbs$inboundSchema: z.ZodType<
@@ -31,7 +92,9 @@ export const OpenResponsesLogProbs$inboundSchema: z.ZodType<
 > = z.object({
   logprob: z.number(),
   token: z.string(),
-  top_logprobs: z.array(OpenResponsesTopLogprobs$inboundSchema).optional(),
+  top_logprobs: z.array(
+    z.lazy(() => OpenResponsesLogProbsTopLogprob$inboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
@@ -42,7 +105,7 @@ export const OpenResponsesLogProbs$inboundSchema: z.ZodType<
 export type OpenResponsesLogProbs$Outbound = {
   logprob: number;
   token: string;
-  top_logprobs?: Array<OpenResponsesTopLogprobs$Outbound> | undefined;
+  top_logprobs?: Array<OpenResponsesLogProbsTopLogprob$Outbound> | undefined;
 };
 
 /** @internal */
@@ -53,7 +116,9 @@ export const OpenResponsesLogProbs$outboundSchema: z.ZodType<
 > = z.object({
   logprob: z.number(),
   token: z.string(),
-  topLogprobs: z.array(OpenResponsesTopLogprobs$outboundSchema).optional(),
+  topLogprobs: z.array(
+    z.lazy(() => OpenResponsesLogProbsTopLogprob$outboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     topLogprobs: "top_logprobs",

@@ -33,32 +33,6 @@ export type OpenResponsesReasoningType = ClosedEnum<
   typeof OpenResponsesReasoningType
 >;
 
-export const OpenResponsesReasoningStatusInProgress = {
-  InProgress: "in_progress",
-} as const;
-export type OpenResponsesReasoningStatusInProgress = ClosedEnum<
-  typeof OpenResponsesReasoningStatusInProgress
->;
-
-export const OpenResponsesReasoningStatusIncomplete = {
-  Incomplete: "incomplete",
-} as const;
-export type OpenResponsesReasoningStatusIncomplete = ClosedEnum<
-  typeof OpenResponsesReasoningStatusIncomplete
->;
-
-export const OpenResponsesReasoningStatusCompleted = {
-  Completed: "completed",
-} as const;
-export type OpenResponsesReasoningStatusCompleted = ClosedEnum<
-  typeof OpenResponsesReasoningStatusCompleted
->;
-
-export type OpenResponsesReasoningStatusUnion =
-  | OpenResponsesReasoningStatusCompleted
-  | OpenResponsesReasoningStatusIncomplete
-  | OpenResponsesReasoningStatusInProgress;
-
 export const OpenResponsesReasoningFormat = {
   Unknown: "unknown",
   OpenaiResponsesV1: "openai-responses-v1",
@@ -78,11 +52,6 @@ export type OpenResponsesReasoning = {
   content?: Array<ReasoningTextContent> | undefined;
   summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
-  status?:
-    | OpenResponsesReasoningStatusCompleted
-    | OpenResponsesReasoningStatusIncomplete
-    | OpenResponsesReasoningStatusInProgress
-    | undefined;
   signature?: string | null | undefined;
   format?: OpenResponsesReasoningFormat | null | undefined;
 };
@@ -106,140 +75,6 @@ export namespace OpenResponsesReasoningType$ {
   export const inboundSchema = OpenResponsesReasoningType$inboundSchema;
   /** @deprecated use `OpenResponsesReasoningType$outboundSchema` instead. */
   export const outboundSchema = OpenResponsesReasoningType$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusInProgress$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusInProgress> = z.nativeEnum(
-    OpenResponsesReasoningStatusInProgress,
-  );
-
-/** @internal */
-export const OpenResponsesReasoningStatusInProgress$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusInProgress> =
-    OpenResponsesReasoningStatusInProgress$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusInProgress$ {
-  /** @deprecated use `OpenResponsesReasoningStatusInProgress$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusInProgress$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusInProgress$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusInProgress$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusIncomplete$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusIncomplete> = z.nativeEnum(
-    OpenResponsesReasoningStatusIncomplete,
-  );
-
-/** @internal */
-export const OpenResponsesReasoningStatusIncomplete$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusIncomplete> =
-    OpenResponsesReasoningStatusIncomplete$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusIncomplete$ {
-  /** @deprecated use `OpenResponsesReasoningStatusIncomplete$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusIncomplete$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusIncomplete$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusIncomplete$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusCompleted$inboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusCompleted> = z.nativeEnum(
-    OpenResponsesReasoningStatusCompleted,
-  );
-
-/** @internal */
-export const OpenResponsesReasoningStatusCompleted$outboundSchema:
-  z.ZodNativeEnum<typeof OpenResponsesReasoningStatusCompleted> =
-    OpenResponsesReasoningStatusCompleted$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusCompleted$ {
-  /** @deprecated use `OpenResponsesReasoningStatusCompleted$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusCompleted$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusCompleted$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusCompleted$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusUnion$inboundSchema: z.ZodType<
-  OpenResponsesReasoningStatusUnion,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  OpenResponsesReasoningStatusCompleted$inboundSchema,
-  OpenResponsesReasoningStatusIncomplete$inboundSchema,
-  OpenResponsesReasoningStatusInProgress$inboundSchema,
-]);
-
-/** @internal */
-export type OpenResponsesReasoningStatusUnion$Outbound =
-  | string
-  | string
-  | string;
-
-/** @internal */
-export const OpenResponsesReasoningStatusUnion$outboundSchema: z.ZodType<
-  OpenResponsesReasoningStatusUnion$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesReasoningStatusUnion
-> = z.union([
-  OpenResponsesReasoningStatusCompleted$outboundSchema,
-  OpenResponsesReasoningStatusIncomplete$outboundSchema,
-  OpenResponsesReasoningStatusInProgress$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusUnion$ {
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningStatusUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningStatusUnion$Outbound;
-}
-
-export function openResponsesReasoningStatusUnionToJSON(
-  openResponsesReasoningStatusUnion: OpenResponsesReasoningStatusUnion,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningStatusUnion$outboundSchema.parse(
-      openResponsesReasoningStatusUnion,
-    ),
-  );
-}
-
-export function openResponsesReasoningStatusUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesReasoningStatusUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesReasoningStatusUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesReasoningStatusUnion' from JSON`,
-  );
 }
 
 /** @internal */
@@ -285,11 +120,6 @@ export const OpenResponsesReasoning$inboundSchema: z.ZodType<
   content: z.array(ReasoningTextContent$inboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$inboundSchema),
   encrypted_content: z.nullable(z.string()).optional(),
-  status: z.union([
-    OpenResponsesReasoningStatusCompleted$inboundSchema,
-    OpenResponsesReasoningStatusIncomplete$inboundSchema,
-    OpenResponsesReasoningStatusInProgress$inboundSchema,
-  ]).optional(),
   signature: z.nullable(z.string()).optional(),
   format: z.nullable(OpenResponsesReasoningFormat$inboundSchema).optional(),
 }).transform((v) => {
@@ -305,7 +135,6 @@ export type OpenResponsesReasoning$Outbound = {
   content?: Array<ReasoningTextContent$Outbound> | undefined;
   summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
-  status?: string | string | string | undefined;
   signature?: string | null | undefined;
   format?: string | null | undefined;
 };
@@ -321,11 +150,6 @@ export const OpenResponsesReasoning$outboundSchema: z.ZodType<
   content: z.array(ReasoningTextContent$outboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$outboundSchema),
   encryptedContent: z.nullable(z.string()).optional(),
-  status: z.union([
-    OpenResponsesReasoningStatusCompleted$outboundSchema,
-    OpenResponsesReasoningStatusIncomplete$outboundSchema,
-    OpenResponsesReasoningStatusInProgress$outboundSchema,
-  ]).optional(),
   signature: z.nullable(z.string()).optional(),
   format: z.nullable(OpenResponsesReasoningFormat$outboundSchema).optional(),
 }).transform((v) => {

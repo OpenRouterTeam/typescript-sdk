@@ -5,7 +5,7 @@
 ```typescript
 import { Truncation } from "@openrouter/sdk/models";
 
-let value: Truncation = "auto";
+let value: Truncation = "disabled";
 ```
 
 ## Values

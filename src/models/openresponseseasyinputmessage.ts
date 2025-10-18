@@ -8,23 +8,11 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ResponseInputFile,
-  ResponseInputFile$inboundSchema,
-  ResponseInputFile$Outbound,
-  ResponseInputFile$outboundSchema,
-} from "./responseinputfile.js";
-import {
-  ResponseInputImage,
-  ResponseInputImage$inboundSchema,
-  ResponseInputImage$Outbound,
-  ResponseInputImage$outboundSchema,
-} from "./responseinputimage.js";
-import {
-  ResponseInputText,
-  ResponseInputText$inboundSchema,
-  ResponseInputText$Outbound,
-  ResponseInputText$outboundSchema,
-} from "./responseinputtext.js";
+  OpenResponsesInputContent,
+  OpenResponsesInputContent$inboundSchema,
+  OpenResponsesInputContent$Outbound,
+  OpenResponsesInputContent$outboundSchema,
+} from "./openresponsesinputcontent.js";
 
 export const OpenResponsesEasyInputMessageType = {
   Message: "message",
@@ -67,19 +55,13 @@ export type OpenResponsesEasyInputMessageRoleUnion =
   | OpenResponsesEasyInputMessageRoleAssistant
   | OpenResponsesEasyInputMessageRoleDeveloper;
 
-export type OpenResponsesEasyInputMessageContent1 =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputFile & { type: "input_file" });
-
-export type OpenResponsesEasyInputMessageContent2 =
-  | Array<
-    | (ResponseInputText & { type: "input_text" })
-    | (ResponseInputImage & { type: "input_image" })
-    | (ResponseInputFile & { type: "input_file" })
-  >
+export type OpenResponsesEasyInputMessageContent =
+  | Array<OpenResponsesInputContent>
   | string;
 
+/**
+ * Simplified input message format that accepts string or array content
+ */
 export type OpenResponsesEasyInputMessage = {
   type?: OpenResponsesEasyInputMessageType | undefined;
   role:
@@ -87,13 +69,7 @@ export type OpenResponsesEasyInputMessage = {
     | OpenResponsesEasyInputMessageRoleSystem
     | OpenResponsesEasyInputMessageRoleAssistant
     | OpenResponsesEasyInputMessageRoleDeveloper;
-  content:
-    | Array<
-      | (ResponseInputText & { type: "input_text" })
-      | (ResponseInputImage & { type: "input_image" })
-      | (ResponseInputFile & { type: "input_file" })
-    >
-    | string;
+  content: Array<OpenResponsesInputContent> | string;
 };
 
 /** @internal */
@@ -280,191 +256,57 @@ export function openResponsesEasyInputMessageRoleUnionFromJSON(
 }
 
 /** @internal */
-export const OpenResponsesEasyInputMessageContent1$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent1,
+export const OpenResponsesEasyInputMessageContent$inboundSchema: z.ZodType<
+  OpenResponsesEasyInputMessageContent,
   z.ZodTypeDef,
   unknown
-> = z.union([
-  ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-]);
+> = z.union([z.array(OpenResponsesInputContent$inboundSchema), z.string()]);
 
 /** @internal */
-export type OpenResponsesEasyInputMessageContent1$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
-
-/** @internal */
-export const OpenResponsesEasyInputMessageContent1$outboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent1$Outbound,
-  z.ZodTypeDef,
-  OpenResponsesEasyInputMessageContent1
-> = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageContent1$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageContent1$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageContent1$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessageContent1$Outbound;
-}
-
-export function openResponsesEasyInputMessageContent1ToJSON(
-  openResponsesEasyInputMessageContent1: OpenResponsesEasyInputMessageContent1,
-): string {
-  return JSON.stringify(
-    OpenResponsesEasyInputMessageContent1$outboundSchema.parse(
-      openResponsesEasyInputMessageContent1,
-    ),
-  );
-}
-
-export function openResponsesEasyInputMessageContent1FromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessageContent1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesEasyInputMessageContent1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessageContent1' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageContent2$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent2,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.array(
-    z.union([
-      ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-    ]),
-  ),
-  z.string(),
-]);
-
-/** @internal */
-export type OpenResponsesEasyInputMessageContent2$Outbound =
-  | Array<
-    | (ResponseInputText$Outbound & { type: "input_text" })
-    | (ResponseInputImage$Outbound & { type: "input_image" })
-    | (ResponseInputFile$Outbound & { type: "input_file" })
-  >
+export type OpenResponsesEasyInputMessageContent$Outbound =
+  | Array<OpenResponsesInputContent$Outbound>
   | string;
 
 /** @internal */
-export const OpenResponsesEasyInputMessageContent2$outboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent2$Outbound,
+export const OpenResponsesEasyInputMessageContent$outboundSchema: z.ZodType<
+  OpenResponsesEasyInputMessageContent$Outbound,
   z.ZodTypeDef,
-  OpenResponsesEasyInputMessageContent2
-> = z.union([
-  z.array(
-    z.union([
-      ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-    ]),
-  ),
-  z.string(),
-]);
+  OpenResponsesEasyInputMessageContent
+> = z.union([z.array(OpenResponsesInputContent$outboundSchema), z.string()]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OpenResponsesEasyInputMessageContent2$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$inboundSchema` instead. */
+export namespace OpenResponsesEasyInputMessageContent$ {
+  /** @deprecated use `OpenResponsesEasyInputMessageContent$inboundSchema` instead. */
   export const inboundSchema =
-    OpenResponsesEasyInputMessageContent2$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$outboundSchema` instead. */
+    OpenResponsesEasyInputMessageContent$inboundSchema;
+  /** @deprecated use `OpenResponsesEasyInputMessageContent$outboundSchema` instead. */
   export const outboundSchema =
-    OpenResponsesEasyInputMessageContent2$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessageContent2$Outbound;
+    OpenResponsesEasyInputMessageContent$outboundSchema;
+  /** @deprecated use `OpenResponsesEasyInputMessageContent$Outbound` instead. */
+  export type Outbound = OpenResponsesEasyInputMessageContent$Outbound;
 }
 
-export function openResponsesEasyInputMessageContent2ToJSON(
-  openResponsesEasyInputMessageContent2: OpenResponsesEasyInputMessageContent2,
+export function openResponsesEasyInputMessageContentToJSON(
+  openResponsesEasyInputMessageContent: OpenResponsesEasyInputMessageContent,
 ): string {
   return JSON.stringify(
-    OpenResponsesEasyInputMessageContent2$outboundSchema.parse(
-      openResponsesEasyInputMessageContent2,
+    OpenResponsesEasyInputMessageContent$outboundSchema.parse(
+      openResponsesEasyInputMessageContent,
     ),
   );
 }
 
-export function openResponsesEasyInputMessageContent2FromJSON(
+export function openResponsesEasyInputMessageContentFromJSON(
   jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessageContent2, SDKValidationError> {
+): SafeParseResult<OpenResponsesEasyInputMessageContent, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OpenResponsesEasyInputMessageContent2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessageContent2' from JSON`,
+      OpenResponsesEasyInputMessageContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesEasyInputMessageContent' from JSON`,
   );
 }
 
@@ -482,25 +324,7 @@ export const OpenResponsesEasyInputMessage$inboundSchema: z.ZodType<
     OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema,
   ]),
   content: z.union([
-    z.array(
-      z.union([
-        ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-      ]),
-    ),
+    z.array(OpenResponsesInputContent$inboundSchema),
     z.string(),
   ]),
 });
@@ -509,13 +333,7 @@ export const OpenResponsesEasyInputMessage$inboundSchema: z.ZodType<
 export type OpenResponsesEasyInputMessage$Outbound = {
   type?: string | undefined;
   role: string | string | string | string;
-  content:
-    | Array<
-      | (ResponseInputText$Outbound & { type: "input_text" })
-      | (ResponseInputImage$Outbound & { type: "input_image" })
-      | (ResponseInputFile$Outbound & { type: "input_file" })
-    >
-    | string;
+  content: Array<OpenResponsesInputContent$Outbound> | string;
 };
 
 /** @internal */
@@ -532,25 +350,7 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
     OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema,
   ]),
   content: z.union([
-    z.array(
-      z.union([
-        ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-      ]),
-    ),
+    z.array(OpenResponsesInputContent$outboundSchema),
     z.string(),
   ]),
 });

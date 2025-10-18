@@ -43,9 +43,16 @@ const value: models.OpenResponsesNonStreamingResponse = {
       reasoningTokens: 0,
     },
     totalTokens: 35,
+    cost: 5062.45,
+    isByok: false,
+    costDetails: {
+      upstreamInferenceCost: 5882.86,
+      upstreamInferenceInputCost: 6012.25,
+      upstreamInferenceOutputCost: 7726.94,
+    },
   },
-  maxToolCalls: 5062.45,
-  topLogprobs: 5016.12,
+  maxToolCalls: 8999.13,
+  topLogprobs: 2970.58,
   maxOutputTokens: null,
   temperature: null,
   topP: null,
@@ -55,23 +62,25 @@ const value: models.OpenResponsesNonStreamingResponse = {
   toolChoice: "auto",
   parallelToolCalls: true,
   prompt: {
-    id: "<id>",
+    id: "prompt-abc123",
     variables: {
-      "key": {
+      "name": {
         type: "input_text",
-        text: "Hello, how can I help you?",
+        text: "John",
       },
     },
   },
-  background: true,
+  background: false,
   previousResponseId: "<id>",
   reasoning: {
     effort: "high",
     summary: "auto",
+    maxTokens: null,
+    enabled: true,
   },
-  serviceTier: "default",
-  store: true,
-  truncation: null,
+  serviceTier: "priority",
+  store: false,
+  truncation: "disabled",
   text: {
     format: {
       type: "text",

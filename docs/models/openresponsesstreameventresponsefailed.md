@@ -23,18 +23,25 @@ let value: OpenResponsesStreamEventResponseFailed = {
     error: null,
     incompleteDetails: null,
     usage: {
-      inputTokens: 1595.05,
+      inputTokens: 10,
       inputTokensDetails: {
-        cachedTokens: 6890.78,
+        cachedTokens: 0,
       },
-      outputTokens: 5882.86,
+      outputTokens: 25,
       outputTokensDetails: {
-        reasoningTokens: 6012.25,
+        reasoningTokens: 0,
       },
-      totalTokens: 7726.94,
+      totalTokens: 35,
+      cost: 0.0012,
+      isByok: true,
+      costDetails: {
+        upstreamInferenceCost: 5882.86,
+        upstreamInferenceInputCost: 6012.25,
+        upstreamInferenceOutputCost: 7726.94,
+      },
     },
-    maxToolCalls: 3749.57,
-    topLogprobs: 7933.03,
+    maxToolCalls: 7933.03,
+    topLogprobs: 4962.64,
     maxOutputTokens: null,
     temperature: null,
     topP: null,
@@ -44,22 +51,24 @@ let value: OpenResponsesStreamEventResponseFailed = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "<id>",
+      id: "prompt-abc123",
       variables: {
-        "key": {
+        "name": {
           type: "input_text",
-          text: "Hello, how can I help you?",
+          text: "John",
         },
       },
     },
     background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "high",
+      effort: "low",
       summary: "auto",
+      maxTokens: 7081.7,
+      enabled: true,
     },
-    serviceTier: "flex",
-    store: false,
+    serviceTier: "priority",
+    store: true,
     truncation: "disabled",
     text: {
       format: {

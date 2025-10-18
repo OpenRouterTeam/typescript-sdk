@@ -5,10 +5,10 @@ An output item from the response
 
 ## Supported Types
 
-### `models.OpenResponsesOutputMessage`
+### `models.ResponsesOutputItemMessage`
 
 ```typescript
-const value: models.OpenResponsesOutputMessage = {
+const value: models.ResponsesOutputItemMessage = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
@@ -30,10 +30,10 @@ const value: models.OpenResponsesOutputMessage = {
 };
 ```
 
-### `models.OpenResponsesOutputItemReasoning`
+### `models.ResponsesOutputItemReasoning`
 
 ```typescript
-const value: models.OpenResponsesOutputItemReasoning = {
+const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
   id: "reasoning-abc123",
   content: [
@@ -49,7 +49,6 @@ const value: models.OpenResponsesOutputItemReasoning = {
     },
   ],
   encryptedContent: "<value>",
-  status: "completed",
 };
 ```
 
@@ -62,7 +61,6 @@ const value: models.ResponsesOutputItemFunctionCall = {
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
   callId: "call-abc123",
-  status: "in_progress",
 };
 ```
 

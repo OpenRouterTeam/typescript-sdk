@@ -24,15 +24,22 @@ let value: CreateApiAlphaResponsesResponseBody = {
       error: null,
       incompleteDetails: null,
       usage: {
-        inputTokens: 1595.05,
+        inputTokens: 10,
         inputTokensDetails: {
-          cachedTokens: 6890.78,
+          cachedTokens: 0,
         },
-        outputTokens: 5882.86,
+        outputTokens: 25,
         outputTokensDetails: {
-          reasoningTokens: 6012.25,
+          reasoningTokens: 0,
         },
-        totalTokens: 7726.94,
+        totalTokens: 35,
+        cost: 0.0012,
+        isByok: true,
+        costDetails: {
+          upstreamInferenceCost: 5882.86,
+          upstreamInferenceInputCost: 6012.25,
+          upstreamInferenceOutputCost: 7726.94,
+        },
       },
       maxToolCalls: 7012.95,
       topLogprobs: 6849.55,
@@ -45,11 +52,11 @@ let value: CreateApiAlphaResponsesResponseBody = {
       toolChoice: "auto",
       parallelToolCalls: true,
       prompt: {
-        id: "<id>",
+        id: "prompt-abc123",
         variables: {
-          "key": {
+          "name": {
             type: "input_text",
-            text: "Hello, how can I help you?",
+            text: "John",
           },
         },
       },
@@ -58,10 +65,12 @@ let value: CreateApiAlphaResponsesResponseBody = {
       reasoning: {
         effort: "high",
         summary: "auto",
+        maxTokens: 8530.14,
+        enabled: true,
       },
       serviceTier: null,
       store: true,
-      truncation: "auto",
+      truncation: null,
       text: {
         format: {
           type: "text",

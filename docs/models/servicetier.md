@@ -13,5 +13,5 @@ let value: ServiceTier = "auto";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"auto" | "default" | "flex" | "scale" | "priority" | Unrecognized<string>
+"auto" | "default" | "flex" | "priority" | "scale" | Unrecognized<string>
 ```

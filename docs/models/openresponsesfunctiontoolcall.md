@@ -9,10 +9,10 @@ import { OpenResponsesFunctionToolCall } from "@openrouter/sdk/models";
 
 let value: OpenResponsesFunctionToolCall = {
   type: "function_call",
-  callId: "call-abc123",
-  name: "get_weather",
-  arguments: "{\"location\":\"San Francisco\"}",
-  id: "call-abc123",
+  callId: "<id>",
+  name: "<value>",
+  arguments: "<value>",
+  id: "<id>",
   status: "completed",
 };
 ```

@@ -3,10 +3,10 @@
 
 ## Supported Types
 
-### `models.ResponseOutputText`
+### `models.OpenResponsesOutputText`
 
 ```typescript
-const value: models.ResponseOutputText = {
+const value: models.OpenResponsesOutputText = {
   type: "output_text",
   text: "The capital of France is Paris.",
   annotations: [
@@ -30,10 +30,10 @@ const value: models.ReasoningTextContent = {
 };
 ```
 
-### `models.OpenAIResponsesRefusalContent`
+### `models.OpenResponsesRefusalContent`
 
 ```typescript
-const value: models.OpenAIResponsesRefusalContent = {
+const value: models.OpenResponsesRefusalContent = {
   type: "refusal",
   refusal: "I'm sorry, I cannot assist with that request",
 };
