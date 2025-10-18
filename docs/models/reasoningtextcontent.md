@@ -7,7 +7,7 @@ import { ReasoningTextContent } from "@openrouter/sdk/models";
 
 let value: ReasoningTextContent = {
   type: "reasoning_text",
-  text: "<value>",
+  text: "Let me think step by step about this problem...",
 };
 ```
 

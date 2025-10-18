@@ -5,7 +5,7 @@
 ```typescript
 import { ProviderName } from "@openrouter/sdk/models";
 
-let value: ProviderName = "Modal";
+let value: ProviderName = "OpenAI";
 ```
 
 ## Values

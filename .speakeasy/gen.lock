@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: f6abd30297b7b0357613b4e2eba0557c
+  docChecksum: 4b5b858a659c79c998dc73b8f227d602
   docVersion: 1.0.0
-  speakeasyVersion: 1.636.3
-  generationVersion: 2.723.11
-  releaseVersion: 0.0.0-beta.40
-  configChecksum: d45a169b1c869ac3faad46f8e44c5b27
+  speakeasyVersion: 1.637.0
+  generationVersion: 2.727.4
+  releaseVersion: 0.0.0-beta.41
+  configChecksum: 0234204a844f1b17b47e59150250c592
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.21.26
+    core: 3.22.0
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -1061,16 +1061,16 @@ examples:
         5XX:
           application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
         default:
-          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getCredits:
     speakeasy-default-get-credits:
       responses:
         "200":
-          application/json: {"data": {"total_credits": 1683.62, "total_usage": 2963.62}}
+          application/json: {"data": {"total_credits": 100.5, "total_usage": 25.75}}
         4XX:
           application/json: {"error": {"code": 101, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         default:
-          application/json: {"error": {"code": 208, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   addCoinbaseCharge:
     speakeasy-default-add-coinbase-charge:
       requestBody:
@@ -1146,17 +1146,17 @@ examples:
           author: "<value>"
           slug: "<value>"
         query:
-          include_disabled: "<value>"
-          offset: "<value>"
+          include_disabled: "false"
+          offset: "0"
       responses:
         "200":
-          application/json: {"data": [{"hash": "sk-or-v1-abc123def456", "name": "GPT-4", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}]}
+          application/json: {"data": [{"hash": "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", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}]}
         4XX:
           application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         5XX:
           application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
         default:
-          application/json: {"error": {"code": 529, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   previewZDR:
     speakeasy-default-preview-ZDR:
       responses:
@@ -1176,13 +1176,13 @@ examples:
           provider: "Google AI Studio"
       responses:
         "200":
-          application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["temperature", "max_tokens", "top_p", "frequency_penalty", "presence_penalty"]}}
+          application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["temperature", "top_p", "max_tokens"]}}
         4XX:
           application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         5XX:
           application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         default:
-          application/json: {"error": {"code": 406, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listProviders:
     speakeasy-default-list-providers:
       responses:
@@ -1262,7 +1262,7 @@ examples:
         5XX:
           application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         default:
-          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   exchangeAuthorizationCode:
     speakeasy-default-exchange-authorization-code:
       requestBody:
@@ -1332,12 +1332,12 @@ examples:
   createApiAlphaResponses:
     speakeasy-default-create-api-alpha-responses:
       requestBody:
-        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": "auto", "parallel_tool_calls": false, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto", "max_tokens": 6415.05, "enabled": true}, "max_output_tokens": 5270.85, "temperature": 0.7, "top_p": 0.9, "top_k": 5913.88, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "include": ["message.input_image.image_url"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "scale", "truncation": "disabled", "stream": false, "provider": {"allow_fallbacks": false, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["Moonshot AI"], "only": ["<value>"], "ignore": ["<value>"], "quantizations": ["bf16"], "sort": "price", "max_price": {"prompt": "<value>", "completion": 4351.98, "image": "https://loremflickr.com/916/1698?lock=7420998995259402", "audio": "<value>", "request": "<value>"}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 3555.38, "pdf": {"engine": "pdf-text"}}], "user": "Parker.OKeefe"}
+        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": "auto", "parallel_tool_calls": false, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto", "max_tokens": 6415.05, "enabled": true}, "max_output_tokens": 5270.85, "temperature": 0.7, "top_p": 0.9, "top_k": 5913.88, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "include": ["message.input_image.image_url"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "auto", "truncation": "auto", "stream": false, "provider": {"allow_fallbacks": false, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["Moonshot AI"], "only": ["<value>"], "ignore": ["<value>"], "quantizations": ["bf16"], "sort": "price", "max_price": {"prompt": "<value>", "completion": 4351.98, "image": "https://loremflickr.com/916/1698?lock=7420998995259402", "audio": "<value>", "request": "<value>"}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 3555.38, "pdf": {"engine": "pdf-text"}}], "user": "Parker.OKeefe"}
       responses:
         "200":
           application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 3724.45, "is_byok": true, "cost_details": {"upstream_inference_cost": 4523.63, "upstream_inference_input_cost": 2057.21, "upstream_inference_output_cost": 9109.74}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto", "max_tokens": 3668.47, "enabled": true}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
         default:
-          application/json: {"error": {"code": 529, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   createCoinbaseCharge:
     speakeasy-default-create-coinbase-charge:
       requestBody:
@@ -1346,7 +1346,7 @@ examples:
         "200":
           application/json: {"data": {"id": "<id>", "created_at": "1715098772685", "expires_at": "1755552807642", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 4907.84, "contract_address": "<value>", "sender": "<value>"}}}}}
         default:
-          application/json: {"error": {"code": 411, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getGeneration:
     speakeasy-default-get-generation:
       parameters:
@@ -1356,14 +1356,14 @@ examples:
         "200":
           application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
-          application/json: {"error": {"code": 451, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listModelsCount:
     speakeasy-default-list-models-count:
       responses:
         "200":
           application/json: {"data": {"count": 150}}
         default:
-          application/json: {"error": {"code": 404, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getModels:
     speakeasy-default-get-models:
       parameters:
@@ -1377,14 +1377,14 @@ examples:
           application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": "<value>", "request": 5485.57, "image": 8576.67, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3012.51, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 167.91}, "context_length": 8192, "architecture": {"tokenizer": "PaLM", "instruct_type": null, "modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": ["top_p"], "default_parameters": {"temperature": 4228.12, "top_p": 7758.51, "frequency_penalty": 1201.29}}]}
           application/rss+xml: "<value>"
         default:
-          application/json: {"error": {"code": 401, "message": "<value>", "metadata": null}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listModelsUser:
     speakeasy-default-list-models-user:
       responses:
         "200":
           application/json: {"data": []}
         default:
-          application/json: {"error": {"code": 301, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listEndpoints:
     speakeasy-default-list-endpoints:
       parameters:
@@ -1393,55 +1393,55 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "Claude", "instruct_type": "phi3", "modality": "text", "input_modalities": [], "output_modalities": []}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5355.68, "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://picsum.photos/seed/uZjMJ4Dy/1347/1789", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3498.4, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9312.33}, "provider_name": "Crusoe", "tag": "<value>", "quantization": "fp4", "max_completion_tokens": 2451.81, "max_prompt_tokens": 5726.51, "supported_parameters": [], "status": -5, "uptime_last_30m": 3744.66, "supports_implicit_caching": false}]}}
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": [], "output_modalities": []}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5355.68, "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://picsum.photos/seed/uZjMJ4Dy/1347/1789", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3498.4, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9312.33}, "provider_name": "Crusoe", "tag": "<value>", "quantization": "fp4", "max_completion_tokens": 2451.81, "max_prompt_tokens": 5726.51, "supported_parameters": [], "status": -5, "uptime_last_30m": 3744.66, "supports_implicit_caching": false}]}}
         default:
-          application/json: {"error": {"code": 208, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listEndpointsZdr:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
           application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 6280.84, "pricing": {"prompt": "<value>", "completion": "<value>", "request": 9611.08, "image": 1226.28, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 2784.22}, "provider_name": "AnyScale", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 8097.59, "max_prompt_tokens": 1849.71, "supported_parameters": ["include_reasoning"], "status": -2, "uptime_last_30m": 2509.54, "supports_implicit_caching": true}]}
         default:
-          application/json: {"error": {"code": 521, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   createKeys:
     speakeasy-default-create-keys:
       requestBody:
         application/json: {"name": "My New API Key", "limit": 50, "limit_reset": "monthly", "include_byok_in_limit": true}
       responses:
         "201":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}, "key": "sk-or-v1-abc123def456ghi789jkl012"}
+          application/json: {"data": {"hash": "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", "name": "My New API Key", "label": "My New API Key", "disabled": false, "limit": 50, "limit_remaining": 50, "limit_reset": "monthly", "include_byok_in_limit": true, "usage": 0, "usage_daily": 0, "usage_weekly": 0, "usage_monthly": 0, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "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"}
         default:
-          application/json: {"error": {"code": 303, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   updateKeys:
     speakeasy-default-update-keys:
       parameters:
         path:
-          hash: "sk-or-v1-abc123def456"
+          hash: "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"
       requestBody:
         application/json: {"name": "Updated API Key Name", "disabled": false, "limit": 75, "limit_reset": "daily", "include_byok_in_limit": true}
       responses:
         "200":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
+          application/json: {"data": {"hash": "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", "name": "Updated API Key Name", "label": "Updated API Key Name", "disabled": false, "limit": 75, "limit_remaining": 49.5, "limit_reset": "daily", "include_byok_in_limit": true, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
         default:
-          application/json: {"error": {"code": 423, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   deleteKeys:
     speakeasy-default-delete-keys:
       parameters:
         path:
-          hash: "sk-or-v1-abc123def456"
+          hash: "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"
       responses:
         "200":
           application/json: {"deleted": true}
         default:
-          application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getKey:
     speakeasy-default-get-key:
       parameters:
         path:
-          hash: "sk-or-v1-abc123def456"
+          hash: "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"
       responses:
         "200":
-          application/json: {"data": {"hash": "sk-or-v1-abc123def456", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
+          application/json: {"data": {"hash": "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", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
         default:
-          application/json: {"error": {"code": 526, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2

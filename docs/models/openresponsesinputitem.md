@@ -10,17 +10,17 @@ An item in the input array for a response request
 ```typescript
 const value: models.OpenResponsesReasoning = {
   type: "reasoning",
-  id: "<id>",
+  id: "reasoning-abc123",
   content: [
     {
       type: "reasoning_text",
-      text: "<value>",
+      text: "Let me think step by step about this problem...",
     },
   ],
   summary: [
     {
       type: "summary_text",
-      text: "<value>",
+      text: "Analyzed the problem using first principles",
     },
   ],
   encryptedContent: "<value>",
@@ -85,14 +85,22 @@ const value: models.OpenResponsesFunctionCallOutput = {
 
 ```typescript
 const value: models.OpenResponsesInputItemMessage = {
-  id: "<id>",
+  id: "msg-abc123",
   role: "assistant",
   type: "message",
-  status: "incomplete",
+  status: "completed",
   content: [
     {
-      type: "refusal",
-      refusal: "<value>",
+      type: "output_text",
+      text: "Hello! How can I help you today?",
+      annotations: [
+        {
+          type: "file_citation",
+          fileId: "file-abc123",
+          filename: "research_paper.pdf",
+          index: 0,
+        },
+      ],
     },
   ],
 };
@@ -103,17 +111,17 @@ const value: models.OpenResponsesInputItemMessage = {
 ```typescript
 const value: models.OpenResponsesInputItemReasoning = {
   type: "reasoning",
-  id: "<id>",
+  id: "reasoning-abc123",
   content: [
     {
       type: "reasoning_text",
-      text: "<value>",
+      text: "Let me think step by step about this problem...",
     },
   ],
   summary: [
     {
       type: "summary_text",
-      text: "<value>",
+      text: "Analyzed the problem using first principles",
     },
   ],
   encryptedContent: "<value>",
@@ -125,10 +133,10 @@ const value: models.OpenResponsesInputItemReasoning = {
 ```typescript
 const value: models.OpenResponsesInputItemFunctionCall = {
   type: "function_call",
-  id: "<id>",
-  name: "<value>",
-  arguments: "<value>",
-  callId: "<id>",
+  id: "call-abc123",
+  name: "get_weather",
+  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  callId: "call-abc123",
 };
 ```
 
@@ -137,8 +145,8 @@ const value: models.OpenResponsesInputItemFunctionCall = {
 ```typescript
 const value: models.OpenResponsesInputItemWebSearchCall = {
   type: "web_search_call",
-  id: "<id>",
-  status: "failed",
+  id: "search-abc123",
+  status: "completed",
 };
 ```
 
@@ -147,8 +155,11 @@ const value: models.OpenResponsesInputItemWebSearchCall = {
 ```typescript
 const value: models.OpenResponsesInputItemFileSearchCall = {
   type: "file_search_call",
-  id: "<id>",
-  queries: [],
+  id: "filesearch-abc123",
+  queries: [
+    "machine learning algorithms",
+    "neural networks",
+  ],
   status: "completed",
 };
 ```
@@ -158,9 +169,10 @@ const value: models.OpenResponsesInputItemFileSearchCall = {
 ```typescript
 const value: models.OpenResponsesInputItemImageGenerationCall = {
   type: "image_generation_call",
-  id: "<id>",
-  result: "<value>",
-  status: "generating",
+  id: "imagegen-abc123",
+  result:
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  status: "completed",
 };
 ```
 

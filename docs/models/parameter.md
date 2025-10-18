@@ -5,7 +5,7 @@
 ```typescript
 import { Parameter } from "@openrouter/sdk/models";
 
-let value: Parameter = "web_search_options";
+let value: Parameter = "temperature";
 ```
 
 ## Values

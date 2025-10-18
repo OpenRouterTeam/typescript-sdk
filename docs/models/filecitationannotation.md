@@ -7,9 +7,9 @@ import { FileCitationAnnotation } from "@openrouter/sdk/models";
 
 let value: FileCitationAnnotation = {
   type: "file_citation",
-  fileId: "<id>",
-  filename: "example.file",
-  index: 5362.04,
+  fileId: "file-abc123",
+  filename: "research_paper.pdf",
+  index: 0,
 };
 ```
 

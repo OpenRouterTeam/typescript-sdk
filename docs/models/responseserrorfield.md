@@ -8,8 +8,8 @@ Error information returned from the API
 import { ResponsesErrorField } from "@openrouter/sdk/models";
 
 let value: ResponsesErrorField = {
-  code: "invalid_prompt",
-  message: "<value>",
+  code: "rate_limit_exceeded",
+  message: "Rate limit exceeded. Please try again later.",
 };
 ```
 

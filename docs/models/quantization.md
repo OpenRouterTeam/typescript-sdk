@@ -5,7 +5,7 @@
 ```typescript
 import { Quantization } from "@openrouter/sdk/models";
 
-let value: Quantization = "int8";
+let value: Quantization = "fp16";
 ```
 
 ## Values

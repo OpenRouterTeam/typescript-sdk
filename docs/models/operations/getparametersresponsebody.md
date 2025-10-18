@@ -10,13 +10,17 @@ import { GetParametersResponseBody } from "@openrouter/sdk/models/operations";
 let value: GetParametersResponseBody = {
   data: {
     model: "openai/gpt-4",
-    supportedParameters: [],
+    supportedParameters: [
+      "temperature",
+      "top_p",
+      "max_tokens",
+    ],
   },
 };
 ```
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `data`                                                                       | [operations.GetParametersData](../../models/operations/getparametersdata.md) | :heavy_check_mark:                                                           | Parameter analytics data                                                     |
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `data`                                                                                        | [operations.GetParametersData](../../models/operations/getparametersdata.md)                  | :heavy_check_mark:                                                                            | Parameter analytics data                                                                      | {<br/>"model": "openai/gpt-4",<br/>"supported_parameters": [<br/>"temperature",<br/>"top_p",<br/>"max_tokens"<br/>]<br/>} |

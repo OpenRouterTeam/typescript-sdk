@@ -5,7 +5,7 @@
 ```typescript
 import { ImageGenerationStatus } from "@openrouter/sdk/models";
 
-let value: ImageGenerationStatus = "failed";
+let value: ImageGenerationStatus = "completed";
 ```
 
 ## Values

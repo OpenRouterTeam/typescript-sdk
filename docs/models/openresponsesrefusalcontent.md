@@ -7,7 +7,7 @@ import { OpenResponsesRefusalContent } from "@openrouter/sdk/models";
 
 let value: OpenResponsesRefusalContent = {
   type: "refusal",
-  refusal: "<value>",
+  refusal: "I'm sorry, I cannot assist with that request",
 };
 ```
 

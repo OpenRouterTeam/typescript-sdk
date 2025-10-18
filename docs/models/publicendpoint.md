@@ -8,51 +8,53 @@ Information about a specific model endpoint
 import { PublicEndpoint } from "@openrouter/sdk/models";
 
 let value: PublicEndpoint = {
-  name: "<value>",
-  modelName: "<value>",
-  contextLength: 6987.3,
+  name: "OpenAI: GPT-4",
+  modelName: "GPT-4",
+  contextLength: 8192,
   pricing: {
-    prompt: "<value>",
-    completion: "<value>",
-    request: 4487.12,
-    image: 7285.01,
-    imageOutput: 7293.72,
+    prompt: "0.00003",
+    completion: "0.00006",
+    request: "0",
+    image: "0",
+    imageOutput: "<value>",
     audio: "<value>",
     inputAudioCache: "<value>",
-    webSearch: 8364.54,
-    internalReasoning: "<value>",
+    webSearch: "<value>",
+    internalReasoning: 4640.78,
     inputCacheRead: "<value>",
     inputCacheWrite: "<value>",
-    discount: 8394.77,
+    discount: 9180,
   },
-  providerName: "Minimax",
-  tag: "<value>",
-  quantization: "fp6",
-  maxCompletionTokens: 4640.78,
-  maxPromptTokens: 6580.71,
+  providerName: "OpenAI",
+  tag: "openai",
+  quantization: "fp16",
+  maxCompletionTokens: 4096,
+  maxPromptTokens: 8192,
   supportedParameters: [
+    "temperature",
     "top_p",
+    "max_tokens",
   ],
-  status: -3,
-  uptimeLast30m: 9674.1,
-  supportsImplicitCaching: false,
+  status: 0,
+  uptimeLast30m: 99.5,
+  supportsImplicitCaching: true,
 };
 ```
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `name`                                                                       | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `modelName`                                                                  | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `contextLength`                                                              | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `pricing`                                                                    | [models.PublicEndpointPricing](../models/publicendpointpricing.md)           | :heavy_check_mark:                                                           | N/A                                                                          |
-| `providerName`                                                               | [models.ProviderName](../models/providername.md)                             | :heavy_check_mark:                                                           | N/A                                                                          |
-| `tag`                                                                        | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `quantization`                                                               | [models.PublicEndpointQuantization](../models/publicendpointquantization.md) | :heavy_check_mark:                                                           | N/A                                                                          |
-| `maxCompletionTokens`                                                        | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `maxPromptTokens`                                                            | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `supportedParameters`                                                        | [models.Parameter](../models/parameter.md)[]                                 | :heavy_check_mark:                                                           | N/A                                                                          |
-| `status`                                                                     | [models.EndpointStatus](../models/endpointstatus.md)                         | :heavy_minus_sign:                                                           | N/A                                                                          |
-| `uptimeLast30m`                                                              | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `supportsImplicitCaching`                                                    | *boolean*                                                                    | :heavy_check_mark:                                                           | N/A                                                                          |
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  | Example                                                                      |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `name`                                                                       | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `modelName`                                                                  | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `contextLength`                                                              | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `pricing`                                                                    | [models.PublicEndpointPricing](../models/publicendpointpricing.md)           | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `providerName`                                                               | [models.ProviderName](../models/providername.md)                             | :heavy_check_mark:                                                           | N/A                                                                          | OpenAI                                                                       |
+| `tag`                                                                        | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `quantization`                                                               | [models.PublicEndpointQuantization](../models/publicendpointquantization.md) | :heavy_check_mark:                                                           | N/A                                                                          | fp16                                                                         |
+| `maxCompletionTokens`                                                        | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `maxPromptTokens`                                                            | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `supportedParameters`                                                        | [models.Parameter](../models/parameter.md)[]                                 | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `status`                                                                     | [models.EndpointStatus](../models/endpointstatus.md)                         | :heavy_minus_sign:                                                           | N/A                                                                          | 0                                                                            |
+| `uptimeLast30m`                                                              | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |
+| `supportsImplicitCaching`                                                    | *boolean*                                                                    | :heavy_check_mark:                                                           | N/A                                                                          |                                                                              |

@@ -7,7 +7,7 @@ Tokenizer type used by the model
 ```typescript
 import { ModelGroup } from "@openrouter/sdk/models";
 
-let value: ModelGroup = "Mistral";
+let value: ModelGroup = "GPT";
 ```
 
 ## Values

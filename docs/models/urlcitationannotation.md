@@ -7,10 +7,10 @@ import { URLCitationAnnotation } from "@openrouter/sdk/models";
 
 let value: URLCitationAnnotation = {
   type: "url_citation",
-  endIndex: 6805.23,
-  startIndex: 5557.95,
-  title: "<value>",
-  url: "https://fat-gloom.biz",
+  endIndex: 42,
+  startIndex: 0,
+  title: "OpenRouter Documentation",
+  url: "https://openrouter.ai/docs",
 };
 ```
 

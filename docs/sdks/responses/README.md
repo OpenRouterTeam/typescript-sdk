@@ -92,8 +92,8 @@ async function run() {
     background: false,
     safetyIdentifier: "<value>",
     store: false,
-    serviceTier: "scale",
-    truncation: "disabled",
+    serviceTier: "auto",
+    truncation: "auto",
     stream: false,
     provider: {
       allowFallbacks: false,
@@ -223,8 +223,8 @@ async function run() {
     background: false,
     safetyIdentifier: "<value>",
     store: false,
-    serviceTier: "scale",
-    truncation: "disabled",
+    serviceTier: "auto",
+    truncation: "auto",
     stream: false,
     provider: {
       allowFallbacks: false,

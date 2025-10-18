@@ -5,7 +5,7 @@
 ```typescript
 import { InputModality } from "@openrouter/sdk/models";
 
-let value: InputModality = "file";
+let value: InputModality = "text";
 ```
 
 ## Values

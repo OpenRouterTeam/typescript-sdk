@@ -1,6 +1,6 @@
 # GetGenerationResponseBody
 
-Returns the request metadata for this generation
+Generation response
 
 ## Example Usage
 

@@ -10,7 +10,13 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type GetCreditsData = {
+  /**
+   * Total credits purchased
+   */
   totalCredits: number;
+  /**
+   * Total credits used
+   */
   totalUsage: number;
 };
 

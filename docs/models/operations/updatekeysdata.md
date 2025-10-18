@@ -8,7 +8,8 @@ The updated API key information
 import { UpdateKeysData } from "@openrouter/sdk/models/operations";
 
 let value: UpdateKeysData = {
-  hash: "sk-or-v1-abc123def456",
+  hash:
+    "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",
   name: "My Production Key",
   label: "Production API Key",
   disabled: false,
@@ -33,7 +34,7 @@ let value: UpdateKeysData = {
 
 | Field                                                                     | Type                                                                      | Required                                                                  | Description                                                               | Example                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `hash`                                                                    | *string*                                                                  | :heavy_check_mark:                                                        | Unique hash identifier for the API key                                    | sk-or-v1-abc123def456                                                     |
+| `hash`                                                                    | *string*                                                                  | :heavy_check_mark:                                                        | Unique hash identifier for the API key                                    | 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 |
 | `name`                                                                    | *string*                                                                  | :heavy_check_mark:                                                        | Name of the API key                                                       | My Production Key                                                         |
 | `label`                                                                   | *string*                                                                  | :heavy_check_mark:                                                        | Human-readable label for the API key                                      | Production API Key                                                        |
 | `disabled`                                                                | *boolean*                                                                 | :heavy_check_mark:                                                        | Whether the API key is disabled                                           | false                                                                     |

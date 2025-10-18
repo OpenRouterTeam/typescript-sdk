@@ -7,9 +7,9 @@ import { OpenResponsesStreamEventResponseImageGenerationCallCompleted } from "@o
 
 let value: OpenResponsesStreamEventResponseImageGenerationCallCompleted = {
   type: "response.image_generation_call.completed",
-  itemId: "<id>",
-  outputIndex: 9711.58,
-  sequenceNumber: 6956.11,
+  itemId: "item-abc123",
+  outputIndex: 0,
+  sequenceNumber: 4,
 };
 ```
 

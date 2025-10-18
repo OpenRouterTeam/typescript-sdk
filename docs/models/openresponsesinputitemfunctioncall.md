@@ -7,10 +7,10 @@ import { OpenResponsesInputItemFunctionCall } from "@openrouter/sdk/models";
 
 let value: OpenResponsesInputItemFunctionCall = {
   type: "function_call",
-  id: "<id>",
-  name: "<value>",
-  arguments: "<value>",
-  callId: "<id>",
+  id: "call-abc123",
+  name: "get_weather",
+  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  callId: "call-abc123",
 };
 ```
 

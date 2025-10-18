@@ -7,7 +7,7 @@ import { ReasoningSummaryText } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryText = {
   type: "summary_text",
-  text: "<value>",
+  text: "Analyzed the problem using first principles",
 };
 ```
 

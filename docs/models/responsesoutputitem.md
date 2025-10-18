@@ -9,11 +9,24 @@ An output item from the response
 
 ```typescript
 const value: models.ResponsesOutputItemMessage = {
-  id: "<id>",
+  id: "msg-abc123",
   role: "assistant",
   type: "message",
-  status: "in_progress",
-  content: [],
+  status: "completed",
+  content: [
+    {
+      type: "output_text",
+      text: "Hello! How can I help you today?",
+      annotations: [
+        {
+          type: "file_citation",
+          fileId: "file-abc123",
+          filename: "research_paper.pdf",
+          index: 0,
+        },
+      ],
+    },
+  ],
 };
 ```
 
@@ -22,17 +35,17 @@ const value: models.ResponsesOutputItemMessage = {
 ```typescript
 const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "<id>",
+  id: "reasoning-abc123",
   content: [
     {
       type: "reasoning_text",
-      text: "<value>",
+      text: "Let me think step by step about this problem...",
     },
   ],
   summary: [
     {
       type: "summary_text",
-      text: "<value>",
+      text: "Analyzed the problem using first principles",
     },
   ],
   encryptedContent: "<value>",
@@ -44,10 +57,10 @@ const value: models.ResponsesOutputItemReasoning = {
 ```typescript
 const value: models.ResponsesOutputItemFunctionCall = {
   type: "function_call",
-  id: "<id>",
-  name: "<value>",
-  arguments: "<value>",
-  callId: "<id>",
+  id: "call-abc123",
+  name: "get_weather",
+  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  callId: "call-abc123",
 };
 ```
 
@@ -56,7 +69,7 @@ const value: models.ResponsesOutputItemFunctionCall = {
 ```typescript
 const value: models.ResponsesOutputItemWebSearchCall = {
   type: "web_search_call",
-  id: "<id>",
+  id: "search-abc123",
   status: "completed",
 };
 ```
@@ -66,11 +79,12 @@ const value: models.ResponsesOutputItemWebSearchCall = {
 ```typescript
 const value: models.ResponsesOutputItemFileSearchCall = {
   type: "file_search_call",
-  id: "<id>",
+  id: "filesearch-abc123",
   queries: [
-    "<value 1>",
+    "machine learning algorithms",
+    "neural networks",
   ],
-  status: "failed",
+  status: "completed",
 };
 ```
 
@@ -79,9 +93,10 @@ const value: models.ResponsesOutputItemFileSearchCall = {
 ```typescript
 const value: models.ResponsesOutputItemImageGenerationCall = {
   type: "image_generation_call",
-  id: "<id>",
-  result: null,
-  status: "generating",
+  id: "imagegen-abc123",
+  result:
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  status: "completed",
 };
 ```
 

@@ -22,12 +22,14 @@ generation:
     hoistGlobalSecurity: true
   inferSSEOverload: true
   sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
   tests:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.0-beta.40
+  version: 0.0.0-beta.41
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}

@@ -5,7 +5,7 @@
 ```typescript
 import { OutputModality } from "@openrouter/sdk/models";
 
-let value: OutputModality = "image";
+let value: OutputModality = "text";
 ```
 
 ## Values

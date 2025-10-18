@@ -5,7 +5,7 @@
 ```typescript
 import { OpenResponsesServiceTier } from "@openrouter/sdk/models";
 
-let value: OpenResponsesServiceTier = "default";
+let value: OpenResponsesServiceTier = "auto";
 ```
 
 ## Values

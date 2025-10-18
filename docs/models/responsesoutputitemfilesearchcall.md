@@ -7,19 +7,20 @@ import { ResponsesOutputItemFileSearchCall } from "@openrouter/sdk/models";
 
 let value: ResponsesOutputItemFileSearchCall = {
   type: "file_search_call",
-  id: "<id>",
+  id: "filesearch-abc123",
   queries: [
-    "<value 1>",
+    "machine learning algorithms",
+    "neural networks",
   ],
-  status: "failed",
+  status: "completed",
 };
 ```
 
 ## Fields
 
-| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `type`                                                                                             | [models.ResponsesOutputItemTypeFileSearchCall](../models/responsesoutputitemtypefilesearchcall.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `id`                                                                                               | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `queries`                                                                                          | *string*[]                                                                                         | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `status`                                                                                           | [models.WebSearchStatus](../models/websearchstatus.md)                                             | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        | Example                                                                                            |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `type`                                                                                             | [models.ResponsesOutputItemTypeFileSearchCall](../models/responsesoutputitemtypefilesearchcall.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |                                                                                                    |
+| `id`                                                                                               | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |                                                                                                    |
+| `queries`                                                                                          | *string*[]                                                                                         | :heavy_check_mark:                                                                                 | N/A                                                                                                |                                                                                                    |
+| `status`                                                                                           | [models.WebSearchStatus](../models/websearchstatus.md)                                             | :heavy_check_mark:                                                                                 | N/A                                                                                                | completed                                                                                          |

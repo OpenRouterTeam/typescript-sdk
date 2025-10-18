@@ -8,8 +8,8 @@
 ```typescript
 const value: operations.GetCreditsResponseBody = {
   data: {
-    totalCredits: 3929.68,
-    totalUsage: 9534.38,
+    totalCredits: 100.5,
+    totalUsage: 25.75,
   },
 };
 ```
@@ -19,13 +19,14 @@ const value: operations.GetCreditsResponseBody = {
 ```typescript
 const value: models.ErrorResponse = {
   error: {
-    code: 451,
-    message: "<value>",
+    code: 400,
+    message: "Invalid request parameters",
     metadata: {
-      "key": "<value>",
+      "field": "temperature",
+      "reason": "Must be between 0 and 2",
     },
   },
-  userId: "<id>",
+  userId: "user-abc123",
 };
 ```
 

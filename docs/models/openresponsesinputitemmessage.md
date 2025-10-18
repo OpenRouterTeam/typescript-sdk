@@ -6,21 +6,20 @@
 import { OpenResponsesInputItemMessage } from "@openrouter/sdk/models";
 
 let value: OpenResponsesInputItemMessage = {
-  id: "<id>",
+  id: "msg-abc123",
   role: "assistant",
   type: "message",
-  status: "incomplete",
+  status: "completed",
   content: [
     {
       type: "output_text",
-      text: "<value>",
+      text: "Hello! How can I help you today?",
       annotations: [
         {
-          type: "url_citation",
-          endIndex: 3228.16,
-          startIndex: 417.8,
-          title: "<value>",
-          url: "https://unkempt-equal.com/",
+          type: "file_citation",
+          fileId: "file-abc123",
+          filename: "research_paper.pdf",
+          index: 0,
         },
       ],
     },

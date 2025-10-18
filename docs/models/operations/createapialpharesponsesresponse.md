@@ -46,9 +46,9 @@ const value: models.OpenResponsesNonStreamingResponse = {
     cost: 5062.45,
     isByok: false,
     costDetails: {
-      upstreamInferenceCost: 9784.78,
-      upstreamInferenceInputCost: 4970.36,
-      upstreamInferenceOutputCost: 6210.54,
+      upstreamInferenceCost: 5882.86,
+      upstreamInferenceInputCost: 6012.25,
+      upstreamInferenceOutputCost: 7726.94,
     },
   },
   maxToolCalls: 8999.13,
@@ -97,13 +97,14 @@ const value: models.OpenResponsesNonStreamingResponse = {
 ```typescript
 const value: models.ErrorResponse = {
   error: {
-    code: 451,
-    message: "<value>",
+    code: 400,
+    message: "Invalid request parameters",
     metadata: {
-      "key": "<value>",
+      "field": "temperature",
+      "reason": "Must be between 0 and 2",
     },
   },
-  userId: "<id>",
+  userId: "user-abc123",
 };
 ```
 

@@ -9,10 +9,10 @@ import { ResponsesWebSearchUserLocation } from "@openrouter/sdk/models";
 
 let value: ResponsesWebSearchUserLocation = {
   type: "approximate",
-  city: "Kristinaland",
-  country: "Portugal",
-  region: "<value>",
-  timezone: "Pacific/Niue",
+  city: "San Francisco",
+  country: "USA",
+  region: "California",
+  timezone: "America/Los_Angeles",
 };
 ```
 

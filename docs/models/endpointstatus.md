@@ -5,7 +5,7 @@
 ```typescript
 import { EndpointStatus } from "@openrouter/sdk/models";
 
-let value: EndpointStatus = -10;
+let value: EndpointStatus = 0;
 ```
 
 ## Values

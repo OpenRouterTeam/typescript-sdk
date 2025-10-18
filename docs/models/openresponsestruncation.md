@@ -5,7 +5,7 @@
 ```typescript
 import { OpenResponsesTruncation } from "@openrouter/sdk/models";
 
-let value: OpenResponsesTruncation = "disabled";
+let value: OpenResponsesTruncation = "auto";
 ```
 
 ## Values

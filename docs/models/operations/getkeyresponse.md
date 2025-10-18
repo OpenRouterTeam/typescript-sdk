@@ -8,7 +8,8 @@
 ```typescript
 const value: operations.GetKeyResponseBody = {
   data: {
-    hash: "sk-or-v1-abc123def456",
+    hash:
+      "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",
     name: "My Production Key",
     label: "Production API Key",
     disabled: false,
@@ -35,13 +36,14 @@ const value: operations.GetKeyResponseBody = {
 ```typescript
 const value: models.ErrorResponse = {
   error: {
-    code: 451,
-    message: "<value>",
+    code: 400,
+    message: "Invalid request parameters",
     metadata: {
-      "key": "<value>",
+      "field": "temperature",
+      "reason": "Must be between 0 and 2",
     },
   },
-  userId: "<id>",
+  userId: "user-abc123",
 };
 ```
 

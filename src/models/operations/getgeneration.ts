@@ -165,7 +165,7 @@ export type GetGenerationData = {
 };
 
 /**
- * Returns the request metadata for this generation
+ * Generation response
  */
 export type GetGenerationResponseBody = {
   /**

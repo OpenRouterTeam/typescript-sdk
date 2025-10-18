@@ -14,11 +14,11 @@ const value: operations.ListEndpointsResponseBody = {
     description:
       "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.",
     architecture: {
-      tokenizer: null,
-      instructType: null,
+      tokenizer: "GPT",
+      instructType: "chatml",
       modality: "text",
       inputModalities: [
-        "file",
+        "text",
       ],
       outputModalities: [
         "text",
@@ -26,33 +26,35 @@ const value: operations.ListEndpointsResponseBody = {
     },
     endpoints: [
       {
-        name: "<value>",
-        modelName: "<value>",
-        contextLength: 648.47,
+        name: "OpenAI: GPT-4",
+        modelName: "GPT-4",
+        contextLength: 8192,
         pricing: {
-          prompt: "<value>",
-          completion: "<value>",
-          request: 4487.12,
-          image: 7285.01,
-          imageOutput: 7293.72,
+          prompt: "0.00003",
+          completion: "0.00006",
+          request: "0",
+          image: "0",
+          imageOutput: "<value>",
           audio: "<value>",
           inputAudioCache: "<value>",
-          webSearch: 8364.54,
+          webSearch: "<value>",
           internalReasoning: "<value>",
           inputCacheRead: "<value>",
-          inputCacheWrite: "<value>",
-          discount: 8394.77,
+          inputCacheWrite: 5536.24,
+          discount: 9541.49,
         },
-        providerName: "Cohere",
-        tag: "<value>",
-        quantization: "fp6",
-        maxCompletionTokens: 7441.05,
-        maxPromptTokens: 7949.82,
+        providerName: "OpenAI",
+        tag: "openai",
+        quantization: "fp16",
+        maxCompletionTokens: 4096,
+        maxPromptTokens: 8192,
         supportedParameters: [
-          "web_search_options",
+          "temperature",
+          "top_p",
+          "max_tokens",
         ],
-        status: -3,
-        uptimeLast30m: null,
+        status: 0,
+        uptimeLast30m: 99.5,
         supportsImplicitCaching: true,
       },
     ],
@@ -65,13 +67,14 @@ const value: operations.ListEndpointsResponseBody = {
 ```typescript
 const value: models.ErrorResponse = {
   error: {
-    code: 451,
-    message: "<value>",
+    code: 400,
+    message: "Invalid request parameters",
     metadata: {
-      "key": "<value>",
+      "field": "temperature",
+      "reason": "Must be between 0 and 2",
     },
   },
-  userId: "<id>",
+  userId: "user-abc123",
 };
 ```
 

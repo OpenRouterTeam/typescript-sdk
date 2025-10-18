@@ -30,8 +30,8 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.list({
-    includeDisabled: "<value>",
-    offset: "<value>",
+    includeDisabled: "false",
+    offset: "0",
   });
 
   console.log(result);
@@ -56,8 +56,8 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysList(openRouter, {
-    includeDisabled: "<value>",
-    offset: "<value>",
+    includeDisabled: "false",
+    offset: "0",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -229,7 +229,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.update({
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
     requestBody: {
       name: "Updated API Key Name",
       disabled: false,
@@ -261,7 +261,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysUpdate(openRouter, {
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
     requestBody: {
       name: "Updated API Key Name",
       disabled: false,
@@ -333,7 +333,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.delete({
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
   });
 
   console.log(result);
@@ -358,7 +358,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysDelete(openRouter, {
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -423,7 +423,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.get({
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
   });
 
   console.log(result);
@@ -448,7 +448,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysGet(openRouter, {
-    hash: "sk-or-v1-abc123def456",
+    hash: "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",
   });
   if (res.ok) {
     const { value: result } = res;

@@ -8,21 +8,21 @@ Token usage information for the response
 import { ResponsesUsage } from "@openrouter/sdk/models";
 
 let value: ResponsesUsage = {
-  inputTokens: 6434.62,
+  inputTokens: 10,
   inputTokensDetails: {
-    cachedTokens: 6890.78,
+    cachedTokens: 0,
   },
-  outputTokens: 9050.65,
+  outputTokens: 25,
   outputTokensDetails: {
-    reasoningTokens: 6012.25,
+    reasoningTokens: 0,
   },
-  totalTokens: 3299.07,
-  cost: 8507.77,
-  isByok: true,
+  totalTokens: 35,
+  cost: 0.0012,
+  isByok: false,
   costDetails: {
-    upstreamInferenceCost: 9784.78,
-    upstreamInferenceInputCost: 4970.36,
-    upstreamInferenceOutputCost: 6210.54,
+    upstreamInferenceCost: 5882.86,
+    upstreamInferenceInputCost: 6012.25,
+    upstreamInferenceOutputCost: 7726.94,
   },
 };
 ```

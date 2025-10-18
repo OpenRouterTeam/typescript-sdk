@@ -6,7 +6,7 @@
 ### `models.ProviderName`
 
 ```typescript
-const value: models.ProviderName = "Atoma";
+const value: models.ProviderName = "OpenAI";
 ```
 
 ### `string`

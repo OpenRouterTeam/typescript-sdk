@@ -7,12 +7,14 @@ import { OpenResponsesOutputText } from "@openrouter/sdk/models";
 
 let value: OpenResponsesOutputText = {
   type: "output_text",
-  text: "<value>",
+  text: "The capital of France is Paris.",
   annotations: [
     {
-      type: "file_path",
-      fileId: "<id>",
-      index: 722.68,
+      type: "url_citation",
+      endIndex: 42,
+      startIndex: 0,
+      title: "Paris - Wikipedia",
+      url: "https://en.wikipedia.org/wiki/Paris",
     },
   ],
 };

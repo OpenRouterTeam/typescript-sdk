@@ -17,29 +17,29 @@ const value: operations.ListModelsUserResponseBody = {
       description:
         "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.",
       pricing: {
-        prompt: "<value>",
-        completion: 8892.26,
-        request: "<value>",
-        image: "https://picsum.photos/seed/OFc4KN9F/2036/3960",
+        prompt: "0.00003",
+        completion: "0.00006",
+        request: "0",
+        image: "0",
         imageOutput: "<value>",
-        audio: 2211.35,
-        inputAudioCache: "<value>",
+        audio: "<value>",
+        inputAudioCache: 8892.26,
         webSearch: "<value>",
         internalReasoning: "<value>",
-        inputCacheRead: 7953.16,
-        inputCacheWrite: 5827.73,
-        discount: 4469.95,
+        inputCacheRead: "<value>",
+        inputCacheWrite: "<value>",
+        discount: 7572.39,
       },
       contextLength: 8192,
       architecture: {
-        tokenizer: "Qwen3",
-        instructType: "qwq",
-        modality: "text",
+        tokenizer: "GPT",
+        instructType: "chatml",
+        modality: "text->text",
         inputModalities: [
-          "audio",
+          "text",
         ],
         outputModalities: [
-          "image",
+          "text",
         ],
       },
       topProvider: {
@@ -47,16 +47,13 @@ const value: operations.ListModelsUserResponseBody = {
         maxCompletionTokens: 4096,
         isModerated: true,
       },
-      perRequestLimits: {
-        promptTokens: "<value>",
-        completionTokens: "<value>",
-      },
-      supportedParameters: [],
-      defaultParameters: {
-        temperature: 5369.88,
-        topP: 4063.21,
-        frequencyPenalty: 2995.53,
-      },
+      perRequestLimits: null,
+      supportedParameters: [
+        "temperature",
+        "top_p",
+        "max_tokens",
+      ],
+      defaultParameters: null,
     },
   ],
 };
@@ -67,13 +64,14 @@ const value: operations.ListModelsUserResponseBody = {
 ```typescript
 const value: models.ErrorResponse = {
   error: {
-    code: 451,
-    message: "<value>",
+    code: 400,
+    message: "Invalid request parameters",
     metadata: {
-      "key": "<value>",
+      "field": "temperature",
+      "reason": "Must be between 0 and 2",
     },
   },
-  userId: "<id>",
+  userId: "user-abc123",
 };
 ```
 

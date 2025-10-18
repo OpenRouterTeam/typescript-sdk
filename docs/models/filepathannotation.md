@@ -7,8 +7,8 @@ import { FilePathAnnotation } from "@openrouter/sdk/models";
 
 let value: FilePathAnnotation = {
   type: "file_path",
-  fileId: "<id>",
-  index: 6594.22,
+  fileId: "file-xyz789",
+  index: 0,
 };
 ```
 

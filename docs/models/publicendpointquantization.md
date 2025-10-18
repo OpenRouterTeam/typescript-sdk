@@ -5,7 +5,7 @@
 ```typescript
 import { PublicEndpointQuantization } from "@openrouter/sdk/models";
 
-let value: PublicEndpointQuantization = "int4";
+let value: PublicEndpointQuantization = "fp16";
 ```
 
 ## Values

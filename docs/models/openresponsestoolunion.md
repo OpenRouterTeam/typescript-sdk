@@ -41,13 +41,13 @@ const value: models.OpenResponsesToolUnionFunction = {
 ```typescript
 const value: models.OpenResponsesWebSearchPreviewTool = {
   type: "web_search_preview",
-  searchContextSize: "low",
+  searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "Bechtelarstad",
-    country: "Bangladesh",
-    region: "<value>",
-    timezone: "America/Blanc-Sablon",
+    city: "San Francisco",
+    country: "USA",
+    region: "California",
+    timezone: "America/Los_Angeles",
   },
 };
 ```
@@ -57,13 +57,13 @@ const value: models.OpenResponsesWebSearchPreviewTool = {
 ```typescript
 const value: models.OpenResponsesWebSearchPreview20250311Tool = {
   type: "web_search_preview_2025_03_11",
-  searchContextSize: "low",
+  searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "Bechtelarstad",
-    country: "Bangladesh",
-    region: "<value>",
-    timezone: "America/Blanc-Sablon",
+    city: "San Francisco",
+    country: "USA",
+    region: "California",
+    timezone: "America/Los_Angeles",
   },
 };
 ```
@@ -77,7 +77,13 @@ const value: models.OpenResponsesWebSearchTool = {
     allowedDomains: null,
   },
   searchContextSize: "medium",
-  userLocation: null,
+  userLocation: {
+    type: "approximate",
+    city: "San Francisco",
+    country: "USA",
+    region: "California",
+    timezone: "America/Los_Angeles",
+  },
 };
 ```
 
@@ -93,13 +99,13 @@ const value: models.OpenResponsesWebSearch20250826Tool = {
       "<value 3>",
     ],
   },
-  searchContextSize: "low",
+  searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "Bechtelarstad",
-    country: "Bangladesh",
-    region: "<value>",
-    timezone: "America/Blanc-Sablon",
+    city: "San Francisco",
+    country: "USA",
+    region: "California",
+    timezone: "America/Los_Angeles",
   },
 };
 ```

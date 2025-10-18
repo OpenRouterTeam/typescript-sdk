@@ -7,11 +7,11 @@ import { OpenResponsesStreamEventResponseImageGenerationCallPartialImage } from 
 
 let value: OpenResponsesStreamEventResponseImageGenerationCallPartialImage = {
   type: "response.image_generation_call.partial_image",
-  itemId: "<id>",
-  outputIndex: 1295.21,
-  sequenceNumber: 9395.14,
-  partialImageB64: "<value>",
-  partialImageIndex: 7473.81,
+  itemId: "item-abc123",
+  outputIndex: 0,
+  sequenceNumber: 3,
+  partialImageB64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ",
+  partialImageIndex: 0,
 };
 ```
 

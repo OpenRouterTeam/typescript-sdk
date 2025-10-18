@@ -8,9 +8,9 @@ Default parameters for this model
 import { DefaultParameters } from "@openrouter/sdk/models";
 
 let value: DefaultParameters = {
-  temperature: 3730.01,
-  topP: null,
-  frequencyPenalty: 246.2,
+  temperature: 0.7,
+  topP: 0.9,
+  frequencyPenalty: 0,
 };
 ```
 
