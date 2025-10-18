@@ -23,25 +23,18 @@ let value: OpenResponsesStreamEventResponseCreated = {
     error: null,
     incompleteDetails: null,
     usage: {
-      inputTokens: 10,
+      inputTokens: 1595.05,
       inputTokensDetails: {
-        cachedTokens: 0,
+        cachedTokens: 6890.78,
       },
-      outputTokens: 25,
+      outputTokens: 5882.86,
       outputTokensDetails: {
-        reasoningTokens: 0,
+        reasoningTokens: 6012.25,
       },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: false,
-      costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
-      },
+      totalTokens: 7726.94,
     },
-    maxToolCalls: 4980.76,
-    topLogprobs: 2691.9,
+    maxToolCalls: 7104.58,
+    topLogprobs: 4980.76,
     maxOutputTokens: null,
     temperature: null,
     topP: null,
@@ -51,21 +44,19 @@ let value: OpenResponsesStreamEventResponseCreated = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "medium",
+      effort: "high",
       summary: "auto",
-      maxTokens: 9402.5,
-      enabled: true,
     },
     serviceTier: "flex",
     store: false,

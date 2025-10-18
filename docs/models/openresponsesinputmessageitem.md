@@ -1,7 +1,5 @@
 # OpenResponsesInputMessageItem
 
-Input message item with structured content array
-
 ## Example Usage
 
 ```typescript
@@ -10,14 +8,11 @@ import { OpenResponsesInputMessageItem } from "@openrouter/sdk/models";
 let value: OpenResponsesInputMessageItem = {
   id: "<id>",
   type: "message",
-  role: "user",
+  role: "system",
   content: [
     {
-      type: "input_file",
-      fileId: "<id>",
-      fileData: "<value>",
-      filename: "example.file",
-      fileUrl: "https://messy-institute.net",
+      type: "input_text",
+      text: "Hello, how can I help you?",
     },
   ],
 };
@@ -27,7 +22,7 @@ let value: OpenResponsesInputMessageItem = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `id`                                                                                       | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `id`                                                                                       | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |
 | `type`                                                                                     | [models.OpenResponsesInputMessageItemType](../models/openresponsesinputmessageitemtype.md) | :heavy_minus_sign:                                                                         | N/A                                                                                        |
 | `role`                                                                                     | *models.OpenResponsesInputMessageItemRoleUnion*                                            | :heavy_check_mark:                                                                         | N/A                                                                                        |
-| `content`                                                                                  | *models.OpenResponsesInputContent*[]                                                       | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `content`                                                                                  | *models.OpenResponsesInputMessageItemContent*[]                                            | :heavy_check_mark:                                                                         | N/A                                                                                        |

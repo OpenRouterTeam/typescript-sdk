@@ -11,6 +11,7 @@ let value: ResponsesOutputItemFunctionCall = {
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
   callId: "call-abc123",
+  status: "incomplete",
 };
 ```
 
@@ -23,3 +24,4 @@ let value: ResponsesOutputItemFunctionCall = {
 | `name`                                                                                         | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |
 | `arguments`                                                                                    | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |
 | `callId`                                                                                       | *string*                                                                                       | :heavy_check_mark:                                                                             | N/A                                                                                            |
+| `status`                                                                                       | *models.ResponsesOutputItemStatusUnion*                                                        | :heavy_minus_sign:                                                                             | N/A                                                                                            |

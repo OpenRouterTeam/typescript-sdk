@@ -58,7 +58,7 @@ export type ChatGenerationParamsEffort = OpenEnum<
   typeof ChatGenerationParamsEffort
 >;
 
-export type Reasoning = {
+export type ChatGenerationParamsReasoning = {
   effort?: ChatGenerationParamsEffort | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
 };
@@ -95,7 +95,7 @@ export type ChatGenerationParams = {
   maxTokens?: number | null | undefined;
   metadata?: { [k: string]: string } | undefined;
   presencePenalty?: number | null | undefined;
-  reasoning?: Reasoning | undefined;
+  reasoning?: ChatGenerationParamsReasoning | undefined;
   responseFormat?:
     | ResponseFormatJSONSchema
     | ResponseFormatTextGrammar
@@ -147,8 +147,8 @@ export namespace ChatGenerationParamsEffort$ {
 }
 
 /** @internal */
-export const Reasoning$inboundSchema: z.ZodType<
-  Reasoning,
+export const ChatGenerationParamsReasoning$inboundSchema: z.ZodType<
+  ChatGenerationParamsReasoning,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -157,16 +157,16 @@ export const Reasoning$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type Reasoning$Outbound = {
+export type ChatGenerationParamsReasoning$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
 };
 
 /** @internal */
-export const Reasoning$outboundSchema: z.ZodType<
-  Reasoning$Outbound,
+export const ChatGenerationParamsReasoning$outboundSchema: z.ZodType<
+  ChatGenerationParamsReasoning$Outbound,
   z.ZodTypeDef,
-  Reasoning
+  ChatGenerationParamsReasoning
 > = z.object({
   effort: z.nullable(ChatGenerationParamsEffort$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
@@ -176,26 +176,32 @@ export const Reasoning$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Reasoning$ {
-  /** @deprecated use `Reasoning$inboundSchema` instead. */
-  export const inboundSchema = Reasoning$inboundSchema;
-  /** @deprecated use `Reasoning$outboundSchema` instead. */
-  export const outboundSchema = Reasoning$outboundSchema;
-  /** @deprecated use `Reasoning$Outbound` instead. */
-  export type Outbound = Reasoning$Outbound;
+export namespace ChatGenerationParamsReasoning$ {
+  /** @deprecated use `ChatGenerationParamsReasoning$inboundSchema` instead. */
+  export const inboundSchema = ChatGenerationParamsReasoning$inboundSchema;
+  /** @deprecated use `ChatGenerationParamsReasoning$outboundSchema` instead. */
+  export const outboundSchema = ChatGenerationParamsReasoning$outboundSchema;
+  /** @deprecated use `ChatGenerationParamsReasoning$Outbound` instead. */
+  export type Outbound = ChatGenerationParamsReasoning$Outbound;
 }
 
-export function reasoningToJSON(reasoning: Reasoning): string {
-  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
+export function chatGenerationParamsReasoningToJSON(
+  chatGenerationParamsReasoning: ChatGenerationParamsReasoning,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsReasoning$outboundSchema.parse(
+      chatGenerationParamsReasoning,
+    ),
+  );
 }
 
-export function reasoningFromJSON(
+export function chatGenerationParamsReasoningFromJSON(
   jsonString: string,
-): SafeParseResult<Reasoning, SDKValidationError> {
+): SafeParseResult<ChatGenerationParamsReasoning, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Reasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Reasoning' from JSON`,
+    (x) => ChatGenerationParamsReasoning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatGenerationParamsReasoning' from JSON`,
   );
 }
 
@@ -531,7 +537,8 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
   max_tokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presence_penalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$inboundSchema).optional(),
+  reasoning: z.lazy(() => ChatGenerationParamsReasoning$inboundSchema)
+    .optional(),
   response_format: z.union([
     ResponseFormatJSONSchema$inboundSchema,
     ResponseFormatTextGrammar$inboundSchema,
@@ -575,7 +582,7 @@ export type ChatGenerationParams$Outbound = {
   max_tokens?: number | null | undefined;
   metadata?: { [k: string]: string } | undefined;
   presence_penalty?: number | null | undefined;
-  reasoning?: Reasoning$Outbound | undefined;
+  reasoning?: ChatGenerationParamsReasoning$Outbound | undefined;
   response_format?:
     | ResponseFormatJSONSchema$Outbound
     | ResponseFormatTextGrammar$Outbound
@@ -610,7 +617,8 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   maxTokens: z.nullable(z.number()).optional(),
   metadata: z.record(z.string()).optional(),
   presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
+  reasoning: z.lazy(() => ChatGenerationParamsReasoning$outboundSchema)
+    .optional(),
   responseFormat: z.union([
     ResponseFormatJSONSchema$outboundSchema,
     ResponseFormatTextGrammar$outboundSchema,

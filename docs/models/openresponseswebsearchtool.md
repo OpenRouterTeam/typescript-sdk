@@ -10,7 +10,9 @@ import { OpenResponsesWebSearchTool } from "@openrouter/sdk/models";
 let value: OpenResponsesWebSearchTool = {
   type: "web_search",
   filters: {
-    allowedDomains: null,
+    allowedDomains: [
+      "example.com",
+    ],
   },
   searchContextSize: "medium",
   userLocation: {

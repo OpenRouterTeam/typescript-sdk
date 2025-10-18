@@ -8,11 +8,23 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OpenResponsesInputContent,
-  OpenResponsesInputContent$inboundSchema,
-  OpenResponsesInputContent$Outbound,
-  OpenResponsesInputContent$outboundSchema,
-} from "./openresponsesinputcontent.js";
+  ResponseInputFile,
+  ResponseInputFile$inboundSchema,
+  ResponseInputFile$Outbound,
+  ResponseInputFile$outboundSchema,
+} from "./responseinputfile.js";
+import {
+  ResponseInputImage,
+  ResponseInputImage$inboundSchema,
+  ResponseInputImage$Outbound,
+  ResponseInputImage$outboundSchema,
+} from "./responseinputimage.js";
+import {
+  ResponseInputText,
+  ResponseInputText$inboundSchema,
+  ResponseInputText$Outbound,
+  ResponseInputText$outboundSchema,
+} from "./responseinputtext.js";
 
 export const OpenResponsesInputMessageItemType = {
   Message: "message",
@@ -47,17 +59,23 @@ export type OpenResponsesInputMessageItemRoleUnion =
   | OpenResponsesInputMessageItemRoleSystem
   | OpenResponsesInputMessageItemRoleDeveloper;
 
-/**
- * Input message item with structured content array
- */
+export type OpenResponsesInputMessageItemContent =
+  | (ResponseInputText & { type: "input_text" })
+  | (ResponseInputImage & { type: "input_image" })
+  | (ResponseInputFile & { type: "input_file" });
+
 export type OpenResponsesInputMessageItem = {
-  id: string;
+  id?: string | undefined;
   type?: OpenResponsesInputMessageItemType | undefined;
   role:
     | OpenResponsesInputMessageItemRoleUser
     | OpenResponsesInputMessageItemRoleSystem
     | OpenResponsesInputMessageItemRoleDeveloper;
-  content: Array<OpenResponsesInputContent>;
+  content: Array<
+    | (ResponseInputText & { type: "input_text" })
+    | (ResponseInputImage & { type: "input_image" })
+    | (ResponseInputFile & { type: "input_file" })
+  >;
 };
 
 /** @internal */
@@ -218,27 +236,137 @@ export function openResponsesInputMessageItemRoleUnionFromJSON(
 }
 
 /** @internal */
+export const OpenResponsesInputMessageItemContent$inboundSchema: z.ZodType<
+  OpenResponsesInputMessageItemContent,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  ResponseInputText$inboundSchema.and(
+    z.object({ type: z.literal("input_text") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputImage$inboundSchema.and(
+    z.object({ type: z.literal("input_image") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputFile$inboundSchema.and(
+    z.object({ type: z.literal("input_file") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+]);
+
+/** @internal */
+export type OpenResponsesInputMessageItemContent$Outbound =
+  | (ResponseInputText$Outbound & { type: "input_text" })
+  | (ResponseInputImage$Outbound & { type: "input_image" })
+  | (ResponseInputFile$Outbound & { type: "input_file" });
+
+/** @internal */
+export const OpenResponsesInputMessageItemContent$outboundSchema: z.ZodType<
+  OpenResponsesInputMessageItemContent$Outbound,
+  z.ZodTypeDef,
+  OpenResponsesInputMessageItemContent
+> = z.union([
+  ResponseInputText$outboundSchema.and(
+    z.object({ type: z.literal("input_text") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputImage$outboundSchema.and(
+    z.object({ type: z.literal("input_image") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputFile$outboundSchema.and(
+    z.object({ type: z.literal("input_file") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenResponsesInputMessageItemContent$ {
+  /** @deprecated use `OpenResponsesInputMessageItemContent$inboundSchema` instead. */
+  export const inboundSchema =
+    OpenResponsesInputMessageItemContent$inboundSchema;
+  /** @deprecated use `OpenResponsesInputMessageItemContent$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenResponsesInputMessageItemContent$outboundSchema;
+  /** @deprecated use `OpenResponsesInputMessageItemContent$Outbound` instead. */
+  export type Outbound = OpenResponsesInputMessageItemContent$Outbound;
+}
+
+export function openResponsesInputMessageItemContentToJSON(
+  openResponsesInputMessageItemContent: OpenResponsesInputMessageItemContent,
+): string {
+  return JSON.stringify(
+    OpenResponsesInputMessageItemContent$outboundSchema.parse(
+      openResponsesInputMessageItemContent,
+    ),
+  );
+}
+
+export function openResponsesInputMessageItemContentFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesInputMessageItemContent, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenResponsesInputMessageItemContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesInputMessageItemContent' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenResponsesInputMessageItem$inboundSchema: z.ZodType<
   OpenResponsesInputMessageItem,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   type: OpenResponsesInputMessageItemType$inboundSchema.optional(),
   role: z.union([
     OpenResponsesInputMessageItemRoleUser$inboundSchema,
     OpenResponsesInputMessageItemRoleSystem$inboundSchema,
     OpenResponsesInputMessageItemRoleDeveloper$inboundSchema,
   ]),
-  content: z.array(OpenResponsesInputContent$inboundSchema),
+  content: z.array(
+    z.union([
+      ResponseInputText$inboundSchema.and(
+        z.object({ type: z.literal("input_text") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputFile$inboundSchema.and(
+        z.object({ type: z.literal("input_file") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+    ]),
+  ),
 });
 
 /** @internal */
 export type OpenResponsesInputMessageItem$Outbound = {
-  id: string;
+  id?: string | undefined;
   type?: string | undefined;
   role: string | string | string;
-  content: Array<OpenResponsesInputContent$Outbound>;
+  content: Array<
+    | (ResponseInputText$Outbound & { type: "input_text" })
+    | (ResponseInputImage$Outbound & { type: "input_image" })
+    | (ResponseInputFile$Outbound & { type: "input_file" })
+  >;
 };
 
 /** @internal */
@@ -247,14 +375,32 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   OpenResponsesInputMessageItem
 > = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   type: OpenResponsesInputMessageItemType$outboundSchema.optional(),
   role: z.union([
     OpenResponsesInputMessageItemRoleUser$outboundSchema,
     OpenResponsesInputMessageItemRoleSystem$outboundSchema,
     OpenResponsesInputMessageItemRoleDeveloper$outboundSchema,
   ]),
-  content: z.array(OpenResponsesInputContent$outboundSchema),
+  content: z.array(
+    z.union([
+      ResponseInputText$outboundSchema.and(
+        z.object({ type: z.literal("input_text") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputImage$outboundSchema.and(
+        z.object({ type: z.literal("input_image") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputFile$outboundSchema.and(
+        z.object({ type: z.literal("input_file") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+    ]),
+  ),
 });
 
 /**
