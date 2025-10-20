@@ -23,6 +23,8 @@ jobs:
       - name: Setup Speakeasy
         uses: speakeasy-api/sdk-generation-action@v15
         with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
           speakeasy_version: latest
 
       - name: Run Speakeasy
