@@ -4872,7 +4872,13 @@ paths:
                       prompt_tokens: 50
                       completion_tokens: 125
                       reasoning_tokens: 25
-        default:
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error Response
           content:
             application/json:
@@ -4917,8 +4923,14 @@ paths:
                   data:
                     total_credits: 100.5
                     total_usage: 25.75
-        default:
-          description: Internal server error
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -5035,7 +5047,13 @@ paths:
                       - web3_data
                 required:
                   - data
-        default:
+        4XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
           description: Error
           content:
             application/json:
@@ -5256,8 +5274,14 @@ paths:
                 required:
                   - data
                 description: Generation response
-        default:
-          description: Error
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -5267,6 +5291,7 @@ paths:
     get:
       tags:
         - Models
+      x-speakeasy-name-override: count
       summary: Get total count of available models
       responses:
         '200':
@@ -5304,6 +5329,7 @@ paths:
     get:
       tags:
         - Models
+      x-speakeasy-name-override: list
       summary: List all models and their properties
       parameters:
         - schema:
@@ -5355,6 +5381,7 @@ paths:
     get:
       tags:
         - Models
+      x-speakeasy-name-override: listForUser
       summary: List models filtered by user provider preferences
       security:
         - bearer: []
@@ -5470,8 +5497,14 @@ paths:
                       - endpoints
                 required:
                   - data
-        default:
-          description: Error
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -5661,8 +5694,14 @@ paths:
                       - temperature
                       - top_p
                       - max_tokens
-        default:
-          description: Data not found
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -5926,8 +5965,14 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -6130,8 +6175,14 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: null
                   key: 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
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -6340,8 +6391,14 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T16:00:00Z'
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -6377,8 +6434,14 @@ paths:
                   - deleted
                 example:
                   deleted: true
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -6546,8 +6609,14 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T15:45:00Z'
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
@@ -6720,8 +6789,14 @@ paths:
                       requests: 1000
                       interval: 1h
                       note: This field is deprecated and safe to ignore.
-        default:
-          description: Error response
+        4XX:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Error Response
           content:
             application/json:
               schema:
