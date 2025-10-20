@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { modelsListModelsUser } from "../funcs/modelsListModelsUser.js";
+import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -21,18 +21,18 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type ModelsListModelsUserQueryData = operations.ListModelsUserResponse;
+export type ModelsListForUserQueryData = operations.ListModelsUserResponse;
 
 /**
  * List models filtered by user provider preferences
  */
-export function useModelsListModelsUser(
+export function useModelsListForUser(
   security: operations.ListModelsUserSecurity,
-  options?: QueryHookOptions<ModelsListModelsUserQueryData>,
-): UseQueryResult<ModelsListModelsUserQueryData, Error> {
+  options?: QueryHookOptions<ModelsListForUserQueryData>,
+): UseQueryResult<ModelsListForUserQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildModelsListModelsUserQuery(
+    ...buildModelsListForUserQuery(
       client,
       security,
       options,
@@ -44,13 +44,13 @@ export function useModelsListModelsUser(
 /**
  * List models filtered by user provider preferences
  */
-export function useModelsListModelsUserSuspense(
+export function useModelsListForUserSuspense(
   security: operations.ListModelsUserSecurity,
-  options?: SuspenseQueryHookOptions<ModelsListModelsUserQueryData>,
-): UseSuspenseQueryResult<ModelsListModelsUserQueryData, Error> {
+  options?: SuspenseQueryHookOptions<ModelsListForUserQueryData>,
+): UseSuspenseQueryResult<ModelsListForUserQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildModelsListModelsUserQuery(
+    ...buildModelsListForUserQuery(
       client,
       security,
       options,
@@ -59,39 +59,39 @@ export function useModelsListModelsUserSuspense(
   });
 }
 
-export function prefetchModelsListModelsUser(
+export function prefetchModelsListForUser(
   queryClient: QueryClient,
   client$: OpenRouterCore,
   security: operations.ListModelsUserSecurity,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildModelsListModelsUserQuery(
+    ...buildModelsListForUserQuery(
       client$,
       security,
     ),
   });
 }
 
-export function setModelsListModelsUserData(
+export function setModelsListForUserData(
   client: QueryClient,
-  data: ModelsListModelsUserQueryData,
-): ModelsListModelsUserQueryData | undefined {
-  const key = queryKeyModelsListModelsUser();
+  data: ModelsListForUserQueryData,
+): ModelsListForUserQueryData | undefined {
+  const key = queryKeyModelsListForUser();
 
-  return client.setQueryData<ModelsListModelsUserQueryData>(key, data);
+  return client.setQueryData<ModelsListForUserQueryData>(key, data);
 }
 
-export function invalidateAllModelsListModelsUser(
+export function invalidateAllModelsListForUser(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Models", "listModelsUser"],
+    queryKey: ["@openrouter/sdk", "Models", "listForUser"],
   });
 }
 
-export function buildModelsListModelsUserQuery(
+export function buildModelsListForUserQuery(
   client$: OpenRouterCore,
   security: operations.ListModelsUserSecurity,
   options?: RequestOptions,
@@ -99,20 +99,20 @@ export function buildModelsListModelsUserQuery(
   queryKey: QueryKey;
   queryFn: (
     context: QueryFunctionContext,
-  ) => Promise<ModelsListModelsUserQueryData>;
+  ) => Promise<ModelsListForUserQueryData>;
 } {
   return {
-    queryKey: queryKeyModelsListModelsUser(),
-    queryFn: async function modelsListModelsUserQueryFn(
+    queryKey: queryKeyModelsListForUser(),
+    queryFn: async function modelsListForUserQueryFn(
       ctx,
-    ): Promise<ModelsListModelsUserQueryData> {
+    ): Promise<ModelsListForUserQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(modelsListModelsUser(
+      return unwrapAsync(modelsListForUser(
         client$,
         security,
         mergedOptions,
@@ -121,6 +121,6 @@ export function buildModelsListModelsUserQuery(
   };
 }
 
-export function queryKeyModelsListModelsUser(): QueryKey {
-  return ["@openrouter/sdk", "Models", "listModelsUser"];
+export function queryKeyModelsListForUser(): QueryKey {
+  return ["@openrouter/sdk", "Models", "listForUser"];
 }

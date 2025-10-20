@@ -113,9 +113,10 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |
 
 ## create
 
@@ -209,9 +210,10 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |
 
 ## update
 
@@ -313,9 +315,10 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |
 
 ## delete
 
@@ -403,9 +406,10 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |
 
 ## get
 
@@ -504,9 +508,10 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |
 
 ## getCurrentKeyMetadata
 
@@ -599,6 +604,7 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type           | Status Code          | Content Type         |
+| -------------------- | -------------------- | -------------------- |
+| errors.ErrorResponse | 4XX                  | application/json     |
+| errors.ErrorResponse | 5XX                  | application/json     |

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 4b5b858a659c79c998dc73b8f227d602
+  docChecksum: e4e1223498928c4eb610287822d724df
   docVersion: 1.0.0
   speakeasyVersion: 1.637.2
   generationVersion: 2.727.9
-  releaseVersion: 0.0.1-beta.00
-  configChecksum: e883b865331e1d150bbb350fea0d1810
+  releaseVersion: 0.0.1-beta.1
+  configChecksum: 30f46be2606d41af387a239a2a3f84c0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -109,6 +109,7 @@ generatedFiles:
   - docs/models/errorresponsecode.md
   - docs/models/errorresponseerror.md
   - docs/models/errors/chaterror.md
+  - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
   - docs/models/experimental.md
   - docs/models/filecitationannotation.md
@@ -285,47 +286,37 @@ generatedFiles:
   - docs/models/operations/createcoinbasechargedata.md
   - docs/models/operations/createcoinbasechargerequest.md
   - docs/models/operations/createcoinbasechargeresponse.md
-  - docs/models/operations/createcoinbasechargeresponsebody.md
   - docs/models/operations/createcoinbasechargesecurity.md
   - docs/models/operations/createkeysdata.md
   - docs/models/operations/createkeyslimitreset.md
   - docs/models/operations/createkeysrequest.md
   - docs/models/operations/createkeysresponse.md
-  - docs/models/operations/createkeysresponsebody.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
-  - docs/models/operations/deletekeysresponsebody.md
   - docs/models/operations/errort.md
   - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
-  - docs/models/operations/getcreditsresponsebody.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
-  - docs/models/operations/getcurrentkeyresponsebody.md
   - docs/models/operations/getgenerationdata.md
   - docs/models/operations/getgenerationrequest.md
   - docs/models/operations/getgenerationresponse.md
-  - docs/models/operations/getgenerationresponsebody.md
   - docs/models/operations/getkeydata.md
   - docs/models/operations/getkeyrequest.md
   - docs/models/operations/getkeyresponse.md
-  - docs/models/operations/getkeyresponsebody.md
   - docs/models/operations/getmodelsrequest.md
   - docs/models/operations/getmodelsresponse.md
   - docs/models/operations/getmodelsresponsebody.md
   - docs/models/operations/getparametersdata.md
   - docs/models/operations/getparametersrequest.md
   - docs/models/operations/getparametersresponse.md
-  - docs/models/operations/getparametersresponsebody.md
   - docs/models/operations/getparameterssecurity.md
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
-  - docs/models/operations/getuseractivityresponsebody.md
   - docs/models/operations/listdata.md
   - docs/models/operations/listendpointsdata.md
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
-  - docs/models/operations/listendpointsresponsebody.md
   - docs/models/operations/listendpointszdrresponse.md
   - docs/models/operations/listendpointszdrresponsebody.md
   - docs/models/operations/listmodelscountdata.md
@@ -338,7 +329,6 @@ generatedFiles:
   - docs/models/operations/listprovidersresponse.md
   - docs/models/operations/listrequest.md
   - docs/models/operations/listresponse.md
-  - docs/models/operations/listresponsebody.md
   - docs/models/operations/metadata.md
   - docs/models/operations/provider.md
   - docs/models/operations/ratelimit.md
@@ -351,7 +341,6 @@ generatedFiles:
   - docs/models/operations/updatekeysrequest.md
   - docs/models/operations/updatekeysrequestbody.md
   - docs/models/operations/updatekeysresponse.md
-  - docs/models/operations/updatekeysresponsebody.md
   - docs/models/operations/web3data.md
   - docs/models/order.md
   - docs/models/outputmodality.md
@@ -510,9 +499,9 @@ generatedFiles:
   - src/funcs/endpointsList.ts
   - src/funcs/endpointsListZdrEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
-  - src/funcs/modelsGetModels.ts
-  - src/funcs/modelsListModelsCount.ts
-  - src/funcs/modelsListModelsUser.ts
+  - src/funcs/modelsCount.ts
+  - src/funcs/modelsList.ts
+  - src/funcs/modelsListForUser.ts
   - src/funcs/parametersGetParameters.ts
   - src/funcs/providersList.ts
   - src/hooks/hooks.ts
@@ -567,6 +556,7 @@ generatedFiles:
   - src/models/endpointstatus.ts
   - src/models/errorresponse.ts
   - src/models/errors/chaterror.ts
+  - src/models/errors/errorresponse.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
   - src/models/errors/listproviders.ts
@@ -685,9 +675,9 @@ generatedFiles:
   - src/react-query/endpointsListZdrEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
   - src/react-query/index.ts
-  - src/react-query/modelsGetModels.ts
-  - src/react-query/modelsListModelsCount.ts
-  - src/react-query/modelsListModelsUser.ts
+  - src/react-query/modelsCount.ts
+  - src/react-query/modelsList.ts
+  - src/react-query/modelsListForUser.ts
   - src/react-query/parametersGetParameters.ts
   - src/react-query/providersList.ts
   - src/sdk/analytics.ts
@@ -1057,9 +1047,9 @@ examples:
         "200":
           application/json: {"data": [{"date": "2025-08-24", "model": "openai/gpt-4.1", "model_permaslug": "openai/gpt-4.1-2025-04-14", "endpoint_id": "550e8400-e29b-41d4-a716-446655440000", "provider_name": "OpenAI", "usage": 0.015, "byok_usage_inference": 0.012, "requests": 5, "prompt_tokens": 50, "completion_tokens": 125, "reasoning_tokens": 25}]}
         4XX:
-          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
-          application/json: {"error": {"code": 498, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getCredits:
@@ -1068,8 +1058,10 @@ examples:
         "200":
           application/json: {"data": {"total_credits": 100.5, "total_usage": 25.75}}
         4XX:
-          application/json: {"error": {"code": 101, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   addCoinbaseCharge:
     speakeasy-default-add-coinbase-charge:
@@ -1152,9 +1144,9 @@ examples:
         "200":
           application/json: {"data": [{"hash": "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", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}]}
         4XX:
-          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
-          application/json: {"error": {"code": 525, "message": "<value>", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   previewZDR:
@@ -1178,9 +1170,9 @@ examples:
         "200":
           application/json: {"data": {"model": "openai/gpt-4", "supported_parameters": ["temperature", "top_p", "max_tokens"]}}
         4XX:
-          application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
-          application/json: {"error": {"code": 503, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listProviders:
@@ -1258,9 +1250,9 @@ examples:
         "200":
           application/json: {"data": {"label": "sk-or-v1-au78b3456789012345678901234567890", "limit": 100, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "is_free_tier": false, "is_provisioning_key": false, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "rate_limit": {"requests": 1000, "interval": "1h", "note": "This field is deprecated and safe to ignore."}}}
         4XX:
-          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
-          application/json: {"error": {"code": 426, "message": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   exchangeAuthorizationCode:
@@ -1347,6 +1339,10 @@ examples:
           application/json: {"data": {"id": "<id>", "created_at": "1715098772685", "expires_at": "1755552807642", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 4907.84, "contract_address": "<value>", "sender": "<value>"}}}}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getGeneration:
     speakeasy-default-get-generation:
       parameters:
@@ -1356,6 +1352,10 @@ examples:
         "200":
           application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listModelsCount:
     speakeasy-default-list-models-count:
@@ -1396,6 +1396,10 @@ examples:
           application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": [], "output_modalities": []}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5355.68, "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://picsum.photos/seed/uZjMJ4Dy/1347/1789", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3498.4, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9312.33}, "provider_name": "Crusoe", "tag": "<value>", "quantization": "fp4", "max_completion_tokens": 2451.81, "max_prompt_tokens": 5726.51, "supported_parameters": [], "status": -5, "uptime_last_30m": 3744.66, "supports_implicit_caching": false}]}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listEndpointsZdr:
     speakeasy-default-list-endpoints-zdr:
       responses:
@@ -1412,6 +1416,10 @@ examples:
           application/json: {"data": {"hash": "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", "name": "My New API Key", "label": "My New API Key", "disabled": false, "limit": 50, "limit_remaining": 50, "limit_reset": "monthly", "include_byok_in_limit": true, "usage": 0, "usage_daily": 0, "usage_weekly": 0, "usage_monthly": 0, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "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"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   updateKeys:
     speakeasy-default-update-keys:
       parameters:
@@ -1424,6 +1432,10 @@ examples:
           application/json: {"data": {"hash": "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", "name": "Updated API Key Name", "label": "Updated API Key Name", "disabled": false, "limit": 75, "limit_remaining": 49.5, "limit_reset": "daily", "include_byok_in_limit": true, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   deleteKeys:
     speakeasy-default-delete-keys:
       parameters:
@@ -1433,6 +1445,10 @@ examples:
         "200":
           application/json: {"deleted": true}
         default:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getKey:
     speakeasy-default-get-key:
@@ -1444,4 +1460,9 @@ examples:
           application/json: {"data": {"hash": "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", "name": "My Production Key", "label": "Production API Key", "disabled": false, "limit": 100, "limit_remaining": 74.5, "limit_reset": "monthly", "include_byok_in_limit": false, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T15:45:00Z"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        4XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        5XX:
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.apiKeys.list()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.create()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.getCurrentKeyMetadata()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.get()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.delete()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.update()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.analytics.getUserActivity()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.credits.getCredits()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.credits.createCoinbaseCharge()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.endpoints.list()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.generations.getGeneration()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.parameters.getParameters()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.models.count()`: **Added**\n* `openrouter.models.list()`: **Added**\n* `openrouter.models.listModelsUser()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.getModels()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.listModelsCount()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.listForUser()`: **Added**\n"

@@ -7,7 +7,6 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 /**
  * Legacy rate limit information about a key. Will always return -1.
@@ -104,16 +103,12 @@ export type GetCurrentKeyData = {
 /**
  * API key details
  */
-export type GetCurrentKeyResponseBody = {
+export type GetCurrentKeyResponse = {
   /**
    * Current API key information
    */
   data: GetCurrentKeyData;
 };
-
-export type GetCurrentKeyResponse =
-  | GetCurrentKeyResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const RateLimit$inboundSchema: z.ZodType<
@@ -303,8 +298,8 @@ export function getCurrentKeyDataFromJSON(
 }
 
 /** @internal */
-export const GetCurrentKeyResponseBody$inboundSchema: z.ZodType<
-  GetCurrentKeyResponseBody,
+export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
+  GetCurrentKeyResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -312,74 +307,18 @@ export const GetCurrentKeyResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetCurrentKeyResponseBody$Outbound = {
+export type GetCurrentKeyResponse$Outbound = {
   data: GetCurrentKeyData$Outbound;
 };
-
-/** @internal */
-export const GetCurrentKeyResponseBody$outboundSchema: z.ZodType<
-  GetCurrentKeyResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetCurrentKeyResponseBody
-> = z.object({
-  data: z.lazy(() => GetCurrentKeyData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetCurrentKeyResponseBody$ {
-  /** @deprecated use `GetCurrentKeyResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetCurrentKeyResponseBody$inboundSchema;
-  /** @deprecated use `GetCurrentKeyResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetCurrentKeyResponseBody$outboundSchema;
-  /** @deprecated use `GetCurrentKeyResponseBody$Outbound` instead. */
-  export type Outbound = GetCurrentKeyResponseBody$Outbound;
-}
-
-export function getCurrentKeyResponseBodyToJSON(
-  getCurrentKeyResponseBody: GetCurrentKeyResponseBody,
-): string {
-  return JSON.stringify(
-    GetCurrentKeyResponseBody$outboundSchema.parse(getCurrentKeyResponseBody),
-  );
-}
-
-export function getCurrentKeyResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetCurrentKeyResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetCurrentKeyResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetCurrentKeyResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
-  GetCurrentKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetCurrentKeyResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetCurrentKeyResponse$Outbound =
-  | GetCurrentKeyResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetCurrentKeyResponse$outboundSchema: z.ZodType<
   GetCurrentKeyResponse$Outbound,
   z.ZodTypeDef,
   GetCurrentKeyResponse
-> = z.union([
-  z.lazy(() => GetCurrentKeyResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetCurrentKeyData$outboundSchema),
+});
 
 /**
  * @internal

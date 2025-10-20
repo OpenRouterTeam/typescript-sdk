@@ -1,12 +1,13 @@
 # GetParametersResponse
 
+Returns the parameters for the specified model
 
-## Supported Types
-
-### `operations.GetParametersResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetParametersResponseBody = {
+import { GetParametersResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetParametersResponse = {
   data: {
     model: "openai/gpt-4",
     supportedParameters: [
@@ -18,19 +19,8 @@ const value: operations.GetParametersResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   | Example                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `data`                                                                                        | [operations.GetParametersData](../../models/operations/getparametersdata.md)                  | :heavy_check_mark:                                                                            | Parameter analytics data                                                                      | {<br/>"model": "openai/gpt-4",<br/>"supported_parameters": [<br/>"temperature",<br/>"top_p",<br/>"max_tokens"<br/>]<br/>} |

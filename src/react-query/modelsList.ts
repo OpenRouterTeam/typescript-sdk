@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { modelsGetModels } from "../funcs/modelsGetModels.js";
+import { modelsList } from "../funcs/modelsList.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -25,18 +25,18 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type ModelsGetModelsQueryData = operations.GetModelsResponse;
+export type ModelsListQueryData = operations.GetModelsResponse;
 
 /**
  * List all models and their properties
  */
-export function useModelsGetModels(
+export function useModelsList(
   request?: operations.GetModelsRequest | undefined,
-  options?: QueryHookOptions<ModelsGetModelsQueryData>,
-): UseQueryResult<ModelsGetModelsQueryData, Error> {
+  options?: QueryHookOptions<ModelsListQueryData>,
+): UseQueryResult<ModelsListQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildModelsGetModelsQuery(
+    ...buildModelsListQuery(
       client,
       request,
       options,
@@ -48,13 +48,13 @@ export function useModelsGetModels(
 /**
  * List all models and their properties
  */
-export function useModelsGetModelsSuspense(
+export function useModelsListSuspense(
   request?: operations.GetModelsRequest | undefined,
-  options?: SuspenseQueryHookOptions<ModelsGetModelsQueryData>,
-): UseSuspenseQueryResult<ModelsGetModelsQueryData, Error> {
+  options?: SuspenseQueryHookOptions<ModelsListQueryData>,
+): UseSuspenseQueryResult<ModelsListQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildModelsGetModelsQuery(
+    ...buildModelsListQuery(
       client,
       request,
       options,
@@ -63,20 +63,20 @@ export function useModelsGetModelsSuspense(
   });
 }
 
-export function prefetchModelsGetModels(
+export function prefetchModelsList(
   queryClient: QueryClient,
   client$: OpenRouterCore,
   request?: operations.GetModelsRequest | undefined,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildModelsGetModelsQuery(
+    ...buildModelsListQuery(
       client$,
       request,
     ),
   });
 }
 
-export function setModelsGetModelsData(
+export function setModelsListData(
   client: QueryClient,
   queryKeyBase: [
     parameters: {
@@ -86,14 +86,14 @@ export function setModelsGetModelsData(
       useRssChatLinks?: string | undefined;
     },
   ],
-  data: ModelsGetModelsQueryData,
-): ModelsGetModelsQueryData | undefined {
-  const key = queryKeyModelsGetModels(...queryKeyBase);
+  data: ModelsListQueryData,
+): ModelsListQueryData | undefined {
+  const key = queryKeyModelsList(...queryKeyBase);
 
-  return client.setQueryData<ModelsGetModelsQueryData>(key, data);
+  return client.setQueryData<ModelsListQueryData>(key, data);
 }
 
-export function invalidateModelsGetModels(
+export function invalidateModelsList(
   client: QueryClient,
   queryKeyBase: TupleToPrefixes<
     [parameters: {
@@ -107,45 +107,45 @@ export function invalidateModelsGetModels(
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Models", "getModels", ...queryKeyBase],
+    queryKey: ["@openrouter/sdk", "Models", "list", ...queryKeyBase],
   });
 }
 
-export function invalidateAllModelsGetModels(
+export function invalidateAllModelsList(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Models", "getModels"],
+    queryKey: ["@openrouter/sdk", "Models", "list"],
   });
 }
 
-export function buildModelsGetModelsQuery(
+export function buildModelsListQuery(
   client$: OpenRouterCore,
   request?: operations.GetModelsRequest | undefined,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;
-  queryFn: (context: QueryFunctionContext) => Promise<ModelsGetModelsQueryData>;
+  queryFn: (context: QueryFunctionContext) => Promise<ModelsListQueryData>;
 } {
   return {
-    queryKey: queryKeyModelsGetModels({
+    queryKey: queryKeyModelsList({
       category: request?.category,
       supportedParameters: request?.supportedParameters,
       useRss: request?.useRss,
       useRssChatLinks: request?.useRssChatLinks,
     }),
-    queryFn: async function modelsGetModelsQueryFn(
+    queryFn: async function modelsListQueryFn(
       ctx,
-    ): Promise<ModelsGetModelsQueryData> {
+    ): Promise<ModelsListQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(modelsGetModels(
+      return unwrapAsync(modelsList(
         client$,
         request,
         mergedOptions,
@@ -154,7 +154,7 @@ export function buildModelsGetModelsQuery(
   };
 }
 
-export function queryKeyModelsGetModels(
+export function queryKeyModelsList(
   parameters: {
     category?: string | undefined;
     supportedParameters?: string | undefined;
@@ -162,5 +162,5 @@ export function queryKeyModelsGetModels(
     useRssChatLinks?: string | undefined;
   },
 ): QueryKey {
-  return ["@openrouter/sdk", "Models", "getModels", parameters];
+  return ["@openrouter/sdk", "Models", "list", parameters];
 }

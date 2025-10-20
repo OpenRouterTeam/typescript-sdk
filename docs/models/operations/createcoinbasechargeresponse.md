@@ -1,16 +1,17 @@
 # CreateCoinbaseChargeResponse
 
+Returns the calldata to fulfill the transaction
 
-## Supported Types
-
-### `operations.CreateCoinbaseChargeResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.CreateCoinbaseChargeResponseBody = {
+import { CreateCoinbaseChargeResponse } from "@openrouter/sdk/models/operations";
+
+let value: CreateCoinbaseChargeResponse = {
   data: {
     id: "<id>",
-    createdAt: "1705315914848",
-    expiresAt: "1759618011738",
+    createdAt: "1723897831264",
+    expiresAt: "1744713163031",
     web3Data: {
       transferIntent: {
         callData: {
@@ -36,19 +37,8 @@ const value: operations.CreateCoinbaseChargeResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `data`                                                                                     | [operations.CreateCoinbaseChargeData](../../models/operations/createcoinbasechargedata.md) | :heavy_check_mark:                                                                         | N/A                                                                                        |

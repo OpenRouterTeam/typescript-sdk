@@ -1,12 +1,13 @@
 # ListEndpointsResponse
 
+Returns a list of endpoints
 
-## Supported Types
-
-### `operations.ListEndpointsResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.ListEndpointsResponseBody = {
+import { ListEndpointsResponse } from "@openrouter/sdk/models/operations";
+
+let value: ListEndpointsResponse = {
   data: {
     id: "openai/gpt-4",
     name: "GPT-4",
@@ -36,12 +37,12 @@ const value: operations.ListEndpointsResponseBody = {
           image: "0",
           imageOutput: "<value>",
           audio: "<value>",
-          inputAudioCache: "<value>",
+          inputAudioCache: 1680.97,
           webSearch: "<value>",
-          internalReasoning: "<value>",
-          inputCacheRead: "<value>",
-          inputCacheWrite: 5536.24,
-          discount: 9541.49,
+          internalReasoning: 2716.81,
+          inputCacheRead: 8244.1,
+          inputCacheWrite: 5146.35,
+          discount: 8299.01,
         },
         providerName: "OpenAI",
         tag: "openai",
@@ -62,19 +63,8 @@ const value: operations.ListEndpointsResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `data`                                                                       | [operations.ListEndpointsData](../../models/operations/listendpointsdata.md) | :heavy_check_mark:                                                           | N/A                                                                          |

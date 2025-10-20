@@ -12,7 +12,6 @@ import {
 } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type CreateCoinbaseChargeSecurity = {
   bearer: string;
@@ -69,13 +68,9 @@ export type CreateCoinbaseChargeData = {
 /**
  * Returns the calldata to fulfill the transaction
  */
-export type CreateCoinbaseChargeResponseBody = {
+export type CreateCoinbaseChargeResponse = {
   data: CreateCoinbaseChargeData;
 };
-
-export type CreateCoinbaseChargeResponse =
-  | CreateCoinbaseChargeResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const CreateCoinbaseChargeSecurity$inboundSchema: z.ZodType<
@@ -581,8 +576,8 @@ export function createCoinbaseChargeDataFromJSON(
 }
 
 /** @internal */
-export const CreateCoinbaseChargeResponseBody$inboundSchema: z.ZodType<
-  CreateCoinbaseChargeResponseBody,
+export const CreateCoinbaseChargeResponse$inboundSchema: z.ZodType<
+  CreateCoinbaseChargeResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -590,76 +585,18 @@ export const CreateCoinbaseChargeResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type CreateCoinbaseChargeResponseBody$Outbound = {
+export type CreateCoinbaseChargeResponse$Outbound = {
   data: CreateCoinbaseChargeData$Outbound;
 };
-
-/** @internal */
-export const CreateCoinbaseChargeResponseBody$outboundSchema: z.ZodType<
-  CreateCoinbaseChargeResponseBody$Outbound,
-  z.ZodTypeDef,
-  CreateCoinbaseChargeResponseBody
-> = z.object({
-  data: z.lazy(() => CreateCoinbaseChargeData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateCoinbaseChargeResponseBody$ {
-  /** @deprecated use `CreateCoinbaseChargeResponseBody$inboundSchema` instead. */
-  export const inboundSchema = CreateCoinbaseChargeResponseBody$inboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeResponseBody$outboundSchema` instead. */
-  export const outboundSchema = CreateCoinbaseChargeResponseBody$outboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeResponseBody$Outbound` instead. */
-  export type Outbound = CreateCoinbaseChargeResponseBody$Outbound;
-}
-
-export function createCoinbaseChargeResponseBodyToJSON(
-  createCoinbaseChargeResponseBody: CreateCoinbaseChargeResponseBody,
-): string {
-  return JSON.stringify(
-    CreateCoinbaseChargeResponseBody$outboundSchema.parse(
-      createCoinbaseChargeResponseBody,
-    ),
-  );
-}
-
-export function createCoinbaseChargeResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateCoinbaseChargeResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateCoinbaseChargeResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateCoinbaseChargeResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const CreateCoinbaseChargeResponse$inboundSchema: z.ZodType<
-  CreateCoinbaseChargeResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => CreateCoinbaseChargeResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type CreateCoinbaseChargeResponse$Outbound =
-  | CreateCoinbaseChargeResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const CreateCoinbaseChargeResponse$outboundSchema: z.ZodType<
   CreateCoinbaseChargeResponse$Outbound,
   z.ZodTypeDef,
   CreateCoinbaseChargeResponse
-> = z.union([
-  z.lazy(() => CreateCoinbaseChargeResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => CreateCoinbaseChargeData$outboundSchema),
+});
 
 /**
  * @internal

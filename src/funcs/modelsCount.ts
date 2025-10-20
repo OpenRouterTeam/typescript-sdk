@@ -25,7 +25,7 @@ import { Result } from "../types/fp.js";
 /**
  * Get total count of available models
  */
-export function modelsListModelsCount(
+export function modelsCount(
   client: OpenRouterCore,
   options?: RequestOptions,
 ): APIPromise<

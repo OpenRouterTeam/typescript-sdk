@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.0.1-beta.00",
+  "version": "0.0.1-beta.1",
   "author": "OpenRouter",
   "type": "module",
   "tshy": {

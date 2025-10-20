@@ -1,12 +1,13 @@
 # GetGenerationResponse
 
+Generation response
 
-## Supported Types
-
-### `operations.GetGenerationResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetGenerationResponseBody = {
+import { GetGenerationResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetGenerationResponse = {
   data: {
     id: "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG",
     upstreamId: "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946",
@@ -39,24 +40,13 @@ const value: operations.GetGenerationResponseBody = {
     isByok: false,
     nativeFinishReason: "stop",
     externalUser: "user-123",
-    apiType: "embeddings",
+    apiType: null,
   },
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `data`                                                                       | [operations.GetGenerationData](../../models/operations/getgenerationdata.md) | :heavy_check_mark:                                                           | Generation data                                                              |

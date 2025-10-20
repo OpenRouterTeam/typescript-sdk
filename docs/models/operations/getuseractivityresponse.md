@@ -1,12 +1,13 @@
 # GetUserActivityResponse
 
+Returns user activity data grouped by endpoint
 
-## Supported Types
-
-### `operations.GetUserActivityResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.GetUserActivityResponseBody = {
+import { GetUserActivityResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetUserActivityResponse = {
   data: [
     {
       date: "2025-08-24",
@@ -25,19 +26,8 @@ const value: operations.GetUserActivityResponseBody = {
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                                 | Type                                                  | Required                                              | Description                                           |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `data`                                                | [models.ActivityItem](../../models/activityitem.md)[] | :heavy_check_mark:                                    | List of activity items                                |

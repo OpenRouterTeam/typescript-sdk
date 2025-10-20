@@ -12,7 +12,6 @@ import {
 } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 /**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
@@ -127,7 +126,7 @@ export type CreateKeysData = {
 /**
  * API key created successfully
  */
-export type CreateKeysResponseBody = {
+export type CreateKeysResponse = {
   /**
    * The created API key information
    */
@@ -137,8 +136,6 @@ export type CreateKeysResponseBody = {
    */
   key: string;
 };
-
-export type CreateKeysResponse = CreateKeysResponseBody | models.ErrorResponse;
 
 /** @internal */
 export const CreateKeysLimitReset$inboundSchema: z.ZodType<
@@ -377,8 +374,8 @@ export function createKeysDataFromJSON(
 }
 
 /** @internal */
-export const CreateKeysResponseBody$inboundSchema: z.ZodType<
-  CreateKeysResponseBody,
+export const CreateKeysResponse$inboundSchema: z.ZodType<
+  CreateKeysResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -387,76 +384,20 @@ export const CreateKeysResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type CreateKeysResponseBody$Outbound = {
+export type CreateKeysResponse$Outbound = {
   data: CreateKeysData$Outbound;
   key: string;
 };
-
-/** @internal */
-export const CreateKeysResponseBody$outboundSchema: z.ZodType<
-  CreateKeysResponseBody$Outbound,
-  z.ZodTypeDef,
-  CreateKeysResponseBody
-> = z.object({
-  data: z.lazy(() => CreateKeysData$outboundSchema),
-  key: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateKeysResponseBody$ {
-  /** @deprecated use `CreateKeysResponseBody$inboundSchema` instead. */
-  export const inboundSchema = CreateKeysResponseBody$inboundSchema;
-  /** @deprecated use `CreateKeysResponseBody$outboundSchema` instead. */
-  export const outboundSchema = CreateKeysResponseBody$outboundSchema;
-  /** @deprecated use `CreateKeysResponseBody$Outbound` instead. */
-  export type Outbound = CreateKeysResponseBody$Outbound;
-}
-
-export function createKeysResponseBodyToJSON(
-  createKeysResponseBody: CreateKeysResponseBody,
-): string {
-  return JSON.stringify(
-    CreateKeysResponseBody$outboundSchema.parse(createKeysResponseBody),
-  );
-}
-
-export function createKeysResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateKeysResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateKeysResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateKeysResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const CreateKeysResponse$inboundSchema: z.ZodType<
-  CreateKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => CreateKeysResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type CreateKeysResponse$Outbound =
-  | CreateKeysResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const CreateKeysResponse$outboundSchema: z.ZodType<
   CreateKeysResponse$Outbound,
   z.ZodTypeDef,
   CreateKeysResponse
-> = z.union([
-  z.lazy(() => CreateKeysResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => CreateKeysData$outboundSchema),
+  key: z.string(),
+});
 
 /**
  * @internal

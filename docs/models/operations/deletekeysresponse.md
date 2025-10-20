@@ -1,29 +1,19 @@
 # DeleteKeysResponse
 
+API key deleted successfully
 
-## Supported Types
-
-### `operations.DeleteKeysResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.DeleteKeysResponseBody = {
+import { DeleteKeysResponse } from "@openrouter/sdk/models/operations";
+
+let value: DeleteKeysResponse = {
   deleted: true,
 };
 ```
 
-### `models.ErrorResponse`
+## Fields
 
-```typescript
-const value: models.ErrorResponse = {
-  error: {
-    code: 400,
-    message: "Invalid request parameters",
-    metadata: {
-      "field": "temperature",
-      "reason": "Must be between 0 and 2",
-    },
-  },
-  userId: "user-abc123",
-};
-```
-
+| Field                                     | Type                                      | Required                                  | Description                               | Example                                   |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `deleted`                                 | *boolean*                                 | :heavy_check_mark:                        | Confirmation that the API key was deleted | true                                      |

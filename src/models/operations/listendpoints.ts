@@ -101,13 +101,9 @@ export type ListEndpointsData = {
 /**
  * Returns a list of endpoints
  */
-export type ListEndpointsResponseBody = {
+export type ListEndpointsResponse = {
   data: ListEndpointsData;
 };
-
-export type ListEndpointsResponse =
-  | ListEndpointsResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const ListEndpointsRequest$inboundSchema: z.ZodType<
@@ -342,8 +338,8 @@ export function listEndpointsDataFromJSON(
 }
 
 /** @internal */
-export const ListEndpointsResponseBody$inboundSchema: z.ZodType<
-  ListEndpointsResponseBody,
+export const ListEndpointsResponse$inboundSchema: z.ZodType<
+  ListEndpointsResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -351,74 +347,18 @@ export const ListEndpointsResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ListEndpointsResponseBody$Outbound = {
+export type ListEndpointsResponse$Outbound = {
   data: ListEndpointsData$Outbound;
 };
-
-/** @internal */
-export const ListEndpointsResponseBody$outboundSchema: z.ZodType<
-  ListEndpointsResponseBody$Outbound,
-  z.ZodTypeDef,
-  ListEndpointsResponseBody
-> = z.object({
-  data: z.lazy(() => ListEndpointsData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListEndpointsResponseBody$ {
-  /** @deprecated use `ListEndpointsResponseBody$inboundSchema` instead. */
-  export const inboundSchema = ListEndpointsResponseBody$inboundSchema;
-  /** @deprecated use `ListEndpointsResponseBody$outboundSchema` instead. */
-  export const outboundSchema = ListEndpointsResponseBody$outboundSchema;
-  /** @deprecated use `ListEndpointsResponseBody$Outbound` instead. */
-  export type Outbound = ListEndpointsResponseBody$Outbound;
-}
-
-export function listEndpointsResponseBodyToJSON(
-  listEndpointsResponseBody: ListEndpointsResponseBody,
-): string {
-  return JSON.stringify(
-    ListEndpointsResponseBody$outboundSchema.parse(listEndpointsResponseBody),
-  );
-}
-
-export function listEndpointsResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<ListEndpointsResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListEndpointsResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListEndpointsResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListEndpointsResponse$inboundSchema: z.ZodType<
-  ListEndpointsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => ListEndpointsResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type ListEndpointsResponse$Outbound =
-  | ListEndpointsResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const ListEndpointsResponse$outboundSchema: z.ZodType<
   ListEndpointsResponse$Outbound,
   z.ZodTypeDef,
   ListEndpointsResponse
-> = z.union([
-  z.lazy(() => ListEndpointsResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => ListEndpointsData$outboundSchema),
+});
 
 /**
  * @internal

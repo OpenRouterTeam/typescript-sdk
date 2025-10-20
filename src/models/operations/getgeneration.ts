@@ -12,7 +12,6 @@ import {
 } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetGenerationRequest = {
   id: string;
@@ -167,16 +166,12 @@ export type GetGenerationData = {
 /**
  * Generation response
  */
-export type GetGenerationResponseBody = {
+export type GetGenerationResponse = {
   /**
    * Generation data
    */
   data: GetGenerationData;
 };
-
-export type GetGenerationResponse =
-  | GetGenerationResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetGenerationRequest$inboundSchema: z.ZodType<
@@ -462,8 +457,8 @@ export function getGenerationDataFromJSON(
 }
 
 /** @internal */
-export const GetGenerationResponseBody$inboundSchema: z.ZodType<
-  GetGenerationResponseBody,
+export const GetGenerationResponse$inboundSchema: z.ZodType<
+  GetGenerationResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -471,74 +466,18 @@ export const GetGenerationResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetGenerationResponseBody$Outbound = {
+export type GetGenerationResponse$Outbound = {
   data: GetGenerationData$Outbound;
 };
-
-/** @internal */
-export const GetGenerationResponseBody$outboundSchema: z.ZodType<
-  GetGenerationResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetGenerationResponseBody
-> = z.object({
-  data: z.lazy(() => GetGenerationData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetGenerationResponseBody$ {
-  /** @deprecated use `GetGenerationResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetGenerationResponseBody$inboundSchema;
-  /** @deprecated use `GetGenerationResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetGenerationResponseBody$outboundSchema;
-  /** @deprecated use `GetGenerationResponseBody$Outbound` instead. */
-  export type Outbound = GetGenerationResponseBody$Outbound;
-}
-
-export function getGenerationResponseBodyToJSON(
-  getGenerationResponseBody: GetGenerationResponseBody,
-): string {
-  return JSON.stringify(
-    GetGenerationResponseBody$outboundSchema.parse(getGenerationResponseBody),
-  );
-}
-
-export function getGenerationResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetGenerationResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetGenerationResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetGenerationResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetGenerationResponse$inboundSchema: z.ZodType<
-  GetGenerationResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetGenerationResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetGenerationResponse$Outbound =
-  | GetGenerationResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetGenerationResponse$outboundSchema: z.ZodType<
   GetGenerationResponse$Outbound,
   z.ZodTypeDef,
   GetGenerationResponse
-> = z.union([
-  z.lazy(() => GetGenerationResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetGenerationData$outboundSchema),
+});
 
 /**
  * @internal

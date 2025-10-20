@@ -412,9 +412,9 @@ run();
 
 ### [models](docs/sdks/models/README.md)
 
-* [listModelsCount](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
-* [getModels](docs/sdks/models/README.md#getmodels) - List all models and their properties
-* [listModelsUser](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
+* [count](docs/sdks/models/README.md#count) - Get total count of available models
+* [list](docs/sdks/models/README.md#list) - List all models and their properties
+* [listForUser](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
 
 ### [parameters](docs/sdks/parameters/README.md)
 
@@ -457,9 +457,9 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`endpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
 - [`endpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
 - [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`modelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`modelsListModelsCount`](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
-- [`modelsListModelsUser`](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
+- [`modelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
+- [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+- [`modelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
 - [`parametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 - [`providersList`](docs/sdks/providers/README.md#list) - List all providers
 
@@ -503,9 +503,9 @@ To learn about this feature and how to get started, check
 - [`useEndpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
 - [`useEndpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
 - [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`useModelsGetModels`](docs/sdks/models/README.md#getmodels) - List all models and their properties
-- [`useModelsListModelsCount`](docs/sdks/models/README.md#listmodelscount) - Get total count of available models
-- [`useModelsListModelsUser`](docs/sdks/models/README.md#listmodelsuser) - List models filtered by user provider preferences
+- [`useModelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
+- [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+- [`useModelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
 - [`useParametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 - [`useProvidersList`](docs/sdks/providers/README.md#list) - List all providers
 
@@ -954,7 +954,9 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.providers.list();
+    const result = await openRouter.analytics.getUserActivity({
+      date: "2025-08-24",
+    });
 
     console.log(result);
   } catch (error) {
@@ -966,8 +968,9 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.InternalServerError) {
-        console.log(error.data$.error); // operations.ErrorT
+      if (error instanceof errors.ErrorResponse) {
+        console.log(error.data$.error); // models.ErrorResponseError
+        console.log(error.data$.userId); // string
       }
     }
   }
@@ -981,7 +984,7 @@ run();
 **Primary error:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
 
-<details><summary>Less common errors (8)</summary>
+<details><summary>Less common errors (9)</summary>
 
 <br />
 
@@ -994,6 +997,7 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
+* [`ErrorResponse`](./src/models/errors/errorresponse.ts): Error response. Applicable to 12 of 20 methods.*
 * [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 20 methods.*
 * [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.

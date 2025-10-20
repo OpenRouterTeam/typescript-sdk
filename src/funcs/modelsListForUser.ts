@@ -3,12 +3,10 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeFormQuery } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
+import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -25,15 +23,15 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all models and their properties
+ * List models filtered by user provider preferences
  */
-export function modelsGetModels(
+export function modelsListForUser(
   client: OpenRouterCore,
-  request?: operations.GetModelsRequest | undefined,
+  security: operations.ListModelsUserSecurity,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetModelsResponse,
+    operations.ListModelsUserResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -46,19 +44,19 @@ export function modelsGetModels(
 > {
   return new APIPromise($do(
     client,
-    request,
+    security,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
-  request?: operations.GetModelsRequest | undefined,
+  security: operations.ListModelsUserSecurity,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.GetModelsResponse,
+      operations.ListModelsUserResponse,
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -71,44 +69,31 @@ async function $do(
     APICall,
   ]
 > {
-  const parsed = safeParse(
-    request,
-    (value) =>
-      operations.GetModelsRequest$outboundSchema.optional().parse(value),
-    "Input validation failed",
-  );
-  if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
-  }
-  const payload = parsed.value;
-  const body = null;
-
-  const path = pathToFunc("/models")();
-
-  const query = encodeFormQuery({
-    "category": payload?.category,
-    "supported_parameters": payload?.supported_parameters,
-    "use_rss": payload?.use_rss,
-    "use_rss_chat_links": payload?.use_rss_chat_links,
-  });
+  const path = pathToFunc("/models/user")();
 
   const headers = new Headers(compactMap({
-    Accept: "application/json;q=1, application/rss+xml;q=0",
+    Accept: "application/json",
   }));
 
-  const secConfig = await extractSecurity(client._options.apiKey);
-  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveSecurity(
+    [
+      {
+        fieldName: "Authorization",
+        type: "http:bearer",
+        value: security?.bearer,
+      },
+    ],
+  );
 
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "getModels",
+    operationID: "listModelsUser",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
-    securitySource: client._options.apiKey,
+    securitySource: security,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -121,8 +106,6 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
-    query: query,
-    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
@@ -143,7 +126,7 @@ async function $do(
   const response = doResult.value;
 
   const [result] = await M.match<
-    operations.GetModelsResponse,
+    operations.ListModelsUserResponse,
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -153,13 +136,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.GetModelsResponse$inboundSchema),
-    M.text(200, operations.GetModelsResponse$inboundSchema, {
-      ctype: "application/rss+xml",
-    }),
+    M.json(200, operations.ListModelsUserResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
-    M.json("default", operations.GetModelsResponse$inboundSchema),
+    M.json("default", operations.ListModelsUserResponse$inboundSchema),
   )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

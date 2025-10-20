@@ -7,7 +7,6 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type ListRequest = {
   includeDisabled?: string | undefined;
@@ -92,14 +91,12 @@ export type ListData = {
 /**
  * List of API keys
  */
-export type ListResponseBody = {
+export type ListResponse = {
   /**
    * List of API keys
    */
   data: Array<ListData>;
 };
-
-export type ListResponse = ListResponseBody | models.ErrorResponse;
 
 /** @internal */
 export const ListRequest$inboundSchema: z.ZodType<
@@ -294,8 +291,8 @@ export function listDataFromJSON(
 }
 
 /** @internal */
-export const ListResponseBody$inboundSchema: z.ZodType<
-  ListResponseBody,
+export const ListResponse$inboundSchema: z.ZodType<
+  ListResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -303,74 +300,18 @@ export const ListResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type ListResponseBody$Outbound = {
+export type ListResponse$Outbound = {
   data: Array<ListData$Outbound>;
 };
-
-/** @internal */
-export const ListResponseBody$outboundSchema: z.ZodType<
-  ListResponseBody$Outbound,
-  z.ZodTypeDef,
-  ListResponseBody
-> = z.object({
-  data: z.array(z.lazy(() => ListData$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListResponseBody$ {
-  /** @deprecated use `ListResponseBody$inboundSchema` instead. */
-  export const inboundSchema = ListResponseBody$inboundSchema;
-  /** @deprecated use `ListResponseBody$outboundSchema` instead. */
-  export const outboundSchema = ListResponseBody$outboundSchema;
-  /** @deprecated use `ListResponseBody$Outbound` instead. */
-  export type Outbound = ListResponseBody$Outbound;
-}
-
-export function listResponseBodyToJSON(
-  listResponseBody: ListResponseBody,
-): string {
-  return JSON.stringify(
-    ListResponseBody$outboundSchema.parse(listResponseBody),
-  );
-}
-
-export function listResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<ListResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListResponse$inboundSchema: z.ZodType<
-  ListResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => ListResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type ListResponse$Outbound =
-  | ListResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const ListResponse$outboundSchema: z.ZodType<
   ListResponse$Outbound,
   z.ZodTypeDef,
   ListResponse
-> = z.union([
-  z.lazy(() => ListResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.array(z.lazy(() => ListData$outboundSchema)),
+});
 
 /**
  * @internal

@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { modelsListModelsCount } from "../funcs/modelsListModelsCount.js";
+import { modelsCount } from "../funcs/modelsCount.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -21,17 +21,17 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type ModelsListModelsCountQueryData = operations.ListModelsCountResponse;
+export type ModelsCountQueryData = operations.ListModelsCountResponse;
 
 /**
  * Get total count of available models
  */
-export function useModelsListModelsCount(
-  options?: QueryHookOptions<ModelsListModelsCountQueryData>,
-): UseQueryResult<ModelsListModelsCountQueryData, Error> {
+export function useModelsCount(
+  options?: QueryHookOptions<ModelsCountQueryData>,
+): UseQueryResult<ModelsCountQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildModelsListModelsCountQuery(
+    ...buildModelsCountQuery(
       client,
       options,
     ),
@@ -42,12 +42,12 @@ export function useModelsListModelsCount(
 /**
  * Get total count of available models
  */
-export function useModelsListModelsCountSuspense(
-  options?: SuspenseQueryHookOptions<ModelsListModelsCountQueryData>,
-): UseSuspenseQueryResult<ModelsListModelsCountQueryData, Error> {
+export function useModelsCountSuspense(
+  options?: SuspenseQueryHookOptions<ModelsCountQueryData>,
+): UseSuspenseQueryResult<ModelsCountQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildModelsListModelsCountQuery(
+    ...buildModelsCountQuery(
       client,
       options,
     ),
@@ -55,57 +55,55 @@ export function useModelsListModelsCountSuspense(
   });
 }
 
-export function prefetchModelsListModelsCount(
+export function prefetchModelsCount(
   queryClient: QueryClient,
   client$: OpenRouterCore,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildModelsListModelsCountQuery(
+    ...buildModelsCountQuery(
       client$,
     ),
   });
 }
 
-export function setModelsListModelsCountData(
+export function setModelsCountData(
   client: QueryClient,
-  data: ModelsListModelsCountQueryData,
-): ModelsListModelsCountQueryData | undefined {
-  const key = queryKeyModelsListModelsCount();
+  data: ModelsCountQueryData,
+): ModelsCountQueryData | undefined {
+  const key = queryKeyModelsCount();
 
-  return client.setQueryData<ModelsListModelsCountQueryData>(key, data);
+  return client.setQueryData<ModelsCountQueryData>(key, data);
 }
 
-export function invalidateAllModelsListModelsCount(
+export function invalidateAllModelsCount(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Models", "listModelsCount"],
+    queryKey: ["@openrouter/sdk", "Models", "count"],
   });
 }
 
-export function buildModelsListModelsCountQuery(
+export function buildModelsCountQuery(
   client$: OpenRouterCore,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;
-  queryFn: (
-    context: QueryFunctionContext,
-  ) => Promise<ModelsListModelsCountQueryData>;
+  queryFn: (context: QueryFunctionContext) => Promise<ModelsCountQueryData>;
 } {
   return {
-    queryKey: queryKeyModelsListModelsCount(),
-    queryFn: async function modelsListModelsCountQueryFn(
+    queryKey: queryKeyModelsCount(),
+    queryFn: async function modelsCountQueryFn(
       ctx,
-    ): Promise<ModelsListModelsCountQueryData> {
+    ): Promise<ModelsCountQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(modelsListModelsCount(
+      return unwrapAsync(modelsCount(
         client$,
         mergedOptions,
       ));
@@ -113,6 +111,6 @@ export function buildModelsListModelsCountQuery(
   };
 }
 
-export function queryKeyModelsListModelsCount(): QueryKey {
-  return ["@openrouter/sdk", "Models", "listModelsCount"];
+export function queryKeyModelsCount(): QueryKey {
+  return ["@openrouter/sdk", "Models", "count"];
 }

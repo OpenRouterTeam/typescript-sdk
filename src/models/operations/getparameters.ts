@@ -12,7 +12,6 @@ import {
 } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetParametersSecurity = {
   bearer: string;
@@ -139,16 +138,12 @@ export type GetParametersData = {
 /**
  * Returns the parameters for the specified model
  */
-export type GetParametersResponseBody = {
+export type GetParametersResponse = {
   /**
    * Parameter analytics data
    */
   data: GetParametersData;
 };
-
-export type GetParametersResponse =
-  | GetParametersResponseBody
-  | models.ErrorResponse;
 
 /** @internal */
 export const GetParametersSecurity$inboundSchema: z.ZodType<
@@ -394,8 +389,8 @@ export function getParametersDataFromJSON(
 }
 
 /** @internal */
-export const GetParametersResponseBody$inboundSchema: z.ZodType<
-  GetParametersResponseBody,
+export const GetParametersResponse$inboundSchema: z.ZodType<
+  GetParametersResponse,
   z.ZodTypeDef,
   unknown
 > = z.object({
@@ -403,74 +398,18 @@ export const GetParametersResponseBody$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type GetParametersResponseBody$Outbound = {
+export type GetParametersResponse$Outbound = {
   data: GetParametersData$Outbound;
 };
-
-/** @internal */
-export const GetParametersResponseBody$outboundSchema: z.ZodType<
-  GetParametersResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetParametersResponseBody
-> = z.object({
-  data: z.lazy(() => GetParametersData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersResponseBody$ {
-  /** @deprecated use `GetParametersResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetParametersResponseBody$inboundSchema;
-  /** @deprecated use `GetParametersResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetParametersResponseBody$outboundSchema;
-  /** @deprecated use `GetParametersResponseBody$Outbound` instead. */
-  export type Outbound = GetParametersResponseBody$Outbound;
-}
-
-export function getParametersResponseBodyToJSON(
-  getParametersResponseBody: GetParametersResponseBody,
-): string {
-  return JSON.stringify(
-    GetParametersResponseBody$outboundSchema.parse(getParametersResponseBody),
-  );
-}
-
-export function getParametersResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetParametersResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetParametersResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetParametersResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetParametersResponse$inboundSchema: z.ZodType<
-  GetParametersResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.union([
-  z.lazy(() => GetParametersResponseBody$inboundSchema),
-  models.ErrorResponse$inboundSchema,
-]);
-
-/** @internal */
-export type GetParametersResponse$Outbound =
-  | GetParametersResponseBody$Outbound
-  | models.ErrorResponse$Outbound;
 
 /** @internal */
 export const GetParametersResponse$outboundSchema: z.ZodType<
   GetParametersResponse$Outbound,
   z.ZodTypeDef,
   GetParametersResponse
-> = z.union([
-  z.lazy(() => GetParametersResponseBody$outboundSchema),
-  models.ErrorResponse$outboundSchema,
-]);
+> = z.object({
+  data: z.lazy(() => GetParametersData$outboundSchema),
+});
 
 /**
  * @internal

@@ -7,11 +7,11 @@ Model information endpoints
 
 ### Available Operations
 
-* [listModelsCount](#listmodelscount) - Get total count of available models
-* [getModels](#getmodels) - List all models and their properties
-* [listModelsUser](#listmodelsuser) - List models filtered by user provider preferences
+* [count](#count) - Get total count of available models
+* [list](#list) - List all models and their properties
+* [listForUser](#listforuser) - List models filtered by user provider preferences
 
-## listModelsCount
+## count
 
 Get total count of available models
 
@@ -26,7 +26,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.models.listModelsCount();
+  const result = await openRouter.models.count();
 
   console.log(result);
 }
@@ -40,7 +40,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { modelsListModelsCount } from "@openrouter/sdk/funcs/modelsListModelsCount.js";
+import { modelsCount } from "@openrouter/sdk/funcs/modelsCount.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -49,12 +49,12 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await modelsListModelsCount(openRouter);
+  const res = await modelsCount(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("modelsListModelsCount failed:", res.error);
+    console.log("modelsCount failed:", res.error);
   }
 }
 
@@ -74,18 +74,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useModelsListModelsCount,
-  useModelsListModelsCountSuspense,
+  useModelsCount,
+  useModelsCountSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchModelsListModelsCount,
+  prefetchModelsCount,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllModelsListModelsCount,
-} from "@openrouter/sdk/react-query/modelsListModelsCount.js";
+  invalidateAllModelsCount,
+} from "@openrouter/sdk/react-query/modelsCount.js";
 ```
 
 ### Parameters
@@ -106,7 +106,7 @@ import {
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## getModels
+## list
 
 List all models and their properties
 
@@ -121,7 +121,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.models.getModels({
+  const result = await openRouter.models.list({
     category: "<value>",
     supportedParameters: "<value>",
     useRss: "<value>",
@@ -140,7 +140,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { modelsGetModels } from "@openrouter/sdk/funcs/modelsGetModels.js";
+import { modelsList } from "@openrouter/sdk/funcs/modelsList.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -149,7 +149,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await modelsGetModels(openRouter, {
+  const res = await modelsList(openRouter, {
     category: "<value>",
     supportedParameters: "<value>",
     useRss: "<value>",
@@ -159,7 +159,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("modelsGetModels failed:", res.error);
+    console.log("modelsList failed:", res.error);
   }
 }
 
@@ -179,19 +179,19 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useModelsGetModels,
-  useModelsGetModelsSuspense,
+  useModelsList,
+  useModelsListSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchModelsGetModels,
+  prefetchModelsList,
   
   // Utilities to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateModelsGetModels,
-  invalidateAllModelsGetModels,
-} from "@openrouter/sdk/react-query/modelsGetModels.js";
+  invalidateModelsList,
+  invalidateAllModelsList,
+} from "@openrouter/sdk/react-query/modelsList.js";
 ```
 
 ### Parameters
@@ -213,7 +213,7 @@ import {
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## listModelsUser
+## listForUser
 
 List models filtered by user provider preferences
 
@@ -226,7 +226,7 @@ import { OpenRouter } from "@openrouter/sdk";
 const openRouter = new OpenRouter();
 
 async function run() {
-  const result = await openRouter.models.listModelsUser({
+  const result = await openRouter.models.listForUser({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   });
 
@@ -242,21 +242,21 @@ The standalone function version of this method:
 
 ```typescript
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { modelsListModelsUser } from "@openrouter/sdk/funcs/modelsListModelsUser.js";
+import { modelsListForUser } from "@openrouter/sdk/funcs/modelsListForUser.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore();
 
 async function run() {
-  const res = await modelsListModelsUser(openRouter, {
+  const res = await modelsListForUser(openRouter, {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("modelsListModelsUser failed:", res.error);
+    console.log("modelsListForUser failed:", res.error);
   }
 }
 
@@ -276,18 +276,18 @@ associated utilities.
 ```tsx
 import {
   // Query hooks for fetching data.
-  useModelsListModelsUser,
-  useModelsListModelsUserSuspense,
+  useModelsListForUser,
+  useModelsListForUserSuspense,
 
   // Utility for prefetching data during server-side rendering and in React
   // Server Components that will be immediately available to client components
   // using the hooks.
-  prefetchModelsListModelsUser,
+  prefetchModelsListForUser,
   
   // Utility to invalidate the query cache for this query in response to
   // mutations and other user actions.
-  invalidateAllModelsListModelsUser,
-} from "@openrouter/sdk/react-query/modelsListModelsUser.js";
+  invalidateAllModelsListForUser,
+} from "@openrouter/sdk/react-query/modelsListForUser.js";
 ```
 
 ### Parameters
