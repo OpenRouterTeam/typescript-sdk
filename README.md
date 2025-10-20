@@ -7,7 +7,7 @@ The [OpenRouter](https://openrouter.ai/) SDK gives access to over 300 large lang
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [OpenRouter SDK](#openrouter-sdk)
+* [OpenRouter SDK (Beta)](#openrouter-sdk-beta)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
