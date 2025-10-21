@@ -3,10 +3,10 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: e4e1223498928c4eb610287822d724df
   docVersion: 1.0.0
-  speakeasyVersion: 1.637.2
+  speakeasyVersion: 1.637.3
   generationVersion: 2.727.9
-  releaseVersion: 0.0.1-beta.1
-  configChecksum: 30f46be2606d41af387a239a2a3f84c0
+  releaseVersion: 0.0.1-beta.2
+  configChecksum: ad4dc36804e08b5b7a5bd9f2340c861c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1465,4 +1465,3 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.apiKeys.list()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.create()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.getCurrentKeyMetadata()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.get()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.delete()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.apiKeys.update()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.analytics.getUserActivity()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.credits.getCredits()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.credits.createCoinbaseCharge()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.endpoints.list()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.generations.getGeneration()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.parameters.getParameters()`: \n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.models.count()`: **Added**\n* `openrouter.models.list()`: **Added**\n* `openrouter.models.listModelsUser()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.getModels()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.listModelsCount()`: **Deleted** **Breaking** :warning:\n* `openrouter.models.listForUser()`: **Added**\n"
