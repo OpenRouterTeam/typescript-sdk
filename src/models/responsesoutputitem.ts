@@ -108,7 +108,7 @@ export type ResponsesOutputItemTypeReasoning = ClosedEnum<
 
 export type ResponsesOutputItemReasoning = {
   type: ResponsesOutputItemTypeReasoning;
-  id: string;
+  id?: string | undefined;
   content?: Array<ReasoningTextContent> | undefined;
   summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
@@ -175,8 +175,8 @@ export type ResponsesOutputItem =
   | ResponsesOutputItemFunctionCall
   | ResponsesOutputItemFileSearchCall
   | ResponsesOutputItemImageGenerationCall
-  | ResponsesOutputItemReasoning
-  | ResponsesOutputItemWebSearchCall;
+  | ResponsesOutputItemWebSearchCall
+  | ResponsesOutputItemReasoning;
 
 /** @internal */
 export const ResponsesOutputItemTypeImageGenerationCall$inboundSchema:
@@ -573,7 +573,7 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: ResponsesOutputItemTypeReasoning$inboundSchema,
-  id: z.string(),
+  id: z.string().optional(),
   content: z.array(ReasoningTextContent$inboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$inboundSchema),
   encrypted_content: z.nullable(z.string()).optional(),
@@ -586,7 +586,7 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
 /** @internal */
 export type ResponsesOutputItemReasoning$Outbound = {
   type: string;
-  id: string;
+  id?: string | undefined;
   content?: Array<ReasoningTextContent$Outbound> | undefined;
   summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
@@ -599,7 +599,7 @@ export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
   ResponsesOutputItemReasoning
 > = z.object({
   type: ResponsesOutputItemTypeReasoning$outboundSchema,
-  id: z.string(),
+  id: z.string().optional(),
   content: z.array(ReasoningTextContent$outboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$outboundSchema),
   encryptedContent: z.nullable(z.string()).optional(),
@@ -948,8 +948,8 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   z.lazy(() => ResponsesOutputItemFunctionCall$inboundSchema),
   z.lazy(() => ResponsesOutputItemFileSearchCall$inboundSchema),
   z.lazy(() => ResponsesOutputItemImageGenerationCall$inboundSchema),
-  z.lazy(() => ResponsesOutputItemReasoning$inboundSchema),
   z.lazy(() => ResponsesOutputItemWebSearchCall$inboundSchema),
+  z.lazy(() => ResponsesOutputItemReasoning$inboundSchema),
 ]);
 
 /** @internal */
@@ -958,8 +958,8 @@ export type ResponsesOutputItem$Outbound =
   | ResponsesOutputItemFunctionCall$Outbound
   | ResponsesOutputItemFileSearchCall$Outbound
   | ResponsesOutputItemImageGenerationCall$Outbound
-  | ResponsesOutputItemReasoning$Outbound
-  | ResponsesOutputItemWebSearchCall$Outbound;
+  | ResponsesOutputItemWebSearchCall$Outbound
+  | ResponsesOutputItemReasoning$Outbound;
 
 /** @internal */
 export const ResponsesOutputItem$outboundSchema: z.ZodType<
@@ -971,8 +971,8 @@ export const ResponsesOutputItem$outboundSchema: z.ZodType<
   z.lazy(() => ResponsesOutputItemFunctionCall$outboundSchema),
   z.lazy(() => ResponsesOutputItemFileSearchCall$outboundSchema),
   z.lazy(() => ResponsesOutputItemImageGenerationCall$outboundSchema),
-  z.lazy(() => ResponsesOutputItemReasoning$outboundSchema),
   z.lazy(() => ResponsesOutputItemWebSearchCall$outboundSchema),
+  z.lazy(() => ResponsesOutputItemReasoning$outboundSchema),
 ]);
 
 /**

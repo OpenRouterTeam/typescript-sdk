@@ -198,36 +198,6 @@ components:
       example:
         type: summary_text
         text: Analyzed the problem using first principles
-    OutputItemReasoning:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - reasoning
-        id:
-          type: string
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningTextContent'
-        summary:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningSummaryText'
-        encrypted_content:
-          type: string
-          nullable: true
-      required:
-        - type
-        - id
-        - summary
-      example:
-        type: reasoning
-        id: reasoning-abc123
-        summary:
-          - type: summary_text
-            text: Analyzed the problem using first principles
     OutputItemFunctionCall:
       type: object
       properties:
@@ -356,16 +326,28 @@ components:
             content:
               - type: output_text
                 text: Hello! How can I help you today?
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemReasoning'
-            - type: object
-              properties: {}
-          example:
-            type: reasoning
-            id: reasoning-abc123
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - reasoning
+            id:
+              type: string
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReasoningTextContent'
             summary:
-              - type: summary_text
-                text: Analyzed the problem using first principles
+              type: array
+              items:
+                $ref: '#/components/schemas/ReasoningSummaryText'
+            encrypted_content:
+              type: string
+              nullable: true
+          required:
+            - type
+            - summary
         - allOf:
             - $ref: '#/components/schemas/OutputItemFunctionCall'
             - type: object
@@ -492,6 +474,36 @@ components:
         output_tokens_details:
           reasoning_tokens: 0
         cost: 0.0012
+    OutputItemReasoning:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning
+        id:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningTextContent'
+        summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningSummaryText'
+        encrypted_content:
+          type: string
+          nullable: true
+      required:
+        - type
+        - id
+        - summary
+      example:
+        type: reasoning
+        id: reasoning-abc123
+        summary:
+          - type: summary_text
+            text: Analyzed the problem using first principles
     OpenResponsesReasoning:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
@@ -509,13 +521,13 @@ components:
                 - xai-responses-v1
                 - anthropic-claude-v1
               x-speakeasy-unknown-values: allow
-      description: Reasoning output item with signature and format extensions
       example:
         type: reasoning
         id: reasoning-abc123
         summary:
           - type: summary_text
             text: Step by step analysis
+      description: Reasoning output item with signature and format extensions
     OpenResponsesInputText:
       type: object
       properties:
@@ -750,16 +762,28 @@ components:
             content:
               - type: output_text
                 text: Hello! How can I help you today?
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemReasoning'
-            - type: object
-              properties: {}
-          example:
-            type: reasoning
-            id: reasoning-abc123
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - reasoning
+            id:
+              type: string
+            content:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReasoningTextContent'
             summary:
-              - type: summary_text
-                text: Analyzed the problem using first principles
+              type: array
+              items:
+                $ref: '#/components/schemas/ReasoningSummaryText'
+            encrypted_content:
+              type: string
+              nullable: true
+          required:
+            - type
+            - summary
         - allOf:
             - $ref: '#/components/schemas/OutputItemFunctionCall'
             - type: object
@@ -876,6 +900,78 @@ components:
       description: Size of the search context for web search tools
       example: medium
       x-speakeasy-unknown-values: allow
+    OpenResponsesWebSearchPreviewTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - web_search_preview
+        search_context_size:
+          $ref: '#/components/schemas/ResponsesSearchContextSize'
+        user_location:
+          type: object
+          nullable: true
+          properties:
+            type:
+              type: string
+              enum:
+                - approximate
+            city:
+              type: string
+              nullable: true
+            country:
+              type: string
+              nullable: true
+            region:
+              type: string
+              nullable: true
+            timezone:
+              type: string
+              nullable: true
+          required:
+            - type
+      required:
+        - type
+      description: Web search preview tool configuration
+      example:
+        type: web_search_preview
+    OpenResponsesWebSearchPreview20250311Tool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - web_search_preview_2025_03_11
+        search_context_size:
+          $ref: '#/components/schemas/ResponsesSearchContextSize'
+        user_location:
+          type: object
+          nullable: true
+          properties:
+            type:
+              type: string
+              enum:
+                - approximate
+            city:
+              type: string
+              nullable: true
+            country:
+              type: string
+              nullable: true
+            region:
+              type: string
+              nullable: true
+            timezone:
+              type: string
+              nullable: true
+          required:
+            - type
+      required:
+        - type
+      description: Web search preview tool configuration (2025-03-11 version)
+      example:
+        type: web_search_preview_2025_03_11
     ResponsesWebSearchUserLocation:
       type: object
       nullable: true
@@ -896,8 +992,6 @@ components:
         timezone:
           type: string
           nullable: true
-      required:
-        - type
       description: User location information for web search
       example:
         type: approximate
@@ -905,38 +999,6 @@ components:
         country: USA
         region: California
         timezone: America/Los_Angeles
-    OpenResponsesWebSearchPreviewTool:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - web_search_preview
-        search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
-        user_location:
-          $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
-      required:
-        - type
-      description: Web search preview tool configuration
-      example:
-        type: web_search_preview
-    OpenResponsesWebSearchPreview20250311Tool:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - web_search_preview_2025_03_11
-        search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
-        user_location:
-          $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
-      required:
-        - type
-      description: Web search preview tool configuration (2025-03-11 version)
-      example:
-        type: web_search_preview_2025_03_11
     OpenResponsesWebSearchTool:
       type: object
       properties:
@@ -2936,399 +2998,8 @@ components:
             field: temperature
             reason: Must be between 0 and 2
         user_id: user-abc123
-    OpenResponsesIncludable:
-      type: string
-      enum:
-        - file_search_call.results
-        - message.input_image.image_url
-        - computer_call_output.output.image_url
-        - reasoning.encrypted_content
-        - code_interpreter_call.outputs
-      description: Fields to include in the response that would normally be omitted
-      example: message.input_image.image_url
-      x-speakeasy-unknown-values: allow
-    OpenResponsesServiceTier:
-      type: string
-      nullable: true
-      enum:
-        - auto
-        - default
-        - flex
-        - priority
-        - scale
-      example: auto
-      x-speakeasy-unknown-values: allow
-    OpenResponsesTruncation:
-      type: string
-      nullable: true
-      enum:
-        - auto
-        - disabled
-      example: auto
-      x-speakeasy-unknown-values: allow
-    DataCollection:
-      type: string
-      nullable: true
-      enum:
-        - deny
-        - allow
-      description: >
-        Data collection setting. If no available model provider meets the requirement, your request will return an error.
-
-        - allow: (default) allow providers which store user data non-transiently and may train on it
-
-        - deny: use only providers which do not collect user data.
-
-      example: deny
-      x-speakeasy-unknown-values: allow
-    ProviderName:
-      type: string
-      enum:
-        - AnyScale
-        - Cent-ML
-        - HuggingFace
-        - Hyperbolic 2
-        - Lepton
-        - Lynn 2
-        - Lynn
-        - Mancer
-        - Modal
-        - OctoAI
-        - Recursal
-        - Reflection
-        - Replicate
-        - SambaNova 2
-        - SF Compute
-        - Together 2
-        - 01.AI
-        - AI21
-        - AionLabs
-        - Alibaba
-        - Amazon Bedrock
-        - Anthropic
-        - AtlasCloud
-        - Atoma
-        - Avian
-        - Azure
-        - BaseTen
-        - Cerebras
-        - Chutes
-        - Cirrascale
-        - Clarifai
-        - Cloudflare
-        - Cohere
-        - CrofAI
-        - Crusoe
-        - DeepInfra
-        - DeepSeek
-        - Enfer
-        - Featherless
-        - Fireworks
-        - Friendli
-        - GMICloud
-        - Google
-        - Google AI Studio
-        - Groq
-        - Hyperbolic
-        - Inception
-        - InferenceNet
-        - Infermatic
-        - Inflection
-        - InoCloud
-        - Kluster
-        - Lambda
-        - Liquid
-        - Mancer 2
-        - Meta
-        - Minimax
-        - Mistral
-        - Modular
-        - Moonshot AI
-        - Morph
-        - NCompass
-        - Nebius
-        - NextBit
-        - Nineteen
-        - Novita
-        - Nvidia
-        - OpenAI
-        - OpenInference
-        - Parasail
-        - Perplexity
-        - Phala
-        - Relace
-        - SambaNova
-        - SiliconFlow
-        - Stealth
-        - Switchpoint
-        - Targon
-        - Together
-        - Ubicloud
-        - Venice
-        - WandB
-        - xAI
-        - Z.AI
-        - FakeProvider
-      example: OpenAI
-      x-speakeasy-unknown-values: allow
-    Quantization:
-      type: string
-      enum:
-        - int4
-        - int8
-        - fp4
-        - fp6
-        - fp8
-        - fp16
-        - bf16
-        - fp32
-        - unknown
-      example: fp16
-      x-speakeasy-unknown-values: allow
-    ProviderSort:
-      type: string
-      nullable: true
-      enum:
-        - price
-        - throughput
-        - latency
-      description: >-
-        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-      example: price
-      x-speakeasy-unknown-values: allow
     OpenResponsesRequest:
       type: object
-      properties:
-        input:
-          allOf:
-            - $ref: '#/components/schemas/OpenResponsesInput'
-            - anyOf:
-                - type: string
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/OpenResponsesInputItem'
-        instructions:
-          type: string
-          nullable: true
-        metadata:
-          $ref: '#/components/schemas/OpenResponsesRequestMetadata'
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/OpenResponsesToolUnion'
-        tool_choice:
-          $ref: '#/components/schemas/OpenResponsesToolChoice'
-        parallel_tool_calls:
-          type: boolean
-          nullable: true
-        model:
-          type: string
-        models:
-          type: array
-          items:
-            type: string
-        text:
-          $ref: '#/components/schemas/OpenResponsesTextConfig'
-        reasoning:
-          $ref: '#/components/schemas/OpenResponsesReasoningConfig'
-        max_output_tokens:
-          type: number
-          nullable: true
-        temperature:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 2
-        top_p:
-          type: number
-          nullable: true
-          minimum: 0
-        top_k:
-          type: number
-        prompt_cache_key:
-          type: string
-          nullable: true
-        previous_response_id:
-          type: string
-          nullable: true
-        prompt:
-          $ref: '#/components/schemas/OpenResponsesPrompt'
-        include:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/OpenResponsesIncludable'
-        background:
-          type: boolean
-          nullable: true
-        safety_identifier:
-          type: string
-          nullable: true
-        store:
-          type: boolean
-          nullable: true
-        service_tier:
-          $ref: '#/components/schemas/OpenResponsesServiceTier'
-        truncation:
-          $ref: '#/components/schemas/OpenResponsesTruncation'
-        stream:
-          type: boolean
-          nullable: true
-        provider:
-          type: object
-          nullable: true
-          properties:
-            allow_fallbacks:
-              type: boolean
-              nullable: true
-              description: >
-                Whether to allow backup providers to serve requests
-
-                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-
-                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-
-            require_parameters:
-              type: boolean
-              nullable: true
-              description: >-
-                Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-            data_collection:
-              $ref: '#/components/schemas/DataCollection'
-            zdr:
-              type: boolean
-              nullable: true
-              description: >-
-                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-              example: true
-            order:
-              type: array
-              nullable: true
-              items:
-                anyOf:
-                  - $ref: '#/components/schemas/ProviderName'
-                  - type: string
-              description: >-
-                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-            only:
-              type: array
-              nullable: true
-              items:
-                anyOf:
-                  - $ref: '#/components/schemas/ProviderName'
-                  - type: string
-              description: >-
-                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-            ignore:
-              type: array
-              nullable: true
-              items:
-                anyOf:
-                  - $ref: '#/components/schemas/ProviderName'
-                  - type: string
-              description: >-
-                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-            quantizations:
-              type: array
-              nullable: true
-              items:
-                $ref: '#/components/schemas/Quantization'
-              description: A list of quantization levels to filter the provider by.
-            sort:
-              $ref: '#/components/schemas/ProviderSort'
-            max_price:
-              type: object
-              properties:
-                prompt:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - {}
-                completion:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - {}
-                image:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - {}
-                audio:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - {}
-                request:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - {}
-              additionalProperties: false
-              description: >-
-                The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-            experimental:
-              type: object
-              nullable: true
-              properties: {}
-          additionalProperties: false
-          description: When multiple model providers are available, optionally indicate your routing preference.
-        plugins:
-          type: array
-          items:
-            oneOf:
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    enum:
-                      - moderation
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    enum:
-                      - web
-                  max_results:
-                    type: number
-                  search_prompt:
-                    type: string
-                  engine:
-                    type: string
-                    enum:
-                      - native
-                      - exa
-                    x-speakeasy-unknown-values: allow
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    enum:
-                      - file-parser
-                  max_files:
-                    type: number
-                  pdf:
-                    type: object
-                    properties:
-                      engine:
-                        type: string
-                        enum:
-                          - mistral-ocr
-                          - pdf-text
-                          - native
-                        x-speakeasy-unknown-values: allow
-                required:
-                  - id
-          description: Plugins you want to enable for this request, including their settings.
-        user:
-          type: string
-          maxLength: 128
-          description: >-
-            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
       description: Request schema for Responses endpoint
       example:
         model: anthropic/claude-4.5-sonnet-20250929
@@ -3418,475 +3089,38 @@ components:
         prompt_tokens: 50
         completion_tokens: 125
         reasoning_tokens: 25
-    ModelGroup:
-      type: string
-      enum:
-        - Router
-        - Media
-        - Other
-        - GPT
-        - Claude
-        - Gemini
-        - Grok
-        - Cohere
-        - Nova
-        - Qwen
-        - Yi
-        - DeepSeek
-        - Mistral
-        - Llama2
-        - Llama3
-        - Llama4
-        - PaLM
-        - RWKV
-        - Qwen3
-      description: Tokenizer type used by the model
-      example: GPT
-      x-speakeasy-unknown-values: allow
-    InstructType:
-      type: string
-      nullable: true
-      enum:
-        - none
-        - airoboros
-        - alpaca
-        - alpaca-modif
-        - chatml
-        - claude
-        - code-llama
-        - gemma
-        - llama2
-        - llama3
-        - mistral
-        - nemotron
-        - neural
-        - openchat
-        - phi3
-        - rwkv
-        - vicuna
-        - zephyr
-        - deepseek-r1
-        - deepseek-v3.1
-        - qwq
-        - qwen3
-      description: Instruction format type
-      example: chatml
-      x-speakeasy-unknown-values: allow
-    InputModality:
-      type: string
-      enum:
-        - text
-        - image
-        - file
-        - audio
-      example: text
-      x-speakeasy-unknown-values: allow
-    OutputModality:
-      type: string
-      enum:
-        - text
-        - image
-        - embeddings
-      example: text
-      x-speakeasy-unknown-values: allow
-    ModelArchitecture:
+    CreateChargeRequest:
       type: object
-      properties:
-        tokenizer:
-          $ref: '#/components/schemas/ModelGroup'
-        instruct_type:
-          $ref: '#/components/schemas/InstructType'
-        modality:
-          type: string
-          nullable: true
-          description: Primary modality of the model
-          example: text->text
-        input_modalities:
-          type: array
-          items:
-            $ref: '#/components/schemas/InputModality'
-          description: Supported input modalities
-        output_modalities:
-          type: array
-          items:
-            $ref: '#/components/schemas/OutputModality'
-          description: Supported output modalities
-      required:
-        - modality
-        - input_modalities
-        - output_modalities
-      description: Model architecture information
+      description: Create a Coinbase charge for crypto payment
       example:
-        tokenizer: GPT
-        instruct_type: chatml
-        modality: text->text
-        input_modalities:
-          - text
-        output_modalities:
-          - text
-    TopProviderInfo:
+        amount: 100
+        sender: '0x1234567890123456789012345678901234567890'
+        chain_id: 1
+    ModelsCountResponse:
       type: object
-      properties:
-        context_length:
-          type: number
-          nullable: true
-          description: Context length from the top provider
-          example: 8192
-        max_completion_tokens:
-          type: number
-          nullable: true
-          description: Maximum completion tokens from the top provider
-          example: 4096
-        is_moderated:
-          type: boolean
-          description: Whether the top provider moderates content
-          example: true
-      required:
-        - is_moderated
-      description: Information about the top provider for this model
+      description: Model count data
       example:
-        context_length: 8192
-        max_completion_tokens: 4096
-        is_moderated: true
-    Parameter:
-      type: string
-      enum:
-        - temperature
-        - top_p
-        - top_k
-        - min_p
-        - top_a
-        - frequency_penalty
-        - presence_penalty
-        - repetition_penalty
-        - max_tokens
-        - logit_bias
-        - logprobs
-        - top_logprobs
-        - seed
-        - response_format
-        - structured_outputs
-        - stop
-        - tools
-        - tool_choice
-        - parallel_tool_calls
-        - include_reasoning
-        - reasoning
-        - web_search_options
-        - verbosity
-      example: temperature
-      x-speakeasy-unknown-values: allow
-    DefaultParameters:
+        data:
+          count: 150
+    ModelsListResponse:
       type: object
-      nullable: true
-      properties:
-        temperature:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 2
-        top_p:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 1
-        frequency_penalty:
-          type: number
-          nullable: true
-          minimum: -2
-          maximum: 2
-      additionalProperties: false
-      description: Default parameters for this model
+      description: List of available models
       example:
-        temperature: 0.7
-        top_p: 0.9
-        frequency_penalty: 0
-    Model:
+        data:
+          - id: openai/gpt-4
+            name: GPT-4
+            created: 1692901234
+            description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+    ListEndpointsResponse:
       type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the model
-          example: openai/gpt-4
-        canonical_slug:
-          type: string
-          description: Canonical slug for the model
-          example: openai/gpt-4
-        hugging_face_id:
-          type: string
-          nullable: true
-          description: Hugging Face model identifier, if applicable
-          example: microsoft/DialoGPT-medium
-        name:
-          type: string
-          description: Display name of the model
-          example: GPT-4
-        created:
-          type: number
-          description: Unix timestamp of when the model was created
-          example: 1692901234
-        description:
-          type: string
-          description: Description of the model
-          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-        pricing:
-          type: object
-          properties:
-            prompt:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            completion:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            request:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            image:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            image_output:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            audio:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_audio_cache:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            web_search:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            internal_reasoning:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_cache_read:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_cache_write:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            discount:
-              type: number
-          required:
-            - prompt
-            - completion
-          additionalProperties: false
-          description: Pricing information for the model
-        context_length:
-          type: number
-          nullable: true
-          description: Maximum context length in tokens
-          example: 8192
-        architecture:
-          $ref: '#/components/schemas/ModelArchitecture'
-        top_provider:
-          $ref: '#/components/schemas/TopProviderInfo'
-        per_request_limits:
-          type: object
-          nullable: true
-          properties:
-            prompt_tokens:
-              description: Maximum prompt tokens per request
-            completion_tokens:
-              description: Maximum completion tokens per request
-          required:
-            - prompt_tokens
-            - completion_tokens
-          description: Per-request token limits
-        supported_parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-          description: List of supported parameters for this model
-        default_parameters:
-          $ref: '#/components/schemas/DefaultParameters'
-      required:
-        - id
-        - canonical_slug
-        - name
-        - created
-        - pricing
-        - context_length
-        - architecture
-        - top_provider
-        - per_request_limits
-        - supported_parameters
-        - default_parameters
-      description: Information about an AI model available on OpenRouter
+      description: List of available endpoints for a model
       example:
         id: openai/gpt-4
-        canonical_slug: openai/gpt-4
         name: GPT-4
         created: 1692901234
         description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-        pricing:
-          prompt: '0.00003'
-          completion: '0.00006'
-          request: '0'
-          image: '0'
-        context_length: 8192
-        architecture:
-          tokenizer: GPT
-          instruct_type: chatml
-          modality: text->text
-          input_modalities:
-            - text
-          output_modalities:
-            - text
-        top_provider:
-          context_length: 8192
-          max_completion_tokens: 4096
-          is_moderated: true
-        per_request_limits: null
-        supported_parameters:
-          - temperature
-          - top_p
-          - max_tokens
-        default_parameters: null
-    EndpointStatus:
-      type: integer
-      enum:
-        - 0
-        - -1
-        - -2
-        - -3
-        - -5
-        - -10
-      example: 0
-      x-speakeasy-unknown-values: allow
     PublicEndpoint:
       type: object
-      properties:
-        name:
-          type: string
-        model_name:
-          type: string
-        context_length:
-          type: number
-        pricing:
-          type: object
-          properties:
-            prompt:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            completion:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            request:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            image:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            image_output:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            audio:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_audio_cache:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            web_search:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            internal_reasoning:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_cache_read:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            input_cache_write:
-              anyOf:
-                - type: number
-                - type: string
-                - {}
-            discount:
-              type: number
-          required:
-            - prompt
-            - completion
-          additionalProperties: false
-        provider_name:
-          $ref: '#/components/schemas/ProviderName'
-        tag:
-          type: string
-        quantization:
-          allOf:
-            - $ref: '#/components/schemas/Quantization'
-            - nullable: true
-        max_completion_tokens:
-          type: number
-          nullable: true
-        max_prompt_tokens:
-          type: number
-          nullable: true
-        supported_parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Parameter'
-        status:
-          $ref: '#/components/schemas/EndpointStatus'
-        uptime_last_30m:
-          type: number
-          nullable: true
-        supports_implicit_caching:
-          type: boolean
-      required:
-        - name
-        - model_name
-        - context_length
-        - pricing
-        - provider_name
-        - tag
-        - quantization
-        - max_completion_tokens
-        - max_prompt_tokens
-        - supported_parameters
-        - uptime_last_30m
-        - supports_implicit_caching
       description: Information about a specific model endpoint
       example:
         name: 'OpenAI: GPT-4'
@@ -3909,6 +3143,10 @@ components:
         status: 0
         uptime_last_30m: 99.5
         supports_implicit_caching: true
+    __schema0:
+      anyOf:
+        - $ref: '#/components/schemas/ChatCompletionFinishReason'
+        - type: 'null'
     ChatMessageContentItemText:
       type: object
       properties:
@@ -3976,6 +3214,7 @@ components:
         - $ref: '#/components/schemas/ChatMessageContentItemText'
         - $ref: '#/components/schemas/ChatMessageContentItemImage'
         - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+      type: object
       discriminator:
         propertyName: type
         mapping:
@@ -4012,10 +3251,11 @@ components:
         logprob:
           type: number
         bytes:
-          type: array
-          nullable: true
-          items:
-            type: number
+          anyOf:
+            - type: array
+              items:
+                type: number
+            - type: 'null'
         top_logprobs:
           type: array
           items:
@@ -4026,10 +3266,11 @@ components:
               logprob:
                 type: number
               bytes:
-                type: array
-                nullable: true
-                items:
-                  type: number
+                anyOf:
+                  - type: array
+                    items:
+                      type: number
+                  - type: 'null'
             required:
               - token
               - logprob
@@ -4043,15 +3284,17 @@ components:
       type: object
       properties:
         content:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            - type: 'null'
         refusal:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+          anyOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            - type: 'null'
       required:
         - content
         - refusal
@@ -4105,10 +3348,13 @@ components:
           type: string
         schema:
           type: object
+          propertyNames:
+            type: string
           additionalProperties: {}
         strict:
-          type: boolean
-          nullable: true
+          anyOf:
+            - type: boolean
+            - type: 'null'
       required:
         - name
     ResponseFormatJSONSchema:
@@ -4175,10 +3421,11 @@ components:
           const: assistant
         content:
           anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+            - anyOf:
+                - type: string
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/ChatMessageContentItem'
             - type: 'null'
         name:
           type: string
@@ -4187,11 +3434,13 @@ components:
           items:
             $ref: '#/components/schemas/ChatMessageToolCall'
         refusal:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         reasoning:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
       required:
         - role
     ToolResponseMessage:
@@ -4234,6 +3483,7 @@ components:
             - content
         - $ref: '#/components/schemas/AssistantMessage'
         - $ref: '#/components/schemas/ToolResponseMessage'
+      type: object
     Tool:
       type: object
       properties:
@@ -4250,10 +3500,13 @@ components:
               type: string
             parameters:
               type: object
+              propertyNames:
+                type: string
               additionalProperties: {}
             strict:
-              type: boolean
-              nullable: true
+              anyOf:
+                - type: boolean
+                - type: 'null'
           required:
             - name
       required:
@@ -4293,60 +3546,71 @@ components:
       type: object
       properties:
         messages:
+          minItems: 1
           type: array
           items:
             $ref: '#/components/schemas/Message'
-          minItems: 1
         model:
           type: string
         frequency_penalty:
-          type: number
-          nullable: true
-          minimum: -2
-          maximum: 2
+          anyOf:
+            - type: number
+              minimum: -2
+              maximum: 2
+            - type: 'null'
         logit_bias:
-          type: object
-          nullable: true
-          additionalProperties:
-            type: number
+          anyOf:
+            - type: object
+              propertyNames:
+                type: string
+              additionalProperties:
+                type: number
+            - type: 'null'
         logprobs:
-          type: boolean
-          nullable: true
+          anyOf:
+            - type: boolean
+            - type: 'null'
         top_logprobs:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 20
+          anyOf:
+            - type: number
+              minimum: 0
+              maximum: 20
+            - type: 'null'
         max_completion_tokens:
-          type: number
-          nullable: true
-          minimum: 1
+          anyOf:
+            - type: number
+              minimum: 1
+            - type: 'null'
         max_tokens:
-          type: number
-          nullable: true
-          minimum: 1
+          anyOf:
+            - type: number
+              minimum: 1
+            - type: 'null'
         metadata:
           type: object
+          propertyNames:
+            type: string
           additionalProperties:
             type: string
         presence_penalty:
-          type: number
-          nullable: true
-          minimum: -2
-          maximum: 2
+          anyOf:
+            - type: number
+              minimum: -2
+              maximum: 2
+            - type: 'null'
         reasoning:
           type: object
           properties:
             effort:
-              type: string
-              nullable: true
-              enum:
-                - minimal
-                - low
-                - medium
-                - high
-                - null
-              x-speakeasy-unknown-values: allow
+              anyOf:
+                - type: string
+                  enum:
+                    - minimal
+                    - low
+                    - medium
+                    - high
+                  x-speakeasy-unknown-values: allow
+                - type: 'null'
             summary:
               anyOf:
                 - $ref: '#/components/schemas/ReasoningSummaryVerbosity'
@@ -4376,31 +3640,38 @@ components:
                   const: python
               required:
                 - type
+          type: object
         seed:
-          type: integer
-          nullable: true
+          anyOf:
+            - type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+            - type: 'null'
         stop:
           anyOf:
-            - type: string
-            - type: array
-              items:
-                type: string
-              maxItems: 4
+            - anyOf:
+                - type: string
+                - maxItems: 4
+                  type: array
+                  items:
+                    type: string
             - type: 'null'
         stream:
-          type: boolean
-          nullable: true
           default: false
+          anyOf:
+            - type: boolean
+            - type: 'null'
         stream_options:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ChatStreamOptions'
             - type: 'null'
         temperature:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 2
           default: 1
+          anyOf:
+            - type: number
+              minimum: 0
+              maximum: 2
+            - type: 'null'
         tool_choice:
           $ref: '#/components/schemas/ToolChoiceOption'
         tools:
@@ -4408,11 +3679,12 @@ components:
           items:
             $ref: '#/components/schemas/Tool'
         top_p:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 1
           default: 1
+          anyOf:
+            - type: number
+              minimum: 0
+              maximum: 1
+            - type: 'null'
         user:
           type: string
       required:
@@ -4422,73 +3694,19 @@ components:
       type: object
       properties:
         finish_reason:
-          anyOf:
-            - $ref: '#/components/schemas/ChatCompletionFinishReason'
-            - type: 'null'
+          $ref: '#/components/schemas/__schema0'
         index:
           type: number
         message:
           $ref: '#/components/schemas/AssistantMessage'
         logprobs:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
             - type: 'null'
       required:
         - finish_reason
         - index
         - message
-    ChatResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatResponseChoice'
-        created:
-          type: number
-        model:
-          type: string
-        object:
-          type: string
-          const: chat.completion
-        system_fingerprint:
-          type: string
-          nullable: true
-        usage:
-          $ref: '#/components/schemas/ChatGenerationTokenUsage'
-      required:
-        - id
-        - choices
-        - created
-        - model
-        - object
-    ChatError:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              anyOf:
-                - type: string
-                - type: number
-                - type: 'null'
-            message:
-              type: string
-            param:
-              type: string
-              nullable: true
-            type:
-              type: string
-          required:
-            - code
-            - message
-            - param
-            - type
-      required:
-        - error
     ChatStreamingMessageToolCall:
       type: object
       properties:
@@ -4516,14 +3734,17 @@ components:
           enum:
             - assistant
         content:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         reasoning:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         refusal:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         tool_calls:
           type: array
           items:
@@ -4534,19 +3755,75 @@ components:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          anyOf:
-            - $ref: '#/components/schemas/ChatCompletionFinishReason'
-            - type: 'null'
+          $ref: '#/components/schemas/__schema0'
         index:
           type: number
         logprobs:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
             - type: 'null'
       required:
         - delta
         - finish_reason
         - index
+    ChatError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              anyOf:
+                - anyOf:
+                    - type: string
+                    - type: number
+                - type: 'null'
+            message:
+              type: string
+            param:
+              anyOf:
+                - type: string
+                - type: 'null'
+            type:
+              type: string
+          required:
+            - code
+            - message
+            - param
+            - type
+          additionalProperties: false
+      required:
+        - error
+      additionalProperties: false
+    ChatResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatResponseChoice'
+        created:
+          type: number
+        model:
+          type: string
+        object:
+          type: string
+          const: chat.completion
+        system_fingerprint:
+          anyOf:
+            - type: string
+            - type: 'null'
+        usage:
+          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+      required:
+        - id
+        - choices
+        - created
+        - model
+        - object
+      additionalProperties: false
     ChatStreamingResponseChunk:
       type: object
       properties:
@@ -4567,8 +3844,9 @@ components:
               type: string
               const: chat.completion.chunk
             system_fingerprint:
-              type: string
-              nullable: true
+              anyOf:
+                - type: string
+                - type: 'null'
             error:
               type: object
               properties:
@@ -4579,6 +3857,7 @@ components:
               required:
                 - message
                 - code
+              additionalProperties: false
             usage:
               $ref: '#/components/schemas/ChatGenerationTokenUsage'
           required:
@@ -4587,17 +3866,19 @@ components:
             - created
             - model
             - object
+          additionalProperties: false
       required:
         - data
+      additionalProperties: false
     CompletionFinishReason:
-      type: string
-      nullable: true
-      enum:
-        - stop
-        - length
-        - content_filter
-        - null
-      x-speakeasy-unknown-values: allow
+      anyOf:
+        - type: string
+          enum:
+            - stop
+            - length
+            - content_filter
+          x-speakeasy-unknown-values: allow
+        - type: 'null'
     CompletionLogprobs:
       type: object
       properties:
@@ -4610,12 +3891,15 @@ components:
           items:
             type: number
         top_logprobs:
-          type: array
-          nullable: true
-          items:
-            type: object
-            additionalProperties:
-              type: number
+          anyOf:
+            - type: array
+              items:
+                type: object
+                propertyNames:
+                  type: string
+                additionalProperties:
+                  type: number
+            - type: 'null'
         text_offset:
           type: array
           items:
@@ -4658,107 +3942,133 @@ components:
                 items:
                   type: number
         best_of:
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 20
+          anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 20
+            - type: 'null'
         echo:
-          type: boolean
-          nullable: true
+          anyOf:
+            - type: boolean
+            - type: 'null'
         frequency_penalty:
-          type: number
-          nullable: true
-          minimum: -2
-          maximum: 2
+          anyOf:
+            - type: number
+              minimum: -2
+              maximum: 2
+            - type: 'null'
         logit_bias:
-          type: object
-          nullable: true
-          additionalProperties:
-            type: number
+          anyOf:
+            - type: object
+              propertyNames:
+                type: string
+              additionalProperties:
+                type: number
+            - type: 'null'
         logprobs:
-          type: integer
-          nullable: true
-          minimum: 0
-          maximum: 5
+          anyOf:
+            - type: integer
+              minimum: 0
+              maximum: 5
+            - type: 'null'
         max_tokens:
-          type: integer
-          nullable: true
-          minimum: 1
+          anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 9007199254740991
+            - type: 'null'
         'n':
-          type: integer
-          nullable: true
-          minimum: 1
-          maximum: 128
+          anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 128
+            - type: 'null'
         presence_penalty:
-          type: number
-          nullable: true
-          minimum: -2
-          maximum: 2
+          anyOf:
+            - type: number
+              minimum: -2
+              maximum: 2
+            - type: 'null'
         seed:
-          type: integer
-          nullable: true
+          anyOf:
+            - type: integer
+              minimum: -9007199254740991
+              maximum: 9007199254740991
+            - type: 'null'
         stop:
           anyOf:
-            - type: string
-            - type: array
-              items:
-                type: string
+            - anyOf:
+                - type: string
+                - type: array
+                  items:
+                    type: string
             - type: 'null'
         stream:
-          type: boolean
-          nullable: true
+          anyOf:
+            - type: boolean
+            - type: 'null'
         stream_options:
-          type: object
-          nullable: true
-          properties:
-            include_usage:
-              type: boolean
-              nullable: true
+          anyOf:
+            - type: object
+              properties:
+                include_usage:
+                  anyOf:
+                    - type: boolean
+                    - type: 'null'
+            - type: 'null'
         suffix:
-          type: string
-          nullable: true
+          anyOf:
+            - type: string
+            - type: 'null'
         temperature:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 2
+          anyOf:
+            - type: number
+              minimum: 0
+              maximum: 2
+            - type: 'null'
         top_p:
-          type: number
-          nullable: true
-          minimum: 0
-          maximum: 1
+          anyOf:
+            - type: number
+              minimum: 0
+              maximum: 1
+            - type: 'null'
         user:
           type: string
         metadata:
-          type: object
-          nullable: true
-          additionalProperties:
-            type: string
+          anyOf:
+            - type: object
+              propertyNames:
+                type: string
+              additionalProperties:
+                type: string
+            - type: 'null'
         response_format:
-          oneOf:
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: text
-              required:
-                - type
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: json_object
-              required:
-                - type
-            - $ref: '#/components/schemas/ResponseFormatJSONSchema'
-            - $ref: '#/components/schemas/ResponseFormatTextGrammar'
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: python
-              required:
-                - type
+          anyOf:
+            - oneOf:
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      const: text
+                  required:
+                    - type
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      const: json_object
+                  required:
+                    - type
+                - $ref: '#/components/schemas/ResponseFormatJSONSchema'
+                - $ref: '#/components/schemas/ResponseFormatTextGrammar'
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      const: python
+                  required:
+                    - type
+              type: object
             - type: 'null'
       required:
         - model
@@ -4771,7 +4081,7 @@ components:
         index:
           type: number
         logprobs:
-          oneOf:
+          anyOf:
             - $ref: '#/components/schemas/CompletionLogprobs'
             - type: 'null'
         finish_reason:
@@ -4807,6 +4117,7 @@ components:
         - created
         - model
         - choices
+      additionalProperties: false
   parameters: {}
   securitySchemes:
     apiKey:
@@ -4868,6 +4179,7 @@ paths:
             description: Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
             example: '2025-08-24'
           required: false
+          description: Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
           name: date
           in: query
       responses:
@@ -4925,26 +4237,7 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      total_credits:
-                        type: number
-                        description: Total credits purchased
-                        example: 100.5
-                      total_usage:
-                        type: number
-                        description: Total credits used
-                        example: 25.75
-                    required:
-                      - total_credits
-                      - total_usage
-                    example:
-                      total_credits: 100.5
-                      total_usage: 25.75
-                required:
-                  - data
+                description: Total credits purchased and used
                 example:
                   data:
                     total_credits: 100.5
@@ -4975,22 +4268,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                amount:
-                  type: number
-                sender: {}
-                chain_id:
-                  type: integer
-                  enum:
-                    - 1
-                    - 137
-                    - 8453
-                  x-speakeasy-unknown-values: allow
-              required:
-                - amount
-                - sender
-                - chain_id
+              $ref: '#/components/schemas/CreateChargeRequest'
         required: true
       responses:
         '200':
@@ -5327,25 +4605,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      count:
-                        type: number
-                        description: Total number of available models
-                        example: 150
-                    required:
-                      - count
-                    description: Model count data
-                    example:
-                      count: 150
-                required:
-                  - data
-                example:
-                  data:
-                    count: 150
+                $ref: '#/components/schemas/ModelsCountResponse'
         default:
           description: Error Response
           content:
@@ -5386,15 +4646,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Model'
-                    description: List of available models
-                required:
-                  - data
+                $ref: '#/components/schemas/ModelsListResponse'
             application/rss+xml:
               schema:
                 type: string
@@ -5419,15 +4671,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Model'
-                    description: List of available models
-                required:
-                  - data
+                $ref: '#/components/schemas/ModelsListResponse'
         default:
           description: Error Response
           content:
@@ -5462,67 +4706,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        description: Unique identifier for the model
-                        example: openai/gpt-4
-                      name:
-                        type: string
-                        description: Display name of the model
-                        example: GPT-4
-                      created:
-                        type: number
-                        description: Unix timestamp of when the model was created
-                        example: 1692901234
-                      description:
-                        type: string
-                        description: Description of the model
-                        example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
-                      architecture:
-                        type: object
-                        properties:
-                          tokenizer:
-                            allOf:
-                              - $ref: '#/components/schemas/ModelGroup'
-                              - nullable: true
-                          instruct_type:
-                            $ref: '#/components/schemas/InstructType'
-                          modality:
-                            type: string
-                            nullable: true
-                            description: Primary modality of the model
-                            example: text
-                          input_modalities:
-                            type: array
-                            items:
-                              $ref: '#/components/schemas/InputModality'
-                            description: Supported input modalities
-                          output_modalities:
-                            type: array
-                            items:
-                              $ref: '#/components/schemas/OutputModality'
-                            description: Supported output modalities
-                        required:
-                          - tokenizer
-                          - instruct_type
-                          - modality
-                          - input_modalities
-                          - output_modalities
-                        description: Model architecture information
-                      endpoints:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/PublicEndpoint'
-                        description: List of available endpoints for this model
-                    required:
-                      - id
-                      - name
-                      - created
-                      - description
-                      - architecture
-                      - endpoints
+                    $ref: '#/components/schemas/ListEndpointsResponse'
                 required:
                   - data
         4XX:
@@ -5708,13 +4892,13 @@ paths:
                     required:
                       - model
                       - supported_parameters
-                    description: Parameter analytics data
                     example:
                       model: openai/gpt-4
                       supported_parameters:
                         - temperature
                         - top_p
                         - max_tokens
+                    description: Parameter analytics data
                 required:
                   - data
                 example:
@@ -5836,6 +5020,7 @@ paths:
             description: Whether to include disabled API keys in the response
             example: 'false'
           required: false
+          description: Whether to include disabled API keys in the response
           name: include_disabled
           in: query
         - schema:
@@ -5843,6 +5028,7 @@ paths:
             description: Number of API keys to skip for pagination
             example: '0'
           required: false
+          description: Number of API keys to skip for pagination
           name: offset
           in: query
       responses:
@@ -6157,7 +5343,6 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
-                    description: The created API key information
                     example:
                       hash: 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
                       name: My Production Key
@@ -6177,6 +5362,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                    description: The created API key information
                   key:
                     type: string
                     description: The actual API key string (only shown once)
@@ -6230,6 +5416,7 @@ paths:
             description: The hash identifier of the API key to update
             example: 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
           required: true
+          description: The hash identifier of the API key to update
           name: hash
           in: path
       requestBody:
@@ -6379,7 +5566,6 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
-                    description: The updated API key information
                     example:
                       hash: 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
                       name: My Production Key
@@ -6399,6 +5585,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                    description: The updated API key information
                 required:
                   - data
                 example:
@@ -6445,6 +5632,7 @@ paths:
             description: The hash identifier of the API key to delete
             example: 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
           required: true
+          description: The hash identifier of the API key to delete
           name: hash
           in: path
       responses:
@@ -6489,6 +5677,7 @@ paths:
             description: The hash identifier of the API key to retrieve
             example: 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
           required: true
+          description: The hash identifier of the API key to retrieve
           name: hash
           in: path
       responses:
@@ -6597,7 +5786,6 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
-                    description: The API key information
                     example:
                       hash: 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
                       name: My Production Key
@@ -6617,6 +5805,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                    description: The API key information
                 required:
                   - data
                 example:
@@ -6858,9 +6047,9 @@ paths:
                 $ref: '#/components/schemas/ChatResponse'
                 description: Chat completion response
             text/event-stream:
+              x-speakeasy-sse-sentinel: '[DONE]'
               schema:
                 $ref: '#/components/schemas/ChatStreamingResponseChunk'
-              x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad request - invalid parameters
           content:

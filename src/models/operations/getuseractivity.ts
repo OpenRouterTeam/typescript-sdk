@@ -9,6 +9,9 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type GetUserActivityRequest = {
+  /**
+   * Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
+   */
   date?: string | undefined;
 };
 

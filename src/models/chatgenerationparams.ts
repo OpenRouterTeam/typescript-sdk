@@ -541,12 +541,12 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean().default(false)),
+  stream: z.nullable(z.boolean()).optional(),
   stream_options: z.nullable(ChatStreamOptions$inboundSchema).optional(),
-  temperature: z.nullable(z.number().default(1)),
+  temperature: z.nullable(z.number()).optional(),
   tool_choice: z.any().optional(),
   tools: z.array(Tool$inboundSchema).optional(),
-  top_p: z.nullable(z.number().default(1)),
+  top_p: z.nullable(z.number()).optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -585,12 +585,12 @@ export type ChatGenerationParams$Outbound = {
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
-  stream: boolean | null;
+  stream?: boolean | null | undefined;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
-  temperature: number | null;
+  temperature?: number | null | undefined;
   tool_choice?: any | undefined;
   tools?: Array<Tool$Outbound> | undefined;
-  top_p: number | null;
+  top_p?: number | null | undefined;
   user?: string | undefined;
 };
 
@@ -620,12 +620,12 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean().default(false)),
+  stream: z.nullable(z.boolean()).optional(),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
-  temperature: z.nullable(z.number().default(1)),
+  temperature: z.nullable(z.number()).optional(),
   toolChoice: z.any().optional(),
   tools: z.array(Tool$outboundSchema).optional(),
-  topP: z.nullable(z.number().default(1)),
+  topP: z.nullable(z.number()).optional(),
   user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

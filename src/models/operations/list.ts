@@ -9,7 +9,13 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ListRequest = {
+  /**
+   * Whether to include disabled API keys in the response
+   */
   includeDisabled?: string | undefined;
+  /**
+   * Number of API keys to skip for pagination
+   */
   offset?: string | undefined;
 };
 

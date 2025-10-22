@@ -9,8 +9,7 @@ let value: Tool = {
   type: "function",
   function: {
     name: "<value>",
-    description:
-      "consequently abaft as uh-huh drat video imagineer for gadzooks",
+    description: "afore boohoo exempt inwardly phew",
     parameters: {
       "key": "<value>",
       "key1": "<value>",

@@ -9,6 +9,9 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type GetKeyRequest = {
+  /**
+   * The hash identifier of the API key to retrieve
+   */
   hash: string;
 };
 

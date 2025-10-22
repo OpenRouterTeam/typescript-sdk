@@ -8,6 +8,9 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type DeleteKeysRequest = {
+  /**
+   * The hash identifier of the API key to delete
+   */
   hash: string;
 };
 

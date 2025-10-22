@@ -111,11 +111,11 @@ const value: models.OpenResponsesInputItemMessage = {
 ```typescript
 const value: models.OpenResponsesInputItemReasoning = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "<id>",
   content: [
     {
       type: "reasoning_text",
-      text: "Let me think step by step about this problem...",
+      text: "<value>",
     },
   ],
   summary: [

@@ -44,10 +44,10 @@ const value: models.OpenResponsesWebSearchPreviewTool = {
   searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "San Francisco",
-    country: "USA",
-    region: "California",
-    timezone: "America/Los_Angeles",
+    city: "New Amelie",
+    country: "Liberia",
+    region: null,
+    timezone: "Europe/Minsk",
   },
 };
 ```
@@ -60,10 +60,10 @@ const value: models.OpenResponsesWebSearchPreview20250311Tool = {
   searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "San Francisco",
-    country: "USA",
-    region: "California",
-    timezone: "America/Los_Angeles",
+    city: "North Clint",
+    country: "Moldova",
+    region: "<value>",
+    timezone: "Europe/Tirane",
   },
 };
 ```

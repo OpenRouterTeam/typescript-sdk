@@ -50,6 +50,9 @@ export type UpdateKeysRequestBody = {
 };
 
 export type UpdateKeysRequest = {
+  /**
+   * The hash identifier of the API key to update
+   */
   hash: string;
   requestBody: UpdateKeysRequestBody;
 };

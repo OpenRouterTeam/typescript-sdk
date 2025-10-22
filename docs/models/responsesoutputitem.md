@@ -35,11 +35,11 @@ const value: models.ResponsesOutputItemMessage = {
 ```typescript
 const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "msg-abc123",
   content: [
     {
       type: "reasoning_text",
-      text: "Let me think step by step about this problem...",
+      text: "Hello! How can I help you today?",
     },
   ],
   summary: [

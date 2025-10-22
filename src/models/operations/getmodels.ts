@@ -16,19 +16,9 @@ export type GetModelsRequest = {
   useRssChatLinks?: string | undefined;
 };
 
-/**
- * Returns a list of models or RSS feed
- */
-export type GetModelsResponseBody = {
-  /**
-   * List of available models
-   */
-  data: Array<models.Model>;
-};
-
 export type GetModelsResponse =
-  | GetModelsResponseBody
   | models.ErrorResponse
+  | models.ModelsListResponse
   | string;
 
 /** @internal */
@@ -107,74 +97,20 @@ export function getModelsRequestFromJSON(
 }
 
 /** @internal */
-export const GetModelsResponseBody$inboundSchema: z.ZodType<
-  GetModelsResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(models.Model$inboundSchema),
-});
-
-/** @internal */
-export type GetModelsResponseBody$Outbound = {
-  data: Array<models.Model$Outbound>;
-};
-
-/** @internal */
-export const GetModelsResponseBody$outboundSchema: z.ZodType<
-  GetModelsResponseBody$Outbound,
-  z.ZodTypeDef,
-  GetModelsResponseBody
-> = z.object({
-  data: z.array(models.Model$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsResponseBody$ {
-  /** @deprecated use `GetModelsResponseBody$inboundSchema` instead. */
-  export const inboundSchema = GetModelsResponseBody$inboundSchema;
-  /** @deprecated use `GetModelsResponseBody$outboundSchema` instead. */
-  export const outboundSchema = GetModelsResponseBody$outboundSchema;
-  /** @deprecated use `GetModelsResponseBody$Outbound` instead. */
-  export type Outbound = GetModelsResponseBody$Outbound;
-}
-
-export function getModelsResponseBodyToJSON(
-  getModelsResponseBody: GetModelsResponseBody,
-): string {
-  return JSON.stringify(
-    GetModelsResponseBody$outboundSchema.parse(getModelsResponseBody),
-  );
-}
-
-export function getModelsResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
 export const GetModelsResponse$inboundSchema: z.ZodType<
   GetModelsResponse,
   z.ZodTypeDef,
   unknown
 > = z.union([
-  z.lazy(() => GetModelsResponseBody$inboundSchema),
   models.ErrorResponse$inboundSchema,
+  models.ModelsListResponse$inboundSchema,
   z.string(),
 ]);
 
 /** @internal */
 export type GetModelsResponse$Outbound =
-  | GetModelsResponseBody$Outbound
   | models.ErrorResponse$Outbound
+  | models.ModelsListResponse$Outbound
   | string;
 
 /** @internal */
@@ -183,8 +119,8 @@ export const GetModelsResponse$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   GetModelsResponse
 > = z.union([
-  z.lazy(() => GetModelsResponseBody$outboundSchema),
   models.ErrorResponse$outboundSchema,
+  models.ModelsListResponse$outboundSchema,
   z.string(),
 ]);
 

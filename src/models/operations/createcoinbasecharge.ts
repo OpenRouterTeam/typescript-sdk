@@ -5,29 +5,11 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type CreateCoinbaseChargeSecurity = {
   bearer: string;
-};
-
-export const ChainId = {
-  One: 1,
-  OneHundredAndThirtySeven: 137,
-  EightThousandFourHundredAndFiftyThree: 8453,
-} as const;
-export type ChainId = OpenEnum<typeof ChainId>;
-
-export type CreateCoinbaseChargeRequest = {
-  amount: number;
-  sender?: any | undefined;
-  chainId: ChainId;
 };
 
 export type CallData = {
@@ -125,102 +107,6 @@ export function createCoinbaseChargeSecurityFromJSON(
     jsonString,
     (x) => CreateCoinbaseChargeSecurity$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'CreateCoinbaseChargeSecurity' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChainId$inboundSchema: z.ZodType<ChainId, z.ZodTypeDef, unknown> =
-  z
-    .union([
-      z.nativeEnum(ChainId),
-      z.number().transform(catchUnrecognizedEnum),
-    ]);
-
-/** @internal */
-export const ChainId$outboundSchema: z.ZodType<ChainId, z.ZodTypeDef, ChainId> =
-  z.union([
-    z.nativeEnum(ChainId),
-    z.number().and(z.custom<Unrecognized<number>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChainId$ {
-  /** @deprecated use `ChainId$inboundSchema` instead. */
-  export const inboundSchema = ChainId$inboundSchema;
-  /** @deprecated use `ChainId$outboundSchema` instead. */
-  export const outboundSchema = ChainId$outboundSchema;
-}
-
-/** @internal */
-export const CreateCoinbaseChargeRequest$inboundSchema: z.ZodType<
-  CreateCoinbaseChargeRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  amount: z.number(),
-  sender: z.any().optional(),
-  chain_id: ChainId$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "chain_id": "chainId",
-  });
-});
-
-/** @internal */
-export type CreateCoinbaseChargeRequest$Outbound = {
-  amount: number;
-  sender?: any | undefined;
-  chain_id: number;
-};
-
-/** @internal */
-export const CreateCoinbaseChargeRequest$outboundSchema: z.ZodType<
-  CreateCoinbaseChargeRequest$Outbound,
-  z.ZodTypeDef,
-  CreateCoinbaseChargeRequest
-> = z.object({
-  amount: z.number(),
-  sender: z.any().optional(),
-  chainId: ChainId$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    chainId: "chain_id",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateCoinbaseChargeRequest$ {
-  /** @deprecated use `CreateCoinbaseChargeRequest$inboundSchema` instead. */
-  export const inboundSchema = CreateCoinbaseChargeRequest$inboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeRequest$outboundSchema` instead. */
-  export const outboundSchema = CreateCoinbaseChargeRequest$outboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeRequest$Outbound` instead. */
-  export type Outbound = CreateCoinbaseChargeRequest$Outbound;
-}
-
-export function createCoinbaseChargeRequestToJSON(
-  createCoinbaseChargeRequest: CreateCoinbaseChargeRequest,
-): string {
-  return JSON.stringify(
-    CreateCoinbaseChargeRequest$outboundSchema.parse(
-      createCoinbaseChargeRequest,
-    ),
-  );
-}
-
-export function createCoinbaseChargeRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateCoinbaseChargeRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateCoinbaseChargeRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateCoinbaseChargeRequest' from JSON`,
   );
 }
 

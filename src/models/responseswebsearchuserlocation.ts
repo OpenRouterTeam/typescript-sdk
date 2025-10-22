@@ -19,7 +19,7 @@ export type ResponsesWebSearchUserLocationType = ClosedEnum<
  * User location information for web search
  */
 export type ResponsesWebSearchUserLocation = {
-  type: ResponsesWebSearchUserLocationType;
+  type?: ResponsesWebSearchUserLocationType | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
@@ -54,7 +54,7 @@ export const ResponsesWebSearchUserLocation$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: ResponsesWebSearchUserLocationType$inboundSchema,
+  type: ResponsesWebSearchUserLocationType$inboundSchema.optional(),
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
@@ -63,7 +63,7 @@ export const ResponsesWebSearchUserLocation$inboundSchema: z.ZodType<
 
 /** @internal */
 export type ResponsesWebSearchUserLocation$Outbound = {
-  type: string;
+  type?: string | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
@@ -76,7 +76,7 @@ export const ResponsesWebSearchUserLocation$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ResponsesWebSearchUserLocation
 > = z.object({
-  type: ResponsesWebSearchUserLocationType$outboundSchema,
+  type: ResponsesWebSearchUserLocationType$outboundSchema.optional(),
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),

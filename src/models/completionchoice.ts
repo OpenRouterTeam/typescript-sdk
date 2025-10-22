@@ -5,12 +5,12 @@
 import * as z from "zod/v3";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
 import {
-  CompletionFinishReason,
-  CompletionFinishReason$inboundSchema,
-  CompletionFinishReason$outboundSchema,
-} from "./completionfinishreason.js";
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompletionLogprobs,
   CompletionLogprobs$inboundSchema,
@@ -19,12 +19,51 @@ import {
 } from "./completionlogprobs.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const CompletionFinishReason = {
+  Stop: "stop",
+  Length: "length",
+  ContentFilter: "content_filter",
+} as const;
+export type CompletionFinishReason = OpenEnum<typeof CompletionFinishReason>;
+
 export type CompletionChoice = {
   text: string;
   index: number;
   logprobs: CompletionLogprobs | null;
   finishReason: CompletionFinishReason | null;
 };
+
+/** @internal */
+export const CompletionFinishReason$inboundSchema: z.ZodType<
+  CompletionFinishReason,
+  z.ZodTypeDef,
+  unknown
+> = z
+  .union([
+    z.nativeEnum(CompletionFinishReason),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const CompletionFinishReason$outboundSchema: z.ZodType<
+  CompletionFinishReason,
+  z.ZodTypeDef,
+  CompletionFinishReason
+> = z.union([
+  z.nativeEnum(CompletionFinishReason),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace CompletionFinishReason$ {
+  /** @deprecated use `CompletionFinishReason$inboundSchema` instead. */
+  export const inboundSchema = CompletionFinishReason$inboundSchema;
+  /** @deprecated use `CompletionFinishReason$outboundSchema` instead. */
+  export const outboundSchema = CompletionFinishReason$outboundSchema;
+}
 
 /** @internal */
 export const CompletionChoice$inboundSchema: z.ZodType<

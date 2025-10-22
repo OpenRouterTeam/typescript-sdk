@@ -121,11 +121,7 @@ const openRouter = new OpenRouter();
 async function run() {
   const result = await openRouter.credits.createCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {
-    amount: 711.16,
-    sender: "<value>",
-    chainId: 1,
-  });
+  }, {});
 
   console.log(result);
 }
@@ -148,11 +144,7 @@ const openRouter = new OpenRouterCore();
 async function run() {
   const res = await creditsCreateCoinbaseCharge(openRouter, {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {
-    amount: 711.16,
-    sender: "<value>",
-    chainId: 1,
-  });
+  }, {});
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -185,7 +177,7 @@ import {
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.CreateCoinbaseChargeRequest](../../models/operations/createcoinbasechargerequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [models.CreateChargeRequest](../../models/createchargerequest.md)                                                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `security`                                                                                                                                                                     | [operations.CreateCoinbaseChargeSecurity](../../models/operations/createcoinbasechargesecurity.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
