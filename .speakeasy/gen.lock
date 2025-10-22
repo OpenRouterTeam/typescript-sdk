@@ -3,8 +3,8 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: e4e1223498928c4eb610287822d724df
   docVersion: 1.0.0
-  speakeasyVersion: 1.637.3
-  generationVersion: 2.727.9
+  speakeasyVersion: 1.638.0
+  generationVersion: 2.728.0
   releaseVersion: 0.0.1-beta.2
   configChecksum: ad4dc36804e08b5b7a5bd9f2340c861c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.22.0
+    core: 3.23.0
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
