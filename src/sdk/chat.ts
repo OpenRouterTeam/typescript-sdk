@@ -7,16 +7,6 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-// <custom>
-import type { ZodType } from "zod/v3";
-import {
-  experimental_Send,
-  type ExperimentalChatParams,
-  type ExperimentalChatResponse,
-  type ExperimentalTool,
-  type ToolMap,
-} from "../lib/experimental.js";
-// </custom>
 
 export class Chat extends ClientSDK {
   /**
@@ -35,29 +25,4 @@ export class Chat extends ClientSDK {
       options,
     ));
   }
-
-  // <custom>
-  /**
-   * Experimental chat completion with enhanced features
-   *
-   * @remarks
-   * Enhanced version of send() that supports:
-   * - Function tools with Zod schema validation and automatic execution
-   * - MCP (Model Context Protocol) tools
-   * - Output schema validation
-   * - Enhanced response types with responseText, responseFunctionCall, output, etc.
-   *
-   * @experimental This API is experimental and may change in future versions
-   */
-  async experimental_send<
-    TTools extends readonly ExperimentalTool[] = readonly ExperimentalTool[],
-    TOutput = unknown
-  >(
-    request: ExperimentalChatParams<TTools, ZodType<TOutput>>,
-    options?: RequestOptions,
-  ): Promise<ExperimentalChatResponse<ToolMap<TTools>, TOutput>> {
-    // Cast to OpenRouterCore since Chat extends ClientSDK which extends OpenRouterCore
-    return experimental_Send<TTools, TOutput>(this as unknown as import("../core.js").OpenRouterCore, request, options);
-  }
-  // </custom>
 }

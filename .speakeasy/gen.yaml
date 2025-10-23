@@ -35,7 +35,11 @@ typescript:
     dependencies: {}
     devDependencies:
       vitest: ^3.2.4
-    peerDependencies: {}
+    peerDependencies:
+      '@modelcontextprotocol/sdk': ^1.20.1
+      mcp-client: ^1.13.1
+      zod: ^3.25.0 || ^4.0.0
+      zod-to-json-schema: ^3.24.6
   additionalPackageJSON: {}
   author: OpenRouter
   baseErrorName: OpenRouterError
@@ -72,3 +76,4 @@ typescript:
   templateVersion: v2
   usageSDKInitImports: []
   useIndexModules: true
+  zodVersion: v3

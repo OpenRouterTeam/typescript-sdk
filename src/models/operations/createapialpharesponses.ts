@@ -101,8 +101,7 @@ export const CreateApiAlphaResponsesResponse$inboundSchema: z.ZodType<
 > = z.union([
   models.OpenResponsesNonStreamingResponse$inboundSchema,
   models.ErrorResponse$inboundSchema,
-  z
-    .instanceof(ReadableStream<Uint8Array>)
+  z.instanceof(ReadableStream<Uint8Array>)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
         if (rawEvent.data === "[DONE]") return { done: true };

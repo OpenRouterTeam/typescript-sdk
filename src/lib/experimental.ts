@@ -3,7 +3,7 @@
  * This file contains custom types and logic for the experimental_send method
  */
 
-import type { ZodType, ZodObject, ZodRawShape } from "zod/v3";
+import type { ZodType, ZodObject, ZodRawShape } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import type { ChatGenerationParams } from "../models/chatgenerationparams.js";
 import type { Message } from "../models/message.js";
@@ -57,9 +57,9 @@ export type ExperimentalTool = MCPServerConfig | ExperimentalFunctionTool<string
  * Extract tool map from array of tools for type inference
  */
 export type ToolMap<TTools extends readonly ExperimentalTool[]> = {
-  [K in TTools[number] as K extends ExperimentalFunctionTool<infer TName, any, any> ? TName : never]: K extends ExperimentalFunctionTool<any, infer TParams, infer TReturns>
-    ? { params: TParams["_output"]; returns: TReturns["_output"] }
-    : never;
+  [K in TTools[number]as K extends ExperimentalFunctionTool<infer TName, any, any> ? TName : never]: K extends ExperimentalFunctionTool<any, infer TParams, infer TReturns>
+  ? { params: TParams["_output"]; returns: TReturns["_output"] }
+  : never;
 };
 
 /**
@@ -436,89 +436,89 @@ export async function experimental_Send<
       ? await convertToolsForAPI(tools, mcpManager)
       : { apiTools: undefined, toolSources: new Map<string, ToolSource>() };
 
-  // Handle output schema by setting response_format
-  let responseFormat = baseParams.responseFormat;
-  if (outputSchema && !responseFormat) {
-    const jsonSchemaFormat: ResponseFormatJSONSchema = {
-      type: "json_schema",
-      jsonSchema: {
-        name: "output",
-        schema: zodSchemaToJsonSchema(outputSchema),
-        strict: true,
-      },
-    };
-    responseFormat = jsonSchemaFormat;
-  }
-
-  // Track all messages for multi-turn execution
-  let allMessages: Message[] = [...baseParams.messages];
-  let shouldContinue = true;
-  let lastResponse: ChatResponse | undefined;
-
-  // Execute until no more tool calls with run functions
-  while (shouldContinue) {
-    const apiParams: ChatGenerationParams = {
-      ...baseParams,
-      messages: allMessages,
-      // ApiTool includes MCPTool which is compatible at runtime but not type-safe
-      tools: apiTools as ChatGenerationParams["tools"],
-      responseFormat,
-    };
-
-    const result = await chatSend(client, apiParams, options);
-
-    if (!result.ok) {
-      throw result.error;
+    // Handle output schema by setting response_format
+    let responseFormat = baseParams.responseFormat;
+    if (outputSchema && !responseFormat) {
+      const jsonSchemaFormat: ResponseFormatJSONSchema = {
+        type: "json_schema",
+        jsonSchema: {
+          name: "output",
+          schema: zodSchemaToJsonSchema(outputSchema),
+          strict: true,
+        },
+      };
+      responseFormat = jsonSchemaFormat;
     }
 
-    const response: SendChatCompletionRequestResponse = result.value;
+    // Track all messages for multi-turn execution
+    const allMessages: Message[] = [...baseParams.messages];
+    let shouldContinue = true;
+    let lastResponse: ChatResponse | undefined;
 
-    // Handle streaming - check if response is an EventStream (ReadableStream)
-    if (response instanceof ReadableStream || (response instanceof EventStream)) {
-      // For streaming, we can't auto-execute tools, so just return the stream
-      return createStreamingResponse<ToolMap<TTools>, TOutput>(response as EventStream<ChatStreamingResponseChunk>, outputSchema);
-    }
+    // Execute until no more tool calls with run functions
+    while (shouldContinue) {
+      const apiParams: ChatGenerationParams = {
+        ...baseParams,
+        messages: allMessages,
+        // ApiTool includes MCPTool which is compatible at runtime but not type-safe
+        tools: apiTools as ChatGenerationParams["tools"],
+        responseFormat,
+      };
 
-    // Non-streaming response
-    const chatResponse = response as ChatResponse;
-    lastResponse = chatResponse;
+      const result = await chatSend(client, apiParams, options);
 
-    const lastChoice = chatResponse.choices[chatResponse.choices.length - 1];
-    if (!lastChoice) {
-      throw new Error("No choices in response");
-    }
-
-    const message = lastChoice.message as EnhancedMessage<ToolMap<TTools>>;
-
-    // Check if there are tool calls that can be executed
-    if (message.tool_calls && message.tool_calls.length > 0) {
-      // Check if any tool calls can be executed (either local or MCP)
-      const hasExecutableTool = message.tool_calls.some((tc) => {
-        const source = toolSources.get(tc.function.name);
-        if (!source) return false;
-        // MCP tools are always executable, local functions need a run callback
-        return source.type === "mcp" || (source.type === "function" && source.tool.function.run !== undefined);
-      });
-
-      if (hasExecutableTool) {
-        // Execute tools and continue
-        allMessages.push(message as Message);
-        const toolResults = await executeTools(message.tool_calls, toolSources, mcpManager);
-        allMessages.push(...toolResults);
-        continue;
+      if (!result.ok) {
+        throw result.error;
       }
+
+      const response: SendChatCompletionRequestResponse = result.value;
+
+      // Handle streaming - check if response is an EventStream (ReadableStream)
+      if (response instanceof ReadableStream || (response instanceof EventStream)) {
+        // For streaming, we can't auto-execute tools, so just return the stream
+        return createStreamingResponse<ToolMap<TTools>, TOutput>(response as EventStream<ChatStreamingResponseChunk>, outputSchema);
+      }
+
+      // Non-streaming response
+      const chatResponse = response as ChatResponse;
+      lastResponse = chatResponse;
+
+      const lastChoice = chatResponse.choices[chatResponse.choices.length - 1];
+      if (!lastChoice) {
+        throw new Error("No choices in response");
+      }
+
+      const message = lastChoice.message as EnhancedMessage<ToolMap<TTools>>;
+
+      // Check if there are tool calls that can be executed
+      if (message.tool_calls && message.tool_calls.length > 0) {
+        // Check if any tool calls can be executed (either local or MCP)
+        const hasExecutableTool = message.tool_calls.some((tc) => {
+          const source = toolSources.get(tc.function.name);
+          if (!source) return false;
+          // MCP tools are always executable, local functions need a run callback
+          return source.type === "mcp" || (source.type === "function" && source.tool.function.run !== undefined);
+        });
+
+        if (hasExecutableTool) {
+          // Execute tools and continue
+          allMessages.push(message as Message);
+          const toolResults = await executeTools(message.tool_calls, toolSources, mcpManager);
+          allMessages.push(...toolResults);
+          continue;
+        }
+      }
+
+      // No more tool calls to execute
+      shouldContinue = false;
     }
 
-    // No more tool calls to execute
-    shouldContinue = false;
-  }
+    if (!lastResponse) {
+      throw new Error("No response received");
+    }
 
-  if (!lastResponse) {
-    throw new Error("No response received");
-  }
-
-  const newMessages = allMessages.slice(baseParams.messages.length) as EnhancedMessage<ToolMap<TTools>>[];
-  return processNonStreamingResponse<ToolMap<TTools>, TOutput>(lastResponse, tools || [], outputSchema, newMessages);
+    const newMessages = allMessages.slice(baseParams.messages.length) as EnhancedMessage<ToolMap<TTools>>[];
+    return processNonStreamingResponse<ToolMap<TTools>, TOutput>(lastResponse, tools || [], outputSchema, newMessages);
   } finally {
     // Clean up MCP connections
     await mcpManager.closeAll();

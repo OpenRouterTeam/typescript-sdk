@@ -7,19 +7,3 @@ export * as files from "./lib/files.js";
 export { HTTPClient } from "./lib/http.js";
 export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export * from "./sdk/sdk.js";
-// <custom>
-export type {
-  MCPServerConfig,
-  ExperimentalFunctionTool,
-  ExperimentalTool,
-  ExperimentalChatParams,
-  EnhancedMessage,
-  FunctionCall,
-  ExperimentalNonStreamingResponse,
-  ExperimentalFullStreamChunk,
-  ExperimentalResponseStreamChunk,
-  ExperimentalStreamingResponse,
-  ExperimentalChatResponse,
-  ToolMap,
-} from "./lib/experimental.js";
-// </custom>

@@ -3,10 +3,10 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: 91fac1777f65751c0821fcc871339214
   docVersion: 1.0.0
-  speakeasyVersion: 1.638.2
-  generationVersion: 2.729.3
+  speakeasyVersion: 1.639.0
+  generationVersion: 2.730.0
   releaseVersion: 0.0.1-beta.6
-  configChecksum: 550c3a591fe28e4437bad9246d74cc8b
+  configChecksum: 2991fa5c177f7315bcfe0a736b115aa0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.23.0
+    core: 3.24.0
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -1370,6 +1370,3 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes Detected:
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
