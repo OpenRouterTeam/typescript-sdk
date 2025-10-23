@@ -5,10 +5,10 @@ An output item from the response
 
 ## Supported Types
 
-### `models.ResponsesOutputItemMessage`
+### `models.ResponsesOutputMessage`
 
 ```typescript
-const value: models.ResponsesOutputItemMessage = {
+const value: models.ResponsesOutputMessage = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
@@ -64,10 +64,10 @@ const value: models.ResponsesOutputItemFunctionCall = {
 };
 ```
 
-### `models.ResponsesOutputItemWebSearchCall`
+### `models.ResponsesWebSearchCallOutput`
 
 ```typescript
-const value: models.ResponsesOutputItemWebSearchCall = {
+const value: models.ResponsesWebSearchCallOutput = {
   type: "web_search_call",
   id: "search-abc123",
   status: "completed",
@@ -88,10 +88,10 @@ const value: models.ResponsesOutputItemFileSearchCall = {
 };
 ```
 
-### `models.ResponsesOutputItemImageGenerationCall`
+### `models.ResponsesImageGenerationCall`
 
 ```typescript
-const value: models.ResponsesOutputItemImageGenerationCall = {
+const value: models.ResponsesImageGenerationCall = {
   type: "image_generation_call",
   id: "imagegen-abc123",
   result:
