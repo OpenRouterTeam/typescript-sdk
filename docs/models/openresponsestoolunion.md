@@ -60,10 +60,10 @@ const value: models.OpenResponsesWebSearchPreview20250311Tool = {
   searchContextSize: "medium",
   userLocation: {
     type: "approximate",
-    city: "North Clint",
-    country: "Moldova",
-    region: "<value>",
-    timezone: "Europe/Tirane",
+    city: "New Amelie",
+    country: "Liberia",
+    region: null,
+    timezone: "Europe/Minsk",
   },
 };
 ```

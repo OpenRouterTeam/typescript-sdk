@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 8b0fc00e0a568f4963589069d5a6e8b6
+  docChecksum: 91fac1777f65751c0821fcc871339214
   docVersion: 1.0.0
-  speakeasyVersion: 1.638.1
-  generationVersion: 2.729.2
-  releaseVersion: 0.0.1-beta.5
-  configChecksum: 8f8177a8ae55359cdcb970ef0c1edd54
+  speakeasyVersion: 1.638.2
+  generationVersion: 2.729.3
+  releaseVersion: 0.0.1-beta.6
+  configChecksum: 550c3a591fe28e4437bad9246d74cc8b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -152,24 +152,6 @@ generatedFiles:
   - docs/models/openresponsesinputimagedetail.md
   - docs/models/openresponsesinputimagetype.md
   - docs/models/openresponsesinputitem.md
-  - docs/models/openresponsesinputitemcontent.md
-  - docs/models/openresponsesinputitemfilesearchcall.md
-  - docs/models/openresponsesinputitemfunctioncall.md
-  - docs/models/openresponsesinputitemimagegenerationcall.md
-  - docs/models/openresponsesinputitemmessage.md
-  - docs/models/openresponsesinputitemreasoning.md
-  - docs/models/openresponsesinputitemrole.md
-  - docs/models/openresponsesinputitemstatuscompleted.md
-  - docs/models/openresponsesinputitemstatusincomplete.md
-  - docs/models/openresponsesinputitemstatusinprogress.md
-  - docs/models/openresponsesinputitemstatusunion.md
-  - docs/models/openresponsesinputitemtypefilesearchcall.md
-  - docs/models/openresponsesinputitemtypefunctioncall.md
-  - docs/models/openresponsesinputitemtypeimagegenerationcall.md
-  - docs/models/openresponsesinputitemtypemessage.md
-  - docs/models/openresponsesinputitemtypereasoning.md
-  - docs/models/openresponsesinputitemtypewebsearchcall.md
-  - docs/models/openresponsesinputitemwebsearchcall.md
   - docs/models/openresponsesinputmessageitem.md
   - docs/models/openresponsesinputmessageitemroledeveloper.md
   - docs/models/openresponsesinputmessageitemrolesystem.md
@@ -237,13 +219,9 @@ generatedFiles:
   - docs/models/openresponseswebsearch20250826toolfilters.md
   - docs/models/openresponseswebsearch20250826tooltype.md
   - docs/models/openresponseswebsearchpreview20250311tool.md
-  - docs/models/openresponseswebsearchpreview20250311tooltypeapproximate.md
-  - docs/models/openresponseswebsearchpreview20250311tooltypewebsearchpreview20250311.md
-  - docs/models/openresponseswebsearchpreview20250311tooluserlocation.md
+  - docs/models/openresponseswebsearchpreview20250311tooltype.md
   - docs/models/openresponseswebsearchpreviewtool.md
-  - docs/models/openresponseswebsearchpreviewtooltypeapproximate.md
-  - docs/models/openresponseswebsearchpreviewtooltypewebsearchpreview.md
-  - docs/models/openresponseswebsearchpreviewtooluserlocation.md
+  - docs/models/openresponseswebsearchpreviewtooltype.md
   - docs/models/openresponseswebsearchtool.md
   - docs/models/openresponseswebsearchtoolfilters.md
   - docs/models/openresponseswebsearchtooltype.md
@@ -324,31 +302,31 @@ generatedFiles:
   - docs/models/responseformattextgrammar.md
   - docs/models/responseserrorfield.md
   - docs/models/responseserrorfieldcode.md
+  - docs/models/responsesimagegenerationcall.md
+  - docs/models/responsesimagegenerationcalltype.md
   - docs/models/responsesoutputitem.md
-  - docs/models/responsesoutputitemcontent.md
   - docs/models/responsesoutputitemfilesearchcall.md
+  - docs/models/responsesoutputitemfilesearchcalltype.md
   - docs/models/responsesoutputitemfunctioncall.md
-  - docs/models/responsesoutputitemimagegenerationcall.md
-  - docs/models/responsesoutputitemmessage.md
+  - docs/models/responsesoutputitemfunctioncalltype.md
   - docs/models/responsesoutputitemreasoning.md
-  - docs/models/responsesoutputitemrole.md
-  - docs/models/responsesoutputitemstatuscompleted.md
-  - docs/models/responsesoutputitemstatusincomplete.md
-  - docs/models/responsesoutputitemstatusinprogress.md
-  - docs/models/responsesoutputitemstatusunion.md
-  - docs/models/responsesoutputitemtypefilesearchcall.md
-  - docs/models/responsesoutputitemtypefunctioncall.md
-  - docs/models/responsesoutputitemtypeimagegenerationcall.md
-  - docs/models/responsesoutputitemtypemessage.md
-  - docs/models/responsesoutputitemtypereasoning.md
-  - docs/models/responsesoutputitemtypewebsearchcall.md
-  - docs/models/responsesoutputitemwebsearchcall.md
+  - docs/models/responsesoutputitemreasoningtype.md
+  - docs/models/responsesoutputmessage.md
+  - docs/models/responsesoutputmessagecontent.md
+  - docs/models/responsesoutputmessagerole.md
+  - docs/models/responsesoutputmessagetype.md
   - docs/models/responsessearchcontextsize.md
   - docs/models/responsesusage.md
+  - docs/models/responseswebsearchcalloutput.md
+  - docs/models/responseswebsearchcalloutputtype.md
   - docs/models/responseswebsearchuserlocation.md
   - docs/models/responseswebsearchuserlocationtype.md
   - docs/models/security.md
   - docs/models/servicetier.md
+  - docs/models/status.md
+  - docs/models/statuscompleted.md
+  - docs/models/statusincomplete.md
+  - docs/models/statusinprogress.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
@@ -397,6 +375,8 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/verbosity.md
+  - docs/models/websearchpreviewtooluserlocation.md
+  - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
   - docs/sdks/analytics/README.md
   - docs/sdks/apikeys/README.md
@@ -563,9 +543,15 @@ generatedFiles:
   - src/models/responseformatjsonschema.ts
   - src/models/responseformattextgrammar.ts
   - src/models/responseserrorfield.ts
+  - src/models/responsesimagegenerationcall.ts
   - src/models/responsesoutputitem.ts
+  - src/models/responsesoutputitemfilesearchcall.ts
+  - src/models/responsesoutputitemfunctioncall.ts
+  - src/models/responsesoutputitemreasoning.ts
+  - src/models/responsesoutputmessage.ts
   - src/models/responsessearchcontextsize.ts
   - src/models/responsesusage.ts
+  - src/models/responseswebsearchcalloutput.ts
   - src/models/responseswebsearchuserlocation.ts
   - src/models/security.ts
   - src/models/systemmessage.ts
@@ -575,6 +561,7 @@ generatedFiles:
   - src/models/toolresponsemessage.ts
   - src/models/urlcitationannotation.ts
   - src/models/usermessage.ts
+  - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
   - src/react-query/_context.tsx
   - src/react-query/_types.ts
@@ -1383,3 +1370,6 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Typescript SDK Changes Detected:
+  * `openrouter.beta.responses.send()`:  `response` **Changed**

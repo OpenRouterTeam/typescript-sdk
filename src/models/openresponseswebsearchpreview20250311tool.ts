@@ -13,178 +13,53 @@ import {
   ResponsesSearchContextSize$inboundSchema,
   ResponsesSearchContextSize$outboundSchema,
 } from "./responsessearchcontextsize.js";
+import {
+  WebSearchPreviewToolUserLocation,
+  WebSearchPreviewToolUserLocation$inboundSchema,
+  WebSearchPreviewToolUserLocation$Outbound,
+  WebSearchPreviewToolUserLocation$outboundSchema,
+} from "./websearchpreviewtooluserlocation.js";
 
-export const OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311 =
-  {
-    WebSearchPreview20250311: "web_search_preview_2025_03_11",
-  } as const;
-export type OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311 =
-  ClosedEnum<
-    typeof OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311
-  >;
-
-export const OpenResponsesWebSearchPreview20250311ToolTypeApproximate = {
-  Approximate: "approximate",
+export const OpenResponsesWebSearchPreview20250311ToolType = {
+  WebSearchPreview20250311: "web_search_preview_2025_03_11",
 } as const;
-export type OpenResponsesWebSearchPreview20250311ToolTypeApproximate =
-  ClosedEnum<typeof OpenResponsesWebSearchPreview20250311ToolTypeApproximate>;
-
-export type OpenResponsesWebSearchPreview20250311ToolUserLocation = {
-  type: OpenResponsesWebSearchPreview20250311ToolTypeApproximate;
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-};
+export type OpenResponsesWebSearchPreview20250311ToolType = ClosedEnum<
+  typeof OpenResponsesWebSearchPreview20250311ToolType
+>;
 
 /**
  * Web search preview tool configuration (2025-03-11 version)
  */
 export type OpenResponsesWebSearchPreview20250311Tool = {
-  type: OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311;
+  type: OpenResponsesWebSearchPreview20250311ToolType;
   /**
    * Size of the search context for web search tools
    */
   searchContextSize?: ResponsesSearchContextSize | undefined;
-  userLocation?:
-    | OpenResponsesWebSearchPreview20250311ToolUserLocation
-    | null
-    | undefined;
+  userLocation?: WebSearchPreviewToolUserLocation | null | undefined;
 };
 
 /** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$inboundSchema:
-  z.ZodNativeEnum<
-    typeof OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311
-  > = z.nativeEnum(
-    OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311,
-  );
+export const OpenResponsesWebSearchPreview20250311ToolType$inboundSchema:
+  z.ZodNativeEnum<typeof OpenResponsesWebSearchPreview20250311ToolType> = z
+    .nativeEnum(OpenResponsesWebSearchPreview20250311ToolType);
 
 /** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$outboundSchema:
-  z.ZodNativeEnum<
-    typeof OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311
-  > =
-    OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$inboundSchema;
+export const OpenResponsesWebSearchPreview20250311ToolType$outboundSchema:
+  z.ZodNativeEnum<typeof OpenResponsesWebSearchPreview20250311ToolType> =
+    OpenResponsesWebSearchPreview20250311ToolType$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$ {
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$inboundSchema` instead. */
+export namespace OpenResponsesWebSearchPreview20250311ToolType$ {
+  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolType$inboundSchema` instead. */
   export const inboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$outboundSchema` instead. */
+    OpenResponsesWebSearchPreview20250311ToolType$inboundSchema;
+  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolType$outboundSchema` instead. */
   export const outboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolTypeApproximate$inboundSchema:
-  z.ZodNativeEnum<
-    typeof OpenResponsesWebSearchPreview20250311ToolTypeApproximate
-  > = z.nativeEnum(OpenResponsesWebSearchPreview20250311ToolTypeApproximate);
-
-/** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolTypeApproximate$outboundSchema:
-  z.ZodNativeEnum<
-    typeof OpenResponsesWebSearchPreview20250311ToolTypeApproximate
-  > = OpenResponsesWebSearchPreview20250311ToolTypeApproximate$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreview20250311ToolTypeApproximate$ {
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolTypeApproximate$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolTypeApproximate$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolTypeApproximate$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolTypeApproximate$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolUserLocation$inboundSchema:
-  z.ZodType<
-    OpenResponsesWebSearchPreview20250311ToolUserLocation,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    type:
-      OpenResponsesWebSearchPreview20250311ToolTypeApproximate$inboundSchema,
-    city: z.nullable(z.string()).optional(),
-    country: z.nullable(z.string()).optional(),
-    region: z.nullable(z.string()).optional(),
-    timezone: z.nullable(z.string()).optional(),
-  });
-
-/** @internal */
-export type OpenResponsesWebSearchPreview20250311ToolUserLocation$Outbound = {
-  type: string;
-  city?: string | null | undefined;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  timezone?: string | null | undefined;
-};
-
-/** @internal */
-export const OpenResponsesWebSearchPreview20250311ToolUserLocation$outboundSchema:
-  z.ZodType<
-    OpenResponsesWebSearchPreview20250311ToolUserLocation$Outbound,
-    z.ZodTypeDef,
-    OpenResponsesWebSearchPreview20250311ToolUserLocation
-  > = z.object({
-    type:
-      OpenResponsesWebSearchPreview20250311ToolTypeApproximate$outboundSchema,
-    city: z.nullable(z.string()).optional(),
-    country: z.nullable(z.string()).optional(),
-    region: z.nullable(z.string()).optional(),
-    timezone: z.nullable(z.string()).optional(),
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreview20250311ToolUserLocation$ {
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolUserLocation$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolUserLocation$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolUserLocation$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolUserLocation$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolUserLocation$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesWebSearchPreview20250311ToolUserLocation$Outbound;
-}
-
-export function openResponsesWebSearchPreview20250311ToolUserLocationToJSON(
-  openResponsesWebSearchPreview20250311ToolUserLocation:
-    OpenResponsesWebSearchPreview20250311ToolUserLocation,
-): string {
-  return JSON.stringify(
-    OpenResponsesWebSearchPreview20250311ToolUserLocation$outboundSchema.parse(
-      openResponsesWebSearchPreview20250311ToolUserLocation,
-    ),
-  );
-}
-
-export function openResponsesWebSearchPreview20250311ToolUserLocationFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  OpenResponsesWebSearchPreview20250311ToolUserLocation,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesWebSearchPreview20250311ToolUserLocation$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'OpenResponsesWebSearchPreview20250311ToolUserLocation' from JSON`,
-  );
+    OpenResponsesWebSearchPreview20250311ToolType$outboundSchema;
 }
 
 /** @internal */
@@ -193,14 +68,10 @@ export const OpenResponsesWebSearchPreview20250311Tool$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type:
-    OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$inboundSchema,
+  type: OpenResponsesWebSearchPreview20250311ToolType$inboundSchema,
   search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
-  user_location: z.nullable(
-    z.lazy(() =>
-      OpenResponsesWebSearchPreview20250311ToolUserLocation$inboundSchema
-    ),
-  ).optional(),
+  user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "search_context_size": "searchContextSize",
@@ -212,10 +83,7 @@ export const OpenResponsesWebSearchPreview20250311Tool$inboundSchema: z.ZodType<
 export type OpenResponsesWebSearchPreview20250311Tool$Outbound = {
   type: string;
   search_context_size?: string | undefined;
-  user_location?:
-    | OpenResponsesWebSearchPreview20250311ToolUserLocation$Outbound
-    | null
-    | undefined;
+  user_location?: WebSearchPreviewToolUserLocation$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -225,14 +93,10 @@ export const OpenResponsesWebSearchPreview20250311Tool$outboundSchema:
     z.ZodTypeDef,
     OpenResponsesWebSearchPreview20250311Tool
   > = z.object({
-    type:
-      OpenResponsesWebSearchPreview20250311ToolTypeWebSearchPreview20250311$outboundSchema,
+    type: OpenResponsesWebSearchPreview20250311ToolType$outboundSchema,
     searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
-    userLocation: z.nullable(
-      z.lazy(() =>
-        OpenResponsesWebSearchPreview20250311ToolUserLocation$outboundSchema
-      ),
-    ).optional(),
+    userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema)
+      .optional(),
   }).transform((v) => {
     return remap$(v, {
       searchContextSize: "search_context_size",

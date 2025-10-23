@@ -168,6 +168,19 @@ components:
         content:
           - type: output_text
             text: Hello! How can I help you today?
+    ResponsesOutputMessage:
+      allOf:
+        - $ref: '#/components/schemas/OutputMessage'
+        - type: object
+          properties: {}
+      example:
+        id: msg-abc123
+        role: assistant
+        type: message
+        status: completed
+        content:
+          - type: output_text
+            text: Hello! How can I help you today?
     ReasoningTextContent:
       type: object
       properties:
@@ -198,6 +211,29 @@ components:
       example:
         type: summary_text
         text: Analyzed the problem using first principles
+    ResponsesOutputItemReasoning:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning
+        id:
+          type: string
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningTextContent'
+        summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReasoningSummaryText'
+        encrypted_content:
+          type: string
+          nullable: true
+      required:
+        - type
+        - summary
     OutputItemFunctionCall:
       type: object
       properties:
@@ -218,6 +254,17 @@ components:
         - name
         - arguments
         - call_id
+      example:
+        type: function_call
+        id: call-abc123
+        name: get_weather
+        arguments: '{"location":"San Francisco","unit":"celsius"}'
+        call_id: call-abc123
+    ResponsesOutputItemFunctionCall:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemFunctionCall'
+        - type: object
+          properties: {}
       example:
         type: function_call
         id: call-abc123
@@ -252,6 +299,15 @@ components:
         type: web_search_call
         id: search-abc123
         status: completed
+    ResponsesWebSearchCallOutput:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemWebSearchCall'
+        - type: object
+          properties: {}
+      example:
+        type: web_search_call
+        id: search-abc123
+        status: completed
     OutputItemFileSearchCall:
       type: object
       properties:
@@ -272,6 +328,18 @@ components:
         - id
         - queries
         - status
+      example:
+        type: file_search_call
+        id: filesearch-abc123
+        queries:
+          - machine learning algorithms
+          - neural networks
+        status: completed
+    ResponsesOutputItemFileSearchCall:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemFileSearchCall'
+        - type: object
+          properties: {}
       example:
         type: file_search_call
         id: filesearch-abc123
@@ -312,80 +380,24 @@ components:
         id: imagegen-abc123
         result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
         status: completed
+    ResponsesImageGenerationCall:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+        - type: object
+          properties: {}
+      example:
+        type: image_generation_call
+        id: imagegen-abc123
+        result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+        status: completed
     ResponsesOutputItem:
       anyOf:
-        - allOf:
-            - $ref: '#/components/schemas/OutputMessage'
-            - type: object
-              properties: {}
-          example:
-            id: msg-abc123
-            role: assistant
-            type: message
-            status: completed
-            content:
-              - type: output_text
-                text: Hello! How can I help you today?
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - reasoning
-            id:
-              type: string
-            content:
-              type: array
-              items:
-                $ref: '#/components/schemas/ReasoningTextContent'
-            summary:
-              type: array
-              items:
-                $ref: '#/components/schemas/ReasoningSummaryText'
-            encrypted_content:
-              type: string
-              nullable: true
-          required:
-            - type
-            - summary
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemFunctionCall'
-            - type: object
-              properties: {}
-          example:
-            type: function_call
-            id: call-abc123
-            name: get_weather
-            arguments: '{"location":"San Francisco","unit":"celsius"}'
-            call_id: call-abc123
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemWebSearchCall'
-            - type: object
-              properties: {}
-          example:
-            type: web_search_call
-            id: search-abc123
-            status: completed
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemFileSearchCall'
-            - type: object
-              properties: {}
-          example:
-            type: file_search_call
-            id: filesearch-abc123
-            queries:
-              - machine learning algorithms
-              - neural networks
-            status: completed
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-            - type: object
-              properties: {}
-          example:
-            type: image_generation_call
-            id: imagegen-abc123
-            result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
-            status: completed
+        - $ref: '#/components/schemas/ResponsesOutputMessage'
+        - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
+        - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
+        - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
+        - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
+        - $ref: '#/components/schemas/ResponsesImageGenerationCall'
       description: An output item from the response
       example:
         id: msg-abc123
@@ -750,78 +762,12 @@ components:
         - $ref: '#/components/schemas/OpenResponsesInputMessageItem'
         - $ref: '#/components/schemas/OpenResponsesFunctionToolCall'
         - $ref: '#/components/schemas/OpenResponsesFunctionCallOutput'
-        - allOf:
-            - $ref: '#/components/schemas/OutputMessage'
-            - type: object
-              properties: {}
-          example:
-            id: msg-abc123
-            role: assistant
-            type: message
-            status: completed
-            content:
-              - type: output_text
-                text: Hello! How can I help you today?
-        - type: object
-          properties:
-            type:
-              type: string
-              enum:
-                - reasoning
-            id:
-              type: string
-            content:
-              type: array
-              items:
-                $ref: '#/components/schemas/ReasoningTextContent'
-            summary:
-              type: array
-              items:
-                $ref: '#/components/schemas/ReasoningSummaryText'
-            encrypted_content:
-              type: string
-              nullable: true
-          required:
-            - type
-            - summary
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemFunctionCall'
-            - type: object
-              properties: {}
-          example:
-            type: function_call
-            id: call-abc123
-            name: get_weather
-            arguments: '{"location":"San Francisco","unit":"celsius"}'
-            call_id: call-abc123
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemWebSearchCall'
-            - type: object
-              properties: {}
-          example:
-            type: web_search_call
-            id: search-abc123
-            status: completed
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemFileSearchCall'
-            - type: object
-              properties: {}
-          example:
-            type: file_search_call
-            id: filesearch-abc123
-            queries:
-              - machine learning algorithms
-              - neural networks
-            status: completed
-        - allOf:
-            - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-            - type: object
-              properties: {}
-          example:
-            type: image_generation_call
-            id: imagegen-abc123
-            result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
-            status: completed
+        - $ref: '#/components/schemas/ResponsesOutputMessage'
+        - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
+        - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
+        - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
+        - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
+        - $ref: '#/components/schemas/ResponsesImageGenerationCall'
       description: An item in the input array for a response request
       example:
         role: user
@@ -900,6 +846,28 @@ components:
       description: Size of the search context for web search tools
       example: medium
       x-speakeasy-unknown-values: allow
+    WebSearchPreviewToolUserLocation:
+      type: object
+      nullable: true
+      properties:
+        type:
+          type: string
+          enum:
+            - approximate
+        city:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        region:
+          type: string
+          nullable: true
+        timezone:
+          type: string
+          nullable: true
+      required:
+        - type
     OpenResponsesWebSearchPreviewTool:
       type: object
       properties:
@@ -910,27 +878,7 @@ components:
         search_context_size:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
-          type: object
-          nullable: true
-          properties:
-            type:
-              type: string
-              enum:
-                - approximate
-            city:
-              type: string
-              nullable: true
-            country:
-              type: string
-              nullable: true
-            region:
-              type: string
-              nullable: true
-            timezone:
-              type: string
-              nullable: true
-          required:
-            - type
+          $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
       required:
         - type
       description: Web search preview tool configuration
@@ -946,27 +894,7 @@ components:
         search_context_size:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
-          type: object
-          nullable: true
-          properties:
-            type:
-              type: string
-              enum:
-                - approximate
-            city:
-              type: string
-              nullable: true
-            country:
-              type: string
-              nullable: true
-            region:
-              type: string
-              nullable: true
-            timezone:
-              type: string
-              nullable: true
-          required:
-            - type
+          $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
       required:
         - type
       description: Web search preview tool configuration (2025-03-11 version)

@@ -81,10 +81,10 @@ const value: models.OpenResponsesFunctionCallOutput = {
 };
 ```
 
-### `models.OpenResponsesInputItemMessage`
+### `models.ResponsesOutputMessage`
 
 ```typescript
-const value: models.OpenResponsesInputItemMessage = {
+const value: models.ResponsesOutputMessage = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
@@ -106,16 +106,16 @@ const value: models.OpenResponsesInputItemMessage = {
 };
 ```
 
-### `models.OpenResponsesInputItemReasoning`
+### `models.ResponsesOutputItemReasoning`
 
 ```typescript
-const value: models.OpenResponsesInputItemReasoning = {
+const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "<id>",
+  id: "msg-abc123",
   content: [
     {
       type: "reasoning_text",
-      text: "<value>",
+      text: "Hello! How can I help you today?",
     },
   ],
   summary: [
@@ -128,10 +128,10 @@ const value: models.OpenResponsesInputItemReasoning = {
 };
 ```
 
-### `models.OpenResponsesInputItemFunctionCall`
+### `models.ResponsesOutputItemFunctionCall`
 
 ```typescript
-const value: models.OpenResponsesInputItemFunctionCall = {
+const value: models.ResponsesOutputItemFunctionCall = {
   type: "function_call",
   id: "call-abc123",
   name: "get_weather",
@@ -140,20 +140,20 @@ const value: models.OpenResponsesInputItemFunctionCall = {
 };
 ```
 
-### `models.OpenResponsesInputItemWebSearchCall`
+### `models.ResponsesWebSearchCallOutput`
 
 ```typescript
-const value: models.OpenResponsesInputItemWebSearchCall = {
+const value: models.ResponsesWebSearchCallOutput = {
   type: "web_search_call",
   id: "search-abc123",
   status: "completed",
 };
 ```
 
-### `models.OpenResponsesInputItemFileSearchCall`
+### `models.ResponsesOutputItemFileSearchCall`
 
 ```typescript
-const value: models.OpenResponsesInputItemFileSearchCall = {
+const value: models.ResponsesOutputItemFileSearchCall = {
   type: "file_search_call",
   id: "filesearch-abc123",
   queries: [
@@ -164,10 +164,10 @@ const value: models.OpenResponsesInputItemFileSearchCall = {
 };
 ```
 
-### `models.OpenResponsesInputItemImageGenerationCall`
+### `models.ResponsesImageGenerationCall`
 
 ```typescript
-const value: models.OpenResponsesInputItemImageGenerationCall = {
+const value: models.ResponsesImageGenerationCall = {
   type: "image_generation_call",
   id: "imagegen-abc123",
   result:
