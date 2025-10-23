@@ -5,8 +5,8 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.638.1
   generationVersion: 2.729.2
-  releaseVersion: 0.0.1-beta.3
-  configChecksum: 3b9bd90ee53858e8aacee093a21fcec1
+  releaseVersion: 0.0.1-beta.4
+  configChecksum: 0e341f06cad125fd5498aa53cace4e90
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1385,4 +1385,3 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.beta.responses.send()`: \n  *  `request` **Changed** **Breaking** :warning:\n  *  `response` **Changed**\n* `openrouter.credits.getCredits()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.credits.createCoinbaseCharge()`:  `request` **Changed** **Breaking** :warning:\n* `openrouter.models.count()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.models.list()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.models.listForUser()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.endpoints.list()`:  `response.data` **Changed** **Breaking** :warning:\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data.[]` **Changed** **Breaking** :warning:\n* `openrouter.chat.send()`:  `request` **Changed**\n"
