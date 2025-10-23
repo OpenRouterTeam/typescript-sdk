@@ -5,8 +5,8 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.638.1
   generationVersion: 2.729.2
-  releaseVersion: 0.0.1-beta.4
-  configChecksum: 0e341f06cad125fd5498aa53cace4e90
+  releaseVersion: 0.0.1-beta.5
+  configChecksum: 8f8177a8ae55359cdcb970ef0c1edd54
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -45,7 +45,6 @@ generatedFiles:
   - .devcontainer/devcontainer.json
   - .devcontainer/setup.sh
   - .gitattributes
-  - .npmignore
   - FUNCTIONS.md
   - REACT_QUERY.md
   - RUNTIMES.md
@@ -623,7 +622,6 @@ generatedFiles:
   - src/types/operations.ts
   - src/types/rfcdate.ts
   - src/types/streams.ts
-  - tsconfig.json
 examples:
   createChatCompletion:
     speakeasy-default-create-chat-completion:
