@@ -34,12 +34,13 @@ export type MCPServerConfig = {
  * Enhanced function tool with Zod schema support and optional run callback
  */
 export type ExperimentalFunctionTool<
+  TName extends string = string,
   TParams extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
   TReturns extends ZodType<unknown> = ZodType<unknown>
 > = {
   type: "function";
   function: {
-    name: string;
+    name: TName;
     description?: string;
     parameters: TParams;
     returns: TReturns;
@@ -50,41 +51,52 @@ export type ExperimentalFunctionTool<
 /**
  * Union of all tool types for experimental_send
  */
-export type ExperimentalTool = MCPServerConfig | ExperimentalFunctionTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
+export type ExperimentalTool = MCPServerConfig | ExperimentalFunctionTool<string, ZodObject<ZodRawShape>, ZodType<unknown>>;
+
+/**
+ * Extract tool map from array of tools for type inference
+ */
+export type ToolMap<TTools extends readonly ExperimentalTool[]> = {
+  [K in TTools[number] as K extends ExperimentalFunctionTool<infer TName, any, any> ? TName : never]: K extends ExperimentalFunctionTool<any, infer TParams, infer TReturns>
+    ? { params: TParams["_output"]; returns: TReturns["_output"] }
+    : never;
+};
 
 /**
  * Extended chat parameters with experimental features
  */
-export type ExperimentalChatParams<TOutput extends ZodType<any> = ZodType<any>> = Omit<
-  ChatGenerationParams,
-  "tools"
-> & {
-  tools?: ExperimentalTool[];
+export type ExperimentalChatParams<
+  TTools extends readonly ExperimentalTool[] = readonly ExperimentalTool[],
+  TOutput extends ZodType<any> = ZodType<any>
+> = Omit<ChatGenerationParams, "tools"> & {
+  tools?: TTools;
   outputSchema?: TOutput;
-};
-
-/**
- * Enhanced message type with structured content
- */
-export type EnhancedMessage = Message & {
-  tool_calls?: Array<{
-    id: string;
-    type: "function";
-    function: {
-      name: string;
-      arguments: string;
-    };
-  }>;
-  tool_call_id?: string;
-  content?: string | null;
 };
 
 /**
  * Function call with parsed arguments (for non-streaming)
  */
-export type FunctionCall = {
-  name: string;
-  arguments: Record<string, unknown>;
+export type FunctionCall<TToolMap = Record<string, { params: any; returns: any }>> = {
+  [K in keyof TToolMap]: {
+    name: K;
+    arguments: TToolMap[K] extends { params: infer P } ? P : never;
+  };
+}[keyof TToolMap];
+
+/**
+ * Enhanced message type with structured content
+ */
+export type EnhancedMessage<TToolMap = Record<string, { params: any; returns: any }>> = Message & {
+  tool_calls?: Array<{
+    id: string;
+    type: "function";
+    function: {
+      name: keyof TToolMap & string;
+      arguments: string;
+    };
+  }>;
+  tool_call_id?: string;
+  content?: string | null | (TToolMap[keyof TToolMap] extends { returns: infer R } ? R : never);
 };
 
 /**
@@ -99,47 +111,59 @@ type PartialFunctionCall = {
  * Non-streaming response with enhanced fields
  * Extends ChatResponse to provide both raw access and enhanced fields
  */
-export type ExperimentalNonStreamingResponse<TOutput = unknown> = ChatResponse & {
+export type ExperimentalNonStreamingResponse<
+  TToolMap = Record<string, { params: any; returns: any }>,
+  TOutput = unknown
+> = ChatResponse & {
   raw: ChatResponse;
-  allNewMessages: EnhancedMessage[];
-  responseMessage: EnhancedMessage;
+  allNewMessages: EnhancedMessage<TToolMap>[];
+  responseMessage: EnhancedMessage<TToolMap>;
   responseText: string | null;
-  responseFunctionCall: FunctionCall | null;
+  responseFunctionCall: FunctionCall<TToolMap> | null;
   output: TOutput | null;
 };
 
 /**
  * Chunk for the full stream (all messages)
  */
-export type ExperimentalFullStreamChunk = {
+export type ExperimentalFullStreamChunk<TToolMap = Record<string, { params: any; returns: any }>> = {
   raw: ChatStreamingResponseChunk;
-  message: Partial<EnhancedMessage>;
+  message: Partial<EnhancedMessage<TToolMap>>;
 };
 
 /**
  * Chunk for the response stream (final message only)
  */
-export type ExperimentalResponseStreamChunk<TOutput = unknown> = {
-  message: Partial<EnhancedMessage>;
+export type ExperimentalResponseStreamChunk<
+  TToolMap = Record<string, { params: any; returns: any }>,
+  TOutput = unknown
+> = {
+  message: Partial<EnhancedMessage<TToolMap>>;
   text: string | null;
-  functionCall: FunctionCall | null;
+  functionCall: FunctionCall<TToolMap> | null;
   output: TOutput | null;
 };
 
 /**
  * Streaming response with two iterator types
  */
-export type ExperimentalStreamingResponse<TOutput = unknown> = {
-  fullStream: AsyncIterable<ExperimentalFullStreamChunk>;
-  response: AsyncIterable<ExperimentalResponseStreamChunk<TOutput>>;
+export type ExperimentalStreamingResponse<
+  TToolMap = Record<string, { params: any; returns: any }>,
+  TOutput = unknown
+> = {
+  fullStream: AsyncIterable<ExperimentalFullStreamChunk<TToolMap>>;
+  response: AsyncIterable<ExperimentalResponseStreamChunk<TToolMap, TOutput>>;
 };
 
 /**
  * Union response type
  */
-export type ExperimentalChatResponse<TOutput = unknown> =
-  | ExperimentalNonStreamingResponse<TOutput>
-  | ExperimentalStreamingResponse<TOutput>;
+export type ExperimentalChatResponse<
+  TToolMap = Record<string, { params: any; returns: any }>,
+  TOutput = unknown
+> =
+  | ExperimentalNonStreamingResponse<TToolMap, TOutput>
+  | ExperimentalStreamingResponse<TToolMap, TOutput>;
 
 /**
  * JSON Schema type
@@ -181,7 +205,7 @@ type ApiTool = MCPServerConfig | {
  */
 type ToolSource =
   | { type: "mcp"; serverUrl: string; toolName: string }
-  | { type: "function"; tool: ExperimentalFunctionTool<ZodObject<ZodRawShape>, ZodType<unknown>> };
+  | { type: "function"; tool: ExperimentalFunctionTool<string, ZodObject<ZodRawShape>, ZodType<unknown>> };
 
 /**
  * Convert MCP tool to API format
@@ -201,7 +225,7 @@ function convertMCPToolToAPI(mcpTool: MCPToolDefinition): ApiTool {
  * Convert experimental tools to API-compatible format and build tool source map
  */
 async function convertToolsForAPI(
-  tools: ExperimentalTool[],
+  tools: readonly ExperimentalTool[],
   mcpManager: MCPManager
 ): Promise<{ apiTools: ApiTool[]; toolSources: Map<string, ToolSource> }> {
   const apiTools: ApiTool[] = [];
@@ -209,7 +233,7 @@ async function convertToolsForAPI(
 
   // Separate MCP servers from function tools
   const mcpServers = tools.filter((t) => t.type === "mcp") as MCPServerConfig[];
-  const functionTools = tools.filter((t) => t.type === "function") as ExperimentalFunctionTool<ZodObject<ZodRawShape>, ZodType<unknown>>[];
+  const functionTools = tools.filter((t) => t.type === "function") as ExperimentalFunctionTool<string, ZodObject<ZodRawShape>, ZodType<unknown>>[];
 
   // Add function tools
   for (const tool of functionTools) {
@@ -274,18 +298,18 @@ function extractTextContent(message: Message): string | null {
 /**
  * Process non-streaming response
  */
-async function processNonStreamingResponse<TOutput>(
+async function processNonStreamingResponse<TToolMap, TOutput>(
   response: ChatResponse,
-  _tools: ExperimentalTool[],
+  _tools: readonly ExperimentalTool[],
   outputSchema: ZodType<TOutput> | undefined,
-  allMessages: EnhancedMessage[]
-): Promise<ExperimentalNonStreamingResponse<TOutput>> {
+  allMessages: EnhancedMessage<TToolMap>[]
+): Promise<ExperimentalNonStreamingResponse<TToolMap, TOutput>> {
   const lastChoice = response.choices[response.choices.length - 1];
   if (!lastChoice) {
     throw new Error("No choices in response");
   }
 
-  const responseMessage = lastChoice.message as EnhancedMessage;
+  const responseMessage = lastChoice.message as EnhancedMessage<TToolMap>;
 
   const responseText = extractTextContent(responseMessage);
 
@@ -296,7 +320,7 @@ async function processNonStreamingResponse<TOutput>(
       responseFunctionCall = {
         name: toolCall.function.name,
         arguments: JSON.parse(toolCall.function.arguments),
-      };
+      } as FunctionCall<TToolMap>;
     }
   }
 
@@ -393,11 +417,14 @@ async function executeTools(
 /**
  * Main experimental_send implementation
  */
-export async function experimental_Send<TOutput = unknown>(
+export async function experimental_Send<
+  TTools extends readonly ExperimentalTool[] = readonly ExperimentalTool[],
+  TOutput = unknown
+>(
   client: OpenRouterCore,
-  params: ExperimentalChatParams<ZodType<TOutput>>,
+  params: ExperimentalChatParams<TTools, ZodType<TOutput>>,
   options?: RequestOptions
-): Promise<ExperimentalChatResponse<TOutput>> {
+): Promise<ExperimentalChatResponse<ToolMap<TTools>, TOutput>> {
   const { tools, outputSchema, ...baseParams } = params;
 
   // Create MCP manager for this request
@@ -449,7 +476,7 @@ export async function experimental_Send<TOutput = unknown>(
     // Handle streaming - check if response is an EventStream (ReadableStream)
     if (response instanceof ReadableStream || (response instanceof EventStream)) {
       // For streaming, we can't auto-execute tools, so just return the stream
-      return createStreamingResponse(response as EventStream<ChatStreamingResponseChunk>, outputSchema);
+      return createStreamingResponse<ToolMap<TTools>, TOutput>(response as EventStream<ChatStreamingResponseChunk>, outputSchema);
     }
 
     // Non-streaming response
@@ -461,7 +488,7 @@ export async function experimental_Send<TOutput = unknown>(
       throw new Error("No choices in response");
     }
 
-    const message = lastChoice.message as EnhancedMessage;
+    const message = lastChoice.message as EnhancedMessage<ToolMap<TTools>>;
 
     // Check if there are tool calls that can be executed
     if (message.tool_calls && message.tool_calls.length > 0) {
@@ -490,8 +517,8 @@ export async function experimental_Send<TOutput = unknown>(
     throw new Error("No response received");
   }
 
-  const newMessages = allMessages.slice(baseParams.messages.length) as EnhancedMessage[];
-  return processNonStreamingResponse(lastResponse, tools || [], outputSchema, newMessages);
+  const newMessages = allMessages.slice(baseParams.messages.length) as EnhancedMessage<ToolMap<TTools>>[];
+  return processNonStreamingResponse<ToolMap<TTools>, TOutput>(lastResponse, tools || [], outputSchema, newMessages);
   } finally {
     // Clean up MCP connections
     await mcpManager.closeAll();
@@ -501,14 +528,14 @@ export async function experimental_Send<TOutput = unknown>(
 /**
  * Create streaming response iterators
  */
-function createStreamingResponse<TOutput>(
+function createStreamingResponse<TToolMap, TOutput>(
   streamResponse: EventStream<ChatStreamingResponseChunk>,
   outputSchema: ZodType<TOutput> | undefined
-): ExperimentalStreamingResponse<TOutput> {
-  const fullStreamChunks: ExperimentalFullStreamChunk[] = [];
+): ExperimentalStreamingResponse<TToolMap, TOutput> {
+  const fullStreamChunks: ExperimentalFullStreamChunk<TToolMap>[] = [];
   let isFullStreamConsumed = false;
 
-  const fullStream: AsyncIterable<ExperimentalFullStreamChunk> = {
+  const fullStream: AsyncIterable<ExperimentalFullStreamChunk<TToolMap>> = {
     async *[Symbol.asyncIterator]() {
       if (isFullStreamConsumed) {
         // Replay from cache
@@ -521,9 +548,9 @@ function createStreamingResponse<TOutput>(
       // EventStream is already async iterable
       for await (const chunk of streamResponse) {
         const delta = chunk.data.choices?.[0]?.delta;
-        const enhancedChunk: ExperimentalFullStreamChunk = {
+        const enhancedChunk: ExperimentalFullStreamChunk<TToolMap> = {
           raw: chunk,
-          message: delta as Partial<EnhancedMessage> || {},
+          message: delta as Partial<EnhancedMessage<TToolMap>> || {},
         };
 
         fullStreamChunks.push(enhancedChunk);
@@ -534,7 +561,7 @@ function createStreamingResponse<TOutput>(
     },
   };
 
-  const response: AsyncIterable<ExperimentalResponseStreamChunk<TOutput>> = {
+  const response: AsyncIterable<ExperimentalResponseStreamChunk<TToolMap, TOutput>> = {
     async *[Symbol.asyncIterator]() {
       let accumulatedText = "";
       let accumulatedPartialCall: PartialFunctionCall | null = null;
@@ -548,7 +575,7 @@ function createStreamingResponse<TOutput>(
           text = delta.content;
         }
 
-        let functionCall: FunctionCall | null = null;
+        let functionCall: FunctionCall<TToolMap> | null = null;
         if (delta.tool_calls && delta.tool_calls.length > 0) {
           const toolCall = delta.tool_calls[0];
           if (toolCall) {
@@ -567,7 +594,7 @@ function createStreamingResponse<TOutput>(
               functionCall = {
                 name: accumulatedPartialCall.name,
                 arguments: parsedArgs as Record<string, unknown>,
-              };
+              } as FunctionCall<TToolMap>;
             } catch (e) {
               // Arguments not complete yet, skip
               functionCall = null;

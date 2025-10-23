@@ -13,6 +13,8 @@ import {
   experimental_Send,
   type ExperimentalChatParams,
   type ExperimentalChatResponse,
+  type ExperimentalTool,
+  type ToolMap,
 } from "../lib/experimental.js";
 // </custom>
 
@@ -47,12 +49,15 @@ export class Chat extends ClientSDK {
    *
    * @experimental This API is experimental and may change in future versions
    */
-  async experimental_send<TOutput = unknown>(
-    request: ExperimentalChatParams<ZodType<TOutput>>,
+  async experimental_send<
+    TTools extends readonly ExperimentalTool[] = readonly ExperimentalTool[],
+    TOutput = unknown
+  >(
+    request: ExperimentalChatParams<TTools, ZodType<TOutput>>,
     options?: RequestOptions,
-  ): Promise<ExperimentalChatResponse<TOutput>> {
+  ): Promise<ExperimentalChatResponse<ToolMap<TTools>, TOutput>> {
     // Cast to OpenRouterCore since Chat extends ClientSDK which extends OpenRouterCore
-    return experimental_Send<TOutput>(this as unknown as import("../core.js").OpenRouterCore, request, options);
+    return experimental_Send<TTools, TOutput>(this as unknown as import("../core.js").OpenRouterCore, request, options);
   }
   // </custom>
 }

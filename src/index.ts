@@ -20,5 +20,6 @@ export type {
   ExperimentalResponseStreamChunk,
   ExperimentalStreamingResponse,
   ExperimentalChatResponse,
+  ToolMap,
 } from "./lib/experimental.js";
 // </custom>
