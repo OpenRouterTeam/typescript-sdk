@@ -13,3 +13,7 @@
 /.tshy
 /.tshy-*
 /__tests__
+examples/*
+docs/*
+tests/*
+src/*
