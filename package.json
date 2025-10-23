@@ -6,43 +6,35 @@
   "main": "./esm/index.js",
   "exports": {
     ".": {
-      "source": "./src/index.ts",
       "types": "./esm/index.d.ts",
       "default": "./esm/index.js"
     },
     "./package.json": "./package.json",
     "./types": {
-      "source": "./src/types/index.ts",
       "types": "./esm/types/index.d.ts",
       "default": "./esm/types/index.js"
     },
     "./models/errors": {
-      "source": "./src/models/errors/index.ts",
       "types": "./esm/models/errors/index.d.ts",
       "default": "./esm/models/errors/index.js"
     },
     "./models": {
-      "source": "./src/models/index.ts",
       "types": "./esm/models/index.d.ts",
       "default": "./esm/models/index.js"
     },
     "./models/operations": {
-      "source": "./src/models/operations/index.ts",
       "types": "./esm/models/operations/index.d.ts",
       "default": "./esm/models/operations/index.js"
     },
     "./react-query": {
-      "source": "./src/react-query/index.ts",
       "types": "./esm/react-query/index.d.ts",
       "default": "./esm/react-query/index.js"
     },
     "./*.js": {
-      "source": "./src/*.ts",
       "types": "./esm/*.d.ts",
       "default": "./esm/*.js"
     },
     "./*": {
-      "source": "./src/*.ts",
       "types": "./esm/*.d.ts",
       "default": "./esm/*.js"
     }
@@ -63,9 +55,15 @@
     "react-dom": "^18 || ^19"
   },
   "peerDependenciesMeta": {
-    "@tanstack/react-query": {"optional":true},
-    "react": {"optional":true},
-    "react-dom": {"optional":true}
+    "@tanstack/react-query": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

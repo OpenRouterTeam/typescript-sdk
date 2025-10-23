@@ -6,8 +6,9 @@
 !/**/*.js
 !/**/*.mjs
 !/**/*.json
-!/**/*.map
+/**/*.map
 
+/openapi
 /eslint.config.mjs
 /cjs
 /.tshy
