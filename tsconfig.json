@@ -12,8 +12,8 @@
     "allowJs": true,
 
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declarationMap": false,
+    "sourceMap": false,
     "outDir": ".",
     
 
