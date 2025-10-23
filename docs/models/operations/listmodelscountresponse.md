@@ -3,14 +3,10 @@
 
 ## Supported Types
 
-### `operations.ListModelsCountResponseBody`
+### `models.ModelsCountResponse`
 
 ```typescript
-const value: operations.ListModelsCountResponseBody = {
-  data: {
-    count: 150,
-  },
-};
+const value: models.ModelsCountResponse = {};
 ```
 
 ### `models.ErrorResponse`

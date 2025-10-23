@@ -50,9 +50,11 @@ async function run() {
     },
     seed: null,
     stop: [],
+    stream: false,
     streamOptions: {
       includeUsage: true,
     },
+    temperature: 1,
     toolChoice: "<value>",
     tools: [
       {
@@ -67,6 +69,7 @@ async function run() {
         },
       },
     ],
+    topP: 1,
     user: "Francesco.Bartell",
   });
 
@@ -119,9 +122,11 @@ async function run() {
     },
     seed: null,
     stop: [],
+    stream: false,
     streamOptions: {
       includeUsage: true,
     },
+    temperature: 1,
     toolChoice: "<value>",
     tools: [
       {
@@ -136,6 +141,7 @@ async function run() {
         },
       },
     ],
+    topP: 1,
     user: "Francesco.Bartell",
   });
   if (res.ok) {

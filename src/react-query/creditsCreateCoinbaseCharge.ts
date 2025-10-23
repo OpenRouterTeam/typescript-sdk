@@ -11,6 +11,7 @@ import { OpenRouterCore } from "../core.js";
 import { creditsCreateCoinbaseCharge } from "../funcs/creditsCreateCoinbaseCharge.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
@@ -18,7 +19,7 @@ import { MutationHookOptions } from "./_types.js";
 
 export type CreditsCreateCoinbaseChargeMutationVariables = {
   security: operations.CreateCoinbaseChargeSecurity;
-  request: operations.CreateCoinbaseChargeRequest;
+  request: models.CreateChargeRequest;
   options?: RequestOptions;
 };
 

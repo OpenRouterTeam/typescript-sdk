@@ -5,6 +5,7 @@
 import { creditsCreateCoinbaseCharge } from "../funcs/creditsCreateCoinbaseCharge.js";
 import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -32,7 +33,7 @@ export class Credits extends ClientSDK {
    */
   async createCoinbaseCharge(
     security: operations.CreateCoinbaseChargeSecurity,
-    request: operations.CreateCoinbaseChargeRequest,
+    request: models.CreateChargeRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateCoinbaseChargeResponse> {
     return unwrapAsync(creditsCreateCoinbaseCharge(

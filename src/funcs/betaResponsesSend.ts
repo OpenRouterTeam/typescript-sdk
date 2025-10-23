@@ -3,10 +3,8 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -33,7 +31,7 @@ import { Result } from "../types/fp.js";
  */
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest,
+  _request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -50,14 +48,14 @@ export function betaResponsesSend(
 > {
   return new APIPromise($do(
     client,
-    request,
+    _request,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest,
+  _request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -75,17 +73,6 @@ async function $do(
     APICall,
   ]
 > {
-  const parsed = safeParse(
-    request,
-    (value) => models.OpenResponsesRequest$outboundSchema.parse(value),
-    "Input validation failed",
-  );
-  if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
-  }
-  const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
-
   const path = pathToFunc("/api/alpha/responses")();
 
   const headers = new Headers(compactMap({
@@ -118,7 +105,6 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
-    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);

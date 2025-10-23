@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: e4e1223498928c4eb610287822d724df
+  docChecksum: 8b0fc00e0a568f4963589069d5a6e8b6
   docVersion: 1.0.0
-  speakeasyVersion: 1.637.3
-  generationVersion: 2.727.9
-  releaseVersion: 0.0.1-beta.2
-  configChecksum: ad4dc36804e08b5b7a5bd9f2340c861c
+  speakeasyVersion: 1.638.1
+  generationVersion: 2.729.2
+  releaseVersion: 0.0.1-beta.3
+  configChecksum: 3b9bd90ee53858e8aacee093a21fcec1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.22.0
+    core: 3.23.0
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -88,7 +88,6 @@ generatedFiles:
   - docs/models/code.md
   - docs/models/completionchoice.md
   - docs/models/completioncreateparams.md
-  - docs/models/completioncreateparamsprompt.md
   - docs/models/completioncreateparamsresponseformatjsonobject.md
   - docs/models/completioncreateparamsresponseformatpython.md
   - docs/models/completioncreateparamsresponseformattext.md
@@ -100,57 +99,33 @@ generatedFiles:
   - docs/models/completiontokensdetails.md
   - docs/models/completionusage.md
   - docs/models/costdetails.md
+  - docs/models/createchargerequest.md
   - docs/models/data.md
-  - docs/models/datacollection.md
-  - docs/models/defaultparameters.md
-  - docs/models/endpointstatus.md
-  - docs/models/engine.md
   - docs/models/errorresponse.md
   - docs/models/errorresponsecode.md
   - docs/models/errorresponseerror.md
   - docs/models/errors/chaterror.md
   - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
-  - docs/models/experimental.md
   - docs/models/filecitationannotation.md
   - docs/models/filecitationannotationtype.md
   - docs/models/filepathannotation.md
   - docs/models/filepathannotationtype.md
-  - docs/models/idfileparser.md
-  - docs/models/idmoderation.md
-  - docs/models/idweb.md
-  - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
   - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
-  - docs/models/inputmodality.md
   - docs/models/inputtokensdetails.md
-  - docs/models/instructtype.md
   - docs/models/jsonschemaconfig.md
-  - docs/models/maxprice.md
+  - docs/models/listendpointsresponse.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
-  - docs/models/model.md
-  - docs/models/modelarchitecture.md
-  - docs/models/modelaudio.md
-  - docs/models/modelcompletion.md
-  - docs/models/modelgroup.md
-  - docs/models/modelimage.md
-  - docs/models/modelimageoutput.md
-  - docs/models/modelinputaudiocache.md
-  - docs/models/modelinputcacheread.md
-  - docs/models/modelinputcachewrite.md
-  - docs/models/modelinternalreasoning.md
-  - docs/models/modelpricing.md
-  - docs/models/modelprompt.md
-  - docs/models/modelrequest.md
-  - docs/models/modelwebsearch.md
+  - docs/models/modelscountresponse.md
+  - docs/models/modelslistresponse.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/objectt.md
-  - docs/models/only.md
   - docs/models/openresponseseasyinputmessage.md
   - docs/models/openresponseseasyinputmessagecontent.md
   - docs/models/openresponseseasyinputmessageroleassistant.md
@@ -170,7 +145,6 @@ generatedFiles:
   - docs/models/openresponsesfunctioncalloutputtype.md
   - docs/models/openresponsesfunctiontoolcall.md
   - docs/models/openresponsesfunctiontoolcalltype.md
-  - docs/models/openresponsesincludable.md
   - docs/models/openresponsesinput.md
   - docs/models/openresponsesinputcontent.md
   - docs/models/openresponsesinputfile.md
@@ -221,12 +195,6 @@ generatedFiles:
   - docs/models/openresponsesrefusalcontent.md
   - docs/models/openresponsesrefusalcontenttype.md
   - docs/models/openresponsesrequest.md
-  - docs/models/openresponsesrequestaudio.md
-  - docs/models/openresponsesrequestcompletion.md
-  - docs/models/openresponsesrequestimage.md
-  - docs/models/openresponsesrequestprompt.md
-  - docs/models/openresponsesrequestrequest.md
-  - docs/models/openresponsesservicetier.md
   - docs/models/openresponsesstreamevent.md
   - docs/models/openresponsesstreameventannotation.md
   - docs/models/openresponsesstreameventerror.md
@@ -266,25 +234,25 @@ generatedFiles:
   - docs/models/openresponsestoolunion.md
   - docs/models/openresponsestoolunionfunction.md
   - docs/models/openresponsestooluniontype.md
-  - docs/models/openresponsestruncation.md
   - docs/models/openresponseswebsearch20250826tool.md
   - docs/models/openresponseswebsearch20250826toolfilters.md
   - docs/models/openresponseswebsearch20250826tooltype.md
   - docs/models/openresponseswebsearchpreview20250311tool.md
-  - docs/models/openresponseswebsearchpreview20250311tooltype.md
+  - docs/models/openresponseswebsearchpreview20250311tooltypeapproximate.md
+  - docs/models/openresponseswebsearchpreview20250311tooltypewebsearchpreview20250311.md
+  - docs/models/openresponseswebsearchpreview20250311tooluserlocation.md
   - docs/models/openresponseswebsearchpreviewtool.md
-  - docs/models/openresponseswebsearchpreviewtooltype.md
+  - docs/models/openresponseswebsearchpreviewtooltypeapproximate.md
+  - docs/models/openresponseswebsearchpreviewtooltypewebsearchpreview.md
+  - docs/models/openresponseswebsearchpreviewtooluserlocation.md
   - docs/models/openresponseswebsearchtool.md
   - docs/models/openresponseswebsearchtoolfilters.md
   - docs/models/openresponseswebsearchtooltype.md
   - docs/models/operations/apitype.md
-  - docs/models/operations/architecture.md
   - docs/models/operations/calldata.md
-  - docs/models/operations/chainid.md
   - docs/models/operations/createapialpharesponsesresponse.md
   - docs/models/operations/createapialpharesponsesresponsebody.md
   - docs/models/operations/createcoinbasechargedata.md
-  - docs/models/operations/createcoinbasechargerequest.md
   - docs/models/operations/createcoinbasechargeresponse.md
   - docs/models/operations/createcoinbasechargesecurity.md
   - docs/models/operations/createkeysdata.md
@@ -294,7 +262,6 @@ generatedFiles:
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
   - docs/models/operations/errort.md
-  - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -306,7 +273,6 @@ generatedFiles:
   - docs/models/operations/getkeyresponse.md
   - docs/models/operations/getmodelsrequest.md
   - docs/models/operations/getmodelsresponse.md
-  - docs/models/operations/getmodelsresponsebody.md
   - docs/models/operations/getparametersdata.md
   - docs/models/operations/getparametersrequest.md
   - docs/models/operations/getparametersresponse.md
@@ -314,16 +280,12 @@ generatedFiles:
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
   - docs/models/operations/listdata.md
-  - docs/models/operations/listendpointsdata.md
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
   - docs/models/operations/listendpointszdrresponse.md
   - docs/models/operations/listendpointszdrresponsebody.md
-  - docs/models/operations/listmodelscountdata.md
   - docs/models/operations/listmodelscountresponse.md
-  - docs/models/operations/listmodelscountresponsebody.md
   - docs/models/operations/listmodelsuserresponse.md
-  - docs/models/operations/listmodelsuserresponsebody.md
   - docs/models/operations/listmodelsusersecurity.md
   - docs/models/operations/listprovidersdata.md
   - docs/models/operations/listprovidersresponse.md
@@ -334,7 +296,6 @@ generatedFiles:
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
   - docs/models/operations/supportedparameter.md
-  - docs/models/operations/tokenizer.md
   - docs/models/operations/transferintent.md
   - docs/models/operations/updatekeysdata.md
   - docs/models/operations/updatekeyslimitreset.md
@@ -342,41 +303,15 @@ generatedFiles:
   - docs/models/operations/updatekeysrequestbody.md
   - docs/models/operations/updatekeysresponse.md
   - docs/models/operations/web3data.md
-  - docs/models/order.md
-  - docs/models/outputmodality.md
   - docs/models/outputtextcontent.md
   - docs/models/outputtextcontentannotation.md
   - docs/models/outputtextcontenttype.md
   - docs/models/outputtokensdetails.md
-  - docs/models/parameter.md
   - docs/models/part1.md
   - docs/models/part2.md
-  - docs/models/pdf.md
-  - docs/models/pdfengine.md
-  - docs/models/perrequestlimits.md
-  - docs/models/plugin.md
-  - docs/models/pluginfileparser.md
-  - docs/models/pluginmoderation.md
-  - docs/models/pluginweb.md
+  - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
-  - docs/models/provider.md
-  - docs/models/providername.md
-  - docs/models/providersort.md
   - docs/models/publicendpoint.md
-  - docs/models/publicendpointaudio.md
-  - docs/models/publicendpointcompletion.md
-  - docs/models/publicendpointimage.md
-  - docs/models/publicendpointimageoutput.md
-  - docs/models/publicendpointinputaudiocache.md
-  - docs/models/publicendpointinputcacheread.md
-  - docs/models/publicendpointinputcachewrite.md
-  - docs/models/publicendpointinternalreasoning.md
-  - docs/models/publicendpointpricing.md
-  - docs/models/publicendpointprompt.md
-  - docs/models/publicendpointquantization.md
-  - docs/models/publicendpointrequest.md
-  - docs/models/publicendpointwebsearch.md
-  - docs/models/quantization.md
   - docs/models/reason.md
   - docs/models/reasoning.md
   - docs/models/reasoningsummarytext.md
@@ -426,7 +361,6 @@ generatedFiles:
   - docs/models/toolfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
-  - docs/models/topproviderinfo.md
   - docs/models/truncation.md
   - docs/models/type.md
   - docs/models/typecodeinterpreter.md
@@ -547,13 +481,10 @@ generatedFiles:
   - src/models/chatstreamoptions.ts
   - src/models/completionchoice.ts
   - src/models/completioncreateparams.ts
-  - src/models/completionfinishreason.ts
   - src/models/completionlogprobs.ts
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
-  - src/models/datacollection.ts
-  - src/models/defaultparameters.ts
-  - src/models/endpointstatus.ts
+  - src/models/createchargerequest.ts
   - src/models/errorresponse.ts
   - src/models/errors/chaterror.ts
   - src/models/errors/errorresponse.ts
@@ -568,13 +499,11 @@ generatedFiles:
   - src/models/filepathannotation.ts
   - src/models/imagegenerationstatus.ts
   - src/models/index.ts
-  - src/models/inputmodality.ts
-  - src/models/instructtype.ts
   - src/models/jsonschemaconfig.ts
+  - src/models/listendpointsresponse.ts
   - src/models/message.ts
-  - src/models/model.ts
-  - src/models/modelarchitecture.ts
-  - src/models/modelgroup.ts
+  - src/models/modelscountresponse.ts
+  - src/models/modelslistresponse.ts
   - src/models/namedtoolchoice.ts
   - src/models/openresponseseasyinputmessage.ts
   - src/models/openresponsesformatjsonobject.ts
@@ -583,7 +512,6 @@ generatedFiles:
   - src/models/openresponsesformattextconfig.ts
   - src/models/openresponsesfunctioncalloutput.ts
   - src/models/openresponsesfunctiontoolcall.ts
-  - src/models/openresponsesincludable.ts
   - src/models/openresponsesinput.ts
   - src/models/openresponsesinputcontent.ts
   - src/models/openresponsesinputfile.ts
@@ -599,12 +527,10 @@ generatedFiles:
   - src/models/openresponsesreasoningconfig.ts
   - src/models/openresponsesrefusalcontent.ts
   - src/models/openresponsesrequest.ts
-  - src/models/openresponsesservicetier.ts
   - src/models/openresponsesstreamevent.ts
   - src/models/openresponsestextconfig.ts
   - src/models/openresponsestoolchoice.ts
   - src/models/openresponsestoolunion.ts
-  - src/models/openresponsestruncation.ts
   - src/models/openresponseswebsearch20250826tool.ts
   - src/models/openresponseswebsearchpreview20250311tool.ts
   - src/models/openresponseswebsearchpreviewtool.ts
@@ -629,13 +555,8 @@ generatedFiles:
   - src/models/operations/listproviders.ts
   - src/models/operations/sendchatcompletionrequest.ts
   - src/models/operations/updatekeys.ts
-  - src/models/outputmodality.ts
   - src/models/outputtextcontent.ts
-  - src/models/parameter.ts
-  - src/models/providername.ts
-  - src/models/providersort.ts
   - src/models/publicendpoint.ts
-  - src/models/quantization.ts
   - src/models/reasoningsummarytext.ts
   - src/models/reasoningsummaryverbosity.ts
   - src/models/reasoningtextcontent.ts
@@ -653,7 +574,6 @@ generatedFiles:
   - src/models/toolcallstatus.ts
   - src/models/toolchoicetypes.ts
   - src/models/toolresponsemessage.ts
-  - src/models/topproviderinfo.ts
   - src/models/urlcitationannotation.ts
   - src/models/usermessage.ts
   - src/models/websearchstatus.ts
@@ -1056,7 +976,7 @@ examples:
     speakeasy-default-get-credits:
       responses:
         "200":
-          application/json: {"data": {"total_credits": 100.5, "total_usage": 25.75}}
+          application/json: {}
         4XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
@@ -1324,7 +1244,7 @@ examples:
   createApiAlphaResponses:
     speakeasy-default-create-api-alpha-responses:
       requestBody:
-        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": "auto", "parallel_tool_calls": false, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "medium", "summary": "auto", "max_tokens": 6415.05, "enabled": true}, "max_output_tokens": 5270.85, "temperature": 0.7, "top_p": 0.9, "top_k": 5913.88, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "include": ["message.input_image.image_url"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "auto", "truncation": "auto", "stream": false, "provider": {"allow_fallbacks": false, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["Moonshot AI"], "only": ["<value>"], "ignore": ["<value>"], "quantizations": ["bf16"], "sort": "price", "max_price": {"prompt": "<value>", "completion": 4351.98, "image": "https://loremflickr.com/916/1698?lock=7420998995259402", "audio": "<value>", "request": "<value>"}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 3555.38, "pdf": {"engine": "pdf-text"}}], "user": "Parker.OKeefe"}
+        application/json: {}
       responses:
         "200":
           application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 8700.29, "is_byok": true, "cost_details": {"upstream_inference_cost": 5688.69, "upstream_inference_input_cost": 1605.62, "upstream_inference_output_cost": 6596.56}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto", "max_tokens": 8142.98, "enabled": true}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
@@ -1333,7 +1253,7 @@ examples:
   createCoinbaseCharge:
     speakeasy-default-create-coinbase-charge:
       requestBody:
-        application/json: {"amount": 711.16, "sender": "<value>", "chain_id": 1}
+        application/json: {}
       responses:
         "200":
           application/json: {"data": {"id": "<id>", "created_at": "1715098772685", "expires_at": "1755552807642", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 4907.84, "contract_address": "<value>", "sender": "<value>"}}}}}
@@ -1361,7 +1281,7 @@ examples:
     speakeasy-default-list-models-count:
       responses:
         "200":
-          application/json: {"data": {"count": 150}}
+          application/json: {}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   getModels:
@@ -1374,7 +1294,7 @@ examples:
           use_rss_chat_links: "<value>"
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "<value>", "completion": "<value>", "request": 5485.57, "image": 8576.67, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3012.51, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 167.91}, "context_length": 8192, "architecture": {"tokenizer": "PaLM", "instruct_type": null, "modality": "text", "input_modalities": [], "output_modalities": []}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": {"prompt_tokens": "<value>", "completion_tokens": "<value>"}, "supported_parameters": ["top_p"], "default_parameters": {"temperature": 4228.12, "top_p": 7758.51, "frequency_penalty": 1201.29}}]}
+          application/json: {}
           application/rss+xml: "<value>"
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
@@ -1382,7 +1302,7 @@ examples:
     speakeasy-default-list-models-user:
       responses:
         "200":
-          application/json: {"data": []}
+          application/json: {}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   listEndpoints:
@@ -1393,7 +1313,7 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text", "input_modalities": [], "output_modalities": []}, "endpoints": [{"name": "<value>", "model_name": "<value>", "context_length": 5355.68, "pricing": {"prompt": "<value>", "completion": "<value>", "request": "<value>", "image": "https://picsum.photos/seed/uZjMJ4Dy/1347/1789", "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": 3498.4, "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 9312.33}, "provider_name": "Crusoe", "tag": "<value>", "quantization": "fp4", "max_completion_tokens": 2451.81, "max_prompt_tokens": 5726.51, "supported_parameters": [], "status": -5, "uptime_last_30m": 3744.66, "supports_implicit_caching": false}]}}
+          application/json: {"data": {}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
@@ -1404,7 +1324,7 @@ examples:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 6280.84, "pricing": {"prompt": "<value>", "completion": "<value>", "request": 9611.08, "image": 1226.28, "image_output": "<value>", "audio": "<value>", "input_audio_cache": "<value>", "web_search": "<value>", "internal_reasoning": "<value>", "input_cache_read": "<value>", "input_cache_write": "<value>", "discount": 2784.22}, "provider_name": "AnyScale", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 8097.59, "max_prompt_tokens": 1849.71, "supported_parameters": ["include_reasoning"], "status": -2, "uptime_last_30m": 2509.54, "supports_implicit_caching": true}]}
+          application/json: {"data": [{}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   createKeys:
@@ -1465,3 +1385,4 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.beta.responses.send()`: \n  *  `request` **Changed** **Breaking** :warning:\n  *  `response` **Changed**\n* `openrouter.credits.getCredits()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.credits.createCoinbaseCharge()`:  `request` **Changed** **Breaking** :warning:\n* `openrouter.models.count()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.models.list()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.models.listForUser()`:  `response.data` **Removed** **Breaking** :warning:\n* `openrouter.endpoints.list()`:  `response.data` **Changed** **Breaking** :warning:\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data.[]` **Changed** **Breaking** :warning:\n* `openrouter.chat.send()`:  `request` **Changed**\n"
