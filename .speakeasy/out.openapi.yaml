@@ -3036,9 +3036,36 @@ components:
       example:
         data:
           - id: openai/gpt-4
+            canonical_slug: openai/gpt-4
             name: GPT-4
             created: 1692901234
             description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+            pricing:
+              prompt: '0.00003'
+              completion: '0.00006'
+              request: '0'
+              image: '0'
+            context_length: 8192
+            architecture:
+              tokenizer: GPT
+              instruct_type: chatml
+              modality: text->text
+              input_modalities:
+                - text
+              output_modalities:
+                - text
+            top_provider:
+              context_length: 8192
+              max_completion_tokens: 4096
+              is_moderated: true
+            per_request_limits: null
+            supported_parameters:
+              - temperature
+              - top_p
+              - max_tokens
+              - frequency_penalty
+              - presence_penalty
+            default_parameters: null
     ListEndpointsResponse:
       type: object
       description: List of available endpoints for a model
@@ -3047,6 +3074,37 @@ components:
         name: GPT-4
         created: 1692901234
         description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+        architecture:
+          tokenizer: GPT
+          instruct_type: chatml
+          modality: text->text
+          input_modalities:
+            - text
+          output_modalities:
+            - text
+        endpoints:
+          - name: 'OpenAI: GPT-4'
+            model_name: GPT-4
+            context_length: 8192
+            pricing:
+              prompt: '0.00003'
+              completion: '0.00006'
+              request: '0'
+              image: '0'
+            provider_name: OpenAI
+            tag: openai
+            quantization: fp16
+            max_completion_tokens: 4096
+            max_prompt_tokens: 8192
+            supported_parameters:
+              - temperature
+              - top_p
+              - max_tokens
+              - frequency_penalty
+              - presence_penalty
+            status: default
+            uptime_last_30m: 99.5
+            supports_implicit_caching: true
     PublicEndpoint:
       type: object
       description: Information about a specific model endpoint
