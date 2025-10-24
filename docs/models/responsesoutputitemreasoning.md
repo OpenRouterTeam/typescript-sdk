@@ -1,5 +1,7 @@
 # ResponsesOutputItemReasoning
 
+An output item containing reasoning
+
 ## Example Usage
 
 ```typescript
@@ -21,6 +23,7 @@ let value: ResponsesOutputItemReasoning = {
     },
   ],
   encryptedContent: "<value>",
+  status: "completed",
 };
 ```
 
@@ -33,3 +36,4 @@ let value: ResponsesOutputItemReasoning = {
 | `content`                                                                                | [models.ReasoningTextContent](../models/reasoningtextcontent.md)[]                       | :heavy_minus_sign:                                                                       | N/A                                                                                      |
 | `summary`                                                                                | [models.ReasoningSummaryText](../models/reasoningsummarytext.md)[]                       | :heavy_check_mark:                                                                       | N/A                                                                                      |
 | `encryptedContent`                                                                       | *string*                                                                                 | :heavy_minus_sign:                                                                       | N/A                                                                                      |
+| `status`                                                                                 | *models.ResponsesOutputItemReasoningStatusUnion*                                         | :heavy_minus_sign:                                                                       | N/A                                                                                      |

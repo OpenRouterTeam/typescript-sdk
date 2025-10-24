@@ -36,13 +36,13 @@ let value: CreateApiAlphaResponsesResponseBody = {
         cost: 0.0012,
         isByok: true,
         costDetails: {
-          upstreamInferenceCost: 5882.86,
-          upstreamInferenceInputCost: 6012.25,
-          upstreamInferenceOutputCost: 7726.94,
+          upstreamInferenceCost: null,
+          upstreamInferenceInputCost: 0.0008,
+          upstreamInferenceOutputCost: 0.0004,
         },
       },
-      maxToolCalls: 7012.95,
-      topLogprobs: 6849.55,
+      maxToolCalls: 5882.86,
+      topLogprobs: 6012.25,
       maxOutputTokens: null,
       temperature: null,
       topP: null,
@@ -52,25 +52,23 @@ let value: CreateApiAlphaResponsesResponseBody = {
       toolChoice: "auto",
       parallelToolCalls: true,
       prompt: {
-        id: "prompt-abc123",
+        id: "<id>",
         variables: {
-          "name": {
+          "key": {
             type: "input_text",
-            text: "John",
+            text: "Hello, how can I help you?",
           },
         },
       },
       background: false,
       previousResponseId: "<id>",
       reasoning: {
-        effort: "high",
+        effort: "low",
         summary: "auto",
-        maxTokens: 8530.14,
-        enabled: true,
       },
-      serviceTier: null,
+      serviceTier: "scale",
       store: true,
-      truncation: null,
+      truncation: "auto",
       text: {
         format: {
           type: "text",

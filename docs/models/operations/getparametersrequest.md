@@ -8,7 +8,7 @@ import { GetParametersRequest } from "@openrouter/sdk/models/operations";
 let value: GetParametersRequest = {
   author: "<value>",
   slug: "<value>",
-  provider: "Featherless",
+  provider: "Fireworks",
 };
 ```
 

@@ -16,12 +16,43 @@ export type ResponsesOutputItemFunctionCallType = ClosedEnum<
   typeof ResponsesOutputItemFunctionCallType
 >;
 
+export const ResponsesOutputItemFunctionCallStatusInProgress = {
+  InProgress: "in_progress",
+} as const;
+export type ResponsesOutputItemFunctionCallStatusInProgress = ClosedEnum<
+  typeof ResponsesOutputItemFunctionCallStatusInProgress
+>;
+
+export const ResponsesOutputItemFunctionCallStatusIncomplete = {
+  Incomplete: "incomplete",
+} as const;
+export type ResponsesOutputItemFunctionCallStatusIncomplete = ClosedEnum<
+  typeof ResponsesOutputItemFunctionCallStatusIncomplete
+>;
+
+export const ResponsesOutputItemFunctionCallStatusCompleted = {
+  Completed: "completed",
+} as const;
+export type ResponsesOutputItemFunctionCallStatusCompleted = ClosedEnum<
+  typeof ResponsesOutputItemFunctionCallStatusCompleted
+>;
+
+export type ResponsesOutputItemFunctionCallStatusUnion =
+  | ResponsesOutputItemFunctionCallStatusCompleted
+  | ResponsesOutputItemFunctionCallStatusIncomplete
+  | ResponsesOutputItemFunctionCallStatusInProgress;
+
 export type ResponsesOutputItemFunctionCall = {
   type: ResponsesOutputItemFunctionCallType;
   id?: string | undefined;
   name: string;
   arguments: string;
   callId: string;
+  status?:
+    | ResponsesOutputItemFunctionCallStatusCompleted
+    | ResponsesOutputItemFunctionCallStatusIncomplete
+    | ResponsesOutputItemFunctionCallStatusInProgress
+    | undefined;
 };
 
 /** @internal */
@@ -48,6 +79,145 @@ export namespace ResponsesOutputItemFunctionCallType$ {
 }
 
 /** @internal */
+export const ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusInProgress> = z.enum(
+    ResponsesOutputItemFunctionCallStatusInProgress,
+  );
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusInProgress> =
+    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFunctionCallStatusInProgress$ {
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusIncomplete> = z.enum(
+    ResponsesOutputItemFunctionCallStatusIncomplete,
+  );
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusIncomplete> =
+    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFunctionCallStatusIncomplete$ {
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusCompleted> = z.enum(
+    ResponsesOutputItemFunctionCallStatusCompleted,
+  );
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusCompleted> =
+    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFunctionCallStatusCompleted$ {
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusUnion$inboundSchema:
+  z.ZodType<ResponsesOutputItemFunctionCallStatusUnion, unknown> = z.union([
+    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
+    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
+    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
+  ]);
+
+/** @internal */
+export type ResponsesOutputItemFunctionCallStatusUnion$Outbound =
+  | string
+  | string
+  | string;
+
+/** @internal */
+export const ResponsesOutputItemFunctionCallStatusUnion$outboundSchema:
+  z.ZodType<
+    ResponsesOutputItemFunctionCallStatusUnion$Outbound,
+    ResponsesOutputItemFunctionCallStatusUnion
+  > = z.union([
+    ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
+    ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
+    ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemFunctionCallStatusUnion$ {
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusUnion$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemFunctionCallStatusUnion$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusUnion$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemFunctionCallStatusUnion$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemFunctionCallStatusUnion$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemFunctionCallStatusUnion$Outbound;
+}
+
+export function responsesOutputItemFunctionCallStatusUnionToJSON(
+  responsesOutputItemFunctionCallStatusUnion:
+    ResponsesOutputItemFunctionCallStatusUnion,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemFunctionCallStatusUnion$outboundSchema.parse(
+      responsesOutputItemFunctionCallStatusUnion,
+    ),
+  );
+}
+
+export function responsesOutputItemFunctionCallStatusUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  ResponsesOutputItemFunctionCallStatusUnion,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ResponsesOutputItemFunctionCallStatusUnion$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ResponsesOutputItemFunctionCallStatusUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const ResponsesOutputItemFunctionCall$inboundSchema: z.ZodType<
   ResponsesOutputItemFunctionCall,
   unknown
@@ -57,6 +227,11 @@ export const ResponsesOutputItemFunctionCall$inboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   call_id: z.string(),
+  status: z.union([
+    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
+    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
+    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
+  ]).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -70,6 +245,7 @@ export type ResponsesOutputItemFunctionCall$Outbound = {
   name: string;
   arguments: string;
   call_id: string;
+  status?: string | string | string | undefined;
 };
 
 /** @internal */
@@ -82,6 +258,11 @@ export const ResponsesOutputItemFunctionCall$outboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   callId: z.string(),
+  status: z.union([
+    ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
+    ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
+    ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
+  ]).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

@@ -48,18 +48,16 @@ import {
   Tool$outboundSchema,
 } from "./tool.js";
 
-export const ChatGenerationParamsEffort = {
+export const Effort = {
   Minimal: "minimal",
   Low: "low",
   Medium: "medium",
   High: "high",
 } as const;
-export type ChatGenerationParamsEffort = OpenEnum<
-  typeof ChatGenerationParamsEffort
->;
+export type Effort = OpenEnum<typeof Effort>;
 
 export type Reasoning = {
-  effort?: ChatGenerationParamsEffort | null | undefined;
+  effort?: Effort | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
 };
 
@@ -115,21 +113,15 @@ export type ChatGenerationParams = {
 };
 
 /** @internal */
-export const ChatGenerationParamsEffort$inboundSchema: z.ZodType<
-  ChatGenerationParamsEffort,
-  unknown
-> = z
+export const Effort$inboundSchema: z.ZodType<Effort, unknown> = z
   .union([
-    z.enum(ChatGenerationParamsEffort),
+    z.enum(Effort),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const ChatGenerationParamsEffort$outboundSchema: z.ZodType<
-  ChatGenerationParamsEffort,
-  ChatGenerationParamsEffort
-> = z.union([
-  z.enum(ChatGenerationParamsEffort),
+export const Effort$outboundSchema: z.ZodType<Effort, Effort> = z.union([
+  z.enum(Effort),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
@@ -137,16 +129,16 @@ export const ChatGenerationParamsEffort$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatGenerationParamsEffort$ {
-  /** @deprecated use `ChatGenerationParamsEffort$inboundSchema` instead. */
-  export const inboundSchema = ChatGenerationParamsEffort$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsEffort$outboundSchema` instead. */
-  export const outboundSchema = ChatGenerationParamsEffort$outboundSchema;
+export namespace Effort$ {
+  /** @deprecated use `Effort$inboundSchema` instead. */
+  export const inboundSchema = Effort$inboundSchema;
+  /** @deprecated use `Effort$outboundSchema` instead. */
+  export const outboundSchema = Effort$outboundSchema;
 }
 
 /** @internal */
 export const Reasoning$inboundSchema: z.ZodType<Reasoning, unknown> = z.object({
-  effort: z.nullable(ChatGenerationParamsEffort$inboundSchema).optional(),
+  effort: z.nullable(Effort$inboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
 });
 
@@ -161,7 +153,7 @@ export const Reasoning$outboundSchema: z.ZodType<
   Reasoning$Outbound,
   Reasoning
 > = z.object({
-  effort: z.nullable(ChatGenerationParamsEffort$outboundSchema).optional(),
+  effort: z.nullable(Effort$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
 });
 

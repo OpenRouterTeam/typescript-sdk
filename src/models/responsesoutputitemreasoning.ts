@@ -28,12 +28,46 @@ export type ResponsesOutputItemReasoningType = ClosedEnum<
   typeof ResponsesOutputItemReasoningType
 >;
 
+export const ResponsesOutputItemReasoningStatusInProgress = {
+  InProgress: "in_progress",
+} as const;
+export type ResponsesOutputItemReasoningStatusInProgress = ClosedEnum<
+  typeof ResponsesOutputItemReasoningStatusInProgress
+>;
+
+export const ResponsesOutputItemReasoningStatusIncomplete = {
+  Incomplete: "incomplete",
+} as const;
+export type ResponsesOutputItemReasoningStatusIncomplete = ClosedEnum<
+  typeof ResponsesOutputItemReasoningStatusIncomplete
+>;
+
+export const ResponsesOutputItemReasoningStatusCompleted = {
+  Completed: "completed",
+} as const;
+export type ResponsesOutputItemReasoningStatusCompleted = ClosedEnum<
+  typeof ResponsesOutputItemReasoningStatusCompleted
+>;
+
+export type ResponsesOutputItemReasoningStatusUnion =
+  | ResponsesOutputItemReasoningStatusCompleted
+  | ResponsesOutputItemReasoningStatusIncomplete
+  | ResponsesOutputItemReasoningStatusInProgress;
+
+/**
+ * An output item containing reasoning
+ */
 export type ResponsesOutputItemReasoning = {
   type: ResponsesOutputItemReasoningType;
   id?: string | undefined;
   content?: Array<ReasoningTextContent> | undefined;
   summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
+  status?:
+    | ResponsesOutputItemReasoningStatusCompleted
+    | ResponsesOutputItemReasoningStatusIncomplete
+    | ResponsesOutputItemReasoningStatusInProgress
+    | undefined;
 };
 
 /** @internal */
@@ -58,6 +92,146 @@ export namespace ResponsesOutputItemReasoningType$ {
 }
 
 /** @internal */
+export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> = z.enum(
+    ResponsesOutputItemReasoningStatusInProgress,
+  );
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusInProgress$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> =
+    ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemReasoningStatusInProgress$ {
+  /** @deprecated use `ResponsesOutputItemReasoningStatusInProgress$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoningStatusInProgress$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemReasoningStatusInProgress$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusIncomplete$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> = z.enum(
+    ResponsesOutputItemReasoningStatusIncomplete,
+  );
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusIncomplete$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> =
+    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemReasoningStatusIncomplete$ {
+  /** @deprecated use `ResponsesOutputItemReasoningStatusIncomplete$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoningStatusIncomplete$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemReasoningStatusIncomplete$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusCompleted$inboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> = z.enum(
+    ResponsesOutputItemReasoningStatusCompleted,
+  );
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusCompleted$outboundSchema:
+  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> =
+    ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemReasoningStatusCompleted$ {
+  /** @deprecated use `ResponsesOutputItemReasoningStatusCompleted$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoningStatusCompleted$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemReasoningStatusCompleted$outboundSchema;
+}
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
+  ResponsesOutputItemReasoningStatusUnion,
+  unknown
+> = z.union([
+  ResponsesOutputItemReasoningStatusCompleted$inboundSchema,
+  ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
+  ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
+]);
+
+/** @internal */
+export type ResponsesOutputItemReasoningStatusUnion$Outbound =
+  | string
+  | string
+  | string;
+
+/** @internal */
+export const ResponsesOutputItemReasoningStatusUnion$outboundSchema: z.ZodType<
+  ResponsesOutputItemReasoningStatusUnion$Outbound,
+  ResponsesOutputItemReasoningStatusUnion
+> = z.union([
+  ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
+  ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
+  ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ResponsesOutputItemReasoningStatusUnion$ {
+  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$inboundSchema` instead. */
+  export const inboundSchema =
+    ResponsesOutputItemReasoningStatusUnion$inboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$outboundSchema` instead. */
+  export const outboundSchema =
+    ResponsesOutputItemReasoningStatusUnion$outboundSchema;
+  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$Outbound` instead. */
+  export type Outbound = ResponsesOutputItemReasoningStatusUnion$Outbound;
+}
+
+export function responsesOutputItemReasoningStatusUnionToJSON(
+  responsesOutputItemReasoningStatusUnion:
+    ResponsesOutputItemReasoningStatusUnion,
+): string {
+  return JSON.stringify(
+    ResponsesOutputItemReasoningStatusUnion$outboundSchema.parse(
+      responsesOutputItemReasoningStatusUnion,
+    ),
+  );
+}
+
+export function responsesOutputItemReasoningStatusUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  ResponsesOutputItemReasoningStatusUnion,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ResponsesOutputItemReasoningStatusUnion$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ResponsesOutputItemReasoningStatusUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoning,
   unknown
@@ -67,6 +241,11 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   content: z.array(ReasoningTextContent$inboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$inboundSchema),
   encrypted_content: z.nullable(z.string()).optional(),
+  status: z.union([
+    ResponsesOutputItemReasoningStatusCompleted$inboundSchema,
+    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
+    ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
+  ]).optional(),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",
@@ -80,6 +259,7 @@ export type ResponsesOutputItemReasoning$Outbound = {
   content?: Array<ReasoningTextContent$Outbound> | undefined;
   summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
+  status?: string | string | string | undefined;
 };
 
 /** @internal */
@@ -92,6 +272,11 @@ export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
   content: z.array(ReasoningTextContent$outboundSchema).optional(),
   summary: z.array(ReasoningSummaryText$outboundSchema),
   encryptedContent: z.nullable(z.string()).optional(),
+  status: z.union([
+    ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
+    ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
+    ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
+  ]).optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",

@@ -36,9 +36,9 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
       cost: 0.0012,
       isByok: false,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: 6635.84,
@@ -52,11 +52,11 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
@@ -65,12 +65,10 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
     reasoning: {
       effort: "low",
       summary: "auto",
-      maxTokens: 411.41,
-      enabled: true,
     },
-    serviceTier: "flex",
-    store: true,
-    truncation: "disabled",
+    serviceTier: "auto",
+    store: false,
+    truncation: "auto",
     text: {
       format: {
         type: "text",
@@ -113,9 +111,9 @@ const value: models.OpenResponsesStreamEventResponseInProgress = {
       cost: 0.0012,
       isByok: false,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: 5511.35,
@@ -129,25 +127,23 @@ const value: models.OpenResponsesStreamEventResponseInProgress = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
     background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "high",
+      effort: "low",
       summary: "auto",
-      maxTokens: null,
-      enabled: true,
     },
-    serviceTier: "priority",
-    store: true,
-    truncation: null,
+    serviceTier: null,
+    store: false,
+    truncation: "auto",
     text: {
       format: {
         type: "text",
@@ -204,9 +200,9 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
       cost: 0.0012,
       isByok: false,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: 3089.58,
@@ -220,23 +216,21 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
-    background: true,
+    background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "minimal",
+      effort: "low",
       summary: "auto",
-      maxTokens: 8630.87,
-      enabled: true,
     },
-    serviceTier: "default",
+    serviceTier: "scale",
     store: true,
     truncation: "auto",
     text: {
@@ -281,9 +275,9 @@ const value: models.OpenResponsesStreamEventResponseIncomplete = {
       cost: 0.0012,
       isByok: true,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: 5440.53,
@@ -297,25 +291,23 @@ const value: models.OpenResponsesStreamEventResponseIncomplete = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
-    background: false,
+    background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "minimal",
+      effort: "low",
       summary: "auto",
-      maxTokens: 2298.59,
-      enabled: true,
     },
     serviceTier: "default",
-    store: true,
-    truncation: "disabled",
+    store: false,
+    truncation: "auto",
     text: {
       format: {
         type: "text",
@@ -358,9 +350,9 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
       cost: 0.0012,
       isByok: true,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: null,
@@ -374,21 +366,19 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
-    background: true,
+    background: null,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "medium",
+      effort: "low",
       summary: "auto",
-      maxTokens: 3318.92,
-      enabled: true,
     },
     serviceTier: "priority",
     store: true,
@@ -404,10 +394,10 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
 };
 ```
 
-### `models.OpenResponsesStreamEventError`
+### `models.OpenResponsesErrorEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventError = {
+const value: models.OpenResponsesErrorEvent = {
   type: "error",
   code: "rate_limit_exceeded",
   message: "Rate limit exceeded. Please try again later.",
@@ -557,10 +547,10 @@ const value: models.OpenResponsesStreamEventResponseOutputTextAnnotationAdded =
     annotationIndex: 0,
     annotation: {
       type: "url_citation",
-      endIndex: 7,
-      startIndex: 0,
-      title: "Example",
       url: "https://example.com",
+      title: "Example",
+      startIndex: 0,
+      endIndex: 7,
     },
   };
 ```
@@ -592,10 +582,10 @@ const value: models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone =
   };
 ```
 
-### `models.OpenResponsesStreamEventResponseReasoningTextDelta`
+### `models.OpenResponsesReasoningDeltaEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventResponseReasoningTextDelta = {
+const value: models.OpenResponsesReasoningDeltaEvent = {
   type: "response.reasoning_text.delta",
   outputIndex: 0,
   itemId: "item-1",
@@ -605,10 +595,10 @@ const value: models.OpenResponsesStreamEventResponseReasoningTextDelta = {
 };
 ```
 
-### `models.OpenResponsesStreamEventResponseReasoningTextDone`
+### `models.OpenResponsesReasoningDoneEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventResponseReasoningTextDone = {
+const value: models.OpenResponsesReasoningDoneEvent = {
   type: "response.reasoning_text.done",
   outputIndex: 0,
   itemId: "item-1",
@@ -619,21 +609,20 @@ const value: models.OpenResponsesStreamEventResponseReasoningTextDone = {
 };
 ```
 
-### `models.OpenResponsesStreamEventResponseReasoningSummaryPartAdded`
+### `models.OpenResponsesReasoningSummaryPartAddedEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventResponseReasoningSummaryPartAdded =
-  {
-    type: "response.reasoning_summary_part.added",
-    outputIndex: 0,
-    itemId: "item-1",
-    summaryIndex: 0,
-    part: {
-      type: "summary_text",
-      text: "",
-    },
-    sequenceNumber: 3,
-  };
+const value: models.OpenResponsesReasoningSummaryPartAddedEvent = {
+  type: "response.reasoning_summary_part.added",
+  outputIndex: 0,
+  itemId: "item-1",
+  summaryIndex: 0,
+  part: {
+    type: "summary_text",
+    text: "",
+  },
+  sequenceNumber: 3,
+};
 ```
 
 ### `models.OpenResponsesStreamEventResponseReasoningSummaryPartDone`
@@ -652,24 +641,23 @@ const value: models.OpenResponsesStreamEventResponseReasoningSummaryPartDone = {
 };
 ```
 
-### `models.OpenResponsesStreamEventResponseReasoningSummaryTextDelta`
+### `models.OpenResponsesReasoningSummaryTextDeltaEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventResponseReasoningSummaryTextDelta =
-  {
-    type: "response.reasoning_summary_text.delta",
-    itemId: "item-1",
-    outputIndex: 0,
-    summaryIndex: 0,
-    delta: "Analyzing",
-    sequenceNumber: 4,
-  };
+const value: models.OpenResponsesReasoningSummaryTextDeltaEvent = {
+  type: "response.reasoning_summary_text.delta",
+  itemId: "item-1",
+  outputIndex: 0,
+  summaryIndex: 0,
+  delta: "Analyzing",
+  sequenceNumber: 4,
+};
 ```
 
-### `models.OpenResponsesStreamEventResponseReasoningSummaryTextDone`
+### `models.OpenResponsesReasoningSummaryTextDoneEvent`
 
 ```typescript
-const value: models.OpenResponsesStreamEventResponseReasoningSummaryTextDone = {
+const value: models.OpenResponsesReasoningSummaryTextDoneEvent = {
   type: "response.reasoning_summary_text.done",
   itemId: "item-1",
   outputIndex: 0,
@@ -679,53 +667,49 @@ const value: models.OpenResponsesStreamEventResponseReasoningSummaryTextDone = {
 };
 ```
 
-### `models.OpenResponsesStreamEventResponseImageGenerationCallInProgress`
+### `models.OpenResponsesImageGenCallInProgress`
 
 ```typescript
-const value:
-  models.OpenResponsesStreamEventResponseImageGenerationCallInProgress = {
-    type: "response.image_generation_call.in_progress",
-    itemId: "item-abc123",
-    outputIndex: 0,
-    sequenceNumber: 1,
-  };
+const value: models.OpenResponsesImageGenCallInProgress = {
+  type: "response.image_generation_call.in_progress",
+  itemId: "<id>",
+  outputIndex: 8869.44,
+  sequenceNumber: 0,
+};
 ```
 
-### `models.OpenResponsesStreamEventResponseImageGenerationCallGenerating`
+### `models.OpenResponsesImageGenCallGenerating`
 
 ```typescript
-const value:
-  models.OpenResponsesStreamEventResponseImageGenerationCallGenerating = {
-    type: "response.image_generation_call.generating",
-    itemId: "item-abc123",
-    outputIndex: 0,
-    sequenceNumber: 2,
-  };
+const value: models.OpenResponsesImageGenCallGenerating = {
+  type: "response.image_generation_call.generating",
+  itemId: "<id>",
+  outputIndex: 1669.75,
+  sequenceNumber: 0,
+};
 ```
 
-### `models.OpenResponsesStreamEventResponseImageGenerationCallPartialImage`
+### `models.OpenResponsesImageGenCallPartialImage`
 
 ```typescript
-const value:
-  models.OpenResponsesStreamEventResponseImageGenerationCallPartialImage = {
-    type: "response.image_generation_call.partial_image",
-    itemId: "item-abc123",
-    outputIndex: 0,
-    sequenceNumber: 3,
-    partialImageB64: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ",
-    partialImageIndex: 0,
-  };
+const value: models.OpenResponsesImageGenCallPartialImage = {
+  type: "response.image_generation_call.partial_image",
+  itemId: "<id>",
+  outputIndex: 4078.33,
+  sequenceNumber: 0,
+  partialImageB64: "<value>",
+  partialImageIndex: 6154.36,
+};
 ```
 
-### `models.OpenResponsesStreamEventResponseImageGenerationCallCompleted`
+### `models.OpenResponsesImageGenCallCompleted`
 
 ```typescript
-const value:
-  models.OpenResponsesStreamEventResponseImageGenerationCallCompleted = {
-    type: "response.image_generation_call.completed",
-    itemId: "item-abc123",
-    outputIndex: 0,
-    sequenceNumber: 4,
-  };
+const value: models.OpenResponsesImageGenCallCompleted = {
+  type: "response.image_generation_call.completed",
+  itemId: "<id>",
+  outputIndex: 776.49,
+  sequenceNumber: 0,
+};
 ```
 

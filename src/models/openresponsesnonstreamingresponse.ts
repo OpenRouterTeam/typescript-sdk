@@ -5,50 +5,84 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  OpenResponsesInput,
-  OpenResponsesInput$inboundSchema,
-  OpenResponsesInput$Outbound,
-  OpenResponsesInput$outboundSchema,
-} from "./openresponsesinput.js";
+  OpenAIResponsesIncompleteDetails,
+  OpenAIResponsesIncompleteDetails$inboundSchema,
+  OpenAIResponsesIncompleteDetails$Outbound,
+  OpenAIResponsesIncompleteDetails$outboundSchema,
+} from "./openairesponsesincompletedetails.js";
 import {
-  OpenResponsesPrompt,
-  OpenResponsesPrompt$inboundSchema,
-  OpenResponsesPrompt$Outbound,
-  OpenResponsesPrompt$outboundSchema,
-} from "./openresponsesprompt.js";
+  OpenAIResponsesInputUnion,
+  OpenAIResponsesInputUnion$inboundSchema,
+  OpenAIResponsesInputUnion$Outbound,
+  OpenAIResponsesInputUnion$outboundSchema,
+} from "./openairesponsesinputunion.js";
 import {
-  OpenResponsesReasoningConfig,
-  OpenResponsesReasoningConfig$inboundSchema,
-  OpenResponsesReasoningConfig$Outbound,
-  OpenResponsesReasoningConfig$outboundSchema,
-} from "./openresponsesreasoningconfig.js";
+  OpenAIResponsesPrompt,
+  OpenAIResponsesPrompt$inboundSchema,
+  OpenAIResponsesPrompt$Outbound,
+  OpenAIResponsesPrompt$outboundSchema,
+} from "./openairesponsesprompt.js";
 import {
-  OpenResponsesTextConfig,
-  OpenResponsesTextConfig$inboundSchema,
-  OpenResponsesTextConfig$Outbound,
-  OpenResponsesTextConfig$outboundSchema,
-} from "./openresponsestextconfig.js";
+  OpenAIResponsesReasoningConfig,
+  OpenAIResponsesReasoningConfig$inboundSchema,
+  OpenAIResponsesReasoningConfig$Outbound,
+  OpenAIResponsesReasoningConfig$outboundSchema,
+} from "./openairesponsesreasoningconfig.js";
 import {
-  OpenResponsesToolChoice,
-  OpenResponsesToolChoice$inboundSchema,
-  OpenResponsesToolChoice$Outbound,
-  OpenResponsesToolChoice$outboundSchema,
-} from "./openresponsestoolchoice.js";
+  OpenAIResponsesResponseStatus,
+  OpenAIResponsesResponseStatus$inboundSchema,
+  OpenAIResponsesResponseStatus$outboundSchema,
+} from "./openairesponsesresponsestatus.js";
 import {
-  OpenResponsesToolUnion,
-  OpenResponsesToolUnion$inboundSchema,
-  OpenResponsesToolUnion$Outbound,
-  OpenResponsesToolUnion$outboundSchema,
-} from "./openresponsestoolunion.js";
+  OpenAIResponsesServiceTier,
+  OpenAIResponsesServiceTier$inboundSchema,
+  OpenAIResponsesServiceTier$outboundSchema,
+} from "./openairesponsesservicetier.js";
+import {
+  OpenAIResponsesToolChoiceUnion,
+  OpenAIResponsesToolChoiceUnion$inboundSchema,
+  OpenAIResponsesToolChoiceUnion$Outbound,
+  OpenAIResponsesToolChoiceUnion$outboundSchema,
+} from "./openairesponsestoolchoiceunion.js";
+import {
+  OpenAIResponsesTruncation,
+  OpenAIResponsesTruncation$inboundSchema,
+  OpenAIResponsesTruncation$outboundSchema,
+} from "./openairesponsestruncation.js";
+import {
+  OpenResponsesUsage,
+  OpenResponsesUsage$inboundSchema,
+  OpenResponsesUsage$Outbound,
+  OpenResponsesUsage$outboundSchema,
+} from "./openresponsesusage.js";
+import {
+  OpenResponsesWebSearch20250826Tool,
+  OpenResponsesWebSearch20250826Tool$inboundSchema,
+  OpenResponsesWebSearch20250826Tool$Outbound,
+  OpenResponsesWebSearch20250826Tool$outboundSchema,
+} from "./openresponseswebsearch20250826tool.js";
+import {
+  OpenResponsesWebSearchPreview20250311Tool,
+  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$Outbound,
+  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+} from "./openresponseswebsearchpreview20250311tool.js";
+import {
+  OpenResponsesWebSearchPreviewTool,
+  OpenResponsesWebSearchPreviewTool$inboundSchema,
+  OpenResponsesWebSearchPreviewTool$Outbound,
+  OpenResponsesWebSearchPreviewTool$outboundSchema,
+} from "./openresponseswebsearchpreviewtool.js";
+import {
+  OpenResponsesWebSearchTool,
+  OpenResponsesWebSearchTool$inboundSchema,
+  OpenResponsesWebSearchTool$Outbound,
+  OpenResponsesWebSearchTool$outboundSchema,
+} from "./openresponseswebsearchtool.js";
 import {
   ResponsesErrorField,
   ResponsesErrorField$inboundSchema,
@@ -62,63 +96,51 @@ import {
   ResponsesOutputItem$outboundSchema,
 } from "./responsesoutputitem.js";
 import {
-  ResponsesUsage,
-  ResponsesUsage$inboundSchema,
-  ResponsesUsage$Outbound,
-  ResponsesUsage$outboundSchema,
-} from "./responsesusage.js";
+  ResponseTextConfig,
+  ResponseTextConfig$inboundSchema,
+  ResponseTextConfig$Outbound,
+  ResponseTextConfig$outboundSchema,
+} from "./responsetextconfig.js";
 
 export const ObjectT = {
   Response: "response",
 } as const;
 export type ObjectT = ClosedEnum<typeof ObjectT>;
 
-export const OpenResponsesNonStreamingResponseStatus = {
-  Completed: "completed",
-  Incomplete: "incomplete",
-  InProgress: "in_progress",
-  Failed: "failed",
-  Cancelled: "cancelled",
-  Queued: "queued",
+export const OpenResponsesNonStreamingResponseType = {
+  Function: "function",
 } as const;
-export type OpenResponsesNonStreamingResponseStatus = OpenEnum<
-  typeof OpenResponsesNonStreamingResponseStatus
+export type OpenResponsesNonStreamingResponseType = ClosedEnum<
+  typeof OpenResponsesNonStreamingResponseType
 >;
 
-export const Reason = {
-  MaxOutputTokens: "max_output_tokens",
-  ContentFilter: "content_filter",
-} as const;
-export type Reason = OpenEnum<typeof Reason>;
-
-export type IncompleteDetails = {
-  reason?: Reason | undefined;
+/**
+ * Function tool definition
+ */
+export type OpenResponsesNonStreamingResponseToolFunction = {
+  type: OpenResponsesNonStreamingResponseType;
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
 };
 
-export const ServiceTier = {
-  Auto: "auto",
-  Default: "default",
-  Flex: "flex",
-  Priority: "priority",
-  Scale: "scale",
-} as const;
-export type ServiceTier = OpenEnum<typeof ServiceTier>;
-
-export const Truncation = {
-  Auto: "auto",
-  Disabled: "disabled",
-} as const;
-export type Truncation = OpenEnum<typeof Truncation>;
+export type ToolUnion =
+  | OpenResponsesNonStreamingResponseToolFunction
+  | OpenResponsesWebSearchPreviewTool
+  | OpenResponsesWebSearchPreview20250311Tool
+  | OpenResponsesWebSearchTool
+  | OpenResponsesWebSearch20250826Tool;
 
 /**
  * Complete non-streaming response from the Responses API
  */
 export type OpenResponsesNonStreamingResponse = {
-  id?: string | undefined;
+  id: string;
   object: ObjectT;
   createdAt: number;
   model: string;
-  status?: OpenResponsesNonStreamingResponseStatus | undefined;
+  status?: OpenAIResponsesResponseStatus | undefined;
   output: Array<ResponsesOutputItem>;
   user?: string | null | undefined;
   outputText?: string | undefined;
@@ -128,47 +150,41 @@ export type OpenResponsesNonStreamingResponse = {
    * Error information returned from the API
    */
   error: ResponsesErrorField | null;
-  incompleteDetails: IncompleteDetails | null;
+  incompleteDetails: OpenAIResponsesIncompleteDetails | null;
   /**
    * Token usage information for the response
    */
-  usage?: ResponsesUsage | undefined;
+  usage?: OpenResponsesUsage | undefined;
   maxToolCalls?: number | null | undefined;
   topLogprobs?: number | undefined;
   maxOutputTokens?: number | null | undefined;
   temperature: number | null;
   topP: number | null;
-  /**
-   * Input for a response request - can be a string or array of items
-   */
-  instructions?: OpenResponsesInput | null | undefined;
+  instructions?: OpenAIResponsesInputUnion | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
   metadata: { [k: string]: string } | null;
-  tools: Array<OpenResponsesToolUnion>;
-  /**
-   * Controls which tool the model should call
-   */
-  toolChoice: OpenResponsesToolChoice;
+  tools: Array<
+    | OpenResponsesNonStreamingResponseToolFunction
+    | OpenResponsesWebSearchPreviewTool
+    | OpenResponsesWebSearchPreview20250311Tool
+    | OpenResponsesWebSearchTool
+    | OpenResponsesWebSearch20250826Tool
+  >;
+  toolChoice: OpenAIResponsesToolChoiceUnion;
   parallelToolCalls: boolean;
-  /**
-   * Prompt template with variables for the response
-   */
-  prompt?: OpenResponsesPrompt | null | undefined;
+  prompt?: OpenAIResponsesPrompt | null | undefined;
   background?: boolean | null | undefined;
   previousResponseId?: string | null | undefined;
-  /**
-   * Configuration for reasoning mode in the response
-   */
-  reasoning?: OpenResponsesReasoningConfig | null | undefined;
-  serviceTier?: ServiceTier | null | undefined;
+  reasoning?: OpenAIResponsesReasoningConfig | null | undefined;
+  serviceTier?: OpenAIResponsesServiceTier | null | undefined;
   store?: boolean | undefined;
-  truncation?: Truncation | null | undefined;
+  truncation?: OpenAIResponsesTruncation | null | undefined;
   /**
    * Text output configuration including format and verbosity
    */
-  text?: OpenResponsesTextConfig | undefined;
+  text?: ResponseTextConfig | undefined;
 };
 
 /** @internal */
@@ -190,161 +206,156 @@ export namespace ObjectT$ {
 }
 
 /** @internal */
-export const OpenResponsesNonStreamingResponseStatus$inboundSchema: z.ZodType<
-  OpenResponsesNonStreamingResponseStatus,
-  unknown
-> = z
-  .union([
-    z.enum(OpenResponsesNonStreamingResponseStatus),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const OpenResponsesNonStreamingResponseType$inboundSchema: z.ZodEnum<
+  typeof OpenResponsesNonStreamingResponseType
+> = z.enum(OpenResponsesNonStreamingResponseType);
 
 /** @internal */
-export const OpenResponsesNonStreamingResponseStatus$outboundSchema: z.ZodType<
-  OpenResponsesNonStreamingResponseStatus,
-  OpenResponsesNonStreamingResponseStatus
-> = z.union([
-  z.enum(OpenResponsesNonStreamingResponseStatus),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const OpenResponsesNonStreamingResponseType$outboundSchema: z.ZodEnum<
+  typeof OpenResponsesNonStreamingResponseType
+> = OpenResponsesNonStreamingResponseType$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace OpenResponsesNonStreamingResponseStatus$ {
-  /** @deprecated use `OpenResponsesNonStreamingResponseStatus$inboundSchema` instead. */
+export namespace OpenResponsesNonStreamingResponseType$ {
+  /** @deprecated use `OpenResponsesNonStreamingResponseType$inboundSchema` instead. */
   export const inboundSchema =
-    OpenResponsesNonStreamingResponseStatus$inboundSchema;
-  /** @deprecated use `OpenResponsesNonStreamingResponseStatus$outboundSchema` instead. */
+    OpenResponsesNonStreamingResponseType$inboundSchema;
+  /** @deprecated use `OpenResponsesNonStreamingResponseType$outboundSchema` instead. */
   export const outboundSchema =
-    OpenResponsesNonStreamingResponseStatus$outboundSchema;
+    OpenResponsesNonStreamingResponseType$outboundSchema;
 }
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, unknown> = z
-  .union([
-    z.enum(Reason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const OpenResponsesNonStreamingResponseToolFunction$inboundSchema:
+  z.ZodType<OpenResponsesNonStreamingResponseToolFunction, unknown> = z.object({
+    type: OpenResponsesNonStreamingResponseType$inboundSchema,
+    name: z.string(),
+    description: z.nullable(z.string()).optional(),
+    strict: z.nullable(z.boolean()).optional(),
+    parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  });
 
 /** @internal */
-export const Reason$outboundSchema: z.ZodType<Reason, Reason> = z.union([
-  z.enum(Reason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Reason$ {
-  /** @deprecated use `Reason$inboundSchema` instead. */
-  export const inboundSchema = Reason$inboundSchema;
-  /** @deprecated use `Reason$outboundSchema` instead. */
-  export const outboundSchema = Reason$outboundSchema;
-}
-
-/** @internal */
-export const IncompleteDetails$inboundSchema: z.ZodType<
-  IncompleteDetails,
-  unknown
-> = z.object({
-  reason: Reason$inboundSchema.optional(),
-});
-
-/** @internal */
-export type IncompleteDetails$Outbound = {
-  reason?: string | undefined;
+export type OpenResponsesNonStreamingResponseToolFunction$Outbound = {
+  type: string;
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
 };
 
 /** @internal */
-export const IncompleteDetails$outboundSchema: z.ZodType<
-  IncompleteDetails$Outbound,
-  IncompleteDetails
-> = z.object({
-  reason: Reason$outboundSchema.optional(),
-});
+export const OpenResponsesNonStreamingResponseToolFunction$outboundSchema:
+  z.ZodType<
+    OpenResponsesNonStreamingResponseToolFunction$Outbound,
+    OpenResponsesNonStreamingResponseToolFunction
+  > = z.object({
+    type: OpenResponsesNonStreamingResponseType$outboundSchema,
+    name: z.string(),
+    description: z.nullable(z.string()).optional(),
+    strict: z.nullable(z.boolean()).optional(),
+    parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  });
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace IncompleteDetails$ {
-  /** @deprecated use `IncompleteDetails$inboundSchema` instead. */
-  export const inboundSchema = IncompleteDetails$inboundSchema;
-  /** @deprecated use `IncompleteDetails$outboundSchema` instead. */
-  export const outboundSchema = IncompleteDetails$outboundSchema;
-  /** @deprecated use `IncompleteDetails$Outbound` instead. */
-  export type Outbound = IncompleteDetails$Outbound;
+export namespace OpenResponsesNonStreamingResponseToolFunction$ {
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolFunction$inboundSchema` instead. */
+  export const inboundSchema =
+    OpenResponsesNonStreamingResponseToolFunction$inboundSchema;
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolFunction$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenResponsesNonStreamingResponseToolFunction$outboundSchema;
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolFunction$Outbound` instead. */
+  export type Outbound = OpenResponsesNonStreamingResponseToolFunction$Outbound;
 }
 
-export function incompleteDetailsToJSON(
-  incompleteDetails: IncompleteDetails,
+export function openResponsesNonStreamingResponseToolFunctionToJSON(
+  openResponsesNonStreamingResponseToolFunction:
+    OpenResponsesNonStreamingResponseToolFunction,
 ): string {
   return JSON.stringify(
-    IncompleteDetails$outboundSchema.parse(incompleteDetails),
+    OpenResponsesNonStreamingResponseToolFunction$outboundSchema.parse(
+      openResponsesNonStreamingResponseToolFunction,
+    ),
   );
 }
 
-export function incompleteDetailsFromJSON(
+export function openResponsesNonStreamingResponseToolFunctionFromJSON(
   jsonString: string,
-): SafeParseResult<IncompleteDetails, SDKValidationError> {
+): SafeParseResult<
+  OpenResponsesNonStreamingResponseToolFunction,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => IncompleteDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'IncompleteDetails' from JSON`,
+    (x) =>
+      OpenResponsesNonStreamingResponseToolFunction$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OpenResponsesNonStreamingResponseToolFunction' from JSON`,
   );
 }
 
 /** @internal */
-export const ServiceTier$inboundSchema: z.ZodType<ServiceTier, unknown> = z
-  .union([
-    z.enum(ServiceTier),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const ToolUnion$inboundSchema: z.ZodType<ToolUnion, unknown> = z.union([
+  z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$inboundSchema),
+  OpenResponsesWebSearchPreviewTool$inboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+  OpenResponsesWebSearchTool$inboundSchema,
+  OpenResponsesWebSearch20250826Tool$inboundSchema,
+]);
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodType<ServiceTier, ServiceTier> = z
-  .union([
-    z.enum(ServiceTier),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export type ToolUnion$Outbound =
+  | OpenResponsesNonStreamingResponseToolFunction$Outbound
+  | OpenResponsesWebSearchPreviewTool$Outbound
+  | OpenResponsesWebSearchPreview20250311Tool$Outbound
+  | OpenResponsesWebSearchTool$Outbound
+  | OpenResponsesWebSearch20250826Tool$Outbound;
+
+/** @internal */
+export const ToolUnion$outboundSchema: z.ZodType<
+  ToolUnion$Outbound,
+  ToolUnion
+> = z.union([
+  z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$outboundSchema),
+  OpenResponsesWebSearchPreviewTool$outboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+  OpenResponsesWebSearchTool$outboundSchema,
+  OpenResponsesWebSearch20250826Tool$outboundSchema,
+]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ServiceTier$ {
-  /** @deprecated use `ServiceTier$inboundSchema` instead. */
-  export const inboundSchema = ServiceTier$inboundSchema;
-  /** @deprecated use `ServiceTier$outboundSchema` instead. */
-  export const outboundSchema = ServiceTier$outboundSchema;
+export namespace ToolUnion$ {
+  /** @deprecated use `ToolUnion$inboundSchema` instead. */
+  export const inboundSchema = ToolUnion$inboundSchema;
+  /** @deprecated use `ToolUnion$outboundSchema` instead. */
+  export const outboundSchema = ToolUnion$outboundSchema;
+  /** @deprecated use `ToolUnion$Outbound` instead. */
+  export type Outbound = ToolUnion$Outbound;
 }
 
-/** @internal */
-export const Truncation$inboundSchema: z.ZodType<Truncation, unknown> = z
-  .union([
-    z.enum(Truncation),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export function toolUnionToJSON(toolUnion: ToolUnion): string {
+  return JSON.stringify(ToolUnion$outboundSchema.parse(toolUnion));
+}
 
-/** @internal */
-export const Truncation$outboundSchema: z.ZodType<Truncation, Truncation> = z
-  .union([
-    z.enum(Truncation),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Truncation$ {
-  /** @deprecated use `Truncation$inboundSchema` instead. */
-  export const inboundSchema = Truncation$inboundSchema;
-  /** @deprecated use `Truncation$outboundSchema` instead. */
-  export const outboundSchema = Truncation$outboundSchema;
+export function toolUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<ToolUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ToolUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ToolUnion' from JSON`,
+  );
 }
 
 /** @internal */
@@ -352,37 +363,48 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   OpenResponsesNonStreamingResponse,
   unknown
 > = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   object: ObjectT$inboundSchema,
   created_at: z.number(),
   model: z.string(),
-  status: OpenResponsesNonStreamingResponseStatus$inboundSchema.optional(),
+  status: OpenAIResponsesResponseStatus$inboundSchema.optional(),
   output: z.array(ResponsesOutputItem$inboundSchema),
   user: z.nullable(z.string()).optional(),
   output_text: z.string().optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
   safety_identifier: z.nullable(z.string()).optional(),
   error: z.nullable(ResponsesErrorField$inboundSchema),
-  incomplete_details: z.nullable(z.lazy(() => IncompleteDetails$inboundSchema)),
-  usage: ResponsesUsage$inboundSchema.optional(),
+  incomplete_details: z.nullable(
+    OpenAIResponsesIncompleteDetails$inboundSchema,
+  ),
+  usage: OpenResponsesUsage$inboundSchema.optional(),
   max_tool_calls: z.nullable(z.number()).optional(),
   top_logprobs: z.number().optional(),
   max_output_tokens: z.nullable(z.number()).optional(),
   temperature: z.nullable(z.number()),
   top_p: z.nullable(z.number()),
-  instructions: z.nullable(OpenResponsesInput$inboundSchema).optional(),
+  instructions: z.nullable(OpenAIResponsesInputUnion$inboundSchema).optional(),
   metadata: z.nullable(z.record(z.string(), z.string())),
-  tools: z.array(OpenResponsesToolUnion$inboundSchema),
-  tool_choice: OpenResponsesToolChoice$inboundSchema,
+  tools: z.array(
+    z.union([
+      z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$inboundSchema),
+      OpenResponsesWebSearchPreviewTool$inboundSchema,
+      OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+      OpenResponsesWebSearchTool$inboundSchema,
+      OpenResponsesWebSearch20250826Tool$inboundSchema,
+    ]),
+  ),
+  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
   parallel_tool_calls: z.boolean(),
-  prompt: z.nullable(OpenResponsesPrompt$inboundSchema).optional(),
+  prompt: z.nullable(OpenAIResponsesPrompt$inboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
   previous_response_id: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(OpenResponsesReasoningConfig$inboundSchema).optional(),
-  service_tier: z.nullable(ServiceTier$inboundSchema).optional(),
+  reasoning: z.nullable(OpenAIResponsesReasoningConfig$inboundSchema)
+    .optional(),
+  service_tier: z.nullable(OpenAIResponsesServiceTier$inboundSchema).optional(),
   store: z.boolean().optional(),
-  truncation: z.nullable(Truncation$inboundSchema).optional(),
-  text: OpenResponsesTextConfig$inboundSchema.optional(),
+  truncation: z.nullable(OpenAIResponsesTruncation$inboundSchema).optional(),
+  text: ResponseTextConfig$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
@@ -403,7 +425,7 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
 
 /** @internal */
 export type OpenResponsesNonStreamingResponse$Outbound = {
-  id?: string | undefined;
+  id: string;
   object: string;
   created_at: number;
   model: string;
@@ -414,26 +436,32 @@ export type OpenResponsesNonStreamingResponse$Outbound = {
   prompt_cache_key?: string | null | undefined;
   safety_identifier?: string | null | undefined;
   error: ResponsesErrorField$Outbound | null;
-  incomplete_details: IncompleteDetails$Outbound | null;
-  usage?: ResponsesUsage$Outbound | undefined;
+  incomplete_details: OpenAIResponsesIncompleteDetails$Outbound | null;
+  usage?: OpenResponsesUsage$Outbound | undefined;
   max_tool_calls?: number | null | undefined;
   top_logprobs?: number | undefined;
   max_output_tokens?: number | null | undefined;
   temperature: number | null;
   top_p: number | null;
-  instructions?: OpenResponsesInput$Outbound | null | undefined;
+  instructions?: OpenAIResponsesInputUnion$Outbound | null | undefined;
   metadata: { [k: string]: string } | null;
-  tools: Array<OpenResponsesToolUnion$Outbound>;
-  tool_choice: OpenResponsesToolChoice$Outbound;
+  tools: Array<
+    | OpenResponsesNonStreamingResponseToolFunction$Outbound
+    | OpenResponsesWebSearchPreviewTool$Outbound
+    | OpenResponsesWebSearchPreview20250311Tool$Outbound
+    | OpenResponsesWebSearchTool$Outbound
+    | OpenResponsesWebSearch20250826Tool$Outbound
+  >;
+  tool_choice: OpenAIResponsesToolChoiceUnion$Outbound;
   parallel_tool_calls: boolean;
-  prompt?: OpenResponsesPrompt$Outbound | null | undefined;
+  prompt?: OpenAIResponsesPrompt$Outbound | null | undefined;
   background?: boolean | null | undefined;
   previous_response_id?: string | null | undefined;
-  reasoning?: OpenResponsesReasoningConfig$Outbound | null | undefined;
+  reasoning?: OpenAIResponsesReasoningConfig$Outbound | null | undefined;
   service_tier?: string | null | undefined;
   store?: boolean | undefined;
   truncation?: string | null | undefined;
-  text?: OpenResponsesTextConfig$Outbound | undefined;
+  text?: ResponseTextConfig$Outbound | undefined;
 };
 
 /** @internal */
@@ -441,37 +469,50 @@ export const OpenResponsesNonStreamingResponse$outboundSchema: z.ZodType<
   OpenResponsesNonStreamingResponse$Outbound,
   OpenResponsesNonStreamingResponse
 > = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   object: ObjectT$outboundSchema,
   createdAt: z.number(),
   model: z.string(),
-  status: OpenResponsesNonStreamingResponseStatus$outboundSchema.optional(),
+  status: OpenAIResponsesResponseStatus$outboundSchema.optional(),
   output: z.array(ResponsesOutputItem$outboundSchema),
   user: z.nullable(z.string()).optional(),
   outputText: z.string().optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
   error: z.nullable(ResponsesErrorField$outboundSchema),
-  incompleteDetails: z.nullable(z.lazy(() => IncompleteDetails$outboundSchema)),
-  usage: ResponsesUsage$outboundSchema.optional(),
+  incompleteDetails: z.nullable(
+    OpenAIResponsesIncompleteDetails$outboundSchema,
+  ),
+  usage: OpenResponsesUsage$outboundSchema.optional(),
   maxToolCalls: z.nullable(z.number()).optional(),
   topLogprobs: z.number().optional(),
   maxOutputTokens: z.nullable(z.number()).optional(),
   temperature: z.nullable(z.number()),
   topP: z.nullable(z.number()),
-  instructions: z.nullable(OpenResponsesInput$outboundSchema).optional(),
+  instructions: z.nullable(OpenAIResponsesInputUnion$outboundSchema).optional(),
   metadata: z.nullable(z.record(z.string(), z.string())),
-  tools: z.array(OpenResponsesToolUnion$outboundSchema),
-  toolChoice: OpenResponsesToolChoice$outboundSchema,
+  tools: z.array(
+    z.union([
+      z.lazy(() =>
+        OpenResponsesNonStreamingResponseToolFunction$outboundSchema
+      ),
+      OpenResponsesWebSearchPreviewTool$outboundSchema,
+      OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+      OpenResponsesWebSearchTool$outboundSchema,
+      OpenResponsesWebSearch20250826Tool$outboundSchema,
+    ]),
+  ),
+  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema,
   parallelToolCalls: z.boolean(),
-  prompt: z.nullable(OpenResponsesPrompt$outboundSchema).optional(),
+  prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
   previousResponseId: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(OpenResponsesReasoningConfig$outboundSchema).optional(),
-  serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
+  reasoning: z.nullable(OpenAIResponsesReasoningConfig$outboundSchema)
+    .optional(),
+  serviceTier: z.nullable(OpenAIResponsesServiceTier$outboundSchema).optional(),
   store: z.boolean().optional(),
-  truncation: z.nullable(Truncation$outboundSchema).optional(),
-  text: OpenResponsesTextConfig$outboundSchema.optional(),
+  truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
+  text: ResponseTextConfig$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     createdAt: "created_at",

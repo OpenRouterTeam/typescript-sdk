@@ -57,6 +57,7 @@ export const Provider = {
   Mancer2: "Mancer 2",
   Meta: "Meta",
   Minimax: "Minimax",
+  ModelRun: "ModelRun",
   Mistral: "Mistral",
   Modular: "Modular",
   MoonshotAI: "Moonshot AI",

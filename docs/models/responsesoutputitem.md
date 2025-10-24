@@ -49,6 +49,7 @@ const value: models.ResponsesOutputItemReasoning = {
     },
   ],
   encryptedContent: "<value>",
+  status: "completed",
 };
 ```
 
@@ -61,6 +62,7 @@ const value: models.ResponsesOutputItemFunctionCall = {
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
   callId: "call-abc123",
+  status: "in_progress",
 };
 ```
 

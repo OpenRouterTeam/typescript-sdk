@@ -1,5 +1,7 @@
 # ResponsesOutputMessage
 
+An output message item
+
 ## Example Usage
 
 ```typescript
@@ -34,5 +36,5 @@ let value: ResponsesOutputMessage = {
 | `id`                                                                         | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
 | `role`                                                                       | [models.ResponsesOutputMessageRole](../models/responsesoutputmessagerole.md) | :heavy_check_mark:                                                           | N/A                                                                          |
 | `type`                                                                       | [models.ResponsesOutputMessageType](../models/responsesoutputmessagetype.md) | :heavy_check_mark:                                                           | N/A                                                                          |
-| `status`                                                                     | *models.Status*                                                              | :heavy_check_mark:                                                           | N/A                                                                          |
+| `status`                                                                     | *models.ResponsesOutputMessageStatusUnion*                                   | :heavy_minus_sign:                                                           | N/A                                                                          |
 | `content`                                                                    | *models.ResponsesOutputMessageContent*[]                                     | :heavy_check_mark:                                                           | N/A                                                                          |

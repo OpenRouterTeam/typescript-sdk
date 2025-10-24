@@ -3,28 +3,28 @@
 
 ## Supported Types
 
-### `models.OutputTextContent`
+### `models.ResponseOutputText`
 
 ```typescript
-const value: models.OutputTextContent = {
+const value: models.ResponseOutputText = {
   type: "output_text",
   text: "The capital of France is Paris.",
   annotations: [
     {
       type: "url_citation",
-      endIndex: 42,
-      startIndex: 0,
-      title: "Paris - Wikipedia",
       url: "https://en.wikipedia.org/wiki/Paris",
+      title: "Paris - Wikipedia",
+      startIndex: 0,
+      endIndex: 42,
     },
   ],
 };
 ```
 
-### `models.RefusalContent`
+### `models.OpenAIResponsesRefusalContent`
 
 ```typescript
-const value: models.RefusalContent = {
+const value: models.OpenAIResponsesRefusalContent = {
   type: "refusal",
   refusal: "I'm sorry, I cannot assist with that request",
 };

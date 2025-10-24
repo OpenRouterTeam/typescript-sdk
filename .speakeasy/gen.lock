@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 44cfa1829604dd567e06b709b25215f3
+  docChecksum: dab89c3598e1168d2904ae03d1491c6f
   docVersion: 1.0.0
-  speakeasyVersion: 1.639.0
-  generationVersion: 2.730.0
-  releaseVersion: 0.0.1-beta.9
-  configChecksum: 5f3f54e0abdfc4d4d257493598cf7c34
+  speakeasyVersion: 1.639.3
+  generationVersion: 2.730.5
+  releaseVersion: 0.0.1-beta.10
+  configChecksum: dae5299905f8d086c61e6f28c594ed39
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.24.0
+    core: 3.24.1
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -56,7 +56,6 @@ generatedFiles:
   - docs/models/chatcompletionfinishreason.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
-  - docs/models/chatgenerationparamseffort.md
   - docs/models/chatgenerationparamsresponseformatjsonobject.md
   - docs/models/chatgenerationparamsresponseformatpython.md
   - docs/models/chatgenerationparamsresponseformattext.md
@@ -65,13 +64,11 @@ generatedFiles:
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
-  - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
-  - docs/models/chatmessagetokenlogprobtoplogprob.md
   - docs/models/chatmessagetoolcall.md
   - docs/models/chatmessagetoolcallfunction.md
   - docs/models/chatresponse.md
@@ -100,19 +97,20 @@ generatedFiles:
   - docs/models/costdetails.md
   - docs/models/createchargerequest.md
   - docs/models/data.md
+  - docs/models/effort.md
   - docs/models/errorresponse.md
   - docs/models/errorresponsecode.md
   - docs/models/errorresponseerror.md
   - docs/models/errors/chaterror.md
   - docs/models/errors/errorresponse.md
   - docs/models/errors/internalservererror.md
-  - docs/models/filecitationannotation.md
-  - docs/models/filecitationannotationtype.md
-  - docs/models/filepathannotation.md
-  - docs/models/filepathannotationtype.md
+  - docs/models/filecitation.md
+  - docs/models/filecitationtype.md
+  - docs/models/filepath.md
+  - docs/models/filepathtype.md
+  - docs/models/format.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
-  - docs/models/incompletedetails.md
   - docs/models/inputaudio.md
   - docs/models/inputtokensdetails.md
   - docs/models/jsonschemaconfig.md
@@ -125,60 +123,64 @@ generatedFiles:
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
   - docs/models/objectt.md
-  - docs/models/openresponseseasyinputmessage.md
-  - docs/models/openresponseseasyinputmessagecontent.md
-  - docs/models/openresponseseasyinputmessageroleassistant.md
-  - docs/models/openresponseseasyinputmessageroledeveloper.md
-  - docs/models/openresponseseasyinputmessagerolesystem.md
-  - docs/models/openresponseseasyinputmessageroleunion.md
-  - docs/models/openresponseseasyinputmessageroleuser.md
-  - docs/models/openresponseseasyinputmessagetype.md
-  - docs/models/openresponsesformatjsonobject.md
-  - docs/models/openresponsesformatjsonobjecttype.md
-  - docs/models/openresponsesformatjsonschema.md
-  - docs/models/openresponsesformatjsonschematype.md
-  - docs/models/openresponsesformattext.md
-  - docs/models/openresponsesformattextconfig.md
-  - docs/models/openresponsesformattexttype.md
-  - docs/models/openresponsesfunctioncalloutput.md
-  - docs/models/openresponsesfunctioncalloutputtype.md
-  - docs/models/openresponsesfunctiontoolcall.md
-  - docs/models/openresponsesfunctiontoolcalltype.md
-  - docs/models/openresponsesinput.md
-  - docs/models/openresponsesinputcontent.md
-  - docs/models/openresponsesinputfile.md
-  - docs/models/openresponsesinputfiletype.md
-  - docs/models/openresponsesinputimage.md
-  - docs/models/openresponsesinputimagedetail.md
-  - docs/models/openresponsesinputimagetype.md
-  - docs/models/openresponsesinputitem.md
-  - docs/models/openresponsesinputmessageitem.md
-  - docs/models/openresponsesinputmessageitemroledeveloper.md
-  - docs/models/openresponsesinputmessageitemrolesystem.md
-  - docs/models/openresponsesinputmessageitemroleunion.md
-  - docs/models/openresponsesinputmessageitemroleuser.md
-  - docs/models/openresponsesinputmessageitemtype.md
-  - docs/models/openresponsesinputtext.md
-  - docs/models/openresponsesinputtexttype.md
+  - docs/models/openairesponsesannotation.md
+  - docs/models/openairesponsesincompletedetails.md
+  - docs/models/openairesponsesinputcontent1.md
+  - docs/models/openairesponsesinputcontent2.md
+  - docs/models/openairesponsesinputcontent3.md
+  - docs/models/openairesponsesinputfunctioncall.md
+  - docs/models/openairesponsesinputfunctioncalloutput.md
+  - docs/models/openairesponsesinputmessage1.md
+  - docs/models/openairesponsesinputmessage2.md
+  - docs/models/openairesponsesinputroleassistant.md
+  - docs/models/openairesponsesinputtypefunctioncall.md
+  - docs/models/openairesponsesinputtypemessage1.md
+  - docs/models/openairesponsesinputtypemessage2.md
+  - docs/models/openairesponsesinputunion.md
+  - docs/models/openairesponsesinputunion1.md
+  - docs/models/openairesponsesprompt.md
+  - docs/models/openairesponsesreasoningconfig.md
+  - docs/models/openairesponsesreasoningeffort.md
+  - docs/models/openairesponsesrefusalcontent.md
+  - docs/models/openairesponsesrefusalcontenttype.md
+  - docs/models/openairesponsesresponsestatus.md
+  - docs/models/openairesponsesservicetier.md
+  - docs/models/openairesponsestoolchoice.md
+  - docs/models/openairesponsestoolchoiceauto.md
+  - docs/models/openairesponsestoolchoicefunction.md
+  - docs/models/openairesponsestoolchoicenone.md
+  - docs/models/openairesponsestoolchoicerequired.md
+  - docs/models/openairesponsestoolchoicetypefunction.md
+  - docs/models/openairesponsestoolchoicetypewebsearchpreview.md
+  - docs/models/openairesponsestoolchoicetypewebsearchpreview20250311.md
+  - docs/models/openairesponsestoolchoiceunion.md
+  - docs/models/openairesponsestruncation.md
+  - docs/models/openresponseserrorevent.md
+  - docs/models/openresponseserroreventtype.md
+  - docs/models/openresponsesimagegencallcompleted.md
+  - docs/models/openresponsesimagegencallcompletedtype.md
+  - docs/models/openresponsesimagegencallgenerating.md
+  - docs/models/openresponsesimagegencallgeneratingtype.md
+  - docs/models/openresponsesimagegencallinprogress.md
+  - docs/models/openresponsesimagegencallinprogresstype.md
+  - docs/models/openresponsesimagegencallpartialimage.md
+  - docs/models/openresponsesimagegencallpartialimagetype.md
   - docs/models/openresponseslogprobs.md
-  - docs/models/openresponseslogprobstoplogprob.md
   - docs/models/openresponsesnonstreamingresponse.md
-  - docs/models/openresponsesnonstreamingresponsestatus.md
-  - docs/models/openresponsesoutputtext.md
-  - docs/models/openresponsesoutputtextannotation.md
-  - docs/models/openresponsesoutputtexttype.md
-  - docs/models/openresponsesprompt.md
-  - docs/models/openresponsesreasoning.md
-  - docs/models/openresponsesreasoningconfig.md
-  - docs/models/openresponsesreasoningconfigeffort.md
-  - docs/models/openresponsesreasoningformat.md
-  - docs/models/openresponsesreasoningtype.md
-  - docs/models/openresponsesrefusalcontent.md
-  - docs/models/openresponsesrefusalcontenttype.md
+  - docs/models/openresponsesnonstreamingresponsetoolfunction.md
+  - docs/models/openresponsesnonstreamingresponsetype.md
+  - docs/models/openresponsesreasoningdeltaevent.md
+  - docs/models/openresponsesreasoningdeltaeventtype.md
+  - docs/models/openresponsesreasoningdoneevent.md
+  - docs/models/openresponsesreasoningdoneeventtype.md
+  - docs/models/openresponsesreasoningsummarypartaddedevent.md
+  - docs/models/openresponsesreasoningsummarypartaddedeventtype.md
+  - docs/models/openresponsesreasoningsummarytextdeltaevent.md
+  - docs/models/openresponsesreasoningsummarytextdeltaeventtype.md
+  - docs/models/openresponsesreasoningsummarytextdoneevent.md
+  - docs/models/openresponsesreasoningsummarytextdoneeventtype.md
   - docs/models/openresponsesrequest.md
   - docs/models/openresponsesstreamevent.md
-  - docs/models/openresponsesstreameventannotation.md
-  - docs/models/openresponsesstreameventerror.md
   - docs/models/openresponsesstreameventresponsecompleted.md
   - docs/models/openresponsesstreameventresponsecontentpartadded.md
   - docs/models/openresponsesstreameventresponsecontentpartdone.md
@@ -186,10 +188,6 @@ generatedFiles:
   - docs/models/openresponsesstreameventresponsefailed.md
   - docs/models/openresponsesstreameventresponsefunctioncallargumentsdelta.md
   - docs/models/openresponsesstreameventresponsefunctioncallargumentsdone.md
-  - docs/models/openresponsesstreameventresponseimagegenerationcallcompleted.md
-  - docs/models/openresponsesstreameventresponseimagegenerationcallgenerating.md
-  - docs/models/openresponsesstreameventresponseimagegenerationcallinprogress.md
-  - docs/models/openresponsesstreameventresponseimagegenerationcallpartialimage.md
   - docs/models/openresponsesstreameventresponseincomplete.md
   - docs/models/openresponsesstreameventresponseinprogress.md
   - docs/models/openresponsesstreameventresponseoutputitemadded.md
@@ -197,24 +195,11 @@ generatedFiles:
   - docs/models/openresponsesstreameventresponseoutputtextannotationadded.md
   - docs/models/openresponsesstreameventresponseoutputtextdelta.md
   - docs/models/openresponsesstreameventresponseoutputtextdone.md
-  - docs/models/openresponsesstreameventresponsereasoningsummarypartadded.md
   - docs/models/openresponsesstreameventresponsereasoningsummarypartdone.md
-  - docs/models/openresponsesstreameventresponsereasoningsummarytextdelta.md
-  - docs/models/openresponsesstreameventresponsereasoningsummarytextdone.md
-  - docs/models/openresponsesstreameventresponsereasoningtextdelta.md
-  - docs/models/openresponsesstreameventresponsereasoningtextdone.md
   - docs/models/openresponsesstreameventresponserefusaldelta.md
   - docs/models/openresponsesstreameventresponserefusaldone.md
-  - docs/models/openresponsestextconfig.md
-  - docs/models/openresponsestoolchoice.md
-  - docs/models/openresponsestoolchoiceauto.md
-  - docs/models/openresponsestoolchoicefunction.md
-  - docs/models/openresponsestoolchoicenone.md
-  - docs/models/openresponsestoolchoicerequired.md
-  - docs/models/openresponsestoolchoicetype.md
-  - docs/models/openresponsestoolunion.md
-  - docs/models/openresponsestoolunionfunction.md
-  - docs/models/openresponsestooluniontype.md
+  - docs/models/openresponsestoplogprobs.md
+  - docs/models/openresponsesusage.md
   - docs/models/openresponseswebsearch20250826tool.md
   - docs/models/openresponseswebsearch20250826toolfilters.md
   - docs/models/openresponseswebsearch20250826tooltype.md
@@ -280,9 +265,16 @@ generatedFiles:
   - docs/models/operations/updatekeysrequestbody.md
   - docs/models/operations/updatekeysresponse.md
   - docs/models/operations/web3data.md
-  - docs/models/outputtextcontent.md
-  - docs/models/outputtextcontentannotation.md
-  - docs/models/outputtextcontenttype.md
+  - docs/models/outputitemimagegenerationcall.md
+  - docs/models/outputitemimagegenerationcalltype.md
+  - docs/models/outputmessage.md
+  - docs/models/outputmessagecontent.md
+  - docs/models/outputmessagerole.md
+  - docs/models/outputmessagestatuscompleted.md
+  - docs/models/outputmessagestatusincomplete.md
+  - docs/models/outputmessagestatusinprogress.md
+  - docs/models/outputmessagestatusunion.md
+  - docs/models/outputmessagetype.md
   - docs/models/outputtokensdetails.md
   - docs/models/part1.md
   - docs/models/part2.md
@@ -296,54 +288,78 @@ generatedFiles:
   - docs/models/reasoningsummaryverbosity.md
   - docs/models/reasoningtextcontent.md
   - docs/models/reasoningtextcontenttype.md
-  - docs/models/refusalcontent.md
-  - docs/models/refusalcontenttype.md
   - docs/models/responseformatjsonschema.md
+  - docs/models/responseformattextconfig.md
   - docs/models/responseformattextgrammar.md
+  - docs/models/responseinputfile.md
+  - docs/models/responseinputfiletype.md
+  - docs/models/responseinputimage.md
+  - docs/models/responseinputimagedetail.md
+  - docs/models/responseinputimagetype.md
+  - docs/models/responseinputtext.md
+  - docs/models/responseinputtexttype.md
+  - docs/models/responseoutputtext.md
+  - docs/models/responseoutputtexttype.md
   - docs/models/responseserrorfield.md
   - docs/models/responseserrorfieldcode.md
+  - docs/models/responsesformatjsonobject.md
+  - docs/models/responsesformatjsonobjecttype.md
+  - docs/models/responsesformattext.md
+  - docs/models/responsesformattextjsonschemaconfig.md
+  - docs/models/responsesformattextjsonschemaconfigtype.md
+  - docs/models/responsesformattexttype.md
   - docs/models/responsesimagegenerationcall.md
   - docs/models/responsesimagegenerationcalltype.md
   - docs/models/responsesoutputitem.md
   - docs/models/responsesoutputitemfilesearchcall.md
   - docs/models/responsesoutputitemfilesearchcalltype.md
   - docs/models/responsesoutputitemfunctioncall.md
+  - docs/models/responsesoutputitemfunctioncallstatuscompleted.md
+  - docs/models/responsesoutputitemfunctioncallstatusincomplete.md
+  - docs/models/responsesoutputitemfunctioncallstatusinprogress.md
+  - docs/models/responsesoutputitemfunctioncallstatusunion.md
   - docs/models/responsesoutputitemfunctioncalltype.md
   - docs/models/responsesoutputitemreasoning.md
+  - docs/models/responsesoutputitemreasoningstatuscompleted.md
+  - docs/models/responsesoutputitemreasoningstatusincomplete.md
+  - docs/models/responsesoutputitemreasoningstatusinprogress.md
+  - docs/models/responsesoutputitemreasoningstatusunion.md
   - docs/models/responsesoutputitemreasoningtype.md
   - docs/models/responsesoutputmessage.md
   - docs/models/responsesoutputmessagecontent.md
   - docs/models/responsesoutputmessagerole.md
+  - docs/models/responsesoutputmessagestatuscompleted.md
+  - docs/models/responsesoutputmessagestatusincomplete.md
+  - docs/models/responsesoutputmessagestatusinprogress.md
+  - docs/models/responsesoutputmessagestatusunion.md
   - docs/models/responsesoutputmessagetype.md
   - docs/models/responsessearchcontextsize.md
-  - docs/models/responsesusage.md
   - docs/models/responseswebsearchcalloutput.md
   - docs/models/responseswebsearchcalloutputtype.md
   - docs/models/responseswebsearchuserlocation.md
   - docs/models/responseswebsearchuserlocationtype.md
+  - docs/models/responsetextconfig.md
+  - docs/models/roledeveloper1.md
+  - docs/models/roledeveloper2.md
+  - docs/models/rolesystem1.md
+  - docs/models/rolesystem2.md
+  - docs/models/roleunion1.md
+  - docs/models/roleunion2.md
+  - docs/models/roleuser1.md
+  - docs/models/roleuser2.md
   - docs/models/security.md
-  - docs/models/servicetier.md
-  - docs/models/status.md
-  - docs/models/statuscompleted.md
-  - docs/models/statusincomplete.md
-  - docs/models/statusinprogress.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
   - docs/models/tool.md
   - docs/models/toolcallstatus.md
-  - docs/models/toolchoicetypes.md
-  - docs/models/toolchoicetypestypewebsearchpreview.md
-  - docs/models/toolchoicetypestypewebsearchpreview20250311.md
   - docs/models/toolfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
-  - docs/models/truncation.md
+  - docs/models/toolunion.md
+  - docs/models/toplogprob.md
   - docs/models/type.md
-  - docs/models/typecodeinterpreter.md
-  - docs/models/typecomputerusepreview.md
-  - docs/models/typeerror.md
-  - docs/models/typefilesearch.md
+  - docs/models/typefunctioncalloutput.md
   - docs/models/typeresponsecompleted.md
   - docs/models/typeresponsecontentpartadded.md
   - docs/models/typeresponsecontentpartdone.md
@@ -351,10 +367,6 @@ generatedFiles:
   - docs/models/typeresponsefailed.md
   - docs/models/typeresponsefunctioncallargumentsdelta.md
   - docs/models/typeresponsefunctioncallargumentsdone.md
-  - docs/models/typeresponseimagegenerationcallcompleted.md
-  - docs/models/typeresponseimagegenerationcallgenerating.md
-  - docs/models/typeresponseimagegenerationcallinprogress.md
-  - docs/models/typeresponseimagegenerationcallpartialimage.md
   - docs/models/typeresponseincomplete.md
   - docs/models/typeresponseinprogress.md
   - docs/models/typeresponseoutputitemadded.md
@@ -362,18 +374,14 @@ generatedFiles:
   - docs/models/typeresponseoutputtextannotationadded.md
   - docs/models/typeresponseoutputtextdelta.md
   - docs/models/typeresponseoutputtextdone.md
-  - docs/models/typeresponsereasoningsummarypartadded.md
   - docs/models/typeresponsereasoningsummarypartdone.md
-  - docs/models/typeresponsereasoningsummarytextdelta.md
-  - docs/models/typeresponsereasoningsummarytextdone.md
-  - docs/models/typeresponsereasoningtextdelta.md
-  - docs/models/typeresponsereasoningtextdone.md
   - docs/models/typeresponserefusaldelta.md
   - docs/models/typeresponserefusaldone.md
-  - docs/models/urlcitationannotation.md
-  - docs/models/urlcitationannotationtype.md
+  - docs/models/urlcitation.md
+  - docs/models/urlcitationtype.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
+  - docs/models/variables.md
   - docs/models/verbosity.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
@@ -474,8 +482,8 @@ generatedFiles:
   - src/models/errors/openroutererror.ts
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
-  - src/models/filecitationannotation.ts
-  - src/models/filepathannotation.ts
+  - src/models/filecitation.ts
+  - src/models/filepath.ts
   - src/models/imagegenerationstatus.ts
   - src/models/index.ts
   - src/models/jsonschemaconfig.ts
@@ -484,32 +492,33 @@ generatedFiles:
   - src/models/modelscountresponse.ts
   - src/models/modelslistresponse.ts
   - src/models/namedtoolchoice.ts
-  - src/models/openresponseseasyinputmessage.ts
-  - src/models/openresponsesformatjsonobject.ts
-  - src/models/openresponsesformatjsonschema.ts
-  - src/models/openresponsesformattext.ts
-  - src/models/openresponsesformattextconfig.ts
-  - src/models/openresponsesfunctioncalloutput.ts
-  - src/models/openresponsesfunctiontoolcall.ts
-  - src/models/openresponsesinput.ts
-  - src/models/openresponsesinputcontent.ts
-  - src/models/openresponsesinputfile.ts
-  - src/models/openresponsesinputimage.ts
-  - src/models/openresponsesinputitem.ts
-  - src/models/openresponsesinputmessageitem.ts
-  - src/models/openresponsesinputtext.ts
+  - src/models/openairesponsesannotation.ts
+  - src/models/openairesponsesincompletedetails.ts
+  - src/models/openairesponsesinputunion.ts
+  - src/models/openairesponsesprompt.ts
+  - src/models/openairesponsesreasoningconfig.ts
+  - src/models/openairesponsesreasoningeffort.ts
+  - src/models/openairesponsesrefusalcontent.ts
+  - src/models/openairesponsesresponsestatus.ts
+  - src/models/openairesponsesservicetier.ts
+  - src/models/openairesponsestoolchoiceunion.ts
+  - src/models/openairesponsestruncation.ts
+  - src/models/openresponseserrorevent.ts
+  - src/models/openresponsesimagegencallcompleted.ts
+  - src/models/openresponsesimagegencallgenerating.ts
+  - src/models/openresponsesimagegencallinprogress.ts
+  - src/models/openresponsesimagegencallpartialimage.ts
   - src/models/openresponseslogprobs.ts
   - src/models/openresponsesnonstreamingresponse.ts
-  - src/models/openresponsesoutputtext.ts
-  - src/models/openresponsesprompt.ts
-  - src/models/openresponsesreasoning.ts
-  - src/models/openresponsesreasoningconfig.ts
-  - src/models/openresponsesrefusalcontent.ts
+  - src/models/openresponsesreasoningdeltaevent.ts
+  - src/models/openresponsesreasoningdoneevent.ts
+  - src/models/openresponsesreasoningsummarypartaddedevent.ts
+  - src/models/openresponsesreasoningsummarytextdeltaevent.ts
+  - src/models/openresponsesreasoningsummarytextdoneevent.ts
   - src/models/openresponsesrequest.ts
   - src/models/openresponsesstreamevent.ts
-  - src/models/openresponsestextconfig.ts
-  - src/models/openresponsestoolchoice.ts
-  - src/models/openresponsestoolunion.ts
+  - src/models/openresponsestoplogprobs.ts
+  - src/models/openresponsesusage.ts
   - src/models/openresponseswebsearch20250826tool.ts
   - src/models/openresponseswebsearchpreview20250311tool.ts
   - src/models/openresponseswebsearchpreviewtool.ts
@@ -534,15 +543,23 @@ generatedFiles:
   - src/models/operations/listproviders.ts
   - src/models/operations/sendchatcompletionrequest.ts
   - src/models/operations/updatekeys.ts
-  - src/models/outputtextcontent.ts
+  - src/models/outputitemimagegenerationcall.ts
+  - src/models/outputmessage.ts
   - src/models/publicendpoint.ts
   - src/models/reasoningsummarytext.ts
   - src/models/reasoningsummaryverbosity.ts
   - src/models/reasoningtextcontent.ts
-  - src/models/refusalcontent.ts
   - src/models/responseformatjsonschema.ts
+  - src/models/responseformattextconfig.ts
   - src/models/responseformattextgrammar.ts
+  - src/models/responseinputfile.ts
+  - src/models/responseinputimage.ts
+  - src/models/responseinputtext.ts
+  - src/models/responseoutputtext.ts
   - src/models/responseserrorfield.ts
+  - src/models/responsesformatjsonobject.ts
+  - src/models/responsesformattext.ts
+  - src/models/responsesformattextjsonschemaconfig.ts
   - src/models/responsesimagegenerationcall.ts
   - src/models/responsesoutputitem.ts
   - src/models/responsesoutputitemfilesearchcall.ts
@@ -550,16 +567,15 @@ generatedFiles:
   - src/models/responsesoutputitemreasoning.ts
   - src/models/responsesoutputmessage.ts
   - src/models/responsessearchcontextsize.ts
-  - src/models/responsesusage.ts
   - src/models/responseswebsearchcalloutput.ts
   - src/models/responseswebsearchuserlocation.ts
+  - src/models/responsetextconfig.ts
   - src/models/security.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
   - src/models/toolcallstatus.ts
-  - src/models/toolchoicetypes.ts
   - src/models/toolresponsemessage.ts
-  - src/models/urlcitationannotation.ts
+  - src/models/urlcitation.ts
   - src/models/usermessage.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
@@ -1233,7 +1249,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 8700.29, "is_byok": true, "cost_details": {"upstream_inference_cost": 5688.69, "upstream_inference_input_cost": 1605.62, "upstream_inference_output_cost": 6596.56}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto", "max_tokens": 8142.98, "enabled": true}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 8700.29, "is_byok": true, "cost_details": {"upstream_inference_cost": 5688.69, "upstream_inference_input_cost": 1605.62, "upstream_inference_output_cost": 6596.56}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto"}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
   createCoinbaseCharge:
@@ -1371,3 +1387,4 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.beta.responses.send()`:  `response` **Changed** **Breaking** :warning:\n* `openrouter.parameters.getParameters()`: \n  *  `request.provider` **Changed**\n"

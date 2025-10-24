@@ -35,9 +35,9 @@ let value: OpenResponsesStreamEventResponseIncomplete = {
       cost: 0.0012,
       isByok: true,
       costDetails: {
-        upstreamInferenceCost: 5882.86,
-        upstreamInferenceInputCost: 6012.25,
-        upstreamInferenceOutputCost: 7726.94,
+        upstreamInferenceCost: null,
+        upstreamInferenceInputCost: 0.0008,
+        upstreamInferenceOutputCost: 0.0004,
       },
     },
     maxToolCalls: 2849.55,
@@ -51,25 +51,23 @@ let value: OpenResponsesStreamEventResponseIncomplete = {
     toolChoice: "auto",
     parallelToolCalls: true,
     prompt: {
-      id: "prompt-abc123",
+      id: "<id>",
       variables: {
-        "name": {
+        "key": {
           type: "input_text",
-          text: "John",
+          text: "Hello, how can I help you?",
         },
       },
     },
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "medium",
+      effort: "low",
       summary: "auto",
-      maxTokens: 7831.05,
-      enabled: true,
     },
-    serviceTier: "flex",
-    store: false,
-    truncation: "auto",
+    serviceTier: "priority",
+    store: true,
+    truncation: "disabled",
     text: {
       format: {
         type: "text",

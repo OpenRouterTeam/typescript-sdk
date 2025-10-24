@@ -16,10 +16,10 @@ let value: OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
   annotationIndex: 0,
   annotation: {
     type: "url_citation",
-    endIndex: 7,
-    startIndex: 0,
-    title: "Example",
     url: "https://example.com",
+    title: "Example",
+    startIndex: 0,
+    endIndex: 7,
   },
 };
 ```
@@ -34,4 +34,4 @@ let value: OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
 | `contentIndex`                                                                                     | *number*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `sequenceNumber`                                                                                   | *number*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `annotationIndex`                                                                                  | *number*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |
-| `annotation`                                                                                       | *models.OpenResponsesStreamEventAnnotation*                                                        | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `annotation`                                                                                       | *models.OpenAIResponsesAnnotation*                                                                 | :heavy_check_mark:                                                                                 | N/A                                                                                                |
