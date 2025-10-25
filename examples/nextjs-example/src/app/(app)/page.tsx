@@ -14,10 +14,13 @@ import {
   OPENROUTER_CODE_VERIFIER_KEY,
   OPENROUTER_KEY_LOCALSTORAGE_KEY,
 } from "@/lib/config";
-import { createSHA256CodeChallenge } from "@/lib/oauth";
+import {
+  createAuthorizationUrl,
+  createSHA256CodeChallenge,
+  exchangeAuthorizationCode,
+} from "@/lib/oauth";
 
 import { useApiKey } from "@/lib/hooks/use-api-key";
-import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
 import {
   ArrowRightIcon,
   ExternalLink,
@@ -79,7 +82,6 @@ function InitializingPageContent() {
 
 function ConnectingPageContent(props: { code: string }) {
   const router = useRouter();
-  const { client: openRouter } = useOpenRouter();
   const [, setApiKey] = useApiKey();
 
   useEffect(() => {
@@ -94,7 +96,7 @@ function ConnectingPageContent(props: { code: string }) {
 
       try {
         // Exchange the authorization code for an API key using PKCE
-        const result = await openRouter.oAuth.exchangeAuthorizationCode({
+        const result = await exchangeAuthorizationCode({
           code: props.code,
           codeVerifier,
           codeChallengeMethod: "S256",
@@ -117,7 +119,7 @@ function ConnectingPageContent(props: { code: string }) {
     };
 
     exchangeCode();
-  }, [props.code, router]);
+  }, [props.code, router, setApiKey]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -176,7 +178,6 @@ function ConnectedPageContent() {
 
 function DisconnectedPageContent() {
   const [authUrl, setAuthUrl] = useState<string | null>(null);
-  const { client: openRouter } = useOpenRouter();
 
   useEffect(() => {
     const generateAuthUrl = async () => {
@@ -190,7 +191,7 @@ function DisconnectedPageContent() {
       );
 
       // Generate authorization URL with PKCE
-      const url = await openRouter.oAuth.createAuthorizationUrl({
+      const url = await createAuthorizationUrl({
         callbackUrl: OAUTH_CALLBACK_URL,
         codeChallenge: challenge.codeChallenge,
         codeChallengeMethod: "S256",

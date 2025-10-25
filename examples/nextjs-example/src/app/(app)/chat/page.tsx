@@ -14,7 +14,12 @@ import {
 } from "@/components/ui/select";
 import { useApiKey } from "@/lib/hooks/use-api-key";
 import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
-import { Message as OpenRouterMessageRequest } from "@openrouter/sdk/models";
+import {
+  ChatMessageContentItem,
+  ChatResponse,
+  Message as OpenRouterMessageRequest,
+} from "@openrouter/sdk/models";
+import type { SendChatCompletionRequestResponse } from "@openrouter/sdk/models/operations";
 import { Bot, MessageSquare, Send, Settings, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NotConnectedDialog } from "./_dialogs/not-connected";
@@ -23,6 +28,48 @@ type Message = OpenRouterMessageRequest & {
   id: string;
   created?: number;
 };
+
+type ChatSendResult = SendChatCompletionRequestResponse;
+
+function isChatResponse(result: ChatSendResult): result is ChatResponse {
+  return (
+    !!result
+    && typeof result === "object"
+    && Array.isArray((result as ChatResponse).choices)
+  );
+}
+
+function formatContentItem(item: ChatMessageContentItem | string): string {
+  if (typeof item === "string") return item;
+
+  switch (item.type) {
+    case "text":
+      return item.text;
+    case "image_url":
+      return "[image]";
+    case "input_audio":
+      return "[audio]";
+    default:
+      return "";
+  }
+}
+
+function formatAssistantContent(
+  content: ChatResponse["choices"][number]["message"]["content"],
+): string {
+  if (!content) return "";
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) {
+    return content.map(formatContentItem).filter(Boolean).join("\n");
+  }
+  return "";
+}
+
+function extractAssistantMessage(response: ChatResponse): string {
+  const [firstChoice] = response.choices;
+  if (!firstChoice) return "";
+  return formatAssistantContent(firstChoice.message.content ?? "");
+}
 
 export default function Page() {
   const { client: openRouter } = useOpenRouter();
@@ -96,10 +143,24 @@ export default function Page() {
       stream: true,
     });
 
+    if (isChatResponse(result)) {
+      const finalContent = extractAssistantMessage(result);
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        const lastMessage = newMessages[newMessages.length - 1];
+        if (lastMessage && lastMessage.role === "assistant") {
+          lastMessage.content = finalContent;
+        }
+        return newMessages;
+      });
+      setIsLoading(false);
+      return;
+    }
+
     // Stream chunks into the latest message
     const chunks: string[] = [];
     for await (const chunk of result) {
-      chunks.push(chunk.data.choices[0].delta.content || "");
+      chunks.push(chunk.data.choices[0]?.delta.content || "");
       setMessages((prev) => {
         const newMessages = [...prev];
         const lastMessage = newMessages[newMessages.length - 1];
