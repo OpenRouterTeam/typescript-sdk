@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Override for local developtment of OAuth functionality
+!src/lib/oauth.ts
