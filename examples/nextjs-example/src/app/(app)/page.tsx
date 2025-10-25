@@ -14,6 +14,8 @@ import {
   OPENROUTER_CODE_VERIFIER_KEY,
   OPENROUTER_KEY_LOCALSTORAGE_KEY,
 } from "@/lib/config";
+import { createSHA256CodeChallenge } from "@/lib/oauth";
+
 import { useApiKey } from "@/lib/hooks/use-api-key";
 import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
 import {
@@ -179,7 +181,7 @@ function DisconnectedPageContent() {
   useEffect(() => {
     const generateAuthUrl = async () => {
       // Generate PKCE code challenge
-      const challenge = await openRouter.oAuth.createSHA256CodeChallenge();
+      const challenge = await createSHA256CodeChallenge();
 
       // Store the code verifier for later use in the callback
       localStorage.setItem(
