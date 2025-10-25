@@ -13,11 +13,13 @@ import {
   OAUTH_CALLBACK_URL,
   OPENROUTER_CODE_VERIFIER_KEY,
   OPENROUTER_KEY_LOCALSTORAGE_KEY,
+  OPENROUTER_STATE_LOCALSTORAGE_KEY,
 } from "@/lib/config";
 import {
   createAuthorizationUrl,
   createSHA256CodeChallenge,
   exchangeAuthorizationCode,
+  generateOAuthState,
 } from "@/lib/oauth";
 
 import { useApiKey } from "@/lib/hooks/use-api-key";
@@ -29,28 +31,66 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
-export default function Page({ searchParams }: PageProps<"/">) {
+export default function Page() {
+  return (
+    <Suspense fallback={<InitializingPageContent />}>
+      <PageContent />
+    </Suspense>
+  );
+}
+
+function PageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const codeParam = searchParams?.get("code");
+  const stateParam = searchParams?.get("state");
+  const errorParam = searchParams?.get("error");
   const [connectionState, setConnectionState] = useState<
     "disconnected" | "connecting" | "connected" | "initializing" | "error"
   >("initializing");
   const [code, setCode] = useState<string>();
 
   useEffect(() => {
-    if (localStorage.getItem(OPENROUTER_KEY_LOCALSTORAGE_KEY))
-      return setConnectionState("connected");
+    const initialize = () => {
+      if (localStorage.getItem(OPENROUTER_KEY_LOCALSTORAGE_KEY)) {
+        setConnectionState("connected");
+        return;
+      }
 
-    searchParams.then((p) => {
-      if (p.code) {
+      if (codeParam) {
+        const storedState = localStorage.getItem(
+          OPENROUTER_STATE_LOCALSTORAGE_KEY,
+        );
+
+        if (!stateParam || !storedState || storedState !== stateParam) {
+          console.error("OAuth state mismatch detected.");
+          localStorage.removeItem(OPENROUTER_STATE_LOCALSTORAGE_KEY);
+          localStorage.removeItem(OPENROUTER_CODE_VERIFIER_KEY);
+          setConnectionState("error");
+          router.replace("/?error=state_mismatch");
+          return;
+        }
+
+        localStorage.removeItem(OPENROUTER_STATE_LOCALSTORAGE_KEY);
         setConnectionState("connecting");
-        setCode(p.code.toString());
-      } else if (p.error) {
+        setCode(codeParam);
+        router.replace("/");
+        return;
+      }
+
+      if (errorParam) {
         setConnectionState("error");
-      } else setConnectionState("disconnected");
-    });
-  }, [searchParams]);
+        return;
+      }
+
+      setConnectionState("disconnected");
+    };
+
+    initialize();
+  }, [codeParam, errorParam, router, stateParam]);
 
   switch (connectionState) {
     case "initializing":
@@ -114,6 +154,7 @@ function ConnectingPageContent(props: { code: string }) {
         router.push("/chat");
       } catch (error) {
         console.error("Failed to exchange authorization code:", error);
+        localStorage.removeItem(OPENROUTER_CODE_VERIFIER_KEY);
         router.push("/?error=exchange_failed");
       }
     };
@@ -183,18 +224,21 @@ function DisconnectedPageContent() {
     const generateAuthUrl = async () => {
       // Generate PKCE code challenge
       const challenge = await createSHA256CodeChallenge();
+      const state = generateOAuthState();
 
       // Store the code verifier for later use in the callback
       localStorage.setItem(
         OPENROUTER_CODE_VERIFIER_KEY,
         challenge.codeVerifier,
       );
+      localStorage.setItem(OPENROUTER_STATE_LOCALSTORAGE_KEY, state);
 
       // Generate authorization URL with PKCE
       const url = await createAuthorizationUrl({
         callbackUrl: OAUTH_CALLBACK_URL,
         codeChallenge: challenge.codeChallenge,
         codeChallengeMethod: "S256",
+        state,
       });
 
       setAuthUrl(url);

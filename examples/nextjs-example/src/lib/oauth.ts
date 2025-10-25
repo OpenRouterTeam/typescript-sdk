@@ -10,6 +10,7 @@ const CODE_VERIFIER_REGEX = /^[A-Za-z0-9\-._~]+$/;
 const CODE_VERIFIER_MIN_LENGTH = 43;
 const CODE_VERIFIER_MAX_LENGTH = 128;
 const DEFAULT_RANDOM_BYTE_LENGTH = 32;
+const DEFAULT_STATE_BYTE_LENGTH = 16;
 
 export type PkceChallenge = {
   codeChallenge: string;
@@ -130,6 +131,22 @@ export async function createSHA256CodeChallenge(
   const codeChallenge = arrayBufferToBase64Url(hash);
 
   return { codeVerifier, codeChallenge };
+}
+
+/**
+ * Generate an OAuth state token for CSRF protection.
+ */
+export function generateOAuthState(
+  randomByteLength: number = DEFAULT_STATE_BYTE_LENGTH,
+): string {
+  if (randomByteLength <= 0) {
+    throw new Error("randomByteLength must be a positive integer.");
+  }
+
+  assertWebCryptoSupport();
+  const randomBytes = new Uint8Array(randomByteLength);
+  crypto.getRandomValues(randomBytes);
+  return arrayBufferToBase64Url(randomBytes);
 }
 
 /**
