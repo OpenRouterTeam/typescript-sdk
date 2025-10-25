@@ -8,8 +8,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { OAUTH_CALLBACK_URL, OPENROUTER_CODE_VERIFIER_KEY } from "@/lib/config";
-import { useOpenRouter } from "@/lib/hooks/use-openrouter-client";
+import {
+  OAUTH_CALLBACK_URL,
+  OPENROUTER_CODE_VERIFIER_KEY,
+  OPENROUTER_STATE_LOCALSTORAGE_KEY,
+} from "@/lib/config";
+import {
+  createAuthorizationUrl,
+  createSHA256CodeChallenge,
+  generateOAuthState,
+} from "@/lib/oauth";
 import { ExternalLink } from "lucide-react";
 
 interface NotConnectedDialogProps {
@@ -17,19 +25,20 @@ interface NotConnectedDialogProps {
 }
 
 export function NotConnectedDialog({ open }: NotConnectedDialogProps) {
-  const { client } = useOpenRouter();
-
   const handleGotoOAuth = async () => {
     const { codeChallenge, codeVerifier } =
-      await client.oAuth.createSHA256CodeChallenge();
+      await createSHA256CodeChallenge();
+    const state = generateOAuthState();
 
-    const url = await client.oAuth.createAuthorizationUrl({
+    const url = await createAuthorizationUrl({
       codeChallenge,
       callbackUrl: OAUTH_CALLBACK_URL,
       codeChallengeMethod: "S256",
+      state,
     });
 
     localStorage.setItem(OPENROUTER_CODE_VERIFIER_KEY, codeVerifier);
+    localStorage.setItem(OPENROUTER_STATE_LOCALSTORAGE_KEY, state);
     window.location.href = url;
   };
 
