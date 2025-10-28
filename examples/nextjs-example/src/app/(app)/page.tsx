@@ -27,7 +27,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Page({ searchParams }: PageProps<"/">) {
+export default function Page({ searchParams }: { searchParams: Promise<{ code?: string; error?: string }> }) {
   const [connectionState, setConnectionState] = useState<
     "disconnected" | "connecting" | "connected" | "initializing" | "error"
   >("initializing");
