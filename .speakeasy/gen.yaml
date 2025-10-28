@@ -29,12 +29,13 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.1-beta.13
+  version: 0.0.1-beta.14
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
     devDependencies:
       '@types/node': ^22.13.12
+      dotenv: ^16.4.7
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON: {}

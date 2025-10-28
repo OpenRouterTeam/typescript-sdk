@@ -14,7 +14,7 @@ targets:
         sourceRevisionDigest: sha256:6dd11a2a3212f61a00c0e0b6309aaf39cc3d2575493aea2b54aafb0cf187d272
         sourceBlobDigest: sha256:e46f40a6a57e7eb1c21a40c388f46b9b7b36ed0dd9ea78d480d300d83ace2fe3
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:a32fc4de0e7ad3a96fb0b223d0f01b9bcfb2040e9b401cb72f3be56ed77e60fb
+        codeSamplesRevisionDigest: sha256:1d36752fa1859baae015ab744eb16369c7c2a9d9de92e60135d98860d2ab4741
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

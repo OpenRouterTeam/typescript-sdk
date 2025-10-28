@@ -92,7 +92,7 @@ function ConnectingPageContent(props: { code: string }) {
 
       try {
         // Exchange the authorization code for an API key using PKCE
-        const result = await openRouter.oAuth.exchangeAuthorizationCode({
+        const result = await openRouter.oAuth.exchangeAuthCodeForAPIKey({
           code: props.code,
           codeVerifier,
           codeChallengeMethod: "S256",

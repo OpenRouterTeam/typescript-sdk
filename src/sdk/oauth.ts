@@ -7,8 +7,61 @@ import { oAuthExchangeAuthCodeForAPIKey } from "../funcs/oAuthExchangeAuthCodeFo
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+// #region imports
+import {
+  CreateAuthorizationUrlRequest,
+  oAuthCreateAuthorizationUrl,
+} from "../funcs/oAuthCreateAuthorizationUrl.js";
+import {
+  CreateSHA256CodeChallengeResponse,
+  oAuthCreateSHA256CodeChallenge,
+} from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+// #endregion imports
 
 export class OAuth extends ClientSDK {
+  // #region sdk-class-body
+  /**
+   * Generate a OAuth2 authorization URL
+   *
+   * @remarks
+   * Generates a URL to redirect users to for authorizing your application. The
+   * URL includes the provided callback URL and, if applicable, the code
+   * challenge parameters for PKCE.
+   *
+   * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
+   */
+  async createAuthorizationUrl(
+    request: CreateAuthorizationUrlRequest,
+  ): Promise<string> {
+    const result = oAuthCreateAuthorizationUrl(this, request);
+
+    if (!result.ok) {
+      throw result.error;
+    }
+
+    return result.value;
+  }
+
+  /**
+   * Generate a SHA-256 code challenge for PKCE
+   *
+   * @remarks
+   * Generates a SHA-256 code challenge and corresponding code verifier for use
+   * in the PKCE extension to OAuth2. If no code verifier is provided, a random
+   * one will be generated according to RFC 7636 (32 random bytes, base64url
+   * encoded). If a code verifier is provided, it must be 43-128 characters and
+   * contain only unreserved characters [A-Za-z0-9-._~].
+   *
+   * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
+   * @see {@link https://datatracker.ietf.org/doc/html/rfc7636}
+   */
+  async createSHA256CodeChallenge(): Promise<
+    CreateSHA256CodeChallengeResponse
+  > {
+    return unwrapAsync(oAuthCreateSHA256CodeChallenge());
+  }
+  // #endregion sdk-class-body
+
   /**
    * Exchange authorization code for API key
    *
