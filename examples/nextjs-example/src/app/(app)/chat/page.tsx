@@ -99,7 +99,7 @@ export default function Page() {
     // Stream chunks into the latest message
     const chunks: string[] = [];
     for await (const chunk of result) {
-      chunks.push(chunk.data.choices[0].delta.content || "");
+      chunks.push(chunk.choices[0].delta.content || "");
       setMessages((prev) => {
         const newMessages = [...prev];
         const lastMessage = newMessages[newMessages.length - 1];
