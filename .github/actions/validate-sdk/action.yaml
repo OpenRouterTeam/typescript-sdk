@@ -12,11 +12,11 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: npm install
 
     - name: Build SDK
       shell: bash
-      run: pnpm run build
+      run: npm run build
 
     # - name: Typecheck tests directory
     #   shell: bash
@@ -25,7 +25,7 @@ runs:
     - name: Install examples dependencies
       shell: bash
       working-directory: examples
-      run: pnpm install
+      run: npm install
 
     - name: Typecheck examples root
       shell: bash
@@ -35,7 +35,7 @@ runs:
     - name: Install nextjs-example dependencies
       shell: bash
       working-directory: examples/nextjs-example
-      run: pnpm install
+      run: npm install
 
     - name: Typecheck nextjs-example
       shell: bash
@@ -44,4 +44,4 @@ runs:
 
     - name: Run tests
       shell: bash
-      run: pnpm vitest
+      run: npx vitest
