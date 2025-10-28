@@ -8,9 +8,7 @@ export type SseMessage<T> = {
   id?: string | undefined;
   retry?: number | undefined;
 };
-export class EventStream<T extends SseMessage<unknown>>
-  extends ReadableStream<T>
-{
+export class EventStream<T> extends ReadableStream<T> {
   constructor(
     responseBody: ReadableStream<Uint8Array>,
     parse: (x: SseMessage<string>) => IteratorResult<T, undefined>,
@@ -106,7 +104,7 @@ function findBoundary(
   }
   return null;
 }
-function parseMessage<T extends SseMessage<unknown>>(
+function parseMessage<T>(
   chunk: Uint8Array,
   parse: (x: SseMessage<string>) => IteratorResult<T, undefined>,
 ) {

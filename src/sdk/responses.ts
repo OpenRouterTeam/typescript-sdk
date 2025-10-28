@@ -23,7 +23,7 @@ export class Responses extends ClientSDK {
   async send(
     request: models.OpenResponsesRequest & { stream: true },
     options?: RequestOptions,
-  ): Promise<EventStream<operations.CreateApiAlphaResponsesResponseBody>>;
+  ): Promise<EventStream<models.OpenResponsesStreamEvent>>;
   async send(
     request: models.OpenResponsesRequest,
     options?: RequestOptions,

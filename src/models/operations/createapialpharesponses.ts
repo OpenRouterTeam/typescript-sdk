@@ -21,7 +21,7 @@ export type CreateApiAlphaResponsesResponseBody = {
 
 export type CreateApiAlphaResponsesResponse =
   | models.OpenResponsesNonStreamingResponse
-  | EventStream<CreateApiAlphaResponsesResponseBody>;
+  | EventStream<models.OpenResponsesStreamEvent>;
 
 /** @internal */
 export const CreateApiAlphaResponsesResponseBody$inboundSchema: z.ZodType<
@@ -102,7 +102,7 @@ export const CreateApiAlphaResponsesResponse$inboundSchema: z.ZodType<
         if (rawEvent.data === "[DONE]") return { done: true };
         return {
           value: z.lazy(() => CreateApiAlphaResponsesResponseBody$inboundSchema)
-            .parse(rawEvent),
+            .parse(rawEvent)?.data,
         };
       });
     }),

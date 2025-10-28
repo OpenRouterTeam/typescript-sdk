@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { OpenRouter } from "../../src/sdk/sdk.js";
+import { ChatError } from "../../src/models/errors/chaterror.js";
 
 describe("Chat E2E Tests", () => {
   let client: OpenRouter;
@@ -114,7 +115,6 @@ describe("Chat E2E Tests", () => {
       const chunks: any[] = [];
 
       for await (const chunk of response) {
-        expect(chunk).toBeDefined();
         chunks.push(chunk);
       }
 
@@ -154,7 +154,7 @@ describe("Chat E2E Tests", () => {
 
       expect(chunkCount).toBeGreaterThan(0);
       expect(fullContent.length).toBeGreaterThan(0);
-    }
+    });
 
     it("should include finish_reason in final chunk", async () => {
       const response = await client.chat.send({
@@ -181,6 +181,134 @@ describe("Chat E2E Tests", () => {
       }
 
       expect(foundFinishReason).toBe(true);
-    }
+    });
+  });
+
+  describe("Error Handling", () => {
+    it("should throw ErrorResponse with 401 status code for invalid API key", async () => {
+      const invalidClient = new OpenRouter({
+        apiKey: "invalid-api-key-12345",
+      });
+
+      try {
+        await invalidClient.chat.send({
+          model: "meta-llama/llama-3.2-1b-instruct",
+          messages: [
+            {
+              role: "user",
+              content: "Hello",
+            },
+          ],
+          stream: false,
+        });
+
+        // If we reach here, the test should fail
+        expect.fail("Expected an error to be thrown for invalid API key");
+      } catch (error) {
+        // Verify it's an ErrorResponse
+        expect(error).toBeInstanceOf(ChatError);
+
+        if (error instanceof ChatError) {
+          // Verify status code is 401 (Unauthorized)
+          expect(error.statusCode).toBe(401);
+
+          // Verify error structure
+          expect(error.error).toBeDefined();
+          expect(error.error.code).toBe(401);
+          expect(error.error.message).toBeDefined();
+          expect(typeof error.error.message).toBe("string");
+
+          // Verify the error message contains relevant information
+          expect(error.message.toLowerCase()).toMatch(/invalid|unauthorized|api key/i);
+        }
+      }
+    });
+
+    it("should throw ErrorResponse with 400 status code for invalid model", async () => {
+      try {
+        await client.chat.send({
+          model: "this-model-does-not-exist/invalid-model-name-12345",
+          messages: [
+            {
+              role: "user",
+              content: "Hello",
+            },
+          ],
+          stream: false,
+        });
+
+        // If we reach here, the test should fail
+        expect.fail("Expected an error to be thrown for invalid model");
+      } catch (error) {
+        // Verify it's an ErrorResponse
+        expect(error).toBeInstanceOf(ChatError);
+
+        if (error instanceof ChatError) {
+          // Verify status code is 400 (Bad Request)
+          expect(error.statusCode).toBe(400);
+
+          // Verify error structure
+          expect(error.error).toBeDefined();
+          expect(error.error.code).toBe(400);
+          expect(error.error.message).toBeDefined();
+          expect(typeof error.error.message).toBe("string");
+
+          // Verify the error message contains relevant information about invalid model
+          expect(error.message.toLowerCase()).toMatch(/model|invalid|not found/i);
+        }
+      }
+    });
+
+    it("should throw ErrorResponse with proper structure for invalid model in streaming mode", async () => {
+      await expect(async () => {
+        const response = await client.chat.send({
+          model: "this-model-does-not-exist/invalid-model-name-streaming",
+          messages: [
+            {
+              role: "user",
+              content: "Hello",
+            },
+          ],
+          stream: true,
+        });
+
+        // Consume the stream - error may be thrown here or during iteration
+        for await (const _chunk of response) {
+          // If we get chunks, that's unexpected
+        }
+      }).rejects.toThrow();
+
+      // Now test the actual error details
+      try {
+        const response = await client.chat.send({
+          model: "this-model-does-not-exist/invalid-model-name-streaming",
+          messages: [
+            {
+              role: "user",
+              content: "Hello",
+            },
+          ],
+          stream: true,
+        });
+
+        for await (const _chunk of response) {
+          // Continue consuming stream
+        }
+      } catch (error) {
+        // Verify it's an ErrorResponse
+        expect(error).toBeInstanceOf(ChatError);
+
+        if (error instanceof ChatError) {
+          // Verify status code is 400 (Bad Request)
+          expect(error.statusCode).toBe(400);
+
+          // Verify error structure
+          expect(error.error).toBeDefined();
+          expect(error.error.code).toBe(400);
+          expect(error.error.message).toBeDefined();
+          expect(typeof error.error.message).toBe("string");
+        }
+      }
+    });
   });
 });

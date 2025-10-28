@@ -11,7 +11,7 @@ import * as models from "../index.js";
 
 export type SendChatCompletionRequestResponse =
   | models.ChatResponse
-  | EventStream<models.ChatStreamingResponseChunk>;
+  | EventStream<models.ChatStreamingResponseChunkData>;
 
 /** @internal */
 export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
@@ -24,9 +24,8 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
       return new EventStream(stream, rawEvent => {
         if (rawEvent.data === "[DONE]") return { done: true };
         return {
-          value: models.ChatStreamingResponseChunk$inboundSchema.parse(
-            rawEvent,
-          ),
+          value: models.ChatStreamingResponseChunk$inboundSchema.parse(rawEvent)
+            ?.data,
         };
       });
     }),

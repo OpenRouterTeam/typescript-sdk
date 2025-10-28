@@ -7,16 +7,11 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetModelsRequest = {
   category?: string | undefined;
   supportedParameters?: string | undefined;
-  useRss?: string | undefined;
-  useRssChatLinks?: string | undefined;
 };
-
-export type GetModelsResponse = models.ModelsListResponse | string;
 
 /** @internal */
 export const GetModelsRequest$inboundSchema: z.ZodType<
@@ -25,13 +20,9 @@ export const GetModelsRequest$inboundSchema: z.ZodType<
 > = z.object({
   category: z.string().optional(),
   supported_parameters: z.string().optional(),
-  use_rss: z.string().optional(),
-  use_rss_chat_links: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "supported_parameters": "supportedParameters",
-    "use_rss": "useRss",
-    "use_rss_chat_links": "useRssChatLinks",
   });
 });
 
@@ -39,8 +30,6 @@ export const GetModelsRequest$inboundSchema: z.ZodType<
 export type GetModelsRequest$Outbound = {
   category?: string | undefined;
   supported_parameters?: string | undefined;
-  use_rss?: string | undefined;
-  use_rss_chat_links?: string | undefined;
 };
 
 /** @internal */
@@ -50,13 +39,9 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
 > = z.object({
   category: z.string().optional(),
   supportedParameters: z.string().optional(),
-  useRss: z.string().optional(),
-  useRssChatLinks: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     supportedParameters: "supported_parameters",
-    useRss: "use_rss",
-    useRssChatLinks: "use_rss_chat_links",
   });
 });
 
@@ -88,53 +73,5 @@ export function getModelsRequestFromJSON(
     jsonString,
     (x) => GetModelsRequest$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'GetModelsRequest' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetModelsResponse$inboundSchema: z.ZodType<
-  GetModelsResponse,
-  unknown
-> = z.union([models.ModelsListResponse$inboundSchema, z.string()]);
-
-/** @internal */
-export type GetModelsResponse$Outbound =
-  | models.ModelsListResponse$Outbound
-  | string;
-
-/** @internal */
-export const GetModelsResponse$outboundSchema: z.ZodType<
-  GetModelsResponse$Outbound,
-  GetModelsResponse
-> = z.union([models.ModelsListResponse$outboundSchema, z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsResponse$ {
-  /** @deprecated use `GetModelsResponse$inboundSchema` instead. */
-  export const inboundSchema = GetModelsResponse$inboundSchema;
-  /** @deprecated use `GetModelsResponse$outboundSchema` instead. */
-  export const outboundSchema = GetModelsResponse$outboundSchema;
-  /** @deprecated use `GetModelsResponse$Outbound` instead. */
-  export type Outbound = GetModelsResponse$Outbound;
-}
-
-export function getModelsResponseToJSON(
-  getModelsResponse: GetModelsResponse,
-): string {
-  return JSON.stringify(
-    GetModelsResponse$outboundSchema.parse(getModelsResponse),
-  );
-}
-
-export function getModelsResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsResponse' from JSON`,
   );
 }

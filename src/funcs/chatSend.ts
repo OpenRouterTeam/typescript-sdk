@@ -57,7 +57,7 @@ export function chatSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    EventStream<models.ChatStreamingResponseChunk>,
+    EventStream<models.ChatStreamingResponseChunkData>,
     | errors.ChatError
     | OpenRouterError
     | ResponseValidationError

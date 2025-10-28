@@ -6225,16 +6225,6 @@ paths:
           required: false
           name: supported_parameters
           in: query
-        - schema:
-            type: string
-          required: false
-          name: use_rss
-          in: query
-        - schema:
-            type: string
-          required: false
-          name: use_rss_chat_links
-          in: query
       responses:
         '200':
           description: Returns a list of models or RSS feed
@@ -6242,9 +6232,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelsListResponse'
-            application/rss+xml:
-              schema:
-                type: string
         '400':
           description: Bad Request - Invalid request parameters
           content:

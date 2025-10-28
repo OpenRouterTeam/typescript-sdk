@@ -1,0 +1,15 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Remove RSS+XML response schemas and related parameters
+  version: 0.0.0
+actions:
+  - target: $..responses.*.content["application/rss+xml"]
+    description: Remove application/rss+xml response schemas
+    remove: true
+  - target: $..parameters[?@.name == "use_rss"]
+    description: Remove use_rss parameter
+    remove: true
+  - target: $..parameters[?@.name == "use_rss_chat_links"]
+    description: Remove use_rss_chat_links parameter
+    remove: true

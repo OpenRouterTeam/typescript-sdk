@@ -69,7 +69,7 @@ export function betaResponsesSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    EventStream<operations.CreateApiAlphaResponsesResponseBody>,
+    EventStream<models.OpenResponsesStreamEvent>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError

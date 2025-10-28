@@ -22,8 +22,9 @@ describe("Models E2E Tests", () => {
       const response = await client.models.list();
 
       expect(response).toBeDefined();
-      expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toBeGreaterThan(0);
+
+      expect(Array.isArray(response.data)).toBe(true);
+      expect(response.data.length).toBeGreaterThan(0);
     });
 
     it("should return models with expected properties", async () => {
@@ -51,9 +52,9 @@ describe("Models E2E Tests", () => {
       const response = await client.models.count();
 
       expect(response).toBeDefined();
-      expect(response.count).toBeDefined();
-      expect(typeof response.count).toBe("number");
-      expect(response.count).toBeGreaterThan(0);
+      expect(response.data.count).toBeDefined();
+      expect(typeof response.data.count).toBe("number");
+      expect(response.data.count).toBeGreaterThan(0);
     });
   });
 });

@@ -21,6 +21,7 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -34,7 +35,7 @@ export function modelsList(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetModelsResponse,
+    models.ModelsListResponse,
     | errors.BadRequestResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -61,7 +62,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.GetModelsResponse,
+      models.ModelsListResponse,
       | errors.BadRequestResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -93,12 +94,10 @@ async function $do(
   const query = encodeFormQuery({
     "category": payload?.category,
     "supported_parameters": payload?.supported_parameters,
-    "use_rss": payload?.use_rss,
-    "use_rss_chat_links": payload?.use_rss_chat_links,
   });
 
   const headers = new Headers(compactMap({
-    Accept: "application/json;q=1, application/rss+xml;q=0",
+    Accept: "application/json",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -152,7 +151,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.GetModelsResponse,
+    models.ModelsListResponse,
     | errors.BadRequestResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -164,10 +163,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.GetModelsResponse$inboundSchema),
-    M.text(200, operations.GetModelsResponse$inboundSchema, {
-      ctype: "application/rss+xml",
-    }),
+    M.json(200, models.ModelsListResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),

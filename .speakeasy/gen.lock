@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 7f43f4106a0f75ade1a816e5e10b615f
+  docChecksum: c8741e08f825c713956bfbdd29d4fdaf
   docVersion: 1.0.0
   speakeasyVersion: 1.642.1
   generationVersion: 2.731.4
   releaseVersion: 0.0.1-beta.12
-  configChecksum: 36d34058cd13b897e88b223354a76018
+  configChecksum: e6c04301f8a6286cc4a63b775130ead9
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -315,7 +315,6 @@ generatedFiles:
   - docs/models/operations/getkeyrequest.md
   - docs/models/operations/getkeyresponse.md
   - docs/models/operations/getmodelsrequest.md
-  - docs/models/operations/getmodelsresponse.md
   - docs/models/operations/getparametersdata.md
   - docs/models/operations/getparametersrequest.md
   - docs/models/operations/getparametersresponse.md
@@ -1660,4 +1659,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.beta.responses.send()`: \n  *  `request` **Changed**\n  *  `response.status[default]` **Removed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.analytics.getUserActivity()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.credits.getCredits()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.credits.createCoinbaseCharge()`: \n  *  `request` **Changed** **Breaking** :warning:\n  *  `error` **Changed** **Breaking** :warning:\n* `openrouter.generations.getGeneration()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.models.count()`: \n  *  `response` **Changed** **Breaking** :warning:\n  *  `error.status[500]` **Added**\n* `openrouter.models.list()`: \n  *  `response` **Changed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.models.listForUser()`: \n  *  `response` **Changed** **Breaking** :warning:\n  *  `error` **Changed**\n* `openrouter.endpoints.list()`: \n  *  `response.data` **Changed**\n  *  `error` **Changed** **Breaking** :warning:\n* `openrouter.endpoints.listZdrEndpoints()`: \n  *  `response` **Changed** **Breaking** :warning:\n  *  `error.status[500]` **Added**\n* `openrouter.parameters.getParameters()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.providers.list()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.list()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.create()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.update()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.delete()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.get()`:  `error` **Changed** **Breaking** :warning:\n* `openrouter.apiKeys.getCurrentKeyMetadata()`:  `error` **Changed** **Breaking** :warning:\n"

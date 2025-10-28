@@ -16,6 +16,7 @@ import { OpenRouterCore } from "../core.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
@@ -25,7 +26,7 @@ import {
   TupleToPrefixes,
 } from "./_types.js";
 
-export type ModelsListQueryData = operations.GetModelsResponse;
+export type ModelsListQueryData = models.ModelsListResponse;
 
 /**
  * List all models and their properties
@@ -82,8 +83,6 @@ export function setModelsListData(
     parameters: {
       category?: string | undefined;
       supportedParameters?: string | undefined;
-      useRss?: string | undefined;
-      useRssChatLinks?: string | undefined;
     },
   ],
   data: ModelsListQueryData,
@@ -99,8 +98,6 @@ export function invalidateModelsList(
     [parameters: {
       category?: string | undefined;
       supportedParameters?: string | undefined;
-      useRss?: string | undefined;
-      useRssChatLinks?: string | undefined;
     }]
   >,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
@@ -133,8 +130,6 @@ export function buildModelsListQuery(
     queryKey: queryKeyModelsList({
       category: request?.category,
       supportedParameters: request?.supportedParameters,
-      useRss: request?.useRss,
-      useRssChatLinks: request?.useRssChatLinks,
     }),
     queryFn: async function modelsListQueryFn(
       ctx,
@@ -158,8 +153,6 @@ export function queryKeyModelsList(
   parameters: {
     category?: string | undefined;
     supportedParameters?: string | undefined;
-    useRss?: string | undefined;
-    useRssChatLinks?: string | undefined;
   },
 ): QueryKey {
   return ["@openrouter/sdk", "Models", "list", parameters];

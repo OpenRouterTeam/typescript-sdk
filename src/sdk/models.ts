@@ -29,7 +29,7 @@ export class Models extends ClientSDK {
   async list(
     request?: operations.GetModelsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.GetModelsResponse> {
+  ): Promise<models.ModelsListResponse> {
     return unwrapAsync(modelsList(
       this,
       request,

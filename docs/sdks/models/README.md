@@ -125,8 +125,6 @@ async function run() {
   const result = await openRouter.models.list({
     category: "<value>",
     supportedParameters: "<value>",
-    useRss: "<value>",
-    useRssChatLinks: "<value>",
   });
 
   console.log(result);
@@ -153,8 +151,6 @@ async function run() {
   const res = await modelsList(openRouter, {
     category: "<value>",
     supportedParameters: "<value>",
-    useRss: "<value>",
-    useRssChatLinks: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -206,7 +202,7 @@ import {
 
 ### Response
 
-**Promise\<[operations.GetModelsResponse](../../models/operations/getmodelsresponse.md)\>**
+**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
 
 ### Errors
 

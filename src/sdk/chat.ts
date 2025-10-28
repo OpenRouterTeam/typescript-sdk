@@ -23,7 +23,7 @@ export class Chat extends ClientSDK {
   async send(
     request: models.ChatGenerationParams & { stream: true },
     options?: RequestOptions,
-  ): Promise<EventStream<models.ChatStreamingResponseChunk>>;
+  ): Promise<EventStream<models.ChatStreamingResponseChunkData>>;
   async send(
     request: models.ChatGenerationParams,
     options?: RequestOptions,

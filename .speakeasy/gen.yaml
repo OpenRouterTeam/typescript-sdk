@@ -34,6 +34,7 @@ typescript:
   additionalDependencies:
     dependencies: {}
     devDependencies:
+      '@types/node': ^22.13.12
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON: {}
@@ -68,7 +69,7 @@ typescript:
   outputModelSuffix: output
   packageName: '@openrouter/sdk'
   responseFormat: flat
-  sseFlatResponse: false
+  sseFlatResponse: true
   templateVersion: v2
   usageSDKInitImports: []
   useIndexModules: true
