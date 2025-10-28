@@ -51,4 +51,4 @@ runs:
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-      run: npx vitest
+      run: npx vitest --run
