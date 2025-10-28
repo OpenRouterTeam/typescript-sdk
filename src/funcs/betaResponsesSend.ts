@@ -99,7 +99,7 @@ export function betaResponsesSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.CreateApiAlphaResponsesResponse,
+    operations.CreateResponsesResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -129,7 +129,7 @@ export function betaResponsesSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.CreateApiAlphaResponsesResponse,
+    operations.CreateResponsesResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -167,7 +167,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.CreateApiAlphaResponsesResponse,
+      operations.CreateResponsesResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
@@ -204,7 +204,7 @@ async function $do(
   const payload = parsed.value;
   const body = encodeJSON("body", payload, { explode: true });
 
-  const path = pathToFunc("/api/alpha/responses")();
+  const path = pathToFunc("/responses")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
@@ -218,7 +218,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "createApiAlphaResponses",
+    operationID: "createResponses",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -277,7 +277,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.CreateApiAlphaResponsesResponse,
+    operations.CreateResponsesResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -300,8 +300,8 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
-    M.sse(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
+    M.json(200, operations.CreateResponsesResponse$inboundSchema),
+    M.sse(200, operations.CreateResponsesResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),

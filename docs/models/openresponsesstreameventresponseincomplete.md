@@ -62,7 +62,7 @@ let value: OpenResponsesStreamEventResponseIncomplete = {
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "priority",

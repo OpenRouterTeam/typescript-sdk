@@ -76,7 +76,7 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: null,

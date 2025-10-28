@@ -12,6 +12,7 @@ import { Credits } from "./credits.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
 import { Models } from "./models.js";
+import { OAuth } from "./oauth.js";
 import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 
@@ -59,6 +60,11 @@ export class OpenRouter extends ClientSDK {
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
+  }
+
+  private _oAuth?: OAuth;
+  get oAuth(): OAuth {
+    return (this._oAuth ??= new OAuth(this._options));
   }
 
   private _chat?: Chat;
