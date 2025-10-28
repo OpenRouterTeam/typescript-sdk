@@ -103,7 +103,7 @@ export type ChatGenerationParams = {
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
-  stream?: boolean | null | undefined;
+  stream?: boolean | undefined;
   streamOptions?: ChatStreamOptions | null | undefined;
   temperature?: number | null | undefined;
   toolChoice?: any | undefined;
@@ -512,7 +512,7 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean()).optional(),
+  stream: z.boolean().default(false),
   stream_options: z.nullable(ChatStreamOptions$inboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
   tool_choice: z.any().optional(),
@@ -556,7 +556,7 @@ export type ChatGenerationParams$Outbound = {
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
-  stream?: boolean | null | undefined;
+  stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
   tool_choice?: any | undefined;
@@ -590,7 +590,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   ]).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean()).optional(),
+  stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
   toolChoice: z.any().optional(),

@@ -3,6 +3,7 @@
  */
 
 import { chatSend } from "../funcs/chatSend.js";
+import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -15,6 +16,18 @@ export class Chat extends ClientSDK {
    * @remarks
    * Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
    */
+  async send(
+    request: models.ChatGenerationParams & { stream?: false | undefined },
+    options?: RequestOptions,
+  ): Promise<models.ChatResponse>;
+  async send(
+    request: models.ChatGenerationParams & { stream: true },
+    options?: RequestOptions,
+  ): Promise<EventStream<models.ChatStreamingResponseChunk>>;
+  async send(
+    request: models.ChatGenerationParams,
+    options?: RequestOptions,
+  ): Promise<operations.SendChatCompletionRequestResponse>;
   async send(
     request: models.ChatGenerationParams,
     options?: RequestOptions,

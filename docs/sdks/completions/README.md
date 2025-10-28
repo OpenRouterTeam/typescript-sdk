@@ -42,7 +42,6 @@ async function run() {
       "<value 1>",
       "<value 2>",
     ],
-    stream: true,
     streamOptions: {
       includeUsage: false,
     },
@@ -100,7 +99,6 @@ async function run() {
       "<value 1>",
       "<value 2>",
     ],
-    stream: true,
     streamOptions: {
       includeUsage: false,
     },

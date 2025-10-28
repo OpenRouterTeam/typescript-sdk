@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: dab89c3598e1168d2904ae03d1491c6f
+  docChecksum: b497af800c6af3eee76358f6da69b969
   docVersion: 1.0.0
-  speakeasyVersion: 1.639.3
-  generationVersion: 2.730.5
-  releaseVersion: 0.0.1-beta.10
-  configChecksum: dae5299905f8d086c61e6f28c594ed39
+  speakeasyVersion: 1.642.1
+  generationVersion: 2.731.4
+  releaseVersion: 0.0.1-beta.11
+  configChecksum: e56adf14cadcee6e3695153442088909
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1213,7 +1213,7 @@ examples:
   createCompletions:
     speakeasy-default-create-completions:
       requestBody:
-        application/json: {"model": "Model T", "prompt": "<value>", "best_of": 163488, "echo": true, "frequency_penalty": 27.55, "logit_bias": {"key": 9064.25, "key1": 7698.06, "key2": 6481.8}, "logprobs": 482258, "max_tokens": null, "n": 629532, "presence_penalty": 5430.28, "seed": 853393, "stop": ["<value 1>", "<value 2>"], "stream": true, "stream_options": {"include_usage": false}, "suffix": "<value>", "temperature": null, "top_p": 5229.98, "user": "Anita53", "metadata": {"key": "<value>", "key1": "<value>"}, "response_format": {"type": "text"}}
+        application/json: {"model": "Model T", "prompt": "<value>", "best_of": 163488, "echo": true, "frequency_penalty": 27.55, "logit_bias": {"key": 9064.25, "key1": 7698.06, "key2": 6481.8}, "logprobs": 482258, "max_tokens": null, "n": 629532, "presence_penalty": 5430.28, "seed": 853393, "stop": ["<value 1>", "<value 2>"], "stream": false, "stream_options": {"include_usage": false}, "suffix": "<value>", "temperature": null, "top_p": 5229.98, "user": "Anita53", "metadata": {"key": "<value>", "key1": "<value>"}, "response_format": {"type": "text"}}
       responses:
         "200":
           application/json: {"id": "<id>", "object": "text_completion", "created": 2021.59, "model": "Jetta", "system_fingerprint": "<value>", "choices": [], "usage": {"prompt_tokens": 8379.72, "completion_tokens": 7782.47, "total_tokens": 4749.16}}
@@ -1387,4 +1387,4 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.beta.responses.send()`:  `response` **Changed** **Breaking** :warning:\n* `openrouter.parameters.getParameters()`: \n  *  `request.provider` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.chat.send()`: \n  *  `request.stream` **Changed** **Breaking** :warning:\n* `openrouter.completions.generate()`: \n  *  `request.stream` **Changed** **Breaking** :warning:\n"

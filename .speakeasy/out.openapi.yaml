@@ -3602,9 +3602,7 @@ components:
             - type: 'null'
         stream:
           default: false
-          anyOf:
-            - type: boolean
-            - type: 'null'
+          type: boolean
         stream_options:
           anyOf:
             - $ref: '#/components/schemas/ChatStreamOptions'
@@ -3948,9 +3946,8 @@ components:
                     type: string
             - type: 'null'
         stream:
-          anyOf:
-            - type: boolean
-            - type: 'null'
+          default: false
+          type: boolean
         stream_options:
           anyOf:
             - type: object

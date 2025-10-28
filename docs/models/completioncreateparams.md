@@ -21,31 +21,19 @@ let value: CompletionCreateParams = {
   presencePenalty: null,
   seed: 672410,
   stop: [],
-  stream: true,
   streamOptions: {
-    includeUsage: true,
+    includeUsage: null,
   },
   suffix: "<value>",
-  temperature: 6791.47,
-  topP: 7646.79,
-  user: "Martin.Greenfelder",
+  temperature: 4914.33,
+  topP: 8009.56,
+  user: "Marielle_Runolfsdottir82",
   metadata: {
     "key": "<value>",
     "key1": "<value>",
-    "key2": "<value>",
   },
   responseFormat: {
-    type: "json_schema",
-    jsonSchema: {
-      name: "<value>",
-      description: "circa or and",
-      schema: {
-        "key": "<value>",
-        "key1": "<value>",
-        "key2": "<value>",
-      },
-      strict: false,
-    },
+    type: "json_object",
   },
 };
 ```

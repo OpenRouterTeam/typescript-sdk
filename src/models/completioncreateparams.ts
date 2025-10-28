@@ -64,7 +64,7 @@ export type CompletionCreateParams = {
   presencePenalty?: number | null | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
-  stream?: boolean | null | undefined;
+  stream?: boolean | undefined;
   streamOptions?: StreamOptions | null | undefined;
   suffix?: string | null | undefined;
   temperature?: number | null | undefined;
@@ -519,7 +519,7 @@ export const CompletionCreateParams$inboundSchema: z.ZodType<
   presence_penalty: z.nullable(z.number()).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean()).optional(),
+  stream: z.boolean().default(false),
   stream_options: z.nullable(z.lazy(() => StreamOptions$inboundSchema))
     .optional(),
   suffix: z.nullable(z.string()).optional(),
@@ -565,7 +565,7 @@ export type CompletionCreateParams$Outbound = {
   presence_penalty?: number | null | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
-  stream?: boolean | null | undefined;
+  stream: boolean;
   stream_options?: StreamOptions$Outbound | null | undefined;
   suffix?: string | null | undefined;
   temperature?: number | null | undefined;
@@ -604,7 +604,7 @@ export const CompletionCreateParams$outboundSchema: z.ZodType<
   presencePenalty: z.nullable(z.number()).optional(),
   seed: z.nullable(z.number().int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.nullable(z.boolean()).optional(),
+  stream: z.boolean().default(false),
   streamOptions: z.nullable(z.lazy(() => StreamOptions$outboundSchema))
     .optional(),
   suffix: z.nullable(z.string()).optional(),

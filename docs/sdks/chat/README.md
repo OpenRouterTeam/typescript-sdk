@@ -50,7 +50,6 @@ async function run() {
     },
     seed: null,
     stop: [],
-    stream: false,
     streamOptions: {
       includeUsage: true,
     },
@@ -122,7 +121,6 @@ async function run() {
     },
     seed: null,
     stop: [],
-    stream: false,
     streamOptions: {
       includeUsage: true,
     },

@@ -4,6 +4,7 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
+import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -32,6 +33,60 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
  */
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams & { stream?: false },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    models.ChatResponse,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams & { stream: true },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    EventStream<models.ChatStreamingResponseChunk>,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function chatSend(
+  client: OpenRouterCore,
+  request: models.ChatGenerationParams,
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    operations.SendChatCompletionRequestResponse,
+    | errors.ChatError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
 export function chatSend(
   client: OpenRouterCore,
   request: models.ChatGenerationParams,
@@ -93,7 +148,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/json;q=1, text/event-stream;q=0",
+    Accept: request?.stream ? "text/event-stream" : "application/json",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

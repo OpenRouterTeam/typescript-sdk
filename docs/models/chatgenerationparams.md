@@ -40,29 +40,27 @@ let value: ChatGenerationParams = {
     "<value 1>",
     "<value 2>",
   ],
-  stream: true,
   streamOptions: {
-    includeUsage: false,
+    includeUsage: true,
   },
-  temperature: null,
+  temperature: 7887.12,
   toolChoice: "<value>",
   tools: [
     {
       type: "function",
       function: {
         name: "<value>",
-        description: "afore boohoo exempt inwardly phew",
+        description: "cutover eek excepting behind fall peter even",
         parameters: {
           "key": "<value>",
           "key1": "<value>",
-          "key2": "<value>",
         },
-        strict: false,
+        strict: true,
       },
     },
   ],
-  topP: 1098.47,
-  user: "Leone_Will",
+  topP: 2113.35,
+  user: "Lina_Beier39",
 };
 ```
 
