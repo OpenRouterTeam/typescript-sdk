@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.0.1-beta.12",
+  "version": "0.0.1-beta.14",
   "author": "OpenRouter",
   "type": "module",
   "main": "./esm/index.js",
@@ -72,6 +72,7 @@
     "@tanstack/react-query": "^5.61.4",
     "@types/node": "^22.13.12",
     "@types/react": "^18.3.12",
+    "dotenv": "^16.4.7",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",
     "typescript": "~5.8.3",
