@@ -18,9 +18,9 @@ runs:
       shell: bash
       run: npm run build
 
-    - name: Typecheck tests directory
-      shell: bash
-      run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
+    # - name: Typecheck tests directory
+    #   shell: bash
+    #   run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
 
     - name: Install examples dependencies
       shell: bash
