@@ -1,0 +1,10 @@
+name: PR Validation
+
+on:
+  pull_request:
+    paths-ignore:
+      - .speakeasy/in.openapi.yaml
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validation-checks.yaml
