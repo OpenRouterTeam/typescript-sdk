@@ -55,7 +55,6 @@ async function main() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -64,15 +63,15 @@ async function main() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -85,25 +84,25 @@ async function main() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -112,7 +111,7 @@ async function main() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -120,13 +119,13 @@ async function main() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   });
 
   console.log(result);

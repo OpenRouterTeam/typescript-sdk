@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: c8741e08f825c713956bfbdd29d4fdaf
+  docChecksum: a815b143d071828ce4ab7b3a743ec82c
   docVersion: 1.0.0
   speakeasyVersion: 1.642.1
   generationVersion: 2.731.4
-  releaseVersion: 0.0.1-beta.12
-  configChecksum: e6c04301f8a6286cc4a63b775130ead9
+  releaseVersion: 0.0.1-beta.13
+  configChecksum: 103616b55fcea3c23037d3b2e3489d25
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -294,8 +294,10 @@ generatedFiles:
   - docs/models/openresponseswebsearchtooltype.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
-  - docs/models/operations/createapialpharesponsesresponse.md
-  - docs/models/operations/createapialpharesponsesresponsebody.md
+  - docs/models/operations/createauthkeyscodecodechallengemethod.md
+  - docs/models/operations/createauthkeyscodedata.md
+  - docs/models/operations/createauthkeyscoderequest.md
+  - docs/models/operations/createauthkeyscoderesponse.md
   - docs/models/operations/createcoinbasechargedata.md
   - docs/models/operations/createcoinbasechargeresponse.md
   - docs/models/operations/createcoinbasechargesecurity.md
@@ -303,8 +305,13 @@ generatedFiles:
   - docs/models/operations/createkeyslimitreset.md
   - docs/models/operations/createkeysrequest.md
   - docs/models/operations/createkeysresponse.md
+  - docs/models/operations/createresponsesresponse.md
+  - docs/models/operations/createresponsesresponsebody.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
+  - docs/models/operations/exchangeauthcodeforapikeycodechallengemethod.md
+  - docs/models/operations/exchangeauthcodeforapikeyrequest.md
+  - docs/models/operations/exchangeauthcodeforapikeyresponse.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -489,6 +496,7 @@ generatedFiles:
   - docs/sdks/endpoints/README.md
   - docs/sdks/generations/README.md
   - docs/sdks/models/README.md
+  - docs/sdks/oauth/README.md
   - docs/sdks/parameters/README.md
   - docs/sdks/providers/README.md
   - docs/sdks/responses/README.md
@@ -518,6 +526,8 @@ generatedFiles:
   - src/funcs/modelsCount.ts
   - src/funcs/modelsList.ts
   - src/funcs/modelsListForUser.ts
+  - src/funcs/oAuthCreateAuthCode.ts
+  - src/funcs/oAuthExchangeAuthCodeForAPIKey.ts
   - src/funcs/parametersGetParameters.ts
   - src/funcs/providersList.ts
   - src/hooks/hooks.ts
@@ -651,10 +661,12 @@ generatedFiles:
   - src/models/openresponseswebsearchpreview20250311tool.ts
   - src/models/openresponseswebsearchpreviewtool.ts
   - src/models/openresponseswebsearchtool.ts
-  - src/models/operations/createapialpharesponses.ts
+  - src/models/operations/createauthkeyscode.ts
   - src/models/operations/createcoinbasecharge.ts
   - src/models/operations/createkeys.ts
+  - src/models/operations/createresponses.ts
   - src/models/operations/deletekeys.ts
+  - src/models/operations/exchangeauthcodeforapikey.ts
   - src/models/operations/getcredits.ts
   - src/models/operations/getcurrentkey.ts
   - src/models/operations/getgeneration.ts
@@ -742,6 +754,8 @@ generatedFiles:
   - src/react-query/modelsCount.ts
   - src/react-query/modelsList.ts
   - src/react-query/modelsListForUser.ts
+  - src/react-query/oAuthCreateAuthCode.ts
+  - src/react-query/oAuthExchangeAuthCodeForAPIKey.ts
   - src/react-query/parametersGetParameters.ts
   - src/react-query/providersList.ts
   - src/sdk/analytics.ts
@@ -754,6 +768,7 @@ generatedFiles:
   - src/sdk/generations.ts
   - src/sdk/index.ts
   - src/sdk/models.ts
+  - src/sdk/oauth.ts
   - src/sdk/parameters.ts
   - src/sdk/providers.ts
   - src/sdk/responses.ts
@@ -1658,4 +1673,63 @@ examples:
           application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+  createResponses:
+    speakeasy-default-create-responses:
+      requestBody:
+        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": {"type": "function", "name": "<value>"}, "parallel_tool_calls": true, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "high", "summary": "auto", "max_tokens": 8661.16, "enabled": true}, "max_output_tokens": null, "temperature": 0.7, "top_p": 0.9, "top_k": 193.77, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "include": ["reasoning.encrypted_content"], "background": true, "safety_identifier": "<value>", "store": true, "service_tier": "auto", "truncation": "auto", "stream": false, "provider": {"allow_fallbacks": null, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["OpenAI"], "only": ["OpenAI"], "ignore": null, "quantizations": ["fp16"], "sort": "price", "max_price": {"prompt": "1000", "completion": 1000, "image": 1000, "audio": "1000", "request": 1000}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 4870.55, "pdf": {"engine": "mistral-ocr"}}], "user": "Elmer_Yundt72"}
+      responses:
+        "200":
+          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Maria_Zboncak17", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 4793.03, "is_byok": false, "cost_details": {"upstream_inference_cost": 2597.96, "upstream_inference_input_cost": 1590.87, "upstream_inference_output_cost": 2325.17}}, "max_tool_calls": 1419.9, "top_logprobs": 1435.99, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "low", "summary": "concise"}, "service_tier": "priority", "store": true, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "402":
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits", "metadata": null}, "user_id": null}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later.", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "524":
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later.", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "529":
+          application/json: {"error": {"code": 529, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+  exchangeAuthCodeForAPIKey:
+    speakeasy-default-exchange-auth-code-for-API-key:
+      requestBody:
+        application/json: {"code": "auth_code_abc123def456", "code_verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", "code_challenge_method": "S256"}
+      responses:
+        "200":
+          application/json: {"key": "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", "user_id": "user_2yOPcMpKoQhcd4bVgSMlELRaIah"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": null}, "user_id": "<id>"}
+  createAuthKeysCode:
+    speakeasy-default-create-auth-keys-code:
+      requestBody:
+        application/json: {"callback_url": "https://myapp.com/auth/callback", "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "code_challenge_method": "S256", "limit": 100}
+      responses:
+        "200":
+          application/json: {"data": {"id": "auth_code_xyz789", "app_id": 12345, "created_at": "2025-08-24T10:30:00Z"}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
 examplesVersion: 1.0.2

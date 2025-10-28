@@ -123,7 +123,6 @@ async function run() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -132,15 +131,15 @@ async function run() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -153,25 +152,25 @@ async function run() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -180,7 +179,7 @@ async function run() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -188,13 +187,13 @@ async function run() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   });
 
   console.log(result);
@@ -262,7 +261,6 @@ async function run() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -271,15 +269,15 @@ async function run() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -292,25 +290,25 @@ async function run() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -319,7 +317,7 @@ async function run() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -327,13 +325,13 @@ async function run() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   });
 
   console.log(result);
@@ -419,6 +417,11 @@ run();
 * [list](docs/sdks/models/README.md#list) - List all models and their properties
 * [listForUser](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
 
+### [oAuth](docs/sdks/oauth/README.md)
+
+* [exchangeAuthCodeForAPIKey](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
+* [createAuthCode](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
+
 ### [parameters](docs/sdks/parameters/README.md)
 
 * [getParameters](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
@@ -463,6 +466,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`modelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
 - [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
 - [`modelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
+- [`oAuthCreateAuthCode`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
+- [`oAuthExchangeAuthCodeForAPIKey`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
 - [`parametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 - [`providersList`](docs/sdks/providers/README.md#list) - List all providers
 
@@ -509,6 +514,8 @@ To learn about this feature and how to get started, check
 - [`useModelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
 - [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
 - [`useModelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
+- [`useOAuthCreateAuthCodeMutation`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
+- [`useOAuthExchangeAuthCodeForAPIKeyMutation`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
 - [`useParametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
 - [`useProvidersList`](docs/sdks/providers/README.md#list) - List all providers
 
@@ -569,7 +576,6 @@ async function run() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -578,15 +584,15 @@ async function run() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -599,25 +605,25 @@ async function run() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -626,7 +632,7 @@ async function run() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -634,13 +640,13 @@ async function run() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   });
 
   console.log(result);
@@ -705,7 +711,6 @@ async function run() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -714,15 +719,15 @@ async function run() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -735,25 +740,25 @@ async function run() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -762,7 +767,7 @@ async function run() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -770,13 +775,13 @@ async function run() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   }, {
     retries: {
       strategy: "backoff",
@@ -853,7 +858,6 @@ async function run() {
     model: "anthropic/claude-4.5-sonnet-20250929",
     models: [
       "<value 1>",
-      "<value 2>",
     ],
     text: {
       format: {
@@ -862,15 +866,15 @@ async function run() {
       verbosity: "medium",
     },
     reasoning: {
-      effort: "minimal",
+      effort: "high",
       summary: "auto",
-      maxTokens: 5632.72,
+      maxTokens: 8661.16,
       enabled: true,
     },
-    maxOutputTokens: 5913.88,
+    maxOutputTokens: null,
     temperature: 0.7,
     topP: 0.9,
-    topK: 1770.66,
+    topK: 193.77,
     promptCacheKey: "<value>",
     previousResponseId: "<id>",
     prompt: {
@@ -883,25 +887,25 @@ async function run() {
       },
     },
     include: [
-      "file_search_call.results",
+      "reasoning.encrypted_content",
     ],
-    background: false,
+    background: true,
     safetyIdentifier: "<value>",
-    store: false,
+    store: true,
     serviceTier: "auto",
     truncation: "auto",
     provider: {
-      allowFallbacks: false,
-      requireParameters: false,
+      allowFallbacks: null,
+      requireParameters: true,
       dataCollection: "deny",
       zdr: true,
       order: [
         "OpenAI",
       ],
-      only: null,
-      ignore: [
+      only: [
         "OpenAI",
       ],
+      ignore: null,
       quantizations: [
         "fp16",
       ],
@@ -910,7 +914,7 @@ async function run() {
         prompt: "1000",
         completion: 1000,
         image: 1000,
-        audio: 1000,
+        audio: "1000",
         request: 1000,
       },
       experimental: {},
@@ -918,13 +922,13 @@ async function run() {
     plugins: [
       {
         id: "file-parser",
-        maxFiles: 6167.86,
+        maxFiles: 4870.55,
         pdf: {
-          engine: "native",
+          engine: "mistral-ocr",
         },
       },
     ],
-    user: "Minnie.Ratke",
+    user: "Elmer_Yundt72",
   });
 
   console.log(result);
@@ -997,7 +1001,6 @@ async function run() {
       model: "anthropic/claude-4.5-sonnet-20250929",
       models: [
         "<value 1>",
-        "<value 2>",
       ],
       text: {
         format: {
@@ -1006,15 +1009,15 @@ async function run() {
         verbosity: "medium",
       },
       reasoning: {
-        effort: "minimal",
+        effort: "high",
         summary: "auto",
-        maxTokens: 5632.72,
+        maxTokens: 8661.16,
         enabled: true,
       },
-      maxOutputTokens: 5913.88,
+      maxOutputTokens: null,
       temperature: 0.7,
       topP: 0.9,
-      topK: 1770.66,
+      topK: 193.77,
       promptCacheKey: "<value>",
       previousResponseId: "<id>",
       prompt: {
@@ -1027,25 +1030,25 @@ async function run() {
         },
       },
       include: [
-        "file_search_call.results",
+        "reasoning.encrypted_content",
       ],
-      background: false,
+      background: true,
       safetyIdentifier: "<value>",
-      store: false,
+      store: true,
       serviceTier: "auto",
       truncation: "auto",
       provider: {
-        allowFallbacks: false,
-        requireParameters: false,
+        allowFallbacks: null,
+        requireParameters: true,
         dataCollection: "deny",
         zdr: true,
         order: [
           "OpenAI",
         ],
-        only: null,
-        ignore: [
+        only: [
           "OpenAI",
         ],
+        ignore: null,
         quantizations: [
           "fp16",
         ],
@@ -1054,7 +1057,7 @@ async function run() {
           prompt: "1000",
           completion: 1000,
           image: 1000,
-          audio: 1000,
+          audio: "1000",
           request: 1000,
         },
         experimental: {},
@@ -1062,13 +1065,13 @@ async function run() {
       plugins: [
         {
           id: "file-parser",
-          maxFiles: 6167.86,
+          maxFiles: 4870.55,
           pdf: {
-            engine: "native",
+            engine: "mistral-ocr",
           },
         },
       ],
-      user: "Minnie.Ratke",
+      user: "Elmer_Yundt72",
     });
 
     console.log(result);
@@ -1111,20 +1114,20 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`UnauthorizedResponseError`](./src/models/errors/unauthorizedresponseerror.ts): Unauthorized - Authentication required or invalid credentials. Status code `401`. Applicable to 13 of 20 methods.*
-* [`TooManyRequestsResponseError`](./src/models/errors/toomanyrequestsresponseerror.ts): Too Many Requests - Rate limit exceeded. Status code `429`. Applicable to 8 of 20 methods.*
-* [`NotFoundResponseError`](./src/models/errors/notfoundresponseerror.ts): Not Found - Resource does not exist. Status code `404`. Applicable to 7 of 20 methods.*
-* [`BadRequestResponseError`](./src/models/errors/badrequestresponseerror.ts): Bad Request - Invalid request parameters or malformed input. Status code `400`. Applicable to 6 of 20 methods.*
-* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 20 methods.*
-* [`PaymentRequiredResponseError`](./src/models/errors/paymentrequiredresponseerror.ts): Payment Required - Insufficient credits or quota to complete request. Status code `402`. Applicable to 2 of 20 methods.*
-* [`ForbiddenResponseError`](./src/models/errors/forbiddenresponseerror.ts): Forbidden - Authentication successful but insufficient permissions. Status code `403`. Applicable to 2 of 20 methods.*
-* [`BadGatewayResponseError`](./src/models/errors/badgatewayresponseerror.ts): Bad Gateway - Provider/upstream API failure. Status code `502`. Applicable to 2 of 20 methods.*
-* [`EdgeNetworkTimeoutResponseError`](./src/models/errors/edgenetworktimeoutresponseerror.ts): Infrastructure Timeout - Provider request timed out at edge network. Status code `524`. Applicable to 2 of 20 methods.*
-* [`ProviderOverloadedResponseError`](./src/models/errors/provideroverloadedresponseerror.ts): Provider Overloaded - Provider is temporarily overloaded. Status code `529`. Applicable to 2 of 20 methods.*
-* [`RequestTimeoutResponseError`](./src/models/errors/requesttimeoutresponseerror.ts): Request Timeout - Operation exceeded time limit. Status code `408`. Applicable to 1 of 20 methods.*
-* [`PayloadTooLargeResponseError`](./src/models/errors/payloadtoolargeresponseerror.ts): Payload Too Large - Request payload exceeds size limits. Status code `413`. Applicable to 1 of 20 methods.*
-* [`UnprocessableEntityResponseError`](./src/models/errors/unprocessableentityresponseerror.ts): Unprocessable Entity - Semantic validation failure. Status code `422`. Applicable to 1 of 20 methods.*
-* [`ServiceUnavailableResponseError`](./src/models/errors/serviceunavailableresponseerror.ts): Service Unavailable - Service temporarily unavailable. Status code `503`. Applicable to 1 of 20 methods.*
+* [`UnauthorizedResponseError`](./src/models/errors/unauthorizedresponseerror.ts): Unauthorized - Authentication required or invalid credentials. Status code `401`. Applicable to 14 of 22 methods.*
+* [`BadRequestResponseError`](./src/models/errors/badrequestresponseerror.ts): Bad Request - Invalid request parameters or malformed input. Status code `400`. Applicable to 8 of 22 methods.*
+* [`TooManyRequestsResponseError`](./src/models/errors/toomanyrequestsresponseerror.ts): Too Many Requests - Rate limit exceeded. Status code `429`. Applicable to 8 of 22 methods.*
+* [`NotFoundResponseError`](./src/models/errors/notfoundresponseerror.ts): Not Found - Resource does not exist. Status code `404`. Applicable to 7 of 22 methods.*
+* [`ForbiddenResponseError`](./src/models/errors/forbiddenresponseerror.ts): Forbidden - Authentication successful but insufficient permissions. Status code `403`. Applicable to 3 of 22 methods.*
+* [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 22 methods.*
+* [`PaymentRequiredResponseError`](./src/models/errors/paymentrequiredresponseerror.ts): Payment Required - Insufficient credits or quota to complete request. Status code `402`. Applicable to 2 of 22 methods.*
+* [`BadGatewayResponseError`](./src/models/errors/badgatewayresponseerror.ts): Bad Gateway - Provider/upstream API failure. Status code `502`. Applicable to 2 of 22 methods.*
+* [`EdgeNetworkTimeoutResponseError`](./src/models/errors/edgenetworktimeoutresponseerror.ts): Infrastructure Timeout - Provider request timed out at edge network. Status code `524`. Applicable to 2 of 22 methods.*
+* [`ProviderOverloadedResponseError`](./src/models/errors/provideroverloadedresponseerror.ts): Provider Overloaded - Provider is temporarily overloaded. Status code `529`. Applicable to 2 of 22 methods.*
+* [`RequestTimeoutResponseError`](./src/models/errors/requesttimeoutresponseerror.ts): Request Timeout - Operation exceeded time limit. Status code `408`. Applicable to 1 of 22 methods.*
+* [`PayloadTooLargeResponseError`](./src/models/errors/payloadtoolargeresponseerror.ts): Payload Too Large - Request payload exceeds size limits. Status code `413`. Applicable to 1 of 22 methods.*
+* [`UnprocessableEntityResponseError`](./src/models/errors/unprocessableentityresponseerror.ts): Unprocessable Entity - Semantic validation failure. Status code `422`. Applicable to 1 of 22 methods.*
+* [`ServiceUnavailableResponseError`](./src/models/errors/serviceunavailableresponseerror.ts): Service Unavailable - Service temporarily unavailable. Status code `503`. Applicable to 1 of 22 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

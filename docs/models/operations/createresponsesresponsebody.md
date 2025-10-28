@@ -1,13 +1,13 @@
-# CreateApiAlphaResponsesResponseBody
+# CreateResponsesResponseBody
 
 Successful response
 
 ## Example Usage
 
 ```typescript
-import { CreateApiAlphaResponsesResponseBody } from "@openrouter/sdk/models/operations";
+import { CreateResponsesResponseBody } from "@openrouter/sdk/models/operations";
 
-let value: CreateApiAlphaResponsesResponseBody = {
+let value: CreateResponsesResponseBody = {
   data: {
     type: "response.created",
     response: {
@@ -17,7 +17,7 @@ let value: CreateApiAlphaResponsesResponseBody = {
       model: "gpt-4",
       status: "in_progress",
       output: [],
-      user: "Toby.Kunze16",
+      user: "Ramiro.Schowalter-Kshlerin",
       outputText: "<value>",
       promptCacheKey: "<value>",
       safetyIdentifier: "<value>",
@@ -34,15 +34,15 @@ let value: CreateApiAlphaResponsesResponseBody = {
         },
         totalTokens: 35,
         cost: 0.0012,
-        isByok: true,
+        isByok: false,
         costDetails: {
           upstreamInferenceCost: null,
           upstreamInferenceInputCost: 0.0008,
           upstreamInferenceOutputCost: 0.0004,
         },
       },
-      maxToolCalls: 5882.86,
-      topLogprobs: 6012.25,
+      maxToolCalls: 264.25,
+      topLogprobs: 2443.21,
       maxOutputTokens: null,
       temperature: null,
       topP: null,
@@ -60,15 +60,15 @@ let value: CreateApiAlphaResponsesResponseBody = {
           },
         },
       },
-      background: false,
+      background: null,
       previousResponseId: "<id>",
       reasoning: {
-        effort: "low",
+        effort: "medium",
         summary: "auto",
       },
-      serviceTier: "scale",
+      serviceTier: "default",
       store: true,
-      truncation: "auto",
+      truncation: "disabled",
       text: {
         format: {
           type: "text",

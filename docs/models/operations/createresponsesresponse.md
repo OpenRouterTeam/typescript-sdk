@@ -1,4 +1,4 @@
-# CreateApiAlphaResponsesResponse
+# CreateResponsesResponse
 
 
 ## Supported Types
@@ -73,7 +73,7 @@ const value: models.OpenResponsesNonStreamingResponse = {
   background: null,
   previousResponseId: "<id>",
   reasoning: {
-    effort: "low",
+    effort: "medium",
     summary: "auto",
   },
   serviceTier: "auto",
@@ -88,5 +88,5 @@ const value: models.OpenResponsesNonStreamingResponse = {
 };
 ```
 
-### `EventStream<operations.CreateApiAlphaResponsesResponseBody>`
+### `EventStream<operations.CreateResponsesResponseBody>`
 
