@@ -55,7 +55,10 @@
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "vitest run",
+    "test:e2e": "vitest run tests/e2e",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5",
