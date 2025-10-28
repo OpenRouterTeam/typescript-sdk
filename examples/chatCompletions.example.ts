@@ -66,14 +66,14 @@ async function streamingExample() {
     let fullContent = "";
 
     for await (const chunk of stream) {
-      if (chunk.data.choices && chunk.data.choices[0]?.delta?.content) {
-        const content = chunk.data.choices[0].delta.content;
+      if (chunk.choices && chunk.choices[0]?.delta?.content) {
+        const content = chunk.choices[0].delta.content;
         process.stdout.write(content);
         fullContent += content;
       }
 
-      if (chunk.data.usage) {
-        console.log("\n\nStream usage:", chunk.data.usage);
+      if (chunk.usage) {
+        console.log("\n\nStream usage:", chunk.usage);
       }
     }
 
