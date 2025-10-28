@@ -14,6 +14,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    // Don't override env vars - just let them pass through from the system
+    // The env object here will be merged with process.env
+    env: {
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+    },
     include: ["tests/**/*.test.ts"],
     hookTimeout: 30000,
     testTimeout: 30000,
