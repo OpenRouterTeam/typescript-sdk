@@ -30,6 +30,37 @@ jobs:
       - name: Run Speakeasy
         run: speakeasy run
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build SDK
+        run: npm run build
+
+      - name: Typecheck tests directory
+        run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 'tests/**/*.ts'
+
+      - name: Install examples dependencies
+        working-directory: examples
+        run: npm install
+
+      - name: Typecheck examples root
+        working-directory: examples
+        run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 '*.ts'
+
+      - name: Install nextjs-example dependencies
+        working-directory: examples/nextjs-example
+        run: npm install
+
+      - name: Typecheck nextjs-example
+        working-directory: examples/nextjs-example
+        run: npx tsc --noEmit
+
       - name: Commit changes
         run: |
           git config --global user.name 'github-actions[bot]'
