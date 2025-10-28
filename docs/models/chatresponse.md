@@ -23,8 +23,8 @@ let value: ChatResponse = {
       rejectedPredictionTokens: 2801.33,
     },
     promptTokensDetails: {
-      cachedTokens: 6205.53,
-      audioTokens: 1522.95,
+      cachedTokens: 1522.95,
+      audioTokens: 8854.61,
     },
   },
 };

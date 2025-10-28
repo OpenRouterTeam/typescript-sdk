@@ -20,6 +20,7 @@ The [OpenRouter](https://openrouter.ai/) SDK gives access to over 300 large lang
   * [Error Handling](#error-handling)
   * [Debugging](#debugging)
 * [Development](#development)
+  * [Running Tests](#running-tests)
   * [Maturity](#maturity)
   * [Contributions](#contributions)
 
@@ -1161,6 +1162,30 @@ You can also enable a default debug logger by setting an environment variable `O
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 
 # Development
+
+## Running Tests
+
+To run the test suite, you'll need to set up your environment with an OpenRouter API key.
+
+### Local Development
+
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` and add your OpenRouter API key:
+
+   ```bash
+   OPENROUTER_API_KEY=your_api_key_here
+   ```
+
+3. Run the tests:
+
+   ```bash
+   npx vitest
+   ```
 
 ## Maturity
 

@@ -8,3 +8,4 @@ on:
 jobs:
   validate:
     uses: ./.github/workflows/validation-checks.yaml
+    secrets: inherit

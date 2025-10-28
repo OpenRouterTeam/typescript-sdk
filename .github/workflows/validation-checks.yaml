@@ -12,3 +12,5 @@ jobs:
 
       - name: Validate SDK
         uses: ./.github/actions/validate-sdk
+        with:
+          openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}

@@ -1,6 +1,11 @@
 name: 'Validate SDK'
 description: 'Run build, typecheck, and tests for the SDK'
 
+inputs:
+  openrouter-api-key:
+    description: 'OpenRouter API key for running tests'
+    required: true
+
 runs:
   using: 'composite'
   steps:
@@ -44,4 +49,6 @@ runs:
 
     - name: Run tests
       shell: bash
-      run: npx vitest
+      env:
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+      run: npx vitest --run
