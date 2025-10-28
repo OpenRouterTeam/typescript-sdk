@@ -5586,7 +5586,7 @@ components:
       scheme: bearer
       description: API key as bearer token in Authorization header
 paths:
-  /api/alpha/responses:
+  /responses:
     post:
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
@@ -5694,7 +5694,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
-      operationId: createApiAlphaResponses
+      operationId: createResponses
   /activity:
     get:
       tags:
@@ -7656,6 +7656,180 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+  /auth/keys:
+    post:
+      operationId: exchangeAuthCodeForAPIKey
+      tags:
+        - OAuth
+      summary: Exchange authorization code for API key
+      description: Exchange an authorization code from the PKCE flow for a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: The authorization code received from the OAuth redirect
+                  example: auth_code_abc123def456
+                code_verifier:
+                  type: string
+                  description: The code verifier if code_challenge was used in the authorization request
+                  example: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+                code_challenge_method:
+                  type: string
+                  nullable: true
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+                  x-speakeasy-unknown-values: allow
+              required:
+                - code
+              example:
+                code: auth_code_abc123def456
+                code_verifier: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+                code_challenge_method: S256
+        required: true
+      responses:
+        '200':
+          description: Successfully exchanged code for an API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    description: The API key to use for OpenRouter requests
+                    example: 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
+                  user_id:
+                    type: string
+                    nullable: true
+                    description: User ID associated with the API key
+                    example: user_2yOPcMpKoQhcd4bVgSMlELRaIah
+                required:
+                  - key
+                  - user_id
+                example:
+                  key: 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
+                  user_id: user_2yOPcMpKoQhcd4bVgSMlELRaIah
+        '400':
+          description: Bad Request - Invalid request parameters or malformed input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '403':
+          description: Forbidden - Authentication successful but insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /auth/keys/code:
+    post:
+      x-speakeasy-name-override: createAuthCode
+      tags:
+        - OAuth
+      summary: Create authorization code
+      description: Create an authorization code for the PKCE flow to generate a user-controlled API key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callback_url:
+                  type: string
+                  format: uri
+                  description: >-
+                    The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
+                  example: https://myapp.com/auth/callback
+                code_challenge:
+                  type: string
+                  description: PKCE code challenge for enhanced security
+                  example: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+                code_challenge_method:
+                  type: string
+                  enum:
+                    - S256
+                    - plain
+                  description: The method used to generate the code challenge
+                  example: S256
+                  x-speakeasy-unknown-values: allow
+                limit:
+                  type: number
+                  description: Credit limit for the API key to be created
+                  example: 100
+              required:
+                - callback_url
+              example:
+                callback_url: https://myapp.com/auth/callback
+                code_challenge: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+                code_challenge_method: S256
+                limit: 100
+        required: true
+      responses:
+        '200':
+          description: Successfully created authorization code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The authorization code ID to use in the exchange request
+                        example: auth_code_xyz789
+                      app_id:
+                        type: number
+                        description: The application ID associated with this auth code
+                        example: 12345
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the auth code was created
+                        example: '2025-08-24T10:30:00Z'
+                    required:
+                      - id
+                      - app_id
+                      - created_at
+                    description: Auth code data
+                    example:
+                      id: auth_code_xyz789
+                      app_id: 12345
+                      created_at: '2025-08-24T10:30:00Z'
+                required:
+                  - data
+        '400':
+          description: Bad Request - Invalid request parameters or malformed input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+      operationId: createAuthKeysCode
   /chat/completions:
     post:
       summary: Create a chat completion
@@ -7785,6 +7959,8 @@ tags:
     description: Generation history endpoints
   - name: Models
     description: Model information endpoints
+  - name: OAuth
+    description: OAuth authentication endpoints
   - name: Parameters
     description: Parameters endpoints
   - name: Providers

@@ -74,7 +74,7 @@ let value: OpenResponsesNonStreamingResponse = {
   background: true,
   previousResponseId: "<id>",
   reasoning: {
-    effort: "low",
+    effort: "medium",
     summary: "auto",
   },
   serviceTier: "default",

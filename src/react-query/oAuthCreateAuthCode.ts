@@ -8,65 +8,65 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
+import { oAuthCreateAuthCode } from "../funcs/oAuthCreateAuthCode.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { MutationHookOptions } from "./_types.js";
 
-export type BetaResponsesSendMutationVariables = {
-  request: models.OpenResponsesRequest;
+export type OAuthCreateAuthCodeMutationVariables = {
+  request: operations.CreateAuthKeysCodeRequest;
   options?: RequestOptions;
 };
 
-export type BetaResponsesSendMutationData = operations.CreateResponsesResponse;
+export type OAuthCreateAuthCodeMutationData =
+  operations.CreateAuthKeysCodeResponse;
 
 /**
- * Create a response
+ * Create authorization code
  *
  * @remarks
- * Creates a streaming or non-streaming response using OpenResponses API format
+ * Create an authorization code for the PKCE flow to generate a user-controlled API key
  */
-export function useBetaResponsesSendMutation(
+export function useOAuthCreateAuthCodeMutation(
   options?: MutationHookOptions<
-    BetaResponsesSendMutationData,
+    OAuthCreateAuthCodeMutationData,
     Error,
-    BetaResponsesSendMutationVariables
+    OAuthCreateAuthCodeMutationVariables
   >,
 ): UseMutationResult<
-  BetaResponsesSendMutationData,
+  OAuthCreateAuthCodeMutationData,
   Error,
-  BetaResponsesSendMutationVariables
+  OAuthCreateAuthCodeMutationVariables
 > {
   const client = useOpenRouterContext();
   return useMutation({
-    ...buildBetaResponsesSendMutation(client, options),
+    ...buildOAuthCreateAuthCodeMutation(client, options),
     ...options,
   });
 }
 
-export function mutationKeyBetaResponsesSend(): MutationKey {
-  return ["@openrouter/sdk", "responses", "send"];
+export function mutationKeyOAuthCreateAuthCode(): MutationKey {
+  return ["@openrouter/sdk", "OAuth", "createAuthCode"];
 }
 
-export function buildBetaResponsesSendMutation(
+export function buildOAuthCreateAuthCodeMutation(
   client$: OpenRouterCore,
   hookOptions?: RequestOptions,
 ): {
   mutationKey: MutationKey;
   mutationFn: (
-    variables: BetaResponsesSendMutationVariables,
-  ) => Promise<BetaResponsesSendMutationData>;
+    variables: OAuthCreateAuthCodeMutationVariables,
+  ) => Promise<OAuthCreateAuthCodeMutationData>;
 } {
   return {
-    mutationKey: mutationKeyBetaResponsesSend(),
-    mutationFn: function betaResponsesSendMutationFn({
+    mutationKey: mutationKeyOAuthCreateAuthCode(),
+    mutationFn: function oAuthCreateAuthCodeMutationFn({
       request,
       options,
-    }): Promise<BetaResponsesSendMutationData> {
+    }): Promise<OAuthCreateAuthCodeMutationData> {
       const mergedOptions = {
         ...hookOptions,
         ...options,
@@ -79,7 +79,7 @@ export function buildBetaResponsesSendMutation(
           ),
         },
       };
-      return unwrapAsync(betaResponsesSend(
+      return unwrapAsync(oAuthCreateAuthCode(
         client$,
         request,
         mergedOptions,

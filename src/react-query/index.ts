@@ -23,5 +23,7 @@ export * from "./generationsGetGeneration.js";
 export * from "./modelsCount.js";
 export * from "./modelsList.js";
 export * from "./modelsListForUser.js";
+export * from "./oAuthCreateAuthCode.js";
+export * from "./oAuthExchangeAuthCodeForAPIKey.js";
 export * from "./parametersGetParameters.js";
 export * from "./providersList.js";

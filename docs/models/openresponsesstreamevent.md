@@ -63,7 +63,7 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "auto",
@@ -138,7 +138,7 @@ const value: models.OpenResponsesStreamEventResponseInProgress = {
     background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: null,
@@ -227,7 +227,7 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
     background: false,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "scale",
@@ -302,7 +302,7 @@ const value: models.OpenResponsesStreamEventResponseIncomplete = {
     background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "default",
@@ -377,7 +377,7 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
     background: null,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "priority",

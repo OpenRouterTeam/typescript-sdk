@@ -62,7 +62,7 @@ let value: OpenResponsesStreamEventResponseCreated = {
     background: true,
     previousResponseId: "<id>",
     reasoning: {
-      effort: "low",
+      effort: "medium",
       summary: "auto",
     },
     serviceTier: "scale",

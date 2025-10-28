@@ -27,11 +27,11 @@ export class Responses extends ClientSDK {
   async send(
     request: models.OpenResponsesRequest,
     options?: RequestOptions,
-  ): Promise<operations.CreateApiAlphaResponsesResponse>;
+  ): Promise<operations.CreateResponsesResponse>;
   async send(
     request: models.OpenResponsesRequest,
     options?: RequestOptions,
-  ): Promise<operations.CreateApiAlphaResponsesResponse> {
+  ): Promise<operations.CreateResponsesResponse> {
     return unwrapAsync(betaResponsesSend(
       this,
       request,

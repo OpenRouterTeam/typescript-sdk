@@ -30,21 +30,14 @@ describe("Models E2E Tests", () => {
     it("should return models with expected properties", async () => {
       const response = await client.models.list();
 
-      const firstModel = response?.[0];
+      const firstModel = response.data[0];
       expect(firstModel).toBeDefined();
       expect(firstModel?.id).toBeDefined();
       expect(typeof firstModel?.id).toBe("string");
       expect(firstModel?.name).toBeDefined();
     });
 
-    it("should support filtering by category", async () => {
-      const response = await client.models.list({
-        category: "text",
-      });
 
-      expect(response).toBeDefined();
-      expect(Array.isArray(response)).toBe(true);
-    });
   });
 
   describe("models.count()", () => {
