@@ -113,10 +113,12 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
 
 ## create
 
@@ -210,10 +212,13 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.BadRequestResponseError      | 400                                 | application/json                    |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
 
 ## update
 
@@ -315,10 +320,14 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.BadRequestResponseError      | 400                                 | application/json                    |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.NotFoundResponseError        | 404                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
 
 ## delete
 
@@ -406,10 +415,13 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.NotFoundResponseError        | 404                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
 
 ## get
 
@@ -508,10 +520,13 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.NotFoundResponseError        | 404                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
 
 ## getCurrentKeyMetadata
 
@@ -604,7 +619,8 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

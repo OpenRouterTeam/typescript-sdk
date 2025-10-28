@@ -3,27 +3,313 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  EndpointStatus,
+  EndpointStatus$inboundSchema,
+  EndpointStatus$outboundSchema,
+} from "./endpointstatus.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  Parameter,
+  Parameter$inboundSchema,
+  Parameter$outboundSchema,
+} from "./parameter.js";
+import {
+  ProviderName,
+  ProviderName$inboundSchema,
+  ProviderName$outboundSchema,
+} from "./providername.js";
+
+export type Pricing = {
+  /**
+   * A value in string or number format that is a large number
+   */
+  prompt?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  completion?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  request?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  image?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  imageOutput?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  audio?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  inputAudioCache?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  webSearch?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  internalReasoning?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  inputCacheRead?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  inputCacheWrite?: any | undefined;
+  discount?: number | undefined;
+};
+
+export const PublicEndpointQuantization = {
+  Int4: "int4",
+  Int8: "int8",
+  Fp4: "fp4",
+  Fp6: "fp6",
+  Fp8: "fp8",
+  Fp16: "fp16",
+  Bf16: "bf16",
+  Fp32: "fp32",
+  Unknown: "unknown",
+} as const;
+export type PublicEndpointQuantization = OpenEnum<
+  typeof PublicEndpointQuantization
+>;
 
 /**
  * Information about a specific model endpoint
  */
-export type PublicEndpoint = {};
+export type PublicEndpoint = {
+  name: string;
+  modelName: string;
+  contextLength: number;
+  pricing: Pricing;
+  providerName: ProviderName;
+  tag: string;
+  quantization: PublicEndpointQuantization | null;
+  maxCompletionTokens: number | null;
+  maxPromptTokens: number | null;
+  supportedParameters: Array<Parameter>;
+  status?: EndpointStatus | undefined;
+  uptimeLast30m: number | null;
+  supportsImplicitCaching: boolean;
+};
+
+/** @internal */
+export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
+  prompt: z.any().optional(),
+  completion: z.any().optional(),
+  request: z.any().optional(),
+  image: z.any().optional(),
+  image_output: z.any().optional(),
+  audio: z.any().optional(),
+  input_audio_cache: z.any().optional(),
+  web_search: z.any().optional(),
+  internal_reasoning: z.any().optional(),
+  input_cache_read: z.any().optional(),
+  input_cache_write: z.any().optional(),
+  discount: z.number().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "image_output": "imageOutput",
+    "input_audio_cache": "inputAudioCache",
+    "web_search": "webSearch",
+    "internal_reasoning": "internalReasoning",
+    "input_cache_read": "inputCacheRead",
+    "input_cache_write": "inputCacheWrite",
+  });
+});
+
+/** @internal */
+export type Pricing$Outbound = {
+  prompt?: any | undefined;
+  completion?: any | undefined;
+  request?: any | undefined;
+  image?: any | undefined;
+  image_output?: any | undefined;
+  audio?: any | undefined;
+  input_audio_cache?: any | undefined;
+  web_search?: any | undefined;
+  internal_reasoning?: any | undefined;
+  input_cache_read?: any | undefined;
+  input_cache_write?: any | undefined;
+  discount?: number | undefined;
+};
+
+/** @internal */
+export const Pricing$outboundSchema: z.ZodType<Pricing$Outbound, Pricing> = z
+  .object({
+    prompt: z.any().optional(),
+    completion: z.any().optional(),
+    request: z.any().optional(),
+    image: z.any().optional(),
+    imageOutput: z.any().optional(),
+    audio: z.any().optional(),
+    inputAudioCache: z.any().optional(),
+    webSearch: z.any().optional(),
+    internalReasoning: z.any().optional(),
+    inputCacheRead: z.any().optional(),
+    inputCacheWrite: z.any().optional(),
+    discount: z.number().optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      imageOutput: "image_output",
+      inputAudioCache: "input_audio_cache",
+      webSearch: "web_search",
+      internalReasoning: "internal_reasoning",
+      inputCacheRead: "input_cache_read",
+      inputCacheWrite: "input_cache_write",
+    });
+  });
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Pricing$ {
+  /** @deprecated use `Pricing$inboundSchema` instead. */
+  export const inboundSchema = Pricing$inboundSchema;
+  /** @deprecated use `Pricing$outboundSchema` instead. */
+  export const outboundSchema = Pricing$outboundSchema;
+  /** @deprecated use `Pricing$Outbound` instead. */
+  export type Outbound = Pricing$Outbound;
+}
+
+export function pricingToJSON(pricing: Pricing): string {
+  return JSON.stringify(Pricing$outboundSchema.parse(pricing));
+}
+
+export function pricingFromJSON(
+  jsonString: string,
+): SafeParseResult<Pricing, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Pricing$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Pricing' from JSON`,
+  );
+}
+
+/** @internal */
+export const PublicEndpointQuantization$inboundSchema: z.ZodType<
+  PublicEndpointQuantization,
+  unknown
+> = z
+  .union([
+    z.enum(PublicEndpointQuantization),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const PublicEndpointQuantization$outboundSchema: z.ZodType<
+  PublicEndpointQuantization,
+  PublicEndpointQuantization
+> = z.union([
+  z.enum(PublicEndpointQuantization),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PublicEndpointQuantization$ {
+  /** @deprecated use `PublicEndpointQuantization$inboundSchema` instead. */
+  export const inboundSchema = PublicEndpointQuantization$inboundSchema;
+  /** @deprecated use `PublicEndpointQuantization$outboundSchema` instead. */
+  export const outboundSchema = PublicEndpointQuantization$outboundSchema;
+}
 
 /** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
-  z.object({});
+  z.object({
+    name: z.string(),
+    model_name: z.string(),
+    context_length: z.number(),
+    pricing: z.lazy(() => Pricing$inboundSchema),
+    provider_name: ProviderName$inboundSchema,
+    tag: z.string(),
+    quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
+    max_completion_tokens: z.nullable(z.number()),
+    max_prompt_tokens: z.nullable(z.number()),
+    supported_parameters: z.array(Parameter$inboundSchema),
+    status: EndpointStatus$inboundSchema.optional(),
+    uptime_last_30m: z.nullable(z.number()),
+    supports_implicit_caching: z.boolean(),
+  }).transform((v) => {
+    return remap$(v, {
+      "model_name": "modelName",
+      "context_length": "contextLength",
+      "provider_name": "providerName",
+      "max_completion_tokens": "maxCompletionTokens",
+      "max_prompt_tokens": "maxPromptTokens",
+      "supported_parameters": "supportedParameters",
+      "uptime_last_30m": "uptimeLast30m",
+      "supports_implicit_caching": "supportsImplicitCaching",
+    });
+  });
 
 /** @internal */
-export type PublicEndpoint$Outbound = {};
+export type PublicEndpoint$Outbound = {
+  name: string;
+  model_name: string;
+  context_length: number;
+  pricing: Pricing$Outbound;
+  provider_name: string;
+  tag: string;
+  quantization: string | null;
+  max_completion_tokens: number | null;
+  max_prompt_tokens: number | null;
+  supported_parameters: Array<string>;
+  status?: number | undefined;
+  uptime_last_30m: number | null;
+  supports_implicit_caching: boolean;
+};
 
 /** @internal */
 export const PublicEndpoint$outboundSchema: z.ZodType<
   PublicEndpoint$Outbound,
   PublicEndpoint
-> = z.object({});
+> = z.object({
+  name: z.string(),
+  modelName: z.string(),
+  contextLength: z.number(),
+  pricing: z.lazy(() => Pricing$outboundSchema),
+  providerName: ProviderName$outboundSchema,
+  tag: z.string(),
+  quantization: z.nullable(PublicEndpointQuantization$outboundSchema),
+  maxCompletionTokens: z.nullable(z.number()),
+  maxPromptTokens: z.nullable(z.number()),
+  supportedParameters: z.array(Parameter$outboundSchema),
+  status: EndpointStatus$outboundSchema.optional(),
+  uptimeLast30m: z.nullable(z.number()),
+  supportsImplicitCaching: z.boolean(),
+}).transform((v) => {
+  return remap$(v, {
+    modelName: "model_name",
+    contextLength: "context_length",
+    providerName: "provider_name",
+    maxCompletionTokens: "max_completion_tokens",
+    maxPromptTokens: "max_prompt_tokens",
+    supportedParameters: "supported_parameters",
+    uptimeLast30m: "uptime_last_30m",
+    supportsImplicitCaching: "supports_implicit_caching",
+  });
+});
 
 /**
  * @internal

@@ -14,10 +14,10 @@ let value: ChatStreamingResponseChunk = {
           role: "assistant",
           content: "<value>",
           reasoning: "<value>",
-          refusal: null,
+          refusal: "<value>",
           toolCalls: [
             {
-              index: 5916.2,
+              index: 932.78,
               id: "<id>",
               function: {
                 name: "<value>",
@@ -26,8 +26,8 @@ let value: ChatStreamingResponseChunk = {
             },
           ],
         },
-        finishReason: "content_filter",
-        index: 564.35,
+        finishReason: "tool_calls",
+        index: 8525.14,
         logprobs: {
           content: [
             {
@@ -55,13 +55,13 @@ let value: ChatStreamingResponseChunk = {
         },
       },
     ],
-    created: 9352.59,
-    model: "Ranchero",
+    created: 9152.94,
+    model: "Model 3",
     object: "chat.completion.chunk",
-    systemFingerprint: "<value>",
+    systemFingerprint: null,
     error: {
       message: "<value>",
-      code: 4598.98,
+      code: 4181.38,
     },
     usage: {
       completionTokens: 6813.22,
@@ -84,6 +84,6 @@ let value: ChatStreamingResponseChunk = {
 
 ## Fields
 
-| Field                            | Type                             | Required                         | Description                      |
-| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
-| `data`                           | [models.Data](../models/data.md) | :heavy_check_mark:               | N/A                              |
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `data`                                                                               | [models.ChatStreamingResponseChunkData](../models/chatstreamingresponsechunkdata.md) | :heavy_check_mark:                                                                   | N/A                                                                                  |

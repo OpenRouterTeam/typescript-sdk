@@ -111,7 +111,9 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.NotFoundResponseError       | 404                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

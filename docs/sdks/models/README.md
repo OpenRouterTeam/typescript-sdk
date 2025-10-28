@@ -98,13 +98,14 @@ import {
 
 ### Response
 
-**Promise\<[operations.ListModelsCountResponse](../../models/operations/listmodelscountresponse.md)\>**
+**Promise\<[models.ModelsCountResponse](../../models/modelscountresponse.md)\>**
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
 ## list
 
@@ -209,9 +210,11 @@ import {
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
 ## listForUser
 
@@ -301,10 +304,12 @@ import {
 
 ### Response
 
-**Promise\<[operations.ListModelsUserResponse](../../models/operations/listmodelsuserresponse.md)\>**
+**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

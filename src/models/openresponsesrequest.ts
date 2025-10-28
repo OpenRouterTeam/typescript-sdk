@@ -3,29 +3,1472 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import {
+  catchUnrecognizedEnum,
+  ClosedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  OpenAIResponsesIncludable,
+  OpenAIResponsesIncludable$inboundSchema,
+  OpenAIResponsesIncludable$outboundSchema,
+} from "./openairesponsesincludable.js";
+import {
+  OpenAIResponsesPrompt,
+  OpenAIResponsesPrompt$inboundSchema,
+  OpenAIResponsesPrompt$Outbound,
+  OpenAIResponsesPrompt$outboundSchema,
+} from "./openairesponsesprompt.js";
+import {
+  OpenAIResponsesToolChoiceUnion,
+  OpenAIResponsesToolChoiceUnion$inboundSchema,
+  OpenAIResponsesToolChoiceUnion$Outbound,
+  OpenAIResponsesToolChoiceUnion$outboundSchema,
+} from "./openairesponsestoolchoiceunion.js";
+import {
+  OpenResponsesInput,
+  OpenResponsesInput$inboundSchema,
+  OpenResponsesInput$Outbound,
+  OpenResponsesInput$outboundSchema,
+} from "./openresponsesinput.js";
+import {
+  OpenResponsesReasoningConfig,
+  OpenResponsesReasoningConfig$inboundSchema,
+  OpenResponsesReasoningConfig$Outbound,
+  OpenResponsesReasoningConfig$outboundSchema,
+} from "./openresponsesreasoningconfig.js";
+import {
+  OpenResponsesResponseText,
+  OpenResponsesResponseText$inboundSchema,
+  OpenResponsesResponseText$Outbound,
+  OpenResponsesResponseText$outboundSchema,
+} from "./openresponsesresponsetext.js";
+import {
+  OpenResponsesWebSearch20250826Tool,
+  OpenResponsesWebSearch20250826Tool$inboundSchema,
+  OpenResponsesWebSearch20250826Tool$Outbound,
+  OpenResponsesWebSearch20250826Tool$outboundSchema,
+} from "./openresponseswebsearch20250826tool.js";
+import {
+  OpenResponsesWebSearchPreview20250311Tool,
+  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$Outbound,
+  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+} from "./openresponseswebsearchpreview20250311tool.js";
+import {
+  OpenResponsesWebSearchPreviewTool,
+  OpenResponsesWebSearchPreviewTool$inboundSchema,
+  OpenResponsesWebSearchPreviewTool$Outbound,
+  OpenResponsesWebSearchPreviewTool$outboundSchema,
+} from "./openresponseswebsearchpreviewtool.js";
+import {
+  OpenResponsesWebSearchTool,
+  OpenResponsesWebSearchTool$inboundSchema,
+  OpenResponsesWebSearchTool$Outbound,
+  OpenResponsesWebSearchTool$outboundSchema,
+} from "./openresponseswebsearchtool.js";
+import {
+  ProviderName,
+  ProviderName$inboundSchema,
+  ProviderName$outboundSchema,
+} from "./providername.js";
+import {
+  Quantization,
+  Quantization$inboundSchema,
+  Quantization$outboundSchema,
+} from "./quantization.js";
+
+export const OpenResponsesRequestType = {
+  Function: "function",
+} as const;
+export type OpenResponsesRequestType = ClosedEnum<
+  typeof OpenResponsesRequestType
+>;
+
+/**
+ * Function tool definition
+ */
+export type OpenResponsesRequestToolFunction = {
+  type: OpenResponsesRequestType;
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
+};
+
+export type OpenResponsesRequestToolUnion =
+  | OpenResponsesRequestToolFunction
+  | OpenResponsesWebSearchPreviewTool
+  | OpenResponsesWebSearchPreview20250311Tool
+  | OpenResponsesWebSearchTool
+  | OpenResponsesWebSearch20250826Tool;
+
+export const ServiceTier = {
+  Auto: "auto",
+  Default: "default",
+  Flex: "flex",
+  Priority: "priority",
+  Scale: "scale",
+} as const;
+export type ServiceTier = OpenEnum<typeof ServiceTier>;
+
+export const Truncation = {
+  Auto: "auto",
+  Disabled: "disabled",
+} as const;
+export type Truncation = OpenEnum<typeof Truncation>;
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ * - deny: use only providers which do not collect user data.
+ */
+export const DataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ * - deny: use only providers which do not collect user data.
+ */
+export type DataCollection = OpenEnum<typeof DataCollection>;
+
+export type Order = ProviderName | string;
+
+export type Only = ProviderName | string;
+
+export type Ignore = ProviderName | string;
+
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export const Sort = {
+  Price: "price",
+  Throughput: "throughput",
+  Latency: "latency",
+} as const;
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type Sort = OpenEnum<typeof Sort>;
+
+/**
+ * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+ */
+export type MaxPrice = {
+  /**
+   * A value in string or number format that is a large number
+   */
+  prompt?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  completion?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  image?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  audio?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  request?: any | undefined;
+};
+
+export type Experimental = {};
+
+/**
+ * When multiple model providers are available, optionally indicate your routing preference.
+ */
+export type Provider = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
+  /**
+   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+   */
+  requireParameters?: boolean | null | undefined;
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers which store user data non-transiently and may train on it
+   * - deny: use only providers which do not collect user data.
+   */
+  dataCollection?: DataCollection | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * A list of quantization levels to filter the provider by.
+   */
+  quantizations?: Array<Quantization> | null | undefined;
+  /**
+   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+   */
+  sort?: Sort | null | undefined;
+  /**
+   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+   */
+  maxPrice?: MaxPrice | undefined;
+  experimental?: Experimental | null | undefined;
+};
+
+export const IdFileParser = {
+  FileParser: "file-parser",
+} as const;
+export type IdFileParser = ClosedEnum<typeof IdFileParser>;
+
+export const PdfEngine = {
+  MistralOcr: "mistral-ocr",
+  PdfText: "pdf-text",
+  Native: "native",
+} as const;
+export type PdfEngine = OpenEnum<typeof PdfEngine>;
+
+export type Pdf = {
+  engine?: PdfEngine | undefined;
+};
+
+export type PluginFileParser = {
+  id: IdFileParser;
+  maxFiles?: number | undefined;
+  pdf?: Pdf | undefined;
+};
+
+export const IdWeb = {
+  Web: "web",
+} as const;
+export type IdWeb = ClosedEnum<typeof IdWeb>;
+
+export const Engine = {
+  Native: "native",
+  Exa: "exa",
+} as const;
+export type Engine = OpenEnum<typeof Engine>;
+
+export type PluginWeb = {
+  id: IdWeb;
+  maxResults?: number | undefined;
+  searchPrompt?: string | undefined;
+  engine?: Engine | undefined;
+};
+
+export const IdModeration = {
+  Moderation: "moderation",
+} as const;
+export type IdModeration = ClosedEnum<typeof IdModeration>;
+
+export type PluginModeration = {
+  id: IdModeration;
+};
+
+export type Plugin = PluginModeration | PluginWeb | PluginFileParser;
 
 /**
  * Request schema for Responses endpoint
  */
-export type OpenResponsesRequest = {};
+export type OpenResponsesRequest = {
+  /**
+   * Input for a response request - can be a string or array of items
+   */
+  input?: OpenResponsesInput | undefined;
+  instructions?: string | null | undefined;
+  /**
+   * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
+   */
+  metadata?: { [k: string]: string } | null | undefined;
+  tools?:
+    | Array<
+      | OpenResponsesRequestToolFunction
+      | OpenResponsesWebSearchPreviewTool
+      | OpenResponsesWebSearchPreview20250311Tool
+      | OpenResponsesWebSearchTool
+      | OpenResponsesWebSearch20250826Tool
+    >
+    | undefined;
+  toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
+  parallelToolCalls?: boolean | null | undefined;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
+  /**
+   * Text output configuration including format and verbosity
+   */
+  text?: OpenResponsesResponseText | undefined;
+  /**
+   * Configuration for reasoning mode in the response
+   */
+  reasoning?: OpenResponsesReasoningConfig | null | undefined;
+  maxOutputTokens?: number | null | undefined;
+  temperature?: number | null | undefined;
+  topP?: number | null | undefined;
+  topK?: number | undefined;
+  promptCacheKey?: string | null | undefined;
+  previousResponseId?: string | null | undefined;
+  prompt?: OpenAIResponsesPrompt | null | undefined;
+  include?: Array<OpenAIResponsesIncludable> | null | undefined;
+  background?: boolean | null | undefined;
+  safetyIdentifier?: string | null | undefined;
+  store?: boolean | null | undefined;
+  serviceTier?: ServiceTier | null | undefined;
+  truncation?: Truncation | null | undefined;
+  stream?: boolean | undefined;
+  /**
+   * When multiple model providers are available, optionally indicate your routing preference.
+   */
+  provider?: Provider | null | undefined;
+  /**
+   * Plugins you want to enable for this request, including their settings.
+   */
+  plugins?: Array<PluginModeration | PluginWeb | PluginFileParser> | undefined;
+  /**
+   * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
+   */
+  user?: string | undefined;
+};
+
+/** @internal */
+export const OpenResponsesRequestType$inboundSchema: z.ZodEnum<
+  typeof OpenResponsesRequestType
+> = z.enum(OpenResponsesRequestType);
+
+/** @internal */
+export const OpenResponsesRequestType$outboundSchema: z.ZodEnum<
+  typeof OpenResponsesRequestType
+> = OpenResponsesRequestType$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenResponsesRequestType$ {
+  /** @deprecated use `OpenResponsesRequestType$inboundSchema` instead. */
+  export const inboundSchema = OpenResponsesRequestType$inboundSchema;
+  /** @deprecated use `OpenResponsesRequestType$outboundSchema` instead. */
+  export const outboundSchema = OpenResponsesRequestType$outboundSchema;
+}
+
+/** @internal */
+export const OpenResponsesRequestToolFunction$inboundSchema: z.ZodType<
+  OpenResponsesRequestToolFunction,
+  unknown
+> = z.object({
+  type: OpenResponsesRequestType$inboundSchema,
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
+  strict: z.nullable(z.boolean()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+});
+
+/** @internal */
+export type OpenResponsesRequestToolFunction$Outbound = {
+  type: string;
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
+};
+
+/** @internal */
+export const OpenResponsesRequestToolFunction$outboundSchema: z.ZodType<
+  OpenResponsesRequestToolFunction$Outbound,
+  OpenResponsesRequestToolFunction
+> = z.object({
+  type: OpenResponsesRequestType$outboundSchema,
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
+  strict: z.nullable(z.boolean()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenResponsesRequestToolFunction$ {
+  /** @deprecated use `OpenResponsesRequestToolFunction$inboundSchema` instead. */
+  export const inboundSchema = OpenResponsesRequestToolFunction$inboundSchema;
+  /** @deprecated use `OpenResponsesRequestToolFunction$outboundSchema` instead. */
+  export const outboundSchema = OpenResponsesRequestToolFunction$outboundSchema;
+  /** @deprecated use `OpenResponsesRequestToolFunction$Outbound` instead. */
+  export type Outbound = OpenResponsesRequestToolFunction$Outbound;
+}
+
+export function openResponsesRequestToolFunctionToJSON(
+  openResponsesRequestToolFunction: OpenResponsesRequestToolFunction,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestToolFunction$outboundSchema.parse(
+      openResponsesRequestToolFunction,
+    ),
+  );
+}
+
+export function openResponsesRequestToolFunctionFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesRequestToolFunction, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesRequestToolFunction$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesRequestToolFunction' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenResponsesRequestToolUnion$inboundSchema: z.ZodType<
+  OpenResponsesRequestToolUnion,
+  unknown
+> = z.union([
+  z.lazy(() => OpenResponsesRequestToolFunction$inboundSchema),
+  OpenResponsesWebSearchPreviewTool$inboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+  OpenResponsesWebSearchTool$inboundSchema,
+  OpenResponsesWebSearch20250826Tool$inboundSchema,
+]);
+
+/** @internal */
+export type OpenResponsesRequestToolUnion$Outbound =
+  | OpenResponsesRequestToolFunction$Outbound
+  | OpenResponsesWebSearchPreviewTool$Outbound
+  | OpenResponsesWebSearchPreview20250311Tool$Outbound
+  | OpenResponsesWebSearchTool$Outbound
+  | OpenResponsesWebSearch20250826Tool$Outbound;
+
+/** @internal */
+export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
+  OpenResponsesRequestToolUnion$Outbound,
+  OpenResponsesRequestToolUnion
+> = z.union([
+  z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
+  OpenResponsesWebSearchPreviewTool$outboundSchema,
+  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+  OpenResponsesWebSearchTool$outboundSchema,
+  OpenResponsesWebSearch20250826Tool$outboundSchema,
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace OpenResponsesRequestToolUnion$ {
+  /** @deprecated use `OpenResponsesRequestToolUnion$inboundSchema` instead. */
+  export const inboundSchema = OpenResponsesRequestToolUnion$inboundSchema;
+  /** @deprecated use `OpenResponsesRequestToolUnion$outboundSchema` instead. */
+  export const outboundSchema = OpenResponsesRequestToolUnion$outboundSchema;
+  /** @deprecated use `OpenResponsesRequestToolUnion$Outbound` instead. */
+  export type Outbound = OpenResponsesRequestToolUnion$Outbound;
+}
+
+export function openResponsesRequestToolUnionToJSON(
+  openResponsesRequestToolUnion: OpenResponsesRequestToolUnion,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestToolUnion$outboundSchema.parse(
+      openResponsesRequestToolUnion,
+    ),
+  );
+}
+
+export function openResponsesRequestToolUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesRequestToolUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesRequestToolUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesRequestToolUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const ServiceTier$inboundSchema: z.ZodType<ServiceTier, unknown> = z
+  .union([
+    z.enum(ServiceTier),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const ServiceTier$outboundSchema: z.ZodType<ServiceTier, ServiceTier> = z
+  .union([
+    z.enum(ServiceTier),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ServiceTier$ {
+  /** @deprecated use `ServiceTier$inboundSchema` instead. */
+  export const inboundSchema = ServiceTier$inboundSchema;
+  /** @deprecated use `ServiceTier$outboundSchema` instead. */
+  export const outboundSchema = ServiceTier$outboundSchema;
+}
+
+/** @internal */
+export const Truncation$inboundSchema: z.ZodType<Truncation, unknown> = z
+  .union([
+    z.enum(Truncation),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const Truncation$outboundSchema: z.ZodType<Truncation, Truncation> = z
+  .union([
+    z.enum(Truncation),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Truncation$ {
+  /** @deprecated use `Truncation$inboundSchema` instead. */
+  export const inboundSchema = Truncation$inboundSchema;
+  /** @deprecated use `Truncation$outboundSchema` instead. */
+  export const outboundSchema = Truncation$outboundSchema;
+}
+
+/** @internal */
+export const DataCollection$inboundSchema: z.ZodType<DataCollection, unknown> =
+  z
+    .union([
+      z.enum(DataCollection),
+      z.string().transform(catchUnrecognizedEnum),
+    ]);
+
+/** @internal */
+export const DataCollection$outboundSchema: z.ZodType<
+  DataCollection,
+  DataCollection
+> = z.union([
+  z.enum(DataCollection),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace DataCollection$ {
+  /** @deprecated use `DataCollection$inboundSchema` instead. */
+  export const inboundSchema = DataCollection$inboundSchema;
+  /** @deprecated use `DataCollection$outboundSchema` instead. */
+  export const outboundSchema = DataCollection$outboundSchema;
+}
+
+/** @internal */
+export const Order$inboundSchema: z.ZodType<Order, unknown> = z.union([
+  ProviderName$inboundSchema,
+  z.string(),
+]);
+
+/** @internal */
+export type Order$Outbound = string | string;
+
+/** @internal */
+export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Order$ {
+  /** @deprecated use `Order$inboundSchema` instead. */
+  export const inboundSchema = Order$inboundSchema;
+  /** @deprecated use `Order$outboundSchema` instead. */
+  export const outboundSchema = Order$outboundSchema;
+  /** @deprecated use `Order$Outbound` instead. */
+  export type Outbound = Order$Outbound;
+}
+
+export function orderToJSON(order: Order): string {
+  return JSON.stringify(Order$outboundSchema.parse(order));
+}
+
+export function orderFromJSON(
+  jsonString: string,
+): SafeParseResult<Order, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Order$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Order' from JSON`,
+  );
+}
+
+/** @internal */
+export const Only$inboundSchema: z.ZodType<Only, unknown> = z.union([
+  ProviderName$inboundSchema,
+  z.string(),
+]);
+
+/** @internal */
+export type Only$Outbound = string | string;
+
+/** @internal */
+export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Only$ {
+  /** @deprecated use `Only$inboundSchema` instead. */
+  export const inboundSchema = Only$inboundSchema;
+  /** @deprecated use `Only$outboundSchema` instead. */
+  export const outboundSchema = Only$outboundSchema;
+  /** @deprecated use `Only$Outbound` instead. */
+  export type Outbound = Only$Outbound;
+}
+
+export function onlyToJSON(only: Only): string {
+  return JSON.stringify(Only$outboundSchema.parse(only));
+}
+
+export function onlyFromJSON(
+  jsonString: string,
+): SafeParseResult<Only, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Only$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Only' from JSON`,
+  );
+}
+
+/** @internal */
+export const Ignore$inboundSchema: z.ZodType<Ignore, unknown> = z.union([
+  ProviderName$inboundSchema,
+  z.string(),
+]);
+
+/** @internal */
+export type Ignore$Outbound = string | string;
+
+/** @internal */
+export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
+  .union([ProviderName$outboundSchema, z.string()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Ignore$ {
+  /** @deprecated use `Ignore$inboundSchema` instead. */
+  export const inboundSchema = Ignore$inboundSchema;
+  /** @deprecated use `Ignore$outboundSchema` instead. */
+  export const outboundSchema = Ignore$outboundSchema;
+  /** @deprecated use `Ignore$Outbound` instead. */
+  export type Outbound = Ignore$Outbound;
+}
+
+export function ignoreToJSON(ignore: Ignore): string {
+  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
+}
+
+export function ignoreFromJSON(
+  jsonString: string,
+): SafeParseResult<Ignore, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Ignore' from JSON`,
+  );
+}
+
+/** @internal */
+export const Sort$inboundSchema: z.ZodType<Sort, unknown> = z
+  .union([
+    z.enum(Sort),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const Sort$outboundSchema: z.ZodType<Sort, Sort> = z.union([
+  z.enum(Sort),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Sort$ {
+  /** @deprecated use `Sort$inboundSchema` instead. */
+  export const inboundSchema = Sort$inboundSchema;
+  /** @deprecated use `Sort$outboundSchema` instead. */
+  export const outboundSchema = Sort$outboundSchema;
+}
+
+/** @internal */
+export const MaxPrice$inboundSchema: z.ZodType<MaxPrice, unknown> = z.object({
+  prompt: z.any().optional(),
+  completion: z.any().optional(),
+  image: z.any().optional(),
+  audio: z.any().optional(),
+  request: z.any().optional(),
+});
+
+/** @internal */
+export type MaxPrice$Outbound = {
+  prompt?: any | undefined;
+  completion?: any | undefined;
+  image?: any | undefined;
+  audio?: any | undefined;
+  request?: any | undefined;
+};
+
+/** @internal */
+export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
+  .object({
+    prompt: z.any().optional(),
+    completion: z.any().optional(),
+    image: z.any().optional(),
+    audio: z.any().optional(),
+    request: z.any().optional(),
+  });
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace MaxPrice$ {
+  /** @deprecated use `MaxPrice$inboundSchema` instead. */
+  export const inboundSchema = MaxPrice$inboundSchema;
+  /** @deprecated use `MaxPrice$outboundSchema` instead. */
+  export const outboundSchema = MaxPrice$outboundSchema;
+  /** @deprecated use `MaxPrice$Outbound` instead. */
+  export type Outbound = MaxPrice$Outbound;
+}
+
+export function maxPriceToJSON(maxPrice: MaxPrice): string {
+  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+}
+
+export function maxPriceFromJSON(
+  jsonString: string,
+): SafeParseResult<MaxPrice, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'MaxPrice' from JSON`,
+  );
+}
+
+/** @internal */
+export const Experimental$inboundSchema: z.ZodType<Experimental, unknown> = z
+  .object({});
+
+/** @internal */
+export type Experimental$Outbound = {};
+
+/** @internal */
+export const Experimental$outboundSchema: z.ZodType<
+  Experimental$Outbound,
+  Experimental
+> = z.object({});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Experimental$ {
+  /** @deprecated use `Experimental$inboundSchema` instead. */
+  export const inboundSchema = Experimental$inboundSchema;
+  /** @deprecated use `Experimental$outboundSchema` instead. */
+  export const outboundSchema = Experimental$outboundSchema;
+  /** @deprecated use `Experimental$Outbound` instead. */
+  export type Outbound = Experimental$Outbound;
+}
+
+export function experimentalToJSON(experimental: Experimental): string {
+  return JSON.stringify(Experimental$outboundSchema.parse(experimental));
+}
+
+export function experimentalFromJSON(
+  jsonString: string,
+): SafeParseResult<Experimental, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Experimental$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Experimental' from JSON`,
+  );
+}
+
+/** @internal */
+export const Provider$inboundSchema: z.ZodType<Provider, unknown> = z.object({
+  allow_fallbacks: z.nullable(z.boolean()).optional(),
+  require_parameters: z.nullable(z.boolean()).optional(),
+  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+  order: z.nullable(z.array(z.union([ProviderName$inboundSchema, z.string()])))
+    .optional(),
+  only: z.nullable(z.array(z.union([ProviderName$inboundSchema, z.string()])))
+    .optional(),
+  ignore: z.nullable(z.array(z.union([ProviderName$inboundSchema, z.string()])))
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$inboundSchema)).optional(),
+  sort: z.nullable(Sort$inboundSchema).optional(),
+  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
+  experimental: z.nullable(z.lazy(() => Experimental$inboundSchema)).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "allow_fallbacks": "allowFallbacks",
+    "require_parameters": "requireParameters",
+    "data_collection": "dataCollection",
+    "max_price": "maxPrice",
+  });
+});
+
+/** @internal */
+export type Provider$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
+  require_parameters?: boolean | null | undefined;
+  data_collection?: string | null | undefined;
+  zdr?: boolean | null | undefined;
+  order?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
+  quantizations?: Array<string> | null | undefined;
+  sort?: string | null | undefined;
+  max_price?: MaxPrice$Outbound | undefined;
+  experimental?: Experimental$Outbound | null | undefined;
+};
+
+/** @internal */
+export const Provider$outboundSchema: z.ZodType<Provider$Outbound, Provider> = z
+  .object({
+    allowFallbacks: z.nullable(z.boolean()).optional(),
+    requireParameters: z.nullable(z.boolean()).optional(),
+    dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+    zdr: z.nullable(z.boolean()).optional(),
+    order: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    only: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    ignore: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+    sort: z.nullable(Sort$outboundSchema).optional(),
+    maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
+    experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))
+      .optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      allowFallbacks: "allow_fallbacks",
+      requireParameters: "require_parameters",
+      dataCollection: "data_collection",
+      maxPrice: "max_price",
+    });
+  });
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Provider$ {
+  /** @deprecated use `Provider$inboundSchema` instead. */
+  export const inboundSchema = Provider$inboundSchema;
+  /** @deprecated use `Provider$outboundSchema` instead. */
+  export const outboundSchema = Provider$outboundSchema;
+  /** @deprecated use `Provider$Outbound` instead. */
+  export type Outbound = Provider$Outbound;
+}
+
+export function providerToJSON(provider: Provider): string {
+  return JSON.stringify(Provider$outboundSchema.parse(provider));
+}
+
+export function providerFromJSON(
+  jsonString: string,
+): SafeParseResult<Provider, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Provider$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Provider' from JSON`,
+  );
+}
+
+/** @internal */
+export const IdFileParser$inboundSchema: z.ZodEnum<typeof IdFileParser> = z
+  .enum(IdFileParser);
+
+/** @internal */
+export const IdFileParser$outboundSchema: z.ZodEnum<typeof IdFileParser> =
+  IdFileParser$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace IdFileParser$ {
+  /** @deprecated use `IdFileParser$inboundSchema` instead. */
+  export const inboundSchema = IdFileParser$inboundSchema;
+  /** @deprecated use `IdFileParser$outboundSchema` instead. */
+  export const outboundSchema = IdFileParser$outboundSchema;
+}
+
+/** @internal */
+export const PdfEngine$inboundSchema: z.ZodType<PdfEngine, unknown> = z
+  .union([
+    z.enum(PdfEngine),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const PdfEngine$outboundSchema: z.ZodType<PdfEngine, PdfEngine> = z
+  .union([
+    z.enum(PdfEngine),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PdfEngine$ {
+  /** @deprecated use `PdfEngine$inboundSchema` instead. */
+  export const inboundSchema = PdfEngine$inboundSchema;
+  /** @deprecated use `PdfEngine$outboundSchema` instead. */
+  export const outboundSchema = PdfEngine$outboundSchema;
+}
+
+/** @internal */
+export const Pdf$inboundSchema: z.ZodType<Pdf, unknown> = z.object({
+  engine: PdfEngine$inboundSchema.optional(),
+});
+
+/** @internal */
+export type Pdf$Outbound = {
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const Pdf$outboundSchema: z.ZodType<Pdf$Outbound, Pdf> = z.object({
+  engine: PdfEngine$outboundSchema.optional(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Pdf$ {
+  /** @deprecated use `Pdf$inboundSchema` instead. */
+  export const inboundSchema = Pdf$inboundSchema;
+  /** @deprecated use `Pdf$outboundSchema` instead. */
+  export const outboundSchema = Pdf$outboundSchema;
+  /** @deprecated use `Pdf$Outbound` instead. */
+  export type Outbound = Pdf$Outbound;
+}
+
+export function pdfToJSON(pdf: Pdf): string {
+  return JSON.stringify(Pdf$outboundSchema.parse(pdf));
+}
+
+export function pdfFromJSON(
+  jsonString: string,
+): SafeParseResult<Pdf, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Pdf$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Pdf' from JSON`,
+  );
+}
+
+/** @internal */
+export const PluginFileParser$inboundSchema: z.ZodType<
+  PluginFileParser,
+  unknown
+> = z.object({
+  id: IdFileParser$inboundSchema,
+  max_files: z.number().optional(),
+  pdf: z.lazy(() => Pdf$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_files": "maxFiles",
+  });
+});
+
+/** @internal */
+export type PluginFileParser$Outbound = {
+  id: string;
+  max_files?: number | undefined;
+  pdf?: Pdf$Outbound | undefined;
+};
+
+/** @internal */
+export const PluginFileParser$outboundSchema: z.ZodType<
+  PluginFileParser$Outbound,
+  PluginFileParser
+> = z.object({
+  id: IdFileParser$outboundSchema,
+  maxFiles: z.number().optional(),
+  pdf: z.lazy(() => Pdf$outboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxFiles: "max_files",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PluginFileParser$ {
+  /** @deprecated use `PluginFileParser$inboundSchema` instead. */
+  export const inboundSchema = PluginFileParser$inboundSchema;
+  /** @deprecated use `PluginFileParser$outboundSchema` instead. */
+  export const outboundSchema = PluginFileParser$outboundSchema;
+  /** @deprecated use `PluginFileParser$Outbound` instead. */
+  export type Outbound = PluginFileParser$Outbound;
+}
+
+export function pluginFileParserToJSON(
+  pluginFileParser: PluginFileParser,
+): string {
+  return JSON.stringify(
+    PluginFileParser$outboundSchema.parse(pluginFileParser),
+  );
+}
+
+export function pluginFileParserFromJSON(
+  jsonString: string,
+): SafeParseResult<PluginFileParser, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PluginFileParser$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginFileParser' from JSON`,
+  );
+}
+
+/** @internal */
+export const IdWeb$inboundSchema: z.ZodEnum<typeof IdWeb> = z.enum(IdWeb);
+
+/** @internal */
+export const IdWeb$outboundSchema: z.ZodEnum<typeof IdWeb> =
+  IdWeb$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace IdWeb$ {
+  /** @deprecated use `IdWeb$inboundSchema` instead. */
+  export const inboundSchema = IdWeb$inboundSchema;
+  /** @deprecated use `IdWeb$outboundSchema` instead. */
+  export const outboundSchema = IdWeb$outboundSchema;
+}
+
+/** @internal */
+export const Engine$inboundSchema: z.ZodType<Engine, unknown> = z
+  .union([
+    z.enum(Engine),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const Engine$outboundSchema: z.ZodType<Engine, Engine> = z.union([
+  z.enum(Engine),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Engine$ {
+  /** @deprecated use `Engine$inboundSchema` instead. */
+  export const inboundSchema = Engine$inboundSchema;
+  /** @deprecated use `Engine$outboundSchema` instead. */
+  export const outboundSchema = Engine$outboundSchema;
+}
+
+/** @internal */
+export const PluginWeb$inboundSchema: z.ZodType<PluginWeb, unknown> = z.object({
+  id: IdWeb$inboundSchema,
+  max_results: z.number().optional(),
+  search_prompt: z.string().optional(),
+  engine: Engine$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "max_results": "maxResults",
+    "search_prompt": "searchPrompt",
+  });
+});
+
+/** @internal */
+export type PluginWeb$Outbound = {
+  id: string;
+  max_results?: number | undefined;
+  search_prompt?: string | undefined;
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const PluginWeb$outboundSchema: z.ZodType<
+  PluginWeb$Outbound,
+  PluginWeb
+> = z.object({
+  id: IdWeb$outboundSchema,
+  maxResults: z.number().optional(),
+  searchPrompt: z.string().optional(),
+  engine: Engine$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxResults: "max_results",
+    searchPrompt: "search_prompt",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PluginWeb$ {
+  /** @deprecated use `PluginWeb$inboundSchema` instead. */
+  export const inboundSchema = PluginWeb$inboundSchema;
+  /** @deprecated use `PluginWeb$outboundSchema` instead. */
+  export const outboundSchema = PluginWeb$outboundSchema;
+  /** @deprecated use `PluginWeb$Outbound` instead. */
+  export type Outbound = PluginWeb$Outbound;
+}
+
+export function pluginWebToJSON(pluginWeb: PluginWeb): string {
+  return JSON.stringify(PluginWeb$outboundSchema.parse(pluginWeb));
+}
+
+export function pluginWebFromJSON(
+  jsonString: string,
+): SafeParseResult<PluginWeb, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PluginWeb$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginWeb' from JSON`,
+  );
+}
+
+/** @internal */
+export const IdModeration$inboundSchema: z.ZodEnum<typeof IdModeration> = z
+  .enum(IdModeration);
+
+/** @internal */
+export const IdModeration$outboundSchema: z.ZodEnum<typeof IdModeration> =
+  IdModeration$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace IdModeration$ {
+  /** @deprecated use `IdModeration$inboundSchema` instead. */
+  export const inboundSchema = IdModeration$inboundSchema;
+  /** @deprecated use `IdModeration$outboundSchema` instead. */
+  export const outboundSchema = IdModeration$outboundSchema;
+}
+
+/** @internal */
+export const PluginModeration$inboundSchema: z.ZodType<
+  PluginModeration,
+  unknown
+> = z.object({
+  id: IdModeration$inboundSchema,
+});
+
+/** @internal */
+export type PluginModeration$Outbound = {
+  id: string;
+};
+
+/** @internal */
+export const PluginModeration$outboundSchema: z.ZodType<
+  PluginModeration$Outbound,
+  PluginModeration
+> = z.object({
+  id: IdModeration$outboundSchema,
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace PluginModeration$ {
+  /** @deprecated use `PluginModeration$inboundSchema` instead. */
+  export const inboundSchema = PluginModeration$inboundSchema;
+  /** @deprecated use `PluginModeration$outboundSchema` instead. */
+  export const outboundSchema = PluginModeration$outboundSchema;
+  /** @deprecated use `PluginModeration$Outbound` instead. */
+  export type Outbound = PluginModeration$Outbound;
+}
+
+export function pluginModerationToJSON(
+  pluginModeration: PluginModeration,
+): string {
+  return JSON.stringify(
+    PluginModeration$outboundSchema.parse(pluginModeration),
+  );
+}
+
+export function pluginModerationFromJSON(
+  jsonString: string,
+): SafeParseResult<PluginModeration, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => PluginModeration$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'PluginModeration' from JSON`,
+  );
+}
+
+/** @internal */
+export const Plugin$inboundSchema: z.ZodType<Plugin, unknown> = z.union([
+  z.lazy(() => PluginModeration$inboundSchema),
+  z.lazy(() => PluginWeb$inboundSchema),
+  z.lazy(() => PluginFileParser$inboundSchema),
+]);
+
+/** @internal */
+export type Plugin$Outbound =
+  | PluginModeration$Outbound
+  | PluginWeb$Outbound
+  | PluginFileParser$Outbound;
+
+/** @internal */
+export const Plugin$outboundSchema: z.ZodType<Plugin$Outbound, Plugin> = z
+  .union([
+    z.lazy(() => PluginModeration$outboundSchema),
+    z.lazy(() => PluginWeb$outboundSchema),
+    z.lazy(() => PluginFileParser$outboundSchema),
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Plugin$ {
+  /** @deprecated use `Plugin$inboundSchema` instead. */
+  export const inboundSchema = Plugin$inboundSchema;
+  /** @deprecated use `Plugin$outboundSchema` instead. */
+  export const outboundSchema = Plugin$outboundSchema;
+  /** @deprecated use `Plugin$Outbound` instead. */
+  export type Outbound = Plugin$Outbound;
+}
+
+export function pluginToJSON(plugin: Plugin): string {
+  return JSON.stringify(Plugin$outboundSchema.parse(plugin));
+}
+
+export function pluginFromJSON(
+  jsonString: string,
+): SafeParseResult<Plugin, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Plugin$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Plugin' from JSON`,
+  );
+}
 
 /** @internal */
 export const OpenResponsesRequest$inboundSchema: z.ZodType<
   OpenResponsesRequest,
   unknown
-> = z.object({});
+> = z.object({
+  input: OpenResponsesInput$inboundSchema.optional(),
+  instructions: z.nullable(z.string()).optional(),
+  metadata: z.nullable(z.record(z.string(), z.string())).optional(),
+  tools: z.array(
+    z.union([
+      z.lazy(() => OpenResponsesRequestToolFunction$inboundSchema),
+      OpenResponsesWebSearchPreviewTool$inboundSchema,
+      OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+      OpenResponsesWebSearchTool$inboundSchema,
+      OpenResponsesWebSearch20250826Tool$inboundSchema,
+    ]),
+  ).optional(),
+  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema.optional(),
+  parallel_tool_calls: z.nullable(z.boolean()).optional(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
+  text: OpenResponsesResponseText$inboundSchema.optional(),
+  reasoning: z.nullable(OpenResponsesReasoningConfig$inboundSchema).optional(),
+  max_output_tokens: z.nullable(z.number()).optional(),
+  temperature: z.nullable(z.number()).optional(),
+  top_p: z.nullable(z.number()).optional(),
+  top_k: z.number().optional(),
+  prompt_cache_key: z.nullable(z.string()).optional(),
+  previous_response_id: z.nullable(z.string()).optional(),
+  prompt: z.nullable(OpenAIResponsesPrompt$inboundSchema).optional(),
+  include: z.nullable(z.array(OpenAIResponsesIncludable$inboundSchema))
+    .optional(),
+  background: z.nullable(z.boolean()).optional(),
+  safety_identifier: z.nullable(z.string()).optional(),
+  store: z.nullable(z.boolean()).optional(),
+  service_tier: z.nullable(ServiceTier$inboundSchema).optional(),
+  truncation: z.nullable(Truncation$inboundSchema).optional(),
+  stream: z.boolean().default(false),
+  provider: z.nullable(z.lazy(() => Provider$inboundSchema)).optional(),
+  plugins: z.array(
+    z.union([
+      z.lazy(() => PluginModeration$inboundSchema),
+      z.lazy(() => PluginWeb$inboundSchema),
+      z.lazy(() => PluginFileParser$inboundSchema),
+    ]),
+  ).optional(),
+  user: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "tool_choice": "toolChoice",
+    "parallel_tool_calls": "parallelToolCalls",
+    "max_output_tokens": "maxOutputTokens",
+    "top_p": "topP",
+    "top_k": "topK",
+    "prompt_cache_key": "promptCacheKey",
+    "previous_response_id": "previousResponseId",
+    "safety_identifier": "safetyIdentifier",
+    "service_tier": "serviceTier",
+  });
+});
 
 /** @internal */
-export type OpenResponsesRequest$Outbound = {};
+export type OpenResponsesRequest$Outbound = {
+  input?: OpenResponsesInput$Outbound | undefined;
+  instructions?: string | null | undefined;
+  metadata?: { [k: string]: string } | null | undefined;
+  tools?:
+    | Array<
+      | OpenResponsesRequestToolFunction$Outbound
+      | OpenResponsesWebSearchPreviewTool$Outbound
+      | OpenResponsesWebSearchPreview20250311Tool$Outbound
+      | OpenResponsesWebSearchTool$Outbound
+      | OpenResponsesWebSearch20250826Tool$Outbound
+    >
+    | undefined;
+  tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
+  parallel_tool_calls?: boolean | null | undefined;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
+  text?: OpenResponsesResponseText$Outbound | undefined;
+  reasoning?: OpenResponsesReasoningConfig$Outbound | null | undefined;
+  max_output_tokens?: number | null | undefined;
+  temperature?: number | null | undefined;
+  top_p?: number | null | undefined;
+  top_k?: number | undefined;
+  prompt_cache_key?: string | null | undefined;
+  previous_response_id?: string | null | undefined;
+  prompt?: OpenAIResponsesPrompt$Outbound | null | undefined;
+  include?: Array<string> | null | undefined;
+  background?: boolean | null | undefined;
+  safety_identifier?: string | null | undefined;
+  store?: boolean | null | undefined;
+  service_tier?: string | null | undefined;
+  truncation?: string | null | undefined;
+  stream: boolean;
+  provider?: Provider$Outbound | null | undefined;
+  plugins?:
+    | Array<
+      PluginModeration$Outbound | PluginWeb$Outbound | PluginFileParser$Outbound
+    >
+    | undefined;
+  user?: string | undefined;
+};
 
 /** @internal */
 export const OpenResponsesRequest$outboundSchema: z.ZodType<
   OpenResponsesRequest$Outbound,
   OpenResponsesRequest
-> = z.object({});
+> = z.object({
+  input: OpenResponsesInput$outboundSchema.optional(),
+  instructions: z.nullable(z.string()).optional(),
+  metadata: z.nullable(z.record(z.string(), z.string())).optional(),
+  tools: z.array(
+    z.union([
+      z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
+      OpenResponsesWebSearchPreviewTool$outboundSchema,
+      OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+      OpenResponsesWebSearchTool$outboundSchema,
+      OpenResponsesWebSearch20250826Tool$outboundSchema,
+    ]),
+  ).optional(),
+  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
+  parallelToolCalls: z.nullable(z.boolean()).optional(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
+  text: OpenResponsesResponseText$outboundSchema.optional(),
+  reasoning: z.nullable(OpenResponsesReasoningConfig$outboundSchema).optional(),
+  maxOutputTokens: z.nullable(z.number()).optional(),
+  temperature: z.nullable(z.number()).optional(),
+  topP: z.nullable(z.number()).optional(),
+  topK: z.number().optional(),
+  promptCacheKey: z.nullable(z.string()).optional(),
+  previousResponseId: z.nullable(z.string()).optional(),
+  prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
+  include: z.nullable(z.array(OpenAIResponsesIncludable$outboundSchema))
+    .optional(),
+  background: z.nullable(z.boolean()).optional(),
+  safetyIdentifier: z.nullable(z.string()).optional(),
+  store: z.nullable(z.boolean()).optional(),
+  serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
+  truncation: z.nullable(Truncation$outboundSchema).optional(),
+  stream: z.boolean().default(false),
+  provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
+  plugins: z.array(
+    z.union([
+      z.lazy(() => PluginModeration$outboundSchema),
+      z.lazy(() => PluginWeb$outboundSchema),
+      z.lazy(() => PluginFileParser$outboundSchema),
+    ]),
+  ).optional(),
+  user: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    toolChoice: "tool_choice",
+    parallelToolCalls: "parallel_tool_calls",
+    maxOutputTokens: "max_output_tokens",
+    topP: "top_p",
+    topK: "top_k",
+    promptCacheKey: "prompt_cache_key",
+    previousResponseId: "previous_response_id",
+    safetyIdentifier: "safety_identifier",
+    serviceTier: "service_tier",
+  });
+});
 
 /**
  * @internal

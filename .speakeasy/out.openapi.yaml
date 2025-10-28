@@ -2780,112 +2780,1046 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 0
-    ErrorResponse:
+    BadRequestResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for BadRequestResponse
+      example:
+        code: 400
+        message: Invalid request parameters
+    BadRequestResponse:
       type: object
       properties:
         error:
-          type: object
-          properties:
-            code:
-              type: integer
-              enum:
-                - 100
-                - 101
-                - 102
-                - 200
-                - 201
-                - 202
-                - 203
-                - 204
-                - 205
-                - 206
-                - 207
-                - 208
-                - 300
-                - 301
-                - 302
-                - 303
-                - 304
-                - 305
-                - 307
-                - 308
-                - 400
-                - 401
-                - 402
-                - 403
-                - 404
-                - 405
-                - 406
-                - 407
-                - 408
-                - 409
-                - 410
-                - 411
-                - 412
-                - 413
-                - 414
-                - 415
-                - 416
-                - 417
-                - 418
-                - 422
-                - 423
-                - 424
-                - 425
-                - 426
-                - 428
-                - 429
-                - 431
-                - 451
-                - 498
-                - 499
-                - 500
-                - 501
-                - 502
-                - 503
-                - 504
-                - 505
-                - 506
-                - 507
-                - 508
-                - 510
-                - 511
-                - 520
-                - 521
-                - 522
-                - 523
-                - 524
-                - 525
-                - 526
-                - 529
-                - 530
-              x-speakeasy-unknown-values: allow
-            message:
-              type: string
-            metadata:
-              type: object
-              nullable: true
-              additionalProperties:
-                nullable: true
-          required:
-            - code
-            - message
+          $ref: '#/components/schemas/BadRequestResponseErrorData'
         user_id:
           type: string
           nullable: true
       required:
         - error
-      description: Error response
+      description: Bad Request - Invalid request parameters or malformed input
       example:
         error:
           code: 400
           message: Invalid request parameters
-          metadata:
-            field: temperature
-            reason: Must be between 0 and 2
-        user_id: user-abc123
+    UnauthorizedResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for UnauthorizedResponse
+      example:
+        code: 401
+        message: Missing Authentication header
+    UnauthorizedResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/UnauthorizedResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Unauthorized - Authentication required or invalid credentials
+      example:
+        error:
+          code: 401
+          message: Missing Authentication header
+    PaymentRequiredResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for PaymentRequiredResponse
+      example:
+        code: 402
+        message: Insufficient credits. Add more using https://openrouter.ai/credits
+    PaymentRequiredResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/PaymentRequiredResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Payment Required - Insufficient credits or quota to complete request
+      example:
+        error:
+          code: 402
+          message: Insufficient credits. Add more using https://openrouter.ai/credits
+    NotFoundResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for NotFoundResponse
+      example:
+        code: 404
+        message: Resource not found
+    NotFoundResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/NotFoundResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Not Found - Resource does not exist
+      example:
+        error:
+          code: 404
+          message: Resource not found
+    RequestTimeoutResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for RequestTimeoutResponse
+      example:
+        code: 408
+        message: Operation timed out. Please try again later.
+    RequestTimeoutResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/RequestTimeoutResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Request Timeout - Operation exceeded time limit
+      example:
+        error:
+          code: 408
+          message: Operation timed out. Please try again later.
+    PayloadTooLargeResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for PayloadTooLargeResponse
+      example:
+        code: 413
+        message: Request payload too large
+    PayloadTooLargeResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/PayloadTooLargeResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Payload Too Large - Request payload exceeds size limits
+      example:
+        error:
+          code: 413
+          message: Request payload too large
+    UnprocessableEntityResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for UnprocessableEntityResponse
+      example:
+        code: 422
+        message: Invalid argument
+    UnprocessableEntityResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/UnprocessableEntityResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Unprocessable Entity - Semantic validation failure
+      example:
+        error:
+          code: 422
+          message: Invalid argument
+    TooManyRequestsResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for TooManyRequestsResponse
+      example:
+        code: 429
+        message: Rate limit exceeded
+    TooManyRequestsResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/TooManyRequestsResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Too Many Requests - Rate limit exceeded
+      example:
+        error:
+          code: 429
+          message: Rate limit exceeded
+    InternalServerResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for InternalServerResponse
+      example:
+        code: 500
+        message: Internal Server Error
+    InternalServerResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/InternalServerResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Internal Server Error - Unexpected server error
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    BadGatewayResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for BadGatewayResponse
+      example:
+        code: 502
+        message: Provider returned error
+    BadGatewayResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/BadGatewayResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Bad Gateway - Provider/upstream API failure
+      example:
+        error:
+          code: 502
+          message: Provider returned error
+    ServiceUnavailableResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for ServiceUnavailableResponse
+      example:
+        code: 503
+        message: Service temporarily unavailable
+    ServiceUnavailableResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ServiceUnavailableResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Service Unavailable - Service temporarily unavailable
+      example:
+        error:
+          code: 503
+          message: Service temporarily unavailable
+    EdgeNetworkTimeoutResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for EdgeNetworkTimeoutResponse
+      example:
+        code: 524
+        message: Request timed out. Please try again later.
+    EdgeNetworkTimeoutResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/EdgeNetworkTimeoutResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Infrastructure Timeout - Provider request timed out at edge network
+      example:
+        error:
+          code: 524
+          message: Request timed out. Please try again later.
+    ProviderOverloadedResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for ProviderOverloadedResponse
+      example:
+        code: 529
+        message: Provider returned error
+    ProviderOverloadedResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ProviderOverloadedResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Provider Overloaded - Provider is temporarily overloaded
+      example:
+        error:
+          code: 529
+          message: Provider returned error
+    OpenResponsesReasoning:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemReasoning'
+        - type: object
+          properties:
+            signature:
+              type: string
+              nullable: true
+            format:
+              type: string
+              nullable: true
+              enum:
+                - unknown
+                - openai-responses-v1
+                - xai-responses-v1
+                - anthropic-claude-v1
+              x-speakeasy-unknown-values: allow
+      example:
+        type: reasoning
+        id: reasoning-abc123
+        summary:
+          - type: summary_text
+            text: Step by step analysis
+      description: Reasoning output item with signature and format extensions
+    OpenResponsesEasyInputMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          anyOf:
+            - type: string
+              enum:
+                - user
+            - type: string
+              enum:
+                - system
+            - type: string
+              enum:
+                - assistant
+            - type: string
+              enum:
+                - developer
+        content:
+          anyOf:
+            - type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/ResponseInputText'
+                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - $ref: '#/components/schemas/ResponseInputFile'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    input_text: '#/components/schemas/ResponseInputText'
+                    input_image: '#/components/schemas/ResponseInputImage'
+                    input_file: '#/components/schemas/ResponseInputFile'
+            - type: string
+      required:
+        - role
+        - content
+    OpenResponsesInputMessageItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          anyOf:
+            - type: string
+              enum:
+                - user
+            - type: string
+              enum:
+                - system
+            - type: string
+              enum:
+                - developer
+        content:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ResponseInputText'
+              - $ref: '#/components/schemas/ResponseInputImage'
+              - $ref: '#/components/schemas/ResponseInputFile'
+            discriminator:
+              propertyName: type
+              mapping:
+                input_text: '#/components/schemas/ResponseInputText'
+                input_image: '#/components/schemas/ResponseInputImage'
+                input_file: '#/components/schemas/ResponseInputFile'
+      required:
+        - role
+        - content
+    OpenResponsesFunctionToolCall:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function_call
+        call_id:
+          type: string
+        name:
+          type: string
+        arguments:
+          type: string
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+      required:
+        - type
+        - call_id
+        - name
+        - arguments
+        - id
+      description: A function call initiated by the model
+      example:
+        id: call-abc123
+        type: function_call
+        call_id: call-abc123
+        name: get_weather
+        arguments: '{"location":"San Francisco"}'
+        status: completed
+    OpenResponsesFunctionCallOutput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function_call_output
+        id:
+          type: string
+        call_id:
+          type: string
+        output:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+      required:
+        - type
+        - id
+        - call_id
+        - output
+      description: The output from a function call execution
+      example:
+        type: function_call_output
+        id: output-abc123
+        call_id: call-abc123
+        output: '{"temperature":72,"conditions":"sunny"}'
+        status: completed
+    OpenResponsesInput:
+      anyOf:
+        - type: string
+        - type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/OpenResponsesReasoning'
+              - $ref: '#/components/schemas/OpenResponsesEasyInputMessage'
+              - $ref: '#/components/schemas/OpenResponsesInputMessageItem'
+              - $ref: '#/components/schemas/OpenResponsesFunctionToolCall'
+              - $ref: '#/components/schemas/OpenResponsesFunctionCallOutput'
+              - $ref: '#/components/schemas/ResponsesOutputMessage'
+              - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
+              - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
+              - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
+              - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
+              - $ref: '#/components/schemas/ResponsesImageGenerationCall'
+      description: Input for a response request - can be a string or array of items
+      example:
+        - role: user
+          content: What is the weather today?
+    OpenResponsesResponseText:
+      allOf:
+        - $ref: '#/components/schemas/ResponseTextConfig'
+        - type: object
+          properties: {}
+      description: Text output configuration including format and verbosity
+      example:
+        format:
+          type: text
+        verbosity: medium
+    OpenResponsesReasoningConfig:
+      allOf:
+        - $ref: '#/components/schemas/OpenAIResponsesReasoningConfig'
+        - type: object
+          nullable: true
+          properties:
+            max_tokens:
+              type: number
+              nullable: true
+            enabled:
+              type: boolean
+              nullable: true
+      description: Configuration for reasoning mode in the response
+      example:
+        summary: auto
+        enabled: true
+    OpenAIResponsesIncludable:
+      type: string
+      enum:
+        - file_search_call.results
+        - message.input_image.image_url
+        - computer_call_output.output.image_url
+        - reasoning.encrypted_content
+        - code_interpreter_call.outputs
+      x-speakeasy-unknown-values: allow
+    ProviderName:
+      type: string
+      enum:
+        - AnyScale
+        - Cent-ML
+        - HuggingFace
+        - Hyperbolic 2
+        - Lepton
+        - Lynn 2
+        - Lynn
+        - Mancer
+        - Modal
+        - OctoAI
+        - Recursal
+        - Reflection
+        - Replicate
+        - SambaNova 2
+        - SF Compute
+        - Together 2
+        - 01.AI
+        - AI21
+        - AionLabs
+        - Alibaba
+        - Amazon Bedrock
+        - Anthropic
+        - AtlasCloud
+        - Atoma
+        - Avian
+        - Azure
+        - BaseTen
+        - Cerebras
+        - Chutes
+        - Cirrascale
+        - Clarifai
+        - Cloudflare
+        - Cohere
+        - CrofAI
+        - Crusoe
+        - DeepInfra
+        - DeepSeek
+        - Enfer
+        - Featherless
+        - Fireworks
+        - Friendli
+        - GMICloud
+        - Google
+        - Google AI Studio
+        - Groq
+        - Hyperbolic
+        - Inception
+        - InferenceNet
+        - Infermatic
+        - Inflection
+        - InoCloud
+        - Kluster
+        - Lambda
+        - Liquid
+        - Mancer 2
+        - Meta
+        - Minimax
+        - ModelRun
+        - Mistral
+        - Modular
+        - Moonshot AI
+        - Morph
+        - NCompass
+        - Nebius
+        - NextBit
+        - Nineteen
+        - Novita
+        - Nvidia
+        - OpenAI
+        - OpenInference
+        - Parasail
+        - Perplexity
+        - Phala
+        - Relace
+        - SambaNova
+        - SiliconFlow
+        - Stealth
+        - Switchpoint
+        - Targon
+        - Together
+        - Ubicloud
+        - Venice
+        - WandB
+        - xAI
+        - Z.AI
+        - FakeProvider
+      example: OpenAI
+      x-speakeasy-unknown-values: allow
+    Quantization:
+      type: string
+      enum:
+        - int4
+        - int8
+        - fp4
+        - fp6
+        - fp8
+        - fp16
+        - bf16
+        - fp32
+        - unknown
+      example: fp16
+      x-speakeasy-unknown-values: allow
+    BigNumberUnion:
+      anyOf:
+        - type: number
+        - type: string
+        - type: number
+          example: 1000
+      description: A value in string or number format that is a large number
+      example: 1000
     OpenResponsesRequest:
       type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/OpenResponsesInput'
+        instructions:
+          type: string
+          nullable: true
+        metadata:
+          $ref: '#/components/schemas/OpenResponsesRequestMetadata'
+        tools:
+          type: array
+          items:
+            oneOf:
+              - allOf:
+                  - $ref: '#/components/schemas/OpenResponsesFunctionTool'
+                  - type: object
+                    properties: {}
+                description: Function tool definition
+                example:
+                  type: function
+                  name: get_weather
+                  description: Get the current weather in a location
+                  parameters:
+                    type: object
+                    properties:
+                      location:
+                        type: string
+                        description: The city and state
+                      unit:
+                        type: string
+                        enum:
+                          - celsius
+                          - fahrenheit
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - location
+              - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
+              - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
+              - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
+              - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
+        tool_choice:
+          $ref: '#/components/schemas/OpenAIResponsesToolChoice'
+        parallel_tool_calls:
+          type: boolean
+          nullable: true
+        model:
+          type: string
+        models:
+          type: array
+          items:
+            type: string
+        text:
+          $ref: '#/components/schemas/OpenResponsesResponseText'
+        reasoning:
+          $ref: '#/components/schemas/OpenResponsesReasoningConfig'
+        max_output_tokens:
+          type: number
+          nullable: true
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+        top_k:
+          type: number
+        prompt_cache_key:
+          type: string
+          nullable: true
+        previous_response_id:
+          type: string
+          nullable: true
+        prompt:
+          $ref: '#/components/schemas/OpenAIResponsesPrompt'
+        include:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/OpenAIResponsesIncludable'
+        background:
+          type: boolean
+          nullable: true
+        safety_identifier:
+          type: string
+          nullable: true
+        store:
+          type: boolean
+          nullable: true
+        service_tier:
+          allOf:
+            - $ref: '#/components/schemas/OpenAIResponsesServiceTier'
+            - enum:
+                - auto
+                - default
+                - flex
+                - scale
+                - priority
+              example: auto
+              x-speakeasy-unknown-values: allow
+        truncation:
+          allOf:
+            - $ref: '#/components/schemas/OpenAIResponsesTruncation'
+            - example: auto
+        stream:
+          type: boolean
+          default: false
+        provider:
+          type: object
+          nullable: true
+          properties:
+            allow_fallbacks:
+              type: boolean
+              nullable: true
+              description: >
+                Whether to allow backup providers to serve requests
+
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+            require_parameters:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+            data_collection:
+              type: string
+              nullable: true
+              enum:
+                - deny
+                - allow
+              example: deny
+              description: >
+                Data collection setting. If no available model provider meets the requirement, your request will return an error.
+
+                - allow: (default) allow providers which store user data non-transiently and may train on it
+
+                - deny: use only providers which do not collect user data.
+
+              x-speakeasy-unknown-values: allow
+            zdr:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+              example: true
+            order:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+            only:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+            ignore:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+            quantizations:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/Quantization'
+              description: A list of quantization levels to filter the provider by.
+            sort:
+              type: string
+              nullable: true
+              enum:
+                - price
+                - throughput
+                - latency
+              example: price
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+              x-speakeasy-unknown-values: allow
+            max_price:
+              type: object
+              properties:
+                prompt:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                completion:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                image:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                audio:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                request:
+                  $ref: '#/components/schemas/BigNumberUnion'
+              additionalProperties: false
+              description: >-
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+            experimental:
+              type: object
+              nullable: true
+              properties: {}
+          additionalProperties: false
+          description: When multiple model providers are available, optionally indicate your routing preference.
+        plugins:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - moderation
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - web
+                  max_results:
+                    type: number
+                  search_prompt:
+                    type: string
+                  engine:
+                    type: string
+                    enum:
+                      - native
+                      - exa
+                    x-speakeasy-unknown-values: allow
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - file-parser
+                  max_files:
+                    type: number
+                  pdf:
+                    type: object
+                    properties:
+                      engine:
+                        type: string
+                        enum:
+                          - mistral-ocr
+                          - pdf-text
+                          - native
+                        x-speakeasy-unknown-values: allow
+                required:
+                  - id
+          description: Plugins you want to enable for this request, including their settings.
+        user:
+          type: string
+          maxLength: 128
+          description: >-
+            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
       description: Request schema for Responses endpoint
       example:
         model: anthropic/claude-4.5-sonnet-20250929
@@ -2975,8 +3909,58 @@ components:
         prompt_tokens: 50
         completion_tokens: 125
         reasoning_tokens: 25
+    ForbiddenResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for ForbiddenResponse
+      example:
+        code: 403
+        message: Only provisioning keys can perform this operation
+    ForbiddenResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ForbiddenResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Forbidden - Authentication successful but insufficient permissions
+      example:
+        error:
+          code: 403
+          message: Only provisioning keys can perform this operation
     CreateChargeRequest:
       type: object
+      properties:
+        amount:
+          type: number
+        sender:
+          type: string
+        chain_id:
+          type: integer
+          enum:
+            - 1
+            - 137
+            - 8453
+          x-speakeasy-unknown-values: allow
+      required:
+        - amount
+        - sender
+        - chain_id
       description: Create a Coinbase charge for crypto payment
       example:
         amount: 100
@@ -2984,12 +3968,365 @@ components:
         chain_id: 1
     ModelsCountResponse:
       type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: number
+              description: Total number of available models
+              example: 150
+          required:
+            - count
+          description: Model count data
+          example:
+            count: 150
+      required:
+        - data
       description: Model count data
       example:
         data:
           count: 150
+    PublicPricing:
+      type: object
+      properties:
+        prompt:
+          $ref: '#/components/schemas/BigNumberUnion'
+        completion:
+          $ref: '#/components/schemas/BigNumberUnion'
+        request:
+          $ref: '#/components/schemas/BigNumberUnion'
+        image:
+          $ref: '#/components/schemas/BigNumberUnion'
+        image_output:
+          $ref: '#/components/schemas/BigNumberUnion'
+        audio:
+          $ref: '#/components/schemas/BigNumberUnion'
+        input_audio_cache:
+          $ref: '#/components/schemas/BigNumberUnion'
+        web_search:
+          $ref: '#/components/schemas/BigNumberUnion'
+        internal_reasoning:
+          $ref: '#/components/schemas/BigNumberUnion'
+        input_cache_read:
+          $ref: '#/components/schemas/BigNumberUnion'
+        input_cache_write:
+          $ref: '#/components/schemas/BigNumberUnion'
+        discount:
+          type: number
+      required:
+        - prompt
+        - completion
+      additionalProperties: false
+      description: Pricing information for the model
+      example:
+        prompt: '0.00003'
+        completion: '0.00006'
+        request: '0'
+        image: '0'
+    ModelGroup:
+      type: string
+      enum:
+        - Router
+        - Media
+        - Other
+        - GPT
+        - Claude
+        - Gemini
+        - Grok
+        - Cohere
+        - Nova
+        - Qwen
+        - Yi
+        - DeepSeek
+        - Mistral
+        - Llama2
+        - Llama3
+        - Llama4
+        - PaLM
+        - RWKV
+        - Qwen3
+      example: GPT
+      description: Tokenizer type used by the model
+      x-speakeasy-unknown-values: allow
+    InputModality:
+      type: string
+      enum:
+        - text
+        - image
+        - file
+        - audio
+      example: text
+      x-speakeasy-unknown-values: allow
+    OutputModality:
+      type: string
+      enum:
+        - text
+        - image
+        - embeddings
+      example: text
+      x-speakeasy-unknown-values: allow
+    ModelArchitecture:
+      type: object
+      properties:
+        tokenizer:
+          $ref: '#/components/schemas/ModelGroup'
+        instruct_type:
+          type: string
+          nullable: true
+          enum:
+            - none
+            - airoboros
+            - alpaca
+            - alpaca-modif
+            - chatml
+            - claude
+            - code-llama
+            - gemma
+            - llama2
+            - llama3
+            - mistral
+            - nemotron
+            - neural
+            - openchat
+            - phi3
+            - rwkv
+            - vicuna
+            - zephyr
+            - deepseek-r1
+            - deepseek-v3.1
+            - qwq
+            - qwen3
+          example: chatml
+          description: Instruction format type
+          x-speakeasy-unknown-values: allow
+        modality:
+          type: string
+          nullable: true
+          description: Primary modality of the model
+          example: text->text
+        input_modalities:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputModality'
+          description: Supported input modalities
+        output_modalities:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputModality'
+          description: Supported output modalities
+      required:
+        - modality
+        - input_modalities
+        - output_modalities
+      description: Model architecture information
+      example:
+        tokenizer: GPT
+        instruct_type: chatml
+        modality: text->text
+        input_modalities:
+          - text
+        output_modalities:
+          - text
+    TopProviderInfo:
+      type: object
+      properties:
+        context_length:
+          type: number
+          nullable: true
+          description: Context length from the top provider
+          example: 8192
+        max_completion_tokens:
+          type: number
+          nullable: true
+          description: Maximum completion tokens from the top provider
+          example: 4096
+        is_moderated:
+          type: boolean
+          description: Whether the top provider moderates content
+          example: true
+      required:
+        - is_moderated
+      description: Information about the top provider for this model
+      example:
+        context_length: 8192
+        max_completion_tokens: 4096
+        is_moderated: true
+    PerRequestLimits:
+      type: object
+      nullable: true
+      properties:
+        prompt_tokens:
+          type: number
+          example: 1000
+          description: Maximum prompt tokens per request
+        completion_tokens:
+          type: number
+          example: 1000
+          description: Maximum completion tokens per request
+      required:
+        - prompt_tokens
+        - completion_tokens
+      description: Per-request token limits
+      example:
+        prompt_tokens: 1000
+        completion_tokens: 1000
+    Parameter:
+      type: string
+      enum:
+        - temperature
+        - top_p
+        - top_k
+        - min_p
+        - top_a
+        - frequency_penalty
+        - presence_penalty
+        - repetition_penalty
+        - max_tokens
+        - logit_bias
+        - logprobs
+        - top_logprobs
+        - seed
+        - response_format
+        - structured_outputs
+        - stop
+        - tools
+        - tool_choice
+        - parallel_tool_calls
+        - include_reasoning
+        - reasoning
+        - web_search_options
+        - verbosity
+      example: temperature
+      x-speakeasy-unknown-values: allow
+    DefaultParameters:
+      type: object
+      nullable: true
+      properties:
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+      additionalProperties: false
+      description: Default parameters for this model
+      example:
+        temperature: 0.7
+        top_p: 0.9
+        frequency_penalty: 0
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the model
+          example: openai/gpt-4
+        canonical_slug:
+          type: string
+          description: Canonical slug for the model
+          example: openai/gpt-4
+        hugging_face_id:
+          type: string
+          nullable: true
+          description: Hugging Face model identifier, if applicable
+          example: microsoft/DialoGPT-medium
+        name:
+          type: string
+          description: Display name of the model
+          example: GPT-4
+        created:
+          type: number
+          description: Unix timestamp of when the model was created
+          example: 1692901234
+        description:
+          type: string
+          description: Description of the model
+          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+        pricing:
+          $ref: '#/components/schemas/PublicPricing'
+        context_length:
+          type: number
+          nullable: true
+          description: Maximum context length in tokens
+          example: 8192
+        architecture:
+          $ref: '#/components/schemas/ModelArchitecture'
+        top_provider:
+          $ref: '#/components/schemas/TopProviderInfo'
+        per_request_limits:
+          $ref: '#/components/schemas/PerRequestLimits'
+        supported_parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+          description: List of supported parameters for this model
+        default_parameters:
+          $ref: '#/components/schemas/DefaultParameters'
+      required:
+        - id
+        - canonical_slug
+        - name
+        - created
+        - pricing
+        - context_length
+        - architecture
+        - top_provider
+        - per_request_limits
+        - supported_parameters
+        - default_parameters
+      description: Information about an AI model available on OpenRouter
+      example:
+        id: openai/gpt-4
+        canonical_slug: openai/gpt-4
+        name: GPT-4
+        created: 1692901234
+        description: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+        pricing:
+          prompt: '0.00003'
+          completion: '0.00006'
+          request: '0'
+          image: '0'
+        context_length: 8192
+        architecture:
+          tokenizer: GPT
+          instruct_type: chatml
+          modality: text->text
+          input_modalities:
+            - text
+          output_modalities:
+            - text
+        top_provider:
+          context_length: 8192
+          max_completion_tokens: 4096
+          is_moderated: true
+        per_request_limits: null
+        supported_parameters:
+          - temperature
+          - top_p
+          - max_tokens
+        default_parameters: null
+    ModelsListResponseData:
+      type: array
+      items:
+        $ref: '#/components/schemas/Model'
+      description: List of available models
     ModelsListResponse:
       type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ModelsListResponseData'
+      required:
+        - data
       description: List of available models
       example:
         data:
@@ -3024,8 +4361,211 @@ components:
               - frequency_penalty
               - presence_penalty
             default_parameters: null
+    InstructType:
+      type: string
+      nullable: true
+      enum:
+        - none
+        - airoboros
+        - alpaca
+        - alpaca-modif
+        - chatml
+        - claude
+        - code-llama
+        - gemma
+        - llama2
+        - llama3
+        - mistral
+        - nemotron
+        - neural
+        - openchat
+        - phi3
+        - rwkv
+        - vicuna
+        - zephyr
+        - deepseek-r1
+        - deepseek-v3.1
+        - qwq
+        - qwen3
+      description: Instruction format type
+      x-speakeasy-unknown-values: allow
+    EndpointStatus:
+      type: integer
+      enum:
+        - 0
+        - -1
+        - -2
+        - -3
+        - -5
+        - -10
+      example: 0
+      x-speakeasy-unknown-values: allow
+    PublicEndpoint:
+      type: object
+      properties:
+        name:
+          type: string
+        model_name:
+          type: string
+        context_length:
+          type: number
+        pricing:
+          type: object
+          properties:
+            prompt:
+              $ref: '#/components/schemas/BigNumberUnion'
+            completion:
+              $ref: '#/components/schemas/BigNumberUnion'
+            request:
+              $ref: '#/components/schemas/BigNumberUnion'
+            image:
+              $ref: '#/components/schemas/BigNumberUnion'
+            image_output:
+              $ref: '#/components/schemas/BigNumberUnion'
+            audio:
+              $ref: '#/components/schemas/BigNumberUnion'
+            input_audio_cache:
+              $ref: '#/components/schemas/BigNumberUnion'
+            web_search:
+              $ref: '#/components/schemas/BigNumberUnion'
+            internal_reasoning:
+              $ref: '#/components/schemas/BigNumberUnion'
+            input_cache_read:
+              $ref: '#/components/schemas/BigNumberUnion'
+            input_cache_write:
+              $ref: '#/components/schemas/BigNumberUnion'
+            discount:
+              type: number
+          required:
+            - prompt
+            - completion
+          additionalProperties: false
+        provider_name:
+          $ref: '#/components/schemas/ProviderName'
+        tag:
+          type: string
+        quantization:
+          allOf:
+            - $ref: '#/components/schemas/Quantization'
+            - nullable: true
+        max_completion_tokens:
+          type: number
+          nullable: true
+        max_prompt_tokens:
+          type: number
+          nullable: true
+        supported_parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        uptime_last_30m:
+          type: number
+          nullable: true
+        supports_implicit_caching:
+          type: boolean
+      required:
+        - name
+        - model_name
+        - context_length
+        - pricing
+        - provider_name
+        - tag
+        - quantization
+        - max_completion_tokens
+        - max_prompt_tokens
+        - supported_parameters
+        - uptime_last_30m
+        - supports_implicit_caching
+      description: Information about a specific model endpoint
+      example:
+        name: 'OpenAI: GPT-4'
+        model_name: GPT-4
+        context_length: 8192
+        pricing:
+          prompt: '0.00003'
+          completion: '0.00006'
+          request: '0'
+          image: '0'
+        provider_name: OpenAI
+        tag: openai
+        quantization: fp16
+        max_completion_tokens: 4096
+        max_prompt_tokens: 8192
+        supported_parameters:
+          - temperature
+          - top_p
+          - max_tokens
+        status: 0
+        uptime_last_30m: 99.5
+        supports_implicit_caching: true
     ListEndpointsResponse:
       type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the model
+          example: openai/gpt-4
+        name:
+          type: string
+          description: Display name of the model
+          example: GPT-4
+        created:
+          type: number
+          description: Unix timestamp of when the model was created
+          example: 1692901234
+        description:
+          type: string
+          description: Description of the model
+          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+        architecture:
+          allOf:
+            - $ref: '#/components/schemas/ModelArchitecture'
+            - properties:
+                tokenizer:
+                  allOf:
+                    - $ref: '#/components/schemas/ModelGroup'
+                    - nullable: true
+                instruct_type:
+                  $ref: '#/components/schemas/InstructType'
+                modality:
+                  type: string
+                  nullable: true
+                  description: Primary modality of the model
+                  example: text
+                input_modalities:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/InputModality'
+                  description: Supported input modalities
+                output_modalities:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OutputModality'
+                  description: Supported output modalities
+              required:
+                - tokenizer
+                - instruct_type
+                - modality
+                - input_modalities
+                - output_modalities
+              example:
+                tokenizer: GPT
+                instruct_type: chatml
+                modality: text
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicEndpoint'
+          description: List of available endpoints for this model
+      required:
+        - id
+        - name
+        - created
+        - description
+        - architecture
+        - endpoints
       description: List of available endpoints for a model
       example:
         id: openai/gpt-4
@@ -3063,30 +4603,6 @@ components:
             status: default
             uptime_last_30m: 99.5
             supports_implicit_caching: true
-    PublicEndpoint:
-      type: object
-      description: Information about a specific model endpoint
-      example:
-        name: 'OpenAI: GPT-4'
-        model_name: GPT-4
-        context_length: 8192
-        pricing:
-          prompt: '0.00003'
-          completion: '0.00006'
-          request: '0'
-          image: '0'
-        provider_name: OpenAI
-        tag: openai
-        quantization: fp16
-        max_completion_tokens: 4096
-        max_prompt_tokens: 8192
-        supported_parameters:
-          - temperature
-          - top_p
-          - max_tokens
-        status: 0
-        uptime_last_30m: 99.5
-        supports_implicit_caching: true
     __schema0:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
@@ -4100,12 +5616,84 @@ paths:
                 required:
                   - data
               x-speakeasy-sse-sentinel: '[DONE]'
-        default:
-          description: Error Response
+        '400':
+          description: Bad Request - Invalid request parameters or malformed input
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '402':
+          description: Payment Required - Insufficient credits or quota to complete request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+        '404':
+          description: Not Found - Resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '408':
+          description: Request Timeout - Operation exceeded time limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+        '413':
+          description: Payload Too Large - Request payload exceeds size limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+        '422':
+          description: Unprocessable Entity - Semantic validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+        '502':
+          description: Bad Gateway - Provider/upstream API failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+        '503':
+          description: Service Unavailable - Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+        '524':
+          description: Infrastructure Timeout - Request timed out at our edge network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+        '529':
+          description: Provider Overloaded - Provider is temporarily overloaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createApiAlphaResponses
   /activity:
     get:
@@ -4151,18 +5739,30 @@ paths:
                       prompt_tokens: 50
                       completion_tokens: 125
                       reasoning_tokens: 25
-        4XX:
-          description: Error Response
+        '400':
+          description: Bad Request - Invalid date format or date range
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden - Only provisioning keys can fetch activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
   /credits:
     get:
       x-speakeasy-name-override: getCredits
@@ -4183,18 +5783,24 @@ paths:
                   data:
                     total_credits: 100.5
                     total_usage: 25.75
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '403':
+          description: Forbidden - Only provisioning keys can fetch credits
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
   /credits/coinbase:
     post:
       security:
@@ -4293,18 +5899,30 @@ paths:
                       - web3_data
                 required:
                   - data
-        4XX:
-          description: Error
+        '400':
+          description: Bad Request - Invalid credit amount or request body
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
   /generation:
     get:
       tags:
@@ -4521,18 +6139,54 @@ paths:
                 required:
                   - data
                 description: Generation response
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '402':
+          description: Payment Required - Insufficient credits or quota to complete request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+        '404':
+          description: Not Found - Generation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+        '502':
+          description: Bad Gateway - Provider/upstream API failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+        '524':
+          description: Infrastructure Timeout - Request timed out at our edge network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+        '529':
+          description: Provider Overloaded - Provider is temporarily overloaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: getGeneration
   /models/count:
     get:
@@ -4547,12 +6201,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelsCountResponse'
-        default:
-          description: Error Response
+        '500':
+          description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsCount
   /models:
     get:
@@ -4591,12 +6245,18 @@ paths:
             application/rss+xml:
               schema:
                 type: string
-        default:
-          description: Error Response
+        '400':
+          description: Bad Request - Invalid request parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/BadRequestResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: getModels
   /models/user:
     get:
@@ -4613,12 +6273,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelsListResponse'
-        default:
-          description: Error Response
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsUser
   /models/{author}/{slug}/endpoints:
     get:
@@ -4650,18 +6316,18 @@ paths:
                     $ref: '#/components/schemas/ListEndpointsResponse'
                 required:
                   - data
-        4XX:
-          description: Error Response
+        '404':
+          description: Not Found - Model does not exist
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/InternalServerResponse'
   /endpoints/zdr:
     get:
       tags:
@@ -4682,12 +6348,12 @@ paths:
                       $ref: '#/components/schemas/PublicEndpoint'
                 required:
                   - data
-        default:
-          description: Error
+        '500':
+          description: Internal Server Error - Unexpected server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEndpointsZdr
   /parameters/{author}/{slug}:
     get:
@@ -4850,18 +6516,24 @@ paths:
                       - temperature
                       - top_p
                       - max_tokens
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - Model or provider does not exist
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: getParameters
   /providers:
     get:
@@ -4919,36 +6591,11 @@ paths:
                 required:
                   - data
         '500':
-          description: Internal Server Error
+          description: Internal Server Error - Unexpected server error
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      code:
-                        type: number
-                        description: Error code
-                        example: 400
-                      message:
-                        type: string
-                        description: Error message
-                        example: Bad Request
-                    required:
-                      - code
-                      - message
-                    description: Error details
-                    example:
-                      code: 400
-                      message: Bad Request
-                required:
-                  - error
-                example:
-                  error:
-                    code: 400
-                    message: Bad Request
+                $ref: '#/components/schemas/InternalServerResponse'
   /keys:
     get:
       operationId: list
@@ -5123,18 +6770,24 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
     post:
       x-speakeasy-name-override: create
       tags:
@@ -5333,18 +6986,30 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: null
                   key: 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
-        4XX:
-          description: Error Response
+        '400':
+          description: Bad Request - Invalid request parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: createKeys
   /keys/{hash}:
     patch:
@@ -5550,18 +7215,36 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T16:00:00Z'
-        4XX:
-          description: Error Response
+        '400':
+          description: Bad Request - Invalid request parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - API key does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: updateKeys
     delete:
       x-speakeasy-name-override: delete
@@ -5594,18 +7277,30 @@ paths:
                   - deleted
                 example:
                   deleted: true
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - API key does not exist
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/NotFoundResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
       operationId: deleteKeys
     get:
       operationId: getKey
@@ -5770,18 +7465,30 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T15:45:00Z'
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Missing or invalid authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - API key does not exist
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/NotFoundResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
   /key:
     get:
       operationId: getCurrentKey
@@ -5950,18 +7657,18 @@ paths:
                       requests: 1000
                       interval: 1h
                       note: This field is deprecated and safe to ignore.
-        4XX:
-          description: Error Response
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        5XX:
-          description: Error Response
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/InternalServerResponse'
   /chat/completions:
     post:
       summary: Create a chat completion

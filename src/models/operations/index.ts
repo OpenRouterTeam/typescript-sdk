@@ -16,7 +16,6 @@ export * from "./getuseractivity.js";
 export * from "./list.js";
 export * from "./listendpoints.js";
 export * from "./listendpointszdr.js";
-export * from "./listmodelscount.js";
 export * from "./listmodelsuser.js";
 export * from "./listproviders.js";
 export * from "./sendchatcompletionrequest.js";

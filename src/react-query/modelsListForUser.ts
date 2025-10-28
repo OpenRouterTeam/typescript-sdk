@@ -16,12 +16,13 @@ import { OpenRouterCore } from "../core.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type ModelsListForUserQueryData = operations.ListModelsUserResponse;
+export type ModelsListForUserQueryData = models.ModelsListResponse;
 
 /**
  * List models filtered by user provider preferences

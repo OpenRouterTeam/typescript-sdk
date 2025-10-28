@@ -8,7 +8,60 @@ Returns a list of endpoints
 import { ListEndpointsResponse } from "@openrouter/sdk/models/operations";
 
 let value: ListEndpointsResponse = {
-  data: {},
+  data: {
+    id: "openai/gpt-4",
+    name: "GPT-4",
+    created: 1692901234,
+    description:
+      "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.",
+    architecture: {
+      tokenizer: "GPT",
+      instructType: "chatml",
+      modality: "text->text",
+      inputModalities: [
+        "text",
+      ],
+      outputModalities: [
+        "text",
+      ],
+    },
+    endpoints: [
+      {
+        name: "OpenAI: GPT-4",
+        modelName: "GPT-4",
+        contextLength: 8192,
+        pricing: {
+          prompt: "0.00003",
+          completion: "0.00006",
+          request: "0",
+          image: "0",
+          imageOutput: "1000",
+          audio: "1000",
+          inputAudioCache: 1000,
+          webSearch: 1000,
+          internalReasoning: "1000",
+          inputCacheRead: 1000,
+          inputCacheWrite: 1000,
+          discount: 1993.56,
+        },
+        providerName: "OpenAI",
+        tag: "openai",
+        quantization: "fp16",
+        maxCompletionTokens: 4096,
+        maxPromptTokens: 8192,
+        supportedParameters: [
+          "temperature",
+          "top_p",
+          "max_tokens",
+          "frequency_penalty",
+          "presence_penalty",
+        ],
+        status: -5,
+        uptimeLast30m: 99.5,
+        supportsImplicitCaching: true,
+      },
+    ],
+  },
 };
 ```
 

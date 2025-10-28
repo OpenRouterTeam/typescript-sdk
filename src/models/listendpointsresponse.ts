@@ -3,29 +3,246 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  InputModality,
+  InputModality$inboundSchema,
+  InputModality$outboundSchema,
+} from "./inputmodality.js";
+import {
+  InstructType,
+  InstructType$inboundSchema,
+  InstructType$outboundSchema,
+} from "./instructtype.js";
+import {
+  OutputModality,
+  OutputModality$inboundSchema,
+  OutputModality$outboundSchema,
+} from "./outputmodality.js";
+import {
+  PublicEndpoint,
+  PublicEndpoint$inboundSchema,
+  PublicEndpoint$Outbound,
+  PublicEndpoint$outboundSchema,
+} from "./publicendpoint.js";
+
+/**
+ * Tokenizer type used by the model
+ */
+export const Tokenizer = {
+  Router: "Router",
+  Media: "Media",
+  Other: "Other",
+  Gpt: "GPT",
+  Claude: "Claude",
+  Gemini: "Gemini",
+  Grok: "Grok",
+  Cohere: "Cohere",
+  Nova: "Nova",
+  Qwen: "Qwen",
+  Yi: "Yi",
+  DeepSeek: "DeepSeek",
+  Mistral: "Mistral",
+  Llama2: "Llama2",
+  Llama3: "Llama3",
+  Llama4: "Llama4",
+  PaLM: "PaLM",
+  Rwkv: "RWKV",
+  Qwen3: "Qwen3",
+} as const;
+/**
+ * Tokenizer type used by the model
+ */
+export type Tokenizer = OpenEnum<typeof Tokenizer>;
+
+/**
+ * Model architecture information
+ */
+export type Architecture = {
+  tokenizer: Tokenizer | null;
+  /**
+   * Instruction format type
+   */
+  instructType: InstructType | null;
+  /**
+   * Primary modality of the model
+   */
+  modality: string | null;
+  /**
+   * Supported input modalities
+   */
+  inputModalities: Array<InputModality>;
+  /**
+   * Supported output modalities
+   */
+  outputModalities: Array<OutputModality>;
+};
 
 /**
  * List of available endpoints for a model
  */
-export type ListEndpointsResponse = {};
+export type ListEndpointsResponse = {
+  /**
+   * Unique identifier for the model
+   */
+  id: string;
+  /**
+   * Display name of the model
+   */
+  name: string;
+  /**
+   * Unix timestamp of when the model was created
+   */
+  created: number;
+  /**
+   * Description of the model
+   */
+  description: string;
+  architecture: Architecture;
+  /**
+   * List of available endpoints for this model
+   */
+  endpoints: Array<PublicEndpoint>;
+};
+
+/** @internal */
+export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = z
+  .union([
+    z.enum(Tokenizer),
+    z.string().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const Tokenizer$outboundSchema: z.ZodType<Tokenizer, Tokenizer> = z
+  .union([
+    z.enum(Tokenizer),
+    z.string().and(z.custom<Unrecognized<string>>()),
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Tokenizer$ {
+  /** @deprecated use `Tokenizer$inboundSchema` instead. */
+  export const inboundSchema = Tokenizer$inboundSchema;
+  /** @deprecated use `Tokenizer$outboundSchema` instead. */
+  export const outboundSchema = Tokenizer$outboundSchema;
+}
+
+/** @internal */
+export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
+  .object({
+    tokenizer: z.nullable(Tokenizer$inboundSchema),
+    instruct_type: z.nullable(InstructType$inboundSchema),
+    modality: z.nullable(z.string()),
+    input_modalities: z.array(InputModality$inboundSchema),
+    output_modalities: z.array(OutputModality$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "instruct_type": "instructType",
+      "input_modalities": "inputModalities",
+      "output_modalities": "outputModalities",
+    });
+  });
+
+/** @internal */
+export type Architecture$Outbound = {
+  tokenizer: string | null;
+  instruct_type: string | null;
+  modality: string | null;
+  input_modalities: Array<string>;
+  output_modalities: Array<string>;
+};
+
+/** @internal */
+export const Architecture$outboundSchema: z.ZodType<
+  Architecture$Outbound,
+  Architecture
+> = z.object({
+  tokenizer: z.nullable(Tokenizer$outboundSchema),
+  instructType: z.nullable(InstructType$outboundSchema),
+  modality: z.nullable(z.string()),
+  inputModalities: z.array(InputModality$outboundSchema),
+  outputModalities: z.array(OutputModality$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    instructType: "instruct_type",
+    inputModalities: "input_modalities",
+    outputModalities: "output_modalities",
+  });
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Architecture$ {
+  /** @deprecated use `Architecture$inboundSchema` instead. */
+  export const inboundSchema = Architecture$inboundSchema;
+  /** @deprecated use `Architecture$outboundSchema` instead. */
+  export const outboundSchema = Architecture$outboundSchema;
+  /** @deprecated use `Architecture$Outbound` instead. */
+  export type Outbound = Architecture$Outbound;
+}
+
+export function architectureToJSON(architecture: Architecture): string {
+  return JSON.stringify(Architecture$outboundSchema.parse(architecture));
+}
+
+export function architectureFromJSON(
+  jsonString: string,
+): SafeParseResult<Architecture, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Architecture$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Architecture' from JSON`,
+  );
+}
 
 /** @internal */
 export const ListEndpointsResponse$inboundSchema: z.ZodType<
   ListEndpointsResponse,
   unknown
-> = z.object({});
+> = z.object({
+  id: z.string(),
+  name: z.string(),
+  created: z.number(),
+  description: z.string(),
+  architecture: z.lazy(() => Architecture$inboundSchema),
+  endpoints: z.array(PublicEndpoint$inboundSchema),
+});
 
 /** @internal */
-export type ListEndpointsResponse$Outbound = {};
+export type ListEndpointsResponse$Outbound = {
+  id: string;
+  name: string;
+  created: number;
+  description: string;
+  architecture: Architecture$Outbound;
+  endpoints: Array<PublicEndpoint$Outbound>;
+};
 
 /** @internal */
 export const ListEndpointsResponse$outboundSchema: z.ZodType<
   ListEndpointsResponse$Outbound,
   ListEndpointsResponse
-> = z.object({});
+> = z.object({
+  id: z.string(),
+  name: z.string(),
+  created: z.number(),
+  description: z.string(),
+  architecture: z.lazy(() => Architecture$outboundSchema),
+  endpoints: z.array(PublicEndpoint$outboundSchema),
+});
 
 /**
  * @internal

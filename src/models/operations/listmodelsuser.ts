@@ -6,15 +6,10 @@ import * as z from "zod/v4";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type ListModelsUserSecurity = {
   bearer: string;
 };
-
-export type ListModelsUserResponse =
-  | models.ErrorResponse
-  | models.ModelsListResponse;
 
 /** @internal */
 export const ListModelsUserSecurity$inboundSchema: z.ZodType<
@@ -65,59 +60,5 @@ export function listModelsUserSecurityFromJSON(
     jsonString,
     (x) => ListModelsUserSecurity$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ListModelsUserSecurity' from JSON`,
-  );
-}
-
-/** @internal */
-export const ListModelsUserResponse$inboundSchema: z.ZodType<
-  ListModelsUserResponse,
-  unknown
-> = z.union([
-  models.ErrorResponse$inboundSchema,
-  models.ModelsListResponse$inboundSchema,
-]);
-
-/** @internal */
-export type ListModelsUserResponse$Outbound =
-  | models.ErrorResponse$Outbound
-  | models.ModelsListResponse$Outbound;
-
-/** @internal */
-export const ListModelsUserResponse$outboundSchema: z.ZodType<
-  ListModelsUserResponse$Outbound,
-  ListModelsUserResponse
-> = z.union([
-  models.ErrorResponse$outboundSchema,
-  models.ModelsListResponse$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListModelsUserResponse$ {
-  /** @deprecated use `ListModelsUserResponse$inboundSchema` instead. */
-  export const inboundSchema = ListModelsUserResponse$inboundSchema;
-  /** @deprecated use `ListModelsUserResponse$outboundSchema` instead. */
-  export const outboundSchema = ListModelsUserResponse$outboundSchema;
-  /** @deprecated use `ListModelsUserResponse$Outbound` instead. */
-  export type Outbound = ListModelsUserResponse$Outbound;
-}
-
-export function listModelsUserResponseToJSON(
-  listModelsUserResponse: ListModelsUserResponse,
-): string {
-  return JSON.stringify(
-    ListModelsUserResponse$outboundSchema.parse(listModelsUserResponse),
-  );
-}
-
-export function listModelsUserResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<ListModelsUserResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListModelsUserResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListModelsUserResponse' from JSON`,
   );
 }

@@ -10,22 +10,95 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Model count data
  */
-export type ModelsCountResponse = {};
+export type ModelsCountResponseData = {
+  /**
+   * Total number of available models
+   */
+  count: number;
+};
+
+/**
+ * Model count data
+ */
+export type ModelsCountResponse = {
+  /**
+   * Model count data
+   */
+  data: ModelsCountResponseData;
+};
+
+/** @internal */
+export const ModelsCountResponseData$inboundSchema: z.ZodType<
+  ModelsCountResponseData,
+  unknown
+> = z.object({
+  count: z.number(),
+});
+
+/** @internal */
+export type ModelsCountResponseData$Outbound = {
+  count: number;
+};
+
+/** @internal */
+export const ModelsCountResponseData$outboundSchema: z.ZodType<
+  ModelsCountResponseData$Outbound,
+  ModelsCountResponseData
+> = z.object({
+  count: z.number(),
+});
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ModelsCountResponseData$ {
+  /** @deprecated use `ModelsCountResponseData$inboundSchema` instead. */
+  export const inboundSchema = ModelsCountResponseData$inboundSchema;
+  /** @deprecated use `ModelsCountResponseData$outboundSchema` instead. */
+  export const outboundSchema = ModelsCountResponseData$outboundSchema;
+  /** @deprecated use `ModelsCountResponseData$Outbound` instead. */
+  export type Outbound = ModelsCountResponseData$Outbound;
+}
+
+export function modelsCountResponseDataToJSON(
+  modelsCountResponseData: ModelsCountResponseData,
+): string {
+  return JSON.stringify(
+    ModelsCountResponseData$outboundSchema.parse(modelsCountResponseData),
+  );
+}
+
+export function modelsCountResponseDataFromJSON(
+  jsonString: string,
+): SafeParseResult<ModelsCountResponseData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ModelsCountResponseData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ModelsCountResponseData' from JSON`,
+  );
+}
 
 /** @internal */
 export const ModelsCountResponse$inboundSchema: z.ZodType<
   ModelsCountResponse,
   unknown
-> = z.object({});
+> = z.object({
+  data: z.lazy(() => ModelsCountResponseData$inboundSchema),
+});
 
 /** @internal */
-export type ModelsCountResponse$Outbound = {};
+export type ModelsCountResponse$Outbound = {
+  data: ModelsCountResponseData$Outbound;
+};
 
 /** @internal */
 export const ModelsCountResponse$outboundSchema: z.ZodType<
   ModelsCountResponse$Outbound,
   ModelsCountResponse
-> = z.object({});
+> = z.object({
+  data: z.lazy(() => ModelsCountResponseData$outboundSchema),
+});
 
 /**
  * @internal

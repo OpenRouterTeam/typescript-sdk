@@ -7,10 +7,15 @@ Model count data
 ```typescript
 import { ModelsCountResponse } from "@openrouter/sdk/models";
 
-let value: ModelsCountResponse = {};
+let value: ModelsCountResponse = {
+  data: {
+    count: 150,
+  },
+};
 ```
 
 ## Fields
 
-| Field       | Type        | Required    | Description |
-| ----------- | ----------- | ----------- | ----------- |
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            | Example                                                                |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `data`                                                                 | [models.ModelsCountResponseData](../models/modelscountresponsedata.md) | :heavy_check_mark:                                                     | Model count data                                                       | {<br/>"count": 150<br/>}                                               |

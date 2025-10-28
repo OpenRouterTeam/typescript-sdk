@@ -86,7 +86,116 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({});
+  const result = await openRouter.beta.responses.send({
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    instructions: "<value>",
+    metadata: {
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
+    },
+    tools: [
+      {
+        type: "function",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
+          },
+        },
+      },
+    ],
+    toolChoice: {
+      type: "function",
+      name: "<value>",
+    },
+    parallelToolCalls: true,
+    model: "anthropic/claude-4.5-sonnet-20250929",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "minimal",
+      summary: "auto",
+      maxTokens: 5632.72,
+      enabled: true,
+    },
+    maxOutputTokens: 5913.88,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 1770.66,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "<id>",
+      variables: {
+        "key": {
+          type: "input_text",
+          text: "Hello, how can I help you?",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "auto",
+    truncation: "auto",
+    provider: {
+      allowFallbacks: false,
+      requireParameters: false,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "OpenAI",
+      ],
+      only: null,
+      ignore: [
+        "OpenAI",
+      ],
+      quantizations: [
+        "fp16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "1000",
+        completion: 1000,
+        image: 1000,
+        audio: 1000,
+        request: 1000,
+      },
+      experimental: {},
+    },
+    plugins: [
+      {
+        id: "file-parser",
+        maxFiles: 6167.86,
+        pdf: {
+          engine: "native",
+        },
+      },
+    ],
+    user: "Minnie.Ratke",
+  });
 
   console.log(result);
 }
@@ -116,7 +225,116 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({});
+  const result = await openRouter.beta.responses.send({
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    instructions: "<value>",
+    metadata: {
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
+    },
+    tools: [
+      {
+        type: "function",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
+          },
+        },
+      },
+    ],
+    toolChoice: {
+      type: "function",
+      name: "<value>",
+    },
+    parallelToolCalls: true,
+    model: "anthropic/claude-4.5-sonnet-20250929",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "minimal",
+      summary: "auto",
+      maxTokens: 5632.72,
+      enabled: true,
+    },
+    maxOutputTokens: 5913.88,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 1770.66,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "<id>",
+      variables: {
+        "key": {
+          type: "input_text",
+          text: "Hello, how can I help you?",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "auto",
+    truncation: "auto",
+    provider: {
+      allowFallbacks: false,
+      requireParameters: false,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "OpenAI",
+      ],
+      only: null,
+      ignore: [
+        "OpenAI",
+      ],
+      quantizations: [
+        "fp16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "1000",
+        completion: 1000,
+        image: 1000,
+        audio: 1000,
+        request: 1000,
+      },
+      experimental: {},
+    },
+    plugins: [
+      {
+        id: "file-parser",
+        maxFiles: 6167.86,
+        pdf: {
+          engine: "native",
+        },
+      },
+    ],
+    user: "Minnie.Ratke",
+  });
 
   console.log(result);
 }
@@ -136,7 +354,11 @@ const openRouter = new OpenRouter();
 async function run() {
   const result = await openRouter.credits.createCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {});
+  }, {
+    amount: 100,
+    sender: "0x1234567890123456789012345678901234567890",
+    chainId: 1,
+  });
 
   console.log(result);
 }
@@ -310,7 +532,116 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({});
+  const result = await openRouter.beta.responses.send({
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    instructions: "<value>",
+    metadata: {
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
+    },
+    tools: [
+      {
+        type: "function",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
+          },
+        },
+      },
+    ],
+    toolChoice: {
+      type: "function",
+      name: "<value>",
+    },
+    parallelToolCalls: true,
+    model: "anthropic/claude-4.5-sonnet-20250929",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "minimal",
+      summary: "auto",
+      maxTokens: 5632.72,
+      enabled: true,
+    },
+    maxOutputTokens: 5913.88,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 1770.66,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "<id>",
+      variables: {
+        "key": {
+          type: "input_text",
+          text: "Hello, how can I help you?",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "auto",
+    truncation: "auto",
+    provider: {
+      allowFallbacks: false,
+      requireParameters: false,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "OpenAI",
+      ],
+      only: null,
+      ignore: [
+        "OpenAI",
+      ],
+      quantizations: [
+        "fp16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "1000",
+        completion: 1000,
+        image: 1000,
+        audio: 1000,
+        request: 1000,
+      },
+      experimental: {},
+    },
+    plugins: [
+      {
+        id: "file-parser",
+        maxFiles: 6167.86,
+        pdf: {
+          engine: "native",
+        },
+      },
+    ],
+    user: "Minnie.Ratke",
+  });
 
   console.log(result);
 }
@@ -337,7 +668,116 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({}, {
+  const result = await openRouter.beta.responses.send({
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    instructions: "<value>",
+    metadata: {
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
+    },
+    tools: [
+      {
+        type: "function",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
+          },
+        },
+      },
+    ],
+    toolChoice: {
+      type: "function",
+      name: "<value>",
+    },
+    parallelToolCalls: true,
+    model: "anthropic/claude-4.5-sonnet-20250929",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "minimal",
+      summary: "auto",
+      maxTokens: 5632.72,
+      enabled: true,
+    },
+    maxOutputTokens: 5913.88,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 1770.66,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "<id>",
+      variables: {
+        "key": {
+          type: "input_text",
+          text: "Hello, how can I help you?",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "auto",
+    truncation: "auto",
+    provider: {
+      allowFallbacks: false,
+      requireParameters: false,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "OpenAI",
+      ],
+      only: null,
+      ignore: [
+        "OpenAI",
+      ],
+      quantizations: [
+        "fp16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "1000",
+        completion: 1000,
+        image: 1000,
+        audio: 1000,
+        request: 1000,
+      },
+      experimental: {},
+    },
+    plugins: [
+      {
+        id: "file-parser",
+        maxFiles: 6167.86,
+        pdf: {
+          engine: "native",
+        },
+      },
+    ],
+    user: "Minnie.Ratke",
+  }, {
     retries: {
       strategy: "backoff",
       backoff: {
@@ -376,7 +816,116 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({});
+  const result = await openRouter.beta.responses.send({
+    input: [
+      {
+        type: "message",
+        role: "user",
+        content: "Hello, how are you?",
+      },
+    ],
+    instructions: "<value>",
+    metadata: {
+      "user_id": "123",
+      "session_id": "abc-def-ghi",
+    },
+    tools: [
+      {
+        type: "function",
+        name: "get_current_weather",
+        description: "Get the current weather in a given location",
+        strict: true,
+        parameters: {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+            },
+          },
+        },
+      },
+    ],
+    toolChoice: {
+      type: "function",
+      name: "<value>",
+    },
+    parallelToolCalls: true,
+    model: "anthropic/claude-4.5-sonnet-20250929",
+    models: [
+      "<value 1>",
+      "<value 2>",
+    ],
+    text: {
+      format: {
+        type: "text",
+      },
+      verbosity: "medium",
+    },
+    reasoning: {
+      effort: "minimal",
+      summary: "auto",
+      maxTokens: 5632.72,
+      enabled: true,
+    },
+    maxOutputTokens: 5913.88,
+    temperature: 0.7,
+    topP: 0.9,
+    topK: 1770.66,
+    promptCacheKey: "<value>",
+    previousResponseId: "<id>",
+    prompt: {
+      id: "<id>",
+      variables: {
+        "key": {
+          type: "input_text",
+          text: "Hello, how can I help you?",
+        },
+      },
+    },
+    include: [
+      "file_search_call.results",
+    ],
+    background: false,
+    safetyIdentifier: "<value>",
+    store: false,
+    serviceTier: "auto",
+    truncation: "auto",
+    provider: {
+      allowFallbacks: false,
+      requireParameters: false,
+      dataCollection: "deny",
+      zdr: true,
+      order: [
+        "OpenAI",
+      ],
+      only: null,
+      ignore: [
+        "OpenAI",
+      ],
+      quantizations: [
+        "fp16",
+      ],
+      sort: "price",
+      maxPrice: {
+        prompt: "1000",
+        completion: 1000,
+        image: 1000,
+        audio: 1000,
+        request: 1000,
+      },
+      experimental: {},
+    },
+    plugins: [
+      {
+        id: "file-parser",
+        maxFiles: 6167.86,
+        pdf: {
+          engine: "native",
+        },
+      },
+    ],
+    user: "Minnie.Ratke",
+  });
 
   console.log(result);
 }
@@ -411,8 +960,115 @@ const openRouter = new OpenRouter({
 
 async function run() {
   try {
-    const result = await openRouter.analytics.getUserActivity({
-      date: "2025-08-24",
+    const result = await openRouter.beta.responses.send({
+      input: [
+        {
+          type: "message",
+          role: "user",
+          content: "Hello, how are you?",
+        },
+      ],
+      instructions: "<value>",
+      metadata: {
+        "user_id": "123",
+        "session_id": "abc-def-ghi",
+      },
+      tools: [
+        {
+          type: "function",
+          name: "get_current_weather",
+          description: "Get the current weather in a given location",
+          strict: true,
+          parameters: {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+              },
+            },
+          },
+        },
+      ],
+      toolChoice: {
+        type: "function",
+        name: "<value>",
+      },
+      parallelToolCalls: true,
+      model: "anthropic/claude-4.5-sonnet-20250929",
+      models: [
+        "<value 1>",
+        "<value 2>",
+      ],
+      text: {
+        format: {
+          type: "text",
+        },
+        verbosity: "medium",
+      },
+      reasoning: {
+        effort: "minimal",
+        summary: "auto",
+        maxTokens: 5632.72,
+        enabled: true,
+      },
+      maxOutputTokens: 5913.88,
+      temperature: 0.7,
+      topP: 0.9,
+      topK: 1770.66,
+      promptCacheKey: "<value>",
+      previousResponseId: "<id>",
+      prompt: {
+        id: "<id>",
+        variables: {
+          "key": {
+            type: "input_text",
+            text: "Hello, how can I help you?",
+          },
+        },
+      },
+      include: [
+        "file_search_call.results",
+      ],
+      background: false,
+      safetyIdentifier: "<value>",
+      store: false,
+      serviceTier: "auto",
+      truncation: "auto",
+      provider: {
+        allowFallbacks: false,
+        requireParameters: false,
+        dataCollection: "deny",
+        zdr: true,
+        order: [
+          "OpenAI",
+        ],
+        only: null,
+        ignore: [
+          "OpenAI",
+        ],
+        quantizations: [
+          "fp16",
+        ],
+        sort: "price",
+        maxPrice: {
+          prompt: "1000",
+          completion: 1000,
+          image: 1000,
+          audio: 1000,
+          request: 1000,
+        },
+        experimental: {},
+      },
+      plugins: [
+        {
+          id: "file-parser",
+          maxFiles: 6167.86,
+          pdf: {
+            engine: "native",
+          },
+        },
+      ],
+      user: "Minnie.Ratke",
     });
 
     console.log(result);
@@ -425,8 +1081,8 @@ async function run() {
       console.log(error.headers);
 
       // Depending on the method different errors may be thrown
-      if (error instanceof errors.ErrorResponse) {
-        console.log(error.data$.error); // models.ErrorResponseError
+      if (error instanceof errors.BadRequestResponseError) {
+        console.log(error.data$.error); // models.BadRequestResponseErrorData
         console.log(error.data$.userId); // string
       }
     }
@@ -438,10 +1094,11 @@ run();
 ```
 
 ### Error Classes
-**Primary error:**
+**Primary errors:**
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
+  * [`InternalServerResponseError`](./src/models/errors/internalserverresponseerror.ts): Internal Server Error - Unexpected server error. Status code `500`. *
 
-<details><summary>Less common errors (9)</summary>
+<details><summary>Less common errors (20)</summary>
 
 <br />
 
@@ -454,9 +1111,20 @@ run();
 
 
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
-* [`ErrorResponse`](./src/models/errors/errorresponse.ts): Error response. Applicable to 12 of 20 methods.*
+* [`UnauthorizedResponseError`](./src/models/errors/unauthorizedresponseerror.ts): Unauthorized - Authentication required or invalid credentials. Status code `401`. Applicable to 13 of 20 methods.*
+* [`TooManyRequestsResponseError`](./src/models/errors/toomanyrequestsresponseerror.ts): Too Many Requests - Rate limit exceeded. Status code `429`. Applicable to 8 of 20 methods.*
+* [`NotFoundResponseError`](./src/models/errors/notfoundresponseerror.ts): Not Found - Resource does not exist. Status code `404`. Applicable to 7 of 20 methods.*
+* [`BadRequestResponseError`](./src/models/errors/badrequestresponseerror.ts): Bad Request - Invalid request parameters or malformed input. Status code `400`. Applicable to 6 of 20 methods.*
 * [`ChatError`](./src/models/errors/chaterror.ts): Bad request - invalid parameters. Applicable to 2 of 20 methods.*
-* [`InternalServerError`](./src/models/errors/internalservererror.ts): Internal Server Error. Status code `500`. Applicable to 1 of 20 methods.*
+* [`PaymentRequiredResponseError`](./src/models/errors/paymentrequiredresponseerror.ts): Payment Required - Insufficient credits or quota to complete request. Status code `402`. Applicable to 2 of 20 methods.*
+* [`ForbiddenResponseError`](./src/models/errors/forbiddenresponseerror.ts): Forbidden - Authentication successful but insufficient permissions. Status code `403`. Applicable to 2 of 20 methods.*
+* [`BadGatewayResponseError`](./src/models/errors/badgatewayresponseerror.ts): Bad Gateway - Provider/upstream API failure. Status code `502`. Applicable to 2 of 20 methods.*
+* [`EdgeNetworkTimeoutResponseError`](./src/models/errors/edgenetworktimeoutresponseerror.ts): Infrastructure Timeout - Provider request timed out at edge network. Status code `524`. Applicable to 2 of 20 methods.*
+* [`ProviderOverloadedResponseError`](./src/models/errors/provideroverloadedresponseerror.ts): Provider Overloaded - Provider is temporarily overloaded. Status code `529`. Applicable to 2 of 20 methods.*
+* [`RequestTimeoutResponseError`](./src/models/errors/requesttimeoutresponseerror.ts): Request Timeout - Operation exceeded time limit. Status code `408`. Applicable to 1 of 20 methods.*
+* [`PayloadTooLargeResponseError`](./src/models/errors/payloadtoolargeresponseerror.ts): Payload Too Large - Request payload exceeds size limits. Status code `413`. Applicable to 1 of 20 methods.*
+* [`UnprocessableEntityResponseError`](./src/models/errors/unprocessableentityresponseerror.ts): Unprocessable Entity - Semantic validation failure. Status code `422`. Applicable to 1 of 20 methods.*
+* [`ServiceUnavailableResponseError`](./src/models/errors/serviceunavailableresponseerror.ts): Service Unavailable - Service temporarily unavailable. Status code `503`. Applicable to 1 of 20 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

@@ -35,17 +35,17 @@ const value: models.ResponsesOutputMessage = {
 ```typescript
 const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "msg-abc123",
+  id: "reasoning-123",
   content: [
     {
       type: "reasoning_text",
-      text: "Hello! How can I help you today?",
+      text: "First, we analyze the problem...",
     },
   ],
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem using first principles",
+      text: "Analyzed the problem and found the optimal solution.",
     },
   ],
   encryptedContent: "<value>",

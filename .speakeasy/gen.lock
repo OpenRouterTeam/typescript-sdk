@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: b497af800c6af3eee76358f6da69b969
+  docChecksum: 7f43f4106a0f75ade1a816e5e10b615f
   docVersion: 1.0.0
   speakeasyVersion: 1.642.1
   generationVersion: 2.731.4
-  releaseVersion: 0.0.1-beta.11
-  configChecksum: e56adf14cadcee6e3695153442088909
+  releaseVersion: 0.0.1-beta.12
+  configChecksum: 36d34058cd13b897e88b223354a76018
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -51,8 +51,12 @@ generatedFiles:
   - USAGE.md
   - docs/lib/utils/retryconfig.md
   - docs/models/activityitem.md
+  - docs/models/architecture.md
   - docs/models/assistantmessage.md
   - docs/models/assistantmessagecontent.md
+  - docs/models/badgatewayresponseerrordata.md
+  - docs/models/badrequestresponseerrordata.md
+  - docs/models/chainid.md
   - docs/models/chatcompletionfinishreason.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
@@ -64,6 +68,7 @@ generatedFiles:
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
+  - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
@@ -79,9 +84,11 @@ generatedFiles:
   - docs/models/chatstreamingmessagetoolcall.md
   - docs/models/chatstreamingmessagetoolcallfunction.md
   - docs/models/chatstreamingresponsechunk.md
+  - docs/models/chatstreamingresponsechunkdata.md
   - docs/models/chatstreamingresponsechunkerror.md
   - docs/models/chatstreamoptions.md
   - docs/models/code.md
+  - docs/models/codeenum.md
   - docs/models/completionchoice.md
   - docs/models/completioncreateparams.md
   - docs/models/completioncreateparamsresponseformatjsonobject.md
@@ -96,34 +103,64 @@ generatedFiles:
   - docs/models/completionusage.md
   - docs/models/costdetails.md
   - docs/models/createchargerequest.md
-  - docs/models/data.md
+  - docs/models/datacollection.md
+  - docs/models/defaultparameters.md
+  - docs/models/edgenetworktimeoutresponseerrordata.md
   - docs/models/effort.md
-  - docs/models/errorresponse.md
-  - docs/models/errorresponsecode.md
-  - docs/models/errorresponseerror.md
+  - docs/models/endpointstatus.md
+  - docs/models/engine.md
+  - docs/models/errors/badgatewayresponseerror.md
+  - docs/models/errors/badrequestresponseerror.md
   - docs/models/errors/chaterror.md
-  - docs/models/errors/errorresponse.md
-  - docs/models/errors/internalservererror.md
+  - docs/models/errors/edgenetworktimeoutresponseerror.md
+  - docs/models/errors/forbiddenresponseerror.md
+  - docs/models/errors/internalserverresponseerror.md
+  - docs/models/errors/notfoundresponseerror.md
+  - docs/models/errors/payloadtoolargeresponseerror.md
+  - docs/models/errors/paymentrequiredresponseerror.md
+  - docs/models/errors/provideroverloadedresponseerror.md
+  - docs/models/errors/requesttimeoutresponseerror.md
+  - docs/models/errors/serviceunavailableresponseerror.md
+  - docs/models/errors/toomanyrequestsresponseerror.md
+  - docs/models/errors/unauthorizedresponseerror.md
+  - docs/models/errors/unprocessableentityresponseerror.md
+  - docs/models/experimental.md
   - docs/models/filecitation.md
   - docs/models/filecitationtype.md
   - docs/models/filepath.md
   - docs/models/filepathtype.md
-  - docs/models/format.md
+  - docs/models/forbiddenresponseerrordata.md
+  - docs/models/idfileparser.md
+  - docs/models/idmoderation.md
+  - docs/models/idweb.md
+  - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
   - docs/models/inputaudio.md
+  - docs/models/inputmodality.md
   - docs/models/inputtokensdetails.md
+  - docs/models/instructtype.md
+  - docs/models/internalserverresponseerrordata.md
   - docs/models/jsonschemaconfig.md
   - docs/models/listendpointsresponse.md
+  - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
+  - docs/models/model.md
+  - docs/models/modelarchitecture.md
+  - docs/models/modelarchitectureinstructtype.md
+  - docs/models/modelgroup.md
   - docs/models/modelscountresponse.md
+  - docs/models/modelscountresponsedata.md
   - docs/models/modelslistresponse.md
   - docs/models/namedtoolchoice.md
   - docs/models/namedtoolchoicefunction.md
+  - docs/models/notfoundresponseerrordata.md
   - docs/models/objectt.md
+  - docs/models/only.md
   - docs/models/openairesponsesannotation.md
+  - docs/models/openairesponsesincludable.md
   - docs/models/openairesponsesincompletedetails.md
   - docs/models/openairesponsesinputcontent1.md
   - docs/models/openairesponsesinputcontent2.md
@@ -133,7 +170,16 @@ generatedFiles:
   - docs/models/openairesponsesinputmessage1.md
   - docs/models/openairesponsesinputmessage2.md
   - docs/models/openairesponsesinputroleassistant.md
+  - docs/models/openairesponsesinputroledeveloper1.md
+  - docs/models/openairesponsesinputroledeveloper2.md
+  - docs/models/openairesponsesinputrolesystem1.md
+  - docs/models/openairesponsesinputrolesystem2.md
+  - docs/models/openairesponsesinputroleunion1.md
+  - docs/models/openairesponsesinputroleunion2.md
+  - docs/models/openairesponsesinputroleuser1.md
+  - docs/models/openairesponsesinputroleuser2.md
   - docs/models/openairesponsesinputtypefunctioncall.md
+  - docs/models/openairesponsesinputtypefunctioncalloutput.md
   - docs/models/openairesponsesinputtypemessage1.md
   - docs/models/openairesponsesinputtypemessage2.md
   - docs/models/openairesponsesinputunion.md
@@ -155,8 +201,21 @@ generatedFiles:
   - docs/models/openairesponsestoolchoicetypewebsearchpreview20250311.md
   - docs/models/openairesponsestoolchoiceunion.md
   - docs/models/openairesponsestruncation.md
+  - docs/models/openresponseseasyinputmessage.md
+  - docs/models/openresponseseasyinputmessagecontent1.md
+  - docs/models/openresponseseasyinputmessagecontent2.md
+  - docs/models/openresponseseasyinputmessageroleassistant.md
+  - docs/models/openresponseseasyinputmessageroledeveloper.md
+  - docs/models/openresponseseasyinputmessagerolesystem.md
+  - docs/models/openresponseseasyinputmessageroleunion.md
+  - docs/models/openresponseseasyinputmessageroleuser.md
+  - docs/models/openresponseseasyinputmessagetype.md
   - docs/models/openresponseserrorevent.md
   - docs/models/openresponseserroreventtype.md
+  - docs/models/openresponsesfunctioncalloutput.md
+  - docs/models/openresponsesfunctioncalloutputtype.md
+  - docs/models/openresponsesfunctiontoolcall.md
+  - docs/models/openresponsesfunctiontoolcalltype.md
   - docs/models/openresponsesimagegencallcompleted.md
   - docs/models/openresponsesimagegencallcompletedtype.md
   - docs/models/openresponsesimagegencallgenerating.md
@@ -165,21 +224,44 @@ generatedFiles:
   - docs/models/openresponsesimagegencallinprogresstype.md
   - docs/models/openresponsesimagegencallpartialimage.md
   - docs/models/openresponsesimagegencallpartialimagetype.md
+  - docs/models/openresponsesinput.md
+  - docs/models/openresponsesinput1.md
+  - docs/models/openresponsesinputmessageitem.md
+  - docs/models/openresponsesinputmessageitemcontent.md
+  - docs/models/openresponsesinputmessageitemroledeveloper.md
+  - docs/models/openresponsesinputmessageitemrolesystem.md
+  - docs/models/openresponsesinputmessageitemroleunion.md
+  - docs/models/openresponsesinputmessageitemroleuser.md
+  - docs/models/openresponsesinputmessageitemtype.md
   - docs/models/openresponseslogprobs.md
   - docs/models/openresponsesnonstreamingresponse.md
   - docs/models/openresponsesnonstreamingresponsetoolfunction.md
+  - docs/models/openresponsesnonstreamingresponsetoolunion.md
   - docs/models/openresponsesnonstreamingresponsetype.md
+  - docs/models/openresponsesreasoning.md
+  - docs/models/openresponsesreasoningconfig.md
   - docs/models/openresponsesreasoningdeltaevent.md
   - docs/models/openresponsesreasoningdeltaeventtype.md
   - docs/models/openresponsesreasoningdoneevent.md
   - docs/models/openresponsesreasoningdoneeventtype.md
+  - docs/models/openresponsesreasoningformat.md
+  - docs/models/openresponsesreasoningstatuscompleted.md
+  - docs/models/openresponsesreasoningstatusincomplete.md
+  - docs/models/openresponsesreasoningstatusinprogress.md
+  - docs/models/openresponsesreasoningstatusunion.md
   - docs/models/openresponsesreasoningsummarypartaddedevent.md
   - docs/models/openresponsesreasoningsummarypartaddedeventtype.md
   - docs/models/openresponsesreasoningsummarytextdeltaevent.md
   - docs/models/openresponsesreasoningsummarytextdeltaeventtype.md
   - docs/models/openresponsesreasoningsummarytextdoneevent.md
   - docs/models/openresponsesreasoningsummarytextdoneeventtype.md
+  - docs/models/openresponsesreasoningtype.md
   - docs/models/openresponsesrequest.md
+  - docs/models/openresponsesrequesttoolfunction.md
+  - docs/models/openresponsesrequesttoolunion.md
+  - docs/models/openresponsesrequesttype.md
+  - docs/models/openresponsesresponsetext.md
+  - docs/models/openresponsesresponsetextverbosity.md
   - docs/models/openresponsesstreamevent.md
   - docs/models/openresponsesstreameventresponsecompleted.md
   - docs/models/openresponsesstreameventresponsecontentpartadded.md
@@ -223,7 +305,6 @@ generatedFiles:
   - docs/models/operations/createkeysresponse.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
-  - docs/models/operations/errort.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -245,9 +326,6 @@ generatedFiles:
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
   - docs/models/operations/listendpointszdrresponse.md
-  - docs/models/operations/listendpointszdrresponsebody.md
-  - docs/models/operations/listmodelscountresponse.md
-  - docs/models/operations/listmodelsuserresponse.md
   - docs/models/operations/listmodelsusersecurity.md
   - docs/models/operations/listprovidersdata.md
   - docs/models/operations/listprovidersresponse.md
@@ -265,6 +343,7 @@ generatedFiles:
   - docs/models/operations/updatekeysrequestbody.md
   - docs/models/operations/updatekeysresponse.md
   - docs/models/operations/web3data.md
+  - docs/models/order.md
   - docs/models/outputitemimagegenerationcall.md
   - docs/models/outputitemimagegenerationcalltype.md
   - docs/models/outputmessage.md
@@ -275,12 +354,30 @@ generatedFiles:
   - docs/models/outputmessagestatusinprogress.md
   - docs/models/outputmessagestatusunion.md
   - docs/models/outputmessagetype.md
+  - docs/models/outputmodality.md
   - docs/models/outputtokensdetails.md
+  - docs/models/parameter.md
   - docs/models/part1.md
   - docs/models/part2.md
+  - docs/models/payloadtoolargeresponseerrordata.md
+  - docs/models/paymentrequiredresponseerrordata.md
+  - docs/models/pdf.md
+  - docs/models/pdfengine.md
+  - docs/models/perrequestlimits.md
+  - docs/models/plugin.md
+  - docs/models/pluginfileparser.md
+  - docs/models/pluginmoderation.md
+  - docs/models/pluginweb.md
+  - docs/models/pricing.md
   - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
+  - docs/models/provider.md
+  - docs/models/providername.md
+  - docs/models/provideroverloadedresponseerrordata.md
   - docs/models/publicendpoint.md
+  - docs/models/publicendpointquantization.md
+  - docs/models/publicpricing.md
+  - docs/models/quantization.md
   - docs/models/reason.md
   - docs/models/reasoning.md
   - docs/models/reasoningsummarytext.md
@@ -288,6 +385,7 @@ generatedFiles:
   - docs/models/reasoningsummaryverbosity.md
   - docs/models/reasoningtextcontent.md
   - docs/models/reasoningtextcontenttype.md
+  - docs/models/requesttimeoutresponseerrordata.md
   - docs/models/responseformatjsonschema.md
   - docs/models/responseformattextconfig.md
   - docs/models/responseformattextgrammar.md
@@ -301,7 +399,6 @@ generatedFiles:
   - docs/models/responseoutputtext.md
   - docs/models/responseoutputtexttype.md
   - docs/models/responseserrorfield.md
-  - docs/models/responseserrorfieldcode.md
   - docs/models/responsesformatjsonobject.md
   - docs/models/responsesformatjsonobjecttype.md
   - docs/models/responsesformattext.md
@@ -339,27 +436,25 @@ generatedFiles:
   - docs/models/responseswebsearchuserlocation.md
   - docs/models/responseswebsearchuserlocationtype.md
   - docs/models/responsetextconfig.md
-  - docs/models/roledeveloper1.md
-  - docs/models/roledeveloper2.md
-  - docs/models/rolesystem1.md
-  - docs/models/rolesystem2.md
-  - docs/models/roleunion1.md
-  - docs/models/roleunion2.md
-  - docs/models/roleuser1.md
-  - docs/models/roleuser2.md
+  - docs/models/responsetextconfigverbosity.md
   - docs/models/security.md
+  - docs/models/servicetier.md
+  - docs/models/serviceunavailableresponseerrordata.md
+  - docs/models/sort.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
+  - docs/models/tokenizer.md
   - docs/models/tool.md
   - docs/models/toolcallstatus.md
   - docs/models/toolfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
-  - docs/models/toolunion.md
+  - docs/models/toomanyrequestsresponseerrordata.md
   - docs/models/toplogprob.md
+  - docs/models/topproviderinfo.md
+  - docs/models/truncation.md
   - docs/models/type.md
-  - docs/models/typefunctioncalloutput.md
   - docs/models/typeresponsecompleted.md
   - docs/models/typeresponsecontentpartadded.md
   - docs/models/typeresponsecontentpartdone.md
@@ -377,12 +472,13 @@ generatedFiles:
   - docs/models/typeresponsereasoningsummarypartdone.md
   - docs/models/typeresponserefusaldelta.md
   - docs/models/typeresponserefusaldone.md
+  - docs/models/unauthorizedresponseerrordata.md
+  - docs/models/unprocessableentityresponseerrordata.md
   - docs/models/urlcitation.md
   - docs/models/urlcitationtype.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/verbosity.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -448,6 +544,8 @@ generatedFiles:
   - src/lib/url.ts
   - src/models/activityitem.ts
   - src/models/assistantmessage.ts
+  - src/models/badgatewayresponseerrordata.ts
+  - src/models/badrequestresponseerrordata.ts
   - src/models/chatcompletionfinishreason.ts
   - src/models/chaterror.ts
   - src/models/chatgenerationparams.ts
@@ -472,27 +570,50 @@ generatedFiles:
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
   - src/models/createchargerequest.ts
-  - src/models/errorresponse.ts
+  - src/models/defaultparameters.ts
+  - src/models/edgenetworktimeoutresponseerrordata.ts
+  - src/models/endpointstatus.ts
+  - src/models/errors/badgatewayresponseerror.ts
+  - src/models/errors/badrequestresponseerror.ts
   - src/models/errors/chaterror.ts
-  - src/models/errors/errorresponse.ts
+  - src/models/errors/edgenetworktimeoutresponseerror.ts
+  - src/models/errors/forbiddenresponseerror.ts
   - src/models/errors/httpclienterrors.ts
   - src/models/errors/index.ts
-  - src/models/errors/listproviders.ts
+  - src/models/errors/internalserverresponseerror.ts
+  - src/models/errors/notfoundresponseerror.ts
   - src/models/errors/openrouterdefaulterror.ts
   - src/models/errors/openroutererror.ts
+  - src/models/errors/payloadtoolargeresponseerror.ts
+  - src/models/errors/paymentrequiredresponseerror.ts
+  - src/models/errors/provideroverloadedresponseerror.ts
+  - src/models/errors/requesttimeoutresponseerror.ts
   - src/models/errors/responsevalidationerror.ts
   - src/models/errors/sdkvalidationerror.ts
+  - src/models/errors/serviceunavailableresponseerror.ts
+  - src/models/errors/toomanyrequestsresponseerror.ts
+  - src/models/errors/unauthorizedresponseerror.ts
+  - src/models/errors/unprocessableentityresponseerror.ts
   - src/models/filecitation.ts
   - src/models/filepath.ts
+  - src/models/forbiddenresponseerrordata.ts
   - src/models/imagegenerationstatus.ts
   - src/models/index.ts
+  - src/models/inputmodality.ts
+  - src/models/instructtype.ts
+  - src/models/internalserverresponseerrordata.ts
   - src/models/jsonschemaconfig.ts
   - src/models/listendpointsresponse.ts
   - src/models/message.ts
+  - src/models/model.ts
+  - src/models/modelarchitecture.ts
+  - src/models/modelgroup.ts
   - src/models/modelscountresponse.ts
   - src/models/modelslistresponse.ts
   - src/models/namedtoolchoice.ts
+  - src/models/notfoundresponseerrordata.ts
   - src/models/openairesponsesannotation.ts
+  - src/models/openairesponsesincludable.ts
   - src/models/openairesponsesincompletedetails.ts
   - src/models/openairesponsesinputunion.ts
   - src/models/openairesponsesprompt.ts
@@ -503,19 +624,27 @@ generatedFiles:
   - src/models/openairesponsesservicetier.ts
   - src/models/openairesponsestoolchoiceunion.ts
   - src/models/openairesponsestruncation.ts
+  - src/models/openresponseseasyinputmessage.ts
   - src/models/openresponseserrorevent.ts
+  - src/models/openresponsesfunctioncalloutput.ts
+  - src/models/openresponsesfunctiontoolcall.ts
   - src/models/openresponsesimagegencallcompleted.ts
   - src/models/openresponsesimagegencallgenerating.ts
   - src/models/openresponsesimagegencallinprogress.ts
   - src/models/openresponsesimagegencallpartialimage.ts
+  - src/models/openresponsesinput.ts
+  - src/models/openresponsesinputmessageitem.ts
   - src/models/openresponseslogprobs.ts
   - src/models/openresponsesnonstreamingresponse.ts
+  - src/models/openresponsesreasoning.ts
+  - src/models/openresponsesreasoningconfig.ts
   - src/models/openresponsesreasoningdeltaevent.ts
   - src/models/openresponsesreasoningdoneevent.ts
   - src/models/openresponsesreasoningsummarypartaddedevent.ts
   - src/models/openresponsesreasoningsummarytextdeltaevent.ts
   - src/models/openresponsesreasoningsummarytextdoneevent.ts
   - src/models/openresponsesrequest.ts
+  - src/models/openresponsesresponsetext.ts
   - src/models/openresponsesstreamevent.ts
   - src/models/openresponsestoplogprobs.ts
   - src/models/openresponsesusage.ts
@@ -538,17 +667,26 @@ generatedFiles:
   - src/models/operations/list.ts
   - src/models/operations/listendpoints.ts
   - src/models/operations/listendpointszdr.ts
-  - src/models/operations/listmodelscount.ts
   - src/models/operations/listmodelsuser.ts
   - src/models/operations/listproviders.ts
   - src/models/operations/sendchatcompletionrequest.ts
   - src/models/operations/updatekeys.ts
   - src/models/outputitemimagegenerationcall.ts
   - src/models/outputmessage.ts
+  - src/models/outputmodality.ts
+  - src/models/parameter.ts
+  - src/models/payloadtoolargeresponseerrordata.ts
+  - src/models/paymentrequiredresponseerrordata.ts
+  - src/models/perrequestlimits.ts
+  - src/models/providername.ts
+  - src/models/provideroverloadedresponseerrordata.ts
   - src/models/publicendpoint.ts
+  - src/models/publicpricing.ts
+  - src/models/quantization.ts
   - src/models/reasoningsummarytext.ts
   - src/models/reasoningsummaryverbosity.ts
   - src/models/reasoningtextcontent.ts
+  - src/models/requesttimeoutresponseerrordata.ts
   - src/models/responseformatjsonschema.ts
   - src/models/responseformattextconfig.ts
   - src/models/responseformattextgrammar.ts
@@ -571,10 +709,15 @@ generatedFiles:
   - src/models/responseswebsearchuserlocation.ts
   - src/models/responsetextconfig.ts
   - src/models/security.ts
+  - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
   - src/models/tool.ts
   - src/models/toolcallstatus.ts
   - src/models/toolresponsemessage.ts
+  - src/models/toomanyrequestsresponseerrordata.ts
+  - src/models/topproviderinfo.ts
+  - src/models/unauthorizedresponseerrordata.ts
+  - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
   - src/models/websearchpreviewtooluserlocation.ts
@@ -974,6 +1117,14 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   getCredits:
     speakeasy-default-get-credits:
       responses:
@@ -985,6 +1136,12 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": null}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   addCoinbaseCharge:
     speakeasy-default-add-coinbase-charge:
       requestBody:
@@ -1071,6 +1228,12 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": null}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   previewZDR:
     speakeasy-default-preview-ZDR:
       responses:
@@ -1097,13 +1260,19 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
   listProviders:
     speakeasy-default-list-providers:
       responses:
         "200":
           application/json: {"data": [{"name": "OpenAI", "slug": "openai", "privacy_policy_url": "https://openai.com/privacy", "terms_of_service_url": "https://openai.com/terms", "status_page_url": "https://status.openai.com"}]}
         "500":
-          application/json: {"error": {"code": 400, "message": "Bad Request"}}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   listApiKeys:
     speakeasy-default-list-api-keys:
       parameters:
@@ -1177,6 +1346,10 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": null}
   exchangeAuthorizationCode:
     speakeasy-default-exchange-authorization-code:
       requestBody:
@@ -1246,16 +1419,42 @@ examples:
   createApiAlphaResponses:
     speakeasy-default-create-api-alpha-responses:
       requestBody:
-        application/json: {}
+        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": {"type": "function", "name": "<value>"}, "parallel_tool_calls": true, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>", "<value 2>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "minimal", "summary": "auto", "max_tokens": 5632.72, "enabled": true}, "max_output_tokens": 5913.88, "temperature": 0.7, "top_p": 0.9, "top_k": 1770.66, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "include": ["file_search_call.results"], "background": false, "safety_identifier": "<value>", "store": false, "service_tier": "auto", "truncation": "auto", "stream": false, "provider": {"allow_fallbacks": false, "require_parameters": false, "data_collection": "deny", "zdr": true, "order": ["OpenAI"], "only": null, "ignore": ["OpenAI"], "quantizations": ["fp16"], "sort": "price", "max_price": {"prompt": "1000", "completion": 1000, "image": 1000, "audio": 1000, "request": 1000}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 6167.86, "pdf": {"engine": "native"}}], "user": "Minnie.Ratke"}
       responses:
         "200":
-          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 8700.29, "is_byok": true, "cost_details": {"upstream_inference_cost": 5688.69, "upstream_inference_input_cost": 1605.62, "upstream_inference_output_cost": 6596.56}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "prompt-abc123", "variables": {"name": {"type": "input_text", "text": "John"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto"}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Alphonso_Stokes-Parisian", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 8700.29, "is_byok": true, "cost_details": {"upstream_inference_cost": 5688.69, "upstream_inference_input_cost": 1605.62, "upstream_inference_output_cost": 6596.56}}, "max_tool_calls": 3304.4, "top_logprobs": 2211.18, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "high", "summary": "auto"}, "service_tier": "default", "store": true, "truncation": null, "text": {"format": {"type": "text"}, "verbosity": "medium"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "402":
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "408":
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later.", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "413":
+          application/json: {"error": {"code": 413, "message": "Request payload too large", "metadata": {"key": "<value>"}}, "user_id": null}
+        "422":
+          application/json: {"error": {"code": 422, "message": "Invalid argument", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "524":
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later.", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "529":
+          application/json: {"error": {"code": 529, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   createCoinbaseCharge:
     speakeasy-default-create-coinbase-charge:
       requestBody:
-        application/json: {}
+        application/json: {"amount": 100, "sender": "0x1234567890123456789012345678901234567890", "chain_id": 1}
       responses:
         "200":
           application/json: {"data": {"id": "<id>", "created_at": "1715098772685", "expires_at": "1755552807642", "web3_data": {"transfer_intent": {"call_data": {"deadline": "<value>", "fee_amount": "<value>", "id": "<id>", "operator": "<value>", "prefix": "<value>", "recipient": "<value>", "recipient_amount": "<value>", "recipient_currency": "<value>", "refund_destination": "<value>", "signature": "<value>"}, "metadata": {"chain_id": 4907.84, "contract_address": "<value>", "sender": "<value>"}}}}}
@@ -1265,6 +1464,14 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": null}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   getGeneration:
     speakeasy-default-get-generation:
       parameters:
@@ -1279,13 +1486,31 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "402":
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": null}, "user_id": null}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "524":
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later.", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "529":
+          application/json: {"error": {"code": 529, "message": "Provider returned error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
   listModelsCount:
     speakeasy-default-list-models-count:
       responses:
         "200":
-          application/json: {}
+          application/json: {"data": {"count": 150}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   getModels:
     speakeasy-default-get-models:
       parameters:
@@ -1296,17 +1521,25 @@ examples:
           use_rss_chat_links: "<value>"
       responses:
         "200":
-          application/json: {}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": 1000, "audio": 1000, "input_audio_cache": "1000", "web_search": 1000, "internal_reasoning": "1000", "input_cache_read": 1000, "input_cache_write": 1000, "discount": 8591.99}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
           application/rss+xml: "<value>"
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   listModelsUser:
     speakeasy-default-list-models-user:
       responses:
         "200":
-          application/json: {}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": 1000, "audio": 1000, "input_audio_cache": "1000", "web_search": "1000", "internal_reasoning": 1000, "input_cache_read": 1000, "input_cache_write": 1000, "discount": 389.6}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   listEndpoints:
     speakeasy-default-list-endpoints:
       parameters:
@@ -1315,20 +1548,26 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {}}
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI: GPT-4", "model_name": "GPT-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": "1000", "audio": 1000, "input_audio_cache": "1000", "web_search": 1000, "internal_reasoning": 1000, "input_cache_read": 1000, "input_cache_write": "1000", "discount": 5355.68}, "provider_name": "OpenAI", "tag": "openai", "quantization": "fp16", "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "status": -5, "uptime_last_30m": 99.5, "supports_implicit_caching": true}]}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
   listEndpointsZdr:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{}]}
+          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 8891.09, "pricing": {"prompt": "1000", "completion": 1000, "request": 1000, "image": 1000, "image_output": 1000, "audio": 1000, "input_audio_cache": 1000, "web_search": 1000, "internal_reasoning": "1000", "input_cache_read": 1000, "input_cache_write": 1000, "discount": 6579.66}, "provider_name": "OpenAI", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 4685.25, "max_prompt_tokens": 22.7, "supported_parameters": ["temperature"], "status": 0, "uptime_last_30m": 6060.66, "supports_implicit_caching": true}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
   createKeys:
     speakeasy-default-create-keys:
       requestBody:
@@ -1342,6 +1581,14 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": null}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   updateKeys:
     speakeasy-default-update-keys:
       parameters:
@@ -1358,6 +1605,16 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
   deleteKeys:
     speakeasy-default-delete-keys:
       parameters:
@@ -1372,6 +1629,14 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>"}}, "user_id": null}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
   getKey:
     speakeasy-default-get-key:
       parameters:
@@ -1386,5 +1651,12 @@ examples:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes Detected:\n* `openrouter.chat.send()`: \n  *  `request.stream` **Changed** **Breaking** :warning:\n* `openrouter.completions.generate()`: \n  *  `request.stream` **Changed** **Breaking** :warning:\n"

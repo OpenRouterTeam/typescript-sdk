@@ -6,26 +6,43 @@ import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  Model,
+  Model$inboundSchema,
+  Model$Outbound,
+  Model$outboundSchema,
+} from "./model.js";
 
 /**
  * List of available models
  */
-export type ModelsListResponse = {};
+export type ModelsListResponse = {
+  /**
+   * List of available models
+   */
+  data: Array<Model>;
+};
 
 /** @internal */
 export const ModelsListResponse$inboundSchema: z.ZodType<
   ModelsListResponse,
   unknown
-> = z.object({});
+> = z.object({
+  data: z.array(Model$inboundSchema),
+});
 
 /** @internal */
-export type ModelsListResponse$Outbound = {};
+export type ModelsListResponse$Outbound = {
+  data: Array<Model$Outbound>;
+};
 
 /** @internal */
 export const ModelsListResponse$outboundSchema: z.ZodType<
   ModelsListResponse$Outbound,
   ModelsListResponse
-> = z.object({});
+> = z.object({
+  data: z.array(Model$outboundSchema),
+});
 
 /**
  * @internal

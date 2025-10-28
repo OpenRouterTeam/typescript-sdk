@@ -101,10 +101,12 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                         | Status Code                        | Content Type                       |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ForbiddenResponseError      | 403                                | application/json                   |
+| errors.InternalServerResponseError | 500                                | application/json                   |
+| errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
 ## createCoinbaseCharge
 
@@ -121,7 +123,11 @@ const openRouter = new OpenRouter();
 async function run() {
   const result = await openRouter.credits.createCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {});
+  }, {
+    amount: 100,
+    sender: "0x1234567890123456789012345678901234567890",
+    chainId: 1,
+  });
 
   console.log(result);
 }
@@ -144,7 +150,11 @@ const openRouter = new OpenRouterCore();
 async function run() {
   const res = await creditsCreateCoinbaseCharge(openRouter, {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {});
+  }, {
+    amount: 100,
+    sender: "0x1234567890123456789012345678901234567890",
+    chainId: 1,
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -189,7 +199,10 @@ import {
 
 ### Errors
 
-| Error Type           | Status Code          | Content Type         |
-| -------------------- | -------------------- | -------------------- |
-| errors.ErrorResponse | 4XX                  | application/json     |
-| errors.ErrorResponse | 5XX                  | application/json     |
+| Error Type                          | Status Code                         | Content Type                        |
+| ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| errors.BadRequestResponseError      | 400                                 | application/json                    |
+| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
+| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
+| errors.InternalServerResponseError  | 500                                 | application/json                    |
+| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |

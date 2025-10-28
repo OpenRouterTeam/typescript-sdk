@@ -3,8 +3,11 @@
  */
 
 import { OpenRouterCore } from "../core.js";
+import { encodeJSON } from "../lib/encodings.js";
+import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -15,6 +18,7 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
+import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
@@ -31,11 +35,114 @@ import { Result } from "../types/fp.js";
  */
 export function betaResponsesSend(
   client: OpenRouterCore,
-  _request: models.OpenResponsesRequest,
+  request: models.OpenResponsesRequest & { stream?: false },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    models.OpenResponsesNonStreamingResponse,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function betaResponsesSend(
+  client: OpenRouterCore,
+  request: models.OpenResponsesRequest & { stream: true },
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    EventStream<operations.CreateApiAlphaResponsesResponseBody>,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function betaResponsesSend(
+  client: OpenRouterCore,
+  request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.CreateApiAlphaResponsesResponse,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
+    | OpenRouterError
+    | ResponseValidationError
+    | ConnectionError
+    | RequestAbortedError
+    | RequestTimeoutError
+    | InvalidRequestError
+    | UnexpectedClientError
+    | SDKValidationError
+  >
+>;
+export function betaResponsesSend(
+  client: OpenRouterCore,
+  request: models.OpenResponsesRequest,
+  options?: RequestOptions,
+): APIPromise<
+  Result<
+    operations.CreateApiAlphaResponsesResponse,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -48,19 +155,32 @@ export function betaResponsesSend(
 > {
   return new APIPromise($do(
     client,
-    _request,
+    request,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
-  _request: models.OpenResponsesRequest,
+  request: models.OpenResponsesRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
       operations.CreateApiAlphaResponsesResponse,
+      | errors.BadRequestResponseError
+      | errors.UnauthorizedResponseError
+      | errors.PaymentRequiredResponseError
+      | errors.NotFoundResponseError
+      | errors.RequestTimeoutResponseError
+      | errors.PayloadTooLargeResponseError
+      | errors.UnprocessableEntityResponseError
+      | errors.TooManyRequestsResponseError
+      | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
+      | errors.ServiceUnavailableResponseError
+      | errors.EdgeNetworkTimeoutResponseError
+      | errors.ProviderOverloadedResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -73,11 +193,22 @@ async function $do(
     APICall,
   ]
 > {
+  const parsed = safeParse(
+    request,
+    (value) => models.OpenResponsesRequest$outboundSchema.parse(value),
+    "Input validation failed",
+  );
+  if (!parsed.ok) {
+    return [parsed, { status: "invalid" }];
+  }
+  const payload = parsed.value;
+  const body = encodeJSON("body", payload, { explode: true });
+
   const path = pathToFunc("/api/alpha/responses")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/json;q=1, text/event-stream;q=0",
+    Accept: request?.stream ? "text/event-stream" : "application/json",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -105,6 +236,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
@@ -115,7 +247,23 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: [
+      "400",
+      "401",
+      "402",
+      "404",
+      "408",
+      "413",
+      "422",
+      "429",
+      "4XX",
+      "500",
+      "502",
+      "503",
+      "524",
+      "529",
+      "5XX",
+    ],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -124,8 +272,25 @@ async function $do(
   }
   const response = doResult.value;
 
+  const responseFields = {
+    HttpMeta: { Response: response, Request: req },
+  };
+
   const [result] = await M.match<
     operations.CreateApiAlphaResponsesResponse,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -137,10 +302,22 @@ async function $do(
   >(
     M.json(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
     M.sse(200, operations.CreateApiAlphaResponsesResponse$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(408, errors.RequestTimeoutResponseError$inboundSchema),
+    M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
+    M.jsonErr(422, errors.UnprocessableEntityResponseError$inboundSchema),
+    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
+    M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
+    M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
-    M.json("default", operations.CreateApiAlphaResponsesResponse$inboundSchema),
-  )(response, req);
+  )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

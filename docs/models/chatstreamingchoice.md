@@ -10,10 +10,10 @@ let value: ChatStreamingChoice = {
     role: "assistant",
     content: "<value>",
     reasoning: "<value>",
-    refusal: null,
+    refusal: "<value>",
     toolCalls: [
       {
-        index: 5916.2,
+        index: 932.78,
         id: "<id>",
         function: {
           name: "<value>",
