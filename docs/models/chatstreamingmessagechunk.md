@@ -12,7 +12,7 @@ let value: ChatStreamingMessageChunk = {
   refusal: "<value>",
   toolCalls: [
     {
-      index: 5916.2,
+      index: 932.78,
       id: "<id>",
       function: {
         name: "<value>",

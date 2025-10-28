@@ -16,10 +16,7 @@ export type GetModelsRequest = {
   useRssChatLinks?: string | undefined;
 };
 
-export type GetModelsResponse =
-  | models.ErrorResponse
-  | models.ModelsListResponse
-  | string;
+export type GetModelsResponse = models.ModelsListResponse | string;
 
 /** @internal */
 export const GetModelsRequest$inboundSchema: z.ZodType<
@@ -98,15 +95,10 @@ export function getModelsRequestFromJSON(
 export const GetModelsResponse$inboundSchema: z.ZodType<
   GetModelsResponse,
   unknown
-> = z.union([
-  models.ErrorResponse$inboundSchema,
-  models.ModelsListResponse$inboundSchema,
-  z.string(),
-]);
+> = z.union([models.ModelsListResponse$inboundSchema, z.string()]);
 
 /** @internal */
 export type GetModelsResponse$Outbound =
-  | models.ErrorResponse$Outbound
   | models.ModelsListResponse$Outbound
   | string;
 
@@ -114,11 +106,7 @@ export type GetModelsResponse$Outbound =
 export const GetModelsResponse$outboundSchema: z.ZodType<
   GetModelsResponse$Outbound,
   GetModelsResponse
-> = z.union([
-  models.ErrorResponse$outboundSchema,
-  models.ModelsListResponse$outboundSchema,
-  z.string(),
-]);
+> = z.union([models.ModelsListResponse$outboundSchema, z.string()]);
 
 /**
  * @internal

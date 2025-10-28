@@ -12,7 +12,7 @@ import {
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ResponsesErrorFieldCode = {
+export const CodeEnum = {
   ServerError: "server_error",
   RateLimitExceeded: "rate_limit_exceeded",
   InvalidPrompt: "invalid_prompt",
@@ -32,32 +32,26 @@ export const ResponsesErrorFieldCode = {
   FailedToDownloadImage: "failed_to_download_image",
   ImageFileNotFound: "image_file_not_found",
 } as const;
-export type ResponsesErrorFieldCode = OpenEnum<typeof ResponsesErrorFieldCode>;
+export type CodeEnum = OpenEnum<typeof CodeEnum>;
 
 /**
  * Error information returned from the API
  */
 export type ResponsesErrorField = {
-  code: ResponsesErrorFieldCode;
+  code: CodeEnum;
   message: string;
 };
 
 /** @internal */
-export const ResponsesErrorFieldCode$inboundSchema: z.ZodType<
-  ResponsesErrorFieldCode,
-  unknown
-> = z
+export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = z
   .union([
-    z.enum(ResponsesErrorFieldCode),
+    z.enum(CodeEnum),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const ResponsesErrorFieldCode$outboundSchema: z.ZodType<
-  ResponsesErrorFieldCode,
-  ResponsesErrorFieldCode
-> = z.union([
-  z.enum(ResponsesErrorFieldCode),
+export const CodeEnum$outboundSchema: z.ZodType<CodeEnum, CodeEnum> = z.union([
+  z.enum(CodeEnum),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
@@ -65,11 +59,11 @@ export const ResponsesErrorFieldCode$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ResponsesErrorFieldCode$ {
-  /** @deprecated use `ResponsesErrorFieldCode$inboundSchema` instead. */
-  export const inboundSchema = ResponsesErrorFieldCode$inboundSchema;
-  /** @deprecated use `ResponsesErrorFieldCode$outboundSchema` instead. */
-  export const outboundSchema = ResponsesErrorFieldCode$outboundSchema;
+export namespace CodeEnum$ {
+  /** @deprecated use `CodeEnum$inboundSchema` instead. */
+  export const inboundSchema = CodeEnum$inboundSchema;
+  /** @deprecated use `CodeEnum$outboundSchema` instead. */
+  export const outboundSchema = CodeEnum$outboundSchema;
 }
 
 /** @internal */
@@ -77,7 +71,7 @@ export const ResponsesErrorField$inboundSchema: z.ZodType<
   ResponsesErrorField,
   unknown
 > = z.object({
-  code: ResponsesErrorFieldCode$inboundSchema,
+  code: CodeEnum$inboundSchema,
   message: z.string(),
 });
 
@@ -92,7 +86,7 @@ export const ResponsesErrorField$outboundSchema: z.ZodType<
   ResponsesErrorField$Outbound,
   ResponsesErrorField
 > = z.object({
-  code: ResponsesErrorFieldCode$outboundSchema,
+  code: CodeEnum$outboundSchema,
   message: z.string(),
 });
 

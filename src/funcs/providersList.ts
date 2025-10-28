@@ -32,7 +32,7 @@ export function providersList(
 ): APIPromise<
   Result<
     operations.ListProvidersResponse,
-    | errors.InternalServerError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -56,7 +56,7 @@ async function $do(
   [
     Result<
       operations.ListProvidersResponse,
-      | errors.InternalServerError
+      | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -125,7 +125,7 @@ async function $do(
 
   const [result] = await M.match<
     operations.ListProvidersResponse,
-    | errors.InternalServerError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -136,7 +136,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ListProvidersResponse$inboundSchema),
-    M.jsonErr(500, errors.InternalServerError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

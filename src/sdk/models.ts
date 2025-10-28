@@ -6,6 +6,7 @@ import { modelsCount } from "../funcs/modelsCount.js";
 import { modelsList } from "../funcs/modelsList.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -15,7 +16,7 @@ export class Models extends ClientSDK {
    */
   async count(
     options?: RequestOptions,
-  ): Promise<operations.ListModelsCountResponse> {
+  ): Promise<models.ModelsCountResponse> {
     return unwrapAsync(modelsCount(
       this,
       options,
@@ -42,7 +43,7 @@ export class Models extends ClientSDK {
   async listForUser(
     security: operations.ListModelsUserSecurity,
     options?: RequestOptions,
-  ): Promise<operations.ListModelsUserResponse> {
+  ): Promise<models.ModelsListResponse> {
     return unwrapAsync(modelsListForUser(
       this,
       security,

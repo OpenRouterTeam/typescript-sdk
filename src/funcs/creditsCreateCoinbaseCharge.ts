@@ -3,8 +3,10 @@
  */
 
 import { OpenRouterCore } from "../core.js";
+import { encodeJSON } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -33,12 +35,15 @@ import { Result } from "../types/fp.js";
 export function creditsCreateCoinbaseCharge(
   client: OpenRouterCore,
   security: operations.CreateCoinbaseChargeSecurity,
-  _request: models.CreateChargeRequest,
+  request: models.CreateChargeRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
     operations.CreateCoinbaseChargeResponse,
-    | errors.ErrorResponse
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -52,7 +57,7 @@ export function creditsCreateCoinbaseCharge(
   return new APIPromise($do(
     client,
     security,
-    _request,
+    request,
     options,
   ));
 }
@@ -60,13 +65,16 @@ export function creditsCreateCoinbaseCharge(
 async function $do(
   client: OpenRouterCore,
   security: operations.CreateCoinbaseChargeSecurity,
-  _request: models.CreateChargeRequest,
+  request: models.CreateChargeRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
       operations.CreateCoinbaseChargeResponse,
-      | errors.ErrorResponse
+      | errors.BadRequestResponseError
+      | errors.UnauthorizedResponseError
+      | errors.TooManyRequestsResponseError
+      | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -79,6 +87,17 @@ async function $do(
     APICall,
   ]
 > {
+  const parsed = safeParse(
+    request,
+    (value) => models.CreateChargeRequest$outboundSchema.parse(value),
+    "Input validation failed",
+  );
+  if (!parsed.ok) {
+    return [parsed, { status: "invalid" }];
+  }
+  const payload = parsed.value;
+  const body = encodeJSON("body", payload, { explode: true });
+
   const path = pathToFunc("/credits/coinbase")();
 
   const headers = new Headers(compactMap({
@@ -117,6 +136,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
@@ -127,7 +147,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: ["400", "401", "429", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -142,7 +162,10 @@ async function $do(
 
   const [result] = await M.match<
     operations.CreateCoinbaseChargeResponse,
-    | errors.ErrorResponse
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -153,8 +176,12 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.CreateCoinbaseChargeResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

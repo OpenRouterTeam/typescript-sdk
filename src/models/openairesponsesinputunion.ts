@@ -60,13 +60,15 @@ export type OpenAIResponsesInputFunctionCall = {
   status?: ToolCallStatus | undefined;
 };
 
-export const TypeFunctionCallOutput = {
+export const OpenAIResponsesInputTypeFunctionCallOutput = {
   FunctionCallOutput: "function_call_output",
 } as const;
-export type TypeFunctionCallOutput = ClosedEnum<typeof TypeFunctionCallOutput>;
+export type OpenAIResponsesInputTypeFunctionCallOutput = ClosedEnum<
+  typeof OpenAIResponsesInputTypeFunctionCallOutput
+>;
 
 export type OpenAIResponsesInputFunctionCallOutput = {
-  type: TypeFunctionCallOutput;
+  type: OpenAIResponsesInputTypeFunctionCallOutput;
   id: string;
   callId: string;
   output: string;
@@ -80,22 +82,31 @@ export type OpenAIResponsesInputTypeMessage2 = ClosedEnum<
   typeof OpenAIResponsesInputTypeMessage2
 >;
 
-export const RoleDeveloper2 = {
+export const OpenAIResponsesInputRoleDeveloper2 = {
   Developer: "developer",
 } as const;
-export type RoleDeveloper2 = ClosedEnum<typeof RoleDeveloper2>;
+export type OpenAIResponsesInputRoleDeveloper2 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleDeveloper2
+>;
 
-export const RoleSystem2 = {
+export const OpenAIResponsesInputRoleSystem2 = {
   System: "system",
 } as const;
-export type RoleSystem2 = ClosedEnum<typeof RoleSystem2>;
+export type OpenAIResponsesInputRoleSystem2 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleSystem2
+>;
 
-export const RoleUser2 = {
+export const OpenAIResponsesInputRoleUser2 = {
   User: "user",
 } as const;
-export type RoleUser2 = ClosedEnum<typeof RoleUser2>;
+export type OpenAIResponsesInputRoleUser2 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleUser2
+>;
 
-export type RoleUnion2 = RoleUser2 | RoleSystem2 | RoleDeveloper2;
+export type OpenAIResponsesInputRoleUnion2 =
+  | OpenAIResponsesInputRoleUser2
+  | OpenAIResponsesInputRoleSystem2
+  | OpenAIResponsesInputRoleDeveloper2;
 
 export type OpenAIResponsesInputContent3 =
   | (ResponseInputText & { type: "input_text" })
@@ -105,7 +116,10 @@ export type OpenAIResponsesInputContent3 =
 export type OpenAIResponsesInputMessage2 = {
   id: string;
   type?: OpenAIResponsesInputTypeMessage2 | undefined;
-  role: RoleUser2 | RoleSystem2 | RoleDeveloper2;
+  role:
+    | OpenAIResponsesInputRoleUser2
+    | OpenAIResponsesInputRoleSystem2
+    | OpenAIResponsesInputRoleDeveloper2;
   content: Array<
     | (ResponseInputText & { type: "input_text" })
     | (ResponseInputImage & { type: "input_image" })
@@ -120,10 +134,12 @@ export type OpenAIResponsesInputTypeMessage1 = ClosedEnum<
   typeof OpenAIResponsesInputTypeMessage1
 >;
 
-export const RoleDeveloper1 = {
+export const OpenAIResponsesInputRoleDeveloper1 = {
   Developer: "developer",
 } as const;
-export type RoleDeveloper1 = ClosedEnum<typeof RoleDeveloper1>;
+export type OpenAIResponsesInputRoleDeveloper1 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleDeveloper1
+>;
 
 export const OpenAIResponsesInputRoleAssistant = {
   Assistant: "assistant",
@@ -132,21 +148,25 @@ export type OpenAIResponsesInputRoleAssistant = ClosedEnum<
   typeof OpenAIResponsesInputRoleAssistant
 >;
 
-export const RoleSystem1 = {
+export const OpenAIResponsesInputRoleSystem1 = {
   System: "system",
 } as const;
-export type RoleSystem1 = ClosedEnum<typeof RoleSystem1>;
+export type OpenAIResponsesInputRoleSystem1 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleSystem1
+>;
 
-export const RoleUser1 = {
+export const OpenAIResponsesInputRoleUser1 = {
   User: "user",
 } as const;
-export type RoleUser1 = ClosedEnum<typeof RoleUser1>;
+export type OpenAIResponsesInputRoleUser1 = ClosedEnum<
+  typeof OpenAIResponsesInputRoleUser1
+>;
 
-export type RoleUnion1 =
-  | RoleUser1
-  | RoleSystem1
+export type OpenAIResponsesInputRoleUnion1 =
+  | OpenAIResponsesInputRoleUser1
+  | OpenAIResponsesInputRoleSystem1
   | OpenAIResponsesInputRoleAssistant
-  | RoleDeveloper1;
+  | OpenAIResponsesInputRoleDeveloper1;
 
 export type OpenAIResponsesInputContent1 =
   | (ResponseInputText & { type: "input_text" })
@@ -164,10 +184,10 @@ export type OpenAIResponsesInputContent2 =
 export type OpenAIResponsesInputMessage1 = {
   type?: OpenAIResponsesInputTypeMessage1 | undefined;
   role:
-    | RoleUser1
-    | RoleSystem1
+    | OpenAIResponsesInputRoleUser1
+    | OpenAIResponsesInputRoleSystem1
     | OpenAIResponsesInputRoleAssistant
-    | RoleDeveloper1;
+    | OpenAIResponsesInputRoleDeveloper1;
   content:
     | Array<
       | (ResponseInputText & { type: "input_text" })
@@ -298,24 +318,27 @@ export function openAIResponsesInputFunctionCallFromJSON(
 }
 
 /** @internal */
-export const TypeFunctionCallOutput$inboundSchema: z.ZodEnum<
-  typeof TypeFunctionCallOutput
-> = z.enum(TypeFunctionCallOutput);
+export const OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema:
+  z.ZodEnum<typeof OpenAIResponsesInputTypeFunctionCallOutput> = z.enum(
+    OpenAIResponsesInputTypeFunctionCallOutput,
+  );
 
 /** @internal */
-export const TypeFunctionCallOutput$outboundSchema: z.ZodEnum<
-  typeof TypeFunctionCallOutput
-> = TypeFunctionCallOutput$inboundSchema;
+export const OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema:
+  z.ZodEnum<typeof OpenAIResponsesInputTypeFunctionCallOutput> =
+    OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace TypeFunctionCallOutput$ {
-  /** @deprecated use `TypeFunctionCallOutput$inboundSchema` instead. */
-  export const inboundSchema = TypeFunctionCallOutput$inboundSchema;
-  /** @deprecated use `TypeFunctionCallOutput$outboundSchema` instead. */
-  export const outboundSchema = TypeFunctionCallOutput$outboundSchema;
+export namespace OpenAIResponsesInputTypeFunctionCallOutput$ {
+  /** @deprecated use `OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema` instead. */
+  export const inboundSchema =
+    OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema;
 }
 
 /** @internal */
@@ -323,7 +346,7 @@ export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCallOutput,
   unknown
 > = z.object({
-  type: TypeFunctionCallOutput$inboundSchema,
+  type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
   id: z.string(),
   call_id: z.string(),
   output: z.string(),
@@ -348,7 +371,7 @@ export const OpenAIResponsesInputFunctionCallOutput$outboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCallOutput$Outbound,
   OpenAIResponsesInputFunctionCallOutput
 > = z.object({
-  type: TypeFunctionCallOutput$outboundSchema,
+  type: OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema,
   id: z.string(),
   callId: z.string(),
   output: z.string(),
@@ -418,110 +441,122 @@ export namespace OpenAIResponsesInputTypeMessage2$ {
 }
 
 /** @internal */
-export const RoleDeveloper2$inboundSchema: z.ZodEnum<typeof RoleDeveloper2> = z
-  .enum(RoleDeveloper2);
+export const OpenAIResponsesInputRoleDeveloper2$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleDeveloper2
+> = z.enum(OpenAIResponsesInputRoleDeveloper2);
 
 /** @internal */
-export const RoleDeveloper2$outboundSchema: z.ZodEnum<typeof RoleDeveloper2> =
-  RoleDeveloper2$inboundSchema;
+export const OpenAIResponsesInputRoleDeveloper2$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleDeveloper2
+> = OpenAIResponsesInputRoleDeveloper2$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleDeveloper2$ {
-  /** @deprecated use `RoleDeveloper2$inboundSchema` instead. */
-  export const inboundSchema = RoleDeveloper2$inboundSchema;
-  /** @deprecated use `RoleDeveloper2$outboundSchema` instead. */
-  export const outboundSchema = RoleDeveloper2$outboundSchema;
+export namespace OpenAIResponsesInputRoleDeveloper2$ {
+  /** @deprecated use `OpenAIResponsesInputRoleDeveloper2$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleDeveloper2$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleDeveloper2$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenAIResponsesInputRoleDeveloper2$outboundSchema;
 }
 
 /** @internal */
-export const RoleSystem2$inboundSchema: z.ZodEnum<typeof RoleSystem2> = z.enum(
-  RoleSystem2,
-);
+export const OpenAIResponsesInputRoleSystem2$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleSystem2
+> = z.enum(OpenAIResponsesInputRoleSystem2);
 
 /** @internal */
-export const RoleSystem2$outboundSchema: z.ZodEnum<typeof RoleSystem2> =
-  RoleSystem2$inboundSchema;
+export const OpenAIResponsesInputRoleSystem2$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleSystem2
+> = OpenAIResponsesInputRoleSystem2$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleSystem2$ {
-  /** @deprecated use `RoleSystem2$inboundSchema` instead. */
-  export const inboundSchema = RoleSystem2$inboundSchema;
-  /** @deprecated use `RoleSystem2$outboundSchema` instead. */
-  export const outboundSchema = RoleSystem2$outboundSchema;
+export namespace OpenAIResponsesInputRoleSystem2$ {
+  /** @deprecated use `OpenAIResponsesInputRoleSystem2$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleSystem2$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleSystem2$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleSystem2$outboundSchema;
 }
 
 /** @internal */
-export const RoleUser2$inboundSchema: z.ZodEnum<typeof RoleUser2> = z.enum(
-  RoleUser2,
-);
+export const OpenAIResponsesInputRoleUser2$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleUser2
+> = z.enum(OpenAIResponsesInputRoleUser2);
 
 /** @internal */
-export const RoleUser2$outboundSchema: z.ZodEnum<typeof RoleUser2> =
-  RoleUser2$inboundSchema;
+export const OpenAIResponsesInputRoleUser2$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleUser2
+> = OpenAIResponsesInputRoleUser2$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleUser2$ {
-  /** @deprecated use `RoleUser2$inboundSchema` instead. */
-  export const inboundSchema = RoleUser2$inboundSchema;
-  /** @deprecated use `RoleUser2$outboundSchema` instead. */
-  export const outboundSchema = RoleUser2$outboundSchema;
+export namespace OpenAIResponsesInputRoleUser2$ {
+  /** @deprecated use `OpenAIResponsesInputRoleUser2$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleUser2$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUser2$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleUser2$outboundSchema;
 }
 
 /** @internal */
-export const RoleUnion2$inboundSchema: z.ZodType<RoleUnion2, unknown> = z.union(
-  [
-    RoleUser2$inboundSchema,
-    RoleSystem2$inboundSchema,
-    RoleDeveloper2$inboundSchema,
-  ],
-);
-
-/** @internal */
-export type RoleUnion2$Outbound = string | string | string;
-
-/** @internal */
-export const RoleUnion2$outboundSchema: z.ZodType<
-  RoleUnion2$Outbound,
-  RoleUnion2
+export const OpenAIResponsesInputRoleUnion2$inboundSchema: z.ZodType<
+  OpenAIResponsesInputRoleUnion2,
+  unknown
 > = z.union([
-  RoleUser2$outboundSchema,
-  RoleSystem2$outboundSchema,
-  RoleDeveloper2$outboundSchema,
+  OpenAIResponsesInputRoleUser2$inboundSchema,
+  OpenAIResponsesInputRoleSystem2$inboundSchema,
+  OpenAIResponsesInputRoleDeveloper2$inboundSchema,
+]);
+
+/** @internal */
+export type OpenAIResponsesInputRoleUnion2$Outbound = string | string | string;
+
+/** @internal */
+export const OpenAIResponsesInputRoleUnion2$outboundSchema: z.ZodType<
+  OpenAIResponsesInputRoleUnion2$Outbound,
+  OpenAIResponsesInputRoleUnion2
+> = z.union([
+  OpenAIResponsesInputRoleUser2$outboundSchema,
+  OpenAIResponsesInputRoleSystem2$outboundSchema,
+  OpenAIResponsesInputRoleDeveloper2$outboundSchema,
 ]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleUnion2$ {
-  /** @deprecated use `RoleUnion2$inboundSchema` instead. */
-  export const inboundSchema = RoleUnion2$inboundSchema;
-  /** @deprecated use `RoleUnion2$outboundSchema` instead. */
-  export const outboundSchema = RoleUnion2$outboundSchema;
-  /** @deprecated use `RoleUnion2$Outbound` instead. */
-  export type Outbound = RoleUnion2$Outbound;
+export namespace OpenAIResponsesInputRoleUnion2$ {
+  /** @deprecated use `OpenAIResponsesInputRoleUnion2$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleUnion2$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUnion2$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleUnion2$outboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUnion2$Outbound` instead. */
+  export type Outbound = OpenAIResponsesInputRoleUnion2$Outbound;
 }
 
-export function roleUnion2ToJSON(roleUnion2: RoleUnion2): string {
-  return JSON.stringify(RoleUnion2$outboundSchema.parse(roleUnion2));
+export function openAIResponsesInputRoleUnion2ToJSON(
+  openAIResponsesInputRoleUnion2: OpenAIResponsesInputRoleUnion2,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesInputRoleUnion2$outboundSchema.parse(
+      openAIResponsesInputRoleUnion2,
+    ),
+  );
 }
 
-export function roleUnion2FromJSON(
+export function openAIResponsesInputRoleUnion2FromJSON(
   jsonString: string,
-): SafeParseResult<RoleUnion2, SDKValidationError> {
+): SafeParseResult<OpenAIResponsesInputRoleUnion2, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => RoleUnion2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RoleUnion2' from JSON`,
+    (x) => OpenAIResponsesInputRoleUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesInputRoleUnion2' from JSON`,
   );
 }
 
@@ -616,9 +651,9 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
   id: z.string(),
   type: OpenAIResponsesInputTypeMessage2$inboundSchema.optional(),
   role: z.union([
-    RoleUser2$inboundSchema,
-    RoleSystem2$inboundSchema,
-    RoleDeveloper2$inboundSchema,
+    OpenAIResponsesInputRoleUser2$inboundSchema,
+    OpenAIResponsesInputRoleSystem2$inboundSchema,
+    OpenAIResponsesInputRoleDeveloper2$inboundSchema,
   ]),
   content: z.array(
     z.union([
@@ -661,9 +696,9 @@ export const OpenAIResponsesInputMessage2$outboundSchema: z.ZodType<
   id: z.string(),
   type: OpenAIResponsesInputTypeMessage2$outboundSchema.optional(),
   role: z.union([
-    RoleUser2$outboundSchema,
-    RoleSystem2$outboundSchema,
-    RoleDeveloper2$outboundSchema,
+    OpenAIResponsesInputRoleUser2$outboundSchema,
+    OpenAIResponsesInputRoleSystem2$outboundSchema,
+    OpenAIResponsesInputRoleDeveloper2$outboundSchema,
   ]),
   content: z.array(
     z.union([
@@ -741,22 +776,25 @@ export namespace OpenAIResponsesInputTypeMessage1$ {
 }
 
 /** @internal */
-export const RoleDeveloper1$inboundSchema: z.ZodEnum<typeof RoleDeveloper1> = z
-  .enum(RoleDeveloper1);
+export const OpenAIResponsesInputRoleDeveloper1$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleDeveloper1
+> = z.enum(OpenAIResponsesInputRoleDeveloper1);
 
 /** @internal */
-export const RoleDeveloper1$outboundSchema: z.ZodEnum<typeof RoleDeveloper1> =
-  RoleDeveloper1$inboundSchema;
+export const OpenAIResponsesInputRoleDeveloper1$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleDeveloper1
+> = OpenAIResponsesInputRoleDeveloper1$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleDeveloper1$ {
-  /** @deprecated use `RoleDeveloper1$inboundSchema` instead. */
-  export const inboundSchema = RoleDeveloper1$inboundSchema;
-  /** @deprecated use `RoleDeveloper1$outboundSchema` instead. */
-  export const outboundSchema = RoleDeveloper1$outboundSchema;
+export namespace OpenAIResponsesInputRoleDeveloper1$ {
+  /** @deprecated use `OpenAIResponsesInputRoleDeveloper1$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleDeveloper1$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleDeveloper1$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenAIResponsesInputRoleDeveloper1$outboundSchema;
 }
 
 /** @internal */
@@ -782,93 +820,106 @@ export namespace OpenAIResponsesInputRoleAssistant$ {
 }
 
 /** @internal */
-export const RoleSystem1$inboundSchema: z.ZodEnum<typeof RoleSystem1> = z.enum(
-  RoleSystem1,
-);
+export const OpenAIResponsesInputRoleSystem1$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleSystem1
+> = z.enum(OpenAIResponsesInputRoleSystem1);
 
 /** @internal */
-export const RoleSystem1$outboundSchema: z.ZodEnum<typeof RoleSystem1> =
-  RoleSystem1$inboundSchema;
+export const OpenAIResponsesInputRoleSystem1$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleSystem1
+> = OpenAIResponsesInputRoleSystem1$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleSystem1$ {
-  /** @deprecated use `RoleSystem1$inboundSchema` instead. */
-  export const inboundSchema = RoleSystem1$inboundSchema;
-  /** @deprecated use `RoleSystem1$outboundSchema` instead. */
-  export const outboundSchema = RoleSystem1$outboundSchema;
+export namespace OpenAIResponsesInputRoleSystem1$ {
+  /** @deprecated use `OpenAIResponsesInputRoleSystem1$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleSystem1$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleSystem1$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleSystem1$outboundSchema;
 }
 
 /** @internal */
-export const RoleUser1$inboundSchema: z.ZodEnum<typeof RoleUser1> = z.enum(
-  RoleUser1,
-);
+export const OpenAIResponsesInputRoleUser1$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleUser1
+> = z.enum(OpenAIResponsesInputRoleUser1);
 
 /** @internal */
-export const RoleUser1$outboundSchema: z.ZodEnum<typeof RoleUser1> =
-  RoleUser1$inboundSchema;
+export const OpenAIResponsesInputRoleUser1$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputRoleUser1
+> = OpenAIResponsesInputRoleUser1$inboundSchema;
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleUser1$ {
-  /** @deprecated use `RoleUser1$inboundSchema` instead. */
-  export const inboundSchema = RoleUser1$inboundSchema;
-  /** @deprecated use `RoleUser1$outboundSchema` instead. */
-  export const outboundSchema = RoleUser1$outboundSchema;
+export namespace OpenAIResponsesInputRoleUser1$ {
+  /** @deprecated use `OpenAIResponsesInputRoleUser1$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleUser1$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUser1$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleUser1$outboundSchema;
 }
 
 /** @internal */
-export const RoleUnion1$inboundSchema: z.ZodType<RoleUnion1, unknown> = z.union(
-  [
-    RoleUser1$inboundSchema,
-    RoleSystem1$inboundSchema,
-    OpenAIResponsesInputRoleAssistant$inboundSchema,
-    RoleDeveloper1$inboundSchema,
-  ],
-);
-
-/** @internal */
-export type RoleUnion1$Outbound = string | string | string | string;
-
-/** @internal */
-export const RoleUnion1$outboundSchema: z.ZodType<
-  RoleUnion1$Outbound,
-  RoleUnion1
+export const OpenAIResponsesInputRoleUnion1$inboundSchema: z.ZodType<
+  OpenAIResponsesInputRoleUnion1,
+  unknown
 > = z.union([
-  RoleUser1$outboundSchema,
-  RoleSystem1$outboundSchema,
+  OpenAIResponsesInputRoleUser1$inboundSchema,
+  OpenAIResponsesInputRoleSystem1$inboundSchema,
+  OpenAIResponsesInputRoleAssistant$inboundSchema,
+  OpenAIResponsesInputRoleDeveloper1$inboundSchema,
+]);
+
+/** @internal */
+export type OpenAIResponsesInputRoleUnion1$Outbound =
+  | string
+  | string
+  | string
+  | string;
+
+/** @internal */
+export const OpenAIResponsesInputRoleUnion1$outboundSchema: z.ZodType<
+  OpenAIResponsesInputRoleUnion1$Outbound,
+  OpenAIResponsesInputRoleUnion1
+> = z.union([
+  OpenAIResponsesInputRoleUser1$outboundSchema,
+  OpenAIResponsesInputRoleSystem1$outboundSchema,
   OpenAIResponsesInputRoleAssistant$outboundSchema,
-  RoleDeveloper1$outboundSchema,
+  OpenAIResponsesInputRoleDeveloper1$outboundSchema,
 ]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace RoleUnion1$ {
-  /** @deprecated use `RoleUnion1$inboundSchema` instead. */
-  export const inboundSchema = RoleUnion1$inboundSchema;
-  /** @deprecated use `RoleUnion1$outboundSchema` instead. */
-  export const outboundSchema = RoleUnion1$outboundSchema;
-  /** @deprecated use `RoleUnion1$Outbound` instead. */
-  export type Outbound = RoleUnion1$Outbound;
+export namespace OpenAIResponsesInputRoleUnion1$ {
+  /** @deprecated use `OpenAIResponsesInputRoleUnion1$inboundSchema` instead. */
+  export const inboundSchema = OpenAIResponsesInputRoleUnion1$inboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUnion1$outboundSchema` instead. */
+  export const outboundSchema = OpenAIResponsesInputRoleUnion1$outboundSchema;
+  /** @deprecated use `OpenAIResponsesInputRoleUnion1$Outbound` instead. */
+  export type Outbound = OpenAIResponsesInputRoleUnion1$Outbound;
 }
 
-export function roleUnion1ToJSON(roleUnion1: RoleUnion1): string {
-  return JSON.stringify(RoleUnion1$outboundSchema.parse(roleUnion1));
+export function openAIResponsesInputRoleUnion1ToJSON(
+  openAIResponsesInputRoleUnion1: OpenAIResponsesInputRoleUnion1,
+): string {
+  return JSON.stringify(
+    OpenAIResponsesInputRoleUnion1$outboundSchema.parse(
+      openAIResponsesInputRoleUnion1,
+    ),
+  );
 }
 
-export function roleUnion1FromJSON(
+export function openAIResponsesInputRoleUnion1FromJSON(
   jsonString: string,
-): SafeParseResult<RoleUnion1, SDKValidationError> {
+): SafeParseResult<OpenAIResponsesInputRoleUnion1, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => RoleUnion1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RoleUnion1' from JSON`,
+    (x) => OpenAIResponsesInputRoleUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesInputRoleUnion1' from JSON`,
   );
 }
 
@@ -1058,10 +1109,10 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
 > = z.object({
   type: OpenAIResponsesInputTypeMessage1$inboundSchema.optional(),
   role: z.union([
-    RoleUser1$inboundSchema,
-    RoleSystem1$inboundSchema,
+    OpenAIResponsesInputRoleUser1$inboundSchema,
+    OpenAIResponsesInputRoleSystem1$inboundSchema,
     OpenAIResponsesInputRoleAssistant$inboundSchema,
-    RoleDeveloper1$inboundSchema,
+    OpenAIResponsesInputRoleDeveloper1$inboundSchema,
   ]),
   content: z.union([
     z.array(
@@ -1107,10 +1158,10 @@ export const OpenAIResponsesInputMessage1$outboundSchema: z.ZodType<
 > = z.object({
   type: OpenAIResponsesInputTypeMessage1$outboundSchema.optional(),
   role: z.union([
-    RoleUser1$outboundSchema,
-    RoleSystem1$outboundSchema,
+    OpenAIResponsesInputRoleUser1$outboundSchema,
+    OpenAIResponsesInputRoleSystem1$outboundSchema,
     OpenAIResponsesInputRoleAssistant$outboundSchema,
-    RoleDeveloper1$outboundSchema,
+    OpenAIResponsesInputRoleDeveloper1$outboundSchema,
   ]),
   content: z.union([
     z.array(

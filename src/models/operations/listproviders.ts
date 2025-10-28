@@ -8,20 +8,6 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
-/**
- * Error details
- */
-export type ErrorT = {
-  /**
-   * Error code
-   */
-  code: number;
-  /**
-   * Error message
-   */
-  message: string;
-};
-
 export type ListProvidersData = {
   /**
    * Display name of the provider
@@ -51,52 +37,6 @@ export type ListProvidersData = {
 export type ListProvidersResponse = {
   data: Array<ListProvidersData>;
 };
-
-/** @internal */
-export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
-  code: z.number(),
-  message: z.string(),
-});
-
-/** @internal */
-export type ErrorT$Outbound = {
-  code: number;
-  message: string;
-};
-
-/** @internal */
-export const ErrorT$outboundSchema: z.ZodType<ErrorT$Outbound, ErrorT> = z
-  .object({
-    code: z.number(),
-    message: z.string(),
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ErrorT$ {
-  /** @deprecated use `ErrorT$inboundSchema` instead. */
-  export const inboundSchema = ErrorT$inboundSchema;
-  /** @deprecated use `ErrorT$outboundSchema` instead. */
-  export const outboundSchema = ErrorT$outboundSchema;
-  /** @deprecated use `ErrorT$Outbound` instead. */
-  export type Outbound = ErrorT$Outbound;
-}
-
-export function errorToJSON(errorT: ErrorT): string {
-  return JSON.stringify(ErrorT$outboundSchema.parse(errorT));
-}
-
-export function errorFromJSON(
-  jsonString: string,
-): SafeParseResult<ErrorT, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ErrorT$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ErrorT' from JSON`,
-  );
-}
 
 /** @internal */
 export const ListProvidersData$inboundSchema: z.ZodType<

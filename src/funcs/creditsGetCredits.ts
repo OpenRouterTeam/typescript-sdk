@@ -35,7 +35,9 @@ export function creditsGetCredits(
 ): APIPromise<
   Result<
     operations.GetCreditsResponse,
-    | errors.ErrorResponse
+    | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -59,7 +61,9 @@ async function $do(
   [
     Result<
       operations.GetCreditsResponse,
-      | errors.ErrorResponse
+      | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
+      | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -113,7 +117,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: ["401", "403", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -128,7 +132,9 @@ async function $do(
 
   const [result] = await M.match<
     operations.GetCreditsResponse,
-    | errors.ErrorResponse
+    | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
+    | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -139,8 +145,11 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.GetCreditsResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

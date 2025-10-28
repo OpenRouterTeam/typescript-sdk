@@ -35,7 +35,14 @@ export function generationsGetGeneration(
 ): APIPromise<
   Result<
     operations.GetGenerationResponse,
-    | errors.ErrorResponse
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -61,7 +68,14 @@ async function $do(
   [
     Result<
       operations.GetGenerationResponse,
-      | errors.ErrorResponse
+      | errors.UnauthorizedResponseError
+      | errors.PaymentRequiredResponseError
+      | errors.NotFoundResponseError
+      | errors.TooManyRequestsResponseError
+      | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
+      | errors.EdgeNetworkTimeoutResponseError
+      | errors.ProviderOverloadedResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -132,7 +146,18 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    errorCodes: [
+      "401",
+      "402",
+      "404",
+      "429",
+      "4XX",
+      "500",
+      "502",
+      "524",
+      "529",
+      "5XX",
+    ],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -147,7 +172,14 @@ async function $do(
 
   const [result] = await M.match<
     operations.GetGenerationResponse,
-    | errors.ErrorResponse
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -158,8 +190,16 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.GetGenerationResponse$inboundSchema),
-    M.jsonErr("4XX", errors.ErrorResponse$inboundSchema),
-    M.jsonErr("5XX", errors.ErrorResponse$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
+    M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
+    M.fail("4XX"),
+    M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];

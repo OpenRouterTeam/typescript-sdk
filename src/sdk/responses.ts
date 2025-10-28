@@ -3,6 +3,7 @@
  */
 
 import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
+import { EventStream } from "../lib/event-streams.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -15,6 +16,18 @@ export class Responses extends ClientSDK {
    * @remarks
    * Creates a streaming or non-streaming response using OpenResponses API format
    */
+  async send(
+    request: models.OpenResponsesRequest & { stream?: false | undefined },
+    options?: RequestOptions,
+  ): Promise<models.OpenResponsesNonStreamingResponse>;
+  async send(
+    request: models.OpenResponsesRequest & { stream: true },
+    options?: RequestOptions,
+  ): Promise<EventStream<operations.CreateApiAlphaResponsesResponseBody>>;
+  async send(
+    request: models.OpenResponsesRequest,
+    options?: RequestOptions,
+  ): Promise<operations.CreateApiAlphaResponsesResponse>;
   async send(
     request: models.OpenResponsesRequest,
     options?: RequestOptions,

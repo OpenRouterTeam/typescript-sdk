@@ -16,12 +16,12 @@ import { OpenRouterCore } from "../core.js";
 import { modelsCount } from "../funcs/modelsCount.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
+import * as models from "../models/index.js";
 import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type ModelsCountQueryData = operations.ListModelsCountResponse;
+export type ModelsCountQueryData = models.ModelsCountResponse;
 
 /**
  * Get total count of available models

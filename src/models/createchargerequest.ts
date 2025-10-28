@@ -3,29 +3,90 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import {
+  catchUnrecognizedEnum,
+  OpenEnum,
+  Unrecognized,
+} from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const ChainId = {
+  One: 1,
+  OneHundredAndThirtySeven: 137,
+  EightThousandFourHundredAndFiftyThree: 8453,
+} as const;
+export type ChainId = OpenEnum<typeof ChainId>;
 
 /**
  * Create a Coinbase charge for crypto payment
  */
-export type CreateChargeRequest = {};
+export type CreateChargeRequest = {
+  amount: number;
+  sender: string;
+  chainId: ChainId;
+};
+
+/** @internal */
+export const ChainId$inboundSchema: z.ZodType<ChainId, unknown> = z
+  .union([
+    z.enum(ChainId),
+    z.number().transform(catchUnrecognizedEnum),
+  ]);
+
+/** @internal */
+export const ChainId$outboundSchema: z.ZodType<ChainId, ChainId> = z.union([
+  z.enum(ChainId),
+  z.number().and(z.custom<Unrecognized<number>>()),
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ChainId$ {
+  /** @deprecated use `ChainId$inboundSchema` instead. */
+  export const inboundSchema = ChainId$inboundSchema;
+  /** @deprecated use `ChainId$outboundSchema` instead. */
+  export const outboundSchema = ChainId$outboundSchema;
+}
 
 /** @internal */
 export const CreateChargeRequest$inboundSchema: z.ZodType<
   CreateChargeRequest,
   unknown
-> = z.object({});
+> = z.object({
+  amount: z.number(),
+  sender: z.string(),
+  chain_id: ChainId$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "chain_id": "chainId",
+  });
+});
 
 /** @internal */
-export type CreateChargeRequest$Outbound = {};
+export type CreateChargeRequest$Outbound = {
+  amount: number;
+  sender: string;
+  chain_id: number;
+};
 
 /** @internal */
 export const CreateChargeRequest$outboundSchema: z.ZodType<
   CreateChargeRequest$Outbound,
   CreateChargeRequest
-> = z.object({});
+> = z.object({
+  amount: z.number(),
+  sender: z.string(),
+  chainId: ChainId$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    chainId: "chain_id",
+  });
+});
 
 /**
  * @internal

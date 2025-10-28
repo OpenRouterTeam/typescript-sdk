@@ -13,7 +13,7 @@ import {
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Format = {
+export const ChatMessageContentItemAudioFormat = {
   Wav: "wav",
   Mp3: "mp3",
   Flac: "flac",
@@ -22,11 +22,13 @@ export const Format = {
   Pcm16: "pcm16",
   Pcm24: "pcm24",
 } as const;
-export type Format = OpenEnum<typeof Format>;
+export type ChatMessageContentItemAudioFormat = OpenEnum<
+  typeof ChatMessageContentItemAudioFormat
+>;
 
 export type InputAudio = {
   data: string;
-  format: Format;
+  format: ChatMessageContentItemAudioFormat;
 };
 
 export type ChatMessageContentItemAudio = {
@@ -35,15 +37,21 @@ export type ChatMessageContentItemAudio = {
 };
 
 /** @internal */
-export const Format$inboundSchema: z.ZodType<Format, unknown> = z
+export const ChatMessageContentItemAudioFormat$inboundSchema: z.ZodType<
+  ChatMessageContentItemAudioFormat,
+  unknown
+> = z
   .union([
-    z.enum(Format),
+    z.enum(ChatMessageContentItemAudioFormat),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const Format$outboundSchema: z.ZodType<Format, Format> = z.union([
-  z.enum(Format),
+export const ChatMessageContentItemAudioFormat$outboundSchema: z.ZodType<
+  ChatMessageContentItemAudioFormat,
+  ChatMessageContentItemAudioFormat
+> = z.union([
+  z.enum(ChatMessageContentItemAudioFormat),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
@@ -51,18 +59,19 @@ export const Format$outboundSchema: z.ZodType<Format, Format> = z.union([
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Format$ {
-  /** @deprecated use `Format$inboundSchema` instead. */
-  export const inboundSchema = Format$inboundSchema;
-  /** @deprecated use `Format$outboundSchema` instead. */
-  export const outboundSchema = Format$outboundSchema;
+export namespace ChatMessageContentItemAudioFormat$ {
+  /** @deprecated use `ChatMessageContentItemAudioFormat$inboundSchema` instead. */
+  export const inboundSchema = ChatMessageContentItemAudioFormat$inboundSchema;
+  /** @deprecated use `ChatMessageContentItemAudioFormat$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatMessageContentItemAudioFormat$outboundSchema;
 }
 
 /** @internal */
 export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
   .object({
     data: z.string(),
-    format: Format$inboundSchema,
+    format: ChatMessageContentItemAudioFormat$inboundSchema,
   });
 
 /** @internal */
@@ -77,7 +86,7 @@ export const InputAudio$outboundSchema: z.ZodType<
   InputAudio
 > = z.object({
   data: z.string(),
-  format: Format$outboundSchema,
+  format: ChatMessageContentItemAudioFormat$outboundSchema,
 });
 
 /**

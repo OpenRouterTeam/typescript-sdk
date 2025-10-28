@@ -21,7 +21,6 @@ export type CreateApiAlphaResponsesResponseBody = {
 
 export type CreateApiAlphaResponsesResponse =
   | models.OpenResponsesNonStreamingResponse
-  | models.ErrorResponse
   | EventStream<CreateApiAlphaResponsesResponseBody>;
 
 /** @internal */
@@ -97,7 +96,6 @@ export const CreateApiAlphaResponsesResponse$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   models.OpenResponsesNonStreamingResponse$inboundSchema,
-  models.ErrorResponse$inboundSchema,
   z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
@@ -113,7 +111,6 @@ export const CreateApiAlphaResponsesResponse$inboundSchema: z.ZodType<
 /** @internal */
 export type CreateApiAlphaResponsesResponse$Outbound =
   | models.OpenResponsesNonStreamingResponse$Outbound
-  | models.ErrorResponse$Outbound
   | never;
 
 /** @internal */
@@ -122,7 +119,6 @@ export const CreateApiAlphaResponsesResponse$outboundSchema: z.ZodType<
   CreateApiAlphaResponsesResponse
 > = z.union([
   models.OpenResponsesNonStreamingResponse$outboundSchema,
-  models.ErrorResponse$outboundSchema,
   z.never(),
 ]);
 

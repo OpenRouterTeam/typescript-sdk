@@ -125,7 +125,7 @@ export type OpenResponsesNonStreamingResponseToolFunction = {
   parameters: { [k: string]: any | null } | null;
 };
 
-export type ToolUnion =
+export type OpenResponsesNonStreamingResponseToolUnion =
   | OpenResponsesNonStreamingResponseToolFunction
   | OpenResponsesWebSearchPreviewTool
   | OpenResponsesWebSearchPreview20250311Tool
@@ -303,16 +303,17 @@ export function openResponsesNonStreamingResponseToolFunctionFromJSON(
 }
 
 /** @internal */
-export const ToolUnion$inboundSchema: z.ZodType<ToolUnion, unknown> = z.union([
-  z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$inboundSchema),
-  OpenResponsesWebSearchPreviewTool$inboundSchema,
-  OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
-  OpenResponsesWebSearchTool$inboundSchema,
-  OpenResponsesWebSearch20250826Tool$inboundSchema,
-]);
+export const OpenResponsesNonStreamingResponseToolUnion$inboundSchema:
+  z.ZodType<OpenResponsesNonStreamingResponseToolUnion, unknown> = z.union([
+    z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$inboundSchema),
+    OpenResponsesWebSearchPreviewTool$inboundSchema,
+    OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
+    OpenResponsesWebSearchTool$inboundSchema,
+    OpenResponsesWebSearch20250826Tool$inboundSchema,
+  ]);
 
 /** @internal */
-export type ToolUnion$Outbound =
+export type OpenResponsesNonStreamingResponseToolUnion$Outbound =
   | OpenResponsesNonStreamingResponseToolFunction$Outbound
   | OpenResponsesWebSearchPreviewTool$Outbound
   | OpenResponsesWebSearchPreview20250311Tool$Outbound
@@ -320,41 +321,57 @@ export type ToolUnion$Outbound =
   | OpenResponsesWebSearch20250826Tool$Outbound;
 
 /** @internal */
-export const ToolUnion$outboundSchema: z.ZodType<
-  ToolUnion$Outbound,
-  ToolUnion
-> = z.union([
-  z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$outboundSchema),
-  OpenResponsesWebSearchPreviewTool$outboundSchema,
-  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-  OpenResponsesWebSearchTool$outboundSchema,
-  OpenResponsesWebSearch20250826Tool$outboundSchema,
-]);
+export const OpenResponsesNonStreamingResponseToolUnion$outboundSchema:
+  z.ZodType<
+    OpenResponsesNonStreamingResponseToolUnion$Outbound,
+    OpenResponsesNonStreamingResponseToolUnion
+  > = z.union([
+    z.lazy(() => OpenResponsesNonStreamingResponseToolFunction$outboundSchema),
+    OpenResponsesWebSearchPreviewTool$outboundSchema,
+    OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+    OpenResponsesWebSearchTool$outboundSchema,
+    OpenResponsesWebSearch20250826Tool$outboundSchema,
+  ]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ToolUnion$ {
-  /** @deprecated use `ToolUnion$inboundSchema` instead. */
-  export const inboundSchema = ToolUnion$inboundSchema;
-  /** @deprecated use `ToolUnion$outboundSchema` instead. */
-  export const outboundSchema = ToolUnion$outboundSchema;
-  /** @deprecated use `ToolUnion$Outbound` instead. */
-  export type Outbound = ToolUnion$Outbound;
+export namespace OpenResponsesNonStreamingResponseToolUnion$ {
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolUnion$inboundSchema` instead. */
+  export const inboundSchema =
+    OpenResponsesNonStreamingResponseToolUnion$inboundSchema;
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolUnion$outboundSchema` instead. */
+  export const outboundSchema =
+    OpenResponsesNonStreamingResponseToolUnion$outboundSchema;
+  /** @deprecated use `OpenResponsesNonStreamingResponseToolUnion$Outbound` instead. */
+  export type Outbound = OpenResponsesNonStreamingResponseToolUnion$Outbound;
 }
 
-export function toolUnionToJSON(toolUnion: ToolUnion): string {
-  return JSON.stringify(ToolUnion$outboundSchema.parse(toolUnion));
+export function openResponsesNonStreamingResponseToolUnionToJSON(
+  openResponsesNonStreamingResponseToolUnion:
+    OpenResponsesNonStreamingResponseToolUnion,
+): string {
+  return JSON.stringify(
+    OpenResponsesNonStreamingResponseToolUnion$outboundSchema.parse(
+      openResponsesNonStreamingResponseToolUnion,
+    ),
+  );
 }
 
-export function toolUnionFromJSON(
+export function openResponsesNonStreamingResponseToolUnionFromJSON(
   jsonString: string,
-): SafeParseResult<ToolUnion, SDKValidationError> {
+): SafeParseResult<
+  OpenResponsesNonStreamingResponseToolUnion,
+  SDKValidationError
+> {
   return safeParse(
     jsonString,
-    (x) => ToolUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ToolUnion' from JSON`,
+    (x) =>
+      OpenResponsesNonStreamingResponseToolUnion$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OpenResponsesNonStreamingResponseToolUnion' from JSON`,
   );
 }
 

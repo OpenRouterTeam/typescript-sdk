@@ -18,12 +18,14 @@ import {
   ResponseFormatTextConfig$outboundSchema,
 } from "./responseformattextconfig.js";
 
-export const Verbosity = {
+export const ResponseTextConfigVerbosity = {
   High: "high",
   Low: "low",
   Medium: "medium",
 } as const;
-export type Verbosity = OpenEnum<typeof Verbosity>;
+export type ResponseTextConfigVerbosity = OpenEnum<
+  typeof ResponseTextConfigVerbosity
+>;
 
 /**
  * Text output configuration including format and verbosity
@@ -33,32 +35,37 @@ export type ResponseTextConfig = {
    * Text response format configuration
    */
   format?: ResponseFormatTextConfig | undefined;
-  verbosity?: Verbosity | null | undefined;
+  verbosity?: ResponseTextConfigVerbosity | null | undefined;
 };
 
 /** @internal */
-export const Verbosity$inboundSchema: z.ZodType<Verbosity, unknown> = z
+export const ResponseTextConfigVerbosity$inboundSchema: z.ZodType<
+  ResponseTextConfigVerbosity,
+  unknown
+> = z
   .union([
-    z.enum(Verbosity),
+    z.enum(ResponseTextConfigVerbosity),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const Verbosity$outboundSchema: z.ZodType<Verbosity, Verbosity> = z
-  .union([
-    z.enum(Verbosity),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export const ResponseTextConfigVerbosity$outboundSchema: z.ZodType<
+  ResponseTextConfigVerbosity,
+  ResponseTextConfigVerbosity
+> = z.union([
+  z.enum(ResponseTextConfigVerbosity),
+  z.string().and(z.custom<Unrecognized<string>>()),
+]);
 
 /**
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Verbosity$ {
-  /** @deprecated use `Verbosity$inboundSchema` instead. */
-  export const inboundSchema = Verbosity$inboundSchema;
-  /** @deprecated use `Verbosity$outboundSchema` instead. */
-  export const outboundSchema = Verbosity$outboundSchema;
+export namespace ResponseTextConfigVerbosity$ {
+  /** @deprecated use `ResponseTextConfigVerbosity$inboundSchema` instead. */
+  export const inboundSchema = ResponseTextConfigVerbosity$inboundSchema;
+  /** @deprecated use `ResponseTextConfigVerbosity$outboundSchema` instead. */
+  export const outboundSchema = ResponseTextConfigVerbosity$outboundSchema;
 }
 
 /** @internal */
@@ -67,7 +74,7 @@ export const ResponseTextConfig$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   format: ResponseFormatTextConfig$inboundSchema.optional(),
-  verbosity: z.nullable(Verbosity$inboundSchema).optional(),
+  verbosity: z.nullable(ResponseTextConfigVerbosity$inboundSchema).optional(),
 });
 
 /** @internal */
@@ -82,7 +89,7 @@ export const ResponseTextConfig$outboundSchema: z.ZodType<
   ResponseTextConfig
 > = z.object({
   format: ResponseFormatTextConfig$outboundSchema.optional(),
-  verbosity: z.nullable(Verbosity$outboundSchema).optional(),
+  verbosity: z.nullable(ResponseTextConfigVerbosity$outboundSchema).optional(),
 });
 
 /**
