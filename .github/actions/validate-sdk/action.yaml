@@ -44,4 +44,6 @@ runs:
 
     - name: Run tests
       shell: bash
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: npx vitest

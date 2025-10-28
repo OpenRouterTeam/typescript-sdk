@@ -216,6 +216,7 @@ This SDK supports the following security scheme globally:
 | `apiKey` | http | HTTP Bearer | `OPENROUTER_API_KEY` |
 
 To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
+
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -344,6 +345,7 @@ run();
 ### Per-Operation Security Schemes
 
 Some operations in this SDK require the security scheme to be specified at the request level. For example:
+
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -448,28 +450,28 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 
 <summary>Available standalone functions</summary>
 
-- [`analyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
-- [`apiKeysCreate`](docs/sdks/apikeys/README.md#create) - Create a new API key
-- [`apiKeysDelete`](docs/sdks/apikeys/README.md#delete) - Delete an API key
-- [`apiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
-- [`apiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
-- [`apiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
-- [`apiKeysUpdate`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`betaResponsesSend`](docs/sdks/responses/README.md#send) - Create a response
-- [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`creditsCreateCoinbaseCharge`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
-- [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
-- [`endpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
-- [`endpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
-- [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`modelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
-- [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
-- [`modelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
-- [`oAuthCreateAuthCode`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
-- [`oAuthExchangeAuthCodeForAPIKey`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
-- [`parametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
-- [`providersList`](docs/sdks/providers/README.md#list) - List all providers
+* [`analyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
+* [`apiKeysCreate`](docs/sdks/apikeys/README.md#create) - Create a new API key
+* [`apiKeysDelete`](docs/sdks/apikeys/README.md#delete) - Delete an API key
+* [`apiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
+* [`apiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
+* [`apiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
+* [`apiKeysUpdate`](docs/sdks/apikeys/README.md#update) - Update an API key
+* [`betaResponsesSend`](docs/sdks/responses/README.md#send) - Create a response
+* [`chatSend`](docs/sdks/chat/README.md#send) - Create a chat completion
+* [`completionsGenerate`](docs/sdks/completions/README.md#generate) - Create a completion
+* [`creditsCreateCoinbaseCharge`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
+* [`creditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
+* [`endpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
+* [`endpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
+* [`generationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+* [`modelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
+* [`modelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+* [`modelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
+* [`oAuthCreateAuthCode`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
+* [`oAuthExchangeAuthCodeForAPIKey`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
+* [`parametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+* [`providersList`](docs/sdks/providers/README.md#list) - List all providers
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -496,28 +498,28 @@ To learn about this feature and how to get started, check
 
 <summary>Available React hooks</summary>
 
-- [`useAnalyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
-- [`useApiKeysCreateMutation`](docs/sdks/apikeys/README.md#create) - Create a new API key
-- [`useApiKeysDeleteMutation`](docs/sdks/apikeys/README.md#delete) - Delete an API key
-- [`useApiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
-- [`useApiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
-- [`useApiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
-- [`useApiKeysUpdateMutation`](docs/sdks/apikeys/README.md#update) - Update an API key
-- [`useBetaResponsesSendMutation`](docs/sdks/responses/README.md#send) - Create a response
-- [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
-- [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
-- [`useCreditsCreateCoinbaseChargeMutation`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
-- [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
-- [`useEndpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
-- [`useEndpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
-- [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
-- [`useModelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
-- [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
-- [`useModelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
-- [`useOAuthCreateAuthCodeMutation`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
-- [`useOAuthExchangeAuthCodeForAPIKeyMutation`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
-- [`useParametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
-- [`useProvidersList`](docs/sdks/providers/README.md#list) - List all providers
+* [`useAnalyticsGetUserActivity`](docs/sdks/analytics/README.md#getuseractivity) - Get user activity grouped by endpoint
+* [`useApiKeysCreateMutation`](docs/sdks/apikeys/README.md#create) - Create a new API key
+* [`useApiKeysDeleteMutation`](docs/sdks/apikeys/README.md#delete) - Delete an API key
+* [`useApiKeysGet`](docs/sdks/apikeys/README.md#get) - Get a single API key
+* [`useApiKeysGetCurrentKeyMetadata`](docs/sdks/apikeys/README.md#getcurrentkeymetadata) - Get current API key
+* [`useApiKeysList`](docs/sdks/apikeys/README.md#list) - List API keys
+* [`useApiKeysUpdateMutation`](docs/sdks/apikeys/README.md#update) - Update an API key
+* [`useBetaResponsesSendMutation`](docs/sdks/responses/README.md#send) - Create a response
+* [`useChatSendMutation`](docs/sdks/chat/README.md#send) - Create a chat completion
+* [`useCompletionsGenerateMutation`](docs/sdks/completions/README.md#generate) - Create a completion
+* [`useCreditsCreateCoinbaseChargeMutation`](docs/sdks/credits/README.md#createcoinbasecharge) - Create a Coinbase charge for crypto payment
+* [`useCreditsGetCredits`](docs/sdks/credits/README.md#getcredits) - Get remaining credits
+* [`useEndpointsList`](docs/sdks/endpoints/README.md#list) - List all endpoints for a model
+* [`useEndpointsListZdrEndpoints`](docs/sdks/endpoints/README.md#listzdrendpoints) - Preview the impact of ZDR on the available endpoints
+* [`useGenerationsGetGeneration`](docs/sdks/generations/README.md#getgeneration) - Get request & usage metadata for a generation
+* [`useModelsCount`](docs/sdks/models/README.md#count) - Get total count of available models
+* [`useModelsList`](docs/sdks/models/README.md#list) - List all models and their properties
+* [`useModelsListForUser`](docs/sdks/models/README.md#listforuser) - List models filtered by user provider preferences
+* [`useOAuthCreateAuthCodeMutation`](docs/sdks/oauth/README.md#createauthcode) - Create authorization code
+* [`useOAuthExchangeAuthCodeForAPIKeyMutation`](docs/sdks/oauth/README.md#exchangeauthcodeforapikey) - Exchange authorization code for API key
+* [`useParametersGetParameters`](docs/sdks/parameters/README.md#getparameters) - Get a model's supported parameters and data about which are most popular
+* [`useProvidersList`](docs/sdks/providers/README.md#list) - List all providers
 
 </details>
 <!-- End React hooks with TanStack Query [react-query] -->
@@ -666,6 +668,7 @@ run();
 Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
+
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -803,6 +806,7 @@ run();
 ```
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
+
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
@@ -954,6 +958,7 @@ run();
 | `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
+
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 import * as errors from "@openrouter/sdk/models/errors";
@@ -1097,7 +1102,9 @@ run();
 ```
 
 ### Error Classes
+
 **Primary errors:**
+
 * [`OpenRouterError`](./src/models/errors/openroutererror.ts): The base class for HTTP error responses.
   * [`InternalServerResponseError`](./src/models/errors/internalserverresponseerror.ts): Internal Server Error - Unexpected server error. Status code `500`. *
 
@@ -1106,14 +1113,15 @@ run();
 <br />
 
 **Network errors:**
+
 * [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
 * [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
 * [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
 * [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
 * [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
-
 **Inherit from [`OpenRouterError`](./src/models/errors/openroutererror.ts)**:
+
 * [`UnauthorizedResponseError`](./src/models/errors/unauthorizedresponseerror.ts): Unauthorized - Authentication required or invalid credentials. Status code `401`. Applicable to 14 of 22 methods.*
 * [`BadRequestResponseError`](./src/models/errors/badrequestresponseerror.ts): Bad Request - Invalid request parameters or malformed input. Status code `400`. Applicable to 8 of 22 methods.*
 * [`TooManyRequestsResponseError`](./src/models/errors/toomanyrequestsresponseerror.ts): Too Many Requests - Rate limit exceeded. Status code `429`. Applicable to 8 of 22 methods.*
@@ -1161,6 +1169,30 @@ You can also enable a default debug logger by setting an environment variable `O
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 
 # Development
+
+## Running Tests
+
+To run the test suite, you'll need to set up your environment with an OpenRouter API key.
+
+### Local Development
+
+1. Copy the example environment file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` and add your OpenRouter API key:
+
+   ```bash
+   OPENROUTER_API_KEY=your_api_key_here
+   ```
+
+3. Run the tests:
+
+   ```bash
+   npx vitest
+   ```
 
 ## Maturity
 
