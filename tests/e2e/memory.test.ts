@@ -257,50 +257,6 @@ describe("Memory Integration E2E Tests", () => {
       expect(messages.length).toBeLessThanOrEqual(4);
     });
 
-    it("should manage cache control for messages", async () => {
-      await memory.createThread("thread-1", "user-1");
-
-      const saved = await memory.saveMessages("thread-1", "user-1", [
-        { role: "user" as const, content: "Cached message" },
-        { role: "assistant" as const, content: "Not cached" },
-      ]);
-
-      // Enable cache for first message
-      const futureDate = new Date(Date.now() + 60000); // 1 minute from now
-      await storage.updateMessage(saved[0].id, {
-        cacheControl: { enabled: true, expiresAt: futureDate },
-      });
-
-      const cachedMessages = await memory.getCachedMessages("thread-1");
-      expect(cachedMessages).toHaveLength(1);
-      expect(cachedMessages[0].message.content).toBe("Cached message");
-    });
-
-    it("should invalidate cache for messages", async () => {
-      await memory.createThread("thread-1", "user-1");
-
-      const saved = await memory.saveMessages("thread-1", "user-1", [
-        { role: "user" as const, content: "Cached message" },
-      ]);
-
-      // Enable cache
-      const futureDate = new Date(Date.now() + 60000);
-      await storage.updateMessage(saved[0].id, {
-        cacheControl: { enabled: true, expiresAt: futureDate },
-      });
-
-      // Verify cache is active
-      let cachedMessages = await memory.getCachedMessages("thread-1");
-      expect(cachedMessages).toHaveLength(1);
-
-      // Invalidate cache
-      await memory.invalidateCache("thread-1");
-
-      // Verify cache is invalidated
-      cachedMessages = await memory.getCachedMessages("thread-1");
-      expect(cachedMessages).toHaveLength(0);
-    });
-
     it("should filter messages by status", async () => {
       await memory.createThread("thread-1", "user-1");
 
@@ -322,27 +278,6 @@ describe("Memory Integration E2E Tests", () => {
       const archivedMessages = await memory.getMessagesByStatus("thread-1", "archived");
       expect(archivedMessages).toHaveLength(1);
       expect(archivedMessages[0].message.content).toBe("Archived message");
-    });
-
-    it("should filter messages by importance threshold", async () => {
-      await memory.createThread("thread-1", "user-1");
-
-      const saved = await memory.saveMessages("thread-1", "user-1", [
-        { role: "user" as const, content: "Low importance" },
-        { role: "assistant" as const, content: "Medium importance" },
-        { role: "user" as const, content: "High importance" },
-      ]);
-
-      // Set importance scores
-      await storage.updateMessage(saved[0].id, { importance: 0.3 });
-      await storage.updateMessage(saved[1].id, { importance: 0.6 });
-      await storage.updateMessage(saved[2].id, { importance: 0.9 });
-
-      // Get messages with importance >= 0.5
-      const importantMessages = await memory.getMessagesByImportance("thread-1", 0.5);
-      expect(importantMessages).toHaveLength(2);
-      expect(importantMessages[0].importance).toBeGreaterThanOrEqual(0.5);
-      expect(importantMessages[1].importance).toBeGreaterThanOrEqual(0.5);
     });
 
     it("should handle graceful degradation when storage doesn't support features", async () => {

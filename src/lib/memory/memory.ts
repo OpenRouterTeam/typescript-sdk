@@ -345,19 +345,6 @@ export class Memory {
   // ===== Cache Management =====
 
   /**
-   * Get messages with active cache
-   * @param threadId The thread ID
-   * @returns Array of cached messages, or empty if storage doesn't support caching
-   */
-  async getCachedMessages(threadId: string): Promise<MemoryMessage[]> {
-    if (!this.storage.getCachedMessages) {
-      return [];
-    }
-
-    return await this.storage.getCachedMessages(threadId);
-  }
-
-  /**
    * Invalidate cache for messages
    * @param threadId The thread ID
    * @param beforeDate Optional date - invalidate cache before this date
@@ -389,27 +376,6 @@ export class Memory {
     }
 
     return await this.storage.getMessagesByStatus(threadId, status);
-  }
-
-  /**
-   * Get messages by importance threshold
-   * @param threadId The thread ID
-   * @param minImportance Minimum importance score (0-1)
-   * @returns Array of messages meeting importance threshold
-   */
-  async getMessagesByImportance(
-    threadId: string,
-    minImportance: number,
-  ): Promise<MemoryMessage[]> {
-    if (!this.storage.getMessagesByImportance) {
-      // Fall back to getting all messages and filtering
-      const all = await this.storage.getMessages(threadId);
-      return all.filter(
-        (m) => m.importance !== undefined && m.importance >= minImportance,
-      );
-    }
-
-    return await this.storage.getMessagesByImportance(threadId, minImportance);
   }
 
   // ===== Utility Methods =====

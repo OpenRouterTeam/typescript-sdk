@@ -195,13 +195,11 @@ async function main() {
     cacheControl: { enabled: true, expiresAt: futureDate },
   });
 
-  const cachedMsgs = await memory.getCachedMessages(cacheThreadId);
-  console.log(`Cached messages: ${cachedMsgs.length}`);
+  console.log(`Cache control enabled for message: ${cacheMsg.id}`);
 
   // Invalidate cache when needed
   await memory.invalidateCache(cacheThreadId);
-  const cachedAfterInvalidate = await memory.getCachedMessages(cacheThreadId);
-  console.log(`Cached messages after invalidation: ${cachedAfterInvalidate.length}`);
+  console.log(`Cache invalidated for thread: ${cacheThreadId}`);
 
   // Example 12: Message filtering by status and importance
   console.log("\n=== Example 12: Message Filtering ===");
@@ -235,10 +233,6 @@ async function main() {
 
   const archivedMsgs = await memory.getMessagesByStatus(filterThreadId, "archived");
   console.log(`Archived messages: ${archivedMsgs.length}`);
-
-  // Filter by importance
-  const importantMsgs = await memory.getMessagesByImportance(filterThreadId, 0.7);
-  console.log(`Messages with importance >= 0.7: ${importantMsgs.length}`);
 }
 
 main().catch(console.error);

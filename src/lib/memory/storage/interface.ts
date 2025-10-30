@@ -206,13 +206,6 @@ export interface MemoryStorage {
   // ===== Cache Management Operations (Optional) =====
 
   /**
-   * Get messages with active cache
-   * @param threadId The thread ID
-   * @returns Array of cached messages
-   */
-  getCachedMessages?(threadId: string): Promise<MemoryMessage[]>;
-
-  /**
    * Invalidate cache for messages
    * @param threadId The thread ID
    * @param beforeDate Optional date - invalidate cache before this date
@@ -230,16 +223,5 @@ export interface MemoryStorage {
   getMessagesByStatus?(
     threadId: string,
     status: string,
-  ): Promise<MemoryMessage[]>;
-
-  /**
-   * Get messages by importance threshold
-   * @param threadId The thread ID
-   * @param minImportance Minimum importance score (0-1)
-   * @returns Array of messages meeting importance threshold
-   */
-  getMessagesByImportance?(
-    threadId: string,
-    minImportance: number,
   ): Promise<MemoryMessage[]>;
 }

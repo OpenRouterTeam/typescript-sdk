@@ -364,17 +364,6 @@ export class InMemoryStorage implements MemoryStorage {
 
   // ===== Cache Management Operations =====
 
-  async getCachedMessages(threadId: string): Promise<MemoryMessage[]> {
-    const messages = await this.getMessages(threadId);
-    const now = new Date();
-
-    return messages.filter((msg) => {
-      if (!msg.cacheControl?.enabled) return false;
-      if (!msg.cacheControl.expiresAt) return true;
-      return msg.cacheControl.expiresAt > now;
-    });
-  }
-
   async invalidateCache(threadId: string, beforeDate?: Date): Promise<void> {
     const messages = await this.getMessages(threadId);
     const cutoff = beforeDate || new Date();
@@ -403,15 +392,5 @@ export class InMemoryStorage implements MemoryStorage {
   ): Promise<MemoryMessage[]> {
     const messages = await this.getMessages(threadId);
     return messages.filter((m) => m.status === status);
-  }
-
-  async getMessagesByImportance(
-    threadId: string,
-    minImportance: number,
-  ): Promise<MemoryMessage[]> {
-    const messages = await this.getMessages(threadId);
-    return messages.filter(
-      (m) => m.importance !== undefined && m.importance >= minImportance,
-    );
   }
 }
