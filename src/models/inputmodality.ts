@@ -14,6 +14,7 @@ export const InputModality = {
   Image: "image",
   File: "file",
   Audio: "audio",
+  Video: "video",
 } as const;
 export type InputModality = OpenEnum<typeof InputModality>;
 
