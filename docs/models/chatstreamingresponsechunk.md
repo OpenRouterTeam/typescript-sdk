@@ -74,8 +74,8 @@ let value: ChatStreamingResponseChunk = {
         rejectedPredictionTokens: 2801.33,
       },
       promptTokensDetails: {
-        cachedTokens: 1522.95,
-        audioTokens: 8854.61,
+        cachedTokens: 6205.53,
+        audioTokens: 1522.95,
       },
     },
   },

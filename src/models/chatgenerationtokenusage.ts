@@ -25,7 +25,7 @@ export type ChatGenerationTokenUsage = {
   promptTokens: number;
   totalTokens: number;
   completionTokensDetails?: CompletionTokensDetails | undefined;
-  promptTokensDetails?: PromptTokensDetails | null | undefined;
+  promptTokensDetails?: PromptTokensDetails | undefined;
 };
 
 /** @internal */
@@ -178,9 +178,8 @@ export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
   total_tokens: z.number(),
   completion_tokens_details: z.lazy(() => CompletionTokensDetails$inboundSchema)
     .optional(),
-  prompt_tokens_details: z.nullable(
-    z.lazy(() => PromptTokensDetails$inboundSchema),
-  ).optional(),
+  prompt_tokens_details: z.lazy(() => PromptTokensDetails$inboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "completion_tokens": "completionTokens",
@@ -197,7 +196,7 @@ export type ChatGenerationTokenUsage$Outbound = {
   prompt_tokens: number;
   total_tokens: number;
   completion_tokens_details?: CompletionTokensDetails$Outbound | undefined;
-  prompt_tokens_details?: PromptTokensDetails$Outbound | null | undefined;
+  prompt_tokens_details?: PromptTokensDetails$Outbound | undefined;
 };
 
 /** @internal */
@@ -210,9 +209,8 @@ export const ChatGenerationTokenUsage$outboundSchema: z.ZodType<
   totalTokens: z.number(),
   completionTokensDetails: z.lazy(() => CompletionTokensDetails$outboundSchema)
     .optional(),
-  promptTokensDetails: z.nullable(
-    z.lazy(() => PromptTokensDetails$outboundSchema),
-  ).optional(),
+  promptTokensDetails: z.lazy(() => PromptTokensDetails$outboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     completionTokens: "completion_tokens",
