@@ -4041,6 +4041,7 @@ components:
         - image
         - file
         - audio
+        - video
       example: text
     OutputModality:
       type: string
@@ -4756,12 +4757,14 @@ components:
             rejected_prediction_tokens:
               type: number
         prompt_tokens_details:
-          type: object
-          properties:
-            cached_tokens:
-              type: number
-            audio_tokens:
-              type: number
+          anyOf:
+            - type: object
+              properties:
+                cached_tokens:
+                  type: number
+                audio_tokens:
+                  type: number
+            - type: 'null'
       required:
         - completion_tokens
         - prompt_tokens

@@ -4056,6 +4056,7 @@ components:
         - image
         - file
         - audio
+        - video
       example: text
       x-speakeasy-unknown-values: allow
     OutputModality:
