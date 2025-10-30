@@ -3,6 +3,12 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+// #region imports
+import { RequestOptions } from "../lib/sdks.js";
+import { ResponseWrapper } from "../lib/response-wrapper.js";
+import { getResponse } from "../funcs/getResponse.js";
+import * as models from "../models/index.js";
+// #endregion
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
@@ -76,4 +82,46 @@ export class OpenRouter extends ClientSDK {
   get completions(): Completions {
     return (this._completions ??= new Completions(this._options));
   }
+  // #region sdk-class-body
+  /**
+   * Get a response with multiple consumption patterns
+   *
+   * @remarks
+   * Returns a wrapper that allows consuming the response in multiple ways:
+   * - `await response.message` - Get the completed message
+   * - `await response.text` - Get just the text content
+   * - `for await (const delta of response.textStream)` - Stream text deltas
+   * - `for await (const msg of response.messageStream)` - Stream incremental message updates
+   * - `for await (const event of response.fullResponsesStream)` - Stream all response events
+   * - `for await (const chunk of response.fullChatStream)` - Stream in chat-compatible format
+   *
+   * All consumption patterns can be used concurrently on the same response.
+   *
+   * @example
+   * ```typescript
+   * // Simple text extraction
+   * const response = openRouter.getResponse({
+   *   model: "anthropic/claude-3-opus",
+   *   input: [{ role: "user", content: "Hello!" }]
+   * });
+   * const text = await response.text;
+   * console.log(text);
+   *
+   * // Streaming text
+   * const response = openRouter.getResponse({
+   *   model: "anthropic/claude-3-opus",
+   *   input: [{ role: "user", content: "Hello!" }]
+   * });
+   * for await (const delta of response.textStream) {
+   *   process.stdout.write(delta);
+   * }
+   * ```
+   */
+  getResponse(
+    request: Omit<models.OpenResponsesRequest, "stream">,
+    options?: RequestOptions,
+  ): ResponseWrapper {
+    return getResponse(this, request, options);
+  }
+  // #endregion
 }
