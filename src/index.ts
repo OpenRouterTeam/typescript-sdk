@@ -10,5 +10,20 @@ export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export { ResponseWrapper } from "./lib/response-wrapper.js";
 export type { GetResponseOptions } from "./lib/response-wrapper.js";
 export { ReusableReadableStream } from "./lib/reusable-stream.js";
+// Memory system exports
+export { Memory, InMemoryStorage } from "./lib/memory/index.js";
+export type {
+  MemoryStorage,
+  MemoryConfig,
+  Thread,
+  Resource,
+  MemoryMessage,
+  ThreadWorkingMemory,
+  ResourceWorkingMemory,
+  WorkingMemoryData,
+  SerializedMemoryState,
+  SerializedThreadState,
+  GetMessagesOptions,
+} from "./lib/memory/index.js";
 // #endregion
 export * from "./sdk/sdk.js";

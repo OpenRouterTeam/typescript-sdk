@@ -21,6 +21,10 @@ import * as models from "../models/index.js";
  *
  * All consumption patterns can be used concurrently on the same response.
  *
+ * When memory is configured and threadId/resourceId are provided:
+ * - Conversation history will be automatically injected before the input
+ * - Messages will be automatically saved after the response completes
+ *
  * @example
  * ```typescript
  * // Simple text extraction
@@ -47,16 +51,42 @@ import * as models from "../models/index.js";
  * });
  * const message = await response.message;
  * console.log(message.content);
+ *
+ * // With memory (auto-inject history and auto-save)
+ * const response = openrouter.beta.responses.get({
+ *   model: "anthropic/claude-3-opus",
+ *   input: [{ role: "user", content: "Hello!" }],
+ *   threadId: "thread-123",
+ *   resourceId: "user-456"
+ * });
+ * const text = await response.text; // Messages automatically saved
  * ```
  */
 export function getResponse(
   client: OpenRouterCore,
-  request: Omit<models.OpenResponsesRequest, "stream">,
+  request: Omit<models.OpenResponsesRequest, "stream"> & {
+    threadId?: string;
+    resourceId?: string;
+  },
   options?: RequestOptions,
 ): ResponseWrapper {
-  return new ResponseWrapper({
+  // Extract memory-specific fields
+  const { threadId, resourceId, ...apiRequest } = request;
+
+  // Get memory from client if available
+  const memory = ("memory" in client && (client as any).memory) ? (client as any).memory : undefined;
+
+  const wrapperOptions: any = {
     client,
-    request: { ...request },
+    request: { ...apiRequest },
     options: options ?? {},
-  });
+  };
+
+  // Only add memory fields if they exist
+  if (memory !== undefined) wrapperOptions.memory = memory;
+  if (threadId !== undefined) wrapperOptions.threadId = threadId;
+  if (resourceId !== undefined) wrapperOptions.resourceId = resourceId;
+  if (request.input !== undefined) wrapperOptions.originalInput = request.input;
+
+  return new ResponseWrapper(wrapperOptions);
 }
