@@ -9,6 +9,7 @@ import type {
   Resource,
   ResourceWorkingMemory,
   SerializedMemoryState,
+  SerializedThreadState,
   Thread,
   ThreadWorkingMemory,
   WorkingMemoryData,
@@ -196,7 +197,7 @@ export class InMemoryStorage implements MemoryStorage {
 
   // ===== Serialization Operations =====
 
-  async exportState(): Promise<SerializedMemoryState> {
+  async serialize(): Promise<SerializedMemoryState> {
     return {
       version: "1.0.0",
       threads: Array.from(this.threads.values()),
@@ -210,7 +211,25 @@ export class InMemoryStorage implements MemoryStorage {
     };
   }
 
-  async importState(state: SerializedMemoryState): Promise<void> {
+  async serializeThread(threadId: string): Promise<SerializedThreadState | null> {
+    const thread = await this.getThread(threadId);
+    if (!thread) {
+      return null;
+    }
+
+    const messages = await this.getMessages(threadId);
+    const threadWorkingMemory = await this.getThreadWorkingMemory(threadId);
+
+    return {
+      version: "1.0.0",
+      thread,
+      messages,
+      ...(threadWorkingMemory !== null && { threadWorkingMemory }),
+      serializedAt: new Date(),
+    };
+  }
+
+  async hydrate(state: SerializedMemoryState): Promise<void> {
     // Clear existing data
     this.threads.clear();
     this.messages.clear();
@@ -240,6 +259,22 @@ export class InMemoryStorage implements MemoryStorage {
     // Import resource working memories
     for (const rwm of state.resourceWorkingMemories) {
       this.resourceWorkingMemories.set(rwm.resourceId, rwm);
+    }
+  }
+
+  async hydrateThread(threadState: SerializedThreadState): Promise<void> {
+    // Save the thread
+    await this.saveThread(threadState.thread);
+
+    // Save all messages
+    await this.saveMessages(threadState.messages);
+
+    // Save thread working memory if present
+    if (threadState.threadWorkingMemory) {
+      await this.updateThreadWorkingMemory(
+        threadState.thread.id,
+        threadState.threadWorkingMemory.data,
+      );
     }
   }
 }

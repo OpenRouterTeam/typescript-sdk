@@ -4,10 +4,12 @@ import { OpenRouter, Memory, InMemoryStorage } from "../../src/index.js";
 describe("Memory Integration E2E Tests", () => {
   const apiKey = process.env.OPENROUTER_API_KEY;
   let memory: Memory;
+  let storage: InMemoryStorage;
   let client: OpenRouter;
 
   beforeEach(() => {
-    memory = new Memory(new InMemoryStorage());
+    storage = new InMemoryStorage();
+    memory = new Memory(storage);
     client = new OpenRouter({
       apiKey,
       memory,
@@ -85,16 +87,19 @@ describe("Memory Integration E2E Tests", () => {
     ]);
     await memory.updateThreadWorkingMemory("thread-1", { test: "data" });
 
-    // Serialize
-    const state = await memory.serialize();
+    // Serialize using storage
+    const state = await storage.serialize();
     expect(state.threads).toHaveLength(1);
     expect(state.messages).toHaveLength(1);
     expect(state.resources).toHaveLength(1);
     expect(state.threadWorkingMemories).toHaveLength(1);
 
-    // Create new memory and hydrate
-    const newMemory = new Memory(new InMemoryStorage());
-    await newMemory.hydrate(state);
+    // Create new storage and hydrate
+    const newStorage = new InMemoryStorage();
+    await newStorage.hydrate(state);
+
+    // Create new memory with hydrated storage
+    const newMemory = new Memory(newStorage);
 
     // Verify data was restored
     const thread = await newMemory.getThread("thread-1");
@@ -115,14 +120,18 @@ describe("Memory Integration E2E Tests", () => {
       { role: "assistant" as const, content: "Hi!" },
     ]);
 
-    const threadState = await memory.serializeThread("thread-1");
+    // Serialize using storage
+    const threadState = await storage.serializeThread("thread-1");
     expect(threadState).toBeDefined();
     expect(threadState?.thread.id).toBe("thread-1");
     expect(threadState?.messages).toHaveLength(2);
 
-    // Hydrate into new memory
-    const newMemory = new Memory(new InMemoryStorage());
-    await newMemory.hydrateThread(threadState!);
+    // Hydrate into new storage
+    const newStorage = new InMemoryStorage();
+    await newStorage.hydrateThread(threadState!);
+
+    // Create new memory with hydrated storage
+    const newMemory = new Memory(newStorage);
 
     const thread = await newMemory.getThread("thread-1");
     expect(thread?.title).toBe("Test Thread");

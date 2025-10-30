@@ -11,8 +11,6 @@ import type {
   MemoryMessage,
   Resource,
   ResourceWorkingMemory,
-  SerializedMemoryState,
-  SerializedThreadState,
   Thread,
   ThreadWorkingMemory,
   WorkingMemoryData,
@@ -259,69 +257,6 @@ export class Memory {
     resourceId: string,
   ): Promise<ResourceWorkingMemory | null> {
     return await this.storage.getResourceWorkingMemory(resourceId);
-  }
-
-  // ===== Serialization =====
-
-  /**
-   * Serialize the entire memory state to JSON
-   * @returns The serialized state
-   */
-  async serialize(): Promise<SerializedMemoryState> {
-    return await this.storage.exportState();
-  }
-
-  /**
-   * Serialize a single thread to JSON
-   * @param threadId The thread ID
-   * @returns The serialized thread state, or null if thread not found
-   */
-  async serializeThread(threadId: string): Promise<SerializedThreadState | null> {
-    const thread = await this.storage.getThread(threadId);
-    if (!thread) {
-      return null;
-    }
-
-    const messages = await this.storage.getMessages(threadId);
-    const threadWorkingMemory =
-      await this.storage.getThreadWorkingMemory(threadId);
-
-    return {
-      version: "1.0.0",
-      thread,
-      messages,
-      ...(threadWorkingMemory !== null && { threadWorkingMemory }),
-      serializedAt: new Date(),
-    };
-  }
-
-  /**
-   * Hydrate (restore) the entire memory state from JSON
-   * Warning: This will replace all existing data in memory
-   * @param state The serialized state to restore
-   */
-  async hydrate(state: SerializedMemoryState): Promise<void> {
-    await this.storage.importState(state);
-  }
-
-  /**
-   * Hydrate (restore) a single thread from JSON
-   * @param threadState The serialized thread state to restore
-   */
-  async hydrateThread(threadState: SerializedThreadState): Promise<void> {
-    // Save the thread
-    await this.storage.saveThread(threadState.thread);
-
-    // Save all messages
-    await this.storage.saveMessages(threadState.messages);
-
-    // Save thread working memory if present
-    if (threadState.threadWorkingMemory) {
-      await this.storage.updateThreadWorkingMemory(
-        threadState.thread.id,
-        threadState.threadWorkingMemory.data,
-      );
-    }
   }
 
   // ===== Utility Methods =====

@@ -9,6 +9,7 @@ import type {
   Resource,
   ResourceWorkingMemory,
   SerializedMemoryState,
+  SerializedThreadState,
   Thread,
   ThreadWorkingMemory,
   WorkingMemoryData,
@@ -135,14 +136,28 @@ export interface MemoryStorage {
   // ===== Serialization Operations =====
 
   /**
-   * Export the entire storage state
+   * Serialize the entire storage state
    * @returns Serialized state of all data in storage
    */
-  exportState(): Promise<SerializedMemoryState>;
+  serialize(): Promise<SerializedMemoryState>;
 
   /**
-   * Import a complete storage state
-   * @param state The state to import
+   * Serialize a single thread and its data
+   * @param threadId The thread ID to serialize
+   * @returns The serialized thread state, or null if not found
    */
-  importState(state: SerializedMemoryState): Promise<void>;
+  serializeThread(threadId: string): Promise<SerializedThreadState | null>;
+
+  /**
+   * Hydrate (restore) the entire storage state
+   * Warning: This will replace all existing data in storage
+   * @param state The state to restore
+   */
+  hydrate(state: SerializedMemoryState): Promise<void>;
+
+  /**
+   * Hydrate (restore) a single thread
+   * @param threadState The thread state to restore
+   */
+  hydrateThread(threadState: SerializedThreadState): Promise<void>;
 }

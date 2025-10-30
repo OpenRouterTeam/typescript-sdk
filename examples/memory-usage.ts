@@ -8,8 +8,11 @@
 import { OpenRouter, Memory, InMemoryStorage } from "@openrouter/sdk";
 
 async function main() {
-  // Create a memory instance with in-memory storage
-  const memory = new Memory(new InMemoryStorage(), {
+  // Create storage instance
+  const storage = new InMemoryStorage();
+
+  // Create a memory instance with the storage
+  const memory = new Memory(storage, {
     maxHistoryMessages: 10,  // Keep last 10 messages in context
     autoInject: true,        // Automatically inject history
     autoSave: true,          // Automatically save messages
@@ -30,58 +33,23 @@ async function main() {
   // First message
   const response1 = client.getResponse({
     model: "meta-llama/llama-3.2-1b-instruct",
-    input: [{ role: "user", content: "My name is Alice." }],
+    input: "My name is Alice.",
     threadId,
     resourceId: userId,
   });
   const text1 = await response1.text;
-  console.log("Assistant:", text1);
+  console.log("AI Response:", text1);
 
   // Second message - history is automatically injected
   const response2 = client.getResponse({
     model: "meta-llama/llama-3.2-1b-instruct",
-    input: [{ role: "user", content: "What's my name?" }],
+    input: "What's my name?",
     threadId,
     resourceId: userId,
   });
   const text2 = await response2.text;
-  console.log("Assistant:", text2); // Should remember the name is Alice
+  console.log("AI Response:", text2); // Should remember the name is Alice
 
-  // Example 2: Working with thread working memory
-  console.log("\n=== Example 2: Thread Working Memory ===");
-
-  await memory.updateThreadWorkingMemory(threadId, {
-    topic: "Introduction",
-    lastActivity: new Date().toISOString(),
-    messageCount: 2,
-  });
-
-  const threadMemory = await memory.getThreadWorkingMemory(threadId);
-  console.log("Thread working memory:", threadMemory?.data);
-
-  // Example 3: Working with resource (user) working memory
-  console.log("\n=== Example 3: Resource Working Memory ===");
-
-  await memory.updateResourceWorkingMemory(userId, {
-    name: "Alice",
-    preferences: {
-      theme: "dark",
-      language: "en",
-    },
-    createdAt: new Date().toISOString(),
-  });
-
-  const userMemory = await memory.getResourceWorkingMemory(userId);
-  console.log("User working memory:", userMemory?.data);
-
-  // Example 4: Managing multiple threads for a user
-  console.log("\n=== Example 4: Multiple Threads ===");
-
-  const thread2Id = "conversation-789";
-  await memory.createThread(thread2Id, userId, "Second Conversation");
-  await memory.saveMessages(thread2Id, userId, [
-    { role: "user", content: "Hello from second thread!" },
-  ]);
 
   const userThreads = await memory.getThreadsByResource(userId);
   console.log(`User has ${userThreads.length} threads:`,
@@ -90,8 +58,8 @@ async function main() {
   // Example 5: Serialization and persistence
   console.log("\n=== Example 5: Serialization ===");
 
-  // Serialize entire memory state
-  const memoryState = await memory.serialize();
+  // Serialize entire memory state using storage
+  const memoryState = await storage.serialize();
   console.log("Serialized state:", {
     threads: memoryState.threads.length,
     messages: memoryState.messages.length,
@@ -102,12 +70,13 @@ async function main() {
   // For example: fs.writeFileSync('memory-state.json', JSON.stringify(memoryState));
 
   // Later, you can restore the state
-  const newMemory = new Memory(new InMemoryStorage());
-  await newMemory.hydrate(memoryState);
+  const newStorage = new InMemoryStorage();
+  await newStorage.hydrate(memoryState);
+  const newMemory = new Memory(newStorage);
   console.log("Memory restored successfully!");
 
   // Example 6: Serialize a single thread
-  const threadState = await memory.serializeThread(threadId);
+  const threadState = await storage.serializeThread(threadId);
   if (threadState) {
     console.log("Thread state:", {
       threadId: threadState.thread.id,
