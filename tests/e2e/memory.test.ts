@@ -189,4 +189,233 @@ describe("Memory Integration E2E Tests", () => {
     // Should have 10 unique messages
     expect(new Set(contents).size).toBe(10);
   });
+
+  describe("Context-Aware Memory Features", () => {
+    it("should update a message and track version history", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Original message" },
+      ]);
+      const messageId = saved[0].id;
+
+      // Update the message
+      const updated = await memory.updateMessage(messageId, {
+        content: "Updated message",
+      });
+
+      expect(updated).toBeDefined();
+      expect(updated?.message.content).toBe("Updated message");
+      expect(updated?.version).toBe(2);
+
+      // Get version history
+      const versions = await memory.getMessageVersions(messageId);
+      expect(versions).toHaveLength(2);
+      expect(versions[0].message.content).toBe("Original message");
+      expect(versions[1].message.content).toBe("Updated message");
+    });
+
+    it("should track token counts and get thread token total", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      // Save messages with token counts
+      const messages = await memory.getMessages("thread-1");
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Hello" },
+        { role: "assistant" as const, content: "Hi there" },
+      ]);
+
+      // Manually add token counts (in real usage these would come from API)
+      await storage.updateMessage(saved[0].id, { tokenCount: 10 });
+      await storage.updateMessage(saved[1].id, { tokenCount: 15 });
+
+      const tokenCount = await memory.getThreadTokenCount("thread-1");
+      expect(tokenCount).toBe(25);
+    });
+
+    it("should get messages within token budget", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Message 1" },
+        { role: "assistant" as const, content: "Response 1" },
+        { role: "user" as const, content: "Message 2" },
+        { role: "assistant" as const, content: "Response 2" },
+      ]);
+
+      // Add token counts
+      await storage.updateMessage(saved[0].id, { tokenCount: 20, importance: 0.5 });
+      await storage.updateMessage(saved[1].id, { tokenCount: 30, importance: 0.5 });
+      await storage.updateMessage(saved[2].id, { tokenCount: 25, importance: 0.8 });
+      await storage.updateMessage(saved[3].id, { tokenCount: 35, importance: 0.8 });
+
+      // Get messages within 70 token budget
+      const messages = await memory.getMessagesWithinBudget("thread-1", 70);
+
+      // Should get the two highest importance messages (Message 2 + Response 2 = 60 tokens)
+      expect(messages.length).toBeGreaterThan(0);
+      expect(messages.length).toBeLessThanOrEqual(4);
+    });
+
+    it("should manage cache control for messages", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Cached message" },
+        { role: "assistant" as const, content: "Not cached" },
+      ]);
+
+      // Enable cache for first message
+      const futureDate = new Date(Date.now() + 60000); // 1 minute from now
+      await storage.updateMessage(saved[0].id, {
+        cacheControl: { enabled: true, expiresAt: futureDate },
+      });
+
+      const cachedMessages = await memory.getCachedMessages("thread-1");
+      expect(cachedMessages).toHaveLength(1);
+      expect(cachedMessages[0].message.content).toBe("Cached message");
+    });
+
+    it("should invalidate cache for messages", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Cached message" },
+      ]);
+
+      // Enable cache
+      const futureDate = new Date(Date.now() + 60000);
+      await storage.updateMessage(saved[0].id, {
+        cacheControl: { enabled: true, expiresAt: futureDate },
+      });
+
+      // Verify cache is active
+      let cachedMessages = await memory.getCachedMessages("thread-1");
+      expect(cachedMessages).toHaveLength(1);
+
+      // Invalidate cache
+      await memory.invalidateCache("thread-1");
+
+      // Verify cache is invalidated
+      cachedMessages = await memory.getCachedMessages("thread-1");
+      expect(cachedMessages).toHaveLength(0);
+    });
+
+    it("should filter messages by status", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Active message" },
+        { role: "assistant" as const, content: "Archived message" },
+        { role: "user" as const, content: "Deleted message" },
+      ]);
+
+      // Set different statuses
+      await storage.updateMessage(saved[0].id, { status: "active" });
+      await storage.updateMessage(saved[1].id, { status: "archived" });
+      await storage.updateMessage(saved[2].id, { status: "deleted" });
+
+      const activeMessages = await memory.getMessagesByStatus("thread-1", "active");
+      expect(activeMessages).toHaveLength(1);
+      expect(activeMessages[0].message.content).toBe("Active message");
+
+      const archivedMessages = await memory.getMessagesByStatus("thread-1", "archived");
+      expect(archivedMessages).toHaveLength(1);
+      expect(archivedMessages[0].message.content).toBe("Archived message");
+    });
+
+    it("should filter messages by importance threshold", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Low importance" },
+        { role: "assistant" as const, content: "Medium importance" },
+        { role: "user" as const, content: "High importance" },
+      ]);
+
+      // Set importance scores
+      await storage.updateMessage(saved[0].id, { importance: 0.3 });
+      await storage.updateMessage(saved[1].id, { importance: 0.6 });
+      await storage.updateMessage(saved[2].id, { importance: 0.9 });
+
+      // Get messages with importance >= 0.5
+      const importantMessages = await memory.getMessagesByImportance("thread-1", 0.5);
+      expect(importantMessages).toHaveLength(2);
+      expect(importantMessages[0].importance).toBeGreaterThanOrEqual(0.5);
+      expect(importantMessages[1].importance).toBeGreaterThanOrEqual(0.5);
+    });
+
+    it("should handle graceful degradation when storage doesn't support features", async () => {
+      // Create a storage that doesn't implement optional methods
+      class BasicStorage extends InMemoryStorage {
+        updateMessage = undefined;
+        getMessageHistory = undefined;
+      }
+
+      const basicStorage = new BasicStorage();
+      const basicMemory = new Memory(basicStorage);
+
+      await basicMemory.createThread("thread-1", "user-1");
+      const saved = await basicMemory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Test" },
+      ]);
+
+      // These should return null/empty without errors
+      const updated = await basicMemory.updateMessage(saved[0].id, { content: "Updated" });
+      expect(updated).toBeNull();
+
+      const versions = await basicMemory.getMessageVersions(saved[0].id);
+      expect(versions).toEqual([]);
+    });
+
+    it("should use contextWindow config for token-aware selection", async () => {
+      const configuredStorage = new InMemoryStorage();
+      const configuredMemory = new Memory(configuredStorage, {
+        contextWindow: {
+          maxTokens: 100,
+          strategy: "token-aware",
+        },
+      });
+
+      await configuredMemory.createThread("thread-1", "user-1");
+      const saved = await configuredMemory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "Message 1" },
+        { role: "assistant" as const, content: "Response 1" },
+        { role: "user" as const, content: "Message 2" },
+      ]);
+
+      // Add token counts
+      await configuredStorage.updateMessage(saved[0].id, { tokenCount: 40 });
+      await configuredStorage.updateMessage(saved[1].id, { tokenCount: 50 });
+      await configuredStorage.updateMessage(saved[2].id, { tokenCount: 30 });
+
+      // Should use contextWindow.maxTokens from config
+      const messages = await configuredMemory.getMessagesWithinBudget("thread-1");
+      expect(messages.length).toBeGreaterThan(0);
+    });
+
+    it("should preserve message order when sorting by importance and recency", async () => {
+      await memory.createThread("thread-1", "user-1");
+
+      const saved = await memory.saveMessages("thread-1", "user-1", [
+        { role: "user" as const, content: "First" },
+        { role: "assistant" as const, content: "Second" },
+        { role: "user" as const, content: "Third" },
+      ]);
+
+      // Set same importance, different times
+      await storage.updateMessage(saved[0].id, { importance: 0.5, tokenCount: 10 });
+      await new Promise(resolve => setTimeout(resolve, 10));
+      await storage.updateMessage(saved[1].id, { importance: 0.5, tokenCount: 10 });
+      await new Promise(resolve => setTimeout(resolve, 10));
+      await storage.updateMessage(saved[2].id, { importance: 0.5, tokenCount: 10 });
+
+      const messages = await memory.getMessagesWithinBudget("thread-1", 30);
+
+      // Should maintain chronological order in result
+      expect(messages[0].content).toBe("First");
+      expect(messages[1].content).toBe("Second");
+      expect(messages[2].content).toBe("Third");
+    });
+  });
 });

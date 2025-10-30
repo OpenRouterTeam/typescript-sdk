@@ -107,6 +107,138 @@ async function main() {
     autoSave: true,
   });
   console.log("Custom memory config:", customMemory.getConfig());
+
+  // Example 9: Token-aware memory management
+  console.log("\n=== Example 9: Token-Aware Features ===");
+
+  const tokenStorage = new InMemoryStorage();
+  const tokenMemory = new Memory(tokenStorage, {
+    maxHistoryMessages: 10,
+    autoInject: true,
+    autoSave: true,
+    contextWindow: {
+      maxTokens: 1000,
+      strategy: "token-aware",
+    },
+    trackTokenUsage: true,
+  });
+
+  const tokenThreadId = "token-thread-1";
+  await tokenMemory.createThread(tokenThreadId, userId);
+
+  // Save messages with token counts (in real usage, these would come from API responses)
+  const savedMsgs = await tokenMemory.saveMessages(tokenThreadId, userId, [
+    { role: "user" as const, content: "Tell me about AI" },
+    { role: "assistant" as const, content: "AI is artificial intelligence..." },
+  ]);
+
+  // Manually set token counts (in production, these would be from API)
+  await tokenStorage.updateMessage(savedMsgs[0].id, {
+    tokenCount: 50,
+    importance: 0.8
+  });
+  await tokenStorage.updateMessage(savedMsgs[1].id, {
+    tokenCount: 150,
+    importance: 0.9
+  });
+
+  // Get total token count for thread
+  const totalTokens = await tokenMemory.getThreadTokenCount(tokenThreadId);
+  console.log(`Total tokens in thread: ${totalTokens}`);
+
+  // Get messages within token budget
+  const budgetedMessages = await tokenMemory.getMessagesWithinBudget(tokenThreadId, 500);
+  console.log(`Messages within 500 token budget: ${budgetedMessages.length}`);
+
+  // Example 10: Message editing with version history
+  console.log("\n=== Example 10: Message Editing ===");
+
+  const editThreadId = "edit-thread-1";
+  await memory.createThread(editThreadId, userId);
+
+  const [originalMsg] = await memory.saveMessages(editThreadId, userId, [
+    { role: "user" as const, content: "Original message content" },
+  ]);
+
+  console.log("Original message:", originalMsg.message.content);
+
+  // Edit the message
+  const updatedMsg = await memory.updateMessage(originalMsg.id, {
+    content: "Updated message content",
+  });
+
+  if (updatedMsg) {
+    console.log("Updated message:", updatedMsg.message.content);
+    console.log("Version:", updatedMsg.version);
+
+    // Get version history
+    const versions = await memory.getMessageVersions(originalMsg.id);
+    console.log(`Message has ${versions.length} versions`);
+    versions.forEach((v) => {
+      console.log(`  v${v.version || 1}: ${v.message.content}`);
+    });
+  }
+
+  // Example 11: Cache management
+  console.log("\n=== Example 11: Cache Management ===");
+
+  const cacheThreadId = "cache-thread-1";
+  await memory.createThread(cacheThreadId, userId);
+
+  const [cacheMsg] = await memory.saveMessages(cacheThreadId, userId, [
+    { role: "system" as const, content: "System prompt that should be cached" },
+  ]);
+
+  // Enable caching for this message (e.g., for provider-level prompt caching)
+  const futureDate = new Date(Date.now() + 3600000); // 1 hour from now
+  await storage.updateMessage(cacheMsg.id, {
+    cacheControl: { enabled: true, expiresAt: futureDate },
+  });
+
+  const cachedMsgs = await memory.getCachedMessages(cacheThreadId);
+  console.log(`Cached messages: ${cachedMsgs.length}`);
+
+  // Invalidate cache when needed
+  await memory.invalidateCache(cacheThreadId);
+  const cachedAfterInvalidate = await memory.getCachedMessages(cacheThreadId);
+  console.log(`Cached messages after invalidation: ${cachedAfterInvalidate.length}`);
+
+  // Example 12: Message filtering by status and importance
+  console.log("\n=== Example 12: Message Filtering ===");
+
+  const filterThreadId = "filter-thread-1";
+  await memory.createThread(filterThreadId, userId);
+
+  const filterMsgs = await memory.saveMessages(filterThreadId, userId, [
+    { role: "user" as const, content: "Important message" },
+    { role: "assistant" as const, content: "Normal response" },
+    { role: "user" as const, content: "Low priority message" },
+  ]);
+
+  // Set different statuses and importance
+  await storage.updateMessage(filterMsgs[0].id, {
+    status: "active",
+    importance: 0.9
+  });
+  await storage.updateMessage(filterMsgs[1].id, {
+    status: "active",
+    importance: 0.5
+  });
+  await storage.updateMessage(filterMsgs[2].id, {
+    status: "archived",
+    importance: 0.2
+  });
+
+  // Filter by status
+  const activeMsgs = await memory.getMessagesByStatus(filterThreadId, "active");
+  console.log(`Active messages: ${activeMsgs.length}`);
+
+  const archivedMsgs = await memory.getMessagesByStatus(filterThreadId, "archived");
+  console.log(`Archived messages: ${archivedMsgs.length}`);
+
+  // Filter by importance
+  const importantMsgs = await memory.getMessagesByImportance(filterThreadId, 0.7);
+  console.log(`Messages with importance >= 0.7: ${importantMsgs.length}`);
 }
 
 main().catch(console.error);
