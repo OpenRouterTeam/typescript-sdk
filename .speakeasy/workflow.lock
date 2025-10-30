@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:da053f100fc1b8b64975f7612dd8970661444f9156cd295a6cc49fd5914e8247
         tags:
             - latest
+            - staging
             - 1.0.0
 targets:
     openrouter:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:1076c98248df2a8c6c6a22cb2fcefd3a517f2dc346c0c5b410abfe301bdb1dad
         sourceBlobDigest: sha256:da053f100fc1b8b64975f7612dd8970661444f9156cd295a6cc49fd5914e8247
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:d55fa0cdee5a0b30fe7338c0d02e452e1d39f9f18b3d6db51f01314a8cea65ef
+        codeSamplesRevisionDigest: sha256:adbc72c41ea0d8b705a76a082a80a369ae3aa971d7ecacfcc3fa512d384f057d
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
