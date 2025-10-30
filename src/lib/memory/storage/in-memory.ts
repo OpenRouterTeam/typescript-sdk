@@ -28,6 +28,8 @@ export class InMemoryStorage implements MemoryStorage {
   private threadWorkingMemories: Map<string, ThreadWorkingMemory> = new Map();
   private resourceWorkingMemories: Map<string, ResourceWorkingMemory> =
     new Map();
+  // Message version history tracking
+  private messageHistory: Map<string, MemoryMessage[]> = new Map();
 
   // ===== Thread Operations =====
 
@@ -276,5 +278,140 @@ export class InMemoryStorage implements MemoryStorage {
         threadState.threadWorkingMemory.data,
       );
     }
+  }
+
+  // ===== Enhanced Message Operations =====
+
+  async updateMessage(
+    messageId: string,
+    updates: Partial<MemoryMessage>,
+  ): Promise<MemoryMessage> {
+    const existing = this.messages.get(messageId);
+    if (!existing) {
+      throw new Error(`Message ${messageId} not found`);
+    }
+
+    // Save current version to history
+    if (!this.messageHistory.has(messageId)) {
+      this.messageHistory.set(messageId, []);
+    }
+    this.messageHistory.get(messageId)!.push({ ...existing });
+
+    // Create updated message with incremented version
+    const updated: MemoryMessage = {
+      ...existing,
+      ...updates,
+      version: (existing.version || 1) + 1,
+      editedFrom: existing.editedFrom || existing.id,
+    };
+
+    this.messages.set(messageId, updated);
+    return updated;
+  }
+
+  async getMessageHistory(messageId: string): Promise<MemoryMessage[]> {
+    const history = this.messageHistory.get(messageId) || [];
+    const current = this.messages.get(messageId);
+
+    // Return history + current (oldest to newest)
+    return current ? [...history, current] : history;
+  }
+
+  // ===== Token-Aware Operations =====
+
+  async getThreadTokenCount(threadId: string): Promise<number> {
+    const messages = await this.getMessages(threadId);
+    return messages.reduce((sum, msg) => sum + (msg.tokenCount || 0), 0);
+  }
+
+  async getMessagesByTokenBudget(
+    threadId: string,
+    maxTokens: number,
+    options: GetMessagesOptions = {},
+  ): Promise<MemoryMessage[]> {
+    const messages = await this.getMessages(threadId, options);
+
+    // Filter to only active messages with token counts
+    const activeMessages = messages.filter(
+      (m) => (!m.status || m.status === "active") && m.tokenCount !== undefined,
+    );
+
+    // Sort by importance (desc) then recency (desc)
+    activeMessages.sort((a, b) => {
+      const importanceA = a.importance || 0;
+      const importanceB = b.importance || 0;
+      if (importanceA !== importanceB) {
+        return importanceB - importanceA; // Higher importance first
+      }
+      return b.createdAt.getTime() - a.createdAt.getTime(); // More recent first
+    });
+
+    // Select messages within token budget
+    const selected: MemoryMessage[] = [];
+    let tokenCount = 0;
+
+    for (const message of activeMessages) {
+      const messageTokens = message.tokenCount || 0;
+      if (tokenCount + messageTokens <= maxTokens) {
+        selected.push(message);
+        tokenCount += messageTokens;
+      }
+    }
+
+    // Sort selected messages chronologically for conversation flow
+    return selected.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  }
+
+  // ===== Cache Management Operations =====
+
+  async getCachedMessages(threadId: string): Promise<MemoryMessage[]> {
+    const messages = await this.getMessages(threadId);
+    const now = new Date();
+
+    return messages.filter((msg) => {
+      if (!msg.cacheControl?.enabled) return false;
+      if (!msg.cacheControl.expiresAt) return true;
+      return msg.cacheControl.expiresAt > now;
+    });
+  }
+
+  async invalidateCache(threadId: string, beforeDate?: Date): Promise<void> {
+    const messages = await this.getMessages(threadId);
+    const cutoff = beforeDate || new Date();
+
+    for (const message of messages) {
+      if (message.cacheControl?.enabled) {
+        // Update cache control to mark as expired
+        const updated = {
+          ...message,
+          cacheControl: {
+            ...message.cacheControl,
+            enabled: false,
+            expiresAt: cutoff,
+          },
+        };
+        this.messages.set(message.id, updated);
+      }
+    }
+  }
+
+  // ===== Filtered Retrieval Operations =====
+
+  async getMessagesByStatus(
+    threadId: string,
+    status: string,
+  ): Promise<MemoryMessage[]> {
+    const messages = await this.getMessages(threadId);
+    return messages.filter((m) => m.status === status);
+  }
+
+  async getMessagesByImportance(
+    threadId: string,
+    minImportance: number,
+  ): Promise<MemoryMessage[]> {
+    const messages = await this.getMessages(threadId);
+    return messages.filter(
+      (m) => m.importance !== undefined && m.importance >= minImportance,
+    );
   }
 }

@@ -13,17 +13,19 @@ export { ReusableReadableStream } from "./lib/reusable-stream.js";
 // Memory system exports
 export { Memory, InMemoryStorage } from "./lib/memory/index.js";
 export type {
-  MemoryStorage,
+  CacheControl,
+  ContextWindowConfig,
+  GetMessagesOptions,
   MemoryConfig,
-  Thread,
-  Resource,
   MemoryMessage,
-  ThreadWorkingMemory,
+  MemoryStorage,
+  Resource,
   ResourceWorkingMemory,
-  WorkingMemoryData,
   SerializedMemoryState,
   SerializedThreadState,
-  GetMessagesOptions,
+  Thread,
+  ThreadWorkingMemory,
+  WorkingMemoryData,
 } from "./lib/memory/index.js";
 // #endregion
 export * from "./sdk/sdk.js";

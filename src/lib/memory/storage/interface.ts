@@ -160,4 +160,86 @@ export interface MemoryStorage {
    * @param threadState The thread state to restore
    */
   hydrateThread(threadState: SerializedThreadState): Promise<void>;
+
+  // ===== Enhanced Message Operations (Optional) =====
+
+  /**
+   * Update an existing message
+   * @param messageId The message ID to update
+   * @param updates Partial message updates
+   * @returns The updated message
+   */
+  updateMessage?(
+    messageId: string,
+    updates: Partial<MemoryMessage>,
+  ): Promise<MemoryMessage>;
+
+  /**
+   * Get message edit history
+   * @param messageId The message ID
+   * @returns Array of message versions (oldest to newest)
+   */
+  getMessageHistory?(messageId: string): Promise<MemoryMessage[]>;
+
+  // ===== Token-Aware Operations (Optional) =====
+
+  /**
+   * Get total token count for a thread
+   * @param threadId The thread ID
+   * @returns Total token count across all messages
+   */
+  getThreadTokenCount?(threadId: string): Promise<number>;
+
+  /**
+   * Get messages within a token budget
+   * @param threadId The thread ID
+   * @param maxTokens Maximum tokens to include
+   * @param options Optional filtering and pagination options
+   * @returns Array of messages within token budget
+   */
+  getMessagesByTokenBudget?(
+    threadId: string,
+    maxTokens: number,
+    options?: GetMessagesOptions,
+  ): Promise<MemoryMessage[]>;
+
+  // ===== Cache Management Operations (Optional) =====
+
+  /**
+   * Get messages with active cache
+   * @param threadId The thread ID
+   * @returns Array of cached messages
+   */
+  getCachedMessages?(threadId: string): Promise<MemoryMessage[]>;
+
+  /**
+   * Invalidate cache for messages
+   * @param threadId The thread ID
+   * @param beforeDate Optional date - invalidate cache before this date
+   */
+  invalidateCache?(threadId: string, beforeDate?: Date): Promise<void>;
+
+  // ===== Filtered Retrieval Operations (Optional) =====
+
+  /**
+   * Get messages by status
+   * @param threadId The thread ID
+   * @param status The status to filter by
+   * @returns Array of messages with matching status
+   */
+  getMessagesByStatus?(
+    threadId: string,
+    status: string,
+  ): Promise<MemoryMessage[]>;
+
+  /**
+   * Get messages by importance threshold
+   * @param threadId The thread ID
+   * @param minImportance Minimum importance score (0-1)
+   * @returns Array of messages meeting importance threshold
+   */
+  getMessagesByImportance?(
+    threadId: string,
+    minImportance: number,
+  ): Promise<MemoryMessage[]>;
 }

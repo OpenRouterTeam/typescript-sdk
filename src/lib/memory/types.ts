@@ -6,6 +6,16 @@
 import type { Message } from "../../models/message.js";
 
 /**
+ * Cache control configuration for a message
+ */
+export interface CacheControl {
+  /** Whether caching is enabled for this message */
+  enabled: boolean;
+  /** When the cache expires (if applicable) */
+  expiresAt?: Date;
+}
+
+/**
  * Stored message with metadata for memory system
  */
 export interface MemoryMessage {
@@ -19,6 +29,20 @@ export interface MemoryMessage {
   resourceId: string;
   /** When the message was created */
   createdAt: Date;
+
+  // Optional enhancements for context-aware memory
+  /** Message status for filtering and soft deletes */
+  status?: "active" | "archived" | "deleted";
+  /** Importance score (0-1) for priority-based selection */
+  importance?: number;
+  /** Token count for this message (provider-calculated) */
+  tokenCount?: number;
+  /** Cache control configuration */
+  cacheControl?: CacheControl;
+  /** Version number for message editing */
+  version?: number;
+  /** Original message ID if this is an edited version */
+  editedFrom?: string;
 }
 
 /**
@@ -79,6 +103,23 @@ export interface ResourceWorkingMemory {
 }
 
 /**
+ * Context window management configuration
+ */
+export interface ContextWindowConfig {
+  /** Maximum tokens to keep in context */
+  maxTokens: number;
+  /**
+   * Strategy for selecting messages within token budget
+   * - fifo: First in, first out (oldest messages dropped first)
+   * - priority-based: Keep messages with highest importance scores
+   * - token-aware: Smart selection based on tokens and recency
+   */
+  strategy: "fifo" | "priority-based" | "token-aware";
+  /** Always retain this many recent messages regardless of tokens */
+  retainRecentMessages?: number;
+}
+
+/**
  * Configuration options for the memory system
  */
 export interface MemoryConfig {
@@ -99,6 +140,18 @@ export interface MemoryConfig {
    * @default true
    */
   autoSave?: boolean;
+
+  /**
+   * Context window management configuration
+   * When provided, overrides maxHistoryMessages with token-aware selection
+   */
+  contextWindow?: ContextWindowConfig;
+
+  /**
+   * Whether to track token usage for messages
+   * @default false
+   */
+  trackTokenUsage?: boolean;
 }
 
 /**

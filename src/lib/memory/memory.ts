@@ -17,11 +17,16 @@ import type {
 } from "./types.js";
 
 /**
+ * Resolved configuration with all defaults applied
+ */
+type ResolvedMemoryConfig = Required<Pick<MemoryConfig, 'maxHistoryMessages' | 'autoInject' | 'autoSave' | 'trackTokenUsage'>> & Pick<MemoryConfig, 'contextWindow'>;
+
+/**
  * Memory class for managing conversation history, threads, and working memory
  */
 export class Memory {
   private storage: MemoryStorage;
-  private config: Required<MemoryConfig>;
+  private config: ResolvedMemoryConfig;
 
   /**
    * Create a new Memory instance
@@ -34,13 +39,15 @@ export class Memory {
       maxHistoryMessages: config.maxHistoryMessages ?? 10,
       autoInject: config.autoInject ?? true,
       autoSave: config.autoSave ?? true,
+      ...(config.contextWindow !== undefined && { contextWindow: config.contextWindow }),
+      trackTokenUsage: config.trackTokenUsage ?? false,
     };
   }
 
   /**
    * Get the current memory configuration
    */
-  getConfig(): Required<MemoryConfig> {
+  getConfig(): ResolvedMemoryConfig {
     return { ...this.config };
   }
 
@@ -257,6 +264,152 @@ export class Memory {
     resourceId: string,
   ): Promise<ResourceWorkingMemory | null> {
     return await this.storage.getResourceWorkingMemory(resourceId);
+  }
+
+  // ===== Enhanced Message Operations =====
+
+  /**
+   * Update an existing message
+   * @param messageId The message ID
+   * @param updates Partial message updates
+   * @returns The updated message, or null if storage doesn't support updates
+   */
+  async updateMessage(
+    messageId: string,
+    updates: Partial<Message>,
+  ): Promise<MemoryMessage | null> {
+    if (!this.storage.updateMessage) {
+      return null;
+    }
+
+    return await this.storage.updateMessage(messageId, {
+      message: updates as Message,
+    } as Partial<MemoryMessage>);
+  }
+
+  /**
+   * Get edit history for a message
+   * @param messageId The message ID
+   * @returns Array of message versions, or empty if storage doesn't support history
+   */
+  async getMessageVersions(messageId: string): Promise<MemoryMessage[]> {
+    if (!this.storage.getMessageHistory) {
+      return [];
+    }
+
+    return await this.storage.getMessageHistory(messageId);
+  }
+
+  // ===== Token-Aware Operations =====
+
+  /**
+   * Get total token count for a thread
+   * @param threadId The thread ID
+   * @returns Token count, or 0 if storage doesn't support token counting
+   */
+  async getThreadTokenCount(threadId: string): Promise<number> {
+    if (!this.storage.getThreadTokenCount) {
+      return 0;
+    }
+
+    return await this.storage.getThreadTokenCount(threadId);
+  }
+
+  /**
+   * Get messages within a token budget
+   * Uses contextWindow config if available, otherwise falls back to maxHistoryMessages
+   * @param threadId The thread ID
+   * @param maxTokens Optional max tokens (uses config if not provided)
+   * @returns Array of messages within token budget
+   */
+  async getMessagesWithinBudget(
+    threadId: string,
+    maxTokens?: number,
+  ): Promise<Message[]> {
+    const tokenLimit =
+      maxTokens || this.config.contextWindow?.maxTokens;
+
+    if (!tokenLimit || !this.storage.getMessagesByTokenBudget) {
+      // Fall back to regular getRecentMessages
+      return await this.getRecentMessages(threadId);
+    }
+
+    const memoryMessages = await this.storage.getMessagesByTokenBudget(
+      threadId,
+      tokenLimit,
+    );
+
+    return memoryMessages.map((mm) => mm.message);
+  }
+
+  // ===== Cache Management =====
+
+  /**
+   * Get messages with active cache
+   * @param threadId The thread ID
+   * @returns Array of cached messages, or empty if storage doesn't support caching
+   */
+  async getCachedMessages(threadId: string): Promise<MemoryMessage[]> {
+    if (!this.storage.getCachedMessages) {
+      return [];
+    }
+
+    return await this.storage.getCachedMessages(threadId);
+  }
+
+  /**
+   * Invalidate cache for messages
+   * @param threadId The thread ID
+   * @param beforeDate Optional date - invalidate cache before this date
+   */
+  async invalidateCache(threadId: string, beforeDate?: Date): Promise<void> {
+    if (!this.storage.invalidateCache) {
+      return;
+    }
+
+    await this.storage.invalidateCache(threadId, beforeDate);
+  }
+
+  // ===== Filtered Retrieval =====
+
+  /**
+   * Get messages by status
+   * @param threadId The thread ID
+   * @param status The status to filter by
+   * @returns Array of messages with matching status
+   */
+  async getMessagesByStatus(
+    threadId: string,
+    status: "active" | "archived" | "deleted",
+  ): Promise<MemoryMessage[]> {
+    if (!this.storage.getMessagesByStatus) {
+      // Fall back to getting all messages and filtering
+      const all = await this.storage.getMessages(threadId);
+      return all.filter((m) => m.status === status);
+    }
+
+    return await this.storage.getMessagesByStatus(threadId, status);
+  }
+
+  /**
+   * Get messages by importance threshold
+   * @param threadId The thread ID
+   * @param minImportance Minimum importance score (0-1)
+   * @returns Array of messages meeting importance threshold
+   */
+  async getMessagesByImportance(
+    threadId: string,
+    minImportance: number,
+  ): Promise<MemoryMessage[]> {
+    if (!this.storage.getMessagesByImportance) {
+      // Fall back to getting all messages and filtering
+      const all = await this.storage.getMessages(threadId);
+      return all.filter(
+        (m) => m.importance !== undefined && m.importance >= minImportance,
+      );
+    }
+
+    return await this.storage.getMessagesByImportance(threadId, minImportance);
   }
 
   // ===== Utility Methods =====

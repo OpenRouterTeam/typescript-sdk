@@ -12,6 +12,8 @@ export type { MemoryStorage } from "./storage/interface.js";
 
 // Types
 export type {
+  CacheControl,
+  ContextWindowConfig,
   GetMessagesOptions,
   MemoryConfig,
   MemoryMessage,
