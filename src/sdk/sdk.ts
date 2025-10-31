@@ -88,12 +88,12 @@ export class OpenRouter extends ClientSDK {
    *
    * @remarks
    * Returns a wrapper that allows consuming the response in multiple ways:
-   * - `await response.message` - Get the completed message
-   * - `await response.text` - Get just the text content
-   * - `for await (const delta of response.textStream)` - Stream text deltas
-   * - `for await (const msg of response.messageStream)` - Stream incremental message updates
-   * - `for await (const event of response.fullResponsesStream)` - Stream all response events
-   * - `for await (const chunk of response.fullChatStream)` - Stream in chat-compatible format
+   * - `await response.getMessage()` - Get the completed message
+   * - `await response.getText()` - Get just the text content
+   * - `for await (const delta of response.getTextStream())` - Stream text deltas
+   * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
+   * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
+   * - `for await (const chunk of response.getFullChatStream())` - Stream in chat-compatible format
    *
    * All consumption patterns can be used concurrently on the same response.
    *
@@ -104,7 +104,7 @@ export class OpenRouter extends ClientSDK {
    *   model: "anthropic/claude-3-opus",
    *   input: [{ role: "user", content: "Hello!" }]
    * });
-   * const text = await response.text;
+   * const text = await response.getText();
    * console.log(text);
    *
    * // Streaming text
@@ -112,7 +112,7 @@ export class OpenRouter extends ClientSDK {
    *   model: "anthropic/claude-3-opus",
    *   input: [{ role: "user", content: "Hello!" }]
    * });
-   * for await (const delta of response.textStream) {
+   * for await (const delta of response.getTextStream()) {
    *   process.stdout.write(delta);
    * }
    * ```

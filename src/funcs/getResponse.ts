@@ -10,14 +10,14 @@ import * as models from "../models/index.js";
  * Creates a response using the OpenResponses API in streaming mode and returns
  * a wrapper that allows consuming the response in multiple ways:
  *
- * - `await response.message` - Get the completed message
- * - `await response.text` - Get just the text content
- * - `for await (const delta of response.textStream)` - Stream text deltas
- * - `for await (const delta of response.reasoningStream)` - Stream reasoning deltas
- * - `for await (const delta of response.toolStream)` - Stream tool call argument deltas
- * - `for await (const msg of response.newMessagesStream)` - Stream incremental message updates
- * - `for await (const event of response.fullResponsesStream)` - Stream all response events
- * - `for await (const chunk of response.fullChatStream)` - Stream in chat-compatible format
+ * - `await response.getMessage()` - Get the completed message
+ * - `await response.getText()` - Get just the text content
+ * - `for await (const delta of response.getTextStream())` - Stream text deltas
+ * - `for await (const delta of response.getReasoningStream())` - Stream reasoning deltas
+ * - `for await (const delta of response.getToolStream())` - Stream tool call argument deltas
+ * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
+ * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
+ * - `for await (const chunk of response.getFullChatStream())` - Stream in chat-compatible format
  *
  * All consumption patterns can be used concurrently on the same response.
  *
@@ -28,7 +28,7 @@ import * as models from "../models/index.js";
  *   model: "anthropic/claude-3-opus",
  *   input: [{ role: "user", content: "Hello!" }]
  * });
- * const text = await response.text;
+ * const text = await response.getText();
  * console.log(text);
  *
  * // Streaming text
@@ -36,7 +36,7 @@ import * as models from "../models/index.js";
  *   model: "anthropic/claude-3-opus",
  *   input: [{ role: "user", content: "Hello!" }]
  * });
- * for await (const delta of response.textStream) {
+ * for await (const delta of response.getTextStream()) {
  *   process.stdout.write(delta);
  * }
  *
@@ -45,7 +45,7 @@ import * as models from "../models/index.js";
  *   model: "anthropic/claude-3-opus",
  *   input: [{ role: "user", content: "Hello!" }]
  * });
- * const message = await response.message;
+ * const message = await response.getMessage();
  * console.log(message.content);
  * ```
  */

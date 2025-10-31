@@ -24,11 +24,11 @@ export interface GetResponseOptions {
  * A wrapper around a streaming response that provides multiple consumption patterns.
  *
  * Allows consuming the response in multiple ways:
- * - `await response.message` - Get the completed message
- * - `await response.text` - Get just the text
- * - `for await (const delta of response.textStream)` - Stream text deltas
- * - `for await (const msg of response.messageStream)` - Stream incremental message updates
- * - `for await (const event of response.fullResponsesStream)` - Stream all response events
+ * - `await response.getMessage()` - Get the completed message
+ * - `await response.getText()` - Get just the text
+ * - `for await (const delta of response.getTextStream())` - Stream text deltas
+ * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
+ * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
  *
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
@@ -83,7 +83,7 @@ export class ResponseWrapper {
    * This will consume the stream until completion and extract the first message.
    * Returns an AssistantMessage in chat format.
    */
-  get message(): Promise<models.AssistantMessage> {
+  getMessage(): Promise<models.AssistantMessage> {
     if (this.messagePromise) {
       return this.messagePromise;
     }
@@ -105,7 +105,7 @@ export class ResponseWrapper {
    * Get just the text content from the response.
    * This will consume the stream until completion and extract the text.
    */
-  get text(): Promise<string> {
+  getText(): Promise<string> {
     if (this.textPromise) {
       return this.textPromise;
     }
@@ -127,7 +127,7 @@ export class ResponseWrapper {
    * Stream all response events as they arrive.
    * Multiple consumers can iterate over this stream concurrently.
    */
-  get fullResponsesStream(): AsyncIterableIterator<models.OpenResponsesStreamEvent> {
+  getFullResponsesStream(): AsyncIterableIterator<models.OpenResponsesStreamEvent> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -143,7 +143,7 @@ export class ResponseWrapper {
    * Stream only text deltas as they arrive.
    * This filters the full event stream to only yield text content.
    */
-  get textStream(): AsyncIterableIterator<string> {
+  getTextStream(): AsyncIterableIterator<string> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -159,7 +159,7 @@ export class ResponseWrapper {
    * Each iteration yields an updated version of the message with new content.
    * Returns AssistantMessage in chat format.
    */
-  get newMessagesStream(): AsyncIterableIterator<models.AssistantMessage> {
+  getNewMessagesStream(): AsyncIterableIterator<models.AssistantMessage> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -174,7 +174,7 @@ export class ResponseWrapper {
    * Stream only reasoning deltas as they arrive.
    * This filters the full event stream to only yield reasoning content.
    */
-  get reasoningStream(): AsyncIterableIterator<string> {
+  getReasoningStream(): AsyncIterableIterator<string> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -189,7 +189,7 @@ export class ResponseWrapper {
    * Stream only tool call argument deltas as they arrive.
    * This filters the full event stream to only yield function call arguments.
    */
-  get toolStream(): AsyncIterableIterator<string> {
+  getToolStream(): AsyncIterableIterator<string> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -209,7 +209,7 @@ export class ResponseWrapper {
    * stream into a format similar to the chat API. Due to differences in the APIs,
    * this may not be a perfect mapping.
    */
-  get fullChatStream(): AsyncIterableIterator<any> {
+  getFullChatStream(): AsyncIterableIterator<any> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
