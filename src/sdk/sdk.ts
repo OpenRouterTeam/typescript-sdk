@@ -83,6 +83,19 @@ export class OpenRouter extends ClientSDK {
     return (this._completions ??= new Completions(this._options));
   }
   // #region sdk-class-body
+  private _memory?: any; // Memory type imported below
+
+  /**
+   * Get the memory instance if configured
+   */
+  get memory(): any | undefined {
+    // Lazy initialization from options
+    if (!this._memory && this._options && "memory" in this._options) {
+      this._memory = (this._options as any).memory;
+    }
+    return this._memory;
+  }
+
   /**
    * Get a response with multiple consumption patterns
    *
@@ -96,6 +109,10 @@ export class OpenRouter extends ClientSDK {
    * - `for await (const chunk of response.fullChatStream)` - Stream in chat-compatible format
    *
    * All consumption patterns can be used concurrently on the same response.
+   *
+   * When memory is configured and threadId/resourceId are provided in the request:
+   * - History will be automatically injected before the request
+   * - Messages will be automatically saved after the response completes
    *
    * @example
    * ```typescript
@@ -115,10 +132,22 @@ export class OpenRouter extends ClientSDK {
    * for await (const delta of response.textStream) {
    *   process.stdout.write(delta);
    * }
+   *
+   * // With memory
+   * const response = openRouter.getResponse({
+   *   model: "anthropic/claude-3-opus",
+   *   input: [{ role: "user", content: "Hello!" }],
+   *   threadId: "thread-123",
+   *   resourceId: "user-456"
+   * });
+   * const text = await response.text; // Messages automatically saved
    * ```
    */
   getResponse(
-    request: Omit<models.OpenResponsesRequest, "stream">,
+    request: Omit<models.OpenResponsesRequest, "stream"> & {
+      threadId?: string;
+      resourceId?: string;
+    },
     options?: RequestOptions,
   ): ResponseWrapper {
     return getResponse(this, request, options);

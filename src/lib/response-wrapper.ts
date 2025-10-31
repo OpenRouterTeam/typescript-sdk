@@ -18,6 +18,11 @@ export interface GetResponseOptions {
   request: models.OpenResponsesRequest;
   client: OpenRouterCore;
   options?: RequestOptions;
+  // Memory-related options
+  memory?: any;
+  threadId?: string;
+  resourceId?: string;
+  originalInput?: any;
 }
 
 /**
@@ -32,6 +37,10 @@ export interface GetResponseOptions {
  *
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
+ *
+ * When memory is configured:
+ * - History will be auto-injected if threadId is provided
+ * - Messages will be auto-saved after response completes
  */
 export class ResponseWrapper {
   private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
@@ -40,6 +49,7 @@ export class ResponseWrapper {
   private textPromise: Promise<string> | null = null;
   private options: GetResponseOptions;
   private initPromise: Promise<void> | null = null;
+  private savedToMemory: boolean = false;
 
   constructor(options: GetResponseOptions) {
     this.options = options;
@@ -55,8 +65,48 @@ export class ResponseWrapper {
     }
 
     this.initPromise = (async () => {
+      let request = { ...this.options.request };
+
+      // Auto-inject history if memory is configured
+      if (this.options.memory && this.options.threadId) {
+        try {
+          const config = this.options.memory.getConfig();
+
+          // Auto-inject history if enabled
+          if (config.autoInject) {
+            // Ensure thread and resource exist
+            if (this.options.resourceId) {
+              await this.options.memory.ensureResource(this.options.resourceId);
+              await this.options.memory.ensureThread(
+                this.options.threadId,
+                this.options.resourceId,
+              );
+            }
+
+            // Get recent messages and prepend to input
+            const history = await this.options.memory.getRecentMessages(
+              this.options.threadId,
+            );
+
+            if (history.length > 0) {
+              // Prepend history to input
+              if (Array.isArray(request.input)) {
+                request.input = [...history, ...request.input];
+              } else if (request.input) {
+                request.input = [...history, request.input];
+              } else {
+                request.input = history;
+              }
+            }
+          }
+        } catch (error) {
+          // Log error but continue - don't block the request
+          console.error("Error auto-injecting history:", error);
+        }
+      }
+
       // Force stream mode
-      const request = { ...this.options.request, stream: true as const };
+      request = { ...request, stream: true as const };
 
       // Create the stream promise
       this.streamPromise = betaResponsesSend(
@@ -67,15 +117,71 @@ export class ResponseWrapper {
         if (!result.ok) {
           throw result.error;
         }
-        return result.value;
+        return result.value as EventStream<models.OpenResponsesStreamEvent>;
       });
 
       // Wait for the stream and create the reusable stream
       const eventStream = await this.streamPromise;
-      this.reusableStream = new ReusableReadableStream(eventStream);
+      if (eventStream) {
+        this.reusableStream = new ReusableReadableStream(eventStream);
+      }
     })();
 
     return this.initPromise;
+  }
+
+  /**
+   * Auto-save messages to memory after response completes
+   */
+  private async autoSaveToMemory(
+    assistantMessage: models.AssistantMessage,
+  ): Promise<void> {
+    // Only save once
+    if (this.savedToMemory) {
+      return;
+    }
+
+    // Check if memory and auto-save are enabled
+    if (
+      !this.options.memory ||
+      !this.options.threadId ||
+      !this.options.resourceId
+    ) {
+      return;
+    }
+
+    const config = this.options.memory.getConfig();
+    if (!config.autoSave) {
+      return;
+    }
+
+    try {
+      // Prepare messages to save (original input + assistant response)
+      const messagesToSave: any[] = [];
+
+      // Add original input messages
+      if (this.options.originalInput) {
+        if (Array.isArray(this.options.originalInput)) {
+          messagesToSave.push(...this.options.originalInput);
+        } else {
+          messagesToSave.push(this.options.originalInput);
+        }
+      }
+
+      // Add assistant response
+      messagesToSave.push(assistantMessage);
+
+      // Save to memory
+      await this.options.memory.saveMessages(
+        this.options.threadId,
+        this.options.resourceId,
+        messagesToSave,
+      );
+
+      this.savedToMemory = true;
+    } catch (error) {
+      console.error("Error auto-saving to memory:", error);
+    }
   }
 
   /**
@@ -95,7 +201,12 @@ export class ResponseWrapper {
       }
 
       const completedResponse = await consumeStreamForCompletion(this.reusableStream);
-      return extractMessageFromResponse(completedResponse);
+      const message = extractMessageFromResponse(completedResponse);
+
+      // Auto-save to memory if configured
+      await this.autoSaveToMemory(message);
+
+      return message;
     })();
 
     return this.messagePromise;
@@ -117,7 +228,14 @@ export class ResponseWrapper {
       }
 
       const completedResponse = await consumeStreamForCompletion(this.reusableStream);
-      return extractTextFromResponse(completedResponse);
+      const text = extractTextFromResponse(completedResponse);
+
+      // Auto-save to memory if configured
+      // We need to also extract the message for saving
+      const message = extractMessageFromResponse(completedResponse);
+      await this.autoSaveToMemory(message);
+
+      return text;
     })();
 
     return this.textPromise;
