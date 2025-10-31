@@ -295,12 +295,12 @@ describe("Memory Integration E2E Tests", () => {
         { role: "user" as const, content: "Test" },
       ]);
 
-      // These should return null/empty without errors
-      const updated = await basicMemory.updateMessage(saved[0].id, { content: "Updated" });
-      expect(updated).toBeNull();
+      // These should throw errors with clear messages
+      await expect(basicMemory.updateMessage(saved[0].id, { content: "Updated" }))
+        .rejects.toThrow('Message editing is not supported by this storage backend');
 
-      const versions = await basicMemory.getMessageVersions(saved[0].id);
-      expect(versions).toEqual([]);
+      await expect(basicMemory.getMessageVersions(saved[0].id))
+        .rejects.toThrow('Message version history is not supported by this storage backend');
     });
 
     it("should use contextWindow config for token-aware selection", async () => {
@@ -308,7 +308,6 @@ describe("Memory Integration E2E Tests", () => {
       const configuredMemory = new Memory(configuredStorage, {
         contextWindow: {
           maxTokens: 100,
-          strategy: "token-aware",
         },
       });
 

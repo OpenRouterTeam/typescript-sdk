@@ -3,6 +3,7 @@
  * Provides high-level API for managing threads, messages, resources, and working memory
  */
 
+import { randomUUID } from "node:crypto";
 import type { Message } from "../../models/message.js";
 import type { MemoryStorage } from "./storage/interface.js";
 import type {
@@ -19,7 +20,7 @@ import type {
 /**
  * Resolved configuration with all defaults applied
  */
-type ResolvedMemoryConfig = Required<Pick<MemoryConfig, 'maxHistoryMessages' | 'autoInject' | 'autoSave' | 'trackTokenUsage'>> & Pick<MemoryConfig, 'contextWindow'>;
+type ResolvedMemoryConfig = Required<Pick<MemoryConfig, 'maxHistoryMessages'>> & Pick<MemoryConfig, 'contextWindow'>;
 
 /**
  * Memory class for managing conversation history, threads, and working memory
@@ -37,10 +38,7 @@ export class Memory {
     this.storage = storage;
     this.config = {
       maxHistoryMessages: config.maxHistoryMessages ?? 10,
-      autoInject: config.autoInject ?? true,
-      autoSave: config.autoSave ?? true,
       ...(config.contextWindow !== undefined && { contextWindow: config.contextWindow }),
-      trackTokenUsage: config.trackTokenUsage ?? false,
     };
   }
 
@@ -272,29 +270,43 @@ export class Memory {
    * Update an existing message
    * @param messageId The message ID
    * @param updates Partial message updates
-   * @returns The updated message, or null if storage doesn't support updates
+   * @returns The updated message
+   * @throws Error if storage doesn't support message updates
    */
   async updateMessage(
     messageId: string,
     updates: Partial<Message>,
-  ): Promise<MemoryMessage | null> {
+  ): Promise<MemoryMessage> {
     if (!this.storage.updateMessage) {
-      return null;
+      throw new Error(
+        'Message editing is not supported by this storage backend. ' +
+        'Please use a storage implementation that provides the updateMessage method.'
+      );
     }
 
-    return await this.storage.updateMessage(messageId, {
+    const result = await this.storage.updateMessage(messageId, {
       message: updates as Message,
     } as Partial<MemoryMessage>);
+
+    if (!result) {
+      throw new Error(`Message with ID "${messageId}" not found`);
+    }
+
+    return result;
   }
 
   /**
    * Get edit history for a message
    * @param messageId The message ID
-   * @returns Array of message versions, or empty if storage doesn't support history
+   * @returns Array of message versions (oldest to newest)
+   * @throws Error if storage doesn't support message history
    */
   async getMessageVersions(messageId: string): Promise<MemoryMessage[]> {
     if (!this.storage.getMessageHistory) {
-      return [];
+      throw new Error(
+        'Message version history is not supported by this storage backend. ' +
+        'Please use a storage implementation that provides the getMessageHistory method.'
+      );
     }
 
     return await this.storage.getMessageHistory(messageId);
@@ -305,11 +317,15 @@ export class Memory {
   /**
    * Get total token count for a thread
    * @param threadId The thread ID
-   * @returns Token count, or 0 if storage doesn't support token counting
+   * @returns Token count
+   * @throws Error if storage doesn't support token counting
    */
   async getThreadTokenCount(threadId: string): Promise<number> {
     if (!this.storage.getThreadTokenCount) {
-      return 0;
+      throw new Error(
+        'Token counting is not supported by this storage backend. ' +
+        'Please use a storage implementation that provides the getThreadTokenCount method.'
+      );
     }
 
     return await this.storage.getThreadTokenCount(threadId);
@@ -317,10 +333,10 @@ export class Memory {
 
   /**
    * Get messages within a token budget
-   * Uses contextWindow config if available, otherwise falls back to maxHistoryMessages
    * @param threadId The thread ID
-   * @param maxTokens Optional max tokens (uses config if not provided)
+   * @param maxTokens Max tokens (required - use config.contextWindow.maxTokens or provide explicitly)
    * @returns Array of messages within token budget
+   * @throws Error if maxTokens not provided or storage doesn't support token-based selection
    */
   async getMessagesWithinBudget(
     threadId: string,
@@ -329,9 +345,17 @@ export class Memory {
     const tokenLimit =
       maxTokens || this.config.contextWindow?.maxTokens;
 
-    if (!tokenLimit || !this.storage.getMessagesByTokenBudget) {
-      // Fall back to regular getRecentMessages
-      return await this.getRecentMessages(threadId);
+    if (!tokenLimit) {
+      throw new Error(
+        'Token budget not specified. Please provide maxTokens parameter or configure contextWindow.maxTokens.'
+      );
+    }
+
+    if (!this.storage.getMessagesByTokenBudget) {
+      throw new Error(
+        'Token-based message selection is not supported by this storage backend. ' +
+        'Please use a storage implementation that provides the getMessagesByTokenBudget method.'
+      );
     }
 
     const memoryMessages = await this.storage.getMessagesByTokenBudget(
@@ -346,11 +370,13 @@ export class Memory {
 
   /**
    * Invalidate cache for messages
+   * Note: This is a no-op if the storage backend doesn't support caching
    * @param threadId The thread ID
    * @param beforeDate Optional date - invalidate cache before this date
    */
   async invalidateCache(threadId: string, beforeDate?: Date): Promise<void> {
     if (!this.storage.invalidateCache) {
+      // No-op: Storage doesn't support caching
       return;
     }
 
@@ -382,10 +408,10 @@ export class Memory {
 
   /**
    * Generate a unique ID for messages
-   * @returns A unique ID string
+   * @returns A unique ID string (UUID v4)
    */
   private generateId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return randomUUID();
   }
 
   /**

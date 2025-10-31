@@ -108,15 +108,6 @@ export interface ResourceWorkingMemory {
 export interface ContextWindowConfig {
   /** Maximum tokens to keep in context */
   maxTokens: number;
-  /**
-   * Strategy for selecting messages within token budget
-   * - fifo: First in, first out (oldest messages dropped first)
-   * - priority-based: Keep messages with highest importance scores
-   * - token-aware: Smart selection based on tokens and recency
-   */
-  strategy: "fifo" | "priority-based" | "token-aware";
-  /** Always retain this many recent messages regardless of tokens */
-  retainRecentMessages?: number;
 }
 
 /**
@@ -124,34 +115,16 @@ export interface ContextWindowConfig {
  */
 export interface MemoryConfig {
   /**
-   * Maximum number of messages to load from history when auto-injecting
+   * Maximum number of messages to load from history
    * @default 10
    */
   maxHistoryMessages?: number;
-
-  /**
-   * Whether to enable auto-injection of conversation history
-   * @default true
-   */
-  autoInject?: boolean;
-
-  /**
-   * Whether to enable auto-saving of messages
-   * @default true
-   */
-  autoSave?: boolean;
 
   /**
    * Context window management configuration
    * When provided, overrides maxHistoryMessages with token-aware selection
    */
   contextWindow?: ContextWindowConfig;
-
-  /**
-   * Whether to track token usage for messages
-   * @default false
-   */
-  trackTokenUsage?: boolean;
 }
 
 /**

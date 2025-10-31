@@ -14,8 +14,6 @@ async function main() {
   // Create a memory instance with the storage
   const memory = new Memory(storage, {
     maxHistoryMessages: 10,  // Keep last 10 messages in context
-    autoInject: true,        // Automatically inject history
-    autoSave: true,          // Automatically save messages
   });
 
   // Create OpenRouter client with memory
@@ -103,8 +101,6 @@ async function main() {
   // You can create memory with custom config
   const customMemory = new Memory(new InMemoryStorage(), {
     maxHistoryMessages: 20,  // Keep more history
-    autoInject: true,
-    autoSave: true,
   });
   console.log("Custom memory config:", customMemory.getConfig());
 
@@ -113,14 +109,9 @@ async function main() {
 
   const tokenStorage = new InMemoryStorage();
   const tokenMemory = new Memory(tokenStorage, {
-    maxHistoryMessages: 10,
-    autoInject: true,
-    autoSave: true,
     contextWindow: {
       maxTokens: 1000,
-      strategy: "token-aware",
     },
-    trackTokenUsage: true,
   });
 
   const tokenThreadId = "token-thread-1";
