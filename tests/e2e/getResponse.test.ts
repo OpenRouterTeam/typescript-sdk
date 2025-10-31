@@ -30,7 +30,7 @@ describe("getResponse E2E Tests", () => {
         ],
       });
 
-      const text = await response.text;
+      const text = await response.getText();
 
       expect(text).toBeDefined();
       expect(typeof text).toBe("string");
@@ -57,7 +57,7 @@ describe("getResponse E2E Tests", () => {
         ],
       });
 
-      const text = await response.text;
+      const text = await response.getText();
 
       expect(text).toBeDefined();
       expect(text.toLowerCase()).toContain("bob");
@@ -76,7 +76,7 @@ describe("getResponse E2E Tests", () => {
         ],
       });
 
-      const message = await response.message;
+      const message = await response.getMessage();
 
       expect(message).toBeDefined();
       expect(message.role).toBe("assistant");
@@ -105,7 +105,7 @@ describe("getResponse E2E Tests", () => {
         ],
       });
 
-      const message = await response.message;
+      const message = await response.getMessage();
 
       expect(message).toBeDefined();
       expect(message.role).toBe("assistant");
@@ -127,7 +127,7 @@ describe("getResponse E2E Tests", () => {
 
       const deltas: string[] = [];
 
-      for await (const delta of response.textStream) {
+      for await (const delta of response.getTextStream()) {
         expect(typeof delta).toBe("string");
         deltas.push(delta);
       }
@@ -154,7 +154,7 @@ describe("getResponse E2E Tests", () => {
       let lastDeltaTime: number | null = null;
       let deltaCount = 0;
 
-      for await (const delta of response.textStream) {
+      for await (const delta of response.getTextStream()) {
         if (!firstDeltaTime) {
           firstDeltaTime = Date.now();
         }
@@ -187,7 +187,7 @@ describe("getResponse E2E Tests", () => {
 
       const messages: Message[] = [];
 
-      for await (const message of response.newMessagesStream) {
+      for await (const message of response.getNewMessagesStream()) {
         expect(message).toBeDefined();
         expect(message.role).toBe("assistant");
         expect(typeof message.content).toBe("string");
@@ -227,7 +227,7 @@ describe("getResponse E2E Tests", () => {
 
       const reasoningDeltas: string[] = [];
 
-      for await (const delta of response.reasoningStream) {
+      for await (const delta of response.getReasoningStream()) {
         expect(typeof delta).toBe("string");
         reasoningDeltas.push(delta);
       }
@@ -270,7 +270,7 @@ describe("getResponse E2E Tests", () => {
 
       const toolDeltas: string[] = [];
 
-      for await (const delta of response.toolStream) {
+      for await (const delta of response.getToolStream()) {
         expect(typeof delta).toBe("string");
         toolDeltas.push(delta);
       }
@@ -300,7 +300,7 @@ describe("getResponse E2E Tests", () => {
 
       const events: any[] = [];
 
-      for await (const event of response.fullResponsesStream) {
+      for await (const event of response.getFullResponsesStream()) {
         expect(event).toBeDefined();
         expect("type" in event).toBe(true);
         events.push(event);
@@ -332,7 +332,7 @@ describe("getResponse E2E Tests", () => {
 
       const textDeltaEvents: any[] = [];
 
-      for await (const event of response.fullResponsesStream) {
+      for await (const event of response.getFullResponsesStream()) {
         if ("type" in event && event.type === "response.output_text.delta") {
           textDeltaEvents.push(event);
         }
@@ -361,7 +361,7 @@ describe("getResponse E2E Tests", () => {
 
       const chunks: any[] = [];
 
-      for await (const chunk of response.fullChatStream) {
+      for await (const chunk of response.getFullChatStream()) {
         expect(chunk).toBeDefined();
         expect(chunk.type).toBeDefined();
         chunks.push(chunk);
@@ -388,10 +388,10 @@ describe("getResponse E2E Tests", () => {
       });
 
       // Get full text and stream concurrently
-      const textPromise = response.text;
+      const textPromise = response.getText();
       const streamPromise = (async () => {
         const deltas: string[] = [];
-        for await (const delta of response.textStream) {
+        for await (const delta of response.getTextStream()) {
           deltas.push(delta);
         }
         return deltas;
@@ -422,7 +422,7 @@ describe("getResponse E2E Tests", () => {
       // Start two concurrent stream consumers
       const textStreamPromise = (async () => {
         const deltas: string[] = [];
-        for await (const delta of response.textStream) {
+        for await (const delta of response.getTextStream()) {
           deltas.push(delta);
         }
         return deltas;
@@ -430,7 +430,7 @@ describe("getResponse E2E Tests", () => {
 
       const newMessagesStreamPromise = (async () => {
         const messages: any[] = [];
-        for await (const message of response.newMessagesStream) {
+        for await (const message of response.getNewMessagesStream()) {
           messages.push(message);
         }
         return messages;
@@ -464,13 +464,13 @@ describe("getResponse E2E Tests", () => {
       });
 
       // First, get the full text
-      const text = await response.text;
+      const text = await response.getText();
       expect(text).toBeDefined();
       expect(text.length).toBeGreaterThan(0);
 
       // Then, try to stream (should get same data from buffer)
       const deltas: string[] = [];
-      for await (const delta of response.textStream) {
+      for await (const delta of response.getTextStream()) {
         expect(typeof delta).toBe("string");
         deltas.push(delta);
       }
@@ -495,14 +495,14 @@ describe("getResponse E2E Tests", () => {
 
       // First, collect deltas from stream
       const deltas: string[] = [];
-      for await (const delta of response.textStream) {
+      for await (const delta of response.getTextStream()) {
         expect(typeof delta).toBe("string");
         deltas.push(delta);
       }
       expect(deltas.length).toBeGreaterThan(0);
 
       // Then, get the full text (should work even after stream consumed)
-      const text = await response.text;
+      const text = await response.getText();
       expect(text).toBeDefined();
       expect(text.length).toBeGreaterThan(0);
 
@@ -524,7 +524,7 @@ describe("getResponse E2E Tests", () => {
         ],
       });
 
-      await expect(response.text).rejects.toThrow();
+      await expect(response.getText()).rejects.toThrow();
     });
 
     it("should handle empty input", async () => {
@@ -535,7 +535,7 @@ describe("getResponse E2E Tests", () => {
 
       // This might fail or return empty - both are acceptable
       try {
-        const text = await response.text;
+        const text = await response.getText();
         expect(text).toBeDefined();
       } catch (error) {
         expect(error).toBeDefined();
@@ -556,7 +556,7 @@ describe("getResponse E2E Tests", () => {
         maxOutputTokens: 10,
       });
 
-      const text = await response.text;
+      const text = await response.getText();
 
       expect(text).toBeDefined();
       // Text should be relatively short due to token limit
@@ -575,7 +575,7 @@ describe("getResponse E2E Tests", () => {
         instructions: "You are a helpful assistant. Keep responses concise.",
       });
 
-      const text = await response.text;
+      const text = await response.getText();
 
       expect(text).toBeDefined();
       expect(typeof text).toBe("string");
