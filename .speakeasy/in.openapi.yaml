@@ -4584,9 +4584,7 @@ components:
             uptime_last_30m: 99.5
             supports_implicit_caching: true
     __schema0:
-      anyOf:
-        - $ref: '#/components/schemas/ChatCompletionFinishReason'
-        - type: 'null'
+      type: string
     ChatMessageContentItemText:
       type: object
       properties:
@@ -4769,14 +4767,6 @@ components:
         - completion_tokens
         - prompt_tokens
         - total_tokens
-    ChatCompletionFinishReason:
-      type: string
-      enum:
-        - tool_calls
-        - stop
-        - length
-        - content_filter
-        - error
     JSONSchemaConfig:
       type: object
       properties:
@@ -4990,7 +4980,11 @@ components:
           items:
             $ref: '#/components/schemas/Message'
         model:
-          type: string
+          $ref: '#/components/schemas/__schema0'
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema0'
         frequency_penalty:
           anyOf:
             - type: number
@@ -5125,7 +5119,6 @@ components:
           type: string
       required:
         - messages
-        - model
     ChatResponseChoice:
       type: object
       properties:
@@ -5361,7 +5354,11 @@ components:
       type: object
       properties:
         model:
-          type: string
+          $ref: '#/components/schemas/__schema0'
+        models:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema0'
         prompt:
           anyOf:
             - type: string
@@ -5505,7 +5502,6 @@ components:
               type: object
             - type: 'null'
       required:
-        - model
         - prompt
     CompletionChoice:
       type: object
