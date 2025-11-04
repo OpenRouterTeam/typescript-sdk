@@ -7,11 +7,7 @@ Default parameters for this model
 ```typescript
 import { DefaultParameters } from "@openrouter/sdk/models";
 
-let value: DefaultParameters = {
-  temperature: 0.7,
-  topP: 0.9,
-  frequencyPenalty: 0,
-};
+let value: DefaultParameters = {};
 ```
 
 ## Fields

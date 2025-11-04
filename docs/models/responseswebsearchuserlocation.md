@@ -7,13 +7,7 @@ User location information for web search
 ```typescript
 import { ResponsesWebSearchUserLocation } from "@openrouter/sdk/models";
 
-let value: ResponsesWebSearchUserLocation = {
-  type: "approximate",
-  city: "San Francisco",
-  country: "USA",
-  region: "California",
-  timezone: "America/Los_Angeles",
-};
+let value: ResponsesWebSearchUserLocation = {};
 ```
 
 ## Fields

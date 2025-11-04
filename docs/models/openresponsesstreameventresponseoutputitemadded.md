@@ -14,7 +14,6 @@ let value: OpenResponsesStreamEventResponseOutputItemAdded = {
     id: "item-1",
     role: "assistant",
     type: "message",
-    status: "in_progress",
     content: [],
   },
   sequenceNumber: 2,

@@ -5,10 +5,7 @@
 ```typescript
 import { ListRequest } from "@openrouter/sdk/models/operations";
 
-let value: ListRequest = {
-  includeDisabled: "false",
-  offset: "0",
-};
+let value: ListRequest = {};
 ```
 
 ## Fields

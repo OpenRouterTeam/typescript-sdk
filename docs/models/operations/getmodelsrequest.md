@@ -5,10 +5,7 @@
 ```typescript
 import { GetModelsRequest } from "@openrouter/sdk/models/operations";
 
-let value: GetModelsRequest = {
-  category: "<value>",
-  supportedParameters: "<value>",
-};
+let value: GetModelsRequest = {};
 ```
 
 ## Fields

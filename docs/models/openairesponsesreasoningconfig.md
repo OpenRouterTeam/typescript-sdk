@@ -5,10 +5,7 @@
 ```typescript
 import { OpenAIResponsesReasoningConfig } from "@openrouter/sdk/models";
 
-let value: OpenAIResponsesReasoningConfig = {
-  effort: "low",
-  summary: "concise",
-};
+let value: OpenAIResponsesReasoningConfig = {};
 ```
 
 ## Fields

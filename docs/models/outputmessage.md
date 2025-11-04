@@ -9,19 +9,10 @@ let value: OutputMessage = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
-  status: "completed",
   content: [
     {
       type: "output_text",
       text: "Hello! How can I help you today?",
-      annotations: [
-        {
-          type: "file_citation",
-          fileId: "file-abc123",
-          filename: "research_paper.pdf",
-          index: 0,
-        },
-      ],
     },
   ],
 };

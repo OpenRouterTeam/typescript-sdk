@@ -10,9 +10,6 @@ import { EdgeNetworkTimeoutResponseErrorData } from "@openrouter/sdk/models";
 let value: EdgeNetworkTimeoutResponseErrorData = {
   code: 524,
   message: "Request timed out. Please try again later.",
-  metadata: {
-    "key": "<value>",
-  },
 };
 ```
 

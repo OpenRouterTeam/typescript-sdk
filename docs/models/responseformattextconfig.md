@@ -27,9 +27,10 @@ const value: models.ResponsesFormatJSONObject = {
 const value: models.ResponsesFormatTextJSONSchemaConfig = {
   type: "json_schema",
   name: "<value>",
-  description: "innocently rapid what furthermore think despite these vice",
-  strict: true,
-  schema: {},
+  schema: {
+    "key": "<value>",
+    "key1": "<value>",
+  },
 };
 ```
 

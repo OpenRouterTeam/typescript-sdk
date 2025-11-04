@@ -5,9 +5,7 @@
 ```typescript
 import { StreamOptions } from "@openrouter/sdk/models";
 
-let value: StreamOptions = {
-  includeUsage: false,
-};
+let value: StreamOptions = {};
 ```
 
 ## Fields

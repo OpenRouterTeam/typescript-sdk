@@ -10,13 +10,7 @@ let value: CompletionResponse = {
   object: "text_completion",
   created: 7985.17,
   model: "Taurus",
-  systemFingerprint: "<value>",
   choices: [],
-  usage: {
-    promptTokens: 4161.82,
-    completionTokens: 8658.7,
-    totalTokens: 8891.62,
-  },
 };
 ```
 

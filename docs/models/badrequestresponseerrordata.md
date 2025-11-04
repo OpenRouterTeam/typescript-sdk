@@ -10,7 +10,6 @@ import { BadRequestResponseErrorData } from "@openrouter/sdk/models";
 let value: BadRequestResponseErrorData = {
   code: 400,
   message: "Invalid request parameters",
-  metadata: null,
 };
 ```
 

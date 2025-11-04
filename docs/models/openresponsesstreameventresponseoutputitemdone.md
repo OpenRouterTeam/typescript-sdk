@@ -14,12 +14,10 @@ let value: OpenResponsesStreamEventResponseOutputItemDone = {
     id: "item-1",
     role: "assistant",
     type: "message",
-    status: "completed",
     content: [
       {
         type: "output_text",
         text: "Hello! How can I help you?",
-        annotations: [],
       },
     ],
   },

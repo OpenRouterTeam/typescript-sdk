@@ -7,31 +7,7 @@ When multiple model providers are available, optionally indicate your routing pr
 ```typescript
 import { Provider } from "@openrouter/sdk/models";
 
-let value: Provider = {
-  allowFallbacks: true,
-  requireParameters: false,
-  dataCollection: "deny",
-  zdr: true,
-  order: null,
-  only: [
-    "OpenAI",
-  ],
-  ignore: [
-    "OpenAI",
-  ],
-  quantizations: [
-    "fp16",
-  ],
-  sort: "price",
-  maxPrice: {
-    prompt: 1000,
-    completion: 1000,
-    image: "1000",
-    audio: 1000,
-    request: 1000,
-  },
-  experimental: {},
-};
+let value: Provider = {};
 ```
 
 ## Fields

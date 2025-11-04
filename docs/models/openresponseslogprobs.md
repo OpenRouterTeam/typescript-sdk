@@ -10,12 +10,6 @@ import { OpenResponsesLogProbs } from "@openrouter/sdk/models";
 let value: OpenResponsesLogProbs = {
   logprob: -0.1,
   token: "world",
-  topLogprobs: [
-    {
-      token: "hello",
-      logprob: -0.5,
-    },
-  ],
 };
 ```
 

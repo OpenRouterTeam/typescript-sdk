@@ -9,8 +9,6 @@ let value: ListProvidersData = {
   name: "OpenAI",
   slug: "openai",
   privacyPolicyUrl: "https://openai.com/privacy",
-  termsOfServiceUrl: "https://openai.com/terms",
-  statusPageUrl: "https://status.openai.com",
 };
 ```
 

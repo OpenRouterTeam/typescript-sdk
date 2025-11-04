@@ -10,57 +10,9 @@ let value: ChatGenerationParams = {
     {
       role: "system",
       content: "<value>",
-      name: "<value>",
     },
   ],
   model: "Mustang",
-  frequencyPenalty: 7589.96,
-  logitBias: {
-    "key": 847.22,
-    "key1": 4831.07,
-    "key2": 1268.36,
-  },
-  logprobs: true,
-  topLogprobs: 1190.39,
-  maxCompletionTokens: 4025.63,
-  maxTokens: 6504,
-  metadata: {
-    "key": "<value>",
-  },
-  presencePenalty: 7597.29,
-  reasoning: {
-    effort: "minimal",
-    summary: "detailed",
-  },
-  responseFormat: {
-    type: "text",
-  },
-  seed: 493978,
-  stop: [
-    "<value 1>",
-    "<value 2>",
-  ],
-  streamOptions: {
-    includeUsage: true,
-  },
-  temperature: 7887.12,
-  toolChoice: "<value>",
-  tools: [
-    {
-      type: "function",
-      function: {
-        name: "<value>",
-        description: "cutover eek excepting behind fall peter even",
-        parameters: {
-          "key": "<value>",
-          "key1": "<value>",
-        },
-        strict: true,
-      },
-    },
-  ],
-  topP: 2113.35,
-  user: "Lina_Beier39",
 };
 ```
 

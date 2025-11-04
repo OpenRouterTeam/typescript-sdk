@@ -10,7 +10,6 @@ import { PaymentRequiredResponseErrorData } from "@openrouter/sdk/models";
 let value: PaymentRequiredResponseErrorData = {
   code: 402,
   message: "Insufficient credits. Add more using https://openrouter.ai/credits",
-  metadata: null,
 };
 ```
 

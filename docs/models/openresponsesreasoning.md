@@ -10,22 +10,12 @@ import { OpenResponsesReasoning } from "@openrouter/sdk/models";
 let value: OpenResponsesReasoning = {
   type: "reasoning",
   id: "reasoning-abc123",
-  content: [
-    {
-      type: "reasoning_text",
-      text: "Let me think step by step about this problem...",
-    },
-  ],
   summary: [
     {
       type: "summary_text",
       text: "Analyzed the problem using first principles",
     },
   ],
-  encryptedContent: "<value>",
-  status: "completed",
-  signature: "<value>",
-  format: "anthropic-claude-v1",
 };
 ```
 

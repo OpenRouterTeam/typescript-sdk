@@ -8,13 +8,7 @@ import { UpdateKeysRequest } from "@openrouter/sdk/models/operations";
 let value: UpdateKeysRequest = {
   hash:
     "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",
-  requestBody: {
-    name: "Updated API Key Name",
-    disabled: false,
-    limit: 75,
-    limitReset: "daily",
-    includeByokInLimit: true,
-  },
+  requestBody: {},
 };
 ```
 

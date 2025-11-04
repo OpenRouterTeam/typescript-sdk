@@ -10,11 +10,6 @@ import { PayloadTooLargeResponseErrorData } from "@openrouter/sdk/models";
 let value: PayloadTooLargeResponseErrorData = {
   code: 413,
   message: "Request payload too large",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
-  },
 };
 ```
 

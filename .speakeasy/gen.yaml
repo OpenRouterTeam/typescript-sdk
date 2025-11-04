@@ -29,7 +29,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.1
+  version: 0.1.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -39,6 +39,7 @@ typescript:
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON: {}
+  additionalScripts: {}
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true

@@ -10,10 +10,6 @@ import { TooManyRequestsResponseErrorData } from "@openrouter/sdk/models";
 let value: TooManyRequestsResponseErrorData = {
   code: 429,
   message: "Rate limit exceeded",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-  },
 };
 ```
 

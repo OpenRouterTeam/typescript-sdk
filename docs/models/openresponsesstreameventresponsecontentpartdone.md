@@ -15,7 +15,6 @@ let value: OpenResponsesStreamEventResponseContentPartDone = {
   part: {
     type: "output_text",
     text: "Hello! How can I help you?",
-    annotations: [],
   },
   sequenceNumber: 7,
 };

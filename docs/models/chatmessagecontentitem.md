@@ -19,7 +19,6 @@ const value: models.ChatMessageContentItemImage = {
   type: "image_url",
   imageUrl: {
     url: "https://better-nephew.com/",
-    detail: "low",
   },
 };
 ```

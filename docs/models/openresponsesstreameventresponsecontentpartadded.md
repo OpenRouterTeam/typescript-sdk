@@ -15,7 +15,6 @@ let value: OpenResponsesStreamEventResponseContentPartAdded = {
   part: {
     type: "output_text",
     text: "",
-    annotations: [],
   },
   sequenceNumber: 3,
 };

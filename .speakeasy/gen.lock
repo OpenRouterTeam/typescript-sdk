@@ -3,10 +3,10 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: 6676183700397400ca1cc3c4e2b3fa14
   docVersion: 1.0.0
-  speakeasyVersion: 1.643.2
-  generationVersion: 2.731.6
-  releaseVersion: 0.0.1
-  configChecksum: 666b1fff65c09de3e844f1f1a31ce723
+  speakeasyVersion: 1.648.1
+  generationVersion: 2.739.1
+  releaseVersion: 0.1.0
+  configChecksum: d449583229f714111a3a63d351a07b1f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.24.1
+    core: 3.26.0
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -25,7 +25,7 @@ features:
     globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
-    globalServerURLs: 2.82.5
+    globalServerURLs: 2.83.0
     groups: 2.81.3
     methodArguments: 0.1.2
     methodSecurity: 2.82.6
@@ -1132,13 +1132,13 @@ examples:
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "403":
-          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   getCredits:
     speakeasy-default-get-credits:
       responses:
@@ -1151,11 +1151,11 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "403":
-          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   addCoinbaseCharge:
     speakeasy-default-add-coinbase-charge:
       requestBody:
@@ -1243,11 +1243,11 @@ examples:
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   previewZDR:
     speakeasy-default-preview-ZDR:
       responses:
@@ -1275,18 +1275,18 @@ examples:
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   listProviders:
     speakeasy-default-list-providers:
       responses:
         "200":
-          application/json: {"data": [{"name": "OpenAI", "slug": "openai", "privacy_policy_url": "https://openai.com/privacy", "terms_of_service_url": "https://openai.com/terms", "status_page_url": "https://status.openai.com"}]}
+          application/json: {"data": [{"name": "OpenAI", "slug": "openai", "privacy_policy_url": "https://openai.com/privacy"}]}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   listApiKeys:
     speakeasy-default-list-api-keys:
       parameters:
@@ -1361,9 +1361,9 @@ examples:
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   exchangeAuthorizationCode:
     speakeasy-default-exchange-authorization-code:
       requestBody:
@@ -1400,10 +1400,10 @@ examples:
   createCompletions:
     speakeasy-default-create-completions:
       requestBody:
-        application/json: {"model": "Model T", "prompt": "<value>", "best_of": 163488, "echo": true, "frequency_penalty": 27.55, "logit_bias": {"key": 9064.25, "key1": 7698.06, "key2": 6481.8}, "logprobs": 482258, "max_tokens": null, "n": 629532, "presence_penalty": 5430.28, "seed": 853393, "stop": ["<value 1>", "<value 2>"], "stream": false, "stream_options": {"include_usage": false}, "suffix": "<value>", "temperature": null, "top_p": 5229.98, "user": "Anita53", "metadata": {"key": "<value>", "key1": "<value>"}, "response_format": {"type": "text"}}
+        application/json: {"model": "Model T", "prompt": "<value>", "stream": false}
       responses:
         "200":
-          application/json: {"id": "<id>", "object": "text_completion", "created": 2021.59, "model": "Jetta", "system_fingerprint": "<value>", "choices": [], "usage": {"prompt_tokens": 8379.72, "completion_tokens": 7782.47, "total_tokens": 4749.16}}
+          application/json: {"id": "<id>", "object": "text_completion", "created": 2021.59, "model": "Jetta", "choices": []}
         "400":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
@@ -1422,10 +1422,10 @@ examples:
   sendChatCompletionRequest:
     speakeasy-default-send-chat-completion-request:
       requestBody:
-        application/json: {"messages": [], "model": "Charger", "frequency_penalty": 8689.88, "logit_bias": {"key": 4876.54, "key1": 7346.88}, "logprobs": false, "top_logprobs": 2140.15, "max_completion_tokens": 89.43, "max_tokens": 7392.4, "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "presence_penalty": 9132.54, "reasoning": {"effort": "medium", "summary": null}, "response_format": {"type": "grammar", "grammar": "<value>"}, "seed": null, "stop": [], "stream": false, "stream_options": {"include_usage": true}, "temperature": 1, "tool_choice": "<value>", "tools": [{"type": "function", "function": {"name": "<value>", "description": "pro even bank rewarding ha modulo aboard mentor", "parameters": {"key": "<value>"}, "strict": null}}], "top_p": 1, "user": "Francesco.Bartell"}
+        application/json: {"messages": [], "model": "Charger", "stream": false}
       responses:
         "200":
-          application/json: {"id": "<id>", "choices": [], "created": 2736.96, "model": "Impala", "object": "chat.completion", "system_fingerprint": "<value>", "usage": {"completion_tokens": 1508.33, "prompt_tokens": 8882.56, "total_tokens": 6462.52, "completion_tokens_details": {"reasoning_tokens": 29.52, "audio_tokens": 2712.88, "accepted_prediction_tokens": 9343.84, "rejected_prediction_tokens": 3891.43}, "prompt_tokens_details": {"cached_tokens": 8011.45, "audio_tokens": 6106.12}}}
+          application/json: {"id": "<id>", "choices": [], "created": 2736.96, "model": "Impala", "object": "chat.completion"}
         "400":
           application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
         "500":
@@ -1479,13 +1479,13 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": null}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   getGeneration:
     speakeasy-default-get-generation:
       parameters:
@@ -1501,21 +1501,21 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "402":
-          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": null}, "user_id": null}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "502":
-          application/json: {"error": {"code": 502, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
         "524":
-          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later.", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
-          application/json: {"error": {"code": 529, "message": "Provider returned error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 529, "message": "Provider returned error"}}
   listModelsCount:
     speakeasy-default-list-models-count:
       responses:
@@ -1524,7 +1524,7 @@ examples:
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   getModels:
     speakeasy-default-get-models:
       parameters:
@@ -1535,25 +1535,25 @@ examples:
           use_rss_chat_links: "<value>"
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": 1000, "audio": 1000, "input_audio_cache": "1000", "web_search": 1000, "internal_reasoning": "1000", "input_cache_read": 1000, "input_cache_write": 1000, "discount": 8591.99}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
           application/rss+xml: "<value>"
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   listModelsUser:
     speakeasy-default-list-models-user:
       responses:
         "200":
-          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "hugging_face_id": "microsoft/DialoGPT-medium", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": 1000, "audio": 1000, "input_audio_cache": "1000", "web_search": "1000", "internal_reasoning": 1000, "input_cache_read": 1000, "input_cache_write": 1000, "discount": 389.6}, "context_length": 8192, "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"context_length": 8192, "max_completion_tokens": 4096, "is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   listEndpoints:
     speakeasy-default-list-endpoints:
       parameters:
@@ -1562,7 +1562,7 @@ examples:
           slug: "<value>"
       responses:
         "200":
-          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI: GPT-4", "model_name": "GPT-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006", "request": "0", "image": "0", "image_output": "1000", "audio": 1000, "input_audio_cache": "1000", "web_search": 1000, "internal_reasoning": 1000, "input_cache_read": 1000, "input_cache_write": "1000", "discount": 5355.68}, "provider_name": "OpenAI", "tag": "openai", "quantization": "fp16", "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "status": -5, "uptime_last_30m": 99.5, "supports_implicit_caching": true}]}}
+          application/json: {"data": {"id": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "description": "GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.", "architecture": {"tokenizer": "GPT", "instruct_type": "chatml", "modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "endpoints": [{"name": "OpenAI: GPT-4", "model_name": "GPT-4", "context_length": 8192, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "provider_name": "OpenAI", "tag": "openai", "quantization": "fp16", "max_completion_tokens": 4096, "max_prompt_tokens": 8192, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "uptime_last_30m": 99.5, "supports_implicit_caching": true}]}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
@@ -1570,22 +1570,22 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   listEndpointsZdr:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 8891.09, "pricing": {"prompt": "1000", "completion": 1000, "request": 1000, "image": 1000, "image_output": 1000, "audio": 1000, "input_audio_cache": 1000, "web_search": 1000, "internal_reasoning": "1000", "input_cache_read": 1000, "input_cache_write": 1000, "discount": 6579.66}, "provider_name": "OpenAI", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 4685.25, "max_prompt_tokens": 22.7, "supported_parameters": ["temperature"], "status": 0, "uptime_last_30m": 6060.66, "supports_implicit_caching": true}]}
+          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 8891.09, "pricing": {"prompt": "1000", "completion": 1000}, "provider_name": "OpenAI", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 4685.25, "max_prompt_tokens": 22.7, "supported_parameters": ["temperature"], "uptime_last_30m": 6060.66, "supports_implicit_caching": true}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   createKeys:
     speakeasy-default-create-keys:
       requestBody:
-        application/json: {"name": "My New API Key", "limit": 50, "limit_reset": "monthly", "include_byok_in_limit": true}
+        application/json: {"name": "My New API Key"}
       responses:
         "201":
           application/json: {"data": {"hash": "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", "name": "My New API Key", "label": "My New API Key", "disabled": false, "limit": 50, "limit_remaining": 50, "limit_reset": "monthly", "include_byok_in_limit": true, "usage": 0, "usage_daily": 0, "usage_weekly": 0, "usage_monthly": 0, "byok_usage": 0, "byok_usage_daily": 0, "byok_usage_weekly": 0, "byok_usage_monthly": 0, "created_at": "2025-08-24T10:30:00Z", "updated_at": null}, "key": "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"}
@@ -1596,20 +1596,20 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   updateKeys:
     speakeasy-default-update-keys:
       parameters:
         path:
           hash: "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"
       requestBody:
-        application/json: {"name": "Updated API Key Name", "disabled": false, "limit": 75, "limit_reset": "daily", "include_byok_in_limit": true}
+        application/json: {}
       responses:
         "200":
           application/json: {"data": {"hash": "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", "name": "Updated API Key Name", "label": "Updated API Key Name", "disabled": false, "limit": 75, "limit_remaining": 49.5, "limit_reset": "daily", "include_byok_in_limit": true, "usage": 25.5, "usage_daily": 25.5, "usage_weekly": 25.5, "usage_monthly": 25.5, "byok_usage": 17.38, "byok_usage_daily": 17.38, "byok_usage_weekly": 17.38, "byok_usage_monthly": 17.38, "created_at": "2025-08-24T10:30:00Z", "updated_at": "2025-08-24T16:00:00Z"}}
@@ -1620,15 +1620,15 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   deleteKeys:
     speakeasy-default-delete-keys:
       parameters:
@@ -1644,13 +1644,13 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   getKey:
     speakeasy-default-get-key:
       parameters:
@@ -1666,70 +1666,70 @@ examples:
         5XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   createResponses:
     speakeasy-default-create-responses:
       requestBody:
-        application/json: {"input": [{"type": "message", "role": "user", "content": "Hello, how are you?"}], "instructions": "<value>", "metadata": {"user_id": "123", "session_id": "abc-def-ghi"}, "tools": [{"type": "function", "name": "get_current_weather", "description": "Get the current weather in a given location", "strict": true, "parameters": {"type": "object", "properties": {"location": {"type": "string"}}}}], "tool_choice": {"type": "function", "name": "<value>"}, "parallel_tool_calls": true, "model": "anthropic/claude-4.5-sonnet-20250929", "models": ["<value 1>"], "text": {"format": {"type": "text"}, "verbosity": "medium"}, "reasoning": {"effort": "high", "summary": "auto", "max_tokens": 8661.16, "enabled": true}, "max_output_tokens": null, "temperature": 0.7, "top_p": 0.9, "top_k": 193.77, "prompt_cache_key": "<value>", "previous_response_id": "<id>", "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "include": ["reasoning.encrypted_content"], "background": true, "safety_identifier": "<value>", "store": true, "service_tier": "auto", "truncation": "auto", "stream": false, "provider": {"allow_fallbacks": null, "require_parameters": true, "data_collection": "deny", "zdr": true, "order": ["OpenAI"], "only": ["OpenAI"], "ignore": null, "quantizations": ["fp16"], "sort": "price", "max_price": {"prompt": "1000", "completion": 1000, "image": 1000, "audio": "1000", "request": 1000}, "experimental": {}}, "plugins": [{"id": "file-parser", "max_files": 4870.55, "pdf": {"engine": "mistral-ocr"}}], "user": "Elmer_Yundt72"}
+        application/json: {"stream": false}
       responses:
         "200":
-          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "status": "completed", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "status": "completed", "content": [{"type": "output_text", "text": "Hello! How can I help you today?", "annotations": []}]}], "user": "Maria_Zboncak17", "output_text": "<value>", "prompt_cache_key": "<value>", "safety_identifier": "<value>", "error": null, "incomplete_details": null, "usage": {"input_tokens": 10, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 25, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 35, "cost": 4793.03, "is_byok": false, "cost_details": {"upstream_inference_cost": 2597.96, "upstream_inference_input_cost": 1590.87, "upstream_inference_output_cost": 2325.17}}, "max_tool_calls": 1419.9, "top_logprobs": 1435.99, "max_output_tokens": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true, "prompt": {"id": "<id>", "variables": {"key": {"type": "input_text", "text": "Hello, how can I help you?"}}}, "background": false, "previous_response_id": "<id>", "reasoning": {"effort": "low", "summary": "concise"}, "service_tier": "priority", "store": true, "truncation": "disabled", "text": {"format": {"type": "text"}, "verbosity": "medium"}}
+          application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "content": [{"type": "output_text", "text": "Hello! How can I help you today?"}]}], "error": null, "incomplete_details": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "402":
-          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits", "metadata": null}, "user_id": null}
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits"}}
         "404":
-          application/json: {"error": {"code": 404, "message": "Resource not found", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
         "408":
-          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later.", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 408, "message": "Operation timed out. Please try again later."}}
         "413":
-          application/json: {"error": {"code": 413, "message": "Request payload too large", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 413, "message": "Request payload too large"}}
         "422":
-          application/json: {"error": {"code": 422, "message": "Invalid argument", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 422, "message": "Invalid argument"}}
         "429":
-          application/json: {"error": {"code": 429, "message": "Rate limit exceeded", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "502":
-          application/json: {"error": {"code": 502, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
         "503":
-          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
         "524":
-          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later.", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
-          application/json: {"error": {"code": 529, "message": "Provider returned error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 529, "message": "Provider returned error"}}
   exchangeAuthCodeForAPIKey:
     speakeasy-default-exchange-auth-code-for-API-key:
       requestBody:
-        application/json: {"code": "auth_code_abc123def456", "code_verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk", "code_challenge_method": "S256"}
+        application/json: {"code": "auth_code_abc123def456"}
       responses:
         "200":
           application/json: {"key": "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", "user_id": "user_2yOPcMpKoQhcd4bVgSMlELRaIah"}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>", "key1": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "403":
-          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 403, "message": "Only provisioning keys can perform this operation"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": null}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
   createAuthKeysCode:
     speakeasy-default-create-auth-keys-code:
       requestBody:
-        application/json: {"callback_url": "https://myapp.com/auth/callback", "code_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "code_challenge_method": "S256", "limit": 100}
+        application/json: {"callback_url": "https://myapp.com/auth/callback"}
       responses:
         "200":
           application/json: {"data": {"id": "auth_code_xyz789", "app_id": 12345, "created_at": "2025-08-24T10:30:00Z"}}
         "400":
-          application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"key": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
-          application/json: {"error": {"code": 401, "message": "Missing Authentication header", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": null}
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
-          application/json: {"error": {"code": 500, "message": "Internal Server Error", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}, "user_id": "<id>"}
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2

@@ -7,8 +7,6 @@ import { ExchangeAuthCodeForAPIKeyRequest } from "@openrouter/sdk/models/operati
 
 let value: ExchangeAuthCodeForAPIKeyRequest = {
   code: "auth_code_abc123def456",
-  codeVerifier: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
-  codeChallengeMethod: "S256",
 };
 ```
 

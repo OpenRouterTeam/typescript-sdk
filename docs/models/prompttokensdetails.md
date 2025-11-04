@@ -5,10 +5,7 @@
 ```typescript
 import { PromptTokensDetails } from "@openrouter/sdk/models";
 
-let value: PromptTokensDetails = {
-  cachedTokens: 9036.33,
-  audioTokens: 880.11,
-};
+let value: PromptTokensDetails = {};
 ```
 
 ## Fields

@@ -10,7 +10,6 @@ import { InternalServerResponseErrorData } from "@openrouter/sdk/models";
 let value: InternalServerResponseErrorData = {
   code: 500,
   message: "Internal Server Error",
-  metadata: null,
 };
 ```
 

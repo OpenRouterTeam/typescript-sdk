@@ -7,7 +7,6 @@ import { ImageUrl } from "@openrouter/sdk/models";
 
 let value: ImageUrl = {
   url: "https://sinful-meal.biz",
-  detail: "high",
 };
 ```
 

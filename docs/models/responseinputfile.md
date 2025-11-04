@@ -9,10 +9,6 @@ import { ResponseInputFile } from "@openrouter/sdk/models";
 
 let value: ResponseInputFile = {
   type: "input_file",
-  fileId: "file-abc123",
-  fileData: "<value>",
-  filename: "document.pdf",
-  fileUrl: "https://outstanding-scholarship.name/",
 };
 ```
 

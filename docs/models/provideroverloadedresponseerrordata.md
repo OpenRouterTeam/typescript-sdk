@@ -10,9 +10,6 @@ import { ProviderOverloadedResponseErrorData } from "@openrouter/sdk/models";
 let value: ProviderOverloadedResponseErrorData = {
   code: 529,
   message: "Provider returned error",
-  metadata: {
-    "key": "<value>",
-  },
 };
 ```
 

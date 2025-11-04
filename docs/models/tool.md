@@ -9,12 +9,6 @@ let value: Tool = {
   type: "function",
   function: {
     name: "<value>",
-    description: "cutover eek excepting behind fall peter even",
-    parameters: {
-      "key": "<value>",
-      "key1": "<value>",
-    },
-    strict: true,
   },
 };
 ```

@@ -10,45 +10,6 @@ let value: ChatResponseChoice = {
   index: 2823.76,
   message: {
     role: "assistant",
-    content: "<value>",
-    name: "<value>",
-    toolCalls: [
-      {
-        id: "<id>",
-        type: "function",
-        function: {
-          name: "<value>",
-          arguments: "<value>",
-        },
-      },
-    ],
-    refusal: "<value>",
-    reasoning: "<value>",
-  },
-  logprobs: {
-    content: [
-      {
-        token: "<value>",
-        logprob: 7572.98,
-        bytes: [
-          9191.5,
-          2986.81,
-          8603.48,
-        ],
-        topLogprobs: [
-          {
-            token: "<value>",
-            logprob: 1362.57,
-            bytes: [
-              7000.29,
-              7450.46,
-              6296.9,
-            ],
-          },
-        ],
-      },
-    ],
-    refusal: [],
   },
 };
 ```

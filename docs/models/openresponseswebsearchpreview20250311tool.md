@@ -9,14 +9,6 @@ import { OpenResponsesWebSearchPreview20250311Tool } from "@openrouter/sdk/model
 
 let value: OpenResponsesWebSearchPreview20250311Tool = {
   type: "web_search_preview_2025_03_11",
-  searchContextSize: "medium",
-  userLocation: {
-    type: "approximate",
-    city: "New Amelie",
-    country: "Liberia",
-    region: null,
-    timezone: "Europe/Minsk",
-  },
 };
 ```
 

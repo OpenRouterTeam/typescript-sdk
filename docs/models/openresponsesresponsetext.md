@@ -7,12 +7,7 @@ Text output configuration including format and verbosity
 ```typescript
 import { OpenResponsesResponseText } from "@openrouter/sdk/models";
 
-let value: OpenResponsesResponseText = {
-  format: {
-    type: "text",
-  },
-  verbosity: "medium",
-};
+let value: OpenResponsesResponseText = {};
 ```
 
 ## Fields

@@ -8,33 +8,6 @@ import { CompletionCreateParams } from "@openrouter/sdk/models";
 let value: CompletionCreateParams = {
   model: "Model Y",
   prompt: "<value>",
-  bestOf: 276224,
-  echo: true,
-  frequencyPenalty: 1322.75,
-  logitBias: {
-    "key": 108.11,
-    "key1": 9552.79,
-  },
-  logprobs: null,
-  maxTokens: 775190,
-  n: 622592,
-  presencePenalty: null,
-  seed: 672410,
-  stop: [],
-  streamOptions: {
-    includeUsage: null,
-  },
-  suffix: "<value>",
-  temperature: 4914.33,
-  topP: 8009.56,
-  user: "Marielle_Runolfsdottir82",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-  },
-  responseFormat: {
-    type: "json_object",
-  },
 };
 ```
 

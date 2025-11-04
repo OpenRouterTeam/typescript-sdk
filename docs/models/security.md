@@ -5,9 +5,7 @@
 ```typescript
 import { Security } from "@openrouter/sdk/models";
 
-let value: Security = {
-  apiKey: "<value>",
-};
+let value: Security = {};
 ```
 
 ## Fields

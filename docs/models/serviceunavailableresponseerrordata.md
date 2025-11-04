@@ -10,10 +10,6 @@ import { ServiceUnavailableResponseErrorData } from "@openrouter/sdk/models";
 let value: ServiceUnavailableResponseErrorData = {
   code: 503,
   message: "Service temporarily unavailable",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-  },
 };
 ```
 

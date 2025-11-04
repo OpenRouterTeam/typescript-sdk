@@ -5,9 +5,7 @@
 ```typescript
 import { Pdf } from "@openrouter/sdk/models";
 
-let value: Pdf = {
-  engine: "native",
-};
+let value: Pdf = {};
 ```
 
 ## Fields

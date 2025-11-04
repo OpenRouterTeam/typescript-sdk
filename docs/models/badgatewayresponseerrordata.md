@@ -10,11 +10,6 @@ import { BadGatewayResponseErrorData } from "@openrouter/sdk/models";
 let value: BadGatewayResponseErrorData = {
   code: 502,
   message: "Provider returned error",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
-  },
 };
 ```
 

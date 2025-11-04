@@ -10,8 +10,6 @@ import { OpenResponsesRequestToolFunction } from "@openrouter/sdk/models";
 let value: OpenResponsesRequestToolFunction = {
   type: "function",
   name: "get_weather",
-  description: "Get the current weather in a location",
-  strict: true,
   parameters: {
     "type": "object",
     "properties": {

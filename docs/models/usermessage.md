@@ -8,7 +8,6 @@ import { UserMessage } from "@openrouter/sdk/models";
 let value: UserMessage = {
   role: "user",
   content: "<value>",
-  name: "<value>",
 };
 ```
 

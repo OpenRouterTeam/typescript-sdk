@@ -25,37 +25,6 @@ async function run() {
   const result = await openRouter.completions.generate({
     model: "Model T",
     prompt: "<value>",
-    bestOf: 163488,
-    echo: true,
-    frequencyPenalty: 27.55,
-    logitBias: {
-      "key": 9064.25,
-      "key1": 7698.06,
-      "key2": 6481.8,
-    },
-    logprobs: 482258,
-    maxTokens: null,
-    n: 629532,
-    presencePenalty: 5430.28,
-    seed: 853393,
-    stop: [
-      "<value 1>",
-      "<value 2>",
-    ],
-    streamOptions: {
-      includeUsage: false,
-    },
-    suffix: "<value>",
-    temperature: null,
-    topP: 5229.98,
-    user: "Anita53",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-    },
-    responseFormat: {
-      type: "text",
-    },
   });
 
   console.log(result);
@@ -82,37 +51,6 @@ async function run() {
   const res = await completionsGenerate(openRouter, {
     model: "Model T",
     prompt: "<value>",
-    bestOf: 163488,
-    echo: true,
-    frequencyPenalty: 27.55,
-    logitBias: {
-      "key": 9064.25,
-      "key1": 7698.06,
-      "key2": 6481.8,
-    },
-    logprobs: 482258,
-    maxTokens: null,
-    n: 629532,
-    presencePenalty: 5430.28,
-    seed: 853393,
-    stop: [
-      "<value 1>",
-      "<value 2>",
-    ],
-    streamOptions: {
-      includeUsage: false,
-    },
-    suffix: "<value>",
-    temperature: null,
-    topP: 5229.98,
-    user: "Anita53",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-    },
-    responseFormat: {
-      type: "text",
-    },
   });
   if (res.ok) {
     const { value: result } = res;
