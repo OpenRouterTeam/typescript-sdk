@@ -5,10 +5,7 @@
 ```typescript
 import { ChatStreamingMessageToolCallFunction } from "@openrouter/sdk/models";
 
-let value: ChatStreamingMessageToolCallFunction = {
-  name: "<value>",
-  arguments: "<value>",
-};
+let value: ChatStreamingMessageToolCallFunction = {};
 ```
 
 ## Fields

@@ -7,9 +7,6 @@ import { CreateAuthKeysCodeRequest } from "@openrouter/sdk/models/operations";
 
 let value: CreateAuthKeysCodeRequest = {
   callbackUrl: "https://myapp.com/auth/callback",
-  codeChallenge: "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
-  codeChallengeMethod: "S256",
-  limit: 100,
 };
 ```
 

@@ -10,9 +10,6 @@ import { RequestTimeoutResponseErrorData } from "@openrouter/sdk/models";
 let value: RequestTimeoutResponseErrorData = {
   code: 408,
   message: "Operation timed out. Please try again later.",
-  metadata: {
-    "key": "<value>",
-  },
 };
 ```
 

@@ -7,13 +7,7 @@ The object specifying the maximum price you want to pay for this request. USD pr
 ```typescript
 import { MaxPrice } from "@openrouter/sdk/models";
 
-let value: MaxPrice = {
-  prompt: 1000,
-  completion: 1000,
-  image: 1000,
-  audio: 1000,
-  request: "1000",
-};
+let value: MaxPrice = {};
 ```
 
 ## Fields

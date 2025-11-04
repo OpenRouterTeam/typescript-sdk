@@ -10,7 +10,6 @@ import { ResponseInputImage } from "@openrouter/sdk/models";
 let value: ResponseInputImage = {
   type: "input_image",
   detail: "auto",
-  imageUrl: "https://example.com/image.jpg",
 };
 ```
 

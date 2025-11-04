@@ -7,9 +7,6 @@ import { PluginWeb } from "@openrouter/sdk/models";
 
 let value: PluginWeb = {
   id: "web",
-  maxResults: 7404.94,
-  searchPrompt: "<value>",
-  engine: "exa",
 };
 ```
 

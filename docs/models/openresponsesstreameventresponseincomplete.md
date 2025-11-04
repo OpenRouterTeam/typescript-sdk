@@ -14,35 +14,9 @@ let value: OpenResponsesStreamEventResponseIncomplete = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "incomplete",
     output: [],
-    user: "Delia_Koepp20",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: true,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 2849.55,
-    topLogprobs: 7627.34,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -50,30 +24,6 @@ let value: OpenResponsesStreamEventResponseIncomplete = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: false,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "priority",
-    store: true,
-    truncation: "disabled",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 5,
 };

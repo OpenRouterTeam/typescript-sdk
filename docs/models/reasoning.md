@@ -5,10 +5,7 @@
 ```typescript
 import { Reasoning } from "@openrouter/sdk/models";
 
-let value: Reasoning = {
-  effort: "low",
-  summary: "detailed",
-};
+let value: Reasoning = {};
 ```
 
 ## Fields

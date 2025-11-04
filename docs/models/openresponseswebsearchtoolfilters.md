@@ -5,11 +5,7 @@
 ```typescript
 import { OpenResponsesWebSearchToolFilters } from "@openrouter/sdk/models";
 
-let value: OpenResponsesWebSearchToolFilters = {
-  allowedDomains: [
-    "<value 1>",
-  ],
-};
+let value: OpenResponsesWebSearchToolFilters = {};
 ```
 
 ## Fields

@@ -10,8 +10,6 @@ import { OpenResponsesNonStreamingResponseToolFunction } from "@openrouter/sdk/m
 let value: OpenResponsesNonStreamingResponseToolFunction = {
   type: "function",
   name: "get_weather",
-  description: "Get the current weather in a location",
-  strict: true,
   parameters: {
     "type": "object",
     "properties": {

@@ -5,9 +5,7 @@
 ```typescript
 import { OpenAIResponsesIncompleteDetails } from "@openrouter/sdk/models";
 
-let value: OpenAIResponsesIncompleteDetails = {
-  reason: "max_output_tokens",
-};
+let value: OpenAIResponsesIncompleteDetails = {};
 ```
 
 ## Fields

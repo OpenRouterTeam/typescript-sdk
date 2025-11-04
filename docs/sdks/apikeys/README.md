@@ -29,10 +29,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.apiKeys.list({
-    includeDisabled: "false",
-    offset: "0",
-  });
+  const result = await openRouter.apiKeys.list();
 
   console.log(result);
 }
@@ -55,10 +52,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await apiKeysList(openRouter, {
-    includeDisabled: "false",
-    offset: "0",
-  });
+  const res = await apiKeysList(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -137,9 +131,6 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.apiKeys.create({
     name: "My New API Key",
-    limit: 50,
-    limitReset: "monthly",
-    includeByokInLimit: true,
   });
 
   console.log(result);
@@ -165,9 +156,6 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await apiKeysCreate(openRouter, {
     name: "My New API Key",
-    limit: 50,
-    limitReset: "monthly",
-    includeByokInLimit: true,
   });
   if (res.ok) {
     const { value: result } = res;
@@ -237,13 +225,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.apiKeys.update({
     hash: "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",
-    requestBody: {
-      name: "Updated API Key Name",
-      disabled: false,
-      limit: 75,
-      limitReset: "daily",
-      includeByokInLimit: true,
-    },
+    requestBody: {},
   });
 
   console.log(result);
@@ -269,13 +251,7 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await apiKeysUpdate(openRouter, {
     hash: "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",
-    requestBody: {
-      name: "Updated API Key Name",
-      disabled: false,
-      limit: 75,
-      limitReset: "daily",
-      includeByokInLimit: true,
-    },
+    requestBody: {},
   });
   if (res.ok) {
     const { value: result } = res;

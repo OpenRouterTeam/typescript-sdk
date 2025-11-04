@@ -10,8 +10,6 @@ import { ResponsesFormatTextJSONSchemaConfig } from "@openrouter/sdk/models";
 let value: ResponsesFormatTextJSONSchemaConfig = {
   type: "json_schema",
   name: "<value>",
-  description: "yet deceivingly between aw compromise wallaby as",
-  strict: true,
   schema: {
     "key": "<value>",
     "key1": "<value>",

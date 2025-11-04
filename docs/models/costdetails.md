@@ -6,9 +6,8 @@
 import { CostDetails } from "@openrouter/sdk/models";
 
 let value: CostDetails = {
-  upstreamInferenceCost: 5806.85,
-  upstreamInferenceInputCost: 8922.5,
-  upstreamInferenceOutputCost: 9156.98,
+  upstreamInferenceInputCost: 5717.43,
+  upstreamInferenceOutputCost: 5806.85,
 };
 ```
 

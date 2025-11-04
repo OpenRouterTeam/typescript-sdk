@@ -12,11 +12,9 @@ let value: ChatMessageTokenLogprob = {
   topLogprobs: [
     {
       token: "<value>",
-      logprob: 1362.57,
+      logprob: 9715.54,
       bytes: [
-        7000.29,
-        7450.46,
-        6296.9,
+        7041.35,
       ],
     },
   ],

@@ -8,8 +8,6 @@ Model architecture information
 import { ModelArchitecture } from "@openrouter/sdk/models";
 
 let value: ModelArchitecture = {
-  tokenizer: "GPT",
-  instructType: "chatml",
   modality: "text->text",
   inputModalities: [
     "text",

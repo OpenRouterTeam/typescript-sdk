@@ -8,16 +8,6 @@ import { Pricing } from "@openrouter/sdk/models";
 let value: Pricing = {
   prompt: 1000,
   completion: "1000",
-  request: "1000",
-  image: 1000,
-  imageOutput: 1000,
-  audio: "1000",
-  inputAudioCache: 1000,
-  webSearch: 1000,
-  internalReasoning: "1000",
-  inputCacheRead: 1000,
-  inputCacheWrite: 1000,
-  discount: 1863.9,
 };
 ```
 

@@ -6,7 +6,6 @@
 import { OpenResponsesEasyInputMessage } from "@openrouter/sdk/models";
 
 let value: OpenResponsesEasyInputMessage = {
-  type: "message",
   role: "system",
   content: "<value>",
 };

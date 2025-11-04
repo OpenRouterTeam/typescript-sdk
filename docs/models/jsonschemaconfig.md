@@ -7,13 +7,6 @@ import { JSONSchemaConfig } from "@openrouter/sdk/models";
 
 let value: JSONSchemaConfig = {
   name: "<value>",
-  description: "as adumbrate fishery dependable cemetery instead nifty ah rule",
-  schema: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
-  },
-  strict: false,
 };
 ```
 

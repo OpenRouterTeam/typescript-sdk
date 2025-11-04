@@ -14,49 +14,21 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "completed",
     output: [
       {
         id: "item-1",
         role: "assistant",
         type: "message",
-        status: "completed",
         content: [
           {
             type: "output_text",
             text: "Hello! How can I help you?",
-            annotations: [],
           },
         ],
       },
     ],
-    user: "Mariam94",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: true,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 5700,
-    topLogprobs: 3768.35,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -64,30 +36,6 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: false,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: null,
-    store: true,
-    truncation: "disabled",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 10,
 };

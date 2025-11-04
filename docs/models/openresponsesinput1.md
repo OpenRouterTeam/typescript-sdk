@@ -9,22 +9,12 @@
 const value: models.OpenResponsesReasoning = {
   type: "reasoning",
   id: "reasoning-abc123",
-  content: [
-    {
-      type: "reasoning_text",
-      text: "Let me think step by step about this problem...",
-    },
-  ],
   summary: [
     {
       type: "summary_text",
       text: "Analyzed the problem using first principles",
     },
   ],
-  encryptedContent: "<value>",
-  status: "completed",
-  signature: "<value>",
-  format: "unknown",
 };
 ```
 
@@ -32,7 +22,6 @@ const value: models.OpenResponsesReasoning = {
 
 ```typescript
 const value: models.OpenResponsesEasyInputMessage = {
-  type: "message",
   role: "system",
   content: "<value>",
 };
@@ -42,8 +31,6 @@ const value: models.OpenResponsesEasyInputMessage = {
 
 ```typescript
 const value: models.OpenResponsesInputMessageItem = {
-  id: "<id>",
-  type: "message",
   role: "system",
   content: [
     {
@@ -63,7 +50,6 @@ const value: models.OpenResponsesFunctionToolCall = {
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\"}",
   id: "call-abc123",
-  status: "completed",
 };
 ```
 
@@ -75,7 +61,6 @@ const value: models.OpenResponsesFunctionCallOutput = {
   id: "output-abc123",
   callId: "call-abc123",
   output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
-  status: "completed",
 };
 ```
 
@@ -86,19 +71,10 @@ const value: models.ResponsesOutputMessage = {
   id: "msg-abc123",
   role: "assistant",
   type: "message",
-  status: "completed",
   content: [
     {
       type: "output_text",
       text: "Hello! How can I help you today?",
-      annotations: [
-        {
-          type: "file_citation",
-          fileId: "file-abc123",
-          filename: "research_paper.pdf",
-          index: 0,
-        },
-      ],
     },
   ],
 };
@@ -109,21 +85,12 @@ const value: models.ResponsesOutputMessage = {
 ```typescript
 const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "reasoning-123",
-  content: [
-    {
-      type: "reasoning_text",
-      text: "First, we analyze the problem...",
-    },
-  ],
   summary: [
     {
       type: "summary_text",
       text: "Analyzed the problem and found the optimal solution.",
     },
   ],
-  encryptedContent: "<value>",
-  status: "completed",
 };
 ```
 
@@ -132,11 +99,9 @@ const value: models.ResponsesOutputItemReasoning = {
 ```typescript
 const value: models.ResponsesOutputItemFunctionCall = {
   type: "function_call",
-  id: "call-abc123",
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
   callId: "call-abc123",
-  status: "in_progress",
 };
 ```
 

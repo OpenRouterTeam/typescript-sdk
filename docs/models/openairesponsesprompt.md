@@ -7,7 +7,6 @@ import { OpenAIResponsesPrompt } from "@openrouter/sdk/models";
 
 let value: OpenAIResponsesPrompt = {
   id: "<id>",
-  variables: null,
 };
 ```
 

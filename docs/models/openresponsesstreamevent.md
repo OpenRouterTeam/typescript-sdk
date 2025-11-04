@@ -15,35 +15,9 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "in_progress",
     output: [],
-    user: "Polly.Oberbrunner",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: false,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 6635.84,
-    topLogprobs: 7051.98,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -51,30 +25,6 @@ const value: models.OpenResponsesStreamEventResponseCreated = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: false,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "auto",
-    store: false,
-    truncation: "auto",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 0,
 };
@@ -90,35 +40,9 @@ const value: models.OpenResponsesStreamEventResponseInProgress = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "in_progress",
     output: [],
-    user: "Kale.Mueller",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: false,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 5511.35,
-    topLogprobs: 3841.87,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -126,30 +50,6 @@ const value: models.OpenResponsesStreamEventResponseInProgress = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: true,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: null,
-    store: false,
-    truncation: "auto",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 1,
 };
@@ -165,49 +65,21 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "completed",
     output: [
       {
         id: "item-1",
         role: "assistant",
         type: "message",
-        status: "completed",
         content: [
           {
             type: "output_text",
             text: "Hello! How can I help you?",
-            annotations: [],
           },
         ],
       },
     ],
-    user: "Ethyl_Wolf86",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: null,
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: false,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 3089.58,
-    topLogprobs: 6411.11,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -215,30 +87,6 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: false,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "scale",
-    store: true,
-    truncation: "auto",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 10,
 };
@@ -254,35 +102,9 @@ const value: models.OpenResponsesStreamEventResponseIncomplete = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "incomplete",
     output: [],
-    user: "Bonnie2",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: true,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 5440.53,
-    topLogprobs: 5246.72,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -290,30 +112,6 @@ const value: models.OpenResponsesStreamEventResponseIncomplete = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: true,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "default",
-    store: false,
-    truncation: "auto",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 5,
 };
@@ -329,35 +127,9 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "failed",
     output: [],
-    user: "Alden.Carroll21",
-    outputText: "<value>",
-    promptCacheKey: null,
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: true,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: null,
-    topLogprobs: 7860.28,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -365,30 +137,6 @@ const value: models.OpenResponsesStreamEventResponseFailed = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: null,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "priority",
-    store: true,
-    truncation: "disabled",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 3,
 };
@@ -416,7 +164,6 @@ const value: models.OpenResponsesStreamEventResponseOutputItemAdded = {
     id: "item-1",
     role: "assistant",
     type: "message",
-    status: "in_progress",
     content: [],
   },
   sequenceNumber: 2,
@@ -433,12 +180,10 @@ const value: models.OpenResponsesStreamEventResponseOutputItemDone = {
     id: "item-1",
     role: "assistant",
     type: "message",
-    status: "completed",
     content: [
       {
         type: "output_text",
         text: "Hello! How can I help you?",
-        annotations: [],
       },
     ],
   },
@@ -457,7 +202,6 @@ const value: models.OpenResponsesStreamEventResponseContentPartAdded = {
   part: {
     type: "output_text",
     text: "",
-    annotations: [],
   },
   sequenceNumber: 3,
 };
@@ -474,7 +218,6 @@ const value: models.OpenResponsesStreamEventResponseContentPartDone = {
   part: {
     type: "output_text",
     text: "Hello! How can I help you?",
-    annotations: [],
   },
   sequenceNumber: 7,
 };

@@ -17,7 +17,6 @@ const value: string =
 ```typescript
 const value: models.OpenResponsesInput1[] = [
   {
-    type: "message",
     role: "user",
     content: "What is the weather today?",
   },

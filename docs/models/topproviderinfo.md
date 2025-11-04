@@ -8,8 +8,6 @@ Information about the top provider for this model
 import { TopProviderInfo } from "@openrouter/sdk/models";
 
 let value: TopProviderInfo = {
-  contextLength: 8192,
-  maxCompletionTokens: 4096,
   isModerated: true,
 };
 ```

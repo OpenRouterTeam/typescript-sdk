@@ -53,9 +53,7 @@ from TanStack Query.
 import { useAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyticsGetUserActivity.js";
 
 export function Example() {
-  const { data, error, status } = useAnalyticsGetUserActivity({
-    date: "2025-08-24",
-  });
+  const { data, error, status } = useAnalyticsGetUserActivity();
 
   // Render the UI here...
 }
@@ -73,9 +71,6 @@ import { useAnalyticsGetUserActivity } from "@openrouter/sdk/react-query/analyti
 export function ExampleWithOptions() {
   const [enabled, setEnabled] = useState(true);
   const { data, error, status } = useAnalyticsGetUserActivity(
-    {
-      date: "2025-08-24",
-    },
     {
       // TanStack Query options:
       enabled,
@@ -124,115 +119,7 @@ export function Example() {
 
         // Read form data here...
 
-        mutate({
-          input: [
-            {
-              type: "message",
-              role: "user",
-              content: "Hello, how are you?",
-            },
-          ],
-          instructions: "<value>",
-          metadata: {
-            "user_id": "123",
-            "session_id": "abc-def-ghi",
-          },
-          tools: [
-            {
-              type: "function",
-              name: "get_current_weather",
-              description: "Get the current weather in a given location",
-              strict: true,
-              parameters: {
-                "type": "object",
-                "properties": {
-                  "location": {
-                    "type": "string",
-                  },
-                },
-              },
-            },
-          ],
-          toolChoice: {
-            type: "function",
-            name: "<value>",
-          },
-          parallelToolCalls: true,
-          model: "anthropic/claude-4.5-sonnet-20250929",
-          models: [
-            "<value 1>",
-          ],
-          text: {
-            format: {
-              type: "text",
-            },
-            verbosity: "medium",
-          },
-          reasoning: {
-            effort: "high",
-            summary: "auto",
-            maxTokens: 8661.16,
-            enabled: true,
-          },
-          maxOutputTokens: null,
-          temperature: 0.7,
-          topP: 0.9,
-          topK: 193.77,
-          promptCacheKey: "<value>",
-          previousResponseId: "<id>",
-          prompt: {
-            id: "<id>",
-            variables: {
-              "key": {
-                type: "input_text",
-                text: "Hello, how can I help you?",
-              },
-            },
-          },
-          include: [
-            "reasoning.encrypted_content",
-          ],
-          background: true,
-          safetyIdentifier: "<value>",
-          store: true,
-          serviceTier: "auto",
-          truncation: "auto",
-          provider: {
-            allowFallbacks: null,
-            requireParameters: true,
-            dataCollection: "deny",
-            zdr: true,
-            order: [
-              "OpenAI",
-            ],
-            only: [
-              "OpenAI",
-            ],
-            ignore: null,
-            quantizations: [
-              "fp16",
-            ],
-            sort: "price",
-            maxPrice: {
-              prompt: "1000",
-              completion: 1000,
-              image: 1000,
-              audio: "1000",
-              request: 1000,
-            },
-            experimental: {},
-          },
-          plugins: [
-            {
-              id: "file-parser",
-              maxFiles: 4870.55,
-              pdf: {
-                engine: "mistral-ocr",
-              },
-            },
-          ],
-          user: "Elmer_Yundt72",
-        });
+        mutate({});
       }}
     >
       {/* Form fields go here... */} 
@@ -366,9 +253,7 @@ export function App() {
 }
 
 function Example() {
-  const { data } = useAnalyticsGetUserActivitySuspense({
-    date: "2025-08-24",
-  });
+  const { data } = useAnalyticsGetUserActivitySuspense();
 
   // Render the UI here...
 }
@@ -396,9 +281,7 @@ export default async function Page() {
     apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
   });
 
-  await prefetchAnalyticsGetUserActivity(queryClient, openRouter, {
-    date: "2025-08-24",
-  });
+  await prefetchAnalyticsGetUserActivity(openRouter);
 
   return (
     // HydrationBoundary is a Client Component, so hydration will happen there.

@@ -7,10 +7,7 @@ Alternative token with its log probability
 ```typescript
 import { OpenResponsesTopLogprobs } from "@openrouter/sdk/models";
 
-let value: OpenResponsesTopLogprobs = {
-  token: "hello",
-  logprob: -0.5,
-};
+let value: OpenResponsesTopLogprobs = {};
 ```
 
 ## Fields

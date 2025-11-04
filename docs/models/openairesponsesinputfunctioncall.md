@@ -10,8 +10,6 @@ let value: OpenAIResponsesInputFunctionCall = {
   callId: "<id>",
   name: "<value>",
   arguments: "<value>",
-  id: "<id>",
-  status: "completed",
 };
 ```
 

@@ -122,10 +122,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.models.list({
-    category: "<value>",
-    supportedParameters: "<value>",
-  });
+  const result = await openRouter.models.list();
 
   console.log(result);
 }
@@ -148,10 +145,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await modelsList(openRouter, {
-    category: "<value>",
-    supportedParameters: "<value>",
-  });
+  const res = await modelsList(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);

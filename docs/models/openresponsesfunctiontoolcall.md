@@ -13,7 +13,6 @@ let value: OpenResponsesFunctionToolCall = {
   name: "get_weather",
   arguments: "{\"location\":\"San Francisco\"}",
   id: "call-abc123",
-  status: "completed",
 };
 ```
 

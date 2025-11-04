@@ -6,8 +6,6 @@
 import { OpenResponsesInputMessageItem } from "@openrouter/sdk/models";
 
 let value: OpenResponsesInputMessageItem = {
-  id: "<id>",
-  type: "message",
   role: "system",
   content: [
     {

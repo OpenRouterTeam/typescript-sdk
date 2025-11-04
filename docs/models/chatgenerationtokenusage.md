@@ -9,16 +9,6 @@ let value: ChatGenerationTokenUsage = {
   completionTokens: 9399.77,
   promptTokens: 9559.6,
   totalTokens: 7060.03,
-  completionTokensDetails: {
-    reasoningTokens: 1093.75,
-    audioTokens: 130.3,
-    acceptedPredictionTokens: 7308.38,
-    rejectedPredictionTokens: 2801.33,
-  },
-  promptTokensDetails: {
-    cachedTokens: 1522.95,
-    audioTokens: 8854.61,
-  },
 };
 ```
 

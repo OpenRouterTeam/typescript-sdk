@@ -10,10 +10,6 @@ import { ForbiddenResponseErrorData } from "@openrouter/sdk/models";
 let value: ForbiddenResponseErrorData = {
   code: 403,
   message: "Only provisioning keys can perform this operation",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-  },
 };
 ```
 

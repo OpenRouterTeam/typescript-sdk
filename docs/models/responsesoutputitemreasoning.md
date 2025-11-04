@@ -9,21 +9,12 @@ import { ResponsesOutputItemReasoning } from "@openrouter/sdk/models";
 
 let value: ResponsesOutputItemReasoning = {
   type: "reasoning",
-  id: "reasoning-123",
-  content: [
-    {
-      type: "reasoning_text",
-      text: "First, we analyze the problem...",
-    },
-  ],
   summary: [
     {
       type: "summary_text",
       text: "Analyzed the problem and found the optimal solution.",
     },
   ],
-  encryptedContent: "<value>",
-  status: "completed",
 };
 ```
 

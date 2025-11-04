@@ -7,10 +7,6 @@ import { PluginFileParser } from "@openrouter/sdk/models";
 
 let value: PluginFileParser = {
   id: "file-parser",
-  maxFiles: 5518.4,
-  pdf: {
-    engine: "mistral-ocr",
-  },
 };
 ```
 

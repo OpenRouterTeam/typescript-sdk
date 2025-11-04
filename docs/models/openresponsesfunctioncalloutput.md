@@ -12,7 +12,6 @@ let value: OpenResponsesFunctionCallOutput = {
   id: "output-abc123",
   callId: "call-abc123",
   output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
-  status: "completed",
 };
 ```
 

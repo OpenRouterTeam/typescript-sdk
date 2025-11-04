@@ -7,12 +7,7 @@ Configuration for reasoning mode in the response
 ```typescript
 import { OpenResponsesReasoningConfig } from "@openrouter/sdk/models";
 
-let value: OpenResponsesReasoningConfig = {
-  effort: "minimal",
-  summary: "auto",
-  maxTokens: 5685.88,
-  enabled: true,
-};
+let value: OpenResponsesReasoningConfig = {};
 ```
 
 ## Fields

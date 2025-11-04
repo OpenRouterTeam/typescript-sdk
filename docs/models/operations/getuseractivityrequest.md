@@ -5,9 +5,7 @@
 ```typescript
 import { GetUserActivityRequest } from "@openrouter/sdk/models/operations";
 
-let value: GetUserActivityRequest = {
-  date: "2025-08-24",
-};
+let value: GetUserActivityRequest = {};
 ```
 
 ## Fields

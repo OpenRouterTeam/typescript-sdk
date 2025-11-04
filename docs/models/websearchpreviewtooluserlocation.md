@@ -7,10 +7,6 @@ import { WebSearchPreviewToolUserLocation } from "@openrouter/sdk/models";
 
 let value: WebSearchPreviewToolUserLocation = {
   type: "approximate",
-  city: "Mallieside",
-  country: "Nigeria",
-  region: "<value>",
-  timezone: "Australia/Eucla",
 };
 ```
 

@@ -25,51 +25,6 @@ async function run() {
   const result = await openRouter.chat.send({
     messages: [],
     model: "Charger",
-    frequencyPenalty: 8689.88,
-    logitBias: {
-      "key": 4876.54,
-      "key1": 7346.88,
-    },
-    logprobs: false,
-    topLogprobs: 2140.15,
-    maxCompletionTokens: 89.43,
-    maxTokens: 7392.4,
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-    presencePenalty: 9132.54,
-    reasoning: {
-      effort: "medium",
-      summary: null,
-    },
-    responseFormat: {
-      type: "grammar",
-      grammar: "<value>",
-    },
-    seed: null,
-    stop: [],
-    streamOptions: {
-      includeUsage: true,
-    },
-    temperature: 1,
-    toolChoice: "<value>",
-    tools: [
-      {
-        type: "function",
-        function: {
-          name: "<value>",
-          description: "pro even bank rewarding ha modulo aboard mentor",
-          parameters: {
-            "key": "<value>",
-          },
-          strict: null,
-        },
-      },
-    ],
-    topP: 1,
-    user: "Francesco.Bartell",
   });
 
   console.log(result);
@@ -96,51 +51,6 @@ async function run() {
   const res = await chatSend(openRouter, {
     messages: [],
     model: "Charger",
-    frequencyPenalty: 8689.88,
-    logitBias: {
-      "key": 4876.54,
-      "key1": 7346.88,
-    },
-    logprobs: false,
-    topLogprobs: 2140.15,
-    maxCompletionTokens: 89.43,
-    maxTokens: 7392.4,
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-    presencePenalty: 9132.54,
-    reasoning: {
-      effort: "medium",
-      summary: null,
-    },
-    responseFormat: {
-      type: "grammar",
-      grammar: "<value>",
-    },
-    seed: null,
-    stop: [],
-    streamOptions: {
-      includeUsage: true,
-    },
-    temperature: 1,
-    toolChoice: "<value>",
-    tools: [
-      {
-        type: "function",
-        function: {
-          name: "<value>",
-          description: "pro even bank rewarding ha modulo aboard mentor",
-          parameters: {
-            "key": "<value>",
-          },
-          strict: null,
-        },
-      },
-    ],
-    topP: 1,
-    user: "Francesco.Bartell",
   });
   if (res.ok) {
     const { value: result } = res;

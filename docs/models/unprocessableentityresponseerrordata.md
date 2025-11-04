@@ -10,11 +10,6 @@ import { UnprocessableEntityResponseErrorData } from "@openrouter/sdk/models";
 let value: UnprocessableEntityResponseErrorData = {
   code: 422,
   message: "Invalid argument",
-  metadata: {
-    "key": "<value>",
-    "key1": "<value>",
-    "key2": "<value>",
-  },
 };
 ```
 

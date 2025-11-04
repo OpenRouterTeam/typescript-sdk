@@ -10,7 +10,6 @@ import { NotFoundResponseErrorData } from "@openrouter/sdk/models";
 let value: NotFoundResponseErrorData = {
   code: 404,
   message: "Resource not found",
-  metadata: null,
 };
 ```
 

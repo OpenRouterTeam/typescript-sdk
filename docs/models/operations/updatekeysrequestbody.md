@@ -5,13 +5,7 @@
 ```typescript
 import { UpdateKeysRequestBody } from "@openrouter/sdk/models/operations";
 
-let value: UpdateKeysRequestBody = {
-  name: "Updated API Key Name",
-  disabled: false,
-  limit: 75,
-  limitReset: "daily",
-  includeByokInLimit: true,
-};
+let value: UpdateKeysRequestBody = {};
 ```
 
 ## Fields

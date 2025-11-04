@@ -10,7 +10,6 @@ import { UnauthorizedResponseErrorData } from "@openrouter/sdk/models";
 let value: UnauthorizedResponseErrorData = {
   code: 401,
   message: "Missing Authentication header",
-  metadata: null,
 };
 ```
 

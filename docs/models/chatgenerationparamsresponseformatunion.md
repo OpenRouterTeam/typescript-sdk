@@ -26,13 +26,6 @@ const value: models.ResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
     name: "<value>",
-    description: "circa or and",
-    schema: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-    strict: false,
   },
 };
 ```

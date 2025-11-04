@@ -24,9 +24,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.analytics.getUserActivity({
-    date: "2025-08-24",
-  });
+  const result = await openRouter.analytics.getUserActivity();
 
   console.log(result);
 }
@@ -49,9 +47,7 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await analyticsGetUserActivity(openRouter, {
-    date: "2025-08-24",
-  });
+  const res = await analyticsGetUserActivity(openRouter);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);

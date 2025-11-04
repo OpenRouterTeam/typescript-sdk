@@ -10,16 +10,6 @@ import { PublicPricing } from "@openrouter/sdk/models";
 let value: PublicPricing = {
   prompt: "0.00003",
   completion: "0.00006",
-  request: "0",
-  image: "0",
-  imageOutput: 1000,
-  audio: 1000,
-  inputAudioCache: 1000,
-  webSearch: "1000",
-  internalReasoning: "1000",
-  inputCacheRead: 1000,
-  inputCacheWrite: 1000,
-  discount: 4326.33,
 };
 ```
 

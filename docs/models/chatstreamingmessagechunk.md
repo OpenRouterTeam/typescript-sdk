@@ -5,22 +5,7 @@
 ```typescript
 import { ChatStreamingMessageChunk } from "@openrouter/sdk/models";
 
-let value: ChatStreamingMessageChunk = {
-  role: "assistant",
-  content: "<value>",
-  reasoning: "<value>",
-  refusal: "<value>",
-  toolCalls: [
-    {
-      index: 932.78,
-      id: "<id>",
-      function: {
-        name: "<value>",
-        arguments: "<value>",
-      },
-    },
-  ],
-};
+let value: ChatStreamingMessageChunk = {};
 ```
 
 ## Fields

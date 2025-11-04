@@ -6,7 +6,6 @@
 import { OpenAIResponsesInputMessage1 } from "@openrouter/sdk/models";
 
 let value: OpenAIResponsesInputMessage1 = {
-  type: "message",
   role: "assistant",
   content: "<value>",
 };

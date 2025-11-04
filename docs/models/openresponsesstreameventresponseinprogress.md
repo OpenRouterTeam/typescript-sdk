@@ -14,35 +14,9 @@ let value: OpenResponsesStreamEventResponseInProgress = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "in_progress",
     output: [],
-    user: "Brigitte25",
-    outputText: "<value>",
-    promptCacheKey: "<value>",
-    safetyIdentifier: "<value>",
     error: null,
     incompleteDetails: null,
-    usage: {
-      inputTokens: 10,
-      inputTokensDetails: {
-        cachedTokens: 0,
-      },
-      outputTokens: 25,
-      outputTokensDetails: {
-        reasoningTokens: 0,
-      },
-      totalTokens: 35,
-      cost: 0.0012,
-      isByok: true,
-      costDetails: {
-        upstreamInferenceCost: null,
-        upstreamInferenceInputCost: 0.0008,
-        upstreamInferenceOutputCost: 0.0004,
-      },
-    },
-    maxToolCalls: 5033.5,
-    topLogprobs: 3054.26,
-    maxOutputTokens: null,
     temperature: null,
     topP: null,
     instructions: null,
@@ -50,30 +24,6 @@ let value: OpenResponsesStreamEventResponseInProgress = {
     tools: [],
     toolChoice: "auto",
     parallelToolCalls: true,
-    prompt: {
-      id: "<id>",
-      variables: {
-        "key": {
-          type: "input_text",
-          text: "Hello, how can I help you?",
-        },
-      },
-    },
-    background: true,
-    previousResponseId: "<id>",
-    reasoning: {
-      effort: "medium",
-      summary: "auto",
-    },
-    serviceTier: "flex",
-    store: true,
-    truncation: "disabled",
-    text: {
-      format: {
-        type: "text",
-      },
-      verbosity: "medium",
-    },
   },
   sequenceNumber: 1,
 };

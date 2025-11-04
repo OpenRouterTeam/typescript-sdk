@@ -9,19 +9,6 @@ import { OpenResponsesWebSearchTool } from "@openrouter/sdk/models";
 
 let value: OpenResponsesWebSearchTool = {
   type: "web_search",
-  filters: {
-    allowedDomains: [
-      "example.com",
-    ],
-  },
-  searchContextSize: "medium",
-  userLocation: {
-    type: "approximate",
-    city: "San Francisco",
-    country: "USA",
-    region: "California",
-    timezone: "America/Los_Angeles",
-  },
 };
 ```
 

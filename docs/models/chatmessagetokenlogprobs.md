@@ -9,26 +9,30 @@ let value: ChatMessageTokenLogprobs = {
   content: [
     {
       token: "<value>",
-      logprob: 7572.98,
+      logprob: 2764.68,
       bytes: [
-        9191.5,
-        2986.81,
-        8603.48,
+        1199.17,
+        6426.57,
       ],
       topLogprobs: [
         {
           token: "<value>",
-          logprob: 1362.57,
+          logprob: 9715.54,
           bytes: [
-            7000.29,
-            7450.46,
-            6296.9,
+            7041.35,
           ],
         },
       ],
     },
   ],
-  refusal: [],
+  refusal: [
+    {
+      token: "<value>",
+      logprob: 9280.35,
+      bytes: [],
+      topLogprobs: [],
+    },
+  ],
 };
 ```
 

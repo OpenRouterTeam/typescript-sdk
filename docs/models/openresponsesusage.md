@@ -17,13 +17,6 @@ let value: OpenResponsesUsage = {
     reasoningTokens: 0,
   },
   totalTokens: 35,
-  cost: 0.0012,
-  isByok: false,
-  costDetails: {
-    upstreamInferenceCost: null,
-    upstreamInferenceInputCost: 0.0008,
-    upstreamInferenceOutputCost: 0.0004,
-  },
 };
 ```
 

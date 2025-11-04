@@ -18,7 +18,6 @@ const value: models.ResponseInputText = {
 const value: models.ResponseInputImage = {
   type: "input_image",
   detail: "auto",
-  imageUrl: "https://example.com/image.jpg",
 };
 ```
 
@@ -27,10 +26,6 @@ const value: models.ResponseInputImage = {
 ```typescript
 const value: models.ResponseInputFile = {
   type: "input_file",
-  fileId: "file-abc123",
-  fileData: "<value>",
-  filename: "document.pdf",
-  fileUrl: "https://prime-bob.info",
 };
 ```
 

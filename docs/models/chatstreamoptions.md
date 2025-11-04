@@ -5,9 +5,7 @@
 ```typescript
 import { ChatStreamOptions } from "@openrouter/sdk/models";
 
-let value: ChatStreamOptions = {
-  includeUsage: true,
-};
+let value: ChatStreamOptions = {};
 ```
 
 ## Fields

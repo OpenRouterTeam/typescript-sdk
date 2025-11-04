@@ -7,9 +7,6 @@ import { CreateKeysRequest } from "@openrouter/sdk/models/operations";
 
 let value: CreateKeysRequest = {
   name: "My New API Key",
-  limit: 50,
-  limitReset: "monthly",
-  includeByokInLimit: true,
 };
 ```
 
