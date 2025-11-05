@@ -19,7 +19,7 @@
  *   - Context includes: numberOfTurns, messageHistory, model/models
  */
 
-import { OpenRouter } from "../src/index.js";
+import { OpenRouter, ToolType } from "../src/index.js";
 import { z } from "zod/v4";
 import * as dotenv from "dotenv";
 
@@ -38,7 +38,7 @@ async function basicToolExample() {
   console.log("\n=== Example 1: Basic Tool with Execute Function ===\n");
 
   const weatherTool = {
-    type: "function" as const,
+    type: ToolType.Function,
     function: {
       name: "get_weather",
       description: "Get current weather for a location",
@@ -91,7 +91,7 @@ async function generatorToolExample() {
   console.log("\n=== Example 2: Generator Tool with Preliminary Results ===\n");
 
   const processingTool = {
-    type: "function" as const,
+    type: ToolType.Function,
     function: {
       name: "process_data",
       description: "Process data with progress updates",
@@ -162,7 +162,7 @@ async function manualToolExample() {
   console.log("\n=== Example 3: Manual Tool Execution ===\n");
 
   const calculatorTool = {
-    type: "function" as const,
+    type: ToolType.Function,
     function: {
       name: "calculate",
       description: "Perform mathematical calculations",
@@ -216,7 +216,7 @@ async function streamingToolCallsExample() {
   console.log("\n=== Example 4: Streaming Tool Calls ===\n");
 
   const searchTool = {
-    type: "function" as const,
+    type: ToolType.Function,
     function: {
       name: "search",
       description: "Search for information",
@@ -262,7 +262,7 @@ async function multipleToolsExample() {
 
   const tools = [
     {
-      type: "function" as const,
+      type: ToolType.Function,
       function: {
         name: "get_time",
         description: "Get current time",
@@ -282,7 +282,7 @@ async function multipleToolsExample() {
       },
     },
     {
-      type: "function" as const,
+      type: ToolType.Function,
       function: {
         name: "get_weather",
         description: "Get weather information",

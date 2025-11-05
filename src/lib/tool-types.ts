@@ -2,6 +2,13 @@ import { z, ZodType, ZodObject, ZodRawShape } from "zod";
 import * as models from "../models/index.js";
 
 /**
+ * Tool type enum for enhanced tools
+ */
+export enum ToolType {
+  Function = "function",
+}
+
+/**
  * Turn context passed to tool execute functions
  * Contains information about the current conversation state
  */
@@ -73,7 +80,7 @@ export type ToolWithExecute<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
   TOutput extends ZodType = ZodType<any>
 > = {
-  type: "function";
+  type: ToolType.Function;
   function: ToolFunctionWithExecute<TInput, TOutput>;
 };
 
@@ -84,7 +91,7 @@ export type ToolWithGenerator<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
   TEvent extends ZodType = ZodType<any>
 > = {
-  type: "function";
+  type: ToolType.Function;
   function: ToolFunctionWithGenerator<TInput, TEvent>;
 };
 
@@ -95,7 +102,7 @@ export type ManualTool<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
   TOutput extends ZodType = ZodType<any>
 > = {
-  type: "function";
+  type: ToolType.Function;
   function: ManualToolFunction<TInput, TOutput>;
 };
 

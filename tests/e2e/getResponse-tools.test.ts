@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { OpenRouter } from "../../src/index.js";
+import { OpenRouter, ToolType } from "../../src/index.js";
 import { z } from "zod";
 import { toJSONSchema } from "zod/v4";
 import * as dotenv from "dotenv";
@@ -66,7 +66,7 @@ describe("Enhanced Tool Support for getResponse", () => {
   describe("Tool Definition", () => {
     it("should define tool with inputSchema", async () => {
       const weatherTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "get_weather",
           description: "Get current temperature for a given location.",
@@ -124,7 +124,7 @@ describe("Enhanced Tool Support for getResponse", () => {
   describe("Regular Tool Execution", () => {
     it("should execute tool with valid input", async () => {
       const addTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "add_numbers",
           description: "Add two numbers together",
@@ -165,7 +165,7 @@ describe("Enhanced Tool Support for getResponse", () => {
 
     it("should handle execution errors gracefully", async () => {
       const errorTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "error_tool",
           inputSchema: z.object({}),
@@ -200,7 +200,7 @@ describe("Enhanced Tool Support for getResponse", () => {
       });
 
       const generatorTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "get_weather_with_updates",
           description: "Get weather with streaming updates",
@@ -239,7 +239,7 @@ describe("Enhanced Tool Support for getResponse", () => {
 
     it("should send only final (last) yield to model", async () => {
       const generatorTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "process_data",
           inputSchema: z.object({ data: z.string() }),
@@ -306,7 +306,7 @@ describe("Enhanced Tool Support for getResponse", () => {
       const preliminaryResults: any[] = [];
 
       const generatorTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "streaming_tool",
           inputSchema: z.object({ input: z.string() }),
@@ -339,7 +339,7 @@ describe("Enhanced Tool Support for getResponse", () => {
   describe("Manual Tool Execution", () => {
     it("should define tool without execute function", () => {
       const manualTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "manual_tool",
           description: "A tool that requires manual handling",
@@ -361,7 +361,7 @@ describe("Enhanced Tool Support for getResponse", () => {
     it.skip("should send tool call to API and receive tool call response", async () => {
       // This test requires actual API integration which we'll implement
       const weatherTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "get_weather",
           description: "Get the current weather for a location",
@@ -399,7 +399,7 @@ describe("Enhanced Tool Support for getResponse", () => {
     it.skip("should handle multi-turn conversation with tool execution", async () => {
       // This will test the full loop: request -> tool call -> execute -> send result -> final response
       const calculatorTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "calculate",
           description: "Perform a mathematical calculation",
@@ -490,7 +490,7 @@ describe("Enhanced Tool Support for getResponse", () => {
   describe("Type Safety", () => {
     it("should infer correct parameter types from inputSchema", () => {
       const weatherTool = {
-        type: "function" as const,
+        type: ToolType.Function,
         function: {
           name: "get_weather",
           inputSchema: z.object({

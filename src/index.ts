@@ -10,6 +10,7 @@ export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export { ResponseWrapper } from "./lib/response-wrapper.js";
 export type { GetResponseOptions } from "./lib/response-wrapper.js";
 export { ReusableReadableStream } from "./lib/reusable-stream.js";
+export { ToolType } from "./lib/tool-types.js";
 export type {
   EnhancedTool,
   ToolWithExecute,
