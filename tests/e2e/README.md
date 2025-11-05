@@ -61,9 +61,19 @@ The e2e test suite includes:
 - Testing the beta responses endpoint
 - Note: This endpoint is in alpha/beta and may require updates
 
+### Embeddings Tests (`embeddings.test.ts`)
+- **Embeddings generation:**
+  - Generating embeddings for single text input
+  - Generating embeddings for multiple text inputs (batch processing)
+  - Verifying consistent embedding dimensions
+  - Handling edge cases (empty strings)
+  - Model information validation
+  - Support for both array and base64 encoded embeddings
+
 ## Notes
 
 - Tests make real API calls to OpenRouter, so you need a valid API key
 - Tests may consume API credits
-- Some tests use the `openai/gpt-3.5-turbo` model by default
+- Chat tests use the `meta-llama/llama-3.2-1b-instruct` model by default
+- Embeddings tests use the `openai/text-embedding-3-small` model by default
 - The beta responses endpoint has limited test coverage as it's still in development
