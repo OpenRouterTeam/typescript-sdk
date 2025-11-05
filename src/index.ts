@@ -10,7 +10,7 @@ export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export { ResponseWrapper } from "./lib/response-wrapper.js";
 export type { GetResponseOptions } from "./lib/response-wrapper.js";
 export { ReusableReadableStream } from "./lib/reusable-stream.js";
-export { ToolType } from "./lib/tool-types.js";
+export { ToolType, isToolPreliminaryResultEvent } from "./lib/tool-types.js";
 export type {
   EnhancedTool,
   ToolWithExecute,
@@ -23,6 +23,7 @@ export type {
   EnhancedResponseStreamEvent,
   ToolStreamEvent,
   ChatStreamEvent,
+  ToolPreliminaryResultEvent,
 } from "./lib/tool-types.js";
 // #endregion
 export * from "./sdk/sdk.js";

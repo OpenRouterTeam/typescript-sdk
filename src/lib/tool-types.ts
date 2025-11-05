@@ -1,5 +1,6 @@
 import { z, type ZodType, type ZodObject, type ZodRawShape } from "zod/v4";
 import * as models from "../models/index.js";
+import type { OpenResponsesStreamEvent } from "../models/index.js";
 
 /**
  * Tool type enum for enhanced tools
@@ -211,18 +212,31 @@ export interface APITool {
 }
 
 /**
+ * Tool preliminary result event emitted during generator tool execution
+ */
+export type ToolPreliminaryResultEvent = {
+  type: "tool.preliminary_result";
+  toolCallId: string;
+  result: unknown;
+  timestamp: number;
+};
+
+/**
  * Enhanced stream event types for getFullResponsesStream
  * Extends OpenResponsesStreamEvent with tool preliminary results
  */
 export type EnhancedResponseStreamEvent =
-  | { _tag: "original"; event: any } // Original OpenResponsesStreamEvent
-  | {
-      _tag: "tool_preliminary";
-      type: "tool.preliminary_result";
-      toolCallId: string;
-      result: unknown;
-      timestamp: number;
-    };
+  | OpenResponsesStreamEvent
+  | ToolPreliminaryResultEvent;
+
+/**
+ * Type guard to check if an event is a tool preliminary result event
+ */
+export function isToolPreliminaryResultEvent(
+  event: EnhancedResponseStreamEvent
+): event is ToolPreliminaryResultEvent {
+  return event.type === "tool.preliminary_result";
+}
 
 /**
  * Tool stream event types for getToolStream

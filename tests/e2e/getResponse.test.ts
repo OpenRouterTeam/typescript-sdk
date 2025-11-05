@@ -306,23 +306,19 @@ describe("getResponse E2E Tests", () => {
 
       for await (const event of response.getFullResponsesStream()) {
         expect(event).toBeDefined();
-        expect("_tag" in event).toBe(true);
+        expect("type" in event).toBe(true);
         events.push(event);
       }
 
       expect(events.length).toBeGreaterThan(0);
 
-      // Get original events only
-      const originalEvents = events.filter((e) => e._tag === "original");
-      expect(originalEvents.length).toBeGreaterThan(0);
-
-      // Verify we have different event types in original events
-      const eventTypes = new Set(originalEvents.map((e) => e.event?.type).filter(Boolean));
+      // Verify we have different event types
+      const eventTypes = new Set(events.map((e) => e.type));
       expect(eventTypes.size).toBeGreaterThan(1);
 
       // Should have completion event
-      const hasCompletionEvent = originalEvents.some(
-        (e) => e.event?.type === "response.completed" || e.event?.type === "response.incomplete"
+      const hasCompletionEvent = events.some(
+        (e) => e.type === "response.completed" || e.type === "response.incomplete"
       );
       expect(hasCompletionEvent).toBe(true);
     }, 15000);
@@ -340,9 +336,9 @@ describe("getResponse E2E Tests", () => {
 
       const textDeltaEvents: any[] = [];
 
-      for await (const wrappedEvent of response.getFullResponsesStream()) {
-        if (wrappedEvent._tag === "original" && wrappedEvent.event?.type === "response.output_text.delta") {
-          textDeltaEvents.push(wrappedEvent.event);
+      for await (const event of response.getFullResponsesStream()) {
+        if (event.type === "response.output_text.delta") {
+          textDeltaEvents.push(event);
         }
       }
 

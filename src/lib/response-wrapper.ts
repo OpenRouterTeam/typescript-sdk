@@ -339,19 +339,18 @@ export class ResponseWrapper {
 
       const consumer = this.reusableStream.createConsumer();
 
-      // Yield original events wrapped
+      // Yield original events directly
       for await (const event of consumer) {
-        yield { _tag: "original" as const, event };
+        yield event;
       }
 
       // After stream completes, check if tools were executed and emit preliminary results
       await this.executeToolsIfNeeded();
 
-      // Emit all preliminary results
+      // Emit all preliminary results as new event types
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            _tag: "tool_preliminary" as const,
             type: "tool.preliminary_result" as const,
             toolCallId,
             result,
