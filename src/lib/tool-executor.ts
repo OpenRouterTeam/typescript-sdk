@@ -1,4 +1,4 @@
-import { ZodType, ZodError, toJSONSchema } from "zod/v4";
+import { ZodError, toJSONSchema, type ZodType } from "zod/v4";
 import {
   EnhancedTool,
   ToolExecutionResult,
@@ -14,7 +14,7 @@ import {
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, any> {
-  const jsonSchema = toJSONSchema(zodSchema, {
+  const jsonSchema = toJSONSchema(zodSchema as any, {
     target: "openapi-3.0",
   });
   return jsonSchema as Record<string, any>;
@@ -31,7 +31,7 @@ export function convertEnhancedToolsToAPIFormat(
     name: tool.function.name,
     description: tool.function.description || null,
     strict: null,
-    parameters: convertZodToJsonSchema(tool.function.inputSchema),
+    parameters: convertZodToJsonSchema(tool.function.inputSchema as any),
   }));
 }
 
