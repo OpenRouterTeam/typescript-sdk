@@ -119,8 +119,8 @@ export class OpenRouter extends ClientSDK {
    * ```
    */
   getResponse(
-    request: Omit<models.OpenResponsesRequest, "stream"> & {
-      tools?: EnhancedTool[];
+    request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+      tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
       maxToolRounds?: MaxToolRounds;
     },
     options?: RequestOptions,

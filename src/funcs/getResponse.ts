@@ -74,22 +74,30 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  */
 export function getResponse(
   client: OpenRouterCore,
-  request: Omit<models.OpenResponsesRequest, "stream"> & {
-    tools?: EnhancedTool[];
+  request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+    tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
     maxToolRounds?: MaxToolRounds;
   },
   options?: RequestOptions,
 ): ResponseWrapper {
   const { tools, maxToolRounds, ...apiRequest } = request;
 
-  // Convert enhanced tools to API format if provided
-  const apiTools = tools ? convertEnhancedToolsToAPIFormat(tools) : undefined;
+  // Separate enhanced tools from API tools
+  let isEnhancedTools = false;
+  if (tools && tools.length > 0) {
+    const firstTool = tools[0] as any;
+    isEnhancedTools = "function" in firstTool && firstTool.function && "inputSchema" in firstTool.function;
+  }
+  const enhancedTools = isEnhancedTools ? (tools as EnhancedTool[]) : undefined;
+
+  // Convert enhanced tools to API format if provided, otherwise use tools as-is
+  const apiTools = enhancedTools ? convertEnhancedToolsToAPIFormat(enhancedTools) : (tools as models.OpenResponsesRequest["tools"]);
 
   // Build the request with converted tools
-  const finalRequest = {
+  const finalRequest: models.OpenResponsesRequest = {
     ...apiRequest,
     ...(apiTools && { tools: apiTools }),
-  };
+  } as models.OpenResponsesRequest;
 
   const wrapperOptions: {
     client: OpenRouterCore;
@@ -103,8 +111,9 @@ export function getResponse(
     options: options ?? {},
   };
 
-  if (tools) {
-    wrapperOptions.tools = tools;
+  // Only pass enhanced tools to wrapper (needed for auto-execution)
+  if (enhancedTools) {
+    wrapperOptions.tools = enhancedTools;
   }
 
   if (maxToolRounds !== undefined) {
