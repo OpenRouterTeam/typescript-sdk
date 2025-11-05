@@ -123,9 +123,9 @@ export async function executeRegularTool(
 
 /**
  * Execute a generator tool and collect preliminary and final results
- * Following Vercel AI SDK pattern:
- * - All yielded values are preliminary results (for streaming to UI)
- * - Last yielded value is the final result (sent to model)
+ * - Intermediate yields are validated against eventSchema (preliminary events)
+ * - Last yield is validated against outputSchema (final result sent to model)
+ * - Generator must emit at least one value
  */
 export async function executeGeneratorTool(
   tool: EnhancedTool,
@@ -146,14 +146,17 @@ export async function executeGeneratorTool(
 
     // Execute generator and collect all results
     const preliminaryResults: unknown[] = [];
-    let finalResult: unknown = null;
+    let lastEmittedValue: unknown = null;
+    let hasEmittedValue = false;
 
     for await (const event of tool.function.execute(validatedInput as any, context)) {
+      hasEmittedValue = true;
+
       // Validate event against eventSchema
       const validatedEvent = validateToolOutput(tool.function.eventSchema, event);
 
       preliminaryResults.push(validatedEvent);
-      finalResult = validatedEvent;
+      lastEmittedValue = validatedEvent;
 
       // Emit preliminary result via callback
       if (onPreliminaryResult) {
@@ -161,7 +164,22 @@ export async function executeGeneratorTool(
       }
     }
 
-    // The last yielded value is the final result sent to model
+    // Generator must emit at least one value
+    if (!hasEmittedValue) {
+      throw new Error(
+        `Generator tool "${toolCall.name}" completed without emitting any values`
+      );
+    }
+
+    // Validate the last emitted value against outputSchema (this is the final result)
+    const finalResult = validateToolOutput(
+      tool.function.outputSchema,
+      lastEmittedValue
+    );
+
+    // Remove last item from preliminaryResults since it's the final output
+    preliminaryResults.pop();
+
     return {
       toolCallId: toolCall.id,
       toolName: toolCall.name,

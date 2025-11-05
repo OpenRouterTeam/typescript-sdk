@@ -47,16 +47,30 @@ export interface ToolFunctionWithExecute<
 }
 
 /**
- * Generator-based tool with async generator execute function and eventSchema
- * Follows Vercel AI SDK pattern:
- * - All yielded values are "preliminary results" (streamed to UI)
- * - Last yielded value is the "final result" (sent to model)
+ * Generator-based tool with async generator execute function
+ * Emits preliminary events (validated by eventSchema) during execution
+ * and a final output (validated by outputSchema) as the last emission
+ *
+ * @example
+ * ```typescript
+ * {
+ *   eventSchema: z.object({ status: z.string() }),  // For progress events
+ *   outputSchema: z.object({ result: z.number() }), // For final output
+ *   execute: async function* (params) {
+ *     yield { status: "processing..." };  // Event
+ *     yield { status: "almost done..." }; // Event
+ *     yield { result: 42 };               // Final output (must be last)
+ *   }
+ * }
+ * ```
  */
 export interface ToolFunctionWithGenerator<
   TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType = ZodType<any>
+  TEvent extends ZodType = ZodType<any>,
+  TOutput extends ZodType = ZodType<any>
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
+  outputSchema: TOutput;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -89,10 +103,11 @@ export type ToolWithExecute<
  */
 export type ToolWithGenerator<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
-  TEvent extends ZodType = ZodType<any>
+  TEvent extends ZodType = ZodType<any>,
+  TOutput extends ZodType = ZodType<any>
 > = {
   type: ToolType.Function;
-  function: ToolFunctionWithGenerator<TInput, TEvent>;
+  function: ToolFunctionWithGenerator<TInput, TEvent, TOutput>;
 };
 
 /**

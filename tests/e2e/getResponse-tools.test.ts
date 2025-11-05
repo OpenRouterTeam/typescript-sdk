@@ -188,8 +188,8 @@ describe("Enhanced Tool Support for getResponse", () => {
 
   describe("Generator Tools (Preliminary Results)", () => {
     it("should collect all yielded values as preliminary results", async () => {
-      const weatherSchema = z.object({
-        type: z.enum(["start", "update", "end"]),
+      const eventSchema = z.object({
+        type: z.enum(["start", "update"]),
         data: z
           .object({
             location: z.string().optional(),
@@ -197,6 +197,12 @@ describe("Enhanced Tool Support for getResponse", () => {
             description: z.string().optional(),
           })
           .optional(),
+      });
+
+      const outputSchema = z.object({
+        temperature: z.number(),
+        description: z.string(),
+        location: z.string(),
       });
 
       const generatorTool = {
@@ -207,14 +213,20 @@ describe("Enhanced Tool Support for getResponse", () => {
           inputSchema: z.object({
             location: z.string(),
           }),
-          eventSchema: weatherSchema,
+          eventSchema,
+          outputSchema,
           execute: async function* (params: { location: string }, context) {
             yield { type: "start" as const, data: { location: params.location } };
             yield {
               type: "update" as const,
               data: { temperature: 20, description: "Clear skies" },
             };
-            yield { type: "end" as const };
+            // Final output (different schema)
+            yield {
+              temperature: 20,
+              description: "Clear skies",
+              location: params.location,
+            };
           },
         },
       };
@@ -224,7 +236,7 @@ describe("Enhanced Tool Support for getResponse", () => {
         messageHistory: [],
         model: "test-model",
       };
-      const results: Array<z.infer<typeof weatherSchema>> = [];
+      const results: unknown[] = [];
       for await (const result of generatorTool.function.execute({
         location: "Tokyo",
       }, mockContext)) {
@@ -232,9 +244,9 @@ describe("Enhanced Tool Support for getResponse", () => {
       }
 
       expect(results).toHaveLength(3);
-      expect(results[0].type).toBe("start");
-      expect(results[1].type).toBe("update");
-      expect(results[2].type).toBe("end");
+      expect(results[0]).toEqual({ type: "start", data: { location: "Tokyo" } });
+      expect(results[1]).toEqual({ type: "update", data: { temperature: 20, description: "Clear skies" } });
+      expect(results[2]).toEqual({ temperature: 20, description: "Clear skies", location: "Tokyo" });
     });
 
     it("should send only final (last) yield to model", async () => {
@@ -245,12 +257,15 @@ describe("Enhanced Tool Support for getResponse", () => {
           inputSchema: z.object({ data: z.string() }),
           eventSchema: z.object({
             status: z.string(),
-            result: z.any().optional(),
+          }),
+          outputSchema: z.object({
+            result: z.string(),
           }),
           execute: async function* (params: { data: string }, context) {
             yield { status: "processing" };
             yield { status: "almost_done" };
-            yield { status: "complete", result: `Processed: ${params.data}` };
+            // Final output (different schema)
+            yield { result: `Processed: ${params.data}` };
           },
         },
       };
@@ -266,8 +281,7 @@ describe("Enhanced Tool Support for getResponse", () => {
       }
 
       const finalResult = results[results.length - 1];
-      expect(finalResult.status).toBe("complete");
-      expect(finalResult.result).toBe("Processed: test");
+      expect(finalResult).toEqual({ result: "Processed: test" });
     });
 
     it("should validate all events against eventSchema", async () => {
@@ -311,10 +325,12 @@ describe("Enhanced Tool Support for getResponse", () => {
           name: "streaming_tool",
           inputSchema: z.object({ input: z.string() }),
           eventSchema: z.object({ progress: z.number(), message: z.string() }),
+          outputSchema: z.object({ completed: z.boolean(), finalProgress: z.number() }),
           execute: async function* (params: { input: string }, context) {
             yield { progress: 25, message: "Quarter done" };
             yield { progress: 50, message: "Half done" };
-            yield { progress: 100, message: "Complete" };
+            // Final output (different schema)
+            yield { completed: true, finalProgress: 100 };
           },
         },
       };
@@ -330,9 +346,37 @@ describe("Enhanced Tool Support for getResponse", () => {
       }
 
       expect(preliminaryResults).toHaveLength(3);
-      expect(preliminaryResults[0].progress).toBe(25);
-      expect(preliminaryResults[1].progress).toBe(50);
-      expect(preliminaryResults[2].progress).toBe(100);
+      expect(preliminaryResults[0]).toEqual({ progress: 25, message: "Quarter done" });
+      expect(preliminaryResults[1]).toEqual({ progress: 50, message: "Half done" });
+      expect(preliminaryResults[2]).toEqual({ completed: true, finalProgress: 100 });
+    });
+
+    it("should throw error if generator completes without emitting values", async () => {
+      const generatorTool = {
+        type: ToolType.Function,
+        function: {
+          name: "empty_generator",
+          inputSchema: z.object({}),
+          eventSchema: z.object({ status: z.string() }),
+          outputSchema: z.object({ result: z.string() }),
+          execute: async function* (params, context) {
+            // Emit nothing
+          },
+        },
+      };
+
+      const mockContext = {
+        numberOfTurns: 1,
+        messageHistory: [],
+        model: "test-model",
+      };
+
+      const results = [];
+      for await (const result of generatorTool.function.execute({}, mockContext)) {
+        results.push(result);
+      }
+
+      expect(results).toHaveLength(0);
     });
   });
 

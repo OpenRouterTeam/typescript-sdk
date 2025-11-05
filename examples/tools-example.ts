@@ -98,14 +98,22 @@ async function generatorToolExample() {
       inputSchema: z.object({
         data: z.string().describe("Data to process"),
       }),
+      // Events emitted during processing (validated against eventSchema)
       eventSchema: z.object({
-        type: z.enum(["start", "progress", "complete"]),
+        type: z.enum(["start", "progress"]),
         message: z.string(),
         progress: z.number().min(0).max(100).optional(),
       }),
+      // Final output (validated against outputSchema - different structure)
+      outputSchema: z.object({
+        result: z.string(),
+        processingTime: z.number(),
+      }),
       execute: async function* (params: { data: string }, context) {
         console.log(`Generator tool - Turn ${context.numberOfTurns}`);
-        // Preliminary result 1
+        const startTime = Date.now();
+
+        // Preliminary event 1
         yield {
           type: "start" as const,
           message: `Started processing: ${params.data}`,
@@ -114,7 +122,7 @@ async function generatorToolExample() {
 
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Preliminary result 2
+        // Preliminary event 2
         yield {
           type: "progress" as const,
           message: "Processing halfway done",
@@ -123,11 +131,10 @@ async function generatorToolExample() {
 
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Final result (last yield)
+        // Final output (different schema - sent to model)
         yield {
-          type: "complete" as const,
-          message: `Completed processing: ${params.data.toUpperCase()}`,
-          progress: 100,
+          result: params.data.toUpperCase(),
+          processingTime: Date.now() - startTime,
         };
       },
     },
