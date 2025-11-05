@@ -144,6 +144,14 @@ describe("Embeddings E2E Tests", () => {
       if (typeof response === "object") {
         expect(response.model).toBeDefined();
         expect(typeof response.model).toBe("string");
+
+        if (response.usage) {
+          expect(response.usage.promptTokens).toBeDefined();
+          expect(response.usage.totalTokens).toBeDefined();
+          expect(typeof response.usage.promptTokens).toBe("number");
+          expect(typeof response.usage.totalTokens).toBe("number");
+          expect(response.usage.totalTokens).toBeGreaterThan(0);
+        }
       }
     });
   });
