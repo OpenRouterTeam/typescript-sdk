@@ -24,7 +24,6 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.chat.send({
     messages: [],
-    model: "Charger",
   });
 
   console.log(result);
@@ -50,7 +49,6 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await chatSend(openRouter, {
     messages: [],
-    model: "Charger",
   });
   if (res.ok) {
     const { value: result } = res;

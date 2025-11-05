@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 6676183700397400ca1cc3c4e2b3fa14
+  docChecksum: 21d34ad219f16d5944497a609bd0c936
   docVersion: 1.0.0
-  speakeasyVersion: 1.648.1
+  speakeasyVersion: 1.649.0
   generationVersion: 2.739.1
-  releaseVersion: 0.1.0
-  configChecksum: d449583229f714111a3a63d351a07b1f
+  releaseVersion: 0.1.1
+  configChecksum: c28c46b34a103eebef5cf4e55b42c8b7
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -69,6 +69,7 @@ generatedFiles:
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
   - docs/models/chatmessagecontentitemaudioformat.md
+  - docs/models/chatmessagecontentitemaudioinputaudio.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
@@ -136,7 +137,6 @@ generatedFiles:
   - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
-  - docs/models/inputaudio.md
   - docs/models/inputmodality.md
   - docs/models/inputtokensdetails.md
   - docs/models/instructtype.md
@@ -301,17 +301,28 @@ generatedFiles:
   - docs/models/operations/createcoinbasechargedata.md
   - docs/models/operations/createcoinbasechargeresponse.md
   - docs/models/operations/createcoinbasechargesecurity.md
+  - docs/models/operations/createembeddingsdata.md
+  - docs/models/operations/createembeddingsprovider.md
+  - docs/models/operations/createembeddingsrequest.md
+  - docs/models/operations/createembeddingsresponse.md
+  - docs/models/operations/createembeddingsresponsebody.md
   - docs/models/operations/createkeysdata.md
   - docs/models/operations/createkeyslimitreset.md
   - docs/models/operations/createkeysrequest.md
   - docs/models/operations/createkeysresponse.md
   - docs/models/operations/createresponsesresponse.md
   - docs/models/operations/createresponsesresponsebody.md
+  - docs/models/operations/datacollection.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
+  - docs/models/operations/embedding.md
+  - docs/models/operations/encodingformat.md
+  - docs/models/operations/encodingformatbase64.md
+  - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/exchangeauthcodeforapikeycodechallengemethod.md
   - docs/models/operations/exchangeauthcodeforapikeyrequest.md
   - docs/models/operations/exchangeauthcodeforapikeyresponse.md
+  - docs/models/operations/experimental.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -323,11 +334,14 @@ generatedFiles:
   - docs/models/operations/getkeyresponse.md
   - docs/models/operations/getmodelsrequest.md
   - docs/models/operations/getparametersdata.md
+  - docs/models/operations/getparametersprovider.md
   - docs/models/operations/getparametersrequest.md
   - docs/models/operations/getparametersresponse.md
   - docs/models/operations/getparameterssecurity.md
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
+  - docs/models/operations/ignore.md
+  - docs/models/operations/input.md
   - docs/models/operations/listdata.md
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
@@ -337,10 +351,15 @@ generatedFiles:
   - docs/models/operations/listprovidersresponse.md
   - docs/models/operations/listrequest.md
   - docs/models/operations/listresponse.md
+  - docs/models/operations/maxprice.md
   - docs/models/operations/metadata.md
-  - docs/models/operations/provider.md
+  - docs/models/operations/objectembedding.md
+  - docs/models/operations/objectt.md
+  - docs/models/operations/only.md
+  - docs/models/operations/order.md
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
+  - docs/models/operations/sort.md
   - docs/models/operations/supportedparameter.md
   - docs/models/operations/transferintent.md
   - docs/models/operations/updatekeysdata.md
@@ -348,6 +367,7 @@ generatedFiles:
   - docs/models/operations/updatekeysrequest.md
   - docs/models/operations/updatekeysrequestbody.md
   - docs/models/operations/updatekeysresponse.md
+  - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
   - docs/models/order.md
   - docs/models/outputitemimagegenerationcall.md
@@ -395,6 +415,10 @@ generatedFiles:
   - docs/models/responseformatjsonschema.md
   - docs/models/responseformattextconfig.md
   - docs/models/responseformattextgrammar.md
+  - docs/models/responseinputaudio.md
+  - docs/models/responseinputaudioformat.md
+  - docs/models/responseinputaudioinputaudio.md
+  - docs/models/responseinputaudiotype.md
   - docs/models/responseinputfile.md
   - docs/models/responseinputfiletype.md
   - docs/models/responseinputimage.md
@@ -493,6 +517,7 @@ generatedFiles:
   - docs/sdks/chat/README.md
   - docs/sdks/completions/README.md
   - docs/sdks/credits/README.md
+  - docs/sdks/embeddings/README.md
   - docs/sdks/endpoints/README.md
   - docs/sdks/generations/README.md
   - docs/sdks/models/README.md
@@ -520,6 +545,7 @@ generatedFiles:
   - src/funcs/completionsGenerate.ts
   - src/funcs/creditsCreateCoinbaseCharge.ts
   - src/funcs/creditsGetCredits.ts
+  - src/funcs/embeddingsGenerate.ts
   - src/funcs/endpointsList.ts
   - src/funcs/endpointsListZdrEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
@@ -663,6 +689,7 @@ generatedFiles:
   - src/models/openresponseswebsearchtool.ts
   - src/models/operations/createauthkeyscode.ts
   - src/models/operations/createcoinbasecharge.ts
+  - src/models/operations/createembeddings.ts
   - src/models/operations/createkeys.ts
   - src/models/operations/createresponses.ts
   - src/models/operations/deletekeys.ts
@@ -701,6 +728,7 @@ generatedFiles:
   - src/models/responseformatjsonschema.ts
   - src/models/responseformattextconfig.ts
   - src/models/responseformattextgrammar.ts
+  - src/models/responseinputaudio.ts
   - src/models/responseinputfile.ts
   - src/models/responseinputimage.ts
   - src/models/responseinputtext.ts
@@ -747,6 +775,7 @@ generatedFiles:
   - src/react-query/completionsGenerate.ts
   - src/react-query/creditsCreateCoinbaseCharge.ts
   - src/react-query/creditsGetCredits.ts
+  - src/react-query/embeddingsGenerate.ts
   - src/react-query/endpointsList.ts
   - src/react-query/endpointsListZdrEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
@@ -764,6 +793,7 @@ generatedFiles:
   - src/sdk/chat.ts
   - src/sdk/completions.ts
   - src/sdk/credits.ts
+  - src/sdk/embeddings.ts
   - src/sdk/endpoints.ts
   - src/sdk/generations.ts
   - src/sdk/index.ts
@@ -1400,14 +1430,14 @@ examples:
   createCompletions:
     speakeasy-default-create-completions:
       requestBody:
-        application/json: {"model": "Model T", "prompt": "<value>", "stream": false}
+        application/json: {"prompt": "<value>", "stream": false}
       responses:
         "200":
           application/json: {"id": "<id>", "object": "text_completion", "created": 2021.59, "model": "Jetta", "choices": []}
         "400":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": "<value>", "message": "<value>"}}
         "500":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": "<value>", "message": "<value>"}}
   sendResponsesRequest:
     speakeasy-default-send-responses-request:
       requestBody:
@@ -1422,14 +1452,14 @@ examples:
   sendChatCompletionRequest:
     speakeasy-default-send-chat-completion-request:
       requestBody:
-        application/json: {"messages": [], "model": "Charger", "stream": false}
+        application/json: {"messages": [], "stream": false}
       responses:
         "200":
           application/json: {"id": "<id>", "choices": [], "created": 2736.96, "model": "Impala", "object": "chat.completion"}
         "400":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": "<value>", "message": "<value>"}}
         "500":
-          application/json: {"error": {"code": "<value>", "message": "<value>", "param": "<value>", "type": "<value>"}}
+          application/json: {"error": {"code": "<value>", "message": "<value>"}}
   createApiAlphaResponses:
     speakeasy-default-create-api-alpha-responses:
       requestBody:
@@ -1493,7 +1523,7 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
+          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_video_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
@@ -1732,4 +1762,32 @@ examples:
           application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  createEmbeddings:
+    speakeasy-default-create-embeddings:
+      requestBody:
+        application/json: {"input": "<value>", "model": "Taurus"}
+      responses:
+        "200":
+          application/json: {"object": "list", "data": [], "model": "Model S"}
+          text/event-stream: "<value>"
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "401":
+          application/json: {"error": {"code": 401, "message": "Missing Authentication header"}}
+        "402":
+          application/json: {"error": {"code": 402, "message": "Insufficient credits. Add more using https://openrouter.ai/credits"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "429":
+          application/json: {"error": {"code": 429, "message": "Rate limit exceeded"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "502":
+          application/json: {"error": {"code": 502, "message": "Provider returned error"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
+        "524":
+          application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
+        "529":
+          application/json: {"error": {"code": 529, "message": "Provider returned error"}}
 examplesVersion: 1.0.2

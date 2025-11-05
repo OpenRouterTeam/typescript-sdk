@@ -1,13 +1,13 @@
-# InputAudio
+# ChatMessageContentItemAudioInputAudio
 
 ## Example Usage
 
 ```typescript
-import { InputAudio } from "@openrouter/sdk/models";
+import { ChatMessageContentItemAudioInputAudio } from "@openrouter/sdk/models";
 
-let value: InputAudio = {
+let value: ChatMessageContentItemAudioInputAudio = {
   data: "<value>",
-  format: "mp3",
+  format: "wav",
 };
 ```
 

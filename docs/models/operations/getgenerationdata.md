@@ -32,6 +32,7 @@ let value: GetGenerationData = {
   nativeTokensCached: 3,
   numMediaPrompt: 1,
   numInputAudioPrompt: 0,
+  numVideoPrompt: 0,
   numMediaCompletion: 0,
   numSearchResults: 5,
   origin: "https://openrouter.ai/",
@@ -71,6 +72,7 @@ let value: GetGenerationData = {
 | `nativeTokensCached`                                     | *number*                                                 | :heavy_check_mark:                                       | Native cached tokens as reported by provider             | 3                                                        |
 | `numMediaPrompt`                                         | *number*                                                 | :heavy_check_mark:                                       | Number of media items in the prompt                      | 1                                                        |
 | `numInputAudioPrompt`                                    | *number*                                                 | :heavy_check_mark:                                       | Number of audio inputs in the prompt                     | 0                                                        |
+| `numVideoPrompt`                                         | *number*                                                 | :heavy_check_mark:                                       | Number of video inputs in the prompt                     | 0                                                        |
 | `numMediaCompletion`                                     | *number*                                                 | :heavy_check_mark:                                       | Number of media items in the completion                  | 0                                                        |
 | `numSearchResults`                                       | *number*                                                 | :heavy_check_mark:                                       | Number of search results included                        | 5                                                        |
 | `origin`                                                 | *string*                                                 | :heavy_check_mark:                                       | Origin URL of the request                                | https://openrouter.ai/                                   |

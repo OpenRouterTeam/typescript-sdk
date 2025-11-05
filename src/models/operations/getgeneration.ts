@@ -130,6 +130,10 @@ export type GetGenerationData = {
    */
   numInputAudioPrompt: number | null;
   /**
+   * Number of video inputs in the prompt
+   */
+  numVideoPrompt: number | null;
+  /**
    * Number of media items in the completion
    */
   numMediaCompletion: number | null;
@@ -278,6 +282,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   native_tokens_cached: z.nullable(z.number()),
   num_media_prompt: z.nullable(z.number()),
   num_input_audio_prompt: z.nullable(z.number()),
+  num_video_prompt: z.nullable(z.number()),
   num_media_completion: z.nullable(z.number()),
   num_search_results: z.nullable(z.number()),
   origin: z.string(),
@@ -307,6 +312,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "native_tokens_cached": "nativeTokensCached",
     "num_media_prompt": "numMediaPrompt",
     "num_input_audio_prompt": "numInputAudioPrompt",
+    "num_video_prompt": "numVideoPrompt",
     "num_media_completion": "numMediaCompletion",
     "num_search_results": "numSearchResults",
     "is_byok": "isByok",
@@ -342,6 +348,7 @@ export type GetGenerationData$Outbound = {
   native_tokens_cached: number | null;
   num_media_prompt: number | null;
   num_input_audio_prompt: number | null;
+  num_video_prompt: number | null;
   num_media_completion: number | null;
   num_search_results: number | null;
   origin: string;
@@ -381,6 +388,7 @@ export const GetGenerationData$outboundSchema: z.ZodType<
   nativeTokensCached: z.nullable(z.number()),
   numMediaPrompt: z.nullable(z.number()),
   numInputAudioPrompt: z.nullable(z.number()),
+  numVideoPrompt: z.nullable(z.number()),
   numMediaCompletion: z.nullable(z.number()),
   numSearchResults: z.nullable(z.number()),
   origin: z.string(),
@@ -410,6 +418,7 @@ export const GetGenerationData$outboundSchema: z.ZodType<
     nativeTokensCached: "native_tokens_cached",
     numMediaPrompt: "num_media_prompt",
     numInputAudioPrompt: "num_input_audio_prompt",
+    numVideoPrompt: "num_video_prompt",
     numMediaCompletion: "num_media_completion",
     numSearchResults: "num_search_results",
     isByok: "is_byok",

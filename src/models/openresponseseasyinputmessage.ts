@@ -8,6 +8,12 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  ResponseInputAudio,
+  ResponseInputAudio$inboundSchema,
+  ResponseInputAudio$Outbound,
+  ResponseInputAudio$outboundSchema,
+} from "./responseinputaudio.js";
+import {
   ResponseInputFile,
   ResponseInputFile$inboundSchema,
   ResponseInputFile$Outbound,
@@ -70,12 +76,14 @@ export type OpenResponsesEasyInputMessageRoleUnion =
 export type OpenResponsesEasyInputMessageContent1 =
   | (ResponseInputText & { type: "input_text" })
   | (ResponseInputImage & { type: "input_image" })
+  | (ResponseInputAudio & { type: "input_audio" })
   | (ResponseInputFile & { type: "input_file" });
 
 export type OpenResponsesEasyInputMessageContent2 =
   | Array<
     | (ResponseInputText & { type: "input_text" })
     | (ResponseInputImage & { type: "input_image" })
+    | (ResponseInputAudio & { type: "input_audio" })
     | (ResponseInputFile & { type: "input_file" })
   >
   | string;
@@ -91,6 +99,7 @@ export type OpenResponsesEasyInputMessage = {
     | Array<
       | (ResponseInputText & { type: "input_text" })
       | (ResponseInputImage & { type: "input_image" })
+      | (ResponseInputAudio & { type: "input_audio" })
       | (ResponseInputFile & { type: "input_file" })
     >
     | string;
@@ -293,6 +302,11 @@ export const OpenResponsesEasyInputMessageContent1$inboundSchema: z.ZodType<
       type: v.type,
     })),
   ),
+  ResponseInputAudio$inboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
   ResponseInputFile$inboundSchema.and(
     z.object({ type: z.literal("input_file") }).transform((v) => ({
       type: v.type,
@@ -304,6 +318,7 @@ export const OpenResponsesEasyInputMessageContent1$inboundSchema: z.ZodType<
 export type OpenResponsesEasyInputMessageContent1$Outbound =
   | (ResponseInputText$Outbound & { type: "input_text" })
   | (ResponseInputImage$Outbound & { type: "input_image" })
+  | (ResponseInputAudio$Outbound & { type: "input_audio" })
   | (ResponseInputFile$Outbound & { type: "input_file" });
 
 /** @internal */
@@ -318,6 +333,11 @@ export const OpenResponsesEasyInputMessageContent1$outboundSchema: z.ZodType<
   ),
   ResponseInputImage$outboundSchema.and(
     z.object({ type: z.literal("input_image") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputAudio$outboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
       type: v.type,
     })),
   ),
@@ -381,6 +401,11 @@ export const OpenResponsesEasyInputMessageContent2$inboundSchema: z.ZodType<
           type: v.type,
         })),
       ),
+      ResponseInputAudio$inboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
       ResponseInputFile$inboundSchema.and(
         z.object({ type: z.literal("input_file") }).transform((v) => ({
           type: v.type,
@@ -396,6 +421,7 @@ export type OpenResponsesEasyInputMessageContent2$Outbound =
   | Array<
     | (ResponseInputText$Outbound & { type: "input_text" })
     | (ResponseInputImage$Outbound & { type: "input_image" })
+    | (ResponseInputAudio$Outbound & { type: "input_audio" })
     | (ResponseInputFile$Outbound & { type: "input_file" })
   >
   | string;
@@ -414,6 +440,11 @@ export const OpenResponsesEasyInputMessageContent2$outboundSchema: z.ZodType<
       ),
       ResponseInputImage$outboundSchema.and(
         z.object({ type: z.literal("input_image") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputAudio$outboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
           type: v.type,
         })),
       ),
@@ -488,6 +519,11 @@ export const OpenResponsesEasyInputMessage$inboundSchema: z.ZodType<
             type: v.type,
           })),
         ),
+        ResponseInputAudio$inboundSchema.and(
+          z.object({ type: z.literal("input_audio") }).transform((v) => ({
+            type: v.type,
+          })),
+        ),
         ResponseInputFile$inboundSchema.and(
           z.object({ type: z.literal("input_file") }).transform((v) => ({
             type: v.type,
@@ -507,6 +543,7 @@ export type OpenResponsesEasyInputMessage$Outbound = {
     | Array<
       | (ResponseInputText$Outbound & { type: "input_text" })
       | (ResponseInputImage$Outbound & { type: "input_image" })
+      | (ResponseInputAudio$Outbound & { type: "input_audio" })
       | (ResponseInputFile$Outbound & { type: "input_file" })
     >
     | string;
@@ -534,6 +571,11 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
         ),
         ResponseInputImage$outboundSchema.and(
           z.object({ type: z.literal("input_image") }).transform((v) => ({
+            type: v.type,
+          })),
+        ),
+        ResponseInputAudio$outboundSchema.and(
+          z.object({ type: z.literal("input_audio") }).transform((v) => ({
             type: v.type,
           })),
         ),

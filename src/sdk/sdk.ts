@@ -9,6 +9,7 @@ import { Beta } from "./beta.js";
 import { Chat } from "./chat.js";
 import { Completions } from "./completions.js";
 import { Credits } from "./credits.js";
+import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
 import { Models } from "./models.js";
@@ -30,6 +31,11 @@ export class OpenRouter extends ClientSDK {
   private _credits?: Credits;
   get credits(): Credits {
     return (this._credits ??= new Credits(this._options));
+  }
+
+  private _embeddings?: Embeddings;
+  get embeddings(): Embeddings {
+    return (this._embeddings ??= new Embeddings(this._options));
   }
 
   private _generations?: Generations;

@@ -3,6 +3,12 @@
 
 ## Supported Types
 
+### `string`
+
+```typescript
+const value: string = "<value>";
+```
+
 ### `models.ResponseInputText`
 
 ```typescript
