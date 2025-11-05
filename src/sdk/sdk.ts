@@ -7,6 +7,7 @@ import { ClientSDK } from "../lib/sdks.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { ResponseWrapper } from "../lib/response-wrapper.js";
 import { getResponse } from "../funcs/getResponse.js";
+import { EnhancedTool, MaxToolRounds } from "../lib/tool-types.js";
 import * as models from "../models/index.js";
 // #endregion
 import { Analytics } from "./analytics.js";
@@ -118,7 +119,10 @@ export class OpenRouter extends ClientSDK {
    * ```
    */
   getResponse(
-    request: Omit<models.OpenResponsesRequest, "stream">,
+    request: Omit<models.OpenResponsesRequest, "stream"> & {
+      tools?: EnhancedTool[];
+      maxToolRounds?: MaxToolRounds;
+    },
     options?: RequestOptions,
   ): ResponseWrapper {
     return getResponse(this, request, options);
