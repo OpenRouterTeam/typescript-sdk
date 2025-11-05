@@ -270,9 +270,13 @@ describe("getResponse E2E Tests", () => {
 
       const toolDeltas: string[] = [];
 
-      for await (const delta of response.getToolStream()) {
-        expect(typeof delta).toBe("string");
-        toolDeltas.push(delta);
+      for await (const event of response.getToolStream()) {
+        expect(typeof event).toBe("object");
+        expect(event).toHaveProperty("type");
+        if (event.type === "delta") {
+          expect(typeof event.content).toBe("string");
+          toolDeltas.push(event.content);
+        }
       }
 
       // Verify the stream works and received tool call deltas
@@ -302,19 +306,23 @@ describe("getResponse E2E Tests", () => {
 
       for await (const event of response.getFullResponsesStream()) {
         expect(event).toBeDefined();
-        expect("type" in event).toBe(true);
+        expect("_tag" in event).toBe(true);
         events.push(event);
       }
 
       expect(events.length).toBeGreaterThan(0);
 
-      // Verify we have different event types
-      const eventTypes = new Set(events.map((e) => e.type));
+      // Get original events only
+      const originalEvents = events.filter((e) => e._tag === "original");
+      expect(originalEvents.length).toBeGreaterThan(0);
+
+      // Verify we have different event types in original events
+      const eventTypes = new Set(originalEvents.map((e) => e.event?.type).filter(Boolean));
       expect(eventTypes.size).toBeGreaterThan(1);
 
       // Should have completion event
-      const hasCompletionEvent = events.some(
-        (e) => e.type === "response.completed" || e.type === "response.incomplete"
+      const hasCompletionEvent = originalEvents.some(
+        (e) => e.event?.type === "response.completed" || e.event?.type === "response.incomplete"
       );
       expect(hasCompletionEvent).toBe(true);
     }, 15000);
@@ -332,9 +340,9 @@ describe("getResponse E2E Tests", () => {
 
       const textDeltaEvents: any[] = [];
 
-      for await (const event of response.getFullResponsesStream()) {
-        if ("type" in event && event.type === "response.output_text.delta") {
-          textDeltaEvents.push(event);
+      for await (const wrappedEvent of response.getFullResponsesStream()) {
+        if (wrappedEvent._tag === "original" && wrappedEvent.event?.type === "response.output_text.delta") {
+          textDeltaEvents.push(wrappedEvent.event);
         }
       }
 
