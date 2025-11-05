@@ -179,11 +179,14 @@ export class ResponseWrapper {
             break;
           }
         } else if (typeof maxToolRounds === "function") {
-          const shouldContinue = maxToolRounds(
-            currentRound,
-            currentToolCalls,
-            this.allToolExecutionRounds.map((r) => r.response)
-          );
+          // Function signature: (context: TurnContext) => boolean
+          const turnContext: TurnContext = {
+            numberOfTurns: currentRound + 1,
+            messageHistory: currentInput,
+            ...(this.options.request.model && { model: this.options.request.model }),
+            ...(this.options.request.models && { models: this.options.request.models }),
+          };
+          const shouldContinue = maxToolRounds(turnContext);
           if (!shouldContinue) {
             break;
           }

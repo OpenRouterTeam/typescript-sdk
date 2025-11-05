@@ -159,11 +159,7 @@ export interface ToolExecutionResult {
  */
 export type MaxToolRounds =
   | number
-  | ((
-      round: number,
-      toolCalls: ParsedToolCall[],
-      responses: any[] // OpenResponsesNonStreamingResponse[]
-    ) => boolean); // Return true to continue, false to stop
+  | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
 
 /**
  * Result of executeTools operation
