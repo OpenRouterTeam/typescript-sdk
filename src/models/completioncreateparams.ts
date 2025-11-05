@@ -52,7 +52,8 @@ export type CompletionCreateParamsResponseFormatUnion =
   | CompletionCreateParamsResponseFormatPython;
 
 export type CompletionCreateParams = {
-  model: string;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
   prompt: string | Array<string> | Array<number> | Array<Array<number>>;
   bestOf?: number | null | undefined;
   echo?: boolean | null | undefined;
@@ -502,7 +503,8 @@ export const CompletionCreateParams$inboundSchema: z.ZodType<
   CompletionCreateParams,
   unknown
 > = z.object({
-  model: z.string(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
   prompt: z.union([
     z.string(),
     z.array(z.string()),
@@ -553,7 +555,8 @@ export const CompletionCreateParams$inboundSchema: z.ZodType<
 
 /** @internal */
 export type CompletionCreateParams$Outbound = {
-  model: string;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
   prompt: string | Array<string> | Array<number> | Array<Array<number>>;
   best_of?: number | null | undefined;
   echo?: boolean | null | undefined;
@@ -587,7 +590,8 @@ export const CompletionCreateParams$outboundSchema: z.ZodType<
   CompletionCreateParams$Outbound,
   CompletionCreateParams
 > = z.object({
-  model: z.string(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
   prompt: z.union([
     z.string(),
     z.array(z.string()),

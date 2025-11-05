@@ -23,7 +23,6 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.completions.generate({
-    model: "Model T",
     prompt: "<value>",
   });
 
@@ -49,7 +48,6 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await completionsGenerate(openRouter, {
-    model: "Model T",
     prompt: "<value>",
   });
   if (res.ok) {

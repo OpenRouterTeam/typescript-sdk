@@ -624,6 +624,35 @@ components:
         type: input_file
         file_id: file-abc123
         filename: document.pdf
+    ResponseInputAudio:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_audio
+        input_audio:
+          type: object
+          properties:
+            data:
+              type: string
+            format:
+              type: string
+              enum:
+                - mp3
+                - wav
+          required:
+            - data
+            - format
+      required:
+        - type
+        - input_audio
+      description: Audio input content item
+      example:
+        type: input_audio
+        input_audio:
+          data: SGVsbG8gV29ybGQ=
+          format: mp3
     ToolCallStatus:
       type: string
       enum:
@@ -665,12 +694,14 @@ components:
                             - $ref: '#/components/schemas/ResponseInputText'
                             - $ref: '#/components/schemas/ResponseInputImage'
                             - $ref: '#/components/schemas/ResponseInputFile'
+                            - $ref: '#/components/schemas/ResponseInputAudio'
                           discriminator:
                             propertyName: type
                             mapping:
                               input_text: '#/components/schemas/ResponseInputText'
                               input_image: '#/components/schemas/ResponseInputImage'
                               input_file: '#/components/schemas/ResponseInputFile'
+                              input_audio: '#/components/schemas/ResponseInputAudio'
                       - type: string
                 required:
                   - role
@@ -701,12 +732,14 @@ components:
                         - $ref: '#/components/schemas/ResponseInputText'
                         - $ref: '#/components/schemas/ResponseInputImage'
                         - $ref: '#/components/schemas/ResponseInputFile'
+                        - $ref: '#/components/schemas/ResponseInputAudio'
                       discriminator:
                         propertyName: type
                         mapping:
                           input_text: '#/components/schemas/ResponseInputText'
                           input_image: '#/components/schemas/ResponseInputImage'
                           input_file: '#/components/schemas/ResponseInputFile'
+                          input_audio: '#/components/schemas/ResponseInputAudio'
                 required:
                   - id
                   - role
@@ -997,16 +1030,11 @@ components:
           type: object
           nullable: true
           additionalProperties:
-            oneOf:
+            anyOf:
+              - type: string
               - $ref: '#/components/schemas/ResponseInputText'
               - $ref: '#/components/schemas/ResponseInputImage'
               - $ref: '#/components/schemas/ResponseInputFile'
-            discriminator:
-              propertyName: type
-              mapping:
-                input_text: '#/components/schemas/ResponseInputText'
-                input_image: '#/components/schemas/ResponseInputImage'
-                input_file: '#/components/schemas/ResponseInputFile'
       required:
         - id
     OpenAIResponsesReasoningEffort:
@@ -3260,12 +3288,14 @@ components:
                   - $ref: '#/components/schemas/ResponseInputText'
                   - $ref: '#/components/schemas/ResponseInputImage'
                   - $ref: '#/components/schemas/ResponseInputFile'
+                  - $ref: '#/components/schemas/ResponseInputAudio'
                 discriminator:
                   propertyName: type
                   mapping:
                     input_text: '#/components/schemas/ResponseInputText'
                     input_image: '#/components/schemas/ResponseInputImage'
                     input_file: '#/components/schemas/ResponseInputFile'
+                    input_audio: '#/components/schemas/ResponseInputAudio'
             - type: string
       required:
         - role
@@ -3297,12 +3327,14 @@ components:
               - $ref: '#/components/schemas/ResponseInputText'
               - $ref: '#/components/schemas/ResponseInputImage'
               - $ref: '#/components/schemas/ResponseInputFile'
+              - $ref: '#/components/schemas/ResponseInputAudio'
             discriminator:
               propertyName: type
               mapping:
                 input_text: '#/components/schemas/ResponseInputText'
                 input_image: '#/components/schemas/ResponseInputImage'
                 input_file: '#/components/schemas/ResponseInputFile'
+                input_audio: '#/components/schemas/ResponseInputAudio'
       required:
         - role
         - content
@@ -4584,6 +4616,10 @@ components:
             uptime_last_30m: 99.5
             supports_implicit_caching: true
     __schema0:
+      anyOf:
+        - $ref: '#/components/schemas/ChatCompletionFinishReason'
+        - type: 'null'
+    ModelName:
       type: string
     ChatMessageContentItemText:
       type: object
@@ -4767,6 +4803,14 @@ components:
         - completion_tokens
         - prompt_tokens
         - total_tokens
+    ChatCompletionFinishReason:
+      type: string
+      enum:
+        - tool_calls
+        - stop
+        - length
+        - content_filter
+        - error
     JSONSchemaConfig:
       type: object
       properties:
@@ -4980,11 +5024,11 @@ components:
           items:
             $ref: '#/components/schemas/Message'
         model:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ModelName'
         models:
           type: array
           items:
-            $ref: '#/components/schemas/__schema0'
+            $ref: '#/components/schemas/ModelName'
         frequency_penalty:
           anyOf:
             - type: number
@@ -5214,12 +5258,12 @@ components:
                 - type: string
                 - type: 'null'
             type:
-              type: string
+              anyOf:
+                - type: string
+                - type: 'null'
           required:
             - code
             - message
-            - param
-            - type
           additionalProperties: false
       required:
         - error
@@ -5354,11 +5398,11 @@ components:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ModelName'
         models:
           type: array
           items:
-            $ref: '#/components/schemas/__schema0'
+            $ref: '#/components/schemas/ModelName'
         prompt:
           anyOf:
             - type: string
@@ -5896,6 +5940,278 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+  /embeddings:
+    post:
+      x-speakeasy-name-override: generate
+      tags:
+        - Embeddings
+      summary: Submit an embedding request
+      description: Submits an embedding request to the embeddings router
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  anyOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                    - type: array
+                      items:
+                        type: number
+                    - type: array
+                      items:
+                        type: array
+                        items:
+                          type: number
+                model:
+                  type: string
+                provider:
+                  type: object
+                  properties:
+                    allow_fallbacks:
+                      type: boolean
+                      nullable: true
+                      description: >
+                        Whether to allow backup providers to serve requests
+
+                        - true: (default) when the primary provider (or your custom providers in "order") is
+                        unavailable, use the next best provider.
+
+                        - false: use only the primary/custom provider, and return the upstream error if it's
+                        unavailable.
+                    require_parameters:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to filter providers to only those that support the parameters you've provided. If this
+                        setting is omitted or set to false, then providers will receive only the parameters they
+                        support, and ignore the rest.
+                    data_collection:
+                      type: string
+                      nullable: true
+                      enum:
+                        - deny
+                        - allow
+                      example: deny
+                      description: >
+                        Data collection setting. If no available model provider meets the requirement, your request will
+                        return an error.
+
+                        - allow: (default) allow providers which store user data non-transiently and may train on it
+
+                        - deny: use only providers which do not collect user data.
+                    zdr:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only
+                        endpoints that do not retain prompts will be used.
+                      example: true
+                    order:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
+                      description: >-
+                        An ordered list of provider slugs. The router will attempt to use the first provider in the
+                        subset of this list that supports your requested model, and fall back to the next if it is
+                        unavailable. If no providers are available, the request will fail with an error message.
+                    only:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
+                      description: >-
+                        List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
+                        provider settings for this request.
+                    ignore:
+                      type: array
+                      nullable: true
+                      items:
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
+                      description: >-
+                        List of provider slugs to ignore. If provided, this list is merged with your account-wide
+                        ignored provider settings for this request.
+                    quantizations:
+                      type: array
+                      nullable: true
+                      items:
+                        $ref: '#/components/schemas/Quantization'
+                      description: A list of quantization levels to filter the provider by.
+                    sort:
+                      type: string
+                      nullable: true
+                      enum:
+                        - price
+                        - throughput
+                        - latency
+                      example: price
+                      description: >-
+                        The sorting strategy to use for this request, if "order" is not specified. When set, no load
+                        balancing is performed.
+                    max_price:
+                      type: object
+                      properties:
+                        prompt:
+                          $ref: '#/components/schemas/BigNumberUnion'
+                        completion:
+                          $ref: '#/components/schemas/BigNumberUnion'
+                        image:
+                          $ref: '#/components/schemas/BigNumberUnion'
+                        audio:
+                          $ref: '#/components/schemas/BigNumberUnion'
+                        request:
+                          $ref: '#/components/schemas/BigNumberUnion'
+                      additionalProperties: false
+                      description: >-
+                        The object specifying the maximum price you want to pay for this request. USD price per million
+                        tokens, for prompt and completion.
+                    experimental:
+                      type: object
+                      nullable: true
+                      properties: {}
+                encoding_format:
+                  anyOf:
+                    - type: string
+                      enum:
+                        - float
+                    - type: string
+                      enum:
+                        - base64
+                user:
+                  type: string
+              required:
+                - input
+                - model
+        required: true
+      responses:
+        '200':
+          description: Embedding response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  object:
+                    type: string
+                    enum:
+                      - list
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        object:
+                          type: string
+                          enum:
+                            - embedding
+                        embedding:
+                          anyOf:
+                            - type: array
+                              items:
+                                type: number
+                            - type: string
+                        index:
+                          type: number
+                      required:
+                        - object
+                        - embedding
+                  model:
+                    type: string
+                  usage:
+                    type: object
+                    properties:
+                      prompt_tokens:
+                        type: number
+                      total_tokens:
+                        type: number
+                      cost:
+                        type: number
+                    required:
+                      - prompt_tokens
+                      - total_tokens
+                required:
+                  - object
+                  - data
+                  - model
+            text/event-stream:
+              schema:
+                type: string
+                description: Not used for embeddings - embeddings do not support streaming
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
+          description: Bad Request - Invalid request parameters or malformed input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '402':
+          description: Payment Required - Insufficient credits or quota to complete request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+        '404':
+          description: Not Found - Resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+        '502':
+          description: Bad Gateway - Provider/upstream API failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+        '503':
+          description: Service Unavailable - Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+        '524':
+          description: Cloudflare Timeout - Provider request timed out at CDN edge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+        '529':
+          description: Provider Overloaded - Provider is temporarily overloaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
+      operationId: createEmbeddings
   /generation:
     get:
       tags:
@@ -6035,6 +6351,11 @@ paths:
                         nullable: true
                         description: Number of audio inputs in the prompt
                         example: 0
+                      num_video_prompt:
+                        type: number
+                        nullable: true
+                        description: Number of video inputs in the prompt
+                        example: 0
                       num_media_completion:
                         type: number
                         nullable: true
@@ -6099,6 +6420,7 @@ paths:
                       - native_tokens_cached
                       - num_media_prompt
                       - num_input_audio_prompt
+                      - num_video_prompt
                       - num_media_completion
                       - num_search_results
                       - origin
@@ -7936,6 +8258,8 @@ tags:
     description: Text completion endpoints
   - name: Credits
     description: Credit management endpoints
+  - name: Embeddings
+    description: Text embedding endpoints
   - name: Endpoints
     description: Endpoint information
   - name: Generations

@@ -1,0 +1,15 @@
+# EncodingFormatFloat
+
+## Example Usage
+
+```typescript
+import { EncodingFormatFloat } from "@openrouter/sdk/models/operations";
+
+let value: EncodingFormatFloat = "float";
+```
+
+## Values
+
+```typescript
+"float"
+```

@@ -109,6 +109,7 @@ export * from "./requesttimeoutresponseerrordata.js";
 export * from "./responseformatjsonschema.js";
 export * from "./responseformattextconfig.js";
 export * from "./responseformattextgrammar.js";
+export * from "./responseinputaudio.js";
 export * from "./responseinputfile.js";
 export * from "./responseinputimage.js";
 export * from "./responseinputtext.js";

@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "OpenRouter",
   "type": "module",
   "main": "./esm/index.js",

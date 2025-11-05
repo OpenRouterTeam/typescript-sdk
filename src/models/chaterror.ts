@@ -12,8 +12,8 @@ export type Code = string | number;
 export type ChatErrorError = {
   code: string | number | null;
   message: string;
-  param: string | null;
-  type: string;
+  param?: string | null | undefined;
+  type?: string | null | undefined;
 };
 
 /** @internal */
@@ -63,16 +63,16 @@ export const ChatErrorError$inboundSchema: z.ZodType<ChatErrorError, unknown> =
   z.object({
     code: z.nullable(z.union([z.string(), z.number()])),
     message: z.string(),
-    param: z.nullable(z.string()),
-    type: z.string(),
+    param: z.nullable(z.string()).optional(),
+    type: z.nullable(z.string()).optional(),
   });
 
 /** @internal */
 export type ChatErrorError$Outbound = {
   code: string | number | null;
   message: string;
-  param: string | null;
-  type: string;
+  param?: string | null | undefined;
+  type?: string | null | undefined;
 };
 
 /** @internal */
@@ -82,8 +82,8 @@ export const ChatErrorError$outboundSchema: z.ZodType<
 > = z.object({
   code: z.nullable(z.union([z.string(), z.number()])),
   message: z.string(),
-  param: z.nullable(z.string()),
-  type: z.string(),
+  param: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
 });
 
 /**

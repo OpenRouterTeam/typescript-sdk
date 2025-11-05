@@ -21,6 +21,12 @@ import {
   OutputMessage$outboundSchema,
 } from "./outputmessage.js";
 import {
+  ResponseInputAudio,
+  ResponseInputAudio$inboundSchema,
+  ResponseInputAudio$Outbound,
+  ResponseInputAudio$outboundSchema,
+} from "./responseinputaudio.js";
+import {
   ResponseInputFile,
   ResponseInputFile$inboundSchema,
   ResponseInputFile$Outbound,
@@ -111,6 +117,7 @@ export type OpenAIResponsesInputRoleUnion2 =
 export type OpenAIResponsesInputContent3 =
   | (ResponseInputText & { type: "input_text" })
   | (ResponseInputImage & { type: "input_image" })
+  | (ResponseInputAudio & { type: "input_audio" })
   | (ResponseInputFile & { type: "input_file" });
 
 export type OpenAIResponsesInputMessage2 = {
@@ -123,6 +130,7 @@ export type OpenAIResponsesInputMessage2 = {
   content: Array<
     | (ResponseInputText & { type: "input_text" })
     | (ResponseInputImage & { type: "input_image" })
+    | (ResponseInputAudio & { type: "input_audio" })
     | (ResponseInputFile & { type: "input_file" })
   >;
 };
@@ -171,12 +179,14 @@ export type OpenAIResponsesInputRoleUnion1 =
 export type OpenAIResponsesInputContent1 =
   | (ResponseInputText & { type: "input_text" })
   | (ResponseInputImage & { type: "input_image" })
+  | (ResponseInputAudio & { type: "input_audio" })
   | (ResponseInputFile & { type: "input_file" });
 
 export type OpenAIResponsesInputContent2 =
   | Array<
     | (ResponseInputText & { type: "input_text" })
     | (ResponseInputImage & { type: "input_image" })
+    | (ResponseInputAudio & { type: "input_audio" })
     | (ResponseInputFile & { type: "input_file" })
   >
   | string;
@@ -192,6 +202,7 @@ export type OpenAIResponsesInputMessage1 = {
     | Array<
       | (ResponseInputText & { type: "input_text" })
       | (ResponseInputImage & { type: "input_image" })
+      | (ResponseInputAudio & { type: "input_audio" })
       | (ResponseInputFile & { type: "input_file" })
     >
     | string;
@@ -575,6 +586,11 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
       type: v.type,
     })),
   ),
+  ResponseInputAudio$inboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
   ResponseInputFile$inboundSchema.and(
     z.object({ type: z.literal("input_file") }).transform((v) => ({
       type: v.type,
@@ -586,6 +602,7 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
 export type OpenAIResponsesInputContent3$Outbound =
   | (ResponseInputText$Outbound & { type: "input_text" })
   | (ResponseInputImage$Outbound & { type: "input_image" })
+  | (ResponseInputAudio$Outbound & { type: "input_audio" })
   | (ResponseInputFile$Outbound & { type: "input_file" });
 
 /** @internal */
@@ -600,6 +617,11 @@ export const OpenAIResponsesInputContent3$outboundSchema: z.ZodType<
   ),
   ResponseInputImage$outboundSchema.and(
     z.object({ type: z.literal("input_image") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputAudio$outboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
       type: v.type,
     })),
   ),
@@ -667,6 +689,11 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
           type: v.type,
         })),
       ),
+      ResponseInputAudio$inboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
       ResponseInputFile$inboundSchema.and(
         z.object({ type: z.literal("input_file") }).transform((v) => ({
           type: v.type,
@@ -684,6 +711,7 @@ export type OpenAIResponsesInputMessage2$Outbound = {
   content: Array<
     | (ResponseInputText$Outbound & { type: "input_text" })
     | (ResponseInputImage$Outbound & { type: "input_image" })
+    | (ResponseInputAudio$Outbound & { type: "input_audio" })
     | (ResponseInputFile$Outbound & { type: "input_file" })
   >;
 };
@@ -709,6 +737,11 @@ export const OpenAIResponsesInputMessage2$outboundSchema: z.ZodType<
       ),
       ResponseInputImage$outboundSchema.and(
         z.object({ type: z.literal("input_image") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputAudio$outboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
           type: v.type,
         })),
       ),
@@ -938,6 +971,11 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
       type: v.type,
     })),
   ),
+  ResponseInputAudio$inboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
   ResponseInputFile$inboundSchema.and(
     z.object({ type: z.literal("input_file") }).transform((v) => ({
       type: v.type,
@@ -949,6 +987,7 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
 export type OpenAIResponsesInputContent1$Outbound =
   | (ResponseInputText$Outbound & { type: "input_text" })
   | (ResponseInputImage$Outbound & { type: "input_image" })
+  | (ResponseInputAudio$Outbound & { type: "input_audio" })
   | (ResponseInputFile$Outbound & { type: "input_file" });
 
 /** @internal */
@@ -963,6 +1002,11 @@ export const OpenAIResponsesInputContent1$outboundSchema: z.ZodType<
   ),
   ResponseInputImage$outboundSchema.and(
     z.object({ type: z.literal("input_image") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
+  ResponseInputAudio$outboundSchema.and(
+    z.object({ type: z.literal("input_audio") }).transform((v) => ({
       type: v.type,
     })),
   ),
@@ -1023,6 +1067,11 @@ export const OpenAIResponsesInputContent2$inboundSchema: z.ZodType<
           type: v.type,
         })),
       ),
+      ResponseInputAudio$inboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
       ResponseInputFile$inboundSchema.and(
         z.object({ type: z.literal("input_file") }).transform((v) => ({
           type: v.type,
@@ -1038,6 +1087,7 @@ export type OpenAIResponsesInputContent2$Outbound =
   | Array<
     | (ResponseInputText$Outbound & { type: "input_text" })
     | (ResponseInputImage$Outbound & { type: "input_image" })
+    | (ResponseInputAudio$Outbound & { type: "input_audio" })
     | (ResponseInputFile$Outbound & { type: "input_file" })
   >
   | string;
@@ -1056,6 +1106,11 @@ export const OpenAIResponsesInputContent2$outboundSchema: z.ZodType<
       ),
       ResponseInputImage$outboundSchema.and(
         z.object({ type: z.literal("input_image") }).transform((v) => ({
+          type: v.type,
+        })),
+      ),
+      ResponseInputAudio$outboundSchema.and(
+        z.object({ type: z.literal("input_audio") }).transform((v) => ({
           type: v.type,
         })),
       ),
@@ -1127,6 +1182,11 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
             type: v.type,
           })),
         ),
+        ResponseInputAudio$inboundSchema.and(
+          z.object({ type: z.literal("input_audio") }).transform((v) => ({
+            type: v.type,
+          })),
+        ),
         ResponseInputFile$inboundSchema.and(
           z.object({ type: z.literal("input_file") }).transform((v) => ({
             type: v.type,
@@ -1146,6 +1206,7 @@ export type OpenAIResponsesInputMessage1$Outbound = {
     | Array<
       | (ResponseInputText$Outbound & { type: "input_text" })
       | (ResponseInputImage$Outbound & { type: "input_image" })
+      | (ResponseInputAudio$Outbound & { type: "input_audio" })
       | (ResponseInputFile$Outbound & { type: "input_file" })
     >
     | string;
@@ -1173,6 +1234,11 @@ export const OpenAIResponsesInputMessage1$outboundSchema: z.ZodType<
         ),
         ResponseInputImage$outboundSchema.and(
           z.object({ type: z.literal("input_image") }).transform((v) => ({
+            type: v.type,
+          })),
+        ),
+        ResponseInputAudio$outboundSchema.and(
+          z.object({ type: z.literal("input_audio") }).transform((v) => ({
             type: v.type,
           })),
         ),

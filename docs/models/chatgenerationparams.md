@@ -12,7 +12,6 @@ let value: ChatGenerationParams = {
       content: "<value>",
     },
   ],
-  model: "Mustang",
 };
 ```
 
@@ -21,7 +20,8 @@ let value: ChatGenerationParams = {
 | Field                                                      | Type                                                       | Required                                                   | Description                                                |
 | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
 | `messages`                                                 | *models.Message*[]                                         | :heavy_check_mark:                                         | N/A                                                        |
-| `model`                                                    | *string*                                                   | :heavy_check_mark:                                         | N/A                                                        |
+| `model`                                                    | *string*                                                   | :heavy_minus_sign:                                         | N/A                                                        |
+| `models`                                                   | *string*[]                                                 | :heavy_minus_sign:                                         | N/A                                                        |
 | `frequencyPenalty`                                         | *number*                                                   | :heavy_minus_sign:                                         | N/A                                                        |
 | `logitBias`                                                | Record<string, *number*>                                   | :heavy_minus_sign:                                         | N/A                                                        |
 | `logprobs`                                                 | *boolean*                                                  | :heavy_minus_sign:                                         | N/A                                                        |
