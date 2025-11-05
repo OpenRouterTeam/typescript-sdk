@@ -1,4 +1,4 @@
-import { z, ZodType, ZodObject, ZodRawShape } from "zod";
+import { z, type ZodType, type ZodObject, type ZodRawShape } from "zod/v4";
 import * as models from "../models/index.js";
 
 /**

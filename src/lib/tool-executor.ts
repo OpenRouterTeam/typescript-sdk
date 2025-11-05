@@ -16,7 +16,7 @@ import {
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, any> {
   const jsonSchema = toJSONSchema(zodSchema as any, {
     target: "openapi-3.0",
-  });
+  } as any);
   return jsonSchema as Record<string, any>;
 }
 
