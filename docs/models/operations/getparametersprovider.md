@@ -1,11 +1,11 @@
-# Provider
+# GetParametersProvider
 
 ## Example Usage
 
 ```typescript
-import { Provider } from "@openrouter/sdk/models/operations";
+import { GetParametersProvider } from "@openrouter/sdk/models/operations";
 
-let value: Provider = "Cirrascale";
+let value: GetParametersProvider = "Hyperbolic";
 ```
 
 ## Values

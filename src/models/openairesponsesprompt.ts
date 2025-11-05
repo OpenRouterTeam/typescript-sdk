@@ -26,18 +26,20 @@ import {
 } from "./responseinputtext.js";
 
 export type Variables =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputFile & { type: "input_file" });
+  | ResponseInputText
+  | ResponseInputImage
+  | ResponseInputFile
+  | string;
 
 export type OpenAIResponsesPrompt = {
   id: string;
   variables?:
     | {
       [k: string]:
-        | (ResponseInputText & { type: "input_text" })
-        | (ResponseInputImage & { type: "input_image" })
-        | (ResponseInputFile & { type: "input_file" });
+        | ResponseInputText
+        | ResponseInputImage
+        | ResponseInputFile
+        | string;
     }
     | null
     | undefined;
@@ -45,49 +47,28 @@ export type OpenAIResponsesPrompt = {
 
 /** @internal */
 export const Variables$inboundSchema: z.ZodType<Variables, unknown> = z.union([
-  ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
+  ResponseInputText$inboundSchema,
+  ResponseInputImage$inboundSchema,
+  ResponseInputFile$inboundSchema,
+  z.string(),
 ]);
 
 /** @internal */
 export type Variables$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
+  | ResponseInputText$Outbound
+  | ResponseInputImage$Outbound
+  | ResponseInputFile$Outbound
+  | string;
 
 /** @internal */
 export const Variables$outboundSchema: z.ZodType<
   Variables$Outbound,
   Variables
 > = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
+  ResponseInputText$outboundSchema,
+  ResponseInputImage$outboundSchema,
+  ResponseInputFile$outboundSchema,
+  z.string(),
 ]);
 
 /**
@@ -127,21 +108,10 @@ export const OpenAIResponsesPrompt$inboundSchema: z.ZodType<
     z.record(
       z.string(),
       z.union([
-        ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
+        ResponseInputText$inboundSchema,
+        ResponseInputImage$inboundSchema,
+        ResponseInputFile$inboundSchema,
+        z.string(),
       ]),
     ),
   ).optional(),
@@ -153,9 +123,10 @@ export type OpenAIResponsesPrompt$Outbound = {
   variables?:
     | {
       [k: string]:
-        | (ResponseInputText$Outbound & { type: "input_text" })
-        | (ResponseInputImage$Outbound & { type: "input_image" })
-        | (ResponseInputFile$Outbound & { type: "input_file" });
+        | ResponseInputText$Outbound
+        | ResponseInputImage$Outbound
+        | ResponseInputFile$Outbound
+        | string;
     }
     | null
     | undefined;
@@ -171,21 +142,10 @@ export const OpenAIResponsesPrompt$outboundSchema: z.ZodType<
     z.record(
       z.string(),
       z.union([
-        ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
+        ResponseInputText$outboundSchema,
+        ResponseInputImage$outboundSchema,
+        ResponseInputFile$outboundSchema,
+        z.string(),
       ]),
     ),
   ).optional(),

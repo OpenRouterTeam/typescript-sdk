@@ -84,7 +84,8 @@ export type ChatGenerationParamsStop = string | Array<string>;
 
 export type ChatGenerationParams = {
   messages: Array<Message>;
-  model: string;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
   frequencyPenalty?: number | null | undefined;
   logitBias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
@@ -493,7 +494,8 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   messages: z.array(Message$inboundSchema),
-  model: z.string(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
   frequency_penalty: z.nullable(z.number()).optional(),
   logit_bias: z.nullable(z.record(z.string(), z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
@@ -537,7 +539,8 @@ export const ChatGenerationParams$inboundSchema: z.ZodType<
 /** @internal */
 export type ChatGenerationParams$Outbound = {
   messages: Array<Message$Outbound>;
-  model: string;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
   frequency_penalty?: number | null | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
@@ -571,7 +574,8 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   ChatGenerationParams
 > = z.object({
   messages: z.array(Message$outboundSchema),
-  model: z.string(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),

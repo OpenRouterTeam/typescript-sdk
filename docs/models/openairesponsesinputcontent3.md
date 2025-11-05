@@ -29,3 +29,15 @@ const value: models.ResponseInputFile = {
 };
 ```
 
+### `models.ResponseInputAudio`
+
+```typescript
+const value: models.ResponseInputAudio = {
+  type: "input_audio",
+  inputAudio: {
+    data: "SGVsbG8gV29ybGQ=",
+    format: "mp3",
+  },
+};
+```
+

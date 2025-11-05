@@ -4,6 +4,7 @@
 
 export * from "./createauthkeyscode.js";
 export * from "./createcoinbasecharge.js";
+export * from "./createembeddings.js";
 export * from "./createkeys.js";
 export * from "./createresponses.js";
 export * from "./deletekeys.js";

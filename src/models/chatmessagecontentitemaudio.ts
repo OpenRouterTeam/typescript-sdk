@@ -26,14 +26,14 @@ export type ChatMessageContentItemAudioFormat = OpenEnum<
   typeof ChatMessageContentItemAudioFormat
 >;
 
-export type InputAudio = {
+export type ChatMessageContentItemAudioInputAudio = {
   data: string;
   format: ChatMessageContentItemAudioFormat;
 };
 
 export type ChatMessageContentItemAudio = {
   type: "input_audio";
-  inputAudio: InputAudio;
+  inputAudio: ChatMessageContentItemAudioInputAudio;
 };
 
 /** @internal */
@@ -68,22 +68,24 @@ export namespace ChatMessageContentItemAudioFormat$ {
 }
 
 /** @internal */
-export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
-  .object({
-    data: z.string(),
-    format: ChatMessageContentItemAudioFormat$inboundSchema,
-  });
+export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<
+  ChatMessageContentItemAudioInputAudio,
+  unknown
+> = z.object({
+  data: z.string(),
+  format: ChatMessageContentItemAudioFormat$inboundSchema,
+});
 
 /** @internal */
-export type InputAudio$Outbound = {
+export type ChatMessageContentItemAudioInputAudio$Outbound = {
   data: string;
   format: string;
 };
 
 /** @internal */
-export const InputAudio$outboundSchema: z.ZodType<
-  InputAudio$Outbound,
-  InputAudio
+export const ChatMessageContentItemAudioInputAudio$outboundSchema: z.ZodType<
+  ChatMessageContentItemAudioInputAudio$Outbound,
+  ChatMessageContentItemAudioInputAudio
 > = z.object({
   data: z.string(),
   format: ChatMessageContentItemAudioFormat$outboundSchema,
@@ -93,26 +95,35 @@ export const InputAudio$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace InputAudio$ {
-  /** @deprecated use `InputAudio$inboundSchema` instead. */
-  export const inboundSchema = InputAudio$inboundSchema;
-  /** @deprecated use `InputAudio$outboundSchema` instead. */
-  export const outboundSchema = InputAudio$outboundSchema;
-  /** @deprecated use `InputAudio$Outbound` instead. */
-  export type Outbound = InputAudio$Outbound;
+export namespace ChatMessageContentItemAudioInputAudio$ {
+  /** @deprecated use `ChatMessageContentItemAudioInputAudio$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatMessageContentItemAudioInputAudio$inboundSchema;
+  /** @deprecated use `ChatMessageContentItemAudioInputAudio$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatMessageContentItemAudioInputAudio$outboundSchema;
+  /** @deprecated use `ChatMessageContentItemAudioInputAudio$Outbound` instead. */
+  export type Outbound = ChatMessageContentItemAudioInputAudio$Outbound;
 }
 
-export function inputAudioToJSON(inputAudio: InputAudio): string {
-  return JSON.stringify(InputAudio$outboundSchema.parse(inputAudio));
+export function chatMessageContentItemAudioInputAudioToJSON(
+  chatMessageContentItemAudioInputAudio: ChatMessageContentItemAudioInputAudio,
+): string {
+  return JSON.stringify(
+    ChatMessageContentItemAudioInputAudio$outboundSchema.parse(
+      chatMessageContentItemAudioInputAudio,
+    ),
+  );
 }
 
-export function inputAudioFromJSON(
+export function chatMessageContentItemAudioInputAudioFromJSON(
   jsonString: string,
-): SafeParseResult<InputAudio, SDKValidationError> {
+): SafeParseResult<ChatMessageContentItemAudioInputAudio, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => InputAudio$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'InputAudio' from JSON`,
+    (x) =>
+      ChatMessageContentItemAudioInputAudio$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatMessageContentItemAudioInputAudio' from JSON`,
   );
 }
 
@@ -122,7 +133,9 @@ export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("input_audio"),
-  input_audio: z.lazy(() => InputAudio$inboundSchema),
+  input_audio: z.lazy(() =>
+    ChatMessageContentItemAudioInputAudio$inboundSchema
+  ),
 }).transform((v) => {
   return remap$(v, {
     "input_audio": "inputAudio",
@@ -132,7 +145,7 @@ export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
 /** @internal */
 export type ChatMessageContentItemAudio$Outbound = {
   type: "input_audio";
-  input_audio: InputAudio$Outbound;
+  input_audio: ChatMessageContentItemAudioInputAudio$Outbound;
 };
 
 /** @internal */
@@ -141,7 +154,9 @@ export const ChatMessageContentItemAudio$outboundSchema: z.ZodType<
   ChatMessageContentItemAudio
 > = z.object({
   type: z.literal("input_audio"),
-  inputAudio: z.lazy(() => InputAudio$outboundSchema),
+  inputAudio: z.lazy(() =>
+    ChatMessageContentItemAudioInputAudio$outboundSchema
+  ),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",

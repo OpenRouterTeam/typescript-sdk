@@ -87,7 +87,7 @@ export function setParametersGetParametersData(
   queryKeyBase: [
     author: string,
     slug: string,
-    parameters: { provider?: operations.Provider | undefined },
+    parameters: { provider?: operations.GetParametersProvider | undefined },
   ],
   data: ParametersGetParametersQueryData,
 ): ParametersGetParametersQueryData | undefined {
@@ -102,7 +102,7 @@ export function invalidateParametersGetParameters(
     [
       author: string,
       slug: string,
-      parameters: { provider?: operations.Provider | undefined },
+      parameters: { provider?: operations.GetParametersProvider | undefined },
     ]
   >,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
@@ -165,7 +165,7 @@ export function buildParametersGetParametersQuery(
 export function queryKeyParametersGetParameters(
   author: string,
   slug: string,
-  parameters: { provider?: operations.Provider | undefined },
+  parameters: { provider?: operations.GetParametersProvider | undefined },
 ): QueryKey {
   return [
     "@openrouter/sdk",

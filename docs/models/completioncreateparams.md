@@ -6,8 +6,7 @@
 import { CompletionCreateParams } from "@openrouter/sdk/models";
 
 let value: CompletionCreateParams = {
-  model: "Model Y",
-  prompt: "<value>",
+  prompt: [],
 };
 ```
 
@@ -15,7 +14,8 @@ let value: CompletionCreateParams = {
 
 | Field                                              | Type                                               | Required                                           | Description                                        |
 | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `model`                                            | *string*                                           | :heavy_check_mark:                                 | N/A                                                |
+| `model`                                            | *string*                                           | :heavy_minus_sign:                                 | N/A                                                |
+| `models`                                           | *string*[]                                         | :heavy_minus_sign:                                 | N/A                                                |
 | `prompt`                                           | *models.Prompt*                                    | :heavy_check_mark:                                 | N/A                                                |
 | `bestOf`                                           | *number*                                           | :heavy_minus_sign:                                 | N/A                                                |
 | `echo`                                             | *boolean*                                          | :heavy_minus_sign:                                 | N/A                                                |

@@ -17,6 +17,7 @@ export * from "./chatSend.js";
 export * from "./completionsGenerate.js";
 export * from "./creditsCreateCoinbaseCharge.js";
 export * from "./creditsGetCredits.js";
+export * from "./embeddingsGenerate.js";
 export * from "./endpointsList.js";
 export * from "./endpointsListZdrEndpoints.js";
 export * from "./generationsGetGeneration.js";

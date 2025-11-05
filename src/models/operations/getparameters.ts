@@ -17,7 +17,7 @@ export type GetParametersSecurity = {
   bearer: string;
 };
 
-export const Provider = {
+export const GetParametersProvider = {
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",
@@ -87,12 +87,12 @@ export const Provider = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type Provider = OpenEnum<typeof Provider>;
+export type GetParametersProvider = OpenEnum<typeof GetParametersProvider>;
 
 export type GetParametersRequest = {
   author: string;
   slug: string;
-  provider?: Provider | undefined;
+  provider?: GetParametersProvider | undefined;
 };
 
 export const SupportedParameter = {
@@ -199,15 +199,21 @@ export function getParametersSecurityFromJSON(
 }
 
 /** @internal */
-export const Provider$inboundSchema: z.ZodType<Provider, unknown> = z
+export const GetParametersProvider$inboundSchema: z.ZodType<
+  GetParametersProvider,
+  unknown
+> = z
   .union([
-    z.enum(Provider),
+    z.enum(GetParametersProvider),
     z.string().transform(catchUnrecognizedEnum),
   ]);
 
 /** @internal */
-export const Provider$outboundSchema: z.ZodType<Provider, Provider> = z.union([
-  z.enum(Provider),
+export const GetParametersProvider$outboundSchema: z.ZodType<
+  GetParametersProvider,
+  GetParametersProvider
+> = z.union([
+  z.enum(GetParametersProvider),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
@@ -215,11 +221,11 @@ export const Provider$outboundSchema: z.ZodType<Provider, Provider> = z.union([
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace Provider$ {
-  /** @deprecated use `Provider$inboundSchema` instead. */
-  export const inboundSchema = Provider$inboundSchema;
-  /** @deprecated use `Provider$outboundSchema` instead. */
-  export const outboundSchema = Provider$outboundSchema;
+export namespace GetParametersProvider$ {
+  /** @deprecated use `GetParametersProvider$inboundSchema` instead. */
+  export const inboundSchema = GetParametersProvider$inboundSchema;
+  /** @deprecated use `GetParametersProvider$outboundSchema` instead. */
+  export const outboundSchema = GetParametersProvider$outboundSchema;
 }
 
 /** @internal */
@@ -229,7 +235,7 @@ export const GetParametersRequest$inboundSchema: z.ZodType<
 > = z.object({
   author: z.string(),
   slug: z.string(),
-  provider: Provider$inboundSchema.optional(),
+  provider: GetParametersProvider$inboundSchema.optional(),
 });
 
 /** @internal */
@@ -246,7 +252,7 @@ export const GetParametersRequest$outboundSchema: z.ZodType<
 > = z.object({
   author: z.string(),
   slug: z.string(),
-  provider: Provider$outboundSchema.optional(),
+  provider: GetParametersProvider$outboundSchema.optional(),
 });
 
 /**
