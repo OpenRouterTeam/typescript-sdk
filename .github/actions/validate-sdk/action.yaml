@@ -32,11 +32,10 @@ runs:
       working-directory: examples
       run: npm install
 
-    # NOTE: Skipping examples typecheck due to pre-existing type errors in Speakeasy-generated code
-    # - name: Typecheck examples root
-    #   shell: bash
-    #   working-directory: examples
-    #   run: npx tsc --noEmit
+    - name: Typecheck examples root
+      shell: bash
+      working-directory: examples
+      run: npx tsc --noEmit
 
     - name: Install nextjs-example dependencies
       shell: bash
