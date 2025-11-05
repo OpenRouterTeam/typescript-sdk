@@ -10,5 +10,18 @@ export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export { ResponseWrapper } from "./lib/response-wrapper.js";
 export type { GetResponseOptions } from "./lib/response-wrapper.js";
 export { ReusableReadableStream } from "./lib/reusable-stream.js";
+export type {
+  EnhancedTool,
+  ToolWithExecute,
+  ToolWithGenerator,
+  ManualTool,
+  ParsedToolCall,
+  ToolExecutionResult,
+  MaxToolRounds,
+  TurnContext,
+  EnhancedResponseStreamEvent,
+  ToolStreamEvent,
+  ChatStreamEvent,
+} from "./lib/tool-types.js";
 // #endregion
 export * from "./sdk/sdk.js";

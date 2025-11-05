@@ -1,5 +1,6 @@
 import * as models from "../models/index.js";
 import { ReusableReadableStream } from "./reusable-stream.js";
+import { ParsedToolCall } from "./tool-types.js";
 
 /**
  * Extract text deltas from responses stream events
@@ -198,4 +199,168 @@ export function extractTextFromResponse(
   }
 
   return "";
+}
+
+/**
+ * Extract all tool calls from a completed response
+ * Returns parsed tool calls with arguments as objects (not JSON strings)
+ */
+export function extractToolCallsFromResponse(
+  response: models.OpenResponsesNonStreamingResponse,
+): ParsedToolCall[] {
+  const toolCalls: ParsedToolCall[] = [];
+
+  for (const item of response.output) {
+    if ("type" in item && item.type === "function_call") {
+      const functionCallItem = item as models.ResponsesOutputItemFunctionCall;
+
+      try {
+        const parsedArguments = JSON.parse(functionCallItem.arguments);
+
+        toolCalls.push({
+          id: functionCallItem.callId,
+          name: functionCallItem.name,
+          arguments: parsedArguments,
+        });
+      } catch (error) {
+        console.error(
+          `Failed to parse tool call arguments for ${functionCallItem.name}:`,
+          error
+        );
+        // Include the tool call with unparsed arguments
+        toolCalls.push({
+          id: functionCallItem.callId,
+          name: functionCallItem.name,
+          arguments: functionCallItem.arguments, // Keep as string if parsing fails
+        });
+      }
+    }
+  }
+
+  return toolCalls;
+}
+
+/**
+ * Build incremental tool call updates from responses stream events
+ * Yields structured tool call objects as they're built from deltas
+ */
+export async function* buildToolCallStream(
+  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+): AsyncIterableIterator<ParsedToolCall> {
+  const consumer = stream.createConsumer();
+
+  // Track tool calls being built
+  const toolCallsInProgress = new Map<
+    string,
+    {
+      id: string;
+      name: string;
+      argumentsAccumulated: string;
+    }
+  >();
+
+  for await (const event of consumer) {
+    if (!("type" in event)) continue;
+
+    switch (event.type) {
+      case "response.output_item.added": {
+        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
+        if (
+          itemEvent.item &&
+          "type" in itemEvent.item &&
+          itemEvent.item.type === "function_call"
+        ) {
+          const functionCallItem = itemEvent.item as models.ResponsesOutputItemFunctionCall;
+          toolCallsInProgress.set(functionCallItem.callId, {
+            id: functionCallItem.callId,
+            name: functionCallItem.name,
+            argumentsAccumulated: "",
+          });
+        }
+        break;
+      }
+
+      case "response.function_call_arguments.delta": {
+        const deltaEvent =
+          event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
+        const toolCall = toolCallsInProgress.get(deltaEvent.itemId);
+        if (toolCall && deltaEvent.delta) {
+          toolCall.argumentsAccumulated += deltaEvent.delta;
+        }
+        break;
+      }
+
+      case "response.function_call_arguments.done": {
+        const doneEvent =
+          event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone;
+        const toolCall = toolCallsInProgress.get(doneEvent.itemId);
+
+        if (toolCall) {
+          // Parse complete arguments
+          try {
+            const parsedArguments = JSON.parse(doneEvent.arguments);
+            yield {
+              id: toolCall.id,
+              name: doneEvent.name,
+              arguments: parsedArguments,
+            };
+          } catch (error) {
+            // Yield with unparsed arguments if parsing fails
+            yield {
+              id: toolCall.id,
+              name: doneEvent.name,
+              arguments: doneEvent.arguments,
+            };
+          }
+
+          // Clean up
+          toolCallsInProgress.delete(doneEvent.itemId);
+        }
+        break;
+      }
+
+      case "response.output_item.done": {
+        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
+        if (
+          itemDoneEvent.item &&
+          "type" in itemDoneEvent.item &&
+          itemDoneEvent.item.type === "function_call"
+        ) {
+          const functionCallItem = itemDoneEvent.item as models.ResponsesOutputItemFunctionCall;
+
+          // Yield final tool call if we haven't already
+          if (toolCallsInProgress.has(functionCallItem.callId)) {
+            try {
+              const parsedArguments = JSON.parse(functionCallItem.arguments);
+              yield {
+                id: functionCallItem.callId,
+                name: functionCallItem.name,
+                arguments: parsedArguments,
+              };
+            } catch (error) {
+              yield {
+                id: functionCallItem.callId,
+                name: functionCallItem.name,
+                arguments: functionCallItem.arguments,
+              };
+            }
+
+            toolCallsInProgress.delete(functionCallItem.callId);
+          }
+        }
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Check if a response contains any tool calls
+ */
+export function responseHasToolCalls(
+  response: models.OpenResponsesNonStreamingResponse,
+): boolean {
+  return response.output.some(
+    (item) => "type" in item && item.type === "function_call"
+  );
 }
