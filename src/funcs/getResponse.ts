@@ -58,7 +58,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  *       }
  *     }
  *   }],
- *   maxToolRounds: 5, // or function: (round, calls, responses) => boolean
+ *   maxToolRounds: 5, // or function: (context: TurnContext) => boolean
  * });
  * const message = await response.getMessage(); // Tools auto-executed!
  *

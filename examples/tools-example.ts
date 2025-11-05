@@ -10,6 +10,13 @@
  *
  * The API is simple: just call getResponse() with tools, and await the result.
  * Tools are executed transparently before getMessage() or getText() returns!
+ *
+ * maxToolRounds can be:
+ * - A number: Maximum number of tool execution rounds (default: 5)
+ * - A function: (context: TurnContext) => boolean
+ *   - Return true to allow another turn
+ *   - Return false to stop execution
+ *   - Context includes: numberOfTurns, messageHistory, model/models
  */
 
 import { OpenRouter } from "../src/index.js";
@@ -60,6 +67,11 @@ async function basicToolExample() {
     model: "openai/gpt-4o",
     input: "What's the weather like in San Francisco?",
     tools: [weatherTool],
+    // Example: limit to 3 turns using a function
+    maxToolRounds: (context) => {
+      console.log(`Checking if we should continue (currently on turn ${context.numberOfTurns})`);
+      return context.numberOfTurns < 3; // Allow up to 3 turns
+    },
   });
 
   // Tools are automatically executed! Just get the final message
