@@ -4681,11 +4681,28 @@ components:
       required:
         - type
         - input_audio
+    ChatMessageContentItemVideo:
+      type: object
+      properties:
+        type:
+          type: string
+          const: input_video
+        video_url:
+          type: object
+          properties:
+            url:
+              type: string
+          required:
+            - url
+      required:
+        - type
+        - video_url
     ChatMessageContentItem:
       oneOf:
         - $ref: '#/components/schemas/ChatMessageContentItemText'
         - $ref: '#/components/schemas/ChatMessageContentItemImage'
         - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+        - $ref: '#/components/schemas/ChatMessageContentItemVideo'
       type: object
       discriminator:
         propertyName: type
@@ -4693,6 +4710,7 @@ components:
           text: '#/components/schemas/ChatMessageContentItemText'
           image_url: '#/components/schemas/ChatMessageContentItemImage'
           input_audio: '#/components/schemas/ChatMessageContentItemAudio'
+          input_video: '#/components/schemas/ChatMessageContentItemVideo'
     ChatMessageToolCall:
       type: object
       properties:
@@ -4957,7 +4975,7 @@ components:
         - $ref: '#/components/schemas/AssistantMessage'
         - $ref: '#/components/schemas/ToolResponseMessage'
       type: object
-    Tool:
+    ToolDefinitionJson:
       type: object
       properties:
         type:
@@ -5151,7 +5169,7 @@ components:
         tools:
           type: array
           items:
-            $ref: '#/components/schemas/Tool'
+            $ref: '#/components/schemas/ToolDefinitionJson'
         top_p:
           default: 1
           anyOf:
@@ -6351,11 +6369,6 @@ paths:
                         nullable: true
                         description: Number of audio inputs in the prompt
                         example: 0
-                      num_video_prompt:
-                        type: number
-                        nullable: true
-                        description: Number of video inputs in the prompt
-                        example: 0
                       num_media_completion:
                         type: number
                         nullable: true
@@ -6420,7 +6433,6 @@ paths:
                       - native_tokens_cached
                       - num_media_prompt
                       - num_input_audio_prompt
-                      - num_video_prompt
                       - num_media_completion
                       - num_search_results
                       - origin
@@ -6552,6 +6564,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: getModels
+  /models/embeddings:
+    get:
+      tags:
+        - Models
+      x-speakeasy-name-override: listEmbeddings
+      summary: List all embeddings models
+      description: Returns a list of all available embeddings models and their properties
+      responses:
+        '200':
+          description: Returns a list of embeddings models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsListResponse'
+        '400':
+          description: Bad Request - Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+      operationId: listModelsEmbeddings
   /models/user:
     get:
       tags:
