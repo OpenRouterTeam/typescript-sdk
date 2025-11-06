@@ -6,7 +6,7 @@ sources:
         sourceBlobDigest: sha256:8b649cac738303293760c8dc40d56c068cd3d7d3a1a02ec193701759dc723b79
         tags:
             - latest
-            - staging
+            - speakeasy-sdk-regen-1762302715
             - 1.0.0
 targets:
     openrouter:
@@ -15,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:64795ed6576394aed3f6017e7251cbbba10dbea815eed59704d3f181636acf83
         sourceBlobDigest: sha256:8b649cac738303293760c8dc40d56c068cd3d7d3a1a02ec193701759dc723b79
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:f99c1436bd4d779679b3220659d47b10a13ae0464ea036314547fe9bd52ceb95
+        codeSamplesRevisionDigest: sha256:fc787535052e58546c4c1072c8041d631afc15b532f221dd989dea203fe85454
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
