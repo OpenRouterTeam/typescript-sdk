@@ -4798,16 +4798,26 @@ components:
         total_tokens:
           type: number
         completion_tokens_details:
-          type: object
-          properties:
-            reasoning_tokens:
-              type: number
-            audio_tokens:
-              type: number
-            accepted_prediction_tokens:
-              type: number
-            rejected_prediction_tokens:
-              type: number
+          anyOf:
+            - type: object
+              properties:
+                reasoning_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                audio_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                accepted_prediction_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                rejected_prediction_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+            - type: 'null'
         prompt_tokens_details:
           anyOf:
             - type: object
