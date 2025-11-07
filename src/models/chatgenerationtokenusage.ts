@@ -18,6 +18,7 @@ export type CompletionTokensDetails = {
 export type PromptTokensDetails = {
   cachedTokens?: number | undefined;
   audioTokens?: number | undefined;
+  videoTokens?: number | undefined;
 };
 
 export type ChatGenerationTokenUsage = {
@@ -63,10 +64,12 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
 > = z.object({
   cached_tokens: z.number().optional(),
   audio_tokens: z.number().optional(),
+  video_tokens: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     "cached_tokens": "cachedTokens",
     "audio_tokens": "audioTokens",
+    "video_tokens": "videoTokens",
   });
 });
 
