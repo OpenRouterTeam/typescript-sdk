@@ -14,3 +14,4 @@ let value: PromptTokensDetails = {};
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `cachedTokens`     | *number*           | :heavy_minus_sign: | N/A                |
 | `audioTokens`      | *number*           | :heavy_minus_sign: | N/A                |
+| `videoTokens`      | *number*           | :heavy_minus_sign: | N/A                |

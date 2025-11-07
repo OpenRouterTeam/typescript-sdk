@@ -81,8 +81,6 @@ export type MaxPrice = {
   request?: any | undefined;
 };
 
-export type Experimental = {};
-
 export type CreateEmbeddingsProvider = {
   /**
    * Whether to allow backup providers to serve requests
@@ -109,6 +107,10 @@ export type CreateEmbeddingsProvider = {
    */
   zdr?: boolean | null | undefined;
   /**
+   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+   */
+  enforceDistillableText?: boolean | null | undefined;
+  /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
   order?: Array<models.ProviderName | string> | null | undefined;
@@ -132,7 +134,6 @@ export type CreateEmbeddingsProvider = {
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
   maxPrice?: MaxPrice | undefined;
-  experimental?: Experimental | null | undefined;
 };
 
 export const EncodingFormatBase64 = {
@@ -287,31 +288,18 @@ export function maxPriceToJSON(maxPrice: MaxPrice): string {
 }
 
 /** @internal */
-export type Experimental$Outbound = {};
-
-/** @internal */
-export const Experimental$outboundSchema: z.ZodType<
-  Experimental$Outbound,
-  Experimental
-> = z.object({});
-
-export function experimentalToJSON(experimental: Experimental): string {
-  return JSON.stringify(Experimental$outboundSchema.parse(experimental));
-}
-
-/** @internal */
 export type CreateEmbeddingsProvider$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
+  enforce_distillable_text?: boolean | null | undefined;
   order?: Array<string | string> | null | undefined;
   only?: Array<string | string> | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
-  experimental?: Experimental$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -323,6 +311,7 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
   requireParameters: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
+  enforceDistillableText: z.nullable(z.boolean()).optional(),
   order: z.nullable(
     z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
   ).optional(),
@@ -336,13 +325,12 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
     .optional(),
   sort: z.nullable(Sort$outboundSchema).optional(),
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))
-    .optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
     requireParameters: "require_parameters",
     dataCollection: "data_collection",
+    enforceDistillableText: "enforce_distillable_text",
     maxPrice: "max_price",
   });
 });
