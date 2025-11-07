@@ -9,14 +9,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatGenerationTokenUsage,
   ChatGenerationTokenUsage$inboundSchema,
-  ChatGenerationTokenUsage$Outbound,
-  ChatGenerationTokenUsage$outboundSchema,
 } from "./chatgenerationtokenusage.js";
 import {
   ChatResponseChoice,
   ChatResponseChoice$inboundSchema,
-  ChatResponseChoice$Outbound,
-  ChatResponseChoice$outboundSchema,
 } from "./chatresponsechoice.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -45,52 +41,6 @@ export const ChatResponse$inboundSchema: z.ZodType<ChatResponse, unknown> = z
       "system_fingerprint": "systemFingerprint",
     });
   });
-
-/** @internal */
-export type ChatResponse$Outbound = {
-  id: string;
-  choices: Array<ChatResponseChoice$Outbound>;
-  created: number;
-  model: string;
-  object: "chat.completion";
-  system_fingerprint?: string | null | undefined;
-  usage?: ChatGenerationTokenUsage$Outbound | undefined;
-};
-
-/** @internal */
-export const ChatResponse$outboundSchema: z.ZodType<
-  ChatResponse$Outbound,
-  ChatResponse
-> = z.object({
-  id: z.string(),
-  choices: z.array(ChatResponseChoice$outboundSchema),
-  created: z.number(),
-  model: z.string(),
-  object: z.literal("chat.completion"),
-  systemFingerprint: z.nullable(z.string()).optional(),
-  usage: ChatGenerationTokenUsage$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    systemFingerprint: "system_fingerprint",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatResponse$ {
-  /** @deprecated use `ChatResponse$inboundSchema` instead. */
-  export const inboundSchema = ChatResponse$inboundSchema;
-  /** @deprecated use `ChatResponse$outboundSchema` instead. */
-  export const outboundSchema = ChatResponse$outboundSchema;
-  /** @deprecated use `ChatResponse$Outbound` instead. */
-  export type Outbound = ChatResponse$Outbound;
-}
-
-export function chatResponseToJSON(chatResponse: ChatResponse): string {
-  return JSON.stringify(ChatResponse$outboundSchema.parse(chatResponse));
-}
 
 export function chatResponseFromJSON(
   jsonString: string,

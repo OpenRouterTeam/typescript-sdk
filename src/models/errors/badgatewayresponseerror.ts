@@ -68,39 +68,3 @@ export const BadGatewayResponseError$inboundSchema: z.ZodType<
       body: v.body$,
     });
   });
-
-/** @internal */
-export type BadGatewayResponseError$Outbound = {
-  error: models.BadGatewayResponseErrorData$Outbound;
-  user_id?: string | null | undefined;
-};
-
-/** @internal */
-export const BadGatewayResponseError$outboundSchema: z.ZodType<
-  BadGatewayResponseError$Outbound,
-  BadGatewayResponseError
-> = z.custom<BadGatewayResponseError>(x => x instanceof BadGatewayResponseError)
-  .transform(v => v.data$)
-  .pipe(
-    z.object({
-      error: models.BadGatewayResponseErrorData$outboundSchema,
-      userId: z.nullable(z.string()).optional(),
-    }).transform((v) => {
-      return remap$(v, {
-        userId: "user_id",
-      });
-    }),
-  );
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace BadGatewayResponseError$ {
-  /** @deprecated use `BadGatewayResponseError$inboundSchema` instead. */
-  export const inboundSchema = BadGatewayResponseError$inboundSchema;
-  /** @deprecated use `BadGatewayResponseError$outboundSchema` instead. */
-  export const outboundSchema = BadGatewayResponseError$outboundSchema;
-  /** @deprecated use `BadGatewayResponseError$Outbound` instead. */
-  export type Outbound = BadGatewayResponseError$Outbound;
-}

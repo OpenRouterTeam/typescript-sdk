@@ -30,48 +30,6 @@ export const CompletionUsage$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type CompletionUsage$Outbound = {
-  prompt_tokens: number;
-  completion_tokens: number;
-  total_tokens: number;
-};
-
-/** @internal */
-export const CompletionUsage$outboundSchema: z.ZodType<
-  CompletionUsage$Outbound,
-  CompletionUsage
-> = z.object({
-  promptTokens: z.number(),
-  completionTokens: z.number(),
-  totalTokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    promptTokens: "prompt_tokens",
-    completionTokens: "completion_tokens",
-    totalTokens: "total_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionUsage$ {
-  /** @deprecated use `CompletionUsage$inboundSchema` instead. */
-  export const inboundSchema = CompletionUsage$inboundSchema;
-  /** @deprecated use `CompletionUsage$outboundSchema` instead. */
-  export const outboundSchema = CompletionUsage$outboundSchema;
-  /** @deprecated use `CompletionUsage$Outbound` instead. */
-  export type Outbound = CompletionUsage$Outbound;
-}
-
-export function completionUsageToJSON(
-  completionUsage: CompletionUsage,
-): string {
-  return JSON.stringify(CompletionUsage$outboundSchema.parse(completionUsage));
-}
-
 export function completionUsageFromJSON(
   jsonString: string,
 ): SafeParseResult<CompletionUsage, SDKValidationError> {

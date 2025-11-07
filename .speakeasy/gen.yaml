@@ -24,12 +24,13 @@ generation:
   sdkHooksConfigAccess: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.2
+  version: 0.1.3
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -40,6 +41,7 @@ typescript:
     peerDependencies: {}
   additionalPackageJSON: {}
   additionalScripts: {}
+  alwaysIncludeInboundAndOutbound: false
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
@@ -50,6 +52,7 @@ typescript:
   enableReactQuery: true
   enumFormat: union
   envVarPrefix: OPENROUTER
+  exportZodModelNamespace: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
   generateExamples: true

@@ -28,7 +28,6 @@ export const OpenAIResponsesReasoningEffort$inboundSchema: z.ZodType<
     z.enum(OpenAIResponsesReasoningEffort),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const OpenAIResponsesReasoningEffort$outboundSchema: z.ZodType<
   OpenAIResponsesReasoningEffort,
@@ -37,14 +36,3 @@ export const OpenAIResponsesReasoningEffort$outboundSchema: z.ZodType<
   z.enum(OpenAIResponsesReasoningEffort),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesReasoningEffort$ {
-  /** @deprecated use `OpenAIResponsesReasoningEffort$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesReasoningEffort$inboundSchema;
-  /** @deprecated use `OpenAIResponsesReasoningEffort$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesReasoningEffort$outboundSchema;
-}

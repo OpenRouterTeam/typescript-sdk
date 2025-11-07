@@ -77,54 +77,25 @@ export const OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> = z.enum(
     OpenAIResponsesToolChoiceTypeWebSearchPreview,
   );
-
 /** @internal */
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> =
     OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema;
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceTypeWebSearchPreview$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema;
-}
-
 /** @internal */
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> = z
     .enum(OpenAIResponsesToolChoiceTypeWebSearchPreview20250311);
-
 /** @internal */
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema:
   z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> =
     OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema;
-}
 
 /** @internal */
 export const Type$inboundSchema: z.ZodType<Type, unknown> = z.union([
   OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema,
   OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema,
 ]);
-
 /** @internal */
 export type Type$Outbound = string | string;
 
@@ -134,23 +105,9 @@ export const Type$outboundSchema: z.ZodType<Type$Outbound, Type> = z.union([
   OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Type$ {
-  /** @deprecated use `Type$inboundSchema` instead. */
-  export const inboundSchema = Type$inboundSchema;
-  /** @deprecated use `Type$outboundSchema` instead. */
-  export const outboundSchema = Type$outboundSchema;
-  /** @deprecated use `Type$Outbound` instead. */
-  export type Outbound = Type$Outbound;
-}
-
 export function typeToJSON(type: Type): string {
   return JSON.stringify(Type$outboundSchema.parse(type));
 }
-
 export function typeFromJSON(
   jsonString: string,
 ): SafeParseResult<Type, SDKValidationError> {
@@ -171,7 +128,6 @@ export const OpenAIResponsesToolChoice$inboundSchema: z.ZodType<
     OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema,
   ]),
 });
-
 /** @internal */
 export type OpenAIResponsesToolChoice$Outbound = {
   type: string | string;
@@ -188,19 +144,6 @@ export const OpenAIResponsesToolChoice$outboundSchema: z.ZodType<
   ]),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoice$ {
-  /** @deprecated use `OpenAIResponsesToolChoice$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoice$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoice$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesToolChoice$outboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoice$Outbound` instead. */
-  export type Outbound = OpenAIResponsesToolChoice$Outbound;
-}
-
 export function openAIResponsesToolChoiceToJSON(
   openAIResponsesToolChoice: OpenAIResponsesToolChoice,
 ): string {
@@ -208,7 +151,6 @@ export function openAIResponsesToolChoiceToJSON(
     OpenAIResponsesToolChoice$outboundSchema.parse(openAIResponsesToolChoice),
   );
 }
-
 export function openAIResponsesToolChoiceFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoice, SDKValidationError> {
@@ -223,24 +165,10 @@ export function openAIResponsesToolChoiceFromJSON(
 export const OpenAIResponsesToolChoiceTypeFunction$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceTypeFunction
 > = z.enum(OpenAIResponsesToolChoiceTypeFunction);
-
 /** @internal */
 export const OpenAIResponsesToolChoiceTypeFunction$outboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceTypeFunction
 > = OpenAIResponsesToolChoiceTypeFunction$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceTypeFunction$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeFunction$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesToolChoiceTypeFunction$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceTypeFunction$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesToolChoiceTypeFunction$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesToolChoiceFunction$inboundSchema: z.ZodType<
@@ -250,7 +178,6 @@ export const OpenAIResponsesToolChoiceFunction$inboundSchema: z.ZodType<
   type: OpenAIResponsesToolChoiceTypeFunction$inboundSchema,
   name: z.string(),
 });
-
 /** @internal */
 export type OpenAIResponsesToolChoiceFunction$Outbound = {
   type: string;
@@ -266,20 +193,6 @@ export const OpenAIResponsesToolChoiceFunction$outboundSchema: z.ZodType<
   name: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceFunction$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceFunction$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoiceFunction$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceFunction$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesToolChoiceFunction$outboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceFunction$Outbound` instead. */
-  export type Outbound = OpenAIResponsesToolChoiceFunction$Outbound;
-}
-
 export function openAIResponsesToolChoiceFunctionToJSON(
   openAIResponsesToolChoiceFunction: OpenAIResponsesToolChoiceFunction,
 ): string {
@@ -289,7 +202,6 @@ export function openAIResponsesToolChoiceFunctionToJSON(
     ),
   );
 }
-
 export function openAIResponsesToolChoiceFunctionFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoiceFunction, SDKValidationError> {
@@ -304,65 +216,28 @@ export function openAIResponsesToolChoiceFunctionFromJSON(
 export const OpenAIResponsesToolChoiceRequired$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceRequired
 > = z.enum(OpenAIResponsesToolChoiceRequired);
-
 /** @internal */
 export const OpenAIResponsesToolChoiceRequired$outboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceRequired
 > = OpenAIResponsesToolChoiceRequired$inboundSchema;
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceRequired$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceRequired$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoiceRequired$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceRequired$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesToolChoiceRequired$outboundSchema;
-}
-
 /** @internal */
 export const OpenAIResponsesToolChoiceNone$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceNone
 > = z.enum(OpenAIResponsesToolChoiceNone);
-
 /** @internal */
 export const OpenAIResponsesToolChoiceNone$outboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceNone
 > = OpenAIResponsesToolChoiceNone$inboundSchema;
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceNone$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceNone$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoiceNone$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceNone$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesToolChoiceNone$outboundSchema;
-}
-
 /** @internal */
 export const OpenAIResponsesToolChoiceAuto$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceAuto
 > = z.enum(OpenAIResponsesToolChoiceAuto);
-
 /** @internal */
 export const OpenAIResponsesToolChoiceAuto$outboundSchema: z.ZodEnum<
   typeof OpenAIResponsesToolChoiceAuto
 > = OpenAIResponsesToolChoiceAuto$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceAuto$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceAuto$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoiceAuto$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceAuto$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesToolChoiceAuto$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
@@ -375,7 +250,6 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceNone$inboundSchema,
   OpenAIResponsesToolChoiceRequired$inboundSchema,
 ]);
-
 /** @internal */
 export type OpenAIResponsesToolChoiceUnion$Outbound =
   | OpenAIResponsesToolChoiceFunction$Outbound
@@ -396,19 +270,6 @@ export const OpenAIResponsesToolChoiceUnion$outboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceRequired$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesToolChoiceUnion$ {
-  /** @deprecated use `OpenAIResponsesToolChoiceUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesToolChoiceUnion$inboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceUnion$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesToolChoiceUnion$outboundSchema;
-  /** @deprecated use `OpenAIResponsesToolChoiceUnion$Outbound` instead. */
-  export type Outbound = OpenAIResponsesToolChoiceUnion$Outbound;
-}
-
 export function openAIResponsesToolChoiceUnionToJSON(
   openAIResponsesToolChoiceUnion: OpenAIResponsesToolChoiceUnion,
 ): string {
@@ -418,7 +279,6 @@ export function openAIResponsesToolChoiceUnionToJSON(
     ),
   );
 }
-
 export function openAIResponsesToolChoiceUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesToolChoiceUnion, SDKValidationError> {

@@ -9,38 +9,26 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ResponsesImageGenerationCall,
   ResponsesImageGenerationCall$inboundSchema,
-  ResponsesImageGenerationCall$Outbound,
-  ResponsesImageGenerationCall$outboundSchema,
 } from "./responsesimagegenerationcall.js";
 import {
   ResponsesOutputItemFileSearchCall,
   ResponsesOutputItemFileSearchCall$inboundSchema,
-  ResponsesOutputItemFileSearchCall$Outbound,
-  ResponsesOutputItemFileSearchCall$outboundSchema,
 } from "./responsesoutputitemfilesearchcall.js";
 import {
   ResponsesOutputItemFunctionCall,
   ResponsesOutputItemFunctionCall$inboundSchema,
-  ResponsesOutputItemFunctionCall$Outbound,
-  ResponsesOutputItemFunctionCall$outboundSchema,
 } from "./responsesoutputitemfunctioncall.js";
 import {
   ResponsesOutputItemReasoning,
   ResponsesOutputItemReasoning$inboundSchema,
-  ResponsesOutputItemReasoning$Outbound,
-  ResponsesOutputItemReasoning$outboundSchema,
 } from "./responsesoutputitemreasoning.js";
 import {
   ResponsesOutputMessage,
   ResponsesOutputMessage$inboundSchema,
-  ResponsesOutputMessage$Outbound,
-  ResponsesOutputMessage$outboundSchema,
 } from "./responsesoutputmessage.js";
 import {
   ResponsesWebSearchCallOutput,
   ResponsesWebSearchCallOutput$inboundSchema,
-  ResponsesWebSearchCallOutput$Outbound,
-  ResponsesWebSearchCallOutput$outboundSchema,
 } from "./responseswebsearchcalloutput.js";
 
 /**
@@ -66,49 +54,6 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesWebSearchCallOutput$inboundSchema,
   ResponsesOutputItemReasoning$inboundSchema,
 ]);
-
-/** @internal */
-export type ResponsesOutputItem$Outbound =
-  | ResponsesOutputMessage$Outbound
-  | ResponsesOutputItemFunctionCall$Outbound
-  | ResponsesOutputItemFileSearchCall$Outbound
-  | ResponsesImageGenerationCall$Outbound
-  | ResponsesWebSearchCallOutput$Outbound
-  | ResponsesOutputItemReasoning$Outbound;
-
-/** @internal */
-export const ResponsesOutputItem$outboundSchema: z.ZodType<
-  ResponsesOutputItem$Outbound,
-  ResponsesOutputItem
-> = z.union([
-  ResponsesOutputMessage$outboundSchema,
-  ResponsesOutputItemFunctionCall$outboundSchema,
-  ResponsesOutputItemFileSearchCall$outboundSchema,
-  ResponsesImageGenerationCall$outboundSchema,
-  ResponsesWebSearchCallOutput$outboundSchema,
-  ResponsesOutputItemReasoning$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItem$ {
-  /** @deprecated use `ResponsesOutputItem$inboundSchema` instead. */
-  export const inboundSchema = ResponsesOutputItem$inboundSchema;
-  /** @deprecated use `ResponsesOutputItem$outboundSchema` instead. */
-  export const outboundSchema = ResponsesOutputItem$outboundSchema;
-  /** @deprecated use `ResponsesOutputItem$Outbound` instead. */
-  export type Outbound = ResponsesOutputItem$Outbound;
-}
-
-export function responsesOutputItemToJSON(
-  responsesOutputItem: ResponsesOutputItem,
-): string {
-  return JSON.stringify(
-    ResponsesOutputItem$outboundSchema.parse(responsesOutputItem),
-  );
-}
 
 export function responsesOutputItemFromJSON(
   jsonString: string,

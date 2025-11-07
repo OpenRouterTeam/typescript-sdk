@@ -81,66 +81,6 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
     });
   });
 
-/** @internal */
-export type ActivityItem$Outbound = {
-  date: string;
-  model: string;
-  model_permaslug: string;
-  endpoint_id: string;
-  provider_name: string;
-  usage: number;
-  byok_usage_inference: number;
-  requests: number;
-  prompt_tokens: number;
-  completion_tokens: number;
-  reasoning_tokens: number;
-};
-
-/** @internal */
-export const ActivityItem$outboundSchema: z.ZodType<
-  ActivityItem$Outbound,
-  ActivityItem
-> = z.object({
-  date: z.string(),
-  model: z.string(),
-  modelPermaslug: z.string(),
-  endpointId: z.string(),
-  providerName: z.string(),
-  usage: z.number(),
-  byokUsageInference: z.number(),
-  requests: z.number(),
-  promptTokens: z.number(),
-  completionTokens: z.number(),
-  reasoningTokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    modelPermaslug: "model_permaslug",
-    endpointId: "endpoint_id",
-    providerName: "provider_name",
-    byokUsageInference: "byok_usage_inference",
-    promptTokens: "prompt_tokens",
-    completionTokens: "completion_tokens",
-    reasoningTokens: "reasoning_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ActivityItem$ {
-  /** @deprecated use `ActivityItem$inboundSchema` instead. */
-  export const inboundSchema = ActivityItem$inboundSchema;
-  /** @deprecated use `ActivityItem$outboundSchema` instead. */
-  export const outboundSchema = ActivityItem$outboundSchema;
-  /** @deprecated use `ActivityItem$Outbound` instead. */
-  export type Outbound = ActivityItem$Outbound;
-}
-
-export function activityItemToJSON(activityItem: ActivityItem): string {
-  return JSON.stringify(ActivityItem$outboundSchema.parse(activityItem));
-}
-
 export function activityItemFromJSON(
   jsonString: string,
 ): SafeParseResult<ActivityItem, SDKValidationError> {

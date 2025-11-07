@@ -74,94 +74,40 @@ export type ResponsesOutputItemReasoning = {
 export const ResponsesOutputItemReasoningType$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputItemReasoningType
 > = z.enum(ResponsesOutputItemReasoningType);
-
 /** @internal */
 export const ResponsesOutputItemReasoningType$outboundSchema: z.ZodEnum<
   typeof ResponsesOutputItemReasoningType
 > = ResponsesOutputItemReasoningType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoningType$ {
-  /** @deprecated use `ResponsesOutputItemReasoningType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesOutputItemReasoningType$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesOutputItemReasoningType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> = z.enum(
     ResponsesOutputItemReasoningStatusInProgress,
   );
-
 /** @internal */
 export const ResponsesOutputItemReasoningStatusInProgress$outboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> =
     ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoningStatusInProgress$ {
-  /** @deprecated use `ResponsesOutputItemReasoningStatusInProgress$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningStatusInProgress$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemReasoningStatusInProgress$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusIncomplete$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> = z.enum(
     ResponsesOutputItemReasoningStatusIncomplete,
   );
-
 /** @internal */
 export const ResponsesOutputItemReasoningStatusIncomplete$outboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> =
     ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoningStatusIncomplete$ {
-  /** @deprecated use `ResponsesOutputItemReasoningStatusIncomplete$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningStatusIncomplete$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemReasoningStatusIncomplete$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusCompleted$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> = z.enum(
     ResponsesOutputItemReasoningStatusCompleted,
   );
-
 /** @internal */
 export const ResponsesOutputItemReasoningStatusCompleted$outboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> =
     ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoningStatusCompleted$ {
-  /** @deprecated use `ResponsesOutputItemReasoningStatusCompleted$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningStatusCompleted$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemReasoningStatusCompleted$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
@@ -172,7 +118,6 @@ export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
   ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
 ]);
-
 /** @internal */
 export type ResponsesOutputItemReasoningStatusUnion$Outbound =
   | string
@@ -189,21 +134,6 @@ export const ResponsesOutputItemReasoningStatusUnion$outboundSchema: z.ZodType<
   ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoningStatusUnion$ {
-  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesOutputItemReasoningStatusUnion$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemReasoningStatusUnion$outboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoningStatusUnion$Outbound` instead. */
-  export type Outbound = ResponsesOutputItemReasoningStatusUnion$Outbound;
-}
-
 export function responsesOutputItemReasoningStatusUnionToJSON(
   responsesOutputItemReasoningStatusUnion:
     ResponsesOutputItemReasoningStatusUnion,
@@ -214,7 +144,6 @@ export function responsesOutputItemReasoningStatusUnionToJSON(
     ),
   );
 }
-
 export function responsesOutputItemReasoningStatusUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -251,7 +180,6 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
     "encrypted_content": "encryptedContent",
   });
 });
-
 /** @internal */
 export type ResponsesOutputItemReasoning$Outbound = {
   type: string;
@@ -283,19 +211,6 @@ export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemReasoning$ {
-  /** @deprecated use `ResponsesOutputItemReasoning$inboundSchema` instead. */
-  export const inboundSchema = ResponsesOutputItemReasoning$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoning$outboundSchema` instead. */
-  export const outboundSchema = ResponsesOutputItemReasoning$outboundSchema;
-  /** @deprecated use `ResponsesOutputItemReasoning$Outbound` instead. */
-  export type Outbound = ResponsesOutputItemReasoning$Outbound;
-}
-
 export function responsesOutputItemReasoningToJSON(
   responsesOutputItemReasoning: ResponsesOutputItemReasoning,
 ): string {
@@ -305,7 +220,6 @@ export function responsesOutputItemReasoningToJSON(
     ),
   );
 }
-
 export function responsesOutputItemReasoningFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputItemReasoning, SDKValidationError> {

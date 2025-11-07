@@ -3,23 +3,11 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ResponseFormatTextGrammar = {
   type: "grammar";
   grammar: string;
 };
-
-/** @internal */
-export const ResponseFormatTextGrammar$inboundSchema: z.ZodType<
-  ResponseFormatTextGrammar,
-  unknown
-> = z.object({
-  type: z.literal("grammar"),
-  grammar: z.string(),
-});
 
 /** @internal */
 export type ResponseFormatTextGrammar$Outbound = {
@@ -36,33 +24,10 @@ export const ResponseFormatTextGrammar$outboundSchema: z.ZodType<
   grammar: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseFormatTextGrammar$ {
-  /** @deprecated use `ResponseFormatTextGrammar$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatTextGrammar$inboundSchema;
-  /** @deprecated use `ResponseFormatTextGrammar$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatTextGrammar$outboundSchema;
-  /** @deprecated use `ResponseFormatTextGrammar$Outbound` instead. */
-  export type Outbound = ResponseFormatTextGrammar$Outbound;
-}
-
 export function responseFormatTextGrammarToJSON(
   responseFormatTextGrammar: ResponseFormatTextGrammar,
 ): string {
   return JSON.stringify(
     ResponseFormatTextGrammar$outboundSchema.parse(responseFormatTextGrammar),
-  );
-}
-
-export function responseFormatTextGrammarFromJSON(
-  jsonString: string,
-): SafeParseResult<ResponseFormatTextGrammar, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ResponseFormatTextGrammar$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatTextGrammar' from JSON`,
   );
 }

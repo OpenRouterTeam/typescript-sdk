@@ -55,14 +55,6 @@ export type CreateCoinbaseChargeResponse = {
 };
 
 /** @internal */
-export const CreateCoinbaseChargeSecurity$inboundSchema: z.ZodType<
-  CreateCoinbaseChargeSecurity,
-  unknown
-> = z.object({
-  bearer: z.string(),
-});
-
-/** @internal */
 export type CreateCoinbaseChargeSecurity$Outbound = {
   bearer: string;
 };
@@ -75,19 +67,6 @@ export const CreateCoinbaseChargeSecurity$outboundSchema: z.ZodType<
   bearer: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateCoinbaseChargeSecurity$ {
-  /** @deprecated use `CreateCoinbaseChargeSecurity$inboundSchema` instead. */
-  export const inboundSchema = CreateCoinbaseChargeSecurity$inboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeSecurity$outboundSchema` instead. */
-  export const outboundSchema = CreateCoinbaseChargeSecurity$outboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeSecurity$Outbound` instead. */
-  export type Outbound = CreateCoinbaseChargeSecurity$Outbound;
-}
-
 export function createCoinbaseChargeSecurityToJSON(
   createCoinbaseChargeSecurity: CreateCoinbaseChargeSecurity,
 ): string {
@@ -95,16 +74,6 @@ export function createCoinbaseChargeSecurityToJSON(
     CreateCoinbaseChargeSecurity$outboundSchema.parse(
       createCoinbaseChargeSecurity,
     ),
-  );
-}
-
-export function createCoinbaseChargeSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateCoinbaseChargeSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateCoinbaseChargeSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateCoinbaseChargeSecurity' from JSON`,
   );
 }
 
@@ -129,59 +98,6 @@ export const CallData$inboundSchema: z.ZodType<CallData, unknown> = z.object({
   });
 });
 
-/** @internal */
-export type CallData$Outbound = {
-  deadline: string;
-  fee_amount: string;
-  id: string;
-  operator: string;
-  prefix: string;
-  recipient: string;
-  recipient_amount: string;
-  recipient_currency: string;
-  refund_destination: string;
-  signature: string;
-};
-
-/** @internal */
-export const CallData$outboundSchema: z.ZodType<CallData$Outbound, CallData> = z
-  .object({
-    deadline: z.string(),
-    feeAmount: z.string(),
-    id: z.string(),
-    operator: z.string(),
-    prefix: z.string(),
-    recipient: z.string(),
-    recipientAmount: z.string(),
-    recipientCurrency: z.string(),
-    refundDestination: z.string(),
-    signature: z.string(),
-  }).transform((v) => {
-    return remap$(v, {
-      feeAmount: "fee_amount",
-      recipientAmount: "recipient_amount",
-      recipientCurrency: "recipient_currency",
-      refundDestination: "refund_destination",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CallData$ {
-  /** @deprecated use `CallData$inboundSchema` instead. */
-  export const inboundSchema = CallData$inboundSchema;
-  /** @deprecated use `CallData$outboundSchema` instead. */
-  export const outboundSchema = CallData$outboundSchema;
-  /** @deprecated use `CallData$Outbound` instead. */
-  export type Outbound = CallData$Outbound;
-}
-
-export function callDataToJSON(callData: CallData): string {
-  return JSON.stringify(CallData$outboundSchema.parse(callData));
-}
-
 export function callDataFromJSON(
   jsonString: string,
 ): SafeParseResult<CallData, SDKValidationError> {
@@ -204,43 +120,6 @@ export const Metadata$inboundSchema: z.ZodType<Metadata, unknown> = z.object({
   });
 });
 
-/** @internal */
-export type Metadata$Outbound = {
-  chain_id: number;
-  contract_address: string;
-  sender: string;
-};
-
-/** @internal */
-export const Metadata$outboundSchema: z.ZodType<Metadata$Outbound, Metadata> = z
-  .object({
-    chainId: z.number(),
-    contractAddress: z.string(),
-    sender: z.string(),
-  }).transform((v) => {
-    return remap$(v, {
-      chainId: "chain_id",
-      contractAddress: "contract_address",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Metadata$ {
-  /** @deprecated use `Metadata$inboundSchema` instead. */
-  export const inboundSchema = Metadata$inboundSchema;
-  /** @deprecated use `Metadata$outboundSchema` instead. */
-  export const outboundSchema = Metadata$outboundSchema;
-  /** @deprecated use `Metadata$Outbound` instead. */
-  export type Outbound = Metadata$Outbound;
-}
-
-export function metadataToJSON(metadata: Metadata): string {
-  return JSON.stringify(Metadata$outboundSchema.parse(metadata));
-}
-
 export function metadataFromJSON(
   jsonString: string,
 ): SafeParseResult<Metadata, SDKValidationError> {
@@ -262,42 +141,6 @@ export const TransferIntent$inboundSchema: z.ZodType<TransferIntent, unknown> =
     });
   });
 
-/** @internal */
-export type TransferIntent$Outbound = {
-  call_data: CallData$Outbound;
-  metadata: Metadata$Outbound;
-};
-
-/** @internal */
-export const TransferIntent$outboundSchema: z.ZodType<
-  TransferIntent$Outbound,
-  TransferIntent
-> = z.object({
-  callData: z.lazy(() => CallData$outboundSchema),
-  metadata: z.lazy(() => Metadata$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    callData: "call_data",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TransferIntent$ {
-  /** @deprecated use `TransferIntent$inboundSchema` instead. */
-  export const inboundSchema = TransferIntent$inboundSchema;
-  /** @deprecated use `TransferIntent$outboundSchema` instead. */
-  export const outboundSchema = TransferIntent$outboundSchema;
-  /** @deprecated use `TransferIntent$Outbound` instead. */
-  export type Outbound = TransferIntent$Outbound;
-}
-
-export function transferIntentToJSON(transferIntent: TransferIntent): string {
-  return JSON.stringify(TransferIntent$outboundSchema.parse(transferIntent));
-}
-
 export function transferIntentFromJSON(
   jsonString: string,
 ): SafeParseResult<TransferIntent, SDKValidationError> {
@@ -316,38 +159,6 @@ export const Web3Data$inboundSchema: z.ZodType<Web3Data, unknown> = z.object({
     "transfer_intent": "transferIntent",
   });
 });
-
-/** @internal */
-export type Web3Data$Outbound = {
-  transfer_intent: TransferIntent$Outbound;
-};
-
-/** @internal */
-export const Web3Data$outboundSchema: z.ZodType<Web3Data$Outbound, Web3Data> = z
-  .object({
-    transferIntent: z.lazy(() => TransferIntent$outboundSchema),
-  }).transform((v) => {
-    return remap$(v, {
-      transferIntent: "transfer_intent",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Web3Data$ {
-  /** @deprecated use `Web3Data$inboundSchema` instead. */
-  export const inboundSchema = Web3Data$inboundSchema;
-  /** @deprecated use `Web3Data$outboundSchema` instead. */
-  export const outboundSchema = Web3Data$outboundSchema;
-  /** @deprecated use `Web3Data$Outbound` instead. */
-  export type Outbound = Web3Data$Outbound;
-}
-
-export function web3DataToJSON(web3Data: Web3Data): string {
-  return JSON.stringify(Web3Data$outboundSchema.parse(web3Data));
-}
 
 export function web3DataFromJSON(
   jsonString: string,
@@ -376,52 +187,6 @@ export const CreateCoinbaseChargeData$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type CreateCoinbaseChargeData$Outbound = {
-  id: string;
-  created_at: string;
-  expires_at: string;
-  web3_data: Web3Data$Outbound;
-};
-
-/** @internal */
-export const CreateCoinbaseChargeData$outboundSchema: z.ZodType<
-  CreateCoinbaseChargeData$Outbound,
-  CreateCoinbaseChargeData
-> = z.object({
-  id: z.string(),
-  createdAt: z.string(),
-  expiresAt: z.string(),
-  web3Data: z.lazy(() => Web3Data$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    createdAt: "created_at",
-    expiresAt: "expires_at",
-    web3Data: "web3_data",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateCoinbaseChargeData$ {
-  /** @deprecated use `CreateCoinbaseChargeData$inboundSchema` instead. */
-  export const inboundSchema = CreateCoinbaseChargeData$inboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeData$outboundSchema` instead. */
-  export const outboundSchema = CreateCoinbaseChargeData$outboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeData$Outbound` instead. */
-  export type Outbound = CreateCoinbaseChargeData$Outbound;
-}
-
-export function createCoinbaseChargeDataToJSON(
-  createCoinbaseChargeData: CreateCoinbaseChargeData,
-): string {
-  return JSON.stringify(
-    CreateCoinbaseChargeData$outboundSchema.parse(createCoinbaseChargeData),
-  );
-}
-
 export function createCoinbaseChargeDataFromJSON(
   jsonString: string,
 ): SafeParseResult<CreateCoinbaseChargeData, SDKValidationError> {
@@ -439,42 +204,6 @@ export const CreateCoinbaseChargeResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => CreateCoinbaseChargeData$inboundSchema),
 });
-
-/** @internal */
-export type CreateCoinbaseChargeResponse$Outbound = {
-  data: CreateCoinbaseChargeData$Outbound;
-};
-
-/** @internal */
-export const CreateCoinbaseChargeResponse$outboundSchema: z.ZodType<
-  CreateCoinbaseChargeResponse$Outbound,
-  CreateCoinbaseChargeResponse
-> = z.object({
-  data: z.lazy(() => CreateCoinbaseChargeData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateCoinbaseChargeResponse$ {
-  /** @deprecated use `CreateCoinbaseChargeResponse$inboundSchema` instead. */
-  export const inboundSchema = CreateCoinbaseChargeResponse$inboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeResponse$outboundSchema` instead. */
-  export const outboundSchema = CreateCoinbaseChargeResponse$outboundSchema;
-  /** @deprecated use `CreateCoinbaseChargeResponse$Outbound` instead. */
-  export type Outbound = CreateCoinbaseChargeResponse$Outbound;
-}
-
-export function createCoinbaseChargeResponseToJSON(
-  createCoinbaseChargeResponse: CreateCoinbaseChargeResponse,
-): string {
-  return JSON.stringify(
-    CreateCoinbaseChargeResponse$outboundSchema.parse(
-      createCoinbaseChargeResponse,
-    ),
-  );
-}
 
 export function createCoinbaseChargeResponseFromJSON(
   jsonString: string,

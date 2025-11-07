@@ -5,33 +5,18 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  InputModality,
-  InputModality$inboundSchema,
-  InputModality$outboundSchema,
-} from "./inputmodality.js";
-import {
-  InstructType,
-  InstructType$inboundSchema,
-  InstructType$outboundSchema,
-} from "./instructtype.js";
+import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
+import { InstructType, InstructType$inboundSchema } from "./instructtype.js";
 import {
   OutputModality,
   OutputModality$inboundSchema,
-  OutputModality$outboundSchema,
 } from "./outputmodality.js";
 import {
   PublicEndpoint,
   PublicEndpoint$inboundSchema,
-  PublicEndpoint$Outbound,
-  PublicEndpoint$outboundSchema,
 } from "./publicendpoint.js";
 
 /**
@@ -121,24 +106,6 @@ export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = z
   ]);
 
 /** @internal */
-export const Tokenizer$outboundSchema: z.ZodType<Tokenizer, Tokenizer> = z
-  .union([
-    z.enum(Tokenizer),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Tokenizer$ {
-  /** @deprecated use `Tokenizer$inboundSchema` instead. */
-  export const inboundSchema = Tokenizer$inboundSchema;
-  /** @deprecated use `Tokenizer$outboundSchema` instead. */
-  export const outboundSchema = Tokenizer$outboundSchema;
-}
-
-/** @internal */
 export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
   .object({
     tokenizer: z.nullable(Tokenizer$inboundSchema),
@@ -153,50 +120,6 @@ export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
       "output_modalities": "outputModalities",
     });
   });
-
-/** @internal */
-export type Architecture$Outbound = {
-  tokenizer: string | null;
-  instruct_type: string | null;
-  modality: string | null;
-  input_modalities: Array<string>;
-  output_modalities: Array<string>;
-};
-
-/** @internal */
-export const Architecture$outboundSchema: z.ZodType<
-  Architecture$Outbound,
-  Architecture
-> = z.object({
-  tokenizer: z.nullable(Tokenizer$outboundSchema),
-  instructType: z.nullable(InstructType$outboundSchema),
-  modality: z.nullable(z.string()),
-  inputModalities: z.array(InputModality$outboundSchema),
-  outputModalities: z.array(OutputModality$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    instructType: "instruct_type",
-    inputModalities: "input_modalities",
-    outputModalities: "output_modalities",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Architecture$ {
-  /** @deprecated use `Architecture$inboundSchema` instead. */
-  export const inboundSchema = Architecture$inboundSchema;
-  /** @deprecated use `Architecture$outboundSchema` instead. */
-  export const outboundSchema = Architecture$outboundSchema;
-  /** @deprecated use `Architecture$Outbound` instead. */
-  export type Outbound = Architecture$Outbound;
-}
-
-export function architectureToJSON(architecture: Architecture): string {
-  return JSON.stringify(Architecture$outboundSchema.parse(architecture));
-}
 
 export function architectureFromJSON(
   jsonString: string,
@@ -220,50 +143,6 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
   architecture: z.lazy(() => Architecture$inboundSchema),
   endpoints: z.array(PublicEndpoint$inboundSchema),
 });
-
-/** @internal */
-export type ListEndpointsResponse$Outbound = {
-  id: string;
-  name: string;
-  created: number;
-  description: string;
-  architecture: Architecture$Outbound;
-  endpoints: Array<PublicEndpoint$Outbound>;
-};
-
-/** @internal */
-export const ListEndpointsResponse$outboundSchema: z.ZodType<
-  ListEndpointsResponse$Outbound,
-  ListEndpointsResponse
-> = z.object({
-  id: z.string(),
-  name: z.string(),
-  created: z.number(),
-  description: z.string(),
-  architecture: z.lazy(() => Architecture$outboundSchema),
-  endpoints: z.array(PublicEndpoint$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListEndpointsResponse$ {
-  /** @deprecated use `ListEndpointsResponse$inboundSchema` instead. */
-  export const inboundSchema = ListEndpointsResponse$inboundSchema;
-  /** @deprecated use `ListEndpointsResponse$outboundSchema` instead. */
-  export const outboundSchema = ListEndpointsResponse$outboundSchema;
-  /** @deprecated use `ListEndpointsResponse$Outbound` instead. */
-  export type Outbound = ListEndpointsResponse$Outbound;
-}
-
-export function listEndpointsResponseToJSON(
-  listEndpointsResponse: ListEndpointsResponse,
-): string {
-  return JSON.stringify(
-    ListEndpointsResponse$outboundSchema.parse(listEndpointsResponse),
-  );
-}
 
 export function listEndpointsResponseFromJSON(
   jsonString: string,

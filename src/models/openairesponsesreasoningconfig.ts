@@ -9,12 +9,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenAIResponsesReasoningEffort,
   OpenAIResponsesReasoningEffort$inboundSchema,
-  OpenAIResponsesReasoningEffort$outboundSchema,
 } from "./openairesponsesreasoningeffort.js";
 import {
   ReasoningSummaryVerbosity,
   ReasoningSummaryVerbosity$inboundSchema,
-  ReasoningSummaryVerbosity$outboundSchema,
 } from "./reasoningsummaryverbosity.js";
 
 export type OpenAIResponsesReasoningConfig = {
@@ -30,44 +28,6 @@ export const OpenAIResponsesReasoningConfig$inboundSchema: z.ZodType<
   effort: z.nullable(OpenAIResponsesReasoningEffort$inboundSchema).optional(),
   summary: ReasoningSummaryVerbosity$inboundSchema.optional(),
 });
-
-/** @internal */
-export type OpenAIResponsesReasoningConfig$Outbound = {
-  effort?: string | null | undefined;
-  summary?: string | undefined;
-};
-
-/** @internal */
-export const OpenAIResponsesReasoningConfig$outboundSchema: z.ZodType<
-  OpenAIResponsesReasoningConfig$Outbound,
-  OpenAIResponsesReasoningConfig
-> = z.object({
-  effort: z.nullable(OpenAIResponsesReasoningEffort$outboundSchema).optional(),
-  summary: ReasoningSummaryVerbosity$outboundSchema.optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesReasoningConfig$ {
-  /** @deprecated use `OpenAIResponsesReasoningConfig$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesReasoningConfig$inboundSchema;
-  /** @deprecated use `OpenAIResponsesReasoningConfig$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesReasoningConfig$outboundSchema;
-  /** @deprecated use `OpenAIResponsesReasoningConfig$Outbound` instead. */
-  export type Outbound = OpenAIResponsesReasoningConfig$Outbound;
-}
-
-export function openAIResponsesReasoningConfigToJSON(
-  openAIResponsesReasoningConfig: OpenAIResponsesReasoningConfig,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesReasoningConfig$outboundSchema.parse(
-      openAIResponsesReasoningConfig,
-    ),
-  );
-}
 
 export function openAIResponsesReasoningConfigFromJSON(
   jsonString: string,

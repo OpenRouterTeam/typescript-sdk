@@ -3,72 +3,58 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenResponsesEasyInputMessage,
-  OpenResponsesEasyInputMessage$inboundSchema,
   OpenResponsesEasyInputMessage$Outbound,
   OpenResponsesEasyInputMessage$outboundSchema,
 } from "./openresponseseasyinputmessage.js";
 import {
   OpenResponsesFunctionCallOutput,
-  OpenResponsesFunctionCallOutput$inboundSchema,
   OpenResponsesFunctionCallOutput$Outbound,
   OpenResponsesFunctionCallOutput$outboundSchema,
 } from "./openresponsesfunctioncalloutput.js";
 import {
   OpenResponsesFunctionToolCall,
-  OpenResponsesFunctionToolCall$inboundSchema,
   OpenResponsesFunctionToolCall$Outbound,
   OpenResponsesFunctionToolCall$outboundSchema,
 } from "./openresponsesfunctiontoolcall.js";
 import {
   OpenResponsesInputMessageItem,
-  OpenResponsesInputMessageItem$inboundSchema,
   OpenResponsesInputMessageItem$Outbound,
   OpenResponsesInputMessageItem$outboundSchema,
 } from "./openresponsesinputmessageitem.js";
 import {
   OpenResponsesReasoning,
-  OpenResponsesReasoning$inboundSchema,
   OpenResponsesReasoning$Outbound,
   OpenResponsesReasoning$outboundSchema,
 } from "./openresponsesreasoning.js";
 import {
   ResponsesImageGenerationCall,
-  ResponsesImageGenerationCall$inboundSchema,
   ResponsesImageGenerationCall$Outbound,
   ResponsesImageGenerationCall$outboundSchema,
 } from "./responsesimagegenerationcall.js";
 import {
   ResponsesOutputItemFileSearchCall,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
   ResponsesOutputItemFileSearchCall$Outbound,
   ResponsesOutputItemFileSearchCall$outboundSchema,
 } from "./responsesoutputitemfilesearchcall.js";
 import {
   ResponsesOutputItemFunctionCall,
-  ResponsesOutputItemFunctionCall$inboundSchema,
   ResponsesOutputItemFunctionCall$Outbound,
   ResponsesOutputItemFunctionCall$outboundSchema,
 } from "./responsesoutputitemfunctioncall.js";
 import {
   ResponsesOutputItemReasoning,
-  ResponsesOutputItemReasoning$inboundSchema,
   ResponsesOutputItemReasoning$Outbound,
   ResponsesOutputItemReasoning$outboundSchema,
 } from "./responsesoutputitemreasoning.js";
 import {
   ResponsesOutputMessage,
-  ResponsesOutputMessage$inboundSchema,
   ResponsesOutputMessage$Outbound,
   ResponsesOutputMessage$outboundSchema,
 } from "./responsesoutputmessage.js";
 import {
   ResponsesWebSearchCallOutput,
-  ResponsesWebSearchCallOutput$inboundSchema,
   ResponsesWebSearchCallOutput$Outbound,
   ResponsesWebSearchCallOutput$outboundSchema,
 } from "./responseswebsearchcalloutput.js";
@@ -106,24 +92,6 @@ export type OpenResponsesInput =
   >;
 
 /** @internal */
-export const OpenResponsesInput1$inboundSchema: z.ZodType<
-  OpenResponsesInput1,
-  unknown
-> = z.union([
-  OpenResponsesFunctionToolCall$inboundSchema,
-  OpenResponsesFunctionCallOutput$inboundSchema,
-  ResponsesOutputMessage$inboundSchema,
-  ResponsesOutputItemFunctionCall$inboundSchema,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
-  ResponsesImageGenerationCall$inboundSchema,
-  OpenResponsesReasoning$inboundSchema,
-  ResponsesWebSearchCallOutput$inboundSchema,
-  OpenResponsesEasyInputMessage$inboundSchema,
-  OpenResponsesInputMessageItem$inboundSchema,
-  ResponsesOutputItemReasoning$inboundSchema,
-]);
-
-/** @internal */
 export type OpenResponsesInput1$Outbound =
   | OpenResponsesFunctionToolCall$Outbound
   | OpenResponsesFunctionCallOutput$Outbound
@@ -155,19 +123,6 @@ export const OpenResponsesInput1$outboundSchema: z.ZodType<
   ResponsesOutputItemReasoning$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesInput1$ {
-  /** @deprecated use `OpenResponsesInput1$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesInput1$inboundSchema;
-  /** @deprecated use `OpenResponsesInput1$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesInput1$outboundSchema;
-  /** @deprecated use `OpenResponsesInput1$Outbound` instead. */
-  export type Outbound = OpenResponsesInput1$Outbound;
-}
-
 export function openResponsesInput1ToJSON(
   openResponsesInput1: OpenResponsesInput1,
 ): string {
@@ -175,39 +130,6 @@ export function openResponsesInput1ToJSON(
     OpenResponsesInput1$outboundSchema.parse(openResponsesInput1),
   );
 }
-
-export function openResponsesInput1FromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesInput1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesInput1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesInput1' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesInput$inboundSchema: z.ZodType<
-  OpenResponsesInput,
-  unknown
-> = z.union([
-  z.string(),
-  z.array(
-    z.union([
-      OpenResponsesFunctionToolCall$inboundSchema,
-      OpenResponsesFunctionCallOutput$inboundSchema,
-      ResponsesOutputMessage$inboundSchema,
-      ResponsesOutputItemFunctionCall$inboundSchema,
-      ResponsesOutputItemFileSearchCall$inboundSchema,
-      ResponsesImageGenerationCall$inboundSchema,
-      OpenResponsesReasoning$inboundSchema,
-      ResponsesWebSearchCallOutput$inboundSchema,
-      OpenResponsesEasyInputMessage$inboundSchema,
-      OpenResponsesInputMessageItem$inboundSchema,
-      ResponsesOutputItemReasoning$inboundSchema,
-    ]),
-  ),
-]);
 
 /** @internal */
 export type OpenResponsesInput$Outbound =
@@ -249,33 +171,10 @@ export const OpenResponsesInput$outboundSchema: z.ZodType<
   ),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesInput$ {
-  /** @deprecated use `OpenResponsesInput$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesInput$inboundSchema;
-  /** @deprecated use `OpenResponsesInput$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesInput$outboundSchema;
-  /** @deprecated use `OpenResponsesInput$Outbound` instead. */
-  export type Outbound = OpenResponsesInput$Outbound;
-}
-
 export function openResponsesInputToJSON(
   openResponsesInput: OpenResponsesInput,
 ): string {
   return JSON.stringify(
     OpenResponsesInput$outboundSchema.parse(openResponsesInput),
-  );
-}
-
-export function openResponsesInputFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesInput, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesInput$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesInput' from JSON`,
   );
 }

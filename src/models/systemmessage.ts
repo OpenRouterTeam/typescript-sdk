@@ -3,15 +3,11 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatMessageContentItemText,
-  ChatMessageContentItemText$inboundSchema,
   ChatMessageContentItemText$Outbound,
   ChatMessageContentItemText$outboundSchema,
 } from "./chatmessagecontentitemtext.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type SystemMessageContent = string | Array<ChatMessageContentItemText>;
 
@@ -20,12 +16,6 @@ export type SystemMessage = {
   content: string | Array<ChatMessageContentItemText>;
   name?: string | undefined;
 };
-
-/** @internal */
-export const SystemMessageContent$inboundSchema: z.ZodType<
-  SystemMessageContent,
-  unknown
-> = z.union([z.string(), z.array(ChatMessageContentItemText$inboundSchema)]);
 
 /** @internal */
 export type SystemMessageContent$Outbound =
@@ -38,19 +28,6 @@ export const SystemMessageContent$outboundSchema: z.ZodType<
   SystemMessageContent
 > = z.union([z.string(), z.array(ChatMessageContentItemText$outboundSchema)]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace SystemMessageContent$ {
-  /** @deprecated use `SystemMessageContent$inboundSchema` instead. */
-  export const inboundSchema = SystemMessageContent$inboundSchema;
-  /** @deprecated use `SystemMessageContent$outboundSchema` instead. */
-  export const outboundSchema = SystemMessageContent$outboundSchema;
-  /** @deprecated use `SystemMessageContent$Outbound` instead. */
-  export type Outbound = SystemMessageContent$Outbound;
-}
-
 export function systemMessageContentToJSON(
   systemMessageContent: SystemMessageContent,
 ): string {
@@ -58,27 +35,6 @@ export function systemMessageContentToJSON(
     SystemMessageContent$outboundSchema.parse(systemMessageContent),
   );
 }
-
-export function systemMessageContentFromJSON(
-  jsonString: string,
-): SafeParseResult<SystemMessageContent, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => SystemMessageContent$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SystemMessageContent' from JSON`,
-  );
-}
-
-/** @internal */
-export const SystemMessage$inboundSchema: z.ZodType<SystemMessage, unknown> = z
-  .object({
-    role: z.literal("system"),
-    content: z.union([
-      z.string(),
-      z.array(ChatMessageContentItemText$inboundSchema),
-    ]),
-    name: z.string().optional(),
-  });
 
 /** @internal */
 export type SystemMessage$Outbound = {
@@ -100,29 +56,6 @@ export const SystemMessage$outboundSchema: z.ZodType<
   name: z.string().optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace SystemMessage$ {
-  /** @deprecated use `SystemMessage$inboundSchema` instead. */
-  export const inboundSchema = SystemMessage$inboundSchema;
-  /** @deprecated use `SystemMessage$outboundSchema` instead. */
-  export const outboundSchema = SystemMessage$outboundSchema;
-  /** @deprecated use `SystemMessage$Outbound` instead. */
-  export type Outbound = SystemMessage$Outbound;
-}
-
 export function systemMessageToJSON(systemMessage: SystemMessage): string {
   return JSON.stringify(SystemMessage$outboundSchema.parse(systemMessage));
-}
-
-export function systemMessageFromJSON(
-  jsonString: string,
-): SafeParseResult<SystemMessage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => SystemMessage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'SystemMessage' from JSON`,
-  );
 }

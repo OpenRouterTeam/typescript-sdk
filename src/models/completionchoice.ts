@@ -5,17 +5,11 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompletionLogprobs,
   CompletionLogprobs$inboundSchema,
-  CompletionLogprobs$Outbound,
-  CompletionLogprobs$outboundSchema,
 } from "./completionlogprobs.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -44,26 +38,6 @@ export const CompletionFinishReason$inboundSchema: z.ZodType<
   ]);
 
 /** @internal */
-export const CompletionFinishReason$outboundSchema: z.ZodType<
-  CompletionFinishReason,
-  CompletionFinishReason
-> = z.union([
-  z.enum(CompletionFinishReason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionFinishReason$ {
-  /** @deprecated use `CompletionFinishReason$inboundSchema` instead. */
-  export const inboundSchema = CompletionFinishReason$inboundSchema;
-  /** @deprecated use `CompletionFinishReason$outboundSchema` instead. */
-  export const outboundSchema = CompletionFinishReason$outboundSchema;
-}
-
-/** @internal */
 export const CompletionChoice$inboundSchema: z.ZodType<
   CompletionChoice,
   unknown
@@ -77,50 +51,6 @@ export const CompletionChoice$inboundSchema: z.ZodType<
     "finish_reason": "finishReason",
   });
 });
-
-/** @internal */
-export type CompletionChoice$Outbound = {
-  text: string;
-  index: number;
-  logprobs: CompletionLogprobs$Outbound | null;
-  finish_reason: string | null;
-};
-
-/** @internal */
-export const CompletionChoice$outboundSchema: z.ZodType<
-  CompletionChoice$Outbound,
-  CompletionChoice
-> = z.object({
-  text: z.string(),
-  index: z.number(),
-  logprobs: z.nullable(CompletionLogprobs$outboundSchema),
-  finishReason: z.nullable(CompletionFinishReason$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    finishReason: "finish_reason",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionChoice$ {
-  /** @deprecated use `CompletionChoice$inboundSchema` instead. */
-  export const inboundSchema = CompletionChoice$inboundSchema;
-  /** @deprecated use `CompletionChoice$outboundSchema` instead. */
-  export const outboundSchema = CompletionChoice$outboundSchema;
-  /** @deprecated use `CompletionChoice$Outbound` instead. */
-  export type Outbound = CompletionChoice$Outbound;
-}
-
-export function completionChoiceToJSON(
-  completionChoice: CompletionChoice,
-): string {
-  return JSON.stringify(
-    CompletionChoice$outboundSchema.parse(completionChoice),
-  );
-}
 
 export function completionChoiceFromJSON(
   jsonString: string,

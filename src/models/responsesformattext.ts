@@ -26,22 +26,10 @@ export type ResponsesFormatText = {
 export const ResponsesFormatTextType$inboundSchema: z.ZodEnum<
   typeof ResponsesFormatTextType
 > = z.enum(ResponsesFormatTextType);
-
 /** @internal */
 export const ResponsesFormatTextType$outboundSchema: z.ZodEnum<
   typeof ResponsesFormatTextType
 > = ResponsesFormatTextType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatTextType$ {
-  /** @deprecated use `ResponsesFormatTextType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesFormatTextType$inboundSchema;
-  /** @deprecated use `ResponsesFormatTextType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesFormatTextType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesFormatText$inboundSchema: z.ZodType<
@@ -50,7 +38,6 @@ export const ResponsesFormatText$inboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesFormatTextType$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesFormatText$Outbound = {
   type: string;
@@ -64,19 +51,6 @@ export const ResponsesFormatText$outboundSchema: z.ZodType<
   type: ResponsesFormatTextType$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatText$ {
-  /** @deprecated use `ResponsesFormatText$inboundSchema` instead. */
-  export const inboundSchema = ResponsesFormatText$inboundSchema;
-  /** @deprecated use `ResponsesFormatText$outboundSchema` instead. */
-  export const outboundSchema = ResponsesFormatText$outboundSchema;
-  /** @deprecated use `ResponsesFormatText$Outbound` instead. */
-  export type Outbound = ResponsesFormatText$Outbound;
-}
-
 export function responsesFormatTextToJSON(
   responsesFormatText: ResponsesFormatText,
 ): string {
@@ -84,7 +58,6 @@ export function responsesFormatTextToJSON(
     ResponsesFormatText$outboundSchema.parse(responsesFormatText),
   );
 }
-
 export function responsesFormatTextFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesFormatText, SDKValidationError> {

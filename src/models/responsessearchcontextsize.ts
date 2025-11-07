@@ -33,7 +33,6 @@ export const ResponsesSearchContextSize$inboundSchema: z.ZodType<
     z.enum(ResponsesSearchContextSize),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ResponsesSearchContextSize$outboundSchema: z.ZodType<
   ResponsesSearchContextSize,
@@ -42,14 +41,3 @@ export const ResponsesSearchContextSize$outboundSchema: z.ZodType<
   z.enum(ResponsesSearchContextSize),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesSearchContextSize$ {
-  /** @deprecated use `ResponsesSearchContextSize$inboundSchema` instead. */
-  export const inboundSchema = ResponsesSearchContextSize$inboundSchema;
-  /** @deprecated use `ResponsesSearchContextSize$outboundSchema` instead. */
-  export const outboundSchema = ResponsesSearchContextSize$outboundSchema;
-}

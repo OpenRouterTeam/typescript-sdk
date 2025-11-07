@@ -51,22 +51,10 @@ export type OpenResponsesWebSearchTool = {
 export const OpenResponsesWebSearchToolType$inboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearchToolType
 > = z.enum(OpenResponsesWebSearchToolType);
-
 /** @internal */
 export const OpenResponsesWebSearchToolType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearchToolType
 > = OpenResponsesWebSearchToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchToolType$ {
-  /** @deprecated use `OpenResponsesWebSearchToolType$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesWebSearchToolType$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchToolType$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesWebSearchToolType$outboundSchema;
-}
 
 /** @internal */
 export const OpenResponsesWebSearchToolFilters$inboundSchema: z.ZodType<
@@ -79,7 +67,6 @@ export const OpenResponsesWebSearchToolFilters$inboundSchema: z.ZodType<
     "allowed_domains": "allowedDomains",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearchToolFilters$Outbound = {
   allowed_domains?: Array<string> | null | undefined;
@@ -97,20 +84,6 @@ export const OpenResponsesWebSearchToolFilters$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchToolFilters$ {
-  /** @deprecated use `OpenResponsesWebSearchToolFilters$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesWebSearchToolFilters$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchToolFilters$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchToolFilters$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchToolFilters$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearchToolFilters$Outbound;
-}
-
 export function openResponsesWebSearchToolFiltersToJSON(
   openResponsesWebSearchToolFilters: OpenResponsesWebSearchToolFilters,
 ): string {
@@ -120,7 +93,6 @@ export function openResponsesWebSearchToolFiltersToJSON(
     ),
   );
 }
-
 export function openResponsesWebSearchToolFiltersFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesWebSearchToolFilters, SDKValidationError> {
@@ -149,7 +121,6 @@ export const OpenResponsesWebSearchTool$inboundSchema: z.ZodType<
     "user_location": "userLocation",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearchTool$Outbound = {
   type: string;
@@ -177,19 +148,6 @@ export const OpenResponsesWebSearchTool$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchTool$ {
-  /** @deprecated use `OpenResponsesWebSearchTool$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesWebSearchTool$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchTool$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesWebSearchTool$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchTool$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearchTool$Outbound;
-}
-
 export function openResponsesWebSearchToolToJSON(
   openResponsesWebSearchTool: OpenResponsesWebSearchTool,
 ): string {
@@ -197,7 +155,6 @@ export function openResponsesWebSearchToolToJSON(
     OpenResponsesWebSearchTool$outboundSchema.parse(openResponsesWebSearchTool),
   );
 }
-
 export function openResponsesWebSearchToolFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesWebSearchTool, SDKValidationError> {

@@ -31,41 +31,6 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
     }),
 ]);
 
-/** @internal */
-export type SendChatCompletionRequestResponse$Outbound =
-  | models.ChatResponse$Outbound
-  | never;
-
-/** @internal */
-export const SendChatCompletionRequestResponse$outboundSchema: z.ZodType<
-  SendChatCompletionRequestResponse$Outbound,
-  SendChatCompletionRequestResponse
-> = z.union([models.ChatResponse$outboundSchema, z.never()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace SendChatCompletionRequestResponse$ {
-  /** @deprecated use `SendChatCompletionRequestResponse$inboundSchema` instead. */
-  export const inboundSchema = SendChatCompletionRequestResponse$inboundSchema;
-  /** @deprecated use `SendChatCompletionRequestResponse$outboundSchema` instead. */
-  export const outboundSchema =
-    SendChatCompletionRequestResponse$outboundSchema;
-  /** @deprecated use `SendChatCompletionRequestResponse$Outbound` instead. */
-  export type Outbound = SendChatCompletionRequestResponse$Outbound;
-}
-
-export function sendChatCompletionRequestResponseToJSON(
-  sendChatCompletionRequestResponse: SendChatCompletionRequestResponse,
-): string {
-  return JSON.stringify(
-    SendChatCompletionRequestResponse$outboundSchema.parse(
-      sendChatCompletionRequestResponse,
-    ),
-  );
-}
-
 export function sendChatCompletionRequestResponseFromJSON(
   jsonString: string,
 ): SafeParseResult<SendChatCompletionRequestResponse, SDKValidationError> {

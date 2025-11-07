@@ -4,25 +4,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatStreamOptions = {
   includeUsage?: boolean | undefined;
 };
-
-/** @internal */
-export const ChatStreamOptions$inboundSchema: z.ZodType<
-  ChatStreamOptions,
-  unknown
-> = z.object({
-  include_usage: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "include_usage": "includeUsage",
-  });
-});
 
 /** @internal */
 export type ChatStreamOptions$Outbound = {
@@ -41,33 +26,10 @@ export const ChatStreamOptions$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamOptions$ {
-  /** @deprecated use `ChatStreamOptions$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamOptions$inboundSchema;
-  /** @deprecated use `ChatStreamOptions$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamOptions$outboundSchema;
-  /** @deprecated use `ChatStreamOptions$Outbound` instead. */
-  export type Outbound = ChatStreamOptions$Outbound;
-}
-
 export function chatStreamOptionsToJSON(
   chatStreamOptions: ChatStreamOptions,
 ): string {
   return JSON.stringify(
     ChatStreamOptions$outboundSchema.parse(chatStreamOptions),
-  );
-}
-
-export function chatStreamOptionsFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatStreamOptions, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatStreamOptions$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatStreamOptions' from JSON`,
   );
 }

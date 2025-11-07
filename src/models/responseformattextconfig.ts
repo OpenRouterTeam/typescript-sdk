@@ -42,7 +42,6 @@ export const ResponseFormatTextConfig$inboundSchema: z.ZodType<
   ResponsesFormatText$inboundSchema,
   ResponsesFormatJSONObject$inboundSchema,
 ]);
-
 /** @internal */
 export type ResponseFormatTextConfig$Outbound =
   | ResponsesFormatTextJSONSchemaConfig$Outbound
@@ -59,19 +58,6 @@ export const ResponseFormatTextConfig$outboundSchema: z.ZodType<
   ResponsesFormatJSONObject$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseFormatTextConfig$ {
-  /** @deprecated use `ResponseFormatTextConfig$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatTextConfig$inboundSchema;
-  /** @deprecated use `ResponseFormatTextConfig$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatTextConfig$outboundSchema;
-  /** @deprecated use `ResponseFormatTextConfig$Outbound` instead. */
-  export type Outbound = ResponseFormatTextConfig$Outbound;
-}
-
 export function responseFormatTextConfigToJSON(
   responseFormatTextConfig: ResponseFormatTextConfig,
 ): string {
@@ -79,7 +65,6 @@ export function responseFormatTextConfigToJSON(
     ResponseFormatTextConfig$outboundSchema.parse(responseFormatTextConfig),
   );
 }
-
 export function responseFormatTextConfigFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseFormatTextConfig, SDKValidationError> {

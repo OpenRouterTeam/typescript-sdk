@@ -44,22 +44,10 @@ export type ResponseInputAudio = {
 export const ResponseInputAudioType$inboundSchema: z.ZodEnum<
   typeof ResponseInputAudioType
 > = z.enum(ResponseInputAudioType);
-
 /** @internal */
 export const ResponseInputAudioType$outboundSchema: z.ZodEnum<
   typeof ResponseInputAudioType
 > = ResponseInputAudioType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputAudioType$ {
-  /** @deprecated use `ResponseInputAudioType$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputAudioType$inboundSchema;
-  /** @deprecated use `ResponseInputAudioType$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputAudioType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseInputAudioFormat$inboundSchema: z.ZodType<
@@ -70,7 +58,6 @@ export const ResponseInputAudioFormat$inboundSchema: z.ZodType<
     z.enum(ResponseInputAudioFormat),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ResponseInputAudioFormat$outboundSchema: z.ZodType<
   ResponseInputAudioFormat,
@@ -80,17 +67,6 @@ export const ResponseInputAudioFormat$outboundSchema: z.ZodType<
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputAudioFormat$ {
-  /** @deprecated use `ResponseInputAudioFormat$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputAudioFormat$inboundSchema;
-  /** @deprecated use `ResponseInputAudioFormat$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputAudioFormat$outboundSchema;
-}
-
 /** @internal */
 export const ResponseInputAudioInputAudio$inboundSchema: z.ZodType<
   ResponseInputAudioInputAudio,
@@ -99,7 +75,6 @@ export const ResponseInputAudioInputAudio$inboundSchema: z.ZodType<
   data: z.string(),
   format: ResponseInputAudioFormat$inboundSchema,
 });
-
 /** @internal */
 export type ResponseInputAudioInputAudio$Outbound = {
   data: string;
@@ -115,19 +90,6 @@ export const ResponseInputAudioInputAudio$outboundSchema: z.ZodType<
   format: ResponseInputAudioFormat$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputAudioInputAudio$ {
-  /** @deprecated use `ResponseInputAudioInputAudio$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputAudioInputAudio$inboundSchema;
-  /** @deprecated use `ResponseInputAudioInputAudio$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputAudioInputAudio$outboundSchema;
-  /** @deprecated use `ResponseInputAudioInputAudio$Outbound` instead. */
-  export type Outbound = ResponseInputAudioInputAudio$Outbound;
-}
-
 export function responseInputAudioInputAudioToJSON(
   responseInputAudioInputAudio: ResponseInputAudioInputAudio,
 ): string {
@@ -137,7 +99,6 @@ export function responseInputAudioInputAudioToJSON(
     ),
   );
 }
-
 export function responseInputAudioInputAudioFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputAudioInputAudio, SDKValidationError> {
@@ -160,7 +121,6 @@ export const ResponseInputAudio$inboundSchema: z.ZodType<
     "input_audio": "inputAudio",
   });
 });
-
 /** @internal */
 export type ResponseInputAudio$Outbound = {
   type: string;
@@ -180,19 +140,6 @@ export const ResponseInputAudio$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputAudio$ {
-  /** @deprecated use `ResponseInputAudio$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputAudio$inboundSchema;
-  /** @deprecated use `ResponseInputAudio$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputAudio$outboundSchema;
-  /** @deprecated use `ResponseInputAudio$Outbound` instead. */
-  export type Outbound = ResponseInputAudio$Outbound;
-}
-
 export function responseInputAudioToJSON(
   responseInputAudio: ResponseInputAudio,
 ): string {
@@ -200,7 +147,6 @@ export function responseInputAudioToJSON(
     ResponseInputAudio$outboundSchema.parse(responseInputAudio),
   );
 }
-
 export function responseInputAudioFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputAudio, SDKValidationError> {

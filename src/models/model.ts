@@ -9,38 +9,21 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   DefaultParameters,
   DefaultParameters$inboundSchema,
-  DefaultParameters$Outbound,
-  DefaultParameters$outboundSchema,
 } from "./defaultparameters.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ModelArchitecture,
   ModelArchitecture$inboundSchema,
-  ModelArchitecture$Outbound,
-  ModelArchitecture$outboundSchema,
 } from "./modelarchitecture.js";
-import {
-  Parameter,
-  Parameter$inboundSchema,
-  Parameter$outboundSchema,
-} from "./parameter.js";
+import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
   PerRequestLimits,
   PerRequestLimits$inboundSchema,
-  PerRequestLimits$Outbound,
-  PerRequestLimits$outboundSchema,
 } from "./perrequestlimits.js";
-import {
-  PublicPricing,
-  PublicPricing$inboundSchema,
-  PublicPricing$Outbound,
-  PublicPricing$outboundSchema,
-} from "./publicpricing.js";
+import { PublicPricing, PublicPricing$inboundSchema } from "./publicpricing.js";
 import {
   TopProviderInfo,
   TopProviderInfo$inboundSchema,
-  TopProviderInfo$Outbound,
-  TopProviderInfo$outboundSchema,
 } from "./topproviderinfo.js";
 
 /**
@@ -127,67 +110,6 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "default_parameters": "defaultParameters",
   });
 });
-
-/** @internal */
-export type Model$Outbound = {
-  id: string;
-  canonical_slug: string;
-  hugging_face_id?: string | null | undefined;
-  name: string;
-  created: number;
-  description?: string | undefined;
-  pricing: PublicPricing$Outbound;
-  context_length: number | null;
-  architecture: ModelArchitecture$Outbound;
-  top_provider: TopProviderInfo$Outbound;
-  per_request_limits: PerRequestLimits$Outbound | null;
-  supported_parameters: Array<string>;
-  default_parameters: DefaultParameters$Outbound | null;
-};
-
-/** @internal */
-export const Model$outboundSchema: z.ZodType<Model$Outbound, Model> = z.object({
-  id: z.string(),
-  canonicalSlug: z.string(),
-  huggingFaceId: z.nullable(z.string()).optional(),
-  name: z.string(),
-  created: z.number(),
-  description: z.string().optional(),
-  pricing: PublicPricing$outboundSchema,
-  contextLength: z.nullable(z.number()),
-  architecture: ModelArchitecture$outboundSchema,
-  topProvider: TopProviderInfo$outboundSchema,
-  perRequestLimits: z.nullable(PerRequestLimits$outboundSchema),
-  supportedParameters: z.array(Parameter$outboundSchema),
-  defaultParameters: z.nullable(DefaultParameters$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    canonicalSlug: "canonical_slug",
-    huggingFaceId: "hugging_face_id",
-    contextLength: "context_length",
-    topProvider: "top_provider",
-    perRequestLimits: "per_request_limits",
-    supportedParameters: "supported_parameters",
-    defaultParameters: "default_parameters",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Model$ {
-  /** @deprecated use `Model$inboundSchema` instead. */
-  export const inboundSchema = Model$inboundSchema;
-  /** @deprecated use `Model$outboundSchema` instead. */
-  export const outboundSchema = Model$outboundSchema;
-  /** @deprecated use `Model$Outbound` instead. */
-  export type Outbound = Model$Outbound;
-}
-
-export function modelToJSON(model: Model): string {
-  return JSON.stringify(Model$outboundSchema.parse(model));
-}
 
 export function modelFromJSON(
   jsonString: string,

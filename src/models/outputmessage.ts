@@ -10,14 +10,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenAIResponsesRefusalContent,
   OpenAIResponsesRefusalContent$inboundSchema,
-  OpenAIResponsesRefusalContent$Outbound,
-  OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
   ResponseOutputText,
   ResponseOutputText$inboundSchema,
-  ResponseOutputText$Outbound,
-  ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
 
 export const OutputMessageRole = {
@@ -78,41 +74,9 @@ export const OutputMessageRole$inboundSchema: z.ZodEnum<
 > = z.enum(OutputMessageRole);
 
 /** @internal */
-export const OutputMessageRole$outboundSchema: z.ZodEnum<
-  typeof OutputMessageRole
-> = OutputMessageRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageRole$ {
-  /** @deprecated use `OutputMessageRole$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageRole$inboundSchema;
-  /** @deprecated use `OutputMessageRole$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageRole$outboundSchema;
-}
-
-/** @internal */
 export const OutputMessageType$inboundSchema: z.ZodEnum<
   typeof OutputMessageType
 > = z.enum(OutputMessageType);
-
-/** @internal */
-export const OutputMessageType$outboundSchema: z.ZodEnum<
-  typeof OutputMessageType
-> = OutputMessageType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageType$ {
-  /** @deprecated use `OutputMessageType$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageType$inboundSchema;
-  /** @deprecated use `OutputMessageType$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageType$outboundSchema;
-}
 
 /** @internal */
 export const OutputMessageStatusInProgress$inboundSchema: z.ZodEnum<
@@ -120,62 +84,14 @@ export const OutputMessageStatusInProgress$inboundSchema: z.ZodEnum<
 > = z.enum(OutputMessageStatusInProgress);
 
 /** @internal */
-export const OutputMessageStatusInProgress$outboundSchema: z.ZodEnum<
-  typeof OutputMessageStatusInProgress
-> = OutputMessageStatusInProgress$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageStatusInProgress$ {
-  /** @deprecated use `OutputMessageStatusInProgress$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageStatusInProgress$inboundSchema;
-  /** @deprecated use `OutputMessageStatusInProgress$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageStatusInProgress$outboundSchema;
-}
-
-/** @internal */
 export const OutputMessageStatusIncomplete$inboundSchema: z.ZodEnum<
   typeof OutputMessageStatusIncomplete
 > = z.enum(OutputMessageStatusIncomplete);
 
 /** @internal */
-export const OutputMessageStatusIncomplete$outboundSchema: z.ZodEnum<
-  typeof OutputMessageStatusIncomplete
-> = OutputMessageStatusIncomplete$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageStatusIncomplete$ {
-  /** @deprecated use `OutputMessageStatusIncomplete$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageStatusIncomplete$inboundSchema;
-  /** @deprecated use `OutputMessageStatusIncomplete$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageStatusIncomplete$outboundSchema;
-}
-
-/** @internal */
 export const OutputMessageStatusCompleted$inboundSchema: z.ZodEnum<
   typeof OutputMessageStatusCompleted
 > = z.enum(OutputMessageStatusCompleted);
-
-/** @internal */
-export const OutputMessageStatusCompleted$outboundSchema: z.ZodEnum<
-  typeof OutputMessageStatusCompleted
-> = OutputMessageStatusCompleted$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageStatusCompleted$ {
-  /** @deprecated use `OutputMessageStatusCompleted$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageStatusCompleted$inboundSchema;
-  /** @deprecated use `OutputMessageStatusCompleted$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageStatusCompleted$outboundSchema;
-}
 
 /** @internal */
 export const OutputMessageStatusUnion$inboundSchema: z.ZodType<
@@ -186,40 +102,6 @@ export const OutputMessageStatusUnion$inboundSchema: z.ZodType<
   OutputMessageStatusIncomplete$inboundSchema,
   OutputMessageStatusInProgress$inboundSchema,
 ]);
-
-/** @internal */
-export type OutputMessageStatusUnion$Outbound = string | string | string;
-
-/** @internal */
-export const OutputMessageStatusUnion$outboundSchema: z.ZodType<
-  OutputMessageStatusUnion$Outbound,
-  OutputMessageStatusUnion
-> = z.union([
-  OutputMessageStatusCompleted$outboundSchema,
-  OutputMessageStatusIncomplete$outboundSchema,
-  OutputMessageStatusInProgress$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageStatusUnion$ {
-  /** @deprecated use `OutputMessageStatusUnion$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageStatusUnion$inboundSchema;
-  /** @deprecated use `OutputMessageStatusUnion$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageStatusUnion$outboundSchema;
-  /** @deprecated use `OutputMessageStatusUnion$Outbound` instead. */
-  export type Outbound = OutputMessageStatusUnion$Outbound;
-}
-
-export function outputMessageStatusUnionToJSON(
-  outputMessageStatusUnion: OutputMessageStatusUnion,
-): string {
-  return JSON.stringify(
-    OutputMessageStatusUnion$outboundSchema.parse(outputMessageStatusUnion),
-  );
-}
 
 export function outputMessageStatusUnionFromJSON(
   jsonString: string,
@@ -239,41 +121,6 @@ export const OutputMessageContent$inboundSchema: z.ZodType<
   ResponseOutputText$inboundSchema,
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
-
-/** @internal */
-export type OutputMessageContent$Outbound =
-  | ResponseOutputText$Outbound
-  | OpenAIResponsesRefusalContent$Outbound;
-
-/** @internal */
-export const OutputMessageContent$outboundSchema: z.ZodType<
-  OutputMessageContent$Outbound,
-  OutputMessageContent
-> = z.union([
-  ResponseOutputText$outboundSchema,
-  OpenAIResponsesRefusalContent$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessageContent$ {
-  /** @deprecated use `OutputMessageContent$inboundSchema` instead. */
-  export const inboundSchema = OutputMessageContent$inboundSchema;
-  /** @deprecated use `OutputMessageContent$outboundSchema` instead. */
-  export const outboundSchema = OutputMessageContent$outboundSchema;
-  /** @deprecated use `OutputMessageContent$Outbound` instead. */
-  export type Outbound = OutputMessageContent$Outbound;
-}
-
-export function outputMessageContentToJSON(
-  outputMessageContent: OutputMessageContent,
-): string {
-  return JSON.stringify(
-    OutputMessageContent$outboundSchema.parse(outputMessageContent),
-  );
-}
 
 export function outputMessageContentFromJSON(
   jsonString: string,
@@ -303,55 +150,6 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
       ]),
     ),
   });
-
-/** @internal */
-export type OutputMessage$Outbound = {
-  id: string;
-  role: string;
-  type: string;
-  status?: string | string | string | undefined;
-  content: Array<
-    ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
-  >;
-};
-
-/** @internal */
-export const OutputMessage$outboundSchema: z.ZodType<
-  OutputMessage$Outbound,
-  OutputMessage
-> = z.object({
-  id: z.string(),
-  role: OutputMessageRole$outboundSchema,
-  type: OutputMessageType$outboundSchema,
-  status: z.union([
-    OutputMessageStatusCompleted$outboundSchema,
-    OutputMessageStatusIncomplete$outboundSchema,
-    OutputMessageStatusInProgress$outboundSchema,
-  ]).optional(),
-  content: z.array(
-    z.union([
-      ResponseOutputText$outboundSchema,
-      OpenAIResponsesRefusalContent$outboundSchema,
-    ]),
-  ),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputMessage$ {
-  /** @deprecated use `OutputMessage$inboundSchema` instead. */
-  export const inboundSchema = OutputMessage$inboundSchema;
-  /** @deprecated use `OutputMessage$outboundSchema` instead. */
-  export const outboundSchema = OutputMessage$outboundSchema;
-  /** @deprecated use `OutputMessage$Outbound` instead. */
-  export type Outbound = OutputMessage$Outbound;
-}
-
-export function outputMessageToJSON(outputMessage: OutputMessage): string {
-  return JSON.stringify(OutputMessage$outboundSchema.parse(outputMessage));
-}
 
 export function outputMessageFromJSON(
   jsonString: string,

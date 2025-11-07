@@ -44,24 +44,10 @@ export const OpenResponsesWebSearchPreview20250311ToolType$inboundSchema:
   z.ZodEnum<typeof OpenResponsesWebSearchPreview20250311ToolType> = z.enum(
     OpenResponsesWebSearchPreview20250311ToolType,
   );
-
 /** @internal */
 export const OpenResponsesWebSearchPreview20250311ToolType$outboundSchema:
   z.ZodEnum<typeof OpenResponsesWebSearchPreview20250311ToolType> =
     OpenResponsesWebSearchPreview20250311ToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreview20250311ToolType$ {
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolType$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311ToolType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreview20250311ToolType$outboundSchema;
-}
 
 /** @internal */
 export const OpenResponsesWebSearchPreview20250311Tool$inboundSchema: z.ZodType<
@@ -78,7 +64,6 @@ export const OpenResponsesWebSearchPreview20250311Tool$inboundSchema: z.ZodType<
     "user_location": "userLocation",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearchPreview20250311Tool$Outbound = {
   type: string;
@@ -103,21 +88,6 @@ export const OpenResponsesWebSearchPreview20250311Tool$outboundSchema:
     });
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreview20250311Tool$ {
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311Tool$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearchPreview20250311Tool$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311Tool$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreview20250311Tool$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreview20250311Tool$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearchPreview20250311Tool$Outbound;
-}
-
 export function openResponsesWebSearchPreview20250311ToolToJSON(
   openResponsesWebSearchPreview20250311Tool:
     OpenResponsesWebSearchPreview20250311Tool,
@@ -128,7 +98,6 @@ export function openResponsesWebSearchPreview20250311ToolToJSON(
     ),
   );
 }
-
 export function openResponsesWebSearchPreview20250311ToolFromJSON(
   jsonString: string,
 ): SafeParseResult<

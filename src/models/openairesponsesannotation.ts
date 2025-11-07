@@ -36,7 +36,6 @@ export const OpenAIResponsesAnnotation$inboundSchema: z.ZodType<
   FileCitation$inboundSchema,
   FilePath$inboundSchema,
 ]);
-
 /** @internal */
 export type OpenAIResponsesAnnotation$Outbound =
   | URLCitation$Outbound
@@ -53,19 +52,6 @@ export const OpenAIResponsesAnnotation$outboundSchema: z.ZodType<
   FilePath$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesAnnotation$ {
-  /** @deprecated use `OpenAIResponsesAnnotation$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesAnnotation$inboundSchema;
-  /** @deprecated use `OpenAIResponsesAnnotation$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesAnnotation$outboundSchema;
-  /** @deprecated use `OpenAIResponsesAnnotation$Outbound` instead. */
-  export type Outbound = OpenAIResponsesAnnotation$Outbound;
-}
-
 export function openAIResponsesAnnotationToJSON(
   openAIResponsesAnnotation: OpenAIResponsesAnnotation,
 ): string {
@@ -73,7 +59,6 @@ export function openAIResponsesAnnotationToJSON(
     OpenAIResponsesAnnotation$outboundSchema.parse(openAIResponsesAnnotation),
   );
 }
-
 export function openAIResponsesAnnotationFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesAnnotation, SDKValidationError> {

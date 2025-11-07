@@ -25,22 +25,10 @@ export type ResponseInputText = {
 export const ResponseInputTextType$inboundSchema: z.ZodEnum<
   typeof ResponseInputTextType
 > = z.enum(ResponseInputTextType);
-
 /** @internal */
 export const ResponseInputTextType$outboundSchema: z.ZodEnum<
   typeof ResponseInputTextType
 > = ResponseInputTextType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputTextType$ {
-  /** @deprecated use `ResponseInputTextType$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputTextType$inboundSchema;
-  /** @deprecated use `ResponseInputTextType$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputTextType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseInputText$inboundSchema: z.ZodType<
@@ -50,7 +38,6 @@ export const ResponseInputText$inboundSchema: z.ZodType<
   type: ResponseInputTextType$inboundSchema,
   text: z.string(),
 });
-
 /** @internal */
 export type ResponseInputText$Outbound = {
   type: string;
@@ -66,19 +53,6 @@ export const ResponseInputText$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputText$ {
-  /** @deprecated use `ResponseInputText$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputText$inboundSchema;
-  /** @deprecated use `ResponseInputText$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputText$outboundSchema;
-  /** @deprecated use `ResponseInputText$Outbound` instead. */
-  export type Outbound = ResponseInputText$Outbound;
-}
-
 export function responseInputTextToJSON(
   responseInputText: ResponseInputText,
 ): string {
@@ -86,7 +60,6 @@ export function responseInputTextToJSON(
     ResponseInputText$outboundSchema.parse(responseInputText),
   );
 }
-
 export function responseInputTextFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputText, SDKValidationError> {

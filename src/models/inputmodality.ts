@@ -3,11 +3,7 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 
 export const InputModality = {
   Text: "text",
@@ -24,23 +20,3 @@ export const InputModality$inboundSchema: z.ZodType<InputModality, unknown> = z
     z.enum(InputModality),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
-/** @internal */
-export const InputModality$outboundSchema: z.ZodType<
-  InputModality,
-  InputModality
-> = z.union([
-  z.enum(InputModality),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InputModality$ {
-  /** @deprecated use `InputModality$inboundSchema` instead. */
-  export const inboundSchema = InputModality$inboundSchema;
-  /** @deprecated use `InputModality$outboundSchema` instead. */
-  export const outboundSchema = InputModality$outboundSchema;
-}

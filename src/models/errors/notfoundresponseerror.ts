@@ -68,39 +68,3 @@ export const NotFoundResponseError$inboundSchema: z.ZodType<
       body: v.body$,
     });
   });
-
-/** @internal */
-export type NotFoundResponseError$Outbound = {
-  error: models.NotFoundResponseErrorData$Outbound;
-  user_id?: string | null | undefined;
-};
-
-/** @internal */
-export const NotFoundResponseError$outboundSchema: z.ZodType<
-  NotFoundResponseError$Outbound,
-  NotFoundResponseError
-> = z.custom<NotFoundResponseError>(x => x instanceof NotFoundResponseError)
-  .transform(v => v.data$)
-  .pipe(
-    z.object({
-      error: models.NotFoundResponseErrorData$outboundSchema,
-      userId: z.nullable(z.string()).optional(),
-    }).transform((v) => {
-      return remap$(v, {
-        userId: "user_id",
-      });
-    }),
-  );
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace NotFoundResponseError$ {
-  /** @deprecated use `NotFoundResponseError$inboundSchema` instead. */
-  export const inboundSchema = NotFoundResponseError$inboundSchema;
-  /** @deprecated use `NotFoundResponseError$outboundSchema` instead. */
-  export const outboundSchema = NotFoundResponseError$outboundSchema;
-  /** @deprecated use `NotFoundResponseError$Outbound` instead. */
-  export type Outbound = NotFoundResponseError$Outbound;
-}

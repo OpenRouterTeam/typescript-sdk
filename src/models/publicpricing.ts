@@ -85,67 +85,6 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     });
   });
 
-/** @internal */
-export type PublicPricing$Outbound = {
-  prompt?: any | undefined;
-  completion?: any | undefined;
-  request?: any | undefined;
-  image?: any | undefined;
-  image_output?: any | undefined;
-  audio?: any | undefined;
-  input_audio_cache?: any | undefined;
-  web_search?: any | undefined;
-  internal_reasoning?: any | undefined;
-  input_cache_read?: any | undefined;
-  input_cache_write?: any | undefined;
-  discount?: number | undefined;
-};
-
-/** @internal */
-export const PublicPricing$outboundSchema: z.ZodType<
-  PublicPricing$Outbound,
-  PublicPricing
-> = z.object({
-  prompt: z.any().optional(),
-  completion: z.any().optional(),
-  request: z.any().optional(),
-  image: z.any().optional(),
-  imageOutput: z.any().optional(),
-  audio: z.any().optional(),
-  inputAudioCache: z.any().optional(),
-  webSearch: z.any().optional(),
-  internalReasoning: z.any().optional(),
-  inputCacheRead: z.any().optional(),
-  inputCacheWrite: z.any().optional(),
-  discount: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    imageOutput: "image_output",
-    inputAudioCache: "input_audio_cache",
-    webSearch: "web_search",
-    internalReasoning: "internal_reasoning",
-    inputCacheRead: "input_cache_read",
-    inputCacheWrite: "input_cache_write",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PublicPricing$ {
-  /** @deprecated use `PublicPricing$inboundSchema` instead. */
-  export const inboundSchema = PublicPricing$inboundSchema;
-  /** @deprecated use `PublicPricing$outboundSchema` instead. */
-  export const outboundSchema = PublicPricing$outboundSchema;
-  /** @deprecated use `PublicPricing$Outbound` instead. */
-  export type Outbound = PublicPricing$Outbound;
-}
-
-export function publicPricingToJSON(publicPricing: PublicPricing): string {
-  return JSON.stringify(PublicPricing$outboundSchema.parse(publicPricing));
-}
-
 export function publicPricingFromJSON(
   jsonString: string,
 ): SafeParseResult<PublicPricing, SDKValidationError> {

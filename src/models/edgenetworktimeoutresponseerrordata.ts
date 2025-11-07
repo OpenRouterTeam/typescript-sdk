@@ -26,48 +26,6 @@ export const EdgeNetworkTimeoutResponseErrorData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
 
-/** @internal */
-export type EdgeNetworkTimeoutResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const EdgeNetworkTimeoutResponseErrorData$outboundSchema: z.ZodType<
-  EdgeNetworkTimeoutResponseErrorData$Outbound,
-  EdgeNetworkTimeoutResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EdgeNetworkTimeoutResponseErrorData$ {
-  /** @deprecated use `EdgeNetworkTimeoutResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema =
-    EdgeNetworkTimeoutResponseErrorData$inboundSchema;
-  /** @deprecated use `EdgeNetworkTimeoutResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema =
-    EdgeNetworkTimeoutResponseErrorData$outboundSchema;
-  /** @deprecated use `EdgeNetworkTimeoutResponseErrorData$Outbound` instead. */
-  export type Outbound = EdgeNetworkTimeoutResponseErrorData$Outbound;
-}
-
-export function edgeNetworkTimeoutResponseErrorDataToJSON(
-  edgeNetworkTimeoutResponseErrorData: EdgeNetworkTimeoutResponseErrorData,
-): string {
-  return JSON.stringify(
-    EdgeNetworkTimeoutResponseErrorData$outboundSchema.parse(
-      edgeNetworkTimeoutResponseErrorData,
-    ),
-  );
-}
-
 export function edgeNetworkTimeoutResponseErrorDataFromJSON(
   jsonString: string,
 ): SafeParseResult<EdgeNetworkTimeoutResponseErrorData, SDKValidationError> {

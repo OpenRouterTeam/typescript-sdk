@@ -9,10 +9,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CompletionTokensDetails = {
-  reasoningTokens?: number | undefined;
-  audioTokens?: number | undefined;
-  acceptedPredictionTokens?: number | undefined;
-  rejectedPredictionTokens?: number | undefined;
+  reasoningTokens?: number | null | undefined;
+  audioTokens?: number | null | undefined;
+  acceptedPredictionTokens?: number | null | undefined;
+  rejectedPredictionTokens?: number | null | undefined;
 };
 
 export type PromptTokensDetails = {
@@ -24,7 +24,7 @@ export type ChatGenerationTokenUsage = {
   completionTokens: number;
   promptTokens: number;
   totalTokens: number;
-  completionTokensDetails?: CompletionTokensDetails | undefined;
+  completionTokensDetails?: CompletionTokensDetails | null | undefined;
   promptTokensDetails?: PromptTokensDetails | null | undefined;
 };
 
@@ -33,10 +33,10 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   CompletionTokensDetails,
   unknown
 > = z.object({
-  reasoning_tokens: z.number().optional(),
-  audio_tokens: z.number().optional(),
-  accepted_prediction_tokens: z.number().optional(),
-  rejected_prediction_tokens: z.number().optional(),
+  reasoning_tokens: z.nullable(z.number()).optional(),
+  audio_tokens: z.nullable(z.number()).optional(),
+  accepted_prediction_tokens: z.nullable(z.number()).optional(),
+  rejected_prediction_tokens: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "reasoning_tokens": "reasoningTokens",
@@ -45,53 +45,6 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
     "rejected_prediction_tokens": "rejectedPredictionTokens",
   });
 });
-
-/** @internal */
-export type CompletionTokensDetails$Outbound = {
-  reasoning_tokens?: number | undefined;
-  audio_tokens?: number | undefined;
-  accepted_prediction_tokens?: number | undefined;
-  rejected_prediction_tokens?: number | undefined;
-};
-
-/** @internal */
-export const CompletionTokensDetails$outboundSchema: z.ZodType<
-  CompletionTokensDetails$Outbound,
-  CompletionTokensDetails
-> = z.object({
-  reasoningTokens: z.number().optional(),
-  audioTokens: z.number().optional(),
-  acceptedPredictionTokens: z.number().optional(),
-  rejectedPredictionTokens: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    reasoningTokens: "reasoning_tokens",
-    audioTokens: "audio_tokens",
-    acceptedPredictionTokens: "accepted_prediction_tokens",
-    rejectedPredictionTokens: "rejected_prediction_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionTokensDetails$ {
-  /** @deprecated use `CompletionTokensDetails$inboundSchema` instead. */
-  export const inboundSchema = CompletionTokensDetails$inboundSchema;
-  /** @deprecated use `CompletionTokensDetails$outboundSchema` instead. */
-  export const outboundSchema = CompletionTokensDetails$outboundSchema;
-  /** @deprecated use `CompletionTokensDetails$Outbound` instead. */
-  export type Outbound = CompletionTokensDetails$Outbound;
-}
-
-export function completionTokensDetailsToJSON(
-  completionTokensDetails: CompletionTokensDetails,
-): string {
-  return JSON.stringify(
-    CompletionTokensDetails$outboundSchema.parse(completionTokensDetails),
-  );
-}
 
 export function completionTokensDetailsFromJSON(
   jsonString: string,
@@ -117,47 +70,6 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type PromptTokensDetails$Outbound = {
-  cached_tokens?: number | undefined;
-  audio_tokens?: number | undefined;
-};
-
-/** @internal */
-export const PromptTokensDetails$outboundSchema: z.ZodType<
-  PromptTokensDetails$Outbound,
-  PromptTokensDetails
-> = z.object({
-  cachedTokens: z.number().optional(),
-  audioTokens: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    cachedTokens: "cached_tokens",
-    audioTokens: "audio_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PromptTokensDetails$ {
-  /** @deprecated use `PromptTokensDetails$inboundSchema` instead. */
-  export const inboundSchema = PromptTokensDetails$inboundSchema;
-  /** @deprecated use `PromptTokensDetails$outboundSchema` instead. */
-  export const outboundSchema = PromptTokensDetails$outboundSchema;
-  /** @deprecated use `PromptTokensDetails$Outbound` instead. */
-  export type Outbound = PromptTokensDetails$Outbound;
-}
-
-export function promptTokensDetailsToJSON(
-  promptTokensDetails: PromptTokensDetails,
-): string {
-  return JSON.stringify(
-    PromptTokensDetails$outboundSchema.parse(promptTokensDetails),
-  );
-}
-
 export function promptTokensDetailsFromJSON(
   jsonString: string,
 ): SafeParseResult<PromptTokensDetails, SDKValidationError> {
@@ -176,8 +88,9 @@ export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
   completion_tokens: z.number(),
   prompt_tokens: z.number(),
   total_tokens: z.number(),
-  completion_tokens_details: z.lazy(() => CompletionTokensDetails$inboundSchema)
-    .optional(),
+  completion_tokens_details: z.nullable(
+    z.lazy(() => CompletionTokensDetails$inboundSchema),
+  ).optional(),
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
@@ -190,59 +103,6 @@ export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
     "prompt_tokens_details": "promptTokensDetails",
   });
 });
-
-/** @internal */
-export type ChatGenerationTokenUsage$Outbound = {
-  completion_tokens: number;
-  prompt_tokens: number;
-  total_tokens: number;
-  completion_tokens_details?: CompletionTokensDetails$Outbound | undefined;
-  prompt_tokens_details?: PromptTokensDetails$Outbound | null | undefined;
-};
-
-/** @internal */
-export const ChatGenerationTokenUsage$outboundSchema: z.ZodType<
-  ChatGenerationTokenUsage$Outbound,
-  ChatGenerationTokenUsage
-> = z.object({
-  completionTokens: z.number(),
-  promptTokens: z.number(),
-  totalTokens: z.number(),
-  completionTokensDetails: z.lazy(() => CompletionTokensDetails$outboundSchema)
-    .optional(),
-  promptTokensDetails: z.nullable(
-    z.lazy(() => PromptTokensDetails$outboundSchema),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    completionTokens: "completion_tokens",
-    promptTokens: "prompt_tokens",
-    totalTokens: "total_tokens",
-    completionTokensDetails: "completion_tokens_details",
-    promptTokensDetails: "prompt_tokens_details",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationTokenUsage$ {
-  /** @deprecated use `ChatGenerationTokenUsage$inboundSchema` instead. */
-  export const inboundSchema = ChatGenerationTokenUsage$inboundSchema;
-  /** @deprecated use `ChatGenerationTokenUsage$outboundSchema` instead. */
-  export const outboundSchema = ChatGenerationTokenUsage$outboundSchema;
-  /** @deprecated use `ChatGenerationTokenUsage$Outbound` instead. */
-  export type Outbound = ChatGenerationTokenUsage$Outbound;
-}
-
-export function chatGenerationTokenUsageToJSON(
-  chatGenerationTokenUsage: ChatGenerationTokenUsage,
-): string {
-  return JSON.stringify(
-    ChatGenerationTokenUsage$outboundSchema.parse(chatGenerationTokenUsage),
-  );
-}
 
 export function chatGenerationTokenUsageFromJSON(
   jsonString: string,

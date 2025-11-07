@@ -35,24 +35,6 @@ export const OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema:
   );
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDeltaEventType$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryTextDeltaEventType> =
-    OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryTextDeltaEventType$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDeltaEventType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryTextDeltaEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryTextDeltaEvent, unknown> = z.object({
     type: OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema,
@@ -69,63 +51,6 @@ export const OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesReasoningSummaryTextDeltaEvent$Outbound = {
-  type: string;
-  item_id: string;
-  output_index: number;
-  summary_index: number;
-  delta: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema:
-  z.ZodType<
-    OpenResponsesReasoningSummaryTextDeltaEvent$Outbound,
-    OpenResponsesReasoningSummaryTextDeltaEvent
-  > = z.object({
-    type: OpenResponsesReasoningSummaryTextDeltaEventType$outboundSchema,
-    itemId: z.string(),
-    outputIndex: z.number(),
-    summaryIndex: z.number(),
-    delta: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      itemId: "item_id",
-      outputIndex: "output_index",
-      summaryIndex: "summary_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryTextDeltaEvent$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDeltaEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningSummaryTextDeltaEvent$Outbound;
-}
-
-export function openResponsesReasoningSummaryTextDeltaEventToJSON(
-  openResponsesReasoningSummaryTextDeltaEvent:
-    OpenResponsesReasoningSummaryTextDeltaEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema.parse(
-      openResponsesReasoningSummaryTextDeltaEvent,
-    ),
-  );
-}
 
 export function openResponsesReasoningSummaryTextDeltaEventFromJSON(
   jsonString: string,

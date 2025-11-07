@@ -4,24 +4,14 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import { ClosedEnum, OpenEnum, Unrecognized } from "../types/enums.js";
 import {
   ReasoningSummaryText,
-  ReasoningSummaryText$inboundSchema,
   ReasoningSummaryText$Outbound,
   ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 import {
   ReasoningTextContent,
-  ReasoningTextContent$inboundSchema,
   ReasoningTextContent$Outbound,
   ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
@@ -88,104 +78,24 @@ export type OpenResponsesReasoning = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningType$inboundSchema: z.ZodEnum<
+export const OpenResponsesReasoningType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesReasoningType
 > = z.enum(OpenResponsesReasoningType);
 
 /** @internal */
-export const OpenResponsesReasoningType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningType
-> = OpenResponsesReasoningType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningType$ {
-  /** @deprecated use `OpenResponsesReasoningType$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningType$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoningType$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusInProgress$inboundSchema: z.ZodEnum<
+export const OpenResponsesReasoningStatusInProgress$outboundSchema: z.ZodEnum<
   typeof OpenResponsesReasoningStatusInProgress
 > = z.enum(OpenResponsesReasoningStatusInProgress);
 
 /** @internal */
-export const OpenResponsesReasoningStatusInProgress$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningStatusInProgress
-> = OpenResponsesReasoningStatusInProgress$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusInProgress$ {
-  /** @deprecated use `OpenResponsesReasoningStatusInProgress$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusInProgress$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusInProgress$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusInProgress$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusIncomplete$inboundSchema: z.ZodEnum<
+export const OpenResponsesReasoningStatusIncomplete$outboundSchema: z.ZodEnum<
   typeof OpenResponsesReasoningStatusIncomplete
 > = z.enum(OpenResponsesReasoningStatusIncomplete);
 
 /** @internal */
-export const OpenResponsesReasoningStatusIncomplete$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningStatusIncomplete
-> = OpenResponsesReasoningStatusIncomplete$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusIncomplete$ {
-  /** @deprecated use `OpenResponsesReasoningStatusIncomplete$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusIncomplete$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusIncomplete$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusIncomplete$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusCompleted$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningStatusCompleted
-> = z.enum(OpenResponsesReasoningStatusCompleted);
-
-/** @internal */
 export const OpenResponsesReasoningStatusCompleted$outboundSchema: z.ZodEnum<
   typeof OpenResponsesReasoningStatusCompleted
-> = OpenResponsesReasoningStatusCompleted$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusCompleted$ {
-  /** @deprecated use `OpenResponsesReasoningStatusCompleted$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningStatusCompleted$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusCompleted$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusCompleted$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoningStatusUnion$inboundSchema: z.ZodType<
-  OpenResponsesReasoningStatusUnion,
-  unknown
-> = z.union([
-  OpenResponsesReasoningStatusCompleted$inboundSchema,
-  OpenResponsesReasoningStatusIncomplete$inboundSchema,
-  OpenResponsesReasoningStatusInProgress$inboundSchema,
-]);
+> = z.enum(OpenResponsesReasoningStatusCompleted);
 
 /** @internal */
 export type OpenResponsesReasoningStatusUnion$Outbound =
@@ -203,20 +113,6 @@ export const OpenResponsesReasoningStatusUnion$outboundSchema: z.ZodType<
   OpenResponsesReasoningStatusInProgress$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningStatusUnion$ {
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningStatusUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningStatusUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningStatusUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningStatusUnion$Outbound;
-}
-
 export function openResponsesReasoningStatusUnionToJSON(
   openResponsesReasoningStatusUnion: OpenResponsesReasoningStatusUnion,
 ): string {
@@ -227,26 +123,6 @@ export function openResponsesReasoningStatusUnionToJSON(
   );
 }
 
-export function openResponsesReasoningStatusUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesReasoningStatusUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesReasoningStatusUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesReasoningStatusUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesReasoningFormat$inboundSchema: z.ZodType<
-  OpenResponsesReasoningFormat,
-  unknown
-> = z
-  .union([
-    z.enum(OpenResponsesReasoningFormat),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
 /** @internal */
 export const OpenResponsesReasoningFormat$outboundSchema: z.ZodType<
   OpenResponsesReasoningFormat,
@@ -255,40 +131,6 @@ export const OpenResponsesReasoningFormat$outboundSchema: z.ZodType<
   z.enum(OpenResponsesReasoningFormat),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningFormat$ {
-  /** @deprecated use `OpenResponsesReasoningFormat$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningFormat$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningFormat$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoningFormat$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesReasoning$inboundSchema: z.ZodType<
-  OpenResponsesReasoning,
-  unknown
-> = z.object({
-  type: OpenResponsesReasoningType$inboundSchema,
-  id: z.string(),
-  content: z.array(ReasoningTextContent$inboundSchema).optional(),
-  summary: z.array(ReasoningSummaryText$inboundSchema),
-  encrypted_content: z.nullable(z.string()).optional(),
-  status: z.union([
-    OpenResponsesReasoningStatusCompleted$inboundSchema,
-    OpenResponsesReasoningStatusIncomplete$inboundSchema,
-    OpenResponsesReasoningStatusInProgress$inboundSchema,
-  ]).optional(),
-  signature: z.nullable(z.string()).optional(),
-  format: z.nullable(OpenResponsesReasoningFormat$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "encrypted_content": "encryptedContent",
-  });
-});
 
 /** @internal */
 export type OpenResponsesReasoning$Outbound = {
@@ -325,33 +167,10 @@ export const OpenResponsesReasoning$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoning$ {
-  /** @deprecated use `OpenResponsesReasoning$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoning$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoning$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoning$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoning$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoning$Outbound;
-}
-
 export function openResponsesReasoningToJSON(
   openResponsesReasoning: OpenResponsesReasoning,
 ): string {
   return JSON.stringify(
     OpenResponsesReasoning$outboundSchema.parse(openResponsesReasoning),
-  );
-}
-
-export function openResponsesReasoningFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesReasoning, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesReasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesReasoning' from JSON`,
   );
 }

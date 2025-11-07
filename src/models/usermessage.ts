@@ -3,15 +3,11 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatMessageContentItem,
-  ChatMessageContentItem$inboundSchema,
   ChatMessageContentItem$Outbound,
   ChatMessageContentItem$outboundSchema,
 } from "./chatmessagecontentitem.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type UserMessageContent = string | Array<ChatMessageContentItem>;
 
@@ -20,12 +16,6 @@ export type UserMessage = {
   content: string | Array<ChatMessageContentItem>;
   name?: string | undefined;
 };
-
-/** @internal */
-export const UserMessageContent$inboundSchema: z.ZodType<
-  UserMessageContent,
-  unknown
-> = z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]);
 
 /** @internal */
 export type UserMessageContent$Outbound =
@@ -38,19 +28,6 @@ export const UserMessageContent$outboundSchema: z.ZodType<
   UserMessageContent
 > = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace UserMessageContent$ {
-  /** @deprecated use `UserMessageContent$inboundSchema` instead. */
-  export const inboundSchema = UserMessageContent$inboundSchema;
-  /** @deprecated use `UserMessageContent$outboundSchema` instead. */
-  export const outboundSchema = UserMessageContent$outboundSchema;
-  /** @deprecated use `UserMessageContent$Outbound` instead. */
-  export type Outbound = UserMessageContent$Outbound;
-}
-
 export function userMessageContentToJSON(
   userMessageContent: UserMessageContent,
 ): string {
@@ -58,27 +35,6 @@ export function userMessageContentToJSON(
     UserMessageContent$outboundSchema.parse(userMessageContent),
   );
 }
-
-export function userMessageContentFromJSON(
-  jsonString: string,
-): SafeParseResult<UserMessageContent, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => UserMessageContent$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UserMessageContent' from JSON`,
-  );
-}
-
-/** @internal */
-export const UserMessage$inboundSchema: z.ZodType<UserMessage, unknown> = z
-  .object({
-    role: z.literal("user"),
-    content: z.union([
-      z.string(),
-      z.array(ChatMessageContentItem$inboundSchema),
-    ]),
-    name: z.string().optional(),
-  });
 
 /** @internal */
 export type UserMessage$Outbound = {
@@ -100,29 +56,6 @@ export const UserMessage$outboundSchema: z.ZodType<
   name: z.string().optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace UserMessage$ {
-  /** @deprecated use `UserMessage$inboundSchema` instead. */
-  export const inboundSchema = UserMessage$inboundSchema;
-  /** @deprecated use `UserMessage$outboundSchema` instead. */
-  export const outboundSchema = UserMessage$outboundSchema;
-  /** @deprecated use `UserMessage$Outbound` instead. */
-  export type Outbound = UserMessage$Outbound;
-}
-
 export function userMessageToJSON(userMessage: UserMessage): string {
   return JSON.stringify(UserMessage$outboundSchema.parse(userMessage));
-}
-
-export function userMessageFromJSON(
-  jsonString: string,
-): SafeParseResult<UserMessage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => UserMessage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'UserMessage' from JSON`,
-  );
 }

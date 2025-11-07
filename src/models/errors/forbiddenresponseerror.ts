@@ -68,39 +68,3 @@ export const ForbiddenResponseError$inboundSchema: z.ZodType<
       body: v.body$,
     });
   });
-
-/** @internal */
-export type ForbiddenResponseError$Outbound = {
-  error: models.ForbiddenResponseErrorData$Outbound;
-  user_id?: string | null | undefined;
-};
-
-/** @internal */
-export const ForbiddenResponseError$outboundSchema: z.ZodType<
-  ForbiddenResponseError$Outbound,
-  ForbiddenResponseError
-> = z.custom<ForbiddenResponseError>(x => x instanceof ForbiddenResponseError)
-  .transform(v => v.data$)
-  .pipe(
-    z.object({
-      error: models.ForbiddenResponseErrorData$outboundSchema,
-      userId: z.nullable(z.string()).optional(),
-    }).transform((v) => {
-      return remap$(v, {
-        userId: "user_id",
-      });
-    }),
-  );
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ForbiddenResponseError$ {
-  /** @deprecated use `ForbiddenResponseError$inboundSchema` instead. */
-  export const inboundSchema = ForbiddenResponseError$inboundSchema;
-  /** @deprecated use `ForbiddenResponseError$outboundSchema` instead. */
-  export const outboundSchema = ForbiddenResponseError$outboundSchema;
-  /** @deprecated use `ForbiddenResponseError$Outbound` instead. */
-  export type Outbound = ForbiddenResponseError$Outbound;
-}

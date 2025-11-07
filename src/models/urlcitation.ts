@@ -25,21 +25,9 @@ export type URLCitation = {
 /** @internal */
 export const URLCitationType$inboundSchema: z.ZodEnum<typeof URLCitationType> =
   z.enum(URLCitationType);
-
 /** @internal */
 export const URLCitationType$outboundSchema: z.ZodEnum<typeof URLCitationType> =
   URLCitationType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace URLCitationType$ {
-  /** @deprecated use `URLCitationType$inboundSchema` instead. */
-  export const inboundSchema = URLCitationType$inboundSchema;
-  /** @deprecated use `URLCitationType$outboundSchema` instead. */
-  export const outboundSchema = URLCitationType$outboundSchema;
-}
 
 /** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
@@ -55,7 +43,6 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
       "end_index": "endIndex",
     });
   });
-
 /** @internal */
 export type URLCitation$Outbound = {
   type: string;
@@ -82,23 +69,9 @@ export const URLCitation$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace URLCitation$ {
-  /** @deprecated use `URLCitation$inboundSchema` instead. */
-  export const inboundSchema = URLCitation$inboundSchema;
-  /** @deprecated use `URLCitation$outboundSchema` instead. */
-  export const outboundSchema = URLCitation$outboundSchema;
-  /** @deprecated use `URLCitation$Outbound` instead. */
-  export type Outbound = URLCitation$Outbound;
-}
-
 export function urlCitationToJSON(urlCitation: URLCitation): string {
   return JSON.stringify(URLCitation$outboundSchema.parse(urlCitation));
 }
-
 export function urlCitationFromJSON(
   jsonString: string,
 ): SafeParseResult<URLCitation, SDKValidationError> {

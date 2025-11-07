@@ -23,12 +23,19 @@ import {
   ChatMessageContentItemText$Outbound,
   ChatMessageContentItemText$outboundSchema,
 } from "./chatmessagecontentitemtext.js";
+import {
+  ChatMessageContentItemVideo,
+  ChatMessageContentItemVideo$inboundSchema,
+  ChatMessageContentItemVideo$Outbound,
+  ChatMessageContentItemVideo$outboundSchema,
+} from "./chatmessagecontentitemvideo.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatMessageContentItem =
   | (ChatMessageContentItemText & { type: "text" })
   | (ChatMessageContentItemImage & { type: "image_url" })
-  | (ChatMessageContentItemAudio & { type: "input_audio" });
+  | (ChatMessageContentItemAudio & { type: "input_audio" })
+  | (ChatMessageContentItemVideo & { type: "input_video" });
 
 /** @internal */
 export const ChatMessageContentItem$inboundSchema: z.ZodType<
@@ -48,13 +55,18 @@ export const ChatMessageContentItem$inboundSchema: z.ZodType<
       type: v.type,
     })),
   ),
+  ChatMessageContentItemVideo$inboundSchema.and(
+    z.object({ type: z.literal("input_video") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
 ]);
-
 /** @internal */
 export type ChatMessageContentItem$Outbound =
   | (ChatMessageContentItemText$Outbound & { type: "text" })
   | (ChatMessageContentItemImage$Outbound & { type: "image_url" })
-  | (ChatMessageContentItemAudio$Outbound & { type: "input_audio" });
+  | (ChatMessageContentItemAudio$Outbound & { type: "input_audio" })
+  | (ChatMessageContentItemVideo$Outbound & { type: "input_video" });
 
 /** @internal */
 export const ChatMessageContentItem$outboundSchema: z.ZodType<
@@ -74,20 +86,12 @@ export const ChatMessageContentItem$outboundSchema: z.ZodType<
       type: v.type,
     })),
   ),
+  ChatMessageContentItemVideo$outboundSchema.and(
+    z.object({ type: z.literal("input_video") }).transform((v) => ({
+      type: v.type,
+    })),
+  ),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItem$ {
-  /** @deprecated use `ChatMessageContentItem$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItem$inboundSchema;
-  /** @deprecated use `ChatMessageContentItem$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageContentItem$outboundSchema;
-  /** @deprecated use `ChatMessageContentItem$Outbound` instead. */
-  export type Outbound = ChatMessageContentItem$Outbound;
-}
 
 export function chatMessageContentItemToJSON(
   chatMessageContentItem: ChatMessageContentItem,
@@ -96,7 +100,6 @@ export function chatMessageContentItemToJSON(
     ChatMessageContentItem$outboundSchema.parse(chatMessageContentItem),
   );
 }
-
 export function chatMessageContentItemFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageContentItem, SDKValidationError> {

@@ -23,21 +23,9 @@ export type FilePath = {
 /** @internal */
 export const FilePathType$inboundSchema: z.ZodEnum<typeof FilePathType> = z
   .enum(FilePathType);
-
 /** @internal */
 export const FilePathType$outboundSchema: z.ZodEnum<typeof FilePathType> =
   FilePathType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace FilePathType$ {
-  /** @deprecated use `FilePathType$inboundSchema` instead. */
-  export const inboundSchema = FilePathType$inboundSchema;
-  /** @deprecated use `FilePathType$outboundSchema` instead. */
-  export const outboundSchema = FilePathType$outboundSchema;
-}
 
 /** @internal */
 export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
@@ -49,7 +37,6 @@ export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
     "file_id": "fileId",
   });
 });
-
 /** @internal */
 export type FilePath$Outbound = {
   type: string;
@@ -69,23 +56,9 @@ export const FilePath$outboundSchema: z.ZodType<FilePath$Outbound, FilePath> = z
     });
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace FilePath$ {
-  /** @deprecated use `FilePath$inboundSchema` instead. */
-  export const inboundSchema = FilePath$inboundSchema;
-  /** @deprecated use `FilePath$outboundSchema` instead. */
-  export const outboundSchema = FilePath$outboundSchema;
-  /** @deprecated use `FilePath$Outbound` instead. */
-  export type Outbound = FilePath$Outbound;
-}
-
 export function filePathToJSON(filePath: FilePath): string {
   return JSON.stringify(FilePath$outboundSchema.parse(filePath));
 }
-
 export function filePathFromJSON(
   jsonString: string,
 ): SafeParseResult<FilePath, SDKValidationError> {

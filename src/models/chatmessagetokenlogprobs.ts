@@ -8,8 +8,6 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatMessageTokenLogprob,
   ChatMessageTokenLogprob$inboundSchema,
-  ChatMessageTokenLogprob$Outbound,
-  ChatMessageTokenLogprob$outboundSchema,
 } from "./chatmessagetokenlogprob.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -26,42 +24,6 @@ export const ChatMessageTokenLogprobs$inboundSchema: z.ZodType<
   content: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
   refusal: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
 });
-
-/** @internal */
-export type ChatMessageTokenLogprobs$Outbound = {
-  content: Array<ChatMessageTokenLogprob$Outbound> | null;
-  refusal: Array<ChatMessageTokenLogprob$Outbound> | null;
-};
-
-/** @internal */
-export const ChatMessageTokenLogprobs$outboundSchema: z.ZodType<
-  ChatMessageTokenLogprobs$Outbound,
-  ChatMessageTokenLogprobs
-> = z.object({
-  content: z.nullable(z.array(ChatMessageTokenLogprob$outboundSchema)),
-  refusal: z.nullable(z.array(ChatMessageTokenLogprob$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageTokenLogprobs$ {
-  /** @deprecated use `ChatMessageTokenLogprobs$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageTokenLogprobs$inboundSchema;
-  /** @deprecated use `ChatMessageTokenLogprobs$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageTokenLogprobs$outboundSchema;
-  /** @deprecated use `ChatMessageTokenLogprobs$Outbound` instead. */
-  export type Outbound = ChatMessageTokenLogprobs$Outbound;
-}
-
-export function chatMessageTokenLogprobsToJSON(
-  chatMessageTokenLogprobs: ChatMessageTokenLogprobs,
-): string {
-  return JSON.stringify(
-    ChatMessageTokenLogprobs$outboundSchema.parse(chatMessageTokenLogprobs),
-  );
-}
 
 export function chatMessageTokenLogprobsFromJSON(
   jsonString: string,

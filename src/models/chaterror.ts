@@ -22,32 +22,6 @@ export const Code$inboundSchema: z.ZodType<Code, unknown> = z.union([
   z.number(),
 ]);
 
-/** @internal */
-export type Code$Outbound = string | number;
-
-/** @internal */
-export const Code$outboundSchema: z.ZodType<Code$Outbound, Code> = z.union([
-  z.string(),
-  z.number(),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Code$ {
-  /** @deprecated use `Code$inboundSchema` instead. */
-  export const inboundSchema = Code$inboundSchema;
-  /** @deprecated use `Code$outboundSchema` instead. */
-  export const outboundSchema = Code$outboundSchema;
-  /** @deprecated use `Code$Outbound` instead. */
-  export type Outbound = Code$Outbound;
-}
-
-export function codeToJSON(code: Code): string {
-  return JSON.stringify(Code$outboundSchema.parse(code));
-}
-
 export function codeFromJSON(
   jsonString: string,
 ): SafeParseResult<Code, SDKValidationError> {
@@ -66,42 +40,6 @@ export const ChatErrorError$inboundSchema: z.ZodType<ChatErrorError, unknown> =
     param: z.nullable(z.string()).optional(),
     type: z.nullable(z.string()).optional(),
   });
-
-/** @internal */
-export type ChatErrorError$Outbound = {
-  code: string | number | null;
-  message: string;
-  param?: string | null | undefined;
-  type?: string | null | undefined;
-};
-
-/** @internal */
-export const ChatErrorError$outboundSchema: z.ZodType<
-  ChatErrorError$Outbound,
-  ChatErrorError
-> = z.object({
-  code: z.nullable(z.union([z.string(), z.number()])),
-  message: z.string(),
-  param: z.nullable(z.string()).optional(),
-  type: z.nullable(z.string()).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatErrorError$ {
-  /** @deprecated use `ChatErrorError$inboundSchema` instead. */
-  export const inboundSchema = ChatErrorError$inboundSchema;
-  /** @deprecated use `ChatErrorError$outboundSchema` instead. */
-  export const outboundSchema = ChatErrorError$outboundSchema;
-  /** @deprecated use `ChatErrorError$Outbound` instead. */
-  export type Outbound = ChatErrorError$Outbound;
-}
-
-export function chatErrorErrorToJSON(chatErrorError: ChatErrorError): string {
-  return JSON.stringify(ChatErrorError$outboundSchema.parse(chatErrorError));
-}
 
 export function chatErrorErrorFromJSON(
   jsonString: string,

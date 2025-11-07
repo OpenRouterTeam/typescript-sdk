@@ -32,49 +32,6 @@ export const DefaultParameters$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type DefaultParameters$Outbound = {
-  temperature?: number | null | undefined;
-  top_p?: number | null | undefined;
-  frequency_penalty?: number | null | undefined;
-};
-
-/** @internal */
-export const DefaultParameters$outboundSchema: z.ZodType<
-  DefaultParameters$Outbound,
-  DefaultParameters
-> = z.object({
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    topP: "top_p",
-    frequencyPenalty: "frequency_penalty",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DefaultParameters$ {
-  /** @deprecated use `DefaultParameters$inboundSchema` instead. */
-  export const inboundSchema = DefaultParameters$inboundSchema;
-  /** @deprecated use `DefaultParameters$outboundSchema` instead. */
-  export const outboundSchema = DefaultParameters$outboundSchema;
-  /** @deprecated use `DefaultParameters$Outbound` instead. */
-  export type Outbound = DefaultParameters$Outbound;
-}
-
-export function defaultParametersToJSON(
-  defaultParameters: DefaultParameters,
-): string {
-  return JSON.stringify(
-    DefaultParameters$outboundSchema.parse(defaultParameters),
-  );
-}
-
 export function defaultParametersFromJSON(
   jsonString: string,
 ): SafeParseResult<DefaultParameters, SDKValidationError> {

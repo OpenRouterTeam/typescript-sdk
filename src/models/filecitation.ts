@@ -25,22 +25,10 @@ export type FileCitation = {
 export const FileCitationType$inboundSchema: z.ZodEnum<
   typeof FileCitationType
 > = z.enum(FileCitationType);
-
 /** @internal */
 export const FileCitationType$outboundSchema: z.ZodEnum<
   typeof FileCitationType
 > = FileCitationType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace FileCitationType$ {
-  /** @deprecated use `FileCitationType$inboundSchema` instead. */
-  export const inboundSchema = FileCitationType$inboundSchema;
-  /** @deprecated use `FileCitationType$outboundSchema` instead. */
-  export const outboundSchema = FileCitationType$outboundSchema;
-}
 
 /** @internal */
 export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
@@ -54,7 +42,6 @@ export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
       "file_id": "fileId",
     });
   });
-
 /** @internal */
 export type FileCitation$Outbound = {
   type: string;
@@ -78,23 +65,9 @@ export const FileCitation$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace FileCitation$ {
-  /** @deprecated use `FileCitation$inboundSchema` instead. */
-  export const inboundSchema = FileCitation$inboundSchema;
-  /** @deprecated use `FileCitation$outboundSchema` instead. */
-  export const outboundSchema = FileCitation$outboundSchema;
-  /** @deprecated use `FileCitation$Outbound` instead. */
-  export type Outbound = FileCitation$Outbound;
-}
-
 export function fileCitationToJSON(fileCitation: FileCitation): string {
   return JSON.stringify(FileCitation$outboundSchema.parse(fileCitation));
 }
-
 export function fileCitationFromJSON(
   jsonString: string,
 ): SafeParseResult<FileCitation, SDKValidationError> {

@@ -104,12 +104,6 @@ export type GetKeyResponse = {
 };
 
 /** @internal */
-export const GetKeyRequest$inboundSchema: z.ZodType<GetKeyRequest, unknown> = z
-  .object({
-    hash: z.string(),
-  });
-
-/** @internal */
 export type GetKeyRequest$Outbound = {
   hash: string;
 };
@@ -122,31 +116,8 @@ export const GetKeyRequest$outboundSchema: z.ZodType<
   hash: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetKeyRequest$ {
-  /** @deprecated use `GetKeyRequest$inboundSchema` instead. */
-  export const inboundSchema = GetKeyRequest$inboundSchema;
-  /** @deprecated use `GetKeyRequest$outboundSchema` instead. */
-  export const outboundSchema = GetKeyRequest$outboundSchema;
-  /** @deprecated use `GetKeyRequest$Outbound` instead. */
-  export type Outbound = GetKeyRequest$Outbound;
-}
-
 export function getKeyRequestToJSON(getKeyRequest: GetKeyRequest): string {
   return JSON.stringify(GetKeyRequest$outboundSchema.parse(getKeyRequest));
-}
-
-export function getKeyRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<GetKeyRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetKeyRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetKeyRequest' from JSON`,
-  );
 }
 
 /** @internal */
@@ -187,85 +158,6 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     });
   });
 
-/** @internal */
-export type GetKeyData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  limit_remaining: number | null;
-  limit_reset: string | null;
-  include_byok_in_limit: boolean;
-  usage: number;
-  usage_daily: number;
-  usage_weekly: number;
-  usage_monthly: number;
-  byok_usage: number;
-  byok_usage_daily: number;
-  byok_usage_weekly: number;
-  byok_usage_monthly: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const GetKeyData$outboundSchema: z.ZodType<
-  GetKeyData$Outbound,
-  GetKeyData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  limitRemaining: z.nullable(z.number()),
-  limitReset: z.nullable(z.string()),
-  includeByokInLimit: z.boolean(),
-  usage: z.number(),
-  usageDaily: z.number(),
-  usageWeekly: z.number(),
-  usageMonthly: z.number(),
-  byokUsage: z.number(),
-  byokUsageDaily: z.number(),
-  byokUsageWeekly: z.number(),
-  byokUsageMonthly: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    limitRemaining: "limit_remaining",
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
-    usageDaily: "usage_daily",
-    usageWeekly: "usage_weekly",
-    usageMonthly: "usage_monthly",
-    byokUsage: "byok_usage",
-    byokUsageDaily: "byok_usage_daily",
-    byokUsageWeekly: "byok_usage_weekly",
-    byokUsageMonthly: "byok_usage_monthly",
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetKeyData$ {
-  /** @deprecated use `GetKeyData$inboundSchema` instead. */
-  export const inboundSchema = GetKeyData$inboundSchema;
-  /** @deprecated use `GetKeyData$outboundSchema` instead. */
-  export const outboundSchema = GetKeyData$outboundSchema;
-  /** @deprecated use `GetKeyData$Outbound` instead. */
-  export type Outbound = GetKeyData$Outbound;
-}
-
-export function getKeyDataToJSON(getKeyData: GetKeyData): string {
-  return JSON.stringify(GetKeyData$outboundSchema.parse(getKeyData));
-}
-
 export function getKeyDataFromJSON(
   jsonString: string,
 ): SafeParseResult<GetKeyData, SDKValidationError> {
@@ -281,36 +173,6 @@ export const GetKeyResponse$inboundSchema: z.ZodType<GetKeyResponse, unknown> =
   z.object({
     data: z.lazy(() => GetKeyData$inboundSchema),
   });
-
-/** @internal */
-export type GetKeyResponse$Outbound = {
-  data: GetKeyData$Outbound;
-};
-
-/** @internal */
-export const GetKeyResponse$outboundSchema: z.ZodType<
-  GetKeyResponse$Outbound,
-  GetKeyResponse
-> = z.object({
-  data: z.lazy(() => GetKeyData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetKeyResponse$ {
-  /** @deprecated use `GetKeyResponse$inboundSchema` instead. */
-  export const inboundSchema = GetKeyResponse$inboundSchema;
-  /** @deprecated use `GetKeyResponse$outboundSchema` instead. */
-  export const outboundSchema = GetKeyResponse$outboundSchema;
-  /** @deprecated use `GetKeyResponse$Outbound` instead. */
-  export type Outbound = GetKeyResponse$Outbound;
-}
-
-export function getKeyResponseToJSON(getKeyResponse: GetKeyResponse): string {
-  return JSON.stringify(GetKeyResponse$outboundSchema.parse(getKeyResponse));
-}
 
 export function getKeyResponseFromJSON(
   jsonString: string,

@@ -23,6 +23,7 @@ export * from "./endpointsListZdrEndpoints.js";
 export * from "./generationsGetGeneration.js";
 export * from "./modelsCount.js";
 export * from "./modelsList.js";
+export * from "./modelsListEmbeddings.js";
 export * from "./modelsListForUser.js";
 export * from "./oAuthCreateAuthCode.js";
 export * from "./oAuthExchangeAuthCodeForAPIKey.js";

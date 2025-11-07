@@ -11,8 +11,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
-  ReasoningSummaryText$Outbound,
-  ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 
 export const OpenResponsesReasoningSummaryPartAddedEventType = {
@@ -41,24 +39,6 @@ export const OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema:
   );
 
 /** @internal */
-export const OpenResponsesReasoningSummaryPartAddedEventType$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryPartAddedEventType> =
-    OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryPartAddedEventType$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryPartAddedEventType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryPartAddedEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryPartAddedEvent, unknown> = z.object({
     type: OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema,
@@ -75,63 +55,6 @@ export const OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesReasoningSummaryPartAddedEvent$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  summary_index: number;
-  part: ReasoningSummaryText$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema:
-  z.ZodType<
-    OpenResponsesReasoningSummaryPartAddedEvent$Outbound,
-    OpenResponsesReasoningSummaryPartAddedEvent
-  > = z.object({
-    type: OpenResponsesReasoningSummaryPartAddedEventType$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    summaryIndex: z.number(),
-    part: ReasoningSummaryText$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      summaryIndex: "summary_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryPartAddedEvent$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryPartAddedEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningSummaryPartAddedEvent$Outbound;
-}
-
-export function openResponsesReasoningSummaryPartAddedEventToJSON(
-  openResponsesReasoningSummaryPartAddedEvent:
-    OpenResponsesReasoningSummaryPartAddedEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema.parse(
-      openResponsesReasoningSummaryPartAddedEvent,
-    ),
-  );
-}
 
 export function openResponsesReasoningSummaryPartAddedEventFromJSON(
   jsonString: string,

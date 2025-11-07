@@ -26,46 +26,6 @@ export const RequestTimeoutResponseErrorData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
 
-/** @internal */
-export type RequestTimeoutResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const RequestTimeoutResponseErrorData$outboundSchema: z.ZodType<
-  RequestTimeoutResponseErrorData$Outbound,
-  RequestTimeoutResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace RequestTimeoutResponseErrorData$ {
-  /** @deprecated use `RequestTimeoutResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = RequestTimeoutResponseErrorData$inboundSchema;
-  /** @deprecated use `RequestTimeoutResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = RequestTimeoutResponseErrorData$outboundSchema;
-  /** @deprecated use `RequestTimeoutResponseErrorData$Outbound` instead. */
-  export type Outbound = RequestTimeoutResponseErrorData$Outbound;
-}
-
-export function requestTimeoutResponseErrorDataToJSON(
-  requestTimeoutResponseErrorData: RequestTimeoutResponseErrorData,
-): string {
-  return JSON.stringify(
-    RequestTimeoutResponseErrorData$outboundSchema.parse(
-      requestTimeoutResponseErrorData,
-    ),
-  );
-}
-
 export function requestTimeoutResponseErrorDataFromJSON(
   jsonString: string,
 ): SafeParseResult<RequestTimeoutResponseErrorData, SDKValidationError> {

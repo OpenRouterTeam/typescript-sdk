@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 21d34ad219f16d5944497a609bd0c936
+  docChecksum: 49621e9bf67482e01c2be5fffeb0c319
   docVersion: 1.0.0
-  speakeasyVersion: 1.649.0
-  generationVersion: 2.739.1
-  releaseVersion: 0.1.2
-  configChecksum: 657f662a39f93f0a04d95b548cf124fe
+  speakeasyVersion: 1.650.0
+  generationVersion: 2.743.2
+  releaseVersion: 0.1.3
+  configChecksum: 63545a2e0664767bc4706b01fd016538
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.0
+    core: 3.26.3
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -73,6 +73,7 @@ generatedFiles:
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
+  - docs/models/chatmessagecontentitemvideo.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -475,9 +476,9 @@ generatedFiles:
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
   - docs/models/tokenizer.md
-  - docs/models/tool.md
   - docs/models/toolcallstatus.md
-  - docs/models/toolfunction.md
+  - docs/models/tooldefinitionjson.md
+  - docs/models/tooldefinitionjsonfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
   - docs/models/toomanyrequestsresponseerrordata.md
@@ -509,6 +510,7 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
+  - docs/models/videourl.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -551,6 +553,7 @@ generatedFiles:
   - src/funcs/generationsGetGeneration.ts
   - src/funcs/modelsCount.ts
   - src/funcs/modelsList.ts
+  - src/funcs/modelsListEmbeddings.ts
   - src/funcs/modelsListForUser.ts
   - src/funcs/oAuthCreateAuthCode.ts
   - src/funcs/oAuthExchangeAuthCodeForAPIKey.ts
@@ -589,6 +592,7 @@ generatedFiles:
   - src/models/chatmessagecontentitemaudio.ts
   - src/models/chatmessagecontentitemimage.ts
   - src/models/chatmessagecontentitemtext.ts
+  - src/models/chatmessagecontentitemvideo.ts
   - src/models/chatmessagetokenlogprob.ts
   - src/models/chatmessagetokenlogprobs.ts
   - src/models/chatmessagetoolcall.ts
@@ -750,8 +754,8 @@ generatedFiles:
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
-  - src/models/tool.ts
   - src/models/toolcallstatus.ts
+  - src/models/tooldefinitionjson.ts
   - src/models/toolresponsemessage.ts
   - src/models/toomanyrequestsresponseerrordata.ts
   - src/models/topproviderinfo.ts
@@ -782,6 +786,7 @@ generatedFiles:
   - src/react-query/index.ts
   - src/react-query/modelsCount.ts
   - src/react-query/modelsList.ts
+  - src/react-query/modelsListEmbeddings.ts
   - src/react-query/modelsListForUser.ts
   - src/react-query/oAuthCreateAuthCode.ts
   - src/react-query/oAuthExchangeAuthCodeForAPIKey.ts
@@ -1523,7 +1528,7 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_video_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
+          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
@@ -1790,4 +1795,13 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+  listModelsEmbeddings:
+    speakeasy-default-list-models-embeddings:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2

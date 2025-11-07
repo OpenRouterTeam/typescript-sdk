@@ -18,36 +18,6 @@ export const GetCreditsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({});
 
-/** @internal */
-export type GetCreditsResponse$Outbound = {};
-
-/** @internal */
-export const GetCreditsResponse$outboundSchema: z.ZodType<
-  GetCreditsResponse$Outbound,
-  GetCreditsResponse
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetCreditsResponse$ {
-  /** @deprecated use `GetCreditsResponse$inboundSchema` instead. */
-  export const inboundSchema = GetCreditsResponse$inboundSchema;
-  /** @deprecated use `GetCreditsResponse$outboundSchema` instead. */
-  export const outboundSchema = GetCreditsResponse$outboundSchema;
-  /** @deprecated use `GetCreditsResponse$Outbound` instead. */
-  export type Outbound = GetCreditsResponse$Outbound;
-}
-
-export function getCreditsResponseToJSON(
-  getCreditsResponse: GetCreditsResponse,
-): string {
-  return JSON.stringify(
-    GetCreditsResponse$outboundSchema.parse(getCreditsResponse),
-  );
-}
-
 export function getCreditsResponseFromJSON(
   jsonString: string,
 ): SafeParseResult<GetCreditsResponse, SDKValidationError> {

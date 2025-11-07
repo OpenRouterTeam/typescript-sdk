@@ -4,11 +4,7 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -50,23 +46,6 @@ export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = z
   ]);
 
 /** @internal */
-export const CodeEnum$outboundSchema: z.ZodType<CodeEnum, CodeEnum> = z.union([
-  z.enum(CodeEnum),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CodeEnum$ {
-  /** @deprecated use `CodeEnum$inboundSchema` instead. */
-  export const inboundSchema = CodeEnum$inboundSchema;
-  /** @deprecated use `CodeEnum$outboundSchema` instead. */
-  export const outboundSchema = CodeEnum$outboundSchema;
-}
-
-/** @internal */
 export const ResponsesErrorField$inboundSchema: z.ZodType<
   ResponsesErrorField,
   unknown
@@ -74,42 +53,6 @@ export const ResponsesErrorField$inboundSchema: z.ZodType<
   code: CodeEnum$inboundSchema,
   message: z.string(),
 });
-
-/** @internal */
-export type ResponsesErrorField$Outbound = {
-  code: string;
-  message: string;
-};
-
-/** @internal */
-export const ResponsesErrorField$outboundSchema: z.ZodType<
-  ResponsesErrorField$Outbound,
-  ResponsesErrorField
-> = z.object({
-  code: CodeEnum$outboundSchema,
-  message: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesErrorField$ {
-  /** @deprecated use `ResponsesErrorField$inboundSchema` instead. */
-  export const inboundSchema = ResponsesErrorField$inboundSchema;
-  /** @deprecated use `ResponsesErrorField$outboundSchema` instead. */
-  export const outboundSchema = ResponsesErrorField$outboundSchema;
-  /** @deprecated use `ResponsesErrorField$Outbound` instead. */
-  export type Outbound = ResponsesErrorField$Outbound;
-}
-
-export function responsesErrorFieldToJSON(
-  responsesErrorField: ResponsesErrorField,
-): string {
-  return JSON.stringify(
-    ResponsesErrorField$outboundSchema.parse(responsesErrorField),
-  );
-}
 
 export function responsesErrorFieldFromJSON(
   jsonString: string,

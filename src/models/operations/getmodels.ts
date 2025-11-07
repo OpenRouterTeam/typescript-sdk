@@ -4,27 +4,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type GetModelsRequest = {
   category?: string | undefined;
   supportedParameters?: string | undefined;
 };
-
-/** @internal */
-export const GetModelsRequest$inboundSchema: z.ZodType<
-  GetModelsRequest,
-  unknown
-> = z.object({
-  category: z.string().optional(),
-  supported_parameters: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "supported_parameters": "supportedParameters",
-  });
-});
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
@@ -45,33 +29,10 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetModelsRequest$ {
-  /** @deprecated use `GetModelsRequest$inboundSchema` instead. */
-  export const inboundSchema = GetModelsRequest$inboundSchema;
-  /** @deprecated use `GetModelsRequest$outboundSchema` instead. */
-  export const outboundSchema = GetModelsRequest$outboundSchema;
-  /** @deprecated use `GetModelsRequest$Outbound` instead. */
-  export type Outbound = GetModelsRequest$Outbound;
-}
-
 export function getModelsRequestToJSON(
   getModelsRequest: GetModelsRequest,
 ): string {
   return JSON.stringify(
     GetModelsRequest$outboundSchema.parse(getModelsRequest),
-  );
-}
-
-export function getModelsRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<GetModelsRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetModelsRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetModelsRequest' from JSON`,
   );
 }

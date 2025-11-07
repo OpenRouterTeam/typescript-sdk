@@ -43,24 +43,10 @@ export type OpenResponsesWebSearchPreviewTool = {
 export const OpenResponsesWebSearchPreviewToolType$inboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearchPreviewToolType
 > = z.enum(OpenResponsesWebSearchPreviewToolType);
-
 /** @internal */
 export const OpenResponsesWebSearchPreviewToolType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearchPreviewToolType
 > = OpenResponsesWebSearchPreviewToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreviewToolType$ {
-  /** @deprecated use `OpenResponsesWebSearchPreviewToolType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearchPreviewToolType$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreviewToolType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreviewToolType$outboundSchema;
-}
 
 /** @internal */
 export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
@@ -77,7 +63,6 @@ export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
     "user_location": "userLocation",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearchPreviewTool$Outbound = {
   type: string;
@@ -101,20 +86,6 @@ export const OpenResponsesWebSearchPreviewTool$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearchPreviewTool$ {
-  /** @deprecated use `OpenResponsesWebSearchPreviewTool$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesWebSearchPreviewTool$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreviewTool$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearchPreviewTool$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearchPreviewTool$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearchPreviewTool$Outbound;
-}
-
 export function openResponsesWebSearchPreviewToolToJSON(
   openResponsesWebSearchPreviewTool: OpenResponsesWebSearchPreviewTool,
 ): string {
@@ -124,7 +95,6 @@ export function openResponsesWebSearchPreviewToolToJSON(
     ),
   );
 }
-
 export function openResponsesWebSearchPreviewToolFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesWebSearchPreviewTool, SDKValidationError> {

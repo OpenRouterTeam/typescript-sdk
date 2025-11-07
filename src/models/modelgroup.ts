@@ -3,11 +3,7 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 
 /**
  * Tokenizer type used by the model
@@ -44,21 +40,3 @@ export const ModelGroup$inboundSchema: z.ZodType<ModelGroup, unknown> = z
     z.enum(ModelGroup),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
-/** @internal */
-export const ModelGroup$outboundSchema: z.ZodType<ModelGroup, ModelGroup> = z
-  .union([
-    z.enum(ModelGroup),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ModelGroup$ {
-  /** @deprecated use `ModelGroup$inboundSchema` instead. */
-  export const inboundSchema = ModelGroup$inboundSchema;
-  /** @deprecated use `ModelGroup$outboundSchema` instead. */
-  export const outboundSchema = ModelGroup$outboundSchema;
-}

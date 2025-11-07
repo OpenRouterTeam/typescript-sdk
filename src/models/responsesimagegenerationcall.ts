@@ -31,22 +31,10 @@ export type ResponsesImageGenerationCall = {
 export const ResponsesImageGenerationCallType$inboundSchema: z.ZodEnum<
   typeof ResponsesImageGenerationCallType
 > = z.enum(ResponsesImageGenerationCallType);
-
 /** @internal */
 export const ResponsesImageGenerationCallType$outboundSchema: z.ZodEnum<
   typeof ResponsesImageGenerationCallType
 > = ResponsesImageGenerationCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesImageGenerationCallType$ {
-  /** @deprecated use `ResponsesImageGenerationCallType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesImageGenerationCallType$inboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCallType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesImageGenerationCallType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesImageGenerationCall$inboundSchema: z.ZodType<
@@ -58,7 +46,6 @@ export const ResponsesImageGenerationCall$inboundSchema: z.ZodType<
   result: z.nullable(z.string()),
   status: ImageGenerationStatus$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesImageGenerationCall$Outbound = {
   type: string;
@@ -78,19 +65,6 @@ export const ResponsesImageGenerationCall$outboundSchema: z.ZodType<
   status: ImageGenerationStatus$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesImageGenerationCall$ {
-  /** @deprecated use `ResponsesImageGenerationCall$inboundSchema` instead. */
-  export const inboundSchema = ResponsesImageGenerationCall$inboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCall$outboundSchema` instead. */
-  export const outboundSchema = ResponsesImageGenerationCall$outboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCall$Outbound` instead. */
-  export type Outbound = ResponsesImageGenerationCall$Outbound;
-}
-
 export function responsesImageGenerationCallToJSON(
   responsesImageGenerationCall: ResponsesImageGenerationCall,
 ): string {
@@ -100,7 +74,6 @@ export function responsesImageGenerationCallToJSON(
     ),
   );
 }
-
 export function responsesImageGenerationCallFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesImageGenerationCall, SDKValidationError> {

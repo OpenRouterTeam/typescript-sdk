@@ -26,48 +26,6 @@ export const UnprocessableEntityResponseErrorData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
 
-/** @internal */
-export type UnprocessableEntityResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const UnprocessableEntityResponseErrorData$outboundSchema: z.ZodType<
-  UnprocessableEntityResponseErrorData$Outbound,
-  UnprocessableEntityResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace UnprocessableEntityResponseErrorData$ {
-  /** @deprecated use `UnprocessableEntityResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema =
-    UnprocessableEntityResponseErrorData$inboundSchema;
-  /** @deprecated use `UnprocessableEntityResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema =
-    UnprocessableEntityResponseErrorData$outboundSchema;
-  /** @deprecated use `UnprocessableEntityResponseErrorData$Outbound` instead. */
-  export type Outbound = UnprocessableEntityResponseErrorData$Outbound;
-}
-
-export function unprocessableEntityResponseErrorDataToJSON(
-  unprocessableEntityResponseErrorData: UnprocessableEntityResponseErrorData,
-): string {
-  return JSON.stringify(
-    UnprocessableEntityResponseErrorData$outboundSchema.parse(
-      unprocessableEntityResponseErrorData,
-    ),
-  );
-}
-
 export function unprocessableEntityResponseErrorDataFromJSON(
   jsonString: string,
 ): SafeParseResult<UnprocessableEntityResponseErrorData, SDKValidationError> {
