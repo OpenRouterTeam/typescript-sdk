@@ -4,17 +4,12 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenAIResponsesReasoningEffort,
-  OpenAIResponsesReasoningEffort$inboundSchema,
   OpenAIResponsesReasoningEffort$outboundSchema,
 } from "./openairesponsesreasoningeffort.js";
 import {
   ReasoningSummaryVerbosity,
-  ReasoningSummaryVerbosity$inboundSchema,
   ReasoningSummaryVerbosity$outboundSchema,
 } from "./reasoningsummaryverbosity.js";
 
@@ -27,21 +22,6 @@ export type OpenResponsesReasoningConfig = {
   maxTokens?: number | null | undefined;
   enabled?: boolean | null | undefined;
 };
-
-/** @internal */
-export const OpenResponsesReasoningConfig$inboundSchema: z.ZodType<
-  OpenResponsesReasoningConfig,
-  unknown
-> = z.object({
-  effort: z.nullable(OpenAIResponsesReasoningEffort$inboundSchema).optional(),
-  summary: ReasoningSummaryVerbosity$inboundSchema.optional(),
-  max_tokens: z.nullable(z.number()).optional(),
-  enabled: z.nullable(z.boolean()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "max_tokens": "maxTokens",
-  });
-});
 
 /** @internal */
 export type OpenResponsesReasoningConfig$Outbound = {
@@ -66,19 +46,6 @@ export const OpenResponsesReasoningConfig$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningConfig$ {
-  /** @deprecated use `OpenResponsesReasoningConfig$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningConfig$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningConfig$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoningConfig$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningConfig$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningConfig$Outbound;
-}
-
 export function openResponsesReasoningConfigToJSON(
   openResponsesReasoningConfig: OpenResponsesReasoningConfig,
 ): string {
@@ -86,15 +53,5 @@ export function openResponsesReasoningConfigToJSON(
     OpenResponsesReasoningConfig$outboundSchema.parse(
       openResponsesReasoningConfig,
     ),
-  );
-}
-
-export function openResponsesReasoningConfigFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesReasoningConfig, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesReasoningConfig$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesReasoningConfig' from JSON`,
   );
 }

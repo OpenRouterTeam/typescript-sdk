@@ -1,11 +1,11 @@
-# ToolFunction
+# ToolDefinitionJsonFunction
 
 ## Example Usage
 
 ```typescript
-import { ToolFunction } from "@openrouter/sdk/models";
+import { ToolDefinitionJsonFunction } from "@openrouter/sdk/models";
 
-let value: ToolFunction = {
+let value: ToolDefinitionJsonFunction = {
   name: "<value>",
 };
 ```

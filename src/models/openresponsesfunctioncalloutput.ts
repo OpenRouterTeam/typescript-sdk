@@ -4,13 +4,9 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ToolCallStatus,
-  ToolCallStatus$inboundSchema,
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
@@ -33,43 +29,9 @@ export type OpenResponsesFunctionCallOutput = {
 };
 
 /** @internal */
-export const OpenResponsesFunctionCallOutputType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesFunctionCallOutputType
-> = z.enum(OpenResponsesFunctionCallOutputType);
-
-/** @internal */
 export const OpenResponsesFunctionCallOutputType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesFunctionCallOutputType
-> = OpenResponsesFunctionCallOutputType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesFunctionCallOutputType$ {
-  /** @deprecated use `OpenResponsesFunctionCallOutputType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesFunctionCallOutputType$inboundSchema;
-  /** @deprecated use `OpenResponsesFunctionCallOutputType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesFunctionCallOutputType$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesFunctionCallOutput$inboundSchema: z.ZodType<
-  OpenResponsesFunctionCallOutput,
-  unknown
-> = z.object({
-  type: OpenResponsesFunctionCallOutputType$inboundSchema,
-  id: z.string(),
-  call_id: z.string(),
-  output: z.string(),
-  status: ToolCallStatus$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
-  });
-});
+> = z.enum(OpenResponsesFunctionCallOutputType);
 
 /** @internal */
 export type OpenResponsesFunctionCallOutput$Outbound = {
@@ -96,19 +58,6 @@ export const OpenResponsesFunctionCallOutput$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesFunctionCallOutput$ {
-  /** @deprecated use `OpenResponsesFunctionCallOutput$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesFunctionCallOutput$inboundSchema;
-  /** @deprecated use `OpenResponsesFunctionCallOutput$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesFunctionCallOutput$outboundSchema;
-  /** @deprecated use `OpenResponsesFunctionCallOutput$Outbound` instead. */
-  export type Outbound = OpenResponsesFunctionCallOutput$Outbound;
-}
-
 export function openResponsesFunctionCallOutputToJSON(
   openResponsesFunctionCallOutput: OpenResponsesFunctionCallOutput,
 ): string {
@@ -116,15 +65,5 @@ export function openResponsesFunctionCallOutputToJSON(
     OpenResponsesFunctionCallOutput$outboundSchema.parse(
       openResponsesFunctionCallOutput,
     ),
-  );
-}
-
-export function openResponsesFunctionCallOutputFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesFunctionCallOutput, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesFunctionCallOutput$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesFunctionCallOutput' from JSON`,
   );
 }

@@ -105,7 +105,6 @@ export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> = z
     z.enum(ProviderName),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ProviderName$outboundSchema: z.ZodType<
   ProviderName,
@@ -114,14 +113,3 @@ export const ProviderName$outboundSchema: z.ZodType<
   z.enum(ProviderName),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ProviderName$ {
-  /** @deprecated use `ProviderName$inboundSchema` instead. */
-  export const inboundSchema = ProviderName$inboundSchema;
-  /** @deprecated use `ProviderName$outboundSchema` instead. */
-  export const outboundSchema = ProviderName$outboundSchema;
-}

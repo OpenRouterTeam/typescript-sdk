@@ -29,40 +29,6 @@ export const TopLogprob$inboundSchema: z.ZodType<TopLogprob, unknown> = z
     bytes: z.nullable(z.array(z.number())),
   });
 
-/** @internal */
-export type TopLogprob$Outbound = {
-  token: string;
-  logprob: number;
-  bytes: Array<number> | null;
-};
-
-/** @internal */
-export const TopLogprob$outboundSchema: z.ZodType<
-  TopLogprob$Outbound,
-  TopLogprob
-> = z.object({
-  token: z.string(),
-  logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TopLogprob$ {
-  /** @deprecated use `TopLogprob$inboundSchema` instead. */
-  export const inboundSchema = TopLogprob$inboundSchema;
-  /** @deprecated use `TopLogprob$outboundSchema` instead. */
-  export const outboundSchema = TopLogprob$outboundSchema;
-  /** @deprecated use `TopLogprob$Outbound` instead. */
-  export type Outbound = TopLogprob$Outbound;
-}
-
-export function topLogprobToJSON(topLogprob: TopLogprob): string {
-  return JSON.stringify(TopLogprob$outboundSchema.parse(topLogprob));
-}
-
 export function topLogprobFromJSON(
   jsonString: string,
 ): SafeParseResult<TopLogprob, SDKValidationError> {
@@ -87,50 +53,6 @@ export const ChatMessageTokenLogprob$inboundSchema: z.ZodType<
     "top_logprobs": "topLogprobs",
   });
 });
-
-/** @internal */
-export type ChatMessageTokenLogprob$Outbound = {
-  token: string;
-  logprob: number;
-  bytes: Array<number> | null;
-  top_logprobs: Array<TopLogprob$Outbound>;
-};
-
-/** @internal */
-export const ChatMessageTokenLogprob$outboundSchema: z.ZodType<
-  ChatMessageTokenLogprob$Outbound,
-  ChatMessageTokenLogprob
-> = z.object({
-  token: z.string(),
-  logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
-  topLogprobs: z.array(z.lazy(() => TopLogprob$outboundSchema)),
-}).transform((v) => {
-  return remap$(v, {
-    topLogprobs: "top_logprobs",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageTokenLogprob$ {
-  /** @deprecated use `ChatMessageTokenLogprob$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageTokenLogprob$inboundSchema;
-  /** @deprecated use `ChatMessageTokenLogprob$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageTokenLogprob$outboundSchema;
-  /** @deprecated use `ChatMessageTokenLogprob$Outbound` instead. */
-  export type Outbound = ChatMessageTokenLogprob$Outbound;
-}
-
-export function chatMessageTokenLogprobToJSON(
-  chatMessageTokenLogprob: ChatMessageTokenLogprob,
-): string {
-  return JSON.stringify(
-    ChatMessageTokenLogprob$outboundSchema.parse(chatMessageTokenLogprob),
-  );
-}
 
 export function chatMessageTokenLogprobFromJSON(
   jsonString: string,

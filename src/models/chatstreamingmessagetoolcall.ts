@@ -28,46 +28,6 @@ export const ChatStreamingMessageToolCallFunction$inboundSchema: z.ZodType<
   arguments: z.string().optional(),
 });
 
-/** @internal */
-export type ChatStreamingMessageToolCallFunction$Outbound = {
-  name?: string | undefined;
-  arguments?: string | undefined;
-};
-
-/** @internal */
-export const ChatStreamingMessageToolCallFunction$outboundSchema: z.ZodType<
-  ChatStreamingMessageToolCallFunction$Outbound,
-  ChatStreamingMessageToolCallFunction
-> = z.object({
-  name: z.string().optional(),
-  arguments: z.string().optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingMessageToolCallFunction$ {
-  /** @deprecated use `ChatStreamingMessageToolCallFunction$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatStreamingMessageToolCallFunction$inboundSchema;
-  /** @deprecated use `ChatStreamingMessageToolCallFunction$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatStreamingMessageToolCallFunction$outboundSchema;
-  /** @deprecated use `ChatStreamingMessageToolCallFunction$Outbound` instead. */
-  export type Outbound = ChatStreamingMessageToolCallFunction$Outbound;
-}
-
-export function chatStreamingMessageToolCallFunctionToJSON(
-  chatStreamingMessageToolCallFunction: ChatStreamingMessageToolCallFunction,
-): string {
-  return JSON.stringify(
-    ChatStreamingMessageToolCallFunction$outboundSchema.parse(
-      chatStreamingMessageToolCallFunction,
-    ),
-  );
-}
-
 export function chatStreamingMessageToolCallFunctionFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatStreamingMessageToolCallFunction, SDKValidationError> {
@@ -90,49 +50,6 @@ export const ChatStreamingMessageToolCall$inboundSchema: z.ZodType<
   function: z.lazy(() => ChatStreamingMessageToolCallFunction$inboundSchema)
     .optional(),
 });
-
-/** @internal */
-export type ChatStreamingMessageToolCall$Outbound = {
-  index: number;
-  id?: string | undefined;
-  type?: "function" | undefined;
-  function?: ChatStreamingMessageToolCallFunction$Outbound | undefined;
-};
-
-/** @internal */
-export const ChatStreamingMessageToolCall$outboundSchema: z.ZodType<
-  ChatStreamingMessageToolCall$Outbound,
-  ChatStreamingMessageToolCall
-> = z.object({
-  index: z.number(),
-  id: z.string().optional(),
-  type: z.literal("function").optional(),
-  function: z.lazy(() => ChatStreamingMessageToolCallFunction$outboundSchema)
-    .optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingMessageToolCall$ {
-  /** @deprecated use `ChatStreamingMessageToolCall$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingMessageToolCall$inboundSchema;
-  /** @deprecated use `ChatStreamingMessageToolCall$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingMessageToolCall$outboundSchema;
-  /** @deprecated use `ChatStreamingMessageToolCall$Outbound` instead. */
-  export type Outbound = ChatStreamingMessageToolCall$Outbound;
-}
-
-export function chatStreamingMessageToolCallToJSON(
-  chatStreamingMessageToolCall: ChatStreamingMessageToolCall,
-): string {
-  return JSON.stringify(
-    ChatStreamingMessageToolCall$outboundSchema.parse(
-      chatStreamingMessageToolCall,
-    ),
-  );
-}
 
 export function chatStreamingMessageToolCallFromJSON(
   jsonString: string,

@@ -3,11 +3,7 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesResponseStatus = {
   Completed: "completed",
@@ -30,23 +26,3 @@ export const OpenAIResponsesResponseStatus$inboundSchema: z.ZodType<
     z.enum(OpenAIResponsesResponseStatus),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
-/** @internal */
-export const OpenAIResponsesResponseStatus$outboundSchema: z.ZodType<
-  OpenAIResponsesResponseStatus,
-  OpenAIResponsesResponseStatus
-> = z.union([
-  z.enum(OpenAIResponsesResponseStatus),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesResponseStatus$ {
-  /** @deprecated use `OpenAIResponsesResponseStatus$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesResponseStatus$inboundSchema;
-  /** @deprecated use `OpenAIResponsesResponseStatus$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesResponseStatus$outboundSchema;
-}

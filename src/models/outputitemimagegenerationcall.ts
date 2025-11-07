@@ -10,7 +10,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ImageGenerationStatus,
   ImageGenerationStatus$inboundSchema,
-  ImageGenerationStatus$outboundSchema,
 } from "./imagegenerationstatus.js";
 
 export const OutputItemImageGenerationCallType = {
@@ -33,23 +32,6 @@ export const OutputItemImageGenerationCallType$inboundSchema: z.ZodEnum<
 > = z.enum(OutputItemImageGenerationCallType);
 
 /** @internal */
-export const OutputItemImageGenerationCallType$outboundSchema: z.ZodEnum<
-  typeof OutputItemImageGenerationCallType
-> = OutputItemImageGenerationCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputItemImageGenerationCallType$ {
-  /** @deprecated use `OutputItemImageGenerationCallType$inboundSchema` instead. */
-  export const inboundSchema = OutputItemImageGenerationCallType$inboundSchema;
-  /** @deprecated use `OutputItemImageGenerationCallType$outboundSchema` instead. */
-  export const outboundSchema =
-    OutputItemImageGenerationCallType$outboundSchema;
-}
-
-/** @internal */
 export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
   OutputItemImageGenerationCall,
   unknown
@@ -59,48 +41,6 @@ export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
   result: z.nullable(z.string()),
   status: ImageGenerationStatus$inboundSchema,
 });
-
-/** @internal */
-export type OutputItemImageGenerationCall$Outbound = {
-  type: string;
-  id: string;
-  result: string | null;
-  status: string;
-};
-
-/** @internal */
-export const OutputItemImageGenerationCall$outboundSchema: z.ZodType<
-  OutputItemImageGenerationCall$Outbound,
-  OutputItemImageGenerationCall
-> = z.object({
-  type: OutputItemImageGenerationCallType$outboundSchema,
-  id: z.string(),
-  result: z.nullable(z.string()),
-  status: ImageGenerationStatus$outboundSchema,
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputItemImageGenerationCall$ {
-  /** @deprecated use `OutputItemImageGenerationCall$inboundSchema` instead. */
-  export const inboundSchema = OutputItemImageGenerationCall$inboundSchema;
-  /** @deprecated use `OutputItemImageGenerationCall$outboundSchema` instead. */
-  export const outboundSchema = OutputItemImageGenerationCall$outboundSchema;
-  /** @deprecated use `OutputItemImageGenerationCall$Outbound` instead. */
-  export type Outbound = OutputItemImageGenerationCall$Outbound;
-}
-
-export function outputItemImageGenerationCallToJSON(
-  outputItemImageGenerationCall: OutputItemImageGenerationCall,
-): string {
-  return JSON.stringify(
-    OutputItemImageGenerationCall$outboundSchema.parse(
-      outputItemImageGenerationCall,
-    ),
-  );
-}
 
 export function outputItemImageGenerationCallFromJSON(
   jsonString: string,

@@ -41,22 +41,10 @@ export type ResponseInputImage = {
 export const ResponseInputImageType$inboundSchema: z.ZodEnum<
   typeof ResponseInputImageType
 > = z.enum(ResponseInputImageType);
-
 /** @internal */
 export const ResponseInputImageType$outboundSchema: z.ZodEnum<
   typeof ResponseInputImageType
 > = ResponseInputImageType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImageType$ {
-  /** @deprecated use `ResponseInputImageType$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImageType$inboundSchema;
-  /** @deprecated use `ResponseInputImageType$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImageType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseInputImageDetail$inboundSchema: z.ZodType<
@@ -67,7 +55,6 @@ export const ResponseInputImageDetail$inboundSchema: z.ZodType<
     z.enum(ResponseInputImageDetail),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ResponseInputImageDetail$outboundSchema: z.ZodType<
   ResponseInputImageDetail,
@@ -76,17 +63,6 @@ export const ResponseInputImageDetail$outboundSchema: z.ZodType<
   z.enum(ResponseInputImageDetail),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImageDetail$ {
-  /** @deprecated use `ResponseInputImageDetail$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImageDetail$inboundSchema;
-  /** @deprecated use `ResponseInputImageDetail$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImageDetail$outboundSchema;
-}
 
 /** @internal */
 export const ResponseInputImage$inboundSchema: z.ZodType<
@@ -101,7 +77,6 @@ export const ResponseInputImage$inboundSchema: z.ZodType<
     "image_url": "imageUrl",
   });
 });
-
 /** @internal */
 export type ResponseInputImage$Outbound = {
   type: string;
@@ -123,19 +98,6 @@ export const ResponseInputImage$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImage$ {
-  /** @deprecated use `ResponseInputImage$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImage$inboundSchema;
-  /** @deprecated use `ResponseInputImage$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImage$outboundSchema;
-  /** @deprecated use `ResponseInputImage$Outbound` instead. */
-  export type Outbound = ResponseInputImage$Outbound;
-}
-
 export function responseInputImageToJSON(
   responseInputImage: ResponseInputImage,
 ): string {
@@ -143,7 +105,6 @@ export function responseInputImageToJSON(
     ResponseInputImage$outboundSchema.parse(responseInputImage),
   );
 }
-
 export function responseInputImageFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputImage, SDKValidationError> {

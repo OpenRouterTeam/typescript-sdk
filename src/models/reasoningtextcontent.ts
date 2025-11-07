@@ -24,22 +24,10 @@ export type ReasoningTextContent = {
 export const ReasoningTextContentType$inboundSchema: z.ZodEnum<
   typeof ReasoningTextContentType
 > = z.enum(ReasoningTextContentType);
-
 /** @internal */
 export const ReasoningTextContentType$outboundSchema: z.ZodEnum<
   typeof ReasoningTextContentType
 > = ReasoningTextContentType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningTextContentType$ {
-  /** @deprecated use `ReasoningTextContentType$inboundSchema` instead. */
-  export const inboundSchema = ReasoningTextContentType$inboundSchema;
-  /** @deprecated use `ReasoningTextContentType$outboundSchema` instead. */
-  export const outboundSchema = ReasoningTextContentType$outboundSchema;
-}
 
 /** @internal */
 export const ReasoningTextContent$inboundSchema: z.ZodType<
@@ -49,7 +37,6 @@ export const ReasoningTextContent$inboundSchema: z.ZodType<
   type: ReasoningTextContentType$inboundSchema,
   text: z.string(),
 });
-
 /** @internal */
 export type ReasoningTextContent$Outbound = {
   type: string;
@@ -65,19 +52,6 @@ export const ReasoningTextContent$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningTextContent$ {
-  /** @deprecated use `ReasoningTextContent$inboundSchema` instead. */
-  export const inboundSchema = ReasoningTextContent$inboundSchema;
-  /** @deprecated use `ReasoningTextContent$outboundSchema` instead. */
-  export const outboundSchema = ReasoningTextContent$outboundSchema;
-  /** @deprecated use `ReasoningTextContent$Outbound` instead. */
-  export type Outbound = ReasoningTextContent$Outbound;
-}
-
 export function reasoningTextContentToJSON(
   reasoningTextContent: ReasoningTextContent,
 ): string {
@@ -85,7 +59,6 @@ export function reasoningTextContentToJSON(
     ReasoningTextContent$outboundSchema.parse(reasoningTextContent),
   );
 }
-
 export function reasoningTextContentFromJSON(
   jsonString: string,
 ): SafeParseResult<ReasoningTextContent, SDKValidationError> {

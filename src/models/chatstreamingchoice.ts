@@ -9,19 +9,14 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatCompletionFinishReason,
   ChatCompletionFinishReason$inboundSchema,
-  ChatCompletionFinishReason$outboundSchema,
 } from "./chatcompletionfinishreason.js";
 import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
-  ChatMessageTokenLogprobs$Outbound,
-  ChatMessageTokenLogprobs$outboundSchema,
 } from "./chatmessagetokenlogprobs.js";
 import {
   ChatStreamingMessageChunk,
   ChatStreamingMessageChunk$inboundSchema,
-  ChatStreamingMessageChunk$Outbound,
-  ChatStreamingMessageChunk$outboundSchema,
 } from "./chatstreamingmessagechunk.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -46,50 +41,6 @@ export const ChatStreamingChoice$inboundSchema: z.ZodType<
     "finish_reason": "finishReason",
   });
 });
-
-/** @internal */
-export type ChatStreamingChoice$Outbound = {
-  delta: ChatStreamingMessageChunk$Outbound;
-  finish_reason: string | null;
-  index: number;
-  logprobs?: ChatMessageTokenLogprobs$Outbound | null | undefined;
-};
-
-/** @internal */
-export const ChatStreamingChoice$outboundSchema: z.ZodType<
-  ChatStreamingChoice$Outbound,
-  ChatStreamingChoice
-> = z.object({
-  delta: ChatStreamingMessageChunk$outboundSchema,
-  finishReason: z.nullable(ChatCompletionFinishReason$outboundSchema),
-  index: z.number(),
-  logprobs: z.nullable(ChatMessageTokenLogprobs$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    finishReason: "finish_reason",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingChoice$ {
-  /** @deprecated use `ChatStreamingChoice$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingChoice$inboundSchema;
-  /** @deprecated use `ChatStreamingChoice$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingChoice$outboundSchema;
-  /** @deprecated use `ChatStreamingChoice$Outbound` instead. */
-  export type Outbound = ChatStreamingChoice$Outbound;
-}
-
-export function chatStreamingChoiceToJSON(
-  chatStreamingChoice: ChatStreamingChoice,
-): string {
-  return JSON.stringify(
-    ChatStreamingChoice$outboundSchema.parse(chatStreamingChoice),
-  );
-}
 
 export function chatStreamingChoiceFromJSON(
   jsonString: string,

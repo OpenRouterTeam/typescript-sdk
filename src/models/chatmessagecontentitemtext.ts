@@ -20,7 +20,6 @@ export const ChatMessageContentItemText$inboundSchema: z.ZodType<
   type: z.literal("text"),
   text: z.string(),
 });
-
 /** @internal */
 export type ChatMessageContentItemText$Outbound = {
   type: "text";
@@ -36,19 +35,6 @@ export const ChatMessageContentItemText$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemText$ {
-  /** @deprecated use `ChatMessageContentItemText$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItemText$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemText$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageContentItemText$outboundSchema;
-  /** @deprecated use `ChatMessageContentItemText$Outbound` instead. */
-  export type Outbound = ChatMessageContentItemText$Outbound;
-}
-
 export function chatMessageContentItemTextToJSON(
   chatMessageContentItemText: ChatMessageContentItemText,
 ): string {
@@ -56,7 +42,6 @@ export function chatMessageContentItemTextToJSON(
     ChatMessageContentItemText$outboundSchema.parse(chatMessageContentItemText),
   );
 }
-
 export function chatMessageContentItemTextFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageContentItemText, SDKValidationError> {

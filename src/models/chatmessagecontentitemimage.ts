@@ -41,7 +41,6 @@ export const ChatMessageContentItemImageDetail$inboundSchema: z.ZodType<
     z.enum(ChatMessageContentItemImageDetail),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ChatMessageContentItemImageDetail$outboundSchema: z.ZodType<
   ChatMessageContentItemImageDetail,
@@ -51,24 +50,11 @@ export const ChatMessageContentItemImageDetail$outboundSchema: z.ZodType<
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemImageDetail$ {
-  /** @deprecated use `ChatMessageContentItemImageDetail$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItemImageDetail$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemImageDetail$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatMessageContentItemImageDetail$outboundSchema;
-}
-
 /** @internal */
 export const ImageUrl$inboundSchema: z.ZodType<ImageUrl, unknown> = z.object({
   url: z.string(),
   detail: ChatMessageContentItemImageDetail$inboundSchema.optional(),
 });
-
 /** @internal */
 export type ImageUrl$Outbound = {
   url: string;
@@ -82,23 +68,9 @@ export const ImageUrl$outboundSchema: z.ZodType<ImageUrl$Outbound, ImageUrl> = z
     detail: ChatMessageContentItemImageDetail$outboundSchema.optional(),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ImageUrl$ {
-  /** @deprecated use `ImageUrl$inboundSchema` instead. */
-  export const inboundSchema = ImageUrl$inboundSchema;
-  /** @deprecated use `ImageUrl$outboundSchema` instead. */
-  export const outboundSchema = ImageUrl$outboundSchema;
-  /** @deprecated use `ImageUrl$Outbound` instead. */
-  export type Outbound = ImageUrl$Outbound;
-}
-
 export function imageUrlToJSON(imageUrl: ImageUrl): string {
   return JSON.stringify(ImageUrl$outboundSchema.parse(imageUrl));
 }
-
 export function imageUrlFromJSON(
   jsonString: string,
 ): SafeParseResult<ImageUrl, SDKValidationError> {
@@ -121,7 +93,6 @@ export const ChatMessageContentItemImage$inboundSchema: z.ZodType<
     "image_url": "imageUrl",
   });
 });
-
 /** @internal */
 export type ChatMessageContentItemImage$Outbound = {
   type: "image_url";
@@ -141,19 +112,6 @@ export const ChatMessageContentItemImage$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemImage$ {
-  /** @deprecated use `ChatMessageContentItemImage$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItemImage$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemImage$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageContentItemImage$outboundSchema;
-  /** @deprecated use `ChatMessageContentItemImage$Outbound` instead. */
-  export type Outbound = ChatMessageContentItemImage$Outbound;
-}
-
 export function chatMessageContentItemImageToJSON(
   chatMessageContentItemImage: ChatMessageContentItemImage,
 ): string {
@@ -163,7 +121,6 @@ export function chatMessageContentItemImageToJSON(
     ),
   );
 }
-
 export function chatMessageContentItemImageFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageContentItemImage, SDKValidationError> {

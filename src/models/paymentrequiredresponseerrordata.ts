@@ -26,46 +26,6 @@ export const PaymentRequiredResponseErrorData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
 
-/** @internal */
-export type PaymentRequiredResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const PaymentRequiredResponseErrorData$outboundSchema: z.ZodType<
-  PaymentRequiredResponseErrorData$Outbound,
-  PaymentRequiredResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PaymentRequiredResponseErrorData$ {
-  /** @deprecated use `PaymentRequiredResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = PaymentRequiredResponseErrorData$inboundSchema;
-  /** @deprecated use `PaymentRequiredResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = PaymentRequiredResponseErrorData$outboundSchema;
-  /** @deprecated use `PaymentRequiredResponseErrorData$Outbound` instead. */
-  export type Outbound = PaymentRequiredResponseErrorData$Outbound;
-}
-
-export function paymentRequiredResponseErrorDataToJSON(
-  paymentRequiredResponseErrorData: PaymentRequiredResponseErrorData,
-): string {
-  return JSON.stringify(
-    PaymentRequiredResponseErrorData$outboundSchema.parse(
-      paymentRequiredResponseErrorData,
-    ),
-  );
-}
-
 export function paymentRequiredResponseErrorDataFromJSON(
   jsonString: string,
 ): SafeParseResult<PaymentRequiredResponseErrorData, SDKValidationError> {

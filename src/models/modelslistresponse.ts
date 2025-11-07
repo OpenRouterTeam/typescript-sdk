@@ -6,12 +6,7 @@ import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  Model,
-  Model$inboundSchema,
-  Model$Outbound,
-  Model$outboundSchema,
-} from "./model.js";
+import { Model, Model$inboundSchema } from "./model.js";
 
 /**
  * List of available models
@@ -30,40 +25,6 @@ export const ModelsListResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.array(Model$inboundSchema),
 });
-
-/** @internal */
-export type ModelsListResponse$Outbound = {
-  data: Array<Model$Outbound>;
-};
-
-/** @internal */
-export const ModelsListResponse$outboundSchema: z.ZodType<
-  ModelsListResponse$Outbound,
-  ModelsListResponse
-> = z.object({
-  data: z.array(Model$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ModelsListResponse$ {
-  /** @deprecated use `ModelsListResponse$inboundSchema` instead. */
-  export const inboundSchema = ModelsListResponse$inboundSchema;
-  /** @deprecated use `ModelsListResponse$outboundSchema` instead. */
-  export const outboundSchema = ModelsListResponse$outboundSchema;
-  /** @deprecated use `ModelsListResponse$Outbound` instead. */
-  export type Outbound = ModelsListResponse$Outbound;
-}
-
-export function modelsListResponseToJSON(
-  modelsListResponse: ModelsListResponse,
-): string {
-  return JSON.stringify(
-    ModelsListResponse$outboundSchema.parse(modelsListResponse),
-  );
-}
 
 export function modelsListResponseFromJSON(
   jsonString: string,

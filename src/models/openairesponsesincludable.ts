@@ -3,11 +3,7 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { OpenEnum, Unrecognized } from "../types/enums.js";
 
 export const OpenAIResponsesIncludable = {
   FileSearchCallResults: "file_search_call.results",
@@ -21,16 +17,6 @@ export type OpenAIResponsesIncludable = OpenEnum<
 >;
 
 /** @internal */
-export const OpenAIResponsesIncludable$inboundSchema: z.ZodType<
-  OpenAIResponsesIncludable,
-  unknown
-> = z
-  .union([
-    z.enum(OpenAIResponsesIncludable),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
 export const OpenAIResponsesIncludable$outboundSchema: z.ZodType<
   OpenAIResponsesIncludable,
   OpenAIResponsesIncludable
@@ -38,14 +24,3 @@ export const OpenAIResponsesIncludable$outboundSchema: z.ZodType<
   z.enum(OpenAIResponsesIncludable),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesIncludable$ {
-  /** @deprecated use `OpenAIResponsesIncludable$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesIncludable$inboundSchema;
-  /** @deprecated use `OpenAIResponsesIncludable$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesIncludable$outboundSchema;
-}

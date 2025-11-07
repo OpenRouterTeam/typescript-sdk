@@ -31,24 +31,10 @@ export type ResponsesOutputItemFileSearchCall = {
 export const ResponsesOutputItemFileSearchCallType$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputItemFileSearchCallType
 > = z.enum(ResponsesOutputItemFileSearchCallType);
-
 /** @internal */
 export const ResponsesOutputItemFileSearchCallType$outboundSchema: z.ZodEnum<
   typeof ResponsesOutputItemFileSearchCallType
 > = ResponsesOutputItemFileSearchCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemFileSearchCallType$ {
-  /** @deprecated use `ResponsesOutputItemFileSearchCallType$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesOutputItemFileSearchCallType$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemFileSearchCallType$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemFileSearchCallType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesOutputItemFileSearchCall$inboundSchema: z.ZodType<
@@ -60,7 +46,6 @@ export const ResponsesOutputItemFileSearchCall$inboundSchema: z.ZodType<
   queries: z.array(z.string()),
   status: WebSearchStatus$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesOutputItemFileSearchCall$Outbound = {
   type: string;
@@ -80,20 +65,6 @@ export const ResponsesOutputItemFileSearchCall$outboundSchema: z.ZodType<
   status: WebSearchStatus$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesOutputItemFileSearchCall$ {
-  /** @deprecated use `ResponsesOutputItemFileSearchCall$inboundSchema` instead. */
-  export const inboundSchema = ResponsesOutputItemFileSearchCall$inboundSchema;
-  /** @deprecated use `ResponsesOutputItemFileSearchCall$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesOutputItemFileSearchCall$outboundSchema;
-  /** @deprecated use `ResponsesOutputItemFileSearchCall$Outbound` instead. */
-  export type Outbound = ResponsesOutputItemFileSearchCall$Outbound;
-}
-
 export function responsesOutputItemFileSearchCallToJSON(
   responsesOutputItemFileSearchCall: ResponsesOutputItemFileSearchCall,
 ): string {
@@ -103,7 +74,6 @@ export function responsesOutputItemFileSearchCallToJSON(
     ),
   );
 }
-
 export function responsesOutputItemFileSearchCallFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputItemFileSearchCall, SDKValidationError> {

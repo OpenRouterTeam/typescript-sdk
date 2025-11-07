@@ -4,18 +4,13 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ResponseFormatJSONSchema,
-  ResponseFormatJSONSchema$inboundSchema,
   ResponseFormatJSONSchema$Outbound,
   ResponseFormatJSONSchema$outboundSchema,
 } from "./responseformatjsonschema.js";
 import {
   ResponseFormatTextGrammar,
-  ResponseFormatTextGrammar$inboundSchema,
   ResponseFormatTextGrammar$Outbound,
   ResponseFormatTextGrammar$outboundSchema,
 } from "./responseformattextgrammar.js";
@@ -83,14 +78,6 @@ export type CompletionCreateParams = {
 };
 
 /** @internal */
-export const Prompt$inboundSchema: z.ZodType<Prompt, unknown> = z.union([
-  z.string(),
-  z.array(z.string()),
-  z.array(z.number()),
-  z.array(z.array(z.number())),
-]);
-
-/** @internal */
 export type Prompt$Outbound =
   | string
   | Array<string>
@@ -106,38 +93,9 @@ export const Prompt$outboundSchema: z.ZodType<Prompt$Outbound, Prompt> = z
     z.array(z.array(z.number())),
   ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Prompt$ {
-  /** @deprecated use `Prompt$inboundSchema` instead. */
-  export const inboundSchema = Prompt$inboundSchema;
-  /** @deprecated use `Prompt$outboundSchema` instead. */
-  export const outboundSchema = Prompt$outboundSchema;
-  /** @deprecated use `Prompt$Outbound` instead. */
-  export type Outbound = Prompt$Outbound;
-}
-
 export function promptToJSON(prompt: Prompt): string {
   return JSON.stringify(Prompt$outboundSchema.parse(prompt));
 }
-
-export function promptFromJSON(
-  jsonString: string,
-): SafeParseResult<Prompt, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Prompt$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Prompt' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsStop$inboundSchema: z.ZodType<
-  CompletionCreateParamsStop,
-  unknown
-> = z.union([z.string(), z.array(z.string())]);
 
 /** @internal */
 export type CompletionCreateParamsStop$Outbound = string | Array<string>;
@@ -148,19 +106,6 @@ export const CompletionCreateParamsStop$outboundSchema: z.ZodType<
   CompletionCreateParamsStop
 > = z.union([z.string(), z.array(z.string())]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsStop$ {
-  /** @deprecated use `CompletionCreateParamsStop$inboundSchema` instead. */
-  export const inboundSchema = CompletionCreateParamsStop$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsStop$outboundSchema` instead. */
-  export const outboundSchema = CompletionCreateParamsStop$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsStop$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsStop$Outbound;
-}
-
 export function completionCreateParamsStopToJSON(
   completionCreateParamsStop: CompletionCreateParamsStop,
 ): string {
@@ -168,26 +113,6 @@ export function completionCreateParamsStopToJSON(
     CompletionCreateParamsStop$outboundSchema.parse(completionCreateParamsStop),
   );
 }
-
-export function completionCreateParamsStopFromJSON(
-  jsonString: string,
-): SafeParseResult<CompletionCreateParamsStop, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CompletionCreateParamsStop$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CompletionCreateParamsStop' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamOptions$inboundSchema: z.ZodType<StreamOptions, unknown> = z
-  .object({
-    include_usage: z.nullable(z.boolean()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "include_usage": "includeUsage",
-    });
-  });
 
 /** @internal */
 export type StreamOptions$Outbound = {
@@ -206,38 +131,9 @@ export const StreamOptions$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace StreamOptions$ {
-  /** @deprecated use `StreamOptions$inboundSchema` instead. */
-  export const inboundSchema = StreamOptions$inboundSchema;
-  /** @deprecated use `StreamOptions$outboundSchema` instead. */
-  export const outboundSchema = StreamOptions$outboundSchema;
-  /** @deprecated use `StreamOptions$Outbound` instead. */
-  export type Outbound = StreamOptions$Outbound;
-}
-
 export function streamOptionsToJSON(streamOptions: StreamOptions): string {
   return JSON.stringify(StreamOptions$outboundSchema.parse(streamOptions));
 }
-
-export function streamOptionsFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamOptions, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamOptions$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamOptions' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatPython$inboundSchema:
-  z.ZodType<CompletionCreateParamsResponseFormatPython, unknown> = z.object({
-    type: z.literal("python"),
-  });
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatPython$Outbound = {
@@ -253,21 +149,6 @@ export const CompletionCreateParamsResponseFormatPython$outboundSchema:
     type: z.literal("python"),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatPython$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatPython$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatPython$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatPython$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatPython$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatPython$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsResponseFormatPython$Outbound;
-}
-
 export function completionCreateParamsResponseFormatPythonToJSON(
   completionCreateParamsResponseFormatPython:
     CompletionCreateParamsResponseFormatPython,
@@ -278,30 +159,6 @@ export function completionCreateParamsResponseFormatPythonToJSON(
     ),
   );
 }
-
-export function completionCreateParamsResponseFormatPythonFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatPython,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatPython$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatPython' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatJSONObject$inboundSchema:
-  z.ZodType<CompletionCreateParamsResponseFormatJSONObject, unknown> = z.object(
-    {
-      type: z.literal("json_object"),
-    },
-  );
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatJSONObject$Outbound = {
@@ -317,22 +174,6 @@ export const CompletionCreateParamsResponseFormatJSONObject$outboundSchema:
     type: z.literal("json_object"),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatJSONObject$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONObject$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatJSONObject$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONObject$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatJSONObject$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatJSONObject$Outbound` instead. */
-  export type Outbound =
-    CompletionCreateParamsResponseFormatJSONObject$Outbound;
-}
-
 export function completionCreateParamsResponseFormatJSONObjectToJSON(
   completionCreateParamsResponseFormatJSONObject:
     CompletionCreateParamsResponseFormatJSONObject,
@@ -343,30 +184,6 @@ export function completionCreateParamsResponseFormatJSONObjectToJSON(
     ),
   );
 }
-
-export function completionCreateParamsResponseFormatJSONObjectFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatJSONObject,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatJSONObject$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatJSONObject' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatText$inboundSchema: z.ZodType<
-  CompletionCreateParamsResponseFormatText,
-  unknown
-> = z.object({
-  type: z.literal("text"),
-});
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatText$Outbound = {
@@ -381,21 +198,6 @@ export const CompletionCreateParamsResponseFormatText$outboundSchema: z.ZodType<
   type: z.literal("text"),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatText$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatText$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatText$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatText$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatText$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatText$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsResponseFormatText$Outbound;
-}
-
 export function completionCreateParamsResponseFormatTextToJSON(
   completionCreateParamsResponseFormatText:
     CompletionCreateParamsResponseFormatText,
@@ -406,34 +208,6 @@ export function completionCreateParamsResponseFormatTextToJSON(
     ),
   );
 }
-
-export function completionCreateParamsResponseFormatTextFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatText,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatText$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatText' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParamsResponseFormatUnion$inboundSchema: z.ZodType<
-  CompletionCreateParamsResponseFormatUnion,
-  unknown
-> = z.union([
-  ResponseFormatJSONSchema$inboundSchema,
-  ResponseFormatTextGrammar$inboundSchema,
-  z.lazy(() => CompletionCreateParamsResponseFormatText$inboundSchema),
-  z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$inboundSchema),
-  z.lazy(() => CompletionCreateParamsResponseFormatPython$inboundSchema),
-]);
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatUnion$Outbound =
@@ -456,21 +230,6 @@ export const CompletionCreateParamsResponseFormatUnion$outboundSchema:
     z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
   ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParamsResponseFormatUnion$ {
-  /** @deprecated use `CompletionCreateParamsResponseFormatUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    CompletionCreateParamsResponseFormatUnion$inboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    CompletionCreateParamsResponseFormatUnion$outboundSchema;
-  /** @deprecated use `CompletionCreateParamsResponseFormatUnion$Outbound` instead. */
-  export type Outbound = CompletionCreateParamsResponseFormatUnion$Outbound;
-}
-
 export function completionCreateParamsResponseFormatUnionToJSON(
   completionCreateParamsResponseFormatUnion:
     CompletionCreateParamsResponseFormatUnion,
@@ -481,77 +240,6 @@ export function completionCreateParamsResponseFormatUnionToJSON(
     ),
   );
 }
-
-export function completionCreateParamsResponseFormatUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  CompletionCreateParamsResponseFormatUnion,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      CompletionCreateParamsResponseFormatUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'CompletionCreateParamsResponseFormatUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const CompletionCreateParams$inboundSchema: z.ZodType<
-  CompletionCreateParams,
-  unknown
-> = z.object({
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  prompt: z.union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]),
-  best_of: z.nullable(z.number().int()).optional(),
-  echo: z.nullable(z.boolean()).optional(),
-  frequency_penalty: z.nullable(z.number()).optional(),
-  logit_bias: z.nullable(z.record(z.string(), z.number())).optional(),
-  logprobs: z.nullable(z.number().int()).optional(),
-  max_tokens: z.nullable(z.number().int()).optional(),
-  n: z.nullable(z.number().int()).optional(),
-  presence_penalty: z.nullable(z.number()).optional(),
-  seed: z.nullable(z.number().int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.boolean().default(false),
-  stream_options: z.nullable(z.lazy(() => StreamOptions$inboundSchema))
-    .optional(),
-  suffix: z.nullable(z.string()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  top_p: z.nullable(z.number()).optional(),
-  user: z.string().optional(),
-  metadata: z.nullable(z.record(z.string(), z.string())).optional(),
-  response_format: z.nullable(
-    z.union([
-      ResponseFormatJSONSchema$inboundSchema,
-      ResponseFormatTextGrammar$inboundSchema,
-      z.lazy(() => CompletionCreateParamsResponseFormatText$inboundSchema),
-      z.lazy(() =>
-        CompletionCreateParamsResponseFormatJSONObject$inboundSchema
-      ),
-      z.lazy(() => CompletionCreateParamsResponseFormatPython$inboundSchema),
-    ]),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "best_of": "bestOf",
-    "frequency_penalty": "frequencyPenalty",
-    "logit_bias": "logitBias",
-    "max_tokens": "maxTokens",
-    "presence_penalty": "presencePenalty",
-    "stream_options": "streamOptions",
-    "top_p": "topP",
-    "response_format": "responseFormat",
-  });
-});
 
 /** @internal */
 export type CompletionCreateParams$Outbound = {
@@ -640,33 +328,10 @@ export const CompletionCreateParams$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionCreateParams$ {
-  /** @deprecated use `CompletionCreateParams$inboundSchema` instead. */
-  export const inboundSchema = CompletionCreateParams$inboundSchema;
-  /** @deprecated use `CompletionCreateParams$outboundSchema` instead. */
-  export const outboundSchema = CompletionCreateParams$outboundSchema;
-  /** @deprecated use `CompletionCreateParams$Outbound` instead. */
-  export type Outbound = CompletionCreateParams$Outbound;
-}
-
 export function completionCreateParamsToJSON(
   completionCreateParams: CompletionCreateParams,
 ): string {
   return JSON.stringify(
     CompletionCreateParams$outboundSchema.parse(completionCreateParams),
-  );
-}
-
-export function completionCreateParamsFromJSON(
-  jsonString: string,
-): SafeParseResult<CompletionCreateParams, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CompletionCreateParams$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CompletionCreateParams' from JSON`,
   );
 }

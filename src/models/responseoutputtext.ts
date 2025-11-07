@@ -29,22 +29,10 @@ export type ResponseOutputText = {
 export const ResponseOutputTextType$inboundSchema: z.ZodEnum<
   typeof ResponseOutputTextType
 > = z.enum(ResponseOutputTextType);
-
 /** @internal */
 export const ResponseOutputTextType$outboundSchema: z.ZodEnum<
   typeof ResponseOutputTextType
 > = ResponseOutputTextType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseOutputTextType$ {
-  /** @deprecated use `ResponseOutputTextType$inboundSchema` instead. */
-  export const inboundSchema = ResponseOutputTextType$inboundSchema;
-  /** @deprecated use `ResponseOutputTextType$outboundSchema` instead. */
-  export const outboundSchema = ResponseOutputTextType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseOutputText$inboundSchema: z.ZodType<
@@ -55,7 +43,6 @@ export const ResponseOutputText$inboundSchema: z.ZodType<
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
 });
-
 /** @internal */
 export type ResponseOutputText$Outbound = {
   type: string;
@@ -73,19 +60,6 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseOutputText$ {
-  /** @deprecated use `ResponseOutputText$inboundSchema` instead. */
-  export const inboundSchema = ResponseOutputText$inboundSchema;
-  /** @deprecated use `ResponseOutputText$outboundSchema` instead. */
-  export const outboundSchema = ResponseOutputText$outboundSchema;
-  /** @deprecated use `ResponseOutputText$Outbound` instead. */
-  export type Outbound = ResponseOutputText$Outbound;
-}
-
 export function responseOutputTextToJSON(
   responseOutputText: ResponseOutputText,
 ): string {
@@ -93,7 +67,6 @@ export function responseOutputTextToJSON(
     ResponseOutputText$outboundSchema.parse(responseOutputText),
   );
 }
-
 export function responseOutputTextFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseOutputText, SDKValidationError> {

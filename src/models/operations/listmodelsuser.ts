@@ -3,21 +3,10 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type ListModelsUserSecurity = {
   bearer: string;
 };
-
-/** @internal */
-export const ListModelsUserSecurity$inboundSchema: z.ZodType<
-  ListModelsUserSecurity,
-  unknown
-> = z.object({
-  bearer: z.string(),
-});
 
 /** @internal */
 export type ListModelsUserSecurity$Outbound = {
@@ -32,33 +21,10 @@ export const ListModelsUserSecurity$outboundSchema: z.ZodType<
   bearer: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListModelsUserSecurity$ {
-  /** @deprecated use `ListModelsUserSecurity$inboundSchema` instead. */
-  export const inboundSchema = ListModelsUserSecurity$inboundSchema;
-  /** @deprecated use `ListModelsUserSecurity$outboundSchema` instead. */
-  export const outboundSchema = ListModelsUserSecurity$outboundSchema;
-  /** @deprecated use `ListModelsUserSecurity$Outbound` instead. */
-  export type Outbound = ListModelsUserSecurity$Outbound;
-}
-
 export function listModelsUserSecurityToJSON(
   listModelsUserSecurity: ListModelsUserSecurity,
 ): string {
   return JSON.stringify(
     ListModelsUserSecurity$outboundSchema.parse(listModelsUserSecurity),
-  );
-}
-
-export function listModelsUserSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<ListModelsUserSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListModelsUserSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListModelsUserSecurity' from JSON`,
   );
 }

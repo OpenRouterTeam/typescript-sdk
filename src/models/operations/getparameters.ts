@@ -147,14 +147,6 @@ export type GetParametersResponse = {
 };
 
 /** @internal */
-export const GetParametersSecurity$inboundSchema: z.ZodType<
-  GetParametersSecurity,
-  unknown
-> = z.object({
-  bearer: z.string(),
-});
-
-/** @internal */
 export type GetParametersSecurity$Outbound = {
   bearer: string;
 };
@@ -167,19 +159,6 @@ export const GetParametersSecurity$outboundSchema: z.ZodType<
   bearer: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersSecurity$ {
-  /** @deprecated use `GetParametersSecurity$inboundSchema` instead. */
-  export const inboundSchema = GetParametersSecurity$inboundSchema;
-  /** @deprecated use `GetParametersSecurity$outboundSchema` instead. */
-  export const outboundSchema = GetParametersSecurity$outboundSchema;
-  /** @deprecated use `GetParametersSecurity$Outbound` instead. */
-  export type Outbound = GetParametersSecurity$Outbound;
-}
-
 export function getParametersSecurityToJSON(
   getParametersSecurity: GetParametersSecurity,
 ): string {
@@ -187,26 +166,6 @@ export function getParametersSecurityToJSON(
     GetParametersSecurity$outboundSchema.parse(getParametersSecurity),
   );
 }
-
-export function getParametersSecurityFromJSON(
-  jsonString: string,
-): SafeParseResult<GetParametersSecurity, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetParametersSecurity$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetParametersSecurity' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetParametersProvider$inboundSchema: z.ZodType<
-  GetParametersProvider,
-  unknown
-> = z
-  .union([
-    z.enum(GetParametersProvider),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
 
 /** @internal */
 export const GetParametersProvider$outboundSchema: z.ZodType<
@@ -216,27 +175,6 @@ export const GetParametersProvider$outboundSchema: z.ZodType<
   z.enum(GetParametersProvider),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersProvider$ {
-  /** @deprecated use `GetParametersProvider$inboundSchema` instead. */
-  export const inboundSchema = GetParametersProvider$inboundSchema;
-  /** @deprecated use `GetParametersProvider$outboundSchema` instead. */
-  export const outboundSchema = GetParametersProvider$outboundSchema;
-}
-
-/** @internal */
-export const GetParametersRequest$inboundSchema: z.ZodType<
-  GetParametersRequest,
-  unknown
-> = z.object({
-  author: z.string(),
-  slug: z.string(),
-  provider: GetParametersProvider$inboundSchema.optional(),
-});
 
 /** @internal */
 export type GetParametersRequest$Outbound = {
@@ -255,34 +193,11 @@ export const GetParametersRequest$outboundSchema: z.ZodType<
   provider: GetParametersProvider$outboundSchema.optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersRequest$ {
-  /** @deprecated use `GetParametersRequest$inboundSchema` instead. */
-  export const inboundSchema = GetParametersRequest$inboundSchema;
-  /** @deprecated use `GetParametersRequest$outboundSchema` instead. */
-  export const outboundSchema = GetParametersRequest$outboundSchema;
-  /** @deprecated use `GetParametersRequest$Outbound` instead. */
-  export type Outbound = GetParametersRequest$Outbound;
-}
-
 export function getParametersRequestToJSON(
   getParametersRequest: GetParametersRequest,
 ): string {
   return JSON.stringify(
     GetParametersRequest$outboundSchema.parse(getParametersRequest),
-  );
-}
-
-export function getParametersRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<GetParametersRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetParametersRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetParametersRequest' from JSON`,
   );
 }
 
@@ -297,26 +212,6 @@ export const SupportedParameter$inboundSchema: z.ZodType<
   ]);
 
 /** @internal */
-export const SupportedParameter$outboundSchema: z.ZodType<
-  SupportedParameter,
-  SupportedParameter
-> = z.union([
-  z.enum(SupportedParameter),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace SupportedParameter$ {
-  /** @deprecated use `SupportedParameter$inboundSchema` instead. */
-  export const inboundSchema = SupportedParameter$inboundSchema;
-  /** @deprecated use `SupportedParameter$outboundSchema` instead. */
-  export const outboundSchema = SupportedParameter$outboundSchema;
-}
-
-/** @internal */
 export const GetParametersData$inboundSchema: z.ZodType<
   GetParametersData,
   unknown
@@ -328,46 +223,6 @@ export const GetParametersData$inboundSchema: z.ZodType<
     "supported_parameters": "supportedParameters",
   });
 });
-
-/** @internal */
-export type GetParametersData$Outbound = {
-  model: string;
-  supported_parameters: Array<string>;
-};
-
-/** @internal */
-export const GetParametersData$outboundSchema: z.ZodType<
-  GetParametersData$Outbound,
-  GetParametersData
-> = z.object({
-  model: z.string(),
-  supportedParameters: z.array(SupportedParameter$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    supportedParameters: "supported_parameters",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersData$ {
-  /** @deprecated use `GetParametersData$inboundSchema` instead. */
-  export const inboundSchema = GetParametersData$inboundSchema;
-  /** @deprecated use `GetParametersData$outboundSchema` instead. */
-  export const outboundSchema = GetParametersData$outboundSchema;
-  /** @deprecated use `GetParametersData$Outbound` instead. */
-  export type Outbound = GetParametersData$Outbound;
-}
-
-export function getParametersDataToJSON(
-  getParametersData: GetParametersData,
-): string {
-  return JSON.stringify(
-    GetParametersData$outboundSchema.parse(getParametersData),
-  );
-}
 
 export function getParametersDataFromJSON(
   jsonString: string,
@@ -386,40 +241,6 @@ export const GetParametersResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => GetParametersData$inboundSchema),
 });
-
-/** @internal */
-export type GetParametersResponse$Outbound = {
-  data: GetParametersData$Outbound;
-};
-
-/** @internal */
-export const GetParametersResponse$outboundSchema: z.ZodType<
-  GetParametersResponse$Outbound,
-  GetParametersResponse
-> = z.object({
-  data: z.lazy(() => GetParametersData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetParametersResponse$ {
-  /** @deprecated use `GetParametersResponse$inboundSchema` instead. */
-  export const inboundSchema = GetParametersResponse$inboundSchema;
-  /** @deprecated use `GetParametersResponse$outboundSchema` instead. */
-  export const outboundSchema = GetParametersResponse$outboundSchema;
-  /** @deprecated use `GetParametersResponse$Outbound` instead. */
-  export type Outbound = GetParametersResponse$Outbound;
-}
-
-export function getParametersResponseToJSON(
-  getParametersResponse: GetParametersResponse,
-): string {
-  return JSON.stringify(
-    GetParametersResponse$outboundSchema.parse(getParametersResponse),
-  );
-}
 
 export function getParametersResponseFromJSON(
   jsonString: string,

@@ -34,24 +34,6 @@ export const OpenResponsesReasoningDeltaEventType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesReasoningDeltaEventType);
 
 /** @internal */
-export const OpenResponsesReasoningDeltaEventType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningDeltaEventType
-> = OpenResponsesReasoningDeltaEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningDeltaEventType$ {
-  /** @deprecated use `OpenResponsesReasoningDeltaEventType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningDeltaEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDeltaEventType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningDeltaEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesReasoningDeltaEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDeltaEvent,
   unknown
@@ -70,59 +52,6 @@ export const OpenResponsesReasoningDeltaEvent$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesReasoningDeltaEvent$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  delta: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesReasoningDeltaEvent$outboundSchema: z.ZodType<
-  OpenResponsesReasoningDeltaEvent$Outbound,
-  OpenResponsesReasoningDeltaEvent
-> = z.object({
-  type: OpenResponsesReasoningDeltaEventType$outboundSchema,
-  outputIndex: z.number(),
-  itemId: z.string(),
-  contentIndex: z.number(),
-  delta: z.string(),
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    outputIndex: "output_index",
-    itemId: "item_id",
-    contentIndex: "content_index",
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningDeltaEvent$ {
-  /** @deprecated use `OpenResponsesReasoningDeltaEvent$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningDeltaEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDeltaEvent$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoningDeltaEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDeltaEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningDeltaEvent$Outbound;
-}
-
-export function openResponsesReasoningDeltaEventToJSON(
-  openResponsesReasoningDeltaEvent: OpenResponsesReasoningDeltaEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningDeltaEvent$outboundSchema.parse(
-      openResponsesReasoningDeltaEvent,
-    ),
-  );
-}
 
 export function openResponsesReasoningDeltaEventFromJSON(
   jsonString: string,

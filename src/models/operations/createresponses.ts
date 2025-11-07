@@ -41,42 +41,6 @@ export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
   }).pipe(models.OpenResponsesStreamEvent$inboundSchema),
 });
 
-/** @internal */
-export type CreateResponsesResponseBody$Outbound = {
-  data: models.OpenResponsesStreamEvent$Outbound;
-};
-
-/** @internal */
-export const CreateResponsesResponseBody$outboundSchema: z.ZodType<
-  CreateResponsesResponseBody$Outbound,
-  CreateResponsesResponseBody
-> = z.object({
-  data: models.OpenResponsesStreamEvent$outboundSchema,
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateResponsesResponseBody$ {
-  /** @deprecated use `CreateResponsesResponseBody$inboundSchema` instead. */
-  export const inboundSchema = CreateResponsesResponseBody$inboundSchema;
-  /** @deprecated use `CreateResponsesResponseBody$outboundSchema` instead. */
-  export const outboundSchema = CreateResponsesResponseBody$outboundSchema;
-  /** @deprecated use `CreateResponsesResponseBody$Outbound` instead. */
-  export type Outbound = CreateResponsesResponseBody$Outbound;
-}
-
-export function createResponsesResponseBodyToJSON(
-  createResponsesResponseBody: CreateResponsesResponseBody,
-): string {
-  return JSON.stringify(
-    CreateResponsesResponseBody$outboundSchema.parse(
-      createResponsesResponseBody,
-    ),
-  );
-}
-
 export function createResponsesResponseBodyFromJSON(
   jsonString: string,
 ): SafeParseResult<CreateResponsesResponseBody, SDKValidationError> {
@@ -105,41 +69,6 @@ export const CreateResponsesResponse$inboundSchema: z.ZodType<
       });
     }),
 ]);
-
-/** @internal */
-export type CreateResponsesResponse$Outbound =
-  | models.OpenResponsesNonStreamingResponse$Outbound
-  | never;
-
-/** @internal */
-export const CreateResponsesResponse$outboundSchema: z.ZodType<
-  CreateResponsesResponse$Outbound,
-  CreateResponsesResponse
-> = z.union([
-  models.OpenResponsesNonStreamingResponse$outboundSchema,
-  z.never(),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateResponsesResponse$ {
-  /** @deprecated use `CreateResponsesResponse$inboundSchema` instead. */
-  export const inboundSchema = CreateResponsesResponse$inboundSchema;
-  /** @deprecated use `CreateResponsesResponse$outboundSchema` instead. */
-  export const outboundSchema = CreateResponsesResponse$outboundSchema;
-  /** @deprecated use `CreateResponsesResponse$Outbound` instead. */
-  export type Outbound = CreateResponsesResponse$Outbound;
-}
-
-export function createResponsesResponseToJSON(
-  createResponsesResponse: CreateResponsesResponse,
-): string {
-  return JSON.stringify(
-    CreateResponsesResponse$outboundSchema.parse(createResponsesResponse),
-  );
-}
 
 export function createResponsesResponseFromJSON(
   jsonString: string,

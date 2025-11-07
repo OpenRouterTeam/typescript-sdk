@@ -24,23 +24,10 @@ export type OpenAIResponsesRefusalContent = {
 export const OpenAIResponsesRefusalContentType$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesRefusalContentType
 > = z.enum(OpenAIResponsesRefusalContentType);
-
 /** @internal */
 export const OpenAIResponsesRefusalContentType$outboundSchema: z.ZodEnum<
   typeof OpenAIResponsesRefusalContentType
 > = OpenAIResponsesRefusalContentType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesRefusalContentType$ {
-  /** @deprecated use `OpenAIResponsesRefusalContentType$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesRefusalContentType$inboundSchema;
-  /** @deprecated use `OpenAIResponsesRefusalContentType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesRefusalContentType$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesRefusalContent$inboundSchema: z.ZodType<
@@ -50,7 +37,6 @@ export const OpenAIResponsesRefusalContent$inboundSchema: z.ZodType<
   type: OpenAIResponsesRefusalContentType$inboundSchema,
   refusal: z.string(),
 });
-
 /** @internal */
 export type OpenAIResponsesRefusalContent$Outbound = {
   type: string;
@@ -66,19 +52,6 @@ export const OpenAIResponsesRefusalContent$outboundSchema: z.ZodType<
   refusal: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesRefusalContent$ {
-  /** @deprecated use `OpenAIResponsesRefusalContent$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesRefusalContent$inboundSchema;
-  /** @deprecated use `OpenAIResponsesRefusalContent$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesRefusalContent$outboundSchema;
-  /** @deprecated use `OpenAIResponsesRefusalContent$Outbound` instead. */
-  export type Outbound = OpenAIResponsesRefusalContent$Outbound;
-}
-
 export function openAIResponsesRefusalContentToJSON(
   openAIResponsesRefusalContent: OpenAIResponsesRefusalContent,
 ): string {
@@ -88,7 +61,6 @@ export function openAIResponsesRefusalContentToJSON(
     ),
   );
 }
-
 export function openAIResponsesRefusalContentFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesRefusalContent, SDKValidationError> {

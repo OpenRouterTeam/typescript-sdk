@@ -33,22 +33,6 @@ export const OpenResponsesErrorEventType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesErrorEventType);
 
 /** @internal */
-export const OpenResponsesErrorEventType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesErrorEventType
-> = OpenResponsesErrorEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesErrorEventType$ {
-  /** @deprecated use `OpenResponsesErrorEventType$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesErrorEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesErrorEventType$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesErrorEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesErrorEvent$inboundSchema: z.ZodType<
   OpenResponsesErrorEvent,
   unknown
@@ -63,52 +47,6 @@ export const OpenResponsesErrorEvent$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesErrorEvent$Outbound = {
-  type: string;
-  code: string | null;
-  message: string;
-  param: string | null;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesErrorEvent$outboundSchema: z.ZodType<
-  OpenResponsesErrorEvent$Outbound,
-  OpenResponsesErrorEvent
-> = z.object({
-  type: OpenResponsesErrorEventType$outboundSchema,
-  code: z.nullable(z.string()),
-  message: z.string(),
-  param: z.nullable(z.string()),
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesErrorEvent$ {
-  /** @deprecated use `OpenResponsesErrorEvent$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesErrorEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesErrorEvent$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesErrorEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesErrorEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesErrorEvent$Outbound;
-}
-
-export function openResponsesErrorEventToJSON(
-  openResponsesErrorEvent: OpenResponsesErrorEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesErrorEvent$outboundSchema.parse(openResponsesErrorEvent),
-  );
-}
 
 export function openResponsesErrorEventFromJSON(
   jsonString: string,

@@ -35,3 +35,14 @@ const value: models.ChatMessageContentItemAudio = {
 };
 ```
 
+### `models.ChatMessageContentItemVideo`
+
+```typescript
+const value: models.ChatMessageContentItemVideo = {
+  type: "input_video",
+  videoUrl: {
+    url: "https://imaginative-mousse.org",
+  },
+};
+```
+

@@ -26,14 +26,6 @@ export type GetUserActivityResponse = {
 };
 
 /** @internal */
-export const GetUserActivityRequest$inboundSchema: z.ZodType<
-  GetUserActivityRequest,
-  unknown
-> = z.object({
-  date: z.string().optional(),
-});
-
-/** @internal */
 export type GetUserActivityRequest$Outbound = {
   date?: string | undefined;
 };
@@ -46,34 +38,11 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
   date: z.string().optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetUserActivityRequest$ {
-  /** @deprecated use `GetUserActivityRequest$inboundSchema` instead. */
-  export const inboundSchema = GetUserActivityRequest$inboundSchema;
-  /** @deprecated use `GetUserActivityRequest$outboundSchema` instead. */
-  export const outboundSchema = GetUserActivityRequest$outboundSchema;
-  /** @deprecated use `GetUserActivityRequest$Outbound` instead. */
-  export type Outbound = GetUserActivityRequest$Outbound;
-}
-
 export function getUserActivityRequestToJSON(
   getUserActivityRequest: GetUserActivityRequest,
 ): string {
   return JSON.stringify(
     GetUserActivityRequest$outboundSchema.parse(getUserActivityRequest),
-  );
-}
-
-export function getUserActivityRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<GetUserActivityRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetUserActivityRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetUserActivityRequest' from JSON`,
   );
 }
 
@@ -84,40 +53,6 @@ export const GetUserActivityResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.array(models.ActivityItem$inboundSchema),
 });
-
-/** @internal */
-export type GetUserActivityResponse$Outbound = {
-  data: Array<models.ActivityItem$Outbound>;
-};
-
-/** @internal */
-export const GetUserActivityResponse$outboundSchema: z.ZodType<
-  GetUserActivityResponse$Outbound,
-  GetUserActivityResponse
-> = z.object({
-  data: z.array(models.ActivityItem$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetUserActivityResponse$ {
-  /** @deprecated use `GetUserActivityResponse$inboundSchema` instead. */
-  export const inboundSchema = GetUserActivityResponse$inboundSchema;
-  /** @deprecated use `GetUserActivityResponse$outboundSchema` instead. */
-  export const outboundSchema = GetUserActivityResponse$outboundSchema;
-  /** @deprecated use `GetUserActivityResponse$Outbound` instead. */
-  export type Outbound = GetUserActivityResponse$Outbound;
-}
-
-export function getUserActivityResponseToJSON(
-  getUserActivityResponse: GetUserActivityResponse,
-): string {
-  return JSON.stringify(
-    GetUserActivityResponse$outboundSchema.parse(getUserActivityResponse),
-  );
-}
 
 export function getUserActivityResponseFromJSON(
   jsonString: string,

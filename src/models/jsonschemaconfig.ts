@@ -3,9 +3,6 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type JSONSchemaConfig = {
   name: string;
@@ -13,17 +10,6 @@ export type JSONSchemaConfig = {
   schema?: { [k: string]: any } | undefined;
   strict?: boolean | null | undefined;
 };
-
-/** @internal */
-export const JSONSchemaConfig$inboundSchema: z.ZodType<
-  JSONSchemaConfig,
-  unknown
-> = z.object({
-  name: z.string(),
-  description: z.string().optional(),
-  schema: z.record(z.string(), z.any()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
-});
 
 /** @internal */
 export type JSONSchemaConfig$Outbound = {
@@ -44,33 +30,10 @@ export const JSONSchemaConfig$outboundSchema: z.ZodType<
   strict: z.nullable(z.boolean()).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace JSONSchemaConfig$ {
-  /** @deprecated use `JSONSchemaConfig$inboundSchema` instead. */
-  export const inboundSchema = JSONSchemaConfig$inboundSchema;
-  /** @deprecated use `JSONSchemaConfig$outboundSchema` instead. */
-  export const outboundSchema = JSONSchemaConfig$outboundSchema;
-  /** @deprecated use `JSONSchemaConfig$Outbound` instead. */
-  export type Outbound = JSONSchemaConfig$Outbound;
-}
-
 export function jsonSchemaConfigToJSON(
   jsonSchemaConfig: JSONSchemaConfig,
 ): string {
   return JSON.stringify(
     JSONSchemaConfig$outboundSchema.parse(jsonSchemaConfig),
-  );
-}
-
-export function jsonSchemaConfigFromJSON(
-  jsonString: string,
-): SafeParseResult<JSONSchemaConfig, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => JSONSchemaConfig$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'JSONSchemaConfig' from JSON`,
   );
 }

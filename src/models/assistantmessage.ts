@@ -36,7 +36,6 @@ export const AssistantMessageContent$inboundSchema: z.ZodType<
   AssistantMessageContent,
   unknown
 > = z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]);
-
 /** @internal */
 export type AssistantMessageContent$Outbound =
   | string
@@ -48,19 +47,6 @@ export const AssistantMessageContent$outboundSchema: z.ZodType<
   AssistantMessageContent
 > = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace AssistantMessageContent$ {
-  /** @deprecated use `AssistantMessageContent$inboundSchema` instead. */
-  export const inboundSchema = AssistantMessageContent$inboundSchema;
-  /** @deprecated use `AssistantMessageContent$outboundSchema` instead. */
-  export const outboundSchema = AssistantMessageContent$outboundSchema;
-  /** @deprecated use `AssistantMessageContent$Outbound` instead. */
-  export type Outbound = AssistantMessageContent$Outbound;
-}
-
 export function assistantMessageContentToJSON(
   assistantMessageContent: AssistantMessageContent,
 ): string {
@@ -68,7 +54,6 @@ export function assistantMessageContentToJSON(
     AssistantMessageContent$outboundSchema.parse(assistantMessageContent),
   );
 }
-
 export function assistantMessageContentFromJSON(
   jsonString: string,
 ): SafeParseResult<AssistantMessageContent, SDKValidationError> {
@@ -97,7 +82,6 @@ export const AssistantMessage$inboundSchema: z.ZodType<
     "tool_calls": "toolCalls",
   });
 });
-
 /** @internal */
 export type AssistantMessage$Outbound = {
   role: "assistant";
@@ -127,19 +111,6 @@ export const AssistantMessage$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace AssistantMessage$ {
-  /** @deprecated use `AssistantMessage$inboundSchema` instead. */
-  export const inboundSchema = AssistantMessage$inboundSchema;
-  /** @deprecated use `AssistantMessage$outboundSchema` instead. */
-  export const outboundSchema = AssistantMessage$outboundSchema;
-  /** @deprecated use `AssistantMessage$Outbound` instead. */
-  export type Outbound = AssistantMessage$Outbound;
-}
-
 export function assistantMessageToJSON(
   assistantMessage: AssistantMessage,
 ): string {
@@ -147,7 +118,6 @@ export function assistantMessageToJSON(
     AssistantMessage$outboundSchema.parse(assistantMessage),
   );
 }
-
 export function assistantMessageFromJSON(
   jsonString: string,
 ): SafeParseResult<AssistantMessage, SDKValidationError> {

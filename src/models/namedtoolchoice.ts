@@ -3,9 +3,6 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type NamedToolChoiceFunction = {
   name: string;
@@ -15,14 +12,6 @@ export type NamedToolChoice = {
   type: "function";
   function: NamedToolChoiceFunction;
 };
-
-/** @internal */
-export const NamedToolChoiceFunction$inboundSchema: z.ZodType<
-  NamedToolChoiceFunction,
-  unknown
-> = z.object({
-  name: z.string(),
-});
 
 /** @internal */
 export type NamedToolChoiceFunction$Outbound = {
@@ -37,19 +26,6 @@ export const NamedToolChoiceFunction$outboundSchema: z.ZodType<
   name: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace NamedToolChoiceFunction$ {
-  /** @deprecated use `NamedToolChoiceFunction$inboundSchema` instead. */
-  export const inboundSchema = NamedToolChoiceFunction$inboundSchema;
-  /** @deprecated use `NamedToolChoiceFunction$outboundSchema` instead. */
-  export const outboundSchema = NamedToolChoiceFunction$outboundSchema;
-  /** @deprecated use `NamedToolChoiceFunction$Outbound` instead. */
-  export type Outbound = NamedToolChoiceFunction$Outbound;
-}
-
 export function namedToolChoiceFunctionToJSON(
   namedToolChoiceFunction: NamedToolChoiceFunction,
 ): string {
@@ -57,25 +33,6 @@ export function namedToolChoiceFunctionToJSON(
     NamedToolChoiceFunction$outboundSchema.parse(namedToolChoiceFunction),
   );
 }
-
-export function namedToolChoiceFunctionFromJSON(
-  jsonString: string,
-): SafeParseResult<NamedToolChoiceFunction, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => NamedToolChoiceFunction$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'NamedToolChoiceFunction' from JSON`,
-  );
-}
-
-/** @internal */
-export const NamedToolChoice$inboundSchema: z.ZodType<
-  NamedToolChoice,
-  unknown
-> = z.object({
-  type: z.literal("function"),
-  function: z.lazy(() => NamedToolChoiceFunction$inboundSchema),
-});
 
 /** @internal */
 export type NamedToolChoice$Outbound = {
@@ -92,31 +49,8 @@ export const NamedToolChoice$outboundSchema: z.ZodType<
   function: z.lazy(() => NamedToolChoiceFunction$outboundSchema),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace NamedToolChoice$ {
-  /** @deprecated use `NamedToolChoice$inboundSchema` instead. */
-  export const inboundSchema = NamedToolChoice$inboundSchema;
-  /** @deprecated use `NamedToolChoice$outboundSchema` instead. */
-  export const outboundSchema = NamedToolChoice$outboundSchema;
-  /** @deprecated use `NamedToolChoice$Outbound` instead. */
-  export type Outbound = NamedToolChoice$Outbound;
-}
-
 export function namedToolChoiceToJSON(
   namedToolChoice: NamedToolChoice,
 ): string {
   return JSON.stringify(NamedToolChoice$outboundSchema.parse(namedToolChoice));
-}
-
-export function namedToolChoiceFromJSON(
-  jsonString: string,
-): SafeParseResult<NamedToolChoice, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => NamedToolChoice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'NamedToolChoice' from JSON`,
-  );
 }

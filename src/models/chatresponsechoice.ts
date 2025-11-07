@@ -9,19 +9,14 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AssistantMessage,
   AssistantMessage$inboundSchema,
-  AssistantMessage$Outbound,
-  AssistantMessage$outboundSchema,
 } from "./assistantmessage.js";
 import {
   ChatCompletionFinishReason,
   ChatCompletionFinishReason$inboundSchema,
-  ChatCompletionFinishReason$outboundSchema,
 } from "./chatcompletionfinishreason.js";
 import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
-  ChatMessageTokenLogprobs$Outbound,
-  ChatMessageTokenLogprobs$outboundSchema,
 } from "./chatmessagetokenlogprobs.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -46,50 +41,6 @@ export const ChatResponseChoice$inboundSchema: z.ZodType<
     "finish_reason": "finishReason",
   });
 });
-
-/** @internal */
-export type ChatResponseChoice$Outbound = {
-  finish_reason: string | null;
-  index: number;
-  message: AssistantMessage$Outbound;
-  logprobs?: ChatMessageTokenLogprobs$Outbound | null | undefined;
-};
-
-/** @internal */
-export const ChatResponseChoice$outboundSchema: z.ZodType<
-  ChatResponseChoice$Outbound,
-  ChatResponseChoice
-> = z.object({
-  finishReason: z.nullable(ChatCompletionFinishReason$outboundSchema),
-  index: z.number(),
-  message: AssistantMessage$outboundSchema,
-  logprobs: z.nullable(ChatMessageTokenLogprobs$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    finishReason: "finish_reason",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatResponseChoice$ {
-  /** @deprecated use `ChatResponseChoice$inboundSchema` instead. */
-  export const inboundSchema = ChatResponseChoice$inboundSchema;
-  /** @deprecated use `ChatResponseChoice$outboundSchema` instead. */
-  export const outboundSchema = ChatResponseChoice$outboundSchema;
-  /** @deprecated use `ChatResponseChoice$Outbound` instead. */
-  export type Outbound = ChatResponseChoice$Outbound;
-}
-
-export function chatResponseChoiceToJSON(
-  chatResponseChoice: ChatResponseChoice,
-): string {
-  return JSON.stringify(
-    ChatResponseChoice$outboundSchema.parse(chatResponseChoice),
-  );
-}
 
 export function chatResponseChoiceFromJSON(
   jsonString: string,

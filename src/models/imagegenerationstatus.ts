@@ -26,7 +26,6 @@ export const ImageGenerationStatus$inboundSchema: z.ZodType<
     z.enum(ImageGenerationStatus),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ImageGenerationStatus$outboundSchema: z.ZodType<
   ImageGenerationStatus,
@@ -35,14 +34,3 @@ export const ImageGenerationStatus$outboundSchema: z.ZodType<
   z.enum(ImageGenerationStatus),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ImageGenerationStatus$ {
-  /** @deprecated use `ImageGenerationStatus$inboundSchema` instead. */
-  export const inboundSchema = ImageGenerationStatus$inboundSchema;
-  /** @deprecated use `ImageGenerationStatus$outboundSchema` instead. */
-  export const outboundSchema = ImageGenerationStatus$outboundSchema;
-}

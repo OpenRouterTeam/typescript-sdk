@@ -24,15 +24,6 @@ export type ListEndpointsResponse = {
 };
 
 /** @internal */
-export const ListEndpointsRequest$inboundSchema: z.ZodType<
-  ListEndpointsRequest,
-  unknown
-> = z.object({
-  author: z.string(),
-  slug: z.string(),
-});
-
-/** @internal */
 export type ListEndpointsRequest$Outbound = {
   author: string;
   slug: string;
@@ -47,34 +38,11 @@ export const ListEndpointsRequest$outboundSchema: z.ZodType<
   slug: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListEndpointsRequest$ {
-  /** @deprecated use `ListEndpointsRequest$inboundSchema` instead. */
-  export const inboundSchema = ListEndpointsRequest$inboundSchema;
-  /** @deprecated use `ListEndpointsRequest$outboundSchema` instead. */
-  export const outboundSchema = ListEndpointsRequest$outboundSchema;
-  /** @deprecated use `ListEndpointsRequest$Outbound` instead. */
-  export type Outbound = ListEndpointsRequest$Outbound;
-}
-
 export function listEndpointsRequestToJSON(
   listEndpointsRequest: ListEndpointsRequest,
 ): string {
   return JSON.stringify(
     ListEndpointsRequest$outboundSchema.parse(listEndpointsRequest),
-  );
-}
-
-export function listEndpointsRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<ListEndpointsRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListEndpointsRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListEndpointsRequest' from JSON`,
   );
 }
 
@@ -85,40 +53,6 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: models.ListEndpointsResponse$inboundSchema,
 });
-
-/** @internal */
-export type ListEndpointsResponse$Outbound = {
-  data: models.ListEndpointsResponse$Outbound;
-};
-
-/** @internal */
-export const ListEndpointsResponse$outboundSchema: z.ZodType<
-  ListEndpointsResponse$Outbound,
-  ListEndpointsResponse
-> = z.object({
-  data: models.ListEndpointsResponse$outboundSchema,
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListEndpointsResponse$ {
-  /** @deprecated use `ListEndpointsResponse$inboundSchema` instead. */
-  export const inboundSchema = ListEndpointsResponse$inboundSchema;
-  /** @deprecated use `ListEndpointsResponse$outboundSchema` instead. */
-  export const outboundSchema = ListEndpointsResponse$outboundSchema;
-  /** @deprecated use `ListEndpointsResponse$Outbound` instead. */
-  export type Outbound = ListEndpointsResponse$Outbound;
-}
-
-export function listEndpointsResponseToJSON(
-  listEndpointsResponse: ListEndpointsResponse,
-): string {
-  return JSON.stringify(
-    ListEndpointsResponse$outboundSchema.parse(listEndpointsResponse),
-  );
-}
 
 export function listEndpointsResponseFromJSON(
   jsonString: string,

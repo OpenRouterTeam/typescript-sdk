@@ -10,8 +10,6 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenResponsesTopLogprobs,
   OpenResponsesTopLogprobs$inboundSchema,
-  OpenResponsesTopLogprobs$Outbound,
-  OpenResponsesTopLogprobs$outboundSchema,
 } from "./openresponsestoplogprobs.js";
 
 /**
@@ -36,48 +34,6 @@ export const OpenResponsesLogProbs$inboundSchema: z.ZodType<
     "top_logprobs": "topLogprobs",
   });
 });
-
-/** @internal */
-export type OpenResponsesLogProbs$Outbound = {
-  logprob: number;
-  token: string;
-  top_logprobs?: Array<OpenResponsesTopLogprobs$Outbound> | undefined;
-};
-
-/** @internal */
-export const OpenResponsesLogProbs$outboundSchema: z.ZodType<
-  OpenResponsesLogProbs$Outbound,
-  OpenResponsesLogProbs
-> = z.object({
-  logprob: z.number(),
-  token: z.string(),
-  topLogprobs: z.array(OpenResponsesTopLogprobs$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    topLogprobs: "top_logprobs",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesLogProbs$ {
-  /** @deprecated use `OpenResponsesLogProbs$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesLogProbs$inboundSchema;
-  /** @deprecated use `OpenResponsesLogProbs$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesLogProbs$outboundSchema;
-  /** @deprecated use `OpenResponsesLogProbs$Outbound` instead. */
-  export type Outbound = OpenResponsesLogProbs$Outbound;
-}
-
-export function openResponsesLogProbsToJSON(
-  openResponsesLogProbs: OpenResponsesLogProbs,
-): string {
-  return JSON.stringify(
-    OpenResponsesLogProbs$outboundSchema.parse(openResponsesLogProbs),
-  );
-}
 
 export function openResponsesLogProbsFromJSON(
   jsonString: string,

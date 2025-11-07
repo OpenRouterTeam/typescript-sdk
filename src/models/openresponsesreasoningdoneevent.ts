@@ -34,24 +34,6 @@ export const OpenResponsesReasoningDoneEventType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesReasoningDoneEventType);
 
 /** @internal */
-export const OpenResponsesReasoningDoneEventType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningDoneEventType
-> = OpenResponsesReasoningDoneEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningDoneEventType$ {
-  /** @deprecated use `OpenResponsesReasoningDoneEventType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningDoneEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDoneEventType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningDoneEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesReasoningDoneEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDoneEvent,
   unknown
@@ -70,59 +52,6 @@ export const OpenResponsesReasoningDoneEvent$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesReasoningDoneEvent$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  text: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesReasoningDoneEvent$outboundSchema: z.ZodType<
-  OpenResponsesReasoningDoneEvent$Outbound,
-  OpenResponsesReasoningDoneEvent
-> = z.object({
-  type: OpenResponsesReasoningDoneEventType$outboundSchema,
-  outputIndex: z.number(),
-  itemId: z.string(),
-  contentIndex: z.number(),
-  text: z.string(),
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    outputIndex: "output_index",
-    itemId: "item_id",
-    contentIndex: "content_index",
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningDoneEvent$ {
-  /** @deprecated use `OpenResponsesReasoningDoneEvent$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesReasoningDoneEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDoneEvent$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesReasoningDoneEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningDoneEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningDoneEvent$Outbound;
-}
-
-export function openResponsesReasoningDoneEventToJSON(
-  openResponsesReasoningDoneEvent: OpenResponsesReasoningDoneEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningDoneEvent$outboundSchema.parse(
-      openResponsesReasoningDoneEvent,
-    ),
-  );
-}
 
 export function openResponsesReasoningDoneEventFromJSON(
   jsonString: string,

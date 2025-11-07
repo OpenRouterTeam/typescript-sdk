@@ -26,48 +26,6 @@ export const ProviderOverloadedResponseErrorData$inboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
 
-/** @internal */
-export type ProviderOverloadedResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const ProviderOverloadedResponseErrorData$outboundSchema: z.ZodType<
-  ProviderOverloadedResponseErrorData$Outbound,
-  ProviderOverloadedResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ProviderOverloadedResponseErrorData$ {
-  /** @deprecated use `ProviderOverloadedResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema =
-    ProviderOverloadedResponseErrorData$inboundSchema;
-  /** @deprecated use `ProviderOverloadedResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema =
-    ProviderOverloadedResponseErrorData$outboundSchema;
-  /** @deprecated use `ProviderOverloadedResponseErrorData$Outbound` instead. */
-  export type Outbound = ProviderOverloadedResponseErrorData$Outbound;
-}
-
-export function providerOverloadedResponseErrorDataToJSON(
-  providerOverloadedResponseErrorData: ProviderOverloadedResponseErrorData,
-): string {
-  return JSON.stringify(
-    ProviderOverloadedResponseErrorData$outboundSchema.parse(
-      providerOverloadedResponseErrorData,
-    ),
-  );
-}
-
 export function providerOverloadedResponseErrorDataFromJSON(
   jsonString: string,
 ): SafeParseResult<ProviderOverloadedResponseErrorData, SDKValidationError> {

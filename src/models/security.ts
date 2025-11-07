@@ -3,18 +3,10 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Security = {
   apiKey?: string | undefined;
 };
-
-/** @internal */
-export const Security$inboundSchema: z.ZodType<Security, unknown> = z.object({
-  apiKey: z.string().optional(),
-});
 
 /** @internal */
 export type Security$Outbound = {
@@ -27,29 +19,6 @@ export const Security$outboundSchema: z.ZodType<Security$Outbound, Security> = z
     apiKey: z.string().optional(),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Security$ {
-  /** @deprecated use `Security$inboundSchema` instead. */
-  export const inboundSchema = Security$inboundSchema;
-  /** @deprecated use `Security$outboundSchema` instead. */
-  export const outboundSchema = Security$outboundSchema;
-  /** @deprecated use `Security$Outbound` instead. */
-  export type Outbound = Security$Outbound;
-}
-
 export function securityToJSON(security: Security): string {
   return JSON.stringify(Security$outboundSchema.parse(security));
-}
-
-export function securityFromJSON(
-  jsonString: string,
-): SafeParseResult<Security, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Security$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Security' from JSON`,
-  );
 }

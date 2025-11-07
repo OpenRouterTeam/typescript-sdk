@@ -27,24 +27,10 @@ export type WebSearchPreviewToolUserLocation = {
 export const WebSearchPreviewToolUserLocationType$inboundSchema: z.ZodEnum<
   typeof WebSearchPreviewToolUserLocationType
 > = z.enum(WebSearchPreviewToolUserLocationType);
-
 /** @internal */
 export const WebSearchPreviewToolUserLocationType$outboundSchema: z.ZodEnum<
   typeof WebSearchPreviewToolUserLocationType
 > = WebSearchPreviewToolUserLocationType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace WebSearchPreviewToolUserLocationType$ {
-  /** @deprecated use `WebSearchPreviewToolUserLocationType$inboundSchema` instead. */
-  export const inboundSchema =
-    WebSearchPreviewToolUserLocationType$inboundSchema;
-  /** @deprecated use `WebSearchPreviewToolUserLocationType$outboundSchema` instead. */
-  export const outboundSchema =
-    WebSearchPreviewToolUserLocationType$outboundSchema;
-}
 
 /** @internal */
 export const WebSearchPreviewToolUserLocation$inboundSchema: z.ZodType<
@@ -57,7 +43,6 @@ export const WebSearchPreviewToolUserLocation$inboundSchema: z.ZodType<
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
 });
-
 /** @internal */
 export type WebSearchPreviewToolUserLocation$Outbound = {
   type: string;
@@ -79,19 +64,6 @@ export const WebSearchPreviewToolUserLocation$outboundSchema: z.ZodType<
   timezone: z.nullable(z.string()).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace WebSearchPreviewToolUserLocation$ {
-  /** @deprecated use `WebSearchPreviewToolUserLocation$inboundSchema` instead. */
-  export const inboundSchema = WebSearchPreviewToolUserLocation$inboundSchema;
-  /** @deprecated use `WebSearchPreviewToolUserLocation$outboundSchema` instead. */
-  export const outboundSchema = WebSearchPreviewToolUserLocation$outboundSchema;
-  /** @deprecated use `WebSearchPreviewToolUserLocation$Outbound` instead. */
-  export type Outbound = WebSearchPreviewToolUserLocation$Outbound;
-}
-
 export function webSearchPreviewToolUserLocationToJSON(
   webSearchPreviewToolUserLocation: WebSearchPreviewToolUserLocation,
 ): string {
@@ -101,7 +73,6 @@ export function webSearchPreviewToolUserLocationToJSON(
     ),
   );
 }
-
 export function webSearchPreviewToolUserLocationFromJSON(
   jsonString: string,
 ): SafeParseResult<WebSearchPreviewToolUserLocation, SDKValidationError> {

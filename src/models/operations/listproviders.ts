@@ -56,54 +56,6 @@ export const ListProvidersData$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type ListProvidersData$Outbound = {
-  name: string;
-  slug: string;
-  privacy_policy_url: string | null;
-  terms_of_service_url?: string | null | undefined;
-  status_page_url?: string | null | undefined;
-};
-
-/** @internal */
-export const ListProvidersData$outboundSchema: z.ZodType<
-  ListProvidersData$Outbound,
-  ListProvidersData
-> = z.object({
-  name: z.string(),
-  slug: z.string(),
-  privacyPolicyUrl: z.nullable(z.string()),
-  termsOfServiceUrl: z.nullable(z.string()).optional(),
-  statusPageUrl: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    privacyPolicyUrl: "privacy_policy_url",
-    termsOfServiceUrl: "terms_of_service_url",
-    statusPageUrl: "status_page_url",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListProvidersData$ {
-  /** @deprecated use `ListProvidersData$inboundSchema` instead. */
-  export const inboundSchema = ListProvidersData$inboundSchema;
-  /** @deprecated use `ListProvidersData$outboundSchema` instead. */
-  export const outboundSchema = ListProvidersData$outboundSchema;
-  /** @deprecated use `ListProvidersData$Outbound` instead. */
-  export type Outbound = ListProvidersData$Outbound;
-}
-
-export function listProvidersDataToJSON(
-  listProvidersData: ListProvidersData,
-): string {
-  return JSON.stringify(
-    ListProvidersData$outboundSchema.parse(listProvidersData),
-  );
-}
-
 export function listProvidersDataFromJSON(
   jsonString: string,
 ): SafeParseResult<ListProvidersData, SDKValidationError> {
@@ -121,40 +73,6 @@ export const ListProvidersResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.array(z.lazy(() => ListProvidersData$inboundSchema)),
 });
-
-/** @internal */
-export type ListProvidersResponse$Outbound = {
-  data: Array<ListProvidersData$Outbound>;
-};
-
-/** @internal */
-export const ListProvidersResponse$outboundSchema: z.ZodType<
-  ListProvidersResponse$Outbound,
-  ListProvidersResponse
-> = z.object({
-  data: z.array(z.lazy(() => ListProvidersData$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListProvidersResponse$ {
-  /** @deprecated use `ListProvidersResponse$inboundSchema` instead. */
-  export const inboundSchema = ListProvidersResponse$inboundSchema;
-  /** @deprecated use `ListProvidersResponse$outboundSchema` instead. */
-  export const outboundSchema = ListProvidersResponse$outboundSchema;
-  /** @deprecated use `ListProvidersResponse$Outbound` instead. */
-  export type Outbound = ListProvidersResponse$Outbound;
-}
-
-export function listProvidersResponseToJSON(
-  listProvidersResponse: ListProvidersResponse,
-): string {
-  return JSON.stringify(
-    ListProvidersResponse$outboundSchema.parse(listProvidersResponse),
-  );
-}
 
 export function listProvidersResponseFromJSON(
   jsonString: string,

@@ -11,110 +11,74 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenAIResponsesAnnotation,
   OpenAIResponsesAnnotation$inboundSchema,
-  OpenAIResponsesAnnotation$Outbound,
-  OpenAIResponsesAnnotation$outboundSchema,
 } from "./openairesponsesannotation.js";
 import {
   OpenAIResponsesRefusalContent,
   OpenAIResponsesRefusalContent$inboundSchema,
-  OpenAIResponsesRefusalContent$Outbound,
-  OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
   OpenResponsesErrorEvent,
   OpenResponsesErrorEvent$inboundSchema,
-  OpenResponsesErrorEvent$Outbound,
-  OpenResponsesErrorEvent$outboundSchema,
 } from "./openresponseserrorevent.js";
 import {
   OpenResponsesImageGenCallCompleted,
   OpenResponsesImageGenCallCompleted$inboundSchema,
-  OpenResponsesImageGenCallCompleted$Outbound,
-  OpenResponsesImageGenCallCompleted$outboundSchema,
 } from "./openresponsesimagegencallcompleted.js";
 import {
   OpenResponsesImageGenCallGenerating,
   OpenResponsesImageGenCallGenerating$inboundSchema,
-  OpenResponsesImageGenCallGenerating$Outbound,
-  OpenResponsesImageGenCallGenerating$outboundSchema,
 } from "./openresponsesimagegencallgenerating.js";
 import {
   OpenResponsesImageGenCallInProgress,
   OpenResponsesImageGenCallInProgress$inboundSchema,
-  OpenResponsesImageGenCallInProgress$Outbound,
-  OpenResponsesImageGenCallInProgress$outboundSchema,
 } from "./openresponsesimagegencallinprogress.js";
 import {
   OpenResponsesImageGenCallPartialImage,
   OpenResponsesImageGenCallPartialImage$inboundSchema,
-  OpenResponsesImageGenCallPartialImage$Outbound,
-  OpenResponsesImageGenCallPartialImage$outboundSchema,
 } from "./openresponsesimagegencallpartialimage.js";
 import {
   OpenResponsesLogProbs,
   OpenResponsesLogProbs$inboundSchema,
-  OpenResponsesLogProbs$Outbound,
-  OpenResponsesLogProbs$outboundSchema,
 } from "./openresponseslogprobs.js";
 import {
   OpenResponsesNonStreamingResponse,
   OpenResponsesNonStreamingResponse$inboundSchema,
-  OpenResponsesNonStreamingResponse$Outbound,
-  OpenResponsesNonStreamingResponse$outboundSchema,
 } from "./openresponsesnonstreamingresponse.js";
 import {
   OpenResponsesReasoningDeltaEvent,
   OpenResponsesReasoningDeltaEvent$inboundSchema,
-  OpenResponsesReasoningDeltaEvent$Outbound,
-  OpenResponsesReasoningDeltaEvent$outboundSchema,
 } from "./openresponsesreasoningdeltaevent.js";
 import {
   OpenResponsesReasoningDoneEvent,
   OpenResponsesReasoningDoneEvent$inboundSchema,
-  OpenResponsesReasoningDoneEvent$Outbound,
-  OpenResponsesReasoningDoneEvent$outboundSchema,
 } from "./openresponsesreasoningdoneevent.js";
 import {
   OpenResponsesReasoningSummaryPartAddedEvent,
   OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema,
-  OpenResponsesReasoningSummaryPartAddedEvent$Outbound,
-  OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema,
 } from "./openresponsesreasoningsummarypartaddedevent.js";
 import {
   OpenResponsesReasoningSummaryTextDeltaEvent,
   OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema,
-  OpenResponsesReasoningSummaryTextDeltaEvent$Outbound,
-  OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema,
 } from "./openresponsesreasoningsummarytextdeltaevent.js";
 import {
   OpenResponsesReasoningSummaryTextDoneEvent,
   OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
-  OpenResponsesReasoningSummaryTextDoneEvent$Outbound,
-  OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema,
 } from "./openresponsesreasoningsummarytextdoneevent.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
-  ReasoningSummaryText$Outbound,
-  ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 import {
   ReasoningTextContent,
   ReasoningTextContent$inboundSchema,
-  ReasoningTextContent$Outbound,
-  ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
 import {
   ResponseOutputText,
   ResponseOutputText$inboundSchema,
-  ResponseOutputText$Outbound,
-  ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
 import {
   ResponsesOutputItem,
   ResponsesOutputItem$inboundSchema,
-  ResponsesOutputItem$Outbound,
-  ResponsesOutputItem$outboundSchema,
 } from "./responsesoutputitem.js";
 
 export const TypeResponseReasoningSummaryPartDone = {
@@ -488,24 +452,6 @@ export const TypeResponseReasoningSummaryPartDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseReasoningSummaryPartDone);
 
 /** @internal */
-export const TypeResponseReasoningSummaryPartDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseReasoningSummaryPartDone
-> = TypeResponseReasoningSummaryPartDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseReasoningSummaryPartDone$ {
-  /** @deprecated use `TypeResponseReasoningSummaryPartDone$inboundSchema` instead. */
-  export const inboundSchema =
-    TypeResponseReasoningSummaryPartDone$inboundSchema;
-  /** @deprecated use `TypeResponseReasoningSummaryPartDone$outboundSchema` instead. */
-  export const outboundSchema =
-    TypeResponseReasoningSummaryPartDone$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseReasoningSummaryPartDone, unknown> =
     z.object({
@@ -523,64 +469,6 @@ export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSch
         "sequence_number": "sequenceNumber",
       });
     });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseReasoningSummaryPartDone$Outbound =
-  {
-    type: string;
-    output_index: number;
-    item_id: string;
-    summary_index: number;
-    part: ReasoningSummaryText$Outbound;
-    sequence_number: number;
-  };
-
-/** @internal */
-export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$Outbound,
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone
-  > = z.object({
-    type: TypeResponseReasoningSummaryPartDone$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    summaryIndex: z.number(),
-    part: ReasoningSummaryText$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      summaryIndex: "summary_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseReasoningSummaryPartDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseReasoningSummaryPartDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseReasoningSummaryPartDone$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseReasoningSummaryPartDoneToJSON(
-  openResponsesStreamEventResponseReasoningSummaryPartDone:
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$outboundSchema
-      .parse(openResponsesStreamEventResponseReasoningSummaryPartDone),
-  );
-}
 
 export function openResponsesStreamEventResponseReasoningSummaryPartDoneFromJSON(
   jsonString: string,
@@ -603,24 +491,6 @@ export const TypeResponseFunctionCallArgumentsDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseFunctionCallArgumentsDone);
 
 /** @internal */
-export const TypeResponseFunctionCallArgumentsDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseFunctionCallArgumentsDone
-> = TypeResponseFunctionCallArgumentsDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseFunctionCallArgumentsDone$ {
-  /** @deprecated use `TypeResponseFunctionCallArgumentsDone$inboundSchema` instead. */
-  export const inboundSchema =
-    TypeResponseFunctionCallArgumentsDone$inboundSchema;
-  /** @deprecated use `TypeResponseFunctionCallArgumentsDone$outboundSchema` instead. */
-  export const outboundSchema =
-    TypeResponseFunctionCallArgumentsDone$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema:
   z.ZodType<
     OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
@@ -639,63 +509,6 @@ export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSc
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseFunctionCallArgumentsDone$Outbound =
-  {
-    type: string;
-    item_id: string;
-    output_index: number;
-    name: string;
-    arguments: string;
-    sequence_number: number;
-  };
-
-/** @internal */
-export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$Outbound,
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone
-  > = z.object({
-    type: TypeResponseFunctionCallArgumentsDone$outboundSchema,
-    itemId: z.string(),
-    outputIndex: z.number(),
-    name: z.string(),
-    arguments: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      itemId: "item_id",
-      outputIndex: "output_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseFunctionCallArgumentsDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDone$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseFunctionCallArgumentsDoneToJSON(
-  openResponsesStreamEventResponseFunctionCallArgumentsDone:
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$outboundSchema
-      .parse(openResponsesStreamEventResponseFunctionCallArgumentsDone),
-  );
-}
 
 export function openResponsesStreamEventResponseFunctionCallArgumentsDoneFromJSON(
   jsonString: string,
@@ -718,24 +531,6 @@ export const TypeResponseFunctionCallArgumentsDelta$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseFunctionCallArgumentsDelta);
 
 /** @internal */
-export const TypeResponseFunctionCallArgumentsDelta$outboundSchema: z.ZodEnum<
-  typeof TypeResponseFunctionCallArgumentsDelta
-> = TypeResponseFunctionCallArgumentsDelta$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseFunctionCallArgumentsDelta$ {
-  /** @deprecated use `TypeResponseFunctionCallArgumentsDelta$inboundSchema` instead. */
-  export const inboundSchema =
-    TypeResponseFunctionCallArgumentsDelta$inboundSchema;
-  /** @deprecated use `TypeResponseFunctionCallArgumentsDelta$outboundSchema` instead. */
-  export const outboundSchema =
-    TypeResponseFunctionCallArgumentsDelta$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema:
   z.ZodType<
     OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
@@ -753,61 +548,6 @@ export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundS
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$Outbound =
-  {
-    type: string;
-    item_id: string;
-    output_index: number;
-    delta: string;
-    sequence_number: number;
-  };
-
-/** @internal */
-export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$Outbound,
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta
-  > = z.object({
-    type: TypeResponseFunctionCallArgumentsDelta$outboundSchema,
-    itemId: z.string(),
-    outputIndex: z.number(),
-    delta: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      itemId: "item_id",
-      outputIndex: "output_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$Outbound;
-}
-
-export function openResponsesStreamEventResponseFunctionCallArgumentsDeltaToJSON(
-  openResponsesStreamEventResponseFunctionCallArgumentsDelta:
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$outboundSchema
-      .parse(openResponsesStreamEventResponseFunctionCallArgumentsDelta),
-  );
-}
 
 export function openResponsesStreamEventResponseFunctionCallArgumentsDeltaFromJSON(
   jsonString: string,
@@ -828,24 +568,6 @@ export function openResponsesStreamEventResponseFunctionCallArgumentsDeltaFromJS
 export const TypeResponseOutputTextAnnotationAdded$inboundSchema: z.ZodEnum<
   typeof TypeResponseOutputTextAnnotationAdded
 > = z.enum(TypeResponseOutputTextAnnotationAdded);
-
-/** @internal */
-export const TypeResponseOutputTextAnnotationAdded$outboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextAnnotationAdded
-> = TypeResponseOutputTextAnnotationAdded$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseOutputTextAnnotationAdded$ {
-  /** @deprecated use `TypeResponseOutputTextAnnotationAdded$inboundSchema` instead. */
-  export const inboundSchema =
-    TypeResponseOutputTextAnnotationAdded$inboundSchema;
-  /** @deprecated use `TypeResponseOutputTextAnnotationAdded$outboundSchema` instead. */
-  export const outboundSchema =
-    TypeResponseOutputTextAnnotationAdded$outboundSchema;
-}
 
 /** @internal */
 export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema:
@@ -870,67 +592,6 @@ export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSc
     });
   });
 
-/** @internal */
-export type OpenResponsesStreamEventResponseOutputTextAnnotationAdded$Outbound =
-  {
-    type: string;
-    output_index: number;
-    item_id: string;
-    content_index: number;
-    sequence_number: number;
-    annotation_index: number;
-    annotation: OpenAIResponsesAnnotation$Outbound;
-  };
-
-/** @internal */
-export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$Outbound,
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded
-  > = z.object({
-    type: TypeResponseOutputTextAnnotationAdded$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    sequenceNumber: z.number(),
-    annotationIndex: z.number(),
-    annotation: OpenAIResponsesAnnotation$outboundSchema,
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-      annotationIndex: "annotation_index",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseOutputTextAnnotationAdded$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextAnnotationAdded$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextAnnotationAdded$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$Outbound;
-}
-
-export function openResponsesStreamEventResponseOutputTextAnnotationAddedToJSON(
-  openResponsesStreamEventResponseOutputTextAnnotationAdded:
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$outboundSchema
-      .parse(openResponsesStreamEventResponseOutputTextAnnotationAdded),
-  );
-}
-
 export function openResponsesStreamEventResponseOutputTextAnnotationAddedFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -952,22 +613,6 @@ export const TypeResponseRefusalDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseRefusalDone);
 
 /** @internal */
-export const TypeResponseRefusalDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseRefusalDone
-> = TypeResponseRefusalDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseRefusalDone$ {
-  /** @deprecated use `TypeResponseRefusalDone$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseRefusalDone$inboundSchema;
-  /** @deprecated use `TypeResponseRefusalDone$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseRefusalDone$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseRefusalDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseRefusalDone, unknown> = z.object({
     type: TypeResponseRefusalDone$inboundSchema,
@@ -984,63 +629,6 @@ export const OpenResponsesStreamEventResponseRefusalDone$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseRefusalDone$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  refusal: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseRefusalDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseRefusalDone$Outbound,
-    OpenResponsesStreamEventResponseRefusalDone
-  > = z.object({
-    type: TypeResponseRefusalDone$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    refusal: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseRefusalDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseRefusalDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseRefusalDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDone$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseRefusalDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseRefusalDoneToJSON(
-  openResponsesStreamEventResponseRefusalDone:
-    OpenResponsesStreamEventResponseRefusalDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseRefusalDone$outboundSchema.parse(
-      openResponsesStreamEventResponseRefusalDone,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseRefusalDoneFromJSON(
   jsonString: string,
@@ -1064,22 +652,6 @@ export const TypeResponseRefusalDelta$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseRefusalDelta);
 
 /** @internal */
-export const TypeResponseRefusalDelta$outboundSchema: z.ZodEnum<
-  typeof TypeResponseRefusalDelta
-> = TypeResponseRefusalDelta$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseRefusalDelta$ {
-  /** @deprecated use `TypeResponseRefusalDelta$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseRefusalDelta$inboundSchema;
-  /** @deprecated use `TypeResponseRefusalDelta$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseRefusalDelta$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseRefusalDelta$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseRefusalDelta, unknown> = z.object({
     type: TypeResponseRefusalDelta$inboundSchema,
@@ -1096,63 +668,6 @@ export const OpenResponsesStreamEventResponseRefusalDelta$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseRefusalDelta$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  delta: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseRefusalDelta$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseRefusalDelta$Outbound,
-    OpenResponsesStreamEventResponseRefusalDelta
-  > = z.object({
-    type: TypeResponseRefusalDelta$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    delta: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseRefusalDelta$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDelta$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseRefusalDelta$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDelta$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseRefusalDelta$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseRefusalDelta$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseRefusalDelta$Outbound;
-}
-
-export function openResponsesStreamEventResponseRefusalDeltaToJSON(
-  openResponsesStreamEventResponseRefusalDelta:
-    OpenResponsesStreamEventResponseRefusalDelta,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseRefusalDelta$outboundSchema.parse(
-      openResponsesStreamEventResponseRefusalDelta,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseRefusalDeltaFromJSON(
   jsonString: string,
@@ -1176,22 +691,6 @@ export const TypeResponseOutputTextDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseOutputTextDone);
 
 /** @internal */
-export const TypeResponseOutputTextDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextDone
-> = TypeResponseOutputTextDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseOutputTextDone$ {
-  /** @deprecated use `TypeResponseOutputTextDone$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseOutputTextDone$inboundSchema;
-  /** @deprecated use `TypeResponseOutputTextDone$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseOutputTextDone$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDone, unknown> = z.object(
     {
@@ -1211,66 +710,6 @@ export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseOutputTextDone$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  text: string;
-  sequence_number: number;
-  logprobs: Array<OpenResponsesLogProbs$Outbound>;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseOutputTextDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputTextDone$Outbound,
-    OpenResponsesStreamEventResponseOutputTextDone
-  > = z.object({
-    type: TypeResponseOutputTextDone$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    text: z.string(),
-    sequenceNumber: z.number(),
-    logprobs: z.array(OpenResponsesLogProbs$outboundSchema),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseOutputTextDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseOutputTextDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseOutputTextDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDone$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseOutputTextDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseOutputTextDoneToJSON(
-  openResponsesStreamEventResponseOutputTextDone:
-    OpenResponsesStreamEventResponseOutputTextDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseOutputTextDone$outboundSchema.parse(
-      openResponsesStreamEventResponseOutputTextDone,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseOutputTextDoneFromJSON(
   jsonString: string,
@@ -1294,22 +733,6 @@ export const TypeResponseOutputTextDelta$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseOutputTextDelta);
 
 /** @internal */
-export const TypeResponseOutputTextDelta$outboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextDelta
-> = TypeResponseOutputTextDelta$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseOutputTextDelta$ {
-  /** @deprecated use `TypeResponseOutputTextDelta$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseOutputTextDelta$inboundSchema;
-  /** @deprecated use `TypeResponseOutputTextDelta$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseOutputTextDelta$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDelta, unknown> = z
     .object({
@@ -1328,66 +751,6 @@ export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema:
         "sequence_number": "sequenceNumber",
       });
     });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseOutputTextDelta$Outbound = {
-  type: string;
-  logprobs: Array<OpenResponsesLogProbs$Outbound>;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  delta: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseOutputTextDelta$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputTextDelta$Outbound,
-    OpenResponsesStreamEventResponseOutputTextDelta
-  > = z.object({
-    type: TypeResponseOutputTextDelta$outboundSchema,
-    logprobs: z.array(OpenResponsesLogProbs$outboundSchema),
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    delta: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseOutputTextDelta$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDelta$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseOutputTextDelta$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputTextDelta$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseOutputTextDelta$Outbound;
-}
-
-export function openResponsesStreamEventResponseOutputTextDeltaToJSON(
-  openResponsesStreamEventResponseOutputTextDelta:
-    OpenResponsesStreamEventResponseOutputTextDelta,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseOutputTextDelta$outboundSchema.parse(
-      openResponsesStreamEventResponseOutputTextDelta,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseOutputTextDeltaFromJSON(
   jsonString: string,
@@ -1411,57 +774,11 @@ export const TypeResponseContentPartDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseContentPartDone);
 
 /** @internal */
-export const TypeResponseContentPartDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseContentPartDone
-> = TypeResponseContentPartDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseContentPartDone$ {
-  /** @deprecated use `TypeResponseContentPartDone$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseContentPartDone$inboundSchema;
-  /** @deprecated use `TypeResponseContentPartDone$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseContentPartDone$outboundSchema;
-}
-
-/** @internal */
 export const Part2$inboundSchema: z.ZodType<Part2, unknown> = z.union([
   ResponseOutputText$inboundSchema,
   ReasoningTextContent$inboundSchema,
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
-
-/** @internal */
-export type Part2$Outbound =
-  | ResponseOutputText$Outbound
-  | ReasoningTextContent$Outbound
-  | OpenAIResponsesRefusalContent$Outbound;
-
-/** @internal */
-export const Part2$outboundSchema: z.ZodType<Part2$Outbound, Part2> = z.union([
-  ResponseOutputText$outboundSchema,
-  ReasoningTextContent$outboundSchema,
-  OpenAIResponsesRefusalContent$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Part2$ {
-  /** @deprecated use `Part2$inboundSchema` instead. */
-  export const inboundSchema = Part2$inboundSchema;
-  /** @deprecated use `Part2$outboundSchema` instead. */
-  export const outboundSchema = Part2$outboundSchema;
-  /** @deprecated use `Part2$Outbound` instead. */
-  export type Outbound = Part2$Outbound;
-}
-
-export function part2ToJSON(part2: Part2): string {
-  return JSON.stringify(Part2$outboundSchema.parse(part2));
-}
 
 export function part2FromJSON(
   jsonString: string,
@@ -1496,71 +813,6 @@ export const OpenResponsesStreamEventResponseContentPartDone$inboundSchema:
       });
     });
 
-/** @internal */
-export type OpenResponsesStreamEventResponseContentPartDone$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  part:
-    | ResponseOutputText$Outbound
-    | ReasoningTextContent$Outbound
-    | OpenAIResponsesRefusalContent$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseContentPartDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseContentPartDone$Outbound,
-    OpenResponsesStreamEventResponseContentPartDone
-  > = z.object({
-    type: TypeResponseContentPartDone$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    part: z.union([
-      ResponseOutputText$outboundSchema,
-      ReasoningTextContent$outboundSchema,
-      OpenAIResponsesRefusalContent$outboundSchema,
-    ]),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseContentPartDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseContentPartDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseContentPartDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartDone$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseContentPartDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseContentPartDoneToJSON(
-  openResponsesStreamEventResponseContentPartDone:
-    OpenResponsesStreamEventResponseContentPartDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseContentPartDone$outboundSchema.parse(
-      openResponsesStreamEventResponseContentPartDone,
-    ),
-  );
-}
-
 export function openResponsesStreamEventResponseContentPartDoneFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -1583,57 +835,11 @@ export const TypeResponseContentPartAdded$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseContentPartAdded);
 
 /** @internal */
-export const TypeResponseContentPartAdded$outboundSchema: z.ZodEnum<
-  typeof TypeResponseContentPartAdded
-> = TypeResponseContentPartAdded$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseContentPartAdded$ {
-  /** @deprecated use `TypeResponseContentPartAdded$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseContentPartAdded$inboundSchema;
-  /** @deprecated use `TypeResponseContentPartAdded$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseContentPartAdded$outboundSchema;
-}
-
-/** @internal */
 export const Part1$inboundSchema: z.ZodType<Part1, unknown> = z.union([
   ResponseOutputText$inboundSchema,
   ReasoningTextContent$inboundSchema,
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
-
-/** @internal */
-export type Part1$Outbound =
-  | ResponseOutputText$Outbound
-  | ReasoningTextContent$Outbound
-  | OpenAIResponsesRefusalContent$Outbound;
-
-/** @internal */
-export const Part1$outboundSchema: z.ZodType<Part1$Outbound, Part1> = z.union([
-  ResponseOutputText$outboundSchema,
-  ReasoningTextContent$outboundSchema,
-  OpenAIResponsesRefusalContent$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Part1$ {
-  /** @deprecated use `Part1$inboundSchema` instead. */
-  export const inboundSchema = Part1$inboundSchema;
-  /** @deprecated use `Part1$outboundSchema` instead. */
-  export const outboundSchema = Part1$outboundSchema;
-  /** @deprecated use `Part1$Outbound` instead. */
-  export type Outbound = Part1$Outbound;
-}
-
-export function part1ToJSON(part1: Part1): string {
-  return JSON.stringify(Part1$outboundSchema.parse(part1));
-}
 
 export function part1FromJSON(
   jsonString: string,
@@ -1668,71 +874,6 @@ export const OpenResponsesStreamEventResponseContentPartAdded$inboundSchema:
       });
     });
 
-/** @internal */
-export type OpenResponsesStreamEventResponseContentPartAdded$Outbound = {
-  type: string;
-  output_index: number;
-  item_id: string;
-  content_index: number;
-  part:
-    | ResponseOutputText$Outbound
-    | ReasoningTextContent$Outbound
-    | OpenAIResponsesRefusalContent$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseContentPartAdded$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseContentPartAdded$Outbound,
-    OpenResponsesStreamEventResponseContentPartAdded
-  > = z.object({
-    type: TypeResponseContentPartAdded$outboundSchema,
-    outputIndex: z.number(),
-    itemId: z.string(),
-    contentIndex: z.number(),
-    part: z.union([
-      ResponseOutputText$outboundSchema,
-      ReasoningTextContent$outboundSchema,
-      OpenAIResponsesRefusalContent$outboundSchema,
-    ]),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      itemId: "item_id",
-      contentIndex: "content_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseContentPartAdded$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartAdded$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseContentPartAdded$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartAdded$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseContentPartAdded$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseContentPartAdded$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseContentPartAdded$Outbound;
-}
-
-export function openResponsesStreamEventResponseContentPartAddedToJSON(
-  openResponsesStreamEventResponseContentPartAdded:
-    OpenResponsesStreamEventResponseContentPartAdded,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseContentPartAdded$outboundSchema.parse(
-      openResponsesStreamEventResponseContentPartAdded,
-    ),
-  );
-}
-
 export function openResponsesStreamEventResponseContentPartAddedFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -1755,22 +896,6 @@ export const TypeResponseOutputItemDone$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseOutputItemDone);
 
 /** @internal */
-export const TypeResponseOutputItemDone$outboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputItemDone
-> = TypeResponseOutputItemDone$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseOutputItemDone$ {
-  /** @deprecated use `TypeResponseOutputItemDone$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseOutputItemDone$inboundSchema;
-  /** @deprecated use `TypeResponseOutputItemDone$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseOutputItemDone$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputItemDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputItemDone, unknown> = z.object(
     {
@@ -1785,58 +910,6 @@ export const OpenResponsesStreamEventResponseOutputItemDone$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseOutputItemDone$Outbound = {
-  type: string;
-  output_index: number;
-  item: ResponsesOutputItem$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseOutputItemDone$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputItemDone$Outbound,
-    OpenResponsesStreamEventResponseOutputItemDone
-  > = z.object({
-    type: TypeResponseOutputItemDone$outboundSchema,
-    outputIndex: z.number(),
-    item: ResponsesOutputItem$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseOutputItemDone$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemDone$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseOutputItemDone$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemDone$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseOutputItemDone$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemDone$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseOutputItemDone$Outbound;
-}
-
-export function openResponsesStreamEventResponseOutputItemDoneToJSON(
-  openResponsesStreamEventResponseOutputItemDone:
-    OpenResponsesStreamEventResponseOutputItemDone,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseOutputItemDone$outboundSchema.parse(
-      openResponsesStreamEventResponseOutputItemDone,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseOutputItemDoneFromJSON(
   jsonString: string,
@@ -1860,22 +933,6 @@ export const TypeResponseOutputItemAdded$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseOutputItemAdded);
 
 /** @internal */
-export const TypeResponseOutputItemAdded$outboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputItemAdded
-> = TypeResponseOutputItemAdded$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseOutputItemAdded$ {
-  /** @deprecated use `TypeResponseOutputItemAdded$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseOutputItemAdded$inboundSchema;
-  /** @deprecated use `TypeResponseOutputItemAdded$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseOutputItemAdded$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputItemAdded, unknown> = z
     .object({
@@ -1889,58 +946,6 @@ export const OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema:
         "sequence_number": "sequenceNumber",
       });
     });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseOutputItemAdded$Outbound = {
-  type: string;
-  output_index: number;
-  item: ResponsesOutputItem$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseOutputItemAdded$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputItemAdded$Outbound,
-    OpenResponsesStreamEventResponseOutputItemAdded
-  > = z.object({
-    type: TypeResponseOutputItemAdded$outboundSchema,
-    outputIndex: z.number(),
-    item: ResponsesOutputItem$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      outputIndex: "output_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseOutputItemAdded$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemAdded$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseOutputItemAdded$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseOutputItemAdded$Outbound` instead. */
-  export type Outbound =
-    OpenResponsesStreamEventResponseOutputItemAdded$Outbound;
-}
-
-export function openResponsesStreamEventResponseOutputItemAddedToJSON(
-  openResponsesStreamEventResponseOutputItemAdded:
-    OpenResponsesStreamEventResponseOutputItemAdded,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseOutputItemAdded$outboundSchema.parse(
-      openResponsesStreamEventResponseOutputItemAdded,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseOutputItemAddedFromJSON(
   jsonString: string,
@@ -1964,22 +969,6 @@ export const TypeResponseFailed$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseFailed);
 
 /** @internal */
-export const TypeResponseFailed$outboundSchema: z.ZodEnum<
-  typeof TypeResponseFailed
-> = TypeResponseFailed$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseFailed$ {
-  /** @deprecated use `TypeResponseFailed$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseFailed$inboundSchema;
-  /** @deprecated use `TypeResponseFailed$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseFailed$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFailed$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseFailed,
   unknown
@@ -1992,53 +981,6 @@ export const OpenResponsesStreamEventResponseFailed$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseFailed$Outbound = {
-  type: string;
-  response: OpenResponsesNonStreamingResponse$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseFailed$outboundSchema: z.ZodType<
-  OpenResponsesStreamEventResponseFailed$Outbound,
-  OpenResponsesStreamEventResponseFailed
-> = z.object({
-  type: TypeResponseFailed$outboundSchema,
-  response: OpenResponsesNonStreamingResponse$outboundSchema,
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseFailed$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseFailed$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseFailed$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFailed$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseFailed$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseFailed$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseFailed$Outbound;
-}
-
-export function openResponsesStreamEventResponseFailedToJSON(
-  openResponsesStreamEventResponseFailed:
-    OpenResponsesStreamEventResponseFailed,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseFailed$outboundSchema.parse(
-      openResponsesStreamEventResponseFailed,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseFailedFromJSON(
   jsonString: string,
@@ -2057,22 +999,6 @@ export const TypeResponseIncomplete$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseIncomplete);
 
 /** @internal */
-export const TypeResponseIncomplete$outboundSchema: z.ZodEnum<
-  typeof TypeResponseIncomplete
-> = TypeResponseIncomplete$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseIncomplete$ {
-  /** @deprecated use `TypeResponseIncomplete$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseIncomplete$inboundSchema;
-  /** @deprecated use `TypeResponseIncomplete$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseIncomplete$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseIncomplete$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseIncomplete, unknown> = z.object({
     type: TypeResponseIncomplete$inboundSchema,
@@ -2083,54 +1009,6 @@ export const OpenResponsesStreamEventResponseIncomplete$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseIncomplete$Outbound = {
-  type: string;
-  response: OpenResponsesNonStreamingResponse$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseIncomplete$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseIncomplete$Outbound,
-    OpenResponsesStreamEventResponseIncomplete
-  > = z.object({
-    type: TypeResponseIncomplete$outboundSchema,
-    response: OpenResponsesNonStreamingResponse$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseIncomplete$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseIncomplete$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseIncomplete$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseIncomplete$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseIncomplete$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseIncomplete$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseIncomplete$Outbound;
-}
-
-export function openResponsesStreamEventResponseIncompleteToJSON(
-  openResponsesStreamEventResponseIncomplete:
-    OpenResponsesStreamEventResponseIncomplete,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseIncomplete$outboundSchema.parse(
-      openResponsesStreamEventResponseIncomplete,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseIncompleteFromJSON(
   jsonString: string,
@@ -2154,22 +1032,6 @@ export const TypeResponseCompleted$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseCompleted);
 
 /** @internal */
-export const TypeResponseCompleted$outboundSchema: z.ZodEnum<
-  typeof TypeResponseCompleted
-> = TypeResponseCompleted$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseCompleted$ {
-  /** @deprecated use `TypeResponseCompleted$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseCompleted$inboundSchema;
-  /** @deprecated use `TypeResponseCompleted$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseCompleted$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseCompleted$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCompleted,
   unknown
@@ -2182,54 +1044,6 @@ export const OpenResponsesStreamEventResponseCompleted$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseCompleted$Outbound = {
-  type: string;
-  response: OpenResponsesNonStreamingResponse$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseCompleted$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseCompleted$Outbound,
-    OpenResponsesStreamEventResponseCompleted
-  > = z.object({
-    type: TypeResponseCompleted$outboundSchema,
-    response: OpenResponsesNonStreamingResponse$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseCompleted$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseCompleted$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseCompleted$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseCompleted$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseCompleted$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseCompleted$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseCompleted$Outbound;
-}
-
-export function openResponsesStreamEventResponseCompletedToJSON(
-  openResponsesStreamEventResponseCompleted:
-    OpenResponsesStreamEventResponseCompleted,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseCompleted$outboundSchema.parse(
-      openResponsesStreamEventResponseCompleted,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseCompletedFromJSON(
   jsonString: string,
@@ -2253,22 +1067,6 @@ export const TypeResponseInProgress$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseInProgress);
 
 /** @internal */
-export const TypeResponseInProgress$outboundSchema: z.ZodEnum<
-  typeof TypeResponseInProgress
-> = TypeResponseInProgress$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseInProgress$ {
-  /** @deprecated use `TypeResponseInProgress$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseInProgress$inboundSchema;
-  /** @deprecated use `TypeResponseInProgress$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseInProgress$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseInProgress$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseInProgress, unknown> = z.object({
     type: TypeResponseInProgress$inboundSchema,
@@ -2279,54 +1077,6 @@ export const OpenResponsesStreamEventResponseInProgress$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseInProgress$Outbound = {
-  type: string;
-  response: OpenResponsesNonStreamingResponse$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseInProgress$outboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseInProgress$Outbound,
-    OpenResponsesStreamEventResponseInProgress
-  > = z.object({
-    type: TypeResponseInProgress$outboundSchema,
-    response: OpenResponsesNonStreamingResponse$outboundSchema,
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseInProgress$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseInProgress$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseInProgress$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseInProgress$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseInProgress$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseInProgress$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseInProgress$Outbound;
-}
-
-export function openResponsesStreamEventResponseInProgressToJSON(
-  openResponsesStreamEventResponseInProgress:
-    OpenResponsesStreamEventResponseInProgress,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseInProgress$outboundSchema.parse(
-      openResponsesStreamEventResponseInProgress,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseInProgressFromJSON(
   jsonString: string,
@@ -2350,22 +1100,6 @@ export const TypeResponseCreated$inboundSchema: z.ZodEnum<
 > = z.enum(TypeResponseCreated);
 
 /** @internal */
-export const TypeResponseCreated$outboundSchema: z.ZodEnum<
-  typeof TypeResponseCreated
-> = TypeResponseCreated$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TypeResponseCreated$ {
-  /** @deprecated use `TypeResponseCreated$inboundSchema` instead. */
-  export const inboundSchema = TypeResponseCreated$inboundSchema;
-  /** @deprecated use `TypeResponseCreated$outboundSchema` instead. */
-  export const outboundSchema = TypeResponseCreated$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesStreamEventResponseCreated$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCreated,
   unknown
@@ -2378,53 +1112,6 @@ export const OpenResponsesStreamEventResponseCreated$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesStreamEventResponseCreated$Outbound = {
-  type: string;
-  response: OpenResponsesNonStreamingResponse$Outbound;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesStreamEventResponseCreated$outboundSchema: z.ZodType<
-  OpenResponsesStreamEventResponseCreated$Outbound,
-  OpenResponsesStreamEventResponseCreated
-> = z.object({
-  type: TypeResponseCreated$outboundSchema,
-  response: OpenResponsesNonStreamingResponse$outboundSchema,
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEventResponseCreated$ {
-  /** @deprecated use `OpenResponsesStreamEventResponseCreated$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesStreamEventResponseCreated$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseCreated$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesStreamEventResponseCreated$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEventResponseCreated$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEventResponseCreated$Outbound;
-}
-
-export function openResponsesStreamEventResponseCreatedToJSON(
-  openResponsesStreamEventResponseCreated:
-    OpenResponsesStreamEventResponseCreated,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEventResponseCreated$outboundSchema.parse(
-      openResponsesStreamEventResponseCreated,
-    ),
-  );
-}
 
 export function openResponsesStreamEventResponseCreatedFromJSON(
   jsonString: string,
@@ -2483,99 +1170,6 @@ export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<
   z.lazy(() => OpenResponsesStreamEventResponseIncomplete$inboundSchema),
   z.lazy(() => OpenResponsesStreamEventResponseFailed$inboundSchema),
 ]);
-
-/** @internal */
-export type OpenResponsesStreamEvent$Outbound =
-  | OpenResponsesStreamEventResponseOutputTextDelta$Outbound
-  | OpenResponsesStreamEventResponseOutputTextDone$Outbound
-  | OpenResponsesStreamEventResponseOutputTextAnnotationAdded$Outbound
-  | OpenResponsesStreamEventResponseContentPartAdded$Outbound
-  | OpenResponsesStreamEventResponseContentPartDone$Outbound
-  | OpenResponsesStreamEventResponseRefusalDelta$Outbound
-  | OpenResponsesStreamEventResponseRefusalDone$Outbound
-  | OpenResponsesStreamEventResponseFunctionCallArgumentsDone$Outbound
-  | OpenResponsesReasoningDeltaEvent$Outbound
-  | OpenResponsesReasoningDoneEvent$Outbound
-  | OpenResponsesReasoningSummaryPartAddedEvent$Outbound
-  | OpenResponsesStreamEventResponseReasoningSummaryPartDone$Outbound
-  | OpenResponsesReasoningSummaryTextDeltaEvent$Outbound
-  | OpenResponsesReasoningSummaryTextDoneEvent$Outbound
-  | OpenResponsesImageGenCallPartialImage$Outbound
-  | OpenResponsesErrorEvent$Outbound
-  | OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$Outbound
-  | OpenResponsesStreamEventResponseOutputItemAdded$Outbound
-  | OpenResponsesStreamEventResponseOutputItemDone$Outbound
-  | OpenResponsesImageGenCallInProgress$Outbound
-  | OpenResponsesImageGenCallGenerating$Outbound
-  | OpenResponsesImageGenCallCompleted$Outbound
-  | OpenResponsesStreamEventResponseCreated$Outbound
-  | OpenResponsesStreamEventResponseInProgress$Outbound
-  | OpenResponsesStreamEventResponseCompleted$Outbound
-  | OpenResponsesStreamEventResponseIncomplete$Outbound
-  | OpenResponsesStreamEventResponseFailed$Outbound;
-
-/** @internal */
-export const OpenResponsesStreamEvent$outboundSchema: z.ZodType<
-  OpenResponsesStreamEvent$Outbound,
-  OpenResponsesStreamEvent
-> = z.union([
-  z.lazy(() => OpenResponsesStreamEventResponseOutputTextDelta$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputTextDone$outboundSchema),
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$outboundSchema
-  ),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartAdded$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartDone$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDelta$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDone$outboundSchema),
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$outboundSchema
-  ),
-  OpenResponsesReasoningDeltaEvent$outboundSchema,
-  OpenResponsesReasoningDoneEvent$outboundSchema,
-  OpenResponsesReasoningSummaryPartAddedEvent$outboundSchema,
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$outboundSchema
-  ),
-  OpenResponsesReasoningSummaryTextDeltaEvent$outboundSchema,
-  OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema,
-  OpenResponsesImageGenCallPartialImage$outboundSchema,
-  OpenResponsesErrorEvent$outboundSchema,
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$outboundSchema
-  ),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemAdded$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemDone$outboundSchema),
-  OpenResponsesImageGenCallInProgress$outboundSchema,
-  OpenResponsesImageGenCallGenerating$outboundSchema,
-  OpenResponsesImageGenCallCompleted$outboundSchema,
-  z.lazy(() => OpenResponsesStreamEventResponseCreated$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseInProgress$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseCompleted$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseIncomplete$outboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseFailed$outboundSchema),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesStreamEvent$ {
-  /** @deprecated use `OpenResponsesStreamEvent$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesStreamEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesStreamEvent$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesStreamEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesStreamEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesStreamEvent$Outbound;
-}
-
-export function openResponsesStreamEventToJSON(
-  openResponsesStreamEvent: OpenResponsesStreamEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesStreamEvent$outboundSchema.parse(openResponsesStreamEvent),
-  );
-}
 
 export function openResponsesStreamEventFromJSON(
   jsonString: string,

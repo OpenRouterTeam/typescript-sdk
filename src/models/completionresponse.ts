@@ -9,14 +9,10 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompletionChoice,
   CompletionChoice$inboundSchema,
-  CompletionChoice$Outbound,
-  CompletionChoice$outboundSchema,
 } from "./completionchoice.js";
 import {
   CompletionUsage,
   CompletionUsage$inboundSchema,
-  CompletionUsage$Outbound,
-  CompletionUsage$outboundSchema,
 } from "./completionusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -47,56 +43,6 @@ export const CompletionResponse$inboundSchema: z.ZodType<
     "system_fingerprint": "systemFingerprint",
   });
 });
-
-/** @internal */
-export type CompletionResponse$Outbound = {
-  id: string;
-  object: "text_completion";
-  created: number;
-  model: string;
-  system_fingerprint?: string | undefined;
-  choices: Array<CompletionChoice$Outbound>;
-  usage?: CompletionUsage$Outbound | undefined;
-};
-
-/** @internal */
-export const CompletionResponse$outboundSchema: z.ZodType<
-  CompletionResponse$Outbound,
-  CompletionResponse
-> = z.object({
-  id: z.string(),
-  object: z.literal("text_completion"),
-  created: z.number(),
-  model: z.string(),
-  systemFingerprint: z.string().optional(),
-  choices: z.array(CompletionChoice$outboundSchema),
-  usage: CompletionUsage$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    systemFingerprint: "system_fingerprint",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionResponse$ {
-  /** @deprecated use `CompletionResponse$inboundSchema` instead. */
-  export const inboundSchema = CompletionResponse$inboundSchema;
-  /** @deprecated use `CompletionResponse$outboundSchema` instead. */
-  export const outboundSchema = CompletionResponse$outboundSchema;
-  /** @deprecated use `CompletionResponse$Outbound` instead. */
-  export type Outbound = CompletionResponse$Outbound;
-}
-
-export function completionResponseToJSON(
-  completionResponse: CompletionResponse,
-): string {
-  return JSON.stringify(
-    CompletionResponse$outboundSchema.parse(completionResponse),
-  );
-}
 
 export function completionResponseFromJSON(
   jsonString: string,

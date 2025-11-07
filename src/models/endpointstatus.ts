@@ -3,11 +3,7 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 
 export const EndpointStatus = {
   Zero: 0,
@@ -26,23 +22,3 @@ export const EndpointStatus$inboundSchema: z.ZodType<EndpointStatus, unknown> =
       z.enum(EndpointStatus),
       z.number().transform(catchUnrecognizedEnum),
     ]);
-
-/** @internal */
-export const EndpointStatus$outboundSchema: z.ZodType<
-  EndpointStatus,
-  EndpointStatus
-> = z.union([
-  z.enum(EndpointStatus),
-  z.number().and(z.custom<Unrecognized<number>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EndpointStatus$ {
-  /** @deprecated use `EndpointStatus$inboundSchema` instead. */
-  export const inboundSchema = EndpointStatus$inboundSchema;
-  /** @deprecated use `EndpointStatus$outboundSchema` instead. */
-  export const outboundSchema = EndpointStatus$outboundSchema;
-}

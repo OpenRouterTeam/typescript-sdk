@@ -4,18 +4,12 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ResponseFormatTextConfig,
   ResponseFormatTextConfig$inboundSchema,
-  ResponseFormatTextConfig$Outbound,
-  ResponseFormatTextConfig$outboundSchema,
 } from "./responseformattextconfig.js";
 
 export const ResponseTextConfigVerbosity = {
@@ -49,26 +43,6 @@ export const ResponseTextConfigVerbosity$inboundSchema: z.ZodType<
   ]);
 
 /** @internal */
-export const ResponseTextConfigVerbosity$outboundSchema: z.ZodType<
-  ResponseTextConfigVerbosity,
-  ResponseTextConfigVerbosity
-> = z.union([
-  z.enum(ResponseTextConfigVerbosity),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseTextConfigVerbosity$ {
-  /** @deprecated use `ResponseTextConfigVerbosity$inboundSchema` instead. */
-  export const inboundSchema = ResponseTextConfigVerbosity$inboundSchema;
-  /** @deprecated use `ResponseTextConfigVerbosity$outboundSchema` instead. */
-  export const outboundSchema = ResponseTextConfigVerbosity$outboundSchema;
-}
-
-/** @internal */
 export const ResponseTextConfig$inboundSchema: z.ZodType<
   ResponseTextConfig,
   unknown
@@ -76,42 +50,6 @@ export const ResponseTextConfig$inboundSchema: z.ZodType<
   format: ResponseFormatTextConfig$inboundSchema.optional(),
   verbosity: z.nullable(ResponseTextConfigVerbosity$inboundSchema).optional(),
 });
-
-/** @internal */
-export type ResponseTextConfig$Outbound = {
-  format?: ResponseFormatTextConfig$Outbound | undefined;
-  verbosity?: string | null | undefined;
-};
-
-/** @internal */
-export const ResponseTextConfig$outboundSchema: z.ZodType<
-  ResponseTextConfig$Outbound,
-  ResponseTextConfig
-> = z.object({
-  format: ResponseFormatTextConfig$outboundSchema.optional(),
-  verbosity: z.nullable(ResponseTextConfigVerbosity$outboundSchema).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseTextConfig$ {
-  /** @deprecated use `ResponseTextConfig$inboundSchema` instead. */
-  export const inboundSchema = ResponseTextConfig$inboundSchema;
-  /** @deprecated use `ResponseTextConfig$outboundSchema` instead. */
-  export const outboundSchema = ResponseTextConfig$outboundSchema;
-  /** @deprecated use `ResponseTextConfig$Outbound` instead. */
-  export type Outbound = ResponseTextConfig$Outbound;
-}
-
-export function responseTextConfigToJSON(
-  responseTextConfig: ResponseTextConfig,
-): string {
-  return JSON.stringify(
-    ResponseTextConfig$outboundSchema.parse(responseTextConfig),
-  );
-}
 
 export function responseTextConfigFromJSON(
   jsonString: string,

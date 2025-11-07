@@ -23,7 +23,6 @@ export const ToolCallStatus$inboundSchema: z.ZodType<ToolCallStatus, unknown> =
       z.enum(ToolCallStatus),
       z.string().transform(catchUnrecognizedEnum),
     ]);
-
 /** @internal */
 export const ToolCallStatus$outboundSchema: z.ZodType<
   ToolCallStatus,
@@ -32,14 +31,3 @@ export const ToolCallStatus$outboundSchema: z.ZodType<
   z.enum(ToolCallStatus),
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ToolCallStatus$ {
-  /** @deprecated use `ToolCallStatus$inboundSchema` instead. */
-  export const inboundSchema = ToolCallStatus$inboundSchema;
-  /** @deprecated use `ToolCallStatus$outboundSchema` instead. */
-  export const outboundSchema = ToolCallStatus$outboundSchema;
-}

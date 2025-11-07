@@ -45,7 +45,6 @@ export const ChatMessageContentItemAudioFormat$inboundSchema: z.ZodType<
     z.enum(ChatMessageContentItemAudioFormat),
     z.string().transform(catchUnrecognizedEnum),
   ]);
-
 /** @internal */
 export const ChatMessageContentItemAudioFormat$outboundSchema: z.ZodType<
   ChatMessageContentItemAudioFormat,
@@ -55,18 +54,6 @@ export const ChatMessageContentItemAudioFormat$outboundSchema: z.ZodType<
   z.string().and(z.custom<Unrecognized<string>>()),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemAudioFormat$ {
-  /** @deprecated use `ChatMessageContentItemAudioFormat$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItemAudioFormat$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemAudioFormat$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatMessageContentItemAudioFormat$outboundSchema;
-}
-
 /** @internal */
 export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<
   ChatMessageContentItemAudioInputAudio,
@@ -75,7 +62,6 @@ export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<
   data: z.string(),
   format: ChatMessageContentItemAudioFormat$inboundSchema,
 });
-
 /** @internal */
 export type ChatMessageContentItemAudioInputAudio$Outbound = {
   data: string;
@@ -91,21 +77,6 @@ export const ChatMessageContentItemAudioInputAudio$outboundSchema: z.ZodType<
   format: ChatMessageContentItemAudioFormat$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemAudioInputAudio$ {
-  /** @deprecated use `ChatMessageContentItemAudioInputAudio$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatMessageContentItemAudioInputAudio$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemAudioInputAudio$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatMessageContentItemAudioInputAudio$outboundSchema;
-  /** @deprecated use `ChatMessageContentItemAudioInputAudio$Outbound` instead. */
-  export type Outbound = ChatMessageContentItemAudioInputAudio$Outbound;
-}
-
 export function chatMessageContentItemAudioInputAudioToJSON(
   chatMessageContentItemAudioInputAudio: ChatMessageContentItemAudioInputAudio,
 ): string {
@@ -115,7 +86,6 @@ export function chatMessageContentItemAudioInputAudioToJSON(
     ),
   );
 }
-
 export function chatMessageContentItemAudioInputAudioFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageContentItemAudioInputAudio, SDKValidationError> {
@@ -141,7 +111,6 @@ export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
     "input_audio": "inputAudio",
   });
 });
-
 /** @internal */
 export type ChatMessageContentItemAudio$Outbound = {
   type: "input_audio";
@@ -163,19 +132,6 @@ export const ChatMessageContentItemAudio$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageContentItemAudio$ {
-  /** @deprecated use `ChatMessageContentItemAudio$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageContentItemAudio$inboundSchema;
-  /** @deprecated use `ChatMessageContentItemAudio$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageContentItemAudio$outboundSchema;
-  /** @deprecated use `ChatMessageContentItemAudio$Outbound` instead. */
-  export type Outbound = ChatMessageContentItemAudio$Outbound;
-}
-
 export function chatMessageContentItemAudioToJSON(
   chatMessageContentItemAudio: ChatMessageContentItemAudio,
 ): string {
@@ -185,7 +141,6 @@ export function chatMessageContentItemAudioToJSON(
     ),
   );
 }
-
 export function chatMessageContentItemAudioFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageContentItemAudio, SDKValidationError> {
