@@ -3712,6 +3712,13 @@ components:
                 Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that
                 do not retain prompts will be used.
               example: true
+            enforce_distillable_text:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only models that allow text distillation. When true, only models where
+                the author has allowed distillation will be used.
+              example: true
             order:
               type: array
               nullable: true
@@ -3777,10 +3784,6 @@ components:
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens,
                 for prompt and completion.
-            experimental:
-              type: object
-              nullable: true
-              properties: {}
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
@@ -4825,6 +4828,8 @@ components:
                 cached_tokens:
                   type: number
                 audio_tokens:
+                  type: number
+                video_tokens:
                   type: number
             - type: 'null'
       required:
@@ -6039,6 +6044,13 @@ paths:
                         Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only
                         endpoints that do not retain prompts will be used.
                       example: true
+                    enforce_distillable_text:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to restrict routing to only models that allow text distillation. When true, only models
+                        where the author has allowed distillation will be used.
+                      example: true
                     order:
                       type: array
                       nullable: true
@@ -6104,10 +6116,6 @@ paths:
                       description: >-
                         The object specifying the maximum price you want to pay for this request. USD price per million
                         tokens, for prompt and completion.
-                    experimental:
-                      type: object
-                      nullable: true
-                      properties: {}
                 encoding_format:
                   anyOf:
                     - type: string
