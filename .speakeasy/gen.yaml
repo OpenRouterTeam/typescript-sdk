@@ -30,7 +30,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.4
+  version: 0.1.5
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -39,7 +39,8 @@ typescript:
       dotenv: ^16.4.7
       vitest: ^3.2.4
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    license: Apache-2.0
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
   author: OpenRouter
