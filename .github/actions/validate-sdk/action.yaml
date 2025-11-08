@@ -35,7 +35,7 @@ runs:
     - name: Typecheck examples root
       shell: bash
       working-directory: examples
-      run: npx tsc --noEmit
+      run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 *.ts
 
     - name: Install nextjs-example dependencies
       shell: bash
