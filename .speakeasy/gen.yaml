@@ -30,7 +30,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.5
+  version: 0.1.6
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -40,6 +40,21 @@ typescript:
       vitest: ^3.2.4
     peerDependencies: {}
   additionalPackageJSON:
+    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.
+    keywords:
+      - openrouter
+      - sdk
+      - typescript
+      - api
+      - client
+      - library
+      - rest
+      - http
+      - agent
+      - ai
+      - openai
+      - models
+      - llm
     license: Apache-2.0
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
