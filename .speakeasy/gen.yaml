@@ -67,7 +67,6 @@ typescript:
   inferSSEOverload: true
   inputModelSuffix: input
   jsonpath: rfc9535
-  license: Apache-2.0
   maxMethodParams: 0
   methodArguments: infer-optional-args
   modelPropertyCasing: camel
