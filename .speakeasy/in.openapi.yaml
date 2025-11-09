@@ -411,12 +411,12 @@ components:
         result:
           type: string
           nullable: true
+          default: null
         status:
           $ref: '#/components/schemas/ImageGenerationStatus'
       required:
         - type
         - id
-        - result
         - status
       example:
         type: image_generation_call
