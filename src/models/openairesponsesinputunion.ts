@@ -195,9 +195,9 @@ export type OpenAIResponsesInputMessage1 = {
 export type OpenAIResponsesInputUnion1 =
   | OpenAIResponsesInputFunctionCallOutput
   | OpenAIResponsesInputFunctionCall
-  | OutputItemImageGenerationCall
   | OutputMessage
   | OpenAIResponsesInputMessage2
+  | OutputItemImageGenerationCall
   | OpenAIResponsesInputMessage1;
 
 export type OpenAIResponsesInputUnion =
@@ -205,9 +205,9 @@ export type OpenAIResponsesInputUnion =
   | Array<
     | OpenAIResponsesInputFunctionCallOutput
     | OpenAIResponsesInputFunctionCall
-    | OutputItemImageGenerationCall
     | OutputMessage
     | OpenAIResponsesInputMessage2
+    | OutputItemImageGenerationCall
     | OpenAIResponsesInputMessage1
   >
   | any;
@@ -585,9 +585,9 @@ export const OpenAIResponsesInputUnion1$inboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
   z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
-  OutputItemImageGenerationCall$inboundSchema,
   OutputMessage$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+  OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
 ]);
 
@@ -610,9 +610,9 @@ export const OpenAIResponsesInputUnion$inboundSchema: z.ZodType<
   z.array(z.union([
     z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
     z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
-    OutputItemImageGenerationCall$inboundSchema,
     OutputMessage$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+    OutputItemImageGenerationCall$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
   ])),
   z.any(),

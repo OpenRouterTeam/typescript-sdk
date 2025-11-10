@@ -40,6 +40,10 @@ export type CreateAuthKeysCodeRequest = {
    * Credit limit for the API key to be created
    */
   limit?: number | undefined;
+  /**
+   * Optional expiration time for the API key to be created
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -85,6 +89,7 @@ export type CreateAuthKeysCodeRequest$Outbound = {
   code_challenge?: string | undefined;
   code_challenge_method?: string | undefined;
   limit?: number | undefined;
+  expires_at?: string | null | undefined;
 };
 
 /** @internal */
@@ -97,11 +102,13 @@ export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
   codeChallengeMethod: CreateAuthKeysCodeCodeChallengeMethod$outboundSchema
     .optional(),
   limit: z.number().optional(),
+  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
 }).transform((v) => {
   return remap$(v, {
     callbackUrl: "callback_url",
     codeChallenge: "code_challenge",
     codeChallengeMethod: "code_challenge_method",
+    expiresAt: "expires_at",
   });
 });
 

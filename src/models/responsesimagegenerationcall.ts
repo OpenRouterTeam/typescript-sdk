@@ -23,7 +23,7 @@ export type ResponsesImageGenerationCallType = ClosedEnum<
 export type ResponsesImageGenerationCall = {
   type: ResponsesImageGenerationCallType;
   id: string;
-  result: string | null;
+  result?: string | null | undefined;
   status: ImageGenerationStatus;
 };
 
@@ -43,7 +43,7 @@ export const ResponsesImageGenerationCall$inboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesImageGenerationCallType$inboundSchema,
   id: z.string(),
-  result: z.nullable(z.string()),
+  result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
 });
 /** @internal */
@@ -61,7 +61,7 @@ export const ResponsesImageGenerationCall$outboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesImageGenerationCallType$outboundSchema,
   id: z.string(),
-  result: z.nullable(z.string()),
+  result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$outboundSchema,
 });
 
