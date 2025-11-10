@@ -302,7 +302,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
     z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
   ]).optional(),
-  seed: z.nullable(z.number().int()).optional(),
+  seed: z.nullable(z.int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),

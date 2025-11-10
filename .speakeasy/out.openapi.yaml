@@ -4001,27 +4001,6 @@ components:
         amount: 100
         sender: '0x1234567890123456789012345678901234567890'
         chain_id: 1
-    ModelsCountResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            count:
-              type: number
-              description: Total number of available models
-              example: 150
-          required:
-            - count
-          description: Model count data
-          example:
-            count: 150
-      required:
-        - data
-      description: Model count data
-      example:
-        data:
-          count: 150
     PublicPricing:
       type: object
       properties:
@@ -4397,6 +4376,27 @@ components:
               - frequency_penalty
               - presence_penalty
             default_parameters: null
+    ModelsCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: number
+              description: Total number of available models
+              example: 150
+          required:
+            - count
+          description: Model count data
+          example:
+            count: 150
+      required:
+        - data
+      description: Model count data
+      example:
+        data:
+          count: 150
     InstructType:
       type: string
       nullable: true
@@ -6265,6 +6265,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createEmbeddings
+  /embeddings/models:
+    get:
+      tags:
+        - Embeddings
+      x-speakeasy-name-override: listModels
+      summary: List all embeddings models
+      description: Returns a list of all available embeddings models and their properties
+      responses:
+        '200':
+          description: Returns a list of embeddings models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsListResponse'
+        '400':
+          description: Bad Request - Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+      operationId: listEmbeddingsModels
   /generation:
     get:
       tags:
@@ -6587,33 +6614,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: getModels
-  /models/embeddings:
-    get:
-      tags:
-        - Models
-      x-speakeasy-name-override: listEmbeddings
-      summary: List all embeddings models
-      description: Returns a list of all available embeddings models and their properties
-      responses:
-        '200':
-          description: Returns a list of embeddings models
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ModelsListResponse'
-        '400':
-          description: Bad Request - Invalid request parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-      operationId: listModelsEmbeddings
   /models/user:
     get:
       tags:

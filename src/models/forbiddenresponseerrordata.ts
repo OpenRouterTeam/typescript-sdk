@@ -21,7 +21,7 @@ export const ForbiddenResponseErrorData$inboundSchema: z.ZodType<
   ForbiddenResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });

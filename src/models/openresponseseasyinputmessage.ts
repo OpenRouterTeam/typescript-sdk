@@ -167,24 +167,16 @@ export const OpenResponsesEasyInputMessageContent1$outboundSchema: z.ZodType<
   OpenResponsesEasyInputMessageContent1
 > = z.union([
   ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
 
@@ -216,24 +208,16 @@ export const OpenResponsesEasyInputMessageContent2$outboundSchema: z.ZodType<
   z.array(
     z.union([
       ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
@@ -280,24 +264,16 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
     z.array(
       z.union([
         ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_text") }),
         ),
         ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_image") }),
         ),
         ResponseInputAudio$outboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_audio") }),
         ),
         ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_file") }),
         ),
       ]),
     ),

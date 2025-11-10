@@ -21,7 +21,7 @@ export const EdgeNetworkTimeoutResponseErrorData$inboundSchema: z.ZodType<
   EdgeNetworkTimeoutResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });

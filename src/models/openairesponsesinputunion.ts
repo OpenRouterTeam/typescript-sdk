@@ -323,24 +323,16 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
 
@@ -369,24 +361,16 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
   content: z.array(
     z.union([
       ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
@@ -454,24 +438,16 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
 
@@ -493,24 +469,16 @@ export const OpenAIResponsesInputContent2$inboundSchema: z.ZodType<
   z.array(
     z.union([
       ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
@@ -543,24 +511,16 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
     z.array(
       z.union([
         ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_text") }),
         ),
         ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_image") }),
         ),
         ResponseInputAudio$inboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_audio") }),
         ),
         ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_file") }),
         ),
       ]),
     ),

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 72770d47aad60a8f1a16b4613e8d1ca3
+  docChecksum: d991e451fa3b40458d9a8e2e16068801
   docVersion: 1.0.0
-  speakeasyVersion: 1.652.0
-  generationVersion: 2.745.2
-  releaseVersion: 0.1.7
-  configChecksum: bf32e6ab7422922b4cca9c193ae8e0fb
+  speakeasyVersion: 1.653.0
+  generationVersion: 2.748.0
+  releaseVersion: 0.1.8
+  configChecksum: c8eca5e6a16c0adf24b477cd8360e674
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.3
+    core: 3.26.4
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -546,12 +546,12 @@ generatedFiles:
   - src/funcs/creditsCreateCoinbaseCharge.ts
   - src/funcs/creditsGetCredits.ts
   - src/funcs/embeddingsGenerate.ts
+  - src/funcs/embeddingsListModels.ts
   - src/funcs/endpointsList.ts
   - src/funcs/endpointsListZdrEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
   - src/funcs/modelsCount.ts
   - src/funcs/modelsList.ts
-  - src/funcs/modelsListEmbeddings.ts
   - src/funcs/modelsListForUser.ts
   - src/funcs/oAuthCreateAuthCode.ts
   - src/funcs/oAuthExchangeAuthCodeForAPIKey.ts
@@ -778,13 +778,13 @@ generatedFiles:
   - src/react-query/creditsCreateCoinbaseCharge.ts
   - src/react-query/creditsGetCredits.ts
   - src/react-query/embeddingsGenerate.ts
+  - src/react-query/embeddingsListModels.ts
   - src/react-query/endpointsList.ts
   - src/react-query/endpointsListZdrEndpoints.ts
   - src/react-query/generationsGetGeneration.ts
   - src/react-query/index.ts
   - src/react-query/modelsCount.ts
   - src/react-query/modelsList.ts
-  - src/react-query/modelsListEmbeddings.ts
   - src/react-query/modelsListForUser.ts
   - src/react-query/oAuthCreateAuthCode.ts
   - src/react-query/oAuthExchangeAuthCodeForAPIKey.ts
@@ -1795,6 +1795,15 @@ examples:
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
   listModelsEmbeddings:
     speakeasy-default-list-models-embeddings:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  listEmbeddingsModels:
+    speakeasy-default-list-embeddings-models:
       responses:
         "200":
           application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
