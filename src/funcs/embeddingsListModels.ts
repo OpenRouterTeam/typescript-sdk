@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Returns a list of all available embeddings models and their properties
  */
-export function modelsListEmbeddings(
+export function embeddingsListModels(
   client: OpenRouterCore,
   options?: RequestOptions,
 ): APIPromise<
@@ -74,7 +74,7 @@ async function $do(
     APICall,
   ]
 > {
-  const path = pathToFunc("/models/embeddings")();
+  const path = pathToFunc("/embeddings/models")();
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -87,7 +87,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "listModelsEmbeddings",
+    operationID: "listEmbeddingsModels",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,

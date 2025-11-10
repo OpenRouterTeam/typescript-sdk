@@ -140,24 +140,16 @@ export const OpenResponsesInputMessageItemContent$outboundSchema: z.ZodType<
   OpenResponsesInputMessageItemContent
 > = z.union([
   ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
 
@@ -199,24 +191,16 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
   content: z.array(
     z.union([
       ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),

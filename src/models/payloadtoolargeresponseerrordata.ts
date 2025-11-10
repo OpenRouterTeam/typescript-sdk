@@ -21,7 +21,7 @@ export const PayloadTooLargeResponseErrorData$inboundSchema: z.ZodType<
   PayloadTooLargeResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });

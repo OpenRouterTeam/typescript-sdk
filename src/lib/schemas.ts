@@ -3,7 +3,6 @@
  */
 
 import * as z from "zod/v4";
-import { output, ZodError } from "zod/v4";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import { ERR, OK, Result } from "../types/fp.js";
 
@@ -20,7 +19,7 @@ export function parse<Inp, Out>(
   try {
     return fn(rawValue);
   } catch (err) {
-    if (err instanceof ZodError) {
+    if (err instanceof z.ZodError) {
       throw new SDKValidationError(errorMessage, err, rawValue);
     }
     throw err;
@@ -57,7 +56,7 @@ export function collectExtraKeys<
   z.ZodObject<Shape, z.core.$catchall<Catchall>>,
   z.ZodTransform<
     & z.output<z.ZodObject<Shape, z.core.$strip>>
-    & (Optional extends true ? {
+    & (Optional extends false ? {
         [k in K]: Record<string, z.output<Catchall>>;
       }
       : {
@@ -67,7 +66,7 @@ export function collectExtraKeys<
   >
 > {
   return obj.transform((val: any) => {
-    const extras: Record<string, output<Catchall>> = {};
+    const extras: Record<string, z.output<Catchall>> = {};
     const { shape } = obj;
     for (const [key] of Object.entries(val)) {
       if (key in shape) {

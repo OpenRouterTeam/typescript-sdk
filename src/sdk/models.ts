@@ -4,7 +4,6 @@
 
 import { modelsCount } from "../funcs/modelsCount.js";
 import { modelsList } from "../funcs/modelsList.js";
-import { modelsListEmbeddings } from "../funcs/modelsListEmbeddings.js";
 import { modelsListForUser } from "../funcs/modelsListForUser.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -34,21 +33,6 @@ export class Models extends ClientSDK {
     return unwrapAsync(modelsList(
       this,
       request,
-      options,
-    ));
-  }
-
-  /**
-   * List all embeddings models
-   *
-   * @remarks
-   * Returns a list of all available embeddings models and their properties
-   */
-  async listEmbeddings(
-    options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsListEmbeddings(
-      this,
       options,
     ));
   }

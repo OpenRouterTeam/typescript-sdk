@@ -13,7 +13,7 @@ import {
   UseSuspenseQueryResult,
 } from "@tanstack/react-query";
 import { OpenRouterCore } from "../core.js";
-import { modelsListEmbeddings } from "../funcs/modelsListEmbeddings.js";
+import { embeddingsListModels } from "../funcs/embeddingsListModels.js";
 import { combineSignals } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -21,7 +21,7 @@ import { unwrapAsync } from "../types/fp.js";
 import { useOpenRouterContext } from "./_context.js";
 import { QueryHookOptions, SuspenseQueryHookOptions } from "./_types.js";
 
-export type ModelsListEmbeddingsQueryData = models.ModelsListResponse;
+export type EmbeddingsListModelsQueryData = models.ModelsListResponse;
 
 /**
  * List all embeddings models
@@ -29,12 +29,12 @@ export type ModelsListEmbeddingsQueryData = models.ModelsListResponse;
  * @remarks
  * Returns a list of all available embeddings models and their properties
  */
-export function useModelsListEmbeddings(
-  options?: QueryHookOptions<ModelsListEmbeddingsQueryData>,
-): UseQueryResult<ModelsListEmbeddingsQueryData, Error> {
+export function useEmbeddingsListModels(
+  options?: QueryHookOptions<EmbeddingsListModelsQueryData>,
+): UseQueryResult<EmbeddingsListModelsQueryData, Error> {
   const client = useOpenRouterContext();
   return useQuery({
-    ...buildModelsListEmbeddingsQuery(
+    ...buildEmbeddingsListModelsQuery(
       client,
       options,
     ),
@@ -48,12 +48,12 @@ export function useModelsListEmbeddings(
  * @remarks
  * Returns a list of all available embeddings models and their properties
  */
-export function useModelsListEmbeddingsSuspense(
-  options?: SuspenseQueryHookOptions<ModelsListEmbeddingsQueryData>,
-): UseSuspenseQueryResult<ModelsListEmbeddingsQueryData, Error> {
+export function useEmbeddingsListModelsSuspense(
+  options?: SuspenseQueryHookOptions<EmbeddingsListModelsQueryData>,
+): UseSuspenseQueryResult<EmbeddingsListModelsQueryData, Error> {
   const client = useOpenRouterContext();
   return useSuspenseQuery({
-    ...buildModelsListEmbeddingsQuery(
+    ...buildEmbeddingsListModelsQuery(
       client,
       options,
     ),
@@ -61,57 +61,57 @@ export function useModelsListEmbeddingsSuspense(
   });
 }
 
-export function prefetchModelsListEmbeddings(
+export function prefetchEmbeddingsListModels(
   queryClient: QueryClient,
   client$: OpenRouterCore,
 ): Promise<void> {
   return queryClient.prefetchQuery({
-    ...buildModelsListEmbeddingsQuery(
+    ...buildEmbeddingsListModelsQuery(
       client$,
     ),
   });
 }
 
-export function setModelsListEmbeddingsData(
+export function setEmbeddingsListModelsData(
   client: QueryClient,
-  data: ModelsListEmbeddingsQueryData,
-): ModelsListEmbeddingsQueryData | undefined {
-  const key = queryKeyModelsListEmbeddings();
+  data: EmbeddingsListModelsQueryData,
+): EmbeddingsListModelsQueryData | undefined {
+  const key = queryKeyEmbeddingsListModels();
 
-  return client.setQueryData<ModelsListEmbeddingsQueryData>(key, data);
+  return client.setQueryData<EmbeddingsListModelsQueryData>(key, data);
 }
 
-export function invalidateAllModelsListEmbeddings(
+export function invalidateAllEmbeddingsListModels(
   client: QueryClient,
   filters?: Omit<InvalidateQueryFilters, "queryKey" | "predicate" | "exact">,
 ): Promise<void> {
   return client.invalidateQueries({
     ...filters,
-    queryKey: ["@openrouter/sdk", "Models", "listEmbeddings"],
+    queryKey: ["@openrouter/sdk", "Embeddings", "listModels"],
   });
 }
 
-export function buildModelsListEmbeddingsQuery(
+export function buildEmbeddingsListModelsQuery(
   client$: OpenRouterCore,
   options?: RequestOptions,
 ): {
   queryKey: QueryKey;
   queryFn: (
     context: QueryFunctionContext,
-  ) => Promise<ModelsListEmbeddingsQueryData>;
+  ) => Promise<EmbeddingsListModelsQueryData>;
 } {
   return {
-    queryKey: queryKeyModelsListEmbeddings(),
-    queryFn: async function modelsListEmbeddingsQueryFn(
+    queryKey: queryKeyEmbeddingsListModels(),
+    queryFn: async function embeddingsListModelsQueryFn(
       ctx,
-    ): Promise<ModelsListEmbeddingsQueryData> {
+    ): Promise<EmbeddingsListModelsQueryData> {
       const sig = combineSignals(ctx.signal, options?.fetchOptions?.signal);
       const mergedOptions = {
         ...options,
         fetchOptions: { ...options?.fetchOptions, signal: sig },
       };
 
-      return unwrapAsync(modelsListEmbeddings(
+      return unwrapAsync(embeddingsListModels(
         client$,
         mergedOptions,
       ));
@@ -119,6 +119,6 @@ export function buildModelsListEmbeddingsQuery(
   };
 }
 
-export function queryKeyModelsListEmbeddings(): QueryKey {
-  return ["@openrouter/sdk", "Models", "listEmbeddings"];
+export function queryKeyEmbeddingsListModels(): QueryKey {
+  return ["@openrouter/sdk", "Embeddings", "listModels"];
 }
