@@ -13,7 +13,7 @@ const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
 });
 
-const response = await client.chat.completions.create({
+const response = await client.chat.send({
   model: "minimax/minimax-m2",
   messages: [
     { role: "user", content: "Explain quantum computing" }
@@ -29,7 +29,7 @@ The SDK is automatically generated from OpenRouter's OpenAPI specs and updated w
 
 ```typescript
 // When new models launch, they're available instantly
-const response = await client.chat.completions.create({
+const response = await client.chat.send({
   model: "minimax/minimax-m2",
 });
 ```
@@ -39,7 +39,7 @@ const response = await client.chat.completions.create({
 Every parameter, response field, and configuration option is fully typed. Invalid configurations are caught at compile time, not in production.
 
 ```typescript
-const response = await client.chat.completions.create({
+const response = await client.chat.send({
   model: "minimax/minimax-m2",
   messages: [
     { role: "user", content: "Hello" }
@@ -61,7 +61,7 @@ const response = await client.chat.completions.create({
 **Type-safe streaming:**
 
 ```typescript
-const stream = await client.chat.completions.create({
+const stream = await client.chat.send({
   model: "minimax/minimax-m2",
   messages: [{ role: "user", content: "Write a story" }],
   stream: true
@@ -90,7 +90,7 @@ const client = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY
 });
 
-const response = await client.chat.completions.create({
+const response = await client.chat.send({
   model: "minimax/minimax-m2",
   messages: [
     { role: "user", content: "Hello!" }
