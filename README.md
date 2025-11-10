@@ -73,7 +73,7 @@ const result = await openRouter.chat.send({
       content: "Hello, how are you?",
     },
   ],
-  model: "openai/gpt-5"
+  model: "openai/gpt-5",
   provider: {
     zdr: true,
     sort: "price",
@@ -81,8 +81,8 @@ const result = await openRouter.chat.send({
   stream: true
 });
 
-for await (const chunk of stream) {
-  console.log(hunk.choices[0].delta.content)
+for await (const chunk of result) {
+  console.log(chunk.choices[0].delta.content)
 }
 
 ```
