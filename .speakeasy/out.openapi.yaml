@@ -414,12 +414,12 @@ components:
         result:
           type: string
           nullable: true
+          default: null
         status:
           $ref: '#/components/schemas/ImageGenerationStatus'
       required:
         - type
         - id
-        - result
         - status
       example:
         type: image_generation_call
@@ -8138,6 +8138,11 @@ paths:
                   type: number
                   description: Credit limit for the API key to be created
                   example: 100
+                expires_at:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: Optional expiration time for the API key to be created
               required:
                 - callback_url
               example:

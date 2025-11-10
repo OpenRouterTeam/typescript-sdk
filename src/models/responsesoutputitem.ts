@@ -38,8 +38,8 @@ export type ResponsesOutputItem =
   | ResponsesOutputMessage
   | ResponsesOutputItemFunctionCall
   | ResponsesOutputItemFileSearchCall
-  | ResponsesImageGenerationCall
   | ResponsesWebSearchCallOutput
+  | ResponsesImageGenerationCall
   | ResponsesOutputItemReasoning;
 
 /** @internal */
@@ -50,8 +50,8 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesOutputMessage$inboundSchema,
   ResponsesOutputItemFunctionCall$inboundSchema,
   ResponsesOutputItemFileSearchCall$inboundSchema,
-  ResponsesImageGenerationCall$inboundSchema,
   ResponsesWebSearchCallOutput$inboundSchema,
+  ResponsesImageGenerationCall$inboundSchema,
   ResponsesOutputItemReasoning$inboundSchema,
 ]);
 

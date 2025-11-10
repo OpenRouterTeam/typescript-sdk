@@ -65,9 +65,9 @@ export type OpenResponsesInput1 =
   | ResponsesOutputMessage
   | ResponsesOutputItemFunctionCall
   | ResponsesOutputItemFileSearchCall
-  | ResponsesImageGenerationCall
   | OpenResponsesReasoning
   | ResponsesWebSearchCallOutput
+  | ResponsesImageGenerationCall
   | OpenResponsesEasyInputMessage
   | OpenResponsesInputMessageItem
   | ResponsesOutputItemReasoning;
@@ -83,9 +83,9 @@ export type OpenResponsesInput =
     | ResponsesOutputMessage
     | ResponsesOutputItemFunctionCall
     | ResponsesOutputItemFileSearchCall
-    | ResponsesImageGenerationCall
     | OpenResponsesReasoning
     | ResponsesWebSearchCallOutput
+    | ResponsesImageGenerationCall
     | OpenResponsesEasyInputMessage
     | OpenResponsesInputMessageItem
     | ResponsesOutputItemReasoning
@@ -98,9 +98,9 @@ export type OpenResponsesInput1$Outbound =
   | ResponsesOutputMessage$Outbound
   | ResponsesOutputItemFunctionCall$Outbound
   | ResponsesOutputItemFileSearchCall$Outbound
-  | ResponsesImageGenerationCall$Outbound
   | OpenResponsesReasoning$Outbound
   | ResponsesWebSearchCallOutput$Outbound
+  | ResponsesImageGenerationCall$Outbound
   | OpenResponsesEasyInputMessage$Outbound
   | OpenResponsesInputMessageItem$Outbound
   | ResponsesOutputItemReasoning$Outbound;
@@ -115,9 +115,9 @@ export const OpenResponsesInput1$outboundSchema: z.ZodType<
   ResponsesOutputMessage$outboundSchema,
   ResponsesOutputItemFunctionCall$outboundSchema,
   ResponsesOutputItemFileSearchCall$outboundSchema,
-  ResponsesImageGenerationCall$outboundSchema,
   OpenResponsesReasoning$outboundSchema,
   ResponsesWebSearchCallOutput$outboundSchema,
+  ResponsesImageGenerationCall$outboundSchema,
   OpenResponsesEasyInputMessage$outboundSchema,
   OpenResponsesInputMessageItem$outboundSchema,
   ResponsesOutputItemReasoning$outboundSchema,
@@ -140,9 +140,9 @@ export type OpenResponsesInput$Outbound =
     | ResponsesOutputMessage$Outbound
     | ResponsesOutputItemFunctionCall$Outbound
     | ResponsesOutputItemFileSearchCall$Outbound
-    | ResponsesImageGenerationCall$Outbound
     | OpenResponsesReasoning$Outbound
     | ResponsesWebSearchCallOutput$Outbound
+    | ResponsesImageGenerationCall$Outbound
     | OpenResponsesEasyInputMessage$Outbound
     | OpenResponsesInputMessageItem$Outbound
     | ResponsesOutputItemReasoning$Outbound
@@ -161,9 +161,9 @@ export const OpenResponsesInput$outboundSchema: z.ZodType<
       ResponsesOutputMessage$outboundSchema,
       ResponsesOutputItemFunctionCall$outboundSchema,
       ResponsesOutputItemFileSearchCall$outboundSchema,
-      ResponsesImageGenerationCall$outboundSchema,
       OpenResponsesReasoning$outboundSchema,
       ResponsesWebSearchCallOutput$outboundSchema,
+      ResponsesImageGenerationCall$outboundSchema,
       OpenResponsesEasyInputMessage$outboundSchema,
       OpenResponsesInputMessageItem$outboundSchema,
       ResponsesOutputItemReasoning$outboundSchema,
