@@ -91,6 +91,10 @@ export type GetKeyData = {
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
+  /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -141,6 +145,9 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
+    expires_at: z.nullable(
+      z.string().datetime({ offset: true }).transform(v => new Date(v)),
+    ).optional(),
   }).transform((v) => {
     return remap$(v, {
       "limit_remaining": "limitRemaining",
@@ -155,6 +162,7 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
       "byok_usage_monthly": "byokUsageMonthly",
       "created_at": "createdAt",
       "updated_at": "updatedAt",
+      "expires_at": "expiresAt",
     });
   });
 
