@@ -39,6 +39,10 @@ export type CreateKeysRequest = {
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
+  /**
+   * Optional ISO 8601 timestamp with timezone when the API key should expire
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -117,6 +121,10 @@ export type CreateKeysData = {
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
+  /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -148,6 +156,7 @@ export type CreateKeysRequest$Outbound = {
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
+  expires_at?: string | null | undefined;
 };
 
 /** @internal */
@@ -159,10 +168,12 @@ export const CreateKeysRequest$outboundSchema: z.ZodType<
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
+  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
 }).transform((v) => {
   return remap$(v, {
     limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
+    expiresAt: "expires_at",
   });
 });
 
@@ -195,6 +206,9 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
+    expires_at: z.nullable(
+      z.string().datetime({ offset: true }).transform(v => new Date(v)),
+    ).optional(),
   }).transform((v) => {
     return remap$(v, {
       "limit_remaining": "limitRemaining",
@@ -209,6 +223,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
       "byok_usage_monthly": "byokUsageMonthly",
       "created_at": "createdAt",
       "updated_at": "updatedAt",
+      "expires_at": "expiresAt",
     });
   });
 
