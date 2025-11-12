@@ -26,7 +26,7 @@ export type OpenResponsesFunctionToolCall = {
   name: string;
   arguments: string;
   id: string;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 /** @internal */
@@ -41,7 +41,7 @@ export type OpenResponsesFunctionToolCall$Outbound = {
   name: string;
   arguments: string;
   id: string;
-  status?: string | undefined;
+  status?: string | null | undefined;
 };
 
 /** @internal */
@@ -54,7 +54,7 @@ export const OpenResponsesFunctionToolCall$outboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   id: z.string(),
-  status: ToolCallStatus$outboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

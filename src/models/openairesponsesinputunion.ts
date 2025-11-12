@@ -47,7 +47,7 @@ export type OpenAIResponsesInputFunctionCall = {
   name: string;
   arguments: string;
   id?: string | undefined;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 export const OpenAIResponsesInputTypeFunctionCallOutput = {
@@ -59,10 +59,10 @@ export type OpenAIResponsesInputTypeFunctionCallOutput = ClosedEnum<
 
 export type OpenAIResponsesInputFunctionCallOutput = {
   type: OpenAIResponsesInputTypeFunctionCallOutput;
-  id: string;
+  id?: string | null | undefined;
   callId: string;
   output: string;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 export const OpenAIResponsesInputTypeMessage2 = {
@@ -193,20 +193,20 @@ export type OpenAIResponsesInputMessage1 = {
 };
 
 export type OpenAIResponsesInputUnion1 =
-  | OpenAIResponsesInputFunctionCallOutput
   | OpenAIResponsesInputFunctionCall
   | OutputMessage
   | OpenAIResponsesInputMessage2
+  | OpenAIResponsesInputFunctionCallOutput
   | OutputItemImageGenerationCall
   | OpenAIResponsesInputMessage1;
 
 export type OpenAIResponsesInputUnion =
   | string
   | Array<
-    | OpenAIResponsesInputFunctionCallOutput
     | OpenAIResponsesInputFunctionCall
     | OutputMessage
     | OpenAIResponsesInputMessage2
+    | OpenAIResponsesInputFunctionCallOutput
     | OutputItemImageGenerationCall
     | OpenAIResponsesInputMessage1
   >
@@ -227,7 +227,7 @@ export const OpenAIResponsesInputFunctionCall$inboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -256,10 +256,10 @@ export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
-  id: z.string(),
+  id: z.nullable(z.string()).optional(),
   call_id: z.string(),
   output: z.string(),
-  status: ToolCallStatus$inboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -543,10 +543,10 @@ export const OpenAIResponsesInputUnion1$inboundSchema: z.ZodType<
   OpenAIResponsesInputUnion1,
   unknown
 > = z.union([
-  z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
   z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
   OutputMessage$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+  z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
   OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
 ]);
@@ -568,10 +568,10 @@ export const OpenAIResponsesInputUnion$inboundSchema: z.ZodType<
 > = z.union([
   z.string(),
   z.array(z.union([
-    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
     z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
     OutputMessage$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
     OutputItemImageGenerationCall$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
   ])),

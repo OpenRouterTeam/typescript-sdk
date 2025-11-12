@@ -22,10 +22,10 @@ export type OpenResponsesFunctionCallOutputType = ClosedEnum<
  */
 export type OpenResponsesFunctionCallOutput = {
   type: OpenResponsesFunctionCallOutputType;
-  id: string;
+  id?: string | null | undefined;
   callId: string;
   output: string;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 /** @internal */
@@ -36,10 +36,10 @@ export const OpenResponsesFunctionCallOutputType$outboundSchema: z.ZodEnum<
 /** @internal */
 export type OpenResponsesFunctionCallOutput$Outbound = {
   type: string;
-  id: string;
+  id?: string | null | undefined;
   call_id: string;
   output: string;
-  status?: string | undefined;
+  status?: string | null | undefined;
 };
 
 /** @internal */
@@ -48,10 +48,10 @@ export const OpenResponsesFunctionCallOutput$outboundSchema: z.ZodType<
   OpenResponsesFunctionCallOutput
 > = z.object({
   type: OpenResponsesFunctionCallOutputType$outboundSchema,
-  id: z.string(),
+  id: z.nullable(z.string()).optional(),
   callId: z.string(),
   output: z.string(),
-  status: ToolCallStatus$outboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
