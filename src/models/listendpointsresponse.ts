@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
@@ -99,11 +100,8 @@ export type ListEndpointsResponse = {
 };
 
 /** @internal */
-export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = z
-  .union([
-    z.enum(Tokenizer),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = openEnums
+  .inboundSchema(Tokenizer);
 
 /** @internal */
 export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z

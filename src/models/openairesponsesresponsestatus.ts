@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesResponseStatus = {
   Completed: "completed",
@@ -21,8 +22,4 @@ export type OpenAIResponsesResponseStatus = OpenEnum<
 export const OpenAIResponsesResponseStatus$inboundSchema: z.ZodType<
   OpenAIResponsesResponseStatus,
   unknown
-> = z
-  .union([
-    z.enum(OpenAIResponsesResponseStatus),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(OpenAIResponsesResponseStatus);

@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum, OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$Outbound,
@@ -125,12 +126,9 @@ export function openResponsesReasoningStatusUnionToJSON(
 
 /** @internal */
 export const OpenResponsesReasoningFormat$outboundSchema: z.ZodType<
-  OpenResponsesReasoningFormat,
+  string,
   OpenResponsesReasoningFormat
-> = z.union([
-  z.enum(OpenResponsesReasoningFormat),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(OpenResponsesReasoningFormat);
 
 /** @internal */
 export type OpenResponsesReasoning$Outbound = {

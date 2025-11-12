@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum, OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   OpenAIResponsesIncludable,
   OpenAIResponsesIncludable$outboundSchema,
@@ -400,27 +401,16 @@ export function openResponsesRequestToolUnionToJSON(
 }
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodType<ServiceTier, ServiceTier> = z
-  .union([
-    z.enum(ServiceTier),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export const ServiceTier$outboundSchema: z.ZodType<string, ServiceTier> =
+  openEnums.outboundSchema(ServiceTier);
 
 /** @internal */
-export const Truncation$outboundSchema: z.ZodType<Truncation, Truncation> = z
-  .union([
-    z.enum(Truncation),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export const Truncation$outboundSchema: z.ZodType<string, Truncation> =
+  openEnums.outboundSchema(Truncation);
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<
-  DataCollection,
-  DataCollection
-> = z.union([
-  z.enum(DataCollection),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
+  openEnums.outboundSchema(DataCollection);
 
 /** @internal */
 export type Order$Outbound = string | string;
@@ -460,10 +450,8 @@ export function ignoreToJSON(ignore: Ignore): string {
 }
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodType<Sort, Sort> = z.union([
-  z.enum(Sort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
+  .outboundSchema(Sort);
 
 /** @internal */
 export type MaxPrice$Outbound = {
@@ -542,11 +530,8 @@ export const IdFileParser$outboundSchema: z.ZodEnum<typeof IdFileParser> = z
   .enum(IdFileParser);
 
 /** @internal */
-export const PdfEngine$outboundSchema: z.ZodType<PdfEngine, PdfEngine> = z
-  .union([
-    z.enum(PdfEngine),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
+export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> = openEnums
+  .outboundSchema(PdfEngine);
 
 /** @internal */
 export type Pdf$Outbound = {
@@ -595,10 +580,8 @@ export function pluginFileParserToJSON(
 export const IdWeb$outboundSchema: z.ZodEnum<typeof IdWeb> = z.enum(IdWeb);
 
 /** @internal */
-export const Engine$outboundSchema: z.ZodType<Engine, Engine> = z.union([
-  z.enum(Engine),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums
+  .outboundSchema(Engine);
 
 /** @internal */
 export type PluginWeb$Outbound = {

@@ -5,12 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -53,19 +49,12 @@ export const ResponseInputAudioType$outboundSchema: z.ZodEnum<
 export const ResponseInputAudioFormat$inboundSchema: z.ZodType<
   ResponseInputAudioFormat,
   unknown
-> = z
-  .union([
-    z.enum(ResponseInputAudioFormat),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(ResponseInputAudioFormat);
 /** @internal */
 export const ResponseInputAudioFormat$outboundSchema: z.ZodType<
-  ResponseInputAudioFormat,
+  string,
   ResponseInputAudioFormat
-> = z.union([
-  z.enum(ResponseInputAudioFormat),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(ResponseInputAudioFormat);
 
 /** @internal */
 export const ResponseInputAudioInputAudio$inboundSchema: z.ZodType<

@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -169,12 +166,9 @@ export function getParametersSecurityToJSON(
 
 /** @internal */
 export const GetParametersProvider$outboundSchema: z.ZodType<
-  GetParametersProvider,
+  string,
   GetParametersProvider
-> = z.union([
-  z.enum(GetParametersProvider),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(GetParametersProvider);
 
 /** @internal */
 export type GetParametersRequest$Outbound = {
@@ -205,11 +199,7 @@ export function getParametersRequestToJSON(
 export const SupportedParameter$inboundSchema: z.ZodType<
   SupportedParameter,
   unknown
-> = z
-  .union([
-    z.enum(SupportedParameter),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(SupportedParameter);
 
 /** @internal */
 export const GetParametersData$inboundSchema: z.ZodType<

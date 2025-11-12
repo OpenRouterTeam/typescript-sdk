@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const Parameter = {
   Temperature: "temperature",
@@ -33,8 +34,5 @@ export const Parameter = {
 export type Parameter = OpenEnum<typeof Parameter>;
 
 /** @internal */
-export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> = z
-  .union([
-    z.enum(Parameter),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> = openEnums
+  .inboundSchema(Parameter);

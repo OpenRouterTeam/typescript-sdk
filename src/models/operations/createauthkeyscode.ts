@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { OpenEnum, Unrecognized } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -76,12 +77,9 @@ export type CreateAuthKeysCodeResponse = {
 
 /** @internal */
 export const CreateAuthKeysCodeCodeChallengeMethod$outboundSchema: z.ZodType<
-  CreateAuthKeysCodeCodeChallengeMethod,
+  string,
   CreateAuthKeysCodeCodeChallengeMethod
-> = z.union([
-  z.enum(CreateAuthKeysCodeCodeChallengeMethod),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(CreateAuthKeysCodeCodeChallengeMethod);
 
 /** @internal */
 export type CreateAuthKeysCodeRequest$Outbound = {

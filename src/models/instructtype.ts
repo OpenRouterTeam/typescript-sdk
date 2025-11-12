@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
  * Instruction format type
@@ -38,8 +39,5 @@ export const InstructType = {
 export type InstructType = OpenEnum<typeof InstructType>;
 
 /** @internal */
-export const InstructType$inboundSchema: z.ZodType<InstructType, unknown> = z
-  .union([
-    z.enum(InstructType),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const InstructType$inboundSchema: z.ZodType<InstructType, unknown> =
+  openEnums.inboundSchema(InstructType);

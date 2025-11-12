@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ResponseFormatTextConfig,
   ResponseFormatTextConfig$Outbound,
@@ -32,12 +33,9 @@ export type OpenResponsesResponseText = {
 
 /** @internal */
 export const OpenResponsesResponseTextVerbosity$outboundSchema: z.ZodType<
-  OpenResponsesResponseTextVerbosity,
+  string,
   OpenResponsesResponseTextVerbosity
-> = z.union([
-  z.enum(OpenResponsesResponseTextVerbosity),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(OpenResponsesResponseTextVerbosity);
 
 /** @internal */
 export type OpenResponsesResponseText$Outbound = {

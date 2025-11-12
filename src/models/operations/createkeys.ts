@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { OpenEnum, Unrecognized } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -40,7 +41,7 @@ export type CreateKeysRequest = {
    */
   includeByokInLimit?: boolean | undefined;
   /**
-   * Optional ISO 8601 timestamp with timezone when the API key should expire
+   * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
    */
   expiresAt?: Date | null | undefined;
 };
@@ -143,12 +144,9 @@ export type CreateKeysResponse = {
 
 /** @internal */
 export const CreateKeysLimitReset$outboundSchema: z.ZodType<
-  CreateKeysLimitReset,
+  string,
   CreateKeysLimitReset
-> = z.union([
-  z.enum(CreateKeysLimitReset),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(CreateKeysLimitReset);
 
 /** @internal */
 export type CreateKeysRequest$Outbound = {

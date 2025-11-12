@@ -5,12 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -50,19 +46,12 @@ export const ResponseInputImageType$outboundSchema: z.ZodEnum<
 export const ResponseInputImageDetail$inboundSchema: z.ZodType<
   ResponseInputImageDetail,
   unknown
-> = z
-  .union([
-    z.enum(ResponseInputImageDetail),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(ResponseInputImageDetail);
 /** @internal */
 export const ResponseInputImageDetail$outboundSchema: z.ZodType<
-  ResponseInputImageDetail,
+  string,
   ResponseInputImageDetail
-> = z.union([
-  z.enum(ResponseInputImageDetail),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(ResponseInputImageDetail);
 
 /** @internal */
 export const ResponseInputImage$inboundSchema: z.ZodType<
