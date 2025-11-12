@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ChainId = {
   One: 1,
@@ -23,10 +24,8 @@ export type CreateChargeRequest = {
 };
 
 /** @internal */
-export const ChainId$outboundSchema: z.ZodType<ChainId, ChainId> = z.union([
-  z.enum(ChainId),
-  z.number().and(z.custom<Unrecognized<number>>()),
-]);
+export const ChainId$outboundSchema: z.ZodType<number, ChainId> = openEnums
+  .outboundSchemaInt(ChainId);
 
 /** @internal */
 export type CreateChargeRequest$Outbound = {

@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ChatStreamOptions,
   ChatStreamOptions$Outbound,
@@ -101,10 +102,8 @@ export type ChatGenerationParams = {
 };
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodType<Effort, Effort> = z.union([
-  z.enum(Effort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
+  .outboundSchema(Effort);
 
 /** @internal */
 export type Reasoning$Outbound = {

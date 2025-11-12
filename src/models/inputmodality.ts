@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const InputModality = {
   Text: "text",
@@ -15,8 +16,5 @@ export const InputModality = {
 export type InputModality = OpenEnum<typeof InputModality>;
 
 /** @internal */
-export const InputModality$inboundSchema: z.ZodType<InputModality, unknown> = z
-  .union([
-    z.enum(InputModality),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const InputModality$inboundSchema: z.ZodType<InputModality, unknown> =
+  openEnums.inboundSchema(InputModality);

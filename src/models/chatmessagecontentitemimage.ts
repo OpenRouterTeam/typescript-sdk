@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -36,19 +33,12 @@ export type ChatMessageContentItemImage = {
 export const ChatMessageContentItemImageDetail$inboundSchema: z.ZodType<
   ChatMessageContentItemImageDetail,
   unknown
-> = z
-  .union([
-    z.enum(ChatMessageContentItemImageDetail),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(ChatMessageContentItemImageDetail);
 /** @internal */
 export const ChatMessageContentItemImageDetail$outboundSchema: z.ZodType<
-  ChatMessageContentItemImageDetail,
+  string,
   ChatMessageContentItemImageDetail
-> = z.union([
-  z.enum(ChatMessageContentItemImageDetail),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(ChatMessageContentItemImageDetail);
 
 /** @internal */
 export const ImageUrl$inboundSchema: z.ZodType<ImageUrl, unknown> = z.object({

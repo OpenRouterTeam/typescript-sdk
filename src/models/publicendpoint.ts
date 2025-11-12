@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   EndpointStatus,
@@ -136,11 +137,7 @@ export function pricingFromJSON(
 export const PublicEndpointQuantization$inboundSchema: z.ZodType<
   PublicEndpointQuantization,
   unknown
-> = z
-  .union([
-    z.enum(PublicEndpointQuantization),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(PublicEndpointQuantization);
 
 /** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =

@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ChatCompletionFinishReason = {
   ToolCalls: "tool_calls",
@@ -20,8 +21,4 @@ export type ChatCompletionFinishReason = OpenEnum<
 export const ChatCompletionFinishReason$inboundSchema: z.ZodType<
   ChatCompletionFinishReason,
   unknown
-> = z
-  .union([
-    z.enum(ChatCompletionFinishReason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(ChatCompletionFinishReason);

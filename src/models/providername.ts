@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
   AnyScale: "AnyScale",
@@ -100,16 +97,8 @@ export const ProviderName = {
 export type ProviderName = OpenEnum<typeof ProviderName>;
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> = z
-  .union([
-    z.enum(ProviderName),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
+  openEnums.inboundSchema(ProviderName);
 /** @internal */
-export const ProviderName$outboundSchema: z.ZodType<
-  ProviderName,
-  ProviderName
-> = z.union([
-  z.enum(ProviderName),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const ProviderName$outboundSchema: z.ZodType<string, ProviderName> =
+  openEnums.outboundSchema(ProviderName);

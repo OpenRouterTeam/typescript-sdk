@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   CompletionLogprobs,
@@ -31,11 +32,7 @@ export type CompletionChoice = {
 export const CompletionFinishReason$inboundSchema: z.ZodType<
   CompletionFinishReason,
   unknown
-> = z
-  .union([
-    z.enum(CompletionFinishReason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(CompletionFinishReason);
 
 /** @internal */
 export const CompletionChoice$inboundSchema: z.ZodType<

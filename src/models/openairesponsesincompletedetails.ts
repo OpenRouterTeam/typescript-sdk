@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -19,11 +20,8 @@ export type OpenAIResponsesIncompleteDetails = {
 };
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, unknown> = z
-  .union([
-    z.enum(Reason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const Reason$inboundSchema: z.ZodType<Reason, unknown> = openEnums
+  .inboundSchema(Reason);
 
 /** @internal */
 export const OpenAIResponsesIncompleteDetails$inboundSchema: z.ZodType<

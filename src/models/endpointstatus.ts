@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const EndpointStatus = {
   Zero: 0,
@@ -17,8 +18,4 @@ export type EndpointStatus = OpenEnum<typeof EndpointStatus>;
 
 /** @internal */
 export const EndpointStatus$inboundSchema: z.ZodType<EndpointStatus, unknown> =
-  z
-    .union([
-      z.enum(EndpointStatus),
-      z.number().transform(catchUnrecognizedEnum),
-    ]);
+  openEnums.inboundSchemaInt(EndpointStatus);

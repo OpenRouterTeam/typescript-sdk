@@ -4,7 +4,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -39,11 +40,8 @@ export type ResponsesErrorField = {
 };
 
 /** @internal */
-export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = z
-  .union([
-    z.enum(CodeEnum),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = openEnums
+  .inboundSchema(CodeEnum);
 
 /** @internal */
 export const ResponsesErrorField$inboundSchema: z.ZodType<

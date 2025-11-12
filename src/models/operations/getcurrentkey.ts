@@ -93,6 +93,10 @@ export type GetCurrentKeyData = {
    */
   includeByokInLimit: boolean;
   /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
+  /**
    * Legacy rate limit information about a key. Will always return -1.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -147,6 +151,9 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
   include_byok_in_limit: z.boolean(),
+  expires_at: z.nullable(
+    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -162,6 +169,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",
     "include_byok_in_limit": "includeByokInLimit",
+    "expires_at": "expiresAt",
     "rate_limit": "rateLimit",
   });
 });

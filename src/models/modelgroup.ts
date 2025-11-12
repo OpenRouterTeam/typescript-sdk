@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
  * Tokenizer type used by the model
@@ -35,8 +36,5 @@ export const ModelGroup = {
 export type ModelGroup = OpenEnum<typeof ModelGroup>;
 
 /** @internal */
-export const ModelGroup$inboundSchema: z.ZodType<ModelGroup, unknown> = z
-  .union([
-    z.enum(ModelGroup),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+export const ModelGroup$inboundSchema: z.ZodType<ModelGroup, unknown> =
+  openEnums.inboundSchema(ModelGroup);

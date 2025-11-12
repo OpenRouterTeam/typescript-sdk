@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { OpenEnum, Unrecognized } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -147,12 +148,9 @@ export type UpdateKeysResponse = {
 
 /** @internal */
 export const UpdateKeysLimitReset$outboundSchema: z.ZodType<
-  UpdateKeysLimitReset,
+  string,
   UpdateKeysLimitReset
-> = z.union([
-  z.enum(UpdateKeysLimitReset),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(UpdateKeysLimitReset);
 
 /** @internal */
 export type UpdateKeysRequestBody$Outbound = {

@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -40,19 +37,12 @@ export type ChatMessageContentItemAudio = {
 export const ChatMessageContentItemAudioFormat$inboundSchema: z.ZodType<
   ChatMessageContentItemAudioFormat,
   unknown
-> = z
-  .union([
-    z.enum(ChatMessageContentItemAudioFormat),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
+> = openEnums.inboundSchema(ChatMessageContentItemAudioFormat);
 /** @internal */
 export const ChatMessageContentItemAudioFormat$outboundSchema: z.ZodType<
-  ChatMessageContentItemAudioFormat,
+  string,
   ChatMessageContentItemAudioFormat
-> = z.union([
-  z.enum(ChatMessageContentItemAudioFormat),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(ChatMessageContentItemAudioFormat);
 
 /** @internal */
 export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<

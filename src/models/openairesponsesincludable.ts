@@ -3,7 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import { OpenEnum, Unrecognized } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesIncludable = {
   FileSearchCallResults: "file_search_call.results",
@@ -18,9 +19,6 @@ export type OpenAIResponsesIncludable = OpenEnum<
 
 /** @internal */
 export const OpenAIResponsesIncludable$outboundSchema: z.ZodType<
-  OpenAIResponsesIncludable,
+  string,
   OpenAIResponsesIncludable
-> = z.union([
-  z.enum(OpenAIResponsesIncludable),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+> = openEnums.outboundSchema(OpenAIResponsesIncludable);

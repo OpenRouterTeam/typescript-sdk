@@ -5,7 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import { ClosedEnum, OpenEnum, Unrecognized } from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
@@ -213,13 +214,8 @@ export function inputToJSON(input: Input): string {
 }
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<
-  DataCollection,
-  DataCollection
-> = z.union([
-  z.enum(DataCollection),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
+  openEnums.outboundSchema(DataCollection);
 
 /** @internal */
 export type Order$Outbound = string | string;
@@ -259,10 +255,8 @@ export function ignoreToJSON(ignore: Ignore): string {
 }
 
 /** @internal */
-export const Sort$outboundSchema: z.ZodType<Sort, Sort> = z.union([
-  z.enum(Sort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
+export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
+  .outboundSchema(Sort);
 
 /** @internal */
 export type MaxPrice$Outbound = {
