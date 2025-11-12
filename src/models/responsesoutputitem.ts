@@ -38,9 +38,9 @@ export type ResponsesOutputItem =
   | ResponsesOutputMessage
   | ResponsesOutputItemFunctionCall
   | ResponsesOutputItemFileSearchCall
+  | ResponsesOutputItemReasoning
   | ResponsesWebSearchCallOutput
-  | ResponsesImageGenerationCall
-  | ResponsesOutputItemReasoning;
+  | ResponsesImageGenerationCall;
 
 /** @internal */
 export const ResponsesOutputItem$inboundSchema: z.ZodType<
@@ -50,9 +50,9 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesOutputMessage$inboundSchema,
   ResponsesOutputItemFunctionCall$inboundSchema,
   ResponsesOutputItemFileSearchCall$inboundSchema,
+  ResponsesOutputItemReasoning$inboundSchema,
   ResponsesWebSearchCallOutput$inboundSchema,
   ResponsesImageGenerationCall$inboundSchema,
-  ResponsesOutputItemReasoning$inboundSchema,
 ]);
 
 export function responsesOutputItemFromJSON(

@@ -61,16 +61,16 @@ import {
 
 export type OpenResponsesInput1 =
   | OpenResponsesFunctionToolCall
-  | OpenResponsesFunctionCallOutput
   | ResponsesOutputMessage
   | ResponsesOutputItemFunctionCall
   | ResponsesOutputItemFileSearchCall
   | OpenResponsesReasoning
+  | OpenResponsesFunctionCallOutput
+  | ResponsesOutputItemReasoning
   | ResponsesWebSearchCallOutput
   | ResponsesImageGenerationCall
   | OpenResponsesEasyInputMessage
-  | OpenResponsesInputMessageItem
-  | ResponsesOutputItemReasoning;
+  | OpenResponsesInputMessageItem;
 
 /**
  * Input for a response request - can be a string or array of items
@@ -79,31 +79,31 @@ export type OpenResponsesInput =
   | string
   | Array<
     | OpenResponsesFunctionToolCall
-    | OpenResponsesFunctionCallOutput
     | ResponsesOutputMessage
     | ResponsesOutputItemFunctionCall
     | ResponsesOutputItemFileSearchCall
     | OpenResponsesReasoning
+    | OpenResponsesFunctionCallOutput
+    | ResponsesOutputItemReasoning
     | ResponsesWebSearchCallOutput
     | ResponsesImageGenerationCall
     | OpenResponsesEasyInputMessage
     | OpenResponsesInputMessageItem
-    | ResponsesOutputItemReasoning
   >;
 
 /** @internal */
 export type OpenResponsesInput1$Outbound =
   | OpenResponsesFunctionToolCall$Outbound
-  | OpenResponsesFunctionCallOutput$Outbound
   | ResponsesOutputMessage$Outbound
   | ResponsesOutputItemFunctionCall$Outbound
   | ResponsesOutputItemFileSearchCall$Outbound
   | OpenResponsesReasoning$Outbound
+  | OpenResponsesFunctionCallOutput$Outbound
+  | ResponsesOutputItemReasoning$Outbound
   | ResponsesWebSearchCallOutput$Outbound
   | ResponsesImageGenerationCall$Outbound
   | OpenResponsesEasyInputMessage$Outbound
-  | OpenResponsesInputMessageItem$Outbound
-  | ResponsesOutputItemReasoning$Outbound;
+  | OpenResponsesInputMessageItem$Outbound;
 
 /** @internal */
 export const OpenResponsesInput1$outboundSchema: z.ZodType<
@@ -111,16 +111,16 @@ export const OpenResponsesInput1$outboundSchema: z.ZodType<
   OpenResponsesInput1
 > = z.union([
   OpenResponsesFunctionToolCall$outboundSchema,
-  OpenResponsesFunctionCallOutput$outboundSchema,
   ResponsesOutputMessage$outboundSchema,
   ResponsesOutputItemFunctionCall$outboundSchema,
   ResponsesOutputItemFileSearchCall$outboundSchema,
   OpenResponsesReasoning$outboundSchema,
+  OpenResponsesFunctionCallOutput$outboundSchema,
+  ResponsesOutputItemReasoning$outboundSchema,
   ResponsesWebSearchCallOutput$outboundSchema,
   ResponsesImageGenerationCall$outboundSchema,
   OpenResponsesEasyInputMessage$outboundSchema,
   OpenResponsesInputMessageItem$outboundSchema,
-  ResponsesOutputItemReasoning$outboundSchema,
 ]);
 
 export function openResponsesInput1ToJSON(
@@ -136,16 +136,16 @@ export type OpenResponsesInput$Outbound =
   | string
   | Array<
     | OpenResponsesFunctionToolCall$Outbound
-    | OpenResponsesFunctionCallOutput$Outbound
     | ResponsesOutputMessage$Outbound
     | ResponsesOutputItemFunctionCall$Outbound
     | ResponsesOutputItemFileSearchCall$Outbound
     | OpenResponsesReasoning$Outbound
+    | OpenResponsesFunctionCallOutput$Outbound
+    | ResponsesOutputItemReasoning$Outbound
     | ResponsesWebSearchCallOutput$Outbound
     | ResponsesImageGenerationCall$Outbound
     | OpenResponsesEasyInputMessage$Outbound
     | OpenResponsesInputMessageItem$Outbound
-    | ResponsesOutputItemReasoning$Outbound
   >;
 
 /** @internal */
@@ -157,16 +157,16 @@ export const OpenResponsesInput$outboundSchema: z.ZodType<
   z.array(
     z.union([
       OpenResponsesFunctionToolCall$outboundSchema,
-      OpenResponsesFunctionCallOutput$outboundSchema,
       ResponsesOutputMessage$outboundSchema,
       ResponsesOutputItemFunctionCall$outboundSchema,
       ResponsesOutputItemFileSearchCall$outboundSchema,
       OpenResponsesReasoning$outboundSchema,
+      OpenResponsesFunctionCallOutput$outboundSchema,
+      ResponsesOutputItemReasoning$outboundSchema,
       ResponsesWebSearchCallOutput$outboundSchema,
       ResponsesImageGenerationCall$outboundSchema,
       OpenResponsesEasyInputMessage$outboundSchema,
       OpenResponsesInputMessageItem$outboundSchema,
-      ResponsesOutputItemReasoning$outboundSchema,
     ]),
   ),
 ]);
