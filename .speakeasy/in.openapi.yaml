@@ -223,7 +223,7 @@ components:
       example:
         type: summary_text
         text: Analyzed the problem using first principles
-    ResponsesOutputItemReasoning:
+    OutputItemReasoning:
       type: object
       properties:
         type:
@@ -256,8 +256,19 @@ components:
                 - in_progress
       required:
         - type
+        - id
         - summary
-      description: An output item containing reasoning
+      example:
+        type: reasoning
+        id: reasoning-abc123
+        summary:
+          - type: summary_text
+            text: Analyzed the problem using first principles
+    ResponsesOutputItemReasoning:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemReasoning'
+        - type: object
+          properties: {}
       example:
         id: reasoning-123
         type: reasoning
@@ -268,6 +279,7 @@ components:
         content:
           - type: reasoning_text
             text: First, we analyze the problem...
+      description: An output item containing reasoning
     OutputItemFunctionCall:
       type: object
       properties:
@@ -655,6 +667,7 @@ components:
           format: mp3
     ToolCallStatus:
       type: string
+      nullable: true
       enum:
         - in_progress
         - completed
@@ -752,6 +765,7 @@ components:
                       - function_call_output
                   id:
                     type: string
+                    nullable: true
                   call_id:
                     type: string
                   output:
@@ -760,7 +774,6 @@ components:
                     $ref: '#/components/schemas/ToolCallStatus'
                 required:
                   - type
-                  - id
                   - call_id
                   - output
               - type: object
@@ -1159,47 +1172,6 @@ components:
         format:
           type: text
         verbosity: medium
-    OutputItemReasoning:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - reasoning
-        id:
-          type: string
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningTextContent'
-        summary:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningSummaryText'
-        encrypted_content:
-          type: string
-          nullable: true
-        status:
-          anyOf:
-            - type: string
-              enum:
-                - completed
-            - type: string
-              enum:
-                - incomplete
-            - type: string
-              enum:
-                - in_progress
-      required:
-        - type
-        - id
-        - summary
-      example:
-        type: reasoning
-        id: reasoning-abc123
-        summary:
-          - type: summary_text
-            text: Analyzed the problem using first principles
     OpenAIResponsesNonStreamingResponse:
       type: object
       properties:
@@ -3378,6 +3350,7 @@ components:
             - function_call_output
         id:
           type: string
+          nullable: true
         call_id:
           type: string
         output:
@@ -3386,7 +3359,6 @@ components:
           $ref: '#/components/schemas/ToolCallStatus'
       required:
         - type
-        - id
         - call_id
         - output
       description: The output from a function call execution
