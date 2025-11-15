@@ -1,21 +1,27 @@
 # ChatMessageContentItemVideo
 
-## Example Usage
+
+## Supported Types
+
+### `models.ChatMessageContentItemVideoInputVideo`
 
 ```typescript
-import { ChatMessageContentItemVideo } from "@openrouter/sdk/models";
-
-let value: ChatMessageContentItemVideo = {
+const value: models.ChatMessageContentItemVideoInputVideo = {
   type: "input_video",
   videoUrl: {
-    url: "https://imaginative-mousse.org",
+    url: "https://salty-diversity.biz",
   },
 };
 ```
 
-## Fields
+### `models.ChatMessageContentItemVideoVideoURL`
 
-| Field                                    | Type                                     | Required                                 | Description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `type`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
-| `videoUrl`                               | [models.VideoUrl](../models/videourl.md) | :heavy_check_mark:                       | N/A                                      |
+```typescript
+const value: models.ChatMessageContentItemVideoVideoURL = {
+  type: "video_url",
+  videoUrl: {
+    url: "https://palatable-subexpression.com/",
+  },
+};
+```
+
