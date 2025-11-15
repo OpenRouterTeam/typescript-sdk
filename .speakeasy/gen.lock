@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: bc2a17a8bdced4449c22e8cb27f02be5
+  docChecksum: f3cb384db5d4ebfb44d9bee2439a3a0a
   docVersion: 1.0.0
-  speakeasyVersion: 1.654.0
-  generationVersion: 2.750.0
-  releaseVersion: 0.1.11
-  configChecksum: f7e503f7b6144914db85599585462a92
+  speakeasyVersion: 1.658.1
+  generationVersion: 2.755.6
+  releaseVersion: 0.1.12
+  configChecksum: 58991a7987fc75734e6147cc87d5e7fd
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.5
+    core: 3.26.7
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -74,6 +74,8 @@ generatedFiles:
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagecontentitemvideo.md
+  - docs/models/chatmessagecontentitemvideoinputvideo.md
+  - docs/models/chatmessagecontentitemvideovideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -508,7 +510,8 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/videourl.md
+  - docs/models/videourl1.md
+  - docs/models/videourl2.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
