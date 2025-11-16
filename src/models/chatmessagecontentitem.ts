@@ -35,7 +35,8 @@ export type ChatMessageContentItem =
   | (ChatMessageContentItemText & { type: "text" })
   | (ChatMessageContentItemImage & { type: "image_url" })
   | (ChatMessageContentItemAudio & { type: "input_audio" })
-  | (ChatMessageContentItemVideo & { type: "input_video" });
+  | (ChatMessageContentItemVideo & { type: "input_video" })
+  | (ChatMessageContentItemVideo & { type: "video_url" });
 
 /** @internal */
 export const ChatMessageContentItem$inboundSchema: z.ZodType<
@@ -54,13 +55,17 @@ export const ChatMessageContentItem$inboundSchema: z.ZodType<
   ChatMessageContentItemVideo$inboundSchema.and(
     z.object({ type: z.literal("input_video") }),
   ),
+  z.lazy(() => ChatMessageContentItemVideo$inboundSchema).and(
+    z.object({ type: z.literal("video_url") }),
+  ),
 ]);
 /** @internal */
 export type ChatMessageContentItem$Outbound =
   | (ChatMessageContentItemText$Outbound & { type: "text" })
   | (ChatMessageContentItemImage$Outbound & { type: "image_url" })
   | (ChatMessageContentItemAudio$Outbound & { type: "input_audio" })
-  | (ChatMessageContentItemVideo$Outbound & { type: "input_video" });
+  | (ChatMessageContentItemVideo$Outbound & { type: "input_video" })
+  | (ChatMessageContentItemVideo$Outbound & { type: "video_url" });
 
 /** @internal */
 export const ChatMessageContentItem$outboundSchema: z.ZodType<
@@ -78,6 +83,9 @@ export const ChatMessageContentItem$outboundSchema: z.ZodType<
   ),
   ChatMessageContentItemVideo$outboundSchema.and(
     z.object({ type: z.literal("input_video") }),
+  ),
+  z.lazy(() => ChatMessageContentItemVideo$outboundSchema).and(
+    z.object({ type: z.literal("video_url") }),
   ),
 ]);
 

@@ -8,7 +8,7 @@ import { ChatMessageContentItemImage } from "@openrouter/sdk/models";
 let value: ChatMessageContentItemImage = {
   type: "image_url",
   imageUrl: {
-    url: "https://better-nephew.com/",
+    url: "https://pretty-reservation.org",
   },
 };
 ```
