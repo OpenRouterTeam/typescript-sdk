@@ -18,7 +18,7 @@ const value: models.ChatMessageContentItemText = {
 const value: models.ChatMessageContentItemImage = {
   type: "image_url",
   imageUrl: {
-    url: "https://better-nephew.com/",
+    url: "https://pretty-reservation.org",
   },
 };
 ```
@@ -39,9 +39,20 @@ const value: models.ChatMessageContentItemAudio = {
 
 ```typescript
 const value: models.ChatMessageContentItemVideo = {
-  type: "input_video",
+  type: "video_url",
   videoUrl: {
-    url: "https://imaginative-mousse.org",
+    url: "https://palatable-subexpression.com/",
+  },
+};
+```
+
+### `models.ChatMessageContentItemVideo`
+
+```typescript
+const value: models.ChatMessageContentItemVideo = {
+  type: "video_url",
+  videoUrl: {
+    url: "https://palatable-subexpression.com/",
   },
 };
 ```

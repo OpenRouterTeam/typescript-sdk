@@ -7,6 +7,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  DataCollection,
+  DataCollection$outboundSchema,
+} from "./datacollection.js";
+import {
   OpenAIResponsesIncludable,
   OpenAIResponsesIncludable$outboundSchema,
 } from "./openairesponsesincludable.js";
@@ -56,6 +60,7 @@ import {
   OpenResponsesWebSearchTool$outboundSchema,
 } from "./openresponseswebsearchtool.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
 export const OpenResponsesRequestType = {
@@ -98,44 +103,11 @@ export const Truncation = {
 } as const;
 export type Truncation = OpenEnum<typeof Truncation>;
 
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
-} as const;
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export type DataCollection = OpenEnum<typeof DataCollection>;
-
 export type Order = ProviderName | string;
 
 export type Only = ProviderName | string;
 
 export type Ignore = ProviderName | string;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export const Sort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type Sort = OpenEnum<typeof Sort>;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -184,6 +156,7 @@ export type Provider = {
    *
    * @remarks
    * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
    * - deny: use only providers which do not collect user data.
    */
   dataCollection?: DataCollection | null | undefined;
@@ -214,7 +187,7 @@ export type Provider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: ProviderSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
@@ -409,10 +382,6 @@ export const Truncation$outboundSchema: z.ZodType<string, Truncation> =
   openEnums.outboundSchema(Truncation);
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
-  openEnums.outboundSchema(DataCollection);
-
-/** @internal */
 export type Order$Outbound = string | string;
 
 /** @internal */
@@ -448,10 +417,6 @@ export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
 export function ignoreToJSON(ignore: Ignore): string {
   return JSON.stringify(Ignore$outboundSchema.parse(ignore));
 }
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
-  .outboundSchema(Sort);
 
 /** @internal */
 export type MaxPrice$Outbound = {
@@ -509,7 +474,7 @@ export const Provider$outboundSchema: z.ZodType<Provider$Outbound, Provider> = z
       z.array(z.union([ProviderName$outboundSchema, z.string()])),
     ).optional(),
     quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-    sort: z.nullable(Sort$outboundSchema).optional(),
+    sort: z.nullable(ProviderSort$outboundSchema).optional(),
     maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
   }).transform((v) => {
     return remap$(v, {

@@ -1058,6 +1058,7 @@ components:
         - medium
         - low
         - minimal
+        - none
     ReasoningSummaryVerbosity:
       type: string
       enum:
@@ -3224,6 +3225,7 @@ components:
                 - openai-responses-v1
                 - xai-responses-v1
                 - anthropic-claude-v1
+                - google-gemini-v1
       example:
         type: reasoning
         id: reasoning-abc123
@@ -3423,47 +3425,44 @@ components:
         - computer_call_output.output.image_url
         - reasoning.encrypted_content
         - code_interpreter_call.outputs
+    DataCollection:
+      type: string
+      nullable: true
+      enum:
+        - deny
+        - allow
+      description: >-
+        Data collection setting. If no available model provider meets the requirement, your request will return an
+        error.
+
+        - allow: (default) allow providers which store user data non-transiently and may train on it
+
+
+        - deny: use only providers which do not collect user data.
+      example: allow
     ProviderName:
       type: string
       enum:
-        - AnyScale
-        - Cent-ML
-        - HuggingFace
-        - Hyperbolic 2
-        - Lepton
-        - Lynn 2
-        - Lynn
-        - Mancer
-        - Modal
-        - OctoAI
-        - Recursal
-        - Reflection
-        - Replicate
-        - SambaNova 2
-        - SF Compute
-        - Together 2
-        - 01.AI
         - AI21
         - AionLabs
         - Alibaba
         - Amazon Bedrock
         - Anthropic
+        - Arcee
         - AtlasCloud
-        - Atoma
         - Avian
         - Azure
         - BaseTen
+        - Black Forest Labs
         - Cerebras
         - Chutes
         - Cirrascale
         - Clarifai
         - Cloudflare
         - Cohere
-        - CrofAI
         - Crusoe
         - DeepInfra
         - DeepSeek
-        - Enfer
         - Featherless
         - Fireworks
         - Friendli
@@ -3476,12 +3475,8 @@ components:
         - InferenceNet
         - Infermatic
         - Inflection
-        - InoCloud
-        - Kluster
-        - Lambda
         - Liquid
         - Mancer 2
-        - Meta
         - Minimax
         - ModelRun
         - Mistral
@@ -3491,7 +3486,6 @@ components:
         - NCompass
         - Nebius
         - NextBit
-        - Nineteen
         - Novita
         - Nvidia
         - OpenAI
@@ -3506,7 +3500,6 @@ components:
         - Switchpoint
         - Targon
         - Together
-        - Ubicloud
         - Venice
         - WandB
         - xAI
@@ -3526,6 +3519,17 @@ components:
         - fp32
         - unknown
       example: fp16
+    ProviderSort:
+      type: string
+      nullable: true
+      enum:
+        - price
+        - throughput
+        - latency
+      description: >-
+        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is
+        performed.
+      example: price
     BigNumberUnion:
       anyOf:
         - type: number
@@ -3664,19 +3668,7 @@ components:
                 is omitted or set to false, then providers will receive only the parameters they support, and ignore the
                 rest.
             data_collection:
-              type: string
-              nullable: true
-              enum:
-                - deny
-                - allow
-              example: deny
-              description: >
-                Data collection setting. If no available model provider meets the requirement, your request will return
-                an error.
-
-                - allow: (default) allow providers which store user data non-transiently and may train on it
-
-                - deny: use only providers which do not collect user data.
+              $ref: '#/components/schemas/DataCollection'
             zdr:
               type: boolean
               nullable: true
@@ -3729,16 +3721,7 @@ components:
                 $ref: '#/components/schemas/Quantization'
               description: A list of quantization levels to filter the provider by.
             sort:
-              type: string
-              nullable: true
-              enum:
-                - price
-                - throughput
-                - latency
-              example: price
-              description: >-
-                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
-                is performed.
+              $ref: '#/components/schemas/ProviderSort'
             max_price:
               type: object
               properties:
@@ -3969,6 +3952,8 @@ components:
         request:
           $ref: '#/components/schemas/BigNumberUnion'
         image:
+          $ref: '#/components/schemas/BigNumberUnion'
+        image_token:
           $ref: '#/components/schemas/BigNumberUnion'
         image_output:
           $ref: '#/components/schemas/BigNumberUnion'
@@ -4407,6 +4392,8 @@ components:
               $ref: '#/components/schemas/BigNumberUnion'
             image:
               $ref: '#/components/schemas/BigNumberUnion'
+            image_token:
+              $ref: '#/components/schemas/BigNumberUnion'
             image_output:
               $ref: '#/components/schemas/BigNumberUnion'
             audio:
@@ -4590,10 +4577,6 @@ components:
             status: default
             uptime_last_30m: 99.5
             supports_implicit_caching: true
-    __schema0:
-      anyOf:
-        - $ref: '#/components/schemas/ChatCompletionFinishReason'
-        - type: 'null'
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -4657,21 +4640,38 @@ components:
         - type
         - input_audio
     ChatMessageContentItemVideo:
-      type: object
-      properties:
-        type:
-          type: string
-          const: input_video
-        video_url:
-          type: object
+      oneOf:
+        - type: object
           properties:
-            url:
+            type:
               type: string
+              const: input_video
+            video_url:
+              type: object
+              properties:
+                url:
+                  type: string
+              required:
+                - url
           required:
-            - url
-      required:
-        - type
-        - video_url
+            - type
+            - video_url
+        - type: object
+          properties:
+            type:
+              type: string
+              const: video_url
+            video_url:
+              type: object
+              properties:
+                url:
+                  type: string
+              required:
+                - url
+          required:
+            - type
+            - video_url
+      type: object
     ChatMessageContentItem:
       oneOf:
         - $ref: '#/components/schemas/ChatMessageContentItemText'
@@ -4686,6 +4686,7 @@ components:
           image_url: '#/components/schemas/ChatMessageContentItemImage'
           input_audio: '#/components/schemas/ChatMessageContentItemAudio'
           input_video: '#/components/schemas/ChatMessageContentItemVideo'
+          video_url: '#/components/schemas/ChatMessageContentItemVideo'
     ChatMessageToolCall:
       type: object
       properties:
@@ -4809,13 +4810,15 @@ components:
         - prompt_tokens
         - total_tokens
     ChatCompletionFinishReason:
-      type: string
-      enum:
-        - tool_calls
-        - stop
-        - length
-        - content_filter
-        - error
+      anyOf:
+        - type: string
+          enum:
+            - tool_calls
+            - stop
+            - length
+            - content_filter
+            - error
+        - type: 'null'
     JSONSchemaConfig:
       type: object
       properties:
@@ -5087,6 +5090,7 @@ components:
               anyOf:
                 - type: string
                   enum:
+                    - none
                     - minimal
                     - low
                     - medium
@@ -5172,7 +5176,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         message:
@@ -5233,7 +5237,7 @@ components:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         logprobs:
@@ -5972,7 +5976,55 @@ paths:
                         type: array
                         items:
                           type: number
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          content:
+                            type: array
+                            items:
+                              oneOf:
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - text
+                                    text:
+                                      type: string
+                                  required:
+                                    - type
+                                    - text
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - image_url
+                                    image_url:
+                                      type: object
+                                      properties:
+                                        url:
+                                          type: string
+                                      required:
+                                        - url
+                                  required:
+                                    - type
+                                    - image_url
+                        required:
+                          - content
                 model:
+                  type: string
+                encoding_format:
+                  type: string
+                  enum:
+                    - float
+                    - base64
+                dimensions:
+                  type: integer
+                  minimum: 0
+                  exclusiveMinimum: true
+                user:
                   type: string
                 provider:
                   type: object
@@ -5996,19 +6048,7 @@ paths:
                         setting is omitted or set to false, then providers will receive only the parameters they
                         support, and ignore the rest.
                     data_collection:
-                      type: string
-                      nullable: true
-                      enum:
-                        - deny
-                        - allow
-                      example: deny
-                      description: >
-                        Data collection setting. If no available model provider meets the requirement, your request will
-                        return an error.
-
-                        - allow: (default) allow providers which store user data non-transiently and may train on it
-
-                        - deny: use only providers which do not collect user data.
+                      $ref: '#/components/schemas/DataCollection'
                     zdr:
                       type: boolean
                       nullable: true
@@ -6061,16 +6101,7 @@ paths:
                         $ref: '#/components/schemas/Quantization'
                       description: A list of quantization levels to filter the provider by.
                     sort:
-                      type: string
-                      nullable: true
-                      enum:
-                        - price
-                        - throughput
-                        - latency
-                      example: price
-                      description: >-
-                        The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                        balancing is performed.
+                      $ref: '#/components/schemas/ProviderSort'
                     max_price:
                       type: object
                       properties:
@@ -6088,15 +6119,7 @@ paths:
                       description: >-
                         The object specifying the maximum price you want to pay for this request. USD price per million
                         tokens, for prompt and completion.
-                encoding_format:
-                  anyOf:
-                    - type: string
-                      enum:
-                        - float
-                    - type: string
-                      enum:
-                        - base64
-                user:
+                input_type:
                   type: string
               required:
                 - input
@@ -6704,22 +6727,21 @@ paths:
               - Alibaba
               - Amazon Bedrock
               - Anthropic
+              - Arcee
               - AtlasCloud
-              - Atoma
               - Avian
               - Azure
               - BaseTen
+              - Black Forest Labs
               - Cerebras
               - Chutes
               - Cirrascale
               - Clarifai
               - Cloudflare
               - Cohere
-              - CrofAI
               - Crusoe
               - DeepInfra
               - DeepSeek
-              - Enfer
               - Featherless
               - Fireworks
               - Friendli
@@ -6732,11 +6754,8 @@ paths:
               - InferenceNet
               - Infermatic
               - Inflection
-              - Kluster
-              - Lambda
               - Liquid
               - Mancer 2
-              - Meta
               - Minimax
               - ModelRun
               - Mistral
@@ -6746,7 +6765,6 @@ paths:
               - NCompass
               - Nebius
               - NextBit
-              - Nineteen
               - Novita
               - Nvidia
               - OpenAI
@@ -6761,7 +6779,6 @@ paths:
               - Switchpoint
               - Targon
               - Together
-              - Ubicloud
               - Venice
               - WandB
               - xAI

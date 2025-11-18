@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: bc2a17a8bdced4449c22e8cb27f02be5
+  docChecksum: 06c725cfe764dbed9c3f85ff06857003
   docVersion: 1.0.0
-  speakeasyVersion: 1.654.0
-  generationVersion: 2.750.0
-  releaseVersion: 0.1.11
-  configChecksum: f7e503f7b6144914db85599585462a92
+  speakeasyVersion: 1.658.2
+  generationVersion: 2.755.9
+  releaseVersion: 0.1.13
+  configChecksum: 1bbbf76f0f625fbac8a29bd3ed9222e1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.5
+    core: 3.26.7
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -74,6 +74,8 @@ generatedFiles:
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagecontentitemvideo.md
+  - docs/models/chatmessagecontentitemvideoinputvideo.md
+  - docs/models/chatmessagecontentitemvideovideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -294,6 +296,9 @@ generatedFiles:
   - docs/models/openresponseswebsearchtooltype.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
+  - docs/models/operations/content.md
+  - docs/models/operations/contentimageurl.md
+  - docs/models/operations/contenttext.md
   - docs/models/operations/createauthkeyscodecodechallengemethod.md
   - docs/models/operations/createauthkeyscodedata.md
   - docs/models/operations/createauthkeyscoderequest.md
@@ -312,13 +317,10 @@ generatedFiles:
   - docs/models/operations/createkeysresponse.md
   - docs/models/operations/createresponsesresponse.md
   - docs/models/operations/createresponsesresponsebody.md
-  - docs/models/operations/datacollection.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
   - docs/models/operations/embedding.md
   - docs/models/operations/encodingformat.md
-  - docs/models/operations/encodingformatbase64.md
-  - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/exchangeauthcodeforapikeycodechallengemethod.md
   - docs/models/operations/exchangeauthcodeforapikeyrequest.md
   - docs/models/operations/exchangeauthcodeforapikeyresponse.md
@@ -340,7 +342,9 @@ generatedFiles:
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
   - docs/models/operations/ignore.md
+  - docs/models/operations/imageurl.md
   - docs/models/operations/input.md
+  - docs/models/operations/inputunion.md
   - docs/models/operations/listdata.md
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
@@ -358,9 +362,10 @@ generatedFiles:
   - docs/models/operations/order.md
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
-  - docs/models/operations/sort.md
   - docs/models/operations/supportedparameter.md
   - docs/models/operations/transferintent.md
+  - docs/models/operations/typeimageurl.md
+  - docs/models/operations/typetext.md
   - docs/models/operations/updatekeysdata.md
   - docs/models/operations/updatekeyslimitreset.md
   - docs/models/operations/updatekeysrequest.md
@@ -399,6 +404,7 @@ generatedFiles:
   - docs/models/provider.md
   - docs/models/providername.md
   - docs/models/provideroverloadedresponseerrordata.md
+  - docs/models/providersort.md
   - docs/models/publicendpoint.md
   - docs/models/publicendpointquantization.md
   - docs/models/publicpricing.md
@@ -469,7 +475,6 @@ generatedFiles:
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
-  - docs/models/sort.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
@@ -508,7 +513,8 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/videourl.md
+  - docs/models/videourl1.md
+  - docs/models/videourl2.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -582,7 +588,6 @@ generatedFiles:
   - src/models/assistantmessage.ts
   - src/models/badgatewayresponseerrordata.ts
   - src/models/badrequestresponseerrordata.ts
-  - src/models/chatcompletionfinishreason.ts
   - src/models/chaterror.ts
   - src/models/chatgenerationparams.ts
   - src/models/chatgenerationtokenusage.ts
@@ -596,7 +601,6 @@ generatedFiles:
   - src/models/chatmessagetoolcall.ts
   - src/models/chatresponse.ts
   - src/models/chatresponsechoice.ts
-  - src/models/chatstreamingchoice.ts
   - src/models/chatstreamingmessagechunk.ts
   - src/models/chatstreamingmessagetoolcall.ts
   - src/models/chatstreamingresponsechunk.ts
@@ -607,6 +611,7 @@ generatedFiles:
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
   - src/models/createchargerequest.ts
+  - src/models/datacollection.ts
   - src/models/defaultparameters.ts
   - src/models/edgenetworktimeoutresponseerrordata.ts
   - src/models/endpointstatus.ts
@@ -720,6 +725,7 @@ generatedFiles:
   - src/models/perrequestlimits.ts
   - src/models/providername.ts
   - src/models/provideroverloadedresponseerrordata.ts
+  - src/models/providersort.ts
   - src/models/publicendpoint.ts
   - src/models/publicpricing.ts
   - src/models/quantization.ts

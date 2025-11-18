@@ -7,11 +7,13 @@ import { CreateEmbeddingsRequest } from "@openrouter/sdk/models/operations";
 
 let value: CreateEmbeddingsRequest = {
   input: [
-    669.24,
-    4968.43,
-    3849.69,
+    [],
+    [
+      3849.69,
+    ],
+    [],
   ],
-  model: "Altima",
+  model: "Model Y",
 };
 ```
 
@@ -19,8 +21,10 @@ let value: CreateEmbeddingsRequest = {
 
 | Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `input`                                                                                    | *operations.Input*                                                                         | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| `input`                                                                                    | *operations.InputUnion*                                                                    | :heavy_check_mark:                                                                         | N/A                                                                                        |
 | `model`                                                                                    | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
-| `provider`                                                                                 | [operations.CreateEmbeddingsProvider](../../models/operations/createembeddingsprovider.md) | :heavy_minus_sign:                                                                         | N/A                                                                                        |
-| `encodingFormat`                                                                           | *operations.EncodingFormat*                                                                | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `encodingFormat`                                                                           | [operations.EncodingFormat](../../models/operations/encodingformat.md)                     | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `dimensions`                                                                               | *number*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |
 | `user`                                                                                     | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `provider`                                                                                 | [operations.CreateEmbeddingsProvider](../../models/operations/createembeddingsprovider.md) | :heavy_minus_sign:                                                                         | N/A                                                                                        |
+| `inputType`                                                                                | *string*                                                                                   | :heavy_minus_sign:                                                                         | N/A                                                                                        |

@@ -13,5 +13,5 @@ let value: OpenAIResponsesReasoningEffort = "high";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"high" | "medium" | "low" | "minimal" | Unrecognized<string>
+"high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```

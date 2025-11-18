@@ -37,6 +37,7 @@ import {
 } from "./tooldefinitionjson.js";
 
 export const Effort = {
+  None: "none",
   Minimal: "minimal",
   Low: "low",
   Medium: "medium",

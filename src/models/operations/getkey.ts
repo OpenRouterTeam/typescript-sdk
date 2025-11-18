@@ -146,7 +146,7 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
     expires_at: z.nullable(
-      z.string().datetime({ offset: true }).transform(v => new Date(v)),
+      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
     ).optional(),
   }).transform((v) => {
     return remap$(v, {

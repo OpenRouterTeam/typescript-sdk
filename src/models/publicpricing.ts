@@ -31,6 +31,10 @@ export type PublicPricing = {
   /**
    * A value in string or number format that is a large number
    */
+  imageToken?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
   imageOutput?: any | undefined;
   /**
    * A value in string or number format that is a large number
@@ -66,6 +70,7 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     completion: z.any().optional(),
     request: z.any().optional(),
     image: z.any().optional(),
+    image_token: z.any().optional(),
     image_output: z.any().optional(),
     audio: z.any().optional(),
     input_audio_cache: z.any().optional(),
@@ -76,6 +81,7 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     discount: z.number().optional(),
   }).transform((v) => {
     return remap$(v, {
+      "image_token": "imageToken",
       "image_output": "imageOutput",
       "input_audio_cache": "inputAudioCache",
       "web_search": "webSearch",

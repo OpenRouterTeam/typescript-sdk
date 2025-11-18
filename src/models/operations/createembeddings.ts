@@ -11,50 +11,54 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type Input =
+export const TypeImageURL = {
+  ImageUrl: "image_url",
+} as const;
+export type TypeImageURL = ClosedEnum<typeof TypeImageURL>;
+
+export type ImageUrl = {
+  url: string;
+};
+
+export type ContentImageURL = {
+  type: TypeImageURL;
+  imageUrl: ImageUrl;
+};
+
+export const TypeText = {
+  Text: "text",
+} as const;
+export type TypeText = ClosedEnum<typeof TypeText>;
+
+export type ContentText = {
+  type: TypeText;
+  text: string;
+};
+
+export type Content = ContentText | ContentImageURL;
+
+export type Input = {
+  content: Array<ContentText | ContentImageURL>;
+};
+
+export type InputUnion =
   | string
   | Array<string>
   | Array<number>
-  | Array<Array<number>>;
+  | Array<Array<number>>
+  | Array<Input>;
 
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
+export const EncodingFormat = {
+  Float: "float",
+  Base64: "base64",
 } as const;
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export type DataCollection = OpenEnum<typeof DataCollection>;
+export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
 export type Order = models.ProviderName | string;
 
 export type Only = models.ProviderName | string;
 
 export type Ignore = models.ProviderName | string;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export const Sort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type Sort = OpenEnum<typeof Sort>;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -100,9 +104,10 @@ export type CreateEmbeddingsProvider = {
    *
    * @remarks
    * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: models.DataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -130,31 +135,26 @@ export type CreateEmbeddingsProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: models.ProviderSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
   maxPrice?: MaxPrice | undefined;
 };
 
-export const EncodingFormatBase64 = {
-  Base64: "base64",
-} as const;
-export type EncodingFormatBase64 = ClosedEnum<typeof EncodingFormatBase64>;
-
-export const EncodingFormatFloat = {
-  Float: "float",
-} as const;
-export type EncodingFormatFloat = ClosedEnum<typeof EncodingFormatFloat>;
-
-export type EncodingFormat = EncodingFormatFloat | EncodingFormatBase64;
-
 export type CreateEmbeddingsRequest = {
-  input: string | Array<string> | Array<number> | Array<Array<number>>;
+  input:
+    | string
+    | Array<string>
+    | Array<number>
+    | Array<Array<number>>
+    | Array<Input>;
   model: string;
-  provider?: CreateEmbeddingsProvider | undefined;
-  encodingFormat?: EncodingFormatFloat | EncodingFormatBase64 | undefined;
+  encodingFormat?: EncodingFormat | undefined;
+  dimensions?: number | undefined;
   user?: string | undefined;
+  provider?: CreateEmbeddingsProvider | undefined;
+  inputType?: string | undefined;
 };
 
 export const ObjectT = {
@@ -195,27 +195,133 @@ export type CreateEmbeddingsResponseBody = {
 export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
 
 /** @internal */
-export type Input$Outbound =
-  | string
-  | Array<string>
-  | Array<number>
-  | Array<Array<number>>;
+export const TypeImageURL$outboundSchema: z.ZodEnum<typeof TypeImageURL> = z
+  .enum(TypeImageURL);
 
 /** @internal */
-export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.union([
-  z.string(),
-  z.array(z.string()),
-  z.array(z.number()),
-  z.array(z.array(z.number())),
-]);
+export type ImageUrl$Outbound = {
+  url: string;
+};
+
+/** @internal */
+export const ImageUrl$outboundSchema: z.ZodType<ImageUrl$Outbound, ImageUrl> = z
+  .object({
+    url: z.string(),
+  });
+
+export function imageUrlToJSON(imageUrl: ImageUrl): string {
+  return JSON.stringify(ImageUrl$outboundSchema.parse(imageUrl));
+}
+
+/** @internal */
+export type ContentImageURL$Outbound = {
+  type: string;
+  image_url: ImageUrl$Outbound;
+};
+
+/** @internal */
+export const ContentImageURL$outboundSchema: z.ZodType<
+  ContentImageURL$Outbound,
+  ContentImageURL
+> = z.object({
+  type: TypeImageURL$outboundSchema,
+  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    imageUrl: "image_url",
+  });
+});
+
+export function contentImageURLToJSON(
+  contentImageURL: ContentImageURL,
+): string {
+  return JSON.stringify(ContentImageURL$outboundSchema.parse(contentImageURL));
+}
+
+/** @internal */
+export const TypeText$outboundSchema: z.ZodEnum<typeof TypeText> = z.enum(
+  TypeText,
+);
+
+/** @internal */
+export type ContentText$Outbound = {
+  type: string;
+  text: string;
+};
+
+/** @internal */
+export const ContentText$outboundSchema: z.ZodType<
+  ContentText$Outbound,
+  ContentText
+> = z.object({
+  type: TypeText$outboundSchema,
+  text: z.string(),
+});
+
+export function contentTextToJSON(contentText: ContentText): string {
+  return JSON.stringify(ContentText$outboundSchema.parse(contentText));
+}
+
+/** @internal */
+export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+
+/** @internal */
+export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
+  .union([
+    z.lazy(() => ContentText$outboundSchema),
+    z.lazy(() => ContentImageURL$outboundSchema),
+  ]);
+
+export function contentToJSON(content: Content): string {
+  return JSON.stringify(Content$outboundSchema.parse(content));
+}
+
+/** @internal */
+export type Input$Outbound = {
+  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+};
+
+/** @internal */
+export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
+  content: z.array(
+    z.union([
+      z.lazy(() => ContentText$outboundSchema),
+      z.lazy(() => ContentImageURL$outboundSchema),
+    ]),
+  ),
+});
 
 export function inputToJSON(input: Input): string {
   return JSON.stringify(Input$outboundSchema.parse(input));
 }
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
-  openEnums.outboundSchema(DataCollection);
+export type InputUnion$Outbound =
+  | string
+  | Array<string>
+  | Array<number>
+  | Array<Array<number>>
+  | Array<Input$Outbound>;
+
+/** @internal */
+export const InputUnion$outboundSchema: z.ZodType<
+  InputUnion$Outbound,
+  InputUnion
+> = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.array(z.number()),
+  z.array(z.array(z.number())),
+  z.array(z.lazy(() => Input$outboundSchema)),
+]);
+
+export function inputUnionToJSON(inputUnion: InputUnion): string {
+  return JSON.stringify(InputUnion$outboundSchema.parse(inputUnion));
+}
+
+/** @internal */
+export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
+  openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
 export type Order$Outbound = string | string;
@@ -253,10 +359,6 @@ export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
 export function ignoreToJSON(ignore: Ignore): string {
   return JSON.stringify(Ignore$outboundSchema.parse(ignore));
 }
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
-  .outboundSchema(Sort);
 
 /** @internal */
 export type MaxPrice$Outbound = {
@@ -303,7 +405,7 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(models.DataCollection$outboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
   order: z.nullable(
@@ -317,7 +419,7 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
   ).optional(),
   quantizations: z.nullable(z.array(models.Quantization$outboundSchema))
     .optional(),
-  sort: z.nullable(Sort$outboundSchema).optional(),
+  sort: z.nullable(models.ProviderSort$outboundSchema).optional(),
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -338,38 +440,19 @@ export function createEmbeddingsProviderToJSON(
 }
 
 /** @internal */
-export const EncodingFormatBase64$outboundSchema: z.ZodEnum<
-  typeof EncodingFormatBase64
-> = z.enum(EncodingFormatBase64);
-
-/** @internal */
-export const EncodingFormatFloat$outboundSchema: z.ZodEnum<
-  typeof EncodingFormatFloat
-> = z.enum(EncodingFormatFloat);
-
-/** @internal */
-export type EncodingFormat$Outbound = string | string;
-
-/** @internal */
-export const EncodingFormat$outboundSchema: z.ZodType<
-  EncodingFormat$Outbound,
-  EncodingFormat
-> = z.union([
-  EncodingFormatFloat$outboundSchema,
-  EncodingFormatBase64$outboundSchema,
-]);
-
-export function encodingFormatToJSON(encodingFormat: EncodingFormat): string {
-  return JSON.stringify(EncodingFormat$outboundSchema.parse(encodingFormat));
-}
-
-/** @internal */
 export type CreateEmbeddingsRequest$Outbound = {
-  input: string | Array<string> | Array<number> | Array<Array<number>>;
+  input:
+    | string
+    | Array<string>
+    | Array<number>
+    | Array<Array<number>>
+    | Array<Input$Outbound>;
   model: string;
-  provider?: CreateEmbeddingsProvider$Outbound | undefined;
-  encoding_format?: string | string | undefined;
+  encoding_format?: string | undefined;
+  dimensions?: number | undefined;
   user?: string | undefined;
+  provider?: CreateEmbeddingsProvider$Outbound | undefined;
+  input_type?: string | undefined;
 };
 
 /** @internal */
@@ -382,17 +465,18 @@ export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
     z.array(z.string()),
     z.array(z.number()),
     z.array(z.array(z.number())),
+    z.array(z.lazy(() => Input$outboundSchema)),
   ]),
   model: z.string(),
-  provider: z.lazy(() => CreateEmbeddingsProvider$outboundSchema).optional(),
-  encodingFormat: z.union([
-    EncodingFormatFloat$outboundSchema,
-    EncodingFormatBase64$outboundSchema,
-  ]).optional(),
+  encodingFormat: EncodingFormat$outboundSchema.optional(),
+  dimensions: z.int().optional(),
   user: z.string().optional(),
+  provider: z.lazy(() => CreateEmbeddingsProvider$outboundSchema).optional(),
+  inputType: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     encodingFormat: "encoding_format",
+    inputType: "input_type",
   });
 });
 
