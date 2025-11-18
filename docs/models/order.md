@@ -1,12 +1,12 @@
-# Schema0
+# Order
 
 
 ## Supported Types
 
-### `models.Schema0Enum`
+### `models.ProviderName`
 
 ```typescript
-const value: models.Schema0Enum = "Alibaba";
+const value: models.ProviderName = "OpenAI";
 ```
 
 ### `string`

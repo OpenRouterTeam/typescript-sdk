@@ -54,14 +54,35 @@ export const EncodingFormat = {
 } as const;
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
+export type Order = models.ProviderName | string;
+
+export type Only = models.ProviderName | string;
+
+export type Ignore = models.ProviderName | string;
+
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
 export type MaxPrice = {
+  /**
+   * A value in string or number format that is a large number
+   */
   prompt?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
   completion?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
   image?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
   audio?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
   request?: any | undefined;
 };
 
@@ -98,15 +119,15 @@ export type CreateEmbeddingsProvider = {
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
-  order?: Array<string> | undefined;
+  order?: Array<models.ProviderName | string> | null | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
-  only?: Array<string> | undefined;
+  only?: Array<models.ProviderName | string> | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
-  ignore?: Array<string> | undefined;
+  ignore?: Array<models.ProviderName | string> | null | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
@@ -303,6 +324,43 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
+export type Order$Outbound = string | string;
+
+/** @internal */
+export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
+  models.ProviderName$outboundSchema,
+  z.string(),
+]);
+
+export function orderToJSON(order: Order): string {
+  return JSON.stringify(Order$outboundSchema.parse(order));
+}
+
+/** @internal */
+export type Only$Outbound = string | string;
+
+/** @internal */
+export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
+  models.ProviderName$outboundSchema,
+  z.string(),
+]);
+
+export function onlyToJSON(only: Only): string {
+  return JSON.stringify(Only$outboundSchema.parse(only));
+}
+
+/** @internal */
+export type Ignore$Outbound = string | string;
+
+/** @internal */
+export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
+  .union([models.ProviderName$outboundSchema, z.string()]);
+
+export function ignoreToJSON(ignore: Ignore): string {
+  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
+}
+
+/** @internal */
 export type MaxPrice$Outbound = {
   prompt?: any | undefined;
   completion?: any | undefined;
@@ -332,9 +390,9 @@ export type CreateEmbeddingsProvider$Outbound = {
   data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string> | undefined;
-  only?: Array<string> | undefined;
-  ignore?: Array<string> | undefined;
+  order?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
@@ -350,9 +408,15 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
   dataCollection: z.nullable(models.DataCollection$outboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.array(z.string()).optional(),
-  only: z.array(z.string()).optional(),
-  ignore: z.array(z.string()).optional(),
+  order: z.nullable(
+    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(
+    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  ignore: z.nullable(
+    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
+  ).optional(),
   quantizations: z.nullable(z.array(models.Quantization$outboundSchema))
     .optional(),
   sort: z.nullable(models.ProviderSort$outboundSchema).optional(),

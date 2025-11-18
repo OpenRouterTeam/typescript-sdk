@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 44cd1f9d56cdf4f436acedb547101641
+  docChecksum: 06c725cfe764dbed9c3f85ff06857003
   docVersion: 1.0.0
   speakeasyVersion: 1.658.2
   generationVersion: 2.755.9
-  releaseVersion: 0.1.12
-  configChecksum: 58991a7987fc75734e6147cc87d5e7fd
+  releaseVersion: 0.1.13
+  configChecksum: 1bbbf76f0f625fbac8a29bd3ed9222e1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -57,24 +57,13 @@ generatedFiles:
   - docs/models/badgatewayresponseerrordata.md
   - docs/models/badrequestresponseerrordata.md
   - docs/models/chainid.md
+  - docs/models/chatcompletionfinishreason.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
-  - docs/models/chatgenerationparamsdatacollection.md
-  - docs/models/chatgenerationparamsengine.md
-  - docs/models/chatgenerationparamsmaxprice.md
-  - docs/models/chatgenerationparamspdf.md
-  - docs/models/chatgenerationparamspdfengine.md
-  - docs/models/chatgenerationparamspluginfileparser.md
-  - docs/models/chatgenerationparamspluginmoderation.md
-  - docs/models/chatgenerationparamspluginunion.md
-  - docs/models/chatgenerationparamspluginweb.md
-  - docs/models/chatgenerationparamsprovider.md
-  - docs/models/chatgenerationparamsquantizations.md
   - docs/models/chatgenerationparamsresponseformatjsonobject.md
   - docs/models/chatgenerationparamsresponseformatpython.md
   - docs/models/chatgenerationparamsresponseformattext.md
   - docs/models/chatgenerationparamsresponseformatunion.md
-  - docs/models/chatgenerationparamssort.md
   - docs/models/chatgenerationparamsstop.md
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
@@ -106,22 +95,10 @@ generatedFiles:
   - docs/models/codeenum.md
   - docs/models/completionchoice.md
   - docs/models/completioncreateparams.md
-  - docs/models/completioncreateparamsdatacollection.md
-  - docs/models/completioncreateparamsengine.md
-  - docs/models/completioncreateparamsmaxprice.md
-  - docs/models/completioncreateparamspdf.md
-  - docs/models/completioncreateparamspdfengine.md
-  - docs/models/completioncreateparamspluginfileparser.md
-  - docs/models/completioncreateparamspluginmoderation.md
-  - docs/models/completioncreateparamspluginunion.md
-  - docs/models/completioncreateparamspluginweb.md
-  - docs/models/completioncreateparamsprovider.md
-  - docs/models/completioncreateparamsquantizations.md
   - docs/models/completioncreateparamsresponseformatjsonobject.md
   - docs/models/completioncreateparamsresponseformatpython.md
   - docs/models/completioncreateparamsresponseformattext.md
   - docs/models/completioncreateparamsresponseformatunion.md
-  - docs/models/completioncreateparamssort.md
   - docs/models/completioncreateparamsstop.md
   - docs/models/completionfinishreason.md
   - docs/models/completionlogprobs.md
@@ -135,6 +112,7 @@ generatedFiles:
   - docs/models/edgenetworktimeoutresponseerrordata.md
   - docs/models/effort.md
   - docs/models/endpointstatus.md
+  - docs/models/engine.md
   - docs/models/errors/badgatewayresponseerror.md
   - docs/models/errors/badrequestresponseerror.md
   - docs/models/errors/chaterror.md
@@ -158,6 +136,7 @@ generatedFiles:
   - docs/models/idfileparser.md
   - docs/models/idmoderation.md
   - docs/models/idweb.md
+  - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
   - docs/models/inputmodality.md
@@ -166,6 +145,7 @@ generatedFiles:
   - docs/models/internalserverresponseerrordata.md
   - docs/models/jsonschemaconfig.md
   - docs/models/listendpointsresponse.md
+  - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
@@ -180,6 +160,7 @@ generatedFiles:
   - docs/models/namedtoolchoicefunction.md
   - docs/models/notfoundresponseerrordata.md
   - docs/models/objectt.md
+  - docs/models/only.md
   - docs/models/openairesponsesannotation.md
   - docs/models/openairesponsesincludable.md
   - docs/models/openairesponsesincompletedetails.md
@@ -278,15 +259,6 @@ generatedFiles:
   - docs/models/openresponsesreasoningsummarytextdoneeventtype.md
   - docs/models/openresponsesreasoningtype.md
   - docs/models/openresponsesrequest.md
-  - docs/models/openresponsesrequestengine.md
-  - docs/models/openresponsesrequestmaxprice.md
-  - docs/models/openresponsesrequestpdf.md
-  - docs/models/openresponsesrequestpdfengine.md
-  - docs/models/openresponsesrequestpluginfileparser.md
-  - docs/models/openresponsesrequestpluginmoderation.md
-  - docs/models/openresponsesrequestpluginunion.md
-  - docs/models/openresponsesrequestpluginweb.md
-  - docs/models/openresponsesrequestprovider.md
   - docs/models/openresponsesrequesttoolfunction.md
   - docs/models/openresponsesrequesttoolunion.md
   - docs/models/openresponsesrequesttype.md
@@ -369,6 +341,7 @@ generatedFiles:
   - docs/models/operations/getparameterssecurity.md
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
+  - docs/models/operations/ignore.md
   - docs/models/operations/imageurl.md
   - docs/models/operations/input.md
   - docs/models/operations/inputunion.md
@@ -385,6 +358,8 @@ generatedFiles:
   - docs/models/operations/metadata.md
   - docs/models/operations/objectembedding.md
   - docs/models/operations/objectt.md
+  - docs/models/operations/only.md
+  - docs/models/operations/order.md
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
   - docs/models/operations/supportedparameter.md
@@ -398,6 +373,7 @@ generatedFiles:
   - docs/models/operations/updatekeysresponse.md
   - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
+  - docs/models/order.md
   - docs/models/outputitemimagegenerationcall.md
   - docs/models/outputitemimagegenerationcalltype.md
   - docs/models/outputmessage.md
@@ -415,10 +391,17 @@ generatedFiles:
   - docs/models/part2.md
   - docs/models/payloadtoolargeresponseerrordata.md
   - docs/models/paymentrequiredresponseerrordata.md
+  - docs/models/pdf.md
+  - docs/models/pdfengine.md
   - docs/models/perrequestlimits.md
+  - docs/models/plugin.md
+  - docs/models/pluginfileparser.md
+  - docs/models/pluginmoderation.md
+  - docs/models/pluginweb.md
   - docs/models/pricing.md
   - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
+  - docs/models/provider.md
   - docs/models/providername.md
   - docs/models/provideroverloadedresponseerrordata.md
   - docs/models/providersort.md
@@ -489,8 +472,6 @@ generatedFiles:
   - docs/models/responseswebsearchuserlocationtype.md
   - docs/models/responsetextconfig.md
   - docs/models/responsetextconfigverbosity.md
-  - docs/models/schema0.md
-  - docs/models/schema0enum.md
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
@@ -620,7 +601,6 @@ generatedFiles:
   - src/models/chatmessagetoolcall.ts
   - src/models/chatresponse.ts
   - src/models/chatresponsechoice.ts
-  - src/models/chatstreamingchoice.ts
   - src/models/chatstreamingmessagechunk.ts
   - src/models/chatstreamingmessagetoolcall.ts
   - src/models/chatstreamingresponsechunk.ts
@@ -775,7 +755,6 @@ generatedFiles:
   - src/models/responseswebsearchcalloutput.ts
   - src/models/responseswebsearchuserlocation.ts
   - src/models/responsetextconfig.ts
-  - src/models/schema0.ts
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts

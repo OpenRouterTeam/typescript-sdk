@@ -1,11 +1,11 @@
-# OpenResponsesRequestPluginModeration
+# PluginModeration
 
 ## Example Usage
 
 ```typescript
-import { OpenResponsesRequestPluginModeration } from "@openrouter/sdk/models";
+import { PluginModeration } from "@openrouter/sdk/models";
 
-let value: OpenResponsesRequestPluginModeration = {
+let value: PluginModeration = {
   id: "moderation",
 };
 ```

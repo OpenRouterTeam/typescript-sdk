@@ -3440,6 +3440,72 @@ components:
 
         - deny: use only providers which do not collect user data.
       example: allow
+    ProviderName:
+      type: string
+      enum:
+        - AI21
+        - AionLabs
+        - Alibaba
+        - Amazon Bedrock
+        - Anthropic
+        - Arcee
+        - AtlasCloud
+        - Avian
+        - Azure
+        - BaseTen
+        - Black Forest Labs
+        - Cerebras
+        - Chutes
+        - Cirrascale
+        - Clarifai
+        - Cloudflare
+        - Cohere
+        - Crusoe
+        - DeepInfra
+        - DeepSeek
+        - Featherless
+        - Fireworks
+        - Friendli
+        - GMICloud
+        - Google
+        - Google AI Studio
+        - Groq
+        - Hyperbolic
+        - Inception
+        - InferenceNet
+        - Infermatic
+        - Inflection
+        - Liquid
+        - Mancer 2
+        - Minimax
+        - ModelRun
+        - Mistral
+        - Modular
+        - Moonshot AI
+        - Morph
+        - NCompass
+        - Nebius
+        - NextBit
+        - Novita
+        - Nvidia
+        - OpenAI
+        - OpenInference
+        - Parasail
+        - Perplexity
+        - Phala
+        - Relace
+        - SambaNova
+        - SiliconFlow
+        - Stealth
+        - Switchpoint
+        - Targon
+        - Together
+        - Venice
+        - WandB
+        - xAI
+        - Z.AI
+        - FakeProvider
+      example: OpenAI
     Quantization:
       type: string
       enum:
@@ -3464,6 +3530,14 @@ components:
         The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is
         performed.
       example: price
+    BigNumberUnion:
+      anyOf:
+        - type: number
+        - type: string
+        - type: number
+          example: 1000
+      description: A value in string or number format that is a large number
+      example: 1000
     OpenResponsesRequest:
       type: object
       properties:
@@ -3611,35 +3685,35 @@ components:
               example: true
             order:
               type: array
+              nullable: true
               items:
-                type: string
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
               description: >-
                 An ordered list of provider slugs. The router will attempt to use the first provider in the subset of
                 this list that supports your requested model, and fall back to the next if it is unavailable. If no
                 providers are available, the request will fail with an error message.
-              example:
-                - OpenAI
-                - Anthropic
             only:
               type: array
+              nullable: true
               items:
-                type: string
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
               description: >-
                 List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
                 provider settings for this request.
-              example:
-                - OpenAI
-                - Anthropic
             ignore:
               type: array
+              nullable: true
               items:
-                type: string
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
               description: >-
                 List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
                 provider settings for this request.
-              example:
-                - OpenAI
-                - Anthropic
             quantizations:
               type: array
               nullable: true
@@ -3652,40 +3726,15 @@ components:
               type: object
               properties:
                 prompt:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - type: number
-                      description: A value in string or number format that is a large number
-                      example: 1000
+                  $ref: '#/components/schemas/BigNumberUnion'
                 completion:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - type: number
-                      description: A value in string or number format that is a large number
-                      example: 1000
+                  $ref: '#/components/schemas/BigNumberUnion'
                 image:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - type: number
-                      description: A value in string or number format that is a large number
-                      example: 1000
+                  $ref: '#/components/schemas/BigNumberUnion'
                 audio:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - type: number
-                      description: A value in string or number format that is a large number
-                      example: 1000
+                  $ref: '#/components/schemas/BigNumberUnion'
                 request:
-                  anyOf:
-                    - type: number
-                    - type: string
-                    - type: number
-                      description: A value in string or number format that is a large number
-                      example: 1000
+                  $ref: '#/components/schemas/BigNumberUnion'
               additionalProperties: false
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens,
@@ -3897,89 +3946,29 @@ components:
       type: object
       properties:
         prompt:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         completion:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         request:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         image:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         image_token:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         image_output:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         audio:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         input_audio_cache:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         web_search:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         internal_reasoning:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         input_cache_read:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         input_cache_write:
-          anyOf:
-            - type: number
-            - type: string
-            - type: number
-              description: A value in string or number format that is a large number
-              example: 1000
+          $ref: '#/components/schemas/BigNumberUnion'
         discount:
           type: number
       required:
@@ -4373,72 +4362,6 @@ components:
         - qwq
         - qwen3
       description: Instruction format type
-    ProviderName:
-      type: string
-      enum:
-        - AI21
-        - AionLabs
-        - Alibaba
-        - Amazon Bedrock
-        - Anthropic
-        - Arcee
-        - AtlasCloud
-        - Avian
-        - Azure
-        - BaseTen
-        - Black Forest Labs
-        - Cerebras
-        - Chutes
-        - Cirrascale
-        - Clarifai
-        - Cloudflare
-        - Cohere
-        - Crusoe
-        - DeepInfra
-        - DeepSeek
-        - Featherless
-        - Fireworks
-        - Friendli
-        - GMICloud
-        - Google
-        - Google AI Studio
-        - Groq
-        - Hyperbolic
-        - Inception
-        - InferenceNet
-        - Infermatic
-        - Inflection
-        - Liquid
-        - Mancer 2
-        - Minimax
-        - ModelRun
-        - Mistral
-        - Modular
-        - Moonshot AI
-        - Morph
-        - NCompass
-        - Nebius
-        - NextBit
-        - Novita
-        - Nvidia
-        - OpenAI
-        - OpenInference
-        - Parasail
-        - Perplexity
-        - Phala
-        - Relace
-        - SambaNova
-        - SiliconFlow
-        - Stealth
-        - Switchpoint
-        - Targon
-        - Together
-        - Venice
-        - WandB
-        - xAI
-        - Z.AI
-        - FakeProvider
-      example: OpenAI
     EndpointStatus:
       type: integer
       enum:
@@ -4462,89 +4385,29 @@ components:
           type: object
           properties:
             prompt:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             completion:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             request:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             image:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             image_token:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             image_output:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             audio:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             input_audio_cache:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             web_search:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             internal_reasoning:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             input_cache_read:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             input_cache_write:
-              anyOf:
-                - type: number
-                - type: string
-                - type: number
-                  description: A value in string or number format that is a large number
-                  example: 1000
+              $ref: '#/components/schemas/BigNumberUnion'
             discount:
               type: number
           required:
@@ -4714,82 +4577,6 @@ components:
             status: default
             uptime_last_30m: 99.5
             supports_implicit_caching: true
-    __schema0:
-      type: array
-      items:
-        anyOf:
-          - type: string
-            enum:
-              - AI21
-              - AionLabs
-              - Alibaba
-              - Amazon Bedrock
-              - Anthropic
-              - Arcee
-              - AtlasCloud
-              - Avian
-              - Azure
-              - BaseTen
-              - Black Forest Labs
-              - Cerebras
-              - Chutes
-              - Cirrascale
-              - Clarifai
-              - Cloudflare
-              - Cohere
-              - Crusoe
-              - DeepInfra
-              - DeepSeek
-              - Featherless
-              - Fireworks
-              - Friendli
-              - GMICloud
-              - Google
-              - Google AI Studio
-              - Groq
-              - Hyperbolic
-              - Inception
-              - InferenceNet
-              - Infermatic
-              - Inflection
-              - Liquid
-              - Mancer 2
-              - Minimax
-              - ModelRun
-              - Mistral
-              - Modular
-              - Moonshot AI
-              - Morph
-              - NCompass
-              - Nebius
-              - NextBit
-              - Novita
-              - Nvidia
-              - OpenAI
-              - OpenInference
-              - Parasail
-              - Perplexity
-              - Phala
-              - Relace
-              - SambaNova
-              - SiliconFlow
-              - Stealth
-              - Switchpoint
-              - Targon
-              - Together
-              - Venice
-              - WandB
-              - xAI
-              - Z.AI
-              - FakeProvider
-          - type: string
-    __schema1:
-      anyOf:
-        - type: number
-        - type: string
-        - type: number
-          description: A value in string or number format that is a large number
-          example: 1000
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -5022,6 +4809,16 @@ components:
         - completion_tokens
         - prompt_tokens
         - total_tokens
+    ChatCompletionFinishReason:
+      anyOf:
+        - type: string
+          enum:
+            - tool_calls
+            - stop
+            - length
+            - content_filter
+            - error
+        - type: 'null'
     JSONSchemaConfig:
       type: object
       properties:
@@ -5229,167 +5026,6 @@ components:
     ChatGenerationParams:
       type: object
       properties:
-        plugins:
-          type: array
-          items:
-            oneOf:
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: moderation
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: web
-                  max_results:
-                    type: number
-                  search_prompt:
-                    type: string
-                  engine:
-                    type: string
-                    enum:
-                      - native
-                      - exa
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: file-parser
-                  max_files:
-                    type: number
-                  pdf:
-                    type: object
-                    properties:
-                      engine:
-                        type: string
-                        enum:
-                          - mistral-ocr
-                          - pdf-text
-                          - native
-                required:
-                  - id
-            type: object
-        provider:
-          anyOf:
-            - type: object
-              properties:
-                allow_fallbacks:
-                  description: >
-                    Whether to allow backup providers to serve requests
-
-                    - true: (default) when the primary provider (or your custom providers in "order") is unavailable,
-                    use the next best provider.
-
-                    - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                require_parameters:
-                  description: >-
-                    Whether to filter providers to only those that support the parameters you've provided. If this
-                    setting is omitted or set to false, then providers will receive only the parameters they support,
-                    and ignore the rest.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                data_collection:
-                  description: >-
-                    Data collection setting. If no available model provider meets the requirement, your request will
-                    return an error.
-
-                    - allow: (default) allow providers which store user data non-transiently and may train on it
-
-
-                    - deny: use only providers which do not collect user data.
-                  anyOf:
-                    - type: string
-                      enum:
-                        - deny
-                        - allow
-                    - type: 'null'
-                zdr:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                enforce_distillable_text:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                order:
-                  description: >-
-                    An ordered list of provider slugs. The router will attempt to use the first provider in the subset
-                    of this list that supports your requested model, and fall back to the next if it is unavailable. If
-                    no providers are available, the request will fail with an error message.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                only:
-                  description: >-
-                    List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                ignore:
-                  description: >-
-                    List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                quantizations:
-                  description: A list of quantization levels to filter the provider by.
-                  anyOf:
-                    - type: array
-                      items:
-                        type: string
-                        enum:
-                          - int4
-                          - int8
-                          - fp4
-                          - fp6
-                          - fp8
-                          - fp16
-                          - bf16
-                          - fp32
-                          - unknown
-                    - type: 'null'
-                sort:
-                  description: >-
-                    The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                    balancing is performed.
-                  anyOf:
-                    - type: string
-                      enum:
-                        - price
-                        - throughput
-                        - latency
-                    - type: 'null'
-                max_price:
-                  description: >-
-                    The object specifying the maximum price you want to pay for this request. USD price per million
-                    tokens, for prompt and completion.
-                  type: object
-                  properties:
-                    prompt:
-                      $ref: '#/components/schemas/__schema1'
-                    completion:
-                      $ref: '#/components/schemas/__schema1'
-                    image:
-                      $ref: '#/components/schemas/__schema1'
-                    audio:
-                      $ref: '#/components/schemas/__schema1'
-                    request:
-                      $ref: '#/components/schemas/__schema1'
-                  additionalProperties: false
-              additionalProperties: false
-            - type: 'null'
         messages:
           minItems: 1
           type: array
@@ -5540,7 +5176,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         message:
@@ -5601,7 +5237,7 @@ components:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         logprobs:
@@ -5776,167 +5412,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ModelName'
-        plugins:
-          type: array
-          items:
-            oneOf:
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: moderation
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: web
-                  max_results:
-                    type: number
-                  search_prompt:
-                    type: string
-                  engine:
-                    type: string
-                    enum:
-                      - native
-                      - exa
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: file-parser
-                  max_files:
-                    type: number
-                  pdf:
-                    type: object
-                    properties:
-                      engine:
-                        type: string
-                        enum:
-                          - mistral-ocr
-                          - pdf-text
-                          - native
-                required:
-                  - id
-            type: object
-        provider:
-          anyOf:
-            - type: object
-              properties:
-                allow_fallbacks:
-                  description: >
-                    Whether to allow backup providers to serve requests
-
-                    - true: (default) when the primary provider (or your custom providers in "order") is unavailable,
-                    use the next best provider.
-
-                    - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                require_parameters:
-                  description: >-
-                    Whether to filter providers to only those that support the parameters you've provided. If this
-                    setting is omitted or set to false, then providers will receive only the parameters they support,
-                    and ignore the rest.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                data_collection:
-                  description: >-
-                    Data collection setting. If no available model provider meets the requirement, your request will
-                    return an error.
-
-                    - allow: (default) allow providers which store user data non-transiently and may train on it
-
-
-                    - deny: use only providers which do not collect user data.
-                  anyOf:
-                    - type: string
-                      enum:
-                        - deny
-                        - allow
-                    - type: 'null'
-                zdr:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                enforce_distillable_text:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                order:
-                  description: >-
-                    An ordered list of provider slugs. The router will attempt to use the first provider in the subset
-                    of this list that supports your requested model, and fall back to the next if it is unavailable. If
-                    no providers are available, the request will fail with an error message.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                only:
-                  description: >-
-                    List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                ignore:
-                  description: >-
-                    List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                quantizations:
-                  description: A list of quantization levels to filter the provider by.
-                  anyOf:
-                    - type: array
-                      items:
-                        type: string
-                        enum:
-                          - int4
-                          - int8
-                          - fp4
-                          - fp6
-                          - fp8
-                          - fp16
-                          - bf16
-                          - fp32
-                          - unknown
-                    - type: 'null'
-                sort:
-                  description: >-
-                    The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                    balancing is performed.
-                  anyOf:
-                    - type: string
-                      enum:
-                        - price
-                        - throughput
-                        - latency
-                    - type: 'null'
-                max_price:
-                  description: >-
-                    The object specifying the maximum price you want to pay for this request. USD price per million
-                    tokens, for prompt and completion.
-                  type: object
-                  properties:
-                    prompt:
-                      $ref: '#/components/schemas/__schema1'
-                    completion:
-                      $ref: '#/components/schemas/__schema1'
-                    image:
-                      $ref: '#/components/schemas/__schema1'
-                    audio:
-                      $ref: '#/components/schemas/__schema1'
-                    request:
-                      $ref: '#/components/schemas/__schema1'
-                  additionalProperties: false
-              additionalProperties: false
-            - type: 'null'
         prompt:
           anyOf:
             - type: string
@@ -6590,35 +6065,35 @@ paths:
                       example: true
                     order:
                       type: array
+                      nullable: true
                       items:
-                        type: string
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
                       description: >-
                         An ordered list of provider slugs. The router will attempt to use the first provider in the
                         subset of this list that supports your requested model, and fall back to the next if it is
                         unavailable. If no providers are available, the request will fail with an error message.
-                      example:
-                        - OpenAI
-                        - Anthropic
                     only:
                       type: array
+                      nullable: true
                       items:
-                        type: string
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
                       description: >-
                         List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
                         provider settings for this request.
-                      example:
-                        - OpenAI
-                        - Anthropic
                     ignore:
                       type: array
+                      nullable: true
                       items:
-                        type: string
+                        anyOf:
+                          - $ref: '#/components/schemas/ProviderName'
+                          - type: string
                       description: >-
                         List of provider slugs to ignore. If provided, this list is merged with your account-wide
                         ignored provider settings for this request.
-                      example:
-                        - OpenAI
-                        - Anthropic
                     quantizations:
                       type: array
                       nullable: true
@@ -6631,40 +6106,15 @@ paths:
                       type: object
                       properties:
                         prompt:
-                          anyOf:
-                            - type: number
-                            - type: string
-                            - type: number
-                              description: A value in string or number format that is a large number
-                              example: 1000
+                          $ref: '#/components/schemas/BigNumberUnion'
                         completion:
-                          anyOf:
-                            - type: number
-                            - type: string
-                            - type: number
-                              description: A value in string or number format that is a large number
-                              example: 1000
+                          $ref: '#/components/schemas/BigNumberUnion'
                         image:
-                          anyOf:
-                            - type: number
-                            - type: string
-                            - type: number
-                              description: A value in string or number format that is a large number
-                              example: 1000
+                          $ref: '#/components/schemas/BigNumberUnion'
                         audio:
-                          anyOf:
-                            - type: number
-                            - type: string
-                            - type: number
-                              description: A value in string or number format that is a large number
-                              example: 1000
+                          $ref: '#/components/schemas/BigNumberUnion'
                         request:
-                          anyOf:
-                            - type: number
-                            - type: string
-                            - type: number
-                              description: A value in string or number format that is a large number
-                              example: 1000
+                          $ref: '#/components/schemas/BigNumberUnion'
                       additionalProperties: false
                       description: >-
                         The object specifying the maximum price you want to pay for this request. USD price per million

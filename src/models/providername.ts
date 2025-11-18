@@ -75,3 +75,6 @@ export type ProviderName = OpenEnum<typeof ProviderName>;
 /** @internal */
 export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
   openEnums.inboundSchema(ProviderName);
+/** @internal */
+export const ProviderName$outboundSchema: z.ZodType<string, ProviderName> =
+  openEnums.outboundSchema(ProviderName);

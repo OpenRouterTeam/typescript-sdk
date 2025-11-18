@@ -5,6 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AssistantMessage,
@@ -14,22 +16,49 @@ import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
 } from "./chatmessagetokenlogprobs.js";
+import {
+  ChatStreamingMessageChunk,
+  ChatStreamingMessageChunk$inboundSchema,
+} from "./chatstreamingmessagechunk.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema0, Schema0$inboundSchema } from "./schema0.js";
+
+export const ChatCompletionFinishReason = {
+  ToolCalls: "tool_calls",
+  Stop: "stop",
+  Length: "length",
+  ContentFilter: "content_filter",
+  Error: "error",
+} as const;
+export type ChatCompletionFinishReason = OpenEnum<
+  typeof ChatCompletionFinishReason
+>;
 
 export type ChatResponseChoice = {
-  finishReason: Array<Schema0>;
+  finishReason: ChatCompletionFinishReason | null;
   index: number;
   message: AssistantMessage;
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
+
+export type ChatStreamingChoice = {
+  delta: ChatStreamingMessageChunk;
+  finishReason: ChatCompletionFinishReason | null;
+  index: number;
+  logprobs?: ChatMessageTokenLogprobs | null | undefined;
+};
+
+/** @internal */
+export const ChatCompletionFinishReason$inboundSchema: z.ZodType<
+  ChatCompletionFinishReason,
+  unknown
+> = openEnums.inboundSchema(ChatCompletionFinishReason);
 
 /** @internal */
 export const ChatResponseChoice$inboundSchema: z.ZodType<
   ChatResponseChoice,
   unknown
 > = z.object({
-  finish_reason: z.array(Schema0$inboundSchema),
+  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
   index: z.number(),
   message: AssistantMessage$inboundSchema,
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
@@ -46,5 +75,30 @@ export function chatResponseChoiceFromJSON(
     jsonString,
     (x) => ChatResponseChoice$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatResponseChoice' from JSON`,
+  );
+}
+
+/** @internal */
+export const ChatStreamingChoice$inboundSchema: z.ZodType<
+  ChatStreamingChoice,
+  unknown
+> = z.object({
+  delta: ChatStreamingMessageChunk$inboundSchema,
+  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
+  index: z.number(),
+  logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "finish_reason": "finishReason",
+  });
+});
+
+export function chatStreamingChoiceFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatStreamingChoice, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatStreamingChoice$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamingChoice' from JSON`,
   );
 }
