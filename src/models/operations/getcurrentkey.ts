@@ -152,7 +152,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   limit_reset: z.nullable(z.string()),
   include_byok_in_limit: z.boolean(),
   expires_at: z.nullable(
-    z.string().datetime({ offset: true }).transform(v => new Date(v)),
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
 }).transform((v) => {

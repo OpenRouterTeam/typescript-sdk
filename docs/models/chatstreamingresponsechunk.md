@@ -11,7 +11,9 @@ let value: ChatStreamingResponseChunk = {
     choices: [
       {
         delta: {},
-        finishReason: "error",
+        finishReason: [
+          "<value>",
+        ],
         index: 3793.72,
       },
     ],

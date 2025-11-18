@@ -7,6 +7,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  DataCollection,
+  DataCollection$outboundSchema,
+} from "./datacollection.js";
+import {
   OpenAIResponsesIncludable,
   OpenAIResponsesIncludable$outboundSchema,
 } from "./openairesponsesincludable.js";
@@ -55,7 +59,7 @@ import {
   OpenResponsesWebSearchTool$Outbound,
   OpenResponsesWebSearchTool$outboundSchema,
 } from "./openresponseswebsearchtool.js";
-import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
 export const OpenResponsesRequestType = {
@@ -99,74 +103,20 @@ export const Truncation = {
 export type Truncation = OpenEnum<typeof Truncation>;
 
 /**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
-} as const;
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export type DataCollection = OpenEnum<typeof DataCollection>;
-
-export type Order = ProviderName | string;
-
-export type Only = ProviderName | string;
-
-export type Ignore = ProviderName | string;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export const Sort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type Sort = OpenEnum<typeof Sort>;
-
-/**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type MaxPrice = {
-  /**
-   * A value in string or number format that is a large number
-   */
+export type OpenResponsesRequestMaxPrice = {
   prompt?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   completion?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   image?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   audio?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   request?: any | undefined;
 };
 
 /**
  * When multiple model providers are available, optionally indicate your routing preference.
  */
-export type Provider = {
+export type OpenResponsesRequestProvider = {
   /**
    * Whether to allow backup providers to serve requests
    *
@@ -184,6 +134,7 @@ export type Provider = {
    *
    * @remarks
    * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
    * - deny: use only providers which do not collect user data.
    */
   dataCollection?: DataCollection | null | undefined;
@@ -198,15 +149,15 @@ export type Provider = {
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
-  order?: Array<ProviderName | string> | null | undefined;
+  order?: Array<string> | undefined;
   /**
    * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
    */
-  only?: Array<ProviderName | string> | null | undefined;
+  only?: Array<string> | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
-  ignore?: Array<ProviderName | string> | null | undefined;
+  ignore?: Array<string> | undefined;
   /**
    * A list of quantization levels to filter the provider by.
    */
@@ -214,11 +165,11 @@ export type Provider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: ProviderSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: MaxPrice | undefined;
+  maxPrice?: OpenResponsesRequestMaxPrice | undefined;
 };
 
 export const IdFileParser = {
@@ -226,21 +177,23 @@ export const IdFileParser = {
 } as const;
 export type IdFileParser = ClosedEnum<typeof IdFileParser>;
 
-export const PdfEngine = {
+export const OpenResponsesRequestPdfEngine = {
   MistralOcr: "mistral-ocr",
   PdfText: "pdf-text",
   Native: "native",
 } as const;
-export type PdfEngine = OpenEnum<typeof PdfEngine>;
+export type OpenResponsesRequestPdfEngine = OpenEnum<
+  typeof OpenResponsesRequestPdfEngine
+>;
 
-export type Pdf = {
-  engine?: PdfEngine | undefined;
+export type OpenResponsesRequestPdf = {
+  engine?: OpenResponsesRequestPdfEngine | undefined;
 };
 
-export type PluginFileParser = {
+export type OpenResponsesRequestPluginFileParser = {
   id: IdFileParser;
   maxFiles?: number | undefined;
-  pdf?: Pdf | undefined;
+  pdf?: OpenResponsesRequestPdf | undefined;
 };
 
 export const IdWeb = {
@@ -248,17 +201,19 @@ export const IdWeb = {
 } as const;
 export type IdWeb = ClosedEnum<typeof IdWeb>;
 
-export const Engine = {
+export const OpenResponsesRequestEngine = {
   Native: "native",
   Exa: "exa",
 } as const;
-export type Engine = OpenEnum<typeof Engine>;
+export type OpenResponsesRequestEngine = OpenEnum<
+  typeof OpenResponsesRequestEngine
+>;
 
-export type PluginWeb = {
+export type OpenResponsesRequestPluginWeb = {
   id: IdWeb;
   maxResults?: number | undefined;
   searchPrompt?: string | undefined;
-  engine?: Engine | undefined;
+  engine?: OpenResponsesRequestEngine | undefined;
 };
 
 export const IdModeration = {
@@ -266,11 +221,14 @@ export const IdModeration = {
 } as const;
 export type IdModeration = ClosedEnum<typeof IdModeration>;
 
-export type PluginModeration = {
+export type OpenResponsesRequestPluginModeration = {
   id: IdModeration;
 };
 
-export type Plugin = PluginModeration | PluginWeb | PluginFileParser;
+export type OpenResponsesRequestPluginUnion =
+  | OpenResponsesRequestPluginModeration
+  | OpenResponsesRequestPluginWeb
+  | OpenResponsesRequestPluginFileParser;
 
 /**
  * Request schema for Responses endpoint
@@ -323,11 +281,17 @@ export type OpenResponsesRequest = {
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
-  provider?: Provider | null | undefined;
+  provider?: OpenResponsesRequestProvider | null | undefined;
   /**
    * Plugins you want to enable for this request, including their settings.
    */
-  plugins?: Array<PluginModeration | PluginWeb | PluginFileParser> | undefined;
+  plugins?:
+    | Array<
+      | OpenResponsesRequestPluginModeration
+      | OpenResponsesRequestPluginWeb
+      | OpenResponsesRequestPluginFileParser
+    >
+    | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
    */
@@ -409,52 +373,7 @@ export const Truncation$outboundSchema: z.ZodType<string, Truncation> =
   openEnums.outboundSchema(Truncation);
 
 /** @internal */
-export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
-  openEnums.outboundSchema(DataCollection);
-
-/** @internal */
-export type Order$Outbound = string | string;
-
-/** @internal */
-export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
-  ProviderName$outboundSchema,
-  z.string(),
-]);
-
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
-}
-
-/** @internal */
-export type Only$Outbound = string | string;
-
-/** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
-  ProviderName$outboundSchema,
-  z.string(),
-]);
-
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
-}
-
-/** @internal */
-export type Ignore$Outbound = string | string;
-
-/** @internal */
-export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
-  .union([ProviderName$outboundSchema, z.string()]);
-
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
-}
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<string, Sort> = openEnums
-  .outboundSchema(Sort);
-
-/** @internal */
-export type MaxPrice$Outbound = {
+export type OpenResponsesRequestMaxPrice$Outbound = {
   prompt?: any | undefined;
   completion?: any | undefined;
   image?: any | undefined;
@@ -463,66 +382,77 @@ export type MaxPrice$Outbound = {
 };
 
 /** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
-  .object({
-    prompt: z.any().optional(),
-    completion: z.any().optional(),
-    image: z.any().optional(),
-    audio: z.any().optional(),
-    request: z.any().optional(),
-  });
+export const OpenResponsesRequestMaxPrice$outboundSchema: z.ZodType<
+  OpenResponsesRequestMaxPrice$Outbound,
+  OpenResponsesRequestMaxPrice
+> = z.object({
+  prompt: z.any().optional(),
+  completion: z.any().optional(),
+  image: z.any().optional(),
+  audio: z.any().optional(),
+  request: z.any().optional(),
+});
 
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+export function openResponsesRequestMaxPriceToJSON(
+  openResponsesRequestMaxPrice: OpenResponsesRequestMaxPrice,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestMaxPrice$outboundSchema.parse(
+      openResponsesRequestMaxPrice,
+    ),
+  );
 }
 
 /** @internal */
-export type Provider$Outbound = {
+export type OpenResponsesRequestProvider$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
-  ignore?: Array<string | string> | null | undefined;
+  order?: Array<string> | undefined;
+  only?: Array<string> | undefined;
+  ignore?: Array<string> | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
+  max_price?: OpenResponsesRequestMaxPrice$Outbound | undefined;
 };
 
 /** @internal */
-export const Provider$outboundSchema: z.ZodType<Provider$Outbound, Provider> = z
-  .object({
-    allowFallbacks: z.nullable(z.boolean()).optional(),
-    requireParameters: z.nullable(z.boolean()).optional(),
-    dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-    zdr: z.nullable(z.boolean()).optional(),
-    enforceDistillableText: z.nullable(z.boolean()).optional(),
-    order: z.nullable(
-      z.array(z.union([ProviderName$outboundSchema, z.string()])),
-    ).optional(),
-    only: z.nullable(
-      z.array(z.union([ProviderName$outboundSchema, z.string()])),
-    ).optional(),
-    ignore: z.nullable(
-      z.array(z.union([ProviderName$outboundSchema, z.string()])),
-    ).optional(),
-    quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-    sort: z.nullable(Sort$outboundSchema).optional(),
-    maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      allowFallbacks: "allow_fallbacks",
-      requireParameters: "require_parameters",
-      dataCollection: "data_collection",
-      enforceDistillableText: "enforce_distillable_text",
-      maxPrice: "max_price",
-    });
+export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
+  OpenResponsesRequestProvider$Outbound,
+  OpenResponsesRequestProvider
+> = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
+  requireParameters: z.nullable(z.boolean()).optional(),
+  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+  enforceDistillableText: z.nullable(z.boolean()).optional(),
+  order: z.array(z.string()).optional(),
+  only: z.array(z.string()).optional(),
+  ignore: z.array(z.string()).optional(),
+  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  sort: z.nullable(ProviderSort$outboundSchema).optional(),
+  maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
+    requireParameters: "require_parameters",
+    dataCollection: "data_collection",
+    enforceDistillableText: "enforce_distillable_text",
+    maxPrice: "max_price",
   });
+});
 
-export function providerToJSON(provider: Provider): string {
-  return JSON.stringify(Provider$outboundSchema.parse(provider));
+export function openResponsesRequestProviderToJSON(
+  openResponsesRequestProvider: OpenResponsesRequestProvider,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestProvider$outboundSchema.parse(
+      openResponsesRequestProvider,
+    ),
+  );
 }
 
 /** @internal */
@@ -530,49 +460,60 @@ export const IdFileParser$outboundSchema: z.ZodEnum<typeof IdFileParser> = z
   .enum(IdFileParser);
 
 /** @internal */
-export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> = openEnums
-  .outboundSchema(PdfEngine);
+export const OpenResponsesRequestPdfEngine$outboundSchema: z.ZodType<
+  string,
+  OpenResponsesRequestPdfEngine
+> = openEnums.outboundSchema(OpenResponsesRequestPdfEngine);
 
 /** @internal */
-export type Pdf$Outbound = {
+export type OpenResponsesRequestPdf$Outbound = {
   engine?: string | undefined;
 };
 
 /** @internal */
-export const Pdf$outboundSchema: z.ZodType<Pdf$Outbound, Pdf> = z.object({
-  engine: PdfEngine$outboundSchema.optional(),
+export const OpenResponsesRequestPdf$outboundSchema: z.ZodType<
+  OpenResponsesRequestPdf$Outbound,
+  OpenResponsesRequestPdf
+> = z.object({
+  engine: OpenResponsesRequestPdfEngine$outboundSchema.optional(),
 });
 
-export function pdfToJSON(pdf: Pdf): string {
-  return JSON.stringify(Pdf$outboundSchema.parse(pdf));
+export function openResponsesRequestPdfToJSON(
+  openResponsesRequestPdf: OpenResponsesRequestPdf,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestPdf$outboundSchema.parse(openResponsesRequestPdf),
+  );
 }
 
 /** @internal */
-export type PluginFileParser$Outbound = {
+export type OpenResponsesRequestPluginFileParser$Outbound = {
   id: string;
   max_files?: number | undefined;
-  pdf?: Pdf$Outbound | undefined;
+  pdf?: OpenResponsesRequestPdf$Outbound | undefined;
 };
 
 /** @internal */
-export const PluginFileParser$outboundSchema: z.ZodType<
-  PluginFileParser$Outbound,
-  PluginFileParser
+export const OpenResponsesRequestPluginFileParser$outboundSchema: z.ZodType<
+  OpenResponsesRequestPluginFileParser$Outbound,
+  OpenResponsesRequestPluginFileParser
 > = z.object({
   id: IdFileParser$outboundSchema,
   maxFiles: z.number().optional(),
-  pdf: z.lazy(() => Pdf$outboundSchema).optional(),
+  pdf: z.lazy(() => OpenResponsesRequestPdf$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxFiles: "max_files",
   });
 });
 
-export function pluginFileParserToJSON(
-  pluginFileParser: PluginFileParser,
+export function openResponsesRequestPluginFileParserToJSON(
+  openResponsesRequestPluginFileParser: OpenResponsesRequestPluginFileParser,
 ): string {
   return JSON.stringify(
-    PluginFileParser$outboundSchema.parse(pluginFileParser),
+    OpenResponsesRequestPluginFileParser$outboundSchema.parse(
+      openResponsesRequestPluginFileParser,
+    ),
   );
 }
 
@@ -580,11 +521,13 @@ export function pluginFileParserToJSON(
 export const IdWeb$outboundSchema: z.ZodEnum<typeof IdWeb> = z.enum(IdWeb);
 
 /** @internal */
-export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums
-  .outboundSchema(Engine);
+export const OpenResponsesRequestEngine$outboundSchema: z.ZodType<
+  string,
+  OpenResponsesRequestEngine
+> = openEnums.outboundSchema(OpenResponsesRequestEngine);
 
 /** @internal */
-export type PluginWeb$Outbound = {
+export type OpenResponsesRequestPluginWeb$Outbound = {
   id: string;
   max_results?: number | undefined;
   search_prompt?: string | undefined;
@@ -592,14 +535,14 @@ export type PluginWeb$Outbound = {
 };
 
 /** @internal */
-export const PluginWeb$outboundSchema: z.ZodType<
-  PluginWeb$Outbound,
-  PluginWeb
+export const OpenResponsesRequestPluginWeb$outboundSchema: z.ZodType<
+  OpenResponsesRequestPluginWeb$Outbound,
+  OpenResponsesRequestPluginWeb
 > = z.object({
   id: IdWeb$outboundSchema,
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
-  engine: Engine$outboundSchema.optional(),
+  engine: OpenResponsesRequestEngine$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
@@ -607,8 +550,14 @@ export const PluginWeb$outboundSchema: z.ZodType<
   });
 });
 
-export function pluginWebToJSON(pluginWeb: PluginWeb): string {
-  return JSON.stringify(PluginWeb$outboundSchema.parse(pluginWeb));
+export function openResponsesRequestPluginWebToJSON(
+  openResponsesRequestPluginWeb: OpenResponsesRequestPluginWeb,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestPluginWeb$outboundSchema.parse(
+      openResponsesRequestPluginWeb,
+    ),
+  );
 }
 
 /** @internal */
@@ -616,42 +565,52 @@ export const IdModeration$outboundSchema: z.ZodEnum<typeof IdModeration> = z
   .enum(IdModeration);
 
 /** @internal */
-export type PluginModeration$Outbound = {
+export type OpenResponsesRequestPluginModeration$Outbound = {
   id: string;
 };
 
 /** @internal */
-export const PluginModeration$outboundSchema: z.ZodType<
-  PluginModeration$Outbound,
-  PluginModeration
+export const OpenResponsesRequestPluginModeration$outboundSchema: z.ZodType<
+  OpenResponsesRequestPluginModeration$Outbound,
+  OpenResponsesRequestPluginModeration
 > = z.object({
   id: IdModeration$outboundSchema,
 });
 
-export function pluginModerationToJSON(
-  pluginModeration: PluginModeration,
+export function openResponsesRequestPluginModerationToJSON(
+  openResponsesRequestPluginModeration: OpenResponsesRequestPluginModeration,
 ): string {
   return JSON.stringify(
-    PluginModeration$outboundSchema.parse(pluginModeration),
+    OpenResponsesRequestPluginModeration$outboundSchema.parse(
+      openResponsesRequestPluginModeration,
+    ),
   );
 }
 
 /** @internal */
-export type Plugin$Outbound =
-  | PluginModeration$Outbound
-  | PluginWeb$Outbound
-  | PluginFileParser$Outbound;
+export type OpenResponsesRequestPluginUnion$Outbound =
+  | OpenResponsesRequestPluginModeration$Outbound
+  | OpenResponsesRequestPluginWeb$Outbound
+  | OpenResponsesRequestPluginFileParser$Outbound;
 
 /** @internal */
-export const Plugin$outboundSchema: z.ZodType<Plugin$Outbound, Plugin> = z
-  .union([
-    z.lazy(() => PluginModeration$outboundSchema),
-    z.lazy(() => PluginWeb$outboundSchema),
-    z.lazy(() => PluginFileParser$outboundSchema),
-  ]);
+export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
+  OpenResponsesRequestPluginUnion$Outbound,
+  OpenResponsesRequestPluginUnion
+> = z.union([
+  z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
+  z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
+  z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
+]);
 
-export function pluginToJSON(plugin: Plugin): string {
-  return JSON.stringify(Plugin$outboundSchema.parse(plugin));
+export function openResponsesRequestPluginUnionToJSON(
+  openResponsesRequestPluginUnion: OpenResponsesRequestPluginUnion,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestPluginUnion$outboundSchema.parse(
+      openResponsesRequestPluginUnion,
+    ),
+  );
 }
 
 /** @internal */
@@ -688,10 +647,12 @@ export type OpenResponsesRequest$Outbound = {
   service_tier?: string | null | undefined;
   truncation?: string | null | undefined;
   stream: boolean;
-  provider?: Provider$Outbound | null | undefined;
+  provider?: OpenResponsesRequestProvider$Outbound | null | undefined;
   plugins?:
     | Array<
-      PluginModeration$Outbound | PluginWeb$Outbound | PluginFileParser$Outbound
+      | OpenResponsesRequestPluginModeration$Outbound
+      | OpenResponsesRequestPluginWeb$Outbound
+      | OpenResponsesRequestPluginFileParser$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -735,12 +696,14 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
   truncation: z.nullable(Truncation$outboundSchema).optional(),
   stream: z.boolean().default(false),
-  provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
+  provider: z.nullable(
+    z.lazy(() => OpenResponsesRequestProvider$outboundSchema),
+  ).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => PluginModeration$outboundSchema),
-      z.lazy(() => PluginWeb$outboundSchema),
-      z.lazy(() => PluginFileParser$outboundSchema),
+      z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
+      z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
+      z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),

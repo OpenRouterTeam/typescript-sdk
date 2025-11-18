@@ -6,8 +6,8 @@
 import { ChatResponseChoice } from "@openrouter/sdk/models";
 
 let value: ChatResponseChoice = {
-  finishReason: "stop",
-  index: 2823.76,
+  finishReason: [],
+  index: 3961.54,
   message: {
     role: "assistant",
   },
@@ -16,9 +16,9 @@ let value: ChatResponseChoice = {
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `finishReason`                                                               | [models.ChatCompletionFinishReason](../models/chatcompletionfinishreason.md) | :heavy_check_mark:                                                           | N/A                                                                          |
-| `index`                                                                      | *number*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `message`                                                                    | [models.AssistantMessage](../models/assistantmessage.md)                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `logprobs`                                                                   | [models.ChatMessageTokenLogprobs](../models/chatmessagetokenlogprobs.md)     | :heavy_minus_sign:                                                           | N/A                                                                          |
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `finishReason`                                                           | *models.Schema0*[]                                                       | :heavy_check_mark:                                                       | N/A                                                                      |
+| `index`                                                                  | *number*                                                                 | :heavy_check_mark:                                                       | N/A                                                                      |
+| `message`                                                                | [models.AssistantMessage](../models/assistantmessage.md)                 | :heavy_check_mark:                                                       | N/A                                                                      |
+| `logprobs`                                                               | [models.ChatMessageTokenLogprobs](../models/chatmessagetokenlogprobs.md) | :heavy_minus_sign:                                                       | N/A                                                                      |

@@ -17,49 +17,17 @@ import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
-  /**
-   * A value in string or number format that is a large number
-   */
   prompt?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   completion?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   request?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   image?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
+  imageToken?: any | undefined;
   imageOutput?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   audio?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   inputAudioCache?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   webSearch?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   internalReasoning?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   inputCacheRead?: any | undefined;
-  /**
-   * A value in string or number format that is a large number
-   */
   inputCacheWrite?: any | undefined;
   discount?: number | undefined;
 };
@@ -104,6 +72,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   completion: z.any().optional(),
   request: z.any().optional(),
   image: z.any().optional(),
+  image_token: z.any().optional(),
   image_output: z.any().optional(),
   audio: z.any().optional(),
   input_audio_cache: z.any().optional(),
@@ -114,6 +83,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   discount: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "image_token": "imageToken",
     "image_output": "imageOutput",
     "input_audio_cache": "inputAudioCache",
     "web_search": "webSearch",

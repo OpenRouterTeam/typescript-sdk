@@ -7,10 +7,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
-  ChatCompletionFinishReason,
-  ChatCompletionFinishReason$inboundSchema,
-} from "./chatcompletionfinishreason.js";
-import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
 } from "./chatmessagetokenlogprobs.js";
@@ -19,10 +15,11 @@ import {
   ChatStreamingMessageChunk$inboundSchema,
 } from "./chatstreamingmessagechunk.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import { Schema0, Schema0$inboundSchema } from "./schema0.js";
 
 export type ChatStreamingChoice = {
   delta: ChatStreamingMessageChunk;
-  finishReason: ChatCompletionFinishReason | null;
+  finishReason: Array<Schema0>;
   index: number;
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
@@ -33,7 +30,7 @@ export const ChatStreamingChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: ChatStreamingMessageChunk$inboundSchema,
-  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
+  finish_reason: z.array(Schema0$inboundSchema),
   index: z.number(),
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {

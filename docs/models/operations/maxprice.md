@@ -12,10 +12,10 @@ let value: MaxPrice = {};
 
 ## Fields
 
-| Field                                                     | Type                                                      | Required                                                  | Description                                               |
-| --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `prompt`                                                  | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `completion`                                              | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `image`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `audio`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `request`                                                 | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `prompt`           | *any*              | :heavy_minus_sign: | N/A                |
+| `completion`       | *any*              | :heavy_minus_sign: | N/A                |
+| `image`            | *any*              | :heavy_minus_sign: | N/A                |
+| `audio`            | *any*              | :heavy_minus_sign: | N/A                |
+| `request`          | *any*              | :heavy_minus_sign: | N/A                |

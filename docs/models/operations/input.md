@@ -1,47 +1,17 @@
 # Input
 
-
-## Supported Types
-
-### `string`
+## Example Usage
 
 ```typescript
-const value: string = "<value>";
+import { Input } from "@openrouter/sdk/models/operations";
+
+let value: Input = {
+  content: [],
+};
 ```
 
-### `string[]`
+## Fields
 
-```typescript
-const value: string[] = [
-  "<value 1>",
-  "<value 2>",
-];
-```
-
-### `number[]`
-
-```typescript
-const value: number[] = [
-  3390.48,
-  1336.21,
-  9437.99,
-];
-```
-
-### `number[][]`
-
-```typescript
-const value: number[][] = [
-  [
-    6206.15,
-  ],
-  [
-    8419.72,
-    5863.71,
-  ],
-  [
-    2540.22,
-  ],
-];
-```
-
+| Field                  | Type                   | Required               | Description            |
+| ---------------------- | ---------------------- | ---------------------- | ---------------------- |
+| `content`              | *operations.Content*[] | :heavy_check_mark:     | N/A                    |

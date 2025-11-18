@@ -5,7 +5,7 @@
 ```typescript
 import { Effort } from "@openrouter/sdk/models";
 
-let value: Effort = "low";
+let value: Effort = "minimal";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: Effort = "low";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"minimal" | "low" | "medium" | "high" | Unrecognized<string>
+"none" | "minimal" | "low" | "medium" | "high" | Unrecognized<string>
 ```

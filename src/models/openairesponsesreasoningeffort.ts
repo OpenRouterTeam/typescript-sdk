@@ -11,6 +11,7 @@ export const OpenAIResponsesReasoningEffort = {
   Medium: "medium",
   Low: "low",
   Minimal: "minimal",
+  None: "none",
 } as const;
 export type OpenAIResponsesReasoningEffort = OpenEnum<
   typeof OpenAIResponsesReasoningEffort

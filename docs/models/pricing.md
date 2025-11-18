@@ -7,23 +7,24 @@ import { Pricing } from "@openrouter/sdk/models";
 
 let value: Pricing = {
   prompt: 1000,
-  completion: "1000",
+  completion: "<value>",
 };
 ```
 
 ## Fields
 
-| Field                                                     | Type                                                      | Required                                                  | Description                                               |
-| --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `prompt`                                                  | *any*                                                     | :heavy_check_mark:                                        | A value in string or number format that is a large number |
-| `completion`                                              | *any*                                                     | :heavy_check_mark:                                        | A value in string or number format that is a large number |
-| `request`                                                 | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `image`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `imageOutput`                                             | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `audio`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputAudioCache`                                         | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `webSearch`                                               | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `internalReasoning`                                       | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputCacheRead`                                          | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputCacheWrite`                                         | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `discount`                                                | *number*                                                  | :heavy_minus_sign:                                        | N/A                                                       |
+| Field               | Type                | Required            | Description         |
+| ------------------- | ------------------- | ------------------- | ------------------- |
+| `prompt`            | *any*               | :heavy_check_mark:  | N/A                 |
+| `completion`        | *any*               | :heavy_check_mark:  | N/A                 |
+| `request`           | *any*               | :heavy_minus_sign:  | N/A                 |
+| `image`             | *any*               | :heavy_minus_sign:  | N/A                 |
+| `imageToken`        | *any*               | :heavy_minus_sign:  | N/A                 |
+| `imageOutput`       | *any*               | :heavy_minus_sign:  | N/A                 |
+| `audio`             | *any*               | :heavy_minus_sign:  | N/A                 |
+| `inputAudioCache`   | *any*               | :heavy_minus_sign:  | N/A                 |
+| `webSearch`         | *any*               | :heavy_minus_sign:  | N/A                 |
+| `internalReasoning` | *any*               | :heavy_minus_sign:  | N/A                 |
+| `inputCacheRead`    | *any*               | :heavy_minus_sign:  | N/A                 |
+| `inputCacheWrite`   | *any*               | :heavy_minus_sign:  | N/A                 |
+| `discount`          | *number*            | :heavy_minus_sign:  | N/A                 |
