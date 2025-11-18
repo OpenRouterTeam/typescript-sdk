@@ -4672,12 +4672,33 @@ components:
             - type
             - video_url
       type: object
+    ChatMessageContentItemFile:
+      type: object
+      properties:
+        type:
+          type: string
+          const: file
+        file:
+          type: object
+          properties:
+            file_data:
+              type: string
+            file_id:
+              type: string
+            filename:
+              type: string
+          required:
+            - file_data
+      required:
+        - type
+        - file
     ChatMessageContentItem:
       oneOf:
         - $ref: '#/components/schemas/ChatMessageContentItemText'
         - $ref: '#/components/schemas/ChatMessageContentItemImage'
         - $ref: '#/components/schemas/ChatMessageContentItemAudio'
         - $ref: '#/components/schemas/ChatMessageContentItemVideo'
+        - $ref: '#/components/schemas/ChatMessageContentItemFile'
       type: object
       discriminator:
         propertyName: type
@@ -4687,6 +4708,7 @@ components:
           input_audio: '#/components/schemas/ChatMessageContentItemAudio'
           input_video: '#/components/schemas/ChatMessageContentItemVideo'
           video_url: '#/components/schemas/ChatMessageContentItemVideo'
+          file: '#/components/schemas/ChatMessageContentItemFile'
     ChatMessageToolCall:
       type: object
       properties:

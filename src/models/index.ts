@@ -11,6 +11,7 @@ export * from "./chatgenerationparams.js";
 export * from "./chatgenerationtokenusage.js";
 export * from "./chatmessagecontentitem.js";
 export * from "./chatmessagecontentitemaudio.js";
+export * from "./chatmessagecontentitemfile.js";
 export * from "./chatmessagecontentitemimage.js";
 export * from "./chatmessagecontentitemtext.js";
 export * from "./chatmessagecontentitemvideo.js";
