@@ -142,5 +142,6 @@ export * from "./unauthorizedresponseerrordata.js";
 export * from "./unprocessableentityresponseerrordata.js";
 export * from "./urlcitation.js";
 export * from "./usermessage.js";
+export * from "./videourl.js";
 export * from "./websearchpreviewtooluserlocation.js";
 export * from "./websearchstatus.js";

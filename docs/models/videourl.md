@@ -1,12 +1,12 @@
-# VideoUrl1
+# VideoURL
 
 ## Example Usage
 
 ```typescript
-import { VideoUrl1 } from "@openrouter/sdk/models";
+import { VideoURL } from "@openrouter/sdk/models";
 
-let value: VideoUrl1 = {
-  url: "https://colorless-milestone.net/",
+let value: VideoURL = {
+  url: "https://oval-vision.biz/",
 };
 ```
 

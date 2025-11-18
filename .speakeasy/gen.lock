@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: c70fe15adf85b7e7749bd16a443507da
+  docChecksum: 459a4007b7391a38a6e9c7249c84c3bf
   docVersion: 1.0.0
   speakeasyVersion: 1.658.2
   generationVersion: 2.755.9
-  releaseVersion: 0.1.15
-  configChecksum: 25dcabf041ac03139f5304f679506901
+  releaseVersion: 0.1.16
+  configChecksum: fe363eba0cac367f43696e42fa54f2b0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -77,6 +77,7 @@ generatedFiles:
   - docs/models/chatmessagecontentitemvideo.md
   - docs/models/chatmessagecontentitemvideoinputvideo.md
   - docs/models/chatmessagecontentitemvideovideourl.md
+  - docs/models/chatmessagecontentitemvideovideourlvideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -515,8 +516,7 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/videourl1.md
-  - docs/models/videourl2.md
+  - docs/models/videourl.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -770,6 +770,7 @@ generatedFiles:
   - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
+  - src/models/videourl.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
   - src/react-query/_context.tsx

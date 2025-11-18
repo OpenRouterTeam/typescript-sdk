@@ -4647,12 +4647,7 @@ components:
               type: string
               const: input_video
             video_url:
-              type: object
-              properties:
-                url:
-                  type: string
-              required:
-                - url
+              $ref: '#/components/schemas/VideoURL'
           required:
             - type
             - video_url
@@ -4672,6 +4667,13 @@ components:
             - type
             - video_url
       type: object
+    VideoURL:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
     ChatMessageContentItemFile:
       type: object
       properties:
