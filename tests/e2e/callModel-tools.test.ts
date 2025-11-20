@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { OpenRouter, ToolType } from "../../src/index.js";
-import { z } from "zod";
-import { toJSONSchema } from "zod/v4/core";
+import { z, toJSONSchema } from "zod/v4";
 import * as dotenv from "dotenv";
 
 dotenv.config();
