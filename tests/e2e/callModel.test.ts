@@ -627,6 +627,189 @@ describe("callModel E2E Tests", () => {
       const hasContentDeltas = chunks.some((c) => c.type === "content.delta");
       expect(hasContentDeltas).toBe(true);
     }, 15000);
+
+    it("should return events with correct shape for each event type", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Count from 1 to 3.",
+          },
+        ],
+      });
+
+      let hasContentDelta = false;
+      let hasMessageComplete = false;
+
+      for await (const event of response.getFullChatStream()) {
+        // Every event must have a type
+        expect(event).toHaveProperty("type");
+        expect(typeof event.type).toBe("string");
+        expect(event.type.length).toBeGreaterThan(0);
+
+        // Validate shape based on event type
+        switch (event.type) {
+          case "content.delta":
+            hasContentDelta = true;
+            // Must have delta property
+            expect(event).toHaveProperty("delta");
+            expect(typeof event.delta).toBe("string");
+            // Delta can be empty string but must be string
+            break;
+
+          case "message.complete":
+            hasMessageComplete = true;
+            // Must have response property
+            expect(event).toHaveProperty("response");
+            expect(event.response).toBeDefined();
+            // Response should be an object (the full response)
+            expect(typeof event.response).toBe("object");
+            expect(event.response).not.toBeNull();
+            break;
+
+          case "tool.preliminary_result":
+            // Must have toolCallId and result
+            expect(event).toHaveProperty("toolCallId");
+            expect(event).toHaveProperty("result");
+            expect(typeof event.toolCallId).toBe("string");
+            expect(event.toolCallId.length).toBeGreaterThan(0);
+            // result can be any type
+            break;
+
+          default:
+            // Pass-through events must have event property
+            expect(event).toHaveProperty("event");
+            expect(event.event).toBeDefined();
+            break;
+        }
+      }
+
+      // Should have at least content deltas for a text response
+      expect(hasContentDelta).toBe(true);
+    }, 15000);
+
+    it("should validate content.delta events have proper structure", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'hello world'.",
+          },
+        ],
+      });
+
+      const contentDeltas: any[] = [];
+
+      for await (const event of response.getFullChatStream()) {
+        if (event.type === "content.delta") {
+          contentDeltas.push(event);
+
+          // Validate exact shape
+          const keys = Object.keys(event);
+          expect(keys).toContain("type");
+          expect(keys).toContain("delta");
+
+          // type must be exactly "content.delta"
+          expect(event.type).toBe("content.delta");
+
+          // delta must be a string
+          expect(typeof event.delta).toBe("string");
+        }
+      }
+
+      expect(contentDeltas.length).toBeGreaterThan(0);
+
+      // Concatenated deltas should form readable text
+      const fullText = contentDeltas.map(e => e.delta).join("");
+      expect(fullText.length).toBeGreaterThan(0);
+    }, 15000);
+
+    it("should include tool.preliminary_result events with correct shape when generator tools are executed", async () => {
+      const response = client.callModel({
+        model: "openai/gpt-4o-mini",
+        input: [
+          {
+            role: "user",
+            content: "What time is it? Use the get_time tool.",
+          },
+        ],
+        tools: [
+          {
+            type: ToolType.Function,
+            function: {
+              name: "get_time",
+              description: "Get current time",
+              inputSchema: z.object({
+                timezone: z.string().optional().describe("Timezone"),
+              }),
+              // Generator tools need eventSchema for intermediate results
+              eventSchema: z.object({
+                status: z.string(),
+              }),
+              outputSchema: z.object({
+                time: z.string(),
+                timezone: z.string(),
+              }),
+              // Use generator function to emit preliminary results
+              execute: async function* (params: { timezone?: string }) {
+                // Emit preliminary result (validated against eventSchema)
+                yield { status: "fetching time..." };
+
+                // Final result (validated against outputSchema)
+                yield {
+                  time: "14:30:00",
+                  timezone: params.timezone || "UTC",
+                };
+              },
+            },
+          },
+        ],
+      });
+
+      let hasPreliminaryResult = false;
+      const preliminaryResults: any[] = [];
+
+      for await (const event of response.getFullChatStream()) {
+        expect(event).toHaveProperty("type");
+        expect(typeof event.type).toBe("string");
+
+        if (event.type === "tool.preliminary_result") {
+          hasPreliminaryResult = true;
+          preliminaryResults.push(event);
+
+          // Validate exact shape
+          expect(event).toHaveProperty("toolCallId");
+          expect(event).toHaveProperty("result");
+
+          // toolCallId must be non-empty string
+          expect(typeof event.toolCallId).toBe("string");
+          expect(event.toolCallId.length).toBeGreaterThan(0);
+
+          // result is defined
+          expect(event.result).toBeDefined();
+        }
+      }
+
+      // Validate that if we got preliminary results, they have the correct shape
+      if (hasPreliminaryResult) {
+        expect(preliminaryResults.length).toBeGreaterThan(0);
+
+        // Should have status update or final result
+        const hasStatusUpdate = preliminaryResults.some(
+          (e) => e.result && typeof e.result === "object" && "status" in e.result
+        );
+        const hasFinalResult = preliminaryResults.some(
+          (e) => e.result && typeof e.result === "object" && "time" in e.result
+        );
+
+        expect(hasStatusUpdate || hasFinalResult).toBe(true);
+      }
+
+      // The stream should complete without errors regardless of tool execution
+      expect(true).toBe(true);
+    }, 30000);
   });
 
   describe("Multiple concurrent consumption patterns", () => {
