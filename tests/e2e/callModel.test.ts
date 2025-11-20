@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { OpenRouter } from "../../src/sdk/sdk.js";
 import { Message } from "../../src/models/message.js";
 
-describe("getResponse E2E Tests", () => {
+describe("callModel E2E Tests", () => {
   let client: OpenRouter;
 
   beforeAll(() => {
@@ -20,7 +20,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.text - Text extraction", () => {
     it("should successfully get text from a response", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -39,7 +39,7 @@ describe("getResponse E2E Tests", () => {
     });
 
     it("should handle multi-turn conversations", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -66,7 +66,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.message - Complete message extraction", () => {
     it("should successfully get a complete message from response", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -95,7 +95,7 @@ describe("getResponse E2E Tests", () => {
     });
 
     it("should have proper message structure", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -115,7 +115,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.textStream - Streaming text deltas", () => {
     it("should successfully stream text deltas", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -140,7 +140,7 @@ describe("getResponse E2E Tests", () => {
     });
 
     it("should stream progressively without waiting for completion", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -175,7 +175,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.newMessagesStream - Streaming message updates", () => {
     it("should successfully stream incremental message updates", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -211,7 +211,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.reasoningStream - Streaming reasoning deltas", () => {
     it("should successfully stream reasoning deltas for reasoning models", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "minimax/minimax-m2",
         input: [
           {
@@ -241,7 +241,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.toolStream - Streaming tool call deltas", () => {
     it("should successfully stream tool call deltas when tools are called", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.1-8b-instruct",
         input: [
           {
@@ -292,7 +292,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.fullResponsesStream - Streaming all events", () => {
     it("should successfully stream all response events", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -324,7 +324,7 @@ describe("getResponse E2E Tests", () => {
     }, 15000);
 
     it("should include text delta events", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -353,7 +353,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("response.fullChatStream - Chat-compatible streaming", () => {
     it("should successfully stream in chat-compatible format", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -381,7 +381,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("Multiple concurrent consumption patterns", () => {
     it("should allow reading text and streaming simultaneously", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -413,7 +413,7 @@ describe("getResponse E2E Tests", () => {
     }, 30000);
 
     it("should allow multiple stream consumers", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -457,7 +457,7 @@ describe("getResponse E2E Tests", () => {
     }, 20000);
 
     it("should allow sequential consumption - text then stream", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -487,7 +487,7 @@ describe("getResponse E2E Tests", () => {
     }, 20000);
 
     it("should allow sequential consumption - stream then text", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -518,7 +518,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("Error handling", () => {
     it("should handle invalid model gracefully", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "invalid/model-that-does-not-exist",
         input: [
           {
@@ -532,7 +532,7 @@ describe("getResponse E2E Tests", () => {
     });
 
     it("should handle empty input", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [],
       });
@@ -549,7 +549,7 @@ describe("getResponse E2E Tests", () => {
 
   describe("Response parameters", () => {
     it("should respect maxOutputTokens parameter", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {
@@ -568,7 +568,7 @@ describe("getResponse E2E Tests", () => {
     });
 
     it("should work with instructions parameter", async () => {
-      const response = client.getResponse({
+      const response = client.callModel({
         model: "meta-llama/llama-3.2-1b-instruct",
         input: [
           {

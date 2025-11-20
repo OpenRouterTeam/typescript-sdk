@@ -8,7 +8,7 @@
  * 3. Results sent back to the model
  * 4. Process repeats until no more tool calls (up to maxToolRounds)
  *
- * The API is simple: just call getResponse() with tools, and await the result.
+ * The API is simple: just call callModel() with tools, and await the result.
  * Tools are executed transparently before getMessage() or getText() returns!
  *
  * maxToolRounds can be:
@@ -63,7 +63,7 @@ async function basicToolExample() {
     },
   };
 
-  const response = client.getResponse({
+  const response = client.callModel({
     model: "openai/gpt-4o",
     input: "What's the weather like in San Francisco?",
     tools: [weatherTool],
@@ -140,7 +140,7 @@ async function generatorToolExample() {
     },
   };
 
-  const response = client.getResponse({
+  const response = client.callModel({
     model: "openai/gpt-4o",
     input: "Process this data: hello world",
     tools: [processingTool],
@@ -183,7 +183,7 @@ async function manualToolExample() {
     },
   };
 
-  const response = client.getResponse({
+  const response = client.callModel({
     model: "openai/gpt-4o",
     input: "What is 25 * 4 + 10?",
     tools: [calculatorTool],
@@ -245,7 +245,7 @@ async function streamingToolCallsExample() {
     },
   };
 
-  const response = client.getResponse({
+  const response = client.callModel({
     model: "openai/gpt-4o",
     input: "Search for information about TypeScript",
     tools: [searchTool],
@@ -311,7 +311,7 @@ async function multipleToolsExample() {
     },
   ];
 
-  const response = client.getResponse({
+  const response = client.callModel({
     model: "openai/gpt-4o",
     input: "What time is it and what's the weather in New York?",
     tools,

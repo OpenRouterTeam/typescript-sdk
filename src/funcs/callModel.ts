@@ -30,7 +30,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  * import { z } from 'zod';
  *
  * // Simple text extraction
- * const response = openrouter.getResponse({
+ * const response = openrouter.callModel({
  *   model: "openai/gpt-4",
  *   input: "Hello!"
  * });
@@ -38,7 +38,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  * console.log(text);
  *
  * // With tools (automatic execution)
- * const response = openrouter.getResponse({
+ * const response = openrouter.callModel({
  *   model: "openai/gpt-4",
  *   input: "What's the weather in SF?",
  *   tools: [{
@@ -72,7 +72,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  * }
  * ```
  */
-export function getResponse(
+export function callModel(
   client: OpenRouterCore,
   request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
     tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];

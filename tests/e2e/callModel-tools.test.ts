@@ -6,7 +6,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-describe("Enhanced Tool Support for getResponse", () => {
+describe("Enhanced Tool Support for callModel", () => {
   let client: OpenRouter;
 
   beforeAll(() => {
@@ -425,7 +425,7 @@ describe("Enhanced Tool Support for getResponse", () => {
         },
       };
 
-      const response = await client.getResponse({
+      const response = await client.callModel({
         model: "openai/gpt-4o",
         messages: [
           {
@@ -461,7 +461,7 @@ describe("Enhanced Tool Support for getResponse", () => {
         },
       };
 
-      const response = await client.getResponse(
+      const response = await client.callModel(
         {
           model: "openai/gpt-4o",
           messages: [
