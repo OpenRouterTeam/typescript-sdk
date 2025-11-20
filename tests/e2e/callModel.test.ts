@@ -108,6 +108,46 @@ describe("callModel E2E Tests", () => {
 
       const message = await response.getMessage();
 
+      // Ensure the message fully matches the OpenAI Chat API assistant message shape
+      expect(message).toMatchObject({
+        role: "assistant",
+        content: expect.anything(),
+      });
+      // content can be string, array, or null according to OpenAI spec
+      // Check rest of top-level shape
+      expect(Object.keys(message)).toEqual(
+        expect.arrayContaining([
+          "role",
+          "content",
+          // Optionally some implementations may also include:
+          // "tool_calls", "function_call", "tool_call_id", "name"
+        ])
+      );
+      // If content is array, match OpenAI content block shape
+      if (Array.isArray(message.content)) {
+        for (const block of message.content) {
+          expect(block).toMatchObject({
+            type: expect.any(String),
+            // text blocks have 'text', others may have different keys
+          });
+        }
+      }
+      // If present, tool_calls in OpenAI schema must be an array of objects
+      if (message.role === "assistant" && message.toolCalls) {
+        expect(Array.isArray(message.toolCalls)).toBe(true);
+        for (const call of message.toolCalls) {
+          expect(call).toMatchObject({
+            id: expect.any(String),
+            type: expect.any(String),
+            function: expect.any(Object),
+          });
+          expect(call.function).toMatchObject({
+            name: expect.any(String),
+            arguments: expect.any(String),
+          });
+        }
+      }
+
       expect(message).toBeDefined();
       expect(message.role).toBe("assistant");
       expect(message.content).toBeDefined();

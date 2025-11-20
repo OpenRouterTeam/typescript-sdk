@@ -379,16 +379,45 @@ export class ResponseWrapper {
   /**
    * Stream incremental message updates as content is added.
    * Each iteration yields an updated version of the message with new content.
-   * Returns AssistantMessage in chat format.
+   * Also yields ToolResponseMessages after tool execution completes.
+   * Returns AssistantMessage or ToolResponseMessage in chat format.
    */
-  getNewMessagesStream(): AsyncIterableIterator<models.AssistantMessage> {
+  getNewMessagesStream(): AsyncIterableIterator<models.AssistantMessage | models.ToolResponseMessage> {
     return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
       }
 
+      // First yield assistant messages from the stream
       yield* buildMessageStream(this.reusableStream);
+
+      // Execute tools if needed
+      await this.executeToolsIfNeeded();
+
+      // Yield tool response messages for each executed tool
+      for (const round of this.allToolExecutionRounds) {
+        for (const toolCall of round.toolCalls) {
+          // Find the tool to check if it was executed
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
+          if (!tool || !hasExecuteFunction(tool)) {
+            continue;
+          }
+
+          // Get the result from preliminary results or construct from the response
+          const prelimResults = this.preliminaryResults.get(toolCall.id);
+          const result = prelimResults && prelimResults.length > 0
+            ? prelimResults[prelimResults.length - 1] // Last result is the final output
+            : undefined;
+
+          // Yield tool response message
+          yield {
+            role: "tool" as const,
+            content: result !== undefined ? JSON.stringify(result) : "",
+            toolCallId: toolCall.id,
+          } as models.ToolResponseMessage;
+        }
+      }
     }.call(this));
   }
 
