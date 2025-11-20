@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:18aa7b22686c2f559af1062fea408a9f80146231027ed1fd62b68df38c71f65d
         tags:
             - latest
+            - feat-update-sdk-models-and-spec
             - 1.0.0
 targets:
     openrouter:
