@@ -98,7 +98,7 @@ export class OpenRouter extends ClientSDK {
     },
     options?: RequestOptions,
   ): ResponseWrapper {
-    return callModelFunc(this as any, request, options);
+    return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body
 }
