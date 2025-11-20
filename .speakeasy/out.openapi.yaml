@@ -5650,7 +5650,7 @@ components:
         - model
         - choices
       additionalProperties: false
-  parameters: {}
+  parameters: {AppIdentifier: {name: HTTP-Referer, in: header, schema: {type: string}, description: "The app identifier should be your app's URL and is used as the primary identifier for rankings.\nThis is used to track API usage per application.\n"}, AppDisplayName: {name: X-Title, in: header, schema: {type: string}, description: "The app display name allows you to customize how your app appears in OpenRouter's dashboard.\n"}}
   securitySchemes:
     apiKey:
       type: http
@@ -8409,3 +8409,7 @@ x-retry-strategy:
   initialDelay: 500
   maxDelay: 60000
   maxAttempts: 3
+x-speakeasy-globals:
+  parameters:
+    - $ref: "#/components/parameters/AppIdentifier"
+    - $ref: "#/components/parameters/AppDisplayName"

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 459a4007b7391a38a6e9c7249c84c3bf
+  docChecksum: bcccd1abd05f6654a822386f2eefbd8a
   docVersion: 1.0.0
   speakeasyVersion: 1.658.2
   generationVersion: 2.755.9
   releaseVersion: 0.1.16
-  configChecksum: fe363eba0cac367f43696e42fa54f2b0
+  configChecksum: 6960bb8f1b60d5d4de499d95ba613aa2
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -26,13 +26,13 @@ features:
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.83.0
+    globals: 2.82.2
     groups: 2.81.3
     methodArguments: 0.1.2
     methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
     openEnums: 0.1.1
-    reactQueryHooks: 0.2.3
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
@@ -46,7 +46,6 @@ generatedFiles:
   - .devcontainer/setup.sh
   - .gitattributes
   - FUNCTIONS.md
-  - REACT_QUERY.md
   - RUNTIMES.md
   - USAGE.md
   - docs/lib/utils/retryconfig.md
@@ -773,33 +772,6 @@ generatedFiles:
   - src/models/videourl.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
-  - src/react-query/_context.tsx
-  - src/react-query/_types.ts
-  - src/react-query/analyticsGetUserActivity.ts
-  - src/react-query/apiKeysCreate.ts
-  - src/react-query/apiKeysDelete.ts
-  - src/react-query/apiKeysGet.ts
-  - src/react-query/apiKeysGetCurrentKeyMetadata.ts
-  - src/react-query/apiKeysList.ts
-  - src/react-query/apiKeysUpdate.ts
-  - src/react-query/betaResponsesSend.ts
-  - src/react-query/chatSend.ts
-  - src/react-query/completionsGenerate.ts
-  - src/react-query/creditsCreateCoinbaseCharge.ts
-  - src/react-query/creditsGetCredits.ts
-  - src/react-query/embeddingsGenerate.ts
-  - src/react-query/embeddingsListModels.ts
-  - src/react-query/endpointsList.ts
-  - src/react-query/endpointsListZdrEndpoints.ts
-  - src/react-query/generationsGetGeneration.ts
-  - src/react-query/index.ts
-  - src/react-query/modelsCount.ts
-  - src/react-query/modelsList.ts
-  - src/react-query/modelsListForUser.ts
-  - src/react-query/oAuthCreateAuthCode.ts
-  - src/react-query/oAuthExchangeAuthCodeForAPIKey.ts
-  - src/react-query/parametersGetParameters.ts
-  - src/react-query/providersList.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/beta.ts

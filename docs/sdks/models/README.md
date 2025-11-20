@@ -61,33 +61,6 @@ async function run() {
 run();
 ```
 
-### React hooks and utilities
-
-This method can be used in React components through the following hooks and
-associated utilities.
-
-> Check out [this guide][hook-guide] for information about each of the utilities
-> below and how to get started using React hooks.
-
-[hook-guide]: ../../../REACT_QUERY.md
-
-```tsx
-import {
-  // Query hooks for fetching data.
-  useModelsCount,
-  useModelsCountSuspense,
-
-  // Utility for prefetching data during server-side rendering and in React
-  // Server Components that will be immediately available to client components
-  // using the hooks.
-  prefetchModelsCount,
-  
-  // Utility to invalidate the query cache for this query in response to
-  // mutations and other user actions.
-  invalidateAllModelsCount,
-} from "@openrouter/sdk/react-query/modelsCount.js";
-```
-
 ### Parameters
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
@@ -155,34 +128,6 @@ async function run() {
 }
 
 run();
-```
-
-### React hooks and utilities
-
-This method can be used in React components through the following hooks and
-associated utilities.
-
-> Check out [this guide][hook-guide] for information about each of the utilities
-> below and how to get started using React hooks.
-
-[hook-guide]: ../../../REACT_QUERY.md
-
-```tsx
-import {
-  // Query hooks for fetching data.
-  useModelsList,
-  useModelsListSuspense,
-
-  // Utility for prefetching data during server-side rendering and in React
-  // Server Components that will be immediately available to client components
-  // using the hooks.
-  prefetchModelsList,
-  
-  // Utilities to invalidate the query cache for this query in response to
-  // mutations and other user actions.
-  invalidateModelsList,
-  invalidateAllModelsList,
-} from "@openrouter/sdk/react-query/modelsList.js";
 ```
 
 ### Parameters
@@ -254,33 +199,6 @@ async function run() {
 }
 
 run();
-```
-
-### React hooks and utilities
-
-This method can be used in React components through the following hooks and
-associated utilities.
-
-> Check out [this guide][hook-guide] for information about each of the utilities
-> below and how to get started using React hooks.
-
-[hook-guide]: ../../../REACT_QUERY.md
-
-```tsx
-import {
-  // Query hooks for fetching data.
-  useModelsListForUser,
-  useModelsListForUserSuspense,
-
-  // Utility for prefetching data during server-side rendering and in React
-  // Server Components that will be immediately available to client components
-  // using the hooks.
-  prefetchModelsListForUser,
-  
-  // Utility to invalidate the query cache for this query in response to
-  // mutations and other user actions.
-  invalidateAllModelsListForUser,
-} from "@openrouter/sdk/react-query/modelsListForUser.js";
 ```
 
 ### Parameters

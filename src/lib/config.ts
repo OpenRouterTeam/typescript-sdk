@@ -21,6 +21,16 @@ export const ServerList = {
 export type SDKOptions = {
   apiKey?: string | (() => Promise<string>) | undefined;
 
+  /**
+   * Allows setting the httpReferer parameter for all supported operations
+   */
+  httpReferer?: string | undefined;
+
+  /**
+   * Allows setting the xTitle parameter for all supported operations
+   */
+  xTitle?: string | undefined;
+
   httpClient?: HTTPClient;
   /**
    * Allows overriding the default server used by the SDK

@@ -65,7 +65,7 @@ typescript:
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
-  enableReactQuery: true
+  enableReactQuery: false
   enumFormat: union
   envVarPrefix: OPENROUTER
   exportZodModelNamespace: false
