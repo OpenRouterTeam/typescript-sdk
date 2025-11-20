@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ImageGenerationStatus = {
   InProgress: "in_progress",
@@ -21,28 +18,9 @@ export type ImageGenerationStatus = OpenEnum<typeof ImageGenerationStatus>;
 export const ImageGenerationStatus$inboundSchema: z.ZodType<
   ImageGenerationStatus,
   unknown
-> = z
-  .union([
-    z.enum(ImageGenerationStatus),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(ImageGenerationStatus);
 /** @internal */
 export const ImageGenerationStatus$outboundSchema: z.ZodType<
-  ImageGenerationStatus,
+  string,
   ImageGenerationStatus
-> = z.union([
-  z.enum(ImageGenerationStatus),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ImageGenerationStatus$ {
-  /** @deprecated use `ImageGenerationStatus$inboundSchema` instead. */
-  export const inboundSchema = ImageGenerationStatus$inboundSchema;
-  /** @deprecated use `ImageGenerationStatus$outboundSchema` instead. */
-  export const outboundSchema = ImageGenerationStatus$outboundSchema;
-}
+> = openEnums.outboundSchema(ImageGenerationStatus);

@@ -30,22 +30,10 @@ export type ResponsesWebSearchCallOutput = {
 export const ResponsesWebSearchCallOutputType$inboundSchema: z.ZodEnum<
   typeof ResponsesWebSearchCallOutputType
 > = z.enum(ResponsesWebSearchCallOutputType);
-
 /** @internal */
 export const ResponsesWebSearchCallOutputType$outboundSchema: z.ZodEnum<
   typeof ResponsesWebSearchCallOutputType
 > = ResponsesWebSearchCallOutputType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesWebSearchCallOutputType$ {
-  /** @deprecated use `ResponsesWebSearchCallOutputType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesWebSearchCallOutputType$inboundSchema;
-  /** @deprecated use `ResponsesWebSearchCallOutputType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesWebSearchCallOutputType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesWebSearchCallOutput$inboundSchema: z.ZodType<
@@ -56,7 +44,6 @@ export const ResponsesWebSearchCallOutput$inboundSchema: z.ZodType<
   id: z.string(),
   status: WebSearchStatus$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesWebSearchCallOutput$Outbound = {
   type: string;
@@ -74,19 +61,6 @@ export const ResponsesWebSearchCallOutput$outboundSchema: z.ZodType<
   status: WebSearchStatus$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesWebSearchCallOutput$ {
-  /** @deprecated use `ResponsesWebSearchCallOutput$inboundSchema` instead. */
-  export const inboundSchema = ResponsesWebSearchCallOutput$inboundSchema;
-  /** @deprecated use `ResponsesWebSearchCallOutput$outboundSchema` instead. */
-  export const outboundSchema = ResponsesWebSearchCallOutput$outboundSchema;
-  /** @deprecated use `ResponsesWebSearchCallOutput$Outbound` instead. */
-  export type Outbound = ResponsesWebSearchCallOutput$Outbound;
-}
-
 export function responsesWebSearchCallOutputToJSON(
   responsesWebSearchCallOutput: ResponsesWebSearchCallOutput,
 ): string {
@@ -96,7 +70,6 @@ export function responsesWebSearchCallOutputToJSON(
     ),
   );
 }
-
 export function responsesWebSearchCallOutputFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesWebSearchCallOutput, SDKValidationError> {

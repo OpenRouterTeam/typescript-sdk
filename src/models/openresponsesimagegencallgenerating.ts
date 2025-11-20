@@ -33,24 +33,6 @@ export const OpenResponsesImageGenCallGeneratingType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesImageGenCallGeneratingType);
 
 /** @internal */
-export const OpenResponsesImageGenCallGeneratingType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesImageGenCallGeneratingType
-> = OpenResponsesImageGenCallGeneratingType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallGeneratingType$ {
-  /** @deprecated use `OpenResponsesImageGenCallGeneratingType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallGeneratingType$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallGeneratingType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallGeneratingType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesImageGenCallGenerating$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallGenerating,
   unknown
@@ -66,56 +48,6 @@ export const OpenResponsesImageGenCallGenerating$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesImageGenCallGenerating$Outbound = {
-  type: string;
-  item_id: string;
-  output_index: number;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesImageGenCallGenerating$outboundSchema: z.ZodType<
-  OpenResponsesImageGenCallGenerating$Outbound,
-  OpenResponsesImageGenCallGenerating
-> = z.object({
-  type: OpenResponsesImageGenCallGeneratingType$outboundSchema,
-  itemId: z.string(),
-  outputIndex: z.number(),
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    itemId: "item_id",
-    outputIndex: "output_index",
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallGenerating$ {
-  /** @deprecated use `OpenResponsesImageGenCallGenerating$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallGenerating$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallGenerating$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallGenerating$outboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallGenerating$Outbound` instead. */
-  export type Outbound = OpenResponsesImageGenCallGenerating$Outbound;
-}
-
-export function openResponsesImageGenCallGeneratingToJSON(
-  openResponsesImageGenCallGenerating: OpenResponsesImageGenCallGenerating,
-): string {
-  return JSON.stringify(
-    OpenResponsesImageGenCallGenerating$outboundSchema.parse(
-      openResponsesImageGenCallGenerating,
-    ),
-  );
-}
 
 export function openResponsesImageGenCallGeneratingFromJSON(
   jsonString: string,

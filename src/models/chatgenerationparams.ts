@@ -4,51 +4,40 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ChatStreamOptions,
-  ChatStreamOptions$inboundSchema,
   ChatStreamOptions$Outbound,
   ChatStreamOptions$outboundSchema,
 } from "./chatstreamoptions.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   Message,
-  Message$inboundSchema,
   Message$Outbound,
   Message$outboundSchema,
 } from "./message.js";
 import {
   ReasoningSummaryVerbosity,
-  ReasoningSummaryVerbosity$inboundSchema,
   ReasoningSummaryVerbosity$outboundSchema,
 } from "./reasoningsummaryverbosity.js";
 import {
   ResponseFormatJSONSchema,
-  ResponseFormatJSONSchema$inboundSchema,
   ResponseFormatJSONSchema$Outbound,
   ResponseFormatJSONSchema$outboundSchema,
 } from "./responseformatjsonschema.js";
 import {
   ResponseFormatTextGrammar,
-  ResponseFormatTextGrammar$inboundSchema,
   ResponseFormatTextGrammar$Outbound,
   ResponseFormatTextGrammar$outboundSchema,
 } from "./responseformattextgrammar.js";
 import {
-  Tool,
-  Tool$inboundSchema,
-  Tool$Outbound,
-  Tool$outboundSchema,
-} from "./tool.js";
+  ToolDefinitionJson,
+  ToolDefinitionJson$Outbound,
+  ToolDefinitionJson$outboundSchema,
+} from "./tooldefinitionjson.js";
 
 export const Effort = {
+  None: "none",
   Minimal: "minimal",
   Low: "low",
   Medium: "medium",
@@ -108,40 +97,14 @@ export type ChatGenerationParams = {
   streamOptions?: ChatStreamOptions | null | undefined;
   temperature?: number | null | undefined;
   toolChoice?: any | undefined;
-  tools?: Array<Tool> | undefined;
+  tools?: Array<ToolDefinitionJson> | undefined;
   topP?: number | null | undefined;
   user?: string | undefined;
 };
 
 /** @internal */
-export const Effort$inboundSchema: z.ZodType<Effort, unknown> = z
-  .union([
-    z.enum(Effort),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Effort$outboundSchema: z.ZodType<Effort, Effort> = z.union([
-  z.enum(Effort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Effort$ {
-  /** @deprecated use `Effort$inboundSchema` instead. */
-  export const inboundSchema = Effort$inboundSchema;
-  /** @deprecated use `Effort$outboundSchema` instead. */
-  export const outboundSchema = Effort$outboundSchema;
-}
-
-/** @internal */
-export const Reasoning$inboundSchema: z.ZodType<Reasoning, unknown> = z.object({
-  effort: z.nullable(Effort$inboundSchema).optional(),
-  summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
-});
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
+  .outboundSchema(Effort);
 
 /** @internal */
 export type Reasoning$Outbound = {
@@ -158,40 +121,9 @@ export const Reasoning$outboundSchema: z.ZodType<
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Reasoning$ {
-  /** @deprecated use `Reasoning$inboundSchema` instead. */
-  export const inboundSchema = Reasoning$inboundSchema;
-  /** @deprecated use `Reasoning$outboundSchema` instead. */
-  export const outboundSchema = Reasoning$outboundSchema;
-  /** @deprecated use `Reasoning$Outbound` instead. */
-  export type Outbound = Reasoning$Outbound;
-}
-
 export function reasoningToJSON(reasoning: Reasoning): string {
   return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
 }
-
-export function reasoningFromJSON(
-  jsonString: string,
-): SafeParseResult<Reasoning, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Reasoning$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Reasoning' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParamsResponseFormatPython$inboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatPython,
-  unknown
-> = z.object({
-  type: z.literal("python"),
-});
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatPython$Outbound = {
@@ -206,21 +138,6 @@ export const ChatGenerationParamsResponseFormatPython$outboundSchema: z.ZodType<
   type: z.literal("python"),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParamsResponseFormatPython$ {
-  /** @deprecated use `ChatGenerationParamsResponseFormatPython$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatGenerationParamsResponseFormatPython$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatPython$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatGenerationParamsResponseFormatPython$outboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatPython$Outbound` instead. */
-  export type Outbound = ChatGenerationParamsResponseFormatPython$Outbound;
-}
-
 export function chatGenerationParamsResponseFormatPythonToJSON(
   chatGenerationParamsResponseFormatPython:
     ChatGenerationParamsResponseFormatPython,
@@ -231,28 +148,6 @@ export function chatGenerationParamsResponseFormatPythonToJSON(
     ),
   );
 }
-
-export function chatGenerationParamsResponseFormatPythonFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatGenerationParamsResponseFormatPython,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatGenerationParamsResponseFormatPython$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatGenerationParamsResponseFormatPython' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParamsResponseFormatJSONObject$inboundSchema:
-  z.ZodType<ChatGenerationParamsResponseFormatJSONObject, unknown> = z.object({
-    type: z.literal("json_object"),
-  });
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatJSONObject$Outbound = {
@@ -268,21 +163,6 @@ export const ChatGenerationParamsResponseFormatJSONObject$outboundSchema:
     type: z.literal("json_object"),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParamsResponseFormatJSONObject$ {
-  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatGenerationParamsResponseFormatJSONObject$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatGenerationParamsResponseFormatJSONObject$outboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatJSONObject$Outbound` instead. */
-  export type Outbound = ChatGenerationParamsResponseFormatJSONObject$Outbound;
-}
-
 export function chatGenerationParamsResponseFormatJSONObjectToJSON(
   chatGenerationParamsResponseFormatJSONObject:
     ChatGenerationParamsResponseFormatJSONObject,
@@ -293,30 +173,6 @@ export function chatGenerationParamsResponseFormatJSONObjectToJSON(
     ),
   );
 }
-
-export function chatGenerationParamsResponseFormatJSONObjectFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatGenerationParamsResponseFormatJSONObject,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatGenerationParamsResponseFormatJSONObject$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatGenerationParamsResponseFormatJSONObject' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParamsResponseFormatText$inboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatText,
-  unknown
-> = z.object({
-  type: z.literal("text"),
-});
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatText$Outbound = {
@@ -331,21 +187,6 @@ export const ChatGenerationParamsResponseFormatText$outboundSchema: z.ZodType<
   type: z.literal("text"),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParamsResponseFormatText$ {
-  /** @deprecated use `ChatGenerationParamsResponseFormatText$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatGenerationParamsResponseFormatText$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatText$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatGenerationParamsResponseFormatText$outboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatText$Outbound` instead. */
-  export type Outbound = ChatGenerationParamsResponseFormatText$Outbound;
-}
-
 export function chatGenerationParamsResponseFormatTextToJSON(
   chatGenerationParamsResponseFormatText:
     ChatGenerationParamsResponseFormatText,
@@ -356,29 +197,6 @@ export function chatGenerationParamsResponseFormatTextToJSON(
     ),
   );
 }
-
-export function chatGenerationParamsResponseFormatTextFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatGenerationParamsResponseFormatText, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatGenerationParamsResponseFormatText$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatGenerationParamsResponseFormatText' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParamsResponseFormatUnion$inboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatUnion,
-  unknown
-> = z.union([
-  ResponseFormatJSONSchema$inboundSchema,
-  ResponseFormatTextGrammar$inboundSchema,
-  z.lazy(() => ChatGenerationParamsResponseFormatText$inboundSchema),
-  z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$inboundSchema),
-  z.lazy(() => ChatGenerationParamsResponseFormatPython$inboundSchema),
-]);
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatUnion$Outbound =
@@ -400,21 +218,6 @@ export const ChatGenerationParamsResponseFormatUnion$outboundSchema: z.ZodType<
   z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParamsResponseFormatUnion$ {
-  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    ChatGenerationParamsResponseFormatUnion$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    ChatGenerationParamsResponseFormatUnion$outboundSchema;
-  /** @deprecated use `ChatGenerationParamsResponseFormatUnion$Outbound` instead. */
-  export type Outbound = ChatGenerationParamsResponseFormatUnion$Outbound;
-}
-
 export function chatGenerationParamsResponseFormatUnionToJSON(
   chatGenerationParamsResponseFormatUnion:
     ChatGenerationParamsResponseFormatUnion,
@@ -426,28 +229,6 @@ export function chatGenerationParamsResponseFormatUnionToJSON(
   );
 }
 
-export function chatGenerationParamsResponseFormatUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  ChatGenerationParamsResponseFormatUnion,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      ChatGenerationParamsResponseFormatUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'ChatGenerationParamsResponseFormatUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParamsStop$inboundSchema: z.ZodType<
-  ChatGenerationParamsStop,
-  unknown
-> = z.union([z.string(), z.array(z.string())]);
-
 /** @internal */
 export type ChatGenerationParamsStop$Outbound = string | Array<string>;
 
@@ -457,19 +238,6 @@ export const ChatGenerationParamsStop$outboundSchema: z.ZodType<
   ChatGenerationParamsStop
 > = z.union([z.string(), z.array(z.string())]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParamsStop$ {
-  /** @deprecated use `ChatGenerationParamsStop$inboundSchema` instead. */
-  export const inboundSchema = ChatGenerationParamsStop$inboundSchema;
-  /** @deprecated use `ChatGenerationParamsStop$outboundSchema` instead. */
-  export const outboundSchema = ChatGenerationParamsStop$outboundSchema;
-  /** @deprecated use `ChatGenerationParamsStop$Outbound` instead. */
-  export type Outbound = ChatGenerationParamsStop$Outbound;
-}
-
 export function chatGenerationParamsStopToJSON(
   chatGenerationParamsStop: ChatGenerationParamsStop,
 ): string {
@@ -477,64 +245,6 @@ export function chatGenerationParamsStopToJSON(
     ChatGenerationParamsStop$outboundSchema.parse(chatGenerationParamsStop),
   );
 }
-
-export function chatGenerationParamsStopFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatGenerationParamsStop, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatGenerationParamsStop$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatGenerationParamsStop' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatGenerationParams$inboundSchema: z.ZodType<
-  ChatGenerationParams,
-  unknown
-> = z.object({
-  messages: z.array(Message$inboundSchema),
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  frequency_penalty: z.nullable(z.number()).optional(),
-  logit_bias: z.nullable(z.record(z.string(), z.number())).optional(),
-  logprobs: z.nullable(z.boolean()).optional(),
-  top_logprobs: z.nullable(z.number()).optional(),
-  max_completion_tokens: z.nullable(z.number()).optional(),
-  max_tokens: z.nullable(z.number()).optional(),
-  metadata: z.record(z.string(), z.string()).optional(),
-  presence_penalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$inboundSchema).optional(),
-  response_format: z.union([
-    ResponseFormatJSONSchema$inboundSchema,
-    ResponseFormatTextGrammar$inboundSchema,
-    z.lazy(() => ChatGenerationParamsResponseFormatText$inboundSchema),
-    z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$inboundSchema),
-    z.lazy(() => ChatGenerationParamsResponseFormatPython$inboundSchema),
-  ]).optional(),
-  seed: z.nullable(z.number().int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.boolean().default(false),
-  stream_options: z.nullable(ChatStreamOptions$inboundSchema).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  tool_choice: z.any().optional(),
-  tools: z.array(Tool$inboundSchema).optional(),
-  top_p: z.nullable(z.number()).optional(),
-  user: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "frequency_penalty": "frequencyPenalty",
-    "logit_bias": "logitBias",
-    "top_logprobs": "topLogprobs",
-    "max_completion_tokens": "maxCompletionTokens",
-    "max_tokens": "maxTokens",
-    "presence_penalty": "presencePenalty",
-    "response_format": "responseFormat",
-    "stream_options": "streamOptions",
-    "tool_choice": "toolChoice",
-    "top_p": "topP",
-  });
-});
 
 /** @internal */
 export type ChatGenerationParams$Outbound = {
@@ -563,7 +273,7 @@ export type ChatGenerationParams$Outbound = {
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
   temperature?: number | null | undefined;
   tool_choice?: any | undefined;
-  tools?: Array<Tool$Outbound> | undefined;
+  tools?: Array<ToolDefinitionJson$Outbound> | undefined;
   top_p?: number | null | undefined;
   user?: string | undefined;
 };
@@ -592,13 +302,13 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
     z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
   ]).optional(),
-  seed: z.nullable(z.number().int()).optional(),
+  seed: z.nullable(z.int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
   temperature: z.nullable(z.number()).optional(),
   toolChoice: z.any().optional(),
-  tools: z.array(Tool$outboundSchema).optional(),
+  tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
   topP: z.nullable(z.number()).optional(),
   user: z.string().optional(),
 }).transform((v) => {
@@ -616,33 +326,10 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatGenerationParams$ {
-  /** @deprecated use `ChatGenerationParams$inboundSchema` instead. */
-  export const inboundSchema = ChatGenerationParams$inboundSchema;
-  /** @deprecated use `ChatGenerationParams$outboundSchema` instead. */
-  export const outboundSchema = ChatGenerationParams$outboundSchema;
-  /** @deprecated use `ChatGenerationParams$Outbound` instead. */
-  export type Outbound = ChatGenerationParams$Outbound;
-}
-
 export function chatGenerationParamsToJSON(
   chatGenerationParams: ChatGenerationParams,
 ): string {
   return JSON.stringify(
     ChatGenerationParams$outboundSchema.parse(chatGenerationParams),
-  );
-}
-
-export function chatGenerationParamsFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatGenerationParams, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatGenerationParams$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatGenerationParams' from JSON`,
   );
 }

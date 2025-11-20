@@ -23,40 +23,6 @@ export const ListEndpointsZdrResponse$inboundSchema: z.ZodType<
   data: z.array(models.PublicEndpoint$inboundSchema),
 });
 
-/** @internal */
-export type ListEndpointsZdrResponse$Outbound = {
-  data: Array<models.PublicEndpoint$Outbound>;
-};
-
-/** @internal */
-export const ListEndpointsZdrResponse$outboundSchema: z.ZodType<
-  ListEndpointsZdrResponse$Outbound,
-  ListEndpointsZdrResponse
-> = z.object({
-  data: z.array(models.PublicEndpoint$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListEndpointsZdrResponse$ {
-  /** @deprecated use `ListEndpointsZdrResponse$inboundSchema` instead. */
-  export const inboundSchema = ListEndpointsZdrResponse$inboundSchema;
-  /** @deprecated use `ListEndpointsZdrResponse$outboundSchema` instead. */
-  export const outboundSchema = ListEndpointsZdrResponse$outboundSchema;
-  /** @deprecated use `ListEndpointsZdrResponse$Outbound` instead. */
-  export type Outbound = ListEndpointsZdrResponse$Outbound;
-}
-
-export function listEndpointsZdrResponseToJSON(
-  listEndpointsZdrResponse: ListEndpointsZdrResponse,
-): string {
-  return JSON.stringify(
-    ListEndpointsZdrResponse$outboundSchema.parse(listEndpointsZdrResponse),
-  );
-}
-
 export function listEndpointsZdrResponseFromJSON(
   jsonString: string,
 ): SafeParseResult<ListEndpointsZdrResponse, SDKValidationError> {

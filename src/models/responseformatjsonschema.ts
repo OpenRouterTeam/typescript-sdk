@@ -4,12 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   JSONSchemaConfig,
-  JSONSchemaConfig$inboundSchema,
   JSONSchemaConfig$Outbound,
   JSONSchemaConfig$outboundSchema,
 } from "./jsonschemaconfig.js";
@@ -18,19 +14,6 @@ export type ResponseFormatJSONSchema = {
   type: "json_schema";
   jsonSchema: JSONSchemaConfig;
 };
-
-/** @internal */
-export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
-  ResponseFormatJSONSchema,
-  unknown
-> = z.object({
-  type: z.literal("json_schema"),
-  json_schema: JSONSchemaConfig$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "json_schema": "jsonSchema",
-  });
-});
 
 /** @internal */
 export type ResponseFormatJSONSchema$Outbound = {
@@ -51,33 +34,10 @@ export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseFormatJSONSchema$ {
-  /** @deprecated use `ResponseFormatJSONSchema$inboundSchema` instead. */
-  export const inboundSchema = ResponseFormatJSONSchema$inboundSchema;
-  /** @deprecated use `ResponseFormatJSONSchema$outboundSchema` instead. */
-  export const outboundSchema = ResponseFormatJSONSchema$outboundSchema;
-  /** @deprecated use `ResponseFormatJSONSchema$Outbound` instead. */
-  export type Outbound = ResponseFormatJSONSchema$Outbound;
-}
-
 export function responseFormatJSONSchemaToJSON(
   responseFormatJSONSchema: ResponseFormatJSONSchema,
 ): string {
   return JSON.stringify(
     ResponseFormatJSONSchema$outboundSchema.parse(responseFormatJSONSchema),
-  );
-}
-
-export function responseFormatJSONSchemaFromJSON(
-  jsonString: string,
-): SafeParseResult<ResponseFormatJSONSchema, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ResponseFormatJSONSchema$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseFormatJSONSchema' from JSON`,
   );
 }

@@ -35,24 +35,6 @@ export const OpenResponsesImageGenCallPartialImageType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesImageGenCallPartialImageType);
 
 /** @internal */
-export const OpenResponsesImageGenCallPartialImageType$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesImageGenCallPartialImageType> =
-    OpenResponsesImageGenCallPartialImageType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallPartialImageType$ {
-  /** @deprecated use `OpenResponsesImageGenCallPartialImageType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallPartialImageType$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallPartialImageType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallPartialImageType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesImageGenCallPartialImage$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallPartialImage,
   unknown
@@ -72,62 +54,6 @@ export const OpenResponsesImageGenCallPartialImage$inboundSchema: z.ZodType<
     "partial_image_index": "partialImageIndex",
   });
 });
-
-/** @internal */
-export type OpenResponsesImageGenCallPartialImage$Outbound = {
-  type: string;
-  item_id: string;
-  output_index: number;
-  sequence_number: number;
-  partial_image_b64: string;
-  partial_image_index: number;
-};
-
-/** @internal */
-export const OpenResponsesImageGenCallPartialImage$outboundSchema: z.ZodType<
-  OpenResponsesImageGenCallPartialImage$Outbound,
-  OpenResponsesImageGenCallPartialImage
-> = z.object({
-  type: OpenResponsesImageGenCallPartialImageType$outboundSchema,
-  itemId: z.string(),
-  outputIndex: z.number(),
-  sequenceNumber: z.number(),
-  partialImageB64: z.string(),
-  partialImageIndex: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    itemId: "item_id",
-    outputIndex: "output_index",
-    sequenceNumber: "sequence_number",
-    partialImageB64: "partial_image_b64",
-    partialImageIndex: "partial_image_index",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallPartialImage$ {
-  /** @deprecated use `OpenResponsesImageGenCallPartialImage$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallPartialImage$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallPartialImage$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallPartialImage$outboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallPartialImage$Outbound` instead. */
-  export type Outbound = OpenResponsesImageGenCallPartialImage$Outbound;
-}
-
-export function openResponsesImageGenCallPartialImageToJSON(
-  openResponsesImageGenCallPartialImage: OpenResponsesImageGenCallPartialImage,
-): string {
-  return JSON.stringify(
-    OpenResponsesImageGenCallPartialImage$outboundSchema.parse(
-      openResponsesImageGenCallPartialImage,
-    ),
-  );
-}
 
 export function openResponsesImageGenCallPartialImageFromJSON(
   jsonString: string,

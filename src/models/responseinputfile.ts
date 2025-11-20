@@ -29,22 +29,10 @@ export type ResponseInputFile = {
 export const ResponseInputFileType$inboundSchema: z.ZodEnum<
   typeof ResponseInputFileType
 > = z.enum(ResponseInputFileType);
-
 /** @internal */
 export const ResponseInputFileType$outboundSchema: z.ZodEnum<
   typeof ResponseInputFileType
 > = ResponseInputFileType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputFileType$ {
-  /** @deprecated use `ResponseInputFileType$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputFileType$inboundSchema;
-  /** @deprecated use `ResponseInputFileType$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputFileType$outboundSchema;
-}
 
 /** @internal */
 export const ResponseInputFile$inboundSchema: z.ZodType<
@@ -63,7 +51,6 @@ export const ResponseInputFile$inboundSchema: z.ZodType<
     "file_url": "fileUrl",
   });
 });
-
 /** @internal */
 export type ResponseInputFile$Outbound = {
   type: string;
@@ -91,19 +78,6 @@ export const ResponseInputFile$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputFile$ {
-  /** @deprecated use `ResponseInputFile$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputFile$inboundSchema;
-  /** @deprecated use `ResponseInputFile$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputFile$outboundSchema;
-  /** @deprecated use `ResponseInputFile$Outbound` instead. */
-  export type Outbound = ResponseInputFile$Outbound;
-}
-
 export function responseInputFileToJSON(
   responseInputFile: ResponseInputFile,
 ): string {
@@ -111,7 +85,6 @@ export function responseInputFileToJSON(
     ResponseInputFile$outboundSchema.parse(responseInputFile),
   );
 }
-
 export function responseInputFileFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputFile, SDKValidationError> {

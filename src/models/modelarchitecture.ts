@@ -5,27 +5,15 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  InputModality,
-  InputModality$inboundSchema,
-  InputModality$outboundSchema,
-} from "./inputmodality.js";
-import {
-  ModelGroup,
-  ModelGroup$inboundSchema,
-  ModelGroup$outboundSchema,
-} from "./modelgroup.js";
+import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
+import { ModelGroup, ModelGroup$inboundSchema } from "./modelgroup.js";
 import {
   OutputModality,
   OutputModality$inboundSchema,
-  OutputModality$outboundSchema,
 } from "./outputmodality.js";
 
 /**
@@ -92,31 +80,7 @@ export type ModelArchitecture = {
 export const ModelArchitectureInstructType$inboundSchema: z.ZodType<
   ModelArchitectureInstructType,
   unknown
-> = z
-  .union([
-    z.enum(ModelArchitectureInstructType),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ModelArchitectureInstructType$outboundSchema: z.ZodType<
-  ModelArchitectureInstructType,
-  ModelArchitectureInstructType
-> = z.union([
-  z.enum(ModelArchitectureInstructType),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ModelArchitectureInstructType$ {
-  /** @deprecated use `ModelArchitectureInstructType$inboundSchema` instead. */
-  export const inboundSchema = ModelArchitectureInstructType$inboundSchema;
-  /** @deprecated use `ModelArchitectureInstructType$outboundSchema` instead. */
-  export const outboundSchema = ModelArchitectureInstructType$outboundSchema;
-}
+> = openEnums.inboundSchema(ModelArchitectureInstructType);
 
 /** @internal */
 export const ModelArchitecture$inboundSchema: z.ZodType<
@@ -136,55 +100,6 @@ export const ModelArchitecture$inboundSchema: z.ZodType<
     "output_modalities": "outputModalities",
   });
 });
-
-/** @internal */
-export type ModelArchitecture$Outbound = {
-  tokenizer?: string | undefined;
-  instruct_type?: string | null | undefined;
-  modality: string | null;
-  input_modalities: Array<string>;
-  output_modalities: Array<string>;
-};
-
-/** @internal */
-export const ModelArchitecture$outboundSchema: z.ZodType<
-  ModelArchitecture$Outbound,
-  ModelArchitecture
-> = z.object({
-  tokenizer: ModelGroup$outboundSchema.optional(),
-  instructType: z.nullable(ModelArchitectureInstructType$outboundSchema)
-    .optional(),
-  modality: z.nullable(z.string()),
-  inputModalities: z.array(InputModality$outboundSchema),
-  outputModalities: z.array(OutputModality$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    instructType: "instruct_type",
-    inputModalities: "input_modalities",
-    outputModalities: "output_modalities",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ModelArchitecture$ {
-  /** @deprecated use `ModelArchitecture$inboundSchema` instead. */
-  export const inboundSchema = ModelArchitecture$inboundSchema;
-  /** @deprecated use `ModelArchitecture$outboundSchema` instead. */
-  export const outboundSchema = ModelArchitecture$outboundSchema;
-  /** @deprecated use `ModelArchitecture$Outbound` instead. */
-  export type Outbound = ModelArchitecture$Outbound;
-}
-
-export function modelArchitectureToJSON(
-  modelArchitecture: ModelArchitecture,
-): string {
-  return JSON.stringify(
-    ModelArchitecture$outboundSchema.parse(modelArchitecture),
-  );
-}
 
 export function modelArchitectureFromJSON(
   jsonString: string,

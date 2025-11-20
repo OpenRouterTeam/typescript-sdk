@@ -92,6 +92,10 @@ export type ListData = {
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
+  /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -103,17 +107,6 @@ export type ListResponse = {
    */
   data: Array<ListData>;
 };
-
-/** @internal */
-export const ListRequest$inboundSchema: z.ZodType<ListRequest, unknown> = z
-  .object({
-    include_disabled: z.string().optional(),
-    offset: z.string().optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "include_disabled": "includeDisabled",
-    });
-  });
 
 /** @internal */
 export type ListRequest$Outbound = {
@@ -134,31 +127,8 @@ export const ListRequest$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListRequest$ {
-  /** @deprecated use `ListRequest$inboundSchema` instead. */
-  export const inboundSchema = ListRequest$inboundSchema;
-  /** @deprecated use `ListRequest$outboundSchema` instead. */
-  export const outboundSchema = ListRequest$outboundSchema;
-  /** @deprecated use `ListRequest$Outbound` instead. */
-  export type Outbound = ListRequest$Outbound;
-}
-
 export function listRequestToJSON(listRequest: ListRequest): string {
   return JSON.stringify(ListRequest$outboundSchema.parse(listRequest));
-}
-
-export function listRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<ListRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListRequest' from JSON`,
-  );
 }
 
 /** @internal */
@@ -181,6 +151,9 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   byok_usage_monthly: z.number(),
   created_at: z.string(),
   updated_at: z.nullable(z.string()),
+  expires_at: z.nullable(
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "limit_remaining": "limitRemaining",
@@ -195,85 +168,9 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
     "byok_usage_monthly": "byokUsageMonthly",
     "created_at": "createdAt",
     "updated_at": "updatedAt",
+    "expires_at": "expiresAt",
   });
 });
-
-/** @internal */
-export type ListData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  limit_remaining: number | null;
-  limit_reset: string | null;
-  include_byok_in_limit: boolean;
-  usage: number;
-  usage_daily: number;
-  usage_weekly: number;
-  usage_monthly: number;
-  byok_usage: number;
-  byok_usage_daily: number;
-  byok_usage_weekly: number;
-  byok_usage_monthly: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const ListData$outboundSchema: z.ZodType<ListData$Outbound, ListData> = z
-  .object({
-    hash: z.string(),
-    name: z.string(),
-    label: z.string(),
-    disabled: z.boolean(),
-    limit: z.nullable(z.number()),
-    limitRemaining: z.nullable(z.number()),
-    limitReset: z.nullable(z.string()),
-    includeByokInLimit: z.boolean(),
-    usage: z.number(),
-    usageDaily: z.number(),
-    usageWeekly: z.number(),
-    usageMonthly: z.number(),
-    byokUsage: z.number(),
-    byokUsageDaily: z.number(),
-    byokUsageWeekly: z.number(),
-    byokUsageMonthly: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.nullable(z.string()),
-  }).transform((v) => {
-    return remap$(v, {
-      limitRemaining: "limit_remaining",
-      limitReset: "limit_reset",
-      includeByokInLimit: "include_byok_in_limit",
-      usageDaily: "usage_daily",
-      usageWeekly: "usage_weekly",
-      usageMonthly: "usage_monthly",
-      byokUsage: "byok_usage",
-      byokUsageDaily: "byok_usage_daily",
-      byokUsageWeekly: "byok_usage_weekly",
-      byokUsageMonthly: "byok_usage_monthly",
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListData$ {
-  /** @deprecated use `ListData$inboundSchema` instead. */
-  export const inboundSchema = ListData$inboundSchema;
-  /** @deprecated use `ListData$outboundSchema` instead. */
-  export const outboundSchema = ListData$outboundSchema;
-  /** @deprecated use `ListData$Outbound` instead. */
-  export type Outbound = ListData$Outbound;
-}
-
-export function listDataToJSON(listData: ListData): string {
-  return JSON.stringify(ListData$outboundSchema.parse(listData));
-}
 
 export function listDataFromJSON(
   jsonString: string,
@@ -290,36 +187,6 @@ export const ListResponse$inboundSchema: z.ZodType<ListResponse, unknown> = z
   .object({
     data: z.array(z.lazy(() => ListData$inboundSchema)),
   });
-
-/** @internal */
-export type ListResponse$Outbound = {
-  data: Array<ListData$Outbound>;
-};
-
-/** @internal */
-export const ListResponse$outboundSchema: z.ZodType<
-  ListResponse$Outbound,
-  ListResponse
-> = z.object({
-  data: z.array(z.lazy(() => ListData$outboundSchema)),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ListResponse$ {
-  /** @deprecated use `ListResponse$inboundSchema` instead. */
-  export const inboundSchema = ListResponse$inboundSchema;
-  /** @deprecated use `ListResponse$outboundSchema` instead. */
-  export const outboundSchema = ListResponse$outboundSchema;
-  /** @deprecated use `ListResponse$Outbound` instead. */
-  export type Outbound = ListResponse$Outbound;
-}
-
-export function listResponseToJSON(listResponse: ListResponse): string {
-  return JSON.stringify(ListResponse$outboundSchema.parse(listResponse));
-}
 
 export function listResponseFromJSON(
   jsonString: string,

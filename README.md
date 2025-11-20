@@ -19,32 +19,24 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 
 ```bash
 npm add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-npm add @tanstack/react-query react react-dom
 ```
 
 ### PNPM
 
 ```bash
 pnpm add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-pnpm add @tanstack/react-query react react-dom
 ```
 
 ### Bun
 
 ```bash
 bun add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-bun add @tanstack/react-query react react-dom
 ```
 
 ### Yarn
 
 ```bash
 yarn add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-yarn add @tanstack/react-query react react-dom
 ```
 
 > [!NOTE]
@@ -73,7 +65,7 @@ const result = await openRouter.chat.send({
       content: "Hello, how are you?",
     },
   ],
-  model: "openai/gpt-5"
+  model: "openai/gpt-5",
   provider: {
     zdr: true,
     sort: "price",
@@ -81,8 +73,8 @@ const result = await openRouter.chat.send({
   stream: true
 });
 
-for await (const chunk of stream) {
-  console.log(hunk.choices[0].delta.content)
+for await (const chunk of result) {
+  console.log(chunk.choices[0].delta.content)
 }
 
 ```

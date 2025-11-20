@@ -3,17 +3,15 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesReasoningEffort = {
   High: "high",
   Medium: "medium",
   Low: "low",
   Minimal: "minimal",
+  None: "none",
 } as const;
 export type OpenAIResponsesReasoningEffort = OpenEnum<
   typeof OpenAIResponsesReasoningEffort
@@ -23,28 +21,9 @@ export type OpenAIResponsesReasoningEffort = OpenEnum<
 export const OpenAIResponsesReasoningEffort$inboundSchema: z.ZodType<
   OpenAIResponsesReasoningEffort,
   unknown
-> = z
-  .union([
-    z.enum(OpenAIResponsesReasoningEffort),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(OpenAIResponsesReasoningEffort);
 /** @internal */
 export const OpenAIResponsesReasoningEffort$outboundSchema: z.ZodType<
-  OpenAIResponsesReasoningEffort,
+  string,
   OpenAIResponsesReasoningEffort
-> = z.union([
-  z.enum(OpenAIResponsesReasoningEffort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesReasoningEffort$ {
-  /** @deprecated use `OpenAIResponsesReasoningEffort$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesReasoningEffort$inboundSchema;
-  /** @deprecated use `OpenAIResponsesReasoningEffort$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesReasoningEffort$outboundSchema;
-}
+> = openEnums.outboundSchema(OpenAIResponsesReasoningEffort);

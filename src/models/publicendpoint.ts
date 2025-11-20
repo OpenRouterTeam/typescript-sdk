@@ -5,28 +5,16 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   EndpointStatus,
   EndpointStatus$inboundSchema,
-  EndpointStatus$outboundSchema,
 } from "./endpointstatus.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  Parameter,
-  Parameter$inboundSchema,
-  Parameter$outboundSchema,
-} from "./parameter.js";
-import {
-  ProviderName,
-  ProviderName$inboundSchema,
-  ProviderName$outboundSchema,
-} from "./providername.js";
+import { Parameter, Parameter$inboundSchema } from "./parameter.js";
+import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
   /**
@@ -45,6 +33,10 @@ export type Pricing = {
    * A value in string or number format that is a large number
    */
   image?: any | undefined;
+  /**
+   * A value in string or number format that is a large number
+   */
+  imageToken?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
@@ -116,6 +108,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   completion: z.any().optional(),
   request: z.any().optional(),
   image: z.any().optional(),
+  image_token: z.any().optional(),
   image_output: z.any().optional(),
   audio: z.any().optional(),
   input_audio_cache: z.any().optional(),
@@ -126,6 +119,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   discount: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "image_token": "imageToken",
     "image_output": "imageOutput",
     "input_audio_cache": "inputAudioCache",
     "web_search": "webSearch",
@@ -134,65 +128,6 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
     "input_cache_write": "inputCacheWrite",
   });
 });
-
-/** @internal */
-export type Pricing$Outbound = {
-  prompt?: any | undefined;
-  completion?: any | undefined;
-  request?: any | undefined;
-  image?: any | undefined;
-  image_output?: any | undefined;
-  audio?: any | undefined;
-  input_audio_cache?: any | undefined;
-  web_search?: any | undefined;
-  internal_reasoning?: any | undefined;
-  input_cache_read?: any | undefined;
-  input_cache_write?: any | undefined;
-  discount?: number | undefined;
-};
-
-/** @internal */
-export const Pricing$outboundSchema: z.ZodType<Pricing$Outbound, Pricing> = z
-  .object({
-    prompt: z.any().optional(),
-    completion: z.any().optional(),
-    request: z.any().optional(),
-    image: z.any().optional(),
-    imageOutput: z.any().optional(),
-    audio: z.any().optional(),
-    inputAudioCache: z.any().optional(),
-    webSearch: z.any().optional(),
-    internalReasoning: z.any().optional(),
-    inputCacheRead: z.any().optional(),
-    inputCacheWrite: z.any().optional(),
-    discount: z.number().optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      imageOutput: "image_output",
-      inputAudioCache: "input_audio_cache",
-      webSearch: "web_search",
-      internalReasoning: "internal_reasoning",
-      inputCacheRead: "input_cache_read",
-      inputCacheWrite: "input_cache_write",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Pricing$ {
-  /** @deprecated use `Pricing$inboundSchema` instead. */
-  export const inboundSchema = Pricing$inboundSchema;
-  /** @deprecated use `Pricing$outboundSchema` instead. */
-  export const outboundSchema = Pricing$outboundSchema;
-  /** @deprecated use `Pricing$Outbound` instead. */
-  export type Outbound = Pricing$Outbound;
-}
-
-export function pricingToJSON(pricing: Pricing): string {
-  return JSON.stringify(Pricing$outboundSchema.parse(pricing));
-}
 
 export function pricingFromJSON(
   jsonString: string,
@@ -208,31 +143,7 @@ export function pricingFromJSON(
 export const PublicEndpointQuantization$inboundSchema: z.ZodType<
   PublicEndpointQuantization,
   unknown
-> = z
-  .union([
-    z.enum(PublicEndpointQuantization),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const PublicEndpointQuantization$outboundSchema: z.ZodType<
-  PublicEndpointQuantization,
-  PublicEndpointQuantization
-> = z.union([
-  z.enum(PublicEndpointQuantization),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PublicEndpointQuantization$ {
-  /** @deprecated use `PublicEndpointQuantization$inboundSchema` instead. */
-  export const inboundSchema = PublicEndpointQuantization$inboundSchema;
-  /** @deprecated use `PublicEndpointQuantization$outboundSchema` instead. */
-  export const outboundSchema = PublicEndpointQuantization$outboundSchema;
-}
+> = openEnums.inboundSchema(PublicEndpointQuantization);
 
 /** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
@@ -262,71 +173,6 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "supports_implicit_caching": "supportsImplicitCaching",
     });
   });
-
-/** @internal */
-export type PublicEndpoint$Outbound = {
-  name: string;
-  model_name: string;
-  context_length: number;
-  pricing: Pricing$Outbound;
-  provider_name: string;
-  tag: string;
-  quantization: string | null;
-  max_completion_tokens: number | null;
-  max_prompt_tokens: number | null;
-  supported_parameters: Array<string>;
-  status?: number | undefined;
-  uptime_last_30m: number | null;
-  supports_implicit_caching: boolean;
-};
-
-/** @internal */
-export const PublicEndpoint$outboundSchema: z.ZodType<
-  PublicEndpoint$Outbound,
-  PublicEndpoint
-> = z.object({
-  name: z.string(),
-  modelName: z.string(),
-  contextLength: z.number(),
-  pricing: z.lazy(() => Pricing$outboundSchema),
-  providerName: ProviderName$outboundSchema,
-  tag: z.string(),
-  quantization: z.nullable(PublicEndpointQuantization$outboundSchema),
-  maxCompletionTokens: z.nullable(z.number()),
-  maxPromptTokens: z.nullable(z.number()),
-  supportedParameters: z.array(Parameter$outboundSchema),
-  status: EndpointStatus$outboundSchema.optional(),
-  uptimeLast30m: z.nullable(z.number()),
-  supportsImplicitCaching: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    modelName: "model_name",
-    contextLength: "context_length",
-    providerName: "provider_name",
-    maxCompletionTokens: "max_completion_tokens",
-    maxPromptTokens: "max_prompt_tokens",
-    supportedParameters: "supported_parameters",
-    uptimeLast30m: "uptime_last_30m",
-    supportsImplicitCaching: "supports_implicit_caching",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PublicEndpoint$ {
-  /** @deprecated use `PublicEndpoint$inboundSchema` instead. */
-  export const inboundSchema = PublicEndpoint$inboundSchema;
-  /** @deprecated use `PublicEndpoint$outboundSchema` instead. */
-  export const outboundSchema = PublicEndpoint$outboundSchema;
-  /** @deprecated use `PublicEndpoint$Outbound` instead. */
-  export type Outbound = PublicEndpoint$Outbound;
-}
-
-export function publicEndpointToJSON(publicEndpoint: PublicEndpoint): string {
-  return JSON.stringify(PublicEndpoint$outboundSchema.parse(publicEndpoint));
-}
 
 export function publicEndpointFromJSON(
   jsonString: string,

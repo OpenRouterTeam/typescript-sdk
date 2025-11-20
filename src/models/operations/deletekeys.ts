@@ -25,14 +25,6 @@ export type DeleteKeysResponse = {
 };
 
 /** @internal */
-export const DeleteKeysRequest$inboundSchema: z.ZodType<
-  DeleteKeysRequest,
-  unknown
-> = z.object({
-  hash: z.string(),
-});
-
-/** @internal */
 export type DeleteKeysRequest$Outbound = {
   hash: string;
 };
@@ -45,34 +37,11 @@ export const DeleteKeysRequest$outboundSchema: z.ZodType<
   hash: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DeleteKeysRequest$ {
-  /** @deprecated use `DeleteKeysRequest$inboundSchema` instead. */
-  export const inboundSchema = DeleteKeysRequest$inboundSchema;
-  /** @deprecated use `DeleteKeysRequest$outboundSchema` instead. */
-  export const outboundSchema = DeleteKeysRequest$outboundSchema;
-  /** @deprecated use `DeleteKeysRequest$Outbound` instead. */
-  export type Outbound = DeleteKeysRequest$Outbound;
-}
-
 export function deleteKeysRequestToJSON(
   deleteKeysRequest: DeleteKeysRequest,
 ): string {
   return JSON.stringify(
     DeleteKeysRequest$outboundSchema.parse(deleteKeysRequest),
-  );
-}
-
-export function deleteKeysRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<DeleteKeysRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => DeleteKeysRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DeleteKeysRequest' from JSON`,
   );
 }
 
@@ -83,40 +52,6 @@ export const DeleteKeysResponse$inboundSchema: z.ZodType<
 > = z.object({
   deleted: z.literal(true),
 });
-
-/** @internal */
-export type DeleteKeysResponse$Outbound = {
-  deleted: true;
-};
-
-/** @internal */
-export const DeleteKeysResponse$outboundSchema: z.ZodType<
-  DeleteKeysResponse$Outbound,
-  DeleteKeysResponse
-> = z.object({
-  deleted: z.literal(true),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DeleteKeysResponse$ {
-  /** @deprecated use `DeleteKeysResponse$inboundSchema` instead. */
-  export const inboundSchema = DeleteKeysResponse$inboundSchema;
-  /** @deprecated use `DeleteKeysResponse$outboundSchema` instead. */
-  export const outboundSchema = DeleteKeysResponse$outboundSchema;
-  /** @deprecated use `DeleteKeysResponse$Outbound` instead. */
-  export type Outbound = DeleteKeysResponse$Outbound;
-}
-
-export function deleteKeysResponseToJSON(
-  deleteKeysResponse: DeleteKeysResponse,
-): string {
-  return JSON.stringify(
-    DeleteKeysResponse$outboundSchema.parse(deleteKeysResponse),
-  );
-}
 
 export function deleteKeysResponseFromJSON(
   jsonString: string,

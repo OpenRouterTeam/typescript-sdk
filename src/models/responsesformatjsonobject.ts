@@ -26,22 +26,10 @@ export type ResponsesFormatJSONObject = {
 export const ResponsesFormatJSONObjectType$inboundSchema: z.ZodEnum<
   typeof ResponsesFormatJSONObjectType
 > = z.enum(ResponsesFormatJSONObjectType);
-
 /** @internal */
 export const ResponsesFormatJSONObjectType$outboundSchema: z.ZodEnum<
   typeof ResponsesFormatJSONObjectType
 > = ResponsesFormatJSONObjectType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatJSONObjectType$ {
-  /** @deprecated use `ResponsesFormatJSONObjectType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesFormatJSONObjectType$inboundSchema;
-  /** @deprecated use `ResponsesFormatJSONObjectType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesFormatJSONObjectType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesFormatJSONObject$inboundSchema: z.ZodType<
@@ -50,7 +38,6 @@ export const ResponsesFormatJSONObject$inboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesFormatJSONObjectType$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesFormatJSONObject$Outbound = {
   type: string;
@@ -64,19 +51,6 @@ export const ResponsesFormatJSONObject$outboundSchema: z.ZodType<
   type: ResponsesFormatJSONObjectType$outboundSchema,
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatJSONObject$ {
-  /** @deprecated use `ResponsesFormatJSONObject$inboundSchema` instead. */
-  export const inboundSchema = ResponsesFormatJSONObject$inboundSchema;
-  /** @deprecated use `ResponsesFormatJSONObject$outboundSchema` instead. */
-  export const outboundSchema = ResponsesFormatJSONObject$outboundSchema;
-  /** @deprecated use `ResponsesFormatJSONObject$Outbound` instead. */
-  export type Outbound = ResponsesFormatJSONObject$Outbound;
-}
-
 export function responsesFormatJSONObjectToJSON(
   responsesFormatJSONObject: ResponsesFormatJSONObject,
 ): string {
@@ -84,7 +58,6 @@ export function responsesFormatJSONObjectToJSON(
     ResponsesFormatJSONObject$outboundSchema.parse(responsesFormatJSONObject),
   );
 }
-
 export function responsesFormatJSONObjectFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesFormatJSONObject, SDKValidationError> {

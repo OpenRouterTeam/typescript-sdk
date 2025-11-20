@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const Parameter = {
   Temperature: "temperature",
@@ -37,26 +34,5 @@ export const Parameter = {
 export type Parameter = OpenEnum<typeof Parameter>;
 
 /** @internal */
-export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> = z
-  .union([
-    z.enum(Parameter),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Parameter$outboundSchema: z.ZodType<Parameter, Parameter> = z
-  .union([
-    z.enum(Parameter),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Parameter$ {
-  /** @deprecated use `Parameter$inboundSchema` instead. */
-  export const inboundSchema = Parameter$inboundSchema;
-  /** @deprecated use `Parameter$outboundSchema` instead. */
-  export const outboundSchema = Parameter$outboundSchema;
-}
+export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> = openEnums
+  .inboundSchema(Parameter);

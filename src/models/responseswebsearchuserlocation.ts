@@ -30,23 +30,10 @@ export type ResponsesWebSearchUserLocation = {
 export const ResponsesWebSearchUserLocationType$inboundSchema: z.ZodEnum<
   typeof ResponsesWebSearchUserLocationType
 > = z.enum(ResponsesWebSearchUserLocationType);
-
 /** @internal */
 export const ResponsesWebSearchUserLocationType$outboundSchema: z.ZodEnum<
   typeof ResponsesWebSearchUserLocationType
 > = ResponsesWebSearchUserLocationType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesWebSearchUserLocationType$ {
-  /** @deprecated use `ResponsesWebSearchUserLocationType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesWebSearchUserLocationType$inboundSchema;
-  /** @deprecated use `ResponsesWebSearchUserLocationType$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesWebSearchUserLocationType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesWebSearchUserLocation$inboundSchema: z.ZodType<
@@ -59,7 +46,6 @@ export const ResponsesWebSearchUserLocation$inboundSchema: z.ZodType<
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
 });
-
 /** @internal */
 export type ResponsesWebSearchUserLocation$Outbound = {
   type?: string | undefined;
@@ -81,19 +67,6 @@ export const ResponsesWebSearchUserLocation$outboundSchema: z.ZodType<
   timezone: z.nullable(z.string()).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesWebSearchUserLocation$ {
-  /** @deprecated use `ResponsesWebSearchUserLocation$inboundSchema` instead. */
-  export const inboundSchema = ResponsesWebSearchUserLocation$inboundSchema;
-  /** @deprecated use `ResponsesWebSearchUserLocation$outboundSchema` instead. */
-  export const outboundSchema = ResponsesWebSearchUserLocation$outboundSchema;
-  /** @deprecated use `ResponsesWebSearchUserLocation$Outbound` instead. */
-  export type Outbound = ResponsesWebSearchUserLocation$Outbound;
-}
-
 export function responsesWebSearchUserLocationToJSON(
   responsesWebSearchUserLocation: ResponsesWebSearchUserLocation,
 ): string {
@@ -103,7 +76,6 @@ export function responsesWebSearchUserLocationToJSON(
     ),
   );
 }
-
 export function responsesWebSearchUserLocationFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesWebSearchUserLocation, SDKValidationError> {

@@ -58,7 +58,6 @@ const value: models.OpenResponsesFunctionToolCall = {
 ```typescript
 const value: models.OpenResponsesFunctionCallOutput = {
   type: "function_call_output",
-  id: "output-abc123",
   callId: "call-abc123",
   output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
 };
@@ -85,10 +84,11 @@ const value: models.ResponsesOutputMessage = {
 ```typescript
 const value: models.ResponsesOutputItemReasoning = {
   type: "reasoning",
+  id: "reasoning-abc123",
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem and found the optimal solution.",
+      text: "Analyzed the problem using first principles",
     },
   ],
 };

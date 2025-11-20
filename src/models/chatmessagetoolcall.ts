@@ -26,7 +26,6 @@ export const ChatMessageToolCallFunction$inboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
 });
-
 /** @internal */
 export type ChatMessageToolCallFunction$Outbound = {
   name: string;
@@ -42,19 +41,6 @@ export const ChatMessageToolCallFunction$outboundSchema: z.ZodType<
   arguments: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageToolCallFunction$ {
-  /** @deprecated use `ChatMessageToolCallFunction$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageToolCallFunction$inboundSchema;
-  /** @deprecated use `ChatMessageToolCallFunction$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageToolCallFunction$outboundSchema;
-  /** @deprecated use `ChatMessageToolCallFunction$Outbound` instead. */
-  export type Outbound = ChatMessageToolCallFunction$Outbound;
-}
-
 export function chatMessageToolCallFunctionToJSON(
   chatMessageToolCallFunction: ChatMessageToolCallFunction,
 ): string {
@@ -64,7 +50,6 @@ export function chatMessageToolCallFunctionToJSON(
     ),
   );
 }
-
 export function chatMessageToolCallFunctionFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageToolCallFunction, SDKValidationError> {
@@ -84,7 +69,6 @@ export const ChatMessageToolCall$inboundSchema: z.ZodType<
   type: z.literal("function"),
   function: z.lazy(() => ChatMessageToolCallFunction$inboundSchema),
 });
-
 /** @internal */
 export type ChatMessageToolCall$Outbound = {
   id: string;
@@ -102,19 +86,6 @@ export const ChatMessageToolCall$outboundSchema: z.ZodType<
   function: z.lazy(() => ChatMessageToolCallFunction$outboundSchema),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatMessageToolCall$ {
-  /** @deprecated use `ChatMessageToolCall$inboundSchema` instead. */
-  export const inboundSchema = ChatMessageToolCall$inboundSchema;
-  /** @deprecated use `ChatMessageToolCall$outboundSchema` instead. */
-  export const outboundSchema = ChatMessageToolCall$outboundSchema;
-  /** @deprecated use `ChatMessageToolCall$Outbound` instead. */
-  export type Outbound = ChatMessageToolCall$Outbound;
-}
-
 export function chatMessageToolCallToJSON(
   chatMessageToolCall: ChatMessageToolCall,
 ): string {
@@ -122,7 +93,6 @@ export function chatMessageToolCallToJSON(
     ChatMessageToolCall$outboundSchema.parse(chatMessageToolCall),
   );
 }
-
 export function chatMessageToolCallFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatMessageToolCall, SDKValidationError> {

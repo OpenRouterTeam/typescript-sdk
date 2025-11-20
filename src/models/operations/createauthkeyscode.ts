@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -44,6 +41,10 @@ export type CreateAuthKeysCodeRequest = {
    * Credit limit for the API key to be created
    */
   limit?: number | undefined;
+  /**
+   * Optional expiration time for the API key to be created
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -75,54 +76,10 @@ export type CreateAuthKeysCodeResponse = {
 };
 
 /** @internal */
-export const CreateAuthKeysCodeCodeChallengeMethod$inboundSchema: z.ZodType<
-  CreateAuthKeysCodeCodeChallengeMethod,
-  unknown
-> = z
-  .union([
-    z.enum(CreateAuthKeysCodeCodeChallengeMethod),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
 export const CreateAuthKeysCodeCodeChallengeMethod$outboundSchema: z.ZodType<
-  CreateAuthKeysCodeCodeChallengeMethod,
+  string,
   CreateAuthKeysCodeCodeChallengeMethod
-> = z.union([
-  z.enum(CreateAuthKeysCodeCodeChallengeMethod),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateAuthKeysCodeCodeChallengeMethod$ {
-  /** @deprecated use `CreateAuthKeysCodeCodeChallengeMethod$inboundSchema` instead. */
-  export const inboundSchema =
-    CreateAuthKeysCodeCodeChallengeMethod$inboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeCodeChallengeMethod$outboundSchema` instead. */
-  export const outboundSchema =
-    CreateAuthKeysCodeCodeChallengeMethod$outboundSchema;
-}
-
-/** @internal */
-export const CreateAuthKeysCodeRequest$inboundSchema: z.ZodType<
-  CreateAuthKeysCodeRequest,
-  unknown
-> = z.object({
-  callback_url: z.string(),
-  code_challenge: z.string().optional(),
-  code_challenge_method: CreateAuthKeysCodeCodeChallengeMethod$inboundSchema
-    .optional(),
-  limit: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "callback_url": "callbackUrl",
-    "code_challenge": "codeChallenge",
-    "code_challenge_method": "codeChallengeMethod",
-  });
-});
+> = openEnums.outboundSchema(CreateAuthKeysCodeCodeChallengeMethod);
 
 /** @internal */
 export type CreateAuthKeysCodeRequest$Outbound = {
@@ -130,6 +87,7 @@ export type CreateAuthKeysCodeRequest$Outbound = {
   code_challenge?: string | undefined;
   code_challenge_method?: string | undefined;
   limit?: number | undefined;
+  expires_at?: string | null | undefined;
 };
 
 /** @internal */
@@ -142,42 +100,21 @@ export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
   codeChallengeMethod: CreateAuthKeysCodeCodeChallengeMethod$outboundSchema
     .optional(),
   limit: z.number().optional(),
+  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
 }).transform((v) => {
   return remap$(v, {
     callbackUrl: "callback_url",
     codeChallenge: "code_challenge",
     codeChallengeMethod: "code_challenge_method",
+    expiresAt: "expires_at",
   });
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateAuthKeysCodeRequest$ {
-  /** @deprecated use `CreateAuthKeysCodeRequest$inboundSchema` instead. */
-  export const inboundSchema = CreateAuthKeysCodeRequest$inboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeRequest$outboundSchema` instead. */
-  export const outboundSchema = CreateAuthKeysCodeRequest$outboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeRequest$Outbound` instead. */
-  export type Outbound = CreateAuthKeysCodeRequest$Outbound;
-}
 
 export function createAuthKeysCodeRequestToJSON(
   createAuthKeysCodeRequest: CreateAuthKeysCodeRequest,
 ): string {
   return JSON.stringify(
     CreateAuthKeysCodeRequest$outboundSchema.parse(createAuthKeysCodeRequest),
-  );
-}
-
-export function createAuthKeysCodeRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateAuthKeysCodeRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateAuthKeysCodeRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateAuthKeysCodeRequest' from JSON`,
   );
 }
 
@@ -196,49 +133,6 @@ export const CreateAuthKeysCodeData$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type CreateAuthKeysCodeData$Outbound = {
-  id: string;
-  app_id: number;
-  created_at: string;
-};
-
-/** @internal */
-export const CreateAuthKeysCodeData$outboundSchema: z.ZodType<
-  CreateAuthKeysCodeData$Outbound,
-  CreateAuthKeysCodeData
-> = z.object({
-  id: z.string(),
-  appId: z.number(),
-  createdAt: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    appId: "app_id",
-    createdAt: "created_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateAuthKeysCodeData$ {
-  /** @deprecated use `CreateAuthKeysCodeData$inboundSchema` instead. */
-  export const inboundSchema = CreateAuthKeysCodeData$inboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeData$outboundSchema` instead. */
-  export const outboundSchema = CreateAuthKeysCodeData$outboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeData$Outbound` instead. */
-  export type Outbound = CreateAuthKeysCodeData$Outbound;
-}
-
-export function createAuthKeysCodeDataToJSON(
-  createAuthKeysCodeData: CreateAuthKeysCodeData,
-): string {
-  return JSON.stringify(
-    CreateAuthKeysCodeData$outboundSchema.parse(createAuthKeysCodeData),
-  );
-}
-
 export function createAuthKeysCodeDataFromJSON(
   jsonString: string,
 ): SafeParseResult<CreateAuthKeysCodeData, SDKValidationError> {
@@ -256,40 +150,6 @@ export const CreateAuthKeysCodeResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => CreateAuthKeysCodeData$inboundSchema),
 });
-
-/** @internal */
-export type CreateAuthKeysCodeResponse$Outbound = {
-  data: CreateAuthKeysCodeData$Outbound;
-};
-
-/** @internal */
-export const CreateAuthKeysCodeResponse$outboundSchema: z.ZodType<
-  CreateAuthKeysCodeResponse$Outbound,
-  CreateAuthKeysCodeResponse
-> = z.object({
-  data: z.lazy(() => CreateAuthKeysCodeData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateAuthKeysCodeResponse$ {
-  /** @deprecated use `CreateAuthKeysCodeResponse$inboundSchema` instead. */
-  export const inboundSchema = CreateAuthKeysCodeResponse$inboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeResponse$outboundSchema` instead. */
-  export const outboundSchema = CreateAuthKeysCodeResponse$outboundSchema;
-  /** @deprecated use `CreateAuthKeysCodeResponse$Outbound` instead. */
-  export type Outbound = CreateAuthKeysCodeResponse$Outbound;
-}
-
-export function createAuthKeysCodeResponseToJSON(
-  createAuthKeysCodeResponse: CreateAuthKeysCodeResponse,
-): string {
-  return JSON.stringify(
-    CreateAuthKeysCodeResponse$outboundSchema.parse(createAuthKeysCodeResponse),
-  );
-}
 
 export function createAuthKeysCodeResponseFromJSON(
   jsonString: string,

@@ -4,14 +4,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ChainId = {
   One: 1,
@@ -30,42 +24,8 @@ export type CreateChargeRequest = {
 };
 
 /** @internal */
-export const ChainId$inboundSchema: z.ZodType<ChainId, unknown> = z
-  .union([
-    z.enum(ChainId),
-    z.number().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ChainId$outboundSchema: z.ZodType<ChainId, ChainId> = z.union([
-  z.enum(ChainId),
-  z.number().and(z.custom<Unrecognized<number>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChainId$ {
-  /** @deprecated use `ChainId$inboundSchema` instead. */
-  export const inboundSchema = ChainId$inboundSchema;
-  /** @deprecated use `ChainId$outboundSchema` instead. */
-  export const outboundSchema = ChainId$outboundSchema;
-}
-
-/** @internal */
-export const CreateChargeRequest$inboundSchema: z.ZodType<
-  CreateChargeRequest,
-  unknown
-> = z.object({
-  amount: z.number(),
-  sender: z.string(),
-  chain_id: ChainId$inboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    "chain_id": "chainId",
-  });
-});
+export const ChainId$outboundSchema: z.ZodType<number, ChainId> = openEnums
+  .outboundSchemaInt(ChainId);
 
 /** @internal */
 export type CreateChargeRequest$Outbound = {
@@ -88,33 +48,10 @@ export const CreateChargeRequest$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateChargeRequest$ {
-  /** @deprecated use `CreateChargeRequest$inboundSchema` instead. */
-  export const inboundSchema = CreateChargeRequest$inboundSchema;
-  /** @deprecated use `CreateChargeRequest$outboundSchema` instead. */
-  export const outboundSchema = CreateChargeRequest$outboundSchema;
-  /** @deprecated use `CreateChargeRequest$Outbound` instead. */
-  export type Outbound = CreateChargeRequest$Outbound;
-}
-
 export function createChargeRequestToJSON(
   createChargeRequest: CreateChargeRequest,
 ): string {
   return JSON.stringify(
     CreateChargeRequest$outboundSchema.parse(createChargeRequest),
-  );
-}
-
-export function createChargeRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateChargeRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateChargeRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateChargeRequest' from JSON`,
   );
 }

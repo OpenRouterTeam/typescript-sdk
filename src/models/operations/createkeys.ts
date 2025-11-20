@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -43,6 +40,10 @@ export type CreateKeysRequest = {
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
+  /**
+   * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -121,6 +122,10 @@ export type CreateKeysData = {
    * ISO 8601 timestamp of when the API key was last updated
    */
   updatedAt: string | null;
+  /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
 };
 
 /**
@@ -138,50 +143,10 @@ export type CreateKeysResponse = {
 };
 
 /** @internal */
-export const CreateKeysLimitReset$inboundSchema: z.ZodType<
-  CreateKeysLimitReset,
-  unknown
-> = z
-  .union([
-    z.enum(CreateKeysLimitReset),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
 export const CreateKeysLimitReset$outboundSchema: z.ZodType<
-  CreateKeysLimitReset,
+  string,
   CreateKeysLimitReset
-> = z.union([
-  z.enum(CreateKeysLimitReset),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateKeysLimitReset$ {
-  /** @deprecated use `CreateKeysLimitReset$inboundSchema` instead. */
-  export const inboundSchema = CreateKeysLimitReset$inboundSchema;
-  /** @deprecated use `CreateKeysLimitReset$outboundSchema` instead. */
-  export const outboundSchema = CreateKeysLimitReset$outboundSchema;
-}
-
-/** @internal */
-export const CreateKeysRequest$inboundSchema: z.ZodType<
-  CreateKeysRequest,
-  unknown
-> = z.object({
-  name: z.string(),
-  limit: z.nullable(z.number()).optional(),
-  limit_reset: z.nullable(CreateKeysLimitReset$inboundSchema).optional(),
-  include_byok_in_limit: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "limit_reset": "limitReset",
-    "include_byok_in_limit": "includeByokInLimit",
-  });
-});
+> = openEnums.outboundSchema(CreateKeysLimitReset);
 
 /** @internal */
 export type CreateKeysRequest$Outbound = {
@@ -189,6 +154,7 @@ export type CreateKeysRequest$Outbound = {
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
+  expires_at?: string | null | undefined;
 };
 
 /** @internal */
@@ -200,41 +166,20 @@ export const CreateKeysRequest$outboundSchema: z.ZodType<
   limit: z.nullable(z.number()).optional(),
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
+  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
 }).transform((v) => {
   return remap$(v, {
     limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
+    expiresAt: "expires_at",
   });
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateKeysRequest$ {
-  /** @deprecated use `CreateKeysRequest$inboundSchema` instead. */
-  export const inboundSchema = CreateKeysRequest$inboundSchema;
-  /** @deprecated use `CreateKeysRequest$outboundSchema` instead. */
-  export const outboundSchema = CreateKeysRequest$outboundSchema;
-  /** @deprecated use `CreateKeysRequest$Outbound` instead. */
-  export type Outbound = CreateKeysRequest$Outbound;
-}
 
 export function createKeysRequestToJSON(
   createKeysRequest: CreateKeysRequest,
 ): string {
   return JSON.stringify(
     CreateKeysRequest$outboundSchema.parse(createKeysRequest),
-  );
-}
-
-export function createKeysRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateKeysRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateKeysRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateKeysRequest' from JSON`,
   );
 }
 
@@ -259,6 +204,9 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
+    expires_at: z.nullable(
+      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+    ).optional(),
   }).transform((v) => {
     return remap$(v, {
       "limit_remaining": "limitRemaining",
@@ -273,87 +221,9 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
       "byok_usage_monthly": "byokUsageMonthly",
       "created_at": "createdAt",
       "updated_at": "updatedAt",
+      "expires_at": "expiresAt",
     });
   });
-
-/** @internal */
-export type CreateKeysData$Outbound = {
-  hash: string;
-  name: string;
-  label: string;
-  disabled: boolean;
-  limit: number | null;
-  limit_remaining: number | null;
-  limit_reset: string | null;
-  include_byok_in_limit: boolean;
-  usage: number;
-  usage_daily: number;
-  usage_weekly: number;
-  usage_monthly: number;
-  byok_usage: number;
-  byok_usage_daily: number;
-  byok_usage_weekly: number;
-  byok_usage_monthly: number;
-  created_at: string;
-  updated_at: string | null;
-};
-
-/** @internal */
-export const CreateKeysData$outboundSchema: z.ZodType<
-  CreateKeysData$Outbound,
-  CreateKeysData
-> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  limitRemaining: z.nullable(z.number()),
-  limitReset: z.nullable(z.string()),
-  includeByokInLimit: z.boolean(),
-  usage: z.number(),
-  usageDaily: z.number(),
-  usageWeekly: z.number(),
-  usageMonthly: z.number(),
-  byokUsage: z.number(),
-  byokUsageDaily: z.number(),
-  byokUsageWeekly: z.number(),
-  byokUsageMonthly: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    limitRemaining: "limit_remaining",
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
-    usageDaily: "usage_daily",
-    usageWeekly: "usage_weekly",
-    usageMonthly: "usage_monthly",
-    byokUsage: "byok_usage",
-    byokUsageDaily: "byok_usage_daily",
-    byokUsageWeekly: "byok_usage_weekly",
-    byokUsageMonthly: "byok_usage_monthly",
-    createdAt: "created_at",
-    updatedAt: "updated_at",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateKeysData$ {
-  /** @deprecated use `CreateKeysData$inboundSchema` instead. */
-  export const inboundSchema = CreateKeysData$inboundSchema;
-  /** @deprecated use `CreateKeysData$outboundSchema` instead. */
-  export const outboundSchema = CreateKeysData$outboundSchema;
-  /** @deprecated use `CreateKeysData$Outbound` instead. */
-  export type Outbound = CreateKeysData$Outbound;
-}
-
-export function createKeysDataToJSON(createKeysData: CreateKeysData): string {
-  return JSON.stringify(CreateKeysData$outboundSchema.parse(createKeysData));
-}
 
 export function createKeysDataFromJSON(
   jsonString: string,
@@ -373,42 +243,6 @@ export const CreateKeysResponse$inboundSchema: z.ZodType<
   data: z.lazy(() => CreateKeysData$inboundSchema),
   key: z.string(),
 });
-
-/** @internal */
-export type CreateKeysResponse$Outbound = {
-  data: CreateKeysData$Outbound;
-  key: string;
-};
-
-/** @internal */
-export const CreateKeysResponse$outboundSchema: z.ZodType<
-  CreateKeysResponse$Outbound,
-  CreateKeysResponse
-> = z.object({
-  data: z.lazy(() => CreateKeysData$outboundSchema),
-  key: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateKeysResponse$ {
-  /** @deprecated use `CreateKeysResponse$inboundSchema` instead. */
-  export const inboundSchema = CreateKeysResponse$inboundSchema;
-  /** @deprecated use `CreateKeysResponse$outboundSchema` instead. */
-  export const outboundSchema = CreateKeysResponse$outboundSchema;
-  /** @deprecated use `CreateKeysResponse$Outbound` instead. */
-  export type Outbound = CreateKeysResponse$Outbound;
-}
-
-export function createKeysResponseToJSON(
-  createKeysResponse: CreateKeysResponse,
-): string {
-  return JSON.stringify(
-    CreateKeysResponse$outboundSchema.parse(createKeysResponse),
-  );
-}
 
 export function createKeysResponseFromJSON(
   jsonString: string,

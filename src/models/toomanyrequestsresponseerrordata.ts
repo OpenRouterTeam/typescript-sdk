@@ -21,50 +21,10 @@ export const TooManyRequestsResponseErrorData$inboundSchema: z.ZodType<
   TooManyRequestsResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type TooManyRequestsResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const TooManyRequestsResponseErrorData$outboundSchema: z.ZodType<
-  TooManyRequestsResponseErrorData$Outbound,
-  TooManyRequestsResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TooManyRequestsResponseErrorData$ {
-  /** @deprecated use `TooManyRequestsResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = TooManyRequestsResponseErrorData$inboundSchema;
-  /** @deprecated use `TooManyRequestsResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = TooManyRequestsResponseErrorData$outboundSchema;
-  /** @deprecated use `TooManyRequestsResponseErrorData$Outbound` instead. */
-  export type Outbound = TooManyRequestsResponseErrorData$Outbound;
-}
-
-export function tooManyRequestsResponseErrorDataToJSON(
-  tooManyRequestsResponseErrorData: TooManyRequestsResponseErrorData,
-): string {
-  return JSON.stringify(
-    TooManyRequestsResponseErrorData$outboundSchema.parse(
-      tooManyRequestsResponseErrorData,
-    ),
-  );
-}
 
 export function tooManyRequestsResponseErrorDataFromJSON(
   jsonString: string,

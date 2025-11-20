@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ReasoningSummaryVerbosity = {
   Auto: "auto",
@@ -22,28 +19,9 @@ export type ReasoningSummaryVerbosity = OpenEnum<
 export const ReasoningSummaryVerbosity$inboundSchema: z.ZodType<
   ReasoningSummaryVerbosity,
   unknown
-> = z
-  .union([
-    z.enum(ReasoningSummaryVerbosity),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(ReasoningSummaryVerbosity);
 /** @internal */
 export const ReasoningSummaryVerbosity$outboundSchema: z.ZodType<
-  ReasoningSummaryVerbosity,
+  string,
   ReasoningSummaryVerbosity
-> = z.union([
-  z.enum(ReasoningSummaryVerbosity),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningSummaryVerbosity$ {
-  /** @deprecated use `ReasoningSummaryVerbosity$inboundSchema` instead. */
-  export const inboundSchema = ReasoningSummaryVerbosity$inboundSchema;
-  /** @deprecated use `ReasoningSummaryVerbosity$outboundSchema` instead. */
-  export const outboundSchema = ReasoningSummaryVerbosity$outboundSchema;
-}
+> = openEnums.outboundSchema(ReasoningSummaryVerbosity);

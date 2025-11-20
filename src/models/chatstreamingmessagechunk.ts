@@ -10,8 +10,6 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatStreamingMessageToolCall,
   ChatStreamingMessageToolCall$inboundSchema,
-  ChatStreamingMessageToolCall$Outbound,
-  ChatStreamingMessageToolCall$outboundSchema,
 } from "./chatstreamingmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -36,22 +34,6 @@ export const ChatStreamingMessageChunkRole$inboundSchema: z.ZodEnum<
 > = z.enum(ChatStreamingMessageChunkRole);
 
 /** @internal */
-export const ChatStreamingMessageChunkRole$outboundSchema: z.ZodEnum<
-  typeof ChatStreamingMessageChunkRole
-> = ChatStreamingMessageChunkRole$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingMessageChunkRole$ {
-  /** @deprecated use `ChatStreamingMessageChunkRole$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingMessageChunkRole$inboundSchema;
-  /** @deprecated use `ChatStreamingMessageChunkRole$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingMessageChunkRole$outboundSchema;
-}
-
-/** @internal */
 export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   ChatStreamingMessageChunk,
   unknown
@@ -66,52 +48,6 @@ export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
     "tool_calls": "toolCalls",
   });
 });
-
-/** @internal */
-export type ChatStreamingMessageChunk$Outbound = {
-  role?: string | undefined;
-  content?: string | null | undefined;
-  reasoning?: string | null | undefined;
-  refusal?: string | null | undefined;
-  tool_calls?: Array<ChatStreamingMessageToolCall$Outbound> | undefined;
-};
-
-/** @internal */
-export const ChatStreamingMessageChunk$outboundSchema: z.ZodType<
-  ChatStreamingMessageChunk$Outbound,
-  ChatStreamingMessageChunk
-> = z.object({
-  role: ChatStreamingMessageChunkRole$outboundSchema.optional(),
-  content: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(z.string()).optional(),
-  refusal: z.nullable(z.string()).optional(),
-  toolCalls: z.array(ChatStreamingMessageToolCall$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    toolCalls: "tool_calls",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingMessageChunk$ {
-  /** @deprecated use `ChatStreamingMessageChunk$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingMessageChunk$inboundSchema;
-  /** @deprecated use `ChatStreamingMessageChunk$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingMessageChunk$outboundSchema;
-  /** @deprecated use `ChatStreamingMessageChunk$Outbound` instead. */
-  export type Outbound = ChatStreamingMessageChunk$Outbound;
-}
-
-export function chatStreamingMessageChunkToJSON(
-  chatStreamingMessageChunk: ChatStreamingMessageChunk,
-): string {
-  return JSON.stringify(
-    ChatStreamingMessageChunk$outboundSchema.parse(chatStreamingMessageChunk),
-  );
-}
 
 export function chatStreamingMessageChunkFromJSON(
   jsonString: string,

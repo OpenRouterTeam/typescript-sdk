@@ -24,22 +24,10 @@ export type ReasoningSummaryText = {
 export const ReasoningSummaryTextType$inboundSchema: z.ZodEnum<
   typeof ReasoningSummaryTextType
 > = z.enum(ReasoningSummaryTextType);
-
 /** @internal */
 export const ReasoningSummaryTextType$outboundSchema: z.ZodEnum<
   typeof ReasoningSummaryTextType
 > = ReasoningSummaryTextType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningSummaryTextType$ {
-  /** @deprecated use `ReasoningSummaryTextType$inboundSchema` instead. */
-  export const inboundSchema = ReasoningSummaryTextType$inboundSchema;
-  /** @deprecated use `ReasoningSummaryTextType$outboundSchema` instead. */
-  export const outboundSchema = ReasoningSummaryTextType$outboundSchema;
-}
 
 /** @internal */
 export const ReasoningSummaryText$inboundSchema: z.ZodType<
@@ -49,7 +37,6 @@ export const ReasoningSummaryText$inboundSchema: z.ZodType<
   type: ReasoningSummaryTextType$inboundSchema,
   text: z.string(),
 });
-
 /** @internal */
 export type ReasoningSummaryText$Outbound = {
   type: string;
@@ -65,19 +52,6 @@ export const ReasoningSummaryText$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ReasoningSummaryText$ {
-  /** @deprecated use `ReasoningSummaryText$inboundSchema` instead. */
-  export const inboundSchema = ReasoningSummaryText$inboundSchema;
-  /** @deprecated use `ReasoningSummaryText$outboundSchema` instead. */
-  export const outboundSchema = ReasoningSummaryText$outboundSchema;
-  /** @deprecated use `ReasoningSummaryText$Outbound` instead. */
-  export type Outbound = ReasoningSummaryText$Outbound;
-}
-
 export function reasoningSummaryTextToJSON(
   reasoningSummaryText: ReasoningSummaryText,
 ): string {
@@ -85,7 +59,6 @@ export function reasoningSummaryTextToJSON(
     ReasoningSummaryText$outboundSchema.parse(reasoningSummaryText),
   );
 }
-
 export function reasoningSummaryTextFromJSON(
   jsonString: string,
 ): SafeParseResult<ReasoningSummaryText, SDKValidationError> {

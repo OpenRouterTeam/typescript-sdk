@@ -9,15 +9,11 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatGenerationTokenUsage,
   ChatGenerationTokenUsage$inboundSchema,
-  ChatGenerationTokenUsage$Outbound,
-  ChatGenerationTokenUsage$outboundSchema,
 } from "./chatgenerationtokenusage.js";
 import {
   ChatStreamingChoice,
   ChatStreamingChoice$inboundSchema,
-  ChatStreamingChoice$Outbound,
-  ChatStreamingChoice$outboundSchema,
-} from "./chatstreamingchoice.js";
+} from "./chatresponsechoice.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatStreamingResponseChunkError = {
@@ -49,44 +45,6 @@ export const ChatStreamingResponseChunkError$inboundSchema: z.ZodType<
   code: z.number(),
 });
 
-/** @internal */
-export type ChatStreamingResponseChunkError$Outbound = {
-  message: string;
-  code: number;
-};
-
-/** @internal */
-export const ChatStreamingResponseChunkError$outboundSchema: z.ZodType<
-  ChatStreamingResponseChunkError$Outbound,
-  ChatStreamingResponseChunkError
-> = z.object({
-  message: z.string(),
-  code: z.number(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingResponseChunkError$ {
-  /** @deprecated use `ChatStreamingResponseChunkError$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingResponseChunkError$inboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunkError$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingResponseChunkError$outboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunkError$Outbound` instead. */
-  export type Outbound = ChatStreamingResponseChunkError$Outbound;
-}
-
-export function chatStreamingResponseChunkErrorToJSON(
-  chatStreamingResponseChunkError: ChatStreamingResponseChunkError,
-): string {
-  return JSON.stringify(
-    ChatStreamingResponseChunkError$outboundSchema.parse(
-      chatStreamingResponseChunkError,
-    ),
-  );
-}
-
 export function chatStreamingResponseChunkErrorFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatStreamingResponseChunkError, SDKValidationError> {
@@ -116,61 +74,6 @@ export const ChatStreamingResponseChunkData$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type ChatStreamingResponseChunkData$Outbound = {
-  id: string;
-  choices: Array<ChatStreamingChoice$Outbound>;
-  created: number;
-  model: string;
-  object: "chat.completion.chunk";
-  system_fingerprint?: string | null | undefined;
-  error?: ChatStreamingResponseChunkError$Outbound | undefined;
-  usage?: ChatGenerationTokenUsage$Outbound | undefined;
-};
-
-/** @internal */
-export const ChatStreamingResponseChunkData$outboundSchema: z.ZodType<
-  ChatStreamingResponseChunkData$Outbound,
-  ChatStreamingResponseChunkData
-> = z.object({
-  id: z.string(),
-  choices: z.array(ChatStreamingChoice$outboundSchema),
-  created: z.number(),
-  model: z.string(),
-  object: z.literal("chat.completion.chunk"),
-  systemFingerprint: z.nullable(z.string()).optional(),
-  error: z.lazy(() => ChatStreamingResponseChunkError$outboundSchema)
-    .optional(),
-  usage: ChatGenerationTokenUsage$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    systemFingerprint: "system_fingerprint",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingResponseChunkData$ {
-  /** @deprecated use `ChatStreamingResponseChunkData$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingResponseChunkData$inboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunkData$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingResponseChunkData$outboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunkData$Outbound` instead. */
-  export type Outbound = ChatStreamingResponseChunkData$Outbound;
-}
-
-export function chatStreamingResponseChunkDataToJSON(
-  chatStreamingResponseChunkData: ChatStreamingResponseChunkData,
-): string {
-  return JSON.stringify(
-    ChatStreamingResponseChunkData$outboundSchema.parse(
-      chatStreamingResponseChunkData,
-    ),
-  );
-}
-
 export function chatStreamingResponseChunkDataFromJSON(
   jsonString: string,
 ): SafeParseResult<ChatStreamingResponseChunkData, SDKValidationError> {
@@ -198,40 +101,6 @@ export const ChatStreamingResponseChunk$inboundSchema: z.ZodType<
     }
   }).pipe(z.lazy(() => ChatStreamingResponseChunkData$inboundSchema)),
 });
-
-/** @internal */
-export type ChatStreamingResponseChunk$Outbound = {
-  data: ChatStreamingResponseChunkData$Outbound;
-};
-
-/** @internal */
-export const ChatStreamingResponseChunk$outboundSchema: z.ZodType<
-  ChatStreamingResponseChunk$Outbound,
-  ChatStreamingResponseChunk
-> = z.object({
-  data: z.lazy(() => ChatStreamingResponseChunkData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatStreamingResponseChunk$ {
-  /** @deprecated use `ChatStreamingResponseChunk$inboundSchema` instead. */
-  export const inboundSchema = ChatStreamingResponseChunk$inboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunk$outboundSchema` instead. */
-  export const outboundSchema = ChatStreamingResponseChunk$outboundSchema;
-  /** @deprecated use `ChatStreamingResponseChunk$Outbound` instead. */
-  export type Outbound = ChatStreamingResponseChunk$Outbound;
-}
-
-export function chatStreamingResponseChunkToJSON(
-  chatStreamingResponseChunk: ChatStreamingResponseChunk,
-): string {
-  return JSON.stringify(
-    ChatStreamingResponseChunk$outboundSchema.parse(chatStreamingResponseChunk),
-  );
-}
 
 export function chatStreamingResponseChunkFromJSON(
   jsonString: string,

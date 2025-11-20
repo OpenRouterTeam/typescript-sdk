@@ -33,7 +33,6 @@ let value: GetGenerationResponse = {
     nativeTokensCached: 3,
     numMediaPrompt: 1,
     numInputAudioPrompt: 0,
-    numVideoPrompt: 0,
     numMediaCompletion: 0,
     numSearchResults: 5,
     origin: "https://openrouter.ai/",

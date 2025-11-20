@@ -5,60 +5,60 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type Input =
+export const TypeImageURL = {
+  ImageUrl: "image_url",
+} as const;
+export type TypeImageURL = ClosedEnum<typeof TypeImageURL>;
+
+export type ImageUrl = {
+  url: string;
+};
+
+export type ContentImageURL = {
+  type: TypeImageURL;
+  imageUrl: ImageUrl;
+};
+
+export const TypeText = {
+  Text: "text",
+} as const;
+export type TypeText = ClosedEnum<typeof TypeText>;
+
+export type ContentText = {
+  type: TypeText;
+  text: string;
+};
+
+export type Content = ContentText | ContentImageURL;
+
+export type Input = {
+  content: Array<ContentText | ContentImageURL>;
+};
+
+export type InputUnion =
   | string
   | Array<string>
   | Array<number>
-  | Array<Array<number>>;
+  | Array<Array<number>>
+  | Array<Input>;
 
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
+export const EncodingFormat = {
+  Float: "float",
+  Base64: "base64",
 } as const;
-/**
- * Data collection setting. If no available model provider meets the requirement, your request will return an error.
- *
- * @remarks
- * - allow: (default) allow providers which store user data non-transiently and may train on it
- * - deny: use only providers which do not collect user data.
- */
-export type DataCollection = OpenEnum<typeof DataCollection>;
+export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
 export type Order = models.ProviderName | string;
 
 export type Only = models.ProviderName | string;
 
 export type Ignore = models.ProviderName | string;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export const Sort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type Sort = OpenEnum<typeof Sort>;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -86,8 +86,6 @@ export type MaxPrice = {
   request?: any | undefined;
 };
 
-export type Experimental = {};
-
 export type CreateEmbeddingsProvider = {
   /**
    * Whether to allow backup providers to serve requests
@@ -106,13 +104,18 @@ export type CreateEmbeddingsProvider = {
    *
    * @remarks
    * - allow: (default) allow providers which store user data non-transiently and may train on it
+   *
    * - deny: use only providers which do not collect user data.
    */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: models.DataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
   zdr?: boolean | null | undefined;
+  /**
+   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+   */
+  enforceDistillableText?: boolean | null | undefined;
   /**
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
@@ -132,32 +135,26 @@ export type CreateEmbeddingsProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Sort | null | undefined;
+  sort?: models.ProviderSort | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
   maxPrice?: MaxPrice | undefined;
-  experimental?: Experimental | null | undefined;
 };
 
-export const EncodingFormatBase64 = {
-  Base64: "base64",
-} as const;
-export type EncodingFormatBase64 = ClosedEnum<typeof EncodingFormatBase64>;
-
-export const EncodingFormatFloat = {
-  Float: "float",
-} as const;
-export type EncodingFormatFloat = ClosedEnum<typeof EncodingFormatFloat>;
-
-export type EncodingFormat = EncodingFormatFloat | EncodingFormatBase64;
-
 export type CreateEmbeddingsRequest = {
-  input: string | Array<string> | Array<number> | Array<Array<number>>;
+  input:
+    | string
+    | Array<string>
+    | Array<number>
+    | Array<Array<number>>
+    | Array<Input>;
   model: string;
-  provider?: CreateEmbeddingsProvider | undefined;
-  encodingFormat?: EncodingFormatFloat | EncodingFormatBase64 | undefined;
+  encodingFormat?: EncodingFormat | undefined;
+  dimensions?: number | undefined;
   user?: string | undefined;
+  provider?: CreateEmbeddingsProvider | undefined;
+  inputType?: string | undefined;
 };
 
 export const ObjectT = {
@@ -198,88 +195,133 @@ export type CreateEmbeddingsResponseBody = {
 export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
 
 /** @internal */
-export const Input$inboundSchema: z.ZodType<Input, unknown> = z.union([
-  z.string(),
-  z.array(z.string()),
-  z.array(z.number()),
-  z.array(z.array(z.number())),
-]);
+export const TypeImageURL$outboundSchema: z.ZodEnum<typeof TypeImageURL> = z
+  .enum(TypeImageURL);
 
 /** @internal */
-export type Input$Outbound =
-  | string
-  | Array<string>
-  | Array<number>
-  | Array<Array<number>>;
+export type ImageUrl$Outbound = {
+  url: string;
+};
 
 /** @internal */
-export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.union([
-  z.string(),
-  z.array(z.string()),
-  z.array(z.number()),
-  z.array(z.array(z.number())),
-]);
+export const ImageUrl$outboundSchema: z.ZodType<ImageUrl$Outbound, ImageUrl> = z
+  .object({
+    url: z.string(),
+  });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Input$ {
-  /** @deprecated use `Input$inboundSchema` instead. */
-  export const inboundSchema = Input$inboundSchema;
-  /** @deprecated use `Input$outboundSchema` instead. */
-  export const outboundSchema = Input$outboundSchema;
-  /** @deprecated use `Input$Outbound` instead. */
-  export type Outbound = Input$Outbound;
+export function imageUrlToJSON(imageUrl: ImageUrl): string {
+  return JSON.stringify(ImageUrl$outboundSchema.parse(imageUrl));
 }
+
+/** @internal */
+export type ContentImageURL$Outbound = {
+  type: string;
+  image_url: ImageUrl$Outbound;
+};
+
+/** @internal */
+export const ContentImageURL$outboundSchema: z.ZodType<
+  ContentImageURL$Outbound,
+  ContentImageURL
+> = z.object({
+  type: TypeImageURL$outboundSchema,
+  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    imageUrl: "image_url",
+  });
+});
+
+export function contentImageURLToJSON(
+  contentImageURL: ContentImageURL,
+): string {
+  return JSON.stringify(ContentImageURL$outboundSchema.parse(contentImageURL));
+}
+
+/** @internal */
+export const TypeText$outboundSchema: z.ZodEnum<typeof TypeText> = z.enum(
+  TypeText,
+);
+
+/** @internal */
+export type ContentText$Outbound = {
+  type: string;
+  text: string;
+};
+
+/** @internal */
+export const ContentText$outboundSchema: z.ZodType<
+  ContentText$Outbound,
+  ContentText
+> = z.object({
+  type: TypeText$outboundSchema,
+  text: z.string(),
+});
+
+export function contentTextToJSON(contentText: ContentText): string {
+  return JSON.stringify(ContentText$outboundSchema.parse(contentText));
+}
+
+/** @internal */
+export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+
+/** @internal */
+export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
+  .union([
+    z.lazy(() => ContentText$outboundSchema),
+    z.lazy(() => ContentImageURL$outboundSchema),
+  ]);
+
+export function contentToJSON(content: Content): string {
+  return JSON.stringify(Content$outboundSchema.parse(content));
+}
+
+/** @internal */
+export type Input$Outbound = {
+  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+};
+
+/** @internal */
+export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
+  content: z.array(
+    z.union([
+      z.lazy(() => ContentText$outboundSchema),
+      z.lazy(() => ContentImageURL$outboundSchema),
+    ]),
+  ),
+});
 
 export function inputToJSON(input: Input): string {
   return JSON.stringify(Input$outboundSchema.parse(input));
 }
 
-export function inputFromJSON(
-  jsonString: string,
-): SafeParseResult<Input, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Input$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Input' from JSON`,
-  );
-}
+/** @internal */
+export type InputUnion$Outbound =
+  | string
+  | Array<string>
+  | Array<number>
+  | Array<Array<number>>
+  | Array<Input$Outbound>;
 
 /** @internal */
-export const DataCollection$inboundSchema: z.ZodType<DataCollection, unknown> =
-  z
-    .union([
-      z.enum(DataCollection),
-      z.string().transform(catchUnrecognizedEnum),
-    ]);
-
-/** @internal */
-export const DataCollection$outboundSchema: z.ZodType<
-  DataCollection,
-  DataCollection
+export const InputUnion$outboundSchema: z.ZodType<
+  InputUnion$Outbound,
+  InputUnion
 > = z.union([
-  z.enum(DataCollection),
-  z.string().and(z.custom<Unrecognized<string>>()),
+  z.string(),
+  z.array(z.string()),
+  z.array(z.number()),
+  z.array(z.array(z.number())),
+  z.array(z.lazy(() => Input$outboundSchema)),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace DataCollection$ {
-  /** @deprecated use `DataCollection$inboundSchema` instead. */
-  export const inboundSchema = DataCollection$inboundSchema;
-  /** @deprecated use `DataCollection$outboundSchema` instead. */
-  export const outboundSchema = DataCollection$outboundSchema;
+export function inputUnionToJSON(inputUnion: InputUnion): string {
+  return JSON.stringify(InputUnion$outboundSchema.parse(inputUnion));
 }
 
 /** @internal */
-export const Order$inboundSchema: z.ZodType<Order, unknown> = z.union([
-  models.ProviderName$inboundSchema,
-  z.string(),
-]);
+export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
+  openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
 export type Order$Outbound = string | string;
@@ -290,38 +332,9 @@ export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
   z.string(),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Order$ {
-  /** @deprecated use `Order$inboundSchema` instead. */
-  export const inboundSchema = Order$inboundSchema;
-  /** @deprecated use `Order$outboundSchema` instead. */
-  export const outboundSchema = Order$outboundSchema;
-  /** @deprecated use `Order$Outbound` instead. */
-  export type Outbound = Order$Outbound;
-}
-
 export function orderToJSON(order: Order): string {
   return JSON.stringify(Order$outboundSchema.parse(order));
 }
-
-export function orderFromJSON(
-  jsonString: string,
-): SafeParseResult<Order, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Order$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Order' from JSON`,
-  );
-}
-
-/** @internal */
-export const Only$inboundSchema: z.ZodType<Only, unknown> = z.union([
-  models.ProviderName$inboundSchema,
-  z.string(),
-]);
 
 /** @internal */
 export type Only$Outbound = string | string;
@@ -332,38 +345,9 @@ export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
   z.string(),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Only$ {
-  /** @deprecated use `Only$inboundSchema` instead. */
-  export const inboundSchema = Only$inboundSchema;
-  /** @deprecated use `Only$outboundSchema` instead. */
-  export const outboundSchema = Only$outboundSchema;
-  /** @deprecated use `Only$Outbound` instead. */
-  export type Outbound = Only$Outbound;
-}
-
 export function onlyToJSON(only: Only): string {
   return JSON.stringify(Only$outboundSchema.parse(only));
 }
-
-export function onlyFromJSON(
-  jsonString: string,
-): SafeParseResult<Only, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Only$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Only' from JSON`,
-  );
-}
-
-/** @internal */
-export const Ignore$inboundSchema: z.ZodType<Ignore, unknown> = z.union([
-  models.ProviderName$inboundSchema,
-  z.string(),
-]);
 
 /** @internal */
 export type Ignore$Outbound = string | string;
@@ -372,65 +356,9 @@ export type Ignore$Outbound = string | string;
 export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
   .union([models.ProviderName$outboundSchema, z.string()]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Ignore$ {
-  /** @deprecated use `Ignore$inboundSchema` instead. */
-  export const inboundSchema = Ignore$inboundSchema;
-  /** @deprecated use `Ignore$outboundSchema` instead. */
-  export const outboundSchema = Ignore$outboundSchema;
-  /** @deprecated use `Ignore$Outbound` instead. */
-  export type Outbound = Ignore$Outbound;
-}
-
 export function ignoreToJSON(ignore: Ignore): string {
   return JSON.stringify(Ignore$outboundSchema.parse(ignore));
 }
-
-export function ignoreFromJSON(
-  jsonString: string,
-): SafeParseResult<Ignore, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Ignore$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Ignore' from JSON`,
-  );
-}
-
-/** @internal */
-export const Sort$inboundSchema: z.ZodType<Sort, unknown> = z
-  .union([
-    z.enum(Sort),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<Sort, Sort> = z.union([
-  z.enum(Sort),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Sort$ {
-  /** @deprecated use `Sort$inboundSchema` instead. */
-  export const inboundSchema = Sort$inboundSchema;
-  /** @deprecated use `Sort$outboundSchema` instead. */
-  export const outboundSchema = Sort$outboundSchema;
-}
-
-/** @internal */
-export const MaxPrice$inboundSchema: z.ZodType<MaxPrice, unknown> = z.object({
-  prompt: z.any().optional(),
-  completion: z.any().optional(),
-  image: z.any().optional(),
-  audio: z.any().optional(),
-  request: z.any().optional(),
-});
 
 /** @internal */
 export type MaxPrice$Outbound = {
@@ -451,104 +379,9 @@ export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
     request: z.any().optional(),
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace MaxPrice$ {
-  /** @deprecated use `MaxPrice$inboundSchema` instead. */
-  export const inboundSchema = MaxPrice$inboundSchema;
-  /** @deprecated use `MaxPrice$outboundSchema` instead. */
-  export const outboundSchema = MaxPrice$outboundSchema;
-  /** @deprecated use `MaxPrice$Outbound` instead. */
-  export type Outbound = MaxPrice$Outbound;
-}
-
 export function maxPriceToJSON(maxPrice: MaxPrice): string {
   return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
 }
-
-export function maxPriceFromJSON(
-  jsonString: string,
-): SafeParseResult<MaxPrice, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => MaxPrice$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'MaxPrice' from JSON`,
-  );
-}
-
-/** @internal */
-export const Experimental$inboundSchema: z.ZodType<Experimental, unknown> = z
-  .object({});
-
-/** @internal */
-export type Experimental$Outbound = {};
-
-/** @internal */
-export const Experimental$outboundSchema: z.ZodType<
-  Experimental$Outbound,
-  Experimental
-> = z.object({});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Experimental$ {
-  /** @deprecated use `Experimental$inboundSchema` instead. */
-  export const inboundSchema = Experimental$inboundSchema;
-  /** @deprecated use `Experimental$outboundSchema` instead. */
-  export const outboundSchema = Experimental$outboundSchema;
-  /** @deprecated use `Experimental$Outbound` instead. */
-  export type Outbound = Experimental$Outbound;
-}
-
-export function experimentalToJSON(experimental: Experimental): string {
-  return JSON.stringify(Experimental$outboundSchema.parse(experimental));
-}
-
-export function experimentalFromJSON(
-  jsonString: string,
-): SafeParseResult<Experimental, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Experimental$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Experimental' from JSON`,
-  );
-}
-
-/** @internal */
-export const CreateEmbeddingsProvider$inboundSchema: z.ZodType<
-  CreateEmbeddingsProvider,
-  unknown
-> = z.object({
-  allow_fallbacks: z.nullable(z.boolean()).optional(),
-  require_parameters: z.nullable(z.boolean()).optional(),
-  data_collection: z.nullable(DataCollection$inboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  order: z.nullable(
-    z.array(z.union([models.ProviderName$inboundSchema, z.string()])),
-  ).optional(),
-  only: z.nullable(
-    z.array(z.union([models.ProviderName$inboundSchema, z.string()])),
-  ).optional(),
-  ignore: z.nullable(
-    z.array(z.union([models.ProviderName$inboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(models.Quantization$inboundSchema))
-    .optional(),
-  sort: z.nullable(Sort$inboundSchema).optional(),
-  max_price: z.lazy(() => MaxPrice$inboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$inboundSchema)).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allow_fallbacks": "allowFallbacks",
-    "require_parameters": "requireParameters",
-    "data_collection": "dataCollection",
-    "max_price": "maxPrice",
-  });
-});
 
 /** @internal */
 export type CreateEmbeddingsProvider$Outbound = {
@@ -556,13 +389,13 @@ export type CreateEmbeddingsProvider$Outbound = {
   require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
   zdr?: boolean | null | undefined;
+  enforce_distillable_text?: boolean | null | undefined;
   order?: Array<string | string> | null | undefined;
   only?: Array<string | string> | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
-  experimental?: Experimental$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -572,8 +405,9 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(models.DataCollection$outboundSchema).optional(),
   zdr: z.nullable(z.boolean()).optional(),
+  enforceDistillableText: z.nullable(z.boolean()).optional(),
   order: z.nullable(
     z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
   ).optional(),
@@ -585,31 +419,17 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
   ).optional(),
   quantizations: z.nullable(z.array(models.Quantization$outboundSchema))
     .optional(),
-  sort: z.nullable(Sort$outboundSchema).optional(),
+  sort: z.nullable(models.ProviderSort$outboundSchema).optional(),
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  experimental: z.nullable(z.lazy(() => Experimental$outboundSchema))
-    .optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
     requireParameters: "require_parameters",
     dataCollection: "data_collection",
+    enforceDistillableText: "enforce_distillable_text",
     maxPrice: "max_price",
   });
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateEmbeddingsProvider$ {
-  /** @deprecated use `CreateEmbeddingsProvider$inboundSchema` instead. */
-  export const inboundSchema = CreateEmbeddingsProvider$inboundSchema;
-  /** @deprecated use `CreateEmbeddingsProvider$outboundSchema` instead. */
-  export const outboundSchema = CreateEmbeddingsProvider$outboundSchema;
-  /** @deprecated use `CreateEmbeddingsProvider$Outbound` instead. */
-  export type Outbound = CreateEmbeddingsProvider$Outbound;
-}
 
 export function createEmbeddingsProviderToJSON(
   createEmbeddingsProvider: CreateEmbeddingsProvider,
@@ -619,135 +439,20 @@ export function createEmbeddingsProviderToJSON(
   );
 }
 
-export function createEmbeddingsProviderFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateEmbeddingsProvider, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateEmbeddingsProvider$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateEmbeddingsProvider' from JSON`,
-  );
-}
-
-/** @internal */
-export const EncodingFormatBase64$inboundSchema: z.ZodEnum<
-  typeof EncodingFormatBase64
-> = z.enum(EncodingFormatBase64);
-
-/** @internal */
-export const EncodingFormatBase64$outboundSchema: z.ZodEnum<
-  typeof EncodingFormatBase64
-> = EncodingFormatBase64$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EncodingFormatBase64$ {
-  /** @deprecated use `EncodingFormatBase64$inboundSchema` instead. */
-  export const inboundSchema = EncodingFormatBase64$inboundSchema;
-  /** @deprecated use `EncodingFormatBase64$outboundSchema` instead. */
-  export const outboundSchema = EncodingFormatBase64$outboundSchema;
-}
-
-/** @internal */
-export const EncodingFormatFloat$inboundSchema: z.ZodEnum<
-  typeof EncodingFormatFloat
-> = z.enum(EncodingFormatFloat);
-
-/** @internal */
-export const EncodingFormatFloat$outboundSchema: z.ZodEnum<
-  typeof EncodingFormatFloat
-> = EncodingFormatFloat$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EncodingFormatFloat$ {
-  /** @deprecated use `EncodingFormatFloat$inboundSchema` instead. */
-  export const inboundSchema = EncodingFormatFloat$inboundSchema;
-  /** @deprecated use `EncodingFormatFloat$outboundSchema` instead. */
-  export const outboundSchema = EncodingFormatFloat$outboundSchema;
-}
-
-/** @internal */
-export const EncodingFormat$inboundSchema: z.ZodType<EncodingFormat, unknown> =
-  z.union([
-    EncodingFormatFloat$inboundSchema,
-    EncodingFormatBase64$inboundSchema,
-  ]);
-
-/** @internal */
-export type EncodingFormat$Outbound = string | string;
-
-/** @internal */
-export const EncodingFormat$outboundSchema: z.ZodType<
-  EncodingFormat$Outbound,
-  EncodingFormat
-> = z.union([
-  EncodingFormatFloat$outboundSchema,
-  EncodingFormatBase64$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace EncodingFormat$ {
-  /** @deprecated use `EncodingFormat$inboundSchema` instead. */
-  export const inboundSchema = EncodingFormat$inboundSchema;
-  /** @deprecated use `EncodingFormat$outboundSchema` instead. */
-  export const outboundSchema = EncodingFormat$outboundSchema;
-  /** @deprecated use `EncodingFormat$Outbound` instead. */
-  export type Outbound = EncodingFormat$Outbound;
-}
-
-export function encodingFormatToJSON(encodingFormat: EncodingFormat): string {
-  return JSON.stringify(EncodingFormat$outboundSchema.parse(encodingFormat));
-}
-
-export function encodingFormatFromJSON(
-  jsonString: string,
-): SafeParseResult<EncodingFormat, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => EncodingFormat$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'EncodingFormat' from JSON`,
-  );
-}
-
-/** @internal */
-export const CreateEmbeddingsRequest$inboundSchema: z.ZodType<
-  CreateEmbeddingsRequest,
-  unknown
-> = z.object({
-  input: z.union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]),
-  model: z.string(),
-  provider: z.lazy(() => CreateEmbeddingsProvider$inboundSchema).optional(),
-  encoding_format: z.union([
-    EncodingFormatFloat$inboundSchema,
-    EncodingFormatBase64$inboundSchema,
-  ]).optional(),
-  user: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "encoding_format": "encodingFormat",
-  });
-});
-
 /** @internal */
 export type CreateEmbeddingsRequest$Outbound = {
-  input: string | Array<string> | Array<number> | Array<Array<number>>;
+  input:
+    | string
+    | Array<string>
+    | Array<number>
+    | Array<Array<number>>
+    | Array<Input$Outbound>;
   model: string;
-  provider?: CreateEmbeddingsProvider$Outbound | undefined;
-  encoding_format?: string | string | undefined;
+  encoding_format?: string | undefined;
+  dimensions?: number | undefined;
   user?: string | undefined;
+  provider?: CreateEmbeddingsProvider$Outbound | undefined;
+  input_type?: string | undefined;
 };
 
 /** @internal */
@@ -760,32 +465,20 @@ export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
     z.array(z.string()),
     z.array(z.number()),
     z.array(z.array(z.number())),
+    z.array(z.lazy(() => Input$outboundSchema)),
   ]),
   model: z.string(),
-  provider: z.lazy(() => CreateEmbeddingsProvider$outboundSchema).optional(),
-  encodingFormat: z.union([
-    EncodingFormatFloat$outboundSchema,
-    EncodingFormatBase64$outboundSchema,
-  ]).optional(),
+  encodingFormat: EncodingFormat$outboundSchema.optional(),
+  dimensions: z.int().optional(),
   user: z.string().optional(),
+  provider: z.lazy(() => CreateEmbeddingsProvider$outboundSchema).optional(),
+  inputType: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     encodingFormat: "encoding_format",
+    inputType: "input_type",
   });
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateEmbeddingsRequest$ {
-  /** @deprecated use `CreateEmbeddingsRequest$inboundSchema` instead. */
-  export const inboundSchema = CreateEmbeddingsRequest$inboundSchema;
-  /** @deprecated use `CreateEmbeddingsRequest$outboundSchema` instead. */
-  export const outboundSchema = CreateEmbeddingsRequest$outboundSchema;
-  /** @deprecated use `CreateEmbeddingsRequest$Outbound` instead. */
-  export type Outbound = CreateEmbeddingsRequest$Outbound;
-}
 
 export function createEmbeddingsRequestToJSON(
   createEmbeddingsRequest: CreateEmbeddingsRequest,
@@ -795,84 +488,18 @@ export function createEmbeddingsRequestToJSON(
   );
 }
 
-export function createEmbeddingsRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateEmbeddingsRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateEmbeddingsRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateEmbeddingsRequest' from JSON`,
-  );
-}
-
 /** @internal */
 export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
-
-/** @internal */
-export const ObjectT$outboundSchema: z.ZodEnum<typeof ObjectT> =
-  ObjectT$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ObjectT$ {
-  /** @deprecated use `ObjectT$inboundSchema` instead. */
-  export const inboundSchema = ObjectT$inboundSchema;
-  /** @deprecated use `ObjectT$outboundSchema` instead. */
-  export const outboundSchema = ObjectT$outboundSchema;
-}
 
 /** @internal */
 export const ObjectEmbedding$inboundSchema: z.ZodEnum<typeof ObjectEmbedding> =
   z.enum(ObjectEmbedding);
 
 /** @internal */
-export const ObjectEmbedding$outboundSchema: z.ZodEnum<typeof ObjectEmbedding> =
-  ObjectEmbedding$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ObjectEmbedding$ {
-  /** @deprecated use `ObjectEmbedding$inboundSchema` instead. */
-  export const inboundSchema = ObjectEmbedding$inboundSchema;
-  /** @deprecated use `ObjectEmbedding$outboundSchema` instead. */
-  export const outboundSchema = ObjectEmbedding$outboundSchema;
-}
-
-/** @internal */
 export const Embedding$inboundSchema: z.ZodType<Embedding, unknown> = z.union([
   z.array(z.number()),
   z.string(),
 ]);
-
-/** @internal */
-export type Embedding$Outbound = Array<number> | string;
-
-/** @internal */
-export const Embedding$outboundSchema: z.ZodType<
-  Embedding$Outbound,
-  Embedding
-> = z.union([z.array(z.number()), z.string()]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Embedding$ {
-  /** @deprecated use `Embedding$inboundSchema` instead. */
-  export const inboundSchema = Embedding$inboundSchema;
-  /** @deprecated use `Embedding$outboundSchema` instead. */
-  export const outboundSchema = Embedding$outboundSchema;
-  /** @deprecated use `Embedding$Outbound` instead. */
-  export type Outbound = Embedding$Outbound;
-}
-
-export function embeddingToJSON(embedding: Embedding): string {
-  return JSON.stringify(Embedding$outboundSchema.parse(embedding));
-}
 
 export function embeddingFromJSON(
   jsonString: string,
@@ -893,44 +520,6 @@ export const CreateEmbeddingsData$inboundSchema: z.ZodType<
   embedding: z.union([z.array(z.number()), z.string()]),
   index: z.number().optional(),
 });
-
-/** @internal */
-export type CreateEmbeddingsData$Outbound = {
-  object: string;
-  embedding: Array<number> | string;
-  index?: number | undefined;
-};
-
-/** @internal */
-export const CreateEmbeddingsData$outboundSchema: z.ZodType<
-  CreateEmbeddingsData$Outbound,
-  CreateEmbeddingsData
-> = z.object({
-  object: ObjectEmbedding$outboundSchema,
-  embedding: z.union([z.array(z.number()), z.string()]),
-  index: z.number().optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateEmbeddingsData$ {
-  /** @deprecated use `CreateEmbeddingsData$inboundSchema` instead. */
-  export const inboundSchema = CreateEmbeddingsData$inboundSchema;
-  /** @deprecated use `CreateEmbeddingsData$outboundSchema` instead. */
-  export const outboundSchema = CreateEmbeddingsData$outboundSchema;
-  /** @deprecated use `CreateEmbeddingsData$Outbound` instead. */
-  export type Outbound = CreateEmbeddingsData$Outbound;
-}
-
-export function createEmbeddingsDataToJSON(
-  createEmbeddingsData: CreateEmbeddingsData,
-): string {
-  return JSON.stringify(
-    CreateEmbeddingsData$outboundSchema.parse(createEmbeddingsData),
-  );
-}
 
 export function createEmbeddingsDataFromJSON(
   jsonString: string,
@@ -954,42 +543,6 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   });
 });
 
-/** @internal */
-export type Usage$Outbound = {
-  prompt_tokens: number;
-  total_tokens: number;
-  cost?: number | undefined;
-};
-
-/** @internal */
-export const Usage$outboundSchema: z.ZodType<Usage$Outbound, Usage> = z.object({
-  promptTokens: z.number(),
-  totalTokens: z.number(),
-  cost: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    promptTokens: "prompt_tokens",
-    totalTokens: "total_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Usage$ {
-  /** @deprecated use `Usage$inboundSchema` instead. */
-  export const inboundSchema = Usage$inboundSchema;
-  /** @deprecated use `Usage$outboundSchema` instead. */
-  export const outboundSchema = Usage$outboundSchema;
-  /** @deprecated use `Usage$Outbound` instead. */
-  export type Outbound = Usage$Outbound;
-}
-
-export function usageToJSON(usage: Usage): string {
-  return JSON.stringify(Usage$outboundSchema.parse(usage));
-}
-
 export function usageFromJSON(
   jsonString: string,
 ): SafeParseResult<Usage, SDKValidationError> {
@@ -1012,50 +565,6 @@ export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
   usage: z.lazy(() => Usage$inboundSchema).optional(),
 });
 
-/** @internal */
-export type CreateEmbeddingsResponseBody$Outbound = {
-  id?: string | undefined;
-  object: string;
-  data: Array<CreateEmbeddingsData$Outbound>;
-  model: string;
-  usage?: Usage$Outbound | undefined;
-};
-
-/** @internal */
-export const CreateEmbeddingsResponseBody$outboundSchema: z.ZodType<
-  CreateEmbeddingsResponseBody$Outbound,
-  CreateEmbeddingsResponseBody
-> = z.object({
-  id: z.string().optional(),
-  object: ObjectT$outboundSchema,
-  data: z.array(z.lazy(() => CreateEmbeddingsData$outboundSchema)),
-  model: z.string(),
-  usage: z.lazy(() => Usage$outboundSchema).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateEmbeddingsResponseBody$ {
-  /** @deprecated use `CreateEmbeddingsResponseBody$inboundSchema` instead. */
-  export const inboundSchema = CreateEmbeddingsResponseBody$inboundSchema;
-  /** @deprecated use `CreateEmbeddingsResponseBody$outboundSchema` instead. */
-  export const outboundSchema = CreateEmbeddingsResponseBody$outboundSchema;
-  /** @deprecated use `CreateEmbeddingsResponseBody$Outbound` instead. */
-  export type Outbound = CreateEmbeddingsResponseBody$Outbound;
-}
-
-export function createEmbeddingsResponseBodyToJSON(
-  createEmbeddingsResponseBody: CreateEmbeddingsResponseBody,
-): string {
-  return JSON.stringify(
-    CreateEmbeddingsResponseBody$outboundSchema.parse(
-      createEmbeddingsResponseBody,
-    ),
-  );
-}
-
 export function createEmbeddingsResponseBodyFromJSON(
   jsonString: string,
 ): SafeParseResult<CreateEmbeddingsResponseBody, SDKValidationError> {
@@ -1074,41 +583,6 @@ export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
   z.lazy(() => CreateEmbeddingsResponseBody$inboundSchema),
   z.string(),
 ]);
-
-/** @internal */
-export type CreateEmbeddingsResponse$Outbound =
-  | CreateEmbeddingsResponseBody$Outbound
-  | string;
-
-/** @internal */
-export const CreateEmbeddingsResponse$outboundSchema: z.ZodType<
-  CreateEmbeddingsResponse$Outbound,
-  CreateEmbeddingsResponse
-> = z.union([
-  z.lazy(() => CreateEmbeddingsResponseBody$outboundSchema),
-  z.string(),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CreateEmbeddingsResponse$ {
-  /** @deprecated use `CreateEmbeddingsResponse$inboundSchema` instead. */
-  export const inboundSchema = CreateEmbeddingsResponse$inboundSchema;
-  /** @deprecated use `CreateEmbeddingsResponse$outboundSchema` instead. */
-  export const outboundSchema = CreateEmbeddingsResponse$outboundSchema;
-  /** @deprecated use `CreateEmbeddingsResponse$Outbound` instead. */
-  export type Outbound = CreateEmbeddingsResponse$Outbound;
-}
-
-export function createEmbeddingsResponseToJSON(
-  createEmbeddingsResponse: CreateEmbeddingsResponse,
-): string {
-  return JSON.stringify(
-    CreateEmbeddingsResponse$outboundSchema.parse(createEmbeddingsResponse),
-  );
-}
 
 export function createEmbeddingsResponseFromJSON(
   jsonString: string,

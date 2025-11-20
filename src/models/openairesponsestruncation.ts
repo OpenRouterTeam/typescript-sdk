@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesTruncation = {
   Auto: "auto",
@@ -21,28 +18,4 @@ export type OpenAIResponsesTruncation = OpenEnum<
 export const OpenAIResponsesTruncation$inboundSchema: z.ZodType<
   OpenAIResponsesTruncation,
   unknown
-> = z
-  .union([
-    z.enum(OpenAIResponsesTruncation),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const OpenAIResponsesTruncation$outboundSchema: z.ZodType<
-  OpenAIResponsesTruncation,
-  OpenAIResponsesTruncation
-> = z.union([
-  z.enum(OpenAIResponsesTruncation),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesTruncation$ {
-  /** @deprecated use `OpenAIResponsesTruncation$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesTruncation$inboundSchema;
-  /** @deprecated use `OpenAIResponsesTruncation$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesTruncation$outboundSchema;
-}
+> = openEnums.inboundSchema(OpenAIResponsesTruncation);

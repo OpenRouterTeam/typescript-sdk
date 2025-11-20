@@ -21,50 +21,10 @@ export const BadRequestResponseErrorData$inboundSchema: z.ZodType<
   BadRequestResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type BadRequestResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const BadRequestResponseErrorData$outboundSchema: z.ZodType<
-  BadRequestResponseErrorData$Outbound,
-  BadRequestResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace BadRequestResponseErrorData$ {
-  /** @deprecated use `BadRequestResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = BadRequestResponseErrorData$inboundSchema;
-  /** @deprecated use `BadRequestResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = BadRequestResponseErrorData$outboundSchema;
-  /** @deprecated use `BadRequestResponseErrorData$Outbound` instead. */
-  export type Outbound = BadRequestResponseErrorData$Outbound;
-}
-
-export function badRequestResponseErrorDataToJSON(
-  badRequestResponseErrorData: BadRequestResponseErrorData,
-): string {
-  return JSON.stringify(
-    BadRequestResponseErrorData$outboundSchema.parse(
-      badRequestResponseErrorData,
-    ),
-  );
-}
 
 export function badRequestResponseErrorDataFromJSON(
   jsonString: string,

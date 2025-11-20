@@ -35,24 +35,6 @@ export const OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema:
   );
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDoneEventType$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryTextDoneEventType> =
-    OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryTextDoneEventType$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDoneEventType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryTextDoneEventType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryTextDoneEvent, unknown> = z.object({
     type: OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema,
@@ -69,63 +51,6 @@ export const OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema:
       "sequence_number": "sequenceNumber",
     });
   });
-
-/** @internal */
-export type OpenResponsesReasoningSummaryTextDoneEvent$Outbound = {
-  type: string;
-  item_id: string;
-  output_index: number;
-  summary_index: number;
-  text: string;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema:
-  z.ZodType<
-    OpenResponsesReasoningSummaryTextDoneEvent$Outbound,
-    OpenResponsesReasoningSummaryTextDoneEvent
-  > = z.object({
-    type: OpenResponsesReasoningSummaryTextDoneEventType$outboundSchema,
-    itemId: z.string(),
-    outputIndex: z.number(),
-    summaryIndex: z.number(),
-    text: z.string(),
-    sequenceNumber: z.number(),
-  }).transform((v) => {
-    return remap$(v, {
-      itemId: "item_id",
-      outputIndex: "output_index",
-      summaryIndex: "summary_index",
-      sequenceNumber: "sequence_number",
-    });
-  });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesReasoningSummaryTextDoneEvent$ {
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema;
-  /** @deprecated use `OpenResponsesReasoningSummaryTextDoneEvent$Outbound` instead. */
-  export type Outbound = OpenResponsesReasoningSummaryTextDoneEvent$Outbound;
-}
-
-export function openResponsesReasoningSummaryTextDoneEventToJSON(
-  openResponsesReasoningSummaryTextDoneEvent:
-    OpenResponsesReasoningSummaryTextDoneEvent,
-): string {
-  return JSON.stringify(
-    OpenResponsesReasoningSummaryTextDoneEvent$outboundSchema.parse(
-      openResponsesReasoningSummaryTextDoneEvent,
-    ),
-  );
-}
 
 export function openResponsesReasoningSummaryTextDoneEventFromJSON(
   jsonString: string,

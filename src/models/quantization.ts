@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const Quantization = {
   Int4: "int4",
@@ -23,28 +20,5 @@ export const Quantization = {
 export type Quantization = OpenEnum<typeof Quantization>;
 
 /** @internal */
-export const Quantization$inboundSchema: z.ZodType<Quantization, unknown> = z
-  .union([
-    z.enum(Quantization),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Quantization$outboundSchema: z.ZodType<
-  Quantization,
-  Quantization
-> = z.union([
-  z.enum(Quantization),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Quantization$ {
-  /** @deprecated use `Quantization$inboundSchema` instead. */
-  export const inboundSchema = Quantization$inboundSchema;
-  /** @deprecated use `Quantization$outboundSchema` instead. */
-  export const outboundSchema = Quantization$outboundSchema;
-}
+export const Quantization$outboundSchema: z.ZodType<string, Quantization> =
+  openEnums.outboundSchema(Quantization);

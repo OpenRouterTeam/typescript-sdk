@@ -24,12 +24,13 @@ generation:
   sdkHooksConfigAccess: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.1.1
+  version: 0.1.18
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -38,8 +39,25 @@ typescript:
       dotenv: ^16.4.7
       vitest: ^3.2.4
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    description: The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.
+    keywords:
+      - openrouter
+      - sdk
+      - typescript
+      - api
+      - client
+      - library
+      - rest
+      - http
+      - agent
+      - ai
+      - openai
+      - models
+      - llm
+    license: Apache-2.0
   additionalScripts: {}
+  alwaysIncludeInboundAndOutbound: false
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
@@ -47,9 +65,10 @@ typescript:
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
   enableMCPServer: false
-  enableReactQuery: true
+  enableReactQuery: false
   enumFormat: union
   envVarPrefix: OPENROUTER
+  exportZodModelNamespace: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
   generateExamples: true
@@ -73,6 +92,7 @@ typescript:
   responseFormat: flat
   sseFlatResponse: true
   templateVersion: v2
+  unionStrategy: left-to-right
   usageSDKInitImports: []
   useIndexModules: true
   zodVersion: v4

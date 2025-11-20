@@ -3,7 +3,9 @@
  */
 
 import { embeddingsGenerate } from "../funcs/embeddingsGenerate.js";
+import { embeddingsListModels } from "../funcs/embeddingsListModels.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -21,6 +23,21 @@ export class Embeddings extends ClientSDK {
     return unwrapAsync(embeddingsGenerate(
       this,
       request,
+      options,
+    ));
+  }
+
+  /**
+   * List all embeddings models
+   *
+   * @remarks
+   * Returns a list of all available embeddings models and their properties
+   */
+  async listModels(
+    options?: RequestOptions,
+  ): Promise<models.ModelsListResponse> {
+    return unwrapAsync(embeddingsListModels(
+      this,
       options,
     ));
   }

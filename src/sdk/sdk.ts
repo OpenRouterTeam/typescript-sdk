@@ -3,13 +3,6 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
-// #region imports
-import { RequestOptions } from "../lib/sdks.js";
-import { ResponseWrapper } from "../lib/response-wrapper.js";
-import { getResponse } from "../funcs/getResponse.js";
-import { EnhancedTool, MaxToolRounds } from "../lib/tool-types.js";
-import * as models from "../models/index.js";
-// #endregion
 import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
@@ -89,49 +82,4 @@ export class OpenRouter extends ClientSDK {
   get completions(): Completions {
     return (this._completions ??= new Completions(this._options));
   }
-  // #region sdk-class-body
-  /**
-   * Get a response with multiple consumption patterns
-   *
-   * @remarks
-   * Returns a wrapper that allows consuming the response in multiple ways:
-   * - `await response.getMessage()` - Get the completed message
-   * - `await response.getText()` - Get just the text content
-   * - `for await (const delta of response.getTextStream())` - Stream text deltas
-   * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
-   * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
-   * - `for await (const chunk of response.getFullChatStream())` - Stream in chat-compatible format
-   *
-   * All consumption patterns can be used concurrently on the same response.
-   *
-   * @example
-   * ```typescript
-   * // Simple text extraction
-   * const response = openRouter.getResponse({
-   *   model: "anthropic/claude-3-opus",
-   *   input: [{ role: "user", content: "Hello!" }]
-   * });
-   * const text = await response.getText();
-   * console.log(text);
-   *
-   * // Streaming text
-   * const response = openRouter.getResponse({
-   *   model: "anthropic/claude-3-opus",
-   *   input: [{ role: "user", content: "Hello!" }]
-   * });
-   * for await (const delta of response.getTextStream()) {
-   *   process.stdout.write(delta);
-   * }
-   * ```
-   */
-  getResponse(
-    request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
-      tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
-      maxToolRounds?: MaxToolRounds;
-    },
-    options?: RequestOptions,
-  ): ResponseWrapper {
-    return getResponse(this, request, options);
-  }
-  // #endregion
 }

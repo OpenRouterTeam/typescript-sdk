@@ -5,12 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  ClosedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -41,52 +37,21 @@ export type ResponseInputImage = {
 export const ResponseInputImageType$inboundSchema: z.ZodEnum<
   typeof ResponseInputImageType
 > = z.enum(ResponseInputImageType);
-
 /** @internal */
 export const ResponseInputImageType$outboundSchema: z.ZodEnum<
   typeof ResponseInputImageType
 > = ResponseInputImageType$inboundSchema;
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImageType$ {
-  /** @deprecated use `ResponseInputImageType$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImageType$inboundSchema;
-  /** @deprecated use `ResponseInputImageType$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImageType$outboundSchema;
-}
-
 /** @internal */
 export const ResponseInputImageDetail$inboundSchema: z.ZodType<
   ResponseInputImageDetail,
   unknown
-> = z
-  .union([
-    z.enum(ResponseInputImageDetail),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(ResponseInputImageDetail);
 /** @internal */
 export const ResponseInputImageDetail$outboundSchema: z.ZodType<
-  ResponseInputImageDetail,
+  string,
   ResponseInputImageDetail
-> = z.union([
-  z.enum(ResponseInputImageDetail),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImageDetail$ {
-  /** @deprecated use `ResponseInputImageDetail$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImageDetail$inboundSchema;
-  /** @deprecated use `ResponseInputImageDetail$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImageDetail$outboundSchema;
-}
+> = openEnums.outboundSchema(ResponseInputImageDetail);
 
 /** @internal */
 export const ResponseInputImage$inboundSchema: z.ZodType<
@@ -101,7 +66,6 @@ export const ResponseInputImage$inboundSchema: z.ZodType<
     "image_url": "imageUrl",
   });
 });
-
 /** @internal */
 export type ResponseInputImage$Outbound = {
   type: string;
@@ -123,19 +87,6 @@ export const ResponseInputImage$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponseInputImage$ {
-  /** @deprecated use `ResponseInputImage$inboundSchema` instead. */
-  export const inboundSchema = ResponseInputImage$inboundSchema;
-  /** @deprecated use `ResponseInputImage$outboundSchema` instead. */
-  export const outboundSchema = ResponseInputImage$outboundSchema;
-  /** @deprecated use `ResponseInputImage$Outbound` instead. */
-  export type Outbound = ResponseInputImage$Outbound;
-}
-
 export function responseInputImageToJSON(
   responseInputImage: ResponseInputImage,
 ): string {
@@ -143,7 +94,6 @@ export function responseInputImageToJSON(
     ResponseInputImage$outboundSchema.parse(responseInputImage),
   );
 }
-
 export function responseInputImageFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponseInputImage, SDKValidationError> {

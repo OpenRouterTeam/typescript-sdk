@@ -223,7 +223,7 @@ components:
       example:
         type: summary_text
         text: Analyzed the problem using first principles
-    ResponsesOutputItemReasoning:
+    OutputItemReasoning:
       type: object
       properties:
         type:
@@ -256,8 +256,19 @@ components:
                 - in_progress
       required:
         - type
+        - id
         - summary
-      description: An output item containing reasoning
+      example:
+        type: reasoning
+        id: reasoning-abc123
+        summary:
+          - type: summary_text
+            text: Analyzed the problem using first principles
+    ResponsesOutputItemReasoning:
+      allOf:
+        - $ref: '#/components/schemas/OutputItemReasoning'
+        - type: object
+          properties: {}
       example:
         id: reasoning-123
         type: reasoning
@@ -268,6 +279,7 @@ components:
         content:
           - type: reasoning_text
             text: First, we analyze the problem...
+      description: An output item containing reasoning
     OutputItemFunctionCall:
       type: object
       properties:
@@ -411,12 +423,12 @@ components:
         result:
           type: string
           nullable: true
+          default: null
         status:
           $ref: '#/components/schemas/ImageGenerationStatus'
       required:
         - type
         - id
-        - result
         - status
       example:
         type: image_generation_call
@@ -655,6 +667,7 @@ components:
           format: mp3
     ToolCallStatus:
       type: string
+      nullable: true
       enum:
         - in_progress
         - completed
@@ -752,6 +765,7 @@ components:
                       - function_call_output
                   id:
                     type: string
+                    nullable: true
                   call_id:
                     type: string
                   output:
@@ -760,7 +774,6 @@ components:
                     $ref: '#/components/schemas/ToolCallStatus'
                 required:
                   - type
-                  - id
                   - call_id
                   - output
               - type: object
@@ -1045,6 +1058,7 @@ components:
         - medium
         - low
         - minimal
+        - none
     ReasoningSummaryVerbosity:
       type: string
       enum:
@@ -1159,47 +1173,6 @@ components:
         format:
           type: text
         verbosity: medium
-    OutputItemReasoning:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - reasoning
-        id:
-          type: string
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningTextContent'
-        summary:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReasoningSummaryText'
-        encrypted_content:
-          type: string
-          nullable: true
-        status:
-          anyOf:
-            - type: string
-              enum:
-                - completed
-            - type: string
-              enum:
-                - incomplete
-            - type: string
-              enum:
-                - in_progress
-      required:
-        - type
-        - id
-        - summary
-      example:
-        type: reasoning
-        id: reasoning-abc123
-        summary:
-          - type: summary_text
-            text: Analyzed the problem using first principles
     OpenAIResponsesNonStreamingResponse:
       type: object
       properties:
@@ -3252,6 +3225,7 @@ components:
                 - openai-responses-v1
                 - xai-responses-v1
                 - anthropic-claude-v1
+                - google-gemini-v1
       example:
         type: reasoning
         id: reasoning-abc123
@@ -3378,6 +3352,7 @@ components:
             - function_call_output
         id:
           type: string
+          nullable: true
         call_id:
           type: string
         output:
@@ -3386,7 +3361,6 @@ components:
           $ref: '#/components/schemas/ToolCallStatus'
       required:
         - type
-        - id
         - call_id
         - output
       description: The output from a function call execution
@@ -3451,47 +3425,44 @@ components:
         - computer_call_output.output.image_url
         - reasoning.encrypted_content
         - code_interpreter_call.outputs
+    DataCollection:
+      type: string
+      nullable: true
+      enum:
+        - deny
+        - allow
+      description: >-
+        Data collection setting. If no available model provider meets the requirement, your request will return an
+        error.
+
+        - allow: (default) allow providers which store user data non-transiently and may train on it
+
+
+        - deny: use only providers which do not collect user data.
+      example: allow
     ProviderName:
       type: string
       enum:
-        - AnyScale
-        - Cent-ML
-        - HuggingFace
-        - Hyperbolic 2
-        - Lepton
-        - Lynn 2
-        - Lynn
-        - Mancer
-        - Modal
-        - OctoAI
-        - Recursal
-        - Reflection
-        - Replicate
-        - SambaNova 2
-        - SF Compute
-        - Together 2
-        - 01.AI
         - AI21
         - AionLabs
         - Alibaba
         - Amazon Bedrock
         - Anthropic
+        - Arcee
         - AtlasCloud
-        - Atoma
         - Avian
         - Azure
         - BaseTen
+        - Black Forest Labs
         - Cerebras
         - Chutes
         - Cirrascale
         - Clarifai
         - Cloudflare
         - Cohere
-        - CrofAI
         - Crusoe
         - DeepInfra
         - DeepSeek
-        - Enfer
         - Featherless
         - Fireworks
         - Friendli
@@ -3504,12 +3475,8 @@ components:
         - InferenceNet
         - Infermatic
         - Inflection
-        - InoCloud
-        - Kluster
-        - Lambda
         - Liquid
         - Mancer 2
-        - Meta
         - Minimax
         - ModelRun
         - Mistral
@@ -3519,7 +3486,6 @@ components:
         - NCompass
         - Nebius
         - NextBit
-        - Nineteen
         - Novita
         - Nvidia
         - OpenAI
@@ -3534,7 +3500,6 @@ components:
         - Switchpoint
         - Targon
         - Together
-        - Ubicloud
         - Venice
         - WandB
         - xAI
@@ -3554,6 +3519,17 @@ components:
         - fp32
         - unknown
       example: fp16
+    ProviderSort:
+      type: string
+      nullable: true
+      enum:
+        - price
+        - throughput
+        - latency
+      description: >-
+        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is
+        performed.
+      example: price
     BigNumberUnion:
       anyOf:
         - type: number
@@ -3692,25 +3668,20 @@ components:
                 is omitted or set to false, then providers will receive only the parameters they support, and ignore the
                 rest.
             data_collection:
-              type: string
-              nullable: true
-              enum:
-                - deny
-                - allow
-              example: deny
-              description: >
-                Data collection setting. If no available model provider meets the requirement, your request will return
-                an error.
-
-                - allow: (default) allow providers which store user data non-transiently and may train on it
-
-                - deny: use only providers which do not collect user data.
+              $ref: '#/components/schemas/DataCollection'
             zdr:
               type: boolean
               nullable: true
               description: >-
                 Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that
                 do not retain prompts will be used.
+              example: true
+            enforce_distillable_text:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only models that allow text distillation. When true, only models where
+                the author has allowed distillation will be used.
               example: true
             order:
               type: array
@@ -3750,16 +3721,7 @@ components:
                 $ref: '#/components/schemas/Quantization'
               description: A list of quantization levels to filter the provider by.
             sort:
-              type: string
-              nullable: true
-              enum:
-                - price
-                - throughput
-                - latency
-              example: price
-              description: >-
-                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
-                is performed.
+              $ref: '#/components/schemas/ProviderSort'
             max_price:
               type: object
               properties:
@@ -3777,10 +3739,6 @@ components:
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens,
                 for prompt and completion.
-            experimental:
-              type: object
-              nullable: true
-              properties: {}
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
@@ -3984,27 +3942,6 @@ components:
         amount: 100
         sender: '0x1234567890123456789012345678901234567890'
         chain_id: 1
-    ModelsCountResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            count:
-              type: number
-              description: Total number of available models
-              example: 150
-          required:
-            - count
-          description: Model count data
-          example:
-            count: 150
-      required:
-        - data
-      description: Model count data
-      example:
-        data:
-          count: 150
     PublicPricing:
       type: object
       properties:
@@ -4015,6 +3952,8 @@ components:
         request:
           $ref: '#/components/schemas/BigNumberUnion'
         image:
+          $ref: '#/components/schemas/BigNumberUnion'
+        image_token:
           $ref: '#/components/schemas/BigNumberUnion'
         image_output:
           $ref: '#/components/schemas/BigNumberUnion'
@@ -4375,6 +4314,27 @@ components:
               - frequency_penalty
               - presence_penalty
             default_parameters: null
+    ModelsCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: number
+              description: Total number of available models
+              example: 150
+          required:
+            - count
+          description: Model count data
+          example:
+            count: 150
+      required:
+        - data
+      description: Model count data
+      example:
+        data:
+          count: 150
     InstructType:
       type: string
       nullable: true
@@ -4431,6 +4391,8 @@ components:
             request:
               $ref: '#/components/schemas/BigNumberUnion'
             image:
+              $ref: '#/components/schemas/BigNumberUnion'
+            image_token:
               $ref: '#/components/schemas/BigNumberUnion'
             image_output:
               $ref: '#/components/schemas/BigNumberUnion'
@@ -4615,10 +4577,6 @@ components:
             status: default
             uptime_last_30m: 99.5
             supports_implicit_caching: true
-    __schema0:
-      anyOf:
-        - $ref: '#/components/schemas/ChatCompletionFinishReason'
-        - type: 'null'
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -4681,11 +4639,68 @@ components:
       required:
         - type
         - input_audio
+    ChatMessageContentItemVideo:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              const: input_video
+            video_url:
+              $ref: '#/components/schemas/VideoURL'
+          required:
+            - type
+            - video_url
+        - type: object
+          properties:
+            type:
+              type: string
+              const: video_url
+            video_url:
+              type: object
+              properties:
+                url:
+                  type: string
+              required:
+                - url
+          required:
+            - type
+            - video_url
+      type: object
+    VideoURL:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+    ChatMessageContentItemFile:
+      type: object
+      properties:
+        type:
+          type: string
+          const: file
+        file:
+          type: object
+          properties:
+            file_data:
+              type: string
+            file_id:
+              type: string
+            filename:
+              type: string
+          required:
+            - file_data
+      required:
+        - type
+        - file
     ChatMessageContentItem:
       oneOf:
         - $ref: '#/components/schemas/ChatMessageContentItemText'
         - $ref: '#/components/schemas/ChatMessageContentItemImage'
         - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+        - $ref: '#/components/schemas/ChatMessageContentItemVideo'
+        - $ref: '#/components/schemas/ChatMessageContentItemFile'
       type: object
       discriminator:
         propertyName: type
@@ -4693,6 +4708,9 @@ components:
           text: '#/components/schemas/ChatMessageContentItemText'
           image_url: '#/components/schemas/ChatMessageContentItemImage'
           input_audio: '#/components/schemas/ChatMessageContentItemAudio'
+          input_video: '#/components/schemas/ChatMessageContentItemVideo'
+          video_url: '#/components/schemas/ChatMessageContentItemVideo'
+          file: '#/components/schemas/ChatMessageContentItemFile'
     ChatMessageToolCall:
       type: object
       properties:
@@ -4780,16 +4798,26 @@ components:
         total_tokens:
           type: number
         completion_tokens_details:
-          type: object
-          properties:
-            reasoning_tokens:
-              type: number
-            audio_tokens:
-              type: number
-            accepted_prediction_tokens:
-              type: number
-            rejected_prediction_tokens:
-              type: number
+          anyOf:
+            - type: object
+              properties:
+                reasoning_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                audio_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                accepted_prediction_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                rejected_prediction_tokens:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+            - type: 'null'
         prompt_tokens_details:
           anyOf:
             - type: object
@@ -4798,19 +4826,23 @@ components:
                   type: number
                 audio_tokens:
                   type: number
+                video_tokens:
+                  type: number
             - type: 'null'
       required:
         - completion_tokens
         - prompt_tokens
         - total_tokens
     ChatCompletionFinishReason:
-      type: string
-      enum:
-        - tool_calls
-        - stop
-        - length
-        - content_filter
-        - error
+      anyOf:
+        - type: string
+          enum:
+            - tool_calls
+            - stop
+            - length
+            - content_filter
+            - error
+        - type: 'null'
     JSONSchemaConfig:
       type: object
       properties:
@@ -4957,7 +4989,7 @@ components:
         - $ref: '#/components/schemas/AssistantMessage'
         - $ref: '#/components/schemas/ToolResponseMessage'
       type: object
-    Tool:
+    ToolDefinitionJson:
       type: object
       properties:
         type:
@@ -5082,6 +5114,7 @@ components:
               anyOf:
                 - type: string
                   enum:
+                    - none
                     - minimal
                     - low
                     - medium
@@ -5151,7 +5184,7 @@ components:
         tools:
           type: array
           items:
-            $ref: '#/components/schemas/Tool'
+            $ref: '#/components/schemas/ToolDefinitionJson'
         top_p:
           default: 1
           anyOf:
@@ -5167,7 +5200,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         message:
@@ -5228,7 +5261,7 @@ components:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/ChatCompletionFinishReason'
         index:
           type: number
         logprobs:
@@ -5967,7 +6000,55 @@ paths:
                         type: array
                         items:
                           type: number
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          content:
+                            type: array
+                            items:
+                              oneOf:
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - text
+                                    text:
+                                      type: string
+                                  required:
+                                    - type
+                                    - text
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - image_url
+                                    image_url:
+                                      type: object
+                                      properties:
+                                        url:
+                                          type: string
+                                      required:
+                                        - url
+                                  required:
+                                    - type
+                                    - image_url
+                        required:
+                          - content
                 model:
+                  type: string
+                encoding_format:
+                  type: string
+                  enum:
+                    - float
+                    - base64
+                dimensions:
+                  type: integer
+                  minimum: 0
+                  exclusiveMinimum: true
+                user:
                   type: string
                 provider:
                   type: object
@@ -5991,25 +6072,20 @@ paths:
                         setting is omitted or set to false, then providers will receive only the parameters they
                         support, and ignore the rest.
                     data_collection:
-                      type: string
-                      nullable: true
-                      enum:
-                        - deny
-                        - allow
-                      example: deny
-                      description: >
-                        Data collection setting. If no available model provider meets the requirement, your request will
-                        return an error.
-
-                        - allow: (default) allow providers which store user data non-transiently and may train on it
-
-                        - deny: use only providers which do not collect user data.
+                      $ref: '#/components/schemas/DataCollection'
                     zdr:
                       type: boolean
                       nullable: true
                       description: >-
                         Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only
                         endpoints that do not retain prompts will be used.
+                      example: true
+                    enforce_distillable_text:
+                      type: boolean
+                      nullable: true
+                      description: >-
+                        Whether to restrict routing to only models that allow text distillation. When true, only models
+                        where the author has allowed distillation will be used.
                       example: true
                     order:
                       type: array
@@ -6049,16 +6125,7 @@ paths:
                         $ref: '#/components/schemas/Quantization'
                       description: A list of quantization levels to filter the provider by.
                     sort:
-                      type: string
-                      nullable: true
-                      enum:
-                        - price
-                        - throughput
-                        - latency
-                      example: price
-                      description: >-
-                        The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                        balancing is performed.
+                      $ref: '#/components/schemas/ProviderSort'
                     max_price:
                       type: object
                       properties:
@@ -6076,19 +6143,7 @@ paths:
                       description: >-
                         The object specifying the maximum price you want to pay for this request. USD price per million
                         tokens, for prompt and completion.
-                    experimental:
-                      type: object
-                      nullable: true
-                      properties: {}
-                encoding_format:
-                  anyOf:
-                    - type: string
-                      enum:
-                        - float
-                    - type: string
-                      enum:
-                        - base64
-                user:
+                input_type:
                   type: string
               required:
                 - input
@@ -6212,6 +6267,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createEmbeddings
+  /embeddings/models:
+    get:
+      tags:
+        - Embeddings
+      x-speakeasy-name-override: listModels
+      summary: List all embeddings models
+      description: Returns a list of all available embeddings models and their properties
+      responses:
+        '200':
+          description: Returns a list of embeddings models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsListResponse'
+        '400':
+          description: Bad Request - Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+      operationId: listEmbeddingsModels
   /generation:
     get:
       tags:
@@ -6351,11 +6433,6 @@ paths:
                         nullable: true
                         description: Number of audio inputs in the prompt
                         example: 0
-                      num_video_prompt:
-                        type: number
-                        nullable: true
-                        description: Number of video inputs in the prompt
-                        example: 0
                       num_media_completion:
                         type: number
                         nullable: true
@@ -6420,7 +6497,6 @@ paths:
                       - native_tokens_cached
                       - num_media_prompt
                       - num_input_audio_prompt
-                      - num_video_prompt
                       - num_media_completion
                       - num_search_results
                       - origin
@@ -6675,22 +6751,21 @@ paths:
               - Alibaba
               - Amazon Bedrock
               - Anthropic
+              - Arcee
               - AtlasCloud
-              - Atoma
               - Avian
               - Azure
               - BaseTen
+              - Black Forest Labs
               - Cerebras
               - Chutes
               - Cirrascale
               - Clarifai
               - Cloudflare
               - Cohere
-              - CrofAI
               - Crusoe
               - DeepInfra
               - DeepSeek
-              - Enfer
               - Featherless
               - Fireworks
               - Friendli
@@ -6703,11 +6778,8 @@ paths:
               - InferenceNet
               - Infermatic
               - Inflection
-              - Kluster
-              - Lambda
               - Liquid
               - Mancer 2
-              - Meta
               - Minimax
               - ModelRun
               - Mistral
@@ -6717,7 +6789,6 @@ paths:
               - NCompass
               - Nebius
               - NextBit
-              - Nineteen
               - Novita
               - Nvidia
               - OpenAI
@@ -6732,7 +6803,6 @@ paths:
               - Switchpoint
               - Targon
               - Together
-              - Ubicloud
               - Venice
               - WandB
               - xAI
@@ -7001,6 +7071,12 @@ paths:
                           nullable: true
                           description: ISO 8601 timestamp of when the API key was last updated
                           example: '2025-08-24T15:45:00Z'
+                        expires_at:
+                          type: string
+                          nullable: true
+                          format: date-time
+                          description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+                          example: '2027-12-31T23:59:59Z'
                       required:
                         - hash
                         - name
@@ -7039,6 +7115,7 @@ paths:
                         byok_usage_monthly: 17.38
                         created_at: '2025-08-24T10:30:00Z'
                         updated_at: '2025-08-24T15:45:00Z'
+                        expires_at: '2027-12-31T23:59:59Z'
                     description: List of API keys
                 required:
                   - data
@@ -7062,6 +7139,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                      expires_at: '2027-12-31T23:59:59Z'
         '401':
           description: Unauthorized - Missing or invalid authentication
           content:
@@ -7116,6 +7194,14 @@ paths:
                   type: boolean
                   description: Whether to include BYOK usage in the limit
                   example: true
+                expires_at:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: >-
+                    Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be
+                    rejected
+                  example: '2027-12-31T23:59:59Z'
               required:
                 - name
               example:
@@ -7123,6 +7209,7 @@ paths:
                 limit: 50
                 limit_reset: monthly
                 include_byok_in_limit: true
+                expires_at: '2027-12-31T23:59:59Z'
         required: true
       responses:
         '201':
@@ -7211,6 +7298,12 @@ paths:
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
                         example: '2025-08-24T15:45:00Z'
+                      expires_at:
+                        type: string
+                        nullable: true
+                        format: date-time
+                        description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+                        example: '2027-12-31T23:59:59Z'
                     required:
                       - hash
                       - name
@@ -7249,6 +7342,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                      expires_at: '2027-12-31T23:59:59Z'
                     description: The created API key information
                   key:
                     type: string
@@ -7277,6 +7371,7 @@ paths:
                     byok_usage_monthly: 0
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: null
+                    expires_at: '2027-12-31T23:59:59Z'
                   key: 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
         '400':
           description: Bad Request - Invalid request parameters
@@ -7446,6 +7541,12 @@ paths:
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
                         example: '2025-08-24T15:45:00Z'
+                      expires_at:
+                        type: string
+                        nullable: true
+                        format: date-time
+                        description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+                        example: '2027-12-31T23:59:59Z'
                     required:
                       - hash
                       - name
@@ -7484,6 +7585,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                      expires_at: '2027-12-31T23:59:59Z'
                     description: The updated API key information
                 required:
                   - data
@@ -7507,6 +7609,7 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T16:00:00Z'
+                    expires_at: null
         '400':
           description: Bad Request - Invalid request parameters
           content:
@@ -7696,6 +7799,12 @@ paths:
                         nullable: true
                         description: ISO 8601 timestamp of when the API key was last updated
                         example: '2025-08-24T15:45:00Z'
+                      expires_at:
+                        type: string
+                        nullable: true
+                        format: date-time
+                        description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+                        example: '2027-12-31T23:59:59Z'
                     required:
                       - hash
                       - name
@@ -7734,6 +7843,7 @@ paths:
                       byok_usage_monthly: 17.38
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
+                      expires_at: '2027-12-31T23:59:59Z'
                     description: The API key information
                 required:
                   - data
@@ -7757,6 +7867,7 @@ paths:
                     byok_usage_monthly: 17.38
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T15:45:00Z'
+                    expires_at: '2027-12-31T23:59:59Z'
         '401':
           description: Unauthorized - Missing or invalid authentication
           content:
@@ -7863,6 +7974,12 @@ paths:
                         type: boolean
                         description: Whether to include external BYOK usage in the credit limit
                         example: false
+                      expires_at:
+                        type: string
+                        nullable: true
+                        format: date-time
+                        description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+                        example: '2027-12-31T23:59:59Z'
                       rate_limit:
                         type: object
                         properties:
@@ -7922,6 +8039,7 @@ paths:
                       limit_remaining: 74.5
                       limit_reset: monthly
                       include_byok_in_limit: false
+                      expires_at: '2027-12-31T23:59:59Z'
                       rate_limit:
                         requests: 1000
                         interval: 1h
@@ -7945,6 +8063,7 @@ paths:
                     limit_remaining: 74.5
                     limit_reset: monthly
                     include_byok_in_limit: false
+                    expires_at: '2027-12-31T23:59:59Z'
                     rate_limit:
                       requests: 1000
                       interval: 1h
@@ -8073,6 +8192,11 @@ paths:
                   type: number
                   description: Credit limit for the API key to be created
                   example: 100
+                expires_at:
+                  type: string
+                  nullable: true
+                  format: date-time
+                  description: Optional expiration time for the API key to be created
               required:
                 - callback_url
               example:

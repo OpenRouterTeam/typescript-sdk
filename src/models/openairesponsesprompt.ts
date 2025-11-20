@@ -52,7 +52,6 @@ export const Variables$inboundSchema: z.ZodType<Variables, unknown> = z.union([
   ResponseInputFile$inboundSchema,
   z.string(),
 ]);
-
 /** @internal */
 export type Variables$Outbound =
   | ResponseInputText$Outbound
@@ -71,23 +70,9 @@ export const Variables$outboundSchema: z.ZodType<
   z.string(),
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Variables$ {
-  /** @deprecated use `Variables$inboundSchema` instead. */
-  export const inboundSchema = Variables$inboundSchema;
-  /** @deprecated use `Variables$outboundSchema` instead. */
-  export const outboundSchema = Variables$outboundSchema;
-  /** @deprecated use `Variables$Outbound` instead. */
-  export type Outbound = Variables$Outbound;
-}
-
 export function variablesToJSON(variables: Variables): string {
   return JSON.stringify(Variables$outboundSchema.parse(variables));
 }
-
 export function variablesFromJSON(
   jsonString: string,
 ): SafeParseResult<Variables, SDKValidationError> {
@@ -116,7 +101,6 @@ export const OpenAIResponsesPrompt$inboundSchema: z.ZodType<
     ),
   ).optional(),
 });
-
 /** @internal */
 export type OpenAIResponsesPrompt$Outbound = {
   id: string;
@@ -151,19 +135,6 @@ export const OpenAIResponsesPrompt$outboundSchema: z.ZodType<
   ).optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesPrompt$ {
-  /** @deprecated use `OpenAIResponsesPrompt$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesPrompt$inboundSchema;
-  /** @deprecated use `OpenAIResponsesPrompt$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesPrompt$outboundSchema;
-  /** @deprecated use `OpenAIResponsesPrompt$Outbound` instead. */
-  export type Outbound = OpenAIResponsesPrompt$Outbound;
-}
-
 export function openAIResponsesPromptToJSON(
   openAIResponsesPrompt: OpenAIResponsesPrompt,
 ): string {
@@ -171,7 +142,6 @@ export function openAIResponsesPromptToJSON(
     OpenAIResponsesPrompt$outboundSchema.parse(openAIResponsesPrompt),
   );
 }
-
 export function openAIResponsesPromptFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesPrompt, SDKValidationError> {

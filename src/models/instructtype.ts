@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
  * Instruction format type
@@ -42,28 +39,5 @@ export const InstructType = {
 export type InstructType = OpenEnum<typeof InstructType>;
 
 /** @internal */
-export const InstructType$inboundSchema: z.ZodType<InstructType, unknown> = z
-  .union([
-    z.enum(InstructType),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const InstructType$outboundSchema: z.ZodType<
-  InstructType,
-  InstructType
-> = z.union([
-  z.enum(InstructType),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InstructType$ {
-  /** @deprecated use `InstructType$inboundSchema` instead. */
-  export const inboundSchema = InstructType$inboundSchema;
-  /** @deprecated use `InstructType$outboundSchema` instead. */
-  export const outboundSchema = InstructType$outboundSchema;
-}
+export const InstructType$inboundSchema: z.ZodType<InstructType, unknown> =
+  openEnums.inboundSchema(InstructType);

@@ -42,48 +42,6 @@ export const TopProviderInfo$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type TopProviderInfo$Outbound = {
-  context_length?: number | null | undefined;
-  max_completion_tokens?: number | null | undefined;
-  is_moderated: boolean;
-};
-
-/** @internal */
-export const TopProviderInfo$outboundSchema: z.ZodType<
-  TopProviderInfo$Outbound,
-  TopProviderInfo
-> = z.object({
-  contextLength: z.nullable(z.number()).optional(),
-  maxCompletionTokens: z.nullable(z.number()).optional(),
-  isModerated: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    contextLength: "context_length",
-    maxCompletionTokens: "max_completion_tokens",
-    isModerated: "is_moderated",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace TopProviderInfo$ {
-  /** @deprecated use `TopProviderInfo$inboundSchema` instead. */
-  export const inboundSchema = TopProviderInfo$inboundSchema;
-  /** @deprecated use `TopProviderInfo$outboundSchema` instead. */
-  export const outboundSchema = TopProviderInfo$outboundSchema;
-  /** @deprecated use `TopProviderInfo$Outbound` instead. */
-  export type Outbound = TopProviderInfo$Outbound;
-}
-
-export function topProviderInfoToJSON(
-  topProviderInfo: TopProviderInfo,
-): string {
-  return JSON.stringify(TopProviderInfo$outboundSchema.parse(topProviderInfo));
-}
-
 export function topProviderInfoFromJSON(
   jsonString: string,
 ): SafeParseResult<TopProviderInfo, SDKValidationError> {

@@ -54,44 +54,6 @@ export const InputTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type InputTokensDetails$Outbound = {
-  cached_tokens: number;
-};
-
-/** @internal */
-export const InputTokensDetails$outboundSchema: z.ZodType<
-  InputTokensDetails$Outbound,
-  InputTokensDetails
-> = z.object({
-  cachedTokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    cachedTokens: "cached_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InputTokensDetails$ {
-  /** @deprecated use `InputTokensDetails$inboundSchema` instead. */
-  export const inboundSchema = InputTokensDetails$inboundSchema;
-  /** @deprecated use `InputTokensDetails$outboundSchema` instead. */
-  export const outboundSchema = InputTokensDetails$outboundSchema;
-  /** @deprecated use `InputTokensDetails$Outbound` instead. */
-  export type Outbound = InputTokensDetails$Outbound;
-}
-
-export function inputTokensDetailsToJSON(
-  inputTokensDetails: InputTokensDetails,
-): string {
-  return JSON.stringify(
-    InputTokensDetails$outboundSchema.parse(inputTokensDetails),
-  );
-}
-
 export function inputTokensDetailsFromJSON(
   jsonString: string,
 ): SafeParseResult<InputTokensDetails, SDKValidationError> {
@@ -113,44 +75,6 @@ export const OutputTokensDetails$inboundSchema: z.ZodType<
     "reasoning_tokens": "reasoningTokens",
   });
 });
-
-/** @internal */
-export type OutputTokensDetails$Outbound = {
-  reasoning_tokens: number;
-};
-
-/** @internal */
-export const OutputTokensDetails$outboundSchema: z.ZodType<
-  OutputTokensDetails$Outbound,
-  OutputTokensDetails
-> = z.object({
-  reasoningTokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    reasoningTokens: "reasoning_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OutputTokensDetails$ {
-  /** @deprecated use `OutputTokensDetails$inboundSchema` instead. */
-  export const inboundSchema = OutputTokensDetails$inboundSchema;
-  /** @deprecated use `OutputTokensDetails$outboundSchema` instead. */
-  export const outboundSchema = OutputTokensDetails$outboundSchema;
-  /** @deprecated use `OutputTokensDetails$Outbound` instead. */
-  export type Outbound = OutputTokensDetails$Outbound;
-}
-
-export function outputTokensDetailsToJSON(
-  outputTokensDetails: OutputTokensDetails,
-): string {
-  return JSON.stringify(
-    OutputTokensDetails$outboundSchema.parse(outputTokensDetails),
-  );
-}
 
 export function outputTokensDetailsFromJSON(
   jsonString: string,
@@ -175,46 +99,6 @@ export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
       "upstream_inference_output_cost": "upstreamInferenceOutputCost",
     });
   });
-
-/** @internal */
-export type CostDetails$Outbound = {
-  upstream_inference_cost?: number | null | undefined;
-  upstream_inference_input_cost: number;
-  upstream_inference_output_cost: number;
-};
-
-/** @internal */
-export const CostDetails$outboundSchema: z.ZodType<
-  CostDetails$Outbound,
-  CostDetails
-> = z.object({
-  upstreamInferenceCost: z.nullable(z.number()).optional(),
-  upstreamInferenceInputCost: z.number(),
-  upstreamInferenceOutputCost: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    upstreamInferenceCost: "upstream_inference_cost",
-    upstreamInferenceInputCost: "upstream_inference_input_cost",
-    upstreamInferenceOutputCost: "upstream_inference_output_cost",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CostDetails$ {
-  /** @deprecated use `CostDetails$inboundSchema` instead. */
-  export const inboundSchema = CostDetails$inboundSchema;
-  /** @deprecated use `CostDetails$outboundSchema` instead. */
-  export const outboundSchema = CostDetails$outboundSchema;
-  /** @deprecated use `CostDetails$Outbound` instead. */
-  export type Outbound = CostDetails$Outbound;
-}
-
-export function costDetailsToJSON(costDetails: CostDetails): string {
-  return JSON.stringify(CostDetails$outboundSchema.parse(costDetails));
-}
 
 export function costDetailsFromJSON(
   jsonString: string,
@@ -250,64 +134,6 @@ export const OpenResponsesUsage$inboundSchema: z.ZodType<
     "cost_details": "costDetails",
   });
 });
-
-/** @internal */
-export type OpenResponsesUsage$Outbound = {
-  input_tokens: number;
-  input_tokens_details: InputTokensDetails$Outbound;
-  output_tokens: number;
-  output_tokens_details: OutputTokensDetails$Outbound;
-  total_tokens: number;
-  cost?: number | null | undefined;
-  is_byok?: boolean | undefined;
-  cost_details?: CostDetails$Outbound | undefined;
-};
-
-/** @internal */
-export const OpenResponsesUsage$outboundSchema: z.ZodType<
-  OpenResponsesUsage$Outbound,
-  OpenResponsesUsage
-> = z.object({
-  inputTokens: z.number(),
-  inputTokensDetails: z.lazy(() => InputTokensDetails$outboundSchema),
-  outputTokens: z.number(),
-  outputTokensDetails: z.lazy(() => OutputTokensDetails$outboundSchema),
-  totalTokens: z.number(),
-  cost: z.nullable(z.number()).optional(),
-  isByok: z.boolean().optional(),
-  costDetails: z.lazy(() => CostDetails$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    inputTokens: "input_tokens",
-    inputTokensDetails: "input_tokens_details",
-    outputTokens: "output_tokens",
-    outputTokensDetails: "output_tokens_details",
-    totalTokens: "total_tokens",
-    isByok: "is_byok",
-    costDetails: "cost_details",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesUsage$ {
-  /** @deprecated use `OpenResponsesUsage$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesUsage$inboundSchema;
-  /** @deprecated use `OpenResponsesUsage$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesUsage$outboundSchema;
-  /** @deprecated use `OpenResponsesUsage$Outbound` instead. */
-  export type Outbound = OpenResponsesUsage$Outbound;
-}
-
-export function openResponsesUsageToJSON(
-  openResponsesUsage: OpenResponsesUsage,
-): string {
-  return JSON.stringify(
-    OpenResponsesUsage$outboundSchema.parse(openResponsesUsage),
-  );
-}
 
 export function openResponsesUsageFromJSON(
   jsonString: string,

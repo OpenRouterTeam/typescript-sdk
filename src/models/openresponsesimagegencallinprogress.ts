@@ -33,24 +33,6 @@ export const OpenResponsesImageGenCallInProgressType$inboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesImageGenCallInProgressType);
 
 /** @internal */
-export const OpenResponsesImageGenCallInProgressType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesImageGenCallInProgressType
-> = OpenResponsesImageGenCallInProgressType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallInProgressType$ {
-  /** @deprecated use `OpenResponsesImageGenCallInProgressType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallInProgressType$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallInProgressType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallInProgressType$outboundSchema;
-}
-
-/** @internal */
 export const OpenResponsesImageGenCallInProgress$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallInProgress,
   unknown
@@ -66,56 +48,6 @@ export const OpenResponsesImageGenCallInProgress$inboundSchema: z.ZodType<
     "sequence_number": "sequenceNumber",
   });
 });
-
-/** @internal */
-export type OpenResponsesImageGenCallInProgress$Outbound = {
-  type: string;
-  item_id: string;
-  output_index: number;
-  sequence_number: number;
-};
-
-/** @internal */
-export const OpenResponsesImageGenCallInProgress$outboundSchema: z.ZodType<
-  OpenResponsesImageGenCallInProgress$Outbound,
-  OpenResponsesImageGenCallInProgress
-> = z.object({
-  type: OpenResponsesImageGenCallInProgressType$outboundSchema,
-  itemId: z.string(),
-  outputIndex: z.number(),
-  sequenceNumber: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    itemId: "item_id",
-    outputIndex: "output_index",
-    sequenceNumber: "sequence_number",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesImageGenCallInProgress$ {
-  /** @deprecated use `OpenResponsesImageGenCallInProgress$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesImageGenCallInProgress$inboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallInProgress$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesImageGenCallInProgress$outboundSchema;
-  /** @deprecated use `OpenResponsesImageGenCallInProgress$Outbound` instead. */
-  export type Outbound = OpenResponsesImageGenCallInProgress$Outbound;
-}
-
-export function openResponsesImageGenCallInProgressToJSON(
-  openResponsesImageGenCallInProgress: OpenResponsesImageGenCallInProgress,
-): string {
-  return JSON.stringify(
-    OpenResponsesImageGenCallInProgress$outboundSchema.parse(
-      openResponsesImageGenCallInProgress,
-    ),
-  );
-}
 
 export function openResponsesImageGenCallInProgressFromJSON(
   jsonString: string,

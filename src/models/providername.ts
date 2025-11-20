@@ -3,51 +3,30 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
-  AnyScale: "AnyScale",
-  CentML: "Cent-ML",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Modal: "Modal",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Together2: "Together 2",
-  OneDotAI: "01.AI",
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",
   AmazonBedrock: "Amazon Bedrock",
   Anthropic: "Anthropic",
+  Arcee: "Arcee",
   AtlasCloud: "AtlasCloud",
-  Atoma: "Atoma",
   Avian: "Avian",
   Azure: "Azure",
   BaseTen: "BaseTen",
+  BlackForestLabs: "Black Forest Labs",
   Cerebras: "Cerebras",
   Chutes: "Chutes",
   Cirrascale: "Cirrascale",
   Clarifai: "Clarifai",
   Cloudflare: "Cloudflare",
   Cohere: "Cohere",
-  CrofAI: "CrofAI",
   Crusoe: "Crusoe",
   DeepInfra: "DeepInfra",
   DeepSeek: "DeepSeek",
-  Enfer: "Enfer",
   Featherless: "Featherless",
   Fireworks: "Fireworks",
   Friendli: "Friendli",
@@ -60,12 +39,8 @@ export const ProviderName = {
   InferenceNet: "InferenceNet",
   Infermatic: "Infermatic",
   Inflection: "Inflection",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
   Liquid: "Liquid",
   Mancer2: "Mancer 2",
-  Meta: "Meta",
   Minimax: "Minimax",
   ModelRun: "ModelRun",
   Mistral: "Mistral",
@@ -75,7 +50,6 @@ export const ProviderName = {
   NCompass: "NCompass",
   Nebius: "Nebius",
   NextBit: "NextBit",
-  Nineteen: "Nineteen",
   Novita: "Novita",
   Nvidia: "Nvidia",
   OpenAI: "OpenAI",
@@ -90,7 +64,6 @@ export const ProviderName = {
   Switchpoint: "Switchpoint",
   Targon: "Targon",
   Together: "Together",
-  Ubicloud: "Ubicloud",
   Venice: "Venice",
   WandB: "WandB",
   XAI: "xAI",
@@ -100,28 +73,8 @@ export const ProviderName = {
 export type ProviderName = OpenEnum<typeof ProviderName>;
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> = z
-  .union([
-    z.enum(ProviderName),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
+  openEnums.inboundSchema(ProviderName);
 /** @internal */
-export const ProviderName$outboundSchema: z.ZodType<
-  ProviderName,
-  ProviderName
-> = z.union([
-  z.enum(ProviderName),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ProviderName$ {
-  /** @deprecated use `ProviderName$inboundSchema` instead. */
-  export const inboundSchema = ProviderName$inboundSchema;
-  /** @deprecated use `ProviderName$outboundSchema` instead. */
-  export const outboundSchema = ProviderName$outboundSchema;
-}
+export const ProviderName$outboundSchema: z.ZodType<string, ProviderName> =
+  openEnums.outboundSchema(ProviderName);

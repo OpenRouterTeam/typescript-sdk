@@ -32,52 +32,6 @@ export const CompletionLogprobs$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type CompletionLogprobs$Outbound = {
-  tokens: Array<string>;
-  token_logprobs: Array<number>;
-  top_logprobs: Array<{ [k: string]: number }> | null;
-  text_offset: Array<number>;
-};
-
-/** @internal */
-export const CompletionLogprobs$outboundSchema: z.ZodType<
-  CompletionLogprobs$Outbound,
-  CompletionLogprobs
-> = z.object({
-  tokens: z.array(z.string()),
-  tokenLogprobs: z.array(z.number()),
-  topLogprobs: z.nullable(z.array(z.record(z.string(), z.number()))),
-  textOffset: z.array(z.number()),
-}).transform((v) => {
-  return remap$(v, {
-    tokenLogprobs: "token_logprobs",
-    topLogprobs: "top_logprobs",
-    textOffset: "text_offset",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace CompletionLogprobs$ {
-  /** @deprecated use `CompletionLogprobs$inboundSchema` instead. */
-  export const inboundSchema = CompletionLogprobs$inboundSchema;
-  /** @deprecated use `CompletionLogprobs$outboundSchema` instead. */
-  export const outboundSchema = CompletionLogprobs$outboundSchema;
-  /** @deprecated use `CompletionLogprobs$Outbound` instead. */
-  export type Outbound = CompletionLogprobs$Outbound;
-}
-
-export function completionLogprobsToJSON(
-  completionLogprobs: CompletionLogprobs,
-): string {
-  return JSON.stringify(
-    CompletionLogprobs$outboundSchema.parse(completionLogprobs),
-  );
-}
-
 export function completionLogprobsFromJSON(
   jsonString: string,
 ): SafeParseResult<CompletionLogprobs, SDKValidationError> {

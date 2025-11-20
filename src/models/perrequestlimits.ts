@@ -36,47 +36,6 @@ export const PerRequestLimits$inboundSchema: z.ZodType<
   });
 });
 
-/** @internal */
-export type PerRequestLimits$Outbound = {
-  prompt_tokens: number;
-  completion_tokens: number;
-};
-
-/** @internal */
-export const PerRequestLimits$outboundSchema: z.ZodType<
-  PerRequestLimits$Outbound,
-  PerRequestLimits
-> = z.object({
-  promptTokens: z.number(),
-  completionTokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    promptTokens: "prompt_tokens",
-    completionTokens: "completion_tokens",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PerRequestLimits$ {
-  /** @deprecated use `PerRequestLimits$inboundSchema` instead. */
-  export const inboundSchema = PerRequestLimits$inboundSchema;
-  /** @deprecated use `PerRequestLimits$outboundSchema` instead. */
-  export const outboundSchema = PerRequestLimits$outboundSchema;
-  /** @deprecated use `PerRequestLimits$Outbound` instead. */
-  export type Outbound = PerRequestLimits$Outbound;
-}
-
-export function perRequestLimitsToJSON(
-  perRequestLimits: PerRequestLimits,
-): string {
-  return JSON.stringify(
-    PerRequestLimits$outboundSchema.parse(perRequestLimits),
-  );
-}
-
 export function perRequestLimitsFromJSON(
   jsonString: string,
 ): SafeParseResult<PerRequestLimits, SDKValidationError> {

@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const WebSearchStatus = {
   Completed: "completed",
@@ -21,28 +18,9 @@ export type WebSearchStatus = OpenEnum<typeof WebSearchStatus>;
 export const WebSearchStatus$inboundSchema: z.ZodType<
   WebSearchStatus,
   unknown
-> = z
-  .union([
-    z.enum(WebSearchStatus),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(WebSearchStatus);
 /** @internal */
 export const WebSearchStatus$outboundSchema: z.ZodType<
-  WebSearchStatus,
+  string,
   WebSearchStatus
-> = z.union([
-  z.enum(WebSearchStatus),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace WebSearchStatus$ {
-  /** @deprecated use `WebSearchStatus$inboundSchema` instead. */
-  export const inboundSchema = WebSearchStatus$inboundSchema;
-  /** @deprecated use `WebSearchStatus$outboundSchema` instead. */
-  export const outboundSchema = WebSearchStatus$outboundSchema;
-}
+> = openEnums.outboundSchema(WebSearchStatus);

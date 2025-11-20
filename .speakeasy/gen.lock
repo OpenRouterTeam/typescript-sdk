@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 21d34ad219f16d5944497a609bd0c936
+  docChecksum: bcccd1abd05f6654a822386f2eefbd8a
   docVersion: 1.0.0
-  speakeasyVersion: 1.649.0
-  generationVersion: 2.739.1
-  releaseVersion: 0.1.1
-  configChecksum: c28c46b34a103eebef5cf4e55b42c8b7
+  speakeasyVersion: 1.659.0
+  generationVersion: 2.755.9
+  releaseVersion: 0.1.18
+  configChecksum: ad5a220c1110e01ccea49eed2d7bb48c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.0
+    core: 3.26.7
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -26,13 +26,13 @@ features:
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
     globalServerURLs: 2.83.0
+    globals: 2.82.2
     groups: 2.81.3
     methodArguments: 0.1.2
     methodSecurity: 2.82.6
     nameOverrides: 2.81.2
     nullables: 0.1.1
     openEnums: 0.1.1
-    reactQueryHooks: 0.2.3
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
@@ -46,7 +46,6 @@ generatedFiles:
   - .devcontainer/setup.sh
   - .gitattributes
   - FUNCTIONS.md
-  - REACT_QUERY.md
   - RUNTIMES.md
   - USAGE.md
   - docs/lib/utils/retryconfig.md
@@ -70,9 +69,14 @@ generatedFiles:
   - docs/models/chatmessagecontentitemaudio.md
   - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemaudioinputaudio.md
+  - docs/models/chatmessagecontentitemfile.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
+  - docs/models/chatmessagecontentitemvideo.md
+  - docs/models/chatmessagecontentitemvideoinputvideo.md
+  - docs/models/chatmessagecontentitemvideovideourl.md
+  - docs/models/chatmessagecontentitemvideovideourlvideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -125,11 +129,11 @@ generatedFiles:
   - docs/models/errors/toomanyrequestsresponseerror.md
   - docs/models/errors/unauthorizedresponseerror.md
   - docs/models/errors/unprocessableentityresponseerror.md
-  - docs/models/experimental.md
   - docs/models/filecitation.md
   - docs/models/filecitationtype.md
   - docs/models/filepath.md
   - docs/models/filepathtype.md
+  - docs/models/filet.md
   - docs/models/forbiddenresponseerrordata.md
   - docs/models/idfileparser.md
   - docs/models/idmoderation.md
@@ -294,6 +298,9 @@ generatedFiles:
   - docs/models/openresponseswebsearchtooltype.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
+  - docs/models/operations/content.md
+  - docs/models/operations/contentimageurl.md
+  - docs/models/operations/contenttext.md
   - docs/models/operations/createauthkeyscodecodechallengemethod.md
   - docs/models/operations/createauthkeyscodedata.md
   - docs/models/operations/createauthkeyscoderequest.md
@@ -312,17 +319,13 @@ generatedFiles:
   - docs/models/operations/createkeysresponse.md
   - docs/models/operations/createresponsesresponse.md
   - docs/models/operations/createresponsesresponsebody.md
-  - docs/models/operations/datacollection.md
   - docs/models/operations/deletekeysrequest.md
   - docs/models/operations/deletekeysresponse.md
   - docs/models/operations/embedding.md
   - docs/models/operations/encodingformat.md
-  - docs/models/operations/encodingformatbase64.md
-  - docs/models/operations/encodingformatfloat.md
   - docs/models/operations/exchangeauthcodeforapikeycodechallengemethod.md
   - docs/models/operations/exchangeauthcodeforapikeyrequest.md
   - docs/models/operations/exchangeauthcodeforapikeyresponse.md
-  - docs/models/operations/experimental.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -341,7 +344,9 @@ generatedFiles:
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
   - docs/models/operations/ignore.md
+  - docs/models/operations/imageurl.md
   - docs/models/operations/input.md
+  - docs/models/operations/inputunion.md
   - docs/models/operations/listdata.md
   - docs/models/operations/listendpointsrequest.md
   - docs/models/operations/listendpointsresponse.md
@@ -359,9 +364,10 @@ generatedFiles:
   - docs/models/operations/order.md
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
-  - docs/models/operations/sort.md
   - docs/models/operations/supportedparameter.md
   - docs/models/operations/transferintent.md
+  - docs/models/operations/typeimageurl.md
+  - docs/models/operations/typetext.md
   - docs/models/operations/updatekeysdata.md
   - docs/models/operations/updatekeyslimitreset.md
   - docs/models/operations/updatekeysrequest.md
@@ -400,6 +406,7 @@ generatedFiles:
   - docs/models/provider.md
   - docs/models/providername.md
   - docs/models/provideroverloadedresponseerrordata.md
+  - docs/models/providersort.md
   - docs/models/publicendpoint.md
   - docs/models/publicendpointquantization.md
   - docs/models/publicpricing.md
@@ -470,14 +477,13 @@ generatedFiles:
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
-  - docs/models/sort.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
   - docs/models/tokenizer.md
-  - docs/models/tool.md
   - docs/models/toolcallstatus.md
-  - docs/models/toolfunction.md
+  - docs/models/tooldefinitionjson.md
+  - docs/models/tooldefinitionjsonfunction.md
   - docs/models/toolresponsemessage.md
   - docs/models/toolresponsemessagecontent.md
   - docs/models/toomanyrequestsresponseerrordata.md
@@ -509,6 +515,7 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
+  - docs/models/videourl.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -546,6 +553,7 @@ generatedFiles:
   - src/funcs/creditsCreateCoinbaseCharge.ts
   - src/funcs/creditsGetCredits.ts
   - src/funcs/embeddingsGenerate.ts
+  - src/funcs/embeddingsListModels.ts
   - src/funcs/endpointsList.ts
   - src/funcs/endpointsListZdrEndpoints.ts
   - src/funcs/generationsGetGeneration.ts
@@ -581,20 +589,20 @@ generatedFiles:
   - src/models/assistantmessage.ts
   - src/models/badgatewayresponseerrordata.ts
   - src/models/badrequestresponseerrordata.ts
-  - src/models/chatcompletionfinishreason.ts
   - src/models/chaterror.ts
   - src/models/chatgenerationparams.ts
   - src/models/chatgenerationtokenusage.ts
   - src/models/chatmessagecontentitem.ts
   - src/models/chatmessagecontentitemaudio.ts
+  - src/models/chatmessagecontentitemfile.ts
   - src/models/chatmessagecontentitemimage.ts
   - src/models/chatmessagecontentitemtext.ts
+  - src/models/chatmessagecontentitemvideo.ts
   - src/models/chatmessagetokenlogprob.ts
   - src/models/chatmessagetokenlogprobs.ts
   - src/models/chatmessagetoolcall.ts
   - src/models/chatresponse.ts
   - src/models/chatresponsechoice.ts
-  - src/models/chatstreamingchoice.ts
   - src/models/chatstreamingmessagechunk.ts
   - src/models/chatstreamingmessagetoolcall.ts
   - src/models/chatstreamingresponsechunk.ts
@@ -605,6 +613,7 @@ generatedFiles:
   - src/models/completionresponse.ts
   - src/models/completionusage.ts
   - src/models/createchargerequest.ts
+  - src/models/datacollection.ts
   - src/models/defaultparameters.ts
   - src/models/edgenetworktimeoutresponseerrordata.ts
   - src/models/endpointstatus.ts
@@ -718,6 +727,7 @@ generatedFiles:
   - src/models/perrequestlimits.ts
   - src/models/providername.ts
   - src/models/provideroverloadedresponseerrordata.ts
+  - src/models/providersort.ts
   - src/models/publicendpoint.ts
   - src/models/publicpricing.ts
   - src/models/quantization.ts
@@ -750,8 +760,8 @@ generatedFiles:
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
-  - src/models/tool.ts
   - src/models/toolcallstatus.ts
+  - src/models/tooldefinitionjson.ts
   - src/models/toolresponsemessage.ts
   - src/models/toomanyrequestsresponseerrordata.ts
   - src/models/topproviderinfo.ts
@@ -759,34 +769,9 @@ generatedFiles:
   - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
+  - src/models/videourl.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
-  - src/react-query/_context.tsx
-  - src/react-query/_types.ts
-  - src/react-query/analyticsGetUserActivity.ts
-  - src/react-query/apiKeysCreate.ts
-  - src/react-query/apiKeysDelete.ts
-  - src/react-query/apiKeysGet.ts
-  - src/react-query/apiKeysGetCurrentKeyMetadata.ts
-  - src/react-query/apiKeysList.ts
-  - src/react-query/apiKeysUpdate.ts
-  - src/react-query/betaResponsesSend.ts
-  - src/react-query/chatSend.ts
-  - src/react-query/completionsGenerate.ts
-  - src/react-query/creditsCreateCoinbaseCharge.ts
-  - src/react-query/creditsGetCredits.ts
-  - src/react-query/embeddingsGenerate.ts
-  - src/react-query/endpointsList.ts
-  - src/react-query/endpointsListZdrEndpoints.ts
-  - src/react-query/generationsGetGeneration.ts
-  - src/react-query/index.ts
-  - src/react-query/modelsCount.ts
-  - src/react-query/modelsList.ts
-  - src/react-query/modelsListForUser.ts
-  - src/react-query/oAuthCreateAuthCode.ts
-  - src/react-query/oAuthExchangeAuthCodeForAPIKey.ts
-  - src/react-query/parametersGetParameters.ts
-  - src/react-query/providersList.ts
   - src/sdk/analytics.ts
   - src/sdk/apikeys.ts
   - src/sdk/beta.ts
@@ -1523,7 +1508,7 @@ examples:
           id: "<id>"
       responses:
         "200":
-          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_video_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
+          application/json: {"data": {"id": "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG", "upstream_id": "chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946", "total_cost": 0.0015, "cache_discount": 0.0002, "upstream_inference_cost": 0.0012, "created_at": "2024-07-15T23:33:19.433273+00:00", "model": "sao10k/l3-stheno-8b", "app_id": 12345, "streamed": true, "cancelled": false, "provider_name": "Infermatic", "latency": 1250, "moderation_latency": 50, "generation_time": 1200, "finish_reason": "stop", "tokens_prompt": 10, "tokens_completion": 25, "native_tokens_prompt": 10, "native_tokens_completion": 25, "native_tokens_completion_images": 0, "native_tokens_reasoning": 5, "native_tokens_cached": 3, "num_media_prompt": 1, "num_input_audio_prompt": 0, "num_media_completion": 0, "num_search_results": 5, "origin": "https://openrouter.ai/", "usage": 0.0015, "is_byok": false, "native_finish_reason": "stop", "external_user": "user-123", "api_type": "completions"}}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         4XX:
@@ -1790,4 +1775,22 @@ examples:
           application/json: {"error": {"code": 524, "message": "Request timed out. Please try again later."}}
         "529":
           application/json: {"error": {"code": 529, "message": "Provider returned error"}}
+  listModelsEmbeddings:
+    speakeasy-default-list-models-embeddings:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  listEmbeddingsModels:
+    speakeasy-default-list-embeddings-models:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "openai/gpt-4", "canonical_slug": "openai/gpt-4", "name": "GPT-4", "created": 1692901234, "pricing": {"prompt": "0.00003", "completion": "0.00006"}, "context_length": 8192, "architecture": {"modality": "text->text", "input_modalities": ["text"], "output_modalities": ["text"]}, "top_provider": {"is_moderated": true}, "per_request_limits": null, "supported_parameters": ["temperature", "top_p", "max_tokens", "frequency_penalty", "presence_penalty"], "default_parameters": null}]}
+        "400":
+          application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2

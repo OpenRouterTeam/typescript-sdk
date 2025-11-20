@@ -93,6 +93,10 @@ export type GetCurrentKeyData = {
    */
   includeByokInLimit: boolean;
   /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
+  /**
    * Legacy rate limit information about a key. Will always return -1.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -116,40 +120,6 @@ export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
   interval: z.string(),
   note: z.string(),
 });
-
-/** @internal */
-export type RateLimit$Outbound = {
-  requests: number;
-  interval: string;
-  note: string;
-};
-
-/** @internal */
-export const RateLimit$outboundSchema: z.ZodType<
-  RateLimit$Outbound,
-  RateLimit
-> = z.object({
-  requests: z.number(),
-  interval: z.string(),
-  note: z.string(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace RateLimit$ {
-  /** @deprecated use `RateLimit$inboundSchema` instead. */
-  export const inboundSchema = RateLimit$inboundSchema;
-  /** @deprecated use `RateLimit$outboundSchema` instead. */
-  export const outboundSchema = RateLimit$outboundSchema;
-  /** @deprecated use `RateLimit$Outbound` instead. */
-  export type Outbound = RateLimit$Outbound;
-}
-
-export function rateLimitToJSON(rateLimit: RateLimit): string {
-  return JSON.stringify(RateLimit$outboundSchema.parse(rateLimit));
-}
 
 export function rateLimitFromJSON(
   jsonString: string,
@@ -181,6 +151,9 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
   include_byok_in_limit: z.boolean(),
+  expires_at: z.nullable(
+    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
+  ).optional(),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -196,89 +169,10 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",
     "include_byok_in_limit": "includeByokInLimit",
+    "expires_at": "expiresAt",
     "rate_limit": "rateLimit",
   });
 });
-
-/** @internal */
-export type GetCurrentKeyData$Outbound = {
-  label: string;
-  limit: number | null;
-  usage: number;
-  usage_daily: number;
-  usage_weekly: number;
-  usage_monthly: number;
-  byok_usage: number;
-  byok_usage_daily: number;
-  byok_usage_weekly: number;
-  byok_usage_monthly: number;
-  is_free_tier: boolean;
-  is_provisioning_key: boolean;
-  limit_remaining: number | null;
-  limit_reset: string | null;
-  include_byok_in_limit: boolean;
-  rate_limit: RateLimit$Outbound;
-};
-
-/** @internal */
-export const GetCurrentKeyData$outboundSchema: z.ZodType<
-  GetCurrentKeyData$Outbound,
-  GetCurrentKeyData
-> = z.object({
-  label: z.string(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  usageDaily: z.number(),
-  usageWeekly: z.number(),
-  usageMonthly: z.number(),
-  byokUsage: z.number(),
-  byokUsageDaily: z.number(),
-  byokUsageWeekly: z.number(),
-  byokUsageMonthly: z.number(),
-  isFreeTier: z.boolean(),
-  isProvisioningKey: z.boolean(),
-  limitRemaining: z.nullable(z.number()),
-  limitReset: z.nullable(z.string()),
-  includeByokInLimit: z.boolean(),
-  rateLimit: z.lazy(() => RateLimit$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    usageDaily: "usage_daily",
-    usageWeekly: "usage_weekly",
-    usageMonthly: "usage_monthly",
-    byokUsage: "byok_usage",
-    byokUsageDaily: "byok_usage_daily",
-    byokUsageWeekly: "byok_usage_weekly",
-    byokUsageMonthly: "byok_usage_monthly",
-    isFreeTier: "is_free_tier",
-    isProvisioningKey: "is_provisioning_key",
-    limitRemaining: "limit_remaining",
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
-    rateLimit: "rate_limit",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetCurrentKeyData$ {
-  /** @deprecated use `GetCurrentKeyData$inboundSchema` instead. */
-  export const inboundSchema = GetCurrentKeyData$inboundSchema;
-  /** @deprecated use `GetCurrentKeyData$outboundSchema` instead. */
-  export const outboundSchema = GetCurrentKeyData$outboundSchema;
-  /** @deprecated use `GetCurrentKeyData$Outbound` instead. */
-  export type Outbound = GetCurrentKeyData$Outbound;
-}
-
-export function getCurrentKeyDataToJSON(
-  getCurrentKeyData: GetCurrentKeyData,
-): string {
-  return JSON.stringify(
-    GetCurrentKeyData$outboundSchema.parse(getCurrentKeyData),
-  );
-}
 
 export function getCurrentKeyDataFromJSON(
   jsonString: string,
@@ -297,40 +191,6 @@ export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => GetCurrentKeyData$inboundSchema),
 });
-
-/** @internal */
-export type GetCurrentKeyResponse$Outbound = {
-  data: GetCurrentKeyData$Outbound;
-};
-
-/** @internal */
-export const GetCurrentKeyResponse$outboundSchema: z.ZodType<
-  GetCurrentKeyResponse$Outbound,
-  GetCurrentKeyResponse
-> = z.object({
-  data: z.lazy(() => GetCurrentKeyData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetCurrentKeyResponse$ {
-  /** @deprecated use `GetCurrentKeyResponse$inboundSchema` instead. */
-  export const inboundSchema = GetCurrentKeyResponse$inboundSchema;
-  /** @deprecated use `GetCurrentKeyResponse$outboundSchema` instead. */
-  export const outboundSchema = GetCurrentKeyResponse$outboundSchema;
-  /** @deprecated use `GetCurrentKeyResponse$Outbound` instead. */
-  export type Outbound = GetCurrentKeyResponse$Outbound;
-}
-
-export function getCurrentKeyResponseToJSON(
-  getCurrentKeyResponse: GetCurrentKeyResponse,
-): string {
-  return JSON.stringify(
-    GetCurrentKeyResponse$outboundSchema.parse(getCurrentKeyResponse),
-  );
-}
 
 export function getCurrentKeyResponseFromJSON(
   jsonString: string,

@@ -21,48 +21,10 @@ export const ForbiddenResponseErrorData$inboundSchema: z.ZodType<
   ForbiddenResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type ForbiddenResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const ForbiddenResponseErrorData$outboundSchema: z.ZodType<
-  ForbiddenResponseErrorData$Outbound,
-  ForbiddenResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ForbiddenResponseErrorData$ {
-  /** @deprecated use `ForbiddenResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = ForbiddenResponseErrorData$inboundSchema;
-  /** @deprecated use `ForbiddenResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = ForbiddenResponseErrorData$outboundSchema;
-  /** @deprecated use `ForbiddenResponseErrorData$Outbound` instead. */
-  export type Outbound = ForbiddenResponseErrorData$Outbound;
-}
-
-export function forbiddenResponseErrorDataToJSON(
-  forbiddenResponseErrorData: ForbiddenResponseErrorData,
-): string {
-  return JSON.stringify(
-    ForbiddenResponseErrorData$outboundSchema.parse(forbiddenResponseErrorData),
-  );
-}
 
 export function forbiddenResponseErrorDataFromJSON(
   jsonString: string,

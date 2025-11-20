@@ -30,24 +30,10 @@ export type ResponsesFormatTextJSONSchemaConfig = {
 export const ResponsesFormatTextJSONSchemaConfigType$inboundSchema: z.ZodEnum<
   typeof ResponsesFormatTextJSONSchemaConfigType
 > = z.enum(ResponsesFormatTextJSONSchemaConfigType);
-
 /** @internal */
 export const ResponsesFormatTextJSONSchemaConfigType$outboundSchema: z.ZodEnum<
   typeof ResponsesFormatTextJSONSchemaConfigType
 > = ResponsesFormatTextJSONSchemaConfigType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatTextJSONSchemaConfigType$ {
-  /** @deprecated use `ResponsesFormatTextJSONSchemaConfigType$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesFormatTextJSONSchemaConfigType$inboundSchema;
-  /** @deprecated use `ResponsesFormatTextJSONSchemaConfigType$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesFormatTextJSONSchemaConfigType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
@@ -60,7 +46,6 @@ export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
   strict: z.nullable(z.boolean()).optional(),
   schema: z.record(z.string(), z.nullable(z.any())),
 });
-
 /** @internal */
 export type ResponsesFormatTextJSONSchemaConfig$Outbound = {
   type: string;
@@ -82,21 +67,6 @@ export const ResponsesFormatTextJSONSchemaConfig$outboundSchema: z.ZodType<
   schema: z.record(z.string(), z.nullable(z.any())),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesFormatTextJSONSchemaConfig$ {
-  /** @deprecated use `ResponsesFormatTextJSONSchemaConfig$inboundSchema` instead. */
-  export const inboundSchema =
-    ResponsesFormatTextJSONSchemaConfig$inboundSchema;
-  /** @deprecated use `ResponsesFormatTextJSONSchemaConfig$outboundSchema` instead. */
-  export const outboundSchema =
-    ResponsesFormatTextJSONSchemaConfig$outboundSchema;
-  /** @deprecated use `ResponsesFormatTextJSONSchemaConfig$Outbound` instead. */
-  export type Outbound = ResponsesFormatTextJSONSchemaConfig$Outbound;
-}
-
 export function responsesFormatTextJSONSchemaConfigToJSON(
   responsesFormatTextJSONSchemaConfig: ResponsesFormatTextJSONSchemaConfig,
 ): string {
@@ -106,7 +76,6 @@ export function responsesFormatTextJSONSchemaConfigToJSON(
     ),
   );
 }
-
 export function responsesFormatTextJSONSchemaConfigFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesFormatTextJSONSchemaConfig, SDKValidationError> {

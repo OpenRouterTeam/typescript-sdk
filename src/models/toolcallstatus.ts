@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 export const ToolCallStatus = {
   InProgress: "in_progress",
@@ -18,28 +15,7 @@ export type ToolCallStatus = OpenEnum<typeof ToolCallStatus>;
 
 /** @internal */
 export const ToolCallStatus$inboundSchema: z.ZodType<ToolCallStatus, unknown> =
-  z
-    .union([
-      z.enum(ToolCallStatus),
-      z.string().transform(catchUnrecognizedEnum),
-    ]);
-
+  openEnums.inboundSchema(ToolCallStatus);
 /** @internal */
-export const ToolCallStatus$outboundSchema: z.ZodType<
-  ToolCallStatus,
-  ToolCallStatus
-> = z.union([
-  z.enum(ToolCallStatus),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ToolCallStatus$ {
-  /** @deprecated use `ToolCallStatus$inboundSchema` instead. */
-  export const inboundSchema = ToolCallStatus$inboundSchema;
-  /** @deprecated use `ToolCallStatus$outboundSchema` instead. */
-  export const outboundSchema = ToolCallStatus$outboundSchema;
-}
+export const ToolCallStatus$outboundSchema: z.ZodType<string, ToolCallStatus> =
+  openEnums.outboundSchema(ToolCallStatus);

@@ -21,6 +21,16 @@ export const ServerList = {
 export type SDKOptions = {
   apiKey?: string | (() => Promise<string>) | undefined;
 
+  /**
+   * Allows setting the httpReferer parameter for all supported operations
+   */
+  httpReferer?: string | undefined;
+
+  /**
+   * Allows setting the xTitle parameter for all supported operations
+   */
+  xTitle?: string | undefined;
+
   httpClient?: HTTPClient;
   /**
    * Allows overriding the default server used by the SDK
@@ -59,7 +69,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "1.0.0",
-  sdkVersion: "0.1.1",
-  genVersion: "2.739.1",
-  userAgent: "speakeasy-sdk/typescript 0.1.1 2.739.1 1.0.0 @openrouter/sdk",
+  sdkVersion: "0.1.18",
+  genVersion: "2.755.9",
+  userAgent: "speakeasy-sdk/typescript 0.1.18 2.755.9 1.0.0 @openrouter/sdk",
 } as const;

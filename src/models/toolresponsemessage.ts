@@ -4,15 +4,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatMessageContentItem,
-  ChatMessageContentItem$inboundSchema,
   ChatMessageContentItem$Outbound,
   ChatMessageContentItem$outboundSchema,
 } from "./chatmessagecontentitem.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ToolResponseMessageContent = string | Array<ChatMessageContentItem>;
 
@@ -21,12 +17,6 @@ export type ToolResponseMessage = {
   content: string | Array<ChatMessageContentItem>;
   toolCallId: string;
 };
-
-/** @internal */
-export const ToolResponseMessageContent$inboundSchema: z.ZodType<
-  ToolResponseMessageContent,
-  unknown
-> = z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]);
 
 /** @internal */
 export type ToolResponseMessageContent$Outbound =
@@ -39,19 +29,6 @@ export const ToolResponseMessageContent$outboundSchema: z.ZodType<
   ToolResponseMessageContent
 > = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ToolResponseMessageContent$ {
-  /** @deprecated use `ToolResponseMessageContent$inboundSchema` instead. */
-  export const inboundSchema = ToolResponseMessageContent$inboundSchema;
-  /** @deprecated use `ToolResponseMessageContent$outboundSchema` instead. */
-  export const outboundSchema = ToolResponseMessageContent$outboundSchema;
-  /** @deprecated use `ToolResponseMessageContent$Outbound` instead. */
-  export type Outbound = ToolResponseMessageContent$Outbound;
-}
-
 export function toolResponseMessageContentToJSON(
   toolResponseMessageContent: ToolResponseMessageContent,
 ): string {
@@ -59,30 +36,6 @@ export function toolResponseMessageContentToJSON(
     ToolResponseMessageContent$outboundSchema.parse(toolResponseMessageContent),
   );
 }
-
-export function toolResponseMessageContentFromJSON(
-  jsonString: string,
-): SafeParseResult<ToolResponseMessageContent, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ToolResponseMessageContent$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ToolResponseMessageContent' from JSON`,
-  );
-}
-
-/** @internal */
-export const ToolResponseMessage$inboundSchema: z.ZodType<
-  ToolResponseMessage,
-  unknown
-> = z.object({
-  role: z.literal("tool"),
-  content: z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]),
-  tool_call_id: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_call_id": "toolCallId",
-  });
-});
 
 /** @internal */
 export type ToolResponseMessage$Outbound = {
@@ -108,33 +61,10 @@ export const ToolResponseMessage$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ToolResponseMessage$ {
-  /** @deprecated use `ToolResponseMessage$inboundSchema` instead. */
-  export const inboundSchema = ToolResponseMessage$inboundSchema;
-  /** @deprecated use `ToolResponseMessage$outboundSchema` instead. */
-  export const outboundSchema = ToolResponseMessage$outboundSchema;
-  /** @deprecated use `ToolResponseMessage$Outbound` instead. */
-  export type Outbound = ToolResponseMessage$Outbound;
-}
-
 export function toolResponseMessageToJSON(
   toolResponseMessage: ToolResponseMessage,
 ): string {
   return JSON.stringify(
     ToolResponseMessage$outboundSchema.parse(toolResponseMessage),
-  );
-}
-
-export function toolResponseMessageFromJSON(
-  jsonString: string,
-): SafeParseResult<ToolResponseMessage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ToolResponseMessage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ToolResponseMessage' from JSON`,
   );
 }

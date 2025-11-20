@@ -44,31 +44,3 @@ export const ChatError$inboundSchema: z.ZodType<ChatError, unknown> = z.object({
       body: v.body$,
     });
   });
-
-/** @internal */
-export type ChatError$Outbound = {
-  error: models.ChatErrorError$Outbound;
-};
-
-/** @internal */
-export const ChatError$outboundSchema: z.ZodType<
-  ChatError$Outbound,
-  ChatError
-> = z.custom<ChatError>(x => x instanceof ChatError)
-  .transform(v => v.data$)
-  .pipe(z.object({
-    error: z.lazy(() => models.ChatErrorError$outboundSchema),
-  }));
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ChatError$ {
-  /** @deprecated use `ChatError$inboundSchema` instead. */
-  export const inboundSchema = ChatError$inboundSchema;
-  /** @deprecated use `ChatError$outboundSchema` instead. */
-  export const outboundSchema = ChatError$outboundSchema;
-  /** @deprecated use `ChatError$Outbound` instead. */
-  export type Outbound = ChatError$Outbound;
-}

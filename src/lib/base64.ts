@@ -28,10 +28,8 @@ export function stringFromBase64(b64str: string): string {
   return stringFromBytes(bytesFromBase64(b64str));
 }
 
-export const zodOutbound = z
-  .instanceof(Uint8Array)
+export const zodOutbound = z.custom<Uint8Array>(x => x instanceof Uint8Array)
   .or(z.string().transform(stringToBytes));
 
-export const zodInbound = z
-  .instanceof(Uint8Array)
+export const zodInbound = z.custom<Uint8Array>(x => x instanceof Uint8Array)
   .or(z.string().transform(bytesFromBase64));

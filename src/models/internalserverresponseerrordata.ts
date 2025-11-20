@@ -21,50 +21,10 @@ export const InternalServerResponseErrorData$inboundSchema: z.ZodType<
   InternalServerResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type InternalServerResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const InternalServerResponseErrorData$outboundSchema: z.ZodType<
-  InternalServerResponseErrorData$Outbound,
-  InternalServerResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace InternalServerResponseErrorData$ {
-  /** @deprecated use `InternalServerResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = InternalServerResponseErrorData$inboundSchema;
-  /** @deprecated use `InternalServerResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = InternalServerResponseErrorData$outboundSchema;
-  /** @deprecated use `InternalServerResponseErrorData$Outbound` instead. */
-  export type Outbound = InternalServerResponseErrorData$Outbound;
-}
-
-export function internalServerResponseErrorDataToJSON(
-  internalServerResponseErrorData: InternalServerResponseErrorData,
-): string {
-  return JSON.stringify(
-    InternalServerResponseErrorData$outboundSchema.parse(
-      internalServerResponseErrorData,
-    ),
-  );
-}
 
 export function internalServerResponseErrorDataFromJSON(
   jsonString: string,

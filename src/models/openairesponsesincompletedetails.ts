@@ -4,11 +4,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -23,28 +20,8 @@ export type OpenAIResponsesIncompleteDetails = {
 };
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, unknown> = z
-  .union([
-    z.enum(Reason),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const Reason$outboundSchema: z.ZodType<Reason, Reason> = z.union([
-  z.enum(Reason),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace Reason$ {
-  /** @deprecated use `Reason$inboundSchema` instead. */
-  export const inboundSchema = Reason$inboundSchema;
-  /** @deprecated use `Reason$outboundSchema` instead. */
-  export const outboundSchema = Reason$outboundSchema;
-}
+export const Reason$inboundSchema: z.ZodType<Reason, unknown> = openEnums
+  .inboundSchema(Reason);
 
 /** @internal */
 export const OpenAIResponsesIncompleteDetails$inboundSchema: z.ZodType<
@@ -53,42 +30,6 @@ export const OpenAIResponsesIncompleteDetails$inboundSchema: z.ZodType<
 > = z.object({
   reason: Reason$inboundSchema.optional(),
 });
-
-/** @internal */
-export type OpenAIResponsesIncompleteDetails$Outbound = {
-  reason?: string | undefined;
-};
-
-/** @internal */
-export const OpenAIResponsesIncompleteDetails$outboundSchema: z.ZodType<
-  OpenAIResponsesIncompleteDetails$Outbound,
-  OpenAIResponsesIncompleteDetails
-> = z.object({
-  reason: Reason$outboundSchema.optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesIncompleteDetails$ {
-  /** @deprecated use `OpenAIResponsesIncompleteDetails$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesIncompleteDetails$inboundSchema;
-  /** @deprecated use `OpenAIResponsesIncompleteDetails$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesIncompleteDetails$outboundSchema;
-  /** @deprecated use `OpenAIResponsesIncompleteDetails$Outbound` instead. */
-  export type Outbound = OpenAIResponsesIncompleteDetails$Outbound;
-}
-
-export function openAIResponsesIncompleteDetailsToJSON(
-  openAIResponsesIncompleteDetails: OpenAIResponsesIncompleteDetails,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesIncompleteDetails$outboundSchema.parse(
-      openAIResponsesIncompleteDetails,
-    ),
-  );
-}
 
 export function openAIResponsesIncompleteDetailsFromJSON(
   jsonString: string,

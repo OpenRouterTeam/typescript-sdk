@@ -1,17 +1,17 @@
 # EncodingFormat
 
-
-## Supported Types
-
-### `operations.EncodingFormatFloat`
+## Example Usage
 
 ```typescript
-const value: operations.EncodingFormatFloat = "float";
+import { EncodingFormat } from "@openrouter/sdk/models/operations";
+
+let value: EncodingFormat = "float";
 ```
 
-### `operations.EncodingFormatBase64`
+## Values
+
+This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-const value: operations.EncodingFormatBase64 = "base64";
+"float" | "base64" | Unrecognized<string>
 ```
-

@@ -3,11 +3,8 @@
  */
 
 import * as z from "zod/v4";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 
 /**
  * Size of the search context for web search tools
@@ -28,28 +25,9 @@ export type ResponsesSearchContextSize = OpenEnum<
 export const ResponsesSearchContextSize$inboundSchema: z.ZodType<
   ResponsesSearchContextSize,
   unknown
-> = z
-  .union([
-    z.enum(ResponsesSearchContextSize),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
+> = openEnums.inboundSchema(ResponsesSearchContextSize);
 /** @internal */
 export const ResponsesSearchContextSize$outboundSchema: z.ZodType<
-  ResponsesSearchContextSize,
+  string,
   ResponsesSearchContextSize
-> = z.union([
-  z.enum(ResponsesSearchContextSize),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesSearchContextSize$ {
-  /** @deprecated use `ResponsesSearchContextSize$inboundSchema` instead. */
-  export const inboundSchema = ResponsesSearchContextSize$inboundSchema;
-  /** @deprecated use `ResponsesSearchContextSize$outboundSchema` instead. */
-  export const outboundSchema = ResponsesSearchContextSize$outboundSchema;
-}
+> = openEnums.outboundSchema(ResponsesSearchContextSize);

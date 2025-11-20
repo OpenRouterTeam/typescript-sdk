@@ -23,7 +23,7 @@ export type ResponsesImageGenerationCallType = ClosedEnum<
 export type ResponsesImageGenerationCall = {
   type: ResponsesImageGenerationCallType;
   id: string;
-  result: string | null;
+  result?: string | null | undefined;
   status: ImageGenerationStatus;
 };
 
@@ -31,22 +31,10 @@ export type ResponsesImageGenerationCall = {
 export const ResponsesImageGenerationCallType$inboundSchema: z.ZodEnum<
   typeof ResponsesImageGenerationCallType
 > = z.enum(ResponsesImageGenerationCallType);
-
 /** @internal */
 export const ResponsesImageGenerationCallType$outboundSchema: z.ZodEnum<
   typeof ResponsesImageGenerationCallType
 > = ResponsesImageGenerationCallType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesImageGenerationCallType$ {
-  /** @deprecated use `ResponsesImageGenerationCallType$inboundSchema` instead. */
-  export const inboundSchema = ResponsesImageGenerationCallType$inboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCallType$outboundSchema` instead. */
-  export const outboundSchema = ResponsesImageGenerationCallType$outboundSchema;
-}
 
 /** @internal */
 export const ResponsesImageGenerationCall$inboundSchema: z.ZodType<
@@ -55,10 +43,9 @@ export const ResponsesImageGenerationCall$inboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesImageGenerationCallType$inboundSchema,
   id: z.string(),
-  result: z.nullable(z.string()),
+  result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
 });
-
 /** @internal */
 export type ResponsesImageGenerationCall$Outbound = {
   type: string;
@@ -74,22 +61,9 @@ export const ResponsesImageGenerationCall$outboundSchema: z.ZodType<
 > = z.object({
   type: ResponsesImageGenerationCallType$outboundSchema,
   id: z.string(),
-  result: z.nullable(z.string()),
+  result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$outboundSchema,
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ResponsesImageGenerationCall$ {
-  /** @deprecated use `ResponsesImageGenerationCall$inboundSchema` instead. */
-  export const inboundSchema = ResponsesImageGenerationCall$inboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCall$outboundSchema` instead. */
-  export const outboundSchema = ResponsesImageGenerationCall$outboundSchema;
-  /** @deprecated use `ResponsesImageGenerationCall$Outbound` instead. */
-  export type Outbound = ResponsesImageGenerationCall$Outbound;
-}
 
 export function responsesImageGenerationCallToJSON(
   responsesImageGenerationCall: ResponsesImageGenerationCall,
@@ -100,7 +74,6 @@ export function responsesImageGenerationCallToJSON(
     ),
   );
 }
-
 export function responsesImageGenerationCallFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesImageGenerationCall, SDKValidationError> {

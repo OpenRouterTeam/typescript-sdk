@@ -3,17 +3,10 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   ResponseFormatTextConfig,
-  ResponseFormatTextConfig$inboundSchema,
   ResponseFormatTextConfig$Outbound,
   ResponseFormatTextConfig$outboundSchema,
 } from "./responseformattextconfig.js";
@@ -39,45 +32,10 @@ export type OpenResponsesResponseText = {
 };
 
 /** @internal */
-export const OpenResponsesResponseTextVerbosity$inboundSchema: z.ZodType<
-  OpenResponsesResponseTextVerbosity,
-  unknown
-> = z
-  .union([
-    z.enum(OpenResponsesResponseTextVerbosity),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
 export const OpenResponsesResponseTextVerbosity$outboundSchema: z.ZodType<
-  OpenResponsesResponseTextVerbosity,
+  string,
   OpenResponsesResponseTextVerbosity
-> = z.union([
-  z.enum(OpenResponsesResponseTextVerbosity),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesResponseTextVerbosity$ {
-  /** @deprecated use `OpenResponsesResponseTextVerbosity$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesResponseTextVerbosity$inboundSchema;
-  /** @deprecated use `OpenResponsesResponseTextVerbosity$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesResponseTextVerbosity$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesResponseText$inboundSchema: z.ZodType<
-  OpenResponsesResponseText,
-  unknown
-> = z.object({
-  format: ResponseFormatTextConfig$inboundSchema.optional(),
-  verbosity: z.nullable(OpenResponsesResponseTextVerbosity$inboundSchema)
-    .optional(),
-});
+> = openEnums.outboundSchema(OpenResponsesResponseTextVerbosity);
 
 /** @internal */
 export type OpenResponsesResponseText$Outbound = {
@@ -95,33 +53,10 @@ export const OpenResponsesResponseText$outboundSchema: z.ZodType<
     .optional(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesResponseText$ {
-  /** @deprecated use `OpenResponsesResponseText$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesResponseText$inboundSchema;
-  /** @deprecated use `OpenResponsesResponseText$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesResponseText$outboundSchema;
-  /** @deprecated use `OpenResponsesResponseText$Outbound` instead. */
-  export type Outbound = OpenResponsesResponseText$Outbound;
-}
-
 export function openResponsesResponseTextToJSON(
   openResponsesResponseText: OpenResponsesResponseText,
 ): string {
   return JSON.stringify(
     OpenResponsesResponseText$outboundSchema.parse(openResponsesResponseText),
-  );
-}
-
-export function openResponsesResponseTextFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesResponseText, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesResponseText$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesResponseText' from JSON`,
   );
 }

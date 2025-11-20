@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -130,10 +127,6 @@ export type GetGenerationData = {
    */
   numInputAudioPrompt: number | null;
   /**
-   * Number of video inputs in the prompt
-   */
-  numVideoPrompt: number | null;
-  /**
    * Number of media items in the completion
    */
   numMediaCompletion: number | null;
@@ -178,14 +171,6 @@ export type GetGenerationResponse = {
 };
 
 /** @internal */
-export const GetGenerationRequest$inboundSchema: z.ZodType<
-  GetGenerationRequest,
-  unknown
-> = z.object({
-  id: z.string(),
-});
-
-/** @internal */
 export type GetGenerationRequest$Outbound = {
   id: string;
 };
@@ -198,19 +183,6 @@ export const GetGenerationRequest$outboundSchema: z.ZodType<
   id: z.string(),
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetGenerationRequest$ {
-  /** @deprecated use `GetGenerationRequest$inboundSchema` instead. */
-  export const inboundSchema = GetGenerationRequest$inboundSchema;
-  /** @deprecated use `GetGenerationRequest$outboundSchema` instead. */
-  export const outboundSchema = GetGenerationRequest$outboundSchema;
-  /** @deprecated use `GetGenerationRequest$Outbound` instead. */
-  export type Outbound = GetGenerationRequest$Outbound;
-}
-
 export function getGenerationRequestToJSON(
   getGenerationRequest: GetGenerationRequest,
 ): string {
@@ -219,39 +191,9 @@ export function getGenerationRequestToJSON(
   );
 }
 
-export function getGenerationRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<GetGenerationRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetGenerationRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetGenerationRequest' from JSON`,
-  );
-}
-
 /** @internal */
-export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = z
-  .union([
-    z.enum(ApiType),
-    z.string().transform(catchUnrecognizedEnum),
-  ]);
-
-/** @internal */
-export const ApiType$outboundSchema: z.ZodType<ApiType, ApiType> = z.union([
-  z.enum(ApiType),
-  z.string().and(z.custom<Unrecognized<string>>()),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ApiType$ {
-  /** @deprecated use `ApiType$inboundSchema` instead. */
-  export const inboundSchema = ApiType$inboundSchema;
-  /** @deprecated use `ApiType$outboundSchema` instead. */
-  export const outboundSchema = ApiType$outboundSchema;
-}
+export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
+  .inboundSchema(ApiType);
 
 /** @internal */
 export const GetGenerationData$inboundSchema: z.ZodType<
@@ -282,7 +224,6 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   native_tokens_cached: z.nullable(z.number()),
   num_media_prompt: z.nullable(z.number()),
   num_input_audio_prompt: z.nullable(z.number()),
-  num_video_prompt: z.nullable(z.number()),
   num_media_completion: z.nullable(z.number()),
   num_search_results: z.nullable(z.number()),
   origin: z.string(),
@@ -312,7 +253,6 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "native_tokens_cached": "nativeTokensCached",
     "num_media_prompt": "numMediaPrompt",
     "num_input_audio_prompt": "numInputAudioPrompt",
-    "num_video_prompt": "numVideoPrompt",
     "num_media_completion": "numMediaCompletion",
     "num_search_results": "numSearchResults",
     "is_byok": "isByok",
@@ -321,133 +261,6 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "api_type": "apiType",
   });
 });
-
-/** @internal */
-export type GetGenerationData$Outbound = {
-  id: string;
-  upstream_id: string | null;
-  total_cost: number;
-  cache_discount: number | null;
-  upstream_inference_cost: number | null;
-  created_at: string;
-  model: string;
-  app_id: number | null;
-  streamed: boolean | null;
-  cancelled: boolean | null;
-  provider_name: string | null;
-  latency: number | null;
-  moderation_latency: number | null;
-  generation_time: number | null;
-  finish_reason: string | null;
-  tokens_prompt: number | null;
-  tokens_completion: number | null;
-  native_tokens_prompt: number | null;
-  native_tokens_completion: number | null;
-  native_tokens_completion_images: number | null;
-  native_tokens_reasoning: number | null;
-  native_tokens_cached: number | null;
-  num_media_prompt: number | null;
-  num_input_audio_prompt: number | null;
-  num_video_prompt: number | null;
-  num_media_completion: number | null;
-  num_search_results: number | null;
-  origin: string;
-  usage: number;
-  is_byok: boolean;
-  native_finish_reason: string | null;
-  external_user: string | null;
-  api_type: string | null;
-};
-
-/** @internal */
-export const GetGenerationData$outboundSchema: z.ZodType<
-  GetGenerationData$Outbound,
-  GetGenerationData
-> = z.object({
-  id: z.string(),
-  upstreamId: z.nullable(z.string()),
-  totalCost: z.number(),
-  cacheDiscount: z.nullable(z.number()),
-  upstreamInferenceCost: z.nullable(z.number()),
-  createdAt: z.string(),
-  model: z.string(),
-  appId: z.nullable(z.number()),
-  streamed: z.nullable(z.boolean()),
-  cancelled: z.nullable(z.boolean()),
-  providerName: z.nullable(z.string()),
-  latency: z.nullable(z.number()),
-  moderationLatency: z.nullable(z.number()),
-  generationTime: z.nullable(z.number()),
-  finishReason: z.nullable(z.string()),
-  tokensPrompt: z.nullable(z.number()),
-  tokensCompletion: z.nullable(z.number()),
-  nativeTokensPrompt: z.nullable(z.number()),
-  nativeTokensCompletion: z.nullable(z.number()),
-  nativeTokensCompletionImages: z.nullable(z.number()),
-  nativeTokensReasoning: z.nullable(z.number()),
-  nativeTokensCached: z.nullable(z.number()),
-  numMediaPrompt: z.nullable(z.number()),
-  numInputAudioPrompt: z.nullable(z.number()),
-  numVideoPrompt: z.nullable(z.number()),
-  numMediaCompletion: z.nullable(z.number()),
-  numSearchResults: z.nullable(z.number()),
-  origin: z.string(),
-  usage: z.number(),
-  isByok: z.boolean(),
-  nativeFinishReason: z.nullable(z.string()),
-  externalUser: z.nullable(z.string()),
-  apiType: z.nullable(ApiType$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    upstreamId: "upstream_id",
-    totalCost: "total_cost",
-    cacheDiscount: "cache_discount",
-    upstreamInferenceCost: "upstream_inference_cost",
-    createdAt: "created_at",
-    appId: "app_id",
-    providerName: "provider_name",
-    moderationLatency: "moderation_latency",
-    generationTime: "generation_time",
-    finishReason: "finish_reason",
-    tokensPrompt: "tokens_prompt",
-    tokensCompletion: "tokens_completion",
-    nativeTokensPrompt: "native_tokens_prompt",
-    nativeTokensCompletion: "native_tokens_completion",
-    nativeTokensCompletionImages: "native_tokens_completion_images",
-    nativeTokensReasoning: "native_tokens_reasoning",
-    nativeTokensCached: "native_tokens_cached",
-    numMediaPrompt: "num_media_prompt",
-    numInputAudioPrompt: "num_input_audio_prompt",
-    numVideoPrompt: "num_video_prompt",
-    numMediaCompletion: "num_media_completion",
-    numSearchResults: "num_search_results",
-    isByok: "is_byok",
-    nativeFinishReason: "native_finish_reason",
-    externalUser: "external_user",
-    apiType: "api_type",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetGenerationData$ {
-  /** @deprecated use `GetGenerationData$inboundSchema` instead. */
-  export const inboundSchema = GetGenerationData$inboundSchema;
-  /** @deprecated use `GetGenerationData$outboundSchema` instead. */
-  export const outboundSchema = GetGenerationData$outboundSchema;
-  /** @deprecated use `GetGenerationData$Outbound` instead. */
-  export type Outbound = GetGenerationData$Outbound;
-}
-
-export function getGenerationDataToJSON(
-  getGenerationData: GetGenerationData,
-): string {
-  return JSON.stringify(
-    GetGenerationData$outboundSchema.parse(getGenerationData),
-  );
-}
 
 export function getGenerationDataFromJSON(
   jsonString: string,
@@ -466,40 +279,6 @@ export const GetGenerationResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => GetGenerationData$inboundSchema),
 });
-
-/** @internal */
-export type GetGenerationResponse$Outbound = {
-  data: GetGenerationData$Outbound;
-};
-
-/** @internal */
-export const GetGenerationResponse$outboundSchema: z.ZodType<
-  GetGenerationResponse$Outbound,
-  GetGenerationResponse
-> = z.object({
-  data: z.lazy(() => GetGenerationData$outboundSchema),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace GetGenerationResponse$ {
-  /** @deprecated use `GetGenerationResponse$inboundSchema` instead. */
-  export const inboundSchema = GetGenerationResponse$inboundSchema;
-  /** @deprecated use `GetGenerationResponse$outboundSchema` instead. */
-  export const outboundSchema = GetGenerationResponse$outboundSchema;
-  /** @deprecated use `GetGenerationResponse$Outbound` instead. */
-  export type Outbound = GetGenerationResponse$Outbound;
-}
-
-export function getGenerationResponseToJSON(
-  getGenerationResponse: GetGenerationResponse,
-): string {
-  return JSON.stringify(
-    GetGenerationResponse$outboundSchema.parse(getGenerationResponse),
-  );
-}
 
 export function getGenerationResponseFromJSON(
   jsonString: string,

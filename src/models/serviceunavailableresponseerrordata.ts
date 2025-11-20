@@ -21,52 +21,10 @@ export const ServiceUnavailableResponseErrorData$inboundSchema: z.ZodType<
   ServiceUnavailableResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type ServiceUnavailableResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const ServiceUnavailableResponseErrorData$outboundSchema: z.ZodType<
-  ServiceUnavailableResponseErrorData$Outbound,
-  ServiceUnavailableResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ServiceUnavailableResponseErrorData$ {
-  /** @deprecated use `ServiceUnavailableResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema =
-    ServiceUnavailableResponseErrorData$inboundSchema;
-  /** @deprecated use `ServiceUnavailableResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema =
-    ServiceUnavailableResponseErrorData$outboundSchema;
-  /** @deprecated use `ServiceUnavailableResponseErrorData$Outbound` instead. */
-  export type Outbound = ServiceUnavailableResponseErrorData$Outbound;
-}
-
-export function serviceUnavailableResponseErrorDataToJSON(
-  serviceUnavailableResponseErrorData: ServiceUnavailableResponseErrorData,
-): string {
-  return JSON.stringify(
-    ServiceUnavailableResponseErrorData$outboundSchema.parse(
-      serviceUnavailableResponseErrorData,
-    ),
-  );
-}
 
 export function serviceUnavailableResponseErrorDataFromJSON(
   jsonString: string,

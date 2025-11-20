@@ -32,7 +32,6 @@ const value: models.OpenAIResponsesInputMessage2 = {
 ```typescript
 const value: models.OpenAIResponsesInputFunctionCallOutput = {
   type: "function_call_output",
-  id: "<id>",
   callId: "<id>",
   output: "<value>",
 };

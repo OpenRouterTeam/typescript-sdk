@@ -11,43 +11,27 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OutputItemImageGenerationCall,
   OutputItemImageGenerationCall$inboundSchema,
-  OutputItemImageGenerationCall$Outbound,
-  OutputItemImageGenerationCall$outboundSchema,
 } from "./outputitemimagegenerationcall.js";
-import {
-  OutputMessage,
-  OutputMessage$inboundSchema,
-  OutputMessage$Outbound,
-  OutputMessage$outboundSchema,
-} from "./outputmessage.js";
+import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
 import {
   ResponseInputAudio,
   ResponseInputAudio$inboundSchema,
-  ResponseInputAudio$Outbound,
-  ResponseInputAudio$outboundSchema,
 } from "./responseinputaudio.js";
 import {
   ResponseInputFile,
   ResponseInputFile$inboundSchema,
-  ResponseInputFile$Outbound,
-  ResponseInputFile$outboundSchema,
 } from "./responseinputfile.js";
 import {
   ResponseInputImage,
   ResponseInputImage$inboundSchema,
-  ResponseInputImage$Outbound,
-  ResponseInputImage$outboundSchema,
 } from "./responseinputimage.js";
 import {
   ResponseInputText,
   ResponseInputText$inboundSchema,
-  ResponseInputText$Outbound,
-  ResponseInputText$outboundSchema,
 } from "./responseinputtext.js";
 import {
   ToolCallStatus,
   ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
 export const OpenAIResponsesInputTypeFunctionCall = {
@@ -63,7 +47,7 @@ export type OpenAIResponsesInputFunctionCall = {
   name: string;
   arguments: string;
   id?: string | undefined;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 export const OpenAIResponsesInputTypeFunctionCallOutput = {
@@ -75,10 +59,10 @@ export type OpenAIResponsesInputTypeFunctionCallOutput = ClosedEnum<
 
 export type OpenAIResponsesInputFunctionCallOutput = {
   type: OpenAIResponsesInputTypeFunctionCallOutput;
-  id: string;
+  id?: string | null | undefined;
   callId: string;
   output: string;
-  status?: ToolCallStatus | undefined;
+  status?: ToolCallStatus | null | undefined;
 };
 
 export const OpenAIResponsesInputTypeMessage2 = {
@@ -209,21 +193,21 @@ export type OpenAIResponsesInputMessage1 = {
 };
 
 export type OpenAIResponsesInputUnion1 =
-  | OpenAIResponsesInputFunctionCallOutput
   | OpenAIResponsesInputFunctionCall
-  | OutputItemImageGenerationCall
   | OutputMessage
   | OpenAIResponsesInputMessage2
+  | OpenAIResponsesInputFunctionCallOutput
+  | OutputItemImageGenerationCall
   | OpenAIResponsesInputMessage1;
 
 export type OpenAIResponsesInputUnion =
   | string
   | Array<
-    | OpenAIResponsesInputFunctionCallOutput
     | OpenAIResponsesInputFunctionCall
-    | OutputItemImageGenerationCall
     | OutputMessage
     | OpenAIResponsesInputMessage2
+    | OpenAIResponsesInputFunctionCallOutput
+    | OutputItemImageGenerationCall
     | OpenAIResponsesInputMessage1
   >
   | any;
@@ -232,24 +216,6 @@ export type OpenAIResponsesInputUnion =
 export const OpenAIResponsesInputTypeFunctionCall$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputTypeFunctionCall
 > = z.enum(OpenAIResponsesInputTypeFunctionCall);
-
-/** @internal */
-export const OpenAIResponsesInputTypeFunctionCall$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputTypeFunctionCall
-> = OpenAIResponsesInputTypeFunctionCall$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputTypeFunctionCall$ {
-  /** @deprecated use `OpenAIResponsesInputTypeFunctionCall$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesInputTypeFunctionCall$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputTypeFunctionCall$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputTypeFunctionCall$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesInputFunctionCall$inboundSchema: z.ZodType<
@@ -261,62 +227,12 @@ export const OpenAIResponsesInputFunctionCall$inboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
   });
 });
-
-/** @internal */
-export type OpenAIResponsesInputFunctionCall$Outbound = {
-  type: string;
-  call_id: string;
-  name: string;
-  arguments: string;
-  id?: string | undefined;
-  status?: string | undefined;
-};
-
-/** @internal */
-export const OpenAIResponsesInputFunctionCall$outboundSchema: z.ZodType<
-  OpenAIResponsesInputFunctionCall$Outbound,
-  OpenAIResponsesInputFunctionCall
-> = z.object({
-  type: OpenAIResponsesInputTypeFunctionCall$outboundSchema,
-  callId: z.string(),
-  name: z.string(),
-  arguments: z.string(),
-  id: z.string().optional(),
-  status: ToolCallStatus$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputFunctionCall$ {
-  /** @deprecated use `OpenAIResponsesInputFunctionCall$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputFunctionCall$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputFunctionCall$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputFunctionCall$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputFunctionCall$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputFunctionCall$Outbound;
-}
-
-export function openAIResponsesInputFunctionCallToJSON(
-  openAIResponsesInputFunctionCall: OpenAIResponsesInputFunctionCall,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputFunctionCall$outboundSchema.parse(
-      openAIResponsesInputFunctionCall,
-    ),
-  );
-}
 
 export function openAIResponsesInputFunctionCallFromJSON(
   jsonString: string,
@@ -335,89 +251,20 @@ export const OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema:
   );
 
 /** @internal */
-export const OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesInputTypeFunctionCallOutput> =
-    OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputTypeFunctionCallOutput$ {
-  /** @deprecated use `OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCallOutput,
   unknown
 > = z.object({
   type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
-  id: z.string(),
+  id: z.nullable(z.string()).optional(),
   call_id: z.string(),
   output: z.string(),
-  status: ToolCallStatus$inboundSchema.optional(),
+  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
   });
 });
-
-/** @internal */
-export type OpenAIResponsesInputFunctionCallOutput$Outbound = {
-  type: string;
-  id: string;
-  call_id: string;
-  output: string;
-  status?: string | undefined;
-};
-
-/** @internal */
-export const OpenAIResponsesInputFunctionCallOutput$outboundSchema: z.ZodType<
-  OpenAIResponsesInputFunctionCallOutput$Outbound,
-  OpenAIResponsesInputFunctionCallOutput
-> = z.object({
-  type: OpenAIResponsesInputTypeFunctionCallOutput$outboundSchema,
-  id: z.string(),
-  callId: z.string(),
-  output: z.string(),
-  status: ToolCallStatus$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputFunctionCallOutput$ {
-  /** @deprecated use `OpenAIResponsesInputFunctionCallOutput$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenAIResponsesInputFunctionCallOutput$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputFunctionCallOutput$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputFunctionCallOutput$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputFunctionCallOutput$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputFunctionCallOutput$Outbound;
-}
-
-export function openAIResponsesInputFunctionCallOutputToJSON(
-  openAIResponsesInputFunctionCallOutput:
-    OpenAIResponsesInputFunctionCallOutput,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputFunctionCallOutput$outboundSchema.parse(
-      openAIResponsesInputFunctionCallOutput,
-    ),
-  );
-}
 
 export function openAIResponsesInputFunctionCallOutputFromJSON(
   jsonString: string,
@@ -436,42 +283,9 @@ export const OpenAIResponsesInputTypeMessage2$inboundSchema: z.ZodEnum<
 > = z.enum(OpenAIResponsesInputTypeMessage2);
 
 /** @internal */
-export const OpenAIResponsesInputTypeMessage2$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputTypeMessage2
-> = OpenAIResponsesInputTypeMessage2$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputTypeMessage2$ {
-  /** @deprecated use `OpenAIResponsesInputTypeMessage2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputTypeMessage2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputTypeMessage2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputTypeMessage2$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputRoleDeveloper2$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputRoleDeveloper2
 > = z.enum(OpenAIResponsesInputRoleDeveloper2);
-
-/** @internal */
-export const OpenAIResponsesInputRoleDeveloper2$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleDeveloper2
-> = OpenAIResponsesInputRoleDeveloper2$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleDeveloper2$ {
-  /** @deprecated use `OpenAIResponsesInputRoleDeveloper2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleDeveloper2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleDeveloper2$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputRoleDeveloper2$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesInputRoleSystem2$inboundSchema: z.ZodEnum<
@@ -479,41 +293,9 @@ export const OpenAIResponsesInputRoleSystem2$inboundSchema: z.ZodEnum<
 > = z.enum(OpenAIResponsesInputRoleSystem2);
 
 /** @internal */
-export const OpenAIResponsesInputRoleSystem2$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleSystem2
-> = OpenAIResponsesInputRoleSystem2$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleSystem2$ {
-  /** @deprecated use `OpenAIResponsesInputRoleSystem2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleSystem2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleSystem2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleSystem2$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputRoleUser2$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputRoleUser2
 > = z.enum(OpenAIResponsesInputRoleUser2);
-
-/** @internal */
-export const OpenAIResponsesInputRoleUser2$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleUser2
-> = OpenAIResponsesInputRoleUser2$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleUser2$ {
-  /** @deprecated use `OpenAIResponsesInputRoleUser2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleUser2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUser2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleUser2$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesInputRoleUnion2$inboundSchema: z.ZodType<
@@ -524,42 +306,6 @@ export const OpenAIResponsesInputRoleUnion2$inboundSchema: z.ZodType<
   OpenAIResponsesInputRoleSystem2$inboundSchema,
   OpenAIResponsesInputRoleDeveloper2$inboundSchema,
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputRoleUnion2$Outbound = string | string | string;
-
-/** @internal */
-export const OpenAIResponsesInputRoleUnion2$outboundSchema: z.ZodType<
-  OpenAIResponsesInputRoleUnion2$Outbound,
-  OpenAIResponsesInputRoleUnion2
-> = z.union([
-  OpenAIResponsesInputRoleUser2$outboundSchema,
-  OpenAIResponsesInputRoleSystem2$outboundSchema,
-  OpenAIResponsesInputRoleDeveloper2$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleUnion2$ {
-  /** @deprecated use `OpenAIResponsesInputRoleUnion2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleUnion2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUnion2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleUnion2$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUnion2$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputRoleUnion2$Outbound;
-}
-
-export function openAIResponsesInputRoleUnion2ToJSON(
-  openAIResponsesInputRoleUnion2: OpenAIResponsesInputRoleUnion2,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputRoleUnion2$outboundSchema.parse(
-      openAIResponsesInputRoleUnion2,
-    ),
-  );
-}
 
 export function openAIResponsesInputRoleUnion2FromJSON(
   jsonString: string,
@@ -577,83 +323,18 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputContent3$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputAudio$Outbound & { type: "input_audio" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
-
-/** @internal */
-export const OpenAIResponsesInputContent3$outboundSchema: z.ZodType<
-  OpenAIResponsesInputContent3$Outbound,
-  OpenAIResponsesInputContent3
-> = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputContent3$ {
-  /** @deprecated use `OpenAIResponsesInputContent3$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputContent3$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent3$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputContent3$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent3$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputContent3$Outbound;
-}
-
-export function openAIResponsesInputContent3ToJSON(
-  openAIResponsesInputContent3: OpenAIResponsesInputContent3,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputContent3$outboundSchema.parse(
-      openAIResponsesInputContent3,
-    ),
-  );
-}
 
 export function openAIResponsesInputContent3FromJSON(
   jsonString: string,
@@ -680,102 +361,20 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
   content: z.array(
     z.union([
       ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
 });
-
-/** @internal */
-export type OpenAIResponsesInputMessage2$Outbound = {
-  id: string;
-  type?: string | undefined;
-  role: string | string | string;
-  content: Array<
-    | (ResponseInputText$Outbound & { type: "input_text" })
-    | (ResponseInputImage$Outbound & { type: "input_image" })
-    | (ResponseInputAudio$Outbound & { type: "input_audio" })
-    | (ResponseInputFile$Outbound & { type: "input_file" })
-  >;
-};
-
-/** @internal */
-export const OpenAIResponsesInputMessage2$outboundSchema: z.ZodType<
-  OpenAIResponsesInputMessage2$Outbound,
-  OpenAIResponsesInputMessage2
-> = z.object({
-  id: z.string(),
-  type: OpenAIResponsesInputTypeMessage2$outboundSchema.optional(),
-  role: z.union([
-    OpenAIResponsesInputRoleUser2$outboundSchema,
-    OpenAIResponsesInputRoleSystem2$outboundSchema,
-    OpenAIResponsesInputRoleDeveloper2$outboundSchema,
-  ]),
-  content: z.array(
-    z.union([
-      ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-    ]),
-  ),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputMessage2$ {
-  /** @deprecated use `OpenAIResponsesInputMessage2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputMessage2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputMessage2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputMessage2$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputMessage2$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputMessage2$Outbound;
-}
-
-export function openAIResponsesInputMessage2ToJSON(
-  openAIResponsesInputMessage2: OpenAIResponsesInputMessage2,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputMessage2$outboundSchema.parse(
-      openAIResponsesInputMessage2,
-    ),
-  );
-}
 
 export function openAIResponsesInputMessage2FromJSON(
   jsonString: string,
@@ -793,42 +392,9 @@ export const OpenAIResponsesInputTypeMessage1$inboundSchema: z.ZodEnum<
 > = z.enum(OpenAIResponsesInputTypeMessage1);
 
 /** @internal */
-export const OpenAIResponsesInputTypeMessage1$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputTypeMessage1
-> = OpenAIResponsesInputTypeMessage1$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputTypeMessage1$ {
-  /** @deprecated use `OpenAIResponsesInputTypeMessage1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputTypeMessage1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputTypeMessage1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputTypeMessage1$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputRoleDeveloper1$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputRoleDeveloper1
 > = z.enum(OpenAIResponsesInputRoleDeveloper1);
-
-/** @internal */
-export const OpenAIResponsesInputRoleDeveloper1$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleDeveloper1
-> = OpenAIResponsesInputRoleDeveloper1$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleDeveloper1$ {
-  /** @deprecated use `OpenAIResponsesInputRoleDeveloper1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleDeveloper1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleDeveloper1$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputRoleDeveloper1$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesInputRoleAssistant$inboundSchema: z.ZodEnum<
@@ -836,63 +402,14 @@ export const OpenAIResponsesInputRoleAssistant$inboundSchema: z.ZodEnum<
 > = z.enum(OpenAIResponsesInputRoleAssistant);
 
 /** @internal */
-export const OpenAIResponsesInputRoleAssistant$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleAssistant
-> = OpenAIResponsesInputRoleAssistant$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleAssistant$ {
-  /** @deprecated use `OpenAIResponsesInputRoleAssistant$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleAssistant$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleAssistant$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenAIResponsesInputRoleAssistant$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputRoleSystem1$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputRoleSystem1
 > = z.enum(OpenAIResponsesInputRoleSystem1);
 
 /** @internal */
-export const OpenAIResponsesInputRoleSystem1$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleSystem1
-> = OpenAIResponsesInputRoleSystem1$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleSystem1$ {
-  /** @deprecated use `OpenAIResponsesInputRoleSystem1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleSystem1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleSystem1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleSystem1$outboundSchema;
-}
-
-/** @internal */
 export const OpenAIResponsesInputRoleUser1$inboundSchema: z.ZodEnum<
   typeof OpenAIResponsesInputRoleUser1
 > = z.enum(OpenAIResponsesInputRoleUser1);
-
-/** @internal */
-export const OpenAIResponsesInputRoleUser1$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesInputRoleUser1
-> = OpenAIResponsesInputRoleUser1$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleUser1$ {
-  /** @deprecated use `OpenAIResponsesInputRoleUser1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleUser1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUser1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleUser1$outboundSchema;
-}
 
 /** @internal */
 export const OpenAIResponsesInputRoleUnion1$inboundSchema: z.ZodType<
@@ -904,47 +421,6 @@ export const OpenAIResponsesInputRoleUnion1$inboundSchema: z.ZodType<
   OpenAIResponsesInputRoleAssistant$inboundSchema,
   OpenAIResponsesInputRoleDeveloper1$inboundSchema,
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputRoleUnion1$Outbound =
-  | string
-  | string
-  | string
-  | string;
-
-/** @internal */
-export const OpenAIResponsesInputRoleUnion1$outboundSchema: z.ZodType<
-  OpenAIResponsesInputRoleUnion1$Outbound,
-  OpenAIResponsesInputRoleUnion1
-> = z.union([
-  OpenAIResponsesInputRoleUser1$outboundSchema,
-  OpenAIResponsesInputRoleSystem1$outboundSchema,
-  OpenAIResponsesInputRoleAssistant$outboundSchema,
-  OpenAIResponsesInputRoleDeveloper1$outboundSchema,
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputRoleUnion1$ {
-  /** @deprecated use `OpenAIResponsesInputRoleUnion1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputRoleUnion1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUnion1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputRoleUnion1$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputRoleUnion1$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputRoleUnion1$Outbound;
-}
-
-export function openAIResponsesInputRoleUnion1ToJSON(
-  openAIResponsesInputRoleUnion1: OpenAIResponsesInputRoleUnion1,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputRoleUnion1$outboundSchema.parse(
-      openAIResponsesInputRoleUnion1,
-    ),
-  );
-}
 
 export function openAIResponsesInputRoleUnion1FromJSON(
   jsonString: string,
@@ -962,83 +438,18 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputContent1$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputAudio$Outbound & { type: "input_audio" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
-
-/** @internal */
-export const OpenAIResponsesInputContent1$outboundSchema: z.ZodType<
-  OpenAIResponsesInputContent1$Outbound,
-  OpenAIResponsesInputContent1
-> = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputContent1$ {
-  /** @deprecated use `OpenAIResponsesInputContent1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputContent1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputContent1$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent1$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputContent1$Outbound;
-}
-
-export function openAIResponsesInputContent1ToJSON(
-  openAIResponsesInputContent1: OpenAIResponsesInputContent1,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputContent1$outboundSchema.parse(
-      openAIResponsesInputContent1,
-    ),
-  );
-}
 
 export function openAIResponsesInputContent1FromJSON(
   jsonString: string,
@@ -1058,94 +469,21 @@ export const OpenAIResponsesInputContent2$inboundSchema: z.ZodType<
   z.array(
     z.union([
       ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
   z.string(),
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputContent2$Outbound =
-  | Array<
-    | (ResponseInputText$Outbound & { type: "input_text" })
-    | (ResponseInputImage$Outbound & { type: "input_image" })
-    | (ResponseInputAudio$Outbound & { type: "input_audio" })
-    | (ResponseInputFile$Outbound & { type: "input_file" })
-  >
-  | string;
-
-/** @internal */
-export const OpenAIResponsesInputContent2$outboundSchema: z.ZodType<
-  OpenAIResponsesInputContent2$Outbound,
-  OpenAIResponsesInputContent2
-> = z.union([
-  z.array(
-    z.union([
-      ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-    ]),
-  ),
-  z.string(),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputContent2$ {
-  /** @deprecated use `OpenAIResponsesInputContent2$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputContent2$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent2$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputContent2$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputContent2$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputContent2$Outbound;
-}
-
-export function openAIResponsesInputContent2ToJSON(
-  openAIResponsesInputContent2: OpenAIResponsesInputContent2,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputContent2$outboundSchema.parse(
-      openAIResponsesInputContent2,
-    ),
-  );
-}
 
 export function openAIResponsesInputContent2FromJSON(
   jsonString: string,
@@ -1173,108 +511,22 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
     z.array(
       z.union([
         ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_text") }),
         ),
         ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_image") }),
         ),
         ResponseInputAudio$inboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_audio") }),
         ),
         ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_file") }),
         ),
       ]),
     ),
     z.string(),
   ]),
 });
-
-/** @internal */
-export type OpenAIResponsesInputMessage1$Outbound = {
-  type?: string | undefined;
-  role: string | string | string | string;
-  content:
-    | Array<
-      | (ResponseInputText$Outbound & { type: "input_text" })
-      | (ResponseInputImage$Outbound & { type: "input_image" })
-      | (ResponseInputAudio$Outbound & { type: "input_audio" })
-      | (ResponseInputFile$Outbound & { type: "input_file" })
-    >
-    | string;
-};
-
-/** @internal */
-export const OpenAIResponsesInputMessage1$outboundSchema: z.ZodType<
-  OpenAIResponsesInputMessage1$Outbound,
-  OpenAIResponsesInputMessage1
-> = z.object({
-  type: OpenAIResponsesInputTypeMessage1$outboundSchema.optional(),
-  role: z.union([
-    OpenAIResponsesInputRoleUser1$outboundSchema,
-    OpenAIResponsesInputRoleSystem1$outboundSchema,
-    OpenAIResponsesInputRoleAssistant$outboundSchema,
-    OpenAIResponsesInputRoleDeveloper1$outboundSchema,
-  ]),
-  content: z.union([
-    z.array(
-      z.union([
-        ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputAudio$outboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-      ]),
-    ),
-    z.string(),
-  ]),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputMessage1$ {
-  /** @deprecated use `OpenAIResponsesInputMessage1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputMessage1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputMessage1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputMessage1$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputMessage1$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputMessage1$Outbound;
-}
-
-export function openAIResponsesInputMessage1ToJSON(
-  openAIResponsesInputMessage1: OpenAIResponsesInputMessage1,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputMessage1$outboundSchema.parse(
-      openAIResponsesInputMessage1,
-    ),
-  );
-}
 
 export function openAIResponsesInputMessage1FromJSON(
   jsonString: string,
@@ -1291,56 +543,13 @@ export const OpenAIResponsesInputUnion1$inboundSchema: z.ZodType<
   OpenAIResponsesInputUnion1,
   unknown
 > = z.union([
-  z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
   z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
-  OutputItemImageGenerationCall$inboundSchema,
   OutputMessage$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+  z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
+  OutputItemImageGenerationCall$inboundSchema,
   z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputUnion1$Outbound =
-  | OpenAIResponsesInputFunctionCallOutput$Outbound
-  | OpenAIResponsesInputFunctionCall$Outbound
-  | OutputItemImageGenerationCall$Outbound
-  | OutputMessage$Outbound
-  | OpenAIResponsesInputMessage2$Outbound
-  | OpenAIResponsesInputMessage1$Outbound;
-
-/** @internal */
-export const OpenAIResponsesInputUnion1$outboundSchema: z.ZodType<
-  OpenAIResponsesInputUnion1$Outbound,
-  OpenAIResponsesInputUnion1
-> = z.union([
-  z.lazy(() => OpenAIResponsesInputFunctionCallOutput$outboundSchema),
-  z.lazy(() => OpenAIResponsesInputFunctionCall$outboundSchema),
-  OutputItemImageGenerationCall$outboundSchema,
-  OutputMessage$outboundSchema,
-  z.lazy(() => OpenAIResponsesInputMessage2$outboundSchema),
-  z.lazy(() => OpenAIResponsesInputMessage1$outboundSchema),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputUnion1$ {
-  /** @deprecated use `OpenAIResponsesInputUnion1$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputUnion1$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputUnion1$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputUnion1$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputUnion1$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputUnion1$Outbound;
-}
-
-export function openAIResponsesInputUnion1ToJSON(
-  openAIResponsesInputUnion1: OpenAIResponsesInputUnion1,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputUnion1$outboundSchema.parse(openAIResponsesInputUnion1),
-  );
-}
 
 export function openAIResponsesInputUnion1FromJSON(
   jsonString: string,
@@ -1359,66 +568,15 @@ export const OpenAIResponsesInputUnion$inboundSchema: z.ZodType<
 > = z.union([
   z.string(),
   z.array(z.union([
-    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
     z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
-    OutputItemImageGenerationCall$inboundSchema,
     OutputMessage$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
+    OutputItemImageGenerationCall$inboundSchema,
     z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
   ])),
   z.any(),
 ]);
-
-/** @internal */
-export type OpenAIResponsesInputUnion$Outbound =
-  | string
-  | Array<
-    | OpenAIResponsesInputFunctionCallOutput$Outbound
-    | OpenAIResponsesInputFunctionCall$Outbound
-    | OutputItemImageGenerationCall$Outbound
-    | OutputMessage$Outbound
-    | OpenAIResponsesInputMessage2$Outbound
-    | OpenAIResponsesInputMessage1$Outbound
-  >
-  | any;
-
-/** @internal */
-export const OpenAIResponsesInputUnion$outboundSchema: z.ZodType<
-  OpenAIResponsesInputUnion$Outbound,
-  OpenAIResponsesInputUnion
-> = z.union([
-  z.string(),
-  z.array(z.union([
-    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$outboundSchema),
-    z.lazy(() => OpenAIResponsesInputFunctionCall$outboundSchema),
-    OutputItemImageGenerationCall$outboundSchema,
-    OutputMessage$outboundSchema,
-    z.lazy(() => OpenAIResponsesInputMessage2$outboundSchema),
-    z.lazy(() => OpenAIResponsesInputMessage1$outboundSchema),
-  ])),
-  z.any(),
-]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenAIResponsesInputUnion$ {
-  /** @deprecated use `OpenAIResponsesInputUnion$inboundSchema` instead. */
-  export const inboundSchema = OpenAIResponsesInputUnion$inboundSchema;
-  /** @deprecated use `OpenAIResponsesInputUnion$outboundSchema` instead. */
-  export const outboundSchema = OpenAIResponsesInputUnion$outboundSchema;
-  /** @deprecated use `OpenAIResponsesInputUnion$Outbound` instead. */
-  export type Outbound = OpenAIResponsesInputUnion$Outbound;
-}
-
-export function openAIResponsesInputUnionToJSON(
-  openAIResponsesInputUnion: OpenAIResponsesInputUnion,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesInputUnion$outboundSchema.parse(openAIResponsesInputUnion),
-  );
-}
 
 export function openAIResponsesInputUnionFromJSON(
   jsonString: string,

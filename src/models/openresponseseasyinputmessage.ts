@@ -3,31 +3,24 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ResponseInputAudio,
-  ResponseInputAudio$inboundSchema,
   ResponseInputAudio$Outbound,
   ResponseInputAudio$outboundSchema,
 } from "./responseinputaudio.js";
 import {
   ResponseInputFile,
-  ResponseInputFile$inboundSchema,
   ResponseInputFile$Outbound,
   ResponseInputFile$outboundSchema,
 } from "./responseinputfile.js";
 import {
   ResponseInputImage,
-  ResponseInputImage$inboundSchema,
   ResponseInputImage$Outbound,
   ResponseInputImage$outboundSchema,
 } from "./responseinputimage.js";
 import {
   ResponseInputText,
-  ResponseInputText$inboundSchema,
   ResponseInputText$Outbound,
   ResponseInputText$outboundSchema,
 } from "./responseinputtext.js";
@@ -106,131 +99,31 @@ export type OpenResponsesEasyInputMessage = {
 };
 
 /** @internal */
-export const OpenResponsesEasyInputMessageType$inboundSchema: z.ZodEnum<
+export const OpenResponsesEasyInputMessageType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesEasyInputMessageType
 > = z.enum(OpenResponsesEasyInputMessageType);
 
 /** @internal */
-export const OpenResponsesEasyInputMessageType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesEasyInputMessageType
-> = OpenResponsesEasyInputMessageType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageType$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageType$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesEasyInputMessageType$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageType$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema:
+export const OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema:
   z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleDeveloper> = z.enum(
     OpenResponsesEasyInputMessageRoleDeveloper,
   );
 
 /** @internal */
-export const OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleDeveloper> =
-    OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageRoleDeveloper$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageRoleAssistant$inboundSchema:
+export const OpenResponsesEasyInputMessageRoleAssistant$outboundSchema:
   z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleAssistant> = z.enum(
     OpenResponsesEasyInputMessageRoleAssistant,
   );
 
 /** @internal */
-export const OpenResponsesEasyInputMessageRoleAssistant$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleAssistant> =
-    OpenResponsesEasyInputMessageRoleAssistant$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageRoleAssistant$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleAssistant$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageRoleAssistant$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleAssistant$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageRoleAssistant$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageRoleSystem$inboundSchema: z.ZodEnum<
+export const OpenResponsesEasyInputMessageRoleSystem$outboundSchema: z.ZodEnum<
   typeof OpenResponsesEasyInputMessageRoleSystem
 > = z.enum(OpenResponsesEasyInputMessageRoleSystem);
 
 /** @internal */
-export const OpenResponsesEasyInputMessageRoleSystem$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesEasyInputMessageRoleSystem
-> = OpenResponsesEasyInputMessageRoleSystem$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageRoleSystem$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleSystem$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageRoleSystem$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleSystem$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageRoleSystem$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageRoleUser$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesEasyInputMessageRoleUser
-> = z.enum(OpenResponsesEasyInputMessageRoleUser);
-
-/** @internal */
 export const OpenResponsesEasyInputMessageRoleUser$outboundSchema: z.ZodEnum<
   typeof OpenResponsesEasyInputMessageRoleUser
-> = OpenResponsesEasyInputMessageRoleUser$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageRoleUser$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleUser$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageRoleUser$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleUser$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageRoleUser$outboundSchema;
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageRoleUnion$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageRoleUnion,
-  unknown
-> = z.union([
-  OpenResponsesEasyInputMessageRoleUser$inboundSchema,
-  OpenResponsesEasyInputMessageRoleSystem$inboundSchema,
-  OpenResponsesEasyInputMessageRoleAssistant$inboundSchema,
-  OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema,
-]);
+> = z.enum(OpenResponsesEasyInputMessageRoleUser);
 
 /** @internal */
 export type OpenResponsesEasyInputMessageRoleUnion$Outbound =
@@ -250,21 +143,6 @@ export const OpenResponsesEasyInputMessageRoleUnion$outboundSchema: z.ZodType<
   OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema,
 ]);
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageRoleUnion$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleUnion$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageRoleUnion$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleUnion$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageRoleUnion$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageRoleUnion$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessageRoleUnion$Outbound;
-}
-
 export function openResponsesEasyInputMessageRoleUnionToJSON(
   openResponsesEasyInputMessageRoleUnion:
     OpenResponsesEasyInputMessageRoleUnion,
@@ -275,44 +153,6 @@ export function openResponsesEasyInputMessageRoleUnionToJSON(
     ),
   );
 }
-
-export function openResponsesEasyInputMessageRoleUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessageRoleUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesEasyInputMessageRoleUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessageRoleUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageContent1$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent1,
-  unknown
-> = z.union([
-  ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-  ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
-  ),
-]);
 
 /** @internal */
 export type OpenResponsesEasyInputMessageContent1$Outbound =
@@ -327,41 +167,18 @@ export const OpenResponsesEasyInputMessageContent1$outboundSchema: z.ZodType<
   OpenResponsesEasyInputMessageContent1
 > = z.union([
   ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_text") }),
   ),
   ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_image") }),
   ),
   ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_audio") }),
   ),
   ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }).transform((v) => ({
-      type: v.type,
-    })),
+    z.object({ type: z.literal("input_file") }),
   ),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageContent1$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageContent1$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageContent1$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent1$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessageContent1$Outbound;
-}
 
 export function openResponsesEasyInputMessageContent1ToJSON(
   openResponsesEasyInputMessageContent1: OpenResponsesEasyInputMessageContent1,
@@ -372,49 +189,6 @@ export function openResponsesEasyInputMessageContent1ToJSON(
     ),
   );
 }
-
-export function openResponsesEasyInputMessageContent1FromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessageContent1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesEasyInputMessageContent1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessageContent1' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessageContent2$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessageContent2,
-  unknown
-> = z.union([
-  z.array(
-    z.union([
-      ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-      ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
-      ),
-    ]),
-  ),
-  z.string(),
-]);
 
 /** @internal */
 export type OpenResponsesEasyInputMessageContent2$Outbound =
@@ -434,44 +208,21 @@ export const OpenResponsesEasyInputMessageContent2$outboundSchema: z.ZodType<
   z.array(
     z.union([
       ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_text") }),
       ),
       ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_image") }),
       ),
       ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_audio") }),
       ),
       ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }).transform((v) => ({
-          type: v.type,
-        })),
+        z.object({ type: z.literal("input_file") }),
       ),
     ]),
   ),
   z.string(),
 ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessageContent2$ {
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesEasyInputMessageContent2$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesEasyInputMessageContent2$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessageContent2$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessageContent2$Outbound;
-}
 
 export function openResponsesEasyInputMessageContent2ToJSON(
   openResponsesEasyInputMessageContent2: OpenResponsesEasyInputMessageContent2,
@@ -482,58 +233,6 @@ export function openResponsesEasyInputMessageContent2ToJSON(
     ),
   );
 }
-
-export function openResponsesEasyInputMessageContent2FromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessageContent2, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesEasyInputMessageContent2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessageContent2' from JSON`,
-  );
-}
-
-/** @internal */
-export const OpenResponsesEasyInputMessage$inboundSchema: z.ZodType<
-  OpenResponsesEasyInputMessage,
-  unknown
-> = z.object({
-  type: OpenResponsesEasyInputMessageType$inboundSchema.optional(),
-  role: z.union([
-    OpenResponsesEasyInputMessageRoleUser$inboundSchema,
-    OpenResponsesEasyInputMessageRoleSystem$inboundSchema,
-    OpenResponsesEasyInputMessageRoleAssistant$inboundSchema,
-    OpenResponsesEasyInputMessageRoleDeveloper$inboundSchema,
-  ]),
-  content: z.union([
-    z.array(
-      z.union([
-        ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputAudio$inboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-        ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
-        ),
-      ]),
-    ),
-    z.string(),
-  ]),
-});
 
 /** @internal */
 export type OpenResponsesEasyInputMessage$Outbound = {
@@ -565,43 +264,22 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
     z.array(
       z.union([
         ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_text") }),
         ),
         ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_image") }),
         ),
         ResponseInputAudio$outboundSchema.and(
-          z.object({ type: z.literal("input_audio") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_audio") }),
         ),
         ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }).transform((v) => ({
-            type: v.type,
-          })),
+          z.object({ type: z.literal("input_file") }),
         ),
       ]),
     ),
     z.string(),
   ]),
 });
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesEasyInputMessage$ {
-  /** @deprecated use `OpenResponsesEasyInputMessage$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesEasyInputMessage$inboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessage$outboundSchema` instead. */
-  export const outboundSchema = OpenResponsesEasyInputMessage$outboundSchema;
-  /** @deprecated use `OpenResponsesEasyInputMessage$Outbound` instead. */
-  export type Outbound = OpenResponsesEasyInputMessage$Outbound;
-}
 
 export function openResponsesEasyInputMessageToJSON(
   openResponsesEasyInputMessage: OpenResponsesEasyInputMessage,
@@ -610,15 +288,5 @@ export function openResponsesEasyInputMessageToJSON(
     OpenResponsesEasyInputMessage$outboundSchema.parse(
       openResponsesEasyInputMessage,
     ),
-  );
-}
-
-export function openResponsesEasyInputMessageFromJSON(
-  jsonString: string,
-): SafeParseResult<OpenResponsesEasyInputMessage, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => OpenResponsesEasyInputMessage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'OpenResponsesEasyInputMessage' from JSON`,
   );
 }

@@ -21,50 +21,10 @@ export const PayloadTooLargeResponseErrorData$inboundSchema: z.ZodType<
   PayloadTooLargeResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type PayloadTooLargeResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const PayloadTooLargeResponseErrorData$outboundSchema: z.ZodType<
-  PayloadTooLargeResponseErrorData$Outbound,
-  PayloadTooLargeResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace PayloadTooLargeResponseErrorData$ {
-  /** @deprecated use `PayloadTooLargeResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = PayloadTooLargeResponseErrorData$inboundSchema;
-  /** @deprecated use `PayloadTooLargeResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = PayloadTooLargeResponseErrorData$outboundSchema;
-  /** @deprecated use `PayloadTooLargeResponseErrorData$Outbound` instead. */
-  export type Outbound = PayloadTooLargeResponseErrorData$Outbound;
-}
-
-export function payloadTooLargeResponseErrorDataToJSON(
-  payloadTooLargeResponseErrorData: PayloadTooLargeResponseErrorData,
-): string {
-  return JSON.stringify(
-    PayloadTooLargeResponseErrorData$outboundSchema.parse(
-      payloadTooLargeResponseErrorData,
-    ),
-  );
-}
 
 export function payloadTooLargeResponseErrorDataFromJSON(
   jsonString: string,

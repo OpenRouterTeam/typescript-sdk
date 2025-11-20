@@ -3,16 +3,30 @@
  */
 
 import * as z from "zod/v4";
+import { SDKOptions } from "./config.js";
 import { dlv } from "./dlv.js";
 
 export interface Env {
   OPENROUTER_API_KEY?: string | undefined;
+
+  /**
+   * Sets the httpReferer parameter for all supported operations
+   */
+  OPENROUTER_HTTP_REFERER?: string | undefined;
+
+  /**
+   * Sets the xTitle parameter for all supported operations
+   */
+  OPENROUTER_X_TITLE?: string | undefined;
 
   OPENROUTER_DEBUG?: boolean | undefined;
 }
 
 export const envSchema: z.ZodType<Env, unknown> = z.object({
   OPENROUTER_API_KEY: z.string().optional(),
+
+  OPENROUTER_HTTP_REFERER: z.string().optional(),
+  OPENROUTER_X_TITLE: z.string().optional(),
 
   OPENROUTER_DEBUG: z.coerce.boolean().optional(),
 });
@@ -54,4 +68,22 @@ export function env(): Env {
  */
 export function resetEnv() {
   envMemo = undefined;
+}
+
+/**
+ * Populates global parameters with environment variables.
+ */
+export function fillGlobals(options: SDKOptions): SDKOptions {
+  const clone = { ...options };
+
+  const envVars = env();
+
+  if (typeof envVars.OPENROUTER_HTTP_REFERER !== "undefined") {
+    clone.httpReferer ??= envVars.OPENROUTER_HTTP_REFERER;
+  }
+  if (typeof envVars.OPENROUTER_X_TITLE !== "undefined") {
+    clone.xTitle ??= envVars.OPENROUTER_X_TITLE;
+  }
+
+  return clone;
 }

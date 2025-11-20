@@ -21,50 +21,10 @@ export const UnauthorizedResponseErrorData$inboundSchema: z.ZodType<
   UnauthorizedResponseErrorData,
   unknown
 > = z.object({
-  code: z.number().int(),
+  code: z.int(),
   message: z.string(),
   metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
 });
-
-/** @internal */
-export type UnauthorizedResponseErrorData$Outbound = {
-  code: number;
-  message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
-};
-
-/** @internal */
-export const UnauthorizedResponseErrorData$outboundSchema: z.ZodType<
-  UnauthorizedResponseErrorData$Outbound,
-  UnauthorizedResponseErrorData
-> = z.object({
-  code: z.number().int(),
-  message: z.string(),
-  metadata: z.nullable(z.record(z.string(), z.nullable(z.any()))).optional(),
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace UnauthorizedResponseErrorData$ {
-  /** @deprecated use `UnauthorizedResponseErrorData$inboundSchema` instead. */
-  export const inboundSchema = UnauthorizedResponseErrorData$inboundSchema;
-  /** @deprecated use `UnauthorizedResponseErrorData$outboundSchema` instead. */
-  export const outboundSchema = UnauthorizedResponseErrorData$outboundSchema;
-  /** @deprecated use `UnauthorizedResponseErrorData$Outbound` instead. */
-  export type Outbound = UnauthorizedResponseErrorData$Outbound;
-}
-
-export function unauthorizedResponseErrorDataToJSON(
-  unauthorizedResponseErrorData: UnauthorizedResponseErrorData,
-): string {
-  return JSON.stringify(
-    UnauthorizedResponseErrorData$outboundSchema.parse(
-      unauthorizedResponseErrorData,
-    ),
-  );
-}
 
 export function unauthorizedResponseErrorDataFromJSON(
   jsonString: string,

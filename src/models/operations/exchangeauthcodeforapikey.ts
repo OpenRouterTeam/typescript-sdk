@@ -5,11 +5,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import {
-  catchUnrecognizedEnum,
-  OpenEnum,
-  Unrecognized,
-} from "../../types/enums.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
@@ -60,52 +57,9 @@ export type ExchangeAuthCodeForAPIKeyResponse = {
 };
 
 /** @internal */
-export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$inboundSchema:
-  z.ZodType<ExchangeAuthCodeForAPIKeyCodeChallengeMethod, unknown> = z
-    .union([
-      z.enum(ExchangeAuthCodeForAPIKeyCodeChallengeMethod),
-      z.string().transform(catchUnrecognizedEnum),
-    ]);
-
-/** @internal */
 export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema:
-  z.ZodType<
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod,
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod
-  > = z.union([
-    z.enum(ExchangeAuthCodeForAPIKeyCodeChallengeMethod),
-    z.string().and(z.custom<Unrecognized<string>>()),
-  ]);
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ExchangeAuthCodeForAPIKeyCodeChallengeMethod$ {
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyCodeChallengeMethod$inboundSchema` instead. */
-  export const inboundSchema =
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod$inboundSchema;
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema` instead. */
-  export const outboundSchema =
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema;
-}
-
-/** @internal */
-export const ExchangeAuthCodeForAPIKeyRequest$inboundSchema: z.ZodType<
-  ExchangeAuthCodeForAPIKeyRequest,
-  unknown
-> = z.object({
-  code: z.string(),
-  code_verifier: z.string().optional(),
-  code_challenge_method: z.nullable(
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod$inboundSchema,
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "code_verifier": "codeVerifier",
-    "code_challenge_method": "codeChallengeMethod",
-  });
-});
+  z.ZodType<string, ExchangeAuthCodeForAPIKeyCodeChallengeMethod> = openEnums
+    .outboundSchema(ExchangeAuthCodeForAPIKeyCodeChallengeMethod);
 
 /** @internal */
 export type ExchangeAuthCodeForAPIKeyRequest$Outbound = {
@@ -131,19 +85,6 @@ export const ExchangeAuthCodeForAPIKeyRequest$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ExchangeAuthCodeForAPIKeyRequest$ {
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyRequest$inboundSchema` instead. */
-  export const inboundSchema = ExchangeAuthCodeForAPIKeyRequest$inboundSchema;
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyRequest$outboundSchema` instead. */
-  export const outboundSchema = ExchangeAuthCodeForAPIKeyRequest$outboundSchema;
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyRequest$Outbound` instead. */
-  export type Outbound = ExchangeAuthCodeForAPIKeyRequest$Outbound;
-}
-
 export function exchangeAuthCodeForAPIKeyRequestToJSON(
   exchangeAuthCodeForAPIKeyRequest: ExchangeAuthCodeForAPIKeyRequest,
 ): string {
@@ -151,16 +92,6 @@ export function exchangeAuthCodeForAPIKeyRequestToJSON(
     ExchangeAuthCodeForAPIKeyRequest$outboundSchema.parse(
       exchangeAuthCodeForAPIKeyRequest,
     ),
-  );
-}
-
-export function exchangeAuthCodeForAPIKeyRequestFromJSON(
-  jsonString: string,
-): SafeParseResult<ExchangeAuthCodeForAPIKeyRequest, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ExchangeAuthCodeForAPIKeyRequest$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ExchangeAuthCodeForAPIKeyRequest' from JSON`,
   );
 }
 
@@ -176,49 +107,6 @@ export const ExchangeAuthCodeForAPIKeyResponse$inboundSchema: z.ZodType<
     "user_id": "userId",
   });
 });
-
-/** @internal */
-export type ExchangeAuthCodeForAPIKeyResponse$Outbound = {
-  key: string;
-  user_id: string | null;
-};
-
-/** @internal */
-export const ExchangeAuthCodeForAPIKeyResponse$outboundSchema: z.ZodType<
-  ExchangeAuthCodeForAPIKeyResponse$Outbound,
-  ExchangeAuthCodeForAPIKeyResponse
-> = z.object({
-  key: z.string(),
-  userId: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    userId: "user_id",
-  });
-});
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace ExchangeAuthCodeForAPIKeyResponse$ {
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyResponse$inboundSchema` instead. */
-  export const inboundSchema = ExchangeAuthCodeForAPIKeyResponse$inboundSchema;
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyResponse$outboundSchema` instead. */
-  export const outboundSchema =
-    ExchangeAuthCodeForAPIKeyResponse$outboundSchema;
-  /** @deprecated use `ExchangeAuthCodeForAPIKeyResponse$Outbound` instead. */
-  export type Outbound = ExchangeAuthCodeForAPIKeyResponse$Outbound;
-}
-
-export function exchangeAuthCodeForAPIKeyResponseToJSON(
-  exchangeAuthCodeForAPIKeyResponse: ExchangeAuthCodeForAPIKeyResponse,
-): string {
-  return JSON.stringify(
-    ExchangeAuthCodeForAPIKeyResponse$outboundSchema.parse(
-      exchangeAuthCodeForAPIKeyResponse,
-    ),
-  );
-}
 
 export function exchangeAuthCodeForAPIKeyResponseFromJSON(
   jsonString: string,

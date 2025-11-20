@@ -51,24 +51,10 @@ export type OpenResponsesWebSearch20250826Tool = {
 export const OpenResponsesWebSearch20250826ToolType$inboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearch20250826ToolType
 > = z.enum(OpenResponsesWebSearch20250826ToolType);
-
 /** @internal */
 export const OpenResponsesWebSearch20250826ToolType$outboundSchema: z.ZodEnum<
   typeof OpenResponsesWebSearch20250826ToolType
 > = OpenResponsesWebSearch20250826ToolType$inboundSchema;
-
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearch20250826ToolType$ {
-  /** @deprecated use `OpenResponsesWebSearch20250826ToolType$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearch20250826ToolType$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearch20250826ToolType$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearch20250826ToolType$outboundSchema;
-}
 
 /** @internal */
 export const OpenResponsesWebSearch20250826ToolFilters$inboundSchema: z.ZodType<
@@ -81,7 +67,6 @@ export const OpenResponsesWebSearch20250826ToolFilters$inboundSchema: z.ZodType<
     "allowed_domains": "allowedDomains",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearch20250826ToolFilters$Outbound = {
   allowed_domains?: Array<string> | null | undefined;
@@ -100,21 +85,6 @@ export const OpenResponsesWebSearch20250826ToolFilters$outboundSchema:
     });
   });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearch20250826ToolFilters$ {
-  /** @deprecated use `OpenResponsesWebSearch20250826ToolFilters$inboundSchema` instead. */
-  export const inboundSchema =
-    OpenResponsesWebSearch20250826ToolFilters$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearch20250826ToolFilters$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearch20250826ToolFilters$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearch20250826ToolFilters$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearch20250826ToolFilters$Outbound;
-}
-
 export function openResponsesWebSearch20250826ToolFiltersToJSON(
   openResponsesWebSearch20250826ToolFilters:
     OpenResponsesWebSearch20250826ToolFilters,
@@ -125,7 +95,6 @@ export function openResponsesWebSearch20250826ToolFiltersToJSON(
     ),
   );
 }
-
 export function openResponsesWebSearch20250826ToolFiltersFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -160,7 +129,6 @@ export const OpenResponsesWebSearch20250826Tool$inboundSchema: z.ZodType<
     "user_location": "userLocation",
   });
 });
-
 /** @internal */
 export type OpenResponsesWebSearch20250826Tool$Outbound = {
   type: string;
@@ -191,20 +159,6 @@ export const OpenResponsesWebSearch20250826Tool$outboundSchema: z.ZodType<
   });
 });
 
-/**
- * @internal
- * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
- */
-export namespace OpenResponsesWebSearch20250826Tool$ {
-  /** @deprecated use `OpenResponsesWebSearch20250826Tool$inboundSchema` instead. */
-  export const inboundSchema = OpenResponsesWebSearch20250826Tool$inboundSchema;
-  /** @deprecated use `OpenResponsesWebSearch20250826Tool$outboundSchema` instead. */
-  export const outboundSchema =
-    OpenResponsesWebSearch20250826Tool$outboundSchema;
-  /** @deprecated use `OpenResponsesWebSearch20250826Tool$Outbound` instead. */
-  export type Outbound = OpenResponsesWebSearch20250826Tool$Outbound;
-}
-
 export function openResponsesWebSearch20250826ToolToJSON(
   openResponsesWebSearch20250826Tool: OpenResponsesWebSearch20250826Tool,
 ): string {
@@ -214,7 +168,6 @@ export function openResponsesWebSearch20250826ToolToJSON(
     ),
   );
 }
-
 export function openResponsesWebSearch20250826ToolFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesWebSearch20250826Tool, SDKValidationError> {
