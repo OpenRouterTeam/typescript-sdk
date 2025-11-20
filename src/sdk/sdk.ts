@@ -16,6 +16,15 @@ import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
+// #region imports
+import { callModel as callModelFunc } from "../funcs/callModel.js";
+import { ResponseWrapper } from "../lib/response-wrapper.js";
+import { RequestOptions } from "../lib/sdks.js";
+import { EnhancedTool, MaxToolRounds, ToolType } from "../lib/tool-types.js";
+import * as models from "../models/index.js";
+export { ToolType };
+export type { EnhancedTool, MaxToolRounds };
+// #endregion imports
 
 export class OpenRouter extends ClientSDK {
   private _beta?: Beta;
@@ -82,4 +91,16 @@ export class OpenRouter extends ClientSDK {
   get completions(): Completions {
     return (this._completions ??= new Completions(this._options));
   }
+
+  // #region sdk-class-body
+  callModel(
+    request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+      tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
+      maxToolRounds?: MaxToolRounds;
+    },
+    options?: RequestOptions,
+  ): ResponseWrapper {
+    return callModelFunc(this, request, options);
+  }
+  // #endregion sdk-class-body
 }

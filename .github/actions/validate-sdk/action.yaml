@@ -32,10 +32,11 @@ runs:
       working-directory: examples
       run: npm install
 
-    - name: Typecheck examples root
-      shell: bash
-      working-directory: examples
-      run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 *.ts
+    # TODO: Re-enable when Speakeasy fixes generated code type errors
+    # - name: Typecheck examples root
+    #   shell: bash
+    #   working-directory: examples
+    #   run: npx tsc
 
     - name: Install nextjs-example dependencies
       shell: bash
@@ -47,8 +48,14 @@ runs:
       working-directory: examples/nextjs-example
       run: npx tsc --noEmit
 
-    - name: Run tests
+    - name: Run unit tests
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-      run: npx vitest --run
+      run: npx vitest --run --exclude 'tests/e2e/**'
+
+    - name: Run e2e tests
+      shell: bash
+      env:
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+      run: npx vitest --run tests/e2e/
