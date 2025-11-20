@@ -20,8 +20,10 @@ import { Providers } from "./providers.js";
 import { callModel as callModelFunc } from "../funcs/callModel.js";
 import { ResponseWrapper } from "../lib/response-wrapper.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { EnhancedTool, MaxToolRounds } from "../lib/tool-types.js";
+import { EnhancedTool, MaxToolRounds, ToolType } from "../lib/tool-types.js";
 import * as models from "../models/index.js";
+export { ToolType };
+export type { EnhancedTool, MaxToolRounds };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {

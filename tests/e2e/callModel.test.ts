@@ -61,6 +61,7 @@ describe("callModel E2E Tests", () => {
 
       expect(text).toBeDefined();
       expect(text.toLowerCase()).toContain("bob");
+      console.log(text)
     });
   });
 
