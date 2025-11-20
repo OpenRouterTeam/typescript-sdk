@@ -3,10 +3,10 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: bcccd1abd05f6654a822386f2eefbd8a
   docVersion: 1.0.0
-  speakeasyVersion: 1.658.2
+  speakeasyVersion: 1.659.0
   generationVersion: 2.755.9
-  releaseVersion: 0.1.16
-  configChecksum: 6960bb8f1b60d5d4de499d95ba613aa2
+  releaseVersion: 0.1.17
+  configChecksum: 981848e5179cd35dc81cd362029ee736
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
