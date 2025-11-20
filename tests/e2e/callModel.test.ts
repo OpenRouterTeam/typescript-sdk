@@ -1,6 +1,9 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { OpenRouter } from "../../src/sdk/sdk.js";
+import { OpenRouter, ToolType } from "../../src/sdk/sdk.js";
 import { Message } from "../../src/models/message.js";
+import { AssistantMessage } from "../../src/models/assistantmessage.js";
+import { ToolResponseMessage } from "../../src/models/toolresponsemessage.js";
+import { z } from "zod/v4";
 
 describe("callModel E2E Tests", () => {
   let client: OpenRouter;
@@ -226,7 +229,7 @@ describe("callModel E2E Tests", () => {
         ],
       });
 
-      const messages: Message[] = [];
+      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
 
       for await (const message of response.getNewMessagesStream()) {
         expect(message).toBeDefined();
@@ -246,6 +249,212 @@ describe("callModel E2E Tests", () => {
         const lastText = (lastMessage.content as string) || "";
 
         expect(lastText.length).toBeGreaterThanOrEqual(firstText.length);
+      }
+    }, 15000);
+
+    it("should return AssistantMessages with correct shape", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'hello world'.",
+          },
+        ],
+      });
+
+      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
+
+      for await (const message of response.getNewMessagesStream()) {
+        messages.push(message);
+
+        // Deep validation of AssistantMessage shape
+        expect(message).toHaveProperty("role");
+        expect(message).toHaveProperty("content");
+
+        if (message.role === "assistant") {
+          // Validate AssistantMessage structure
+          expect(message.role).toBe("assistant");
+
+          // content must be string, array, null, or undefined
+          const contentType = typeof message.content;
+          const isValidContent =
+            contentType === "string" ||
+            Array.isArray(message.content) ||
+            message.content === null ||
+            message.content === undefined;
+          expect(isValidContent).toBe(true);
+
+          // If content is an array, each item must have a type
+          if (Array.isArray(message.content)) {
+            for (const item of message.content) {
+              expect(item).toHaveProperty("type");
+              expect(typeof item.type).toBe("string");
+            }
+          }
+
+          // If toolCalls present, validate their shape
+          if ("toolCalls" in message && message.toolCalls) {
+            expect(Array.isArray(message.toolCalls)).toBe(true);
+            for (const toolCall of message.toolCalls) {
+              expect(toolCall).toHaveProperty("id");
+              expect(toolCall).toHaveProperty("type");
+              expect(toolCall).toHaveProperty("function");
+              expect(typeof toolCall.id).toBe("string");
+              expect(typeof toolCall.type).toBe("string");
+              expect(toolCall.function).toHaveProperty("name");
+              expect(toolCall.function).toHaveProperty("arguments");
+              expect(typeof toolCall.function.name).toBe("string");
+              expect(typeof toolCall.function.arguments).toBe("string");
+            }
+          }
+        }
+      }
+
+      expect(messages.length).toBeGreaterThan(0);
+
+      // Verify last message has the complete assistant response shape
+      const lastMessage = messages[messages.length - 1];
+      expect(lastMessage.role).toBe("assistant");
+    }, 15000);
+
+    it("should include ToolResponseMessages with correct shape when tools are executed", async () => {
+      const response = client.callModel({
+        model: "openai/gpt-4o-mini",
+        input: [
+          {
+            role: "user",
+            content: "What's the weather in Tokyo? Use the get_weather tool.",
+          },
+        ],
+        tools: [
+          {
+            type: ToolType.Function,
+            function: {
+              name: "get_weather",
+              description: "Get weather for a location",
+              inputSchema: z.object({
+                location: z.string().describe("City name"),
+              }),
+              outputSchema: z.object({
+                temperature: z.number(),
+                condition: z.string(),
+              }),
+              execute: async (params: { location: string }) => {
+                return {
+                  temperature: 22,
+                  condition: "Sunny",
+                };
+              },
+            },
+          },
+        ],
+      });
+
+      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
+      let hasAssistantMessage = false;
+      let hasToolResponseMessage = false;
+
+      for await (const message of response.getNewMessagesStream()) {
+        messages.push(message);
+
+        // Validate each message has correct shape based on role
+        expect(message).toHaveProperty("role");
+        expect(message).toHaveProperty("content");
+
+        if (message.role === "assistant") {
+          hasAssistantMessage = true;
+
+          // Validate AssistantMessage shape
+          const contentType = typeof message.content;
+          const isValidContent =
+            contentType === "string" ||
+            Array.isArray(message.content) ||
+            message.content === null ||
+            message.content === undefined;
+          expect(isValidContent).toBe(true);
+        } else if (message.role === "tool") {
+          hasToolResponseMessage = true;
+
+          // Deep validation of ToolResponseMessage shape
+          expect(message).toHaveProperty("toolCallId");
+          expect(typeof (message as ToolResponseMessage).toolCallId).toBe("string");
+          expect((message as ToolResponseMessage).toolCallId.length).toBeGreaterThan(0);
+
+          // content must be string or array
+          const contentType = typeof message.content;
+          const isValidContent =
+            contentType === "string" ||
+            Array.isArray(message.content);
+          expect(isValidContent).toBe(true);
+
+          // If content is string, it should be parseable JSON (our tool result)
+          if (typeof message.content === "string" && message.content.length > 0) {
+            const parsed = JSON.parse(message.content);
+            expect(parsed).toBeDefined();
+            // Verify it matches our tool output schema
+            expect(parsed).toHaveProperty("temperature");
+            expect(parsed).toHaveProperty("condition");
+            expect(typeof parsed.temperature).toBe("number");
+            expect(typeof parsed.condition).toBe("string");
+          }
+        }
+      }
+
+      expect(messages.length).toBeGreaterThan(0);
+      // We must have tool responses since we have an executable tool
+      expect(hasToolResponseMessage).toBe(true);
+
+      // If the model provided a final text response, verify proper ordering
+      if (hasAssistantMessage) {
+        const lastToolIndex = messages.reduce((lastIdx, m, i) =>
+          m.role === "tool" ? i : lastIdx, -1);
+        const lastAssistantIndex = messages.reduce((lastIdx, m, i) =>
+          m.role === "assistant" ? i : lastIdx, -1);
+
+        // The final assistant message should come after tool responses
+        if (lastToolIndex !== -1 && lastAssistantIndex !== -1) {
+          expect(lastAssistantIndex).toBeGreaterThan(lastToolIndex);
+        }
+      }
+    }, 30000);
+
+    it("should return messages with all required fields and correct types", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Count from 1 to 3.",
+          },
+        ],
+      });
+
+      for await (const message of response.getNewMessagesStream()) {
+        // role must be a string and one of the valid values
+        expect(typeof message.role).toBe("string");
+        expect(["assistant", "tool"]).toContain(message.role);
+
+        // content must exist (even if null)
+        expect("content" in message).toBe(true);
+
+        if (message.role === "assistant") {
+          // AssistantMessage specific validations
+          const validContentTypes = ["string", "object", "undefined"];
+          expect(validContentTypes).toContain(typeof message.content);
+
+          // If content is array, validate structure
+          if (Array.isArray(message.content)) {
+            expect(message.content.every(item =>
+              typeof item === "object" && item !== null && "type" in item
+            )).toBe(true);
+          }
+        } else if (message.role === "tool") {
+          // ToolResponseMessage specific validations
+          const toolMsg = message as ToolResponseMessage;
+          expect(typeof toolMsg.toolCallId).toBe("string");
+          expect(toolMsg.toolCallId.length).toBeGreaterThan(0);
+        }
       }
     }, 15000);
   });

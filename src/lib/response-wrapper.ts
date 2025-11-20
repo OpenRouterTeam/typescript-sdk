@@ -418,6 +418,17 @@ export class ResponseWrapper {
           } as models.ToolResponseMessage;
         }
       }
+
+      // If tools were executed, yield the final assistant message (if there is one)
+      if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
+        // Check if the final response contains a message
+        const hasMessage = this.finalResponse.output.some(
+          (item) => "type" in item && item.type === "message"
+        );
+        if (hasMessage) {
+          yield extractMessageFromResponse(this.finalResponse);
+        }
+      }
     }.call(this));
   }
 
