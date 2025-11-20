@@ -1,0 +1,35 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Add HTTP-Referer and X-Title as global parameters
+  version: 0.0.0
+actions:
+  # Add global parameters for app identification
+  - target: $
+    description: Add x-speakeasy-globals for HTTP-Referer and X-Title headers
+    update:
+      x-speakeasy-globals:
+        parameters:
+          - $ref: "#/components/parameters/AppIdentifier"
+          - $ref: "#/components/parameters/AppDisplayName"
+
+  # Add component parameters
+  - target: $.components
+    description: Add parameters for app identification headers
+    update:
+      parameters:
+        AppIdentifier:
+          name: HTTP-Referer
+          in: header
+          schema:
+            type: string
+          description: |
+            The app identifier should be your app's URL and is used as the primary identifier for rankings.
+            This is used to track API usage per application.
+        AppDisplayName:
+          name: X-Title
+          in: header
+          schema:
+            type: string
+          description: |
+            The app display name allows you to customize how your app appears in OpenRouter's dashboard.

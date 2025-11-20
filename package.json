@@ -48,11 +48,6 @@
       "types": "./esm/models/operations/index.d.ts",
       "default": "./esm/models/operations/index.js"
     },
-    "./react-query": {
-      "source": "./src/react-query/index.ts",
-      "types": "./esm/react-query/index.d.ts",
-      "default": "./esm/react-query/index.js"
-    },
     "./*.js": {
       "source": "./src/*.ts",
       "types": "./esm/*.d.ts",
@@ -75,20 +70,11 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@tanstack/react-query": "^5",
-    "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
-  },
-  "peerDependenciesMeta": {
-    "@tanstack/react-query": {"optional":true},
-    "react": {"optional":true},
-    "react-dom": {"optional":true}
+    
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
-    "@tanstack/react-query": "^5.61.4",
     "@types/node": "^22.13.12",
-    "@types/react": "^18.3.12",
     "dotenv": "^16.4.7",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",

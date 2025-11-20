@@ -19,32 +19,24 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 
 ```bash
 npm add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-npm add @tanstack/react-query react react-dom
 ```
 
 ### PNPM
 
 ```bash
 pnpm add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-pnpm add @tanstack/react-query react react-dom
 ```
 
 ### Bun
 
 ```bash
 bun add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-bun add @tanstack/react-query react react-dom
 ```
 
 ### Yarn
 
 ```bash
 yarn add @openrouter/sdk
-# Install optional peer dependencies if you plan to use React hooks
-yarn add @tanstack/react-query react react-dom
 ```
 
 > [!NOTE]
