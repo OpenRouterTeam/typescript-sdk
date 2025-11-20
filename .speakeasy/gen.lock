@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 06c725cfe764dbed9c3f85ff06857003
+  docChecksum: 459a4007b7391a38a6e9c7249c84c3bf
   docVersion: 1.0.0
   speakeasyVersion: 1.658.2
   generationVersion: 2.755.9
-  releaseVersion: 0.1.13
-  configChecksum: 1bbbf76f0f625fbac8a29bd3ed9222e1
+  releaseVersion: 0.1.17
+  configChecksum: 1aa68a2fafd67f1deb74a05868fefaac
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -70,12 +70,14 @@ generatedFiles:
   - docs/models/chatmessagecontentitemaudio.md
   - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemaudioinputaudio.md
+  - docs/models/chatmessagecontentitemfile.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagecontentitemvideo.md
   - docs/models/chatmessagecontentitemvideoinputvideo.md
   - docs/models/chatmessagecontentitemvideovideourl.md
+  - docs/models/chatmessagecontentitemvideovideourlvideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -132,6 +134,7 @@ generatedFiles:
   - docs/models/filecitationtype.md
   - docs/models/filepath.md
   - docs/models/filepathtype.md
+  - docs/models/filet.md
   - docs/models/forbiddenresponseerrordata.md
   - docs/models/idfileparser.md
   - docs/models/idmoderation.md
@@ -513,8 +516,7 @@ generatedFiles:
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/videourl1.md
-  - docs/models/videourl2.md
+  - docs/models/videourl.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -593,6 +595,7 @@ generatedFiles:
   - src/models/chatgenerationtokenusage.ts
   - src/models/chatmessagecontentitem.ts
   - src/models/chatmessagecontentitemaudio.ts
+  - src/models/chatmessagecontentitemfile.ts
   - src/models/chatmessagecontentitemimage.ts
   - src/models/chatmessagecontentitemtext.ts
   - src/models/chatmessagecontentitemvideo.ts
@@ -767,6 +770,7 @@ generatedFiles:
   - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
+  - src/models/videourl.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
   - src/react-query/_context.tsx

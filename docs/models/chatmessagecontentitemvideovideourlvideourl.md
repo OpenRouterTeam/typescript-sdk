@@ -1,12 +1,12 @@
-# VideoUrl2
+# ChatMessageContentItemVideoVideoUrlVideoUrl
 
 ## Example Usage
 
 ```typescript
-import { VideoUrl2 } from "@openrouter/sdk/models";
+import { ChatMessageContentItemVideoVideoUrlVideoUrl } from "@openrouter/sdk/models";
 
-let value: VideoUrl2 = {
-  url: "https://triangular-soup.info",
+let value: ChatMessageContentItemVideoVideoUrlVideoUrl = {
+  url: "https://perfumed-testimonial.net/",
 };
 ```
 

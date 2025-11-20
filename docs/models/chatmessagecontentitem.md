@@ -57,3 +57,14 @@ const value: models.ChatMessageContentItemVideo = {
 };
 ```
 
+### `models.ChatMessageContentItemFile`
+
+```typescript
+const value: models.ChatMessageContentItemFile = {
+  type: "file",
+  file: {
+    fileData: "<value>",
+  },
+};
+```
+

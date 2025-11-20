@@ -12,6 +12,12 @@ import {
   ChatMessageContentItemAudio$outboundSchema,
 } from "./chatmessagecontentitemaudio.js";
 import {
+  ChatMessageContentItemFile,
+  ChatMessageContentItemFile$inboundSchema,
+  ChatMessageContentItemFile$Outbound,
+  ChatMessageContentItemFile$outboundSchema,
+} from "./chatmessagecontentitemfile.js";
+import {
   ChatMessageContentItemImage,
   ChatMessageContentItemImage$inboundSchema,
   ChatMessageContentItemImage$Outbound,
@@ -35,6 +41,7 @@ export type ChatMessageContentItem =
   | (ChatMessageContentItemText & { type: "text" })
   | (ChatMessageContentItemImage & { type: "image_url" })
   | (ChatMessageContentItemAudio & { type: "input_audio" })
+  | (ChatMessageContentItemFile & { type: "file" })
   | (ChatMessageContentItemVideo & { type: "input_video" })
   | (ChatMessageContentItemVideo & { type: "video_url" });
 
@@ -52,6 +59,9 @@ export const ChatMessageContentItem$inboundSchema: z.ZodType<
   ChatMessageContentItemAudio$inboundSchema.and(
     z.object({ type: z.literal("input_audio") }),
   ),
+  ChatMessageContentItemFile$inboundSchema.and(
+    z.object({ type: z.literal("file") }),
+  ),
   ChatMessageContentItemVideo$inboundSchema.and(
     z.object({ type: z.literal("input_video") }),
   ),
@@ -64,6 +74,7 @@ export type ChatMessageContentItem$Outbound =
   | (ChatMessageContentItemText$Outbound & { type: "text" })
   | (ChatMessageContentItemImage$Outbound & { type: "image_url" })
   | (ChatMessageContentItemAudio$Outbound & { type: "input_audio" })
+  | (ChatMessageContentItemFile$Outbound & { type: "file" })
   | (ChatMessageContentItemVideo$Outbound & { type: "input_video" })
   | (ChatMessageContentItemVideo$Outbound & { type: "video_url" });
 
@@ -80,6 +91,9 @@ export const ChatMessageContentItem$outboundSchema: z.ZodType<
   ),
   ChatMessageContentItemAudio$outboundSchema.and(
     z.object({ type: z.literal("input_audio") }),
+  ),
+  ChatMessageContentItemFile$outboundSchema.and(
+    z.object({ type: z.literal("file") }),
   ),
   ChatMessageContentItemVideo$outboundSchema.and(
     z.object({ type: z.literal("input_video") }),
