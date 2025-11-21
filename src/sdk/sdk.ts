@@ -94,8 +94,9 @@ export class OpenRouter extends ClientSDK {
 
   // #region sdk-class-body
   callModel(
-    request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
-      tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
+    request: Omit<models.OpenResponsesRequest, "stream" | "tools" | "input"> & {
+      input?: import("../funcs/callModel.js").CallModelInput;
+      tools?: import("../funcs/callModel.js").CallModelTools;
       maxToolRounds?: MaxToolRounds;
     },
     options?: RequestOptions,

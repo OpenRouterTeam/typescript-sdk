@@ -21,6 +21,151 @@ describe("callModel E2E Tests", () => {
     });
   });
 
+  describe("Chat-style messages support", () => {
+    it("should accept chat-style Message array as input", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "You are a helpful assistant.",
+          },
+          {
+            role: "user",
+            content: "Say 'chat test' and nothing else.",
+          },
+        ],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+      expect(text.length).toBeGreaterThan(0);
+    });
+
+    it("should handle multi-turn chat-style conversation", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "My favorite color is blue.",
+          },
+          {
+            role: "assistant",
+            content: "That's nice! Blue is a calming color.",
+          },
+          {
+            role: "user",
+            content: "What is my favorite color?",
+          },
+        ],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(text.toLowerCase()).toContain("blue");
+    });
+
+    it("should handle system message in chat-style input", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "Always respond with exactly one word.",
+          },
+          {
+            role: "user",
+            content: "Say hello.",
+          },
+        ],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+    });
+
+    it("should accept chat-style tools (ToolDefinitionJson)", async () => {
+      const response = client.callModel({
+        model: "qwen/qwen3-vl-8b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "What's the weather in Paris? Use the get_weather tool.",
+          },
+        ],
+        tools: [
+          {
+            type: "function" as const,
+            function: {
+              name: "get_weather",
+              description: "Get weather for a location",
+              parameters: {
+                type: "object",
+                properties: {
+                  location: {
+                    type: "string",
+                    description: "City name",
+                  },
+                },
+                required: ["location"],
+              },
+            },
+          },
+        ],
+      });
+
+      const toolCalls = await response.getToolCalls();
+
+      // Model should call the tool
+      expect(toolCalls.length).toBeGreaterThan(0);
+      expect(toolCalls[0].name).toBe("get_weather");
+      expect(toolCalls[0].arguments).toBeDefined();
+    }, 30000);
+
+    it("should work with chat-style messages and chat-style tools together", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.1-8b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "You are a helpful assistant. Use tools when needed.",
+          },
+          {
+            role: "user",
+            content: "Get the weather in Tokyo using the weather tool.",
+          },
+        ],
+        tools: [
+          {
+            type: "function" as const,
+            function: {
+              name: "get_weather",
+              description: "Get current weather",
+              parameters: {
+                type: "object",
+                properties: {
+                  city: { type: "string" },
+                },
+                required: ["city"],
+              },
+            },
+          },
+        ],
+      });
+
+      const toolCalls = await response.getToolCalls();
+
+      expect(toolCalls.length).toBeGreaterThan(0);
+      expect(toolCalls[0].name).toBe("get_weather");
+    }, 30000);
+  });
+
   describe("response.text - Text extraction", () => {
     it("should successfully get text from a response", async () => {
       const response = client.callModel({
