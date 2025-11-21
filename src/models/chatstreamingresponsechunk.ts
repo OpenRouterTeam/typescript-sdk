@@ -94,7 +94,8 @@ export const ChatStreamingResponseChunk$inboundSchema: z.ZodType<
       return JSON.parse(v);
     } catch (err) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        input: v,
+        code: "custom",
         message: `malformed json: ${err}`,
       });
       return z.NEVER;

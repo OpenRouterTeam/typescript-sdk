@@ -3,10 +3,10 @@ id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
   docChecksum: bcccd1abd05f6654a822386f2eefbd8a
   docVersion: 1.0.0
-  speakeasyVersion: 1.659.0
-  generationVersion: 2.755.9
-  releaseVersion: 0.1.23
-  configChecksum: 991bb8e65e382038e344c12cdd982649
+  speakeasyVersion: 1.660.0
+  generationVersion: 2.760.2
+  releaseVersion: 0.1.24
+  configChecksum: 475b25558977e68908a4d0653d872817
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.7
+    core: 3.26.9
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -797,6 +797,7 @@ generatedFiles:
   - src/types/operations.ts
   - src/types/rfcdate.ts
   - src/types/streams.ts
+  - src/types/unrecognized.ts
   - tsconfig.json
 examples:
   createChatCompletion:
