@@ -980,6 +980,182 @@ describe("callModel E2E Tests", () => {
     });
   });
 
+  describe("response.getResponse - Full response with usage", () => {
+    it("should return full response with correct shape", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'hello'.",
+          },
+        ],
+      });
+
+      const fullResponse = await response.getResponse();
+
+      // Verify top-level response shape
+      expect(fullResponse).toBeDefined();
+      expect(typeof fullResponse.id).toBe("string");
+      expect(fullResponse.id.length).toBeGreaterThan(0);
+      expect(fullResponse.object).toBe("response");
+      expect(typeof fullResponse.createdAt).toBe("number");
+      expect(typeof fullResponse.model).toBe("string");
+      expect(Array.isArray(fullResponse.output)).toBe(true);
+      expect(fullResponse.output.length).toBeGreaterThan(0);
+
+      // Verify output items have correct shape
+      for (const item of fullResponse.output) {
+        expect(item).toHaveProperty("type");
+        expect(typeof (item as any).type).toBe("string");
+      }
+
+      // Verify temperature and topP are present (can be null)
+      expect("temperature" in fullResponse).toBe(true);
+      expect("topP" in fullResponse).toBe(true);
+
+      // Verify metadata shape
+      expect("metadata" in fullResponse).toBe(true);
+
+      // Verify tools array exists
+      expect(Array.isArray(fullResponse.tools)).toBe(true);
+
+      // Verify toolChoice exists
+      expect("toolChoice" in fullResponse).toBe(true);
+
+      // Verify parallelToolCalls is boolean
+      expect(typeof fullResponse.parallelToolCalls).toBe("boolean");
+    });
+
+    it("should return usage with correct shape including all token details", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'hello'.",
+          },
+        ],
+      });
+
+      const fullResponse = await response.getResponse();
+
+      // Verify usage exists and has correct shape
+      expect(fullResponse.usage).toBeDefined();
+      const usage = fullResponse.usage!;
+
+      // Verify top-level usage fields
+      expect(typeof usage.inputTokens).toBe("number");
+      expect(usage.inputTokens).toBeGreaterThan(0);
+      expect(typeof usage.outputTokens).toBe("number");
+      expect(usage.outputTokens).toBeGreaterThan(0);
+      expect(typeof usage.totalTokens).toBe("number");
+      expect(usage.totalTokens).toBe(usage.inputTokens + usage.outputTokens);
+
+      // Verify inputTokensDetails shape with cachedTokens
+      expect(usage.inputTokensDetails).toBeDefined();
+      expect(typeof usage.inputTokensDetails.cachedTokens).toBe("number");
+      expect(usage.inputTokensDetails.cachedTokens).toBeGreaterThanOrEqual(0);
+
+      // Verify outputTokensDetails shape with reasoningTokens
+      expect(usage.outputTokensDetails).toBeDefined();
+      expect(typeof usage.outputTokensDetails.reasoningTokens).toBe("number");
+      expect(usage.outputTokensDetails.reasoningTokens).toBeGreaterThanOrEqual(0);
+
+      // Verify optional cost fields if present
+      if (usage.cost !== undefined && usage.cost !== null) {
+        expect(typeof usage.cost).toBe("number");
+      }
+
+      if (usage.isByok !== undefined) {
+        expect(typeof usage.isByok).toBe("boolean");
+      }
+
+      if (usage.costDetails !== undefined) {
+        expect(typeof usage.costDetails.upstreamInferenceInputCost).toBe("number");
+        expect(typeof usage.costDetails.upstreamInferenceOutputCost).toBe("number");
+        if (usage.costDetails.upstreamInferenceCost !== undefined && usage.costDetails.upstreamInferenceCost !== null) {
+          expect(typeof usage.costDetails.upstreamInferenceCost).toBe("number");
+        }
+      }
+    });
+
+    it("should return error and incompleteDetails fields with correct shape", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'test'.",
+          },
+        ],
+      });
+
+      const fullResponse = await response.getResponse();
+
+      // error can be null or an object
+      expect("error" in fullResponse).toBe(true);
+      if (fullResponse.error !== null) {
+        expect(typeof fullResponse.error).toBe("object");
+      }
+
+      // incompleteDetails can be null or an object
+      expect("incompleteDetails" in fullResponse).toBe(true);
+      if (fullResponse.incompleteDetails !== null) {
+        expect(typeof fullResponse.incompleteDetails).toBe("object");
+      }
+    });
+
+    it("should allow concurrent access with other methods", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'test'.",
+          },
+        ],
+      });
+
+      // Get both text and full response concurrently
+      const [text, fullResponse] = await Promise.all([
+        response.getText(),
+        response.getResponse(),
+      ]);
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+      expect(fullResponse).toBeDefined();
+      expect(fullResponse.usage).toBeDefined();
+
+      // Text should match outputText
+      if (fullResponse.outputText) {
+        expect(text).toBe(fullResponse.outputText);
+      }
+    });
+
+    it("should return consistent results on multiple calls", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'consistent'.",
+          },
+        ],
+      });
+
+      const firstCall = await response.getResponse();
+      const secondCall = await response.getResponse();
+
+      // Should return the same response object
+      expect(firstCall.id).toBe(secondCall.id);
+      expect(firstCall.usage?.inputTokens).toBe(secondCall.usage?.inputTokens);
+      expect(firstCall.usage?.outputTokens).toBe(secondCall.usage?.outputTokens);
+      expect(firstCall.usage?.inputTokensDetails?.cachedTokens).toBe(secondCall.usage?.inputTokensDetails?.cachedTokens);
+    });
+  });
+
   describe("Response parameters", () => {
     it("should respect maxOutputTokens parameter", async () => {
       const response = client.callModel({
@@ -1018,6 +1194,91 @@ describe("callModel E2E Tests", () => {
       expect(typeof text).toBe("string");
       expect(text.length).toBeGreaterThan(0);
       // Just verify instructions parameter is accepted, not that model follows it perfectly
+    });
+
+    it("should support provider parameter with correct shape", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'provider test'.",
+          },
+        ],
+        provider: {
+          allowFallbacks: true,
+          requireParameters: false,
+        },
+      });
+
+      const fullResponse = await response.getResponse();
+
+      expect(fullResponse).toBeDefined();
+      expect(fullResponse.usage).toBeDefined();
+      expect(fullResponse.usage?.inputTokens).toBeGreaterThan(0);
+    });
+
+    it("should support provider with order preference", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'ordered provider'.",
+          },
+        ],
+        provider: {
+          order: ["Together", "Fireworks"],
+          allowFallbacks: true,
+        },
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+      expect(text.length).toBeGreaterThan(0);
+    });
+
+    it("should support provider with ignore list", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'ignore test'.",
+          },
+        ],
+        provider: {
+          ignore: ["SomeProvider"],
+          allowFallbacks: true,
+        },
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+    });
+
+    it("should support provider with quantizations filter", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "Say 'quantization test'.",
+          },
+        ],
+        provider: {
+          allowFallbacks: true,
+        },
+      });
+
+      const fullResponse = await response.getResponse();
+
+      expect(fullResponse).toBeDefined();
+      expect(fullResponse.model).toBeDefined();
     });
   });
 });
