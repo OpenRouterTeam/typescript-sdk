@@ -65,17 +65,21 @@ function convertChatToResponsesTools(tools: models.ToolDefinitionJson[]): models
  */
 function convertChatToResponsesInput(messages: models.Message[]): models.OpenResponsesInput {
   return messages.map((msg): models.OpenResponsesEasyInputMessage | models.OpenResponsesFunctionCallOutput => {
-    if (msg.role === "tool") {
+    // Extract extra fields like cache_control
+    const { role, content, ...extraFields } = msg as any;
+
+    if (role === "tool") {
       const toolMsg = msg as models.ToolResponseMessage;
       return {
         type: "function_call_output",
         callId: toolMsg.toolCallId,
         output: typeof toolMsg.content === "string" ? toolMsg.content : JSON.stringify(toolMsg.content),
+        ...extraFields,
       } as models.OpenResponsesFunctionCallOutput;
     }
 
     // Handle assistant messages with tool calls
-    if (msg.role === "assistant") {
+    if (role === "assistant") {
       const assistantMsg = msg as models.AssistantMessage;
       // If it has tool calls, we need to convert them
       // For now, just convert the content part
@@ -86,19 +90,21 @@ function convertChatToResponsesInput(messages: models.Message[]): models.OpenRes
           : assistantMsg.content === null
             ? ""
             : JSON.stringify(assistantMsg.content),
+        ...extraFields,
       } as models.OpenResponsesEasyInputMessage;
     }
 
     // System, user, developer messages
-    const content = typeof msg.content === "string"
-      ? msg.content
-      : msg.content === null || msg.content === undefined
+    const convertedContent = typeof content === "string"
+      ? content
+      : content === null || content === undefined
         ? ""
-        : JSON.stringify(msg.content);
+        : JSON.stringify(content);
 
     return {
-      role: msg.role as "user" | "system" | "developer",
-      content,
+      role: role as "user" | "system" | "developer",
+      content: convertedContent,
+      ...extraFields,
     } as models.OpenResponsesEasyInputMessage;
   }) as models.OpenResponsesInput;
 }
