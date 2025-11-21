@@ -6,6 +6,69 @@ import { EnhancedTool, MaxToolRounds } from "../lib/tool-types.js";
 import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
 
 /**
+ * Input type that accepts both chat-style messages and responses-style input
+ */
+export type CallModelInput =
+  | models.OpenResponsesInput
+  | models.Message[];
+
+/**
+ * Check if input is chat-style messages (Message[])
+ */
+function isChatStyleMessages(input: CallModelInput): input is models.Message[] {
+  if (!Array.isArray(input)) return false;
+  if (input.length === 0) return false;
+
+  const first = input[0] as any;
+  // Chat-style messages have role but no 'type' field at top level
+  // Responses-style items have 'type' field (like 'message', 'function_call', etc.)
+  return first && 'role' in first && !('type' in first);
+}
+
+/**
+ * Convert chat-style messages to responses-style input
+ */
+function convertChatToResponsesInput(messages: models.Message[]): models.OpenResponsesInput {
+  return messages.map((msg): models.OpenResponsesEasyInputMessage | models.OpenResponsesFunctionCallOutput => {
+    if (msg.role === "tool") {
+      const toolMsg = msg as models.ToolResponseMessage;
+      return {
+        type: "function_call_output",
+        callId: toolMsg.toolCallId,
+        output: typeof toolMsg.content === "string" ? toolMsg.content : JSON.stringify(toolMsg.content),
+      } as models.OpenResponsesFunctionCallOutput;
+    }
+
+    // Handle assistant messages with tool calls
+    if (msg.role === "assistant") {
+      const assistantMsg = msg as models.AssistantMessage;
+      // If it has tool calls, we need to convert them
+      // For now, just convert the content part
+      return {
+        role: "assistant",
+        content: typeof assistantMsg.content === "string"
+          ? assistantMsg.content
+          : assistantMsg.content === null
+            ? ""
+            : JSON.stringify(assistantMsg.content),
+      } as models.OpenResponsesEasyInputMessage;
+    }
+
+    // System, user, developer messages
+    const content = typeof msg.content === "string"
+      ? msg.content
+      : msg.content === null || msg.content === undefined
+        ? ""
+        : JSON.stringify(msg.content);
+
+    return {
+      role: msg.role as "user" | "system" | "developer",
+      content,
+    } as models.OpenResponsesEasyInputMessage;
+  }) as models.OpenResponsesInput;
+}
+
+/**
  * Get a response with multiple consumption patterns
  *
  * @remarks
@@ -75,13 +138,24 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  */
 export function callModel(
   client: OpenRouterCore,
-  request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+  request: Omit<models.OpenResponsesRequest, "stream" | "tools" | "input"> & {
+    input?: CallModelInput;
     tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
     maxToolRounds?: MaxToolRounds;
   },
   options?: RequestOptions,
 ): ResponseWrapper {
-  const { tools, maxToolRounds, ...apiRequest } = request;
+  const { tools, maxToolRounds, input, ...restRequest } = request;
+
+  // Convert chat-style messages to responses-style input if needed
+  const convertedInput = input && isChatStyleMessages(input)
+    ? convertChatToResponsesInput(input)
+    : input;
+
+  const apiRequest = {
+    ...restRequest,
+    input: convertedInput,
+  };
 
   // Separate enhanced tools from API tools
   let isEnhancedTools = false;

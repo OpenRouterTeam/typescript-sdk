@@ -21,6 +21,76 @@ describe("callModel E2E Tests", () => {
     });
   });
 
+  describe("Chat-style messages support", () => {
+    it("should accept chat-style Message array as input", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "You are a helpful assistant.",
+          },
+          {
+            role: "user",
+            content: "Say 'chat test' and nothing else.",
+          },
+        ] as Message[],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+      expect(text.length).toBeGreaterThan(0);
+    });
+
+    it("should handle multi-turn chat-style conversation", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "My favorite color is blue.",
+          },
+          {
+            role: "assistant",
+            content: "That's nice! Blue is a calming color.",
+          },
+          {
+            role: "user",
+            content: "What is my favorite color?",
+          },
+        ] as Message[],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(text.toLowerCase()).toContain("blue");
+    });
+
+    it("should handle system message in chat-style input", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.2-1b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "Always respond with exactly one word.",
+          },
+          {
+            role: "user",
+            content: "Say hello.",
+          },
+        ] as Message[],
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe("string");
+    });
+  });
+
   describe("response.text - Text extraction", () => {
     it("should successfully get text from a response", async () => {
       const response = client.callModel({
