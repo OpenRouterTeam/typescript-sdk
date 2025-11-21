@@ -34,7 +34,7 @@ describe("callModel E2E Tests", () => {
             role: "user",
             content: "Say 'chat test' and nothing else.",
           },
-        ] as Message[],
+        ],
       });
 
       const text = await response.getText();
@@ -60,7 +60,7 @@ describe("callModel E2E Tests", () => {
             role: "user",
             content: "What is my favorite color?",
           },
-        ] as Message[],
+        ],
       });
 
       const text = await response.getText();
@@ -81,7 +81,7 @@ describe("callModel E2E Tests", () => {
             role: "user",
             content: "Say hello.",
           },
-        ] as Message[],
+        ],
       });
 
       const text = await response.getText();
@@ -140,7 +140,7 @@ describe("callModel E2E Tests", () => {
             role: "user",
             content: "Get the weather in Tokyo using the weather tool.",
           },
-        ] as Message[],
+        ],
         tools: [
           {
             type: "function" as const,
