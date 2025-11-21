@@ -92,11 +92,11 @@ describe("callModel E2E Tests", () => {
 
     it("should accept chat-style tools (ToolDefinitionJson)", async () => {
       const response = client.callModel({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: "qwen/qwen3-vl-8b-instruct",
         input: [
           {
             role: "user",
-            content: "Say hello",
+            content: "What's the weather in Paris? Use the get_weather tool.",
           },
         ],
         tools: [
@@ -120,10 +120,12 @@ describe("callModel E2E Tests", () => {
         ],
       });
 
-      // Just verify the request succeeds with chat-style tools
-      const text = await response.getText();
-      expect(text).toBeDefined();
-      expect(typeof text).toBe("string");
+      const toolCalls = await response.getToolCalls();
+
+      // Model should call the tool
+      expect(toolCalls.length).toBeGreaterThan(0);
+      expect(toolCalls[0].name).toBe("get_weather");
+      expect(toolCalls[0].arguments).toBeDefined();
     }, 30000);
 
     it("should work with chat-style messages and chat-style tools together", async () => {
