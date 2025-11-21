@@ -14,6 +14,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  *
  * - `await response.getMessage()` - Get the completed message (tools auto-executed)
  * - `await response.getText()` - Get just the text content (tools auto-executed)
+ * - `await response.getResponse()` - Get full response with usage data (inputTokens, cachedTokens, etc.)
  * - `for await (const delta of response.getTextStream())` - Stream text deltas
  * - `for await (const delta of response.getReasoningStream())` - Stream reasoning deltas
  * - `for await (const event of response.getToolStream())` - Stream tool events (incl. preliminary results)

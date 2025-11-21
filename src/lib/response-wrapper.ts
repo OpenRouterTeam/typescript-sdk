@@ -326,6 +326,21 @@ export class ResponseWrapper {
   }
 
   /**
+   * Get the complete response object including usage information.
+   * This will consume the stream until completion and execute any tools.
+   * Returns the full OpenResponsesNonStreamingResponse with usage data (inputTokens, outputTokens, cachedTokens, etc.)
+   */
+  async getResponse(): Promise<models.OpenResponsesNonStreamingResponse> {
+    await this.executeToolsIfNeeded();
+
+    if (!this.finalResponse) {
+      throw new Error("Response not available");
+    }
+
+    return this.finalResponse;
+  }
+
+  /**
    * Stream all response events as they arrive.
    * Multiple consumers can iterate over this stream concurrently.
    * Includes preliminary tool result events after tool execution.
