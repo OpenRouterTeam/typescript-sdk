@@ -89,6 +89,81 @@ describe("callModel E2E Tests", () => {
       expect(text).toBeDefined();
       expect(typeof text).toBe("string");
     });
+
+    it("should accept chat-style tools (ToolDefinitionJson)", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.1-8b-instruct",
+        input: [
+          {
+            role: "user",
+            content: "What's the weather in Paris? Use the get_weather tool.",
+          },
+        ],
+        tools: [
+          {
+            type: "function" as const,
+            function: {
+              name: "get_weather",
+              description: "Get weather for a location",
+              parameters: {
+                type: "object",
+                properties: {
+                  location: {
+                    type: "string",
+                    description: "City name",
+                  },
+                },
+                required: ["location"],
+              },
+            },
+          },
+        ],
+      });
+
+      const toolCalls = await response.getToolCalls();
+
+      // Model should call the tool
+      expect(toolCalls.length).toBeGreaterThan(0);
+      expect(toolCalls[0].name).toBe("get_weather");
+      expect(toolCalls[0].arguments).toBeDefined();
+    }, 30000);
+
+    it("should work with chat-style messages and chat-style tools together", async () => {
+      const response = client.callModel({
+        model: "meta-llama/llama-3.1-8b-instruct",
+        input: [
+          {
+            role: "system",
+            content: "You are a helpful assistant. Use tools when needed.",
+          },
+          {
+            role: "user",
+            content: "Get the weather in Tokyo using the weather tool.",
+          },
+        ] as Message[],
+        tools: [
+          {
+            type: "function" as const,
+            function: {
+              name: "get_weather",
+              description: "Get current weather",
+              parameters: {
+                type: "object",
+                properties: {
+                  city: { type: "string" },
+                },
+                required: ["city"],
+              },
+            },
+          },
+        ],
+      });
+
+      const toolCalls = await response.getToolCalls();
+
+      expect(toolCalls.length).toBeGreaterThan(0);
+      expect(toolCalls[0].name).toBe("get_weather");
+    }, 30000);
   });
 
   describe("response.text - Text extraction", () => {

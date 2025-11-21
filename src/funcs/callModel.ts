@@ -13,6 +13,14 @@ export type CallModelInput =
   | models.Message[];
 
 /**
+ * Tool type that accepts chat-style, responses-style, or enhanced tools
+ */
+export type CallModelTools =
+  | EnhancedTool[]
+  | models.ToolDefinitionJson[]
+  | models.OpenResponsesRequest["tools"];
+
+/**
  * Check if input is chat-style messages (Message[])
  */
 function isChatStyleMessages(input: CallModelInput): input is models.Message[] {
@@ -23,6 +31,33 @@ function isChatStyleMessages(input: CallModelInput): input is models.Message[] {
   // Chat-style messages have role but no 'type' field at top level
   // Responses-style items have 'type' field (like 'message', 'function_call', etc.)
   return first && 'role' in first && !('type' in first);
+}
+
+/**
+ * Check if tools are chat-style (ToolDefinitionJson[])
+ */
+function isChatStyleTools(tools: CallModelTools): tools is models.ToolDefinitionJson[] {
+  if (!Array.isArray(tools)) return false;
+  if (tools.length === 0) return false;
+
+  const first = tools[0] as any;
+  // Chat-style tools have nested 'function' property with 'name' inside
+  // Enhanced tools have 'function' with 'inputSchema'
+  // Responses-style tools have 'name' at top level
+  return first && 'function' in first && first.function && 'name' in first.function && !('inputSchema' in first.function);
+}
+
+/**
+ * Convert chat-style tools to responses-style
+ */
+function convertChatToResponsesTools(tools: models.ToolDefinitionJson[]): models.OpenResponsesRequest["tools"] {
+  return tools.map((tool): models.OpenResponsesRequestToolFunction => ({
+    type: "function",
+    name: tool.function.name,
+    description: tool.function.description ?? null,
+    strict: tool.function.strict ?? null,
+    parameters: tool.function.parameters ?? null,
+  }));
 }
 
 /**
@@ -140,7 +175,7 @@ export function callModel(
   client: OpenRouterCore,
   request: Omit<models.OpenResponsesRequest, "stream" | "tools" | "input"> & {
     input?: CallModelInput;
-    tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
+    tools?: CallModelTools;
     maxToolRounds?: MaxToolRounds;
   },
   options?: RequestOptions,
@@ -157,16 +192,27 @@ export function callModel(
     input: convertedInput,
   };
 
-  // Separate enhanced tools from API tools
+  // Determine tool type and convert as needed
   let isEnhancedTools = false;
-  if (tools && tools.length > 0) {
+  let isChatTools = false;
+
+  if (tools && Array.isArray(tools) && tools.length > 0) {
     const firstTool = tools[0] as any;
     isEnhancedTools = "function" in firstTool && firstTool.function && "inputSchema" in firstTool.function;
+    isChatTools = !isEnhancedTools && isChatStyleTools(tools);
   }
+
   const enhancedTools = isEnhancedTools ? (tools as EnhancedTool[]) : undefined;
 
-  // Convert enhanced tools to API format if provided, otherwise use tools as-is
-  const apiTools = enhancedTools ? convertEnhancedToolsToAPIFormat(enhancedTools) : (tools as models.OpenResponsesRequest["tools"]);
+  // Convert tools to API format based on their type
+  let apiTools: models.OpenResponsesRequest["tools"];
+  if (enhancedTools) {
+    apiTools = convertEnhancedToolsToAPIFormat(enhancedTools);
+  } else if (isChatTools) {
+    apiTools = convertChatToResponsesTools(tools as models.ToolDefinitionJson[]);
+  } else {
+    apiTools = tools as models.OpenResponsesRequest["tools"];
+  }
 
   // Build the request with converted tools
   const finalRequest: models.OpenResponsesRequest = {
