@@ -96,7 +96,7 @@ describe("callModel E2E Tests", () => {
         input: [
           {
             role: "user",
-            content: "What's the weather in Paris? Use the get_weather tool.",
+            content: "Call the get_weather function with location set to Paris.",
           },
         ],
         tools: [
@@ -104,7 +104,7 @@ describe("callModel E2E Tests", () => {
             type: "function" as const,
             function: {
               name: "get_weather",
-              description: "Get weather for a location",
+              description: "Get weather for a location. Always call this when asked about weather.",
               parameters: {
                 type: "object",
                 properties: {
@@ -118,6 +118,7 @@ describe("callModel E2E Tests", () => {
             },
           },
         ],
+        toolChoice: "required",
       });
 
       const toolCalls = await response.getToolCalls();
