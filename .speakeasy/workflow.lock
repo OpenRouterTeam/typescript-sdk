@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:4c80e48fd5e1cd030e68d664eb93984b4d5946867252ff1755a2bd2a05eccd4e
         tags:
             - latest
+            - matt-cache-control
             - 1.0.0
 targets:
     openrouter:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:01256c8494de6bfc13c36d82ae316a6a13d402194f844618bcd4d59e34f325f3
         sourceBlobDigest: sha256:4c80e48fd5e1cd030e68d664eb93984b4d5946867252ff1755a2bd2a05eccd4e
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:8a86af6f91a4227ef163f0079ccc547da1babdd0a070acb002336ec50696425a
+        codeSamplesRevisionDigest: sha256:b9f865c93ad3b73a288706cfe0cdbb54a0a2fe160c405b59bc45f567118e554a
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
