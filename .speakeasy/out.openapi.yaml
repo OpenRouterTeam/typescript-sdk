@@ -8413,3 +8413,5 @@ x-speakeasy-globals:
   parameters:
     - $ref: "#/components/parameters/AppIdentifier"
     - $ref: "#/components/parameters/AppDisplayName"
+    - $ref: "#/components/parameters/AppIdentifier"
+    - $ref: "#/components/parameters/AppDisplayName"
