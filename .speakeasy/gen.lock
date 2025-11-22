@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: bcccd1abd05f6654a822386f2eefbd8a
+  docChecksum: 0ecf8d42d5f305a124cbca4ffbda5eee
   docVersion: 1.0.0
   speakeasyVersion: 1.660.0
   generationVersion: 2.760.2
-  releaseVersion: 0.1.25
-  configChecksum: ec2472ec2f065c6df73009a241b9f6cb
+  releaseVersion: 0.1.26
+  configChecksum: 2f3ef2a2d71f93764577e98276cc994c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
