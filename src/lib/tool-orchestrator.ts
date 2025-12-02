@@ -80,26 +80,23 @@ export async function executeToolLoop(
       break;
     }
 
-    // Execute all tool calls
-    const roundResults: ToolExecutionResult[] = [];
-
-    for (const toolCall of toolCalls) {
+    // Execute all tool calls in parallel (parallel tool calling)
+    const toolCallPromises = toolCalls.map(async (toolCall) => {
       const tool = findToolByName(tools, toolCall.name);
 
       if (!tool) {
         // Tool not found in definitions
-        roundResults.push({
+        return {
           toolCallId: toolCall.id,
           toolName: toolCall.name,
           result: null,
           error: new Error(`Tool "${toolCall.name}" not found in tool definitions`),
-        });
-        continue;
+        } as ToolExecutionResult;
       }
 
       if (!hasExecuteFunction(tool)) {
-        // Tool has no execute function - skip
-        continue;
+        // Tool has no execute function - return null to filter out
+        return null;
       }
 
       // Build turn context
@@ -109,9 +106,34 @@ export async function executeToolLoop(
       };
 
       // Execute the tool
-      const result = await executeTool(tool, toolCall, turnContext, onPreliminaryResult);
-      roundResults.push(result);
-    }
+      return executeTool(tool, toolCall, turnContext, onPreliminaryResult);
+    });
+
+    // Wait for all tool executions to complete in parallel
+    const settledResults = await Promise.allSettled(toolCallPromises);
+
+    // Process settled results, handling both fulfilled and rejected promises
+    const roundResults: ToolExecutionResult[] = [];
+    settledResults.forEach((settled, i) => {
+      const toolCall = toolCalls[i];
+      if (!toolCall) return;
+
+      if (settled.status === "fulfilled") {
+        if (settled.value !== null) {
+          roundResults.push(settled.value);
+        }
+      } else {
+        // Promise rejected - create error result
+        roundResults.push({
+          toolCallId: toolCall.id,
+          toolName: toolCall.name,
+          result: null,
+          error: settled.reason instanceof Error
+            ? settled.reason
+            : new Error(String(settled.reason)),
+        });
+      }
+    });
 
     toolExecutionResults.push(...roundResults);
 

@@ -70,6 +70,20 @@ export class ResponseWrapper {
   }
 
   /**
+   * Type guard to check if a value is a non-streaming response
+   */
+  private isNonStreamingResponse(value: unknown): value is models.OpenResponsesNonStreamingResponse {
+    return (
+      value !== null &&
+      typeof value === "object" &&
+      "id" in value &&
+      "object" in value &&
+      "output" in value &&
+      !("toReadableStream" in value)
+    );
+  }
+
+  /**
    * Initialize the stream if not already started
    * This is idempotent - multiple calls will return the same promise
    */
@@ -284,17 +298,55 @@ export class ResponseWrapper {
             value as EventStream<models.OpenResponsesStreamEvent>,
           );
           currentResponse = await consumeStreamForCompletion(stream);
+        } else if (this.isNonStreamingResponse(value)) {
+          currentResponse = value;
         } else {
-          currentResponse = value as models.OpenResponsesNonStreamingResponse;
+          throw new Error("Unexpected response type from API");
         }
 
         currentRound++;
+      }
+
+      // Validate the final response has required fields
+      if (!currentResponse || !currentResponse.id || !currentResponse.output) {
+        throw new Error("Invalid final response: missing required fields");
+      }
+
+      // Ensure the response is in a completed state (has output content)
+      if (!Array.isArray(currentResponse.output) || currentResponse.output.length === 0) {
+        throw new Error("Invalid final response: empty or invalid output");
       }
 
       this.finalResponse = currentResponse;
     })();
 
     return this.toolExecutionPromise;
+  }
+
+  /**
+   * Internal helper to get the message after tool execution
+   */
+  private async getMessageInternal(): Promise<models.AssistantMessage> {
+    await this.executeToolsIfNeeded();
+
+    if (!this.finalResponse) {
+      throw new Error("Response not available");
+    }
+
+    return extractMessageFromResponse(this.finalResponse);
+  }
+
+  /**
+   * Internal helper to get the text after tool execution
+   */
+  private async getTextInternal(): Promise<string> {
+    await this.executeToolsIfNeeded();
+
+    if (!this.finalResponse) {
+      throw new Error("Response not available");
+    }
+
+    return extractTextFromResponse(this.finalResponse);
   }
 
   /**
@@ -307,16 +359,7 @@ export class ResponseWrapper {
       return this.messagePromise;
     }
 
-    this.messagePromise = (async (): Promise<models.AssistantMessage> => {
-      await this.executeToolsIfNeeded();
-
-      if (!this.finalResponse) {
-        throw new Error('Response not available');
-      }
-
-      return extractMessageFromResponse(this.finalResponse);
-    })();
-
+    this.messagePromise = this.getMessageInternal();
     return this.messagePromise;
   }
 
@@ -329,16 +372,7 @@ export class ResponseWrapper {
       return this.textPromise;
     }
 
-    this.textPromise = (async () => {
-      await this.executeToolsIfNeeded();
-
-      if (!this.finalResponse) {
-        throw new Error('Response not available');
-      }
-
-      return extractTextFromResponse(this.finalResponse);
-    })();
-
+    this.textPromise = this.getTextInternal();
     return this.textPromise;
   }
 
