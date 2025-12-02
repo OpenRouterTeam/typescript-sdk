@@ -32,6 +32,9 @@ generation:
   preApplyUnionDiscriminators: true
 typescript:
   version: 0.2.1
+  compileCommand:
+    - pnpm
+    - install
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
