@@ -5,7 +5,7 @@ import type { RequestOptions } from './sdks.js';
 import type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
-  EnhancedTool,
+  Tool,
   MaxToolRounds,
   ParsedToolCall,
   ToolStreamEvent,
@@ -32,7 +32,7 @@ export interface GetResponseOptions {
   request: models.OpenResponsesRequest;
   client: OpenRouterCore;
   options?: RequestOptions;
-  tools?: EnhancedTool[];
+  tools?: Tool[];
   maxToolRounds?: MaxToolRounds;
 }
 

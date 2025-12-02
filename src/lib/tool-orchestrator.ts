@@ -1,5 +1,5 @@
 import type * as models from '../models/index.js';
-import type { APITool, EnhancedTool, ToolExecutionResult } from './tool-types.js';
+import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
 import { executeTool, findToolByName } from './tool-executor.js';
@@ -40,7 +40,7 @@ export async function executeToolLoop(
     tools: APITool[],
   ) => Promise<models.OpenResponsesNonStreamingResponse>,
   initialInput: models.OpenResponsesInput,
-  tools: EnhancedTool[],
+  tools: Tool[],
   apiTools: APITool[],
   options: ToolExecutionOptions = {},
 ): Promise<ToolOrchestrationResult> {

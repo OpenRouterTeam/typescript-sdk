@@ -1,10 +1,10 @@
 import type { OpenRouterCore } from '../core.js';
 import type { RequestOptions } from '../lib/sdks.js';
-import type { EnhancedTool, MaxToolRounds } from '../lib/tool-types.js';
+import type { Tool, MaxToolRounds } from '../lib/tool-types.js';
 import type * as models from '../models/index.js';
 
 import { ResponseWrapper } from '../lib/response-wrapper.js';
-import { convertEnhancedToolsToAPIFormat } from '../lib/tool-executor.js';
+import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
 
 /**
  * Input type that accepts both chat-style messages and responses-style input
@@ -15,7 +15,7 @@ export type CallModelInput = models.OpenResponsesInput | models.Message[];
  * Tool type that accepts chat-style, responses-style, or enhanced tools
  */
 export type CallModelTools =
-  | EnhancedTool[]
+  | Tool[]
   | models.ToolDefinitionJson[]
   | models.OpenResponsesRequest['tools'];
 
@@ -233,12 +233,12 @@ export function callModel(
     isChatTools = !isEnhancedTools && isChatStyleTools(tools);
   }
 
-  const enhancedTools = isEnhancedTools ? (tools as EnhancedTool[]) : undefined;
+  const enhancedTools = isEnhancedTools ? (tools as Tool[]) : undefined;
 
   // Convert tools to API format based on their type
   let apiTools: models.OpenResponsesRequest['tools'];
   if (enhancedTools) {
-    apiTools = convertEnhancedToolsToAPIFormat(enhancedTools);
+    apiTools = convertToolsToAPIFormat(enhancedTools);
   } else if (isChatTools) {
     apiTools = convertChatToResponsesTools(tools as models.ToolDefinitionJson[]);
   } else {
@@ -257,7 +257,7 @@ export function callModel(
     client: OpenRouterCore;
     request: models.OpenResponsesRequest;
     options: RequestOptions;
-    tools?: EnhancedTool[];
+    tools?: Tool[];
     maxToolRounds?: MaxToolRounds;
   } = {
     client,
