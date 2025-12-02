@@ -9,53 +9,54 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '22'
-        cache: 'npm'
+        cache: 'pnpm'
 
     - name: Install dependencies
       shell: bash
-      run: npm install
+      run: pnpm install
 
     - name: Build SDK
       shell: bash
-      run: npm run build
-
-    # - name: Typecheck tests directory
-    #   shell: bash
-    #   run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
+      run: pnpm run build
 
     - name: Install examples dependencies
       shell: bash
       working-directory: examples
-      run: npm install
+      run: pnpm install
 
     # TODO: Re-enable when Speakeasy fixes generated code type errors
-    # - name: Typecheck examples root
-    #   shell: bash
-    #   working-directory: examples
-    #   run: npx tsc
+    - name: Typecheck examples root
+      shell: bash
+      working-directory: examples
+      run: pnpm exec tsc
 
     - name: Install nextjs-example dependencies
       shell: bash
       working-directory: examples/nextjs-example
-      run: npm install
+      run: pnpm install
 
     - name: Typecheck nextjs-example
       shell: bash
       working-directory: examples/nextjs-example
-      run: npx tsc --noEmit
+      run: pnpm exec tsc --noEmit
 
     - name: Run unit tests
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-      run: npx vitest --run --exclude 'tests/e2e/**'
+      run: pnpm exec vitest --run --exclude 'tests/e2e/**'
 
     - name: Run e2e tests
       shell: bash
       env:
         OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-      run: npx vitest --run tests/e2e/
+      run: pnpm exec vitest --run tests/e2e/

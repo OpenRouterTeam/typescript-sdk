@@ -5,7 +5,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -20,13 +19,6 @@ import {
   ResponsesWebSearchUserLocation$outboundSchema,
 } from "./responseswebsearchuserlocation.js";
 
-export const OpenResponsesWebSearch20250826ToolType = {
-  WebSearch20250826: "web_search_2025_08_26",
-} as const;
-export type OpenResponsesWebSearch20250826ToolType = ClosedEnum<
-  typeof OpenResponsesWebSearch20250826ToolType
->;
-
 export type OpenResponsesWebSearch20250826ToolFilters = {
   allowedDomains?: Array<string> | null | undefined;
 };
@@ -35,7 +27,7 @@ export type OpenResponsesWebSearch20250826ToolFilters = {
  * Web search tool configuration (2025-08-26 version)
  */
 export type OpenResponsesWebSearch20250826Tool = {
-  type: OpenResponsesWebSearch20250826ToolType;
+  type: "web_search_2025_08_26";
   filters?: OpenResponsesWebSearch20250826ToolFilters | null | undefined;
   /**
    * Size of the search context for web search tools
@@ -46,15 +38,6 @@ export type OpenResponsesWebSearch20250826Tool = {
    */
   userLocation?: ResponsesWebSearchUserLocation | null | undefined;
 };
-
-/** @internal */
-export const OpenResponsesWebSearch20250826ToolType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearch20250826ToolType
-> = z.enum(OpenResponsesWebSearch20250826ToolType);
-/** @internal */
-export const OpenResponsesWebSearch20250826ToolType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearch20250826ToolType
-> = OpenResponsesWebSearch20250826ToolType$inboundSchema;
 
 /** @internal */
 export const OpenResponsesWebSearch20250826ToolFilters$inboundSchema: z.ZodType<
@@ -116,7 +99,7 @@ export const OpenResponsesWebSearch20250826Tool$inboundSchema: z.ZodType<
   OpenResponsesWebSearch20250826Tool,
   unknown
 > = z.object({
-  type: OpenResponsesWebSearch20250826ToolType$inboundSchema,
+  type: z.literal("web_search_2025_08_26"),
   filters: z.nullable(
     z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$inboundSchema),
   ).optional(),
@@ -131,7 +114,7 @@ export const OpenResponsesWebSearch20250826Tool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OpenResponsesWebSearch20250826Tool$Outbound = {
-  type: string;
+  type: "web_search_2025_08_26";
   filters?:
     | OpenResponsesWebSearch20250826ToolFilters$Outbound
     | null
@@ -145,7 +128,7 @@ export const OpenResponsesWebSearch20250826Tool$outboundSchema: z.ZodType<
   OpenResponsesWebSearch20250826Tool$Outbound,
   OpenResponsesWebSearch20250826Tool
 > = z.object({
-  type: OpenResponsesWebSearch20250826ToolType$outboundSchema,
+  type: z.literal("web_search_2025_08_26"),
   filters: z.nullable(
     z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$outboundSchema),
   ).optional(),

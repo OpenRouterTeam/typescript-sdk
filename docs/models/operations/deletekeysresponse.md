@@ -16,4 +16,4 @@ let value: DeleteKeysResponse = {
 
 | Field                                     | Type                                      | Required                                  | Description                               | Example                                   |
 | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `deleted`                                 | *boolean*                                 | :heavy_check_mark:                        | Confirmation that the API key was deleted | true                                      |
+| `deleted`                                 | *true*                                    | :heavy_check_mark:                        | Confirmation that the API key was deleted | true                                      |

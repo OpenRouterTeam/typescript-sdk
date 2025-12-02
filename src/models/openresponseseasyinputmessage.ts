@@ -67,17 +67,17 @@ export type OpenResponsesEasyInputMessageRoleUnion =
   | OpenResponsesEasyInputMessageRoleDeveloper;
 
 export type OpenResponsesEasyInputMessageContent1 =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputAudio & { type: "input_audio" })
-  | (ResponseInputFile & { type: "input_file" });
+  | ResponseInputText
+  | ResponseInputImage
+  | ResponseInputFile
+  | ResponseInputAudio;
 
 export type OpenResponsesEasyInputMessageContent2 =
   | Array<
-    | (ResponseInputText & { type: "input_text" })
-    | (ResponseInputImage & { type: "input_image" })
-    | (ResponseInputAudio & { type: "input_audio" })
-    | (ResponseInputFile & { type: "input_file" })
+    | ResponseInputText
+    | ResponseInputImage
+    | ResponseInputFile
+    | ResponseInputAudio
   >
   | string;
 
@@ -90,10 +90,10 @@ export type OpenResponsesEasyInputMessage = {
     | OpenResponsesEasyInputMessageRoleDeveloper;
   content:
     | Array<
-      | (ResponseInputText & { type: "input_text" })
-      | (ResponseInputImage & { type: "input_image" })
-      | (ResponseInputAudio & { type: "input_audio" })
-      | (ResponseInputFile & { type: "input_file" })
+      | ResponseInputText
+      | ResponseInputImage
+      | ResponseInputFile
+      | ResponseInputAudio
     >
     | string;
 };
@@ -156,28 +156,20 @@ export function openResponsesEasyInputMessageRoleUnionToJSON(
 
 /** @internal */
 export type OpenResponsesEasyInputMessageContent1$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputAudio$Outbound & { type: "input_audio" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
+  | ResponseInputText$Outbound
+  | ResponseInputImage$Outbound
+  | ResponseInputFile$Outbound
+  | ResponseInputAudio$Outbound;
 
 /** @internal */
 export const OpenResponsesEasyInputMessageContent1$outboundSchema: z.ZodType<
   OpenResponsesEasyInputMessageContent1$Outbound,
   OpenResponsesEasyInputMessageContent1
 > = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }),
-  ),
-  ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }),
-  ),
+  ResponseInputText$outboundSchema,
+  ResponseInputImage$outboundSchema,
+  ResponseInputFile$outboundSchema,
+  ResponseInputAudio$outboundSchema,
 ]);
 
 export function openResponsesEasyInputMessageContent1ToJSON(
@@ -193,10 +185,10 @@ export function openResponsesEasyInputMessageContent1ToJSON(
 /** @internal */
 export type OpenResponsesEasyInputMessageContent2$Outbound =
   | Array<
-    | (ResponseInputText$Outbound & { type: "input_text" })
-    | (ResponseInputImage$Outbound & { type: "input_image" })
-    | (ResponseInputAudio$Outbound & { type: "input_audio" })
-    | (ResponseInputFile$Outbound & { type: "input_file" })
+    | ResponseInputText$Outbound
+    | ResponseInputImage$Outbound
+    | ResponseInputFile$Outbound
+    | ResponseInputAudio$Outbound
   >
   | string;
 
@@ -207,18 +199,10 @@ export const OpenResponsesEasyInputMessageContent2$outboundSchema: z.ZodType<
 > = z.union([
   z.array(
     z.union([
-      ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }),
-      ),
-      ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }),
-      ),
-      ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }),
-      ),
+      ResponseInputText$outboundSchema,
+      ResponseInputImage$outboundSchema,
+      ResponseInputFile$outboundSchema,
+      ResponseInputAudio$outboundSchema,
     ]),
   ),
   z.string(),
@@ -240,10 +224,10 @@ export type OpenResponsesEasyInputMessage$Outbound = {
   role: string | string | string | string;
   content:
     | Array<
-      | (ResponseInputText$Outbound & { type: "input_text" })
-      | (ResponseInputImage$Outbound & { type: "input_image" })
-      | (ResponseInputAudio$Outbound & { type: "input_audio" })
-      | (ResponseInputFile$Outbound & { type: "input_file" })
+      | ResponseInputText$Outbound
+      | ResponseInputImage$Outbound
+      | ResponseInputFile$Outbound
+      | ResponseInputAudio$Outbound
     >
     | string;
 };
@@ -263,18 +247,10 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
   content: z.union([
     z.array(
       z.union([
-        ResponseInputText$outboundSchema.and(
-          z.object({ type: z.literal("input_text") }),
-        ),
-        ResponseInputImage$outboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        ResponseInputAudio$outboundSchema.and(
-          z.object({ type: z.literal("input_audio") }),
-        ),
-        ResponseInputFile$outboundSchema.and(
-          z.object({ type: z.literal("input_file") }),
-        ),
+        ResponseInputText$outboundSchema,
+        ResponseInputImage$outboundSchema,
+        ResponseInputFile$outboundSchema,
+        ResponseInputAudio$outboundSchema,
       ]),
     ),
     z.string(),

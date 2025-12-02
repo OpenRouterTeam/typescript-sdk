@@ -8,14 +8,10 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 // #region imports
-import {
-  CreateAuthorizationUrlRequest,
-  oAuthCreateAuthorizationUrl,
-} from "../funcs/oAuthCreateAuthorizationUrl.js";
-import {
-  CreateSHA256CodeChallengeResponse,
-  oAuthCreateSHA256CodeChallenge,
-} from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+import type { CreateAuthorizationUrlRequest } from "../funcs/oAuthCreateAuthorizationUrl.js";
+import { oAuthCreateAuthorizationUrl } from "../funcs/oAuthCreateAuthorizationUrl.js";
+import type { CreateSHA256CodeChallengeResponse } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+import { oAuthCreateSHA256CodeChallenge } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
 // #endregion imports
 
 export class OAuth extends ClientSDK {

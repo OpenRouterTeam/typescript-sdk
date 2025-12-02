@@ -19,11 +19,11 @@ let value: OpenResponsesStreamEventResponseRefusalDone = {
 
 ## Fields
 
-| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `type`                                                                 | [models.TypeResponseRefusalDone](../models/typeresponserefusaldone.md) | :heavy_check_mark:                                                     | N/A                                                                    |
-| `outputIndex`                                                          | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
-| `itemId`                                                               | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
-| `contentIndex`                                                         | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
-| `refusal`                                                              | *string*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
-| `sequenceNumber`                                                       | *number*                                                               | :heavy_check_mark:                                                     | N/A                                                                    |
+| Field                     | Type                      | Required                  | Description               |
+| ------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| `type`                    | *"response.refusal.done"* | :heavy_check_mark:        | N/A                       |
+| `outputIndex`             | *number*                  | :heavy_check_mark:        | N/A                       |
+| `itemId`                  | *string*                  | :heavy_check_mark:        | N/A                       |
+| `contentIndex`            | *number*                  | :heavy_check_mark:        | N/A                       |
+| `refusal`                 | *string*                  | :heavy_check_mark:        | N/A                       |
+| `sequenceNumber`          | *number*                  | :heavy_check_mark:        | N/A                       |

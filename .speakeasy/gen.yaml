@@ -29,8 +29,9 @@ generation:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
+  preApplyUnionDiscriminators: true
 typescript:
-  version: 0.1.23
+  version: 0.2.6
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -61,6 +62,9 @@ typescript:
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
+  compileCommand:
+    - pnpm
+    - install
   constFieldsAlwaysOptional: false
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true
@@ -71,6 +75,9 @@ typescript:
   exportZodModelNamespace: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
+  formStringArrayEncodeMode: encoded-string
+  forwardCompatibleEnumsByDefault: false
+  forwardCompatibleUnionsByDefault: "false"
   generateExamples: true
   imports:
     option: openapi
@@ -81,14 +88,18 @@ typescript:
       shared: models
       webhooks: models/webhooks
   inferSSEOverload: true
+  inferUnionDiscriminators: true
   inputModelSuffix: input
   jsonpath: rfc9535
+  laxMode: strict
   maxMethodParams: 0
   methodArguments: infer-optional-args
   modelPropertyCasing: camel
   moduleFormat: esm
+  multipartArrayFormat: legacy
   outputModelSuffix: output
   packageName: '@openrouter/sdk'
+  preApplyUnionDiscriminators: true
   responseFormat: flat
   sseFlatResponse: true
   templateVersion: v2

@@ -59,10 +59,10 @@ export type OpenResponsesInputMessageItemRoleUnion =
   | OpenResponsesInputMessageItemRoleDeveloper;
 
 export type OpenResponsesInputMessageItemContent =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputAudio & { type: "input_audio" })
-  | (ResponseInputFile & { type: "input_file" });
+  | ResponseInputText
+  | ResponseInputImage
+  | ResponseInputFile
+  | ResponseInputAudio;
 
 export type OpenResponsesInputMessageItem = {
   id?: string | undefined;
@@ -72,10 +72,10 @@ export type OpenResponsesInputMessageItem = {
     | OpenResponsesInputMessageItemRoleSystem
     | OpenResponsesInputMessageItemRoleDeveloper;
   content: Array<
-    | (ResponseInputText & { type: "input_text" })
-    | (ResponseInputImage & { type: "input_image" })
-    | (ResponseInputAudio & { type: "input_audio" })
-    | (ResponseInputFile & { type: "input_file" })
+    | ResponseInputText
+    | ResponseInputImage
+    | ResponseInputFile
+    | ResponseInputAudio
   >;
 };
 
@@ -129,28 +129,20 @@ export function openResponsesInputMessageItemRoleUnionToJSON(
 
 /** @internal */
 export type OpenResponsesInputMessageItemContent$Outbound =
-  | (ResponseInputText$Outbound & { type: "input_text" })
-  | (ResponseInputImage$Outbound & { type: "input_image" })
-  | (ResponseInputAudio$Outbound & { type: "input_audio" })
-  | (ResponseInputFile$Outbound & { type: "input_file" });
+  | ResponseInputText$Outbound
+  | ResponseInputImage$Outbound
+  | ResponseInputFile$Outbound
+  | ResponseInputAudio$Outbound;
 
 /** @internal */
 export const OpenResponsesInputMessageItemContent$outboundSchema: z.ZodType<
   OpenResponsesInputMessageItemContent$Outbound,
   OpenResponsesInputMessageItemContent
 > = z.union([
-  ResponseInputText$outboundSchema.and(
-    z.object({ type: z.literal("input_text") }),
-  ),
-  ResponseInputImage$outboundSchema.and(
-    z.object({ type: z.literal("input_image") }),
-  ),
-  ResponseInputAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ResponseInputFile$outboundSchema.and(
-    z.object({ type: z.literal("input_file") }),
-  ),
+  ResponseInputText$outboundSchema,
+  ResponseInputImage$outboundSchema,
+  ResponseInputFile$outboundSchema,
+  ResponseInputAudio$outboundSchema,
 ]);
 
 export function openResponsesInputMessageItemContentToJSON(
@@ -169,10 +161,10 @@ export type OpenResponsesInputMessageItem$Outbound = {
   type?: string | undefined;
   role: string | string | string;
   content: Array<
-    | (ResponseInputText$Outbound & { type: "input_text" })
-    | (ResponseInputImage$Outbound & { type: "input_image" })
-    | (ResponseInputAudio$Outbound & { type: "input_audio" })
-    | (ResponseInputFile$Outbound & { type: "input_file" })
+    | ResponseInputText$Outbound
+    | ResponseInputImage$Outbound
+    | ResponseInputFile$Outbound
+    | ResponseInputAudio$Outbound
   >;
 };
 
@@ -190,18 +182,10 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
   ]),
   content: z.array(
     z.union([
-      ResponseInputText$outboundSchema.and(
-        z.object({ type: z.literal("input_text") }),
-      ),
-      ResponseInputImage$outboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      ResponseInputAudio$outboundSchema.and(
-        z.object({ type: z.literal("input_audio") }),
-      ),
-      ResponseInputFile$outboundSchema.and(
-        z.object({ type: z.literal("input_file") }),
-      ),
+      ResponseInputText$outboundSchema,
+      ResponseInputImage$outboundSchema,
+      ResponseInputFile$outboundSchema,
+      ResponseInputAudio$outboundSchema,
     ]),
   ),
 });

@@ -1,6 +1,6 @@
-import * as models from "../models/index.js";
-import { ReusableReadableStream } from "./reusable-stream.js";
-import { ParsedToolCall } from "./tool-types.js";
+import type * as models from '../models/index.js';
+import type { ReusableReadableStream } from './reusable-stream.js';
+import type { ParsedToolCall } from './tool-types.js';
 
 /**
  * Extract text deltas from responses stream events
@@ -11,7 +11,7 @@ export async function* extractTextDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ("type" in event && event.type === "response.output_text.delta") {
+    if ('type' in event && event.type === 'response.output_text.delta') {
       const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
       if (deltaEvent.delta) {
         yield deltaEvent.delta;
@@ -29,7 +29,7 @@ export async function* extractReasoningDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ("type" in event && event.type === "response.reasoning_text.delta") {
+    if ('type' in event && event.type === 'response.reasoning_text.delta') {
       const deltaEvent = event as models.OpenResponsesReasoningDeltaEvent;
       if (deltaEvent.delta) {
         yield deltaEvent.delta;
@@ -47,7 +47,7 @@ export async function* extractToolDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ("type" in event && event.type === "response.function_call_arguments.delta") {
+    if ('type' in event && event.type === 'response.function_call_arguments.delta') {
       const deltaEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
       if (deltaEvent.delta) {
         yield deltaEvent.delta;
@@ -66,39 +66,45 @@ export async function* buildMessageStream(
   const consumer = stream.createConsumer();
 
   // Track the accumulated text
-  let currentText = "";
+  let currentText = '';
   let hasStarted = false;
 
   for await (const event of consumer) {
-    if (!("type" in event)) continue;
+    if (!('type' in event)) {
+      continue;
+    }
 
     switch (event.type) {
-      case "response.output_item.added": {
+      case 'response.output_item.added': {
         const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && "type" in itemEvent.item && itemEvent.item.type === "message") {
+        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
           hasStarted = true;
-          currentText = "";
+          currentText = '';
         }
         break;
       }
 
-      case "response.output_text.delta": {
+      case 'response.output_text.delta': {
         const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
         if (hasStarted && deltaEvent.delta) {
           currentText += deltaEvent.delta;
 
           // Yield updated message
           yield {
-            role: "assistant" as const,
+            role: 'assistant' as const,
             content: currentText,
           };
         }
         break;
       }
 
-      case "response.output_item.done": {
+      case 'response.output_item.done': {
         const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (itemDoneEvent.item && "type" in itemDoneEvent.item && itemDoneEvent.item.type === "message") {
+        if (
+          itemDoneEvent.item &&
+          'type' in itemDoneEvent.item &&
+          itemDoneEvent.item.type === 'message'
+        ) {
           // Yield final complete message
           const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
           yield convertToAssistantMessage(outputMessage);
@@ -118,27 +124,29 @@ export async function consumeStreamForCompletion(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if (!("type" in event)) continue;
+    if (!('type' in event)) {
+      continue;
+    }
 
-    if (event.type === "response.completed") {
+    if (event.type === 'response.completed') {
       const completedEvent = event as models.OpenResponsesStreamEventResponseCompleted;
       return completedEvent.response;
     }
 
-    if (event.type === "response.failed") {
+    if (event.type === 'response.failed') {
       const failedEvent = event as models.OpenResponsesStreamEventResponseFailed;
       // The failed event contains the full response with error information
       throw new Error(`Response failed: ${JSON.stringify(failedEvent.response.error)}`);
     }
 
-    if (event.type === "response.incomplete") {
+    if (event.type === 'response.incomplete') {
       const incompleteEvent = event as models.OpenResponsesStreamEventResponseIncomplete;
       // Return the incomplete response
       return incompleteEvent.response;
     }
   }
 
-  throw new Error("Stream ended without completion event");
+  throw new Error('Stream ended without completion event');
 }
 
 /**
@@ -149,14 +157,14 @@ function convertToAssistantMessage(
 ): models.AssistantMessage {
   // Extract text content
   const textContent = outputMessage.content
-    .filter((part): part is models.ResponseOutputText =>
-      "type" in part && part.type === "output_text"
+    .filter(
+      (part): part is models.ResponseOutputText => 'type' in part && part.type === 'output_text',
     )
     .map((part) => part.text)
-    .join("");
+    .join('');
 
   return {
-    role: "assistant" as const,
+    role: 'assistant' as const,
     content: textContent || null,
   };
 }
@@ -168,12 +176,11 @@ export function extractMessageFromResponse(
   response: models.OpenResponsesNonStreamingResponse,
 ): models.AssistantMessage {
   const messageItem = response.output.find(
-    (item): item is models.ResponsesOutputMessage =>
-      "type" in item && item.type === "message"
+    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!messageItem) {
-    throw new Error("No message found in response output");
+    throw new Error('No message found in response output');
   }
 
   return convertToAssistantMessage(messageItem);
@@ -194,11 +201,11 @@ export function extractTextFromResponse(
   const message = extractMessageFromResponse(response);
 
   // AssistantMessage.content is string | Array | null | undefined
-  if (typeof message.content === "string") {
+  if (typeof message.content === 'string') {
     return message.content;
   }
 
-  return "";
+  return '';
 }
 
 /**
@@ -211,7 +218,7 @@ export function extractToolCallsFromResponse(
   const toolCalls: ParsedToolCall[] = [];
 
   for (const item of response.output) {
-    if ("type" in item && item.type === "function_call") {
+    if ('type' in item && item.type === 'function_call') {
       const functionCallItem = item as models.ResponsesOutputItemFunctionCall;
 
       try {
@@ -222,11 +229,7 @@ export function extractToolCallsFromResponse(
           name: functionCallItem.name,
           arguments: parsedArguments,
         });
-      } catch (error) {
-        console.error(
-          `Failed to parse tool call arguments for ${functionCallItem.name}:`,
-          error
-        );
+      } catch (_error) {
         // Include the tool call with unparsed arguments
         toolCalls.push({
           id: functionCallItem.callId,
@@ -260,27 +263,25 @@ export async function* buildToolCallStream(
   >();
 
   for await (const event of consumer) {
-    if (!("type" in event)) continue;
+    if (!('type' in event)) {
+      continue;
+    }
 
     switch (event.type) {
-      case "response.output_item.added": {
+      case 'response.output_item.added': {
         const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (
-          itemEvent.item &&
-          "type" in itemEvent.item &&
-          itemEvent.item.type === "function_call"
-        ) {
+        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'function_call') {
           const functionCallItem = itemEvent.item as models.ResponsesOutputItemFunctionCall;
           toolCallsInProgress.set(functionCallItem.callId, {
             id: functionCallItem.callId,
             name: functionCallItem.name,
-            argumentsAccumulated: "",
+            argumentsAccumulated: '',
           });
         }
         break;
       }
 
-      case "response.function_call_arguments.delta": {
+      case 'response.function_call_arguments.delta': {
         const deltaEvent =
           event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
         const toolCall = toolCallsInProgress.get(deltaEvent.itemId);
@@ -290,9 +291,8 @@ export async function* buildToolCallStream(
         break;
       }
 
-      case "response.function_call_arguments.done": {
-        const doneEvent =
-          event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone;
+      case 'response.function_call_arguments.done': {
+        const doneEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone;
         const toolCall = toolCallsInProgress.get(doneEvent.itemId);
 
         if (toolCall) {
@@ -304,7 +304,7 @@ export async function* buildToolCallStream(
               name: doneEvent.name,
               arguments: parsedArguments,
             };
-          } catch (error) {
+          } catch (_error) {
             // Yield with unparsed arguments if parsing fails
             yield {
               id: toolCall.id,
@@ -319,12 +319,12 @@ export async function* buildToolCallStream(
         break;
       }
 
-      case "response.output_item.done": {
+      case 'response.output_item.done': {
         const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
         if (
           itemDoneEvent.item &&
-          "type" in itemDoneEvent.item &&
-          itemDoneEvent.item.type === "function_call"
+          'type' in itemDoneEvent.item &&
+          itemDoneEvent.item.type === 'function_call'
         ) {
           const functionCallItem = itemDoneEvent.item as models.ResponsesOutputItemFunctionCall;
 
@@ -337,7 +337,7 @@ export async function* buildToolCallStream(
                 name: functionCallItem.name,
                 arguments: parsedArguments,
               };
-            } catch (error) {
+            } catch (_error) {
               yield {
                 id: functionCallItem.callId,
                 name: functionCallItem.name,
@@ -357,10 +357,6 @@ export async function* buildToolCallStream(
 /**
  * Check if a response contains any tool calls
  */
-export function responseHasToolCalls(
-  response: models.OpenResponsesNonStreamingResponse,
-): boolean {
-  return response.output.some(
-    (item) => "type" in item && item.type === "function_call"
-  );
+export function responseHasToolCalls(response: models.OpenResponsesNonStreamingResponse): boolean {
+  return response.output.some((item) => 'type' in item && item.type === 'function_call');
 }

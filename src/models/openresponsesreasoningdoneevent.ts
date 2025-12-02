@@ -5,22 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesReasoningDoneEventType = {
-  ResponseReasoningTextDone: "response.reasoning_text.done",
-} as const;
-export type OpenResponsesReasoningDoneEventType = ClosedEnum<
-  typeof OpenResponsesReasoningDoneEventType
->;
 
 /**
  * Event emitted when reasoning text streaming is complete
  */
 export type OpenResponsesReasoningDoneEvent = {
-  type: OpenResponsesReasoningDoneEventType;
+  type: "response.reasoning_text.done";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -29,16 +21,11 @@ export type OpenResponsesReasoningDoneEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningDoneEventType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningDoneEventType
-> = z.enum(OpenResponsesReasoningDoneEventType);
-
-/** @internal */
 export const OpenResponsesReasoningDoneEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDoneEvent,
   unknown
 > = z.object({
-  type: OpenResponsesReasoningDoneEventType$inboundSchema,
+  type: z.literal("response.reasoning_text.done"),
   output_index: z.number(),
   item_id: z.string(),
   content_index: z.number(),

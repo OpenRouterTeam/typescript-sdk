@@ -38,11 +38,11 @@ export type MessageDeveloper = {
 };
 
 export type Message =
-  | ToolResponseMessage
   | SystemMessage
   | UserMessage
   | MessageDeveloper
-  | AssistantMessage;
+  | AssistantMessage
+  | ToolResponseMessage;
 
 /** @internal */
 export type MessageContent$Outbound =
@@ -89,20 +89,20 @@ export function messageDeveloperToJSON(
 
 /** @internal */
 export type Message$Outbound =
-  | ToolResponseMessage$Outbound
   | SystemMessage$Outbound
   | UserMessage$Outbound
   | MessageDeveloper$Outbound
-  | AssistantMessage$Outbound;
+  | AssistantMessage$Outbound
+  | ToolResponseMessage$Outbound;
 
 /** @internal */
 export const Message$outboundSchema: z.ZodType<Message$Outbound, Message> = z
   .union([
-    ToolResponseMessage$outboundSchema,
     SystemMessage$outboundSchema,
     UserMessage$outboundSchema,
     z.lazy(() => MessageDeveloper$outboundSchema),
     AssistantMessage$outboundSchema,
+    ToolResponseMessage$outboundSchema,
   ]);
 
 export function messageToJSON(message: Message): string {

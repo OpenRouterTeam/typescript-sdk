@@ -15,5 +15,5 @@ let value: ResponseFormatTextGrammar = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"grammar"*        | :heavy_check_mark: | N/A                |
 | `grammar`          | *string*           | :heavy_check_mark: | N/A                |

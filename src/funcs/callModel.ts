@@ -1,9 +1,137 @@
-import { OpenRouterCore } from "../core.js";
-import { RequestOptions } from "../lib/sdks.js";
-import { ResponseWrapper } from "../lib/response-wrapper.js";
-import * as models from "../models/index.js";
-import { EnhancedTool, MaxToolRounds } from "../lib/tool-types.js";
-import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
+import type { OpenRouterCore } from '../core.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type { Tool, MaxToolRounds } from '../lib/tool-types.js';
+import type * as models from '../models/index.js';
+
+import { ResponseWrapper } from '../lib/response-wrapper.js';
+import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
+
+/**
+ * Input type that accepts both chat-style messages and responses-style input
+ */
+export type CallModelInput = models.OpenResponsesInput | models.Message[];
+
+/**
+ * Tool type that accepts chat-style, responses-style, or enhanced tools
+ */
+export type CallModelTools =
+  | Tool[]
+  | models.ToolDefinitionJson[]
+  | models.OpenResponsesRequest['tools'];
+
+/**
+ * Check if input is chat-style messages (Message[])
+ */
+function isChatStyleMessages(input: CallModelInput): input is models.Message[] {
+  if (!Array.isArray(input)) {
+    return false;
+  }
+  if (input.length === 0) {
+    return false;
+  }
+
+  const first = input[0] as Record<string, unknown>;
+  // Chat-style messages have role but no 'type' field at top level
+  // Responses-style items have 'type' field (like 'message', 'function_call', etc.)
+  return first && 'role' in first && !('type' in first);
+}
+
+/**
+ * Check if tools are chat-style (ToolDefinitionJson[])
+ */
+function isChatStyleTools(tools: CallModelTools): tools is models.ToolDefinitionJson[] {
+  if (!Array.isArray(tools)) {
+    return false;
+  }
+  if (tools.length === 0) {
+    return false;
+  }
+
+  const first = tools[0] as Record<string, unknown>;
+  // Chat-style tools have nested 'function' property with 'name' inside
+  // Enhanced tools have 'function' with 'inputSchema'
+  // Responses-style tools have 'name' at top level
+  const fn = first?.['function'] as Record<string, unknown> | undefined;
+  return (
+    first &&
+    'function' in first &&
+    fn !== undefined &&
+    fn !== null &&
+    'name' in fn &&
+    !('inputSchema' in fn)
+  );
+}
+
+/**
+ * Convert chat-style tools to responses-style
+ */
+function convertChatToResponsesTools(
+  tools: models.ToolDefinitionJson[],
+): models.OpenResponsesRequest['tools'] {
+  return tools.map(
+    (tool): models.OpenResponsesRequestToolFunction => ({
+      type: 'function',
+      name: tool.function.name,
+      description: tool.function.description ?? null,
+      strict: tool.function.strict ?? null,
+      parameters: tool.function.parameters ?? null,
+    }),
+  );
+}
+
+/**
+ * Convert chat-style messages to responses-style input
+ */
+function convertChatToResponsesInput(messages: models.Message[]): models.OpenResponsesInput {
+  return messages.map(
+    (msg): models.OpenResponsesEasyInputMessage | models.OpenResponsesFunctionCallOutput => {
+      // Extract extra fields like cache_control
+      const { role, content, ...extraFields } = msg as models.Message & Record<string, unknown>;
+
+      if (role === 'tool') {
+        const toolMsg = msg as models.ToolResponseMessage;
+        return {
+          type: 'function_call_output',
+          callId: toolMsg.toolCallId,
+          output:
+            typeof toolMsg.content === 'string' ? toolMsg.content : JSON.stringify(toolMsg.content),
+          ...extraFields,
+        } as models.OpenResponsesFunctionCallOutput;
+      }
+
+      // Handle assistant messages with tool calls
+      if (role === 'assistant') {
+        const assistantMsg = msg as models.AssistantMessage;
+        // If it has tool calls, we need to convert them
+        // For now, just convert the content part
+        return {
+          role: 'assistant',
+          content:
+            typeof assistantMsg.content === 'string'
+              ? assistantMsg.content
+              : assistantMsg.content === null
+                ? ''
+                : JSON.stringify(assistantMsg.content),
+          ...extraFields,
+        } as models.OpenResponsesEasyInputMessage;
+      }
+
+      // System, user, developer messages
+      const convertedContent =
+        typeof content === 'string'
+          ? content
+          : content === null || content === undefined
+            ? ''
+            : JSON.stringify(content);
+
+      return {
+        role: role as 'user' | 'system' | 'developer',
+        content: convertedContent,
+        ...extraFields,
+      } as models.OpenResponsesEasyInputMessage;
+    },
+  ) as models.OpenResponsesInput;
+}
 
 /**
  * Get a response with multiple consumption patterns
@@ -14,6 +142,7 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  *
  * - `await response.getMessage()` - Get the completed message (tools auto-executed)
  * - `await response.getText()` - Get just the text content (tools auto-executed)
+ * - `await response.getResponse()` - Get full response with usage data (inputTokens, cachedTokens, etc.)
  * - `for await (const delta of response.getTextStream())` - Stream text deltas
  * - `for await (const delta of response.getReasoningStream())` - Stream reasoning deltas
  * - `for await (const event of response.getToolStream())` - Stream tool events (incl. preliminary results)
@@ -74,36 +203,61 @@ import { convertEnhancedToolsToAPIFormat } from "../lib/tool-executor.js";
  */
 export function callModel(
   client: OpenRouterCore,
-  request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
-    tools?: EnhancedTool[] | models.OpenResponsesRequest["tools"];
+  request: Omit<models.OpenResponsesRequest, 'stream' | 'tools' | 'input'> & {
+    input?: CallModelInput;
+    tools?: CallModelTools;
     maxToolRounds?: MaxToolRounds;
   },
   options?: RequestOptions,
 ): ResponseWrapper {
-  const { tools, maxToolRounds, ...apiRequest } = request;
+  const { tools, maxToolRounds, input, ...restRequest } = request;
 
-  // Separate enhanced tools from API tools
+  // Convert chat-style messages to responses-style input if needed
+  const convertedInput =
+    input && isChatStyleMessages(input) ? convertChatToResponsesInput(input) : input;
+
+  const apiRequest = {
+    ...restRequest,
+    input: convertedInput,
+  };
+
+  // Determine tool type and convert as needed
   let isEnhancedTools = false;
-  if (tools && tools.length > 0) {
-    const firstTool = tools[0] as any;
-    isEnhancedTools = "function" in firstTool && firstTool.function && "inputSchema" in firstTool.function;
-  }
-  const enhancedTools = isEnhancedTools ? (tools as EnhancedTool[]) : undefined;
+  let isChatTools = false;
 
-  // Convert enhanced tools to API format if provided, otherwise use tools as-is
-  const apiTools = enhancedTools ? convertEnhancedToolsToAPIFormat(enhancedTools) : (tools as models.OpenResponsesRequest["tools"]);
+  if (tools && Array.isArray(tools) && tools.length > 0) {
+    const firstTool = tools[0] as Record<string, unknown>;
+    const fn = firstTool?.['function'] as Record<string, unknown> | undefined;
+    isEnhancedTools =
+      'function' in firstTool && fn !== undefined && fn !== null && 'inputSchema' in fn;
+    isChatTools = !isEnhancedTools && isChatStyleTools(tools);
+  }
+
+  const enhancedTools = isEnhancedTools ? (tools as Tool[]) : undefined;
+
+  // Convert tools to API format based on their type
+  let apiTools: models.OpenResponsesRequest['tools'];
+  if (enhancedTools) {
+    apiTools = convertToolsToAPIFormat(enhancedTools);
+  } else if (isChatTools) {
+    apiTools = convertChatToResponsesTools(tools as models.ToolDefinitionJson[]);
+  } else {
+    apiTools = tools as models.OpenResponsesRequest['tools'];
+  }
 
   // Build the request with converted tools
   const finalRequest: models.OpenResponsesRequest = {
     ...apiRequest,
-    ...(apiTools && { tools: apiTools }),
+    ...(apiTools && {
+      tools: apiTools,
+    }),
   } as models.OpenResponsesRequest;
 
   const wrapperOptions: {
     client: OpenRouterCore;
     request: models.OpenResponsesRequest;
     options: RequestOptions;
-    tools?: EnhancedTool[];
+    tools?: Tool[];
     maxToolRounds?: MaxToolRounds;
   } = {
     client,

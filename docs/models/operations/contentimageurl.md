@@ -15,7 +15,7 @@ let value: ContentImageURL = {
 
 ## Fields
 
-| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `type`                                                             | [operations.TypeImageURL](../../models/operations/typeimageurl.md) | :heavy_check_mark:                                                 | N/A                                                                |
-| `imageUrl`                                                         | [operations.ImageUrl](../../models/operations/imageurl.md)         | :heavy_check_mark:                                                 | N/A                                                                |
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `type`                                                     | *"image_url"*                                              | :heavy_check_mark:                                         | N/A                                                        |
+| `imageUrl`                                                 | [operations.ImageUrl](../../models/operations/imageurl.md) | :heavy_check_mark:                                         | N/A                                                        |

@@ -15,9 +15,9 @@ let value: FileCitation = {
 
 ## Fields
 
-| Field                                                    | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `type`                                                   | [models.FileCitationType](../models/filecitationtype.md) | :heavy_check_mark:                                       | N/A                                                      |
-| `fileId`                                                 | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
-| `filename`                                               | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
-| `index`                                                  | *number*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"file_citation"*  | :heavy_check_mark: | N/A                |
+| `fileId`           | *string*           | :heavy_check_mark: | N/A                |
+| `filename`         | *string*           | :heavy_check_mark: | N/A                |
+| `index`            | *number*           | :heavy_check_mark: | N/A                |

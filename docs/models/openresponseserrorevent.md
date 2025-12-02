@@ -18,10 +18,10 @@ let value: OpenResponsesErrorEvent = {
 
 ## Fields
 
-| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `type`                                                                         | [models.OpenResponsesErrorEventType](../models/openresponseserroreventtype.md) | :heavy_check_mark:                                                             | N/A                                                                            |
-| `code`                                                                         | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
-| `message`                                                                      | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
-| `param`                                                                        | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
-| `sequenceNumber`                                                               | *number*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"error"*          | :heavy_check_mark: | N/A                |
+| `code`             | *string*           | :heavy_check_mark: | N/A                |
+| `message`          | *string*           | :heavy_check_mark: | N/A                |
+| `param`            | *string*           | :heavy_check_mark: | N/A                |
+| `sequenceNumber`   | *number*           | :heavy_check_mark: | N/A                |
