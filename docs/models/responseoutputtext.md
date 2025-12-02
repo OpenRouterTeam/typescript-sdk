@@ -13,8 +13,8 @@ let value: ResponseOutputText = {
 
 ## Fields
 
-| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `type`                                                               | [models.ResponseOutputTextType](../models/responseoutputtexttype.md) | :heavy_check_mark:                                                   | N/A                                                                  |
-| `text`                                                               | *string*                                                             | :heavy_check_mark:                                                   | N/A                                                                  |
-| `annotations`                                                        | *models.OpenAIResponsesAnnotation*[]                                 | :heavy_minus_sign:                                                   | N/A                                                                  |
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `type`                               | *"output_text"*                      | :heavy_check_mark:                   | N/A                                  |
+| `text`                               | *string*                             | :heavy_check_mark:                   | N/A                                  |
+| `annotations`                        | *models.OpenAIResponsesAnnotation*[] | :heavy_minus_sign:                   | N/A                                  |

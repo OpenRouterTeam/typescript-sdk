@@ -35,24 +35,36 @@ import {
  * An output item from the response
  */
 export type ResponsesOutputItem =
-  | ResponsesOutputMessage
-  | ResponsesOutputItemFunctionCall
-  | ResponsesOutputItemFileSearchCall
-  | ResponsesOutputItemReasoning
-  | ResponsesWebSearchCallOutput
-  | ResponsesImageGenerationCall;
+  | (ResponsesOutputMessage & { type: "message" })
+  | (ResponsesOutputItemReasoning & { type: "reasoning" })
+  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
+  | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
+  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
+  | (ResponsesImageGenerationCall & { type: "image_generation_call" });
 
 /** @internal */
 export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesOutputItem,
   unknown
 > = z.union([
-  ResponsesOutputMessage$inboundSchema,
-  ResponsesOutputItemFunctionCall$inboundSchema,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
-  ResponsesOutputItemReasoning$inboundSchema,
-  ResponsesWebSearchCallOutput$inboundSchema,
-  ResponsesImageGenerationCall$inboundSchema,
+  ResponsesOutputMessage$inboundSchema.and(
+    z.object({ type: z.literal("message") }),
+  ),
+  ResponsesOutputItemReasoning$inboundSchema.and(
+    z.object({ type: z.literal("reasoning") }),
+  ),
+  ResponsesOutputItemFunctionCall$inboundSchema.and(
+    z.object({ type: z.literal("function_call") }),
+  ),
+  ResponsesWebSearchCallOutput$inboundSchema.and(
+    z.object({ type: z.literal("web_search_call") }),
+  ),
+  ResponsesOutputItemFileSearchCall$inboundSchema.and(
+    z.object({ type: z.literal("file_search_call") }),
+  ),
+  ResponsesImageGenerationCall$inboundSchema.and(
+    z.object({ type: z.literal("image_generation_call") }),
+  ),
 ]);
 
 export function responsesOutputItemFromJSON(

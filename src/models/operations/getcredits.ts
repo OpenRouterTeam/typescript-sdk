@@ -3,20 +3,58 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type GetCreditsData = {
+  /**
+   * Total credits purchased
+   */
+  totalCredits: number;
+  /**
+   * Total credits used
+   */
+  totalUsage: number;
+};
+
 /**
  * Total credits purchased and used
  */
-export type GetCreditsResponse = {};
+export type GetCreditsResponse = {
+  data: GetCreditsData;
+};
+
+/** @internal */
+export const GetCreditsData$inboundSchema: z.ZodType<GetCreditsData, unknown> =
+  z.object({
+    total_credits: z.number(),
+    total_usage: z.number(),
+  }).transform((v) => {
+    return remap$(v, {
+      "total_credits": "totalCredits",
+      "total_usage": "totalUsage",
+    });
+  });
+
+export function getCreditsDataFromJSON(
+  jsonString: string,
+): SafeParseResult<GetCreditsData, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetCreditsData$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetCreditsData' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetCreditsResponse$inboundSchema: z.ZodType<
   GetCreditsResponse,
   unknown
-> = z.object({});
+> = z.object({
+  data: z.lazy(() => GetCreditsData$inboundSchema),
+});
 
 export function getCreditsResponseFromJSON(
   jsonString: string,

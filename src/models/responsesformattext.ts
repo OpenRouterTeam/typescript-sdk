@@ -4,43 +4,26 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponsesFormatTextType = {
-  Text: "text",
-} as const;
-export type ResponsesFormatTextType = ClosedEnum<
-  typeof ResponsesFormatTextType
->;
 
 /**
  * Plain text response format
  */
 export type ResponsesFormatText = {
-  type: ResponsesFormatTextType;
+  type: "text";
 };
-
-/** @internal */
-export const ResponsesFormatTextType$inboundSchema: z.ZodEnum<
-  typeof ResponsesFormatTextType
-> = z.enum(ResponsesFormatTextType);
-/** @internal */
-export const ResponsesFormatTextType$outboundSchema: z.ZodEnum<
-  typeof ResponsesFormatTextType
-> = ResponsesFormatTextType$inboundSchema;
 
 /** @internal */
 export const ResponsesFormatText$inboundSchema: z.ZodType<
   ResponsesFormatText,
   unknown
 > = z.object({
-  type: ResponsesFormatTextType$inboundSchema,
+  type: z.literal("text"),
 });
 /** @internal */
 export type ResponsesFormatText$Outbound = {
-  type: string;
+  type: "text";
 };
 
 /** @internal */
@@ -48,7 +31,7 @@ export const ResponsesFormatText$outboundSchema: z.ZodType<
   ResponsesFormatText$Outbound,
   ResponsesFormatText
 > = z.object({
-  type: ResponsesFormatTextType$outboundSchema,
+  type: z.literal("text"),
 });
 
 export function responsesFormatTextToJSON(

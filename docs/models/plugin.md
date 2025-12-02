@@ -27,3 +27,11 @@ const value: models.PluginFileParser = {
 };
 ```
 
+### `models.PluginResponseHealing`
+
+```typescript
+const value: models.PluginResponseHealing = {
+  id: "response-healing",
+};
+```
+

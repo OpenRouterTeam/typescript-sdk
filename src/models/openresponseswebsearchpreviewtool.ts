@@ -5,7 +5,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -20,18 +19,11 @@ import {
   WebSearchPreviewToolUserLocation$outboundSchema,
 } from "./websearchpreviewtooluserlocation.js";
 
-export const OpenResponsesWebSearchPreviewToolType = {
-  WebSearchPreview: "web_search_preview",
-} as const;
-export type OpenResponsesWebSearchPreviewToolType = ClosedEnum<
-  typeof OpenResponsesWebSearchPreviewToolType
->;
-
 /**
  * Web search preview tool configuration
  */
 export type OpenResponsesWebSearchPreviewTool = {
-  type: OpenResponsesWebSearchPreviewToolType;
+  type: "web_search_preview";
   /**
    * Size of the search context for web search tools
    */
@@ -40,20 +32,11 @@ export type OpenResponsesWebSearchPreviewTool = {
 };
 
 /** @internal */
-export const OpenResponsesWebSearchPreviewToolType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearchPreviewToolType
-> = z.enum(OpenResponsesWebSearchPreviewToolType);
-/** @internal */
-export const OpenResponsesWebSearchPreviewToolType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearchPreviewToolType
-> = OpenResponsesWebSearchPreviewToolType$inboundSchema;
-
-/** @internal */
 export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
   OpenResponsesWebSearchPreviewTool,
   unknown
 > = z.object({
-  type: OpenResponsesWebSearchPreviewToolType$inboundSchema,
+  type: z.literal("web_search_preview"),
   search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
   user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema)
     .optional(),
@@ -65,7 +48,7 @@ export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OpenResponsesWebSearchPreviewTool$Outbound = {
-  type: string;
+  type: "web_search_preview";
   search_context_size?: string | undefined;
   user_location?: WebSearchPreviewToolUserLocation$Outbound | null | undefined;
 };
@@ -75,7 +58,7 @@ export const OpenResponsesWebSearchPreviewTool$outboundSchema: z.ZodType<
   OpenResponsesWebSearchPreviewTool$Outbound,
   OpenResponsesWebSearchPreviewTool
 > = z.object({
-  type: OpenResponsesWebSearchPreviewToolType$outboundSchema,
+  type: z.literal("web_search_preview"),
   searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
   userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema)
     .optional(),

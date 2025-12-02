@@ -4,7 +4,6 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -14,38 +13,24 @@ import {
   OpenAIResponsesAnnotation$outboundSchema,
 } from "./openairesponsesannotation.js";
 
-export const ResponseOutputTextType = {
-  OutputText: "output_text",
-} as const;
-export type ResponseOutputTextType = ClosedEnum<typeof ResponseOutputTextType>;
-
 export type ResponseOutputText = {
-  type: ResponseOutputTextType;
+  type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation> | undefined;
 };
-
-/** @internal */
-export const ResponseOutputTextType$inboundSchema: z.ZodEnum<
-  typeof ResponseOutputTextType
-> = z.enum(ResponseOutputTextType);
-/** @internal */
-export const ResponseOutputTextType$outboundSchema: z.ZodEnum<
-  typeof ResponseOutputTextType
-> = ResponseOutputTextType$inboundSchema;
 
 /** @internal */
 export const ResponseOutputText$inboundSchema: z.ZodType<
   ResponseOutputText,
   unknown
 > = z.object({
-  type: ResponseOutputTextType$inboundSchema,
+  type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
-  type: string;
+  type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
 };
@@ -55,7 +40,7 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   ResponseOutputText$Outbound,
   ResponseOutputText
 > = z.object({
-  type: ResponseOutputTextType$outboundSchema,
+  type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
 });

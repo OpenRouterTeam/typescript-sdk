@@ -5,22 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesErrorEventType = {
-  Error: "error",
-} as const;
-export type OpenResponsesErrorEventType = ClosedEnum<
-  typeof OpenResponsesErrorEventType
->;
 
 /**
  * Event emitted when an error occurs during streaming
  */
 export type OpenResponsesErrorEvent = {
-  type: OpenResponsesErrorEventType;
+  type: "error";
   code: string | null;
   message: string;
   param: string | null;
@@ -28,16 +20,11 @@ export type OpenResponsesErrorEvent = {
 };
 
 /** @internal */
-export const OpenResponsesErrorEventType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesErrorEventType
-> = z.enum(OpenResponsesErrorEventType);
-
-/** @internal */
 export const OpenResponsesErrorEvent$inboundSchema: z.ZodType<
   OpenResponsesErrorEvent,
   unknown
 > = z.object({
-  type: OpenResponsesErrorEventType$inboundSchema,
+  type: z.literal("error"),
   code: z.nullable(z.string()),
   message: z.string(),
   param: z.nullable(z.string()),

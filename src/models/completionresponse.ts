@@ -21,6 +21,7 @@ export type CompletionResponse = {
   object: "text_completion";
   created: number;
   model: string;
+  provider?: string | undefined;
   systemFingerprint?: string | undefined;
   choices: Array<CompletionChoice>;
   usage?: CompletionUsage | undefined;
@@ -35,6 +36,7 @@ export const CompletionResponse$inboundSchema: z.ZodType<
   object: z.literal("text_completion"),
   created: z.number(),
   model: z.string(),
+  provider: z.string().optional(),
   system_fingerprint: z.string().optional(),
   choices: z.array(CompletionChoice$inboundSchema),
   usage: CompletionUsage$inboundSchema.optional(),

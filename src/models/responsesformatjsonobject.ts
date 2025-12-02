@@ -4,43 +4,26 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponsesFormatJSONObjectType = {
-  JsonObject: "json_object",
-} as const;
-export type ResponsesFormatJSONObjectType = ClosedEnum<
-  typeof ResponsesFormatJSONObjectType
->;
 
 /**
  * JSON object response format
  */
 export type ResponsesFormatJSONObject = {
-  type: ResponsesFormatJSONObjectType;
+  type: "json_object";
 };
-
-/** @internal */
-export const ResponsesFormatJSONObjectType$inboundSchema: z.ZodEnum<
-  typeof ResponsesFormatJSONObjectType
-> = z.enum(ResponsesFormatJSONObjectType);
-/** @internal */
-export const ResponsesFormatJSONObjectType$outboundSchema: z.ZodEnum<
-  typeof ResponsesFormatJSONObjectType
-> = ResponsesFormatJSONObjectType$inboundSchema;
 
 /** @internal */
 export const ResponsesFormatJSONObject$inboundSchema: z.ZodType<
   ResponsesFormatJSONObject,
   unknown
 > = z.object({
-  type: ResponsesFormatJSONObjectType$inboundSchema,
+  type: z.literal("json_object"),
 });
 /** @internal */
 export type ResponsesFormatJSONObject$Outbound = {
-  type: string;
+  type: "json_object";
 };
 
 /** @internal */
@@ -48,7 +31,7 @@ export const ResponsesFormatJSONObject$outboundSchema: z.ZodType<
   ResponsesFormatJSONObject$Outbound,
   ResponsesFormatJSONObject
 > = z.object({
-  type: ResponsesFormatJSONObjectType$outboundSchema,
+  type: z.literal("json_object"),
 });
 
 export function responsesFormatJSONObjectToJSON(

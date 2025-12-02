@@ -4,42 +4,25 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const OpenAIResponsesRefusalContentType = {
-  Refusal: "refusal",
-} as const;
-export type OpenAIResponsesRefusalContentType = ClosedEnum<
-  typeof OpenAIResponsesRefusalContentType
->;
-
 export type OpenAIResponsesRefusalContent = {
-  type: OpenAIResponsesRefusalContentType;
+  type: "refusal";
   refusal: string;
 };
-
-/** @internal */
-export const OpenAIResponsesRefusalContentType$inboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesRefusalContentType
-> = z.enum(OpenAIResponsesRefusalContentType);
-/** @internal */
-export const OpenAIResponsesRefusalContentType$outboundSchema: z.ZodEnum<
-  typeof OpenAIResponsesRefusalContentType
-> = OpenAIResponsesRefusalContentType$inboundSchema;
 
 /** @internal */
 export const OpenAIResponsesRefusalContent$inboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent,
   unknown
 > = z.object({
-  type: OpenAIResponsesRefusalContentType$inboundSchema,
+  type: z.literal("refusal"),
   refusal: z.string(),
 });
 /** @internal */
 export type OpenAIResponsesRefusalContent$Outbound = {
-  type: string;
+  type: "refusal";
   refusal: string;
 };
 
@@ -48,7 +31,7 @@ export const OpenAIResponsesRefusalContent$outboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent$Outbound,
   OpenAIResponsesRefusalContent
 > = z.object({
-  type: OpenAIResponsesRefusalContentType$outboundSchema,
+  type: z.literal("refusal"),
   refusal: z.string(),
 });
 

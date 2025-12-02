@@ -18,12 +18,14 @@ import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
 import { callModel as callModelFunc } from "../funcs/callModel.js";
-import { ResponseWrapper } from "../lib/response-wrapper.js";
-import { RequestOptions } from "../lib/sdks.js";
-import { EnhancedTool, MaxToolRounds, ToolType } from "../lib/tool-types.js";
-import * as models from "../models/index.js";
+import type { ResponseWrapper } from "../lib/response-wrapper.js";
+import type { RequestOptions } from "../lib/sdks.js";
+import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
+import type { OpenResponsesInput } from "../models/openresponsesinput.js";
+import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
+
 export { ToolType };
-export type { EnhancedTool, MaxToolRounds };
+export type { MaxToolRounds };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
@@ -94,9 +96,9 @@ export class OpenRouter extends ClientSDK {
 
   // #region sdk-class-body
   callModel(
-    request: Omit<models.OpenResponsesRequest, "stream" | "tools" | "input"> & {
-      input?: import("../funcs/callModel.js").CallModelInput;
-      tools?: import("../funcs/callModel.js").CallModelTools;
+    request: Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
+      input?: OpenResponsesInput;
+      tools?: Tool[];
       maxToolRounds?: MaxToolRounds;
     },
     options?: RequestOptions,

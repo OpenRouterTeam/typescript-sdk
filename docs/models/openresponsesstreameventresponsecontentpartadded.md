@@ -22,11 +22,11 @@ let value: OpenResponsesStreamEventResponseContentPartAdded = {
 
 ## Fields
 
-| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
-| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `type`                                                                           | [models.TypeResponseContentPartAdded](../models/typeresponsecontentpartadded.md) | :heavy_check_mark:                                                               | N/A                                                                              |
-| `outputIndex`                                                                    | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
-| `itemId`                                                                         | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
-| `contentIndex`                                                                   | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
-| `part`                                                                           | *models.Part1*                                                                   | :heavy_check_mark:                                                               | N/A                                                                              |
-| `sequenceNumber`                                                                 | *number*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |
+| Field                           | Type                            | Required                        | Description                     |
+| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `type`                          | *"response.content_part.added"* | :heavy_check_mark:              | N/A                             |
+| `outputIndex`                   | *number*                        | :heavy_check_mark:              | N/A                             |
+| `itemId`                        | *string*                        | :heavy_check_mark:              | N/A                             |
+| `contentIndex`                  | *number*                        | :heavy_check_mark:              | N/A                             |
+| `part`                          | *models.Part1*                  | :heavy_check_mark:              | N/A                             |
+| `sequenceNumber`                | *number*                        | :heavy_check_mark:              | N/A                             |

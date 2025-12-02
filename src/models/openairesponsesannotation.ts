@@ -25,21 +25,21 @@ import {
   URLCitation$outboundSchema,
 } from "./urlcitation.js";
 
-export type OpenAIResponsesAnnotation = URLCitation | FileCitation | FilePath;
+export type OpenAIResponsesAnnotation = FileCitation | URLCitation | FilePath;
 
 /** @internal */
 export const OpenAIResponsesAnnotation$inboundSchema: z.ZodType<
   OpenAIResponsesAnnotation,
   unknown
 > = z.union([
-  URLCitation$inboundSchema,
   FileCitation$inboundSchema,
+  URLCitation$inboundSchema,
   FilePath$inboundSchema,
 ]);
 /** @internal */
 export type OpenAIResponsesAnnotation$Outbound =
-  | URLCitation$Outbound
   | FileCitation$Outbound
+  | URLCitation$Outbound
   | FilePath$Outbound;
 
 /** @internal */
@@ -47,8 +47,8 @@ export const OpenAIResponsesAnnotation$outboundSchema: z.ZodType<
   OpenAIResponsesAnnotation$Outbound,
   OpenAIResponsesAnnotation
 > = z.union([
-  URLCitation$outboundSchema,
   FileCitation$outboundSchema,
+  URLCitation$outboundSchema,
   FilePath$outboundSchema,
 ]);
 

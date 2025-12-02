@@ -19,14 +19,14 @@
  *   - Context includes: numberOfTurns, messageHistory, model/models
  */
 
-import { OpenRouter, ToolType } from "../src/index.js";
-import { z } from "zod/v4";
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
+import { z } from 'zod/v4';
+import { OpenRouter, ToolType } from '../src/index.js';
 
 dotenv.config();
 
 const client = new OpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY || "",
+  apiKey: process.env.OPENROUTER_API_KEY || '',
 });
 
 /**
@@ -35,28 +35,29 @@ const client = new OpenRouter({
  * Note: The context parameter is optional for backward compatibility
  */
 async function basicToolExample() {
-  console.log("\n=== Example 1: Basic Tool with Execute Function ===\n");
-
   const weatherTool = {
     type: ToolType.Function,
     function: {
-      name: "get_weather",
-      description: "Get current weather for a location",
+      name: 'get_weather',
+      description: 'Get current weather for a location',
       inputSchema: z.object({
-        location: z.string().describe("City and country (e.g., San Francisco, CA)"),
+        location: z.string().describe('City and country (e.g., San Francisco, CA)'),
       }),
       outputSchema: z.object({
         temperature: z.number(),
         description: z.string(),
         humidity: z.number(),
       }),
-      execute: async (params: { location: string }, context) => {
-        console.log(`Executing get_weather for: ${params.location}`);
-        console.log(`Turn ${context.numberOfTurns} - Model: ${context.model || context.models?.join(", ")}`);
+      execute: async (
+        _params: {
+          location: string;
+        },
+        _context,
+      ) => {
         // In real usage, you would call a weather API here
         return {
           temperature: 72,
-          description: "Sunny",
+          description: 'Sunny',
           humidity: 45,
         };
       },
@@ -64,23 +65,22 @@ async function basicToolExample() {
   };
 
   const response = client.callModel({
-    model: "openai/gpt-4o",
+    model: 'openai/gpt-4o',
     input: "What's the weather like in San Francisco?",
-    tools: [weatherTool],
+    tools: [
+      weatherTool,
+    ],
     // Example: limit to 3 turns using a function
     maxToolRounds: (context) => {
-      console.log(`Checking if we should continue (currently on turn ${context.numberOfTurns})`);
       return context.numberOfTurns < 3; // Allow up to 3 turns
     },
   });
 
   // Tools are automatically executed! Just get the final message
-  const message = await response.getMessage();
-  console.log("\nFinal message after automatic tool execution:", message.content);
+  const _message = await response.getMessage();
 
   // You can also check what tool calls were made initially
-  const toolCalls = await response.getToolCalls();
-  console.log("\nInitial tool calls:", JSON.stringify(toolCalls, null, 2));
+  const _toolCalls = await response.getToolCalls();
 }
 
 /**
@@ -88,19 +88,20 @@ async function basicToolExample() {
  * Shows how to use async generators for streaming intermediate results
  */
 async function generatorToolExample() {
-  console.log("\n=== Example 2: Generator Tool with Preliminary Results ===\n");
-
   const processingTool = {
     type: ToolType.Function,
     function: {
-      name: "process_data",
-      description: "Process data with progress updates",
+      name: 'process_data',
+      description: 'Process data with progress updates',
       inputSchema: z.object({
-        data: z.string().describe("Data to process"),
+        data: z.string().describe('Data to process'),
       }),
       // Events emitted during processing (validated against eventSchema)
       eventSchema: z.object({
-        type: z.enum(["start", "progress"]),
+        type: z.enum([
+          'start',
+          'progress',
+        ]),
         message: z.string(),
         progress: z.number().min(0).max(100).optional(),
       }),
@@ -109,13 +110,17 @@ async function generatorToolExample() {
         result: z.string(),
         processingTime: z.number(),
       }),
-      execute: async function* (params: { data: string }, context) {
-        console.log(`Generator tool - Turn ${context.numberOfTurns}`);
+      execute: async function* (
+        params: {
+          data: string;
+        },
+        _context,
+      ) {
         const startTime = Date.now();
 
         // Preliminary event 1
         yield {
-          type: "start" as const,
+          type: 'start' as const,
           message: `Started processing: ${params.data}`,
           progress: 0,
         };
@@ -124,8 +129,8 @@ async function generatorToolExample() {
 
         // Preliminary event 2
         yield {
-          type: "progress" as const,
-          message: "Processing halfway done",
+          type: 'progress' as const,
+          message: 'Processing halfway done',
           progress: 50,
         };
 
@@ -141,24 +146,21 @@ async function generatorToolExample() {
   };
 
   const response = client.callModel({
-    model: "openai/gpt-4o",
-    input: "Process this data: hello world",
-    tools: [processingTool],
+    model: 'openai/gpt-4o',
+    input: 'Process this data: hello world',
+    tools: [
+      processingTool,
+    ],
   });
-
-  // Stream preliminary results as they arrive
-  console.log("Streaming tool events including preliminary results:\n");
   for await (const event of response.getToolStream()) {
-    if (event.type === "preliminary_result") {
-      console.log(`Preliminary result from ${event.toolCallId}:`, event.result);
-    } else if (event.type === "delta") {
+    if (event.type === 'preliminary_result') {
+    } else if (event.type === 'delta') {
       process.stdout.write(event.content);
     }
   }
 
   // Tools are automatically executed with preliminary results available
-  const message = await response.getMessage();
-  console.log("\n\nFinal message:", message.content);
+  const _message = await response.getMessage();
 }
 
 /**
@@ -166,15 +168,13 @@ async function generatorToolExample() {
  * Define a tool without execute function for manual handling
  */
 async function manualToolExample() {
-  console.log("\n=== Example 3: Manual Tool Execution ===\n");
-
   const calculatorTool = {
     type: ToolType.Function,
     function: {
-      name: "calculate",
-      description: "Perform mathematical calculations",
+      name: 'calculate',
+      description: 'Perform mathematical calculations',
       inputSchema: z.object({
-        expression: z.string().describe("Math expression to evaluate"),
+        expression: z.string().describe('Math expression to evaluate'),
       }),
       outputSchema: z.object({
         result: z.number(),
@@ -184,29 +184,30 @@ async function manualToolExample() {
   };
 
   const response = client.callModel({
-    model: "openai/gpt-4o",
-    input: "What is 25 * 4 + 10?",
-    tools: [calculatorTool],
+    model: 'openai/gpt-4o',
+    input: 'What is 25 * 4 + 10?',
+    tools: [
+      calculatorTool,
+    ],
   });
 
   // Since there's no execute function, tool calls are returned but not executed
   const toolCalls = await response.getToolCalls();
-  console.log("Tool calls (not auto-executed):", toolCalls);
 
   // You can manually handle tool execution here
   for (const toolCall of toolCalls) {
-    if (toolCall.name === "calculate") {
-      const expression = (toolCall.arguments as { expression: string }).expression;
-      console.log(`Manually executing calculation: ${expression}`);
+    if (toolCall.name === 'calculate') {
+      const expression = (
+        toolCall.arguments as {
+          expression: string;
+        }
+      ).expression;
 
       // In a real app, you would safely evaluate this
       // For demo purposes only - don't use eval in production!
       try {
-        const result = eval(expression);
-        console.log(`Result: ${result}`);
-      } catch (error) {
-        console.error("Calculation error:", error);
-      }
+        const _result = eval(expression);
+      } catch (_error) {}
     }
   }
 
@@ -220,15 +221,13 @@ async function manualToolExample() {
  * Note: This tool doesn't use context - demonstrating backward compatibility
  */
 async function streamingToolCallsExample() {
-  console.log("\n=== Example 4: Streaming Tool Calls ===\n");
-
   const searchTool = {
     type: ToolType.Function,
     function: {
-      name: "search",
-      description: "Search for information",
+      name: 'search',
+      description: 'Search for information',
       inputSchema: z.object({
-        query: z.string().describe("Search query"),
+        query: z.string().describe('Search query'),
       }),
       outputSchema: z.object({
         results: z.array(z.string()),
@@ -246,16 +245,15 @@ async function streamingToolCallsExample() {
   };
 
   const response = client.callModel({
-    model: "openai/gpt-4o",
-    input: "Search for information about TypeScript",
-    tools: [searchTool],
+    model: 'openai/gpt-4o',
+    input: 'Search for information about TypeScript',
+    tools: [
+      searchTool,
+    ],
   });
 
-  console.log("Streaming tool calls as they arrive:\n");
-
   // Stream structured tool call objects
-  for await (const toolCall of response.getToolCallsStream()) {
-    console.log("Tool call:", JSON.stringify(toolCall, null, 2));
+  for await (const _toolCall of response.getToolCallsStream()) {
   }
 }
 
@@ -265,14 +263,12 @@ async function streamingToolCallsExample() {
  * Note: Shows mixing tools with and without context parameter
  */
 async function multipleToolsExample() {
-  console.log("\n=== Example 5: Multiple Tools ===\n");
-
   const tools = [
     {
       type: ToolType.Function,
       function: {
-        name: "get_time",
-        description: "Get current time",
+        name: 'get_time',
+        description: 'Get current time',
         inputSchema: z.object({
           timezone: z.string().optional(),
         }),
@@ -280,10 +276,15 @@ async function multipleToolsExample() {
           time: z.string(),
           timezone: z.string(),
         }),
-        execute: async (params: { timezone?: string }, context) => {
+        execute: async (
+          params: {
+            timezone?: string;
+          },
+          _context,
+        ) => {
           return {
             time: new Date().toISOString(),
-            timezone: params.timezone || "UTC",
+            timezone: params.timezone || 'UTC',
           };
         },
       },
@@ -291,8 +292,8 @@ async function multipleToolsExample() {
     {
       type: ToolType.Function,
       function: {
-        name: "get_weather",
-        description: "Get weather information",
+        name: 'get_weather',
+        description: 'Get weather information',
         inputSchema: z.object({
           location: z.string(),
         }),
@@ -300,11 +301,11 @@ async function multipleToolsExample() {
           temperature: z.number(),
           description: z.string(),
         }),
-        execute: async (params: { location: string }) => {
+        execute: async (_params: { location: string }) => {
           // This tool doesn't need context
           return {
             temperature: 68,
-            description: "Partly cloudy",
+            description: 'Partly cloudy',
           };
         },
       },
@@ -312,18 +313,16 @@ async function multipleToolsExample() {
   ];
 
   const response = client.callModel({
-    model: "openai/gpt-4o",
+    model: 'openai/gpt-4o',
     input: "What time is it and what's the weather in New York?",
     tools,
   });
 
   // Tools are automatically executed!
-  const message = await response.getMessage();
-  console.log("Final message:", message.content);
+  const _message = await response.getMessage();
 
   // You can check which tools were called
-  const toolCalls = await response.getToolCalls();
-  console.log("\nTools that were called:", toolCalls.map(tc => tc.name));
+  const _toolCalls = await response.getToolCalls();
 }
 
 // Run examples
@@ -334,9 +333,7 @@ async function main() {
     await manualToolExample();
     await streamingToolCallsExample();
     await multipleToolsExample();
-  } catch (error) {
-    console.error("Error running examples:", error);
-  }
+  } catch (_error) {}
 }
 
 // Only run if this file is executed directly

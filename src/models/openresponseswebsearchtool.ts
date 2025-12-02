@@ -5,7 +5,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -20,13 +19,6 @@ import {
   ResponsesWebSearchUserLocation$outboundSchema,
 } from "./responseswebsearchuserlocation.js";
 
-export const OpenResponsesWebSearchToolType = {
-  WebSearch: "web_search",
-} as const;
-export type OpenResponsesWebSearchToolType = ClosedEnum<
-  typeof OpenResponsesWebSearchToolType
->;
-
 export type OpenResponsesWebSearchToolFilters = {
   allowedDomains?: Array<string> | null | undefined;
 };
@@ -35,7 +27,7 @@ export type OpenResponsesWebSearchToolFilters = {
  * Web search tool configuration
  */
 export type OpenResponsesWebSearchTool = {
-  type: OpenResponsesWebSearchToolType;
+  type: "web_search";
   filters?: OpenResponsesWebSearchToolFilters | null | undefined;
   /**
    * Size of the search context for web search tools
@@ -46,15 +38,6 @@ export type OpenResponsesWebSearchTool = {
    */
   userLocation?: ResponsesWebSearchUserLocation | null | undefined;
 };
-
-/** @internal */
-export const OpenResponsesWebSearchToolType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearchToolType
-> = z.enum(OpenResponsesWebSearchToolType);
-/** @internal */
-export const OpenResponsesWebSearchToolType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesWebSearchToolType
-> = OpenResponsesWebSearchToolType$inboundSchema;
 
 /** @internal */
 export const OpenResponsesWebSearchToolFilters$inboundSchema: z.ZodType<
@@ -108,7 +91,7 @@ export const OpenResponsesWebSearchTool$inboundSchema: z.ZodType<
   OpenResponsesWebSearchTool,
   unknown
 > = z.object({
-  type: OpenResponsesWebSearchToolType$inboundSchema,
+  type: z.literal("web_search"),
   filters: z.nullable(
     z.lazy(() => OpenResponsesWebSearchToolFilters$inboundSchema),
   ).optional(),
@@ -123,7 +106,7 @@ export const OpenResponsesWebSearchTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OpenResponsesWebSearchTool$Outbound = {
-  type: string;
+  type: "web_search";
   filters?: OpenResponsesWebSearchToolFilters$Outbound | null | undefined;
   search_context_size?: string | undefined;
   user_location?: ResponsesWebSearchUserLocation$Outbound | null | undefined;
@@ -134,7 +117,7 @@ export const OpenResponsesWebSearchTool$outboundSchema: z.ZodType<
   OpenResponsesWebSearchTool$Outbound,
   OpenResponsesWebSearchTool
 > = z.object({
-  type: OpenResponsesWebSearchToolType$outboundSchema,
+  type: z.literal("web_search"),
   filters: z.nullable(
     z.lazy(() => OpenResponsesWebSearchToolFilters$outboundSchema),
   ).optional(),

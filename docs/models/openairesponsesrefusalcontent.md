@@ -13,7 +13,7 @@ let value: OpenAIResponsesRefusalContent = {
 
 ## Fields
 
-| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `type`                                                                                     | [models.OpenAIResponsesRefusalContentType](../models/openairesponsesrefusalcontenttype.md) | :heavy_check_mark:                                                                         | N/A                                                                                        |
-| `refusal`                                                                                  | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"refusal"*        | :heavy_check_mark: | N/A                |
+| `refusal`          | *string*           | :heavy_check_mark: | N/A                |

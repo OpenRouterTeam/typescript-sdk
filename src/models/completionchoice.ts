@@ -26,6 +26,8 @@ export type CompletionChoice = {
   index: number;
   logprobs: CompletionLogprobs | null;
   finishReason: CompletionFinishReason | null;
+  nativeFinishReason?: string | undefined;
+  reasoning?: string | null | undefined;
 };
 
 /** @internal */
@@ -43,9 +45,12 @@ export const CompletionChoice$inboundSchema: z.ZodType<
   index: z.number(),
   logprobs: z.nullable(CompletionLogprobs$inboundSchema),
   finish_reason: z.nullable(CompletionFinishReason$inboundSchema),
+  native_finish_reason: z.string().optional(),
+  reasoning: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "finish_reason": "finishReason",
+    "native_finish_reason": "nativeFinishReason",
   });
 });
 

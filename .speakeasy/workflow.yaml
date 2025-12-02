@@ -1,5 +1,5 @@
 workflowVersion: 1.0.0
-speakeasyVersion: latest
+speakeasyVersion: 1.666.0
 sources:
     OpenRouter API:
         inputs:

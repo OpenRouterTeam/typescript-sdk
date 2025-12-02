@@ -1,15 +1,13 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { OpenRouter } from "../../src/sdk/sdk.js";
+import { beforeAll, describe, expect, it } from 'vitest';
+import { OpenRouter } from '../../src/sdk/sdk.js';
 
-describe("Embeddings E2E Tests", () => {
+describe('Embeddings E2E Tests', () => {
   let client: OpenRouter;
 
   beforeAll(() => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
-      throw new Error(
-        "OPENROUTER_API_KEY environment variable is required for e2e tests"
-      );
+      throw new Error('OPENROUTER_API_KEY environment variable is required for e2e tests');
     }
 
     client = new OpenRouter({
@@ -17,17 +15,17 @@ describe("Embeddings E2E Tests", () => {
     });
   });
 
-  describe("embeddings.generate()", () => {
-    it("should successfully generate embeddings for a single text input", async () => {
+  describe('embeddings.generate()', () => {
+    it('should successfully generate embeddings for a single text input', async () => {
       const response = await client.embeddings.generate({
-        input: "The quick brown fox jumps over the lazy dog",
-        model: "openai/text-embedding-3-small",
+        input: 'The quick brown fox jumps over the lazy dog',
+        model: 'openai/text-embedding-3-small',
       });
 
       expect(response).toBeDefined();
 
       // Check if response is an object (not a string)
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         expect(response.data).toBeDefined();
         expect(Array.isArray(response.data)).toBe(true);
         expect(response.data.length).toBeGreaterThan(0);
@@ -41,9 +39,9 @@ describe("Embeddings E2E Tests", () => {
           expect(firstEmbedding.embedding.length).toBeGreaterThan(0);
           // Verify embedding values are numbers
           const firstValue = firstEmbedding.embedding[0];
-          expect(typeof firstValue).toBe("number");
+          expect(typeof firstValue).toBe('number');
         } else {
-          expect(typeof firstEmbedding?.embedding).toBe("string");
+          expect(typeof firstEmbedding?.embedding).toBe('string');
         }
 
         // Verify usage information if available
@@ -53,21 +51,21 @@ describe("Embeddings E2E Tests", () => {
       }
     });
 
-    it("should generate embeddings for multiple text inputs", async () => {
+    it('should generate embeddings for multiple text inputs', async () => {
       const inputs = [
-        "Hello, world!",
-        "OpenRouter is amazing",
-        "Embeddings are vector representations of text",
+        'Hello, world!',
+        'OpenRouter is amazing',
+        'Embeddings are vector representations of text',
       ];
 
       const response = await client.embeddings.generate({
         input: inputs,
-        model: "openai/text-embedding-3-small",
+        model: 'openai/text-embedding-3-small',
       });
 
       expect(response).toBeDefined();
 
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         expect(response.data).toBeDefined();
         expect(Array.isArray(response.data)).toBe(true);
         expect(response.data.length).toBe(inputs.length);
@@ -80,7 +78,7 @@ describe("Embeddings E2E Tests", () => {
           if (Array.isArray(embedding?.embedding)) {
             expect(embedding.embedding.length).toBeGreaterThan(0);
           } else {
-            expect(typeof embedding?.embedding).toBe("string");
+            expect(typeof embedding?.embedding).toBe('string');
           }
 
           expect(embedding?.index).toBe(index);
@@ -88,15 +86,18 @@ describe("Embeddings E2E Tests", () => {
       }
     });
 
-    it("should generate consistent embedding dimensions", async () => {
+    it('should generate consistent embedding dimensions', async () => {
       const response = await client.embeddings.generate({
-        input: ["First text", "Second text"],
-        model: "openai/text-embedding-3-small",
+        input: [
+          'First text',
+          'Second text',
+        ],
+        model: 'openai/text-embedding-3-small',
       });
 
       expect(response).toBeDefined();
 
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         expect(response.data.length).toBe(2);
 
         const firstEmbedding = response.data[0]?.embedding;
@@ -113,15 +114,15 @@ describe("Embeddings E2E Tests", () => {
       }
     });
 
-    it("should handle empty string input gracefully", async () => {
+    it('should handle empty string input gracefully', async () => {
       const response = await client.embeddings.generate({
-        input: "",
-        model: "openai/text-embedding-3-small",
+        input: '',
+        model: 'openai/text-embedding-3-small',
       });
 
       expect(response).toBeDefined();
 
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         expect(response.data).toBeDefined();
         expect(Array.isArray(response.data)).toBe(true);
 
@@ -132,24 +133,24 @@ describe("Embeddings E2E Tests", () => {
       }
     });
 
-    it("should include model information in response", async () => {
-      const modelName = "openai/text-embedding-3-small";
+    it('should include model information in response', async () => {
+      const modelName = 'openai/text-embedding-3-small';
       const response = await client.embeddings.generate({
-        input: "Test input for model verification",
+        input: 'Test input for model verification',
         model: modelName,
       });
 
       expect(response).toBeDefined();
 
-      if (typeof response === "object") {
+      if (typeof response === 'object') {
         expect(response.model).toBeDefined();
-        expect(typeof response.model).toBe("string");
+        expect(typeof response.model).toBe('string');
 
         if (response.usage) {
           expect(response.usage.promptTokens).toBeDefined();
           expect(response.usage.totalTokens).toBeDefined();
-          expect(typeof response.usage.promptTokens).toBe("number");
-          expect(typeof response.usage.totalTokens).toBe("number");
+          expect(typeof response.usage.promptTokens).toBe('number');
+          expect(typeof response.usage.totalTokens).toBe('number');
           expect(response.usage.totalTokens).toBeGreaterThan(0);
         }
       }

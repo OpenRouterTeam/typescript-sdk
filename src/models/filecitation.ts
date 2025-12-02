@@ -5,35 +5,20 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const FileCitationType = {
-  FileCitation: "file_citation",
-} as const;
-export type FileCitationType = ClosedEnum<typeof FileCitationType>;
-
 export type FileCitation = {
-  type: FileCitationType;
+  type: "file_citation";
   fileId: string;
   filename: string;
   index: number;
 };
 
 /** @internal */
-export const FileCitationType$inboundSchema: z.ZodEnum<
-  typeof FileCitationType
-> = z.enum(FileCitationType);
-/** @internal */
-export const FileCitationType$outboundSchema: z.ZodEnum<
-  typeof FileCitationType
-> = FileCitationType$inboundSchema;
-
-/** @internal */
 export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
   .object({
-    type: FileCitationType$inboundSchema,
+    type: z.literal("file_citation"),
     file_id: z.string(),
     filename: z.string(),
     index: z.number(),
@@ -44,7 +29,7 @@ export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
   });
 /** @internal */
 export type FileCitation$Outbound = {
-  type: string;
+  type: "file_citation";
   file_id: string;
   filename: string;
   index: number;
@@ -55,7 +40,7 @@ export const FileCitation$outboundSchema: z.ZodType<
   FileCitation$Outbound,
   FileCitation
 > = z.object({
-  type: FileCitationType$outboundSchema,
+  type: z.literal("file_citation"),
   fileId: z.string(),
   filename: z.string(),
   index: z.number(),

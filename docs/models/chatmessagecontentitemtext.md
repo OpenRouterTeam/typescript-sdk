@@ -13,7 +13,8 @@ let value: ChatMessageContentItemText = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *string*           | :heavy_check_mark: | N/A                |
-| `text`             | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `type`                                                                                       | *"text"*                                                                                     | :heavy_check_mark:                                                                           | N/A                                                                                          |
+| `text`                                                                                       | *string*                                                                                     | :heavy_check_mark:                                                                           | N/A                                                                                          |
+| `cacheControl`                                                                               | [models.ChatMessageContentItemCacheControl](../models/chatmessagecontentitemcachecontrol.md) | :heavy_minus_sign:                                                                           | N/A                                                                                          |

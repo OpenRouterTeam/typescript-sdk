@@ -5,22 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesReasoningDeltaEventType = {
-  ResponseReasoningTextDelta: "response.reasoning_text.delta",
-} as const;
-export type OpenResponsesReasoningDeltaEventType = ClosedEnum<
-  typeof OpenResponsesReasoningDeltaEventType
->;
 
 /**
  * Event emitted when reasoning text delta is streamed
  */
 export type OpenResponsesReasoningDeltaEvent = {
-  type: OpenResponsesReasoningDeltaEventType;
+  type: "response.reasoning_text.delta";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -29,16 +21,11 @@ export type OpenResponsesReasoningDeltaEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningDeltaEventType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesReasoningDeltaEventType
-> = z.enum(OpenResponsesReasoningDeltaEventType);
-
-/** @internal */
 export const OpenResponsesReasoningDeltaEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDeltaEvent,
   unknown
 > = z.object({
-  type: OpenResponsesReasoningDeltaEventType$inboundSchema,
+  type: z.literal("response.reasoning_text.delta"),
   output_index: z.number(),
   item_id: z.string(),
   content_index: z.number(),
