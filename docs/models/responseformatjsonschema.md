@@ -17,5 +17,5 @@ let value: ResponseFormatJSONSchema = {
 
 | Field                                                    | Type                                                     | Required                                                 | Description                                              |
 | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `type`                                                   | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
+| `type`                                                   | *"json_schema"*                                          | :heavy_check_mark:                                       | N/A                                                      |
 | `jsonSchema`                                             | [models.JSONSchemaConfig](../models/jsonschemaconfig.md) | :heavy_check_mark:                                       | N/A                                                      |

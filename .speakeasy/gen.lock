@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 0ecf8d42d5f305a124cbca4ffbda5eee
+  docChecksum: 591fccdc6b495b1230644174853f9113
   docVersion: 1.0.0
-  speakeasyVersion: 1.660.0
-  generationVersion: 2.760.2
-  releaseVersion: 0.1.27
-  configChecksum: 2c451c32d0e42b790ff08709ef1011b4
+  speakeasyVersion: 1.666.0
+  generationVersion: 2.768.0
+  releaseVersion: 0.2.1
+  configChecksum: 20b0e93ec59772256ddbc8cfd514e30e
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -15,7 +15,7 @@ features:
     acceptHeaders: 2.81.2
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.12
-    core: 3.26.9
+    core: 3.26.13
     customCodeRegions: 0.1.0
     defaultEnabledRetries: 0.1.0
     deprecations: 2.81.1
@@ -35,11 +35,11 @@ features:
     openEnums: 0.1.1
     responseFormat: 0.2.3
     retries: 2.83.0
-    sdkHooks: 0.3.0
+    sdkHooks: 0.4.0
     serverEvents: 0.1.12
     serverEventsSentinels: 0.1.0
     serverIDs: 2.81.2
-    unions: 2.86.0
+    unions: 2.86.3
 generatedFiles:
   - .devcontainer/README.md
   - .devcontainer/devcontainer.json
@@ -69,14 +69,13 @@ generatedFiles:
   - docs/models/chatmessagecontentitemaudio.md
   - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemaudioinputaudio.md
-  - docs/models/chatmessagecontentitemfile.md
+  - docs/models/chatmessagecontentitemcachecontrol.md
   - docs/models/chatmessagecontentitemimage.md
   - docs/models/chatmessagecontentitemimagedetail.md
   - docs/models/chatmessagecontentitemtext.md
   - docs/models/chatmessagecontentitemvideo.md
   - docs/models/chatmessagecontentitemvideoinputvideo.md
   - docs/models/chatmessagecontentitemvideovideourl.md
-  - docs/models/chatmessagecontentitemvideovideourlvideourl.md
   - docs/models/chatmessagetokenlogprob.md
   - docs/models/chatmessagetokenlogprobs.md
   - docs/models/chatmessagetoolcall.md
@@ -130,14 +129,8 @@ generatedFiles:
   - docs/models/errors/unauthorizedresponseerror.md
   - docs/models/errors/unprocessableentityresponseerror.md
   - docs/models/filecitation.md
-  - docs/models/filecitationtype.md
   - docs/models/filepath.md
-  - docs/models/filepathtype.md
-  - docs/models/filet.md
   - docs/models/forbiddenresponseerrordata.md
-  - docs/models/idfileparser.md
-  - docs/models/idmoderation.md
-  - docs/models/idweb.md
   - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
@@ -192,7 +185,6 @@ generatedFiles:
   - docs/models/openairesponsesreasoningconfig.md
   - docs/models/openairesponsesreasoningeffort.md
   - docs/models/openairesponsesrefusalcontent.md
-  - docs/models/openairesponsesrefusalcontenttype.md
   - docs/models/openairesponsesresponsestatus.md
   - docs/models/openairesponsesservicetier.md
   - docs/models/openairesponsestoolchoice.md
@@ -215,19 +207,14 @@ generatedFiles:
   - docs/models/openresponseseasyinputmessageroleuser.md
   - docs/models/openresponseseasyinputmessagetype.md
   - docs/models/openresponseserrorevent.md
-  - docs/models/openresponseserroreventtype.md
   - docs/models/openresponsesfunctioncalloutput.md
   - docs/models/openresponsesfunctioncalloutputtype.md
   - docs/models/openresponsesfunctiontoolcall.md
   - docs/models/openresponsesfunctiontoolcalltype.md
   - docs/models/openresponsesimagegencallcompleted.md
-  - docs/models/openresponsesimagegencallcompletedtype.md
   - docs/models/openresponsesimagegencallgenerating.md
-  - docs/models/openresponsesimagegencallgeneratingtype.md
   - docs/models/openresponsesimagegencallinprogress.md
-  - docs/models/openresponsesimagegencallinprogresstype.md
   - docs/models/openresponsesimagegencallpartialimage.md
-  - docs/models/openresponsesimagegencallpartialimagetype.md
   - docs/models/openresponsesinput.md
   - docs/models/openresponsesinput1.md
   - docs/models/openresponsesinputmessageitem.md
@@ -241,29 +228,22 @@ generatedFiles:
   - docs/models/openresponsesnonstreamingresponse.md
   - docs/models/openresponsesnonstreamingresponsetoolfunction.md
   - docs/models/openresponsesnonstreamingresponsetoolunion.md
-  - docs/models/openresponsesnonstreamingresponsetype.md
   - docs/models/openresponsesreasoning.md
   - docs/models/openresponsesreasoningconfig.md
   - docs/models/openresponsesreasoningdeltaevent.md
-  - docs/models/openresponsesreasoningdeltaeventtype.md
   - docs/models/openresponsesreasoningdoneevent.md
-  - docs/models/openresponsesreasoningdoneeventtype.md
   - docs/models/openresponsesreasoningformat.md
   - docs/models/openresponsesreasoningstatuscompleted.md
   - docs/models/openresponsesreasoningstatusincomplete.md
   - docs/models/openresponsesreasoningstatusinprogress.md
   - docs/models/openresponsesreasoningstatusunion.md
   - docs/models/openresponsesreasoningsummarypartaddedevent.md
-  - docs/models/openresponsesreasoningsummarypartaddedeventtype.md
   - docs/models/openresponsesreasoningsummarytextdeltaevent.md
-  - docs/models/openresponsesreasoningsummarytextdeltaeventtype.md
   - docs/models/openresponsesreasoningsummarytextdoneevent.md
-  - docs/models/openresponsesreasoningsummarytextdoneeventtype.md
   - docs/models/openresponsesreasoningtype.md
   - docs/models/openresponsesrequest.md
   - docs/models/openresponsesrequesttoolfunction.md
   - docs/models/openresponsesrequesttoolunion.md
-  - docs/models/openresponsesrequesttype.md
   - docs/models/openresponsesresponsetext.md
   - docs/models/openresponsesresponsetextverbosity.md
   - docs/models/openresponsesstreamevent.md
@@ -288,14 +268,10 @@ generatedFiles:
   - docs/models/openresponsesusage.md
   - docs/models/openresponseswebsearch20250826tool.md
   - docs/models/openresponseswebsearch20250826toolfilters.md
-  - docs/models/openresponseswebsearch20250826tooltype.md
   - docs/models/openresponseswebsearchpreview20250311tool.md
-  - docs/models/openresponseswebsearchpreview20250311tooltype.md
   - docs/models/openresponseswebsearchpreviewtool.md
-  - docs/models/openresponseswebsearchpreviewtooltype.md
   - docs/models/openresponseswebsearchtool.md
   - docs/models/openresponseswebsearchtoolfilters.md
-  - docs/models/openresponseswebsearchtooltype.md
   - docs/models/operations/apitype.md
   - docs/models/operations/calldata.md
   - docs/models/operations/content.md
@@ -326,6 +302,7 @@ generatedFiles:
   - docs/models/operations/exchangeauthcodeforapikeycodechallengemethod.md
   - docs/models/operations/exchangeauthcodeforapikeyrequest.md
   - docs/models/operations/exchangeauthcodeforapikeyresponse.md
+  - docs/models/operations/getcreditsdata.md
   - docs/models/operations/getcreditsresponse.md
   - docs/models/operations/getcurrentkeydata.md
   - docs/models/operations/getcurrentkeyresponse.md
@@ -366,8 +343,6 @@ generatedFiles:
   - docs/models/operations/sendchatcompletionrequestresponse.md
   - docs/models/operations/supportedparameter.md
   - docs/models/operations/transferintent.md
-  - docs/models/operations/typeimageurl.md
-  - docs/models/operations/typetext.md
   - docs/models/operations/updatekeysdata.md
   - docs/models/operations/updatekeyslimitreset.md
   - docs/models/operations/updatekeysrequest.md
@@ -399,6 +374,7 @@ generatedFiles:
   - docs/models/plugin.md
   - docs/models/pluginfileparser.md
   - docs/models/pluginmoderation.md
+  - docs/models/pluginresponsehealing.md
   - docs/models/pluginweb.md
   - docs/models/pricing.md
   - docs/models/prompt.md
@@ -425,23 +401,15 @@ generatedFiles:
   - docs/models/responseinputaudio.md
   - docs/models/responseinputaudioformat.md
   - docs/models/responseinputaudioinputaudio.md
-  - docs/models/responseinputaudiotype.md
   - docs/models/responseinputfile.md
-  - docs/models/responseinputfiletype.md
   - docs/models/responseinputimage.md
   - docs/models/responseinputimagedetail.md
-  - docs/models/responseinputimagetype.md
   - docs/models/responseinputtext.md
-  - docs/models/responseinputtexttype.md
   - docs/models/responseoutputtext.md
-  - docs/models/responseoutputtexttype.md
   - docs/models/responseserrorfield.md
   - docs/models/responsesformatjsonobject.md
-  - docs/models/responsesformatjsonobjecttype.md
   - docs/models/responsesformattext.md
   - docs/models/responsesformattextjsonschemaconfig.md
-  - docs/models/responsesformattextjsonschemaconfigtype.md
-  - docs/models/responsesformattexttype.md
   - docs/models/responsesimagegenerationcall.md
   - docs/models/responsesimagegenerationcalltype.md
   - docs/models/responsesoutputitem.md
@@ -490,32 +458,16 @@ generatedFiles:
   - docs/models/toplogprob.md
   - docs/models/topproviderinfo.md
   - docs/models/truncation.md
+  - docs/models/ttl.md
   - docs/models/type.md
-  - docs/models/typeresponsecompleted.md
-  - docs/models/typeresponsecontentpartadded.md
-  - docs/models/typeresponsecontentpartdone.md
-  - docs/models/typeresponsecreated.md
-  - docs/models/typeresponsefailed.md
-  - docs/models/typeresponsefunctioncallargumentsdelta.md
-  - docs/models/typeresponsefunctioncallargumentsdone.md
-  - docs/models/typeresponseincomplete.md
-  - docs/models/typeresponseinprogress.md
-  - docs/models/typeresponseoutputitemadded.md
-  - docs/models/typeresponseoutputitemdone.md
-  - docs/models/typeresponseoutputtextannotationadded.md
-  - docs/models/typeresponseoutputtextdelta.md
-  - docs/models/typeresponseoutputtextdone.md
-  - docs/models/typeresponsereasoningsummarypartdone.md
-  - docs/models/typeresponserefusaldelta.md
-  - docs/models/typeresponserefusaldone.md
   - docs/models/unauthorizedresponseerrordata.md
   - docs/models/unprocessableentityresponseerrordata.md
   - docs/models/urlcitation.md
-  - docs/models/urlcitationtype.md
   - docs/models/usermessage.md
   - docs/models/usermessagecontent.md
   - docs/models/variables.md
-  - docs/models/videourl.md
+  - docs/models/videourl1.md
+  - docs/models/videourl2.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -589,12 +541,13 @@ generatedFiles:
   - src/models/assistantmessage.ts
   - src/models/badgatewayresponseerrordata.ts
   - src/models/badrequestresponseerrordata.ts
+  - src/models/chatcompletionfinishreason.ts
   - src/models/chaterror.ts
   - src/models/chatgenerationparams.ts
   - src/models/chatgenerationtokenusage.ts
   - src/models/chatmessagecontentitem.ts
   - src/models/chatmessagecontentitemaudio.ts
-  - src/models/chatmessagecontentitemfile.ts
+  - src/models/chatmessagecontentitemcachecontrol.ts
   - src/models/chatmessagecontentitemimage.ts
   - src/models/chatmessagecontentitemtext.ts
   - src/models/chatmessagecontentitemvideo.ts
@@ -603,6 +556,7 @@ generatedFiles:
   - src/models/chatmessagetoolcall.ts
   - src/models/chatresponse.ts
   - src/models/chatresponsechoice.ts
+  - src/models/chatstreamingchoice.ts
   - src/models/chatstreamingmessagechunk.ts
   - src/models/chatstreamingmessagetoolcall.ts
   - src/models/chatstreamingresponsechunk.ts
@@ -769,7 +723,6 @@ generatedFiles:
   - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
-  - src/models/videourl.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
   - src/sdk/analytics.ts
@@ -1159,7 +1112,7 @@ examples:
     speakeasy-default-get-credits:
       responses:
         "200":
-          application/json: {}
+          application/json: {"data": {"total_credits": 100.5, "total_usage": 25.75}}
         4XX:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         default:
@@ -1692,7 +1645,7 @@ examples:
   createResponses:
     speakeasy-default-create-responses:
       requestBody:
-        application/json: {"stream": false}
+        application/json: {"store": false, "service_tier": "auto", "stream": false}
       responses:
         "200":
           application/json: {"id": "resp-abc123", "object": "response", "created_at": 1704067200, "model": "gpt-4", "output": [{"id": "msg-abc123", "role": "assistant", "type": "message", "content": [{"type": "output_text", "text": "Hello! How can I help you today?"}]}], "error": null, "incomplete_details": null, "temperature": null, "top_p": null, "instructions": null, "metadata": null, "tools": [], "tool_choice": "auto", "parallel_tool_calls": true}

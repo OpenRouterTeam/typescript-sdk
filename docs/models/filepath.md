@@ -14,8 +14,8 @@ let value: FilePath = {
 
 ## Fields
 
-| Field                                            | Type                                             | Required                                         | Description                                      |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| `type`                                           | [models.FilePathType](../models/filepathtype.md) | :heavy_check_mark:                               | N/A                                              |
-| `fileId`                                         | *string*                                         | :heavy_check_mark:                               | N/A                                              |
-| `index`                                          | *number*                                         | :heavy_check_mark:                               | N/A                                              |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"file_path"*      | :heavy_check_mark: | N/A                |
+| `fileId`           | *string*           | :heavy_check_mark: | N/A                |
+| `index`            | *number*           | :heavy_check_mark: | N/A                |

@@ -5,31 +5,18 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const FilePathType = {
-  FilePath: "file_path",
-} as const;
-export type FilePathType = ClosedEnum<typeof FilePathType>;
-
 export type FilePath = {
-  type: FilePathType;
+  type: "file_path";
   fileId: string;
   index: number;
 };
 
 /** @internal */
-export const FilePathType$inboundSchema: z.ZodEnum<typeof FilePathType> = z
-  .enum(FilePathType);
-/** @internal */
-export const FilePathType$outboundSchema: z.ZodEnum<typeof FilePathType> =
-  FilePathType$inboundSchema;
-
-/** @internal */
 export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
-  type: FilePathType$inboundSchema,
+  type: z.literal("file_path"),
   file_id: z.string(),
   index: z.number(),
 }).transform((v) => {
@@ -39,7 +26,7 @@ export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
 });
 /** @internal */
 export type FilePath$Outbound = {
-  type: string;
+  type: "file_path";
   file_id: string;
   index: number;
 };
@@ -47,7 +34,7 @@ export type FilePath$Outbound = {
 /** @internal */
 export const FilePath$outboundSchema: z.ZodType<FilePath$Outbound, FilePath> = z
   .object({
-    type: FilePathType$outboundSchema,
+    type: z.literal("file_path"),
     fileId: z.string(),
     index: z.number(),
   }).transform((v) => {

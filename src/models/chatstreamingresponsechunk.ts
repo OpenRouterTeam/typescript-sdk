@@ -13,7 +13,7 @@ import {
 import {
   ChatStreamingChoice,
   ChatStreamingChoice$inboundSchema,
-} from "./chatresponsechoice.js";
+} from "./chatstreamingchoice.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatStreamingResponseChunkError = {

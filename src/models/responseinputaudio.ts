@@ -6,14 +6,9 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponseInputAudioType = {
-  InputAudio: "input_audio",
-} as const;
-export type ResponseInputAudioType = ClosedEnum<typeof ResponseInputAudioType>;
 
 export const ResponseInputAudioFormat = {
   Mp3: "mp3",
@@ -32,18 +27,9 @@ export type ResponseInputAudioInputAudio = {
  * Audio input content item
  */
 export type ResponseInputAudio = {
-  type: ResponseInputAudioType;
+  type: "input_audio";
   inputAudio: ResponseInputAudioInputAudio;
 };
-
-/** @internal */
-export const ResponseInputAudioType$inboundSchema: z.ZodEnum<
-  typeof ResponseInputAudioType
-> = z.enum(ResponseInputAudioType);
-/** @internal */
-export const ResponseInputAudioType$outboundSchema: z.ZodEnum<
-  typeof ResponseInputAudioType
-> = ResponseInputAudioType$inboundSchema;
 
 /** @internal */
 export const ResponseInputAudioFormat$inboundSchema: z.ZodType<
@@ -103,7 +89,7 @@ export const ResponseInputAudio$inboundSchema: z.ZodType<
   ResponseInputAudio,
   unknown
 > = z.object({
-  type: ResponseInputAudioType$inboundSchema,
+  type: z.literal("input_audio"),
   input_audio: z.lazy(() => ResponseInputAudioInputAudio$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -112,7 +98,7 @@ export const ResponseInputAudio$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ResponseInputAudio$Outbound = {
-  type: string;
+  type: "input_audio";
   input_audio: ResponseInputAudioInputAudio$Outbound;
 };
 
@@ -121,7 +107,7 @@ export const ResponseInputAudio$outboundSchema: z.ZodType<
   ResponseInputAudio$Outbound,
   ResponseInputAudio
 > = z.object({
-  type: ResponseInputAudioType$outboundSchema,
+  type: z.literal("input_audio"),
   inputAudio: z.lazy(() => ResponseInputAudioInputAudio$outboundSchema),
 }).transform((v) => {
   return remap$(v, {

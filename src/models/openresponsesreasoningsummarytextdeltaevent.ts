@@ -5,22 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesReasoningSummaryTextDeltaEventType = {
-  ResponseReasoningSummaryTextDelta: "response.reasoning_summary_text.delta",
-} as const;
-export type OpenResponsesReasoningSummaryTextDeltaEventType = ClosedEnum<
-  typeof OpenResponsesReasoningSummaryTextDeltaEventType
->;
 
 /**
  * Event emitted when reasoning summary text delta is streamed
  */
 export type OpenResponsesReasoningSummaryTextDeltaEvent = {
-  type: OpenResponsesReasoningSummaryTextDeltaEventType;
+  type: "response.reasoning_summary_text.delta";
   itemId: string;
   outputIndex: number;
   summaryIndex: number;
@@ -29,15 +21,9 @@ export type OpenResponsesReasoningSummaryTextDeltaEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryTextDeltaEventType> = z.enum(
-    OpenResponsesReasoningSummaryTextDeltaEventType,
-  );
-
-/** @internal */
 export const OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryTextDeltaEvent, unknown> = z.object({
-    type: OpenResponsesReasoningSummaryTextDeltaEventType$inboundSchema,
+    type: z.literal("response.reasoning_summary_text.delta"),
     item_id: z.string(),
     output_index: z.number(),
     summary_index: z.number(),

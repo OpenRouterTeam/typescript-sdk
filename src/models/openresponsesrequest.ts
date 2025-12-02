@@ -63,18 +63,11 @@ import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
-export const OpenResponsesRequestType = {
-  Function: "function",
-} as const;
-export type OpenResponsesRequestType = ClosedEnum<
-  typeof OpenResponsesRequestType
->;
-
 /**
  * Function tool definition
  */
 export type OpenResponsesRequestToolFunction = {
-  type: OpenResponsesRequestType;
+  type: "function";
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
@@ -90,12 +83,8 @@ export type OpenResponsesRequestToolUnion =
 
 export const ServiceTier = {
   Auto: "auto",
-  Default: "default",
-  Flex: "flex",
-  Priority: "priority",
-  Scale: "scale",
 } as const;
-export type ServiceTier = OpenEnum<typeof ServiceTier>;
+export type ServiceTier = ClosedEnum<typeof ServiceTier>;
 
 export const Truncation = {
   Auto: "auto",
@@ -194,10 +183,9 @@ export type Provider = {
   maxPrice?: MaxPrice | undefined;
 };
 
-export const IdFileParser = {
-  FileParser: "file-parser",
-} as const;
-export type IdFileParser = ClosedEnum<typeof IdFileParser>;
+export type PluginResponseHealing = {
+  id: "response-healing";
+};
 
 export const PdfEngine = {
   MistralOcr: "mistral-ocr",
@@ -211,15 +199,10 @@ export type Pdf = {
 };
 
 export type PluginFileParser = {
-  id: IdFileParser;
+  id: "file-parser";
   maxFiles?: number | undefined;
   pdf?: Pdf | undefined;
 };
-
-export const IdWeb = {
-  Web: "web",
-} as const;
-export type IdWeb = ClosedEnum<typeof IdWeb>;
 
 export const Engine = {
   Native: "native",
@@ -228,22 +211,21 @@ export const Engine = {
 export type Engine = OpenEnum<typeof Engine>;
 
 export type PluginWeb = {
-  id: IdWeb;
+  id: "web";
   maxResults?: number | undefined;
   searchPrompt?: string | undefined;
   engine?: Engine | undefined;
 };
 
-export const IdModeration = {
-  Moderation: "moderation",
-} as const;
-export type IdModeration = ClosedEnum<typeof IdModeration>;
-
 export type PluginModeration = {
-  id: IdModeration;
+  id: "moderation";
 };
 
-export type Plugin = PluginModeration | PluginWeb | PluginFileParser;
+export type Plugin =
+  | PluginModeration
+  | PluginWeb
+  | PluginFileParser
+  | PluginResponseHealing;
 
 /**
  * Request schema for Responses endpoint
@@ -289,8 +271,8 @@ export type OpenResponsesRequest = {
   include?: Array<OpenAIResponsesIncludable> | null | undefined;
   background?: boolean | null | undefined;
   safetyIdentifier?: string | null | undefined;
-  store?: boolean | null | undefined;
-  serviceTier?: ServiceTier | null | undefined;
+  store?: false | undefined;
+  serviceTier?: ServiceTier | undefined;
   truncation?: Truncation | null | undefined;
   stream?: boolean | undefined;
   /**
@@ -300,7 +282,11 @@ export type OpenResponsesRequest = {
   /**
    * Plugins you want to enable for this request, including their settings.
    */
-  plugins?: Array<PluginModeration | PluginWeb | PluginFileParser> | undefined;
+  plugins?:
+    | Array<
+      PluginModeration | PluginWeb | PluginFileParser | PluginResponseHealing
+    >
+    | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
    */
@@ -308,13 +294,8 @@ export type OpenResponsesRequest = {
 };
 
 /** @internal */
-export const OpenResponsesRequestType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesRequestType
-> = z.enum(OpenResponsesRequestType);
-
-/** @internal */
 export type OpenResponsesRequestToolFunction$Outbound = {
-  type: string;
+  type: "function";
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
@@ -326,7 +307,7 @@ export const OpenResponsesRequestToolFunction$outboundSchema: z.ZodType<
   OpenResponsesRequestToolFunction$Outbound,
   OpenResponsesRequestToolFunction
 > = z.object({
-  type: OpenResponsesRequestType$outboundSchema,
+  type: z.literal("function"),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -374,8 +355,9 @@ export function openResponsesRequestToolUnionToJSON(
 }
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodType<string, ServiceTier> =
-  openEnums.outboundSchema(ServiceTier);
+export const ServiceTier$outboundSchema: z.ZodEnum<typeof ServiceTier> = z.enum(
+  ServiceTier,
+);
 
 /** @internal */
 export const Truncation$outboundSchema: z.ZodType<string, Truncation> =
@@ -491,8 +473,25 @@ export function providerToJSON(provider: Provider): string {
 }
 
 /** @internal */
-export const IdFileParser$outboundSchema: z.ZodEnum<typeof IdFileParser> = z
-  .enum(IdFileParser);
+export type PluginResponseHealing$Outbound = {
+  id: "response-healing";
+};
+
+/** @internal */
+export const PluginResponseHealing$outboundSchema: z.ZodType<
+  PluginResponseHealing$Outbound,
+  PluginResponseHealing
+> = z.object({
+  id: z.literal("response-healing"),
+});
+
+export function pluginResponseHealingToJSON(
+  pluginResponseHealing: PluginResponseHealing,
+): string {
+  return JSON.stringify(
+    PluginResponseHealing$outboundSchema.parse(pluginResponseHealing),
+  );
+}
 
 /** @internal */
 export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> = openEnums
@@ -514,7 +513,7 @@ export function pdfToJSON(pdf: Pdf): string {
 
 /** @internal */
 export type PluginFileParser$Outbound = {
-  id: string;
+  id: "file-parser";
   max_files?: number | undefined;
   pdf?: Pdf$Outbound | undefined;
 };
@@ -524,7 +523,7 @@ export const PluginFileParser$outboundSchema: z.ZodType<
   PluginFileParser$Outbound,
   PluginFileParser
 > = z.object({
-  id: IdFileParser$outboundSchema,
+  id: z.literal("file-parser"),
   maxFiles: z.number().optional(),
   pdf: z.lazy(() => Pdf$outboundSchema).optional(),
 }).transform((v) => {
@@ -542,15 +541,12 @@ export function pluginFileParserToJSON(
 }
 
 /** @internal */
-export const IdWeb$outboundSchema: z.ZodEnum<typeof IdWeb> = z.enum(IdWeb);
-
-/** @internal */
 export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums
   .outboundSchema(Engine);
 
 /** @internal */
 export type PluginWeb$Outbound = {
-  id: string;
+  id: "web";
   max_results?: number | undefined;
   search_prompt?: string | undefined;
   engine?: string | undefined;
@@ -561,7 +557,7 @@ export const PluginWeb$outboundSchema: z.ZodType<
   PluginWeb$Outbound,
   PluginWeb
 > = z.object({
-  id: IdWeb$outboundSchema,
+  id: z.literal("web"),
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
   engine: Engine$outboundSchema.optional(),
@@ -577,12 +573,8 @@ export function pluginWebToJSON(pluginWeb: PluginWeb): string {
 }
 
 /** @internal */
-export const IdModeration$outboundSchema: z.ZodEnum<typeof IdModeration> = z
-  .enum(IdModeration);
-
-/** @internal */
 export type PluginModeration$Outbound = {
-  id: string;
+  id: "moderation";
 };
 
 /** @internal */
@@ -590,7 +582,7 @@ export const PluginModeration$outboundSchema: z.ZodType<
   PluginModeration$Outbound,
   PluginModeration
 > = z.object({
-  id: IdModeration$outboundSchema,
+  id: z.literal("moderation"),
 });
 
 export function pluginModerationToJSON(
@@ -605,7 +597,8 @@ export function pluginModerationToJSON(
 export type Plugin$Outbound =
   | PluginModeration$Outbound
   | PluginWeb$Outbound
-  | PluginFileParser$Outbound;
+  | PluginFileParser$Outbound
+  | PluginResponseHealing$Outbound;
 
 /** @internal */
 export const Plugin$outboundSchema: z.ZodType<Plugin$Outbound, Plugin> = z
@@ -613,6 +606,7 @@ export const Plugin$outboundSchema: z.ZodType<Plugin$Outbound, Plugin> = z
     z.lazy(() => PluginModeration$outboundSchema),
     z.lazy(() => PluginWeb$outboundSchema),
     z.lazy(() => PluginFileParser$outboundSchema),
+    z.lazy(() => PluginResponseHealing$outboundSchema),
   ]);
 
 export function pluginToJSON(plugin: Plugin): string {
@@ -649,14 +643,17 @@ export type OpenResponsesRequest$Outbound = {
   include?: Array<string> | null | undefined;
   background?: boolean | null | undefined;
   safety_identifier?: string | null | undefined;
-  store?: boolean | null | undefined;
-  service_tier?: string | null | undefined;
+  store: false;
+  service_tier: string;
   truncation?: string | null | undefined;
   stream: boolean;
   provider?: Provider$Outbound | null | undefined;
   plugins?:
     | Array<
-      PluginModeration$Outbound | PluginWeb$Outbound | PluginFileParser$Outbound
+      | PluginModeration$Outbound
+      | PluginWeb$Outbound
+      | PluginFileParser$Outbound
+      | PluginResponseHealing$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -696,8 +693,8 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
     .optional(),
   background: z.nullable(z.boolean()).optional(),
   safetyIdentifier: z.nullable(z.string()).optional(),
-  store: z.nullable(z.boolean()).optional(),
-  serviceTier: z.nullable(ServiceTier$outboundSchema).optional(),
+  store: z.literal(false).default(false as const),
+  serviceTier: ServiceTier$outboundSchema.default("auto"),
   truncation: z.nullable(Truncation$outboundSchema).optional(),
   stream: z.boolean().default(false),
   provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
@@ -706,6 +703,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
       z.lazy(() => PluginModeration$outboundSchema),
       z.lazy(() => PluginWeb$outboundSchema),
       z.lazy(() => PluginFileParser$outboundSchema),
+      z.lazy(() => PluginResponseHealing$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),

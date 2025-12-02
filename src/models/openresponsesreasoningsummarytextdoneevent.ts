@@ -5,22 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesReasoningSummaryTextDoneEventType = {
-  ResponseReasoningSummaryTextDone: "response.reasoning_summary_text.done",
-} as const;
-export type OpenResponsesReasoningSummaryTextDoneEventType = ClosedEnum<
-  typeof OpenResponsesReasoningSummaryTextDoneEventType
->;
 
 /**
  * Event emitted when reasoning summary text streaming is complete
  */
 export type OpenResponsesReasoningSummaryTextDoneEvent = {
-  type: OpenResponsesReasoningSummaryTextDoneEventType;
+  type: "response.reasoning_summary_text.done";
   itemId: string;
   outputIndex: number;
   summaryIndex: number;
@@ -29,15 +21,9 @@ export type OpenResponsesReasoningSummaryTextDoneEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryTextDoneEventType> = z.enum(
-    OpenResponsesReasoningSummaryTextDoneEventType,
-  );
-
-/** @internal */
 export const OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryTextDoneEvent, unknown> = z.object({
-    type: OpenResponsesReasoningSummaryTextDoneEventType$inboundSchema,
+    type: z.literal("response.reasoning_summary_text.done"),
     item_id: z.string(),
     output_index: z.number(),
     summary_index: z.number(),

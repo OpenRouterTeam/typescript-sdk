@@ -12,8 +12,8 @@ let value: PluginFileParser = {
 
 ## Fields
 
-| Field                                            | Type                                             | Required                                         | Description                                      |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| `id`                                             | [models.IdFileParser](../models/idfileparser.md) | :heavy_check_mark:                               | N/A                                              |
-| `maxFiles`                                       | *number*                                         | :heavy_minus_sign:                               | N/A                                              |
-| `pdf`                                            | [models.Pdf](../models/pdf.md)                   | :heavy_minus_sign:                               | N/A                                              |
+| Field                          | Type                           | Required                       | Description                    |
+| ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| `id`                           | *"file-parser"*                | :heavy_check_mark:             | N/A                            |
+| `maxFiles`                     | *number*                       | :heavy_minus_sign:             | N/A                            |
+| `pdf`                          | [models.Pdf](../models/pdf.md) | :heavy_minus_sign:             | N/A                            |

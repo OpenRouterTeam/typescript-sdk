@@ -5,7 +5,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -81,18 +80,11 @@ import {
   ResponsesOutputItem$inboundSchema,
 } from "./responsesoutputitem.js";
 
-export const TypeResponseReasoningSummaryPartDone = {
-  ResponseReasoningSummaryPartDone: "response.reasoning_summary_part.done",
-} as const;
-export type TypeResponseReasoningSummaryPartDone = ClosedEnum<
-  typeof TypeResponseReasoningSummaryPartDone
->;
-
 /**
  * Event emitted when a reasoning summary part is complete
  */
 export type OpenResponsesStreamEventResponseReasoningSummaryPartDone = {
-  type: TypeResponseReasoningSummaryPartDone;
+  type: "response.reasoning_summary_part.done";
   outputIndex: number;
   itemId: string;
   summaryIndex: number;
@@ -100,18 +92,11 @@ export type OpenResponsesStreamEventResponseReasoningSummaryPartDone = {
   sequenceNumber: number;
 };
 
-export const TypeResponseFunctionCallArgumentsDone = {
-  ResponseFunctionCallArgumentsDone: "response.function_call_arguments.done",
-} as const;
-export type TypeResponseFunctionCallArgumentsDone = ClosedEnum<
-  typeof TypeResponseFunctionCallArgumentsDone
->;
-
 /**
  * Event emitted when function call arguments streaming is complete
  */
 export type OpenResponsesStreamEventResponseFunctionCallArgumentsDone = {
-  type: TypeResponseFunctionCallArgumentsDone;
+  type: "response.function_call_arguments.done";
   itemId: string;
   outputIndex: number;
   name: string;
@@ -119,36 +104,22 @@ export type OpenResponsesStreamEventResponseFunctionCallArgumentsDone = {
   sequenceNumber: number;
 };
 
-export const TypeResponseFunctionCallArgumentsDelta = {
-  ResponseFunctionCallArgumentsDelta: "response.function_call_arguments.delta",
-} as const;
-export type TypeResponseFunctionCallArgumentsDelta = ClosedEnum<
-  typeof TypeResponseFunctionCallArgumentsDelta
->;
-
 /**
  * Event emitted when function call arguments are being streamed
  */
 export type OpenResponsesStreamEventResponseFunctionCallArgumentsDelta = {
-  type: TypeResponseFunctionCallArgumentsDelta;
+  type: "response.function_call_arguments.delta";
   itemId: string;
   outputIndex: number;
   delta: string;
   sequenceNumber: number;
 };
 
-export const TypeResponseOutputTextAnnotationAdded = {
-  ResponseOutputTextAnnotationAdded: "response.output_text.annotation.added",
-} as const;
-export type TypeResponseOutputTextAnnotationAdded = ClosedEnum<
-  typeof TypeResponseOutputTextAnnotationAdded
->;
-
 /**
  * Event emitted when a text annotation is added to output
  */
 export type OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
-  type: TypeResponseOutputTextAnnotationAdded;
+  type: "response.output_text.annotation.added";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -157,18 +128,11 @@ export type OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
   annotation: OpenAIResponsesAnnotation;
 };
 
-export const TypeResponseRefusalDone = {
-  ResponseRefusalDone: "response.refusal.done",
-} as const;
-export type TypeResponseRefusalDone = ClosedEnum<
-  typeof TypeResponseRefusalDone
->;
-
 /**
  * Event emitted when refusal streaming is complete
  */
 export type OpenResponsesStreamEventResponseRefusalDone = {
-  type: TypeResponseRefusalDone;
+  type: "response.refusal.done";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -176,18 +140,11 @@ export type OpenResponsesStreamEventResponseRefusalDone = {
   sequenceNumber: number;
 };
 
-export const TypeResponseRefusalDelta = {
-  ResponseRefusalDelta: "response.refusal.delta",
-} as const;
-export type TypeResponseRefusalDelta = ClosedEnum<
-  typeof TypeResponseRefusalDelta
->;
-
 /**
  * Event emitted when a refusal delta is streamed
  */
 export type OpenResponsesStreamEventResponseRefusalDelta = {
-  type: TypeResponseRefusalDelta;
+  type: "response.refusal.delta";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -195,18 +152,11 @@ export type OpenResponsesStreamEventResponseRefusalDelta = {
   sequenceNumber: number;
 };
 
-export const TypeResponseOutputTextDone = {
-  ResponseOutputTextDone: "response.output_text.done",
-} as const;
-export type TypeResponseOutputTextDone = ClosedEnum<
-  typeof TypeResponseOutputTextDone
->;
-
 /**
  * Event emitted when text streaming is complete
  */
 export type OpenResponsesStreamEventResponseOutputTextDone = {
-  type: TypeResponseOutputTextDone;
+  type: "response.output_text.done";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -215,18 +165,11 @@ export type OpenResponsesStreamEventResponseOutputTextDone = {
   logprobs: Array<OpenResponsesLogProbs>;
 };
 
-export const TypeResponseOutputTextDelta = {
-  ResponseOutputTextDelta: "response.output_text.delta",
-} as const;
-export type TypeResponseOutputTextDelta = ClosedEnum<
-  typeof TypeResponseOutputTextDelta
->;
-
 /**
  * Event emitted when a text delta is streamed
  */
 export type OpenResponsesStreamEventResponseOutputTextDelta = {
-  type: TypeResponseOutputTextDelta;
+  type: "response.output_text.delta";
   logprobs: Array<OpenResponsesLogProbs>;
   outputIndex: number;
   itemId: string;
@@ -235,72 +178,51 @@ export type OpenResponsesStreamEventResponseOutputTextDelta = {
   sequenceNumber: number;
 };
 
-export const TypeResponseContentPartDone = {
-  ResponseContentPartDone: "response.content_part.done",
-} as const;
-export type TypeResponseContentPartDone = ClosedEnum<
-  typeof TypeResponseContentPartDone
->;
-
 export type Part2 =
   | ResponseOutputText
-  | ReasoningTextContent
+  | (ReasoningTextContent & { type: "reasoning_text" })
   | OpenAIResponsesRefusalContent;
 
 /**
  * Event emitted when a content part is complete
  */
 export type OpenResponsesStreamEventResponseContentPartDone = {
-  type: TypeResponseContentPartDone;
+  type: "response.content_part.done";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
   part:
     | ResponseOutputText
-    | ReasoningTextContent
+    | (ReasoningTextContent & { type: "reasoning_text" })
     | OpenAIResponsesRefusalContent;
   sequenceNumber: number;
 };
 
-export const TypeResponseContentPartAdded = {
-  ResponseContentPartAdded: "response.content_part.added",
-} as const;
-export type TypeResponseContentPartAdded = ClosedEnum<
-  typeof TypeResponseContentPartAdded
->;
-
 export type Part1 =
   | ResponseOutputText
-  | ReasoningTextContent
+  | (ReasoningTextContent & { type: "reasoning_text" })
   | OpenAIResponsesRefusalContent;
 
 /**
  * Event emitted when a new content part is added to an output item
  */
 export type OpenResponsesStreamEventResponseContentPartAdded = {
-  type: TypeResponseContentPartAdded;
+  type: "response.content_part.added";
   outputIndex: number;
   itemId: string;
   contentIndex: number;
   part:
     | ResponseOutputText
-    | ReasoningTextContent
+    | (ReasoningTextContent & { type: "reasoning_text" })
     | OpenAIResponsesRefusalContent;
   sequenceNumber: number;
 };
-
-export const TypeResponseOutputItemDone = {
-  ResponseOutputItemDone: "response.output_item.done",
-} as const;
-export type TypeResponseOutputItemDone = ClosedEnum<
-  typeof TypeResponseOutputItemDone
->;
 
 /**
  * Event emitted when an output item is complete
  */
 export type OpenResponsesStreamEventResponseOutputItemDone = {
-  type: TypeResponseOutputItemDone;
+  type: "response.output_item.done";
   outputIndex: number;
   /**
    * An output item from the response
@@ -308,19 +230,12 @@ export type OpenResponsesStreamEventResponseOutputItemDone = {
   item: ResponsesOutputItem;
   sequenceNumber: number;
 };
-
-export const TypeResponseOutputItemAdded = {
-  ResponseOutputItemAdded: "response.output_item.added",
-} as const;
-export type TypeResponseOutputItemAdded = ClosedEnum<
-  typeof TypeResponseOutputItemAdded
->;
 
 /**
  * Event emitted when a new output item is added to the response
  */
 export type OpenResponsesStreamEventResponseOutputItemAdded = {
-  type: TypeResponseOutputItemAdded;
+  type: "response.output_item.added";
   outputIndex: number;
   /**
    * An output item from the response
@@ -329,67 +244,47 @@ export type OpenResponsesStreamEventResponseOutputItemAdded = {
   sequenceNumber: number;
 };
 
-export const TypeResponseFailed = {
-  ResponseFailed: "response.failed",
-} as const;
-export type TypeResponseFailed = ClosedEnum<typeof TypeResponseFailed>;
-
 /**
  * Event emitted when a response has failed
  */
 export type OpenResponsesStreamEventResponseFailed = {
-  type: TypeResponseFailed;
+  type: "response.failed";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesNonStreamingResponse;
   sequenceNumber: number;
 };
-
-export const TypeResponseIncomplete = {
-  ResponseIncomplete: "response.incomplete",
-} as const;
-export type TypeResponseIncomplete = ClosedEnum<typeof TypeResponseIncomplete>;
 
 /**
  * Event emitted when a response is incomplete
  */
 export type OpenResponsesStreamEventResponseIncomplete = {
-  type: TypeResponseIncomplete;
+  type: "response.incomplete";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesNonStreamingResponse;
   sequenceNumber: number;
 };
-
-export const TypeResponseCompleted = {
-  ResponseCompleted: "response.completed",
-} as const;
-export type TypeResponseCompleted = ClosedEnum<typeof TypeResponseCompleted>;
 
 /**
  * Event emitted when a response has completed successfully
  */
 export type OpenResponsesStreamEventResponseCompleted = {
-  type: TypeResponseCompleted;
+  type: "response.completed";
   /**
    * Complete non-streaming response from the Responses API
    */
   response: OpenResponsesNonStreamingResponse;
   sequenceNumber: number;
 };
-
-export const TypeResponseInProgress = {
-  ResponseInProgress: "response.in_progress",
-} as const;
-export type TypeResponseInProgress = ClosedEnum<typeof TypeResponseInProgress>;
 
 /**
  * Event emitted when a response is in progress
  */
 export type OpenResponsesStreamEventResponseInProgress = {
-  type: TypeResponseInProgress;
+  type: "response.in_progress";
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -397,16 +292,11 @@ export type OpenResponsesStreamEventResponseInProgress = {
   sequenceNumber: number;
 };
 
-export const TypeResponseCreated = {
-  ResponseCreated: "response.created",
-} as const;
-export type TypeResponseCreated = ClosedEnum<typeof TypeResponseCreated>;
-
 /**
  * Event emitted when a response is created
  */
 export type OpenResponsesStreamEventResponseCreated = {
-  type: TypeResponseCreated;
+  type: "response.created";
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -418,13 +308,22 @@ export type OpenResponsesStreamEventResponseCreated = {
  * Union of all possible event types emitted during response streaming
  */
 export type OpenResponsesStreamEvent =
-  | OpenResponsesStreamEventResponseOutputTextDelta
-  | OpenResponsesStreamEventResponseOutputTextDone
-  | OpenResponsesStreamEventResponseOutputTextAnnotationAdded
+  | OpenResponsesStreamEventResponseCreated
+  | OpenResponsesStreamEventResponseInProgress
+  | OpenResponsesStreamEventResponseCompleted
+  | OpenResponsesStreamEventResponseIncomplete
+  | OpenResponsesStreamEventResponseFailed
+  | OpenResponsesErrorEvent
+  | OpenResponsesStreamEventResponseOutputItemAdded
+  | OpenResponsesStreamEventResponseOutputItemDone
   | OpenResponsesStreamEventResponseContentPartAdded
   | OpenResponsesStreamEventResponseContentPartDone
+  | OpenResponsesStreamEventResponseOutputTextDelta
+  | OpenResponsesStreamEventResponseOutputTextDone
   | OpenResponsesStreamEventResponseRefusalDelta
   | OpenResponsesStreamEventResponseRefusalDone
+  | OpenResponsesStreamEventResponseOutputTextAnnotationAdded
+  | OpenResponsesStreamEventResponseFunctionCallArgumentsDelta
   | OpenResponsesStreamEventResponseFunctionCallArgumentsDone
   | OpenResponsesReasoningDeltaEvent
   | OpenResponsesReasoningDoneEvent
@@ -432,30 +331,16 @@ export type OpenResponsesStreamEvent =
   | OpenResponsesStreamEventResponseReasoningSummaryPartDone
   | OpenResponsesReasoningSummaryTextDeltaEvent
   | OpenResponsesReasoningSummaryTextDoneEvent
-  | OpenResponsesImageGenCallPartialImage
-  | OpenResponsesErrorEvent
-  | OpenResponsesStreamEventResponseFunctionCallArgumentsDelta
-  | OpenResponsesStreamEventResponseOutputItemAdded
-  | OpenResponsesStreamEventResponseOutputItemDone
   | OpenResponsesImageGenCallInProgress
   | OpenResponsesImageGenCallGenerating
-  | OpenResponsesImageGenCallCompleted
-  | OpenResponsesStreamEventResponseCreated
-  | OpenResponsesStreamEventResponseInProgress
-  | OpenResponsesStreamEventResponseCompleted
-  | OpenResponsesStreamEventResponseIncomplete
-  | OpenResponsesStreamEventResponseFailed;
-
-/** @internal */
-export const TypeResponseReasoningSummaryPartDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseReasoningSummaryPartDone
-> = z.enum(TypeResponseReasoningSummaryPartDone);
+  | OpenResponsesImageGenCallPartialImage
+  | OpenResponsesImageGenCallCompleted;
 
 /** @internal */
 export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseReasoningSummaryPartDone, unknown> =
     z.object({
-      type: TypeResponseReasoningSummaryPartDone$inboundSchema,
+      type: z.literal("response.reasoning_summary_part.done"),
       output_index: z.number(),
       item_id: z.string(),
       summary_index: z.number(),
@@ -486,17 +371,12 @@ export function openResponsesStreamEventResponseReasoningSummaryPartDoneFromJSON
 }
 
 /** @internal */
-export const TypeResponseFunctionCallArgumentsDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseFunctionCallArgumentsDone
-> = z.enum(TypeResponseFunctionCallArgumentsDone);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema:
   z.ZodType<
     OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
     unknown
   > = z.object({
-    type: TypeResponseFunctionCallArgumentsDone$inboundSchema,
+    type: z.literal("response.function_call_arguments.done"),
     item_id: z.string(),
     output_index: z.number(),
     name: z.string(),
@@ -526,17 +406,12 @@ export function openResponsesStreamEventResponseFunctionCallArgumentsDoneFromJSO
 }
 
 /** @internal */
-export const TypeResponseFunctionCallArgumentsDelta$inboundSchema: z.ZodEnum<
-  typeof TypeResponseFunctionCallArgumentsDelta
-> = z.enum(TypeResponseFunctionCallArgumentsDelta);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema:
   z.ZodType<
     OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
     unknown
   > = z.object({
-    type: TypeResponseFunctionCallArgumentsDelta$inboundSchema,
+    type: z.literal("response.function_call_arguments.delta"),
     item_id: z.string(),
     output_index: z.number(),
     delta: z.string(),
@@ -565,17 +440,12 @@ export function openResponsesStreamEventResponseFunctionCallArgumentsDeltaFromJS
 }
 
 /** @internal */
-export const TypeResponseOutputTextAnnotationAdded$inboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextAnnotationAdded
-> = z.enum(TypeResponseOutputTextAnnotationAdded);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema:
   z.ZodType<
     OpenResponsesStreamEventResponseOutputTextAnnotationAdded,
     unknown
   > = z.object({
-    type: TypeResponseOutputTextAnnotationAdded$inboundSchema,
+    type: z.literal("response.output_text.annotation.added"),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
@@ -608,14 +478,9 @@ export function openResponsesStreamEventResponseOutputTextAnnotationAddedFromJSO
 }
 
 /** @internal */
-export const TypeResponseRefusalDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseRefusalDone
-> = z.enum(TypeResponseRefusalDone);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseRefusalDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseRefusalDone, unknown> = z.object({
-    type: TypeResponseRefusalDone$inboundSchema,
+    type: z.literal("response.refusal.done"),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
@@ -647,14 +512,9 @@ export function openResponsesStreamEventResponseRefusalDoneFromJSON(
 }
 
 /** @internal */
-export const TypeResponseRefusalDelta$inboundSchema: z.ZodEnum<
-  typeof TypeResponseRefusalDelta
-> = z.enum(TypeResponseRefusalDelta);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseRefusalDelta$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseRefusalDelta, unknown> = z.object({
-    type: TypeResponseRefusalDelta$inboundSchema,
+    type: z.literal("response.refusal.delta"),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
@@ -686,15 +546,10 @@ export function openResponsesStreamEventResponseRefusalDeltaFromJSON(
 }
 
 /** @internal */
-export const TypeResponseOutputTextDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextDone
-> = z.enum(TypeResponseOutputTextDone);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDone, unknown> = z.object(
     {
-      type: TypeResponseOutputTextDone$inboundSchema,
+      type: z.literal("response.output_text.done"),
       output_index: z.number(),
       item_id: z.string(),
       content_index: z.number(),
@@ -728,15 +583,10 @@ export function openResponsesStreamEventResponseOutputTextDoneFromJSON(
 }
 
 /** @internal */
-export const TypeResponseOutputTextDelta$inboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputTextDelta
-> = z.enum(TypeResponseOutputTextDelta);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDelta, unknown> = z
     .object({
-      type: TypeResponseOutputTextDelta$inboundSchema,
+      type: z.literal("response.output_text.delta"),
       logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
       output_index: z.number(),
       item_id: z.string(),
@@ -769,14 +619,11 @@ export function openResponsesStreamEventResponseOutputTextDeltaFromJSON(
 }
 
 /** @internal */
-export const TypeResponseContentPartDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseContentPartDone
-> = z.enum(TypeResponseContentPartDone);
-
-/** @internal */
 export const Part2$inboundSchema: z.ZodType<Part2, unknown> = z.union([
   ResponseOutputText$inboundSchema,
-  ReasoningTextContent$inboundSchema,
+  ReasoningTextContent$inboundSchema.and(
+    z.object({ type: z.literal("reasoning_text") }),
+  ),
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
 
@@ -794,13 +641,15 @@ export function part2FromJSON(
 export const OpenResponsesStreamEventResponseContentPartDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseContentPartDone, unknown> = z
     .object({
-      type: TypeResponseContentPartDone$inboundSchema,
+      type: z.literal("response.content_part.done"),
       output_index: z.number(),
       item_id: z.string(),
       content_index: z.number(),
       part: z.union([
         ResponseOutputText$inboundSchema,
-        ReasoningTextContent$inboundSchema,
+        ReasoningTextContent$inboundSchema.and(
+          z.object({ type: z.literal("reasoning_text") }),
+        ),
         OpenAIResponsesRefusalContent$inboundSchema,
       ]),
       sequence_number: z.number(),
@@ -830,14 +679,11 @@ export function openResponsesStreamEventResponseContentPartDoneFromJSON(
 }
 
 /** @internal */
-export const TypeResponseContentPartAdded$inboundSchema: z.ZodEnum<
-  typeof TypeResponseContentPartAdded
-> = z.enum(TypeResponseContentPartAdded);
-
-/** @internal */
 export const Part1$inboundSchema: z.ZodType<Part1, unknown> = z.union([
   ResponseOutputText$inboundSchema,
-  ReasoningTextContent$inboundSchema,
+  ReasoningTextContent$inboundSchema.and(
+    z.object({ type: z.literal("reasoning_text") }),
+  ),
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
 
@@ -855,13 +701,15 @@ export function part1FromJSON(
 export const OpenResponsesStreamEventResponseContentPartAdded$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseContentPartAdded, unknown> = z
     .object({
-      type: TypeResponseContentPartAdded$inboundSchema,
+      type: z.literal("response.content_part.added"),
       output_index: z.number(),
       item_id: z.string(),
       content_index: z.number(),
       part: z.union([
         ResponseOutputText$inboundSchema,
-        ReasoningTextContent$inboundSchema,
+        ReasoningTextContent$inboundSchema.and(
+          z.object({ type: z.literal("reasoning_text") }),
+        ),
         OpenAIResponsesRefusalContent$inboundSchema,
       ]),
       sequence_number: z.number(),
@@ -891,15 +739,10 @@ export function openResponsesStreamEventResponseContentPartAddedFromJSON(
 }
 
 /** @internal */
-export const TypeResponseOutputItemDone$inboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputItemDone
-> = z.enum(TypeResponseOutputItemDone);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputItemDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputItemDone, unknown> = z.object(
     {
-      type: TypeResponseOutputItemDone$inboundSchema,
+      type: z.literal("response.output_item.done"),
       output_index: z.number(),
       item: ResponsesOutputItem$inboundSchema,
       sequence_number: z.number(),
@@ -928,15 +771,10 @@ export function openResponsesStreamEventResponseOutputItemDoneFromJSON(
 }
 
 /** @internal */
-export const TypeResponseOutputItemAdded$inboundSchema: z.ZodEnum<
-  typeof TypeResponseOutputItemAdded
-> = z.enum(TypeResponseOutputItemAdded);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputItemAdded, unknown> = z
     .object({
-      type: TypeResponseOutputItemAdded$inboundSchema,
+      type: z.literal("response.output_item.added"),
       output_index: z.number(),
       item: ResponsesOutputItem$inboundSchema,
       sequence_number: z.number(),
@@ -964,16 +802,11 @@ export function openResponsesStreamEventResponseOutputItemAddedFromJSON(
 }
 
 /** @internal */
-export const TypeResponseFailed$inboundSchema: z.ZodEnum<
-  typeof TypeResponseFailed
-> = z.enum(TypeResponseFailed);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseFailed$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseFailed,
   unknown
 > = z.object({
-  type: TypeResponseFailed$inboundSchema,
+  type: z.literal("response.failed"),
   response: OpenResponsesNonStreamingResponse$inboundSchema,
   sequence_number: z.number(),
 }).transform((v) => {
@@ -994,14 +827,9 @@ export function openResponsesStreamEventResponseFailedFromJSON(
 }
 
 /** @internal */
-export const TypeResponseIncomplete$inboundSchema: z.ZodEnum<
-  typeof TypeResponseIncomplete
-> = z.enum(TypeResponseIncomplete);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseIncomplete$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseIncomplete, unknown> = z.object({
-    type: TypeResponseIncomplete$inboundSchema,
+    type: z.literal("response.incomplete"),
     response: OpenResponsesNonStreamingResponse$inboundSchema,
     sequence_number: z.number(),
   }).transform((v) => {
@@ -1027,16 +855,11 @@ export function openResponsesStreamEventResponseIncompleteFromJSON(
 }
 
 /** @internal */
-export const TypeResponseCompleted$inboundSchema: z.ZodEnum<
-  typeof TypeResponseCompleted
-> = z.enum(TypeResponseCompleted);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseCompleted$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCompleted,
   unknown
 > = z.object({
-  type: TypeResponseCompleted$inboundSchema,
+  type: z.literal("response.completed"),
   response: OpenResponsesNonStreamingResponse$inboundSchema,
   sequence_number: z.number(),
 }).transform((v) => {
@@ -1062,14 +885,9 @@ export function openResponsesStreamEventResponseCompletedFromJSON(
 }
 
 /** @internal */
-export const TypeResponseInProgress$inboundSchema: z.ZodEnum<
-  typeof TypeResponseInProgress
-> = z.enum(TypeResponseInProgress);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseInProgress$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseInProgress, unknown> = z.object({
-    type: TypeResponseInProgress$inboundSchema,
+    type: z.literal("response.in_progress"),
     response: OpenResponsesNonStreamingResponse$inboundSchema,
     sequence_number: z.number(),
   }).transform((v) => {
@@ -1095,16 +913,11 @@ export function openResponsesStreamEventResponseInProgressFromJSON(
 }
 
 /** @internal */
-export const TypeResponseCreated$inboundSchema: z.ZodEnum<
-  typeof TypeResponseCreated
-> = z.enum(TypeResponseCreated);
-
-/** @internal */
 export const OpenResponsesStreamEventResponseCreated$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCreated,
   unknown
 > = z.object({
-  type: TypeResponseCreated$inboundSchema,
+  type: z.literal("response.created"),
   response: OpenResponsesNonStreamingResponse$inboundSchema,
   sequence_number: z.number(),
 }).transform((v) => {
@@ -1134,15 +947,26 @@ export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<
   OpenResponsesStreamEvent,
   unknown
 > = z.union([
+  z.lazy(() => OpenResponsesStreamEventResponseCreated$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseInProgress$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseCompleted$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseIncomplete$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseFailed$inboundSchema),
+  OpenResponsesErrorEvent$inboundSchema,
+  z.lazy(() => OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseOutputItemDone$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseContentPartAdded$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseContentPartDone$inboundSchema),
   z.lazy(() => OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema),
   z.lazy(() => OpenResponsesStreamEventResponseOutputTextDone$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseRefusalDelta$inboundSchema),
+  z.lazy(() => OpenResponsesStreamEventResponseRefusalDone$inboundSchema),
   z.lazy(() =>
     OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema
   ),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartAdded$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartDone$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDelta$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDone$inboundSchema),
+  z.lazy(() =>
+    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema
+  ),
   z.lazy(() =>
     OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema
   ),
@@ -1154,21 +978,10 @@ export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<
   ),
   OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema,
   OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
-  OpenResponsesImageGenCallPartialImage$inboundSchema,
-  OpenResponsesErrorEvent$inboundSchema,
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema
-  ),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemDone$inboundSchema),
   OpenResponsesImageGenCallInProgress$inboundSchema,
   OpenResponsesImageGenCallGenerating$inboundSchema,
+  OpenResponsesImageGenCallPartialImage$inboundSchema,
   OpenResponsesImageGenCallCompleted$inboundSchema,
-  z.lazy(() => OpenResponsesStreamEventResponseCreated$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseInProgress$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseCompleted$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseIncomplete$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseFailed$inboundSchema),
 ]);
 
 export function openResponsesStreamEventFromJSON(

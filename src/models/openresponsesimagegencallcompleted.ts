@@ -5,39 +5,25 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesImageGenCallCompletedType = {
-  ResponseImageGenerationCallCompleted:
-    "response.image_generation_call.completed",
-} as const;
-export type OpenResponsesImageGenCallCompletedType = ClosedEnum<
-  typeof OpenResponsesImageGenCallCompletedType
->;
 
 /**
  * Image generation call completed
  */
 export type OpenResponsesImageGenCallCompleted = {
-  type: OpenResponsesImageGenCallCompletedType;
+  type: "response.image_generation_call.completed";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
 };
 
 /** @internal */
-export const OpenResponsesImageGenCallCompletedType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesImageGenCallCompletedType
-> = z.enum(OpenResponsesImageGenCallCompletedType);
-
-/** @internal */
 export const OpenResponsesImageGenCallCompleted$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallCompleted,
   unknown
 > = z.object({
-  type: OpenResponsesImageGenCallCompletedType$inboundSchema,
+  type: z.literal("response.image_generation_call.completed"),
   item_id: z.string(),
   output_index: z.number(),
   sequence_number: z.number(),

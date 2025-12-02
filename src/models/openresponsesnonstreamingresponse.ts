@@ -78,18 +78,11 @@ export const ObjectT = {
 } as const;
 export type ObjectT = ClosedEnum<typeof ObjectT>;
 
-export const OpenResponsesNonStreamingResponseType = {
-  Function: "function",
-} as const;
-export type OpenResponsesNonStreamingResponseType = ClosedEnum<
-  typeof OpenResponsesNonStreamingResponseType
->;
-
 /**
  * Function tool definition
  */
 export type OpenResponsesNonStreamingResponseToolFunction = {
-  type: OpenResponsesNonStreamingResponseType;
+  type: "function";
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
@@ -162,14 +155,9 @@ export type OpenResponsesNonStreamingResponse = {
 export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
 
 /** @internal */
-export const OpenResponsesNonStreamingResponseType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesNonStreamingResponseType
-> = z.enum(OpenResponsesNonStreamingResponseType);
-
-/** @internal */
 export const OpenResponsesNonStreamingResponseToolFunction$inboundSchema:
   z.ZodType<OpenResponsesNonStreamingResponseToolFunction, unknown> = z.object({
-    type: OpenResponsesNonStreamingResponseType$inboundSchema,
+    type: z.literal("function"),
     name: z.string(),
     description: z.nullable(z.string()).optional(),
     strict: z.nullable(z.boolean()).optional(),

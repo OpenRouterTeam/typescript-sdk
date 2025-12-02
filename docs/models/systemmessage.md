@@ -15,6 +15,6 @@ let value: SystemMessage = {
 
 | Field                         | Type                          | Required                      | Description                   |
 | ----------------------------- | ----------------------------- | ----------------------------- | ----------------------------- |
-| `role`                        | *string*                      | :heavy_check_mark:            | N/A                           |
+| `role`                        | *"system"*                    | :heavy_check_mark:            | N/A                           |
 | `content`                     | *models.SystemMessageContent* | :heavy_check_mark:            | N/A                           |
 | `name`                        | *string*                      | :heavy_minus_sign:            | N/A                           |
