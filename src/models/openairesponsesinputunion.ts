@@ -99,10 +99,10 @@ export type OpenAIResponsesInputRoleUnion2 =
   | OpenAIResponsesInputRoleDeveloper2;
 
 export type OpenAIResponsesInputContent3 =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputAudio & { type: "input_audio" })
-  | (ResponseInputFile & { type: "input_file" });
+  | ResponseInputText
+  | ResponseInputImage
+  | ResponseInputFile
+  | ResponseInputAudio;
 
 export type OpenAIResponsesInputMessage2 = {
   id: string;
@@ -112,10 +112,10 @@ export type OpenAIResponsesInputMessage2 = {
     | OpenAIResponsesInputRoleSystem2
     | OpenAIResponsesInputRoleDeveloper2;
   content: Array<
-    | (ResponseInputText & { type: "input_text" })
-    | (ResponseInputImage & { type: "input_image" })
-    | (ResponseInputAudio & { type: "input_audio" })
-    | (ResponseInputFile & { type: "input_file" })
+    | ResponseInputText
+    | ResponseInputImage
+    | ResponseInputFile
+    | ResponseInputAudio
   >;
 };
 
@@ -161,17 +161,17 @@ export type OpenAIResponsesInputRoleUnion1 =
   | OpenAIResponsesInputRoleDeveloper1;
 
 export type OpenAIResponsesInputContent1 =
-  | (ResponseInputText & { type: "input_text" })
-  | (ResponseInputImage & { type: "input_image" })
-  | (ResponseInputAudio & { type: "input_audio" })
-  | (ResponseInputFile & { type: "input_file" });
+  | ResponseInputText
+  | ResponseInputImage
+  | ResponseInputFile
+  | ResponseInputAudio;
 
 export type OpenAIResponsesInputContent2 =
   | Array<
-    | (ResponseInputText & { type: "input_text" })
-    | (ResponseInputImage & { type: "input_image" })
-    | (ResponseInputAudio & { type: "input_audio" })
-    | (ResponseInputFile & { type: "input_file" })
+    | ResponseInputText
+    | ResponseInputImage
+    | ResponseInputFile
+    | ResponseInputAudio
   >
   | string;
 
@@ -184,10 +184,10 @@ export type OpenAIResponsesInputMessage1 = {
     | OpenAIResponsesInputRoleDeveloper1;
   content:
     | Array<
-      | (ResponseInputText & { type: "input_text" })
-      | (ResponseInputImage & { type: "input_image" })
-      | (ResponseInputAudio & { type: "input_audio" })
-      | (ResponseInputFile & { type: "input_file" })
+      | ResponseInputText
+      | ResponseInputImage
+      | ResponseInputFile
+      | ResponseInputAudio
     >
     | string;
 };
@@ -322,18 +322,10 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
   OpenAIResponsesInputContent3,
   unknown
 > = z.union([
-  ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }),
-  ),
-  ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }),
-  ),
-  ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }),
-  ),
+  ResponseInputText$inboundSchema,
+  ResponseInputImage$inboundSchema,
+  ResponseInputFile$inboundSchema,
+  ResponseInputAudio$inboundSchema,
 ]);
 
 export function openAIResponsesInputContent3FromJSON(
@@ -360,18 +352,10 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
   ]),
   content: z.array(
     z.union([
-      ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }),
-      ),
-      ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }),
-      ),
-      ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }),
-      ),
+      ResponseInputText$inboundSchema,
+      ResponseInputImage$inboundSchema,
+      ResponseInputFile$inboundSchema,
+      ResponseInputAudio$inboundSchema,
     ]),
   ),
 });
@@ -437,18 +421,10 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
   OpenAIResponsesInputContent1,
   unknown
 > = z.union([
-  ResponseInputText$inboundSchema.and(
-    z.object({ type: z.literal("input_text") }),
-  ),
-  ResponseInputImage$inboundSchema.and(
-    z.object({ type: z.literal("input_image") }),
-  ),
-  ResponseInputAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ResponseInputFile$inboundSchema.and(
-    z.object({ type: z.literal("input_file") }),
-  ),
+  ResponseInputText$inboundSchema,
+  ResponseInputImage$inboundSchema,
+  ResponseInputFile$inboundSchema,
+  ResponseInputAudio$inboundSchema,
 ]);
 
 export function openAIResponsesInputContent1FromJSON(
@@ -468,18 +444,10 @@ export const OpenAIResponsesInputContent2$inboundSchema: z.ZodType<
 > = z.union([
   z.array(
     z.union([
-      ResponseInputText$inboundSchema.and(
-        z.object({ type: z.literal("input_text") }),
-      ),
-      ResponseInputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      ResponseInputAudio$inboundSchema.and(
-        z.object({ type: z.literal("input_audio") }),
-      ),
-      ResponseInputFile$inboundSchema.and(
-        z.object({ type: z.literal("input_file") }),
-      ),
+      ResponseInputText$inboundSchema,
+      ResponseInputImage$inboundSchema,
+      ResponseInputFile$inboundSchema,
+      ResponseInputAudio$inboundSchema,
     ]),
   ),
   z.string(),
@@ -510,18 +478,10 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
   content: z.union([
     z.array(
       z.union([
-        ResponseInputText$inboundSchema.and(
-          z.object({ type: z.literal("input_text") }),
-        ),
-        ResponseInputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        ResponseInputAudio$inboundSchema.and(
-          z.object({ type: z.literal("input_audio") }),
-        ),
-        ResponseInputFile$inboundSchema.and(
-          z.object({ type: z.literal("input_file") }),
-        ),
+        ResponseInputText$inboundSchema,
+        ResponseInputImage$inboundSchema,
+        ResponseInputFile$inboundSchema,
+        ResponseInputAudio$inboundSchema,
       ]),
     ),
     z.string(),

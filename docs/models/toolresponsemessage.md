@@ -16,6 +16,6 @@ let value: ToolResponseMessage = {
 
 | Field                               | Type                                | Required                            | Description                         |
 | ----------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
-| `role`                              | *string*                            | :heavy_check_mark:                  | N/A                                 |
+| `role`                              | *"tool"*                            | :heavy_check_mark:                  | N/A                                 |
 | `content`                           | *models.ToolResponseMessageContent* | :heavy_check_mark:                  | N/A                                 |
 | `toolCallId`                        | *string*                            | :heavy_check_mark:                  | N/A                                 |

@@ -29,33 +29,33 @@ import {
  * Text response format configuration
  */
 export type ResponseFormatTextConfig =
-  | ResponsesFormatTextJSONSchemaConfig
   | ResponsesFormatText
-  | ResponsesFormatJSONObject;
+  | ResponsesFormatJSONObject
+  | ResponsesFormatTextJSONSchemaConfig;
 
 /** @internal */
 export const ResponseFormatTextConfig$inboundSchema: z.ZodType<
   ResponseFormatTextConfig,
   unknown
 > = z.union([
-  ResponsesFormatTextJSONSchemaConfig$inboundSchema,
   ResponsesFormatText$inboundSchema,
   ResponsesFormatJSONObject$inboundSchema,
+  ResponsesFormatTextJSONSchemaConfig$inboundSchema,
 ]);
 /** @internal */
 export type ResponseFormatTextConfig$Outbound =
-  | ResponsesFormatTextJSONSchemaConfig$Outbound
   | ResponsesFormatText$Outbound
-  | ResponsesFormatJSONObject$Outbound;
+  | ResponsesFormatJSONObject$Outbound
+  | ResponsesFormatTextJSONSchemaConfig$Outbound;
 
 /** @internal */
 export const ResponseFormatTextConfig$outboundSchema: z.ZodType<
   ResponseFormatTextConfig$Outbound,
   ResponseFormatTextConfig
 > = z.union([
-  ResponsesFormatTextJSONSchemaConfig$outboundSchema,
   ResponsesFormatText$outboundSchema,
   ResponsesFormatJSONObject$outboundSchema,
+  ResponsesFormatTextJSONSchemaConfig$outboundSchema,
 ]);
 
 export function responseFormatTextConfigToJSON(

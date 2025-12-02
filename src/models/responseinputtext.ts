@@ -4,43 +4,28 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponseInputTextType = {
-  InputText: "input_text",
-} as const;
-export type ResponseInputTextType = ClosedEnum<typeof ResponseInputTextType>;
 
 /**
  * Text input content item
  */
 export type ResponseInputText = {
-  type: ResponseInputTextType;
+  type: "input_text";
   text: string;
 };
-
-/** @internal */
-export const ResponseInputTextType$inboundSchema: z.ZodEnum<
-  typeof ResponseInputTextType
-> = z.enum(ResponseInputTextType);
-/** @internal */
-export const ResponseInputTextType$outboundSchema: z.ZodEnum<
-  typeof ResponseInputTextType
-> = ResponseInputTextType$inboundSchema;
 
 /** @internal */
 export const ResponseInputText$inboundSchema: z.ZodType<
   ResponseInputText,
   unknown
 > = z.object({
-  type: ResponseInputTextType$inboundSchema,
+  type: z.literal("input_text"),
   text: z.string(),
 });
 /** @internal */
 export type ResponseInputText$Outbound = {
-  type: string;
+  type: "input_text";
   text: string;
 };
 
@@ -49,7 +34,7 @@ export const ResponseInputText$outboundSchema: z.ZodType<
   ResponseInputText$Outbound,
   ResponseInputText
 > = z.object({
-  type: ResponseInputTextType$outboundSchema,
+  type: z.literal("input_text"),
   text: z.string(),
 });
 

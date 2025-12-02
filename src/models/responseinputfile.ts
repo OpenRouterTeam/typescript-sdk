@@ -5,20 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponseInputFileType = {
-  InputFile: "input_file",
-} as const;
-export type ResponseInputFileType = ClosedEnum<typeof ResponseInputFileType>;
 
 /**
  * File input content item
  */
 export type ResponseInputFile = {
-  type: ResponseInputFileType;
+  type: "input_file";
   fileId?: string | null | undefined;
   fileData?: string | undefined;
   filename?: string | undefined;
@@ -26,20 +20,11 @@ export type ResponseInputFile = {
 };
 
 /** @internal */
-export const ResponseInputFileType$inboundSchema: z.ZodEnum<
-  typeof ResponseInputFileType
-> = z.enum(ResponseInputFileType);
-/** @internal */
-export const ResponseInputFileType$outboundSchema: z.ZodEnum<
-  typeof ResponseInputFileType
-> = ResponseInputFileType$inboundSchema;
-
-/** @internal */
 export const ResponseInputFile$inboundSchema: z.ZodType<
   ResponseInputFile,
   unknown
 > = z.object({
-  type: ResponseInputFileType$inboundSchema,
+  type: z.literal("input_file"),
   file_id: z.nullable(z.string()).optional(),
   file_data: z.string().optional(),
   filename: z.string().optional(),
@@ -53,7 +38,7 @@ export const ResponseInputFile$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ResponseInputFile$Outbound = {
-  type: string;
+  type: "input_file";
   file_id?: string | null | undefined;
   file_data?: string | undefined;
   filename?: string | undefined;
@@ -65,7 +50,7 @@ export const ResponseInputFile$outboundSchema: z.ZodType<
   ResponseInputFile$Outbound,
   ResponseInputFile
 > = z.object({
-  type: ResponseInputFileType$outboundSchema,
+  type: z.literal("input_file"),
   fileId: z.nullable(z.string()).optional(),
   fileData: z.string().optional(),
   filename: z.string().optional(),

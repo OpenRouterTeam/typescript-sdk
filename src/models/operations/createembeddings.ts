@@ -11,27 +11,17 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export const TypeImageURL = {
-  ImageUrl: "image_url",
-} as const;
-export type TypeImageURL = ClosedEnum<typeof TypeImageURL>;
-
 export type ImageUrl = {
   url: string;
 };
 
 export type ContentImageURL = {
-  type: TypeImageURL;
+  type: "image_url";
   imageUrl: ImageUrl;
 };
 
-export const TypeText = {
-  Text: "text",
-} as const;
-export type TypeText = ClosedEnum<typeof TypeText>;
-
 export type ContentText = {
-  type: TypeText;
+  type: "text";
   text: string;
 };
 
@@ -195,10 +185,6 @@ export type CreateEmbeddingsResponseBody = {
 export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
 
 /** @internal */
-export const TypeImageURL$outboundSchema: z.ZodEnum<typeof TypeImageURL> = z
-  .enum(TypeImageURL);
-
-/** @internal */
 export type ImageUrl$Outbound = {
   url: string;
 };
@@ -215,7 +201,7 @@ export function imageUrlToJSON(imageUrl: ImageUrl): string {
 
 /** @internal */
 export type ContentImageURL$Outbound = {
-  type: string;
+  type: "image_url";
   image_url: ImageUrl$Outbound;
 };
 
@@ -224,7 +210,7 @@ export const ContentImageURL$outboundSchema: z.ZodType<
   ContentImageURL$Outbound,
   ContentImageURL
 > = z.object({
-  type: TypeImageURL$outboundSchema,
+  type: z.literal("image_url"),
   imageUrl: z.lazy(() => ImageUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -239,13 +225,8 @@ export function contentImageURLToJSON(
 }
 
 /** @internal */
-export const TypeText$outboundSchema: z.ZodEnum<typeof TypeText> = z.enum(
-  TypeText,
-);
-
-/** @internal */
 export type ContentText$Outbound = {
-  type: string;
+  type: "text";
   text: string;
 };
 
@@ -254,7 +235,7 @@ export const ContentText$outboundSchema: z.ZodType<
   ContentText$Outbound,
   ContentText
 > = z.object({
-  type: TypeText$outboundSchema,
+  type: z.literal("text"),
   text: z.string(),
 });
 

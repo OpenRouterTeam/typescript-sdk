@@ -5,7 +5,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   DataCollection,
   DataCollection$outboundSchema,
@@ -63,18 +63,11 @@ import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
-export const OpenResponsesRequestType = {
-  Function: "function",
-} as const;
-export type OpenResponsesRequestType = ClosedEnum<
-  typeof OpenResponsesRequestType
->;
-
 /**
  * Function tool definition
  */
 export type OpenResponsesRequestToolFunction = {
-  type: OpenResponsesRequestType;
+  type: "function";
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
@@ -194,11 +187,6 @@ export type Provider = {
   maxPrice?: MaxPrice | undefined;
 };
 
-export const IdFileParser = {
-  FileParser: "file-parser",
-} as const;
-export type IdFileParser = ClosedEnum<typeof IdFileParser>;
-
 export const PdfEngine = {
   MistralOcr: "mistral-ocr",
   PdfText: "pdf-text",
@@ -211,15 +199,10 @@ export type Pdf = {
 };
 
 export type PluginFileParser = {
-  id: IdFileParser;
+  id: "file-parser";
   maxFiles?: number | undefined;
   pdf?: Pdf | undefined;
 };
-
-export const IdWeb = {
-  Web: "web",
-} as const;
-export type IdWeb = ClosedEnum<typeof IdWeb>;
 
 export const Engine = {
   Native: "native",
@@ -228,19 +211,14 @@ export const Engine = {
 export type Engine = OpenEnum<typeof Engine>;
 
 export type PluginWeb = {
-  id: IdWeb;
+  id: "web";
   maxResults?: number | undefined;
   searchPrompt?: string | undefined;
   engine?: Engine | undefined;
 };
 
-export const IdModeration = {
-  Moderation: "moderation",
-} as const;
-export type IdModeration = ClosedEnum<typeof IdModeration>;
-
 export type PluginModeration = {
-  id: IdModeration;
+  id: "moderation";
 };
 
 export type Plugin = PluginModeration | PluginWeb | PluginFileParser;
@@ -308,13 +286,8 @@ export type OpenResponsesRequest = {
 };
 
 /** @internal */
-export const OpenResponsesRequestType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesRequestType
-> = z.enum(OpenResponsesRequestType);
-
-/** @internal */
 export type OpenResponsesRequestToolFunction$Outbound = {
-  type: string;
+  type: "function";
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
@@ -326,7 +299,7 @@ export const OpenResponsesRequestToolFunction$outboundSchema: z.ZodType<
   OpenResponsesRequestToolFunction$Outbound,
   OpenResponsesRequestToolFunction
 > = z.object({
-  type: OpenResponsesRequestType$outboundSchema,
+  type: z.literal("function"),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -491,10 +464,6 @@ export function providerToJSON(provider: Provider): string {
 }
 
 /** @internal */
-export const IdFileParser$outboundSchema: z.ZodEnum<typeof IdFileParser> = z
-  .enum(IdFileParser);
-
-/** @internal */
 export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> = openEnums
   .outboundSchema(PdfEngine);
 
@@ -514,7 +483,7 @@ export function pdfToJSON(pdf: Pdf): string {
 
 /** @internal */
 export type PluginFileParser$Outbound = {
-  id: string;
+  id: "file-parser";
   max_files?: number | undefined;
   pdf?: Pdf$Outbound | undefined;
 };
@@ -524,7 +493,7 @@ export const PluginFileParser$outboundSchema: z.ZodType<
   PluginFileParser$Outbound,
   PluginFileParser
 > = z.object({
-  id: IdFileParser$outboundSchema,
+  id: z.literal("file-parser"),
   maxFiles: z.number().optional(),
   pdf: z.lazy(() => Pdf$outboundSchema).optional(),
 }).transform((v) => {
@@ -542,15 +511,12 @@ export function pluginFileParserToJSON(
 }
 
 /** @internal */
-export const IdWeb$outboundSchema: z.ZodEnum<typeof IdWeb> = z.enum(IdWeb);
-
-/** @internal */
 export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums
   .outboundSchema(Engine);
 
 /** @internal */
 export type PluginWeb$Outbound = {
-  id: string;
+  id: "web";
   max_results?: number | undefined;
   search_prompt?: string | undefined;
   engine?: string | undefined;
@@ -561,7 +527,7 @@ export const PluginWeb$outboundSchema: z.ZodType<
   PluginWeb$Outbound,
   PluginWeb
 > = z.object({
-  id: IdWeb$outboundSchema,
+  id: z.literal("web"),
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
   engine: Engine$outboundSchema.optional(),
@@ -577,12 +543,8 @@ export function pluginWebToJSON(pluginWeb: PluginWeb): string {
 }
 
 /** @internal */
-export const IdModeration$outboundSchema: z.ZodEnum<typeof IdModeration> = z
-  .enum(IdModeration);
-
-/** @internal */
 export type PluginModeration$Outbound = {
-  id: string;
+  id: "moderation";
 };
 
 /** @internal */
@@ -590,7 +552,7 @@ export const PluginModeration$outboundSchema: z.ZodType<
   PluginModeration$Outbound,
   PluginModeration
 > = z.object({
-  id: IdModeration$outboundSchema,
+  id: z.literal("moderation"),
 });
 
 export function pluginModerationToJSON(

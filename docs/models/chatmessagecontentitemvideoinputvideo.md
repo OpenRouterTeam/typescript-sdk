@@ -17,5 +17,5 @@ let value: ChatMessageContentItemVideoInputVideo = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `type`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"input_video"*                          | :heavy_check_mark:                       | N/A                                      |
 | `videoUrl`                               | [models.VideoURL](../models/videourl.md) | :heavy_check_mark:                       | N/A                                      |

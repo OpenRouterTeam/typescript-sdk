@@ -5,7 +5,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -13,18 +12,11 @@ import {
   ReasoningSummaryText$inboundSchema,
 } from "./reasoningsummarytext.js";
 
-export const OpenResponsesReasoningSummaryPartAddedEventType = {
-  ResponseReasoningSummaryPartAdded: "response.reasoning_summary_part.added",
-} as const;
-export type OpenResponsesReasoningSummaryPartAddedEventType = ClosedEnum<
-  typeof OpenResponsesReasoningSummaryPartAddedEventType
->;
-
 /**
  * Event emitted when a reasoning summary part is added
  */
 export type OpenResponsesReasoningSummaryPartAddedEvent = {
-  type: OpenResponsesReasoningSummaryPartAddedEventType;
+  type: "response.reasoning_summary_part.added";
   outputIndex: number;
   itemId: string;
   summaryIndex: number;
@@ -33,15 +25,9 @@ export type OpenResponsesReasoningSummaryPartAddedEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema:
-  z.ZodEnum<typeof OpenResponsesReasoningSummaryPartAddedEventType> = z.enum(
-    OpenResponsesReasoningSummaryPartAddedEventType,
-  );
-
-/** @internal */
 export const OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema:
   z.ZodType<OpenResponsesReasoningSummaryPartAddedEvent, unknown> = z.object({
-    type: OpenResponsesReasoningSummaryPartAddedEventType$inboundSchema,
+    type: z.literal("response.reasoning_summary_part.added"),
     output_index: z.number(),
     item_id: z.string(),
     summary_index: z.number(),

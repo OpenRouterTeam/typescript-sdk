@@ -40,10 +40,10 @@ export type CompletionCreateParamsResponseFormatText = {
 };
 
 export type CompletionCreateParamsResponseFormatUnion =
-  | ResponseFormatJSONSchema
-  | ResponseFormatTextGrammar
   | CompletionCreateParamsResponseFormatText
   | CompletionCreateParamsResponseFormatJSONObject
+  | ResponseFormatJSONSchema
+  | ResponseFormatTextGrammar
   | CompletionCreateParamsResponseFormatPython;
 
 export type CompletionCreateParams = {
@@ -68,10 +68,10 @@ export type CompletionCreateParams = {
   user?: string | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   responseFormat?:
-    | ResponseFormatJSONSchema
-    | ResponseFormatTextGrammar
     | CompletionCreateParamsResponseFormatText
     | CompletionCreateParamsResponseFormatJSONObject
+    | ResponseFormatJSONSchema
+    | ResponseFormatTextGrammar
     | CompletionCreateParamsResponseFormatPython
     | null
     | undefined;
@@ -211,10 +211,10 @@ export function completionCreateParamsResponseFormatTextToJSON(
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatUnion$Outbound =
-  | ResponseFormatJSONSchema$Outbound
-  | ResponseFormatTextGrammar$Outbound
   | CompletionCreateParamsResponseFormatText$Outbound
   | CompletionCreateParamsResponseFormatJSONObject$Outbound
+  | ResponseFormatJSONSchema$Outbound
+  | ResponseFormatTextGrammar$Outbound
   | CompletionCreateParamsResponseFormatPython$Outbound;
 
 /** @internal */
@@ -223,10 +223,10 @@ export const CompletionCreateParamsResponseFormatUnion$outboundSchema:
     CompletionCreateParamsResponseFormatUnion$Outbound,
     CompletionCreateParamsResponseFormatUnion
   > = z.union([
-    ResponseFormatJSONSchema$outboundSchema,
-    ResponseFormatTextGrammar$outboundSchema,
     z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
     z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$outboundSchema),
+    ResponseFormatJSONSchema$outboundSchema,
+    ResponseFormatTextGrammar$outboundSchema,
     z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
   ]);
 
@@ -264,10 +264,10 @@ export type CompletionCreateParams$Outbound = {
   user?: string | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   response_format?:
-    | ResponseFormatJSONSchema$Outbound
-    | ResponseFormatTextGrammar$Outbound
     | CompletionCreateParamsResponseFormatText$Outbound
     | CompletionCreateParamsResponseFormatJSONObject$Outbound
+    | ResponseFormatJSONSchema$Outbound
+    | ResponseFormatTextGrammar$Outbound
     | CompletionCreateParamsResponseFormatPython$Outbound
     | null
     | undefined;
@@ -306,12 +306,12 @@ export const CompletionCreateParams$outboundSchema: z.ZodType<
   metadata: z.nullable(z.record(z.string(), z.string())).optional(),
   responseFormat: z.nullable(
     z.union([
-      ResponseFormatJSONSchema$outboundSchema,
-      ResponseFormatTextGrammar$outboundSchema,
       z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
       z.lazy(() =>
         CompletionCreateParamsResponseFormatJSONObject$outboundSchema
       ),
+      ResponseFormatJSONSchema$outboundSchema,
+      ResponseFormatTextGrammar$outboundSchema,
       z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
     ]),
   ).optional(),

@@ -5,17 +5,11 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const URLCitationType = {
-  UrlCitation: "url_citation",
-} as const;
-export type URLCitationType = ClosedEnum<typeof URLCitationType>;
-
 export type URLCitation = {
-  type: URLCitationType;
+  type: "url_citation";
   url: string;
   title: string;
   startIndex: number;
@@ -23,16 +17,9 @@ export type URLCitation = {
 };
 
 /** @internal */
-export const URLCitationType$inboundSchema: z.ZodEnum<typeof URLCitationType> =
-  z.enum(URLCitationType);
-/** @internal */
-export const URLCitationType$outboundSchema: z.ZodEnum<typeof URLCitationType> =
-  URLCitationType$inboundSchema;
-
-/** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   .object({
-    type: URLCitationType$inboundSchema,
+    type: z.literal("url_citation"),
     url: z.string(),
     title: z.string(),
     start_index: z.number(),
@@ -45,7 +32,7 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   });
 /** @internal */
 export type URLCitation$Outbound = {
-  type: string;
+  type: "url_citation";
   url: string;
   title: string;
   start_index: number;
@@ -57,7 +44,7 @@ export const URLCitation$outboundSchema: z.ZodType<
   URLCitation$Outbound,
   URLCitation
 > = z.object({
-  type: URLCitationType$outboundSchema,
+  type: z.literal("url_citation"),
   url: z.string(),
   title: z.string(),
   startIndex: z.number(),

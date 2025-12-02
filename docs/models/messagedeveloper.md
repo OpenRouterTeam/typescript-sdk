@@ -15,6 +15,6 @@ let value: MessageDeveloper = {
 
 | Field                   | Type                    | Required                | Description             |
 | ----------------------- | ----------------------- | ----------------------- | ----------------------- |
-| `role`                  | *string*                | :heavy_check_mark:      | N/A                     |
+| `role`                  | *"developer"*           | :heavy_check_mark:      | N/A                     |
 | `content`               | *models.MessageContent* | :heavy_check_mark:      | N/A                     |
 | `name`                  | *string*                | :heavy_minus_sign:      | N/A                     |

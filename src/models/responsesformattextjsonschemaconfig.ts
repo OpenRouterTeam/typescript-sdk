@@ -4,22 +4,14 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ResponsesFormatTextJSONSchemaConfigType = {
-  JsonSchema: "json_schema",
-} as const;
-export type ResponsesFormatTextJSONSchemaConfigType = ClosedEnum<
-  typeof ResponsesFormatTextJSONSchemaConfigType
->;
 
 /**
  * JSON schema constrained response format
  */
 export type ResponsesFormatTextJSONSchemaConfig = {
-  type: ResponsesFormatTextJSONSchemaConfigType;
+  type: "json_schema";
   name: string;
   description?: string | undefined;
   strict?: boolean | null | undefined;
@@ -27,20 +19,11 @@ export type ResponsesFormatTextJSONSchemaConfig = {
 };
 
 /** @internal */
-export const ResponsesFormatTextJSONSchemaConfigType$inboundSchema: z.ZodEnum<
-  typeof ResponsesFormatTextJSONSchemaConfigType
-> = z.enum(ResponsesFormatTextJSONSchemaConfigType);
-/** @internal */
-export const ResponsesFormatTextJSONSchemaConfigType$outboundSchema: z.ZodEnum<
-  typeof ResponsesFormatTextJSONSchemaConfigType
-> = ResponsesFormatTextJSONSchemaConfigType$inboundSchema;
-
-/** @internal */
 export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
   ResponsesFormatTextJSONSchemaConfig,
   unknown
 > = z.object({
-  type: ResponsesFormatTextJSONSchemaConfigType$inboundSchema,
+  type: z.literal("json_schema"),
   name: z.string(),
   description: z.string().optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -48,7 +31,7 @@ export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ResponsesFormatTextJSONSchemaConfig$Outbound = {
-  type: string;
+  type: "json_schema";
   name: string;
   description?: string | undefined;
   strict?: boolean | null | undefined;
@@ -60,7 +43,7 @@ export const ResponsesFormatTextJSONSchemaConfig$outboundSchema: z.ZodType<
   ResponsesFormatTextJSONSchemaConfig$Outbound,
   ResponsesFormatTextJSONSchemaConfig
 > = z.object({
-  type: ResponsesFormatTextJSONSchemaConfigType$outboundSchema,
+  type: z.literal("json_schema"),
   name: z.string(),
   description: z.string().optional(),
   strict: z.nullable(z.boolean()).optional(),

@@ -14,6 +14,6 @@ let value: ResponsesFormatJSONObject = {
 
 ## Fields
 
-| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `type`                                                                             | [models.ResponsesFormatJSONObjectType](../models/responsesformatjsonobjecttype.md) | :heavy_check_mark:                                                                 | N/A                                                                                |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `type`             | *"json_object"*    | :heavy_check_mark: | N/A                |

@@ -38,69 +38,53 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatMessageContentItem =
-  | (ChatMessageContentItemText & { type: "text" })
-  | (ChatMessageContentItemImage & { type: "image_url" })
-  | (ChatMessageContentItemAudio & { type: "input_audio" })
-  | (ChatMessageContentItemFile & { type: "file" })
+  | ChatMessageContentItemText
+  | ChatMessageContentItemImage
+  | ChatMessageContentItemAudio
   | (ChatMessageContentItemVideo & { type: "input_video" })
-  | (ChatMessageContentItemVideo & { type: "video_url" });
+  | (ChatMessageContentItemVideo & { type: "video_url" })
+  | ChatMessageContentItemFile;
 
 /** @internal */
 export const ChatMessageContentItem$inboundSchema: z.ZodType<
   ChatMessageContentItem,
   unknown
 > = z.union([
-  ChatMessageContentItemText$inboundSchema.and(
-    z.object({ type: z.literal("text") }),
-  ),
-  ChatMessageContentItemImage$inboundSchema.and(
-    z.object({ type: z.literal("image_url") }),
-  ),
-  ChatMessageContentItemAudio$inboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ChatMessageContentItemFile$inboundSchema.and(
-    z.object({ type: z.literal("file") }),
-  ),
+  ChatMessageContentItemText$inboundSchema,
+  ChatMessageContentItemImage$inboundSchema,
+  ChatMessageContentItemAudio$inboundSchema,
   ChatMessageContentItemVideo$inboundSchema.and(
     z.object({ type: z.literal("input_video") }),
   ),
   z.lazy(() => ChatMessageContentItemVideo$inboundSchema).and(
     z.object({ type: z.literal("video_url") }),
   ),
+  ChatMessageContentItemFile$inboundSchema,
 ]);
 /** @internal */
 export type ChatMessageContentItem$Outbound =
-  | (ChatMessageContentItemText$Outbound & { type: "text" })
-  | (ChatMessageContentItemImage$Outbound & { type: "image_url" })
-  | (ChatMessageContentItemAudio$Outbound & { type: "input_audio" })
-  | (ChatMessageContentItemFile$Outbound & { type: "file" })
+  | ChatMessageContentItemText$Outbound
+  | ChatMessageContentItemImage$Outbound
+  | ChatMessageContentItemAudio$Outbound
   | (ChatMessageContentItemVideo$Outbound & { type: "input_video" })
-  | (ChatMessageContentItemVideo$Outbound & { type: "video_url" });
+  | (ChatMessageContentItemVideo$Outbound & { type: "video_url" })
+  | ChatMessageContentItemFile$Outbound;
 
 /** @internal */
 export const ChatMessageContentItem$outboundSchema: z.ZodType<
   ChatMessageContentItem$Outbound,
   ChatMessageContentItem
 > = z.union([
-  ChatMessageContentItemText$outboundSchema.and(
-    z.object({ type: z.literal("text") }),
-  ),
-  ChatMessageContentItemImage$outboundSchema.and(
-    z.object({ type: z.literal("image_url") }),
-  ),
-  ChatMessageContentItemAudio$outboundSchema.and(
-    z.object({ type: z.literal("input_audio") }),
-  ),
-  ChatMessageContentItemFile$outboundSchema.and(
-    z.object({ type: z.literal("file") }),
-  ),
+  ChatMessageContentItemText$outboundSchema,
+  ChatMessageContentItemImage$outboundSchema,
+  ChatMessageContentItemAudio$outboundSchema,
   ChatMessageContentItemVideo$outboundSchema.and(
     z.object({ type: z.literal("input_video") }),
   ),
   z.lazy(() => ChatMessageContentItemVideo$outboundSchema).and(
     z.object({ type: z.literal("video_url") }),
   ),
+  ChatMessageContentItemFile$outboundSchema,
 ]);
 
 export function chatMessageContentItemToJSON(

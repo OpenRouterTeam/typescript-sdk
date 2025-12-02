@@ -5,23 +5,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OpenResponsesImageGenCallPartialImageType = {
-  ResponseImageGenerationCallPartialImage:
-    "response.image_generation_call.partial_image",
-} as const;
-export type OpenResponsesImageGenCallPartialImageType = ClosedEnum<
-  typeof OpenResponsesImageGenCallPartialImageType
->;
 
 /**
  * Image generation call with partial image
  */
 export type OpenResponsesImageGenCallPartialImage = {
-  type: OpenResponsesImageGenCallPartialImageType;
+  type: "response.image_generation_call.partial_image";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
@@ -30,16 +21,11 @@ export type OpenResponsesImageGenCallPartialImage = {
 };
 
 /** @internal */
-export const OpenResponsesImageGenCallPartialImageType$inboundSchema: z.ZodEnum<
-  typeof OpenResponsesImageGenCallPartialImageType
-> = z.enum(OpenResponsesImageGenCallPartialImageType);
-
-/** @internal */
 export const OpenResponsesImageGenCallPartialImage$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallPartialImage,
   unknown
 > = z.object({
-  type: OpenResponsesImageGenCallPartialImageType$inboundSchema,
+  type: z.literal("response.image_generation_call.partial_image"),
   item_id: z.string(),
   output_index: z.number(),
   sequence_number: z.number(),

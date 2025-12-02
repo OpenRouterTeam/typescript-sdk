@@ -14,4 +14,4 @@ let value: CompletionCreateParamsResponseFormatJSONObject = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"json_object"*    | :heavy_check_mark: | N/A                |

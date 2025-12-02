@@ -17,5 +17,5 @@ let value: ChatMessageContentItemFile = {
 
 | Field                              | Type                               | Required                           | Description                        |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
-| `type`                             | *string*                           | :heavy_check_mark:                 | N/A                                |
+| `type`                             | *"file"*                           | :heavy_check_mark:                 | N/A                                |
 | `file`                             | [models.FileT](../models/filet.md) | :heavy_check_mark:                 | N/A                                |

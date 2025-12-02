@@ -63,10 +63,10 @@ export type ChatGenerationParamsResponseFormatText = {
 };
 
 export type ChatGenerationParamsResponseFormatUnion =
-  | ResponseFormatJSONSchema
-  | ResponseFormatTextGrammar
   | ChatGenerationParamsResponseFormatText
   | ChatGenerationParamsResponseFormatJSONObject
+  | ResponseFormatJSONSchema
+  | ResponseFormatTextGrammar
   | ChatGenerationParamsResponseFormatPython;
 
 export type ChatGenerationParamsStop = string | Array<string>;
@@ -85,10 +85,10 @@ export type ChatGenerationParams = {
   presencePenalty?: number | null | undefined;
   reasoning?: Reasoning | undefined;
   responseFormat?:
-    | ResponseFormatJSONSchema
-    | ResponseFormatTextGrammar
     | ChatGenerationParamsResponseFormatText
     | ChatGenerationParamsResponseFormatJSONObject
+    | ResponseFormatJSONSchema
+    | ResponseFormatTextGrammar
     | ChatGenerationParamsResponseFormatPython
     | undefined;
   seed?: number | null | undefined;
@@ -200,10 +200,10 @@ export function chatGenerationParamsResponseFormatTextToJSON(
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatUnion$Outbound =
-  | ResponseFormatJSONSchema$Outbound
-  | ResponseFormatTextGrammar$Outbound
   | ChatGenerationParamsResponseFormatText$Outbound
   | ChatGenerationParamsResponseFormatJSONObject$Outbound
+  | ResponseFormatJSONSchema$Outbound
+  | ResponseFormatTextGrammar$Outbound
   | ChatGenerationParamsResponseFormatPython$Outbound;
 
 /** @internal */
@@ -211,10 +211,10 @@ export const ChatGenerationParamsResponseFormatUnion$outboundSchema: z.ZodType<
   ChatGenerationParamsResponseFormatUnion$Outbound,
   ChatGenerationParamsResponseFormatUnion
 > = z.union([
-  ResponseFormatJSONSchema$outboundSchema,
-  ResponseFormatTextGrammar$outboundSchema,
   z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
   z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+  ResponseFormatJSONSchema$outboundSchema,
+  ResponseFormatTextGrammar$outboundSchema,
   z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
 ]);
 
@@ -261,10 +261,10 @@ export type ChatGenerationParams$Outbound = {
   presence_penalty?: number | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
-    | ResponseFormatJSONSchema$Outbound
-    | ResponseFormatTextGrammar$Outbound
     | ChatGenerationParamsResponseFormatText$Outbound
     | ChatGenerationParamsResponseFormatJSONObject$Outbound
+    | ResponseFormatJSONSchema$Outbound
+    | ResponseFormatTextGrammar$Outbound
     | ChatGenerationParamsResponseFormatPython$Outbound
     | undefined;
   seed?: number | null | undefined;
@@ -296,10 +296,10 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   presencePenalty: z.nullable(z.number()).optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
-    ResponseFormatJSONSchema$outboundSchema,
-    ResponseFormatTextGrammar$outboundSchema,
     z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
     z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+    ResponseFormatJSONSchema$outboundSchema,
+    ResponseFormatTextGrammar$outboundSchema,
     z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
   ]).optional(),
   seed: z.nullable(z.int()).optional(),

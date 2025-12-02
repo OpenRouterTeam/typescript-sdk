@@ -12,6 +12,6 @@ let value: PluginModeration = {
 
 ## Fields
 
-| Field                                            | Type                                             | Required                                         | Description                                      |
-| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| `id`                                             | [models.IdModeration](../models/idmoderation.md) | :heavy_check_mark:                               | N/A                                              |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `id`               | *"moderation"*     | :heavy_check_mark: | N/A                |
