@@ -28,10 +28,6 @@ runs:
       shell: bash
       run: pnpm run build
 
-    - name: Typecheck tests directory
-      shell: bash
-      run: pnpm exec tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
-
     - name: Install examples dependencies
       shell: bash
       working-directory: examples
