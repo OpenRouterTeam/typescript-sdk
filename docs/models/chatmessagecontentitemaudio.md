@@ -9,7 +9,7 @@ let value: ChatMessageContentItemAudio = {
   type: "input_audio",
   inputAudio: {
     data: "<value>",
-    format: "pcm24",
+    format: "<value>",
   },
 };
 ```
