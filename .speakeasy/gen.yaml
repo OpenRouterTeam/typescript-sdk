@@ -31,10 +31,7 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.2.1
-  compileCommand:
-    - pnpm
-    - install
+  version: 0.2.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -65,6 +62,9 @@ typescript:
   author: OpenRouter
   baseErrorName: OpenRouterError
   clientServerStatusCodesAsErrors: true
+  compileCommand:
+    - pnpm
+    - install
   constFieldsAlwaysOptional: false
   defaultErrorName: OpenRouterDefaultError
   enableCustomCodeRegions: true

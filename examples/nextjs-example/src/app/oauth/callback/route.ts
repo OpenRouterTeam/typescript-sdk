@@ -1,11 +1,11 @@
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const code = url.searchParams.get("code");
+  const code = url.searchParams.get('code');
 
   if (!code) {
-    return redirect("/?error=missing_code");
+    return redirect('/?error=missing_code');
   }
 
   // Redirect to the main page with the code

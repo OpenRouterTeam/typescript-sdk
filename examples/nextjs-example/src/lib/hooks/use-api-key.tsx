@@ -1,7 +1,7 @@
-import { useLocalStorage } from "usehooks-ts";
-import { OPENROUTER_KEY_LOCALSTORAGE_KEY } from "../config";
+import { useLocalStorage } from 'usehooks-ts';
+import { OPENROUTER_KEY_LOCALSTORAGE_KEY } from '../config';
 
-const EMPTY_VALUE = "";
+const EMPTY_VALUE = '';
 const FALLBACK_VALUE = undefined;
 
 /**
@@ -15,13 +15,9 @@ const FALLBACK_VALUE = undefined;
  * ```
  */
 export function useApiKey() {
-  return useLocalStorage<string | undefined>(
-    OPENROUTER_KEY_LOCALSTORAGE_KEY,
-    undefined,
-    {
-      deserializer: (value) => (value !== EMPTY_VALUE ? value : FALLBACK_VALUE),
-      serializer: (value) => value || EMPTY_VALUE,
-      initializeWithValue: false,
-    },
-  );
+  return useLocalStorage<string | undefined>(OPENROUTER_KEY_LOCALSTORAGE_KEY, undefined, {
+    deserializer: (value) => (value !== EMPTY_VALUE ? value : FALLBACK_VALUE),
+    serializer: (value) => value || EMPTY_VALUE,
+    initializeWithValue: false,
+  });
 }

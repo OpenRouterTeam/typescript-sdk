@@ -7,16 +7,6 @@ import { oAuthExchangeAuthCodeForAPIKey } from "../funcs/oAuthExchangeAuthCodeFo
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
-// #region imports
-import {
-  CreateAuthorizationUrlRequest,
-  oAuthCreateAuthorizationUrl,
-} from "../funcs/oAuthCreateAuthorizationUrl.js";
-import {
-  CreateSHA256CodeChallengeResponse,
-  oAuthCreateSHA256CodeChallenge,
-} from "../funcs/oAuthCreateSHA256CodeChallenge.js";
-// #endregion imports
 
 export class OAuth extends ClientSDK {
   // #region sdk-class-body

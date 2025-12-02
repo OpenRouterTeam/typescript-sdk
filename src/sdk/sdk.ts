@@ -18,10 +18,21 @@ import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
 import { callModel as callModelFunc } from "../funcs/callModel.js";
-import { ResponseWrapper } from "../lib/response-wrapper.js";
-import { RequestOptions } from "../lib/sdks.js";
-import { EnhancedTool, MaxToolRounds, ToolType } from "../lib/tool-types.js";
-import * as models from "../models/index.js";
+import { ClientSDK } from "../lib/sdks.js";
+import { ToolType } from "../lib/tool-types.js";
+import { Analytics } from "./analytics.js";
+import { APIKeys } from "./apikeys.js";
+import { Beta } from "./beta.js";
+import { Chat } from "./chat.js";
+import { Completions } from "./completions.js";
+import { Credits } from "./credits.js";
+import { Embeddings } from "./embeddings.js";
+import { Endpoints } from "./endpoints.js";
+import { Generations } from "./generations.js";
+import { Models } from "./models.js";
+import { OAuth } from "./oauth.js";
+import { ParametersT } from "./parameters.js";
+import { Providers } from "./providers.js";
 export { ToolType };
 export type { EnhancedTool, MaxToolRounds };
 // #endregion imports

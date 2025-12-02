@@ -105,23 +105,23 @@ export type MaxPrice = {
   /**
    * A value in string or number format that is a large number
    */
-  prompt?: any | undefined;
+  prompt?: number | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  completion?: any | undefined;
+  completion?: number | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  image?: any | undefined;
+  image?: number | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  audio?: any | undefined;
+  audio?: number | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  request?: any | undefined;
+  request?: number | undefined;
 };
 
 /**
@@ -402,21 +402,21 @@ export function ignoreToJSON(ignore: Ignore): string {
 
 /** @internal */
 export type MaxPrice$Outbound = {
-  prompt?: any | undefined;
-  completion?: any | undefined;
-  image?: any | undefined;
-  audio?: any | undefined;
-  request?: any | undefined;
+  prompt?: number | undefined;
+  completion?: number | undefined;
+  image?: number | undefined;
+  audio?: number | undefined;
+  request?: number | undefined;
 };
 
 /** @internal */
 export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
   .object({
-    prompt: z.any().optional(),
-    completion: z.any().optional(),
-    image: z.any().optional(),
-    audio: z.any().optional(),
-    request: z.any().optional(),
+    prompt: z.number().optional(),
+    completion: z.number().optional(),
+    image: z.number().optional(),
+    audio: z.number().optional(),
+    request: z.number().optional(),
   });
 
 export function maxPriceToJSON(maxPrice: MaxPrice): string {

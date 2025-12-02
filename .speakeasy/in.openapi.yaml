@@ -3535,11 +3535,7 @@ components:
         performed.
       example: price
     BigNumberUnion:
-      anyOf:
-        - type: number
-        - type: string
-        - type: number
-          example: 1000
+      type: number
       description: A value in string or number format that is a large number
       example: 1000
     OpenResponsesRequest:
@@ -5195,6 +5191,11 @@ components:
             - type: 'null'
         user:
           type: string
+        debug:
+          type: object
+          properties:
+            echo_upstream_body:
+              type: boolean
       required:
         - messages
     ChatResponseChoice:

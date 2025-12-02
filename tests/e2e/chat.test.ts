@@ -1,16 +1,15 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { OpenRouter } from "../../src/sdk/sdk.js";
-import { ChatStreamingResponseChunkData } from "../../src/models/chatstreamingresponsechunk.js";
+import type { ChatStreamingResponseChunkData } from '../../src/models/chatstreamingresponsechunk.js';
 
-describe("Chat E2E Tests", () => {
+import { beforeAll, describe, expect, it } from 'vitest';
+import { OpenRouter } from '../../src/sdk/sdk.js';
+
+describe('Chat E2E Tests', () => {
   let client: OpenRouter;
 
   beforeAll(() => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
-      throw new Error(
-        "OPENROUTER_API_KEY environment variable is required for e2e tests"
-      );
+      throw new Error('OPENROUTER_API_KEY environment variable is required for e2e tests');
     }
 
     client = new OpenRouter({
@@ -18,13 +17,13 @@ describe("Chat E2E Tests", () => {
     });
   });
 
-  describe("chat.send() - Non-streaming", () => {
-    it("should successfully send a chat request and get a response", async () => {
+  describe('chat.send() - Non-streaming', () => {
+    it('should successfully send a chat request and get a response', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: "Say 'Hello, World!' and nothing else.",
           },
         ],
@@ -33,7 +32,6 @@ describe("Chat E2E Tests", () => {
 
       expect(response).toBeDefined();
 
-
       expect(Array.isArray(response.choices)).toBe(true);
       expect(response.choices.length).toBeGreaterThan(0);
 
@@ -41,29 +39,28 @@ describe("Chat E2E Tests", () => {
       expect(firstChoice).toBeDefined();
       expect(firstChoice?.message).toBeDefined();
       expect(firstChoice?.message?.content).toBeDefined();
-      expect(typeof firstChoice?.message?.content).toBe("string");
+      expect(typeof firstChoice?.message?.content).toBe('string');
 
       // Verify it has usage information
       expect(response.usage).toBeDefined();
       expect(response.usage?.totalTokens).toBeGreaterThan(0);
-
     });
 
-    it("should handle multi-turn conversations", async () => {
+    it('should handle multi-turn conversations', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
-            content: "My name is Alice.",
+            role: 'user',
+            content: 'My name is Alice.',
           },
           {
-            role: "assistant",
-            content: "Hello Alice! How can I help you today?",
+            role: 'assistant',
+            content: 'Hello Alice! How can I help you today?',
           },
           {
-            role: "user",
-            content: "What is my name?",
+            role: 'user',
+            content: 'What is my name?',
           },
         ],
         stream: false,
@@ -71,19 +68,24 @@ describe("Chat E2E Tests", () => {
 
       expect(response).toBeDefined();
 
-      const content = typeof response.choices[0]?.message?.content === "string" ? response.choices[0]?.message?.content?.toLowerCase() : response.choices[0]?.message?.content?.map((item) => item.type === "text" ? item.text : "").join("").toLowerCase();
+      const content =
+        typeof response.choices[0]?.message?.content === 'string'
+          ? response.choices[0]?.message?.content?.toLowerCase()
+          : response.choices[0]?.message?.content
+              ?.map((item) => (item.type === 'text' ? item.text : ''))
+              .join('')
+              .toLowerCase();
       expect(content).toBeDefined();
-      expect(content).toContain("alice");
-
+      expect(content).toContain('alice');
     });
 
-    it("should respect max_tokens parameter", async () => {
+    it('should respect max_tokens parameter', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
-            content: "Write a long story about a cat.",
+            role: 'user',
+            content: 'Write a long story about a cat.',
           },
         ],
         maxTokens: 10,
@@ -93,18 +95,17 @@ describe("Chat E2E Tests", () => {
       expect(response).toBeDefined();
 
       expect(response.usage?.completionTokens).toBeLessThanOrEqual(10);
-
     });
   });
 
-  describe("chat.send() - Streaming", () => {
-    it("should successfully stream chat responses", async () => {
+  describe('chat.send() - Streaming', () => {
+    it('should successfully stream chat responses', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
-            content: "Count from 1 to 5.",
+            role: 'user',
+            content: 'Count from 1 to 5.',
           },
         ],
         stream: true,
@@ -125,15 +126,14 @@ describe("Chat E2E Tests", () => {
       const firstChunk = chunks[0];
       expect(firstChunk?.choices).toBeDefined();
       expect(Array.isArray(firstChunk?.choices)).toBe(true);
-
     });
 
-    it("should stream complete content progressively", async () => {
+    it('should stream complete content progressively', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: "Say 'test'.",
           },
         ],
@@ -142,7 +142,7 @@ describe("Chat E2E Tests", () => {
 
       expect(response).toBeDefined();
 
-      let fullContent = "";
+      let fullContent = '';
       let chunkCount = 0;
 
       for await (const chunk of response) {
@@ -155,14 +155,14 @@ describe("Chat E2E Tests", () => {
 
       expect(chunkCount).toBeGreaterThan(0);
       expect(fullContent.length).toBeGreaterThan(0);
-    }, 10000)
+    }, 10000);
 
-    it("should include finish_reason in final chunk", async () => {
+    it('should include finish_reason in final chunk', async () => {
       const response = await client.chat.send({
-        model: "meta-llama/llama-3.2-1b-instruct",
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
-            role: "user",
+            role: 'user',
             content: "Say 'done'.",
           },
         ],
@@ -177,11 +177,11 @@ describe("Chat E2E Tests", () => {
         const finishReason = chunk.choices?.[0]?.finishReason;
         if (finishReason) {
           foundFinishReason = true;
-          expect(typeof finishReason).toBe("string");
+          expect(typeof finishReason).toBe('string');
         }
       }
 
       expect(foundFinishReason).toBe(true);
-    }, 10000)
+    }, 10000);
   });
 });
