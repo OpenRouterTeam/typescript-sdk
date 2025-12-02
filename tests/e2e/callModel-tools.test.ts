@@ -51,8 +51,8 @@ describe('Enhanced Tool Support for callModel', () => {
         target: 'openapi-3.0',
       });
 
-      expect(jsonSchema.properties.user).toBeDefined();
-      expect(jsonSchema.properties.tags).toBeDefined();
+      expect(jsonSchema.properties?.user).toBeDefined();
+      expect(jsonSchema.properties?.tags).toBeDefined();
     });
 
     it('should preserve descriptions and metadata', () => {
@@ -64,7 +64,8 @@ describe('Enhanced Tool Support for callModel', () => {
         target: 'openapi-3.0',
       });
 
-      expect(jsonSchema.properties.location.description).toBe(
+      // @ts-expect-error - description is not a property of _JSONSchema
+      expect(jsonSchema.properties?.location?.description).toBe(
         'City and country e.g. Bogotá, Colombia',
       );
     });
@@ -357,7 +358,7 @@ describe('Enhanced Tool Support for callModel', () => {
         messageHistory: [],
         model: 'test-model',
       };
-      const results = [];
+      const results: unknown[] = [];
       for await (const result of generatorTool.function.execute(
         {
           data: 'test',
@@ -409,7 +410,7 @@ describe('Enhanced Tool Support for callModel', () => {
         yield 3;
       }
 
-      const results = [];
+      const results: unknown[] = [];
       for await (const value of testGenerator()) {
         results.push(value);
       }
@@ -577,7 +578,7 @@ describe('Enhanced Tool Support for callModel', () => {
 
       const response = await client.callModel({
         model: 'openai/gpt-4o',
-        messages: [
+        input: [
           {
             role: 'user',
             content: "What's the weather like in San Francisco?",
@@ -612,6 +613,7 @@ describe('Enhanced Tool Support for callModel', () => {
             _context,
           ) => {
             // Simple eval for testing (don't use in production!)
+            // biome-ignore lint/security/noGlobalEval: this is just a test
             const result = eval(params.expression);
             return {
               result,
@@ -623,7 +625,7 @@ describe('Enhanced Tool Support for callModel', () => {
       const response = await client.callModel(
         {
           model: 'openai/gpt-4o',
-          messages: [
+          input: [
             {
               role: 'user',
               content: 'What is 25 * 4?',
@@ -632,9 +634,6 @@ describe('Enhanced Tool Support for callModel', () => {
           tools: [
             calculatorTool,
           ],
-        },
-        {
-          autoExecuteTools: true,
           maxToolRounds: 3,
         },
       );

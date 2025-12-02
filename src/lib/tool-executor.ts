@@ -1,7 +1,7 @@
 import type { ZodType } from 'zod/v4';
 import type {
   APITool,
-  EnhancedTool,
+  Tool,
   ParsedToolCall,
   ToolExecutionResult,
   TurnContext,
@@ -21,9 +21,9 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
 }
 
 /**
- * Convert enhanced tools to OpenRouter API format
+ * Convert tools to OpenRouter API format
  */
-export function convertEnhancedToolsToAPIFormat(tools: EnhancedTool[]): APITool[] {
+export function convertToolsToAPIFormat(tools: Tool[]): APITool[] {
   return tools.map((tool) => ({
     type: 'function' as const,
     name: tool.function.name,
@@ -68,7 +68,7 @@ export function parseToolCallArguments(argumentsString: string): unknown {
  * Execute a regular (non-generator) tool
  */
 export async function executeRegularTool(
-  tool: EnhancedTool,
+  tool: Tool,
   toolCall: ParsedToolCall,
   context: TurnContext,
 ): Promise<ToolExecutionResult> {
@@ -121,7 +121,7 @@ export async function executeRegularTool(
  * - Generator must emit at least one value
  */
 export async function executeGeneratorTool(
-  tool: EnhancedTool,
+  tool: Tool,
   toolCall: ParsedToolCall,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
@@ -189,7 +189,7 @@ export async function executeGeneratorTool(
  * Automatically detects if it's a regular or generator tool
  */
 export async function executeTool(
-  tool: EnhancedTool,
+  tool: Tool,
   toolCall: ParsedToolCall,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
@@ -208,7 +208,7 @@ export async function executeTool(
 /**
  * Find a tool by name in the tools array
  */
-export function findToolByName(tools: EnhancedTool[], name: string): EnhancedTool | undefined {
+export function findToolByName(tools: Tool[], name: string): Tool | undefined {
   return tools.find((tool) => tool.function.name === name);
 }
 

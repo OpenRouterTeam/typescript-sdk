@@ -123,7 +123,7 @@ export type ManualTool<
 /**
  * Union type of all enhanced tool types
  */
-export type EnhancedTool =
+export type Tool =
   | ToolWithExecute<ZodObject<ZodRawShape>, ZodType<unknown>>
   | ToolWithGenerator<ZodObject<ZodRawShape>, ZodType<unknown>, ZodType<unknown>>
   | ManualTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
@@ -132,7 +132,7 @@ export type EnhancedTool =
  * Type guard to check if a tool has an execute function
  */
 export function hasExecuteFunction(
-  tool: EnhancedTool,
+  tool: Tool,
 ): tool is ToolWithExecute | ToolWithGenerator {
   return 'execute' in tool.function && typeof tool.function.execute === 'function';
 }
@@ -140,14 +140,14 @@ export function hasExecuteFunction(
 /**
  * Type guard to check if a tool uses a generator (has eventSchema)
  */
-export function isGeneratorTool(tool: EnhancedTool): tool is ToolWithGenerator {
+export function isGeneratorTool(tool: Tool): tool is ToolWithGenerator {
   return 'eventSchema' in tool.function;
 }
 
 /**
  * Type guard to check if a tool is a regular execution tool (not generator)
  */
-export function isRegularExecuteTool(tool: EnhancedTool): tool is ToolWithExecute {
+export function isRegularExecuteTool(tool: Tool): tool is ToolWithExecute {
   return hasExecuteFunction(tool) && !isGeneratorTool(tool);
 }
 

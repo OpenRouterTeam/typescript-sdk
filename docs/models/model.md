@@ -13,8 +13,8 @@ let value: Model = {
   name: "GPT-4",
   created: 1692901234,
   pricing: {
-    prompt: 0.00003,
-    completion: 0.00006,
+    prompt: "0.00003",
+    completion: "0.00006",
   },
   contextLength: 8192,
   architecture: {

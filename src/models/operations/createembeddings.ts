@@ -57,23 +57,23 @@ export type MaxPrice = {
   /**
    * A value in string or number format that is a large number
    */
-  prompt?: number | undefined;
+  prompt?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  completion?: number | undefined;
+  completion?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  image?: number | undefined;
+  image?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  audio?: number | undefined;
+  audio?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  request?: number | undefined;
+  request?: any | undefined;
 };
 
 export type CreateEmbeddingsProvider = {
@@ -343,21 +343,21 @@ export function ignoreToJSON(ignore: Ignore): string {
 
 /** @internal */
 export type MaxPrice$Outbound = {
-  prompt?: number | undefined;
-  completion?: number | undefined;
-  image?: number | undefined;
-  audio?: number | undefined;
-  request?: number | undefined;
+  prompt?: any | undefined;
+  completion?: any | undefined;
+  image?: any | undefined;
+  audio?: any | undefined;
+  request?: any | undefined;
 };
 
 /** @internal */
 export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
   .object({
-    prompt: z.number().optional(),
-    completion: z.number().optional(),
-    image: z.number().optional(),
-    audio: z.number().optional(),
-    request: z.number().optional(),
+    prompt: z.any().optional(),
+    completion: z.any().optional(),
+    image: z.any().optional(),
+    audio: z.any().optional(),
+    request: z.any().optional(),
   });
 
 export function maxPriceToJSON(maxPrice: MaxPrice): string {

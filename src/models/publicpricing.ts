@@ -15,69 +15,69 @@ export type PublicPricing = {
   /**
    * A value in string or number format that is a large number
    */
-  prompt: number;
+  prompt?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  completion: number;
+  completion?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  request?: number | undefined;
+  request?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  image?: number | undefined;
+  image?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  imageToken?: number | undefined;
+  imageToken?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  imageOutput?: number | undefined;
+  imageOutput?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  audio?: number | undefined;
+  audio?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  inputAudioCache?: number | undefined;
+  inputAudioCache?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  webSearch?: number | undefined;
+  webSearch?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  internalReasoning?: number | undefined;
+  internalReasoning?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  inputCacheRead?: number | undefined;
+  inputCacheRead?: any | undefined;
   /**
    * A value in string or number format that is a large number
    */
-  inputCacheWrite?: number | undefined;
+  inputCacheWrite?: any | undefined;
   discount?: number | undefined;
 };
 
 /** @internal */
 export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
   .object({
-    prompt: z.number(),
-    completion: z.number(),
-    request: z.number().optional(),
-    image: z.number().optional(),
-    image_token: z.number().optional(),
-    image_output: z.number().optional(),
-    audio: z.number().optional(),
-    input_audio_cache: z.number().optional(),
-    web_search: z.number().optional(),
-    internal_reasoning: z.number().optional(),
-    input_cache_read: z.number().optional(),
-    input_cache_write: z.number().optional(),
+    prompt: z.any().optional(),
+    completion: z.any().optional(),
+    request: z.any().optional(),
+    image: z.any().optional(),
+    image_token: z.any().optional(),
+    image_output: z.any().optional(),
+    audio: z.any().optional(),
+    input_audio_cache: z.any().optional(),
+    web_search: z.any().optional(),
+    internal_reasoning: z.any().optional(),
+    input_cache_read: z.any().optional(),
+    input_cache_write: z.any().optional(),
     discount: z.number().optional(),
   }).transform((v) => {
     return remap$(v, {

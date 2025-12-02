@@ -23,9 +23,9 @@ runs:
       shell: bash
       run: npm run build
 
-    # - name: Typecheck tests directory
-    #   shell: bash
-    #   run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
+    - name: Typecheck tests directory
+      shell: bash
+      run: npx tsc --noEmit --skipLibCheck --esModuleInterop --moduleResolution node --module esnext --target es2020 tests/**/*.ts
 
     - name: Install examples dependencies
       shell: bash
@@ -33,10 +33,10 @@ runs:
       run: npm install
 
     # TODO: Re-enable when Speakeasy fixes generated code type errors
-    # - name: Typecheck examples root
-    #   shell: bash
-    #   working-directory: examples
-    #   run: npx tsc
+    - name: Typecheck examples root
+      shell: bash
+      working-directory: examples
+      run: npx tsc
 
     - name: Install nextjs-example dependencies
       shell: bash

@@ -116,7 +116,7 @@
         "useParseIntRadix": "error"
       },
       "suspicious": {
-        "noExplicitAny": "error",
+        "noExplicitAny": "warn",
         "noArrayIndexKey": "off",
         "noAssignInExpressions": "error",
         "noAsyncPromiseExecutor": "off",

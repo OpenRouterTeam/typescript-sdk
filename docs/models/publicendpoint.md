@@ -12,8 +12,8 @@ let value: PublicEndpoint = {
   modelName: "GPT-4",
   contextLength: 8192,
   pricing: {
-    prompt: 0.00003,
-    completion: 0.00006,
+    prompt: "0.00003",
+    completion: "0.00006",
   },
   providerName: "OpenAI",
   tag: "openai",
