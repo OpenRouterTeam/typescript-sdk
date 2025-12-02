@@ -5,8 +5,8 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.666.0
   generationVersion: 2.768.0
-  releaseVersion: 0.2.5
-  configChecksum: 324815634003cbee850769ac972293be
+  releaseVersion: 0.2.6
+  configChecksum: faa7e08defaa15a2a216f64d15953590
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
