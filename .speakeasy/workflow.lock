@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:a286a09ceced7f78a685731aef81d1498b89a6a46f3794219dc93fa2d822853b
         tags:
             - latest
+            - matt-fix-more-types
             - 1.0.0
 targets:
     openrouter:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:697f956356ab0195b9a9b9a5106e4ac979caa551709b3614c723df972c661829
         sourceBlobDigest: sha256:a286a09ceced7f78a685731aef81d1498b89a6a46f3794219dc93fa2d822853b
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:579813aa2df81293dfaafc0cbd6ed4dd8f88344af90d80a638d6d76ce87e0eef
+        codeSamplesRevisionDigest: sha256:c47002333af8c87282d60b2be8fb8f27d7d40b9917df9a57fa29ca49166fe591
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.666.0
