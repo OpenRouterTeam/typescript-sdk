@@ -4639,14 +4639,6 @@ components:
               type: string
             format:
               type: string
-              enum:
-                - wav
-                - mp3
-                - flac
-                - m4a
-                - ogg
-                - pcm16
-                - pcm24
           required:
             - data
             - format
@@ -5195,6 +5187,11 @@ components:
             - type: 'null'
         user:
           type: string
+        debug:
+          type: object
+          properties:
+            echo_upstream_body:
+              type: boolean
       required:
         - messages
     ChatResponseChoice:
@@ -6230,11 +6227,6 @@ paths:
                   - object
                   - data
                   - model
-            text/event-stream:
-              schema:
-                type: string
-                description: Not used for embeddings - embeddings do not support streaming
-              x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad Request - Invalid request parameters or malformed input
           content:

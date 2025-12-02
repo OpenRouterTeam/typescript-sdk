@@ -71,6 +71,10 @@ export type ChatGenerationParamsResponseFormatUnion =
 
 export type ChatGenerationParamsStop = string | Array<string>;
 
+export type Debug = {
+  echoUpstreamBody?: boolean | undefined;
+};
+
 export type ChatGenerationParams = {
   messages: Array<Message>;
   model?: string | undefined;
@@ -100,6 +104,7 @@ export type ChatGenerationParams = {
   tools?: Array<ToolDefinitionJson> | undefined;
   topP?: number | null | undefined;
   user?: string | undefined;
+  debug?: Debug | undefined;
 };
 
 /** @internal */
@@ -247,6 +252,24 @@ export function chatGenerationParamsStopToJSON(
 }
 
 /** @internal */
+export type Debug$Outbound = {
+  echo_upstream_body?: boolean | undefined;
+};
+
+/** @internal */
+export const Debug$outboundSchema: z.ZodType<Debug$Outbound, Debug> = z.object({
+  echoUpstreamBody: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    echoUpstreamBody: "echo_upstream_body",
+  });
+});
+
+export function debugToJSON(debug: Debug): string {
+  return JSON.stringify(Debug$outboundSchema.parse(debug));
+}
+
+/** @internal */
 export type ChatGenerationParams$Outbound = {
   messages: Array<Message$Outbound>;
   model?: string | undefined;
@@ -276,6 +299,7 @@ export type ChatGenerationParams$Outbound = {
   tools?: Array<ToolDefinitionJson$Outbound> | undefined;
   top_p?: number | null | undefined;
   user?: string | undefined;
+  debug?: Debug$Outbound | undefined;
 };
 
 /** @internal */
@@ -311,6 +335,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
   topP: z.nullable(z.number()).optional(),
   user: z.string().optional(),
+  debug: z.lazy(() => Debug$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     frequencyPenalty: "frequency_penalty",

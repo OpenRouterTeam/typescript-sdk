@@ -7,13 +7,13 @@ import { ChatMessageContentItemAudioInputAudio } from "@openrouter/sdk/models";
 
 let value: ChatMessageContentItemAudioInputAudio = {
   data: "<value>",
-  format: "wav",
+  format: "<value>",
 };
 ```
 
 ## Fields
 
-| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `data`                                                                                     | *string*                                                                                   | :heavy_check_mark:                                                                         | N/A                                                                                        |
-| `format`                                                                                   | [models.ChatMessageContentItemAudioFormat](../models/chatmessagecontentitemaudioformat.md) | :heavy_check_mark:                                                                         | N/A                                                                                        |
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `data`             | *string*           | :heavy_check_mark: | N/A                |
+| `format`           | *string*           | :heavy_check_mark: | N/A                |

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 591fccdc6b495b1230644174853f9113
+  docChecksum: 8e530fc8f007ea5179129b89d89ba958
   docVersion: 1.0.0
   speakeasyVersion: 1.666.0
   generationVersion: 2.768.0
-  releaseVersion: 0.2.6
-  configChecksum: faa7e08defaa15a2a216f64d15953590
+  releaseVersion: 0.2.9
+  configChecksum: 12a255b210945a121402c22f63d8d8e5
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -67,7 +67,6 @@ generatedFiles:
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
   - docs/models/chatmessagecontentitemaudio.md
-  - docs/models/chatmessagecontentitemaudioformat.md
   - docs/models/chatmessagecontentitemaudioinputaudio.md
   - docs/models/chatmessagecontentitemcachecontrol.md
   - docs/models/chatmessagecontentitemimage.md
@@ -108,6 +107,7 @@ generatedFiles:
   - docs/models/costdetails.md
   - docs/models/createchargerequest.md
   - docs/models/datacollection.md
+  - docs/models/debug.md
   - docs/models/defaultparameters.md
   - docs/models/edgenetworktimeoutresponseerrordata.md
   - docs/models/effort.md
@@ -288,7 +288,6 @@ generatedFiles:
   - docs/models/operations/createembeddingsprovider.md
   - docs/models/operations/createembeddingsrequest.md
   - docs/models/operations/createembeddingsresponse.md
-  - docs/models/operations/createembeddingsresponsebody.md
   - docs/models/operations/createkeysdata.md
   - docs/models/operations/createkeyslimitreset.md
   - docs/models/operations/createkeysrequest.md

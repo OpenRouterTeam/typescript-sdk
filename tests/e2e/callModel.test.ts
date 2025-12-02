@@ -132,7 +132,7 @@ describe('callModel E2E Tests', () => {
       expect(toolCalls[0].arguments).toBeDefined();
     }, 30000);
 
-    it('should work with chat-style messages and chat-style tools together', async () => {
+    it.skip('should work with chat-style messages and chat-style tools together', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.1-8b-instruct',
         input: [

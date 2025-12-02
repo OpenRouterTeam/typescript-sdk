@@ -5,27 +5,12 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const ChatMessageContentItemAudioFormat = {
-  Wav: "wav",
-  Mp3: "mp3",
-  Flac: "flac",
-  M4a: "m4a",
-  Ogg: "ogg",
-  Pcm16: "pcm16",
-  Pcm24: "pcm24",
-} as const;
-export type ChatMessageContentItemAudioFormat = OpenEnum<
-  typeof ChatMessageContentItemAudioFormat
->;
-
 export type ChatMessageContentItemAudioInputAudio = {
   data: string;
-  format: ChatMessageContentItemAudioFormat;
+  format: string;
 };
 
 export type ChatMessageContentItemAudio = {
@@ -34,23 +19,12 @@ export type ChatMessageContentItemAudio = {
 };
 
 /** @internal */
-export const ChatMessageContentItemAudioFormat$inboundSchema: z.ZodType<
-  ChatMessageContentItemAudioFormat,
-  unknown
-> = openEnums.inboundSchema(ChatMessageContentItemAudioFormat);
-/** @internal */
-export const ChatMessageContentItemAudioFormat$outboundSchema: z.ZodType<
-  string,
-  ChatMessageContentItemAudioFormat
-> = openEnums.outboundSchema(ChatMessageContentItemAudioFormat);
-
-/** @internal */
 export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<
   ChatMessageContentItemAudioInputAudio,
   unknown
 > = z.object({
   data: z.string(),
-  format: ChatMessageContentItemAudioFormat$inboundSchema,
+  format: z.string(),
 });
 /** @internal */
 export type ChatMessageContentItemAudioInputAudio$Outbound = {
@@ -64,7 +38,7 @@ export const ChatMessageContentItemAudioInputAudio$outboundSchema: z.ZodType<
   ChatMessageContentItemAudioInputAudio
 > = z.object({
   data: z.string(),
-  format: ChatMessageContentItemAudioFormat$outboundSchema,
+  format: z.string(),
 });
 
 export function chatMessageContentItemAudioInputAudioToJSON(
