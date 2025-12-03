@@ -23,6 +23,14 @@ import * as dotenv from 'dotenv';
 import { z } from 'zod/v4';
 import { OpenRouter, ToolType } from '../src/index.js';
 
+// Type declaration for ShadowRealm (TC39 Stage 3 proposal)
+// See: https://tc39.es/proposal-shadowrealm/
+declare class ShadowRealm {
+  constructor();
+  evaluate(sourceText: string): unknown;
+  importValue(specifier: string, bindingName: string): Promise<unknown>;
+}
+
 dotenv.config();
 
 const client = new OpenRouter({
@@ -164,6 +172,41 @@ async function generatorToolExample() {
 }
 
 /**
+ * Safely evaluate a math expression using ShadowRealm
+ *
+ * ShadowRealm provides a secure, isolated JavaScript execution environment
+ * that prevents access to the host realm's globals (no access to DOM, fetch,
+ * filesystem, etc.). Combined with input validation, this makes it safe for
+ * evaluating untrusted math expressions.
+ *
+ * Note: ShadowRealm isolates from host APIs but does not prevent DoS vectors
+ * like infinite loops. For production use, consider additional safeguards.
+ *
+ * Browser support: Chrome 124+, Edge 124+, Firefox 128+, Safari 18+
+ * Node.js support: Available behind --experimental-shadow-realm flag (v19+)
+ * See: https://tc39.es/proposal-shadowrealm/
+ */
+function safeEvaluateMath(expression: string): number {
+  // Only allow digits, whitespace, basic operators, decimal point, and parentheses
+  if (!/^[\d\s+\-*/.()]+$/.test(expression)) {
+    throw new Error('Expression contains invalid characters');
+  }
+
+  // ShadowRealm creates a separate realm with its own global object, preventing
+  // access to the host environment's APIs (no DOM, no Node.js APIs, no fetch, etc.)
+  const realm = new ShadowRealm();
+
+  // The expression is evaluated in complete isolation
+  const result = realm.evaluate(expression);
+
+  if (typeof result !== 'number' || !Number.isFinite(result)) {
+    throw new Error('Expression did not evaluate to a finite number');
+  }
+
+  return result;
+}
+
+/**
  * Example 3: Manual Tool Execution
  * Define a tool without execute function for manual handling
  */
@@ -203,10 +246,9 @@ async function manualToolExample() {
         }
       ).expression;
 
-      // In a real app, you would safely evaluate this
-      // For demo purposes only - don't use eval in production!
+      // Safely evaluate the math expression using ShadowRealm
       try {
-        const _result = eval(expression);
+        const _result = safeEvaluateMath(expression);
       } catch (_error) {}
     }
   }
