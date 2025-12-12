@@ -6,7 +6,7 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
-export const ProviderName = {
+export const Schema0Enum = {
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",
@@ -77,11 +77,21 @@ export const ProviderName = {
   ZAi: "Z.AI",
   FakeProvider: "FakeProvider",
 } as const;
-export type ProviderName = OpenEnum<typeof ProviderName>;
+export type Schema0Enum = OpenEnum<typeof Schema0Enum>;
+
+export type Schema0 = Schema0Enum | string;
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
-  openEnums.inboundSchema(ProviderName);
+export const Schema0Enum$outboundSchema: z.ZodType<string, Schema0Enum> =
+  openEnums.outboundSchema(Schema0Enum);
+
 /** @internal */
-export const ProviderName$outboundSchema: z.ZodType<string, ProviderName> =
-  openEnums.outboundSchema(ProviderName);
+export type Schema0$Outbound = string | string;
+
+/** @internal */
+export const Schema0$outboundSchema: z.ZodType<Schema0$Outbound, Schema0> = z
+  .union([Schema0Enum$outboundSchema, z.string()]);
+
+export function schema0ToJSON(schema0: Schema0): string {
+  return JSON.stringify(Schema0$outboundSchema.parse(schema0));
+}

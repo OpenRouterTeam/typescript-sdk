@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 8e530fc8f007ea5179129b89d89ba958
+  docChecksum: e929ecf569d79ab96a315332a4855566
   docVersion: 1.0.0
   speakeasyVersion: 1.666.0
   generationVersion: 2.768.0
-  releaseVersion: 0.2.9
-  configChecksum: 12a255b210945a121402c22f63d8d8e5
+  releaseVersion: 0.2.11
+  configChecksum: e77ce69b2f427b72c26c9a5508fc1232
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -59,10 +59,22 @@ generatedFiles:
   - docs/models/chatcompletionfinishreason.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
+  - docs/models/chatgenerationparamsdatacollection.md
+  - docs/models/chatgenerationparamsengine.md
+  - docs/models/chatgenerationparamsmaxprice.md
+  - docs/models/chatgenerationparamspdf.md
+  - docs/models/chatgenerationparamspdfengine.md
+  - docs/models/chatgenerationparamspluginfileparser.md
+  - docs/models/chatgenerationparamspluginmoderation.md
+  - docs/models/chatgenerationparamspluginresponsehealing.md
+  - docs/models/chatgenerationparamspluginunion.md
+  - docs/models/chatgenerationparamspluginweb.md
+  - docs/models/chatgenerationparamsprovider.md
   - docs/models/chatgenerationparamsresponseformatjsonobject.md
   - docs/models/chatgenerationparamsresponseformatpython.md
   - docs/models/chatgenerationparamsresponseformattext.md
   - docs/models/chatgenerationparamsresponseformatunion.md
+  - docs/models/chatgenerationparamsroute.md
   - docs/models/chatgenerationparamsstop.md
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
@@ -112,7 +124,6 @@ generatedFiles:
   - docs/models/edgenetworktimeoutresponseerrordata.md
   - docs/models/effort.md
   - docs/models/endpointstatus.md
-  - docs/models/engine.md
   - docs/models/errors/badgatewayresponseerror.md
   - docs/models/errors/badrequestresponseerror.md
   - docs/models/errors/chaterror.md
@@ -140,7 +151,6 @@ generatedFiles:
   - docs/models/internalserverresponseerrordata.md
   - docs/models/jsonschemaconfig.md
   - docs/models/listendpointsresponse.md
-  - docs/models/maxprice.md
   - docs/models/message.md
   - docs/models/messagecontent.md
   - docs/models/messagedeveloper.md
@@ -242,6 +252,17 @@ generatedFiles:
   - docs/models/openresponsesreasoningsummarytextdoneevent.md
   - docs/models/openresponsesreasoningtype.md
   - docs/models/openresponsesrequest.md
+  - docs/models/openresponsesrequestengine.md
+  - docs/models/openresponsesrequestmaxprice.md
+  - docs/models/openresponsesrequestpdf.md
+  - docs/models/openresponsesrequestpdfengine.md
+  - docs/models/openresponsesrequestpluginfileparser.md
+  - docs/models/openresponsesrequestpluginmoderation.md
+  - docs/models/openresponsesrequestpluginresponsehealing.md
+  - docs/models/openresponsesrequestpluginunion.md
+  - docs/models/openresponsesrequestpluginweb.md
+  - docs/models/openresponsesrequestprovider.md
+  - docs/models/openresponsesrequestroute.md
   - docs/models/openresponsesrequesttoolfunction.md
   - docs/models/openresponsesrequesttoolunion.md
   - docs/models/openresponsesresponsetext.md
@@ -288,6 +309,7 @@ generatedFiles:
   - docs/models/operations/createembeddingsprovider.md
   - docs/models/operations/createembeddingsrequest.md
   - docs/models/operations/createembeddingsresponse.md
+  - docs/models/operations/createembeddingsresponsebody.md
   - docs/models/operations/createkeysdata.md
   - docs/models/operations/createkeyslimitreset.md
   - docs/models/operations/createkeysrequest.md
@@ -367,18 +389,10 @@ generatedFiles:
   - docs/models/part2.md
   - docs/models/payloadtoolargeresponseerrordata.md
   - docs/models/paymentrequiredresponseerrordata.md
-  - docs/models/pdf.md
-  - docs/models/pdfengine.md
   - docs/models/perrequestlimits.md
-  - docs/models/plugin.md
-  - docs/models/pluginfileparser.md
-  - docs/models/pluginmoderation.md
-  - docs/models/pluginresponsehealing.md
-  - docs/models/pluginweb.md
   - docs/models/pricing.md
   - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
-  - docs/models/provider.md
   - docs/models/providername.md
   - docs/models/provideroverloadedresponseerrordata.md
   - docs/models/providersort.md
@@ -386,6 +400,7 @@ generatedFiles:
   - docs/models/publicendpointquantization.md
   - docs/models/publicpricing.md
   - docs/models/quantization.md
+  - docs/models/quantizations.md
   - docs/models/reason.md
   - docs/models/reasoning.md
   - docs/models/reasoningsummarytext.md
@@ -441,9 +456,12 @@ generatedFiles:
   - docs/models/responseswebsearchuserlocationtype.md
   - docs/models/responsetextconfig.md
   - docs/models/responsetextconfigverbosity.md
+  - docs/models/schema0.md
+  - docs/models/schema0enum.md
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
+  - docs/models/sort.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
@@ -710,6 +728,7 @@ generatedFiles:
   - src/models/responseswebsearchcalloutput.ts
   - src/models/responseswebsearchuserlocation.ts
   - src/models/responsetextconfig.ts
+  - src/models/schema0.ts
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
@@ -1545,7 +1564,7 @@ examples:
     speakeasy-default-list-endpoints-zdr:
       responses:
         "200":
-          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 8891.09, "pricing": {"prompt": 1000, "completion": 1000}, "provider_name": "OpenAI", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 4685.25, "max_prompt_tokens": 22.7, "supported_parameters": ["temperature"], "uptime_last_30m": 6060.66, "supports_implicit_caching": true}]}
+          application/json: {"data": [{"name": "<value>", "model_name": "<value>", "context_length": 8891.09, "pricing": {"prompt": "1000", "completion": "1000"}, "provider_name": "OpenAI", "tag": "<value>", "quantization": "fp16", "max_completion_tokens": 4685.25, "max_prompt_tokens": 22.7, "supported_parameters": ["temperature"], "uptime_last_30m": 6060.66, "supports_implicit_caching": true}]}
         default:
           application/json: {"error": {"code": 400, "message": "Invalid request parameters", "metadata": {"field": "temperature", "reason": "Must be between 0 and 2"}}, "user_id": "user-abc123"}
         "500":

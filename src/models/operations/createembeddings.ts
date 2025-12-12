@@ -55,25 +55,25 @@ export type Ignore = models.ProviderName | string;
  */
 export type MaxPrice = {
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  prompt?: any | undefined;
+  prompt?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  completion?: any | undefined;
+  completion?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  image?: any | undefined;
+  image?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  audio?: any | undefined;
+  audio?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  request?: any | undefined;
+  request?: string | undefined;
 };
 
 export type CreateEmbeddingsProvider = {
@@ -130,6 +130,14 @@ export type CreateEmbeddingsProvider = {
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
   maxPrice?: MaxPrice | undefined;
+  /**
+   * The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
+   */
+  minThroughput?: number | null | undefined;
+  /**
+   * The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
+   */
+  maxLatency?: number | null | undefined;
 };
 
 export type CreateEmbeddingsRequest = {
@@ -174,13 +182,15 @@ export type Usage = {
 /**
  * Embedding response
  */
-export type CreateEmbeddingsResponse = {
+export type CreateEmbeddingsResponseBody = {
   id?: string | undefined;
   object: ObjectT;
   data: Array<CreateEmbeddingsData>;
   model: string;
   usage?: Usage | undefined;
 };
+
+export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
 
 /** @internal */
 export type ImageUrl$Outbound = {
@@ -341,21 +351,21 @@ export function ignoreToJSON(ignore: Ignore): string {
 
 /** @internal */
 export type MaxPrice$Outbound = {
-  prompt?: any | undefined;
-  completion?: any | undefined;
-  image?: any | undefined;
-  audio?: any | undefined;
-  request?: any | undefined;
+  prompt?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
+  audio?: string | undefined;
+  request?: string | undefined;
 };
 
 /** @internal */
 export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
   .object({
-    prompt: z.any().optional(),
-    completion: z.any().optional(),
-    image: z.any().optional(),
-    audio: z.any().optional(),
-    request: z.any().optional(),
+    prompt: z.string().optional(),
+    completion: z.string().optional(),
+    image: z.string().optional(),
+    audio: z.string().optional(),
+    request: z.string().optional(),
   });
 
 export function maxPriceToJSON(maxPrice: MaxPrice): string {
@@ -375,6 +385,8 @@ export type CreateEmbeddingsProvider$Outbound = {
   quantizations?: Array<string> | null | undefined;
   sort?: string | null | undefined;
   max_price?: MaxPrice$Outbound | undefined;
+  min_throughput?: number | null | undefined;
+  max_latency?: number | null | undefined;
 };
 
 /** @internal */
@@ -400,6 +412,8 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
     .optional(),
   sort: z.nullable(models.ProviderSort$outboundSchema).optional(),
   maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
+  minThroughput: z.nullable(z.number()).optional(),
+  maxLatency: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -407,6 +421,8 @@ export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
     dataCollection: "data_collection",
     enforceDistillableText: "enforce_distillable_text",
     maxPrice: "max_price",
+    minThroughput: "min_throughput",
+    maxLatency: "max_latency",
   });
 });
 
@@ -533,8 +549,8 @@ export function usageFromJSON(
 }
 
 /** @internal */
-export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
-  CreateEmbeddingsResponse,
+export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
+  CreateEmbeddingsResponseBody,
   unknown
 > = z.object({
   id: z.string().optional(),
@@ -543,6 +559,25 @@ export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
   model: z.string(),
   usage: z.lazy(() => Usage$inboundSchema).optional(),
 });
+
+export function createEmbeddingsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<CreateEmbeddingsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => CreateEmbeddingsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateEmbeddingsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
+  CreateEmbeddingsResponse,
+  unknown
+> = z.union([
+  z.lazy(() => CreateEmbeddingsResponseBody$inboundSchema),
+  z.string(),
+]);
 
 export function createEmbeddingsResponseFromJSON(
   jsonString: string,

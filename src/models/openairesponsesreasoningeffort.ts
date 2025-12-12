@@ -7,6 +7,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const OpenAIResponsesReasoningEffort = {
+  Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
   Low: "low",

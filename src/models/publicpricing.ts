@@ -13,71 +13,71 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type PublicPricing = {
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  prompt?: any | undefined;
+  prompt: string;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  completion?: any | undefined;
+  completion: string;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  request?: any | undefined;
+  request?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  image?: any | undefined;
+  image?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  imageToken?: any | undefined;
+  imageToken?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  imageOutput?: any | undefined;
+  imageOutput?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  audio?: any | undefined;
+  audio?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  inputAudioCache?: any | undefined;
+  inputAudioCache?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  webSearch?: any | undefined;
+  webSearch?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  internalReasoning?: any | undefined;
+  internalReasoning?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  inputCacheRead?: any | undefined;
+  inputCacheRead?: string | undefined;
   /**
-   * A value in string or number format that is a large number
+   * A value in string format that is a large number
    */
-  inputCacheWrite?: any | undefined;
+  inputCacheWrite?: string | undefined;
   discount?: number | undefined;
 };
 
 /** @internal */
 export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
   .object({
-    prompt: z.any().optional(),
-    completion: z.any().optional(),
-    request: z.any().optional(),
-    image: z.any().optional(),
-    image_token: z.any().optional(),
-    image_output: z.any().optional(),
-    audio: z.any().optional(),
-    input_audio_cache: z.any().optional(),
-    web_search: z.any().optional(),
-    internal_reasoning: z.any().optional(),
-    input_cache_read: z.any().optional(),
-    input_cache_write: z.any().optional(),
+    prompt: z.string(),
+    completion: z.string(),
+    request: z.string().optional(),
+    image: z.string().optional(),
+    image_token: z.string().optional(),
+    image_output: z.string().optional(),
+    audio: z.string().optional(),
+    input_audio_cache: z.string().optional(),
+    web_search: z.string().optional(),
+    internal_reasoning: z.string().optional(),
+    input_cache_read: z.string().optional(),
+    input_cache_write: z.string().optional(),
     discount: z.number().optional(),
   }).transform((v) => {
     return remap$(v, {
