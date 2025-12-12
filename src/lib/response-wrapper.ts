@@ -1,38 +1,39 @@
-import type { OpenRouterCore } from '../core.js';
-import type * as models from '../models/index.js';
-import type { EventStream } from './event-streams.js';
-import type { RequestOptions } from './sdks.js';
-import type {
-  ChatStreamEvent,
-  EnhancedResponseStreamEvent,
-  Tool,
-  MaxToolRounds,
-  ParsedToolCall,
-  ToolStreamEvent,
-  TurnContext,
-} from './tool-types.js';
-
-import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
-import { ReusableReadableStream } from './reusable-stream.js';
+import { OpenRouterCore } from "../core.js";
+import { EventStream } from "./event-streams.js";
+import { RequestOptions } from "./sdks.js";
+import * as models from "../models/index.js";
+import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
+import { ReusableReadableStream } from "./reusable-stream.js";
 import {
+  extractTextDeltas,
+  extractReasoningDeltas,
+  extractToolDeltas,
   buildMessageStream,
-  buildToolCallStream,
   consumeStreamForCompletion,
   extractMessageFromResponse,
-  extractReasoningDeltas,
-  extractTextDeltas,
   extractTextFromResponse,
   extractToolCallsFromResponse,
-  extractToolDeltas,
-} from './stream-transformers.js';
-import { executeTool } from './tool-executor.js';
-import { hasExecuteFunction } from './tool-types.js';
+  buildToolCallStream,
+} from "./stream-transformers.js";
+import {
+  EnhancedTool,
+  ParsedToolCall,
+  MaxToolRounds,
+  TurnContext,
+  hasExecuteFunction,
+  EnhancedResponseStreamEvent,
+  ToolStreamEvent,
+  ChatStreamEvent,
+} from "./tool-types.js";
+import {
+  executeTool,
+} from "./tool-executor.js";
 
 export interface GetResponseOptions {
   request: models.OpenResponsesRequest;
   client: OpenRouterCore;
   options?: RequestOptions;
-  tools?: Tool[];
+  tools?: EnhancedTool[];
   maxToolRounds?: MaxToolRounds;
 }
 
@@ -70,20 +71,6 @@ export class ResponseWrapper {
   }
 
   /**
-   * Type guard to check if a value is a non-streaming response
-   */
-  private isNonStreamingResponse(value: unknown): value is models.OpenResponsesNonStreamingResponse {
-    return (
-      value !== null &&
-      typeof value === "object" &&
-      "id" in value &&
-      "object" in value &&
-      "output" in value &&
-      !("toReadableStream" in value)
-    );
-  }
-
-  /**
    * Initialize the stream if not already started
    * This is idempotent - multiple calls will return the same promise
    */
@@ -94,10 +81,7 @@ export class ResponseWrapper {
 
     this.initPromise = (async () => {
       // Force stream mode
-      const request = {
-        ...this.options.request,
-        stream: true as const,
-      };
+      const request = { ...this.options.request, stream: true as const };
 
       // Create the stream promise
       this.streamPromise = betaResponsesSend(
@@ -132,17 +116,18 @@ export class ResponseWrapper {
       await this.initStream();
 
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       // Get the initial response
       const initialResponse = await consumeStreamForCompletion(this.reusableStream);
 
       // Check if we have tools and if auto-execution is enabled
-      const shouldAutoExecute =
-        this.options.tools &&
-        this.options.tools.length > 0 &&
-        initialResponse.output.some((item) => 'type' in item && item.type === 'function_call');
+      const shouldAutoExecute = this.options.tools &&
+                                this.options.tools.length > 0 &&
+                                initialResponse.output.some(
+                                  (item) => "type" in item && item.type === "function_call"
+                                );
 
       if (!shouldAutoExecute) {
         // No tools to execute, use initial response
@@ -189,21 +174,17 @@ export class ResponseWrapper {
         }
 
         // Check if we should continue based on maxToolRounds
-        if (typeof maxToolRounds === 'number') {
+        if (typeof maxToolRounds === "number") {
           if (currentRound >= maxToolRounds) {
             break;
           }
-        } else if (typeof maxToolRounds === 'function') {
+        } else if (typeof maxToolRounds === "function") {
           // Function signature: (context: TurnContext) => boolean
           const turnContext: TurnContext = {
             numberOfTurns: currentRound + 1,
             messageHistory: currentInput,
-            ...(this.options.request.model && {
-              model: this.options.request.model,
-            }),
-            ...(this.options.request.models && {
-              models: this.options.request.models,
-            }),
+            ...(this.options.request.model && { model: this.options.request.model }),
+            ...(this.options.request.models && { models: this.options.request.models }),
           };
           const shouldContinue = maxToolRounds(turnContext);
           if (!shouldContinue) {
@@ -222,12 +203,8 @@ export class ResponseWrapper {
         const turnContext: TurnContext = {
           numberOfTurns: currentRound + 1, // 1-indexed
           messageHistory: currentInput,
-          ...(this.options.request.model && {
-            model: this.options.request.model,
-          }),
-          ...(this.options.request.models && {
-            models: this.options.request.models,
-          }),
+          ...(this.options.request.model && { model: this.options.request.model }),
+          ...(this.options.request.models && { models: this.options.request.models }),
         };
 
         // Execute all tool calls
@@ -248,13 +225,11 @@ export class ResponseWrapper {
           }
 
           toolResults.push({
-            type: 'function_call_output' as const,
+            type: "function_call_output" as const,
             id: `output_${toolCall.id}`,
             callId: toolCall.id,
             output: result.error
-              ? JSON.stringify({
-                  error: result.error.message,
-                })
+              ? JSON.stringify({ error: result.error.message })
               : JSON.stringify(result.result),
           });
         }
@@ -262,11 +237,7 @@ export class ResponseWrapper {
         // Build new input with tool results
         // For the Responses API, we need to include the tool results in the input
         const newInput: models.OpenResponsesInput = [
-          ...(Array.isArray(currentResponse.output)
-            ? currentResponse.output
-            : [
-                currentResponse.output,
-              ]),
+          ...(Array.isArray(currentResponse.output) ? currentResponse.output : [currentResponse.output]),
           ...toolResults,
         ];
 
@@ -283,7 +254,7 @@ export class ResponseWrapper {
         const newResult = await betaResponsesSend(
           this.options.client,
           newRequest,
-          this.options.options,
+          this.options.options
         );
 
         if (!newResult.ok) {
@@ -292,61 +263,21 @@ export class ResponseWrapper {
 
         // Handle the result - it might be a stream or a response
         const value = newResult.value;
-        if (value && typeof value === 'object' && 'toReadableStream' in value) {
+        if (value && typeof value === "object" && "toReadableStream" in value) {
           // It's a stream, consume it
-          const stream = new ReusableReadableStream(
-            value as EventStream<models.OpenResponsesStreamEvent>,
-          );
+          const stream = new ReusableReadableStream(value as EventStream<models.OpenResponsesStreamEvent>);
           currentResponse = await consumeStreamForCompletion(stream);
-        } else if (this.isNonStreamingResponse(value)) {
-          currentResponse = value;
         } else {
-          throw new Error("Unexpected response type from API");
+          currentResponse = value as models.OpenResponsesNonStreamingResponse;
         }
 
         currentRound++;
-      }
-
-      // Validate the final response has required fields
-      if (!currentResponse || !currentResponse.id || !currentResponse.output) {
-        throw new Error("Invalid final response: missing required fields");
-      }
-
-      // Ensure the response is in a completed state (has output content)
-      if (!Array.isArray(currentResponse.output) || currentResponse.output.length === 0) {
-        throw new Error("Invalid final response: empty or invalid output");
       }
 
       this.finalResponse = currentResponse;
     })();
 
     return this.toolExecutionPromise;
-  }
-
-  /**
-   * Internal helper to get the message after tool execution
-   */
-  private async getMessageInternal(): Promise<models.AssistantMessage> {
-    await this.executeToolsIfNeeded();
-
-    if (!this.finalResponse) {
-      throw new Error("Response not available");
-    }
-
-    return extractMessageFromResponse(this.finalResponse);
-  }
-
-  /**
-   * Internal helper to get the text after tool execution
-   */
-  private async getTextInternal(): Promise<string> {
-    await this.executeToolsIfNeeded();
-
-    if (!this.finalResponse) {
-      throw new Error("Response not available");
-    }
-
-    return extractTextFromResponse(this.finalResponse);
   }
 
   /**
@@ -359,7 +290,16 @@ export class ResponseWrapper {
       return this.messagePromise;
     }
 
-    this.messagePromise = this.getMessageInternal();
+    this.messagePromise = (async (): Promise<models.AssistantMessage> => {
+      await this.executeToolsIfNeeded();
+
+      if (!this.finalResponse) {
+        throw new Error("Response not available");
+      }
+
+      return extractMessageFromResponse(this.finalResponse);
+    })();
+
     return this.messagePromise;
   }
 
@@ -372,7 +312,16 @@ export class ResponseWrapper {
       return this.textPromise;
     }
 
-    this.textPromise = this.getTextInternal();
+    this.textPromise = (async () => {
+      await this.executeToolsIfNeeded();
+
+      if (!this.finalResponse) {
+        throw new Error("Response not available");
+      }
+
+      return extractTextFromResponse(this.finalResponse);
+    })();
+
     return this.textPromise;
   }
 
@@ -385,7 +334,7 @@ export class ResponseWrapper {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error('Response not available');
+      throw new Error("Response not available");
     }
 
     return this.finalResponse;
@@ -397,10 +346,10 @@ export class ResponseWrapper {
    * Includes preliminary tool result events after tool execution.
    */
   getFullResponsesStream(): AsyncIterableIterator<EnhancedResponseStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       const consumer = this.reusableStream.createConsumer();
@@ -417,14 +366,14 @@ export class ResponseWrapper {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: 'tool.preliminary_result' as const,
+            type: "tool.preliminary_result" as const,
             toolCallId,
             result,
             timestamp: Date.now(),
           };
         }
       }
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -432,14 +381,14 @@ export class ResponseWrapper {
    * This filters the full event stream to only yield text content.
    */
   getTextStream(): AsyncIterableIterator<string> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       yield* extractTextDeltas(this.reusableStream);
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -448,13 +397,11 @@ export class ResponseWrapper {
    * Also yields ToolResponseMessages after tool execution completes.
    * Returns AssistantMessage or ToolResponseMessage in chat format.
    */
-  getNewMessagesStream(): AsyncIterableIterator<
-    models.AssistantMessage | models.ToolResponseMessage
-  > {
-    return async function* (this: ResponseWrapper) {
+  getNewMessagesStream(): AsyncIterableIterator<models.AssistantMessage | models.ToolResponseMessage> {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       // First yield assistant messages from the stream
@@ -474,15 +421,14 @@ export class ResponseWrapper {
 
           // Get the result from preliminary results or construct from the response
           const prelimResults = this.preliminaryResults.get(toolCall.id);
-          const result =
-            prelimResults && prelimResults.length > 0
-              ? prelimResults[prelimResults.length - 1] // Last result is the final output
-              : undefined;
+          const result = prelimResults && prelimResults.length > 0
+            ? prelimResults[prelimResults.length - 1] // Last result is the final output
+            : undefined;
 
           // Yield tool response message
           yield {
-            role: 'tool' as const,
-            content: result !== undefined ? JSON.stringify(result) : '',
+            role: "tool" as const,
+            content: result !== undefined ? JSON.stringify(result) : "",
             toolCallId: toolCall.id,
           } as models.ToolResponseMessage;
         }
@@ -492,13 +438,13 @@ export class ResponseWrapper {
       if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
         // Check if the final response contains a message
         const hasMessage = this.finalResponse.output.some(
-          (item) => 'type' in item && item.type === 'message',
+          (item) => "type" in item && item.type === "message"
         );
         if (hasMessage) {
           yield extractMessageFromResponse(this.finalResponse);
         }
       }
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -506,14 +452,14 @@ export class ResponseWrapper {
    * This filters the full event stream to only yield reasoning content.
    */
   getReasoningStream(): AsyncIterableIterator<string> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       yield* extractReasoningDeltas(this.reusableStream);
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -523,18 +469,15 @@ export class ResponseWrapper {
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
   getToolStream(): AsyncIterableIterator<ToolStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       // Yield tool deltas as structured events
       for await (const delta of extractToolDeltas(this.reusableStream)) {
-        yield {
-          type: 'delta' as const,
-          content: delta,
-        };
+        yield { type: "delta" as const, content: delta };
       }
 
       // After stream completes, check if tools were executed and emit preliminary results
@@ -544,13 +487,13 @@ export class ResponseWrapper {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: 'preliminary_result' as const,
+            type: "preliminary_result" as const,
             toolCallId,
             result,
           };
         }
       }
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -564,31 +507,29 @@ export class ResponseWrapper {
    * this may not be a perfect mapping.
    */
   getFullChatStream(): AsyncIterableIterator<ChatStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       const consumer = this.reusableStream.createConsumer();
 
       for await (const event of consumer) {
-        if (!('type' in event)) {
-          continue;
-        }
+        if (!("type" in event)) continue;
 
         // Transform responses events to chat-like format
         // This is a simplified transformation - you may need to adjust based on your needs
-        if (event.type === 'response.output_text.delta') {
+        if (event.type === "response.output_text.delta") {
           const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
           yield {
-            type: 'content.delta' as const,
+            type: "content.delta" as const,
             delta: deltaEvent.delta,
           };
-        } else if (event.type === 'response.completed') {
+        } else if (event.type === "response.completed") {
           const completedEvent = event as models.OpenResponsesStreamEventResponseCompleted;
           yield {
-            type: 'message.complete' as const,
+            type: "message.complete" as const,
             response: completedEvent.response,
           };
         } else {
@@ -607,13 +548,13 @@ export class ResponseWrapper {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: 'tool.preliminary_result' as const,
+            type: "tool.preliminary_result" as const,
             toolCallId,
             result,
           };
         }
       }
-    }.call(this);
+    }.call(this));
   }
 
   /**
@@ -625,7 +566,7 @@ export class ResponseWrapper {
   async getToolCalls(): Promise<ParsedToolCall[]> {
     await this.initStream();
     if (!this.reusableStream) {
-      throw new Error('Stream not initialized');
+      throw new Error("Stream not initialized");
     }
 
     const completedResponse = await consumeStreamForCompletion(this.reusableStream);
@@ -637,15 +578,16 @@ export class ResponseWrapper {
    * Each iteration yields a complete tool call with parsed arguments.
    */
   getToolCallsStream(): AsyncIterableIterator<ParsedToolCall> {
-    return async function* (this: ResponseWrapper) {
+    return (async function* (this: ResponseWrapper) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
+        throw new Error("Stream not initialized");
       }
 
       yield* buildToolCallStream(this.reusableStream);
-    }.call(this);
+    }.call(this));
   }
+
 
   /**
    * Cancel the underlying stream and all consumers

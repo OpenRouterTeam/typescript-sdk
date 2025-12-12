@@ -3795,8 +3795,6 @@ components:
                   enabled:
                     type: boolean
                     description: Set to false to disable the file-parser plugin for this request. Defaults to true.
-                  max_files:
-                    type: number
                   pdf:
                     type: object
                     properties:
@@ -5328,8 +5326,6 @@ components:
                     const: file-parser
                   enabled:
                     type: boolean
-                  max_files:
-                    type: number
                   pdf:
                     type: object
                     properties:

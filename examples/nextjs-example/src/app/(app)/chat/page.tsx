@@ -1,10 +1,7 @@
 'use client';
 
-import type { Message as OpenRouterMessageRequest } from '@openrouter/sdk/models';
 import type React from 'react';
 
-import { Bot, MessageSquare, Send, Settings, User } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,6 +14,9 @@ import {
 } from '@/components/ui/select';
 import { useApiKey } from '@/lib/hooks/use-api-key';
 import { useOpenRouter } from '@/lib/hooks/use-openrouter-client';
+import { Message as OpenRouterMessageRequest } from '@openrouter/sdk/models';
+import { Bot, MessageSquare, Send, Settings, User } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { NotConnectedDialog } from './_dialogs/not-connected';
 
 type Message = OpenRouterMessageRequest & {
@@ -56,15 +56,11 @@ export default function Page() {
 
   const handleSend = async () => {
     const input = inputRef.current?.value;
-    if (!input) {
-      return;
-    }
+    if (!input) return;
 
     setIsLoading(true);
 
-    if (!input.trim() || isLoading) {
-      return;
-    }
+    if (!input.trim() || isLoading) return;
 
     const userMessage: OpenRouterMessageRequest = {
       role: 'user',

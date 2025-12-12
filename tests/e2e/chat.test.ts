@@ -1,5 +1,3 @@
-import type { ChatStreamingResponseChunkData } from '../../src/models/chatstreamingresponsechunk.js';
-
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
 
@@ -113,7 +111,7 @@ describe('Chat E2E Tests', () => {
 
       expect(response).toBeDefined();
 
-      const chunks: ChatStreamingResponseChunkData[] = [];
+      const chunks: any[] = [];
 
       for await (const chunk of response) {
         expect(chunk).toBeDefined();

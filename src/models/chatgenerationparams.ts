@@ -159,7 +159,6 @@ export type ChatGenerationParamsPdf = {
 export type ChatGenerationParamsPluginFileParser = {
   id: "file-parser";
   enabled?: boolean | undefined;
-  maxFiles?: number | undefined;
   pdf?: ChatGenerationParamsPdf | undefined;
 };
 
@@ -454,7 +453,6 @@ export function chatGenerationParamsPdfToJSON(
 export type ChatGenerationParamsPluginFileParser$Outbound = {
   id: "file-parser";
   enabled?: boolean | undefined;
-  max_files?: number | undefined;
   pdf?: ChatGenerationParamsPdf$Outbound | undefined;
 };
 
@@ -465,12 +463,7 @@ export const ChatGenerationParamsPluginFileParser$outboundSchema: z.ZodType<
 > = z.object({
   id: z.literal("file-parser"),
   enabled: z.boolean().optional(),
-  maxFiles: z.number().optional(),
   pdf: z.lazy(() => ChatGenerationParamsPdf$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxFiles: "max_files",
-  });
 });
 
 export function chatGenerationParamsPluginFileParserToJSON(

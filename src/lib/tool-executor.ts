@@ -1,35 +1,37 @@
-import type { ZodType } from 'zod/v4';
-import type {
-  APITool,
-  Tool,
-  ParsedToolCall,
+import { ZodError, toJSONSchema, type ZodType } from "zod/v4";
+import {
+  EnhancedTool,
   ToolExecutionResult,
+  ParsedToolCall,
+  APITool,
   TurnContext,
-} from './tool-types.js';
-
-import { toJSONSchema, ZodError } from 'zod/v4';
-import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './tool-types.js';
+  hasExecuteFunction,
+  isGeneratorTool,
+  isRegularExecuteTool,
+} from "./tool-types.js";
 
 /**
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
  */
-export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
-  const jsonSchema = toJSONSchema(zodSchema, {
-    target: 'openapi-3.0',
-  });
-  return jsonSchema as Record<string, unknown>;
+export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, any> {
+  const jsonSchema = toJSONSchema(zodSchema as any, {
+    target: "openapi-3.0",
+  } as any);
+  return jsonSchema as Record<string, any>;
 }
 
 /**
- * Convert tools to OpenRouter API format
+ * Convert enhanced tools to OpenRouter API format
  */
-export function convertToolsToAPIFormat(tools: Tool[]): APITool[] {
+export function convertEnhancedToolsToAPIFormat(
+  tools: EnhancedTool[]
+): APITool[] {
   return tools.map((tool) => ({
-    type: 'function' as const,
+    type: "function" as const,
     name: tool.function.name,
     description: tool.function.description || null,
     strict: null,
-    parameters: convertZodToJsonSchema(tool.function.inputSchema),
+    parameters: convertZodToJsonSchema(tool.function.inputSchema as any),
   }));
 }
 
@@ -59,7 +61,7 @@ export function parseToolCallArguments(argumentsString: string): unknown {
     throw new Error(
       `Failed to parse tool call arguments: ${
         error instanceof Error ? error.message : String(error)
-      }`,
+      }`
     );
   }
 }
@@ -68,29 +70,34 @@ export function parseToolCallArguments(argumentsString: string): unknown {
  * Execute a regular (non-generator) tool
  */
 export async function executeRegularTool(
-  tool: Tool,
+  tool: EnhancedTool,
   toolCall: ParsedToolCall,
-  context: TurnContext,
+  context: TurnContext
 ): Promise<ToolExecutionResult> {
   if (!isRegularExecuteTool(tool)) {
     throw new Error(
-      `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`,
+      `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`
     );
   }
 
   try {
-    // Validate input - the schema validation ensures type safety at runtime
+    // Validate input
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
-      toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+      toolCall.arguments
+    );
 
     // Execute tool with context
-    const result = await Promise.resolve(tool.function.execute(validatedInput, context));
+    const result = await Promise.resolve(
+      tool.function.execute(validatedInput as any, context)
+    );
 
     // Validate output if schema is provided
     if (tool.function.outputSchema) {
-      const validatedOutput = validateToolOutput(tool.function.outputSchema, result);
+      const validatedOutput = validateToolOutput(
+        tool.function.outputSchema,
+        result
+      );
 
       return {
         toolCallId: toolCall.id,
@@ -121,28 +128,28 @@ export async function executeRegularTool(
  * - Generator must emit at least one value
  */
 export async function executeGeneratorTool(
-  tool: Tool,
+  tool: EnhancedTool,
   toolCall: ParsedToolCall,
   context: TurnContext,
-  onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
+  onPreliminaryResult?: (toolCallId: string, result: unknown) => void
 ): Promise<ToolExecutionResult> {
   if (!isGeneratorTool(tool)) {
     throw new Error(`Tool "${toolCall.name}" is not a generator tool`);
   }
 
   try {
-    // Validate input - the schema validation ensures type safety at runtime
+    // Validate input
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
-      toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+      toolCall.arguments
+    );
 
     // Execute generator and collect all results
     const preliminaryResults: unknown[] = [];
     let lastEmittedValue: unknown = null;
     let hasEmittedValue = false;
 
-    for await (const event of tool.function.execute(validatedInput, context)) {
+    for await (const event of tool.function.execute(validatedInput as any, context)) {
       hasEmittedValue = true;
 
       // Validate event against eventSchema
@@ -159,11 +166,16 @@ export async function executeGeneratorTool(
 
     // Generator must emit at least one value
     if (!hasEmittedValue) {
-      throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
+      throw new Error(
+        `Generator tool "${toolCall.name}" completed without emitting any values`
+      );
     }
 
     // Validate the last emitted value against outputSchema (this is the final result)
-    const finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
+    const finalResult = validateToolOutput(
+      tool.function.outputSchema,
+      lastEmittedValue
+    );
 
     // Remove last item from preliminaryResults since it's the final output
     preliminaryResults.pop();
@@ -189,13 +201,15 @@ export async function executeGeneratorTool(
  * Automatically detects if it's a regular or generator tool
  */
 export async function executeTool(
-  tool: Tool,
+  tool: EnhancedTool,
   toolCall: ParsedToolCall,
   context: TurnContext,
-  onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
+  onPreliminaryResult?: (toolCallId: string, result: unknown) => void
 ): Promise<ToolExecutionResult> {
   if (!hasExecuteFunction(tool)) {
-    throw new Error(`Tool "${toolCall.name}" has no execute function. Use manual tool execution.`);
+    throw new Error(
+      `Tool "${toolCall.name}" has no execute function. Use manual tool execution.`
+    );
   }
 
   if (isGeneratorTool(tool)) {
@@ -208,7 +222,10 @@ export async function executeTool(
 /**
  * Find a tool by name in the tools array
  */
-export function findToolByName(tools: Tool[], name: string): Tool | undefined {
+export function findToolByName(
+  tools: EnhancedTool[],
+  name: string
+): EnhancedTool | undefined {
   return tools.find((tool) => tool.function.name === name);
 }
 
@@ -229,14 +246,21 @@ export function formatToolResultForModel(result: ToolExecutionResult): string {
 /**
  * Create a user-friendly error message for tool execution errors
  */
-export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall): string {
+export function formatToolExecutionError(
+  error: Error,
+  toolCall: ParsedToolCall
+): string {
   if (error instanceof ZodError) {
     const issues = error.issues.map((issue) => ({
-      path: issue.path.join('.'),
+      path: issue.path.join("."),
       message: issue.message,
     }));
 
-    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(issues, null, 2)}`;
+    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(
+      issues,
+      null,
+      2
+    )}`;
   }
 
   return `Tool "${toolCall.name}" execution error: ${error.message}`;

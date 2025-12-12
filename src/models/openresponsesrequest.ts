@@ -218,7 +218,6 @@ export type OpenResponsesRequestPluginFileParser = {
    * Set to false to disable the file-parser plugin for this request. Defaults to true.
    */
   enabled?: boolean | undefined;
-  maxFiles?: number | undefined;
   pdf?: OpenResponsesRequestPdf | undefined;
 };
 
@@ -600,7 +599,6 @@ export function openResponsesRequestPdfToJSON(
 export type OpenResponsesRequestPluginFileParser$Outbound = {
   id: "file-parser";
   enabled?: boolean | undefined;
-  max_files?: number | undefined;
   pdf?: OpenResponsesRequestPdf$Outbound | undefined;
 };
 
@@ -611,12 +609,7 @@ export const OpenResponsesRequestPluginFileParser$outboundSchema: z.ZodType<
 > = z.object({
   id: z.literal("file-parser"),
   enabled: z.boolean().optional(),
-  maxFiles: z.number().optional(),
   pdf: z.lazy(() => OpenResponsesRequestPdf$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxFiles: "max_files",
-  });
 });
 
 export function openResponsesRequestPluginFileParserToJSON(
