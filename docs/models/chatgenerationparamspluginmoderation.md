@@ -1,11 +1,11 @@
-# PluginModeration
+# ChatGenerationParamsPluginModeration
 
 ## Example Usage
 
 ```typescript
-import { PluginModeration } from "@openrouter/sdk/models";
+import { ChatGenerationParamsPluginModeration } from "@openrouter/sdk/models";
 
-let value: PluginModeration = {
+let value: ChatGenerationParamsPluginModeration = {
   id: "moderation",
 };
 ```

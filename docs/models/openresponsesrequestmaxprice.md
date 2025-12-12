@@ -1,13 +1,13 @@
-# MaxPrice
+# OpenResponsesRequestMaxPrice
 
 The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
 
 ## Example Usage
 
 ```typescript
-import { MaxPrice } from "@openrouter/sdk/models/operations";
+import { OpenResponsesRequestMaxPrice } from "@openrouter/sdk/models";
 
-let value: MaxPrice = {};
+let value: OpenResponsesRequestMaxPrice = {};
 ```
 
 ## Fields

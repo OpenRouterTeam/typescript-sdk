@@ -6,25 +6,25 @@
 import { Pricing } from "@openrouter/sdk/models";
 
 let value: Pricing = {
-  prompt: 1000,
+  prompt: "1000",
   completion: "1000",
 };
 ```
 
 ## Fields
 
-| Field                                                     | Type                                                      | Required                                                  | Description                                               |
-| --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `prompt`                                                  | *any*                                                     | :heavy_check_mark:                                        | A value in string or number format that is a large number |
-| `completion`                                              | *any*                                                     | :heavy_check_mark:                                        | A value in string or number format that is a large number |
-| `request`                                                 | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `image`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `imageToken`                                              | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `imageOutput`                                             | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `audio`                                                   | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputAudioCache`                                         | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `webSearch`                                               | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `internalReasoning`                                       | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputCacheRead`                                          | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `inputCacheWrite`                                         | *any*                                                     | :heavy_minus_sign:                                        | A value in string or number format that is a large number |
-| `discount`                                                | *number*                                                  | :heavy_minus_sign:                                        | N/A                                                       |
+| Field                                           | Type                                            | Required                                        | Description                                     | Example                                         |
+| ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
+| `prompt`                                        | *string*                                        | :heavy_check_mark:                              | A value in string format that is a large number | 1000                                            |
+| `completion`                                    | *string*                                        | :heavy_check_mark:                              | A value in string format that is a large number | 1000                                            |
+| `request`                                       | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `image`                                         | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `imageToken`                                    | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `imageOutput`                                   | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `audio`                                         | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `inputAudioCache`                               | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `webSearch`                                     | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `internalReasoning`                             | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `inputCacheRead`                                | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `inputCacheWrite`                               | *string*                                        | :heavy_minus_sign:                              | A value in string format that is a large number | 1000                                            |
+| `discount`                                      | *number*                                        | :heavy_minus_sign:                              | N/A                                             |                                                 |

@@ -1,11 +1,11 @@
-# Effort
+# Sort
 
 ## Example Usage
 
 ```typescript
-import { Effort } from "@openrouter/sdk/models";
+import { Sort } from "@openrouter/sdk/models";
 
-let value: Effort = "minimal";
+let value: Sort = "throughput";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: Effort = "minimal";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"none" | "minimal" | "low" | "medium" | "high" | "xhigh" | Unrecognized<string>
+"price" | "throughput" | "latency" | Unrecognized<string>
 ```

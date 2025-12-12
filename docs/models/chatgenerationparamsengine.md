@@ -1,11 +1,11 @@
-# Engine
+# ChatGenerationParamsEngine
 
 ## Example Usage
 
 ```typescript
-import { Engine } from "@openrouter/sdk/models";
+import { ChatGenerationParamsEngine } from "@openrouter/sdk/models";
 
-let value: Engine = "exa";
+let value: ChatGenerationParamsEngine = "native";
 ```
 
 ## Values

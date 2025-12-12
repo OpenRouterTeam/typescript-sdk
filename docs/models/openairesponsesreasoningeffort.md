@@ -5,7 +5,7 @@
 ```typescript
 import { OpenAIResponsesReasoningEffort } from "@openrouter/sdk/models";
 
-let value: OpenAIResponsesReasoningEffort = "high";
+let value: OpenAIResponsesReasoningEffort = "xhigh";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: OpenAIResponsesReasoningEffort = "high";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
 ```

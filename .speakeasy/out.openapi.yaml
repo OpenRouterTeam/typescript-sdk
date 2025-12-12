@@ -1063,6 +1063,7 @@ components:
       type: string
       nullable: true
       enum:
+        - xhigh
         - high
         - medium
         - low
@@ -3496,6 +3497,7 @@ components:
         - Infermatic
         - Inflection
         - Liquid
+        - Mara
         - Mancer 2
         - Minimax
         - ModelRun
@@ -3516,6 +3518,7 @@ components:
         - Relace
         - SambaNova
         - SiliconFlow
+        - Sourceful
         - Stealth
         - StreamLake
         - Switchpoint
@@ -3523,6 +3526,7 @@ components:
         - Together
         - Venice
         - WandB
+        - Xiaomi
         - xAI
         - Z.AI
         - FakeProvider
@@ -3554,12 +3558,8 @@ components:
       example: price
       x-speakeasy-unknown-values: allow
     BigNumberUnion:
-      anyOf:
-        - type: number
-        - type: string
-        - type: number
-          example: 1000
-      description: A value in string or number format that is a large number
+      type: string
+      description: A value in string format that is a large number
       example: 1000
     OpenResponsesRequest:
       type: object
@@ -3747,9 +3747,20 @@ components:
                   $ref: '#/components/schemas/BigNumberUnion'
                 request:
                   $ref: '#/components/schemas/BigNumberUnion'
-              additionalProperties: false
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+            min_throughput:
+              type: number
+              nullable: true
+              example: 100
+              description: >-
+                The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
+            max_latency:
+              type: number
+              nullable: true
+              example: 5
+              description: >-
+                The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
@@ -3770,6 +3781,9 @@ components:
                     type: string
                     enum:
                       - web
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the web-search plugin for this request. Defaults to true.
                   max_results:
                     type: number
                   search_prompt:
@@ -3788,6 +3802,9 @@ components:
                     type: string
                     enum:
                       - file-parser
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the file-parser plugin for this request. Defaults to true.
                   max_files:
                     type: number
                   pdf:
@@ -3808,14 +3825,31 @@ components:
                     type: string
                     enum:
                       - response-healing
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the response-healing plugin for this request. Defaults to true.
                 required:
                   - id
           description: Plugins you want to enable for this request, including their settings.
+        route:
+          type: string
+          nullable: true
+          enum:
+            - fallback
+            - sort
+          description: >-
+            Routing strategy for multiple models: "fallback" (default) uses secondary models as backups, "sort" sorts all endpoints together by routing criteria.
+          x-speakeasy-unknown-values: allow
         user:
           type: string
           maxLength: 128
           description: >-
             A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
+        session_id:
+          type: string
+          maxLength: 128
+          description: >-
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
       description: Request schema for Responses endpoint
       example:
         model: anthropic/claude-4.5-sonnet-20250929
@@ -4605,6 +4639,88 @@ components:
             uptime_last_30m: 99.5
             supports_implicit_caching: true
     __schema0:
+      type: array
+      items:
+        anyOf:
+          - type: string
+            enum:
+              - AI21
+              - AionLabs
+              - Alibaba
+              - Amazon Bedrock
+              - Amazon Nova
+              - Anthropic
+              - Arcee AI
+              - AtlasCloud
+              - Avian
+              - Azure
+              - BaseTen
+              - BytePlus
+              - Black Forest Labs
+              - Cerebras
+              - Chutes
+              - Cirrascale
+              - Clarifai
+              - Cloudflare
+              - Cohere
+              - Crusoe
+              - DeepInfra
+              - DeepSeek
+              - Featherless
+              - Fireworks
+              - Friendli
+              - GMICloud
+              - GoPomelo
+              - Google
+              - Google AI Studio
+              - Groq
+              - Hyperbolic
+              - Inception
+              - InferenceNet
+              - Infermatic
+              - Inflection
+              - Liquid
+              - Mara
+              - Mancer 2
+              - Minimax
+              - ModelRun
+              - Mistral
+              - Modular
+              - Moonshot AI
+              - Morph
+              - NCompass
+              - Nebius
+              - NextBit
+              - Novita
+              - Nvidia
+              - OpenAI
+              - OpenInference
+              - Parasail
+              - Perplexity
+              - Phala
+              - Relace
+              - SambaNova
+              - SiliconFlow
+              - Sourceful
+              - Stealth
+              - StreamLake
+              - Switchpoint
+              - Targon
+              - Together
+              - Venice
+              - WandB
+              - Xiaomi
+              - xAI
+              - Z.AI
+              - FakeProvider
+            x-speakeasy-unknown-values: allow
+          - type: string
+    __schema1:
+      anyOf:
+        - type: number
+        - type: string
+        - type: number
+    __schema2:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
         - type: 'null'
@@ -5065,6 +5181,206 @@ components:
     ChatGenerationParams:
       type: object
       properties:
+        provider:
+          description: When multiple model providers are available, optionally indicate your routing preference.
+          anyOf:
+            - type: object
+              properties:
+                allow_fallbacks:
+                  description: >
+                    Whether to allow backup providers to serve requests
+
+                    - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+                    - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+                  anyOf:
+                    - type: boolean
+                    - type: 'null'
+                require_parameters:
+                  description: >-
+                    Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+                  anyOf:
+                    - type: boolean
+                    - type: 'null'
+                data_collection:
+                  description: >-
+                    Data collection setting. If no available model provider meets the requirement, your request will return an error.
+
+                    - allow: (default) allow providers which store user data non-transiently and may train on it
+
+
+                    - deny: use only providers which do not collect user data.
+                  anyOf:
+                    - type: string
+                      enum:
+                        - deny
+                        - allow
+                      x-speakeasy-unknown-values: allow
+                    - type: 'null'
+                zdr:
+                  anyOf:
+                    - type: boolean
+                    - type: 'null'
+                enforce_distillable_text:
+                  anyOf:
+                    - type: boolean
+                    - type: 'null'
+                order:
+                  description: >-
+                    An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+                  anyOf:
+                    - $ref: '#/components/schemas/__schema0'
+                    - type: 'null'
+                only:
+                  description: >-
+                    List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+                  anyOf:
+                    - $ref: '#/components/schemas/__schema0'
+                    - type: 'null'
+                ignore:
+                  description: >-
+                    List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+                  anyOf:
+                    - $ref: '#/components/schemas/__schema0'
+                    - type: 'null'
+                quantizations:
+                  description: A list of quantization levels to filter the provider by.
+                  anyOf:
+                    - type: array
+                      items:
+                        type: string
+                        enum:
+                          - int4
+                          - int8
+                          - fp4
+                          - fp6
+                          - fp8
+                          - fp16
+                          - bf16
+                          - fp32
+                          - unknown
+                        x-speakeasy-unknown-values: allow
+                    - type: 'null'
+                sort:
+                  description: >-
+                    The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+                  anyOf:
+                    - type: string
+                      enum:
+                        - price
+                        - throughput
+                        - latency
+                      x-speakeasy-unknown-values: allow
+                    - type: 'null'
+                max_price:
+                  description: >-
+                    The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+                  type: object
+                  properties:
+                    prompt:
+                      $ref: '#/components/schemas/__schema1'
+                    completion:
+                      $ref: '#/components/schemas/__schema1'
+                    image:
+                      $ref: '#/components/schemas/__schema1'
+                    audio:
+                      $ref: '#/components/schemas/__schema1'
+                    request:
+                      $ref: '#/components/schemas/__schema1'
+                min_throughput:
+                  description: >-
+                    The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                max_latency:
+                  description: >-
+                    The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+              additionalProperties: false
+            - type: 'null'
+        plugins:
+          description: Plugins you want to enable for this request, including their settings.
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    const: moderation
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    const: web
+                  enabled:
+                    type: boolean
+                  max_results:
+                    type: number
+                  search_prompt:
+                    type: string
+                  engine:
+                    type: string
+                    enum:
+                      - native
+                      - exa
+                    x-speakeasy-unknown-values: allow
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    const: file-parser
+                  enabled:
+                    type: boolean
+                  max_files:
+                    type: number
+                  pdf:
+                    type: object
+                    properties:
+                      engine:
+                        type: string
+                        enum:
+                          - mistral-ocr
+                          - pdf-text
+                          - native
+                        x-speakeasy-unknown-values: allow
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    const: response-healing
+                  enabled:
+                    type: boolean
+                required:
+                  - id
+            type: object
+        route:
+          description: >-
+            Routing strategy for multiple models: "fallback" (default) uses secondary models as backups, "sort" sorts all endpoints together by routing criteria.
+          anyOf:
+            - type: string
+              enum:
+                - fallback
+                - sort
+              x-speakeasy-unknown-values: allow
+            - type: 'null'
+        user:
+          type: string
+        session_id:
+          description: >-
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+          type: string
+          maxLength: 128
         messages:
           minItems: 1
           type: array
@@ -5134,6 +5450,7 @@ components:
                     - low
                     - medium
                     - high
+                    - xhigh
                   x-speakeasy-unknown-values: allow
                 - type: 'null'
             summary:
@@ -5208,8 +5525,6 @@ components:
               minimum: 0
               maximum: 1
             - type: 'null'
-        user:
-          type: string
         debug:
           type: object
           properties:
@@ -5221,7 +5536,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/__schema2'
         index:
           type: number
         message:
@@ -5282,7 +5597,7 @@ components:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema0'
+          $ref: '#/components/schemas/__schema2'
         index:
           type: number
         logprobs:
@@ -6181,9 +6496,20 @@ paths:
                           $ref: '#/components/schemas/BigNumberUnion'
                         request:
                           $ref: '#/components/schemas/BigNumberUnion'
-                      additionalProperties: false
                       description: >-
                         The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+                    min_throughput:
+                      type: number
+                      nullable: true
+                      example: 100
+                      description: >-
+                        The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
+                    max_latency:
+                      type: number
+                      nullable: true
+                      example: 5
+                      description: >-
+                        The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
                 input_type:
                   type: string
               required:
@@ -6242,6 +6568,11 @@ paths:
                   - object
                   - data
                   - model
+            text/event-stream:
+              schema:
+                type: string
+                description: Not used for embeddings - embeddings do not support streaming
+              x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad Request - Invalid request parameters or malformed input
           content:
@@ -6806,6 +7137,7 @@ paths:
               - Infermatic
               - Inflection
               - Liquid
+              - Mara
               - Mancer 2
               - Minimax
               - ModelRun
@@ -6826,6 +7158,7 @@ paths:
               - Relace
               - SambaNova
               - SiliconFlow
+              - Sourceful
               - Stealth
               - StreamLake
               - Switchpoint
@@ -6833,6 +7166,7 @@ paths:
               - Together
               - Venice
               - WandB
+              - Xiaomi
               - xAI
               - Z.AI
               - FakeProvider

@@ -132,6 +132,7 @@ export * from "./responsessearchcontextsize.js";
 export * from "./responseswebsearchcalloutput.js";
 export * from "./responseswebsearchuserlocation.js";
 export * from "./responsetextconfig.js";
+export * from "./schema0.js";
 export * from "./security.js";
 export * from "./serviceunavailableresponseerrordata.js";
 export * from "./systemmessage.js";

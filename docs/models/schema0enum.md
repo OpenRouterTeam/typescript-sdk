@@ -1,11 +1,11 @@
-# GetParametersProvider
+# Schema0Enum
 
 ## Example Usage
 
 ```typescript
-import { GetParametersProvider } from "@openrouter/sdk/models/operations";
+import { Schema0Enum } from "@openrouter/sdk/models";
 
-let value: GetParametersProvider = "Google AI Studio";
+let value: Schema0Enum = "WandB";
 ```
 
 ## Values
