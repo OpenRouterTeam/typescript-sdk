@@ -1,4 +1,4 @@
-# Only
+# OpenResponsesRequestOnly
 
 
 ## Supported Types

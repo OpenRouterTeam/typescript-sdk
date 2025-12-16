@@ -44,102 +44,6 @@ export const EncodingFormat = {
 } as const;
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
-export type Order = models.ProviderName | string;
-
-export type Only = models.ProviderName | string;
-
-export type Ignore = models.ProviderName | string;
-
-/**
- * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
- */
-export type MaxPrice = {
-  /**
-   * A value in string format that is a large number
-   */
-  prompt?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
-  completion?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
-  image?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
-  audio?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
-  request?: string | undefined;
-};
-
-export type CreateEmbeddingsProvider = {
-  /**
-   * Whether to allow backup providers to serve requests
-   *
-   * @remarks
-   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-   */
-  allowFallbacks?: boolean | null | undefined;
-  /**
-   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-   */
-  requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   *
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: models.DataCollection | null | undefined;
-  /**
-   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-   */
-  zdr?: boolean | null | undefined;
-  /**
-   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
-   */
-  enforceDistillableText?: boolean | null | undefined;
-  /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-   */
-  order?: Array<models.ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-   */
-  only?: Array<models.ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-   */
-  ignore?: Array<models.ProviderName | string> | null | undefined;
-  /**
-   * A list of quantization levels to filter the provider by.
-   */
-  quantizations?: Array<models.Quantization> | null | undefined;
-  /**
-   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-   */
-  sort?: models.ProviderSort | null | undefined;
-  /**
-   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-   */
-  maxPrice?: MaxPrice | undefined;
-  /**
-   * The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
-   */
-  minThroughput?: number | null | undefined;
-  /**
-   * The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
-   */
-  maxLatency?: number | null | undefined;
-};
-
 export type CreateEmbeddingsRequest = {
   input:
     | string
@@ -151,7 +55,10 @@ export type CreateEmbeddingsRequest = {
   encodingFormat?: EncodingFormat | undefined;
   dimensions?: number | undefined;
   user?: string | undefined;
-  provider?: CreateEmbeddingsProvider | undefined;
+  /**
+   * Provider routing preferences for the request.
+   */
+  provider?: models.ProviderPreferences | undefined;
   inputType?: string | undefined;
 };
 
@@ -313,128 +220,6 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
-export type Order$Outbound = string | string;
-
-/** @internal */
-export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
-  models.ProviderName$outboundSchema,
-  z.string(),
-]);
-
-export function orderToJSON(order: Order): string {
-  return JSON.stringify(Order$outboundSchema.parse(order));
-}
-
-/** @internal */
-export type Only$Outbound = string | string;
-
-/** @internal */
-export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
-  models.ProviderName$outboundSchema,
-  z.string(),
-]);
-
-export function onlyToJSON(only: Only): string {
-  return JSON.stringify(Only$outboundSchema.parse(only));
-}
-
-/** @internal */
-export type Ignore$Outbound = string | string;
-
-/** @internal */
-export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
-  .union([models.ProviderName$outboundSchema, z.string()]);
-
-export function ignoreToJSON(ignore: Ignore): string {
-  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
-}
-
-/** @internal */
-export type MaxPrice$Outbound = {
-  prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
-  request?: string | undefined;
-};
-
-/** @internal */
-export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
-  .object({
-    prompt: z.string().optional(),
-    completion: z.string().optional(),
-    image: z.string().optional(),
-    audio: z.string().optional(),
-    request: z.string().optional(),
-  });
-
-export function maxPriceToJSON(maxPrice: MaxPrice): string {
-  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
-}
-
-/** @internal */
-export type CreateEmbeddingsProvider$Outbound = {
-  allow_fallbacks?: boolean | null | undefined;
-  require_parameters?: boolean | null | undefined;
-  data_collection?: string | null | undefined;
-  zdr?: boolean | null | undefined;
-  enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
-  ignore?: Array<string | string> | null | undefined;
-  quantizations?: Array<string> | null | undefined;
-  sort?: string | null | undefined;
-  max_price?: MaxPrice$Outbound | undefined;
-  min_throughput?: number | null | undefined;
-  max_latency?: number | null | undefined;
-};
-
-/** @internal */
-export const CreateEmbeddingsProvider$outboundSchema: z.ZodType<
-  CreateEmbeddingsProvider$Outbound,
-  CreateEmbeddingsProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(models.DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(
-    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  only: z.nullable(
-    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  ignore: z.nullable(
-    z.array(z.union([models.ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(models.Quantization$outboundSchema))
-    .optional(),
-  sort: z.nullable(models.ProviderSort$outboundSchema).optional(),
-  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
-  });
-});
-
-export function createEmbeddingsProviderToJSON(
-  createEmbeddingsProvider: CreateEmbeddingsProvider,
-): string {
-  return JSON.stringify(
-    CreateEmbeddingsProvider$outboundSchema.parse(createEmbeddingsProvider),
-  );
-}
-
-/** @internal */
 export type CreateEmbeddingsRequest$Outbound = {
   input:
     | string
@@ -446,7 +231,7 @@ export type CreateEmbeddingsRequest$Outbound = {
   encoding_format?: string | undefined;
   dimensions?: number | undefined;
   user?: string | undefined;
-  provider?: CreateEmbeddingsProvider$Outbound | undefined;
+  provider?: models.ProviderPreferences$Outbound | undefined;
   input_type?: string | undefined;
 };
 
@@ -466,7 +251,7 @@ export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
   encodingFormat: EncodingFormat$outboundSchema.optional(),
   dimensions: z.int().optional(),
   user: z.string().optional(),
-  provider: z.lazy(() => CreateEmbeddingsProvider$outboundSchema).optional(),
+  provider: models.ProviderPreferences$outboundSchema.optional(),
   inputType: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

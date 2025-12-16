@@ -1,11 +1,13 @@
-# OpenResponsesRequestEngine
+# WebSearchEngine
+
+The search engine to use for web search.
 
 ## Example Usage
 
 ```typescript
-import { OpenResponsesRequestEngine } from "@openrouter/sdk/models";
+import { WebSearchEngine } from "@openrouter/sdk/models";
 
-let value: OpenResponsesRequestEngine = "native";
+let value: WebSearchEngine = "native";
 ```
 
 ## Values

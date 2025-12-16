@@ -1,11 +1,11 @@
-# ChatGenerationParamsRoute
+# Route
 
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParamsRoute } from "@openrouter/sdk/models";
+import { Route } from "@openrouter/sdk/models";
 
-let value: ChatGenerationParamsRoute = "sort";
+let value: Route = "fallback";
 ```
 
 ## Values
