@@ -589,7 +589,7 @@ describe('Enhanced Tool Support for callModel', () => {
         ],
       });
 
-      const message = await response.getMessage();
+      const message = await response.getChatMessage();
       expect(message).toBeDefined();
     }, 30000);
 
@@ -638,7 +638,7 @@ describe('Enhanced Tool Support for callModel', () => {
         },
       );
 
-      const finalMessage = await response.getMessage();
+      const finalMessage = await response.getChatMessage();
       expect(finalMessage).toBeDefined();
       expect(finalMessage.content).toBeTruthy();
     }, 30000);

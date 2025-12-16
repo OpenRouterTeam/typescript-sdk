@@ -1,6 +1,7 @@
 import type { ChatStreamEvent, EnhancedResponseStreamEvent } from '../../src/lib/tool-types.js';
 import type { AssistantMessage } from '../../src/models/assistantmessage.js';
 import type { ToolResponseMessage } from '../../src/models/toolresponsemessage.js';
+import type { ClaudeMessageParam } from '../../src/models/claudemessage.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
@@ -176,6 +177,108 @@ describe('callModel E2E Tests', () => {
     }, 30000);
   });
 
+  describe('Claude-style messages support', () => {
+    it('should accept Claude-style MessageParam array with string content', async () => {
+      const claudeMessages: ClaudeMessageParam[] = [
+        {
+          role: 'user',
+          content: "Say 'claude test' and nothing else.",
+        },
+      ];
+
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: claudeMessages,
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe('string');
+      expect(text.length).toBeGreaterThan(0);
+    });
+
+    it('should handle Claude-style messages with content blocks array', async () => {
+      const claudeMessages: ClaudeMessageParam[] = [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: "Say 'hello from blocks' and nothing else.",
+            },
+          ],
+        },
+      ];
+
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: claudeMessages,
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe('string');
+      expect(text.length).toBeGreaterThan(0);
+    });
+
+    it('should handle multi-turn Claude-style conversation', async () => {
+      const claudeMessages: ClaudeMessageParam[] = [
+        {
+          role: 'user',
+          content: 'My name is Alice.',
+        },
+        {
+          role: 'assistant',
+          content: "Nice to meet you, Alice! How can I help you today?",
+        },
+        {
+          role: 'user',
+          content: 'What is my name?',
+        },
+      ];
+
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: claudeMessages,
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(text.toLowerCase()).toContain('alice');
+    });
+
+    it('should handle Claude-style messages with multiple text blocks', async () => {
+      const claudeMessages: ClaudeMessageParam[] = [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello!',
+            },
+            {
+              type: 'text',
+              text: " What's 2+2?",
+            },
+          ],
+        },
+      ];
+
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: claudeMessages,
+      });
+
+      const text = await response.getText();
+
+      expect(text).toBeDefined();
+      expect(typeof text).toBe('string');
+    });
+  });
+
   describe('response.text - Text extraction', () => {
     it('should successfully get text from a response', async () => {
       const response = client.callModel({
@@ -234,7 +337,7 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const message = await response.getMessage();
+      const message = await response.getChatMessage();
 
       expect(message).toBeDefined();
       expect(message.role).toBe('assistant');
@@ -267,7 +370,7 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const message = await response.getMessage();
+      const message = await response.getChatMessage();
 
       // Ensure the message fully matches the OpenAI Chat API assistant message shape
       expect(message).toMatchObject({
@@ -389,7 +492,7 @@ describe('callModel E2E Tests', () => {
 
       const messages: (AssistantMessage | ToolResponseMessage)[] = [];
 
-      for await (const message of response.getNewMessagesStream()) {
+      for await (const message of response.getNewChatMessagesStream()) {
         expect(message).toBeDefined();
         expect(message.role).toBe('assistant');
         expect(typeof message.content).toBe('string');
@@ -423,7 +526,7 @@ describe('callModel E2E Tests', () => {
 
       const messages: (AssistantMessage | ToolResponseMessage)[] = [];
 
-      for await (const message of response.getNewMessagesStream()) {
+      for await (const message of response.getNewChatMessagesStream()) {
         messages.push(message);
 
         // Deep validation of AssistantMessage shape
@@ -513,7 +616,7 @@ describe('callModel E2E Tests', () => {
       let hasAssistantMessage = false;
       let hasToolResponseMessage = false;
 
-      for await (const message of response.getNewMessagesStream()) {
+      for await (const message of response.getNewChatMessagesStream()) {
         messages.push(message);
 
         // Validate each message has correct shape based on role
@@ -590,7 +693,7 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      for await (const message of response.getNewMessagesStream()) {
+      for await (const message of response.getNewChatMessagesStream()) {
         // role must be a string and one of the valid values
         expect(typeof message.role).toBe('string');
         expect([
@@ -1050,7 +1153,7 @@ describe('callModel E2E Tests', () => {
 
       const newMessagesStreamPromise = (async () => {
         const messages: (AssistantMessage | ToolResponseMessage)[] = [];
-        for await (const message of response.getNewMessagesStream()) {
+        for await (const message of response.getNewChatMessagesStream()) {
           messages.push(message);
         }
         return messages;

@@ -18,6 +18,7 @@ import {
   buildMessageStream,
   buildToolCallStream,
   consumeStreamForCompletion,
+  convertToClaudeMessage,
   extractMessageFromResponse,
   extractReasoningDeltas,
   extractTextDeltas,
@@ -40,10 +41,11 @@ export interface GetResponseOptions {
  * A wrapper around a streaming response that provides multiple consumption patterns.
  *
  * Allows consuming the response in multiple ways:
- * - `await response.getMessage()` - Get the completed message
+ * - `await response.getChatMessage()` - Get the completed message in chat format
+ * - `await response.getClaudeMessage()` - Get the completed message in Anthropic Claude format
  * - `await response.getText()` - Get just the text
  * - `for await (const delta of response.getTextStream())` - Stream text deltas
- * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
+ * - `for await (const msg of response.getNewChatMessagesStream())` - Stream incremental message updates
  * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
  *
  * All consumption patterns can be used concurrently thanks to the underlying
@@ -52,7 +54,8 @@ export interface GetResponseOptions {
 export class ResponseWrapper {
   private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
   private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
-  private messagePromise: Promise<models.AssistantMessage> | null = null;
+  private chatMessagePromise: Promise<models.AssistantMessage> | null = null;
+  private claudeMessagePromise: Promise<models.ClaudeMessage> | null = null;
   private textPromise: Promise<string> | null = null;
   private options: GetResponseOptions;
   private initPromise: Promise<void> | null = null;
@@ -350,17 +353,40 @@ export class ResponseWrapper {
   }
 
   /**
-   * Get the completed message from the response.
+   * Get the completed message from the response in chat format.
    * This will consume the stream until completion, execute any tools, and extract the first message.
-   * Returns an AssistantMessage in chat format.
+   * Returns an AssistantMessage compatible with OpenAI chat completions API format.
    */
-  getMessage(): Promise<models.AssistantMessage> {
-    if (this.messagePromise) {
-      return this.messagePromise;
+  getChatMessage(): Promise<models.AssistantMessage> {
+    if (this.chatMessagePromise) {
+      return this.chatMessagePromise;
     }
 
-    this.messagePromise = this.getMessageInternal();
-    return this.messagePromise;
+    this.chatMessagePromise = this.getMessageInternal();
+    return this.chatMessagePromise;
+  }
+
+  /**
+   * Get the completed message in Anthropic Claude format.
+   * This will consume the stream until completion, execute any tools, and return
+   * a ClaudeMessage compatible with the Anthropic SDK.
+   */
+  getClaudeMessage(): Promise<models.ClaudeMessage> {
+    if (this.claudeMessagePromise) {
+      return this.claudeMessagePromise;
+    }
+
+    this.claudeMessagePromise = (async () => {
+      await this.executeToolsIfNeeded();
+
+      if (!this.finalResponse) {
+        throw new Error('Response not available');
+      }
+
+      return convertToClaudeMessage(this.finalResponse);
+    })();
+
+    return this.claudeMessagePromise;
   }
 
   /**
@@ -443,12 +469,12 @@ export class ResponseWrapper {
   }
 
   /**
-   * Stream incremental message updates as content is added.
+   * Stream incremental message updates as content is added in chat format.
    * Each iteration yields an updated version of the message with new content.
    * Also yields ToolResponseMessages after tool execution completes.
-   * Returns AssistantMessage or ToolResponseMessage in chat format.
+   * Returns AssistantMessage or ToolResponseMessage compatible with OpenAI chat completions API format.
    */
-  getNewMessagesStream(): AsyncIterableIterator<
+  getNewChatMessagesStream(): AsyncIterableIterator<
     models.AssistantMessage | models.ToolResponseMessage
   > {
     return async function* (this: ResponseWrapper) {

@@ -17,11 +17,13 @@ import { OAuth } from "./oauth.js";
 import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
-import { callModel as callModelFunc } from "../funcs/callModel.js";
+import {
+  callModel as callModelFunc,
+  CallModelInput,
+} from "../funcs/callModel.js";
 import type { ResponseWrapper } from "../lib/response-wrapper.js";
 import type { RequestOptions } from "../lib/sdks.js";
 import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
-import type { OpenResponsesInput } from "../models/openresponsesinput.js";
 import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
 
 export { ToolType };
@@ -97,11 +99,11 @@ export class OpenRouter extends ClientSDK {
   // #region sdk-class-body
   callModel(
     request: Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
-      input?: OpenResponsesInput;
+      input?: CallModelInput;
       tools?: Tool[];
       maxToolRounds?: MaxToolRounds;
     },
-    options?: RequestOptions,
+    options?: RequestOptions
   ): ResponseWrapper {
     return callModelFunc(this, request, options);
   }

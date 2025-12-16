@@ -360,3 +360,117 @@ export async function* buildToolCallStream(
 export function responseHasToolCalls(response: models.OpenResponsesNonStreamingResponse): boolean {
   return response.output.some((item) => 'type' in item && item.type === 'function_call');
 }
+
+/**
+ * Map OpenResponses status to Claude stop reason
+ */
+function mapStopReason(
+  response: models.OpenResponsesNonStreamingResponse,
+): models.ClaudeStopReason | null {
+  // Check if any tool calls exist in the response
+  const hasToolCalls = response.output.some(
+    (item) => 'type' in item && item.type === 'function_call',
+  );
+
+  if (hasToolCalls) {
+    return 'tool_use';
+  }
+
+  // Check the response status
+  if (response.status === 'completed') {
+    return 'end_turn';
+  }
+
+  if (response.status === 'incomplete') {
+    // Check incomplete reason if available
+    const incompleteReason = response.incompleteDetails?.reason;
+    if (incompleteReason === 'max_output_tokens') {
+      return 'max_tokens';
+    }
+    return 'end_turn';
+  }
+
+  return 'end_turn';
+}
+
+/**
+ * Convert OpenResponsesNonStreamingResponse to ClaudeMessage format
+ * Compatible with the Anthropic SDK BetaMessage type
+ */
+export function convertToClaudeMessage(
+  response: models.OpenResponsesNonStreamingResponse,
+): models.ClaudeMessage {
+  const content: models.ClaudeContentBlock[] = [];
+
+  for (const item of response.output) {
+    if (!('type' in item)) {
+      continue;
+    }
+
+    // Handle message output items
+    if (item.type === 'message') {
+      const msgItem = item as models.ResponsesOutputMessage;
+      for (const part of msgItem.content) {
+        if ('type' in part && part.type === 'output_text') {
+          const textPart = part as models.ResponseOutputText;
+          content.push({
+            type: 'text',
+            text: textPart.text,
+          });
+        }
+      }
+    }
+
+    // Handle function call output items (tool use)
+    if (item.type === 'function_call') {
+      const fnCall = item as models.ResponsesOutputItemFunctionCall;
+      let parsedInput: Record<string, unknown> = {};
+
+      try {
+        parsedInput = JSON.parse(fnCall.arguments);
+      } catch {
+        // If parsing fails, keep as empty object
+        parsedInput = {};
+      }
+
+      content.push({
+        type: 'tool_use',
+        id: fnCall.callId,
+        name: fnCall.name,
+        input: parsedInput,
+      });
+    }
+
+    // Handle reasoning output items (thinking)
+    if (item.type === 'reasoning') {
+      const reasoningItem = item as models.ResponsesOutputItemReasoning;
+      if (reasoningItem.summary && reasoningItem.summary.length > 0) {
+        for (const summaryItem of reasoningItem.summary) {
+          if (summaryItem.type === 'summary_text' && summaryItem.text) {
+            content.push({
+              type: 'thinking',
+              thinking: summaryItem.text,
+              signature: '',
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    id: response.id,
+    type: 'message',
+    role: 'assistant',
+    model: response.model ?? 'unknown',
+    content,
+    stop_reason: mapStopReason(response),
+    stop_sequence: null,
+    usage: {
+      input_tokens: response.usage?.inputTokens ?? 0,
+      output_tokens: response.usage?.outputTokens ?? 0,
+      cache_creation_input_tokens: response.usage?.inputTokensDetails?.cachedTokens ?? 0,
+      cache_read_input_tokens: 0,
+    },
+  };
+}

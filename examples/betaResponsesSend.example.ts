@@ -11,7 +11,7 @@ dotenv.config();
  * npm run build && npx tsx betaResponsesSend.example.ts
  */
 
-import { OpenRouter } from "@openrouter/sdk";
+import { OpenRouter } from "../src/index.js";
 
 const openRouter = new OpenRouter({
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
