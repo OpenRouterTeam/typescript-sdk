@@ -46,6 +46,15 @@ function createFunctionCallOutput(
 }
 
 /**
+ * Type guard for Claude text block params
+ */
+function isTextBlock(
+  block: models.ClaudeContentBlockParam
+): block is models.ClaudeTextBlockParam {
+  return block.type === "text";
+}
+
+/**
  * Convert Anthropic Claude-style messages to OpenResponses input format.
  *
  * This function transforms ClaudeMessageParam[] (Anthropic SDK format) to
@@ -86,21 +95,14 @@ export function fromClaudeMessages(
     // Handle array content - extract text and handle tool results
     const textParts: string[] = [];
     for (const block of content) {
-      if (block.type === "text") {
+      if (isTextBlock(block)) {
         textParts.push(block.text);
       } else if (block.type === "tool_result") {
         // Tool results need special handling - convert to function_call_output
-        let toolContent: string;
-        if (typeof block.content === "string") {
-          toolContent = block.content;
-        } else {
-          toolContent = block.content
-            .filter(
-              (b): b is models.ClaudeTextBlockParam => b.type === "text"
-            )
-            .map((b) => b.text)
-            .join("");
-        }
+        const toolContent =
+          typeof block.content === "string"
+            ? block.content
+            : block.content.filter(isTextBlock).map((b) => b.text).join("");
         result.push(createFunctionCallOutput(block.tool_use_id, toolContent));
       }
       // Note: tool_use and image blocks in input are typically part of conversation history

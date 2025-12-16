@@ -45,6 +45,20 @@ function mapChatRole(
 }
 
 /**
+ * Convert message content to a string representation.
+ * Handles string, null, undefined, and object content types.
+ */
+function contentToString(content: unknown): string {
+  if (typeof content === "string") {
+    return content;
+  }
+  if (content === null || content === undefined) {
+    return "";
+  }
+  return JSON.stringify(content);
+}
+
+/**
  * Convert OpenAI chat-style messages to OpenResponses input format.
  *
  * This function transforms Message[] (OpenAI chat format) to OpenResponsesInput
@@ -78,37 +92,21 @@ export function fromChatMessages(
         return {
           type: OpenResponsesFunctionCallOutputType.FunctionCallOutput,
           callId: msg.toolCallId,
-          output:
-            typeof msg.content === "string"
-              ? msg.content
-              : JSON.stringify(msg.content),
+          output: contentToString(msg.content),
         };
       }
 
       if (isAssistantMessage(msg)) {
         return {
           role: mapChatRole("assistant"),
-          content:
-            typeof msg.content === "string"
-              ? msg.content
-              : msg.content === null || msg.content === undefined
-                ? ""
-                : JSON.stringify(msg.content),
+          content: contentToString(msg.content),
         };
       }
 
       // System, user, developer messages
-      const { role, content } = msg;
-      const convertedContent =
-        typeof content === "string"
-          ? content
-          : content === null || content === undefined
-            ? ""
-            : JSON.stringify(content);
-
       return {
-        role: mapChatRole(role),
-        content: convertedContent,
+        role: mapChatRole(msg.role),
+        content: contentToString(msg.content),
       };
     }
   );

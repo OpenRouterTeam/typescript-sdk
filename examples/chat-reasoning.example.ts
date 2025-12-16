@@ -7,87 +7,120 @@ import dotenv from "dotenv";
 dotenv.config();
 
 /**
- * Example usage of the @openrouter/sdk SDK for chat completions
+ * Example demonstrating multi-turn chat conversations with reasoning models.
+ *
+ * This example shows how to build a conversation over 3 turns,
+ * carrying the message history forward with each request.
  *
  * To run this example from the examples directory with Bun:
- * bun run chatCompletions.example.ts
+ * bun run chat-reasoning.example.ts
  */
 
+import type { Message } from "../src/models/index.js";
 import { OpenRouter } from "../src/index.js";
 
 if (!process.env["OPENROUTER_API_KEY"]) {
   throw new Error("Missing OPENROUTER_API_KEY environment variable");
 }
+
 const openRouter = new OpenRouter({
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
-  debugLogger: console,
 });
 
-async function nonStreamingExample() {
-  const result = await openRouter.chat.send({
-    model: "qwen/qwen3-max",
-    messages: [
-      {
-        role: "user",
-        content: "Tell me a short joke about programming",
-      },
-    ],
+async function multiTurnConversation() {
+  const model = "google/gemini-3-pro-preview";
+
+  // Initialize message history with the first user message
+  const messages: Message[] = [
+    {
+      role: "user",
+      content: "What are the three most important principles of good software architecture?",
+    },
+  ];
+
+  console.log("=== Turn 1 ===");
+  console.log("User:", messages[0].content);
+  console.log();
+
+  // First turn
+  const result1 = await openRouter.chat.send({
+    model,
+    messages,
     stream: false,
   });
 
-  if ("choices" in result) {
-    console.log(result.choices[0].message.content);
+  if (!("choices" in result1)) {
+    throw new Error("Unexpected response format");
   }
-}
 
-async function streamingExample() {
-  const result = await openRouter.chat.send({
-    model: "qwen/qwen3-max",
-    messages: [
-      {
-        role: "user",
-        content: "Write a haiku about TypeScript",
-      },
-    ],
-    stream: true,
-    streamOptions: {
-      includeUsage: true,
-    },
+  const assistant1 = result1.choices[0].message;
+  console.log("Assistant:", assistant1.content);
+  console.log();
+
+  // Add assistant response and next user message to history
+  messages.push(assistant1);
+  messages.push({
+    role: "user",
+    content: "Can you elaborate on the second principle? Give me a concrete example.",
   });
 
-  if (result && typeof result === "object" && Symbol.asyncIterator in result) {
-    const stream = result;
-    let _fullContent = "";
+  console.log("=== Turn 2 ===");
+  console.log("User:", messages[messages.length - 1].content);
+  console.log();
 
-    for await (const chunk of stream) {
-      if (chunk.choices[0].delta?.reasoning_details) {
-        console.log(
-          `REASONING_DETAILS:`,
-          chunk.choices[0].delta.reasoning_details
-        );
-      } else if (chunk.choices[0].delta?.content) {
-        console.log(`CONTENT: ${chunk.choices[0].delta.content}`);
-      }
+  // Second turn
+  const result2 = await openRouter.chat.send({
+    model,
+    messages,
+    stream: false,
+  });
 
-      if (chunk.choices?.[0]?.delta?.content) {
-        const content = chunk.choices[0].delta.content;
-        process.stdout.write(content);
-        _fullContent += content;
-      }
-
-      if (chunk.usage) {
-        console.log(chunk.usage);
-      }
-    }
+  if (!("choices" in result2)) {
+    throw new Error("Unexpected response format");
   }
+
+  const assistant2 = result2.choices[0].message;
+  console.log("Assistant:", assistant2.content);
+  console.log();
+
+  // Add assistant response and next user message to history
+  messages.push(assistant2);
+  messages.push({
+    role: "user",
+    content: "How would you apply this in a TypeScript project specifically?",
+  });
+
+  console.log("=== Turn 3 ===");
+  console.log("User:", messages[messages.length - 1].content);
+  console.log();
+
+  // Third turn
+  const result3 = await openRouter.chat.send({
+    model,
+    messages,
+    stream: false,
+  });
+
+  if (!("choices" in result3)) {
+    throw new Error("Unexpected response format");
+  }
+
+  const assistant3 = result3.choices[0].message;
+  console.log("Assistant:", assistant3.content);
+  console.log();
+
+  // Final message history
+  messages.push(assistant3);
+
+  console.log("=== Conversation Complete ===");
+  console.log(`Total messages in history: ${messages.length}`);
 }
 
 async function main() {
   try {
-    await nonStreamingExample();
-    await streamingExample();
-  } catch (_error) {
-    console.error(_error);
+    await multiTurnConversation();
+  } catch (error) {
+    console.error("Error:", error);
   }
 }
 

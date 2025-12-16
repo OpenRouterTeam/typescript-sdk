@@ -3,7 +3,7 @@ import type { RequestOptions } from "../lib/sdks.js";
 import type { Tool, MaxToolRounds } from "../lib/tool-types.js";
 import type * as models from "../models/index.js";
 
-import { ResponseWrapper } from "../lib/response-wrapper.js";
+import { ModelResult } from "../lib/model-result.js";
 import { convertToolsToAPIFormat } from "../lib/tool-executor.js";
 
 /**
@@ -15,31 +15,105 @@ export type CallModelTools =
   | models.OpenResponsesRequest["tools"];
 
 /**
- * Check if tools are chat-style (ToolDefinitionJson[])
+ * Discriminated tool type detection result
+ */
+type ToolTypeResult =
+  | { kind: "enhanced"; tools: Tool[] }
+  | { kind: "chat"; tools: models.ToolDefinitionJson[] }
+  | { kind: "responses"; tools: models.OpenResponsesRequest["tools"] }
+  | { kind: "empty" };
+
+/**
+ * Type guard for tool objects with a function property containing an object
+ */
+function hasFunctionProperty(
+  tool: unknown
+): tool is { function: Record<string, unknown> } {
+  if (typeof tool !== "object" || tool === null) {
+    return false;
+  }
+  if (!("function" in tool)) {
+    return false;
+  }
+  const fn = (tool as { function: unknown }).function;
+  return typeof fn === "object" && fn !== null;
+}
+
+/**
+ * Type guard for responses-style tools (has name at top level, no function property)
+ */
+function isResponsesStyleTools(
+  tools: CallModelTools
+): tools is NonNullable<models.OpenResponsesRequest["tools"]> {
+  if (!Array.isArray(tools) || tools.length === 0) {
+    return false;
+  }
+  const firstTool = tools[0];
+  // Responses-style tools have 'name' at top level and no 'function' property
+  return (
+    typeof firstTool === "object" &&
+    firstTool !== null &&
+    "name" in firstTool &&
+    !("function" in firstTool)
+  );
+}
+
+/**
+ * Type guard for enhanced tools (has function.inputSchema)
+ */
+function isEnhancedTools(tools: CallModelTools): tools is Tool[] {
+  if (!Array.isArray(tools) || tools.length === 0) {
+    return false;
+  }
+  const firstTool = tools[0];
+  return hasFunctionProperty(firstTool) && "inputSchema" in firstTool.function;
+}
+
+/**
+ * Type guard for chat-style tools (has function.name but no inputSchema)
  */
 function isChatStyleTools(
   tools: CallModelTools
 ): tools is models.ToolDefinitionJson[] {
-  if (!Array.isArray(tools)) {
+  if (!Array.isArray(tools) || tools.length === 0) {
     return false;
   }
-  if (tools.length === 0) {
-    return false;
+  const firstTool = tools[0];
+  return (
+    hasFunctionProperty(firstTool) &&
+    "name" in firstTool.function &&
+    !("inputSchema" in firstTool.function)
+  );
+}
+
+/**
+ * Detect the type of tools provided and return a discriminated result.
+ * This centralizes all tool type detection logic in one place.
+ *
+ * Tool types:
+ * - Enhanced: has function.inputSchema (our SDK tools with Zod schemas)
+ * - Chat: has function.name but no inputSchema (OpenAI chat-style)
+ * - Responses: has name at top level (OpenResponses API native format)
+ */
+function detectToolType(tools: CallModelTools | undefined): ToolTypeResult {
+  if (!tools || !Array.isArray(tools) || tools.length === 0) {
+    return { kind: "empty" };
   }
 
-  const first = tools[0] as Record<string, unknown>;
-  // Chat-style tools have nested 'function' property with 'name' inside
-  // Enhanced tools have 'function' with 'inputSchema'
-  // Responses-style tools have 'name' at top level
-  const fn = first?.["function"] as Record<string, unknown> | undefined;
-  return (
-    first &&
-    "function" in first &&
-    fn !== undefined &&
-    fn !== null &&
-    "name" in fn &&
-    !("inputSchema" in fn)
-  );
+  if (isEnhancedTools(tools)) {
+    return { kind: "enhanced", tools };
+  }
+
+  if (isChatStyleTools(tools)) {
+    return { kind: "chat", tools };
+  }
+
+  if (isResponsesStyleTools(tools)) {
+    return { kind: "responses", tools };
+  }
+
+  // Fallback - treat as responses-style
+  return { kind: "responses", tools: tools as models.OpenResponsesRequest["tools"] };
 }
 
 /**
@@ -150,7 +224,7 @@ export function callModel(
     maxToolRounds?: MaxToolRounds;
   },
   options?: RequestOptions
-): ResponseWrapper {
+): ModelResult {
   const { tools, maxToolRounds, input, ...restRequest } = request;
 
   const apiRequest = {
@@ -158,63 +232,40 @@ export function callModel(
     input,
   };
 
-  // Determine tool type and convert as needed
-  let isEnhancedTools = false;
-  let isChatTools = false;
+  // Detect tool type using discriminated union
+  const toolType = detectToolType(tools);
 
-  if (tools && Array.isArray(tools) && tools.length > 0) {
-    const firstTool = tools[0] as Record<string, unknown>;
-    const fn = firstTool?.["function"] as Record<string, unknown> | undefined;
-    isEnhancedTools =
-      "function" in firstTool &&
-      fn !== undefined &&
-      fn !== null &&
-      "inputSchema" in fn;
-    isChatTools = !isEnhancedTools && isChatStyleTools(tools);
-  }
-
-  const enhancedTools = isEnhancedTools ? (tools as Tool[]) : undefined;
-
-  // Convert tools to API format based on their type
+  // Convert tools to API format and extract enhanced tools if present
   let apiTools: models.OpenResponsesRequest["tools"];
-  if (enhancedTools) {
-    apiTools = convertToolsToAPIFormat(enhancedTools);
-  } else if (isChatTools) {
-    apiTools = convertChatToResponsesTools(
-      tools as models.ToolDefinitionJson[]
-    );
-  } else {
-    apiTools = tools as models.OpenResponsesRequest["tools"];
+  let enhancedTools: Tool[] | undefined;
+
+  switch (toolType.kind) {
+    case "enhanced":
+      enhancedTools = toolType.tools;
+      apiTools = convertToolsToAPIFormat(toolType.tools);
+      break;
+    case "chat":
+      apiTools = convertChatToResponsesTools(toolType.tools);
+      break;
+    case "responses":
+      apiTools = toolType.tools;
+      break;
+    case "empty":
+      apiTools = undefined;
+      break;
   }
 
   // Build the request with converted tools
   const finalRequest: models.OpenResponsesRequest = {
     ...apiRequest,
-    ...(apiTools && {
-      tools: apiTools,
-    }),
-  } as models.OpenResponsesRequest;
+    ...(apiTools !== undefined && { tools: apiTools }),
+  };
 
-  const wrapperOptions: {
-    client: OpenRouterCore;
-    request: models.OpenResponsesRequest;
-    options: RequestOptions;
-    tools?: Tool[];
-    maxToolRounds?: MaxToolRounds;
-  } = {
+  return new ModelResult({
     client,
     request: finalRequest,
     options: options ?? {},
-  };
-
-  // Only pass enhanced tools to wrapper (needed for auto-execution)
-  if (enhancedTools) {
-    wrapperOptions.tools = enhancedTools;
-  }
-
-  if (maxToolRounds !== undefined) {
-    wrapperOptions.maxToolRounds = maxToolRounds;
-  }
-
-  return new ResponseWrapper(wrapperOptions);
+    ...(enhancedTools !== undefined && { tools: enhancedTools }),
+    ...(maxToolRounds !== undefined && { maxToolRounds }),
+  });
 }

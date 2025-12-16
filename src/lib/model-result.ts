@@ -28,6 +28,53 @@ import {
 import { executeTool } from "./tool-executor.js";
 import { hasExecuteFunction } from "./tool-types.js";
 
+/**
+ * Type guard for stream event with toReadableStream method
+ */
+function isEventStream(
+  value: unknown
+): value is EventStream<models.OpenResponsesStreamEvent> {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    "toReadableStream" in value &&
+    typeof (value as { toReadableStream: unknown }).toReadableStream ===
+      "function"
+  );
+}
+
+/**
+ * Type guard for response.output_text.delta events
+ */
+function isOutputTextDeltaEvent(
+  event: models.OpenResponsesStreamEvent
+): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
+  return "type" in event && event.type === "response.output_text.delta";
+}
+
+/**
+ * Type guard for response.completed events
+ */
+function isResponseCompletedEvent(
+  event: models.OpenResponsesStreamEvent
+): event is models.OpenResponsesStreamEventResponseCompleted {
+  return "type" in event && event.type === "response.completed";
+}
+
+/**
+ * Type guard for output items with a type property
+ */
+function hasTypeProperty(
+  item: unknown
+): item is { type: string } {
+  return (
+    typeof item === "object" &&
+    item !== null &&
+    "type" in item &&
+    typeof (item as { type: unknown }).type === "string"
+  );
+}
+
 export interface GetResponseOptions {
   request: models.OpenResponsesRequest;
   client: OpenRouterCore;
@@ -40,11 +87,11 @@ export interface GetResponseOptions {
  * A wrapper around a streaming response that provides multiple consumption patterns.
  *
  * Allows consuming the response in multiple ways:
- * - `await response.getText()` - Get just the text
- * - `await response.getResponse()` - Get the full response object
- * - `for await (const delta of response.getTextStream())` - Stream text deltas
- * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
- * - `for await (const event of response.getFullResponsesStream())` - Stream all response events
+ * - `await result.getText()` - Get just the text
+ * - `await result.getResponse()` - Get the full response object
+ * - `for await (const delta of result.getTextStream())` - Stream text deltas
+ * - `for await (const msg of result.getNewMessagesStream())` - Stream incremental message updates
+ * - `for await (const event of result.getFullResponsesStream())` - Stream all response events
  *
  * For message format conversion, use the helper functions:
  * - `toChatMessage(response)` for OpenAI chat format
@@ -53,7 +100,7 @@ export interface GetResponseOptions {
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
  */
-export class ResponseWrapper {
+export class ModelResult {
   private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null =
     null;
   private streamPromise: Promise<
@@ -153,7 +200,7 @@ export class ResponseWrapper {
         this.options.tools &&
         this.options.tools.length > 0 &&
         initialResponse.output.some(
-          (item) => "type" in item && item.type === "function_call"
+          (item) => hasTypeProperty(item) && item.type === "function_call"
         );
 
       if (!shouldAutoExecute) {
@@ -312,11 +359,9 @@ export class ResponseWrapper {
 
         // Handle the result - it might be a stream or a response
         const value = newResult.value;
-        if (value && typeof value === "object" && "toReadableStream" in value) {
+        if (isEventStream(value)) {
           // It's a stream, consume it
-          const stream = new ReusableReadableStream(
-            value as EventStream<models.OpenResponsesStreamEvent>
-          );
+          const stream = new ReusableReadableStream(value);
           currentResponse = await consumeStreamForCompletion(stream);
         } else if (this.isNonStreamingResponse(value)) {
           currentResponse = value;
@@ -393,7 +438,7 @@ export class ResponseWrapper {
    * Includes preliminary tool result events after tool execution.
    */
   getFullResponsesStream(): AsyncIterableIterator<EnhancedResponseStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -428,7 +473,7 @@ export class ResponseWrapper {
    * This filters the full event stream to only yield text content.
    */
   getTextStream(): AsyncIterableIterator<string> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -447,7 +492,7 @@ export class ResponseWrapper {
   getNewMessagesStream(): AsyncIterableIterator<
     models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput
   > {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -491,7 +536,7 @@ export class ResponseWrapper {
       if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
         // Check if the final response contains a message
         const hasMessage = this.finalResponse.output.some(
-          (item) => "type" in item && item.type === "message"
+          (item) => hasTypeProperty(item) && item.type === "message"
         );
         if (hasMessage) {
           yield extractResponsesMessageFromResponse(this.finalResponse);
@@ -505,7 +550,7 @@ export class ResponseWrapper {
    * This filters the full event stream to only yield reasoning content.
    */
   getReasoningStream(): AsyncIterableIterator<string> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -522,7 +567,7 @@ export class ResponseWrapper {
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
   getToolStream(): AsyncIterableIterator<ToolStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -563,7 +608,7 @@ export class ResponseWrapper {
    * this may not be a perfect mapping.
    */
   getFullChatStream(): AsyncIterableIterator<ChatStreamEvent> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -576,21 +621,16 @@ export class ResponseWrapper {
           continue;
         }
 
-        // Transform responses events to chat-like format
-        // This is a simplified transformation - you may need to adjust based on your needs
-        if (event.type === "response.output_text.delta") {
-          const deltaEvent =
-            event as models.OpenResponsesStreamEventResponseOutputTextDelta;
+        // Transform responses events to chat-like format using type guards
+        if (isOutputTextDeltaEvent(event)) {
           yield {
             type: "content.delta" as const,
-            delta: deltaEvent.delta,
+            delta: event.delta,
           };
-        } else if (event.type === "response.completed") {
-          const completedEvent =
-            event as models.OpenResponsesStreamEventResponseCompleted;
+        } else if (isResponseCompletedEvent(event)) {
           yield {
             type: "message.complete" as const,
-            response: completedEvent.response,
+            response: event.response,
           };
         } else {
           // Pass through other events
@@ -640,7 +680,7 @@ export class ResponseWrapper {
    * Each iteration yields a complete tool call with parsed arguments.
    */
   getToolCallsStream(): AsyncIterableIterator<ParsedToolCall> {
-    return async function* (this: ResponseWrapper) {
+    return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");

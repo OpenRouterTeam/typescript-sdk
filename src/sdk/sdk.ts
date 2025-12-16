@@ -18,7 +18,7 @@ import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
 import { callModel as callModelFunc } from "../funcs/call-model.js";
-import type { ResponseWrapper } from "../lib/response-wrapper.js";
+import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
 import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
 import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
@@ -102,7 +102,7 @@ export class OpenRouter extends ClientSDK {
       maxToolRounds?: MaxToolRounds;
     },
     options?: RequestOptions
-  ): ResponseWrapper {
+  ): ModelResult {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body
