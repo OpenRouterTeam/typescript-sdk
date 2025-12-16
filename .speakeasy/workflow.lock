@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:6bbf6ab7123261f7e0604f1c640e32b5fc8fb6bb503b1bc8b12d0d78ed19fefc
         tags:
             - latest
+            - matt-fix-reasoning-and-types
             - 1.0.0
 targets:
     openrouter:
@@ -14,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:92f6f1568ba089ae8e52bd55d859a97e446ae232c4c9ca9302ea64705313c7a0
         sourceBlobDigest: sha256:6bbf6ab7123261f7e0604f1c640e32b5fc8fb6bb503b1bc8b12d0d78ed19fefc
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:5ad0106b3a90880dd018d09832b27195869090b47114ab2b79c2c35a64a95846
+        codeSamplesRevisionDigest: sha256:7f5011aa123855cc92e9b1975ea54d834113df9dc07c7974b41ef8d49a2d4cfc
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.666.0
