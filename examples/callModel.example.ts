@@ -20,12 +20,6 @@ const openRouter = new OpenRouter({
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
-const chatMessages: Message[] = [
-  {
-    role: "user",
-    content: "Hello! What is your name?",
-  },
-];
 const text = "Hello! What is your name?";
 const responsesMessages: OpenResponsesEasyInputMessage[] = [
   {
@@ -40,19 +34,7 @@ const responsesMessages: OpenResponsesEasyInputMessage[] = [
   },
 ];
 
-const anthropicClaudeMessages: AnthropicClaudeMessage[] = [
-  {
-    role: "user",
-    content: "Hello! What is your name?",
-  },
-];
-
-const supportedInputSchemas = [
-  chatMessages,
-  text,
-  responsesMessages,
-  anthropicClaudeMessages,
-];
+const supportedInputSchemas = [text, responsesMessages];
 
 for (const input of supportedInputSchemas) {
   const result = await openRouter.callModel({
@@ -66,14 +48,8 @@ for (const input of supportedInputSchemas) {
   // text format
   console.log(await result.getText());
 
-  // chat message format (was names getMessage)
-  console.log(await result.getChatMessage());
-
   // response message format
   console.log(await result.getResponse().then((response) => response.output));
-
-  // AnthropicClaude message format
-  console.log(await result.getClaudeMessage());
 
   // stream response message format
   console.log(await result.getFullResponsesStream());
@@ -81,9 +57,12 @@ for (const input of supportedInputSchemas) {
   // stream text format
   console.log(await result.getTextStream());
 
-  // stream chat message format
-  console.log(await result.getNewChatMessagesStream());
+  // stream just the messages (simpler than full response but more than just text)
+  console.log(await result.getNewMessagesStream());
 
-  // stream response message format
-  console.log(await result.getFullResponsesStream());
+  // stream tool calls... (structured tool calls with parsed arguments)
+  console.log(await result.getToolCallsStream());
+
+  // get all tool calls... (structured tool calls with parsed arguments)
+  console.log(await result.getToolCalls());
 }

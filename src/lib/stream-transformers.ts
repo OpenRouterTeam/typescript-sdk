@@ -58,6 +58,77 @@ export async function* extractToolDeltas(
 
 /**
  * Build incremental message updates from responses stream events
+ * Returns ResponsesOutputMessage (assistant/responses format)
+ */
+export async function* buildResponsesMessageStream(
+  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+): AsyncIterableIterator<models.ResponsesOutputMessage> {
+  const consumer = stream.createConsumer();
+
+  // Track the accumulated text and message info
+  let currentText = '';
+  let currentId = '';
+  let hasStarted = false;
+
+  for await (const event of consumer) {
+    if (!('type' in event)) {
+      continue;
+    }
+
+    switch (event.type) {
+      case 'response.output_item.added': {
+        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
+        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
+          hasStarted = true;
+          currentText = '';
+          const msgItem = itemEvent.item as models.ResponsesOutputMessage;
+          currentId = msgItem.id;
+        }
+        break;
+      }
+
+      case 'response.output_text.delta': {
+        const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
+        if (hasStarted && deltaEvent.delta) {
+          currentText += deltaEvent.delta;
+
+          // Yield updated message in ResponsesOutputMessage format
+          yield {
+            id: currentId,
+            type: 'message' as const,
+            role: 'assistant' as const,
+            status: 'in_progress' as const,
+            content: [
+              {
+                type: 'output_text' as const,
+                text: currentText,
+                annotations: [],
+              },
+            ],
+          };
+        }
+        break;
+      }
+
+      case 'response.output_item.done': {
+        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
+        if (
+          itemDoneEvent.item &&
+          'type' in itemDoneEvent.item &&
+          itemDoneEvent.item.type === 'message'
+        ) {
+          // Yield final complete message in ResponsesOutputMessage format
+          const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
+          yield outputMessage;
+        }
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Build incremental message updates from responses stream events
  * Returns AssistantMessage (chat format) instead of ResponsesOutputMessage
  */
 export async function* buildMessageStream(
@@ -170,7 +241,7 @@ function convertToAssistantMessage(
 }
 
 /**
- * Extract the first message from a completed response
+ * Extract the first message from a completed response (chat format)
  */
 export function extractMessageFromResponse(
   response: models.OpenResponsesNonStreamingResponse,
@@ -184,6 +255,23 @@ export function extractMessageFromResponse(
   }
 
   return convertToAssistantMessage(messageItem);
+}
+
+/**
+ * Extract the first message from a completed response (responses format)
+ */
+export function extractResponsesMessageFromResponse(
+  response: models.OpenResponsesNonStreamingResponse,
+): models.ResponsesOutputMessage {
+  const messageItem = response.output.find(
+    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+  );
+
+  if (!messageItem) {
+    throw new Error('No message found in response output');
+  }
+
+  return messageItem;
 }
 
 /**

@@ -1,7 +1,7 @@
 import type { ChatStreamEvent, EnhancedResponseStreamEvent } from '../../src/lib/tool-types.js';
-import type { AssistantMessage } from '../../src/models/assistantmessage.js';
-import type { ToolResponseMessage } from '../../src/models/toolresponsemessage.js';
-import type { ClaudeMessageParam } from '../../src/models/claudemessage.js';
+import type { ClaudeMessageParam } from '../../src/models/claude-message.js';
+import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
+import type { OpenResponsesFunctionCallOutput } from '../../src/models/openresponsesfunctioncalloutput.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
@@ -478,8 +478,8 @@ describe('callModel E2E Tests', () => {
     }, 15000);
   });
 
-  describe('response.newMessagesStream - Streaming message updates', () => {
-    it('should successfully stream incremental message updates', async () => {
+  describe('response.newMessagesStream - Streaming message updates (Responses format)', () => {
+    it('should successfully stream incremental message updates in ResponsesOutputMessage format', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
@@ -490,12 +490,11 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
+      const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
 
-      for await (const message of response.getNewChatMessagesStream()) {
+      for await (const message of response.getNewMessagesStream()) {
         expect(message).toBeDefined();
-        expect(message.role).toBe('assistant');
-        expect(typeof message.content).toBe('string');
+        expect(message.type).toBe('message');
         messages.push(message);
       }
 
@@ -503,17 +502,25 @@ describe('callModel E2E Tests', () => {
 
       // Verify content grows over time
       if (messages.length > 1) {
-        const firstMessage = messages[0];
-        const lastMessage = messages[messages.length - 1];
+        const firstMessage = messages[0] as ResponsesOutputMessage;
+        const lastMessage = messages[messages.length - 1] as ResponsesOutputMessage;
 
-        const firstText = (firstMessage.content as string) || '';
-        const lastText = (lastMessage.content as string) || '';
+        // Extract text from content array
+        const getTextFromContent = (msg: ResponsesOutputMessage) => {
+          return msg.content
+            .filter((c): c is { type: 'output_text'; text: string } => 'type' in c && c.type === 'output_text')
+            .map((c) => c.text)
+            .join('');
+        };
+
+        const firstText = getTextFromContent(firstMessage);
+        const lastText = getTextFromContent(lastMessage);
 
         expect(lastText.length).toBeGreaterThanOrEqual(firstText.length);
       }
     }, 15000);
 
-    it('should return AssistantMessages with correct shape', async () => {
+    it('should return ResponsesOutputMessage with correct shape', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
@@ -524,62 +531,45 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
+      const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
 
-      for await (const message of response.getNewChatMessagesStream()) {
+      for await (const message of response.getNewMessagesStream()) {
         messages.push(message);
 
-        // Deep validation of AssistantMessage shape
-        expect(message).toHaveProperty('role');
-        expect(message).toHaveProperty('content');
+        if (message.type === 'message') {
+          const outputMessage = message as ResponsesOutputMessage;
 
-        if (message.role === 'assistant') {
-          // Validate AssistantMessage structure
-          expect(message.role).toBe('assistant');
+          // Validate ResponsesOutputMessage structure
+          expect(outputMessage.type).toBe('message');
+          expect(outputMessage.role).toBe('assistant');
+          expect(outputMessage.id).toBeDefined();
+          expect(typeof outputMessage.id).toBe('string');
+          expect(Array.isArray(outputMessage.content)).toBe(true);
 
-          // content must be string, array, null, or undefined
-          const contentType = typeof message.content;
-          const isValidContent =
-            contentType === 'string' ||
-            Array.isArray(message.content) ||
-            message.content === null ||
-            message.content === undefined;
-          expect(isValidContent).toBe(true);
-
-          // If content is an array, each item must have a type
-          if (Array.isArray(message.content)) {
-            for (const item of message.content) {
-              expect(item).toHaveProperty('type');
-              expect(typeof item.type).toBe('string');
-            }
+          // Validate content array items
+          for (const item of outputMessage.content) {
+            expect(item).toHaveProperty('type');
+            expect(typeof item.type).toBe('string');
+            // Content items should be output_text or refusal
+            expect(['output_text', 'refusal']).toContain(item.type);
           }
 
-          // If toolCalls present, validate their shape
-          if ('toolCalls' in message && message.toolCalls) {
-            expect(Array.isArray(message.toolCalls)).toBe(true);
-            for (const toolCall of message.toolCalls) {
-              expect(toolCall).toHaveProperty('id');
-              expect(toolCall).toHaveProperty('type');
-              expect(toolCall).toHaveProperty('function');
-              expect(typeof toolCall.id).toBe('string');
-              expect(typeof toolCall.type).toBe('string');
-              expect(toolCall.function).toHaveProperty('name');
-              expect(toolCall.function).toHaveProperty('arguments');
-              expect(typeof toolCall.function.name).toBe('string');
-              expect(typeof toolCall.function.arguments).toBe('string');
-            }
+          // Validate optional status field
+          if (outputMessage.status !== undefined) {
+            expect(['completed', 'incomplete', 'in_progress']).toContain(outputMessage.status);
           }
         }
       }
 
       expect(messages.length).toBeGreaterThan(0);
 
-      // Verify last message has the complete assistant response shape
-      const lastMessage = messages[messages.length - 1];
+      // Verify last message has the complete ResponsesOutputMessage shape
+      const lastMessage = messages[messages.length - 1] as ResponsesOutputMessage;
+      expect(lastMessage.type).toBe('message');
       expect(lastMessage.role).toBe('assistant');
     }, 15000);
 
-    it('should include ToolResponseMessages with correct shape when tools are executed', async () => {
+    it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
         model: 'openai/gpt-4o-mini',
         input: [
@@ -612,44 +602,39 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const messages: (AssistantMessage | ToolResponseMessage)[] = [];
-      let hasAssistantMessage = false;
-      let hasToolResponseMessage = false;
+      const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
+      let hasOutputMessage = false;
+      let hasFunctionCallOutput = false;
 
-      for await (const message of response.getNewChatMessagesStream()) {
+      for await (const message of response.getNewMessagesStream()) {
         messages.push(message);
 
-        // Validate each message has correct shape based on role
-        expect(message).toHaveProperty('role');
-        expect(message).toHaveProperty('content');
+        // Validate each message has correct shape based on type
+        expect(message).toHaveProperty('type');
 
-        if (message.role === 'assistant') {
-          hasAssistantMessage = true;
+        if (message.type === 'message') {
+          hasOutputMessage = true;
+          const outputMessage = message as ResponsesOutputMessage;
 
-          // Validate AssistantMessage shape
-          const contentType = typeof message.content;
-          const isValidContent =
-            contentType === 'string' ||
-            Array.isArray(message.content) ||
-            message.content === null ||
-            message.content === undefined;
-          expect(isValidContent).toBe(true);
-        } else if (message.role === 'tool') {
-          hasToolResponseMessage = true;
+          // Validate ResponsesOutputMessage shape
+          expect(outputMessage.role).toBe('assistant');
+          expect(Array.isArray(outputMessage.content)).toBe(true);
+        } else if (message.type === 'function_call_output') {
+          hasFunctionCallOutput = true;
+          const fnOutput = message as OpenResponsesFunctionCallOutput;
 
-          // Deep validation of ToolResponseMessage shape
-          expect(message).toHaveProperty('toolCallId');
-          expect(typeof (message as ToolResponseMessage).toolCallId).toBe('string');
-          expect((message as ToolResponseMessage).toolCallId.length).toBeGreaterThan(0);
+          // Deep validation of OpenResponsesFunctionCallOutput shape
+          expect(fnOutput.type).toBe('function_call_output');
+          expect(fnOutput).toHaveProperty('callId');
+          expect(typeof fnOutput.callId).toBe('string');
+          expect(fnOutput.callId.length).toBeGreaterThan(0);
 
-          // content must be string or array
-          const contentType = typeof message.content;
-          const isValidContent = contentType === 'string' || Array.isArray(message.content);
-          expect(isValidContent).toBe(true);
+          // output must be a string (JSON stringified result)
+          expect(typeof fnOutput.output).toBe('string');
 
-          // If content is string, it should be parseable JSON (our tool result)
-          if (typeof message.content === 'string' && message.content.length > 0) {
-            const parsed = JSON.parse(message.content);
+          // If output is non-empty, it should be parseable JSON (our tool result)
+          if (fnOutput.output.length > 0) {
+            const parsed = JSON.parse(fnOutput.output);
             expect(parsed).toBeDefined();
             // Verify it matches our tool output schema
             expect(parsed).toHaveProperty('temperature');
@@ -661,23 +646,23 @@ describe('callModel E2E Tests', () => {
       }
 
       expect(messages.length).toBeGreaterThan(0);
-      // We must have tool responses since we have an executable tool
-      expect(hasToolResponseMessage).toBe(true);
+      // We must have function call outputs since we have an executable tool
+      expect(hasFunctionCallOutput).toBe(true);
 
-      // If the model provided a final text response, verify proper ordering
-      if (hasAssistantMessage) {
-        const lastToolIndex = messages.reduce(
-          (lastIdx, m, i) => (m.role === 'tool' ? i : lastIdx),
+      // If the model provided a final message, verify proper ordering
+      if (hasOutputMessage) {
+        const lastFnOutputIndex = messages.reduce(
+          (lastIdx, m, i) => (m.type === 'function_call_output' ? i : lastIdx),
           -1,
         );
-        const lastAssistantIndex = messages.reduce(
-          (lastIdx, m, i) => (m.role === 'assistant' ? i : lastIdx),
+        const lastMessageIndex = messages.reduce(
+          (lastIdx, m, i) => (m.type === 'message' ? i : lastIdx),
           -1,
         );
 
-        // The final assistant message should come after tool responses
-        if (lastToolIndex !== -1 && lastAssistantIndex !== -1) {
-          expect(lastAssistantIndex).toBeGreaterThan(lastToolIndex);
+        // The final message should come after function call outputs
+        if (lastFnOutputIndex !== -1 && lastMessageIndex !== -1) {
+          expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
     }, 30000);
@@ -693,39 +678,30 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      for await (const message of response.getNewChatMessagesStream()) {
-        // role must be a string and one of the valid values
-        expect(typeof message.role).toBe('string');
-        expect([
-          'assistant',
-          'tool',
-        ]).toContain(message.role);
+      for await (const message of response.getNewMessagesStream()) {
+        // type must be a string and one of the valid values
+        expect(typeof message.type).toBe('string');
+        expect(['message', 'function_call_output']).toContain(message.type);
 
-        // content must exist (even if null)
-        expect('content' in message).toBe(true);
+        if (message.type === 'message') {
+          const outputMessage = message as ResponsesOutputMessage;
+          // ResponsesOutputMessage specific validations
+          expect(outputMessage.role).toBe('assistant');
+          expect(outputMessage.id).toBeDefined();
+          expect(Array.isArray(outputMessage.content)).toBe(true);
 
-        if (message.role === 'assistant') {
-          // AssistantMessage specific validations
-          const validContentTypes = [
-            'string',
-            'object',
-            'undefined',
-          ];
-          expect(validContentTypes).toContain(typeof message.content);
-
-          // If content is array, validate structure
-          if (Array.isArray(message.content)) {
-            expect(
-              message.content.every(
-                (item) => typeof item === 'object' && item !== null && 'type' in item,
-              ),
-            ).toBe(true);
+          // Validate content items
+          for (const item of outputMessage.content) {
+            expect(typeof item).toBe('object');
+            expect(item).not.toBeNull();
+            expect(item).toHaveProperty('type');
           }
-        } else if (message.role === 'tool') {
-          // ToolResponseMessage specific validations
-          const toolMsg = message as ToolResponseMessage;
-          expect(typeof toolMsg.toolCallId).toBe('string');
-          expect(toolMsg.toolCallId.length).toBeGreaterThan(0);
+        } else if (message.type === 'function_call_output') {
+          // OpenResponsesFunctionCallOutput specific validations
+          const fnOutput = message as OpenResponsesFunctionCallOutput;
+          expect(typeof fnOutput.callId).toBe('string');
+          expect(fnOutput.callId.length).toBeGreaterThan(0);
+          expect(typeof fnOutput.output).toBe('string');
         }
       }
     }, 15000);
@@ -1152,8 +1128,8 @@ describe('callModel E2E Tests', () => {
       })();
 
       const newMessagesStreamPromise = (async () => {
-        const messages: (AssistantMessage | ToolResponseMessage)[] = [];
-        for await (const message of response.getNewChatMessagesStream()) {
+        const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
+        for await (const message of response.getNewMessagesStream()) {
           messages.push(message);
         }
         return messages;
@@ -1169,8 +1145,12 @@ describe('callModel E2E Tests', () => {
 
       // Verify consistency between streams
       const textFromDeltas = textDeltas.join('');
-      const lastMessage = messages[messages.length - 1];
-      const textFromMessage = (lastMessage.content as string) || '';
+      const lastMessage = messages[messages.length - 1] as ResponsesOutputMessage;
+      // Extract text from ResponsesOutputMessage content array
+      const textFromMessage = lastMessage.content
+        .filter((c): c is { type: 'output_text'; text: string } => 'type' in c && c.type === 'output_text')
+        .map((c) => c.text)
+        .join('');
 
       expect(textFromDeltas).toBe(textFromMessage);
     }, 20000);

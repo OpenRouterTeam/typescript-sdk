@@ -9,7 +9,7 @@ export * from "./badrequestresponseerrordata.js";
 export * from "./chatcompletionfinishreason.js";
 export * from "./chaterror.js";
 export * from "./chatgenerationparams.js";
-export * from "./claudemessage.js";
+export * from "./claude-message.js";
 export * from "./chatgenerationtokenusage.js";
 export * from "./chatmessagecontentitem.js";
 export * from "./chatmessagecontentitemaudio.js";
