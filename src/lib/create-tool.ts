@@ -8,21 +8,39 @@ import {
 } from "./tool-types.js";
 
 /**
- * Configuration for a regular tool (without eventSchema)
+ * Configuration for a regular tool with outputSchema
  */
-type RegularToolConfig<
+type RegularToolConfigWithOutput<
   TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<unknown>,
+  TOutput extends ZodType,
 > = {
   name: string;
   description?: string;
   inputSchema: TInput;
-  outputSchema?: TOutput;
+  outputSchema: TOutput;
   eventSchema?: undefined;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
   ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
+};
+
+/**
+ * Configuration for a regular tool without outputSchema (infers return type from execute)
+ */
+type RegularToolConfigWithoutOutput<
+  TInput extends ZodObject<ZodRawShape>,
+  TReturn,
+> = {
+  name: string;
+  description?: string;
+  inputSchema: TInput;
+  outputSchema?: undefined;
+  eventSchema?: undefined;
+  execute: (
+    params: z.infer<TInput>,
+    context?: TurnContext
+  ) => Promise<TReturn> | TReturn;
 };
 
 /**
@@ -55,16 +73,24 @@ type ManualToolConfig<TInput extends ZodObject<ZodRawShape>> = {
 };
 
 /**
+ * Union type for all regular tool configs
+ */
+type RegularToolConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType, TReturn> =
+  | RegularToolConfigWithOutput<TInput, TOutput>
+  | RegularToolConfigWithoutOutput<TInput, TReturn>;
+
+/**
  * Type guard to check if config is a generator tool config (has eventSchema)
  */
 function isGeneratorConfig<
   TInput extends ZodObject<ZodRawShape>,
   TEvent extends ZodType,
   TOutput extends ZodType,
+  TReturn,
 >(
   config:
     | GeneratorToolConfig<TInput, TEvent, TOutput>
-    | RegularToolConfig<TInput, TOutput>
+    | RegularToolConfig<TInput, TOutput, TReturn>
     | ManualToolConfig<TInput>
 ): config is GeneratorToolConfig<TInput, TEvent, TOutput> {
   return "eventSchema" in config && config.eventSchema !== undefined;
@@ -73,10 +99,10 @@ function isGeneratorConfig<
 /**
  * Type guard to check if config is a manual tool config (execute === false)
  */
-function isManualConfig<TInput extends ZodObject<ZodRawShape>>(
+function isManualConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType, TReturn>(
   config:
     | GeneratorToolConfig<TInput, ZodType, ZodType>
-    | RegularToolConfig<TInput, ZodType>
+    | RegularToolConfig<TInput, TOutput, TReturn>
     | ManualToolConfig<TInput>
 ): config is ManualToolConfig<TInput> {
   return config.execute === false;
@@ -141,25 +167,33 @@ export function tool<TInput extends ZodObject<ZodRawShape>>(
   config: ManualToolConfig<TInput>
 ): ManualTool<TInput>;
 
-// Overload for regular tools (no eventSchema)
+// Overload for regular tools with outputSchema
 export function tool<
   TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<unknown>,
->(config: RegularToolConfig<TInput, TOutput>): ToolWithExecute<TInput, TOutput>;
+  TOutput extends ZodType,
+>(config: RegularToolConfigWithOutput<TInput, TOutput>): ToolWithExecute<TInput, TOutput>;
+
+// Overload for regular tools without outputSchema (infers return type)
+export function tool<
+  TInput extends ZodObject<ZodRawShape>,
+  TReturn,
+>(config: RegularToolConfigWithoutOutput<TInput, TReturn>): ToolWithExecute<TInput, ZodType<TReturn>>;
 
 // Implementation
 export function tool<
   TInput extends ZodObject<ZodRawShape>,
   TEvent extends ZodType,
   TOutput extends ZodType,
+  TReturn,
 >(
   config:
     | GeneratorToolConfig<TInput, TEvent, TOutput>
-    | RegularToolConfig<TInput, TOutput>
+    | RegularToolConfig<TInput, TOutput, TReturn>
     | ManualToolConfig<TInput>
 ):
   | ToolWithGenerator<TInput, TEvent, TOutput>
   | ToolWithExecute<TInput, TOutput>
+  | ToolWithExecute<TInput, ZodType<TReturn>>
   | ManualTool<TInput> {
   // Check for manual tool first (execute === false)
   if (isManualConfig(config)) {
@@ -205,11 +239,13 @@ export function tool<
   }
 
   // Regular tool (has execute function, no eventSchema)
-  const fn: ToolWithExecute<TInput, TOutput>["function"] = {
+  // Type assertion needed because we have two overloads (with/without outputSchema)
+  // and the implementation needs to handle both cases
+  const fn = {
     name: config.name,
     inputSchema: config.inputSchema,
     execute: config.execute,
-  };
+  } as ToolWithExecute<TInput, TOutput>["function"];
 
   if (config.description !== undefined) {
     fn.description = config.description;
