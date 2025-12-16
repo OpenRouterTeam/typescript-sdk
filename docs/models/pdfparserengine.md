@@ -1,11 +1,13 @@
-# ChatGenerationParamsPdfEngine
+# PDFParserEngine
+
+The engine to use for parsing PDF files.
 
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParamsPdfEngine } from "@openrouter/sdk/models";
+import { PDFParserEngine } from "@openrouter/sdk/models";
 
-let value: ChatGenerationParamsPdfEngine = "mistral-ocr";
+let value: PDFParserEngine = "native";
 ```
 
 ## Values

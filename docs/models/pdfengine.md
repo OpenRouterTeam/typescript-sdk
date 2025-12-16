@@ -1,11 +1,11 @@
-# OpenResponsesRequestPdfEngine
+# PdfEngine
 
 ## Example Usage
 
 ```typescript
-import { OpenResponsesRequestPdfEngine } from "@openrouter/sdk/models";
+import { PdfEngine } from "@openrouter/sdk/models";
 
-let value: OpenResponsesRequestPdfEngine = "native";
+let value: PdfEngine = "pdf-text";
 ```
 
 ## Values

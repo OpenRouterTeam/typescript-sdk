@@ -3548,19 +3548,51 @@ components:
       x-speakeasy-unknown-values: allow
     ProviderSort:
       type: string
-      nullable: true
       enum:
         - price
         - throughput
         - latency
-      description: >-
-        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-      example: price
       x-speakeasy-unknown-values: allow
+    ProviderSortConfig:
+      type: object
+      properties:
+        by:
+          anyOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - type: 'null'
+        partition:
+          anyOf:
+            - type: string
+              enum:
+                - model
+                - none
+              x-speakeasy-unknown-values: allow
+            - type: 'null'
     BigNumberUnion:
       type: string
       description: A value in string format that is a large number
       example: 1000
+    WebSearchEngine:
+      type: string
+      enum:
+        - native
+        - exa
+      description: The search engine to use for web search.
+      x-speakeasy-unknown-values: allow
+    PDFParserEngine:
+      type: string
+      enum:
+        - mistral-ocr
+        - pdf-text
+        - native
+      description: The engine to use for parsing PDF files.
+      x-speakeasy-unknown-values: allow
+    PDFParserOptions:
+      type: object
+      properties:
+        engine:
+          $ref: '#/components/schemas/PDFParserEngine'
+      description: Options for PDF parsing.
     OpenResponsesRequest:
       type: object
       properties:
@@ -3733,7 +3765,13 @@ components:
                 $ref: '#/components/schemas/Quantization'
               description: A list of quantization levels to filter the provider by.
             sort:
-              $ref: '#/components/schemas/ProviderSort'
+              anyOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - $ref: '#/components/schemas/ProviderSortConfig'
+                - nullable: true
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+              example: price
             max_price:
               type: object
               properties:
@@ -3749,18 +3787,33 @@ components:
                   $ref: '#/components/schemas/BigNumberUnion'
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+            preferred_min_throughput:
+              type: number
+              nullable: true
+              description: >-
+                Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+              example: 100
+            preferred_max_latency:
+              type: number
+              nullable: true
+              description: >-
+                Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+              example: 5
             min_throughput:
               type: number
               nullable: true
-              example: 100
+              deprecated: true
               description: >-
-                The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
+                **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
+              example: 100
+              x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
             max_latency:
               type: number
               nullable: true
+              deprecated: true
+              description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
               example: 5
-              description: >-
-                The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
+              x-speakeasy-deprecation-message: Use preferred_max_latency instead.
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
@@ -3789,11 +3842,7 @@ components:
                   search_prompt:
                     type: string
                   engine:
-                    type: string
-                    enum:
-                      - native
-                      - exa
-                    x-speakeasy-unknown-values: allow
+                    $ref: '#/components/schemas/WebSearchEngine'
                 required:
                   - id
               - type: object
@@ -3805,18 +3854,8 @@ components:
                   enabled:
                     type: boolean
                     description: Set to false to disable the file-parser plugin for this request. Defaults to true.
-                  max_files:
-                    type: number
                   pdf:
-                    type: object
-                    properties:
-                      engine:
-                        type: string
-                        enum:
-                          - mistral-ocr
-                          - pdf-text
-                          - native
-                        x-speakeasy-unknown-values: allow
+                    $ref: '#/components/schemas/PDFParserOptions'
                 required:
                   - id
               - type: object
@@ -3837,8 +3876,12 @@ components:
           enum:
             - fallback
             - sort
+          deprecated: true
           description: >-
-            Routing strategy for multiple models: "fallback" (default) uses secondary models as backups, "sort" sorts all endpoints together by routing criteria.
+            **DEPRECATED** Use providers.sort.partition instead. Backwards-compatible alias for providers.sort.partition. Accepts legacy values: "fallback" (maps to "model"), "sort" (maps to "none").
+          x-speakeasy-deprecation-message: Use providers.sort.partition instead.
+          x-speakeasy-ignore: true
+          x-fern-ignore: true
           x-speakeasy-unknown-values: allow
         user:
           type: string
@@ -3996,6 +4039,123 @@ components:
         amount: 100
         sender: '0x1234567890123456789012345678901234567890'
         chain_id: 1
+    ProviderPreferences:
+      type: object
+      properties:
+        allow_fallbacks:
+          type: boolean
+          nullable: true
+          description: >
+            Whether to allow backup providers to serve requests
+
+            - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+            - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+        require_parameters:
+          type: boolean
+          nullable: true
+          description: >-
+            Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+        data_collection:
+          $ref: '#/components/schemas/DataCollection'
+        zdr:
+          type: boolean
+          nullable: true
+          description: >-
+            Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+          example: true
+        enforce_distillable_text:
+          type: boolean
+          nullable: true
+          description: >-
+            Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+          example: true
+        order:
+          type: array
+          nullable: true
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          description: >-
+            An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+        only:
+          type: array
+          nullable: true
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          description: >-
+            List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+        ignore:
+          type: array
+          nullable: true
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          description: >-
+            List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+        quantizations:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Quantization'
+          description: A list of quantization levels to filter the provider by.
+        sort:
+          allOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - anyOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - $ref: '#/components/schemas/ProviderSortConfig'
+                - nullable: true
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+        max_price:
+          type: object
+          properties:
+            prompt:
+              $ref: '#/components/schemas/BigNumberUnion'
+            completion:
+              $ref: '#/components/schemas/BigNumberUnion'
+            image:
+              $ref: '#/components/schemas/BigNumberUnion'
+            audio:
+              $ref: '#/components/schemas/BigNumberUnion'
+            request:
+              $ref: '#/components/schemas/BigNumberUnion'
+          description: >-
+            The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+        preferred_min_throughput:
+          type: number
+          nullable: true
+          description: >-
+            Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+          example: 100
+        preferred_max_latency:
+          type: number
+          nullable: true
+          description: >-
+            Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+          example: 5
+        min_throughput:
+          type: number
+          nullable: true
+          deprecated: true
+          description: >-
+            **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
+          example: 100
+          x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
+        max_latency:
+          type: number
+          nullable: true
+          deprecated: true
+          description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
+          example: 5
+          x-speakeasy-deprecation-message: Use preferred_max_latency instead.
+      description: Provider routing preferences for the request.
     PublicPricing:
       type: object
       properties:
@@ -4207,6 +4367,7 @@ components:
         - parallel_tool_calls
         - include_reasoning
         - reasoning
+        - reasoning_effort
         - web_search_options
         - verbosity
       example: temperature
@@ -4724,6 +4885,79 @@ components:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
         - type: 'null'
+    __schema3:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.summary
+            summary:
+              type: string
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+            - summary
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.encrypted
+            data:
+              type: string
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+            - data
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.text
+            text:
+              anyOf:
+                - type: string
+                - type: 'null'
+            signature:
+              anyOf:
+                - type: string
+                - type: 'null'
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+      type: object
+    __schema4:
+      anyOf:
+        - type: string
+        - type: 'null'
+    __schema5:
+      anyOf:
+        - type: string
+          enum:
+            - unknown
+            - openai-responses-v1
+            - xai-responses-v1
+            - anthropic-claude-v1
+            - google-gemini-v1
+          x-speakeasy-unknown-values: allow
+        - type: 'null'
+    __schema6:
+      type: number
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -5266,12 +5500,7 @@ components:
                   description: >-
                     The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
                   anyOf:
-                    - type: string
-                      enum:
-                        - price
-                        - throughput
-                        - latency
-                      x-speakeasy-unknown-values: allow
+                    - $ref: '#/components/schemas/ProviderSortUnion'
                     - type: 'null'
                 max_price:
                   description: >-
@@ -5288,15 +5517,19 @@ components:
                       $ref: '#/components/schemas/__schema1'
                     request:
                       $ref: '#/components/schemas/__schema1'
+                preferred_min_throughput:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                preferred_max_latency:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
                 min_throughput:
-                  description: >-
-                    The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
                   anyOf:
                     - type: number
                     - type: 'null'
                 max_latency:
-                  description: >-
-                    The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
                   anyOf:
                     - type: number
                     - type: 'null'
@@ -5340,8 +5573,6 @@ components:
                     const: file-parser
                   enabled:
                     type: boolean
-                  max_files:
-                    type: number
                   pdf:
                     type: object
                     properties:
@@ -5365,8 +5596,6 @@ components:
                   - id
             type: object
         route:
-          description: >-
-            Routing strategy for multiple models: "fallback" (default) uses secondary models as backups, "sort" sorts all endpoints together by routing criteria.
           anyOf:
             - type: string
               enum:
@@ -5445,12 +5674,12 @@ components:
               anyOf:
                 - type: string
                   enum:
-                    - none
-                    - minimal
-                    - low
-                    - medium
-                    - high
                     - xhigh
+                    - high
+                    - medium
+                    - low
+                    - minimal
+                    - none
                   x-speakeasy-unknown-values: allow
                 - type: 'null'
             summary:
@@ -5532,6 +5761,10 @@ components:
               type: boolean
       required:
         - messages
+    ProviderSortUnion:
+      anyOf:
+        - $ref: '#/components/schemas/ProviderSort'
+        - $ref: '#/components/schemas/ProviderSortConfig'
     ChatResponseChoice:
       type: object
       properties:
@@ -5541,6 +5774,10 @@ components:
           type: number
         message:
           $ref: '#/components/schemas/AssistantMessage'
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema3'
         logprobs:
           anyOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
@@ -5591,6 +5828,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema3'
     ChatStreamingChoice:
       type: object
       properties:
@@ -6417,99 +6658,7 @@ paths:
                 user:
                   type: string
                 provider:
-                  type: object
-                  properties:
-                    allow_fallbacks:
-                      type: boolean
-                      nullable: true
-                      description: >
-                        Whether to allow backup providers to serve requests
-
-                        - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-
-                        - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-
-                    require_parameters:
-                      type: boolean
-                      nullable: true
-                      description: >-
-                        Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-                    data_collection:
-                      $ref: '#/components/schemas/DataCollection'
-                    zdr:
-                      type: boolean
-                      nullable: true
-                      description: >-
-                        Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-                      example: true
-                    enforce_distillable_text:
-                      type: boolean
-                      nullable: true
-                      description: >-
-                        Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
-                      example: true
-                    order:
-                      type: array
-                      nullable: true
-                      items:
-                        anyOf:
-                          - $ref: '#/components/schemas/ProviderName'
-                          - type: string
-                      description: >-
-                        An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-                    only:
-                      type: array
-                      nullable: true
-                      items:
-                        anyOf:
-                          - $ref: '#/components/schemas/ProviderName'
-                          - type: string
-                      description: >-
-                        List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-                    ignore:
-                      type: array
-                      nullable: true
-                      items:
-                        anyOf:
-                          - $ref: '#/components/schemas/ProviderName'
-                          - type: string
-                      description: >-
-                        List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-                    quantizations:
-                      type: array
-                      nullable: true
-                      items:
-                        $ref: '#/components/schemas/Quantization'
-                      description: A list of quantization levels to filter the provider by.
-                    sort:
-                      $ref: '#/components/schemas/ProviderSort'
-                    max_price:
-                      type: object
-                      properties:
-                        prompt:
-                          $ref: '#/components/schemas/BigNumberUnion'
-                        completion:
-                          $ref: '#/components/schemas/BigNumberUnion'
-                        image:
-                          $ref: '#/components/schemas/BigNumberUnion'
-                        audio:
-                          $ref: '#/components/schemas/BigNumberUnion'
-                        request:
-                          $ref: '#/components/schemas/BigNumberUnion'
-                      description: >-
-                        The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-                    min_throughput:
-                      type: number
-                      nullable: true
-                      example: 100
-                      description: >-
-                        The minimum throughput (in tokens per second) required for this request. Only providers serving the model with at least this throughput will be used.
-                    max_latency:
-                      type: number
-                      nullable: true
-                      example: 5
-                      description: >-
-                        The maximum latency (in seconds) allowed for this request. Only providers serving the model with better than this latency will be used.
+                  $ref: '#/components/schemas/ProviderPreferences'
                 input_type:
                   type: string
               required:
@@ -7099,78 +7248,7 @@ paths:
           name: slug
           in: path
         - schema:
-            type: string
-            enum:
-              - AI21
-              - AionLabs
-              - Alibaba
-              - Amazon Bedrock
-              - Amazon Nova
-              - Anthropic
-              - Arcee AI
-              - AtlasCloud
-              - Avian
-              - Azure
-              - BaseTen
-              - BytePlus
-              - Black Forest Labs
-              - Cerebras
-              - Chutes
-              - Cirrascale
-              - Clarifai
-              - Cloudflare
-              - Cohere
-              - Crusoe
-              - DeepInfra
-              - DeepSeek
-              - Featherless
-              - Fireworks
-              - Friendli
-              - GMICloud
-              - GoPomelo
-              - Google
-              - Google AI Studio
-              - Groq
-              - Hyperbolic
-              - Inception
-              - InferenceNet
-              - Infermatic
-              - Inflection
-              - Liquid
-              - Mara
-              - Mancer 2
-              - Minimax
-              - ModelRun
-              - Mistral
-              - Modular
-              - Moonshot AI
-              - Morph
-              - NCompass
-              - Nebius
-              - NextBit
-              - Novita
-              - Nvidia
-              - OpenAI
-              - OpenInference
-              - Parasail
-              - Perplexity
-              - Phala
-              - Relace
-              - SambaNova
-              - SiliconFlow
-              - Sourceful
-              - Stealth
-              - StreamLake
-              - Switchpoint
-              - Targon
-              - Together
-              - Venice
-              - WandB
-              - Xiaomi
-              - xAI
-              - Z.AI
-              - FakeProvider
-            x-speakeasy-unknown-values: allow
+            $ref: '#/components/schemas/ProviderName'
           required: false
           name: provider
           in: query
@@ -7215,6 +7293,7 @@ paths:
                             - parallel_tool_calls
                             - include_reasoning
                             - reasoning
+                            - reasoning_effort
                             - web_search_options
                             - verbosity
                           x-speakeasy-unknown-values: allow

@@ -6,17 +6,11 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
 export const ProviderSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
 } as const;
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
 export type ProviderSort = OpenEnum<typeof ProviderSort>;
 
 /** @internal */
