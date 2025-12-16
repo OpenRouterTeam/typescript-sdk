@@ -11,3 +11,33 @@ export * from "./sdk/sdk.js";
 // Message format compatibility helpers
 export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
 export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
+
+// Tool creation helpers
+export { tool, createTool, createGeneratorTool, createManualTool } from "./lib/create-tool.js";
+
+// Tool types
+export type {
+  Tool,
+  ToolWithExecute,
+  ToolWithGenerator,
+  ManualTool,
+  TurnContext,
+  InferToolInput,
+  InferToolOutput,
+  InferToolEvent,
+  InferToolEventsUnion,
+  TypedToolCall,
+  TypedToolCallUnion,
+  ToolStreamEvent,
+  ChatStreamEvent,
+  EnhancedResponseStreamEvent,
+  ToolPreliminaryResultEvent,
+} from "./lib/tool-types.js";
+
+export {
+  ToolType,
+  hasExecuteFunction,
+  isGeneratorTool,
+  isRegularExecuteTool,
+  isToolPreliminaryResultEvent,
+} from "./lib/tool-types.js";

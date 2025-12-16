@@ -129,6 +129,58 @@ export type Tool =
   | ManualTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
 
 /**
+ * Extracts the input type from a tool definition
+ */
+export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
+  ? S extends ZodType
+    ? z.infer<S>
+    : unknown
+  : unknown;
+
+/**
+ * Extracts the output type from a tool definition
+ */
+export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
+  ? S extends ZodType
+    ? z.infer<S>
+    : unknown
+  : unknown;
+
+/**
+ * A tool call with typed arguments based on the tool's inputSchema
+ */
+export type TypedToolCall<T extends Tool> = {
+  id: string;
+  name: T extends { function: { name: infer N } } ? N : string;
+  arguments: InferToolInput<T>;
+};
+
+/**
+ * Union of typed tool calls for a tuple of tools
+ */
+export type TypedToolCallUnion<T extends readonly Tool[]> = {
+  [K in keyof T]: T[K] extends Tool ? TypedToolCall<T[K]> : never;
+}[number];
+
+/**
+ * Extracts the event type from a generator tool definition
+ * Returns `never` for non-generator tools
+ */
+export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
+  ? S extends ZodType
+    ? z.infer<S>
+    : never
+  : never;
+
+/**
+ * Union of event types for all generator tools in a tuple
+ * Filters out non-generator tools (which return `never`)
+ */
+export type InferToolEventsUnion<T extends readonly Tool[]> = {
+  [K in keyof T]: T[K] extends Tool ? InferToolEvent<T[K]> : never;
+}[number];
+
+/**
  * Type guard to check if a tool has an execute function
  */
 export function hasExecuteFunction(
@@ -207,34 +259,39 @@ export interface APITool {
 
 /**
  * Tool preliminary result event emitted during generator tool execution
+ * @template TEvent - The event type from the tool's eventSchema
  */
-export type ToolPreliminaryResultEvent = {
+export type ToolPreliminaryResultEvent<TEvent = unknown> = {
   type: 'tool.preliminary_result';
   toolCallId: string;
-  result: unknown;
+  result: TEvent;
   timestamp: number;
 };
 
 /**
  * Enhanced stream event types for getFullResponsesStream
  * Extends OpenResponsesStreamEvent with tool preliminary results
+ * @template TEvent - The event type from generator tools
  */
-export type EnhancedResponseStreamEvent = OpenResponsesStreamEvent | ToolPreliminaryResultEvent;
+export type EnhancedResponseStreamEvent<TEvent = unknown> =
+  | OpenResponsesStreamEvent
+  | ToolPreliminaryResultEvent<TEvent>;
 
 /**
  * Type guard to check if an event is a tool preliminary result event
  */
-export function isToolPreliminaryResultEvent(
-  event: EnhancedResponseStreamEvent,
-): event is ToolPreliminaryResultEvent {
+export function isToolPreliminaryResultEvent<TEvent = unknown>(
+  event: EnhancedResponseStreamEvent<TEvent>,
+): event is ToolPreliminaryResultEvent<TEvent> {
   return event.type === 'tool.preliminary_result';
 }
 
 /**
  * Tool stream event types for getToolStream
  * Includes both argument deltas and preliminary results
+ * @template TEvent - The event type from generator tools
  */
-export type ToolStreamEvent =
+export type ToolStreamEvent<TEvent = unknown> =
   | {
       type: 'delta';
       content: string;
@@ -242,14 +299,15 @@ export type ToolStreamEvent =
   | {
       type: 'preliminary_result';
       toolCallId: string;
-      result: unknown;
+      result: TEvent;
     };
 
 /**
  * Chat stream event types for getFullChatStream
  * Includes content deltas, completion events, and tool preliminary results
+ * @template TEvent - The event type from generator tools
  */
-export type ChatStreamEvent =
+export type ChatStreamEvent<TEvent = unknown> =
   | {
       type: 'content.delta';
       delta: string;
@@ -261,7 +319,7 @@ export type ChatStreamEvent =
   | {
       type: 'tool.preliminary_result';
       toolCallId: string;
-      result: unknown;
+      result: TEvent;
     }
   | {
       type: string;
