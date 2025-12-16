@@ -3,6 +3,7 @@ import type { RequestOptions } from "../lib/sdks.js";
 import type { Tool, MaxToolRounds } from "../lib/tool-types.js";
 import type * as models from "../models/index.js";
 
+import { fromClaudeMessages } from "../lib/anthropic-compat.js";
 import { ModelResult } from "../lib/model-result.js";
 import { convertToolsToAPIFormat } from "../lib/tool-executor.js";
 
@@ -13,6 +14,97 @@ export type CallModelTools =
   | Tool[]
   | models.ToolDefinitionJson[]
   | models.OpenResponsesRequest["tools"];
+
+/**
+ * Input type that accepts OpenResponses input or Claude-style messages
+ */
+export type CallModelInput =
+  | models.OpenResponsesInput
+  | models.ClaudeMessageParam[];
+
+/**
+ * Type guard for Claude-style messages (ClaudeMessageParam[])
+ * Claude messages have role: "user" | "assistant" and content as string or content blocks
+ */
+function isClaudeStyleInput(
+  input: CallModelInput | undefined
+): input is models.ClaudeMessageParam[] {
+  if (!input || !Array.isArray(input) || input.length === 0) {
+    return false;
+  }
+
+  const firstItem = input[0];
+
+  // Claude messages have role: "user" | "assistant"
+  // and content as string or array of content blocks with type: "text" | "tool_use" | etc.
+  if (
+    typeof firstItem !== "object" ||
+    firstItem === null ||
+    !("role" in firstItem) ||
+    !("content" in firstItem)
+  ) {
+    return false;
+  }
+
+  const role = firstItem.role;
+  const content = firstItem.content;
+
+  // Check if it's a Claude-style role (only "user" or "assistant")
+  if (role !== "user" && role !== "assistant") {
+    return false;
+  }
+
+  // If content is an array, check if it has Claude-style content blocks
+  if (Array.isArray(content)) {
+    const firstBlock = content[0];
+    if (
+      firstBlock &&
+      typeof firstBlock === "object" &&
+      "type" in firstBlock &&
+      (firstBlock.type === "text" ||
+        firstBlock.type === "tool_use" ||
+        firstBlock.type === "tool_result" ||
+        firstBlock.type === "image")
+    ) {
+      return true;
+    }
+  }
+
+  // If content is a string, we need to distinguish from OpenResponsesEasyInputMessage
+  // OpenResponsesEasyInputMessage also has role and content as string
+  // But Claude uses "user" | "assistant" while OpenResponses uses role enums
+  // The key difference is that OpenResponsesEasyInputMessage role is an enum value like "user"
+  // but that's the same...
+  //
+  // We need another heuristic: if the input doesn't have other OpenResponses fields
+  // like "type", "id", etc., it's likely Claude-style
+  if (typeof content === "string") {
+    // If item has no "type" field and role is strictly "user" or "assistant"
+    // it's likely a Claude-style message
+    // OpenResponses items typically have a "type" field (except for OpenResponsesEasyInputMessage)
+    // This is ambiguous, so we'll be conservative and check if it matches OpenResponses format first
+    return !("type" in firstItem);
+  }
+
+  return false;
+}
+
+/**
+ * Convert input to OpenResponsesInput format if needed
+ */
+function normalizeInput(
+  input: CallModelInput | undefined
+): models.OpenResponsesInput | undefined {
+  if (input === undefined) {
+    return undefined;
+  }
+
+  if (isClaudeStyleInput(input)) {
+    return fromClaudeMessages(input);
+  }
+
+  return input;
+}
 
 /**
  * Discriminated tool type detection result
@@ -219,7 +311,7 @@ function convertChatToResponsesTools(
 export function callModel(
   client: OpenRouterCore,
   request: Omit<models.OpenResponsesRequest, "stream" | "tools" | "input"> & {
-    input?: models.OpenResponsesInput;
+    input?: CallModelInput;
     tools?: CallModelTools;
     maxToolRounds?: MaxToolRounds;
   },
@@ -227,9 +319,12 @@ export function callModel(
 ): ModelResult {
   const { tools, maxToolRounds, input, ...restRequest } = request;
 
+  // Normalize input - convert Claude-style messages if needed
+  const normalizedInput = normalizeInput(input);
+
   const apiRequest = {
     ...restRequest,
-    input,
+    input: normalizedInput,
   };
 
   // Detect tool type using discriminated union
