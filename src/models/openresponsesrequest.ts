@@ -65,11 +65,12 @@ import {
   PDFParserOptions$outboundSchema,
 } from "./pdfparseroptions.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import {
-  ProviderSortUnion,
-  ProviderSortUnion$Outbound,
-  ProviderSortUnion$outboundSchema,
-} from "./providersortunion.js";
+  ProviderSortConfig,
+  ProviderSortConfig$Outbound,
+  ProviderSortConfig$outboundSchema,
+} from "./providersortconfig.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 import {
   WebSearchEngine,
@@ -110,6 +111,11 @@ export type OpenResponsesRequestOrder = ProviderName | string;
 export type OpenResponsesRequestOnly = ProviderName | string;
 
 export type OpenResponsesRequestIgnore = ProviderName | string;
+
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type OpenResponsesRequestSort = ProviderSort | ProviderSortConfig | any;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -189,7 +195,7 @@ export type OpenResponsesRequestProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: ProviderSortUnion | null | undefined;
+  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
@@ -455,6 +461,30 @@ export function openResponsesRequestIgnoreToJSON(
 }
 
 /** @internal */
+export type OpenResponsesRequestSort$Outbound =
+  | string
+  | ProviderSortConfig$Outbound
+  | any;
+
+/** @internal */
+export const OpenResponsesRequestSort$outboundSchema: z.ZodType<
+  OpenResponsesRequestSort$Outbound,
+  OpenResponsesRequestSort
+> = z.union([
+  ProviderSort$outboundSchema,
+  ProviderSortConfig$outboundSchema,
+  z.any(),
+]);
+
+export function openResponsesRequestSortToJSON(
+  openResponsesRequestSort: OpenResponsesRequestSort,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestSort$outboundSchema.parse(openResponsesRequestSort),
+  );
+}
+
+/** @internal */
 export type OpenResponsesRequestMaxPrice$Outbound = {
   prompt?: string | undefined;
   completion?: string | undefined;
@@ -496,7 +526,7 @@ export type OpenResponsesRequestProvider$Outbound = {
   only?: Array<string | string> | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
-  sort?: ProviderSortUnion$Outbound | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
   max_price?: OpenResponsesRequestMaxPrice$Outbound | undefined;
   preferred_min_throughput?: number | null | undefined;
   preferred_max_latency?: number | null | undefined;
@@ -522,7 +552,13 @@ export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
   quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
+  sort: z.nullable(
+    z.union([
+      ProviderSort$outboundSchema,
+      ProviderSortConfig$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
   maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
     .optional(),
   preferredMinThroughput: z.nullable(z.number()).optional(),

@@ -1,11 +1,11 @@
-# ChatGenerationParamsPartition
+# ProviderPreferencesPartition
 
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParamsPartition } from "@openrouter/sdk/models";
+import { ProviderPreferencesPartition } from "@openrouter/sdk/models";
 
-let value: ChatGenerationParamsPartition = "none";
+let value: ProviderPreferencesPartition = "model";
 ```
 
 ## Values

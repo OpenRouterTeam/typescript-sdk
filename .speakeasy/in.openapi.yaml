@@ -3528,38 +3528,25 @@ components:
         - unknown
       example: fp16
     ProviderSort:
-      anyOf:
-        - type: string
-          enum:
-            - price
-            - throughput
-            - latency
-        - type: object
-          properties:
-            by:
-              type: string
-              nullable: true
-              enum:
-                - price
-                - throughput
-                - latency
-              description: The provider sorting strategy (price, throughput, latency)
-              example: price
-            partition:
-              type: string
-              nullable: true
+      type: string
+      enum:
+        - price
+        - throughput
+        - latency
+    ProviderSortConfig:
+      type: object
+      properties:
+        by:
+          anyOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - type: 'null'
+        partition:
+          anyOf:
+            - type: string
               enum:
                 - model
                 - none
-              description: >-
-                Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback
-                models remain fallbacks), "none" sorts all endpoints together regardless of model.
-              example: model
-        - nullable: true
-      description: >-
-        The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is
-        performed.
-      example: price
+            - type: 'null'
     BigNumberUnion:
       type: string
       description: A value in string format that is a large number
@@ -3762,7 +3749,14 @@ components:
                 $ref: '#/components/schemas/Quantization'
               description: A list of quantization levels to filter the provider by.
             sort:
-              $ref: '#/components/schemas/ProviderSort'
+              anyOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - $ref: '#/components/schemas/ProviderSortConfig'
+                - nullable: true
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
+                is performed.
+              example: price
             max_price:
               type: object
               properties:
@@ -4112,7 +4106,15 @@ components:
             $ref: '#/components/schemas/Quantization'
           description: A list of quantization levels to filter the provider by.
         sort:
-          $ref: '#/components/schemas/ProviderSort'
+          allOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - anyOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - $ref: '#/components/schemas/ProviderSortConfig'
+                - nullable: true
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
+                is performed.
         max_price:
           type: object
           properties:
@@ -4875,20 +4877,86 @@ components:
               - FakeProvider
           - type: string
     __schema1:
-      type: string
-      enum:
-        - price
-        - throughput
-        - latency
-    __schema2:
       anyOf:
         - type: number
         - type: string
         - type: number
-    __schema3:
+    __schema2:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
         - type: 'null'
+    __schema3:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.summary
+            summary:
+              type: string
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+            - summary
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.encrypted
+            data:
+              type: string
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+            - data
+        - type: object
+          properties:
+            type:
+              type: string
+              const: reasoning.text
+            text:
+              anyOf:
+                - type: string
+                - type: 'null'
+            signature:
+              anyOf:
+                - type: string
+                - type: 'null'
+            id:
+              $ref: '#/components/schemas/__schema4'
+            format:
+              $ref: '#/components/schemas/__schema5'
+            index:
+              $ref: '#/components/schemas/__schema6'
+          required:
+            - type
+      type: object
+    __schema4:
+      anyOf:
+        - type: string
+        - type: 'null'
+    __schema5:
+      anyOf:
+        - type: string
+          enum:
+            - unknown
+            - openai-responses-v1
+            - xai-responses-v1
+            - anthropic-claude-v1
+            - google-gemini-v1
+        - type: 'null'
+    __schema6:
+      type: number
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -5434,21 +5502,7 @@ components:
                     The sorting strategy to use for this request, if "order" is not specified. When set, no load
                     balancing is performed.
                   anyOf:
-                    - anyOf:
-                        - $ref: '#/components/schemas/__schema1'
-                        - type: object
-                          properties:
-                            by:
-                              anyOf:
-                                - $ref: '#/components/schemas/__schema1'
-                                - type: 'null'
-                            partition:
-                              anyOf:
-                                - type: string
-                                  enum:
-                                    - model
-                                    - none
-                                - type: 'null'
+                    - $ref: '#/components/schemas/ProviderSortUnion'
                     - type: 'null'
                 max_price:
                   description: >-
@@ -5457,15 +5511,15 @@ components:
                   type: object
                   properties:
                     prompt:
-                      $ref: '#/components/schemas/__schema2'
+                      $ref: '#/components/schemas/__schema1'
                     completion:
-                      $ref: '#/components/schemas/__schema2'
+                      $ref: '#/components/schemas/__schema1'
                     image:
-                      $ref: '#/components/schemas/__schema2'
+                      $ref: '#/components/schemas/__schema1'
                     audio:
-                      $ref: '#/components/schemas/__schema2'
+                      $ref: '#/components/schemas/__schema1'
                     request:
-                      $ref: '#/components/schemas/__schema2'
+                      $ref: '#/components/schemas/__schema1'
                 preferred_min_throughput:
                   anyOf:
                     - type: number
@@ -5708,15 +5762,23 @@ components:
               type: boolean
       required:
         - messages
+    ProviderSortUnion:
+      anyOf:
+        - $ref: '#/components/schemas/ProviderSort'
+        - $ref: '#/components/schemas/ProviderSortConfig'
     ChatResponseChoice:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema3'
+          $ref: '#/components/schemas/__schema2'
         index:
           type: number
         message:
           $ref: '#/components/schemas/AssistantMessage'
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema3'
         logprobs:
           anyOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
@@ -5767,13 +5829,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema3'
     ChatStreamingChoice:
       type: object
       properties:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema3'
+          $ref: '#/components/schemas/__schema2'
         index:
           type: number
         logprobs:

@@ -3,7 +3,7 @@ defaultRuleset: openrouter
 rulesets:
   openrouter:
     rulesets:
-      - speakeasy-recommended
+      - speakeasy-generation
     rules:
       oas3-missing-example:
         severity: "off"

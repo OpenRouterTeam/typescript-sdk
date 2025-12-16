@@ -4,16 +4,14 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
-import {
-  ProviderSortUnion,
-  ProviderSortUnion$Outbound,
-  ProviderSortUnion$outboundSchema,
-} from "./providersortunion.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
 export type ProviderPreferencesOrder = ProviderName | string;
@@ -21,6 +19,55 @@ export type ProviderPreferencesOrder = ProviderName | string;
 export type ProviderPreferencesOnly = ProviderName | string;
 
 export type ProviderPreferencesIgnore = ProviderName | string;
+
+export const SortEnum = {
+  Price: "price",
+  Throughput: "throughput",
+  Latency: "latency",
+} as const;
+export type SortEnum = OpenEnum<typeof SortEnum>;
+
+export const ProviderSortConfigEnum = {
+  Price: "price",
+  Throughput: "throughput",
+  Latency: "latency",
+} as const;
+export type ProviderSortConfigEnum = ClosedEnum<typeof ProviderSortConfigEnum>;
+
+export const ProviderPreferencesPartition = {
+  Model: "model",
+  None: "none",
+} as const;
+export type ProviderPreferencesPartition = OpenEnum<
+  typeof ProviderPreferencesPartition
+>;
+
+export type ProviderPreferencesProviderSortConfig = {
+  by?: ProviderSort | null | undefined;
+  partition?: ProviderPreferencesPartition | null | undefined;
+};
+
+export type ProviderSortConfigUnion =
+  | ProviderPreferencesProviderSortConfig
+  | ProviderSortConfigEnum;
+
+export const ProviderPreferencesProviderSort = {
+  Price: "price",
+  Throughput: "throughput",
+  Latency: "latency",
+} as const;
+export type ProviderPreferencesProviderSort = OpenEnum<
+  typeof ProviderPreferencesProviderSort
+>;
+
+/**
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type ProviderPreferencesSortUnion =
+  | ProviderPreferencesProviderSort
+  | ProviderPreferencesProviderSortConfig
+  | ProviderSortConfigEnum
+  | SortEnum;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -97,10 +144,13 @@ export type ProviderPreferences = {
    * A list of quantization levels to filter the provider by.
    */
   quantizations?: Array<Quantization> | null | undefined;
-  /**
-   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-   */
-  sort?: ProviderSortUnion | null | undefined;
+  sort?:
+    | ProviderPreferencesProviderSort
+    | ProviderPreferencesProviderSortConfig
+    | ProviderSortConfigEnum
+    | SortEnum
+    | null
+    | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
@@ -179,6 +229,104 @@ export function providerPreferencesIgnoreToJSON(
 }
 
 /** @internal */
+export const SortEnum$outboundSchema: z.ZodType<string, SortEnum> = openEnums
+  .outboundSchema(SortEnum);
+
+/** @internal */
+export const ProviderSortConfigEnum$outboundSchema: z.ZodEnum<
+  typeof ProviderSortConfigEnum
+> = z.enum(ProviderSortConfigEnum);
+
+/** @internal */
+export const ProviderPreferencesPartition$outboundSchema: z.ZodType<
+  string,
+  ProviderPreferencesPartition
+> = openEnums.outboundSchema(ProviderPreferencesPartition);
+
+/** @internal */
+export type ProviderPreferencesProviderSortConfig$Outbound = {
+  by?: string | null | undefined;
+  partition?: string | null | undefined;
+};
+
+/** @internal */
+export const ProviderPreferencesProviderSortConfig$outboundSchema: z.ZodType<
+  ProviderPreferencesProviderSortConfig$Outbound,
+  ProviderPreferencesProviderSortConfig
+> = z.object({
+  by: z.nullable(ProviderSort$outboundSchema).optional(),
+  partition: z.nullable(ProviderPreferencesPartition$outboundSchema).optional(),
+});
+
+export function providerPreferencesProviderSortConfigToJSON(
+  providerPreferencesProviderSortConfig: ProviderPreferencesProviderSortConfig,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesProviderSortConfig$outboundSchema.parse(
+      providerPreferencesProviderSortConfig,
+    ),
+  );
+}
+
+/** @internal */
+export type ProviderSortConfigUnion$Outbound =
+  | ProviderPreferencesProviderSortConfig$Outbound
+  | string;
+
+/** @internal */
+export const ProviderSortConfigUnion$outboundSchema: z.ZodType<
+  ProviderSortConfigUnion$Outbound,
+  ProviderSortConfigUnion
+> = z.union([
+  z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
+  ProviderSortConfigEnum$outboundSchema,
+]);
+
+export function providerSortConfigUnionToJSON(
+  providerSortConfigUnion: ProviderSortConfigUnion,
+): string {
+  return JSON.stringify(
+    ProviderSortConfigUnion$outboundSchema.parse(providerSortConfigUnion),
+  );
+}
+
+/** @internal */
+export const ProviderPreferencesProviderSort$outboundSchema: z.ZodType<
+  string,
+  ProviderPreferencesProviderSort
+> = openEnums.outboundSchema(ProviderPreferencesProviderSort);
+
+/** @internal */
+export type ProviderPreferencesSortUnion$Outbound =
+  | string
+  | ProviderPreferencesProviderSortConfig$Outbound
+  | string
+  | string;
+
+/** @internal */
+export const ProviderPreferencesSortUnion$outboundSchema: z.ZodType<
+  ProviderPreferencesSortUnion$Outbound,
+  ProviderPreferencesSortUnion
+> = z.union([
+  ProviderPreferencesProviderSort$outboundSchema,
+  z.union([
+    z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
+    ProviderSortConfigEnum$outboundSchema,
+  ]),
+  SortEnum$outboundSchema,
+]);
+
+export function providerPreferencesSortUnionToJSON(
+  providerPreferencesSortUnion: ProviderPreferencesSortUnion,
+): string {
+  return JSON.stringify(
+    ProviderPreferencesSortUnion$outboundSchema.parse(
+      providerPreferencesSortUnion,
+    ),
+  );
+}
+
+/** @internal */
 export type ProviderPreferencesMaxPrice$Outbound = {
   prompt?: string | undefined;
   completion?: string | undefined;
@@ -220,7 +368,13 @@ export type ProviderPreferences$Outbound = {
   only?: Array<string | string> | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   quantizations?: Array<string> | null | undefined;
-  sort?: ProviderSortUnion$Outbound | null | undefined;
+  sort?:
+    | string
+    | ProviderPreferencesProviderSortConfig$Outbound
+    | string
+    | string
+    | null
+    | undefined;
   max_price?: ProviderPreferencesMaxPrice$Outbound | undefined;
   preferred_min_throughput?: number | null | undefined;
   preferred_max_latency?: number | null | undefined;
@@ -246,7 +400,16 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
   quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
+  sort: z.nullable(
+    z.union([
+      ProviderPreferencesProviderSort$outboundSchema,
+      z.union([
+        z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
+        ProviderSortConfigEnum$outboundSchema,
+      ]),
+      SortEnum$outboundSchema,
+    ]),
+  ).optional(),
   maxPrice: z.lazy(() => ProviderPreferencesMaxPrice$outboundSchema).optional(),
   preferredMinThroughput: z.nullable(z.number()).optional(),
   preferredMaxLatency: z.nullable(z.number()).optional(),

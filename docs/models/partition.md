@@ -1,11 +1,11 @@
-# Schema1
+# Partition
 
 ## Example Usage
 
 ```typescript
-import { Schema1 } from "@openrouter/sdk/models";
+import { Partition } from "@openrouter/sdk/models";
 
-let value: Schema1 = "latency";
+let value: Partition = "none";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: Schema1 = "latency";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"price" | "throughput" | "latency" | Unrecognized<string>
+"model" | "none" | Unrecognized<string>
 ```

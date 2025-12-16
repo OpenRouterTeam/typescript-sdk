@@ -3,104 +3,23 @@
  */
 
 import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
+import {
+  ProviderSortConfig,
+  ProviderSortConfig$Outbound,
+  ProviderSortConfig$outboundSchema,
+} from "./providersortconfig.js";
 
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export const By = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type By = OpenEnum<typeof By>;
-
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export const ProviderSortPartition = {
-  Model: "model",
-  None: "none",
-} as const;
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export type ProviderSortPartition = OpenEnum<typeof ProviderSortPartition>;
-
-export type ProviderSort = {
-  /**
-   * The provider sorting strategy (price, throughput, latency)
-   */
-  by?: By | null | undefined;
-  /**
-   * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
-   */
-  partition?: ProviderSortPartition | null | undefined;
-};
-
-export const ProviderSortEnum = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-} as const;
-export type ProviderSortEnum = OpenEnum<typeof ProviderSortEnum>;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type ProviderSortUnion = ProviderSortEnum | ProviderSort | any;
+export type ProviderSortUnion = ProviderSort | ProviderSortConfig;
 
 /** @internal */
-export const By$outboundSchema: z.ZodType<string, By> = openEnums
-  .outboundSchema(By);
-
-/** @internal */
-export const ProviderSortPartition$outboundSchema: z.ZodType<
-  string,
-  ProviderSortPartition
-> = openEnums.outboundSchema(ProviderSortPartition);
-
-/** @internal */
-export type ProviderSort$Outbound = {
-  by?: string | null | undefined;
-  partition?: string | null | undefined;
-};
-
-/** @internal */
-export const ProviderSort$outboundSchema: z.ZodType<
-  ProviderSort$Outbound,
-  ProviderSort
-> = z.object({
-  by: z.nullable(By$outboundSchema).optional(),
-  partition: z.nullable(ProviderSortPartition$outboundSchema).optional(),
-});
-
-export function providerSortToJSON(providerSort: ProviderSort): string {
-  return JSON.stringify(ProviderSort$outboundSchema.parse(providerSort));
-}
-
-/** @internal */
-export const ProviderSortEnum$outboundSchema: z.ZodType<
-  string,
-  ProviderSortEnum
-> = openEnums.outboundSchema(ProviderSortEnum);
-
-/** @internal */
-export type ProviderSortUnion$Outbound = string | ProviderSort$Outbound | any;
+export type ProviderSortUnion$Outbound = string | ProviderSortConfig$Outbound;
 
 /** @internal */
 export const ProviderSortUnion$outboundSchema: z.ZodType<
   ProviderSortUnion$Outbound,
   ProviderSortUnion
-> = z.union([
-  ProviderSortEnum$outboundSchema,
-  z.lazy(() => ProviderSort$outboundSchema),
-  z.any(),
-]);
+> = z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]);
 
 export function providerSortUnionToJSON(
   providerSortUnion: ProviderSortUnion,

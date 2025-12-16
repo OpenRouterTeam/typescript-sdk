@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: 5dd4e6b487f72d43d01cc0d48c2394f6
+  docChecksum: a5b3a567dd4de3ab77a9f0b23d4a9f10
   docVersion: 1.0.0
   speakeasyVersion: 1.666.0
   generationVersion: 2.768.0
-  releaseVersion: 0.2.1
-  configChecksum: 95b15b08a96ab4928e2ebd6a4ba9511f
+  releaseVersion: 0.2.2
+  configChecksum: 18e3ab6a8a0d2fbb81ed748650739b3d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -56,14 +56,12 @@ generatedFiles:
   - docs/models/assistantmessagecontent.md
   - docs/models/badgatewayresponseerrordata.md
   - docs/models/badrequestresponseerrordata.md
-  - docs/models/by.md
   - docs/models/chainid.md
   - docs/models/chatcompletionfinishreason.md
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
   - docs/models/chatgenerationparamsdatacollection.md
   - docs/models/chatgenerationparamsmaxprice.md
-  - docs/models/chatgenerationparamspartition.md
   - docs/models/chatgenerationparamspluginfileparser.md
   - docs/models/chatgenerationparamspluginmoderation.md
   - docs/models/chatgenerationparamspluginresponsehealing.md
@@ -260,6 +258,7 @@ generatedFiles:
   - docs/models/openresponsesrequestpluginunion.md
   - docs/models/openresponsesrequestpluginweb.md
   - docs/models/openresponsesrequestprovider.md
+  - docs/models/openresponsesrequestsort.md
   - docs/models/openresponsesrequesttoolfunction.md
   - docs/models/openresponsesrequesttoolunion.md
   - docs/models/openresponsesresponsetext.md
@@ -377,6 +376,7 @@ generatedFiles:
   - docs/models/parameter.md
   - docs/models/part1.md
   - docs/models/part2.md
+  - docs/models/partition.md
   - docs/models/payloadtoolargeresponseerrordata.md
   - docs/models/paymentrequiredresponseerrordata.md
   - docs/models/pdf.md
@@ -394,9 +394,14 @@ generatedFiles:
   - docs/models/providerpreferencesmaxprice.md
   - docs/models/providerpreferencesonly.md
   - docs/models/providerpreferencesorder.md
+  - docs/models/providerpreferencespartition.md
+  - docs/models/providerpreferencesprovidersort.md
+  - docs/models/providerpreferencesprovidersortconfig.md
+  - docs/models/providerpreferencessortunion.md
   - docs/models/providersort.md
-  - docs/models/providersortenum.md
-  - docs/models/providersortpartition.md
+  - docs/models/providersortconfig.md
+  - docs/models/providersortconfigenum.md
+  - docs/models/providersortconfigunion.md
   - docs/models/providersortunion.md
   - docs/models/publicendpoint.md
   - docs/models/publicendpointquantization.md
@@ -461,12 +466,15 @@ generatedFiles:
   - docs/models/route.md
   - docs/models/schema0.md
   - docs/models/schema0enum.md
-  - docs/models/schema1.md
+  - docs/models/schema3.md
+  - docs/models/schema3reasoningencrypted.md
+  - docs/models/schema3reasoningsummary.md
+  - docs/models/schema3reasoningtext.md
+  - docs/models/schema5.md
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
-  - docs/models/sort.md
-  - docs/models/sortunion.md
+  - docs/models/sortenum.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
@@ -707,6 +715,8 @@ generatedFiles:
   - src/models/providername.ts
   - src/models/provideroverloadedresponseerrordata.ts
   - src/models/providerpreferences.ts
+  - src/models/providersort.ts
+  - src/models/providersortconfig.ts
   - src/models/providersortunion.ts
   - src/models/publicendpoint.ts
   - src/models/publicpricing.ts
@@ -738,7 +748,7 @@ generatedFiles:
   - src/models/responseswebsearchuserlocation.ts
   - src/models/responsetextconfig.ts
   - src/models/schema0.ts
-  - src/models/schema1.ts
+  - src/models/schema3.ts
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
@@ -773,6 +783,7 @@ generatedFiles:
   - src/types/async.ts
   - src/types/blobs.ts
   - src/types/constdatetime.ts
+  - src/types/discriminatedUnion.ts
   - src/types/enums.ts
   - src/types/fp.ts
   - src/types/index.ts

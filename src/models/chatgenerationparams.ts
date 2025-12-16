@@ -17,6 +17,11 @@ import {
   Message$outboundSchema,
 } from "./message.js";
 import {
+  ProviderSortUnion,
+  ProviderSortUnion$Outbound,
+  ProviderSortUnion$outboundSchema,
+} from "./providersortunion.js";
+import {
   ReasoningSummaryVerbosity,
   ReasoningSummaryVerbosity$outboundSchema,
 } from "./reasoningsummaryverbosity.js";
@@ -35,7 +40,6 @@ import {
   Schema0$Outbound,
   Schema0$outboundSchema,
 } from "./schema0.js";
-import { Schema1, Schema1$outboundSchema } from "./schema1.js";
 import {
   ToolDefinitionJson,
   ToolDefinitionJson$Outbound,
@@ -62,21 +66,6 @@ export const Quantizations = {
   Unknown: "unknown",
 } as const;
 export type Quantizations = OpenEnum<typeof Quantizations>;
-
-export const ChatGenerationParamsPartition = {
-  Model: "model",
-  None: "none",
-} as const;
-export type ChatGenerationParamsPartition = OpenEnum<
-  typeof ChatGenerationParamsPartition
->;
-
-export type Sort = {
-  by?: Schema1 | null | undefined;
-  partition?: ChatGenerationParamsPartition | null | undefined;
-};
-
-export type SortUnion = Schema1 | Sort;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
@@ -132,7 +121,7 @@ export type ChatGenerationParamsProvider = {
   /**
    * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
    */
-  sort?: Schema1 | Sort | null | undefined;
+  sort?: ProviderSortUnion | null | undefined;
   /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
@@ -298,42 +287,6 @@ export const Quantizations$outboundSchema: z.ZodType<string, Quantizations> =
   openEnums.outboundSchema(Quantizations);
 
 /** @internal */
-export const ChatGenerationParamsPartition$outboundSchema: z.ZodType<
-  string,
-  ChatGenerationParamsPartition
-> = openEnums.outboundSchema(ChatGenerationParamsPartition);
-
-/** @internal */
-export type Sort$Outbound = {
-  by?: string | null | undefined;
-  partition?: string | null | undefined;
-};
-
-/** @internal */
-export const Sort$outboundSchema: z.ZodType<Sort$Outbound, Sort> = z.object({
-  by: z.nullable(Schema1$outboundSchema).optional(),
-  partition: z.nullable(ChatGenerationParamsPartition$outboundSchema)
-    .optional(),
-});
-
-export function sortToJSON(sort: Sort): string {
-  return JSON.stringify(Sort$outboundSchema.parse(sort));
-}
-
-/** @internal */
-export type SortUnion$Outbound = string | Sort$Outbound;
-
-/** @internal */
-export const SortUnion$outboundSchema: z.ZodType<
-  SortUnion$Outbound,
-  SortUnion
-> = z.union([Schema1$outboundSchema, z.lazy(() => Sort$outboundSchema)]);
-
-export function sortUnionToJSON(sortUnion: SortUnion): string {
-  return JSON.stringify(SortUnion$outboundSchema.parse(sortUnion));
-}
-
-/** @internal */
 export type ChatGenerationParamsMaxPrice$Outbound = {
   prompt?: any | undefined;
   completion?: any | undefined;
@@ -375,7 +328,7 @@ export type ChatGenerationParamsProvider$Outbound = {
   only?: Array<Schema0$Outbound> | null | undefined;
   ignore?: Array<Schema0$Outbound> | null | undefined;
   quantizations?: Array<string> | null | undefined;
-  sort?: string | Sort$Outbound | null | undefined;
+  sort?: ProviderSortUnion$Outbound | null | undefined;
   max_price?: ChatGenerationParamsMaxPrice$Outbound | undefined;
   preferred_min_throughput?: number | null | undefined;
   preferred_max_latency?: number | null | undefined;
@@ -398,9 +351,7 @@ export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
   only: z.nullable(z.array(Schema0$outboundSchema)).optional(),
   ignore: z.nullable(z.array(Schema0$outboundSchema)).optional(),
   quantizations: z.nullable(z.array(Quantizations$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([Schema1$outboundSchema, z.lazy(() => Sort$outboundSchema)]),
-  ).optional(),
+  sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
   maxPrice: z.lazy(() => ChatGenerationParamsMaxPrice$outboundSchema)
     .optional(),
   preferredMinThroughput: z.nullable(z.number()).optional(),

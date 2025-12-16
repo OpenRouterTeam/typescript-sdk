@@ -6,13 +6,13 @@ import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
-export const Schema1 = {
+export const ProviderSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
 } as const;
-export type Schema1 = OpenEnum<typeof Schema1>;
+export type ProviderSort = OpenEnum<typeof ProviderSort>;
 
 /** @internal */
-export const Schema1$outboundSchema: z.ZodType<string, Schema1> = openEnums
-  .outboundSchema(Schema1);
+export const ProviderSort$outboundSchema: z.ZodType<string, ProviderSort> =
+  openEnums.outboundSchema(ProviderSort);

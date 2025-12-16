@@ -1,11 +1,11 @@
-# ProviderSortEnum
+# ProviderPreferencesProviderSort
 
 ## Example Usage
 
 ```typescript
-import { ProviderSortEnum } from "@openrouter/sdk/models";
+import { ProviderPreferencesProviderSort } from "@openrouter/sdk/models";
 
-let value: ProviderSortEnum = "price";
+let value: ProviderPreferencesProviderSort = "latency";
 ```
 
 ## Values

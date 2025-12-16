@@ -1,13 +1,11 @@
-# By
-
-The provider sorting strategy (price, throughput, latency)
+# SortEnum
 
 ## Example Usage
 
 ```typescript
-import { By } from "@openrouter/sdk/models";
+import { SortEnum } from "@openrouter/sdk/models";
 
-let value: By = "price";
+let value: SortEnum = "throughput";
 ```
 
 ## Values
