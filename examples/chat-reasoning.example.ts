@@ -60,6 +60,15 @@ async function streamingExample() {
     let _fullContent = "";
 
     for await (const chunk of stream) {
+      if (chunk.choices[0].delta?.reasoning_details) {
+        console.log(
+          `REASONING_DETAILS:`,
+          chunk.choices[0].delta.reasoning_details
+        );
+      } else if (chunk.choices[0].delta?.content) {
+        console.log(`CONTENT: ${chunk.choices[0].delta.content}`);
+      }
+
       if (chunk.choices?.[0]?.delta?.content) {
         const content = chunk.choices[0].delta.content;
         process.stdout.write(content);
