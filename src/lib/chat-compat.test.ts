@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 import { fromChatMessages, toChatMessage } from "./chat-compat.js";
 import type * as models from "../models/index.js";
 
