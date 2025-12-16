@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { tool, createTool, createGeneratorTool, createManualTool } from '../../src/lib/create-tool.js';
+import { tool, createTool, createGeneratorTool, createManualTool } from '../../src/lib/tool.js';
 import { ToolType } from '../../src/lib/tool-types.js';
 
 describe('tool', () => {

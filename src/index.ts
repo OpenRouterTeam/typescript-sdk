@@ -13,7 +13,7 @@ export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
 export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
 
 // Tool creation helpers
-export { tool, createTool, createGeneratorTool, createManualTool } from "./lib/create-tool.js";
+export { tool, createTool, createGeneratorTool, createManualTool } from "./lib/tool.js";
 
 // Tool types
 export type {
