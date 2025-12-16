@@ -12,9 +12,8 @@ let value: ChatGenerationParamsPluginFileParser = {
 
 ## Fields
 
-| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `id`                                                                   | *"file-parser"*                                                        | :heavy_check_mark:                                                     | N/A                                                                    |
-| `enabled`                                                              | *boolean*                                                              | :heavy_minus_sign:                                                     | N/A                                                                    |
-| `maxFiles`                                                             | *number*                                                               | :heavy_minus_sign:                                                     | N/A                                                                    |
-| `pdf`                                                                  | [models.ChatGenerationParamsPdf](../models/chatgenerationparamspdf.md) | :heavy_minus_sign:                                                     | N/A                                                                    |
+| Field                          | Type                           | Required                       | Description                    |
+| ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| `id`                           | *"file-parser"*                | :heavy_check_mark:             | N/A                            |
+| `enabled`                      | *boolean*                      | :heavy_minus_sign:             | N/A                            |
+| `pdf`                          | [models.Pdf](../models/pdf.md) | :heavy_minus_sign:             | N/A                            |

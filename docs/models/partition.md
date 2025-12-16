@@ -1,11 +1,11 @@
-# Effort
+# Partition
 
 ## Example Usage
 
 ```typescript
-import { Effort } from "@openrouter/sdk/models";
+import { Partition } from "@openrouter/sdk/models";
 
-let value: Effort = "high";
+let value: Partition = "none";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: Effort = "high";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"xhigh" | "high" | "medium" | "low" | "minimal" | "none" | Unrecognized<string>
+"model" | "none" | Unrecognized<string>
 ```
