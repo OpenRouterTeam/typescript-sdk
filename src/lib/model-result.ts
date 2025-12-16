@@ -5,11 +5,13 @@ import type { RequestOptions } from "./sdks.js";
 import type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
+  InferToolEventsUnion,
   Tool,
   MaxToolRounds,
   ParsedToolCall,
   ToolStreamEvent,
   TurnContext,
+  TypedToolCallUnion,
 } from "./tool-types.js";
 
 import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
@@ -75,11 +77,11 @@ function hasTypeProperty(
   );
 }
 
-export interface GetResponseOptions {
+export interface GetResponseOptions<TTools extends readonly Tool[] = Tool[]> {
   request: models.OpenResponsesRequest;
   client: OpenRouterCore;
   options?: RequestOptions;
-  tools?: Tool[];
+  tools?: TTools;
   maxToolRounds?: MaxToolRounds;
 }
 
@@ -100,14 +102,13 @@ export interface GetResponseOptions {
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
  */
-export class ModelResult {
-  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null =
-    null;
-  private streamPromise: Promise<
-    EventStream<models.OpenResponsesStreamEvent>
-  > | null = null;
+export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
+  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
+  private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
+  private chatMessagePromise: Promise<models.AssistantMessage> | null = null;
+  private claudeMessagePromise: Promise<models.ClaudeMessage> | null = null;
   private textPromise: Promise<string> | null = null;
-  private options: GetResponseOptions;
+  private options: GetResponseOptions<TTools>;
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
   private finalResponse: models.OpenResponsesNonStreamingResponse | null = null;
@@ -118,7 +119,7 @@ export class ModelResult {
     response: models.OpenResponsesNonStreamingResponse;
   }> = [];
 
-  constructor(options: GetResponseOptions) {
+  constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
   }
 
@@ -437,8 +438,12 @@ export class ModelResult {
    * Multiple consumers can iterate over this stream concurrently.
    * Includes preliminary tool result events after tool execution.
    */
-  getFullResponsesStream(): AsyncIterableIterator<EnhancedResponseStreamEvent> {
-    return async function* (this: ModelResult) {
+  getFullResponsesStream(): AsyncIterableIterator<
+    EnhancedResponseStreamEvent<InferToolEventsUnion<TTools>>
+  > {
+    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
+      EnhancedResponseStreamEvent<InferToolEventsUnion<TTools>>
+    > {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -460,7 +465,7 @@ export class ModelResult {
           yield {
             type: "tool.preliminary_result" as const,
             toolCallId,
-            result,
+            result: result as InferToolEventsUnion<TTools>,
             timestamp: Date.now(),
           };
         }
@@ -473,7 +478,7 @@ export class ModelResult {
    * This filters the full event stream to only yield text content.
    */
   getTextStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult) {
+    return async function* (this: ResponseWrapper<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -492,7 +497,7 @@ export class ModelResult {
   getNewMessagesStream(): AsyncIterableIterator<
     models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput
   > {
-    return async function* (this: ModelResult) {
+    return async function* (this: ResponseWrapper<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -550,7 +555,7 @@ export class ModelResult {
    * This filters the full event stream to only yield reasoning content.
    */
   getReasoningStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult) {
+    return async function* (this: ResponseWrapper<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -566,8 +571,12 @@ export class ModelResult {
    * - Tool call argument deltas as { type: "delta", content: string }
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
-  getToolStream(): AsyncIterableIterator<ToolStreamEvent> {
-    return async function* (this: ModelResult) {
+  getToolStream(): AsyncIterableIterator<
+    ToolStreamEvent<InferToolEventsUnion<TTools>>
+  > {
+    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
+      ToolStreamEvent<InferToolEventsUnion<TTools>>
+    > {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -590,7 +599,7 @@ export class ModelResult {
           yield {
             type: "preliminary_result" as const,
             toolCallId,
-            result,
+            result: result as InferToolEventsUnion<TTools>,
           };
         }
       }
@@ -607,8 +616,12 @@ export class ModelResult {
    * stream into a format similar to the chat API. Due to differences in the APIs,
    * this may not be a perfect mapping.
    */
-  getFullChatStream(): AsyncIterableIterator<ChatStreamEvent> {
-    return async function* (this: ModelResult) {
+  getFullChatStream(): AsyncIterableIterator<
+    ChatStreamEvent<InferToolEventsUnion<TTools>>
+  > {
+    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
+      ChatStreamEvent<InferToolEventsUnion<TTools>>
+    > {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -650,7 +663,7 @@ export class ModelResult {
           yield {
             type: "tool.preliminary_result" as const,
             toolCallId,
-            result,
+            result: result as InferToolEventsUnion<TTools>,
           };
         }
       }
@@ -661,32 +674,46 @@ export class ModelResult {
    * Get all tool calls from the completed response (before auto-execution).
    * Note: If tools have execute functions, they will be automatically executed
    * and this will return the tool calls from the initial response.
-   * Returns structured tool calls with parsed arguments.
+   * Returns structured tool calls with typed arguments based on tool definitions.
+   *
+   * @example
+   * ```typescript
+   * const toolCalls = await response.getToolCalls();
+   * // toolCalls[0].arguments is typed based on tool inputSchema
+   * ```
    */
-  async getToolCalls(): Promise<ParsedToolCall[]> {
+  async getToolCalls(): Promise<TypedToolCallUnion<TTools>[]> {
     await this.initStream();
     if (!this.reusableStream) {
       throw new Error("Stream not initialized");
     }
 
-    const completedResponse = await consumeStreamForCompletion(
-      this.reusableStream
-    );
-    return extractToolCallsFromResponse(completedResponse);
+    const completedResponse = await consumeStreamForCompletion(this.reusableStream);
+    return extractToolCallsFromResponse(completedResponse) as TypedToolCallUnion<TTools>[];
   }
 
   /**
    * Stream structured tool call objects as they're completed.
-   * Each iteration yields a complete tool call with parsed arguments.
+   * Each iteration yields a complete tool call with typed arguments based on tool definitions.
+   *
+   * @example
+   * ```typescript
+   * for await (const toolCall of response.getToolCallsStream()) {
+   *   // toolCall.arguments is typed based on tool inputSchema
+   *   console.log(toolCall.name, toolCall.arguments);
+   * }
+   * ```
    */
-  getToolCallsStream(): AsyncIterableIterator<ParsedToolCall> {
-    return async function* (this: ModelResult) {
+  getToolCallsStream(): AsyncIterableIterator<TypedToolCallUnion<TTools>> {
+    return async function* (this: ResponseWrapper<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
       }
 
-      yield* buildToolCallStream(this.reusableStream);
+      for await (const toolCall of buildToolCallStream(this.reusableStream)) {
+        yield toolCall as TypedToolCallUnion<TTools>;
+      }
     }.call(this);
   }
 

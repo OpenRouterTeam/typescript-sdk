@@ -20,12 +20,12 @@ import { Providers } from "./providers.js";
 // #region imports
 import {
   callModel as callModelFunc,
+  type CallModelInput,
 } from "../funcs/call-model.js";
-import type { ModelResult } from "../lib/model-result.js";
+import type { ResponseWrapper } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
 import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
 import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
-import type { OpenResponsesInput } from "../models/openresponsesinput.js";
 
 export { ToolType };
 export type { MaxToolRounds };
@@ -98,15 +98,36 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel(
+  /**
+   * Get a response with multiple consumption patterns and typed tool calls.
+   *
+   * @example
+   * ```typescript
+   * const weatherTool = createTool({
+   *   name: "get_weather",
+   *   inputSchema: z.object({ location: z.string() }),
+   *   execute: async (params) => ({ temperature: 72 }),
+   * });
+   *
+   * const response = client.callModel({
+   *   model: "openai/gpt-4",
+   *   input: "What's the weather?",
+   *   tools: [weatherTool] as const,
+   * });
+   *
+   * const toolCalls = await response.getToolCalls();
+   * // toolCalls[0].arguments is typed as { location: string }
+   * ```
+   */
+  callModel<TTools extends readonly Tool[] = Tool[]>(
     request: Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
-      input?: OpenResponsesInput;
-      tools?: Tool[];
+      input?: CallModelInput;
+      tools?: TTools;
       maxToolRounds?: MaxToolRounds;
     },
-    options?: RequestOptions,
-  ): ModelResult {
-    return callModelFunc(this, request, options);
+    options?: RequestOptions
+  ): ResponseWrapper<TTools> {
+    return callModelFunc<TTools>(this, request, options);
   }
   // #endregion sdk-class-body
 }
