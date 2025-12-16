@@ -137,36 +137,35 @@ export async function executeGeneratorTool(
       toolCall.arguments,
     ) as Parameters<typeof tool.function.execute>[0];
 
-    // Execute generator and collect all results
+    // Execute generator and collect all yielded values.
+    // Contract: all yields except the last must match eventSchema; the last yield must match outputSchema.
+    const yielded: unknown[] = [];
+    for await (const value of tool.function.execute(validatedInput, context)) {
+      yielded.push(value);
+    }
+
+    if (yielded.length === 0) {
+      throw new Error(
+        `Generator tool "${toolCall.name}" completed without emitting any values`,
+      );
+    }
+
+    const finalCandidate = yielded[yielded.length - 1];
+    const preliminaryCandidates = yielded.slice(0, -1);
+
     const preliminaryResults: unknown[] = [];
-    let lastEmittedValue: unknown = null;
-    let hasEmittedValue = false;
-
-    for await (const event of tool.function.execute(validatedInput, context)) {
-      hasEmittedValue = true;
-
-      // Validate event against eventSchema
+    for (const event of preliminaryCandidates) {
       const validatedEvent = validateToolOutput(tool.function.eventSchema, event);
-
       preliminaryResults.push(validatedEvent);
-      lastEmittedValue = validatedEvent;
-
-      // Emit preliminary result via callback
       if (onPreliminaryResult) {
         onPreliminaryResult(toolCall.id, validatedEvent);
       }
     }
 
-    // Generator must emit at least one value
-    if (!hasEmittedValue) {
-      throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
-    }
-
-    // Validate the last emitted value against outputSchema (this is the final result)
-    const finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
-
-    // Remove last item from preliminaryResults since it's the final output
-    preliminaryResults.pop();
+    const finalResult = validateToolOutput(
+      tool.function.outputSchema,
+      finalCandidate,
+    );
 
     return {
       toolCallId: toolCall.id,

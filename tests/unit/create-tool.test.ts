@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
 import { createTool, createGeneratorTool, createManualTool } from '../../src/lib/create-tool.js';
-import { ToolType } from '../../src/lib/tool-types.js';
+import { ToolType, hasNextTurnParams } from '../../src/lib/tool-types.js';
 
 describe('createTool', () => {
   describe('createTool - regular tools', () => {
@@ -30,6 +30,10 @@ describe('createTool', () => {
           location: z.string(),
           units: z.enum(['celsius', 'fahrenheit']).optional(),
         }),
+        outputSchema: z.object({
+          location: z.string(),
+          units: z.enum(['celsius', 'fahrenheit']).optional(),
+        }),
         execute: async (params) => {
           // params should be typed as { location: string; units?: 'celsius' | 'fahrenheit' }
           const location: string = params.location;
@@ -38,7 +42,8 @@ describe('createTool', () => {
         },
       });
 
-      const result = await tool.function.execute({ location: 'NYC', units: 'fahrenheit' });
+      const mockContext = { input: [], changes: [] };
+      const result = await tool.function.execute({ location: 'NYC', units: 'fahrenheit' }, mockContext);
       expect(result.location).toBe('NYC');
       expect(result.units).toBe('fahrenheit');
     });
@@ -62,7 +67,8 @@ describe('createTool', () => {
         },
       });
 
-      const result = await tool.function.execute({ location: 'NYC' });
+      const mockContext = { input: [], changes: [] };
+      const result = await tool.function.execute({ location: 'NYC' }, mockContext);
       expect(result.temperature).toBe(72);
       expect(result.description).toBe('Sunny');
     });
@@ -79,7 +85,8 @@ describe('createTool', () => {
         },
       });
 
-      const result = tool.function.execute({ a: 5, b: 3 });
+      const mockContext = { input: [], changes: [] };
+      const result = tool.function.execute({ a: 5, b: 3 }, mockContext);
       expect(result).toEqual({ sum: 8 });
     });
 
@@ -96,19 +103,58 @@ describe('createTool', () => {
       });
 
       const mockContext = {
-        numberOfTurns: 3,
-        messageHistory: [],
+        input: [{ role: 'user' as const, content: 'test' }],
         model: 'test-model',
+        changes: [],
       };
 
       await tool.function.execute({}, mockContext);
       expect(receivedContext).toEqual(mockContext);
     });
+
+    it('should accept nextTurnParams configuration', () => {
+      const tool = createTool({
+        name: 'tool_with_mutations',
+        inputSchema: z.object({
+          query: z.string(),
+        }),
+        nextTurnParams: {
+          instructions: (_params, context) => `Updated: ${context.instructions ?? ''}`,
+        },
+        execute: async (_params) => {
+          return { result: 'done' };
+        },
+      });
+
+      expect(tool.function.nextTurnParams).toBeDefined();
+      expect(tool.function.nextTurnParams?.instructions).toBeInstanceOf(Function);
+    });
+
+    it('should call nextTurnParams mutator with context', () => {
+      const tool = createTool({
+        name: 'mutator_tool',
+        inputSchema: z.object({}),
+        nextTurnParams: {
+          instructions: (_params, context) => `Turn instructions: ${context.model ?? 'unknown'}`,
+        },
+        execute: async () => ({}),
+      });
+
+      const mockParams = {};
+      const mockContext = {
+        model: 'gpt-4',
+        input: [],
+        changes: [],
+      };
+
+      const result = tool.function.nextTurnParams?.instructions?.(mockParams, mockContext as never);
+      expect(result).toBe('Turn instructions: gpt-4');
+    });
   });
 
-  describe('createGeneratorTool - streaming tools', () => {
-    it('should create a generator tool with the correct structure', () => {
-      const tool = createGeneratorTool({
+  describe('createTool with eventSchema - generator/streaming tools', () => {
+    it('should create a generator tool when eventSchema is provided', () => {
+      const tool = createTool({
         name: 'streaming_tool',
         description: 'A streaming tool',
         inputSchema: z.object({
@@ -132,8 +178,8 @@ describe('createTool', () => {
       expect(tool.function.outputSchema).toBeDefined();
     });
 
-    it('should yield properly typed events and output', async () => {
-      const tool = createGeneratorTool({
+    it('should yield properly typed events and output when eventSchema is provided', async () => {
+      const tool = createTool({
         name: 'progress_tool',
         inputSchema: z.object({
           data: z.string(),
@@ -163,6 +209,57 @@ describe('createTool', () => {
       expect(results[1]).toEqual({ status: 'processing', progress: 50 });
       expect(results[2]).toEqual({ completed: true, result: 'Processed: test' });
     });
+
+    it('should accept nextTurnParams for tools with eventSchema', () => {
+      const tool = createTool({
+        name: 'streaming_mutator_tool',
+        inputSchema: z.object({
+          query: z.string(),
+        }),
+        eventSchema: z.object({
+          progress: z.number(),
+        }),
+        outputSchema: z.object({
+          result: z.string(),
+        }),
+        nextTurnParams: {
+          temperature: () => 0.5,
+        },
+        execute: async function* (_params) {
+          yield { progress: 100 };
+          yield { result: 'done' };
+        },
+      });
+
+      expect(tool.function.nextTurnParams).toBeDefined();
+      expect(tool.function.nextTurnParams?.temperature).toBeInstanceOf(Function);
+      expect(tool.function.nextTurnParams?.temperature?.({} as never, {} as never)).toBe(0.5);
+    });
+  });
+
+  describe('createGeneratorTool - deprecated but still works', () => {
+    it('should still work for backwards compatibility', () => {
+      const tool = createGeneratorTool({
+        name: 'legacy_streaming_tool',
+        inputSchema: z.object({
+          query: z.string(),
+        }),
+        eventSchema: z.object({
+          progress: z.number(),
+        }),
+        outputSchema: z.object({
+          result: z.string(),
+        }),
+        execute: async function* (_params) {
+          yield { progress: 50 };
+          yield { result: 'done' };
+        },
+      });
+
+      expect(tool.type).toBe(ToolType.Function);
+      expect(tool.function.name).toBe('legacy_streaming_tool');
+      expect(tool.function.eventSchema).toBeDefined();
+    });
   });
 
   describe('createManualTool - tools without execute', () => {
@@ -181,6 +278,40 @@ describe('createTool', () => {
       expect(tool.type).toBe(ToolType.Function);
       expect(tool.function.name).toBe('manual_tool');
       expect(tool.function).not.toHaveProperty('execute');
+    });
+  });
+
+  describe('hasNextTurnParams - type guard', () => {
+    it('should return true for tools with nextTurnParams', () => {
+      const tool = createTool({
+        name: 'tool_with_next_turn',
+        inputSchema: z.object({}),
+        nextTurnParams: {
+          instructions: () => 'new instructions',
+        },
+        execute: async () => ({}),
+      });
+
+      expect(hasNextTurnParams(tool)).toBe(true);
+    });
+
+    it('should return false for tools without nextTurnParams', () => {
+      const tool = createTool({
+        name: 'tool_without_next_turn',
+        inputSchema: z.object({}),
+        execute: async () => ({}),
+      });
+
+      expect(hasNextTurnParams(tool)).toBe(false);
+    });
+
+    it('should return false for manual tools', () => {
+      const tool = createManualTool({
+        name: 'manual_tool',
+        inputSchema: z.object({}),
+      });
+
+      expect(hasNextTurnParams(tool)).toBe(false);
     });
   });
 });

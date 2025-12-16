@@ -31,6 +31,8 @@ export type {
   TypedToolCall,
   TypedToolCallUnion,
   TurnContext,
+  TurnChange,
+  NextTurnParams,
   ParsedToolCall,
   // Event type inference helpers
   InferToolEvent,
@@ -40,4 +42,9 @@ export type {
   ToolStreamEvent,
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
+  // Builder types
+  BuildTurnContextOptions,
 } from "./lib/tool-types.js";
+
+// Tool helpers
+export { normalizeInputToArray, buildTurnContext } from "./lib/tool-types.js";

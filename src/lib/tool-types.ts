@@ -1,28 +1,161 @@
-import type { ZodObject, ZodRawShape, ZodType, z } from 'zod/v4';
-import type * as models from '../models/index.js';
-import type { OpenResponsesStreamEvent } from '../models/index.js';
-import type { ModelResult } from './model-result.js';
+import type { ZodObject, ZodRawShape, ZodType, z } from "zod/v4";
+import type * as models from "../models/index.js";
+import type { OpenResponsesStreamEvent } from "../models/index.js";
+import type { ResponseWrapper } from "./model-result.js";
+import type { CallModelInput } from "../funcs/call-model.js";
+import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
 
 /**
  * Tool type enum for enhanced tools
  */
 export enum ToolType {
-  Function = 'function',
+  Function = "function",
 }
+
+export type CallModelRequest<TTools extends readonly Tool[] = readonly Tool[]> =
+  Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
+    input?: CallModelInput;
+    tools?: TTools;
+    maxToolRounds?: MaxToolRounds;
+  };
+
+/**
+ * Represents a change made during tool execution turn
+ */
+export type TurnChange<TTools extends readonly Tool[] = readonly Tool[]> =
+  | {
+      type: "tool_result";
+      toolName: string;
+      toolCallId: string;
+      result: unknown;
+      error?: Error;
+    }
+  | {
+      type: "request_mutation";
+      source: string; // tool name that made the mutation
+      delta: Partial<CallModelRequest<TTools>>; // just the changed fields
+    };
+
+/**
+ * Type for nextTurnParams - callbacks to mutate request params before next turn
+ * Each key corresponds to a CallModelRequest param, value is a function that receives
+ * TurnContext and returns the new value for that param (sync or async).
+ */
+export type NextTurnParams<
+  Params extends Record<string, unknown>,
+  TTools extends readonly Tool[] = readonly Tool[],
+> = {
+  [K in keyof CallModelRequest<TTools>]?: (
+    params: Params,
+    context: TurnContext<TTools>
+  ) => CallModelRequest<TTools>[K] | Promise<CallModelRequest<TTools>[K]>;
+};
 
 /**
  * Turn context passed to tool execute functions
  * Contains information about the current conversation state
  */
-export interface TurnContext {
-  /** Number of tool execution turns so far (1-indexed: first turn = 1) */
-  numberOfTurns: number;
-  /** Current message history being sent to the API */
-  messageHistory: models.OpenResponsesInput;
-  /** Model name if request.model is set */
-  model?: string;
-  /** Model names if request.models is set */
-  models?: string[];
+export interface TurnContext<TTools extends readonly Tool[] = readonly Tool[]>
+  extends Omit<CallModelRequest<TTools>, "input"> {
+  /**
+   * The current conversation input in OpenResponses format, normalized to an array.
+   *
+   * Why array-only?
+   * `models.OpenResponsesInput` is `string | OpenResponsesItem[]`. Tool hooks like
+   * `nextTurnParams.input` frequently do `return [...context.input, newMessage]`.
+   * If `context.input` were allowed to be a `string`, spreading would produce
+   * a `string[]` (characters) and break type safety.
+   */
+  input: models.OpenResponsesInput1[];
+  /**
+   * Array of changes made this turn - tool results and request mutations
+   * Applied in order, allowing tools to see what previous tools did
+   */
+  changes: TurnChange<TTools>[];
+  /**
+   * The current tool call's arguments (only present during tool execution)
+   */
+  arguments?: TypedToolCallUnion<TTools>;
+}
+
+/**
+ * Normalizes OpenResponsesInput to always be an array.
+ * If input is undefined, returns empty array.
+ * If input is a string, wraps it in a user message object.
+ */
+export function normalizeInputToArray(
+  input: models.OpenResponsesInput | undefined
+): models.OpenResponsesInput1[] {
+  if (input === undefined) {
+    return [];
+  }
+  if (typeof input === "string") {
+    return [{ role: "user", content: input }];
+  }
+  return input;
+}
+
+/**
+ * Options for building a TurnContext
+ */
+export type BuildTurnContextOptions<
+  TTools extends readonly Tool[] = readonly Tool[],
+> = {
+  /** Base request parameters (model, instructions, etc.) - excludes input, tools, maxToolRounds */
+  request: Record<string, unknown>;
+  /** Current conversation input - can be string or array, will be normalized to array */
+  input: models.OpenResponsesInput;
+  /** Tools being used */
+  tools?: TTools;
+  /** Max tool rounds configuration */
+  maxToolRounds?: MaxToolRounds;
+  /** Changes made this turn */
+  changes: TurnChange<TTools>[];
+  /** Current tool call arguments (optional) */
+  arguments?: TypedToolCallUnion<TTools>;
+};
+
+/**
+ * Builds a TurnContext object from the provided options.
+ * This provides a centralized way to construct TurnContext objects.
+ */
+export function buildTurnContext<
+  TTools extends readonly Tool[] = readonly Tool[],
+>(options: BuildTurnContextOptions<TTools>): TurnContext<TTools> {
+  const {
+    request,
+    input,
+    tools,
+    maxToolRounds,
+    changes,
+    arguments: args,
+  } = options;
+
+  // Normalize input to always be an array
+  const normalizedInput = normalizeInputToArray(input);
+
+  // Build the base context from request params
+  // Cast is required: TypeScript cannot verify that spreading 'request'
+  // (typed as Record<string, unknown>) preserves the TTools generic parameter,
+  // but it does since request comes from CallModelRequest<TTools> at call sites.
+  const context: TurnContext<TTools> = {
+    ...request,
+    input: normalizedInput,
+    changes,
+  } as TurnContext<TTools>;
+
+  // Only add optional fields if they are defined
+  if (tools !== undefined) {
+    context.tools = tools;
+  }
+  if (maxToolRounds !== undefined) {
+    context.maxToolRounds = maxToolRounds;
+  }
+  if (args !== undefined) {
+    context.arguments = args;
+  }
+
+  return context;
 }
 
 /**
@@ -42,9 +175,10 @@ export interface ToolFunctionWithExecute<
   TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
+  nextTurnParams?: NextTurnParams<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
-    context?: TurnContext,
+    context: TurnContext
   ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
 }
 
@@ -73,7 +207,11 @@ export interface ToolFunctionWithGenerator<
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
-  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent>>;
+  nextTurnParams?: NextTurnParams<z.infer<TInput>>;
+  execute: (
+    params: z.infer<TInput>,
+    context?: TurnContext
+  ) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
 }
 
 /**
@@ -125,7 +263,11 @@ export type ManualTool<
  */
 export type Tool =
   | ToolWithExecute<ZodObject<ZodRawShape>, ZodType<unknown>>
-  | ToolWithGenerator<ZodObject<ZodRawShape>, ZodType<unknown>, ZodType<unknown>>
+  | ToolWithGenerator<
+      ZodObject<ZodRawShape>,
+      ZodType<unknown>,
+      ZodType<unknown>
+    >
   | ManualTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
 
 /**
@@ -140,7 +282,9 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
 /**
  * Extracts the output type from a tool definition
  */
-export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
+export type InferToolOutput<T> = T extends {
+  function: { outputSchema: infer S };
+}
   ? S extends ZodType
     ? z.infer<S>
     : unknown
@@ -184,16 +328,18 @@ export type InferToolEventsUnion<T extends readonly Tool[]> = {
  * Type guard to check if a tool has an execute function
  */
 export function hasExecuteFunction(
-  tool: Tool,
+  tool: Tool
 ): tool is ToolWithExecute | ToolWithGenerator {
-  return 'execute' in tool.function && typeof tool.function.execute === 'function';
+  return (
+    "execute" in tool.function && typeof tool.function.execute === "function"
+  );
 }
 
 /**
  * Type guard to check if a tool uses a generator (has eventSchema)
  */
 export function isGeneratorTool(tool: Tool): tool is ToolWithGenerator {
-  return 'eventSchema' in tool.function;
+  return "eventSchema" in tool.function;
 }
 
 /**
@@ -201,6 +347,18 @@ export function isGeneratorTool(tool: Tool): tool is ToolWithGenerator {
  */
 export function isRegularExecuteTool(tool: Tool): tool is ToolWithExecute {
   return hasExecuteFunction(tool) && !isGeneratorTool(tool);
+}
+
+/**
+ * Type guard to check if a tool has nextTurnParams defined
+ */
+export function hasNextTurnParams(
+  tool: Tool
+): tool is ToolWithExecute | ToolWithGenerator {
+  return (
+    "nextTurnParams" in tool.function &&
+    tool.function.nextTurnParams !== undefined
+  );
 }
 
 /**
@@ -248,7 +406,7 @@ export interface ExecuteToolsResult {
  * Matches OpenResponsesRequestToolFunction structure
  */
 export interface APITool {
-  type: 'function';
+  type: "function";
   name: string;
   description?: string | null;
   strict?: boolean | null;
@@ -262,7 +420,7 @@ export interface APITool {
  * @template TEvent - The event type from the tool's eventSchema
  */
 export type ToolPreliminaryResultEvent<TEvent = unknown> = {
-  type: 'tool.preliminary_result';
+  type: "tool.preliminary_result";
   toolCallId: string;
   result: TEvent;
   timestamp: number;
@@ -281,9 +439,9 @@ export type EnhancedResponseStreamEvent<TEvent = unknown> =
  * Type guard to check if an event is a tool preliminary result event
  */
 export function isToolPreliminaryResultEvent<TEvent = unknown>(
-  event: EnhancedResponseStreamEvent<TEvent>,
+  event: EnhancedResponseStreamEvent<TEvent>
 ): event is ToolPreliminaryResultEvent<TEvent> {
-  return event.type === 'tool.preliminary_result';
+  return event.type === "tool.preliminary_result";
 }
 
 /**
@@ -293,11 +451,11 @@ export function isToolPreliminaryResultEvent<TEvent = unknown>(
  */
 export type ToolStreamEvent<TEvent = unknown> =
   | {
-      type: 'delta';
+      type: "delta";
       content: string;
     }
   | {
-      type: 'preliminary_result';
+      type: "preliminary_result";
       toolCallId: string;
       result: TEvent;
     };
@@ -309,15 +467,15 @@ export type ToolStreamEvent<TEvent = unknown> =
  */
 export type ChatStreamEvent<TEvent = unknown> =
   | {
-      type: 'content.delta';
+      type: "content.delta";
       delta: string;
     }
   | {
-      type: 'message.complete';
+      type: "message.complete";
       response: models.OpenResponsesNonStreamingResponse;
     }
   | {
-      type: 'tool.preliminary_result';
+      type: "tool.preliminary_result";
       toolCallId: string;
       result: TEvent;
     }

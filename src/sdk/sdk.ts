@@ -18,14 +18,15 @@ import { OAuth } from "./oauth.js";
 import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
-import {
-  callModel as callModelFunc,
-  type CallModelInput,
-} from "../funcs/call-model.js";
+import { callModel as callModelFunc } from "../funcs/call-model.js";
 import type { ResponseWrapper } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
-import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
-import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
+import {
+  CallModelRequest,
+  type MaxToolRounds,
+  Tool,
+  ToolType,
+} from "../lib/tool-types.js";
 
 export { ToolType };
 export type { MaxToolRounds };
@@ -120,11 +121,7 @@ export class OpenRouter extends ClientSDK {
    * ```
    */
   callModel<TTools extends readonly Tool[] = Tool[]>(
-    request: Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
-      input?: CallModelInput;
-      tools?: TTools;
-      maxToolRounds?: MaxToolRounds;
-    },
+    request: CallModelRequest<TTools>,
     options?: RequestOptions
   ): ResponseWrapper<TTools> {
     return callModelFunc<TTools>(this, request, options);

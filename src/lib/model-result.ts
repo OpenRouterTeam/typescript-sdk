@@ -10,6 +10,7 @@ import type {
   MaxToolRounds,
   ParsedToolCall,
   ToolStreamEvent,
+  TurnChange,
   TurnContext,
   TypedToolCallUnion,
 } from "./tool-types.js";
@@ -20,6 +21,8 @@ import {
   buildResponsesMessageStream,
   buildToolCallStream,
   consumeStreamForCompletion,
+  convertToClaudeMessage,
+  extractMessageFromResponse,
   extractReasoningDeltas,
   extractResponsesMessageFromResponse,
   extractTextDeltas,
@@ -28,54 +31,12 @@ import {
   extractToolDeltas,
 } from "./stream-transformers.js";
 import { executeTool } from "./tool-executor.js";
-import { hasExecuteFunction } from "./tool-types.js";
-
-/**
- * Type guard for stream event with toReadableStream method
- */
-function isEventStream(
-  value: unknown
-): value is EventStream<models.OpenResponsesStreamEvent> {
-  return (
-    value !== null &&
-    typeof value === "object" &&
-    "toReadableStream" in value &&
-    typeof (value as { toReadableStream: unknown }).toReadableStream ===
-      "function"
-  );
-}
-
-/**
- * Type guard for response.output_text.delta events
- */
-function isOutputTextDeltaEvent(
-  event: models.OpenResponsesStreamEvent
-): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
-  return "type" in event && event.type === "response.output_text.delta";
-}
-
-/**
- * Type guard for response.completed events
- */
-function isResponseCompletedEvent(
-  event: models.OpenResponsesStreamEvent
-): event is models.OpenResponsesStreamEventResponseCompleted {
-  return "type" in event && event.type === "response.completed";
-}
-
-/**
- * Type guard for output items with a type property
- */
-function hasTypeProperty(
-  item: unknown
-): item is { type: string } {
-  return (
-    typeof item === "object" &&
-    item !== null &&
-    "type" in item &&
-    typeof (item as { type: unknown }).type === "string"
-  );
-}
+import {
+  hasExecuteFunction,
+  hasNextTurnParams,
+  buildTurnContext,
+  normalizeInputToArray,
+} from "./tool-types.js";
 
 export interface GetResponseOptions<TTools extends readonly Tool[] = Tool[]> {
   request: models.OpenResponsesRequest;
@@ -103,8 +64,11 @@ export interface GetResponseOptions<TTools extends readonly Tool[] = Tool[]> {
  * ReusableReadableStream implementation.
  */
 export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
-  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
-  private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
+  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null =
+    null;
+  private streamPromise: Promise<
+    EventStream<models.OpenResponsesStreamEvent>
+  > | null = null;
   private chatMessagePromise: Promise<models.AssistantMessage> | null = null;
   private claudeMessagePromise: Promise<models.ClaudeMessage> | null = null;
   private textPromise: Promise<string> | null = null;
@@ -137,6 +101,104 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
       "output" in value &&
       !("toReadableStream" in value)
     );
+  }
+
+  /**
+   * Type guard to check if a value is an EventStream
+   */
+  private isEventStream(
+    value: unknown
+  ): value is EventStream<models.OpenResponsesStreamEvent> {
+    return (
+      value !== null && typeof value === "object" && "toReadableStream" in value
+    );
+  }
+
+  /**
+   * Creates a TurnContext with the given input, changes, and optional mutations.
+   * Uses the stored options for request params, tools, and maxToolRounds.
+   *
+   * @param input - The current conversation input
+   * @param changes - Array of changes made this turn
+   * @param mutations - Optional request param mutations from tools' nextTurnParams
+   */
+  private createTurnContext(
+    input: models.OpenResponsesInput,
+    changes: TurnChange<TTools>[],
+    mutations?: Record<string, unknown>
+  ): TurnContext<TTools> {
+    // Extract non-tool/non-input properties from request for context
+    const {
+      input: _input,
+      stream: _stream,
+      tools: _tools,
+      ...requestParams
+    } = this.options.request;
+
+    const baseRequest = mutations
+      ? { ...requestParams, ...mutations }
+      : requestParams;
+
+    return buildTurnContext<TTools>({
+      request: baseRequest,
+      input,
+      changes,
+      ...(this.options.tools !== undefined
+        ? { tools: this.options.tools }
+        : {}),
+      ...(this.options.maxToolRounds !== undefined
+        ? { maxToolRounds: this.options.maxToolRounds }
+        : {}),
+    });
+  }
+
+  /**
+   * Type guard to check if a value is an EventStream
+   */
+  private isEventStream(
+    value: unknown
+  ): value is EventStream<models.OpenResponsesStreamEvent> {
+    return (
+      value !== null && typeof value === "object" && "toReadableStream" in value
+    );
+  }
+
+  /**
+   * Creates a TurnContext with the given input, changes, and optional mutations.
+   * Uses the stored options for request params, tools, and maxToolRounds.
+   *
+   * @param input - The current conversation input
+   * @param changes - Array of changes made this turn
+   * @param mutations - Optional request param mutations from tools' nextTurnParams
+   */
+  private createTurnContext(
+    input: models.OpenResponsesInput,
+    changes: TurnChange<TTools>[],
+    mutations?: Record<string, unknown>
+  ): TurnContext<TTools> {
+    // Extract non-tool/non-input properties from request for context
+    const {
+      input: _input,
+      stream: _stream,
+      tools: _tools,
+      ...requestParams
+    } = this.options.request;
+
+    const baseRequest = mutations
+      ? { ...requestParams, ...mutations }
+      : requestParams;
+
+    return buildTurnContext<TTools>({
+      request: baseRequest,
+      input,
+      changes,
+      ...(this.options.tools !== undefined
+        ? { tools: this.options.tools }
+        : {}),
+      ...(this.options.maxToolRounds !== undefined
+        ? { maxToolRounds: this.options.maxToolRounds }
+        : {}),
+    });
   }
 
   /**
@@ -201,7 +263,7 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
         this.options.tools &&
         this.options.tools.length > 0 &&
         initialResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "function_call"
+          (item) => "type" in item && item.type === "function_call"
         );
 
       if (!shouldAutoExecute) {
@@ -232,8 +294,8 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
 
       let currentResponse = initialResponse;
       let currentRound = 0;
-      let currentInput: models.OpenResponsesInput =
-        this.options.request.input || [];
+      let currentInput: models.OpenResponsesInput1[] =
+        normalizeInputToArray(this.options.request.input);
 
       while (true) {
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
@@ -260,16 +322,7 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
           }
         } else if (typeof maxToolRounds === "function") {
           // Function signature: (context: TurnContext) => boolean
-          const turnContext: TurnContext = {
-            numberOfTurns: currentRound + 1,
-            messageHistory: currentInput,
-            ...(this.options.request.model && {
-              model: this.options.request.model,
-            }),
-            ...(this.options.request.models && {
-              models: this.options.request.models,
-            }),
-          };
+          const turnContext = this.createTurnContext(currentInput, []);
           const shouldContinue = maxToolRounds(turnContext);
           if (!shouldContinue) {
             break;
@@ -284,19 +337,17 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
         });
 
         // Build turn context for tool execution
-        const turnContext: TurnContext = {
-          numberOfTurns: currentRound + 1, // 1-indexed
-          messageHistory: currentInput,
-          ...(this.options.request.model && {
-            model: this.options.request.model,
-          }),
-          ...(this.options.request.models && {
-            models: this.options.request.models,
-          }),
-        };
+        const turnContext = this.createTurnContext(currentInput, []);
 
         // Execute all tool calls
         const toolResults: Array<models.OpenResponsesFunctionCallOutput> = [];
+        // Track execution results for changes array
+        const executionResults: Array<{
+          toolName: string;
+          toolCallId: string;
+          result: unknown;
+          error: Error | undefined;
+        }> = [];
 
         for (const toolCall of currentToolCalls) {
           const tool = this.options.tools?.find(
@@ -317,6 +368,14 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
             this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
           }
 
+          // Track execution result for changes array
+          executionResults.push({
+            toolName: toolCall.name,
+            toolCallId: toolCall.id,
+            result: result.result,
+            error: result.error,
+          });
+
           toolResults.push({
             type: "function_call_output" as const,
             id: `output_${toolCall.id}`,
@@ -331,7 +390,7 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
 
         // Build new input with tool results
         // For the Responses API, we need to include the tool results in the input
-        const newInput: models.OpenResponsesInput = [
+        const newInput: models.OpenResponsesInput1[] = [
           ...(Array.isArray(currentResponse.output)
             ? currentResponse.output
             : [currentResponse.output]),
@@ -341,9 +400,87 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
         // Update current input for next iteration
         currentInput = newInput;
 
-        // Make new request with tool results
+        // Build changes array starting with tool results
+        const changes: TurnChange<TTools>[] = executionResults.map(
+          (execResult): TurnChange<TTools> => {
+            const change: TurnChange<TTools> = {
+              type: "tool_result" as const,
+              toolName: execResult.toolName,
+              toolCallId: execResult.toolCallId,
+              result: execResult.result,
+            };
+            if (execResult.error !== undefined) {
+              change.error = execResult.error;
+            }
+            return change;
+          }
+        );
+
+        // Build context with updated input for nextTurnParams
+        let nextTurnContext = this.createTurnContext(newInput, changes);
+
+        // Collect and apply request mutations from tools that were called
+        // Using Record<string, unknown> allows dynamic key assignment without type assertions
+        const accumulatedMutations: Record<string, unknown> = {};
+
+        // Apply in tools array order (for tools that were actually called this turn)
+        for (const tool of this.options.tools ?? []) {
+          // Find the tool call for this tool (if it was called)
+          const toolCall = currentToolCalls.find(
+            (tc) => tc.name === tool.function.name
+          );
+
+          if (toolCall && hasNextTurnParams(tool)) {
+            const nextTurnParams = tool.function.nextTurnParams;
+            if (!nextTurnParams) continue;
+
+            const thisDelta: Record<string, unknown> = {};
+
+            // Apply each param mutation (supports sync and async mutators)
+            for (const [key, mutator] of Object.entries(nextTurnParams)) {
+              if (typeof mutator === "function") {
+                // mutator is typed as a function from NextTurnParams
+                // First arg is the tool's input params, second is context
+                // The toolCall.arguments have been parsed from JSON and validated
+                // against the tool's inputSchema by executeTool, so this cast is safe
+                const toolParams = toolCall.arguments as Record<string, unknown>;
+                const newValue = await Promise.resolve(
+                  mutator(toolParams, nextTurnContext)
+                );
+                thisDelta[key] = newValue;
+                accumulatedMutations[key] = newValue;
+              }
+            }
+
+            // Record this mutation in changes
+            if (Object.keys(thisDelta).length > 0) {
+              const mutationChange: TurnChange<TTools> = {
+                type: "request_mutation",
+                source: tool.function.name,
+                delta: thisDelta,
+              };
+              changes.push(mutationChange);
+
+              // Update context for next tool to see accumulated changes
+              nextTurnContext = this.createTurnContext(
+                newInput,
+                [...changes],
+                accumulatedMutations
+              );
+            }
+          }
+        }
+
+        // Make new request with tool results and accumulated mutations
+        // Exclude tools and maxToolRounds from mutations as they're managed separately
+        const {
+          tools: _tools,
+          maxToolRounds: _maxToolRounds,
+          ...safeMutations
+        } = accumulatedMutations;
         const newRequest: models.OpenResponsesRequest = {
           ...this.options.request,
+          ...safeMutations,
           input: newInput,
           stream: false,
         };
@@ -360,7 +497,7 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
 
         // Handle the result - it might be a stream or a response
         const value = newResult.value;
-        if (isEventStream(value)) {
+        if (this.isEventStream(value)) {
           // It's a stream, consume it
           const stream = new ReusableReadableStream(value);
           currentResponse = await consumeStreamForCompletion(stream);
@@ -393,6 +530,19 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
   }
 
   /**
+   * Internal helper to get the message after tool execution
+   */
+  private async getMessageInternal(): Promise<models.AssistantMessage> {
+    await this.executeToolsIfNeeded();
+
+    if (!this.finalResponse) {
+      throw new Error("Response not available");
+    }
+
+    return extractMessageFromResponse(this.finalResponse);
+  }
+
+  /**
    * Internal helper to get the text after tool execution
    */
   private async getTextInternal(): Promise<string> {
@@ -403,6 +553,43 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
     }
 
     return extractTextFromResponse(this.finalResponse);
+  }
+
+  /**
+   * Get the completed message from the response in chat format.
+   * This will consume the stream until completion, execute any tools, and extract the first message.
+   * Returns an AssistantMessage compatible with OpenAI chat completions API format.
+   */
+  getChatMessage(): Promise<models.AssistantMessage> {
+    if (this.chatMessagePromise) {
+      return this.chatMessagePromise;
+    }
+
+    this.chatMessagePromise = this.getMessageInternal();
+    return this.chatMessagePromise;
+  }
+
+  /**
+   * Get the completed message in Anthropic Claude format.
+   * This will consume the stream until completion, execute any tools, and return
+   * a ClaudeMessage compatible with the Anthropic SDK.
+   */
+  getClaudeMessage(): Promise<models.ClaudeMessage> {
+    if (this.claudeMessagePromise) {
+      return this.claudeMessagePromise;
+    }
+
+    this.claudeMessagePromise = (async () => {
+      await this.executeToolsIfNeeded();
+
+      if (!this.finalResponse) {
+        throw new Error("Response not available");
+      }
+
+      return convertToClaudeMessage(this.finalResponse);
+    })();
+
+    return this.claudeMessagePromise;
   }
 
   /**
@@ -441,7 +628,9 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
   getFullResponsesStream(): AsyncIterableIterator<
     EnhancedResponseStreamEvent<InferToolEventsUnion<TTools>>
   > {
-    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
+    return async function* (
+      this: ResponseWrapper<TTools>
+    ): AsyncGenerator<
       EnhancedResponseStreamEvent<InferToolEventsUnion<TTools>>
     > {
       await this.initStream();
@@ -529,11 +718,10 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
 
           // Yield function call output in responses format
           yield {
-            type: "function_call_output" as const,
-            id: `output_${toolCall.id}`,
-            callId: toolCall.id,
-            output: result !== undefined ? JSON.stringify(result) : "",
-          } as models.OpenResponsesFunctionCallOutput;
+            role: "tool" as const,
+            content: result !== undefined ? JSON.stringify(result) : "",
+            toolCallId: toolCall.id,
+          } as models.ToolResponseMessage;
         }
       }
 
@@ -541,7 +729,7 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
       if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
         // Check if the final response contains a message
         const hasMessage = this.finalResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "message"
+          (item) => "type" in item && item.type === "message"
         );
         if (hasMessage) {
           yield extractResponsesMessageFromResponse(this.finalResponse);
@@ -574,9 +762,9 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
   getToolStream(): AsyncIterableIterator<
     ToolStreamEvent<InferToolEventsUnion<TTools>>
   > {
-    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
-      ToolStreamEvent<InferToolEventsUnion<TTools>>
-    > {
+    return async function* (
+      this: ResponseWrapper<TTools>
+    ): AsyncGenerator<ToolStreamEvent<InferToolEventsUnion<TTools>>> {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -619,9 +807,9 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
   getFullChatStream(): AsyncIterableIterator<
     ChatStreamEvent<InferToolEventsUnion<TTools>>
   > {
-    return async function* (this: ResponseWrapper<TTools>): AsyncGenerator<
-      ChatStreamEvent<InferToolEventsUnion<TTools>>
-    > {
+    return async function* (
+      this: ResponseWrapper<TTools>
+    ): AsyncGenerator<ChatStreamEvent<InferToolEventsUnion<TTools>>> {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error("Stream not initialized");
@@ -634,16 +822,21 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
           continue;
         }
 
-        // Transform responses events to chat-like format using type guards
-        if (isOutputTextDeltaEvent(event)) {
+        // Transform responses events to chat-like format
+        // This is a simplified transformation - you may need to adjust based on your needs
+        if (event.type === "response.output_text.delta") {
+          const deltaEvent =
+            event as models.OpenResponsesStreamEventResponseOutputTextDelta;
           yield {
             type: "content.delta" as const,
-            delta: event.delta,
+            delta: deltaEvent.delta,
           };
-        } else if (isResponseCompletedEvent(event)) {
+        } else if (event.type === "response.completed") {
+          const completedEvent =
+            event as models.OpenResponsesStreamEventResponseCompleted;
           yield {
             type: "message.complete" as const,
-            response: event.response,
+            response: completedEvent.response,
           };
         } else {
           // Pass through other events
@@ -688,8 +881,12 @@ export class ResponseWrapper<TTools extends readonly Tool[] = Tool[]> {
       throw new Error("Stream not initialized");
     }
 
-    const completedResponse = await consumeStreamForCompletion(this.reusableStream);
-    return extractToolCallsFromResponse(completedResponse) as TypedToolCallUnion<TTools>[];
+    const completedResponse = await consumeStreamForCompletion(
+      this.reusableStream
+    );
+    return extractToolCallsFromResponse(
+      completedResponse
+    ) as TypedToolCallUnion<TTools>[];
   }
 
   /**
