@@ -5,7 +5,8 @@ import type { OpenResponsesFunctionCallOutput } from '../../src/models/openrespo
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { OpenRouter, ToolType, toChatMessage } from '../../src/sdk/sdk.js';
+import { OpenRouter, ToolType } from '../../src/sdk/sdk.js';
+import { toChatMessage } from '../../src/lib/chat-compat.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
 
