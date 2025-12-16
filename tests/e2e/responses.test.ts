@@ -1,5 +1,8 @@
+import type { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
+import { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 
 describe('Beta Responses E2E Tests', () => {
   let client: OpenRouter;
@@ -43,7 +46,8 @@ describe('Beta Responses E2E Tests', () => {
       const firstOutput = response.output[0];
       expect(firstOutput).toBeDefined();
       expect(firstOutput?.type).toBe('message');
-      expect(firstOutput?.role).toBe('assistant');
+      // TODO improve typing here
+      expect((firstOutput as unknown as ResponsesOutputMessage).role).toBe('assistant');
 
       // Verify usage information
       expect(response.usage).toBeDefined();
@@ -171,7 +175,7 @@ describe('Beta Responses E2E Tests', () => {
 
       expect(response).toBeDefined();
 
-      const events: any[] = [];
+      const events: OpenResponsesStreamEvent[] = [];
 
       for await (const event of response) {
         expect(event).toBeDefined();

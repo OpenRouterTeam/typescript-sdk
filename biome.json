@@ -1,0 +1,171 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "**",
+      "./.vscode/extensions/**",
+      "!**/*.json",
+      "!**/*.test.ts.snap",
+      "!**/logger.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "expand": "always",
+    "attributePosition": "multiline"
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "type": true
+              },
+              ":BLANK_LINE:",
+              {
+                "type": false
+              },
+              [
+                ":NODE:"
+              ],
+              ":BLANK_LINE:",
+              [
+                "!@openrouter-monorepo/**"
+              ],
+              ":BLANK_LINE:",
+              [
+                "@openrouter-monorepo/**",
+                "@/**"
+              ],
+              ":BLANK_LINE:",
+              ":ALIAS:"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "nursery": {
+        "noFloatingPromises": "off"
+      },
+      "a11y": {
+        "useSemanticElements": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off",
+        "noExtraBooleanCast": "off",
+        "noForEach": "off",
+        "noBannedTypes": "error",
+        "noUselessSwitchCase": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useNodejsImportProtocol": "error",
+        "useTemplate": "off",
+        "useBlockStatements": "error",
+        "noParameterAssign": "error",
+        "useConst": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error",
+        "useImportType": {
+          "level": "on",
+          "options": {
+            "style": "separatedType"
+          }
+        },
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "node:module": "Don't use `node:module`. Did you mean to import `wrap` from our `@openrouter-monorepo/type-utils/result-monad` package?",
+              "crypto": "Use `node:crypto` instead of `crypto` to follow the Node.js import protocol."
+            }
+          }
+        }
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "off",
+        "noUnknownFunction": "off",
+        "noChildrenProp": "off",
+        "noInnerDeclarations": "error",
+        "useParseIntRadix": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "error",
+        "noAsyncPromiseExecutor": "off",
+        "noFallthroughSwitchClause": "error",
+        "noConsole": "error",
+        "noDoubleEquals": {
+          "level": "error",
+          "options": {
+            "ignoreNull": false
+          }
+        },
+        "noExtraNonNullAssertion": "error",
+        "noUnknownAtRules": "off"
+      },
+      "performance": {
+        "recommended": true,
+        "noAccumulatingSpread": "error"
+      },
+      "security": {
+        "recommended": true
+      }
+    },
+    "includes": [
+      "**",
+      "!**/*.test.ts.snap"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "expand": "always",
+      "lineWidth": 100,
+      "arrowParentheses": "always",
+      "jsxQuoteStyle": "single",
+      "attributePosition": "multiline",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "enabled": true
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
+}

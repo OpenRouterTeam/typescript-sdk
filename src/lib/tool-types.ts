@@ -1,12 +1,13 @@
-import { z, type ZodType, type ZodObject, type ZodRawShape } from "zod/v4";
-import * as models from "../models/index.js";
-import type { OpenResponsesStreamEvent } from "../models/index.js";
+import type { ZodObject, ZodRawShape, ZodType, z } from 'zod/v4';
+import type * as models from '../models/index.js';
+import type { OpenResponsesStreamEvent } from '../models/index.js';
+import type { ResponseWrapper } from './response-wrapper.js';
 
 /**
  * Tool type enum for enhanced tools
  */
 export enum ToolType {
-  Function = "function",
+  Function = 'function',
 }
 
 /**
@@ -38,12 +39,12 @@ export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
  */
 export interface ToolFunctionWithExecute<
   TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<any>
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
   execute: (
     params: z.infer<TInput>,
-    context?: TurnContext
+    context?: TurnContext,
   ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
 }
 
@@ -67,15 +68,12 @@ export interface ToolFunctionWithExecute<
  */
 export interface ToolFunctionWithGenerator<
   TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType = ZodType<any>,
-  TOutput extends ZodType = ZodType<any>
+  TEvent extends ZodType = ZodType<unknown>,
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
-  execute: (
-    params: z.infer<TInput>,
-    context?: TurnContext
-  ) => AsyncGenerator<z.infer<TEvent>>;
+  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent>>;
 }
 
 /**
@@ -83,7 +81,7 @@ export interface ToolFunctionWithGenerator<
  */
 export interface ManualToolFunction<
   TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<any>
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
 }
@@ -93,7 +91,7 @@ export interface ManualToolFunction<
  */
 export type ToolWithExecute<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<any>
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ToolFunctionWithExecute<TInput, TOutput>;
@@ -104,8 +102,8 @@ export type ToolWithExecute<
  */
 export type ToolWithGenerator<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
-  TEvent extends ZodType = ZodType<any>,
-  TOutput extends ZodType = ZodType<any>
+  TEvent extends ZodType = ZodType<unknown>,
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ToolFunctionWithGenerator<TInput, TEvent, TOutput>;
@@ -116,7 +114,7 @@ export type ToolWithGenerator<
  */
 export type ManualTool<
   TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
-  TOutput extends ZodType = ZodType<any>
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ManualToolFunction<TInput, TOutput>;
@@ -125,35 +123,31 @@ export type ManualTool<
 /**
  * Union type of all enhanced tool types
  */
-export type EnhancedTool =
-  | ToolWithExecute<any, any>
-  | ToolWithGenerator<any, any>
-  | ManualTool<any, any>;
+export type Tool =
+  | ToolWithExecute<ZodObject<ZodRawShape>, ZodType<unknown>>
+  | ToolWithGenerator<ZodObject<ZodRawShape>, ZodType<unknown>, ZodType<unknown>>
+  | ManualTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
 
 /**
  * Type guard to check if a tool has an execute function
  */
 export function hasExecuteFunction(
-  tool: EnhancedTool
+  tool: Tool,
 ): tool is ToolWithExecute | ToolWithGenerator {
-  return "execute" in tool.function && typeof tool.function.execute === "function";
+  return 'execute' in tool.function && typeof tool.function.execute === 'function';
 }
 
 /**
  * Type guard to check if a tool uses a generator (has eventSchema)
  */
-export function isGeneratorTool(
-  tool: EnhancedTool
-): tool is ToolWithGenerator {
-  return "eventSchema" in tool.function;
+export function isGeneratorTool(tool: Tool): tool is ToolWithGenerator {
+  return 'eventSchema' in tool.function;
 }
 
 /**
  * Type guard to check if a tool is a regular execution tool (not generator)
  */
-export function isRegularExecuteTool(
-  tool: EnhancedTool
-): tool is ToolWithExecute {
+export function isRegularExecuteTool(tool: Tool): tool is ToolWithExecute {
   return hasExecuteFunction(tool) && !isGeneratorTool(tool);
 }
 
@@ -180,16 +174,14 @@ export interface ToolExecutionResult {
 /**
  * Type for maxToolRounds - can be a number or a function that determines if execution should continue
  */
-export type MaxToolRounds =
-  | number
-  | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
+export type MaxToolRounds = number | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
 
 /**
  * Result of executeTools operation
  */
 export interface ExecuteToolsResult {
-  finalResponse: any; // ResponseWrapper (avoiding circular dependency)
-  allResponses: any[]; // All ResponseWrappers from each round
+  finalResponse: ResponseWrapper;
+  allResponses: ResponseWrapper[];
   toolResults: Map<
     string,
     {
@@ -204,18 +196,20 @@ export interface ExecuteToolsResult {
  * Matches OpenResponsesRequestToolFunction structure
  */
 export interface APITool {
-  type: "function";
+  type: 'function';
   name: string;
   description?: string | null;
   strict?: boolean | null;
-  parameters: { [k: string]: any | null } | null;
+  parameters: {
+    [k: string]: unknown;
+  } | null;
 }
 
 /**
  * Tool preliminary result event emitted during generator tool execution
  */
 export type ToolPreliminaryResultEvent = {
-  type: "tool.preliminary_result";
+  type: 'tool.preliminary_result';
   toolCallId: string;
   result: unknown;
   timestamp: number;
@@ -225,17 +219,15 @@ export type ToolPreliminaryResultEvent = {
  * Enhanced stream event types for getFullResponsesStream
  * Extends OpenResponsesStreamEvent with tool preliminary results
  */
-export type EnhancedResponseStreamEvent =
-  | OpenResponsesStreamEvent
-  | ToolPreliminaryResultEvent;
+export type EnhancedResponseStreamEvent = OpenResponsesStreamEvent | ToolPreliminaryResultEvent;
 
 /**
  * Type guard to check if an event is a tool preliminary result event
  */
 export function isToolPreliminaryResultEvent(
-  event: EnhancedResponseStreamEvent
+  event: EnhancedResponseStreamEvent,
 ): event is ToolPreliminaryResultEvent {
-  return event.type === "tool.preliminary_result";
+  return event.type === 'tool.preliminary_result';
 }
 
 /**
@@ -243,9 +235,12 @@ export function isToolPreliminaryResultEvent(
  * Includes both argument deltas and preliminary results
  */
 export type ToolStreamEvent =
-  | { type: "delta"; content: string }
   | {
-      type: "preliminary_result";
+      type: 'delta';
+      content: string;
+    }
+  | {
+      type: 'preliminary_result';
       toolCallId: string;
       result: unknown;
     };
@@ -255,11 +250,20 @@ export type ToolStreamEvent =
  * Includes content deltas, completion events, and tool preliminary results
  */
 export type ChatStreamEvent =
-  | { type: "content.delta"; delta: string }
-  | { type: "message.complete"; response: any }
   | {
-      type: "tool.preliminary_result";
+      type: 'content.delta';
+      delta: string;
+    }
+  | {
+      type: 'message.complete';
+      response: models.OpenResponsesNonStreamingResponse;
+    }
+  | {
+      type: 'tool.preliminary_result';
       toolCallId: string;
       result: unknown;
     }
-  | { type: string; event: any }; // Pass-through for other events
+  | {
+      type: string;
+      event: OpenResponsesStreamEvent;
+    }; // Pass-through for other events

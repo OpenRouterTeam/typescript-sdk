@@ -1,4 +1,4 @@
-import { describe, it, expect, assert } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { oAuthCreateSHA256CodeChallenge } from '../../src/funcs/oAuthCreateSHA256CodeChallenge';
 
 describe('oAuthCreateSHA256CodeChallenge', () => {
@@ -9,12 +9,14 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier,
     });
 
-    assert(result.ok);
-    expect(result.value.codeVerifier).toBe(codeVerifier);
-    expect(result.value.codeChallenge).toBeTruthy();
-    expect(typeof result.value.codeChallenge).toBe('string');
-    // Code challenge should be base64url encoded (no +, /, or = characters)
-    expect(result.value.codeChallenge).not.toMatch(/[+/=]/);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.codeVerifier).toBe(codeVerifier);
+      expect(result.value.codeChallenge).toBeTruthy();
+      expect(typeof result.value.codeChallenge).toBe('string');
+      // Code challenge should be base64url encoded (no +, /, or = characters)
+      expect(result.value.codeChallenge).not.toMatch(/[+/=]/);
+    }
   });
 
   it('should generate consistent code challenge for same verifier', async () => {
@@ -27,32 +29,38 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier,
     });
 
-    assert(result1.ok);
-    assert(result2.ok);
-    expect(result1.value.codeChallenge).toBe(result2.value.codeChallenge);
+    expect(result1.ok).toBe(true);
+    expect(result2.ok).toBe(true);
+    if (result1.ok && result2.ok) {
+      expect(result1.value.codeChallenge).toBe(result2.value.codeChallenge);
+    }
   });
 
   it('should generate RFC 7636 compliant random code verifier when not provided', async () => {
     const result = await oAuthCreateSHA256CodeChallenge();
 
-    assert(result.ok);
-    expect(result.value.codeVerifier).toBeTruthy();
-    expect(result.value.codeChallenge).toBeTruthy();
-    expect(typeof result.value.codeVerifier).toBe('string');
-    // RFC 7636: verifier should be exactly 43 characters (32 bytes base64url encoded)
-    expect(result.value.codeVerifier.length).toBe(43);
-    // Should only contain base64url characters
-    expect(result.value.codeVerifier).toMatch(/^[A-Za-z0-9_-]+$/);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.codeVerifier).toBeTruthy();
+      expect(result.value.codeChallenge).toBeTruthy();
+      expect(typeof result.value.codeVerifier).toBe('string');
+      // RFC 7636: verifier should be exactly 43 characters (32 bytes base64url encoded)
+      expect(result.value.codeVerifier.length).toBe(43);
+      // Should only contain base64url characters
+      expect(result.value.codeVerifier).toMatch(/^[A-Za-z0-9_-]+$/);
+    }
   });
 
   it('should generate different code verifiers on successive calls', async () => {
     const result1 = await oAuthCreateSHA256CodeChallenge();
     const result2 = await oAuthCreateSHA256CodeChallenge();
 
-    assert(result1.ok);
-    assert(result2.ok);
-    expect(result1.value.codeVerifier).not.toBe(result2.value.codeVerifier);
-    expect(result1.value.codeChallenge).not.toBe(result2.value.codeChallenge);
+    expect(result1.ok).toBe(true);
+    expect(result2.ok).toBe(true);
+    if (result1.ok && result2.ok) {
+      expect(result1.value.codeVerifier).not.toBe(result2.value.codeVerifier);
+      expect(result1.value.codeChallenge).not.toBe(result2.value.codeChallenge);
+    }
   });
 
   it('should generate base64url encoded challenge (RFC 7636)', async () => {
@@ -61,13 +69,15 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier,
     });
 
-    assert(result.ok);
-    // Should be base64url encoded (no standard base64 chars)
-    expect(result.value.codeChallenge).not.toMatch(/\+/);
-    expect(result.value.codeChallenge).not.toMatch(/\//);
-    expect(result.value.codeChallenge).not.toMatch(/=/);
-    // Should only contain base64url characters
-    expect(result.value.codeChallenge).toMatch(/^[A-Za-z0-9_-]+$/);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      // Should be base64url encoded (no standard base64 chars)
+      expect(result.value.codeChallenge).not.toMatch(/\+/);
+      expect(result.value.codeChallenge).not.toMatch(/\//);
+      expect(result.value.codeChallenge).not.toMatch(/=/);
+      // Should only contain base64url characters
+      expect(result.value.codeChallenge).toMatch(/^[A-Za-z0-9_-]+$/);
+    }
   });
 
   it('should handle invalid input type', async () => {
@@ -75,7 +85,10 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: 123 as any,
     });
 
-    assert(result.error);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+    }
   });
 
   it('should produce SHA-256 hash of correct length', async () => {
@@ -84,10 +97,12 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier,
     });
 
-    assert(result.ok);
-    // SHA-256 produces 256 bits = 32 bytes
-    // Base64url encoding of 32 bytes should be 43 characters (no padding)
-    expect(result.value.codeChallenge.length).toBe(43);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      // SHA-256 produces 256 bits = 32 bytes
+      // Base64url encoding of 32 bytes should be 43 characters (no padding)
+      expect(result.value.codeChallenge.length).toBe(43);
+    }
   });
 
   it('should reject empty string code verifier (RFC 7636 violation)', async () => {
@@ -95,8 +110,11 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: '',
     });
 
-    assert(result.error);
-    expect((result.error as Error).message).toContain('at least 43 characters');
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+      expect((result.error as Error).message).toContain('at least 43 characters');
+    }
   });
 
   it('should reject code verifier shorter than 43 characters', async () => {
@@ -104,8 +122,11 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: 'too-short',
     });
 
-    assert(result.error);
-    expect((result.error as Error).message).toContain('at least 43 characters');
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+      expect((result.error as Error).message).toContain('at least 43 characters');
+    }
   });
 
   it('should reject code verifier longer than 128 characters (RFC 7636)', async () => {
@@ -114,8 +135,11 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: longVerifier,
     });
 
-    assert(result.error);
-    expect((result.error as Error).message).toContain('at most 128 characters');
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+      expect((result.error as Error).message).toContain('at most 128 characters');
+    }
   });
 
   it('should accept code verifier at maximum length (128 characters)', async () => {
@@ -124,11 +148,13 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: maxVerifier,
     });
 
-    assert(result.ok);
-    expect(result.value.codeVerifier).toBe(maxVerifier);
-    expect(result.value.codeChallenge).toBeTruthy();
-    // SHA-256 always produces same length output regardless of input length
-    expect(result.value.codeChallenge.length).toBe(43);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.codeVerifier).toBe(maxVerifier);
+      expect(result.value.codeChallenge).toBeTruthy();
+      // SHA-256 always produces same length output regardless of input length
+      expect(result.value.codeChallenge.length).toBe(43);
+    }
   });
 
   it('should accept RFC 7636 unreserved characters in code verifier', async () => {
@@ -138,10 +164,12 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: validVerifier,
     });
 
-    assert(result.ok);
-    expect(result.value.codeVerifier).toBe(validVerifier);
-    expect(result.value.codeChallenge).toBeTruthy();
-    expect(result.value.codeChallenge.length).toBe(43);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.codeVerifier).toBe(validVerifier);
+      expect(result.value.codeChallenge).toBeTruthy();
+      expect(result.value.codeChallenge.length).toBe(43);
+    }
   });
 
   it('should reject code verifier with invalid characters', async () => {
@@ -152,8 +180,10 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
     });
 
     expect(result.ok).toBe(false);
-    assert(result.error);
-    expect((result.error as Error).message).toContain('unreserved characters');
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+      expect((result.error as Error).message).toContain('unreserved characters');
+    }
   });
 
   it('should reject code verifier with spaces', async () => {
@@ -162,7 +192,10 @@ describe('oAuthCreateSHA256CodeChallenge', () => {
       codeVerifier: verifierWithSpaces,
     });
 
-    assert(result.error);
-    expect((result.error as Error).message).toContain('unreserved characters');
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+      expect((result.error as Error).message).toContain('unreserved characters');
+    }
   });
 });

@@ -17,8 +17,8 @@ generation:
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
   auth:
-    oAuth2ClientCredentialsEnabled: false
-    oAuth2PasswordEnabled: false
+    oAuth2ClientCredentialsEnabled: true
+    oAuth2PasswordEnabled: true
     hoistGlobalSecurity: true
   inferSSEOverload: true
   sdkHooksConfigAccess: true
@@ -31,7 +31,7 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.2.2
+  version: 0.3.1
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}

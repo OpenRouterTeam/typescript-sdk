@@ -1,5 +1,6 @@
-import z from "zod/v3";
-import { Result } from "../types/fp.js";
+import type { Result } from '../types/fp.js';
+
+import z from 'zod/v3';
 
 const CreateSHA256CodeChallengeRequestSchema = z.object({
   /**
@@ -9,11 +10,11 @@ const CreateSHA256CodeChallengeRequestSchema = z.object({
    */
   codeVerifier: z
     .string()
-    .min(43, "Code verifier must be at least 43 characters")
-    .max(128, "Code verifier must be at most 128 characters")
+    .min(43, 'Code verifier must be at least 43 characters')
+    .max(128, 'Code verifier must be at most 128 characters')
     .regex(
       /^[A-Za-z0-9\-._~]+$/,
-      "Code verifier must only contain unreserved characters: [A-Za-z0-9-._~]",
+      'Code verifier must only contain unreserved characters: [A-Za-z0-9-._~]',
     )
     .optional(),
 });
@@ -31,14 +32,11 @@ export type CreateSHA256CodeChallengeResponse = {
  * Convert a Uint8Array to base64url encoding (RFC 4648)
  */
 function arrayBufferToBase64Url(buffer: Uint8Array): string {
-  let binary = "";
+  let binary = '';
   for (let i = 0; i < buffer.length; i++) {
     binary += String.fromCharCode(buffer[i]!);
   }
-  return btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 /**
@@ -67,14 +65,19 @@ export async function oAuthCreateSHA256CodeChallenge(
   params: CreateSHA256CodeChallengeRequest = {},
 ): Promise<Result<CreateSHA256CodeChallengeResponse>> {
   const parsedParams = CreateSHA256CodeChallengeRequestSchema.safeParse(params);
-  if (!parsedParams.success) return { ok: false, error: parsedParams.error };
+  if (!parsedParams.success) {
+    return {
+      ok: false,
+      error: parsedParams.error,
+    };
+  }
 
   const { codeVerifier = generateCodeVerifier() } = parsedParams.data;
 
   // Generate SHA-256 hash
   const encoder = new TextEncoder();
   const data = encoder.encode(codeVerifier);
-  const hash = await crypto.subtle.digest("SHA-256", data);
+  const hash = await crypto.subtle.digest('SHA-256', data);
 
   // Convert hash to base64url
   const hashArray = new Uint8Array(hash);

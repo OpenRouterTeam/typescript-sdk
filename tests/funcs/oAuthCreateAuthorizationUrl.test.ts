@@ -1,4 +1,4 @@
-import { describe, it, expect, assert } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { OpenRouterCore } from '../../src/core';
 import { oAuthCreateAuthorizationUrl } from '../../src/funcs/oAuthCreateAuthorizationUrl';
 
@@ -15,9 +15,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback');
+    }
   });
 
   it('should generate authorization URL with URL object as callback', () => {
@@ -27,9 +29,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl,
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback');
+    }
   });
 
   it('should include code challenge with S256 method', () => {
@@ -40,10 +44,12 @@ describe('oAuthCreateAuthorizationUrl', () => {
       codeChallengeMethod: 'S256',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('code_challenge')).toBe('test-code-challenge-abc123');
-    expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('code_challenge')).toBe('test-code-challenge-abc123');
+      expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+    }
   });
 
   it('should include code challenge with plain method', () => {
@@ -54,10 +60,12 @@ describe('oAuthCreateAuthorizationUrl', () => {
       codeChallengeMethod: 'plain',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('code_challenge')).toBe('plain-code-challenge');
-    expect(url.searchParams.get('code_challenge_method')).toBe('plain');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('code_challenge')).toBe('plain-code-challenge');
+      expect(url.searchParams.get('code_challenge_method')).toBe('plain');
+    }
   });
 
   it('should include limit parameter when provided', () => {
@@ -67,9 +75,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       limit: 100,
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('limit')).toBe('100');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('limit')).toBe('100');
+    }
   });
 
   it('should handle callback URL with query parameters', () => {
@@ -78,11 +88,13 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback?state=abc123&redirect=true',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe(
-      'https://example.com/callback?state=abc123&redirect=true',
-    );
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe(
+        'https://example.com/callback?state=abc123&redirect=true',
+      );
+    }
   });
 
   it('should handle callback URL with special characters', () => {
@@ -91,11 +103,13 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback?data=hello%20world',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe(
-      'https://example.com/callback?data=hello%20world',
-    );
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe(
+        'https://example.com/callback?data=hello%20world',
+      );
+    }
   });
 
   it('should return error for invalid callback URL string', () => {
@@ -104,8 +118,10 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'not-a-valid-url' as any,
     });
 
-    assert(result.error);
-    expect(result.error).toBeDefined();
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+    }
   });
 
   it('should handle callback URL with localhost', () => {
@@ -114,9 +130,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'http://localhost:3000/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('http://localhost:3000/callback');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('http://localhost:3000/callback');
+    }
   });
 
   it('should use default production server when no serverURL provided', () => {
@@ -125,10 +143,12 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.origin).toBe('https://openrouter.ai');
-    expect(url.pathname).toBe('/auth');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.origin).toBe('https://openrouter.ai');
+      expect(url.pathname).toBe('/auth');
+    }
   });
 
   it('should use custom server URL when provided', () => {
@@ -137,10 +157,12 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.origin).toBe('https://custom.example.com');
-    expect(url.pathname).toBe('/auth');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.origin).toBe('https://custom.example.com');
+      expect(url.pathname).toBe('/auth');
+    }
   });
 
   it('should preserve all parameters with PKCE', () => {
@@ -152,12 +174,14 @@ describe('oAuthCreateAuthorizationUrl', () => {
       limit: 50,
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback?state=xyz');
-    expect(url.searchParams.get('code_challenge')).toBe('challenge123');
-    expect(url.searchParams.get('code_challenge_method')).toBe('S256');
-    expect(url.searchParams.get('limit')).toBe('50');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback?state=xyz');
+      expect(url.searchParams.get('code_challenge')).toBe('challenge123');
+      expect(url.searchParams.get('code_challenge_method')).toBe('S256');
+      expect(url.searchParams.get('limit')).toBe('50');
+    }
   });
 
   it('should handle callback URL with fragment', () => {
@@ -166,9 +190,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback#section',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback#section');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('https://example.com/callback#section');
+    }
   });
 
   it('should return error for invalid input types', () => {
@@ -177,7 +203,10 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 12345 as any,
     });
 
-    assert(result.error);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toBeDefined();
+    }
   });
 
   it('should handle URL with port number in callback', () => {
@@ -186,9 +215,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com:8443/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('callback_url')).toBe('https://example.com:8443/callback');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('callback_url')).toBe('https://example.com:8443/callback');
+    }
   });
 
   it('should not omit limit parameter when value is 0', () => {
@@ -198,9 +229,11 @@ describe('oAuthCreateAuthorizationUrl', () => {
       limit: 0,
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.get('limit')).toBe('0');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.get('limit')).toBe('0');
+    }
   });
 
   it('should omit limit parameter when not provided', () => {
@@ -209,8 +242,10 @@ describe('oAuthCreateAuthorizationUrl', () => {
       callbackUrl: 'https://example.com/callback',
     });
 
-    assert(result.ok);
-    const url = new URL(result.value);
-    expect(url.searchParams.has('limit')).toBe(false);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const url = new URL(result.value);
+      expect(url.searchParams.has('limit')).toBe(false);
+    }
   });
 });

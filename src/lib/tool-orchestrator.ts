@@ -1,17 +1,9 @@
-import * as models from "../models/index.js";
-import {
-  EnhancedTool,
-  ToolExecutionResult,
-  hasExecuteFunction,
-} from "./tool-types.js";
-import {
-  executeTool,
-  findToolByName,
-} from "./tool-executor.js";
-import {
-  extractToolCallsFromResponse,
-  responseHasToolCalls,
-} from "./stream-transformers.js";
+import type * as models from '../models/index.js';
+import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
+
+import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
+import { executeTool, findToolByName } from './tool-executor.js';
+import { hasExecuteFunction } from './tool-types.js';
 
 /**
  * Options for tool execution
@@ -45,12 +37,12 @@ export interface ToolOrchestrationResult {
 export async function executeToolLoop(
   sendRequest: (
     input: models.OpenResponsesInput,
-    tools: any[]
+    tools: APITool[],
   ) => Promise<models.OpenResponsesNonStreamingResponse>,
   initialInput: models.OpenResponsesInput,
-  tools: EnhancedTool[],
-  apiTools: any[],
-  options: ToolExecutionOptions = {}
+  tools: Tool[],
+  apiTools: APITool[],
+  options: ToolExecutionOptions = {},
 ): Promise<ToolOrchestrationResult> {
   const maxRounds = options.maxRounds ?? 5;
   const onPreliminaryResult = options.onPreliminaryResult;
@@ -88,38 +80,60 @@ export async function executeToolLoop(
       break;
     }
 
-    // Execute all tool calls
-    const roundResults: ToolExecutionResult[] = [];
-
-    for (const toolCall of toolCalls) {
+    // Execute all tool calls in parallel (parallel tool calling)
+    const toolCallPromises = toolCalls.map(async (toolCall) => {
       const tool = findToolByName(tools, toolCall.name);
 
       if (!tool) {
         // Tool not found in definitions
-        roundResults.push({
+        return {
           toolCallId: toolCall.id,
           toolName: toolCall.name,
           result: null,
           error: new Error(`Tool "${toolCall.name}" not found in tool definitions`),
-        });
-        continue;
+        } as ToolExecutionResult;
       }
 
       if (!hasExecuteFunction(tool)) {
-        // Tool has no execute function - skip
-        continue;
+        // Tool has no execute function - return null to filter out
+        return null;
       }
 
       // Build turn context
-      const turnContext: import("./tool-types.js").TurnContext = {
+      const turnContext: import('./tool-types.js').TurnContext = {
         numberOfTurns: currentRound,
         messageHistory: conversationInput,
       };
 
       // Execute the tool
-      const result = await executeTool(tool, toolCall, turnContext, onPreliminaryResult);
-      roundResults.push(result);
-    }
+      return executeTool(tool, toolCall, turnContext, onPreliminaryResult);
+    });
+
+    // Wait for all tool executions to complete in parallel
+    const settledResults = await Promise.allSettled(toolCallPromises);
+
+    // Process settled results, handling both fulfilled and rejected promises
+    const roundResults: ToolExecutionResult[] = [];
+    settledResults.forEach((settled, i) => {
+      const toolCall = toolCalls[i];
+      if (!toolCall) return;
+
+      if (settled.status === "fulfilled") {
+        if (settled.value !== null) {
+          roundResults.push(settled.value);
+        }
+      } else {
+        // Promise rejected - create error result
+        roundResults.push({
+          toolCallId: toolCall.id,
+          toolName: toolCall.name,
+          result: null,
+          error: settled.reason instanceof Error
+            ? settled.reason
+            : new Error(String(settled.reason)),
+        });
+      }
+    });
 
     toolExecutionResults.push(...roundResults);
 
@@ -147,9 +161,7 @@ export async function executeToolLoop(
 /**
  * Convert tool execution results to a map for easy lookup
  */
-export function toolResultsToMap(
-  results: ToolExecutionResult[]
-): Map<
+export function toolResultsToMap(results: ToolExecutionResult[]): Map<
   string,
   {
     result: unknown;
@@ -171,9 +183,7 @@ export function toolResultsToMap(
 /**
  * Build a summary of tool executions for debugging/logging
  */
-export function summarizeToolExecutions(
-  results: ToolExecutionResult[]
-): string {
+export function summarizeToolExecutions(results: ToolExecutionResult[]): string {
   const lines: string[] = [];
 
   for (const result of results) {
@@ -181,12 +191,12 @@ export function summarizeToolExecutions(
       lines.push(`❌ ${result.toolName} (${result.toolCallId}): ERROR - ${result.error.message}`);
     } else {
       const prelimCount = result.preliminaryResults?.length ?? 0;
-      const prelimInfo = prelimCount > 0 ? ` (${prelimCount} preliminary results)` : "";
+      const prelimInfo = prelimCount > 0 ? ` (${prelimCount} preliminary results)` : '';
       lines.push(`✅ ${result.toolName} (${result.toolCallId}): SUCCESS${prelimInfo}`);
     }
   }
 
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 /**
@@ -200,7 +210,5 @@ export function hasToolExecutionErrors(results: ToolExecutionResult[]): boolean 
  * Get all tool execution errors
  */
 export function getToolExecutionErrors(results: ToolExecutionResult[]): Error[] {
-  return results
-    .filter((result) => result.error !== undefined)
-    .map((result) => result.error!);
+  return results.filter((result) => result.error !== undefined).map((result) => result.error!);
 }

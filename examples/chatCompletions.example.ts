@@ -3,7 +3,9 @@
  */
 
 import dotenv from 'dotenv';
+
 dotenv.config();
+
 /**
  * Example usage of the @openrouter/sdk SDK for chat completions
  *
@@ -22,8 +24,6 @@ const openRouter = new OpenRouter({
 });
 
 async function nonStreamingExample() {
-  console.log('=== Non-Streaming Example ===\n');
-
   const result = await openRouter.chat.send({
     model: 'qwen/qwen3-max',
     messages: [
@@ -36,15 +36,10 @@ async function nonStreamingExample() {
   });
 
   if ('choices' in result) {
-    console.log('Model:', result.model);
-    console.log('Response:', result.choices[0].message.content);
-    console.log('Usage:', result.usage);
   }
 }
 
 async function streamingExample() {
-  console.log('\n=== Streaming Example ===\n');
-
   const result = await openRouter.chat.send({
     model: 'qwen/qwen3-max',
     messages: [
@@ -61,22 +56,18 @@ async function streamingExample() {
 
   if (result && typeof result === 'object' && Symbol.asyncIterator in result) {
     const stream = result;
-    console.log('Streaming response:');
-    let fullContent = '';
+    let _fullContent = '';
 
     for await (const chunk of stream) {
-      if (chunk.choices && chunk.choices[0]?.delta?.content) {
+      if (chunk.choices?.[0]?.delta?.content) {
         const content = chunk.choices[0].delta.content;
         process.stdout.write(content);
-        fullContent += content;
+        _fullContent += content;
       }
 
       if (chunk.usage) {
-        console.log('\n\nStream usage:', chunk.usage);
       }
     }
-
-    console.log('\n\nFull response:', fullContent);
   }
 }
 
@@ -84,9 +75,7 @@ async function main() {
   try {
     await nonStreamingExample();
     await streamingExample();
-  } catch (error) {
-    console.error('Error:', error);
-  }
+  } catch (_error) {}
 }
 
 main();
