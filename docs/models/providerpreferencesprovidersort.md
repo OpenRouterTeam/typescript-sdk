@@ -1,11 +1,11 @@
-# ProviderSort
+# ProviderPreferencesProviderSort
 
 ## Example Usage
 
 ```typescript
-import { ProviderSort } from "@openrouter/sdk/models";
+import { ProviderPreferencesProviderSort } from "@openrouter/sdk/models";
 
-let value: ProviderSort = "price";
+let value: ProviderPreferencesProviderSort = "latency";
 ```
 
 ## Values

@@ -9,88 +9,16 @@ import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetParametersSecurity = {
   bearer: string;
 };
 
-export const GetParametersProvider = {
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  AmazonBedrock: "Amazon Bedrock",
-  AmazonNova: "Amazon Nova",
-  Anthropic: "Anthropic",
-  ArceeAI: "Arcee AI",
-  AtlasCloud: "AtlasCloud",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  BytePlus: "BytePlus",
-  BlackForestLabs: "Black Forest Labs",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cirrascale: "Cirrascale",
-  Clarifai: "Clarifai",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  GoPomelo: "GoPomelo",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  InferenceNet: "InferenceNet",
-  Infermatic: "Infermatic",
-  Inflection: "Inflection",
-  Liquid: "Liquid",
-  Mara: "Mara",
-  Mancer2: "Mancer 2",
-  Minimax: "Minimax",
-  ModelRun: "ModelRun",
-  Mistral: "Mistral",
-  Modular: "Modular",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Novita: "Novita",
-  Nvidia: "Nvidia",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  Relace: "Relace",
-  SambaNova: "SambaNova",
-  SiliconFlow: "SiliconFlow",
-  Sourceful: "Sourceful",
-  Stealth: "Stealth",
-  StreamLake: "StreamLake",
-  Switchpoint: "Switchpoint",
-  Targon: "Targon",
-  Together: "Together",
-  Venice: "Venice",
-  WandB: "WandB",
-  Xiaomi: "Xiaomi",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-  FakeProvider: "FakeProvider",
-} as const;
-export type GetParametersProvider = OpenEnum<typeof GetParametersProvider>;
-
 export type GetParametersRequest = {
   author: string;
   slug: string;
-  provider?: GetParametersProvider | undefined;
+  provider?: models.ProviderName | undefined;
 };
 
 export const SupportedParameter = {
@@ -115,6 +43,7 @@ export const SupportedParameter = {
   ParallelToolCalls: "parallel_tool_calls",
   IncludeReasoning: "include_reasoning",
   Reasoning: "reasoning",
+  ReasoningEffort: "reasoning_effort",
   WebSearchOptions: "web_search_options",
   Verbosity: "verbosity",
 } as const;
@@ -166,12 +95,6 @@ export function getParametersSecurityToJSON(
 }
 
 /** @internal */
-export const GetParametersProvider$outboundSchema: z.ZodType<
-  string,
-  GetParametersProvider
-> = openEnums.outboundSchema(GetParametersProvider);
-
-/** @internal */
 export type GetParametersRequest$Outbound = {
   author: string;
   slug: string;
@@ -185,7 +108,7 @@ export const GetParametersRequest$outboundSchema: z.ZodType<
 > = z.object({
   author: z.string(),
   slug: z.string(),
-  provider: GetParametersProvider$outboundSchema.optional(),
+  provider: models.ProviderName$outboundSchema.optional(),
 });
 
 export function getParametersRequestToJSON(

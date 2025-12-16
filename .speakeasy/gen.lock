@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 8b6cd71c-ea04-44da-af45-e43968b5928d
 management:
-  docChecksum: e929ecf569d79ab96a315332a4855566
+  docChecksum: a5b3a567dd4de3ab77a9f0b23d4a9f10
   docVersion: 1.0.0
   speakeasyVersion: 1.666.0
   generationVersion: 2.768.0
-  releaseVersion: 0.2.11
-  configChecksum: e77ce69b2f427b72c26c9a5508fc1232
+  releaseVersion: 0.3.0
+  configChecksum: dfaab54032156b0ea81aabbd4da62e8b
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -28,6 +28,7 @@ features:
     globalServerURLs: 2.83.0
     globals: 2.82.2
     groups: 2.81.3
+    ignores: 2.81.1
     methodArguments: 0.1.2
     methodSecurity: 2.82.6
     nameOverrides: 2.81.2
@@ -60,10 +61,7 @@ generatedFiles:
   - docs/models/chaterrorerror.md
   - docs/models/chatgenerationparams.md
   - docs/models/chatgenerationparamsdatacollection.md
-  - docs/models/chatgenerationparamsengine.md
   - docs/models/chatgenerationparamsmaxprice.md
-  - docs/models/chatgenerationparamspdf.md
-  - docs/models/chatgenerationparamspdfengine.md
   - docs/models/chatgenerationparamspluginfileparser.md
   - docs/models/chatgenerationparamspluginmoderation.md
   - docs/models/chatgenerationparamspluginresponsehealing.md
@@ -74,7 +72,6 @@ generatedFiles:
   - docs/models/chatgenerationparamsresponseformatpython.md
   - docs/models/chatgenerationparamsresponseformattext.md
   - docs/models/chatgenerationparamsresponseformatunion.md
-  - docs/models/chatgenerationparamsroute.md
   - docs/models/chatgenerationparamsstop.md
   - docs/models/chatgenerationtokenusage.md
   - docs/models/chatmessagecontentitem.md
@@ -124,6 +121,7 @@ generatedFiles:
   - docs/models/edgenetworktimeoutresponseerrordata.md
   - docs/models/effort.md
   - docs/models/endpointstatus.md
+  - docs/models/engine.md
   - docs/models/errors/badgatewayresponseerror.md
   - docs/models/errors/badrequestresponseerror.md
   - docs/models/errors/chaterror.md
@@ -142,7 +140,6 @@ generatedFiles:
   - docs/models/filecitation.md
   - docs/models/filepath.md
   - docs/models/forbiddenresponseerrordata.md
-  - docs/models/ignore.md
   - docs/models/imagegenerationstatus.md
   - docs/models/imageurl.md
   - docs/models/inputmodality.md
@@ -165,7 +162,6 @@ generatedFiles:
   - docs/models/namedtoolchoicefunction.md
   - docs/models/notfoundresponseerrordata.md
   - docs/models/objectt.md
-  - docs/models/only.md
   - docs/models/openairesponsesannotation.md
   - docs/models/openairesponsesincludable.md
   - docs/models/openairesponsesincompletedetails.md
@@ -252,17 +248,17 @@ generatedFiles:
   - docs/models/openresponsesreasoningsummarytextdoneevent.md
   - docs/models/openresponsesreasoningtype.md
   - docs/models/openresponsesrequest.md
-  - docs/models/openresponsesrequestengine.md
+  - docs/models/openresponsesrequestignore.md
   - docs/models/openresponsesrequestmaxprice.md
-  - docs/models/openresponsesrequestpdf.md
-  - docs/models/openresponsesrequestpdfengine.md
+  - docs/models/openresponsesrequestonly.md
+  - docs/models/openresponsesrequestorder.md
   - docs/models/openresponsesrequestpluginfileparser.md
   - docs/models/openresponsesrequestpluginmoderation.md
   - docs/models/openresponsesrequestpluginresponsehealing.md
   - docs/models/openresponsesrequestpluginunion.md
   - docs/models/openresponsesrequestpluginweb.md
   - docs/models/openresponsesrequestprovider.md
-  - docs/models/openresponsesrequestroute.md
+  - docs/models/openresponsesrequestsort.md
   - docs/models/openresponsesrequesttoolfunction.md
   - docs/models/openresponsesrequesttoolunion.md
   - docs/models/openresponsesresponsetext.md
@@ -306,7 +302,6 @@ generatedFiles:
   - docs/models/operations/createcoinbasechargeresponse.md
   - docs/models/operations/createcoinbasechargesecurity.md
   - docs/models/operations/createembeddingsdata.md
-  - docs/models/operations/createembeddingsprovider.md
   - docs/models/operations/createembeddingsrequest.md
   - docs/models/operations/createembeddingsresponse.md
   - docs/models/operations/createembeddingsresponsebody.md
@@ -335,13 +330,11 @@ generatedFiles:
   - docs/models/operations/getkeyresponse.md
   - docs/models/operations/getmodelsrequest.md
   - docs/models/operations/getparametersdata.md
-  - docs/models/operations/getparametersprovider.md
   - docs/models/operations/getparametersrequest.md
   - docs/models/operations/getparametersresponse.md
   - docs/models/operations/getparameterssecurity.md
   - docs/models/operations/getuseractivityrequest.md
   - docs/models/operations/getuseractivityresponse.md
-  - docs/models/operations/ignore.md
   - docs/models/operations/imageurl.md
   - docs/models/operations/input.md
   - docs/models/operations/inputunion.md
@@ -354,12 +347,9 @@ generatedFiles:
   - docs/models/operations/listprovidersresponse.md
   - docs/models/operations/listrequest.md
   - docs/models/operations/listresponse.md
-  - docs/models/operations/maxprice.md
   - docs/models/operations/metadata.md
   - docs/models/operations/objectembedding.md
   - docs/models/operations/objectt.md
-  - docs/models/operations/only.md
-  - docs/models/operations/order.md
   - docs/models/operations/ratelimit.md
   - docs/models/operations/sendchatcompletionrequestresponse.md
   - docs/models/operations/supportedparameter.md
@@ -371,7 +361,6 @@ generatedFiles:
   - docs/models/operations/updatekeysresponse.md
   - docs/models/operations/usage.md
   - docs/models/operations/web3data.md
-  - docs/models/order.md
   - docs/models/outputitemimagegenerationcall.md
   - docs/models/outputitemimagegenerationcalltype.md
   - docs/models/outputmessage.md
@@ -387,15 +376,33 @@ generatedFiles:
   - docs/models/parameter.md
   - docs/models/part1.md
   - docs/models/part2.md
+  - docs/models/partition.md
   - docs/models/payloadtoolargeresponseerrordata.md
   - docs/models/paymentrequiredresponseerrordata.md
+  - docs/models/pdf.md
+  - docs/models/pdfengine.md
+  - docs/models/pdfparserengine.md
+  - docs/models/pdfparseroptions.md
   - docs/models/perrequestlimits.md
   - docs/models/pricing.md
   - docs/models/prompt.md
   - docs/models/prompttokensdetails.md
   - docs/models/providername.md
   - docs/models/provideroverloadedresponseerrordata.md
+  - docs/models/providerpreferences.md
+  - docs/models/providerpreferencesignore.md
+  - docs/models/providerpreferencesmaxprice.md
+  - docs/models/providerpreferencesonly.md
+  - docs/models/providerpreferencesorder.md
+  - docs/models/providerpreferencespartition.md
+  - docs/models/providerpreferencesprovidersort.md
+  - docs/models/providerpreferencesprovidersortconfig.md
+  - docs/models/providerpreferencessortunion.md
   - docs/models/providersort.md
+  - docs/models/providersortconfig.md
+  - docs/models/providersortconfigenum.md
+  - docs/models/providersortconfigunion.md
+  - docs/models/providersortunion.md
   - docs/models/publicendpoint.md
   - docs/models/publicendpointquantization.md
   - docs/models/publicpricing.md
@@ -456,12 +463,18 @@ generatedFiles:
   - docs/models/responseswebsearchuserlocationtype.md
   - docs/models/responsetextconfig.md
   - docs/models/responsetextconfigverbosity.md
+  - docs/models/route.md
   - docs/models/schema0.md
   - docs/models/schema0enum.md
+  - docs/models/schema3.md
+  - docs/models/schema3reasoningencrypted.md
+  - docs/models/schema3reasoningsummary.md
+  - docs/models/schema3reasoningtext.md
+  - docs/models/schema5.md
   - docs/models/security.md
   - docs/models/servicetier.md
   - docs/models/serviceunavailableresponseerrordata.md
-  - docs/models/sort.md
+  - docs/models/sortenum.md
   - docs/models/streamoptions.md
   - docs/models/systemmessage.md
   - docs/models/systemmessagecontent.md
@@ -485,6 +498,7 @@ generatedFiles:
   - docs/models/variables.md
   - docs/models/videourl1.md
   - docs/models/videourl2.md
+  - docs/models/websearchengine.md
   - docs/models/websearchpreviewtooluserlocation.md
   - docs/models/websearchpreviewtooluserlocationtype.md
   - docs/models/websearchstatus.md
@@ -695,10 +709,15 @@ generatedFiles:
   - src/models/parameter.ts
   - src/models/payloadtoolargeresponseerrordata.ts
   - src/models/paymentrequiredresponseerrordata.ts
+  - src/models/pdfparserengine.ts
+  - src/models/pdfparseroptions.ts
   - src/models/perrequestlimits.ts
   - src/models/providername.ts
   - src/models/provideroverloadedresponseerrordata.ts
+  - src/models/providerpreferences.ts
   - src/models/providersort.ts
+  - src/models/providersortconfig.ts
+  - src/models/providersortunion.ts
   - src/models/publicendpoint.ts
   - src/models/publicpricing.ts
   - src/models/quantization.ts
@@ -729,6 +748,7 @@ generatedFiles:
   - src/models/responseswebsearchuserlocation.ts
   - src/models/responsetextconfig.ts
   - src/models/schema0.ts
+  - src/models/schema3.ts
   - src/models/security.ts
   - src/models/serviceunavailableresponseerrordata.ts
   - src/models/systemmessage.ts
@@ -741,6 +761,7 @@ generatedFiles:
   - src/models/unprocessableentityresponseerrordata.ts
   - src/models/urlcitation.ts
   - src/models/usermessage.ts
+  - src/models/websearchengine.ts
   - src/models/websearchpreviewtooluserlocation.ts
   - src/models/websearchstatus.ts
   - src/sdk/analytics.ts
@@ -762,6 +783,7 @@ generatedFiles:
   - src/types/async.ts
   - src/types/blobs.ts
   - src/types/constdatetime.ts
+  - src/types/discriminatedUnion.ts
   - src/types/enums.ts
   - src/types/fp.ts
   - src/types/index.ts

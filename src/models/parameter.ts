@@ -28,6 +28,7 @@ export const Parameter = {
   ParallelToolCalls: "parallel_tool_calls",
   IncludeReasoning: "include_reasoning",
   Reasoning: "reasoning",
+  ReasoningEffort: "reasoning_effort",
   WebSearchOptions: "web_search_options",
   Verbosity: "verbosity",
 } as const;
