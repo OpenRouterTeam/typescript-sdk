@@ -5,7 +5,7 @@ import type { OpenResponsesFunctionCallOutput } from '../../src/models/openrespo
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { OpenRouter, ToolType } from '../../src/sdk/sdk.js';
+import { OpenRouter, ToolType, toChatMessage } from '../../src/sdk/sdk.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
 
@@ -337,7 +337,8 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const message = await response.getChatMessage();
+      const fullResponse = await response.getResponse();
+      const message = toChatMessage(fullResponse);
 
       expect(message).toBeDefined();
       expect(message.role).toBe('assistant');
@@ -370,7 +371,8 @@ describe('callModel E2E Tests', () => {
         ],
       });
 
-      const message = await response.getChatMessage();
+      const fullResponse = await response.getResponse();
+      const message = toChatMessage(fullResponse);
 
       // Ensure the message fully matches the OpenAI Chat API assistant message shape
       expect(message).toMatchObject({
