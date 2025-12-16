@@ -599,7 +599,9 @@ export function convertToClaudeMessage(
 
         try {
           parsedInput = JSON.parse(fnCall.arguments);
-        } catch {
+        } catch (e) {
+          // JSON parsing failed - likely malformed arguments from model
+          console.warn(`[OpenRouter SDK] Failed to parse tool arguments for ${fnCall.name}: ${e}`);
           parsedInput = {};
         }
 
@@ -698,6 +700,8 @@ export function convertToClaudeMessage(
       input_tokens: response.usage?.inputTokens ?? 0,
       output_tokens: response.usage?.outputTokens ?? 0,
       cache_creation_input_tokens: response.usage?.inputTokensDetails?.cachedTokens ?? 0,
+      // TODO: OpenResponses doesn't expose cache_read separately from cachedTokens.
+      // Anthropic distinguishes cache creation vs read; OpenResponses combines them.
       cache_read_input_tokens: 0,
     },
     ...(unsupportedContent.length > 0 && { unsupported_content: unsupportedContent }),

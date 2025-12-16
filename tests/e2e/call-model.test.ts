@@ -280,6 +280,86 @@ describe('callModel E2E Tests', () => {
     });
   });
 
+  describe('getClaudeMessage - Claude output format', () => {
+    it('should return ClaudeMessage with correct structure', async () => {
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: "Say 'hello' and nothing else.",
+      });
+
+      const claudeMessage = await response.getClaudeMessage();
+
+      expect(claudeMessage.type).toBe('message');
+      expect(claudeMessage.role).toBe('assistant');
+      expect(claudeMessage.content).toBeInstanceOf(Array);
+      expect(claudeMessage.content.length).toBeGreaterThan(0);
+      expect(claudeMessage.content[0]?.type).toBe('text');
+      expect(claudeMessage.stop_reason).toBeDefined();
+      expect(claudeMessage.usage).toBeDefined();
+      expect(claudeMessage.usage.input_tokens).toBeGreaterThan(0);
+      expect(claudeMessage.usage.output_tokens).toBeGreaterThan(0);
+    }, 30000);
+
+    it('should include text content in ClaudeMessage', async () => {
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: "Say the word 'banana' and nothing else.",
+      });
+
+      const claudeMessage = await response.getClaudeMessage();
+      const textBlock = claudeMessage.content.find((b) => b.type === 'text');
+
+      expect(textBlock).toBeDefined();
+      if (textBlock && textBlock.type === 'text') {
+        expect(textBlock.text.toLowerCase()).toContain('banana');
+      }
+    }, 30000);
+
+    it('should include tool_use blocks when tools are called', async () => {
+      const response = client.callModel({
+        model: 'openai/gpt-4o-mini',
+        input: "What's the weather in Paris?",
+        tools: [
+          {
+            type: ToolType.Function,
+            function: {
+              name: 'get_weather',
+              description: 'Get weather for a location',
+              inputSchema: z.object({
+                location: z.string(),
+              }),
+            },
+          },
+        ],
+        maxToolRounds: 0, // Don't execute tools, just get the tool call
+      });
+
+      const claudeMessage = await response.getClaudeMessage();
+
+      const toolUseBlock = claudeMessage.content.find((b) => b.type === 'tool_use');
+      expect(toolUseBlock).toBeDefined();
+      expect(claudeMessage.stop_reason).toBe('tool_use');
+
+      if (toolUseBlock && toolUseBlock.type === 'tool_use') {
+        expect(toolUseBlock.name).toBe('get_weather');
+        expect(toolUseBlock.id).toBeDefined();
+        expect(toolUseBlock.input).toBeDefined();
+      }
+    }, 30000);
+
+    it('should have correct model field in ClaudeMessage', async () => {
+      const response = client.callModel({
+        model: 'meta-llama/llama-3.2-1b-instruct',
+        input: "Say 'test'",
+      });
+
+      const claudeMessage = await response.getClaudeMessage();
+
+      expect(claudeMessage.model).toBeDefined();
+      expect(typeof claudeMessage.model).toBe('string');
+    }, 30000);
+  });
+
   describe('response.text - Text extraction', () => {
     it('should successfully get text from a response', async () => {
       const response = client.callModel({
