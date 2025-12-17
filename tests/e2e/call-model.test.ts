@@ -6,7 +6,8 @@ import type { OpenResponsesFunctionCallOutput } from '../../src/models/openrespo
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
 import { OpenRouter, ToolType } from '../../src/sdk/sdk.js';
-import { toChatMessage } from '../../src/lib/chat-compat.js';
+import { fromChatMessages, toChatMessage } from '../../src/lib/chat-compat.js';
+import { fromClaudeMessages } from '../../src/lib/anthropic-compat.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
 
@@ -28,7 +29,7 @@ describe('callModel E2E Tests', () => {
     it('should accept chat-style Message array as input', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'system',
             content: 'You are a helpful assistant.',
@@ -37,7 +38,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'chat test' and nothing else.",
           },
-        ],
+        ]),
       });
 
       const text = await response.getText();
@@ -50,7 +51,7 @@ describe('callModel E2E Tests', () => {
     it('should handle multi-turn chat-style conversation', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'My favorite color is blue.',
@@ -63,7 +64,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'What is my favorite color?',
           },
-        ],
+        ]),
       });
 
       const text = await response.getText();
@@ -75,7 +76,7 @@ describe('callModel E2E Tests', () => {
     it('should handle system message in chat-style input', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'system',
             content: 'Always respond with exactly one word.',
@@ -84,7 +85,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Say hello.',
           },
-        ],
+        ]),
       });
 
       const text = await response.getText();
@@ -96,12 +97,12 @@ describe('callModel E2E Tests', () => {
     it('should accept chat-style tools (ToolDefinitionJson)', async () => {
       const response = client.callModel({
         model: 'qwen/qwen3-vl-8b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "What's the weather in Paris? Use the get_weather tool.",
           },
-        ],
+        ]),
         tools: [
           {
             type: ToolType.Function,
@@ -137,7 +138,7 @@ describe('callModel E2E Tests', () => {
     it.skip('should work with chat-style messages and chat-style tools together', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.1-8b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'system',
             content: 'You are a helpful assistant. Use tools when needed.',
@@ -146,7 +147,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Get the weather in Tokyo using the weather tool.',
           },
-        ],
+        ]),
         tools: [
           {
             type: ToolType.Function,
@@ -189,7 +190,7 @@ describe('callModel E2E Tests', () => {
 
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: claudeMessages,
+        input: fromClaudeMessages(claudeMessages),
       });
 
       const text = await response.getText();
@@ -214,7 +215,7 @@ describe('callModel E2E Tests', () => {
 
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: claudeMessages,
+        input: fromClaudeMessages(claudeMessages),
       });
 
       const text = await response.getText();
@@ -242,7 +243,7 @@ describe('callModel E2E Tests', () => {
 
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: claudeMessages,
+        input: fromClaudeMessages(claudeMessages),
       });
 
       const text = await response.getText();
@@ -270,7 +271,7 @@ describe('callModel E2E Tests', () => {
 
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: claudeMessages,
+        input: fromClaudeMessages(claudeMessages),
       });
 
       const text = await response.getText();
@@ -284,12 +285,12 @@ describe('callModel E2E Tests', () => {
     it('should successfully get text from a response', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'Hello, World!' and nothing else.",
           },
-        ],
+        ]),
       });
 
       const text = await response.getText();
@@ -303,7 +304,7 @@ describe('callModel E2E Tests', () => {
     it('should handle multi-turn conversations', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'My name is Bob.',
@@ -316,7 +317,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'What is my name?',
           },
-        ],
+        ]),
       });
 
       const text = await response.getText();
@@ -330,12 +331,12 @@ describe('callModel E2E Tests', () => {
     it('should successfully get a complete message from response', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'test message' and nothing else.",
           },
-        ],
+        ]),
       });
 
       const fullResponse = await response.getResponse();
@@ -364,12 +365,12 @@ describe('callModel E2E Tests', () => {
     it('should have proper message structure', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Respond with a simple greeting.',
           },
-        ],
+        ]),
       });
 
       const fullResponse = await response.getResponse();
@@ -425,7 +426,7 @@ describe('callModel E2E Tests', () => {
     it('should successfully stream text deltas', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Count from 1 to 5.',
@@ -450,7 +451,7 @@ describe('callModel E2E Tests', () => {
     it('should stream progressively without waiting for completion', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Write a short poem.',
@@ -485,7 +486,7 @@ describe('callModel E2E Tests', () => {
     it('should successfully stream incremental message updates in ResponsesOutputMessage format', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'streaming test'.",
@@ -526,7 +527,7 @@ describe('callModel E2E Tests', () => {
     it('should return ResponsesOutputMessage with correct shape', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'hello world'.",
@@ -575,7 +576,7 @@ describe('callModel E2E Tests', () => {
     it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
         model: 'openai/gpt-4o-mini',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "What's the weather in Tokyo? Use the get_weather tool.",
@@ -673,7 +674,7 @@ describe('callModel E2E Tests', () => {
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Count from 1 to 3.',
@@ -714,7 +715,7 @@ describe('callModel E2E Tests', () => {
     it.skip('should successfully stream reasoning deltas for reasoning models', async () => {
       const response = client.callModel({
         model: 'minimax/minimax-m2',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'What is 2+2?',
@@ -744,7 +745,7 @@ describe('callModel E2E Tests', () => {
     it('should successfully stream tool call deltas when tools are called', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.1-8b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "What's the weather like in Paris? Use the get_weather tool to find out.",
@@ -800,7 +801,7 @@ describe('callModel E2E Tests', () => {
     it('should successfully stream all response events', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'hello'.",
@@ -832,7 +833,7 @@ describe('callModel E2E Tests', () => {
     it('should include text delta events', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Count to 3.',
@@ -865,7 +866,7 @@ describe('callModel E2E Tests', () => {
     it('should successfully stream in chat-compatible format', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'test'.",
@@ -891,7 +892,7 @@ describe('callModel E2E Tests', () => {
     it('should return events with correct shape for each event type', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Count from 1 to 3.',
@@ -952,7 +953,7 @@ describe('callModel E2E Tests', () => {
     it('should validate content.delta events have proper structure', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'hello world'.",
@@ -989,7 +990,7 @@ describe('callModel E2E Tests', () => {
     it('should include tool.preliminary_result events with correct shape when generator tools are executed', async () => {
       const response = client.callModel({
         model: 'openai/gpt-4o-mini',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'What time is it? Use the get_time tool.',
@@ -1078,7 +1079,7 @@ describe('callModel E2E Tests', () => {
     it('should allow reading text and streaming simultaneously', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'concurrent test'.",
@@ -1113,7 +1114,7 @@ describe('callModel E2E Tests', () => {
     it('should allow multiple stream consumers', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Write a short sentence.',
@@ -1161,7 +1162,7 @@ describe('callModel E2E Tests', () => {
     it('should allow sequential consumption - text then stream', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'sequential test'.",
@@ -1191,7 +1192,7 @@ describe('callModel E2E Tests', () => {
     it('should allow sequential consumption - stream then text', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'reverse test'.",
@@ -1222,7 +1223,7 @@ describe('callModel E2E Tests', () => {
     it('should handle invalid model gracefully', async () => {
       const response = client.callModel({
         model: 'invalid/model-that-does-not-exist',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Test',
@@ -1253,7 +1254,7 @@ describe('callModel E2E Tests', () => {
     it('should return full response with correct shape', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'hello'.",
@@ -1299,7 +1300,7 @@ describe('callModel E2E Tests', () => {
     it('should return usage with correct shape including all token details', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'hello'.",
@@ -1355,7 +1356,7 @@ describe('callModel E2E Tests', () => {
     it('should return error and incompleteDetails fields with correct shape', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'test'.",
@@ -1381,7 +1382,7 @@ describe('callModel E2E Tests', () => {
     it('should allow concurrent access with other methods', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'test'.",
@@ -1409,7 +1410,7 @@ describe('callModel E2E Tests', () => {
     it('should return consistent results on multiple calls', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'consistent'.",
@@ -1434,7 +1435,7 @@ describe('callModel E2E Tests', () => {
     it('should respect maxOutputTokens parameter', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: 'Write a long story about a cat.',
@@ -1453,7 +1454,7 @@ describe('callModel E2E Tests', () => {
     it('should work with instructions parameter', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say exactly: 'test complete'",
@@ -1473,7 +1474,7 @@ describe('callModel E2E Tests', () => {
     it('should support provider parameter with correct shape', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'provider test'.",
@@ -1495,7 +1496,7 @@ describe('callModel E2E Tests', () => {
     it('should support provider with order preference', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'ordered provider'.",
@@ -1520,7 +1521,7 @@ describe('callModel E2E Tests', () => {
     it('should support provider with ignore list', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'ignore test'.",
@@ -1543,7 +1544,7 @@ describe('callModel E2E Tests', () => {
     it('should support provider with quantizations filter', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.2-1b-instruct',
-        input: [
+        input: fromChatMessages([
           {
             role: 'user',
             content: "Say 'quantization test'.",
