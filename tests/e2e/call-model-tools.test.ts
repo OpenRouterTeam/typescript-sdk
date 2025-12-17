@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { toJSONSchema, z } from 'zod/v4';
-import { OpenRouter, ToolType } from '../../src/index.js';
+import { OpenRouter, ToolType, toChatMessage } from '../../src/index.js';
 
 dotenv.config();
 
@@ -589,7 +589,8 @@ describe('Enhanced Tool Support for callModel', () => {
         ],
       });
 
-      const message = await response.getMessage();
+      const fullResponse = await response.getResponse();
+      const message = toChatMessage(fullResponse);
       expect(message).toBeDefined();
     }, 30000);
 
@@ -638,7 +639,8 @@ describe('Enhanced Tool Support for callModel', () => {
         },
       );
 
-      const finalMessage = await response.getMessage();
+      const fullResponse = await response.getResponse();
+      const finalMessage = toChatMessage(fullResponse);
       expect(finalMessage).toBeDefined();
       expect(finalMessage.content).toBeTruthy();
     }, 30000);

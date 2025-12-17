@@ -7,3 +7,8 @@ export * as files from "./lib/files.js";
 export { HTTPClient } from "./lib/http.js";
 export type { Fetcher, HTTPClientOptions } from "./lib/http.js";
 export * from "./sdk/sdk.js";
+
+// Message format compatibility helpers
+export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
+export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
+export { extractUnsupportedContent, hasUnsupportedContent, getUnsupportedContentSummary } from "./lib/stream-transformers.js";

@@ -33,3 +33,4 @@
 /examples/nextjs-example/package-lock.json
 /examples/nextjs-example/package.lock.json
 /temp
+.codanna/**

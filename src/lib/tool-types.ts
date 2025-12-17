@@ -1,7 +1,7 @@
 import type { ZodObject, ZodRawShape, ZodType, z } from 'zod/v4';
 import type * as models from '../models/index.js';
 import type { OpenResponsesStreamEvent } from '../models/index.js';
-import type { ResponseWrapper } from './response-wrapper.js';
+import type { ModelResult } from './model-result.js';
 
 /**
  * Tool type enum for enhanced tools
@@ -180,8 +180,8 @@ export type MaxToolRounds = number | ((context: TurnContext) => boolean); // Ret
  * Result of executeTools operation
  */
 export interface ExecuteToolsResult {
-  finalResponse: ResponseWrapper;
-  allResponses: ResponseWrapper[];
+  finalResponse: ModelResult;
+  allResponses: ModelResult[];
   toolResults: Map<
     string,
     {
