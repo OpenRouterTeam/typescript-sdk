@@ -3,7 +3,7 @@ import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
 import { executeTool, findToolByName } from './tool-executor.js';
-import { hasExecuteFunction, buildTurnContext } from './tool-types.js';
+import { hasExecuteFunction } from './tool-types.js';
 
 /**
  * Options for tool execution
@@ -100,11 +100,10 @@ export async function executeToolLoop(
       }
 
       // Build turn context
-      const turnContext = buildTurnContext({
-        request: {},
-        input: conversationInput,
-        changes: [],
-      });
+      const turnContext: import('./tool-types.js').TurnContext = {
+        numberOfTurns: currentRound,
+        messageHistory: conversationInput,
+      };
 
       // Execute the tool
       return executeTool(tool, toolCall, turnContext, onPreliminaryResult);
@@ -201,24 +200,15 @@ export function summarizeToolExecutions(results: ToolExecutionResult[]): string 
 }
 
 /**
- * Type guard to check if a tool execution result has an error
- */
-function resultHasError(
-  result: ToolExecutionResult
-): result is ToolExecutionResult & { error: Error } {
-  return result.error !== undefined;
-}
-
-/**
  * Check if any tool executions had errors
  */
 export function hasToolExecutionErrors(results: ToolExecutionResult[]): boolean {
-  return results.some(resultHasError);
+  return results.some((result) => result.error !== undefined);
 }
 
 /**
  * Get all tool execution errors
  */
 export function getToolExecutionErrors(results: ToolExecutionResult[]): Error[] {
-  return results.filter(resultHasError).map((result) => result.error);
+  return results.filter((result) => result.error !== undefined).map((result) => result.error!);
 }
