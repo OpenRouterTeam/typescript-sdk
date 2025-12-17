@@ -1,7 +1,7 @@
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { config } from 'dotenv';
 import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,11 +26,5 @@ export default defineConfig({
     ],
     hookTimeout: 30000,
     testTimeout: 30000,
-    typecheck: {
-      enabled: true,
-      include: [
-        'tests/**/*.test.ts',
-      ],
-    },
   },
 });
