@@ -1,5 +1,4 @@
-# Responses
-(*beta.responses*)
+# Beta.Responses
 
 ## Overview
 

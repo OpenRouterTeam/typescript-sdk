@@ -22,7 +22,7 @@ export type OutputItemImageGenerationCallType = ClosedEnum<
 export type OutputItemImageGenerationCall = {
   type: OutputItemImageGenerationCallType;
   id: string;
-  result?: string | null | undefined;
+  result: string | null;
   status: ImageGenerationStatus;
 };
 

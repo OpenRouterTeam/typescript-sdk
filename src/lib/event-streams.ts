@@ -29,7 +29,7 @@ export class EventStream<T> extends ReadableStream<T> {
             const message = buffer.slice(0, match.index);
             buffer = buffer.slice(match.index + match.length);
             const item = parseMessage(message, parse);
-            if (item?.value) return downstream.enqueue(item.value);
+            if (item && !item.done) return downstream.enqueue(item.value);
             if (item?.done) {
               await upstream.cancel("done");
               return downstream.close();
