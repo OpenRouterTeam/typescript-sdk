@@ -6,7 +6,13 @@ import type * as models from "../models/index.js";
 import { ModelResult } from "../lib/model-result.js";
 import { convertToolsToAPIFormat } from "../lib/tool-executor.js";
 
-
+/**
+ * Input type for callModel function
+ */
+export type CallModelInput = Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+  tools?: Tool[];
+  maxToolRounds?: MaxToolRounds;
+};
 
 /**
  * Get a response with multiple consumption patterns
@@ -33,10 +39,7 @@ import { convertToolsToAPIFormat } from "../lib/tool-executor.js";
  */
 export function callModel(
   client: OpenRouterCore,
-  request: Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
-    tools?: Tool[];
-    maxToolRounds?: MaxToolRounds;
-  },
+  request: CallModelInput,
   options?: RequestOptions
 ): ModelResult {
   const { tools, maxToolRounds, ...apiRequest } = request;

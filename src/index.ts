@@ -12,6 +12,34 @@ export * from "./sdk/sdk.js";
 export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
 export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
 
+// Claude message types
+export type {
+  ClaudeMessage,
+  ClaudeMessageParam,
+  ClaudeContentBlock,
+  ClaudeContentBlockParam,
+  ClaudeTextBlock,
+  ClaudeThinkingBlock,
+  ClaudeRedactedThinkingBlock,
+  ClaudeToolUseBlock,
+  ClaudeServerToolUseBlock,
+  ClaudeTextBlockParam,
+  ClaudeImageBlockParam,
+  ClaudeToolUseBlockParam,
+  ClaudeToolResultBlockParam,
+  ClaudeStopReason,
+  ClaudeUsage,
+  ClaudeCacheControl,
+  ClaudeTextCitation,
+  ClaudeCitationCharLocation,
+  ClaudeCitationPageLocation,
+  ClaudeCitationContentBlockLocation,
+  ClaudeCitationWebSearchResultLocation,
+  ClaudeCitationSearchResultLocation,
+  ClaudeBase64ImageSource,
+  ClaudeURLImageSource,
+} from "./models/claude-message.js";
+
 // Tool creation helpers
 export { tool, createTool, createGeneratorTool, createManualTool } from "./lib/tool.js";
 
