@@ -506,6 +506,11 @@ function mapAnnotationsToCitations(
         });
         break;
       }
+
+      default: {
+        const _exhaustiveCheck: never = annotation;
+        throw new Error(`Unhandled annotation type: ${(_exhaustiveCheck as { type: string }).type}`);
+      }
     }
   }
 
@@ -672,6 +677,11 @@ export function convertToClaudeMessage(
           reason: 'Claude does not support image outputs in assistant messages',
         });
         break;
+      }
+
+      default: {
+        const _exhaustiveCheck: never = item;
+        throw new Error(`Unhandled output item type: ${(_exhaustiveCheck as { type: string }).type}`);
       }
     }
   }

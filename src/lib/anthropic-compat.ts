@@ -3,6 +3,10 @@ import {
   OpenResponsesEasyInputMessageRoleUser,
   OpenResponsesEasyInputMessageRoleAssistant,
 } from "../models/openresponseseasyinputmessage.js";
+import {
+  OpenResponsesInputMessageItemRoleUser,
+  OpenResponsesInputMessageItemRoleSystem,
+} from "../models/openresponsesinputmessageitem.js";
 import { OpenResponsesFunctionCallOutputType } from "../models/openresponsesfunctioncalloutput.js";
 import { convertToClaudeMessage } from "./stream-transformers.js";
 
@@ -71,7 +75,10 @@ export function fromClaudeMessages(
 ): models.OpenResponsesInput {
   const result: (
     | models.OpenResponsesEasyInputMessage
+    | models.OpenResponsesInputMessageItem
     | models.OpenResponsesFunctionCallOutput
+    | models.OpenResponsesFunctionToolCall
+    | models.ResponsesImageGenerationCall
   )[] = [];
 
   for (const msg of messages) {
@@ -82,26 +89,61 @@ export function fromClaudeMessages(
       continue;
     }
 
-    const textParts: string[] = [];
+    const contentItems: (
+      | models.ResponseInputText
+      | models.ResponseInputImage
+      | models.ResponseInputFile
+      | models.ResponseInputAudio
+    )[] = [];
+    let hasStructuredContent = false;
 
     for (const block of content) {
       switch (block.type) {
         case 'text': {
           const textBlock = block as models.ClaudeTextBlockParam;
-          textParts.push(textBlock.text);
+          contentItems.push({
+            type: 'input_text',
+            text: textBlock.text,
+          });
           // Note: cache_control is lost in conversion (OpenRouter doesn't support it)
           break;
         }
 
         case 'image': {
-          // Images in input cannot be mapped to OpenRouter easy format
-          // Add text marker to preserve conversation flow
-          textParts.push('[Image content - not supported in OpenRouter format]');
+          const imageBlock = block as models.ClaudeImageBlockParam;
+          hasStructuredContent = true;
+
+          // Convert Claude image source to OpenRouter format
+          if (imageBlock.source.type === 'url') {
+            contentItems.push({
+              type: 'input_image',
+              detail: 'auto',
+              imageUrl: imageBlock.source.url,
+            });
+          } else if (imageBlock.source.type === 'base64') {
+            // Base64 images: OpenRouter expects a URL, so we use data URI
+            const dataUri = `data:${imageBlock.source.media_type};base64,${imageBlock.source.data}`;
+            contentItems.push({
+              type: 'input_image',
+              detail: 'auto',
+              imageUrl: dataUri,
+            });
+          }
           break;
         }
 
         case 'tool_use': {
-          // Tool use blocks in input are conversation history, skip
+          const toolUseBlock = block as models.ClaudeToolUseBlockParam;
+
+          // Map to OpenResponsesFunctionToolCall
+          result.push({
+            type: 'function_call',
+            callId: toolUseBlock.id,
+            name: toolUseBlock.name,
+            arguments: JSON.stringify(toolUseBlock.input),
+            id: toolUseBlock.id,
+            status: 'completed', // Tool use in conversation history is already completed
+          });
           break;
         }
 
@@ -112,21 +154,75 @@ export function fromClaudeMessages(
           if (typeof toolResultBlock.content === 'string') {
             toolOutput = toolResultBlock.content;
           } else {
-            // Extract text, skip images (OpenRouter function_call_output only supports text)
-            toolOutput = toolResultBlock.content
-              .filter((part): part is models.ClaudeTextBlockParam => part.type === 'text')
-              .map(part => part.text)
-              .join('');
+            // Extract text and handle images separately
+            const textParts: string[] = [];
+            const imageParts: models.ClaudeImageBlockParam[] = [];
+
+            for (const part of toolResultBlock.content) {
+              if (part.type === 'text') {
+                textParts.push(part.text);
+              } else if (part.type === 'image') {
+                imageParts.push(part);
+              }
+            }
+
+            toolOutput = textParts.join('');
+
+            // Map images to image_generation_call items
+            for (const imagePart of imageParts) {
+              const imageUrl = imagePart.source.type === 'url'
+                ? imagePart.source.url
+                : `data:${imagePart.source.media_type};base64,${imagePart.source.data}`;
+
+              result.push({
+                type: 'image_generation_call',
+                id: `${toolResultBlock.tool_use_id}-image-${imageParts.indexOf(imagePart)}`,
+                result: imageUrl,
+                status: 'completed',
+              });
+            }
           }
 
-          result.push(createFunctionCallOutput(toolResultBlock.tool_use_id, toolOutput));
+          // Add the function call output for the text portion
+          if (toolOutput || typeof toolResultBlock.content === 'string') {
+            result.push(createFunctionCallOutput(toolResultBlock.tool_use_id, toolOutput));
+          }
           break;
+        }
+
+        default: {
+          const _exhaustiveCheck: never = block;
+          throw new Error(`Unhandled content block type: ${(_exhaustiveCheck as { type: string }).type}`);
         }
       }
     }
 
-    if (textParts.length > 0) {
-      result.push(createEasyInputMessage(role, textParts.join('')));
+    // Use structured format if we have images, otherwise use simple format
+    if (contentItems.length > 0) {
+      if (hasStructuredContent) {
+        // Use OpenResponsesInputMessageItem for messages with images
+        const messageRole = role === 'user'
+          ? OpenResponsesInputMessageItemRoleUser.User
+          : role === 'assistant'
+            ? OpenResponsesInputMessageItemRoleSystem.System // Assistant messages treated as system in this context
+            : OpenResponsesInputMessageItemRoleSystem.System;
+
+        result.push({
+          type: 'message',
+          role: messageRole,
+          content: contentItems,
+        });
+      } else {
+        // Use simple format for text-only messages
+        const textContent = contentItems
+          .filter((item): item is models.ResponseInputText => item.type === 'input_text')
+          .map(item => item.text)
+          .join('');
+
+        if (textContent) {
+          result.push(createEasyInputMessage(role, textContent));
+        }
+      }
     }
   }
 
