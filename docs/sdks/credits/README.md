@@ -1,5 +1,4 @@
 # Credits
-(*credits*)
 
 ## Overview
 

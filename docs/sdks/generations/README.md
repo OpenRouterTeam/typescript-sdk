@@ -1,5 +1,4 @@
 # Generations
-(*generations*)
 
 ## Overview
 

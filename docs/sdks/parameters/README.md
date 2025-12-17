@@ -1,5 +1,4 @@
-# ParametersT
-(*parameters*)
+# Parameters
 
 ## Overview
 

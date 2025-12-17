@@ -1,5 +1,4 @@
 # Completions
-(*completions*)
 
 ## Overview
 
