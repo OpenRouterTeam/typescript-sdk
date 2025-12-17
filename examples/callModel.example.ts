@@ -12,9 +12,8 @@ dotenv.config();
  */
 
 import { OpenRouter } from "../src/index.js";
-import { Message, OpenResponsesEasyInputMessage } from "../src/models";
+import type { OpenResponsesEasyInputMessage } from "../src/models";
 
-import { MessageParam as AnthropicClaudeMessage } from "@anthropic-ai/sdk/resources/messages";
 
 const openRouter = new OpenRouter({
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
