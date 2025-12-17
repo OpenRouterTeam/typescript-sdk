@@ -42,7 +42,7 @@ export type {
 } from "./models/claude-message.js";
 
 // Tool creation helpers
-export { tool, createTool, createGeneratorTool, createManualTool } from "./lib/tool.js";
+export { tool } from "./lib/tool.js";
 
 // Tool types
 export type {

@@ -5,7 +5,7 @@ import {
   OpenResponsesEasyInputMessageRoleUser,
 } from '../models/openresponseseasyinputmessage.js';
 import { OpenResponsesFunctionCallOutputType } from '../models/openresponsesfunctioncalloutput.js';
-import { OpenResponsesInputMessageItemRoleUser } from '../models/openresponsesinputmessageitem.js';
+import { OpenResponsesInputMessageItemRoleUser, OpenResponsesInputMessageItemRoleDeveloper } from '../models/openresponsesinputmessageitem.js';
 import { convertToClaudeMessage } from './stream-transformers.js';
 
 /**
@@ -150,12 +150,7 @@ export function fromClaudeMessages(
         toolOutput = textParts.join('');
 
         // Map images to image_generation_call items
-        for (let i = 0; i < imageParts.length; i++) {
-          const imagePart = imageParts[i];
-          if (!imagePart) {
-            continue;
-          }
-
+        imageParts.forEach((imagePart, i) => {
           let imageUrl: string;
 
           if (imagePart.source.type === 'url') {
@@ -173,7 +168,7 @@ export function fromClaudeMessages(
             result: imageUrl,
             status: 'completed',
           });
-        }
+        });
       }
 
       // Add the function call output for the text portion (if any)
@@ -222,13 +217,14 @@ export function fromClaudeMessages(
           role:
             role === 'user'
               ? OpenResponsesInputMessageItemRoleUser.User
-              : OpenResponsesInputMessageItemRoleUser.User, // Map assistant to user as well since OpenRouter doesn't have assistant for this type
+              : OpenResponsesInputMessageItemRoleDeveloper.Developer,
           content: contentItems,
         });
       } else {
         // Use simple string format for text-only messages
         const textContent = contentItems
-          .map((item) => (item as models.ResponseInputText).text)
+          .filter((item): item is models.ResponseInputText => item.type === 'input_text')
+          .map((item) => item.text)
           .join('');
 
         if (textContent.length > 0) {

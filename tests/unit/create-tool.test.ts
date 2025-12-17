@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { tool, createTool, createGeneratorTool, createManualTool } from '../../src/lib/tool.js';
+import { tool } from '../../src/lib/tool.js';
 import { ToolType } from '../../src/lib/tool-types.js';
 
 describe('tool', () => {
@@ -180,45 +180,6 @@ describe('tool', () => {
       expect(manualTool.type).toBe(ToolType.Function);
       expect(manualTool.function.name).toBe('manual_tool');
       expect(manualTool.function).not.toHaveProperty('execute');
-    });
-  });
-
-  describe('deprecated functions - backwards compatibility', () => {
-    it('createTool should still work', () => {
-      const testTool = createTool({
-        name: 'test_tool',
-        inputSchema: z.object({ input: z.string() }),
-        execute: async (params) => ({ result: params.input }),
-      });
-
-      expect(testTool.type).toBe(ToolType.Function);
-      expect(testTool.function.name).toBe('test_tool');
-    });
-
-    it('createGeneratorTool should still work', () => {
-      const generatorTool = createGeneratorTool({
-        name: 'generator_tool',
-        inputSchema: z.object({ query: z.string() }),
-        eventSchema: z.object({ progress: z.number() }),
-        outputSchema: z.object({ result: z.string() }),
-        execute: async function* () {
-          yield { progress: 50 };
-          yield { result: 'done' };
-        },
-      });
-
-      expect(generatorTool.type).toBe(ToolType.Function);
-      expect(generatorTool.function.name).toBe('generator_tool');
-    });
-
-    it('createManualTool should still work', () => {
-      const manualTool = createManualTool({
-        name: 'manual_tool',
-        inputSchema: z.object({ query: z.string() }),
-      });
-
-      expect(manualTool.type).toBe(ToolType.Function);
-      expect(manualTool.function.name).toBe('manual_tool');
     });
   });
 });
