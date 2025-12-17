@@ -453,7 +453,7 @@ export function responseHasToolCalls(response: models.OpenResponsesNonStreamingR
  * Convert OpenRouter annotations to Claude citations
  */
 function mapAnnotationsToCitations(
-  annotations?: Array<models.OpenAIResponsesAnnotation>
+  annotations?: Array<models.OpenAIResponsesAnnotation>,
 ): models.ClaudeTextCitation[] | undefined {
   if (!annotations || annotations.length === 0) {
     return undefined;
@@ -509,7 +509,15 @@ function mapAnnotationsToCitations(
 
       default: {
         const _exhaustiveCheck: never = annotation;
-        throw new Error(`Unhandled annotation type: ${(_exhaustiveCheck as { type: string }).type}`);
+        throw new Error(
+          `Unhandled annotation type: ${
+            (
+              _exhaustiveCheck as {
+                type: string;
+              }
+            ).type
+          }`,
+        );
       }
     }
   }
@@ -561,6 +569,12 @@ export function convertToClaudeMessage(
 
   for (const item of response.output) {
     if (!('type' in item)) {
+      // Handle items without type field
+      unsupportedContent.push({
+        original_type: 'unknown',
+        data: item as Record<string, unknown>,
+        reason: 'Output item missing type field',
+      });
       continue;
     }
 
@@ -569,6 +583,11 @@ export function convertToClaudeMessage(
         const msgItem = item as models.ResponsesOutputMessage;
         for (const part of msgItem.content) {
           if (!('type' in part)) {
+            unsupportedContent.push({
+              original_type: 'unknown_message_part',
+              data: part as Record<string, unknown>,
+              reason: 'Message content part missing type field',
+            });
             continue;
           }
 
@@ -579,14 +598,31 @@ export function convertToClaudeMessage(
             content.push({
               type: 'text',
               text: textPart.text,
-              ...(citations && { citations }),
+              ...(citations && {
+                citations,
+              }),
             });
           } else if (part.type === 'refusal') {
             const refusalPart = part as models.OpenAIResponsesRefusalContent;
             unsupportedContent.push({
               original_type: 'refusal',
-              data: { refusal: refusalPart.refusal },
+              data: {
+                refusal: refusalPart.refusal,
+              },
               reason: 'Claude does not have a native refusal content type',
+            });
+          } else {
+            // Handle unknown message content types
+            unsupportedContent.push({
+              original_type: `message_content_${
+                (
+                  part as {
+                    type: string;
+                  }
+                ).type
+              }`,
+              data: part as Record<string, unknown>,
+              reason: 'Unknown message content type',
             });
           }
         }
@@ -595,14 +631,20 @@ export function convertToClaudeMessage(
 
       case 'function_call': {
         const fnCall = item as models.ResponsesOutputItemFunctionCall;
-        let parsedInput: Record<string, unknown> = {};
+        let parsedInput: Record<string, unknown>;
 
         try {
           parsedInput = JSON.parse(fnCall.arguments);
-        } catch (e) {
-          // JSON parsing failed - likely malformed arguments from model
-          console.warn(`[OpenRouter SDK] Failed to parse tool arguments for ${fnCall.name}: ${e}`);
-          parsedInput = {};
+        } catch (error) {
+          // Preserve raw arguments if JSON parsing fails
+          // Log warning in development/debug environments
+          if (typeof process !== 'undefined' && process.env?.['NODE_ENV'] === 'development') {
+            // biome-ignore lint/suspicious/noConsole: needed for debugging in development
+            console.warn(`Failed to parse tool call arguments for ${fnCall.name}:`, error);
+          }
+          parsedInput = {
+            _raw_arguments: fnCall.arguments,
+          };
         }
 
         content.push({
@@ -648,7 +690,9 @@ export function convertToClaudeMessage(
           type: 'server_tool_use',
           id: webSearchItem.id,
           name: 'web_search',
-          input: { status: webSearchItem.status },
+          input: {
+            status: webSearchItem.status,
+          },
         });
         break;
       }
@@ -682,8 +726,13 @@ export function convertToClaudeMessage(
       }
 
       default: {
-        const _exhaustiveCheck: never = item;
-        throw new Error(`Unhandled output item type: ${(_exhaustiveCheck as { type: string }).type}`);
+        const exhaustiveCheck: never = item;
+        unsupportedContent.push({
+          original_type: 'unknown_output_item',
+          data: exhaustiveCheck as Record<string, unknown>,
+          reason: 'Unknown output item type',
+        });
+        break;
       }
     }
   }
@@ -700,11 +749,11 @@ export function convertToClaudeMessage(
       input_tokens: response.usage?.inputTokens ?? 0,
       output_tokens: response.usage?.outputTokens ?? 0,
       cache_creation_input_tokens: response.usage?.inputTokensDetails?.cachedTokens ?? 0,
-      // TODO: OpenResponses doesn't expose cache_read separately from cachedTokens.
-      // Anthropic distinguishes cache creation vs read; OpenResponses combines them.
       cache_read_input_tokens: 0,
     },
-    ...(unsupportedContent.length > 0 && { unsupported_content: unsupportedContent }),
+    ...(unsupportedContent.length > 0 && {
+      unsupported_content: unsupportedContent,
+    }),
   };
 }
 
@@ -713,23 +762,19 @@ export function convertToClaudeMessage(
  */
 export function extractUnsupportedContent(
   message: models.ClaudeMessage,
-  originalType: string
+  originalType: string,
 ): models.UnsupportedContent[] {
   if (!message.unsupported_content) {
     return [];
   }
 
-  return message.unsupported_content.filter(
-    item => item.original_type === originalType
-  );
+  return message.unsupported_content.filter((item) => item.original_type === originalType);
 }
 
 /**
  * Check if message has any unsupported content
  */
-export function hasUnsupportedContent(
-  message: models.ClaudeMessage
-): boolean {
+export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
   return !!(message.unsupported_content && message.unsupported_content.length > 0);
 }
 
@@ -737,7 +782,7 @@ export function hasUnsupportedContent(
  * Get summary of unsupported content types
  */
 export function getUnsupportedContentSummary(
-  message: models.ClaudeMessage
+  message: models.ClaudeMessage,
 ): Record<string, number> {
   if (!message.unsupported_content) {
     return {};

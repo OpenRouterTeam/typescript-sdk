@@ -1,9 +1,14 @@
 /*
  * Example: Typed Tool Calling with callModel
  *
- * This example demonstrates how to use createTool and createGeneratorTool for
+ * This example demonstrates how to use the tool() function for
  * fully-typed tool definitions where execute params, return types, and event
  * types are automatically inferred from Zod schemas.
+ *
+ * Tool types are auto-detected based on configuration:
+ * - Generator tool: When `eventSchema` is provided
+ * - Regular tool: When `execute` is a function (no `eventSchema`)
+ * - Manual tool: When `execute: false` is set
  *
  * To run this example from the examples directory:
  * npm run build && npx tsx callModel-typed-tool-calling.example.ts
@@ -12,17 +17,17 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { OpenRouter, createTool, createGeneratorTool } from "../src/index.js";
+import { OpenRouter, tool } from "../src/index.js";
 import z from "zod";
 
 const openRouter = new OpenRouter({
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
-// Create a typed tool using createTool
+// Create a typed regular tool using tool()
 // The execute function params are automatically typed as z.infer<typeof inputSchema>
 // The return type is enforced based on outputSchema
-const weatherTool = createTool({
+const weatherTool = tool({
   name: "get_weather",
   description: "Get the current weather for a location",
   inputSchema: z.object({
@@ -43,9 +48,9 @@ const weatherTool = createTool({
   },
 });
 
-// Create a generator tool with typed progress events
-// The eventSchema defines the type of events yielded during execution
-const searchTool = createGeneratorTool({
+// Create a generator tool with typed progress events by providing eventSchema
+// The eventSchema triggers generator mode - execute becomes an async generator
+const searchTool = tool({
   name: "search_database",
   description: "Search database with progress updates",
   inputSchema: z.object({

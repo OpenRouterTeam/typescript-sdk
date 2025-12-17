@@ -41,6 +41,10 @@ function mapChatRole(
       return OpenResponsesEasyInputMessageRoleAssistant.Assistant;
     case "developer":
       return OpenResponsesEasyInputMessageRoleDeveloper.Developer;
+    default: {
+      const exhaustiveCheck: never = role;
+      throw new Error(`Unhandled role type: ${exhaustiveCheck}`);
+    }
   }
 }
 

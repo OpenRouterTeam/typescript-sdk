@@ -13,38 +13,60 @@ export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
 export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
 export { extractUnsupportedContent, hasUnsupportedContent, getUnsupportedContentSummary } from "./lib/stream-transformers.js";
 
-// Tool creation helpers
-export {
-  createTool,
-  createGeneratorTool,
-  createManualTool,
-} from "./lib/create-tool.js";
+// Claude message types
+export type {
+  ClaudeMessage,
+  ClaudeMessageParam,
+  ClaudeContentBlock,
+  ClaudeContentBlockParam,
+  ClaudeTextBlock,
+  ClaudeThinkingBlock,
+  ClaudeRedactedThinkingBlock,
+  ClaudeToolUseBlock,
+  ClaudeServerToolUseBlock,
+  ClaudeTextBlockParam,
+  ClaudeImageBlockParam,
+  ClaudeToolUseBlockParam,
+  ClaudeToolResultBlockParam,
+  ClaudeStopReason,
+  ClaudeUsage,
+  ClaudeCacheControl,
+  ClaudeTextCitation,
+  ClaudeCitationCharLocation,
+  ClaudeCitationPageLocation,
+  ClaudeCitationContentBlockLocation,
+  ClaudeCitationWebSearchResultLocation,
+  ClaudeCitationSearchResultLocation,
+  ClaudeBase64ImageSource,
+  ClaudeURLImageSource,
+} from "./models/claude-message.js";
 
-// Tool type inference helpers
+// Tool creation helpers
+export { tool } from "./lib/tool.js";
+
+// Tool types
 export type {
   Tool,
   ToolWithExecute,
   ToolWithGenerator,
   ManualTool,
+  TurnContext,
   InferToolInput,
   InferToolOutput,
-  TypedToolCall,
-  TypedToolCallUnion,
-  TurnContext,
-  TurnChange,
-  NextTurnParams,
-  ParsedToolCall,
-  // Event type inference helpers
   InferToolEvent,
   InferToolEventsUnion,
-  // Stream event types
-  ToolPreliminaryResultEvent,
+  TypedToolCall,
+  TypedToolCallUnion,
   ToolStreamEvent,
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
-  // Builder types
-  BuildTurnContextOptions,
+  ToolPreliminaryResultEvent,
 } from "./lib/tool-types.js";
 
-// Tool helpers
-export { normalizeInputToArray, buildTurnContext } from "./lib/tool-types.js";
+export {
+  ToolType,
+  hasExecuteFunction,
+  isGeneratorTool,
+  isRegularExecuteTool,
+  isToolPreliminaryResultEvent,
+} from "./lib/tool-types.js";
