@@ -431,7 +431,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Count from 1 to 5.',
           },
-        ],
+        ]),
       });
 
       const deltas: string[] = [];
@@ -456,7 +456,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Write a short poem.',
           },
-        ],
+        ]),
       });
 
       let firstDeltaTime: number | null = null;
@@ -491,7 +491,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'streaming test'.",
           },
-        ],
+        ]),
       });
 
       const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
@@ -532,7 +532,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'hello world'.",
           },
-        ],
+        ]),
       });
 
       const messages: (ResponsesOutputMessage | OpenResponsesFunctionCallOutput)[] = [];
@@ -581,7 +581,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "What's the weather in Tokyo? Use the get_weather tool.",
           },
-        ],
+        ]),
         tools: [
           {
             type: ToolType.Function,
@@ -679,7 +679,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Count from 1 to 3.',
           },
-        ],
+        ]),
       });
 
       for await (const message of response.getNewMessagesStream()) {
@@ -720,7 +720,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'What is 2+2?',
           },
-        ],
+        ]),
         reasoning: {
           enabled: true,
           effort: 'low',
@@ -750,7 +750,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "What's the weather like in Paris? Use the get_weather tool to find out.",
           },
-        ],
+        ]),
         tools: [
           {
             type: ToolType.Function,
@@ -806,7 +806,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'hello'.",
           },
-        ],
+        ]),
       });
 
       const events: EnhancedResponseStreamEvent[] = [];
@@ -838,7 +838,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Count to 3.',
           },
-        ],
+        ]),
       });
 
       const textDeltaEvents: EnhancedResponseStreamEvent[] = [];
@@ -871,7 +871,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'test'.",
           },
-        ],
+        ]),
       });
 
       const chunks: ChatStreamEvent[] = [];
@@ -897,7 +897,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Count from 1 to 3.',
           },
-        ],
+        ]),
       });
 
       let hasContentDelta = false;
@@ -958,7 +958,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'hello world'.",
           },
-        ],
+        ]),
       });
 
       const contentDeltas: ChatStreamEvent[] = [];
@@ -995,7 +995,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'What time is it? Use the get_time tool.',
           },
-        ],
+        ]),
         tools: [
           {
             type: ToolType.Function,
@@ -1084,7 +1084,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'concurrent test'.",
           },
-        ],
+        ]),
       });
 
       // Get full text and stream concurrently
@@ -1119,7 +1119,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Write a short sentence.',
           },
-        ],
+        ]),
       });
 
       // Start two concurrent stream consumers
@@ -1167,7 +1167,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'sequential test'.",
           },
-        ],
+        ]),
       });
 
       // First, get the full text
@@ -1197,7 +1197,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'reverse test'.",
           },
-        ],
+        ]),
       });
 
       // First, collect deltas from stream
@@ -1228,7 +1228,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Test',
           },
-        ],
+        ]),
       });
 
       await expect(response.getText()).rejects.toThrow();
@@ -1259,7 +1259,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'hello'.",
           },
-        ],
+        ]),
       });
 
       const fullResponse = await response.getResponse();
@@ -1305,7 +1305,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'hello'.",
           },
-        ],
+        ]),
       });
 
       const fullResponse = await response.getResponse();
@@ -1361,7 +1361,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'test'.",
           },
-        ],
+        ]),
       });
 
       const fullResponse = await response.getResponse();
@@ -1387,7 +1387,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'test'.",
           },
-        ],
+        ]),
       });
 
       // Get both text and full response concurrently
@@ -1415,7 +1415,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'consistent'.",
           },
-        ],
+        ]),
       });
 
       const firstCall = await response.getResponse();
@@ -1440,7 +1440,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: 'Write a long story about a cat.',
           },
-        ],
+        ]),
         maxOutputTokens: 10,
       });
 
@@ -1459,7 +1459,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say exactly: 'test complete'",
           },
-        ],
+        ]),
         instructions: 'You are a helpful assistant. Keep responses concise.',
       });
 
@@ -1479,7 +1479,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'provider test'.",
           },
-        ],
+        ]),
         provider: {
           allowFallbacks: true,
           requireParameters: false,
@@ -1501,7 +1501,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'ordered provider'.",
           },
-        ],
+        ]),
         provider: {
           order: [
             'Together',
@@ -1526,7 +1526,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'ignore test'.",
           },
-        ],
+        ]),
         provider: {
           ignore: [
             'SomeProvider',
@@ -1549,7 +1549,7 @@ describe('callModel E2E Tests', () => {
             role: 'user',
             content: "Say 'quantization test'.",
           },
-        ],
+        ]),
         provider: {
           allowFallbacks: true,
         },
