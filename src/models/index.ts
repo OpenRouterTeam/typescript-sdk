@@ -155,3 +155,4 @@ export * from "./usermessage.js";
 export * from "./websearchengine.js";
 export * from "./websearchpreviewtooluserlocation.js";
 export * from "./websearchstatus.js";
+export * from "./claude-message.js";

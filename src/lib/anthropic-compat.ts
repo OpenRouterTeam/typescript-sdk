@@ -102,7 +102,7 @@ export function fromClaudeMessages(
         const toolContent =
           typeof block.content === "string"
             ? block.content
-            : block.content.filter(isTextBlock).map((b) => b.text).join("");
+            : block.content.filter(isTextBlock).map((b: models.ClaudeTextBlockParam) => b.text).join("");
         result.push(createFunctionCallOutput(block.tool_use_id, toolContent));
       }
       // Note: tool_use and image blocks in input are typically part of conversation history
