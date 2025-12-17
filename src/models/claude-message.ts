@@ -166,6 +166,8 @@ export type ClaudeMessage = {
   stop_reason: ClaudeStopReason | null;
   stop_sequence?: string | null;
   usage: ClaudeUsage;
+  /** Unmappable content preserved for lossless round-trips */
+  unsupported_content?: UnsupportedContent[];
 };
 
 // --- INPUT TYPES (MessageParam) ---
@@ -251,4 +253,17 @@ export type ClaudeContentBlockParam =
 export type ClaudeMessageParam = {
   role: "user" | "assistant";
   content: string | Array<ClaudeContentBlockParam>;
+};
+
+/**
+ * Container for content that cannot be mapped to Claude's native format.
+ * Preserves information for round-trip conversions.
+ */
+export type UnsupportedContent = {
+  /** Original type from source format (e.g., "image_generation_call", "refusal") */
+  original_type: string;
+  /** Complete original data structure */
+  data: Record<string, unknown>;
+  /** Optional explanation of why this couldn't be mapped */
+  reason?: string;
 };

@@ -1,15 +1,15 @@
-import type { OpenRouterCore } from "../core.js";
-import type { RequestOptions } from "../lib/sdks.js";
-import type { Tool, MaxToolRounds } from "../lib/tool-types.js";
-import type * as models from "../models/index.js";
+import type { OpenRouterCore } from '../core.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type { MaxToolRounds, Tool } from '../lib/tool-types.js';
+import type * as models from '../models/index.js';
 
-import { ModelResult } from "../lib/model-result.js";
-import { convertToolsToAPIFormat } from "../lib/tool-executor.js";
+import { ModelResult } from '../lib/model-result.js';
+import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
 
 /**
  * Input type for callModel function
  */
-export type CallModelInput = Omit<models.OpenResponsesRequest, "stream" | "tools"> & {
+export type CallModelInput = Omit<models.OpenResponsesRequest, 'stream' | 'tools'> & {
   tools?: Tool[];
   maxToolRounds?: MaxToolRounds;
 };
@@ -40,19 +40,19 @@ export type CallModelInput = Omit<models.OpenResponsesRequest, "stream" | "tools
 export function callModel(
   client: OpenRouterCore,
   request: CallModelInput,
-  options?: RequestOptions
+  options?: RequestOptions,
 ): ModelResult {
   const { tools, maxToolRounds, ...apiRequest } = request;
-
 
   // Convert tools to API format and extract enhanced tools if present
   const apiTools = tools ? convertToolsToAPIFormat(tools) : undefined;
 
-
   // Build the request with converted tools
   const finalRequest: models.OpenResponsesRequest = {
     ...apiRequest,
-    ...(apiTools !== undefined && { tools: apiTools }),
+    ...(apiTools !== undefined && {
+      tools: apiTools,
+    }),
   };
 
   return new ModelResult({
@@ -60,6 +60,8 @@ export function callModel(
     request: finalRequest,
     options: options ?? {},
     tools: tools ?? [],
-    ...(maxToolRounds !== undefined && { maxToolRounds }),
+    ...(maxToolRounds !== undefined && {
+      maxToolRounds,
+    }),
   });
 }

@@ -450,6 +450,82 @@ export function responseHasToolCalls(response: models.OpenResponsesNonStreamingR
 }
 
 /**
+ * Convert OpenRouter annotations to Claude citations
+ */
+function mapAnnotationsToCitations(
+  annotations?: Array<models.OpenAIResponsesAnnotation>,
+): models.ClaudeTextCitation[] | undefined {
+  if (!annotations || annotations.length === 0) {
+    return undefined;
+  }
+
+  const citations: models.ClaudeTextCitation[] = [];
+
+  for (const annotation of annotations) {
+    if (!('type' in annotation)) {
+      continue;
+    }
+
+    switch (annotation.type) {
+      case 'file_citation': {
+        const fileCite = annotation as models.FileCitation;
+        citations.push({
+          type: 'char_location',
+          cited_text: '',
+          document_index: fileCite.index,
+          document_title: fileCite.filename,
+          file_id: fileCite.fileId,
+          start_char_index: 0,
+          end_char_index: 0,
+        });
+        break;
+      }
+
+      case 'url_citation': {
+        const urlCite = annotation as models.URLCitation;
+        citations.push({
+          type: 'web_search_result_location',
+          cited_text: '',
+          title: urlCite.title,
+          url: urlCite.url,
+          encrypted_index: '',
+        });
+        break;
+      }
+
+      case 'file_path': {
+        const pathCite = annotation as models.FilePath;
+        citations.push({
+          type: 'char_location',
+          cited_text: '',
+          document_index: pathCite.index,
+          document_title: '',
+          file_id: pathCite.fileId,
+          start_char_index: 0,
+          end_char_index: 0,
+        });
+        break;
+      }
+
+      default: {
+        const _exhaustiveCheck: never = annotation;
+        throw new Error(
+          `Unhandled annotation type: ${
+            (
+              _exhaustiveCheck as {
+                type: string;
+              }
+            ).type
+          }`,
+        );
+      }
+    }
+  }
+
+  return citations.length > 0 ? citations : undefined;
+}
+
+/**
  * Map OpenResponses status to Claude stop reason
  */
 function mapStopReason(
@@ -489,59 +565,174 @@ export function convertToClaudeMessage(
   response: models.OpenResponsesNonStreamingResponse,
 ): models.ClaudeMessage {
   const content: models.ClaudeContentBlock[] = [];
+  const unsupportedContent: models.UnsupportedContent[] = [];
 
   for (const item of response.output) {
     if (!('type' in item)) {
+      // Handle items without type field
+      unsupportedContent.push({
+        original_type: 'unknown',
+        data: item as Record<string, unknown>,
+        reason: 'Output item missing type field',
+      });
       continue;
     }
 
-    // Handle message output items
-    if (item.type === 'message') {
-      const msgItem = item as models.ResponsesOutputMessage;
-      for (const part of msgItem.content) {
-        if ('type' in part && part.type === 'output_text') {
-          const textPart = part as models.ResponseOutputText;
-          content.push({
-            type: 'text',
-            text: textPart.text,
-          });
-        }
-      }
-    }
+    switch (item.type) {
+      case 'message': {
+        const msgItem = item as models.ResponsesOutputMessage;
+        for (const part of msgItem.content) {
+          if (!('type' in part)) {
+            unsupportedContent.push({
+              original_type: 'unknown_message_part',
+              data: part as Record<string, unknown>,
+              reason: 'Message content part missing type field',
+            });
+            continue;
+          }
 
-    // Handle function call output items (tool use)
-    if (item.type === 'function_call') {
-      const fnCall = item as models.ResponsesOutputItemFunctionCall;
-      let parsedInput: Record<string, unknown> = {};
+          if (part.type === 'output_text') {
+            const textPart = part as models.ResponseOutputText;
+            const citations = mapAnnotationsToCitations(textPart.annotations);
 
-      try {
-        parsedInput = JSON.parse(fnCall.arguments);
-      } catch {
-        // If parsing fails, keep as empty object
-        parsedInput = {};
-      }
-
-      content.push({
-        type: 'tool_use',
-        id: fnCall.callId,
-        name: fnCall.name,
-        input: parsedInput,
-      });
-    }
-
-    // Handle reasoning output items (thinking)
-    if (item.type === 'reasoning') {
-      const reasoningItem = item as models.ResponsesOutputItemReasoning;
-      if (reasoningItem.summary && reasoningItem.summary.length > 0) {
-        for (const summaryItem of reasoningItem.summary) {
-          if (summaryItem.type === 'summary_text' && summaryItem.text) {
             content.push({
-              type: 'thinking',
-              thinking: summaryItem.text,
-              signature: '',
+              type: 'text',
+              text: textPart.text,
+              ...(citations && {
+                citations,
+              }),
+            });
+          } else if (part.type === 'refusal') {
+            const refusalPart = part as models.OpenAIResponsesRefusalContent;
+            unsupportedContent.push({
+              original_type: 'refusal',
+              data: {
+                refusal: refusalPart.refusal,
+              },
+              reason: 'Claude does not have a native refusal content type',
+            });
+          } else {
+            // Handle unknown message content types
+            unsupportedContent.push({
+              original_type: `message_content_${
+                (
+                  part as {
+                    type: string;
+                  }
+                ).type
+              }`,
+              data: part as Record<string, unknown>,
+              reason: 'Unknown message content type',
             });
           }
         }
+        break;
+      }
+
+      case 'function_call': {
+        const fnCall = item as models.ResponsesOutputItemFunctionCall;
+        let parsedInput: Record<string, unknown>;
+
+        try {
+          parsedInput = JSON.parse(fnCall.arguments);
+        } catch (error) {
+          // Preserve raw arguments if JSON parsing fails
+          // Log warning in development/debug environments
+          if (typeof process !== 'undefined' && process.env?.['NODE_ENV'] === 'development') {
+            // biome-ignore lint/suspicious/noConsole: needed for debugging in development
+            console.warn(`Failed to parse tool call arguments for ${fnCall.name}:`, error);
+          }
+          parsedInput = {
+            _raw_arguments: fnCall.arguments,
+          };
+        }
+
+        content.push({
+          type: 'tool_use',
+          id: fnCall.callId,
+          name: fnCall.name,
+          input: parsedInput,
+        });
+        break;
+      }
+
+      case 'reasoning': {
+        const reasoningItem = item as models.ResponsesOutputItemReasoning;
+
+        if (reasoningItem.summary && reasoningItem.summary.length > 0) {
+          for (const summaryItem of reasoningItem.summary) {
+            if (summaryItem.type === 'summary_text' && summaryItem.text) {
+              content.push({
+                type: 'thinking',
+                thinking: summaryItem.text,
+                signature: '',
+              });
+            }
+          }
+        }
+
+        if (reasoningItem.encryptedContent) {
+          unsupportedContent.push({
+            original_type: 'reasoning_encrypted',
+            data: {
+              id: reasoningItem.id,
+              encrypted_content: reasoningItem.encryptedContent,
+            },
+            reason: 'Encrypted reasoning content preserved for round-trip',
+          });
+        }
+        break;
+      }
+
+      case 'web_search_call': {
+        const webSearchItem = item as models.ResponsesWebSearchCallOutput;
+        content.push({
+          type: 'server_tool_use',
+          id: webSearchItem.id,
+          name: 'web_search',
+          input: {
+            status: webSearchItem.status,
+          },
+        });
+        break;
+      }
+
+      case 'file_search_call': {
+        const fileSearchItem = item as models.ResponsesOutputItemFileSearchCall;
+        content.push({
+          type: 'tool_use',
+          id: fileSearchItem.id,
+          name: 'file_search',
+          input: {
+            queries: fileSearchItem.queries,
+            status: fileSearchItem.status,
+          },
+        });
+        break;
+      }
+
+      case 'image_generation_call': {
+        const imageGenItem = item as models.ResponsesImageGenerationCall;
+        unsupportedContent.push({
+          original_type: 'image_generation_call',
+          data: {
+            id: imageGenItem.id,
+            result: imageGenItem.result,
+            status: imageGenItem.status,
+          },
+          reason: 'Claude does not support image outputs in assistant messages',
+        });
+        break;
+      }
+
+      default: {
+        const exhaustiveCheck: never = item;
+        unsupportedContent.push({
+          original_type: 'unknown_output_item',
+          data: exhaustiveCheck as Record<string, unknown>,
+          reason: 'Unknown output item type',
+        });
+        break;
       }
     }
   }
@@ -560,5 +751,47 @@ export function convertToClaudeMessage(
       cache_creation_input_tokens: response.usage?.inputTokensDetails?.cachedTokens ?? 0,
       cache_read_input_tokens: 0,
     },
+    ...(unsupportedContent.length > 0 && {
+      unsupported_content: unsupportedContent,
+    }),
   };
+}
+
+/**
+ * Extract unsupported content by original type
+ */
+export function extractUnsupportedContent(
+  message: models.ClaudeMessage,
+  originalType: string,
+): models.UnsupportedContent[] {
+  if (!message.unsupported_content) {
+    return [];
+  }
+
+  return message.unsupported_content.filter((item) => item.original_type === originalType);
+}
+
+/**
+ * Check if message has any unsupported content
+ */
+export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
+  return !!(message.unsupported_content && message.unsupported_content.length > 0);
+}
+
+/**
+ * Get summary of unsupported content types
+ */
+export function getUnsupportedContentSummary(
+  message: models.ClaudeMessage,
+): Record<string, number> {
+  if (!message.unsupported_content) {
+    return {};
+  }
+
+  const summary: Record<string, number> = {};
+  for (const item of message.unsupported_content) {
+    summary[item.original_type] = (summary[item.original_type] || 0) + 1;
+  }
+
+  return summary;
 }
