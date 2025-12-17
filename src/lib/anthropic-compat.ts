@@ -46,15 +46,6 @@ function createFunctionCallOutput(
 }
 
 /**
- * Type guard for Claude text block params
- */
-function isTextBlock(
-  block: models.ClaudeContentBlockParam
-): block is models.ClaudeTextBlockParam {
-  return block.type === "text";
-}
-
-/**
  * Convert Anthropic Claude-style messages to OpenResponses input format.
  *
  * This function transforms ClaudeMessageParam[] (Anthropic SDK format) to
@@ -86,32 +77,56 @@ export function fromClaudeMessages(
   for (const msg of messages) {
     const { role, content } = msg;
 
-    // Handle string content directly
     if (typeof content === "string") {
       result.push(createEasyInputMessage(role, content));
       continue;
     }
 
-    // Handle array content - extract text and handle tool results
     const textParts: string[] = [];
+
     for (const block of content) {
-      if (isTextBlock(block)) {
-        textParts.push(block.text);
-      } else if (block.type === "tool_result") {
-        // Tool results need special handling - convert to function_call_output
-        const toolContent =
-          typeof block.content === "string"
-            ? block.content
-            : block.content.filter(isTextBlock).map((b: models.ClaudeTextBlockParam) => b.text).join("");
-        result.push(createFunctionCallOutput(block.tool_use_id, toolContent));
+      switch (block.type) {
+        case 'text': {
+          const textBlock = block as models.ClaudeTextBlockParam;
+          textParts.push(textBlock.text);
+          // Note: cache_control is lost in conversion (OpenRouter doesn't support it)
+          break;
+        }
+
+        case 'image': {
+          // Images in input cannot be mapped to OpenRouter easy format
+          // Add text marker to preserve conversation flow
+          textParts.push('[Image content - not supported in OpenRouter format]');
+          break;
+        }
+
+        case 'tool_use': {
+          // Tool use blocks in input are conversation history, skip
+          break;
+        }
+
+        case 'tool_result': {
+          const toolResultBlock = block as models.ClaudeToolResultBlockParam;
+
+          let toolOutput = '';
+          if (typeof toolResultBlock.content === 'string') {
+            toolOutput = toolResultBlock.content;
+          } else {
+            // Extract text, skip images (OpenRouter function_call_output only supports text)
+            toolOutput = toolResultBlock.content
+              .filter((part): part is models.ClaudeTextBlockParam => part.type === 'text')
+              .map(part => part.text)
+              .join('');
+          }
+
+          result.push(createFunctionCallOutput(toolResultBlock.tool_use_id, toolOutput));
+          break;
+        }
       }
-      // Note: tool_use and image blocks in input are typically part of conversation history
-      // They would come from previous assistant responses, we skip them for now
     }
 
-    // If we collected text parts, add them as a message
     if (textParts.length > 0) {
-      result.push(createEasyInputMessage(role, textParts.join("")));
+      result.push(createEasyInputMessage(role, textParts.join('')));
     }
   }
 
