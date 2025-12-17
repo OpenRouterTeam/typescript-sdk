@@ -30,6 +30,4 @@
 .env.*.local
 /examples/.env
 /examples/package-lock.json
-/examples/nextjs-example/package-lock.json
-/examples/nextjs-example/package.lock.json
 /temp

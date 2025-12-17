@@ -6,7 +6,6 @@ sources:
         sourceBlobDigest: sha256:6bbf6ab7123261f7e0604f1c640e32b5fc8fb6bb503b1bc8b12d0d78ed19fefc
         tags:
             - latest
-            - subtree-sync-import-typescript-sdk
             - 1.0.0
 targets:
     openrouter:
@@ -15,7 +14,7 @@ targets:
         sourceRevisionDigest: sha256:92f6f1568ba089ae8e52bd55d859a97e446ae232c4c9ca9302ea64705313c7a0
         sourceBlobDigest: sha256:6bbf6ab7123261f7e0604f1c640e32b5fc8fb6bb503b1bc8b12d0d78ed19fefc
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:ed65c8a0156ab4cccf319bd085cd624af9a4814e66054c83fba738c67871e436
+        codeSamplesRevisionDigest: sha256:0ac460d1b6ebab411430eae7b520d5337bcf5298aad60af53b02e17dc67ce241
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.666.0

@@ -1,9 +1,5 @@
 'use client';
 
-import { ArrowRightIcon, ExternalLink, Key, MessageSquare, Zap } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -20,6 +16,10 @@ import {
 } from '@/lib/config';
 import { useApiKey } from '@/lib/hooks/use-api-key';
 import { useOpenRouter } from '@/lib/hooks/use-openrouter-client';
+import { ArrowRightIcon, ExternalLink, Key, MessageSquare, Zap } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Page({
   searchParams,
@@ -35,9 +35,8 @@ export default function Page({
   const [code, setCode] = useState<string>();
 
   useEffect(() => {
-    if (localStorage.getItem(OPENROUTER_KEY_LOCALSTORAGE_KEY)) {
+    if (localStorage.getItem(OPENROUTER_KEY_LOCALSTORAGE_KEY))
       return setConnectionState('connected');
-    }
 
     searchParams.then((p) => {
       if (p.code) {
@@ -45,9 +44,7 @@ export default function Page({
         setCode(p.code.toString());
       } else if (p.error) {
         setConnectionState('error');
-      } else {
-        setConnectionState('disconnected');
-      }
+      } else setConnectionState('disconnected');
     });
   }, [
     searchParams,
@@ -89,6 +86,7 @@ function ConnectingPageContent(props: { code: string }) {
       const codeVerifier = localStorage.getItem(OPENROUTER_CODE_VERIFIER_KEY);
 
       if (!codeVerifier) {
+        console.error('Code verifier not found in localStorage');
         router.push('/?error=missing_verifier');
         return;
       }
@@ -111,7 +109,8 @@ function ConnectingPageContent(props: { code: string }) {
 
         // Redirect to chat
         router.push('/chat');
-      } catch (_error) {
+      } catch (error) {
+        console.error('Failed to exchange authorization code:', error);
         router.push('/?error=exchange_failed');
       }
     };
@@ -258,8 +257,10 @@ function DisconnectedPageContent() {
                   className='w-full'
                   size='lg'
                 >
-                  <ExternalLink className='h-4 w-4 mr-2' />
-                  Connect OpenRouter Account
+                  <>
+                    <ExternalLink className='h-4 w-4 mr-2' />
+                    Connect OpenRouter Account
+                  </>
                 </Button>
               </a>
             ) : (

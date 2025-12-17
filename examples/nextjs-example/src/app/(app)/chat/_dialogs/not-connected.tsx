@@ -1,6 +1,5 @@
 'use client';
 
-import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { OAUTH_CALLBACK_URL, OPENROUTER_CODE_VERIFIER_KEY } from '@/lib/config';
 import { useOpenRouter } from '@/lib/hooks/use-openrouter-client';
+import { ExternalLink } from 'lucide-react';
 
 interface NotConnectedDialogProps {
   open: boolean;
