@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": "OpenRouter",
   "description": "The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.",
   "keywords": [
