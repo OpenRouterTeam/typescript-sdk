@@ -3,11 +3,12 @@
  * @generated-id: 49b1cafcb338
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type ChatMessageContentItemAudioInputAudio = {
   data: string;
@@ -15,7 +16,7 @@ export type ChatMessageContentItemAudioInputAudio = {
 };
 
 export type ChatMessageContentItemAudio = {
-  type: "input_audio";
+  type: 'input_audio';
   inputAudio: ChatMessageContentItemAudioInputAudio;
 };
 
@@ -56,8 +57,7 @@ export function chatMessageContentItemAudioInputAudioFromJSON(
 ): SafeParseResult<ChatMessageContentItemAudioInputAudio, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatMessageContentItemAudioInputAudio$inboundSchema.parse(JSON.parse(x)),
+    (x) => ChatMessageContentItemAudioInputAudio$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatMessageContentItemAudioInputAudio' from JSON`,
   );
 }
@@ -66,19 +66,19 @@ export function chatMessageContentItemAudioInputAudioFromJSON(
 export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
   ChatMessageContentItemAudio,
   unknown
-> = z.object({
-  type: z.literal("input_audio"),
-  input_audio: z.lazy(() =>
-    ChatMessageContentItemAudioInputAudio$inboundSchema
-  ),
-}).transform((v) => {
-  return remap$(v, {
-    "input_audio": "inputAudio",
+> = z
+  .object({
+    type: z.literal('input_audio'),
+    input_audio: z.lazy(() => ChatMessageContentItemAudioInputAudio$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      input_audio: 'inputAudio',
+    });
   });
-});
 /** @internal */
 export type ChatMessageContentItemAudio$Outbound = {
-  type: "input_audio";
+  type: 'input_audio';
   input_audio: ChatMessageContentItemAudioInputAudio$Outbound;
 };
 
@@ -86,24 +86,22 @@ export type ChatMessageContentItemAudio$Outbound = {
 export const ChatMessageContentItemAudio$outboundSchema: z.ZodType<
   ChatMessageContentItemAudio$Outbound,
   ChatMessageContentItemAudio
-> = z.object({
-  type: z.literal("input_audio"),
-  inputAudio: z.lazy(() =>
-    ChatMessageContentItemAudioInputAudio$outboundSchema
-  ),
-}).transform((v) => {
-  return remap$(v, {
-    inputAudio: "input_audio",
+> = z
+  .object({
+    type: z.literal('input_audio'),
+    inputAudio: z.lazy(() => ChatMessageContentItemAudioInputAudio$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      inputAudio: 'input_audio',
+    });
   });
-});
 
 export function chatMessageContentItemAudioToJSON(
   chatMessageContentItemAudio: ChatMessageContentItemAudio,
 ): string {
   return JSON.stringify(
-    ChatMessageContentItemAudio$outboundSchema.parse(
-      chatMessageContentItemAudio,
-    ),
+    ChatMessageContentItemAudio$outboundSchema.parse(chatMessageContentItemAudio),
   );
 }
 export function chatMessageContentItemAudioFromJSON(

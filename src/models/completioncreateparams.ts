@@ -3,24 +3,21 @@
  * @generated-id: 44cc0c9c4c06
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import {
+import type {
   ResponseFormatJSONSchema,
   ResponseFormatJSONSchema$Outbound,
-  ResponseFormatJSONSchema$outboundSchema,
-} from "./responseformatjsonschema.js";
-import {
+} from './responseformatjsonschema.js';
+import type {
   ResponseFormatTextGrammar,
   ResponseFormatTextGrammar$Outbound,
-  ResponseFormatTextGrammar$outboundSchema,
-} from "./responseformattextgrammar.js";
+} from './responseformattextgrammar.js';
 
-export type Prompt =
-  | string
-  | Array<string>
-  | Array<number>
-  | Array<Array<number>>;
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { ResponseFormatJSONSchema$outboundSchema } from './responseformatjsonschema.js';
+import { ResponseFormatTextGrammar$outboundSchema } from './responseformattextgrammar.js';
+
+export type Prompt = string | Array<string> | Array<number> | Array<Array<number>>;
 
 export type CompletionCreateParamsStop = string | Array<string>;
 
@@ -29,15 +26,15 @@ export type StreamOptions = {
 };
 
 export type CompletionCreateParamsResponseFormatPython = {
-  type: "python";
+  type: 'python';
 };
 
 export type CompletionCreateParamsResponseFormatJSONObject = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 export type CompletionCreateParamsResponseFormatText = {
-  type: "text";
+  type: 'text';
 };
 
 export type CompletionCreateParamsResponseFormatUnion =
@@ -54,7 +51,12 @@ export type CompletionCreateParams = {
   bestOf?: number | null | undefined;
   echo?: boolean | null | undefined;
   frequencyPenalty?: number | null | undefined;
-  logitBias?: { [k: string]: number } | null | undefined;
+  logitBias?:
+    | {
+        [k: string]: number;
+      }
+    | null
+    | undefined;
   logprobs?: number | null | undefined;
   maxTokens?: number | null | undefined;
   n?: number | null | undefined;
@@ -67,7 +69,12 @@ export type CompletionCreateParams = {
   temperature?: number | null | undefined;
   topP?: number | null | undefined;
   user?: string | undefined;
-  metadata?: { [k: string]: string } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | null
+    | undefined;
   responseFormat?:
     | CompletionCreateParamsResponseFormatText
     | CompletionCreateParamsResponseFormatJSONObject
@@ -79,20 +86,15 @@ export type CompletionCreateParams = {
 };
 
 /** @internal */
-export type Prompt$Outbound =
-  | string
-  | Array<string>
-  | Array<number>
-  | Array<Array<number>>;
+export type Prompt$Outbound = string | Array<string> | Array<number> | Array<Array<number>>;
 
 /** @internal */
-export const Prompt$outboundSchema: z.ZodType<Prompt$Outbound, Prompt> = z
-  .union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]);
+export const Prompt$outboundSchema: z.ZodType<Prompt$Outbound, Prompt> = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.array(z.number()),
+  z.array(z.array(z.number())),
+]);
 
 export function promptToJSON(prompt: Prompt): string {
   return JSON.stringify(Prompt$outboundSchema.parse(prompt));
@@ -105,7 +107,10 @@ export type CompletionCreateParamsStop$Outbound = string | Array<string>;
 export const CompletionCreateParamsStop$outboundSchema: z.ZodType<
   CompletionCreateParamsStop$Outbound,
   CompletionCreateParamsStop
-> = z.union([z.string(), z.array(z.string())]);
+> = z.union([
+  z.string(),
+  z.array(z.string()),
+]);
 
 export function completionCreateParamsStopToJSON(
   completionCreateParamsStop: CompletionCreateParamsStop,
@@ -121,16 +126,15 @@ export type StreamOptions$Outbound = {
 };
 
 /** @internal */
-export const StreamOptions$outboundSchema: z.ZodType<
-  StreamOptions$Outbound,
-  StreamOptions
-> = z.object({
-  includeUsage: z.nullable(z.boolean()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    includeUsage: "include_usage",
+export const StreamOptions$outboundSchema: z.ZodType<StreamOptions$Outbound, StreamOptions> = z
+  .object({
+    includeUsage: z.nullable(z.boolean()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      includeUsage: 'include_usage',
+    });
   });
-});
 
 export function streamOptionsToJSON(streamOptions: StreamOptions): string {
   return JSON.stringify(StreamOptions$outboundSchema.parse(streamOptions));
@@ -138,21 +142,19 @@ export function streamOptionsToJSON(streamOptions: StreamOptions): string {
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatPython$Outbound = {
-  type: "python";
+  type: 'python';
 };
 
 /** @internal */
-export const CompletionCreateParamsResponseFormatPython$outboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatPython$Outbound,
-    CompletionCreateParamsResponseFormatPython
-  > = z.object({
-    type: z.literal("python"),
-  });
+export const CompletionCreateParamsResponseFormatPython$outboundSchema: z.ZodType<
+  CompletionCreateParamsResponseFormatPython$Outbound,
+  CompletionCreateParamsResponseFormatPython
+> = z.object({
+  type: z.literal('python'),
+});
 
 export function completionCreateParamsResponseFormatPythonToJSON(
-  completionCreateParamsResponseFormatPython:
-    CompletionCreateParamsResponseFormatPython,
+  completionCreateParamsResponseFormatPython: CompletionCreateParamsResponseFormatPython,
 ): string {
   return JSON.stringify(
     CompletionCreateParamsResponseFormatPython$outboundSchema.parse(
@@ -163,21 +165,19 @@ export function completionCreateParamsResponseFormatPythonToJSON(
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatJSONObject$Outbound = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 /** @internal */
-export const CompletionCreateParamsResponseFormatJSONObject$outboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatJSONObject$Outbound,
-    CompletionCreateParamsResponseFormatJSONObject
-  > = z.object({
-    type: z.literal("json_object"),
-  });
+export const CompletionCreateParamsResponseFormatJSONObject$outboundSchema: z.ZodType<
+  CompletionCreateParamsResponseFormatJSONObject$Outbound,
+  CompletionCreateParamsResponseFormatJSONObject
+> = z.object({
+  type: z.literal('json_object'),
+});
 
 export function completionCreateParamsResponseFormatJSONObjectToJSON(
-  completionCreateParamsResponseFormatJSONObject:
-    CompletionCreateParamsResponseFormatJSONObject,
+  completionCreateParamsResponseFormatJSONObject: CompletionCreateParamsResponseFormatJSONObject,
 ): string {
   return JSON.stringify(
     CompletionCreateParamsResponseFormatJSONObject$outboundSchema.parse(
@@ -188,7 +188,7 @@ export function completionCreateParamsResponseFormatJSONObjectToJSON(
 
 /** @internal */
 export type CompletionCreateParamsResponseFormatText$Outbound = {
-  type: "text";
+  type: 'text';
 };
 
 /** @internal */
@@ -196,12 +196,11 @@ export const CompletionCreateParamsResponseFormatText$outboundSchema: z.ZodType<
   CompletionCreateParamsResponseFormatText$Outbound,
   CompletionCreateParamsResponseFormatText
 > = z.object({
-  type: z.literal("text"),
+  type: z.literal('text'),
 });
 
 export function completionCreateParamsResponseFormatTextToJSON(
-  completionCreateParamsResponseFormatText:
-    CompletionCreateParamsResponseFormatText,
+  completionCreateParamsResponseFormatText: CompletionCreateParamsResponseFormatText,
 ): string {
   return JSON.stringify(
     CompletionCreateParamsResponseFormatText$outboundSchema.parse(
@@ -219,21 +218,19 @@ export type CompletionCreateParamsResponseFormatUnion$Outbound =
   | CompletionCreateParamsResponseFormatPython$Outbound;
 
 /** @internal */
-export const CompletionCreateParamsResponseFormatUnion$outboundSchema:
-  z.ZodType<
-    CompletionCreateParamsResponseFormatUnion$Outbound,
-    CompletionCreateParamsResponseFormatUnion
-  > = z.union([
-    z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
-    z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$outboundSchema),
-    ResponseFormatJSONSchema$outboundSchema,
-    ResponseFormatTextGrammar$outboundSchema,
-    z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
-  ]);
+export const CompletionCreateParamsResponseFormatUnion$outboundSchema: z.ZodType<
+  CompletionCreateParamsResponseFormatUnion$Outbound,
+  CompletionCreateParamsResponseFormatUnion
+> = z.union([
+  z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
+  z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$outboundSchema),
+  ResponseFormatJSONSchema$outboundSchema,
+  ResponseFormatTextGrammar$outboundSchema,
+  z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
+]);
 
 export function completionCreateParamsResponseFormatUnionToJSON(
-  completionCreateParamsResponseFormatUnion:
-    CompletionCreateParamsResponseFormatUnion,
+  completionCreateParamsResponseFormatUnion: CompletionCreateParamsResponseFormatUnion,
 ): string {
   return JSON.stringify(
     CompletionCreateParamsResponseFormatUnion$outboundSchema.parse(
@@ -250,7 +247,12 @@ export type CompletionCreateParams$Outbound = {
   best_of?: number | null | undefined;
   echo?: boolean | null | undefined;
   frequency_penalty?: number | null | undefined;
-  logit_bias?: { [k: string]: number } | null | undefined;
+  logit_bias?:
+    | {
+        [k: string]: number;
+      }
+    | null
+    | undefined;
   logprobs?: number | null | undefined;
   max_tokens?: number | null | undefined;
   n?: number | null | undefined;
@@ -263,7 +265,12 @@ export type CompletionCreateParams$Outbound = {
   temperature?: number | null | undefined;
   top_p?: number | null | undefined;
   user?: string | undefined;
-  metadata?: { [k: string]: string } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | null
+    | undefined;
   response_format?:
     | CompletionCreateParamsResponseFormatText$Outbound
     | CompletionCreateParamsResponseFormatJSONObject$Outbound
@@ -278,61 +285,67 @@ export type CompletionCreateParams$Outbound = {
 export const CompletionCreateParams$outboundSchema: z.ZodType<
   CompletionCreateParams$Outbound,
   CompletionCreateParams
-> = z.object({
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  prompt: z.union([
-    z.string(),
-    z.array(z.string()),
-    z.array(z.number()),
-    z.array(z.array(z.number())),
-  ]),
-  bestOf: z.nullable(z.int()).optional(),
-  echo: z.nullable(z.boolean()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
-  logprobs: z.nullable(z.int()).optional(),
-  maxTokens: z.nullable(z.int()).optional(),
-  n: z.nullable(z.int()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  seed: z.nullable(z.int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.boolean().default(false),
-  streamOptions: z.nullable(z.lazy(() => StreamOptions$outboundSchema))
-    .optional(),
-  suffix: z.nullable(z.string()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  user: z.string().optional(),
-  metadata: z.nullable(z.record(z.string(), z.string())).optional(),
-  responseFormat: z.nullable(
-    z.union([
-      z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
-      z.lazy(() =>
-        CompletionCreateParamsResponseFormatJSONObject$outboundSchema
-      ),
-      ResponseFormatJSONSchema$outboundSchema,
-      ResponseFormatTextGrammar$outboundSchema,
-      z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
+> = z
+  .object({
+    model: z.string().optional(),
+    models: z.array(z.string()).optional(),
+    prompt: z.union([
+      z.string(),
+      z.array(z.string()),
+      z.array(z.number()),
+      z.array(z.array(z.number())),
     ]),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    bestOf: "best_of",
-    frequencyPenalty: "frequency_penalty",
-    logitBias: "logit_bias",
-    maxTokens: "max_tokens",
-    presencePenalty: "presence_penalty",
-    streamOptions: "stream_options",
-    topP: "top_p",
-    responseFormat: "response_format",
+    bestOf: z.nullable(z.int()).optional(),
+    echo: z.nullable(z.boolean()).optional(),
+    frequencyPenalty: z.nullable(z.number()).optional(),
+    logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
+    logprobs: z.nullable(z.int()).optional(),
+    maxTokens: z.nullable(z.int()).optional(),
+    n: z.nullable(z.int()).optional(),
+    presencePenalty: z.nullable(z.number()).optional(),
+    seed: z.nullable(z.int()).optional(),
+    stop: z
+      .nullable(
+        z.union([
+          z.string(),
+          z.array(z.string()),
+        ]),
+      )
+      .optional(),
+    stream: z.boolean().default(false),
+    streamOptions: z.nullable(z.lazy(() => StreamOptions$outboundSchema)).optional(),
+    suffix: z.nullable(z.string()).optional(),
+    temperature: z.nullable(z.number()).optional(),
+    topP: z.nullable(z.number()).optional(),
+    user: z.string().optional(),
+    metadata: z.nullable(z.record(z.string(), z.string())).optional(),
+    responseFormat: z
+      .nullable(
+        z.union([
+          z.lazy(() => CompletionCreateParamsResponseFormatText$outboundSchema),
+          z.lazy(() => CompletionCreateParamsResponseFormatJSONObject$outboundSchema),
+          ResponseFormatJSONSchema$outboundSchema,
+          ResponseFormatTextGrammar$outboundSchema,
+          z.lazy(() => CompletionCreateParamsResponseFormatPython$outboundSchema),
+        ]),
+      )
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      bestOf: 'best_of',
+      frequencyPenalty: 'frequency_penalty',
+      logitBias: 'logit_bias',
+      maxTokens: 'max_tokens',
+      presencePenalty: 'presence_penalty',
+      streamOptions: 'stream_options',
+      topP: 'top_p',
+      responseFormat: 'response_format',
+    });
   });
-});
 
 export function completionCreateParamsToJSON(
   completionCreateParams: CompletionCreateParams,
 ): string {
-  return JSON.stringify(
-    CompletionCreateParams$outboundSchema.parse(completionCreateParams),
-  );
+  return JSON.stringify(CompletionCreateParams$outboundSchema.parse(completionCreateParams));
 }

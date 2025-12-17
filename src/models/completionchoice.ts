@@ -3,22 +3,21 @@
  * @generated-id: 86092a0ff4c4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  CompletionLogprobs,
-  CompletionLogprobs$inboundSchema,
-} from "./completionlogprobs.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { CompletionLogprobs } from './completionlogprobs.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
+import { CompletionLogprobs$inboundSchema } from './completionlogprobs.js';
 
 export const CompletionFinishReason = {
-  Stop: "stop",
-  Length: "length",
-  ContentFilter: "content_filter",
+  Stop: 'stop',
+  Length: 'length',
+  ContentFilter: 'content_filter',
 } as const;
 export type CompletionFinishReason = OpenEnum<typeof CompletionFinishReason>;
 
@@ -32,28 +31,25 @@ export type CompletionChoice = {
 };
 
 /** @internal */
-export const CompletionFinishReason$inboundSchema: z.ZodType<
-  CompletionFinishReason,
-  unknown
-> = openEnums.inboundSchema(CompletionFinishReason);
+export const CompletionFinishReason$inboundSchema: z.ZodType<CompletionFinishReason, unknown> =
+  openEnums.inboundSchema(CompletionFinishReason);
 
 /** @internal */
-export const CompletionChoice$inboundSchema: z.ZodType<
-  CompletionChoice,
-  unknown
-> = z.object({
-  text: z.string(),
-  index: z.number(),
-  logprobs: z.nullable(CompletionLogprobs$inboundSchema),
-  finish_reason: z.nullable(CompletionFinishReason$inboundSchema),
-  native_finish_reason: z.string().optional(),
-  reasoning: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "finish_reason": "finishReason",
-    "native_finish_reason": "nativeFinishReason",
+export const CompletionChoice$inboundSchema: z.ZodType<CompletionChoice, unknown> = z
+  .object({
+    text: z.string(),
+    index: z.number(),
+    logprobs: z.nullable(CompletionLogprobs$inboundSchema),
+    finish_reason: z.nullable(CompletionFinishReason$inboundSchema),
+    native_finish_reason: z.string().optional(),
+    reasoning: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      finish_reason: 'finishReason',
+      native_finish_reason: 'nativeFinishReason',
+    });
   });
-});
 
 export function completionChoiceFromJSON(
   jsonString: string,

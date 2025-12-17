@@ -3,28 +3,30 @@
  * @generated-id: 2147a953e992
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type {
   ChatMessageContentItem,
-  ChatMessageContentItem$inboundSchema,
   ChatMessageContentItem$Outbound,
-  ChatMessageContentItem$outboundSchema,
-} from "./chatmessagecontentitem.js";
+} from './chatmessagecontentitem.js';
+import type { ChatMessageToolCall, ChatMessageToolCall$Outbound } from './chatmessagetoolcall.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ChatMessageToolCall,
+  ChatMessageContentItem$inboundSchema,
+  ChatMessageContentItem$outboundSchema,
+} from './chatmessagecontentitem.js';
+import {
   ChatMessageToolCall$inboundSchema,
-  ChatMessageToolCall$Outbound,
   ChatMessageToolCall$outboundSchema,
-} from "./chatmessagetoolcall.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+} from './chatmessagetoolcall.js';
 
 export type AssistantMessageContent = string | Array<ChatMessageContentItem>;
 
 export type AssistantMessage = {
-  role: "assistant";
+  role: 'assistant';
   content?: string | Array<ChatMessageContentItem> | null | undefined;
   name?: string | undefined;
   toolCalls?: Array<ChatMessageToolCall> | undefined;
@@ -33,27 +35,27 @@ export type AssistantMessage = {
 };
 
 /** @internal */
-export const AssistantMessageContent$inboundSchema: z.ZodType<
-  AssistantMessageContent,
-  unknown
-> = z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]);
+export const AssistantMessageContent$inboundSchema: z.ZodType<AssistantMessageContent, unknown> =
+  z.union([
+    z.string(),
+    z.array(ChatMessageContentItem$inboundSchema),
+  ]);
 /** @internal */
-export type AssistantMessageContent$Outbound =
-  | string
-  | Array<ChatMessageContentItem$Outbound>;
+export type AssistantMessageContent$Outbound = string | Array<ChatMessageContentItem$Outbound>;
 
 /** @internal */
 export const AssistantMessageContent$outboundSchema: z.ZodType<
   AssistantMessageContent$Outbound,
   AssistantMessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItem$outboundSchema),
+]);
 
 export function assistantMessageContentToJSON(
   assistantMessageContent: AssistantMessageContent,
 ): string {
-  return JSON.stringify(
-    AssistantMessageContent$outboundSchema.parse(assistantMessageContent),
-  );
+  return JSON.stringify(AssistantMessageContent$outboundSchema.parse(assistantMessageContent));
 }
 export function assistantMessageContentFromJSON(
   jsonString: string,
@@ -66,26 +68,30 @@ export function assistantMessageContentFromJSON(
 }
 
 /** @internal */
-export const AssistantMessage$inboundSchema: z.ZodType<
-  AssistantMessage,
-  unknown
-> = z.object({
-  role: z.literal("assistant"),
-  content: z.nullable(
-    z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]),
-  ).optional(),
-  name: z.string().optional(),
-  tool_calls: z.array(ChatMessageToolCall$inboundSchema).optional(),
-  refusal: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_calls": "toolCalls",
+export const AssistantMessage$inboundSchema: z.ZodType<AssistantMessage, unknown> = z
+  .object({
+    role: z.literal('assistant'),
+    content: z
+      .nullable(
+        z.union([
+          z.string(),
+          z.array(ChatMessageContentItem$inboundSchema),
+        ]),
+      )
+      .optional(),
+    name: z.string().optional(),
+    tool_calls: z.array(ChatMessageToolCall$inboundSchema).optional(),
+    refusal: z.nullable(z.string()).optional(),
+    reasoning: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      tool_calls: 'toolCalls',
+    });
   });
-});
 /** @internal */
 export type AssistantMessage$Outbound = {
-  role: "assistant";
+  role: 'assistant';
   content?: string | Array<ChatMessageContentItem$Outbound> | null | undefined;
   name?: string | undefined;
   tool_calls?: Array<ChatMessageToolCall$Outbound> | undefined;
@@ -97,27 +103,30 @@ export type AssistantMessage$Outbound = {
 export const AssistantMessage$outboundSchema: z.ZodType<
   AssistantMessage$Outbound,
   AssistantMessage
-> = z.object({
-  role: z.literal("assistant"),
-  content: z.nullable(
-    z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]),
-  ).optional(),
-  name: z.string().optional(),
-  toolCalls: z.array(ChatMessageToolCall$outboundSchema).optional(),
-  refusal: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    toolCalls: "tool_calls",
+> = z
+  .object({
+    role: z.literal('assistant'),
+    content: z
+      .nullable(
+        z.union([
+          z.string(),
+          z.array(ChatMessageContentItem$outboundSchema),
+        ]),
+      )
+      .optional(),
+    name: z.string().optional(),
+    toolCalls: z.array(ChatMessageToolCall$outboundSchema).optional(),
+    refusal: z.nullable(z.string()).optional(),
+    reasoning: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      toolCalls: 'tool_calls',
+    });
   });
-});
 
-export function assistantMessageToJSON(
-  assistantMessage: AssistantMessage,
-): string {
-  return JSON.stringify(
-    AssistantMessage$outboundSchema.parse(assistantMessage),
-  );
+export function assistantMessageToJSON(assistantMessage: AssistantMessage): string {
+  return JSON.stringify(AssistantMessage$outboundSchema.parse(assistantMessage));
 }
 export function assistantMessageFromJSON(
   jsonString: string,

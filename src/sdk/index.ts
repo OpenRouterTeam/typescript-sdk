@@ -3,4 +3,4 @@
  * @generated-id: a857902a703f
  */
 
-export * from "./sdk.js";
+export * from './sdk.js';

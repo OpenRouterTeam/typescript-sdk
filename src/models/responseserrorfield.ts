@@ -3,32 +3,33 @@
  * @generated-id: 830ea3d3b590
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const CodeEnum = {
-  ServerError: "server_error",
-  RateLimitExceeded: "rate_limit_exceeded",
-  InvalidPrompt: "invalid_prompt",
-  VectorStoreTimeout: "vector_store_timeout",
-  InvalidImage: "invalid_image",
-  InvalidImageFormat: "invalid_image_format",
-  InvalidBase64Image: "invalid_base64_image",
-  InvalidImageUrl: "invalid_image_url",
-  ImageTooLarge: "image_too_large",
-  ImageTooSmall: "image_too_small",
-  ImageParseError: "image_parse_error",
-  ImageContentPolicyViolation: "image_content_policy_violation",
-  InvalidImageMode: "invalid_image_mode",
-  ImageFileTooLarge: "image_file_too_large",
-  UnsupportedImageMediaType: "unsupported_image_media_type",
-  EmptyImageFile: "empty_image_file",
-  FailedToDownloadImage: "failed_to_download_image",
-  ImageFileNotFound: "image_file_not_found",
+  ServerError: 'server_error',
+  RateLimitExceeded: 'rate_limit_exceeded',
+  InvalidPrompt: 'invalid_prompt',
+  VectorStoreTimeout: 'vector_store_timeout',
+  InvalidImage: 'invalid_image',
+  InvalidImageFormat: 'invalid_image_format',
+  InvalidBase64Image: 'invalid_base64_image',
+  InvalidImageUrl: 'invalid_image_url',
+  ImageTooLarge: 'image_too_large',
+  ImageTooSmall: 'image_too_small',
+  ImageParseError: 'image_parse_error',
+  ImageContentPolicyViolation: 'image_content_policy_violation',
+  InvalidImageMode: 'invalid_image_mode',
+  ImageFileTooLarge: 'image_file_too_large',
+  UnsupportedImageMediaType: 'unsupported_image_media_type',
+  EmptyImageFile: 'empty_image_file',
+  FailedToDownloadImage: 'failed_to_download_image',
+  ImageFileNotFound: 'image_file_not_found',
 } as const;
 export type CodeEnum = OpenEnum<typeof CodeEnum>;
 
@@ -41,14 +42,11 @@ export type ResponsesErrorField = {
 };
 
 /** @internal */
-export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> = openEnums
-  .inboundSchema(CodeEnum);
+export const CodeEnum$inboundSchema: z.ZodType<CodeEnum, unknown> =
+  openEnums.inboundSchema(CodeEnum);
 
 /** @internal */
-export const ResponsesErrorField$inboundSchema: z.ZodType<
-  ResponsesErrorField,
-  unknown
-> = z.object({
+export const ResponsesErrorField$inboundSchema: z.ZodType<ResponsesErrorField, unknown> = z.object({
   code: CodeEnum$inboundSchema,
   message: z.string(),
 });

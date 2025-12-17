@@ -3,18 +3,24 @@
  * @generated-id: 314da01dca47
  */
 
-import { Result } from "./fp.js";
+import type { Result } from './fp.js';
 
-export type Paginator<V> = () => Promise<V & { next: Paginator<V> }> | null;
+export type Paginator<V> = () => Promise<
+  V & {
+    next: Paginator<V>;
+  }
+> | null;
 
 export type PageIterator<V, PageState = unknown> = V & {
   next: Paginator<V>;
   [Symbol.asyncIterator]: () => AsyncIterableIterator<V>;
-  "~next"?: PageState | undefined;
+  '~next'?: PageState | undefined;
 };
 
 export function createPageIterator<V>(
-  page: V & { next: Paginator<V> },
+  page: V & {
+    next: Paginator<V>;
+  },
   halt: (v: V) => boolean,
 ): {
   [Symbol.asyncIterator]: () => AsyncIterableIterator<V>;
@@ -42,9 +48,7 @@ export function createPageIterator<V>(
  * terminates. It is useful in paginated SDK functions that have early return
  * paths when things go wrong.
  */
-export function haltIterator<V extends object>(
-  v: V,
-): PageIterator<V, undefined> {
+export function haltIterator<V extends object>(v: V): PageIterator<V, undefined> {
   return {
     ...v,
     next: () => null,
@@ -70,7 +74,7 @@ export async function unwrapResultIterator<V, PageState>(
   return {
     ...resultIter.value,
     next: unwrapPaginator(resultIter.next),
-    "~next": resultIter["~next"],
+    '~next': resultIter['~next'],
     [Symbol.asyncIterator]: async function* paginator() {
       for await (const page of resultIter) {
         if (!page.ok) {
@@ -82,9 +86,7 @@ export async function unwrapResultIterator<V, PageState>(
   };
 }
 
-function unwrapPaginator<V>(
-  paginator: Paginator<Result<V, unknown>>,
-): Paginator<V> {
+function unwrapPaginator<V>(paginator: Paginator<Result<V, unknown>>): Paginator<V> {
   return () => {
     const nextResult = paginator();
     if (nextResult == null) {
@@ -103,4 +105,4 @@ function unwrapPaginator<V>(
   };
 }
 
-export const URL_OVERRIDE = Symbol("URL_OVERRIDE");
+export const URL_OVERRIDE = Symbol('URL_OVERRIDE');

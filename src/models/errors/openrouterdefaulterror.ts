@@ -3,7 +3,7 @@
  * @generated-id: 8a3f2faf1848
  */
 
-import { OpenRouterError } from "./openroutererror.js";
+import { OpenRouterError } from './openroutererror.js';
 
 /** The fallback error class if no more specific error class is matched */
 export class OpenRouterDefaultError extends OpenRouterError {
@@ -16,17 +16,15 @@ export class OpenRouterDefaultError extends OpenRouterError {
     },
   ) {
     if (message) {
-      message += `: `;
+      message += ': ';
     }
     message += `Status ${httpMeta.response.status}`;
-    const contentType = httpMeta.response.headers.get("content-type") || `""`;
-    if (contentType !== "application/json") {
-      message += ` Content-Type ${
-        contentType.includes(" ") ? `"${contentType}"` : contentType
-      }`;
+    const contentType = httpMeta.response.headers.get('content-type') || `""`;
+    if (contentType !== 'application/json') {
+      message += ` Content-Type ${contentType.includes(' ') ? `"${contentType}"` : contentType}`;
     }
     const body = httpMeta.body || `""`;
-    message += body.length > 100 ? "\n" : ". ";
+    message += body.length > 100 ? '\n' : '. ';
     let bodyDisplay = body;
     if (body.length > 10000) {
       const truncated = body.substring(0, 10000);
@@ -36,6 +34,6 @@ export class OpenRouterDefaultError extends OpenRouterError {
     message += `Body: ${bodyDisplay}`;
     message = message.trim();
     super(message, httpMeta);
-    this.name = "OpenRouterDefaultError";
+    this.name = 'OpenRouterDefaultError';
   }
 }

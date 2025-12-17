@@ -3,10 +3,11 @@
  * @generated-id: 557063315301
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Error data for UnprocessableEntityResponse
@@ -14,7 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type UnprocessableEntityResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: any | null;
+      }
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -32,8 +38,7 @@ export function unprocessableEntityResponseErrorDataFromJSON(
 ): SafeParseResult<UnprocessableEntityResponseErrorData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      UnprocessableEntityResponseErrorData$inboundSchema.parse(JSON.parse(x)),
+    (x) => UnprocessableEntityResponseErrorData$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'UnprocessableEntityResponseErrorData' from JSON`,
   );
 }

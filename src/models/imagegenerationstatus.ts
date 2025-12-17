@@ -3,25 +3,22 @@
  * @generated-id: 2a72a5923e5a
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const ImageGenerationStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Generating: "generating",
-  Failed: "failed",
+  InProgress: 'in_progress',
+  Completed: 'completed',
+  Generating: 'generating',
+  Failed: 'failed',
 } as const;
 export type ImageGenerationStatus = OpenEnum<typeof ImageGenerationStatus>;
 
 /** @internal */
-export const ImageGenerationStatus$inboundSchema: z.ZodType<
-  ImageGenerationStatus,
-  unknown
-> = openEnums.inboundSchema(ImageGenerationStatus);
+export const ImageGenerationStatus$inboundSchema: z.ZodType<ImageGenerationStatus, unknown> =
+  openEnums.inboundSchema(ImageGenerationStatus);
 /** @internal */
-export const ImageGenerationStatus$outboundSchema: z.ZodType<
-  string,
-  ImageGenerationStatus
-> = openEnums.outboundSchema(ImageGenerationStatus);
+export const ImageGenerationStatus$outboundSchema: z.ZodType<string, ImageGenerationStatus> =
+  openEnums.outboundSchema(ImageGenerationStatus);

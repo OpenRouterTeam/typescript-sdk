@@ -3,21 +3,20 @@
  * @generated-id: e83b9ca2ee64
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ReasoningSummaryText,
-  ReasoningSummaryText$inboundSchema,
-} from "./reasoningsummarytext.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ReasoningSummaryText } from './reasoningsummarytext.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { ReasoningSummaryText$inboundSchema } from './reasoningsummarytext.js';
 
 /**
  * Event emitted when a reasoning summary part is added
  */
 export type OpenResponsesReasoningSummaryPartAddedEvent = {
-  type: "response.reasoning_summary_part.added";
+  type: 'response.reasoning_summary_part.added';
   outputIndex: number;
   itemId: string;
   summaryIndex: number;
@@ -26,35 +25,33 @@ export type OpenResponsesReasoningSummaryPartAddedEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema:
-  z.ZodType<OpenResponsesReasoningSummaryPartAddedEvent, unknown> = z.object({
-    type: z.literal("response.reasoning_summary_part.added"),
+export const OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema: z.ZodType<
+  OpenResponsesReasoningSummaryPartAddedEvent,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.reasoning_summary_part.added'),
     output_index: z.number(),
     item_id: z.string(),
     summary_index: z.number(),
     part: ReasoningSummaryText$inboundSchema,
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "item_id": "itemId",
-      "summary_index": "summaryIndex",
-      "sequence_number": "sequenceNumber",
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      summary_index: 'summaryIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesReasoningSummaryPartAddedEventFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesReasoningSummaryPartAddedEvent,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesReasoningSummaryPartAddedEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesReasoningSummaryPartAddedEvent' from JSON`,
   );
 }

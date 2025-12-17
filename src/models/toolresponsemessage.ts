@@ -3,32 +3,34 @@
  * @generated-id: 1122bbfb530b
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import {
+import type {
   ChatMessageContentItem,
   ChatMessageContentItem$Outbound,
-  ChatMessageContentItem$outboundSchema,
-} from "./chatmessagecontentitem.js";
+} from './chatmessagecontentitem.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { ChatMessageContentItem$outboundSchema } from './chatmessagecontentitem.js';
 
 export type ToolResponseMessageContent = string | Array<ChatMessageContentItem>;
 
 export type ToolResponseMessage = {
-  role: "tool";
+  role: 'tool';
   content: string | Array<ChatMessageContentItem>;
   toolCallId: string;
 };
 
 /** @internal */
-export type ToolResponseMessageContent$Outbound =
-  | string
-  | Array<ChatMessageContentItem$Outbound>;
+export type ToolResponseMessageContent$Outbound = string | Array<ChatMessageContentItem$Outbound>;
 
 /** @internal */
 export const ToolResponseMessageContent$outboundSchema: z.ZodType<
   ToolResponseMessageContent$Outbound,
   ToolResponseMessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItem$outboundSchema),
+]);
 
 export function toolResponseMessageContentToJSON(
   toolResponseMessageContent: ToolResponseMessageContent,
@@ -40,7 +42,7 @@ export function toolResponseMessageContentToJSON(
 
 /** @internal */
 export type ToolResponseMessage$Outbound = {
-  role: "tool";
+  role: 'tool';
   content: string | Array<ChatMessageContentItem$Outbound>;
   tool_call_id: string;
 };
@@ -49,23 +51,21 @@ export type ToolResponseMessage$Outbound = {
 export const ToolResponseMessage$outboundSchema: z.ZodType<
   ToolResponseMessage$Outbound,
   ToolResponseMessage
-> = z.object({
-  role: z.literal("tool"),
-  content: z.union([
-    z.string(),
-    z.array(ChatMessageContentItem$outboundSchema),
-  ]),
-  toolCallId: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    toolCallId: "tool_call_id",
+> = z
+  .object({
+    role: z.literal('tool'),
+    content: z.union([
+      z.string(),
+      z.array(ChatMessageContentItem$outboundSchema),
+    ]),
+    toolCallId: z.string(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      toolCallId: 'tool_call_id',
+    });
   });
-});
 
-export function toolResponseMessageToJSON(
-  toolResponseMessage: ToolResponseMessage,
-): string {
-  return JSON.stringify(
-    ToolResponseMessage$outboundSchema.parse(toolResponseMessage),
-  );
+export function toolResponseMessageToJSON(toolResponseMessage: ToolResponseMessage): string {
+  return JSON.stringify(ToolResponseMessage$outboundSchema.parse(toolResponseMessage));
 }

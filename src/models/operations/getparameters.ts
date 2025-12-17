@@ -3,14 +3,15 @@
  * @generated-id: 9b364a4cca61
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
+import * as models from '../index.js';
 
 export type GetParametersSecurity = {
   bearer: string;
@@ -23,30 +24,30 @@ export type GetParametersRequest = {
 };
 
 export const SupportedParameter = {
-  Temperature: "temperature",
-  TopP: "top_p",
-  TopK: "top_k",
-  MinP: "min_p",
-  TopA: "top_a",
-  FrequencyPenalty: "frequency_penalty",
-  PresencePenalty: "presence_penalty",
-  RepetitionPenalty: "repetition_penalty",
-  MaxTokens: "max_tokens",
-  LogitBias: "logit_bias",
-  Logprobs: "logprobs",
-  TopLogprobs: "top_logprobs",
-  Seed: "seed",
-  ResponseFormat: "response_format",
-  StructuredOutputs: "structured_outputs",
-  Stop: "stop",
-  Tools: "tools",
-  ToolChoice: "tool_choice",
-  ParallelToolCalls: "parallel_tool_calls",
-  IncludeReasoning: "include_reasoning",
-  Reasoning: "reasoning",
-  ReasoningEffort: "reasoning_effort",
-  WebSearchOptions: "web_search_options",
-  Verbosity: "verbosity",
+  Temperature: 'temperature',
+  TopP: 'top_p',
+  TopK: 'top_k',
+  MinP: 'min_p',
+  TopA: 'top_a',
+  FrequencyPenalty: 'frequency_penalty',
+  PresencePenalty: 'presence_penalty',
+  RepetitionPenalty: 'repetition_penalty',
+  MaxTokens: 'max_tokens',
+  LogitBias: 'logit_bias',
+  Logprobs: 'logprobs',
+  TopLogprobs: 'top_logprobs',
+  Seed: 'seed',
+  ResponseFormat: 'response_format',
+  StructuredOutputs: 'structured_outputs',
+  Stop: 'stop',
+  Tools: 'tools',
+  ToolChoice: 'tool_choice',
+  ParallelToolCalls: 'parallel_tool_calls',
+  IncludeReasoning: 'include_reasoning',
+  Reasoning: 'reasoning',
+  ReasoningEffort: 'reasoning_effort',
+  WebSearchOptions: 'web_search_options',
+  Verbosity: 'verbosity',
 } as const;
 export type SupportedParameter = OpenEnum<typeof SupportedParameter>;
 
@@ -87,12 +88,8 @@ export const GetParametersSecurity$outboundSchema: z.ZodType<
   bearer: z.string(),
 });
 
-export function getParametersSecurityToJSON(
-  getParametersSecurity: GetParametersSecurity,
-): string {
-  return JSON.stringify(
-    GetParametersSecurity$outboundSchema.parse(getParametersSecurity),
-  );
+export function getParametersSecurityToJSON(getParametersSecurity: GetParametersSecurity): string {
+  return JSON.stringify(GetParametersSecurity$outboundSchema.parse(getParametersSecurity));
 }
 
 /** @internal */
@@ -112,32 +109,25 @@ export const GetParametersRequest$outboundSchema: z.ZodType<
   provider: models.ProviderName$outboundSchema.optional(),
 });
 
-export function getParametersRequestToJSON(
-  getParametersRequest: GetParametersRequest,
-): string {
-  return JSON.stringify(
-    GetParametersRequest$outboundSchema.parse(getParametersRequest),
-  );
+export function getParametersRequestToJSON(getParametersRequest: GetParametersRequest): string {
+  return JSON.stringify(GetParametersRequest$outboundSchema.parse(getParametersRequest));
 }
 
 /** @internal */
-export const SupportedParameter$inboundSchema: z.ZodType<
-  SupportedParameter,
-  unknown
-> = openEnums.inboundSchema(SupportedParameter);
+export const SupportedParameter$inboundSchema: z.ZodType<SupportedParameter, unknown> =
+  openEnums.inboundSchema(SupportedParameter);
 
 /** @internal */
-export const GetParametersData$inboundSchema: z.ZodType<
-  GetParametersData,
-  unknown
-> = z.object({
-  model: z.string(),
-  supported_parameters: z.array(SupportedParameter$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "supported_parameters": "supportedParameters",
+export const GetParametersData$inboundSchema: z.ZodType<GetParametersData, unknown> = z
+  .object({
+    model: z.string(),
+    supported_parameters: z.array(SupportedParameter$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      supported_parameters: 'supportedParameters',
+    });
   });
-});
 
 export function getParametersDataFromJSON(
   jsonString: string,
@@ -150,12 +140,10 @@ export function getParametersDataFromJSON(
 }
 
 /** @internal */
-export const GetParametersResponse$inboundSchema: z.ZodType<
-  GetParametersResponse,
-  unknown
-> = z.object({
-  data: z.lazy(() => GetParametersData$inboundSchema),
-});
+export const GetParametersResponse$inboundSchema: z.ZodType<GetParametersResponse, unknown> =
+  z.object({
+    data: z.lazy(() => GetParametersData$inboundSchema),
+  });
 
 export function getParametersResponseFromJSON(
   jsonString: string,

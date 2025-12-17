@@ -3,36 +3,37 @@
  * @generated-id: 970f140dadec
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * Instruction format type
  */
 export const InstructType = {
-  None: "none",
-  Airoboros: "airoboros",
-  Alpaca: "alpaca",
-  AlpacaModif: "alpaca-modif",
-  Chatml: "chatml",
-  Claude: "claude",
-  CodeLlama: "code-llama",
-  Gemma: "gemma",
-  Llama2: "llama2",
-  Llama3: "llama3",
-  Mistral: "mistral",
-  Nemotron: "nemotron",
-  Neural: "neural",
-  Openchat: "openchat",
-  Phi3: "phi3",
-  Rwkv: "rwkv",
-  Vicuna: "vicuna",
-  Zephyr: "zephyr",
-  DeepseekR1: "deepseek-r1",
-  DeepseekV31: "deepseek-v3.1",
-  Qwq: "qwq",
-  Qwen3: "qwen3",
+  None: 'none',
+  Airoboros: 'airoboros',
+  Alpaca: 'alpaca',
+  AlpacaModif: 'alpaca-modif',
+  Chatml: 'chatml',
+  Claude: 'claude',
+  CodeLlama: 'code-llama',
+  Gemma: 'gemma',
+  Llama2: 'llama2',
+  Llama3: 'llama3',
+  Mistral: 'mistral',
+  Nemotron: 'nemotron',
+  Neural: 'neural',
+  Openchat: 'openchat',
+  Phi3: 'phi3',
+  Rwkv: 'rwkv',
+  Vicuna: 'vicuna',
+  Zephyr: 'zephyr',
+  DeepseekR1: 'deepseek-r1',
+  DeepseekV31: 'deepseek-v3.1',
+  Qwq: 'qwq',
+  Qwen3: 'qwen3',
 } as const;
 /**
  * Instruction format type

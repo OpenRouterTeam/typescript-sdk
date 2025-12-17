@@ -3,7 +3,7 @@
  * @generated-id: b24a69d15639
  */
 
-import { isConnectionError, isTimeoutError } from "./http.js";
+import { isConnectionError, isTimeoutError } from './http.js';
 
 export type BackoffStrategy = {
   initialInterval: number;
@@ -20,9 +20,11 @@ const defaultBackoff: BackoffStrategy = {
 };
 
 export type RetryConfig =
-  | { strategy: "none" }
   | {
-      strategy: "backoff";
+      strategy: 'none';
+    }
+  | {
+      strategy: 'backoff';
       backoff?: BackoffStrategy;
       retryConnectionErrors?: boolean;
     };
@@ -35,17 +37,22 @@ export class PermanentError extends Error {
   /** The underlying cause of the error. */
   override readonly cause: unknown;
 
-  constructor(message: string, options?: { cause?: unknown }) {
+  constructor(
+    message: string,
+    options?: {
+      cause?: unknown;
+    },
+  ) {
     let msg = message;
     if (options?.cause) {
       msg += `: ${options.cause}`;
     }
 
     super(msg, options);
-    this.name = "PermanentError";
+    this.name = 'PermanentError';
     // In older runtimes, the cause field would not have been assigned through
     // the super() call.
-    if (typeof this.cause === "undefined") {
+    if (typeof this.cause === 'undefined') {
       this.cause = options?.cause;
     }
 
@@ -64,7 +71,7 @@ export class TemporaryError extends Error {
   constructor(message: string, response: Response) {
     super(message);
     this.response = response;
-    this.name = "TemporaryError";
+    this.name = 'TemporaryError';
 
     Object.setPrototypeOf(this, TemporaryError.prototype);
   }
@@ -78,7 +85,7 @@ export async function retry(
   },
 ): Promise<Response> {
   switch (options.config.strategy) {
-    case "backoff":
+    case 'backoff':
       return retryBackoff(
         wrapFetcher(fetchFn, {
           statusCodes: options.statusCodes,
@@ -102,10 +109,7 @@ function wrapFetcher(
     try {
       const res = await fn();
       if (isRetryableResponse(res, options.statusCodes)) {
-        throw new TemporaryError(
-          "Response failed with retryable status code",
-          res,
-        );
+        throw new TemporaryError('Response failed with retryable status code', res);
       }
 
       return res;
@@ -114,19 +118,18 @@ function wrapFetcher(
         throw err;
       }
 
-      if (
-        options.retryConnectionErrors &&
-        (isTimeoutError(err) || isConnectionError(err))
-      ) {
+      if (options.retryConnectionErrors && (isTimeoutError(err) || isConnectionError(err))) {
         throw err;
       }
 
-      throw new PermanentError("Permanent error", { cause: err });
+      throw new PermanentError('Permanent error', {
+        cause: err,
+      });
     }
   };
 }
 
-const codeRangeRE = new RegExp("^[0-9]xx$", "i");
+const codeRangeRE = /^[0-9]xx$/i;
 
 function isRetryableResponse(res: Response, statusCodes: string[]): boolean {
   const actual = `${res.status}`;
@@ -138,7 +141,7 @@ function isRetryableResponse(res: Response, statusCodes: string[]): boolean {
 
     const expectFamily = code.charAt(0);
     if (!expectFamily) {
-      throw new Error("Invalid status code range");
+      throw new Error('Invalid status code range');
     }
 
     const actualFamily = actual.charAt(0);
@@ -182,8 +185,7 @@ async function retryBackoff(
       }
 
       if (retryInterval <= 0) {
-        retryInterval =
-          initialInterval * Math.pow(x, exponent) + Math.random() * 1000;
+        retryInterval = initialInterval * x ** exponent + Math.random() * 1000;
       }
 
       const d = Math.min(retryInterval, maxInterval);
@@ -195,7 +197,7 @@ async function retryBackoff(
 }
 
 function retryIntervalFromResponse(res: Response): number {
-  const retryVal = res.headers.get("retry-after") || "";
+  const retryVal = res.headers.get('retry-after') || '';
   if (!retryVal) {
     return 0;
   }

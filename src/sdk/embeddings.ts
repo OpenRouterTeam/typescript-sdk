@@ -3,12 +3,14 @@
  * @generated-id: 70cbb18bedaf
  */
 
-import { embeddingsGenerate } from "../funcs/embeddingsGenerate.js";
-import { embeddingsListModels } from "../funcs/embeddingsListModels.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+import type * as operations from '../models/operations/index.js';
+
+import { embeddingsGenerate } from '../funcs/embeddingsGenerate.js';
+import { embeddingsListModels } from '../funcs/embeddingsListModels.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Embeddings extends ClientSDK {
   /**
@@ -21,11 +23,7 @@ export class Embeddings extends ClientSDK {
     request: operations.CreateEmbeddingsRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateEmbeddingsResponse> {
-    return unwrapAsync(embeddingsGenerate(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(embeddingsGenerate(this, request, options));
   }
 
   /**
@@ -34,12 +32,7 @@ export class Embeddings extends ClientSDK {
    * @remarks
    * Returns a list of all available embeddings models and their properties
    */
-  async listModels(
-    options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(embeddingsListModels(
-      this,
-      options,
-    ));
+  async listModels(options?: RequestOptions): Promise<models.ModelsListResponse> {
+    return unwrapAsync(embeddingsListModels(this, options));
   }
 }

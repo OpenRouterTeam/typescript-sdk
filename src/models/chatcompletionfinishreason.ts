@@ -3,20 +3,19 @@
  * @generated-id: 6b06a4d1562d
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const ChatCompletionFinishReason = {
-  ToolCalls: "tool_calls",
-  Stop: "stop",
-  Length: "length",
-  ContentFilter: "content_filter",
-  Error: "error",
+  ToolCalls: 'tool_calls',
+  Stop: 'stop',
+  Length: 'length',
+  ContentFilter: 'content_filter',
+  Error: 'error',
 } as const;
-export type ChatCompletionFinishReason = OpenEnum<
-  typeof ChatCompletionFinishReason
->;
+export type ChatCompletionFinishReason = OpenEnum<typeof ChatCompletionFinishReason>;
 
 /** @internal */
 export const ChatCompletionFinishReason$inboundSchema: z.ZodType<

@@ -3,28 +3,30 @@
  * @generated-id: 565ce9801e34
  */
 
-import { OpenRouterCore } from "../core.js";
-import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
-import { compactMap } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
-import { resolveSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
-import {
+import type { OpenRouterCore } from '../core.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type {
   ConnectionError,
   InvalidRequestError,
   RequestAbortedError,
   RequestTimeoutError,
   UnexpectedClientError,
-} from "../models/errors/httpclienterrors.js";
-import * as errors from "../models/errors/index.js";
-import { OpenRouterError } from "../models/errors/openroutererror.js";
-import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
-import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import * as operations from "../models/operations/index.js";
-import { APICall, APIPromise } from "../types/async.js";
-import { Result } from "../types/fp.js";
+} from '../models/errors/httpclienterrors.js';
+import type { OpenRouterError } from '../models/errors/openroutererror.js';
+import type { ResponseValidationError } from '../models/errors/responsevalidationerror.js';
+import type { SDKValidationError } from '../models/errors/sdkvalidationerror.js';
+import type { APICall } from '../types/async.js';
+import type { Result } from '../types/fp.js';
+
+import { encodeFormQuery, encodeSimple } from '../lib/encodings.js';
+import * as M from '../lib/matchers.js';
+import { compactMap } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { resolveSecurity } from '../lib/security.js';
+import { pathToFunc } from '../lib/url.js';
+import * as errors from '../models/errors/index.js';
+import * as operations from '../models/operations/index.js';
+import { APIPromise } from '../types/async.js';
 
 /**
  * Get a model's supported parameters and data about which are most popular
@@ -50,12 +52,7 @@ export function parametersGetParameters(
     | SDKValidationError
   >
 > {
-  return new APIPromise($do(
-    client,
-    security,
-    request,
-    options,
-  ));
+  return new APIPromise($do(client, security, request, options));
 }
 
 async function $do(
@@ -85,89 +82,125 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) => operations.GetParametersRequest$outboundSchema.parse(value),
-    "Input validation failed",
+    'Input validation failed',
   );
   if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
+    return [
+      parsed,
+      {
+        status: 'invalid',
+      },
+    ];
   }
   const payload = parsed.value;
   const body = null;
 
   const pathParams = {
-    author: encodeSimple("author", payload.author, {
+    author: encodeSimple('author', payload.author, {
       explode: false,
-      charEncoding: "percent",
+      charEncoding: 'percent',
     }),
-    slug: encodeSimple("slug", payload.slug, {
+    slug: encodeSimple('slug', payload.slug, {
       explode: false,
-      charEncoding: "percent",
+      charEncoding: 'percent',
     }),
   };
 
-  const path = pathToFunc("/parameters/{author}/{slug}")(pathParams);
+  const path = pathToFunc('/parameters/{author}/{slug}')(pathParams);
 
   const query = encodeFormQuery({
-    "provider": payload.provider,
+    provider: payload.provider,
   });
 
-  const headers = new Headers(compactMap({
-    Accept: "application/json",
-  }));
-
-  const requestSecurity = resolveSecurity(
-    [
-      {
-        fieldName: "Authorization",
-        type: "http:bearer",
-        value: security?.bearer,
-      },
-    ],
+  const headers = new Headers(
+    compactMap({
+      Accept: 'application/json',
+    }),
   );
+
+  const requestSecurity = resolveSecurity([
+    {
+      fieldName: 'Authorization',
+      type: 'http:bearer',
+      value: security?.bearer,
+    },
+  ]);
 
   const context = {
     options: client._options,
-    baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "getParameters",
+    baseURL: options?.serverURL ?? client._baseURL ?? '',
+    operationID: 'getParameters',
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
     securitySource: security,
-    retryConfig: options?.retries
-      || client._options.retryConfig
-      || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryConfig: options?.retries ||
+      client._options.retryConfig || {
+        strategy: 'none',
+      },
+    retryCodes: options?.retryCodes || [
+      '429',
+      '500',
+      '502',
+      '503',
+      '504',
+    ],
   };
 
-  const requestRes = client._createRequest(context, {
-    security: requestSecurity,
-    method: "GET",
-    baseURL: options?.serverURL,
-    path: path,
-    headers: headers,
-    query: query,
-    body: body,
-    userAgent: client._options.userAgent,
-    timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
-  }, options);
+  const requestRes = client._createRequest(
+    context,
+    {
+      security: requestSecurity,
+      method: 'GET',
+      baseURL: options?.serverURL,
+      path: path,
+      headers: headers,
+      query: query,
+      body: body,
+      userAgent: client._options.userAgent,
+      timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
+    },
+    options,
+  );
   if (!requestRes.ok) {
-    return [requestRes, { status: "invalid" }];
+    return [
+      requestRes,
+      {
+        status: 'invalid',
+      },
+    ];
   }
   const req = requestRes.value;
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["401", "404", "4XX", "500", "5XX"],
+    errorCodes: [
+      '401',
+      '404',
+      '4XX',
+      '500',
+      '5XX',
+    ],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
-    return [doResult, { status: "request-error", request: req }];
+    return [
+      doResult,
+      {
+        status: 'request-error',
+        request: req,
+      },
+    ];
   }
   const response = doResult.value;
 
   const responseFields = {
-    HttpMeta: { Response: response, Request: req },
+    HttpMeta: {
+      Response: response,
+      Request: req,
+    },
   };
 
   const [result] = await M.match<
@@ -188,12 +221,28 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
-    M.fail("4XX"),
-    M.fail("5XX"),
-  )(response, req, { extraFields: responseFields });
+    M.fail('4XX'),
+    M.fail('5XX'),
+  )(response, req, {
+    extraFields: responseFields,
+  });
   if (!result.ok) {
-    return [result, { status: "complete", request: req, response }];
+    return [
+      result,
+      {
+        status: 'complete',
+        request: req,
+        response,
+      },
+    ];
   }
 
-  return [result, { status: "complete", request: req, response }];
+  return [
+    result,
+    {
+      status: 'complete',
+      request: req,
+      response,
+    },
+  ];
 }

@@ -3,28 +3,17 @@
  * @generated-id: 5828fa2314e3
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  FileCitation,
-  FileCitation$inboundSchema,
-  FileCitation$Outbound,
-  FileCitation$outboundSchema,
-} from "./filecitation.js";
-import {
-  FilePath,
-  FilePath$inboundSchema,
-  FilePath$Outbound,
-  FilePath$outboundSchema,
-} from "./filepath.js";
-import {
-  URLCitation,
-  URLCitation$inboundSchema,
-  URLCitation$Outbound,
-  URLCitation$outboundSchema,
-} from "./urlcitation.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { FileCitation, FileCitation$Outbound } from './filecitation.js';
+import type { FilePath, FilePath$Outbound } from './filepath.js';
+import type { URLCitation, URLCitation$Outbound } from './urlcitation.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { FileCitation$inboundSchema, FileCitation$outboundSchema } from './filecitation.js';
+import { FilePath$inboundSchema, FilePath$outboundSchema } from './filepath.js';
+import { URLCitation$inboundSchema, URLCitation$outboundSchema } from './urlcitation.js';
 
 export type OpenAIResponsesAnnotation = FileCitation | URLCitation | FilePath;
 
@@ -56,9 +45,7 @@ export const OpenAIResponsesAnnotation$outboundSchema: z.ZodType<
 export function openAIResponsesAnnotationToJSON(
   openAIResponsesAnnotation: OpenAIResponsesAnnotation,
 ): string {
-  return JSON.stringify(
-    OpenAIResponsesAnnotation$outboundSchema.parse(openAIResponsesAnnotation),
-  );
+  return JSON.stringify(OpenAIResponsesAnnotation$outboundSchema.parse(openAIResponsesAnnotation));
 }
 export function openAIResponsesAnnotationFromJSON(
   jsonString: string,

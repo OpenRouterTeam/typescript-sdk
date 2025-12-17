@@ -3,44 +3,43 @@
  * @generated-id: 296442f2d24a
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
-import {
+import type { ClosedEnum, OpenEnum } from '../types/enums.js';
+import type {
   ReasoningSummaryText,
   ReasoningSummaryText$Outbound,
-  ReasoningSummaryText$outboundSchema,
-} from "./reasoningsummarytext.js";
-import {
+} from './reasoningsummarytext.js';
+import type {
   ReasoningTextContent,
   ReasoningTextContent$Outbound,
-  ReasoningTextContent$outboundSchema,
-} from "./reasoningtextcontent.js";
+} from './reasoningtextcontent.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import * as openEnums from '../types/enums.js';
+import { ReasoningSummaryText$outboundSchema } from './reasoningsummarytext.js';
+import { ReasoningTextContent$outboundSchema } from './reasoningtextcontent.js';
 
 export const OpenResponsesReasoningType = {
-  Reasoning: "reasoning",
+  Reasoning: 'reasoning',
 } as const;
-export type OpenResponsesReasoningType = ClosedEnum<
-  typeof OpenResponsesReasoningType
->;
+export type OpenResponsesReasoningType = ClosedEnum<typeof OpenResponsesReasoningType>;
 
 export const OpenResponsesReasoningStatusInProgress = {
-  InProgress: "in_progress",
+  InProgress: 'in_progress',
 } as const;
 export type OpenResponsesReasoningStatusInProgress = ClosedEnum<
   typeof OpenResponsesReasoningStatusInProgress
 >;
 
 export const OpenResponsesReasoningStatusIncomplete = {
-  Incomplete: "incomplete",
+  Incomplete: 'incomplete',
 } as const;
 export type OpenResponsesReasoningStatusIncomplete = ClosedEnum<
   typeof OpenResponsesReasoningStatusIncomplete
 >;
 
 export const OpenResponsesReasoningStatusCompleted = {
-  Completed: "completed",
+  Completed: 'completed',
 } as const;
 export type OpenResponsesReasoningStatusCompleted = ClosedEnum<
   typeof OpenResponsesReasoningStatusCompleted
@@ -52,15 +51,13 @@ export type OpenResponsesReasoningStatusUnion =
   | OpenResponsesReasoningStatusInProgress;
 
 export const OpenResponsesReasoningFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
+  Unknown: 'unknown',
+  OpenaiResponsesV1: 'openai-responses-v1',
+  XaiResponsesV1: 'xai-responses-v1',
+  AnthropicClaudeV1: 'anthropic-claude-v1',
+  GoogleGeminiV1: 'google-gemini-v1',
 } as const;
-export type OpenResponsesReasoningFormat = OpenEnum<
-  typeof OpenResponsesReasoningFormat
->;
+export type OpenResponsesReasoningFormat = OpenEnum<typeof OpenResponsesReasoningFormat>;
 
 /**
  * Reasoning output item with signature and format extensions
@@ -101,10 +98,7 @@ export const OpenResponsesReasoningStatusCompleted$outboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesReasoningStatusCompleted);
 
 /** @internal */
-export type OpenResponsesReasoningStatusUnion$Outbound =
-  | string
-  | string
-  | string;
+export type OpenResponsesReasoningStatusUnion$Outbound = string | string | string;
 
 /** @internal */
 export const OpenResponsesReasoningStatusUnion$outboundSchema: z.ZodType<
@@ -120,9 +114,7 @@ export function openResponsesReasoningStatusUnionToJSON(
   openResponsesReasoningStatusUnion: OpenResponsesReasoningStatusUnion,
 ): string {
   return JSON.stringify(
-    OpenResponsesReasoningStatusUnion$outboundSchema.parse(
-      openResponsesReasoningStatusUnion,
-    ),
+    OpenResponsesReasoningStatusUnion$outboundSchema.parse(openResponsesReasoningStatusUnion),
   );
 }
 
@@ -148,29 +140,31 @@ export type OpenResponsesReasoning$Outbound = {
 export const OpenResponsesReasoning$outboundSchema: z.ZodType<
   OpenResponsesReasoning$Outbound,
   OpenResponsesReasoning
-> = z.object({
-  type: OpenResponsesReasoningType$outboundSchema,
-  id: z.string(),
-  content: z.array(ReasoningTextContent$outboundSchema).optional(),
-  summary: z.array(ReasoningSummaryText$outboundSchema),
-  encryptedContent: z.nullable(z.string()).optional(),
-  status: z.union([
-    OpenResponsesReasoningStatusCompleted$outboundSchema,
-    OpenResponsesReasoningStatusIncomplete$outboundSchema,
-    OpenResponsesReasoningStatusInProgress$outboundSchema,
-  ]).optional(),
-  signature: z.nullable(z.string()).optional(),
-  format: z.nullable(OpenResponsesReasoningFormat$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    encryptedContent: "encrypted_content",
+> = z
+  .object({
+    type: OpenResponsesReasoningType$outboundSchema,
+    id: z.string(),
+    content: z.array(ReasoningTextContent$outboundSchema).optional(),
+    summary: z.array(ReasoningSummaryText$outboundSchema),
+    encryptedContent: z.nullable(z.string()).optional(),
+    status: z
+      .union([
+        OpenResponsesReasoningStatusCompleted$outboundSchema,
+        OpenResponsesReasoningStatusIncomplete$outboundSchema,
+        OpenResponsesReasoningStatusInProgress$outboundSchema,
+      ])
+      .optional(),
+    signature: z.nullable(z.string()).optional(),
+    format: z.nullable(OpenResponsesReasoningFormat$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      encryptedContent: 'encrypted_content',
+    });
   });
-});
 
 export function openResponsesReasoningToJSON(
   openResponsesReasoning: OpenResponsesReasoning,
 ): string {
-  return JSON.stringify(
-    OpenResponsesReasoning$outboundSchema.parse(openResponsesReasoning),
-  );
+  return JSON.stringify(OpenResponsesReasoning$outboundSchema.parse(openResponsesReasoning));
 }

@@ -3,22 +3,20 @@
  * @generated-id: ff0b42f802dc
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import {
-  JSONSchemaConfig,
-  JSONSchemaConfig$Outbound,
-  JSONSchemaConfig$outboundSchema,
-} from "./jsonschemaconfig.js";
+import type { JSONSchemaConfig, JSONSchemaConfig$Outbound } from './jsonschemaconfig.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { JSONSchemaConfig$outboundSchema } from './jsonschemaconfig.js';
 
 export type ResponseFormatJSONSchema = {
-  type: "json_schema";
+  type: 'json_schema';
   jsonSchema: JSONSchemaConfig;
 };
 
 /** @internal */
 export type ResponseFormatJSONSchema$Outbound = {
-  type: "json_schema";
+  type: 'json_schema';
   json_schema: JSONSchemaConfig$Outbound;
 };
 
@@ -26,19 +24,19 @@ export type ResponseFormatJSONSchema$Outbound = {
 export const ResponseFormatJSONSchema$outboundSchema: z.ZodType<
   ResponseFormatJSONSchema$Outbound,
   ResponseFormatJSONSchema
-> = z.object({
-  type: z.literal("json_schema"),
-  jsonSchema: JSONSchemaConfig$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    jsonSchema: "json_schema",
+> = z
+  .object({
+    type: z.literal('json_schema'),
+    jsonSchema: JSONSchemaConfig$outboundSchema,
+  })
+  .transform((v) => {
+    return remap$(v, {
+      jsonSchema: 'json_schema',
+    });
   });
-});
 
 export function responseFormatJSONSchemaToJSON(
   responseFormatJSONSchema: ResponseFormatJSONSchema,
 ): string {
-  return JSON.stringify(
-    ResponseFormatJSONSchema$outboundSchema.parse(responseFormatJSONSchema),
-  );
+  return JSON.stringify(ResponseFormatJSONSchema$outboundSchema.parse(responseFormatJSONSchema));
 }

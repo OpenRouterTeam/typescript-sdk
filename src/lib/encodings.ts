@@ -3,48 +3,60 @@
  * @generated-id: 3bd8ead98afd
  */
 
-import { bytesToBase64 } from "./base64.js";
-import { isPlainObject } from "./is-plain-object.js";
+import { bytesToBase64 } from './base64.js';
+import { isPlainObject } from './is-plain-object.js';
 
 export class EncodingError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "EncodingError";
+    this.name = 'EncodingError';
   }
 }
 
 export function encodeMatrix(
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined {
-  let out = "";
-  const pairs: [string, unknown][] = options?.explode
+  let out = '';
+  const pairs: [
+    string,
+    unknown,
+  ][] = options?.explode
     ? explode(key, value)
-    : [[key, value]];
+    : [
+        [
+          key,
+          value,
+        ],
+      ];
 
   if (pairs.every(([_, v]) => v == null)) {
     return;
   }
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
   const encodeValue = (v: unknown) => encodeString(serializeValue(v));
 
   pairs.forEach(([pk, pv]) => {
-    let tmp = "";
+    let tmp = '';
     let encValue: string | null | undefined = null;
 
     if (pv == null) {
       return;
-    } else if (Array.isArray(pv)) {
-      encValue = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(",");
+    }
+    if (Array.isArray(pv)) {
+      encValue = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(',');
     } else if (isPlainObject(pv)) {
       const mapped = mapDefinedEntries(Object.entries(pv), ([k, v]) => {
         return `,${encodeString(k)},${encodeValue(v)}`;
       });
-      encValue = mapped?.join("").slice(1);
+      encValue = mapped?.join('').slice(1);
     } else {
       encValue = `${encodeValue(pv)}`;
     }
@@ -74,42 +86,52 @@ export function encodeMatrix(
 export function encodeLabel(
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined {
-  let out = "";
-  const pairs: [string, unknown][] = options?.explode
+  let out = '';
+  const pairs: [
+    string,
+    unknown,
+  ][] = options?.explode
     ? explode(key, value)
-    : [[key, value]];
+    : [
+        [
+          key,
+          value,
+        ],
+      ];
 
   if (pairs.every(([_, v]) => v == null)) {
     return;
   }
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
   const encodeValue = (v: unknown) => encodeString(serializeValue(v));
 
   pairs.forEach(([pk, pv]) => {
-    let encValue: string | null | undefined = "";
+    let encValue: string | null | undefined = '';
 
     if (pv == null) {
       return;
-    } else if (Array.isArray(pv)) {
-      encValue = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(".");
+    }
+    if (Array.isArray(pv)) {
+      encValue = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join('.');
     } else if (isPlainObject(pv)) {
       const mapped = mapDefinedEntries(Object.entries(pv), ([k, v]) => {
         return `.${encodeString(k)}.${encodeValue(v)}`;
       });
-      encValue = mapped?.join("").slice(1);
+      encValue = mapped?.join('').slice(1);
     } else {
-      const k = options?.explode && isPlainObject(value)
-        ? `${encodeString(pk)}=`
-        : "";
+      const k = options?.explode && isPlainObject(value) ? `${encodeString(pk)}=` : '';
       encValue = `${k}${encodeValue(pv)}`;
     }
 
-    out += encValue == null ? "" : `.${encValue}`;
+    out += encValue == null ? '' : `.${encValue}`;
   });
 
   return out;
@@ -118,26 +140,40 @@ export function encodeLabel(
 type FormEncoder = (
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ) => string | undefined;
 
 function formEncoder(sep: string): FormEncoder {
   return (
     key: string,
     value: unknown,
-    options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+    options?: {
+      explode?: boolean;
+      charEncoding?: 'percent' | 'none';
+    },
   ) => {
-    let out = "";
-    const pairs: [string, unknown][] = options?.explode
+    let out = '';
+    const pairs: [
+      string,
+      unknown,
+    ][] = options?.explode
       ? explode(key, value)
-      : [[key, value]];
+      : [
+          [
+            key,
+            value,
+          ],
+        ];
 
     if (pairs.every(([_, v]) => v == null)) {
       return;
     }
 
     const encodeString = (v: string) => {
-      return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+      return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
     };
 
     const encodeValue = (v: unknown) => encodeString(serializeValue(v));
@@ -145,12 +181,13 @@ function formEncoder(sep: string): FormEncoder {
     const encodedSep = encodeString(sep);
 
     pairs.forEach(([pk, pv]) => {
-      let tmp = "";
+      let tmp = '';
       let encValue: string | null | undefined = null;
 
       if (pv == null) {
         return;
-      } else if (Array.isArray(pv)) {
+      }
+      if (Array.isArray(pv)) {
         encValue = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(encodedSep);
       } else if (isPlainObject(pv)) {
         encValue = mapDefinedEntries(Object.entries(pv), ([k, v]) => {
@@ -167,7 +204,7 @@ function formEncoder(sep: string): FormEncoder {
       tmp = `${encodeString(pk)}=${encValue}`;
 
       // If we end up with the nothing then skip forward
-      if (!tmp || tmp === "=") {
+      if (!tmp || tmp === '=') {
         return;
       }
 
@@ -178,33 +215,45 @@ function formEncoder(sep: string): FormEncoder {
   };
 }
 
-export const encodeForm = formEncoder(",");
-export const encodeSpaceDelimited = formEncoder(" ");
-export const encodePipeDelimited = formEncoder("|");
+export const encodeForm = formEncoder(',');
+export const encodeSpaceDelimited = formEncoder(' ');
+export const encodePipeDelimited = formEncoder('|');
 
 export function encodeBodyForm(
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ): string {
-  let out = "";
-  const pairs: [string, unknown][] = options?.explode
+  let out = '';
+  const pairs: [
+    string,
+    unknown,
+  ][] = options?.explode
     ? explode(key, value)
-    : [[key, value]];
+    : [
+        [
+          key,
+          value,
+        ],
+      ];
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
 
   const encodeValue = (v: unknown) => encodeString(serializeValue(v));
 
   pairs.forEach(([pk, pv]) => {
-    let tmp = "";
-    let encValue = "";
+    let tmp = '';
+    let encValue = '';
 
     if (pv == null) {
       return;
-    } else if (Array.isArray(pv)) {
+    }
+    if (Array.isArray(pv)) {
       encValue = JSON.stringify(pv, jsonReplacer);
     } else if (isPlainObject(pv)) {
       encValue = JSON.stringify(pv, jsonReplacer);
@@ -215,7 +264,7 @@ export function encodeBodyForm(
     tmp = `${encodeString(pk)}=${encValue}`;
 
     // If we end up with the nothing then skip forward
-    if (!tmp || tmp === "=") {
+    if (!tmp || tmp === '=') {
       return;
     }
 
@@ -228,7 +277,9 @@ export function encodeBodyForm(
 export function encodeDeepObject(
   key: string,
   value: unknown,
-  options?: { charEncoding?: "percent" | "none" },
+  options?: {
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined {
   if (value == null) {
     return;
@@ -246,16 +297,18 @@ export function encodeDeepObject(
 export function encodeDeepObjectObject(
   key: string,
   value: unknown,
-  options?: { charEncoding?: "percent" | "none" },
+  options?: {
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined {
   if (value == null) {
     return;
   }
 
-  let out = "";
+  let out = '';
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
 
   if (!isPlainObject(value)) {
@@ -272,17 +325,21 @@ export function encodeDeepObjectObject(
     if (isPlainObject(cv)) {
       const objOut = encodeDeepObjectObject(pk, cv, options);
 
-      out += objOut == null ? "" : `&${objOut}`;
+      out += objOut == null ? '' : `&${objOut}`;
 
       return;
     }
 
-    const pairs: unknown[] = Array.isArray(cv) ? cv : [cv];
+    const pairs: unknown[] = Array.isArray(cv)
+      ? cv
+      : [
+          cv,
+        ];
     const encoded = mapDefined(pairs, (v) => {
       return `${encodeString(pk)}=${encodeString(serializeValue(v))}`;
-    })?.join("&");
+    })?.join('&');
 
-    out += encoded == null ? "" : `&${encoded}`;
+    out += encoded == null ? '' : `&${encoded}`;
   });
 
   return out.slice(1);
@@ -291,14 +348,17 @@ export function encodeDeepObjectObject(
 export function encodeJSON(
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined {
-  if (typeof value === "undefined") {
+  if (typeof value === 'undefined') {
     return;
   }
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
 
   const encVal = encodeString(JSON.stringify(value, jsonReplacer));
@@ -309,64 +369,96 @@ export function encodeJSON(
 export const encodeSimple = (
   key: string,
   value: unknown,
-  options?: { explode?: boolean; charEncoding?: "percent" | "none" },
+  options?: {
+    explode?: boolean;
+    charEncoding?: 'percent' | 'none';
+  },
 ): string | undefined => {
-  let out = "";
-  const pairs: [string, unknown][] = options?.explode
+  let out = '';
+  const pairs: [
+    string,
+    unknown,
+  ][] = options?.explode
     ? explode(key, value)
-    : [[key, value]];
+    : [
+        [
+          key,
+          value,
+        ],
+      ];
 
   if (pairs.every(([_, v]) => v == null)) {
     return;
   }
 
   const encodeString = (v: string) => {
-    return options?.charEncoding === "percent" ? encodeURIComponent(v) : v;
+    return options?.charEncoding === 'percent' ? encodeURIComponent(v) : v;
   };
   const encodeValue = (v: unknown) => encodeString(serializeValue(v));
 
   pairs.forEach(([pk, pv]) => {
-    let tmp: string | null | undefined = "";
+    let tmp: string | null | undefined = '';
 
     if (pv == null) {
       return;
-    } else if (Array.isArray(pv)) {
-      tmp = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(",");
+    }
+    if (Array.isArray(pv)) {
+      tmp = mapDefined(pv, (v) => `${encodeValue(v)}`)?.join(',');
     } else if (isPlainObject(pv)) {
       const mapped = mapDefinedEntries(Object.entries(pv), ([k, v]) => {
         return `,${encodeString(k)},${encodeValue(v)}`;
       });
-      tmp = mapped?.join("").slice(1);
+      tmp = mapped?.join('').slice(1);
     } else {
-      const k = options?.explode && isPlainObject(value) ? `${pk}=` : "";
+      const k = options?.explode && isPlainObject(value) ? `${pk}=` : '';
       tmp = `${k}${encodeValue(pv)}`;
     }
 
-    out += tmp ? `,${tmp}` : "";
+    out += tmp ? `,${tmp}` : '';
   });
 
   return out.slice(1);
 };
 
-function explode(key: string, value: unknown): [string, unknown][] {
+function explode(
+  key: string,
+  value: unknown,
+): [
+  string,
+  unknown,
+][] {
   if (Array.isArray(value)) {
-    return value.map((v) => [key, v]);
-  } else if (isPlainObject(value)) {
-    const o = value ?? {};
-    return Object.entries(o).map(([k, v]) => [k, v]);
-  } else {
-    return [[key, value]];
+    return value.map((v) => [
+      key,
+      v,
+    ]);
   }
+  if (isPlainObject(value)) {
+    const o = value ?? {};
+    return Object.entries(o).map(([k, v]) => [
+      k,
+      v,
+    ]);
+  }
+  return [
+    [
+      key,
+      value,
+    ],
+  ];
 }
 
 function serializeValue(value: unknown): string {
   if (value == null) {
-    return "";
-  } else if (value instanceof Date) {
+    return '';
+  }
+  if (value instanceof Date) {
     return value.toISOString();
-  } else if (value instanceof Uint8Array) {
+  }
+  if (value instanceof Uint8Array) {
     return bytesToBase64(value);
-  } else if (typeof value === "object") {
+  }
+  if (typeof value === 'object') {
     return JSON.stringify(value, jsonReplacer);
   }
 
@@ -376,9 +468,8 @@ function serializeValue(value: unknown): string {
 function jsonReplacer(_: string, value: unknown): unknown {
   if (value instanceof Uint8Array) {
     return bytesToBase64(value);
-  } else {
-    return value;
   }
+  return value;
 }
 
 function mapDefined<T, R>(inp: T[], mapper: (v: T) => R): R[] | null {
@@ -401,8 +492,18 @@ function mapDefined<T, R>(inp: T[], mapper: (v: T) => R): R[] | null {
 }
 
 function mapDefinedEntries<K, V, R>(
-  inp: Iterable<[K, V]>,
-  mapper: (v: [K, V]) => R,
+  inp: Iterable<
+    [
+      K,
+      V,
+    ]
+  >,
+  mapper: (
+    v: [
+      K,
+      V,
+    ],
+  ) => R,
 ): R[] | null {
   const acc: R[] = [];
   for (const [k, v] of inp) {
@@ -410,7 +511,10 @@ function mapDefinedEntries<K, V, R>(
       continue;
     }
 
-    const m = mapper([k, v]);
+    const m = mapper([
+      k,
+      v,
+    ]);
     if (m == null) {
       continue;
     }
@@ -422,12 +526,12 @@ function mapDefinedEntries<K, V, R>(
 }
 
 export function queryJoin(...args: (string | undefined)[]): string {
-  return args.filter(Boolean).join("&");
+  return args.filter(Boolean).join('&');
 }
 
 type QueryEncoderOptions = {
   explode?: boolean;
-  charEncoding?: "percent" | "none";
+  charEncoding?: 'percent' | 'none';
   allowEmptyValue?: string[];
 };
 
@@ -437,20 +541,14 @@ type QueryEncoder = (
   options?: QueryEncoderOptions,
 ) => string | undefined;
 
-type BulkQueryEncoder = (
-  values: Record<string, unknown>,
-  options?: QueryEncoderOptions,
-) => string;
+type BulkQueryEncoder = (values: Record<string, unknown>, options?: QueryEncoderOptions) => string;
 
 export function queryEncoder(f: QueryEncoder): BulkQueryEncoder {
-  const bulkEncode = function(
-    values: Record<string, unknown>,
-    options?: QueryEncoderOptions,
-  ): string {
+  const bulkEncode = (values: Record<string, unknown>, options?: QueryEncoderOptions): string => {
     const opts: QueryEncoderOptions = {
       ...options,
       explode: options?.explode ?? true,
-      charEncoding: options?.charEncoding ?? "percent",
+      charEncoding: options?.charEncoding ?? 'percent',
     };
 
     const allowEmptySet = new Set(options?.allowEmptyValue ?? []);
@@ -458,10 +556,10 @@ export function queryEncoder(f: QueryEncoder): BulkQueryEncoder {
     const encoded = Object.entries(values).map(([key, value]) => {
       if (allowEmptySet.has(key)) {
         if (
-          value === undefined
-          || value === null
-          || value === ""
-          || (Array.isArray(value) && value.length === 0)
+          value === undefined ||
+          value === null ||
+          value === '' ||
+          (Array.isArray(value) && value.length === 0)
         ) {
           return `${encodeURIComponent(key)}=`;
         }
@@ -480,15 +578,11 @@ export const encodeSpaceDelimitedQuery = queryEncoder(encodeSpaceDelimited);
 export const encodePipeDelimitedQuery = queryEncoder(encodePipeDelimited);
 export const encodeDeepObjectQuery = queryEncoder(encodeDeepObject);
 
-export function appendForm(
-  fd: FormData,
-  key: string,
-  value: unknown,
-  fileName?: string,
-): void {
+export function appendForm(fd: FormData, key: string, value: unknown, fileName?: string): void {
   if (value == null) {
     return;
-  } else if (value instanceof Blob && fileName) {
+  }
+  if (value instanceof Blob && fileName) {
     fd.append(key, value, fileName);
   } else if (value instanceof Blob) {
     fd.append(key, value);

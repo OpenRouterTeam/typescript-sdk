@@ -3,16 +3,15 @@
  * @generated-id: b028e3118a4e
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
-import {
-  ToolCallStatus,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { ToolCallStatus } from './toolcallstatus.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { ToolCallStatus$outboundSchema } from './toolcallstatus.js';
 
 export const OpenResponsesFunctionToolCallType = {
-  FunctionCall: "function_call",
+  FunctionCall: 'function_call',
 } as const;
 export type OpenResponsesFunctionToolCallType = ClosedEnum<
   typeof OpenResponsesFunctionToolCallType
@@ -49,25 +48,25 @@ export type OpenResponsesFunctionToolCall$Outbound = {
 export const OpenResponsesFunctionToolCall$outboundSchema: z.ZodType<
   OpenResponsesFunctionToolCall$Outbound,
   OpenResponsesFunctionToolCall
-> = z.object({
-  type: OpenResponsesFunctionToolCallType$outboundSchema,
-  callId: z.string(),
-  name: z.string(),
-  arguments: z.string(),
-  id: z.string(),
-  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
+> = z
+  .object({
+    type: OpenResponsesFunctionToolCallType$outboundSchema,
+    callId: z.string(),
+    name: z.string(),
+    arguments: z.string(),
+    id: z.string(),
+    status: z.nullable(ToolCallStatus$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      callId: 'call_id',
+    });
   });
-});
 
 export function openResponsesFunctionToolCallToJSON(
   openResponsesFunctionToolCall: OpenResponsesFunctionToolCall,
 ): string {
   return JSON.stringify(
-    OpenResponsesFunctionToolCall$outboundSchema.parse(
-      openResponsesFunctionToolCall,
-    ),
+    OpenResponsesFunctionToolCall$outboundSchema.parse(openResponsesFunctionToolCall),
   );
 }

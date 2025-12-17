@@ -3,10 +3,7 @@
  * @generated-id: 63a80782d37e
  */
 
-export type Fetcher = (
-  input: RequestInfo | URL,
-  init?: RequestInit,
-) => Promise<Response>;
+export type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 export type Awaitable<T> = T | Promise<T>;
 
@@ -17,9 +14,8 @@ const DEFAULT_FETCHER: Fetcher = (input, init) => {
   // therefore needed for interop with Bun.
   if (init == null) {
     return fetch(input);
-  } else {
-    return fetch(input, init);
   }
+  return fetch(input, init);
 };
 
 export type RequestInput = {
@@ -82,28 +78,37 @@ export class HTTPClient {
    * can mutate the request or return a new request. This may be useful to add
    * additional information to request such as request IDs and tracing headers.
    */
-  addHook(hook: "beforeRequest", fn: BeforeRequestHook): this;
+  addHook(hook: 'beforeRequest', fn: BeforeRequestHook): this;
   /**
    * Registers a hook that is called when a request cannot be made due to a
    * network error.
    */
-  addHook(hook: "requestError", fn: RequestErrorHook): this;
+  addHook(hook: 'requestError', fn: RequestErrorHook): this;
   /**
    * Registers a hook that is called when a response has been received from the
    * server.
    */
-  addHook(hook: "response", fn: ResponseHook): this;
+  addHook(hook: 'response', fn: ResponseHook): this;
   addHook(
     ...args:
-      | [hook: "beforeRequest", fn: BeforeRequestHook]
-      | [hook: "requestError", fn: RequestErrorHook]
-      | [hook: "response", fn: ResponseHook]
+      | [
+          hook: 'beforeRequest',
+          fn: BeforeRequestHook,
+        ]
+      | [
+          hook: 'requestError',
+          fn: RequestErrorHook,
+        ]
+      | [
+          hook: 'response',
+          fn: ResponseHook,
+        ]
   ) {
-    if (args[0] === "beforeRequest") {
+    if (args[0] === 'beforeRequest') {
       this.requestHooks.push(args[1]);
-    } else if (args[0] === "requestError") {
+    } else if (args[0] === 'requestError') {
       this.requestErrorHooks.push(args[1]);
-    } else if (args[0] === "response") {
+    } else if (args[0] === 'response') {
       this.responseHooks.push(args[1]);
     } else {
       throw new Error(`Invalid hook type: ${args[0]}`);
@@ -112,23 +117,32 @@ export class HTTPClient {
   }
 
   /** Removes a hook that was previously registered with `addHook`. */
-  removeHook(hook: "beforeRequest", fn: BeforeRequestHook): this;
+  removeHook(hook: 'beforeRequest', fn: BeforeRequestHook): this;
   /** Removes a hook that was previously registered with `addHook`. */
-  removeHook(hook: "requestError", fn: RequestErrorHook): this;
+  removeHook(hook: 'requestError', fn: RequestErrorHook): this;
   /** Removes a hook that was previously registered with `addHook`. */
-  removeHook(hook: "response", fn: ResponseHook): this;
+  removeHook(hook: 'response', fn: ResponseHook): this;
   removeHook(
     ...args:
-      | [hook: "beforeRequest", fn: BeforeRequestHook]
-      | [hook: "requestError", fn: RequestErrorHook]
-      | [hook: "response", fn: ResponseHook]
+      | [
+          hook: 'beforeRequest',
+          fn: BeforeRequestHook,
+        ]
+      | [
+          hook: 'requestError',
+          fn: RequestErrorHook,
+        ]
+      | [
+          hook: 'response',
+          fn: ResponseHook,
+        ]
   ): this {
     let target: unknown[];
-    if (args[0] === "beforeRequest") {
+    if (args[0] === 'beforeRequest') {
       target = this.requestHooks;
-    } else if (args[0] === "requestError") {
+    } else if (args[0] === 'requestError') {
       target = this.requestErrorHooks;
-    } else if (args[0] === "response") {
+    } else if (args[0] === 'response') {
       target = this.responseHooks;
     } else {
       throw new Error(`Invalid hook type: ${args[0]}`);
@@ -160,31 +174,30 @@ const mediaParamSeparator = /\s*;\s*/g;
 
 export function matchContentType(response: Response, pattern: string): boolean {
   // `*` is a special case which means anything is acceptable.
-  if (pattern === "*") {
+  if (pattern === '*') {
     return true;
   }
 
-  let contentType =
-    response.headers.get("content-type")?.trim() || "application/octet-stream";
+  let contentType = response.headers.get('content-type')?.trim() || 'application/octet-stream';
   contentType = contentType.toLowerCase();
 
   const wantParts = pattern.toLowerCase().trim().split(mediaParamSeparator);
-  const [wantType = "", ...wantParams] = wantParts;
+  const [wantType = '', ...wantParams] = wantParts;
 
-  if (wantType.split("/").length !== 2) {
+  if (wantType.split('/').length !== 2) {
     return false;
   }
 
   const gotParts = contentType.split(mediaParamSeparator);
-  const [gotType = "", ...gotParams] = gotParts;
+  const [gotType = '', ...gotParams] = gotParts;
 
-  const [type = "", subtype = ""] = gotType.split("/");
+  const [type = '', subtype = ''] = gotType.split('/');
   if (!type || !subtype) {
     return false;
   }
 
   if (
-    wantType !== "*/*" &&
+    wantType !== '*/*' &&
     gotType !== wantType &&
     `${type}/*` !== wantType &&
     `*/${subtype}` !== wantType
@@ -206,14 +219,15 @@ export function matchContentType(response: Response, pattern: string): boolean {
   return true;
 }
 
-const codeRangeRE = new RegExp("^[0-9]xx$", "i");
+const codeRangeRE = /^[0-9]xx$/i;
 
-export function matchStatusCode(
-  response: Response,
-  codes: StatusCodePredicate,
-): boolean {
+export function matchStatusCode(response: Response, codes: StatusCodePredicate): boolean {
   const actual = `${response.status}`;
-  const expectedCodes = Array.isArray(codes) ? codes : [codes];
+  const expectedCodes = Array.isArray(codes)
+    ? codes
+    : [
+        codes,
+      ];
   if (!expectedCodes.length) {
     return false;
   }
@@ -221,7 +235,7 @@ export function matchStatusCode(
   return expectedCodes.some((ec) => {
     const code = `${ec}`;
 
-    if (code === "default") {
+    if (code === 'default') {
       return true;
     }
 
@@ -231,7 +245,7 @@ export function matchStatusCode(
 
     const expectFamily = code.charAt(0);
     if (!expectFamily) {
-      throw new Error("Invalid status code range");
+      throw new Error('Invalid status code range');
     }
 
     const actualFamily = actual.charAt(0);
@@ -248,35 +262,28 @@ export function matchResponse(
   code: StatusCodePredicate,
   contentTypePattern: string,
 ): boolean {
-  return (
-    matchStatusCode(response, code) &&
-    matchContentType(response, contentTypePattern)
-  );
+  return matchStatusCode(response, code) && matchContentType(response, contentTypePattern);
 }
 
 /**
  * Uses various heurisitics to determine if an error is a connection error.
  */
 export function isConnectionError(err: unknown): boolean {
-  if (typeof err !== "object" || err == null) {
+  if (typeof err !== 'object' || err == null) {
     return false;
   }
 
   // Covers fetch in Deno as well
   const isBrowserErr =
-    err instanceof TypeError &&
-    err.message.toLowerCase().startsWith("failed to fetch");
+    err instanceof TypeError && err.message.toLowerCase().startsWith('failed to fetch');
 
   const isNodeErr =
-    err instanceof TypeError &&
-    err.message.toLowerCase().startsWith("fetch failed");
+    err instanceof TypeError && err.message.toLowerCase().startsWith('fetch failed');
 
-  const isBunErr = "name" in err && err.name === "ConnectionError";
+  const isBunErr = 'name' in err && err.name === 'ConnectionError';
 
   const isGenericErr =
-    "code" in err &&
-    typeof err.code === "string" &&
-    err.code.toLowerCase() === "econnreset";
+    'code' in err && typeof err.code === 'string' && err.code.toLowerCase() === 'econnreset';
 
   return isBrowserErr || isNodeErr || isGenericErr || isBunErr;
 }
@@ -285,19 +292,17 @@ export function isConnectionError(err: unknown): boolean {
  * Uses various heurisitics to determine if an error is a timeout error.
  */
 export function isTimeoutError(err: unknown): boolean {
-  if (typeof err !== "object" || err == null) {
+  if (typeof err !== 'object' || err == null) {
     return false;
   }
 
   // Fetch in browser, Node.js, Bun, Deno
-  const isNative = "name" in err && err.name === "TimeoutError";
-  const isLegacyNative = "code" in err && err.code === 23;
+  const isNative = 'name' in err && err.name === 'TimeoutError';
+  const isLegacyNative = 'code' in err && err.code === 23;
 
   // Node.js HTTP client and Axios
   const isGenericErr =
-    "code" in err &&
-    typeof err.code === "string" &&
-    err.code.toLowerCase() === "econnaborted";
+    'code' in err && typeof err.code === 'string' && err.code.toLowerCase() === 'econnaborted';
 
   return isNative || isLegacyNative || isGenericErr;
 }
@@ -306,19 +311,17 @@ export function isTimeoutError(err: unknown): boolean {
  * Uses various heurisitics to determine if an error is a abort error.
  */
 export function isAbortError(err: unknown): boolean {
-  if (typeof err !== "object" || err == null) {
+  if (typeof err !== 'object' || err == null) {
     return false;
   }
 
   // Fetch in browser, Node.js, Bun, Deno
-  const isNative = "name" in err && err.name === "AbortError";
-  const isLegacyNative = "code" in err && err.code === 20;
+  const isNative = 'name' in err && err.name === 'AbortError';
+  const isLegacyNative = 'code' in err && err.code === 20;
 
   // Node.js HTTP client and Axios
   const isGenericErr =
-    "code" in err &&
-    typeof err.code === "string" &&
-    err.code.toLowerCase() === "econnaborted";
+    'code' in err && typeof err.code === 'string' && err.code.toLowerCase() === 'econnaborted';
 
   return isNative || isLegacyNative || isGenericErr;
 }

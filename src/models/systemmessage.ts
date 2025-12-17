@@ -3,59 +3,55 @@
  * @generated-id: 2a179ca48627
  */
 
-import * as z from "zod/v4";
-import {
+import type {
   ChatMessageContentItemText,
   ChatMessageContentItemText$Outbound,
-  ChatMessageContentItemText$outboundSchema,
-} from "./chatmessagecontentitemtext.js";
+} from './chatmessagecontentitemtext.js';
+
+import * as z from 'zod/v4';
+import { ChatMessageContentItemText$outboundSchema } from './chatmessagecontentitemtext.js';
 
 export type SystemMessageContent = string | Array<ChatMessageContentItemText>;
 
 export type SystemMessage = {
-  role: "system";
+  role: 'system';
   content: string | Array<ChatMessageContentItemText>;
   name?: string | undefined;
 };
 
 /** @internal */
-export type SystemMessageContent$Outbound =
-  | string
-  | Array<ChatMessageContentItemText$Outbound>;
+export type SystemMessageContent$Outbound = string | Array<ChatMessageContentItemText$Outbound>;
 
 /** @internal */
 export const SystemMessageContent$outboundSchema: z.ZodType<
   SystemMessageContent$Outbound,
   SystemMessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItemText$outboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItemText$outboundSchema),
+]);
 
-export function systemMessageContentToJSON(
-  systemMessageContent: SystemMessageContent,
-): string {
-  return JSON.stringify(
-    SystemMessageContent$outboundSchema.parse(systemMessageContent),
-  );
+export function systemMessageContentToJSON(systemMessageContent: SystemMessageContent): string {
+  return JSON.stringify(SystemMessageContent$outboundSchema.parse(systemMessageContent));
 }
 
 /** @internal */
 export type SystemMessage$Outbound = {
-  role: "system";
+  role: 'system';
   content: string | Array<ChatMessageContentItemText$Outbound>;
   name?: string | undefined;
 };
 
 /** @internal */
-export const SystemMessage$outboundSchema: z.ZodType<
-  SystemMessage$Outbound,
-  SystemMessage
-> = z.object({
-  role: z.literal("system"),
-  content: z.union([
-    z.string(),
-    z.array(ChatMessageContentItemText$outboundSchema),
-  ]),
-  name: z.string().optional(),
-});
+export const SystemMessage$outboundSchema: z.ZodType<SystemMessage$Outbound, SystemMessage> =
+  z.object({
+    role: z.literal('system'),
+    content: z.union([
+      z.string(),
+      z.array(ChatMessageContentItemText$outboundSchema),
+    ]),
+    name: z.string().optional(),
+  });
 
 export function systemMessageToJSON(systemMessage: SystemMessage): string {
   return JSON.stringify(SystemMessage$outboundSchema.parse(systemMessage));

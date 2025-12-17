@@ -3,13 +3,12 @@
  * @generated-id: 7a2d23baab80
  */
 
-import * as z from "zod/v4";
-import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
-import {
-  ProviderSortConfig,
-  ProviderSortConfig$Outbound,
-  ProviderSortConfig$outboundSchema,
-} from "./providersortconfig.js";
+import type { ProviderSort } from './providersort.js';
+import type { ProviderSortConfig, ProviderSortConfig$Outbound } from './providersortconfig.js';
+
+import * as z from 'zod/v4';
+import { ProviderSort$outboundSchema } from './providersort.js';
+import { ProviderSortConfig$outboundSchema } from './providersortconfig.js';
 
 export type ProviderSortUnion = ProviderSort | ProviderSortConfig;
 
@@ -20,12 +19,11 @@ export type ProviderSortUnion$Outbound = string | ProviderSortConfig$Outbound;
 export const ProviderSortUnion$outboundSchema: z.ZodType<
   ProviderSortUnion$Outbound,
   ProviderSortUnion
-> = z.union([ProviderSort$outboundSchema, ProviderSortConfig$outboundSchema]);
+> = z.union([
+  ProviderSort$outboundSchema,
+  ProviderSortConfig$outboundSchema,
+]);
 
-export function providerSortUnionToJSON(
-  providerSortUnion: ProviderSortUnion,
-): string {
-  return JSON.stringify(
-    ProviderSortUnion$outboundSchema.parse(providerSortUnion),
-  );
+export function providerSortUnionToJSON(providerSortUnion: ProviderSortUnion): string {
+  return JSON.stringify(ProviderSortUnion$outboundSchema.parse(providerSortUnion));
 }

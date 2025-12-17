@@ -14,24 +14,25 @@
  * npm run build && npx tsx callModel-typed-tool-calling.example.ts
  */
 
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
+
 dotenv.config();
 
-import { OpenRouter, tool } from "../src/index.js";
-import z from "zod";
+import z from 'zod';
+import { OpenRouter, tool } from '../src/index.js';
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  apiKey: process.env['OPENROUTER_API_KEY'] ?? '',
 });
 
 // Create a typed regular tool using tool()
 // The execute function params are automatically typed as z.infer<typeof inputSchema>
 // The return type is enforced based on outputSchema
 const weatherTool = tool({
-  name: "get_weather",
-  description: "Get the current weather for a location",
+  name: 'get_weather',
+  description: 'Get the current weather for a location',
   inputSchema: z.object({
-    location: z.string().describe("The city and country, e.g. San Francisco, CA"),
+    location: z.string().describe('The city and country, e.g. San Francisco, CA'),
   }),
   outputSchema: z.object({
     temperature: z.number(),
@@ -43,7 +44,7 @@ const weatherTool = tool({
     // Return type is enforced as { temperature: number; description: string }
     return {
       temperature: 20,
-      description: "Sunny",
+      description: 'Sunny',
     };
   },
 });
@@ -51,10 +52,10 @@ const weatherTool = tool({
 // Create a generator tool with typed progress events by providing eventSchema
 // The eventSchema triggers generator mode - execute becomes an async generator
 const searchTool = tool({
-  name: "search_database",
-  description: "Search database with progress updates",
+  name: 'search_database',
+  description: 'Search database with progress updates',
   inputSchema: z.object({
-    query: z.string().describe("The search query"),
+    query: z.string().describe('The search query'),
   }),
   eventSchema: z.object({
     progress: z.number(),
@@ -68,36 +69,52 @@ const searchTool = tool({
   execute: async function* (params) {
     console.log(`Searching for: ${params.query}`);
     // Each yield is typed as { progress: number; message: string }
-    yield { progress: 25, message: "Searching..." };
-    yield { progress: 50, message: "Processing results..." };
-    yield { progress: 75, message: "Almost done..." };
+    yield {
+      progress: 25,
+      message: 'Searching...',
+    };
+    yield {
+      progress: 50,
+      message: 'Processing results...',
+    };
+    yield {
+      progress: 75,
+      message: 'Almost done...',
+    };
     // Final result is typed as { results: string[]; totalFound: number }
-    yield { progress: 100, message: "Complete!" };
+    yield {
+      progress: 100,
+      message: 'Complete!',
+    };
   },
 });
 
 async function main() {
-  console.log("=== Typed Tool Calling Example ===\n");
+  console.log('=== Typed Tool Calling Example ===\n');
 
   // Use 'as const' to enable full type inference for tool calls
   const result = openRouter.callModel({
-    instructions: "You are a helpful assistant. Your name is Mark",
-    model: "openai/gpt-4o-mini",
-    input: "Hello! What is the weather in San Francisco?",
-    tools: [weatherTool] as const,
+    instructions: 'You are a helpful assistant. Your name is Mark',
+    model: 'openai/gpt-4o-mini',
+    input: 'Hello! What is the weather in San Francisco?',
+    tools: [
+      weatherTool,
+    ] as const,
   });
 
   // Get text response (tools are auto-executed)
   const text = await result.getText();
-  console.log("Response:", text);
+  console.log('Response:', text);
 
-  console.log("\n=== Getting Tool Calls ===\n");
+  console.log('\n=== Getting Tool Calls ===\n');
 
   // Create a fresh request for demonstrating getToolCalls
   const result2 = openRouter.callModel({
-    model: "openai/gpt-4o-mini",
+    model: 'openai/gpt-4o-mini',
     input: "What's the weather like in Paris?",
-    tools: [weatherTool] as const,
+    tools: [
+      weatherTool,
+    ] as const,
     maxToolRounds: 0, // Don't auto-execute, just get the tool calls
   });
 
@@ -107,16 +124,18 @@ async function main() {
   for (const toolCall of toolCalls) {
     console.log(`Tool: ${toolCall.name}`);
     // toolCall.arguments is typed as { location: string }
-    console.log(`Arguments:`, toolCall.arguments);
+    console.log('Arguments:', toolCall.arguments);
   }
 
-  console.log("\n=== Streaming Tool Calls ===\n");
+  console.log('\n=== Streaming Tool Calls ===\n');
 
   // Create another request for demonstrating streaming
   const result3 = openRouter.callModel({
-    model: "openai/gpt-4o-mini",
+    model: 'openai/gpt-4o-mini',
     input: "What's the weather in Tokyo?",
-    tools: [weatherTool] as const,
+    tools: [
+      weatherTool,
+    ] as const,
     maxToolRounds: 0,
   });
 
@@ -124,44 +143,49 @@ async function main() {
   for await (const toolCall of result3.getToolCallsStream()) {
     console.log(`Streamed tool: ${toolCall.name}`);
     // toolCall.arguments is typed based on tool definitions
-    console.log(`Streamed arguments:`, toolCall.arguments);
+    console.log('Streamed arguments:', toolCall.arguments);
   }
 
-  console.log("\n=== Generator Tool with Typed Events ===\n");
+  console.log('\n=== Generator Tool with Typed Events ===\n');
 
   // Use generator tool with typed progress events
   const result4 = openRouter.callModel({
-    model: "openai/gpt-4o-mini",
-    input: "Search for documents about TypeScript",
-    tools: [searchTool] as const,
+    model: 'openai/gpt-4o-mini',
+    input: 'Search for documents about TypeScript',
+    tools: [
+      searchTool,
+    ] as const,
   });
 
   // Stream events from getToolStream - events are fully typed!
   for await (const event of result4.getToolStream()) {
-    if (event.type === "preliminary_result") {
+    if (event.type === 'preliminary_result') {
       // event.result is typed as { progress: number; message: string }
       console.log(`Progress: ${event.result.progress}% - ${event.result.message}`);
-    } else if (event.type === "delta") {
+    } else if (event.type === 'delta') {
       // Tool argument deltas
       process.stdout.write(event.content);
     }
   }
 
-  console.log("\n=== Mixed Tools with Typed Events ===\n");
+  console.log('\n=== Mixed Tools with Typed Events ===\n');
 
   // Use both regular and generator tools together
   const result5 = openRouter.callModel({
-    model: "openai/gpt-4o-mini",
-    input: "First search for weather data, then get the weather in Seattle",
-    tools: [weatherTool, searchTool] as const,
+    model: 'openai/gpt-4o-mini',
+    input: 'First search for weather data, then get the weather in Seattle',
+    tools: [
+      weatherTool,
+      searchTool,
+    ] as const,
   });
 
   // Events are a union of all generator tool event types
   for await (const event of result5.getToolStream()) {
-    if (event.type === "preliminary_result") {
+    if (event.type === 'preliminary_result') {
       // event.result is typed as { progress: number; message: string }
       // (only searchTool has eventSchema, so that's the event type)
-      console.log(`Event:`, event.result);
+      console.log('Event:', event.result);
     }
   }
 }

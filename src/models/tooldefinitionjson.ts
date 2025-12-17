@@ -3,17 +3,21 @@
  * @generated-id: 546c340f3013
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type ToolDefinitionJsonFunction = {
   name: string;
   description?: string | undefined;
-  parameters?: { [k: string]: any } | undefined;
+  parameters?:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
   strict?: boolean | null | undefined;
 };
 
 export type ToolDefinitionJson = {
-  type: "function";
+  type: 'function';
   function: ToolDefinitionJsonFunction;
 };
 
@@ -21,7 +25,11 @@ export type ToolDefinitionJson = {
 export type ToolDefinitionJsonFunction$Outbound = {
   name: string;
   description?: string | undefined;
-  parameters?: { [k: string]: any } | undefined;
+  parameters?:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -46,7 +54,7 @@ export function toolDefinitionJsonFunctionToJSON(
 
 /** @internal */
 export type ToolDefinitionJson$Outbound = {
-  type: "function";
+  type: 'function';
   function: ToolDefinitionJsonFunction$Outbound;
 };
 
@@ -55,14 +63,10 @@ export const ToolDefinitionJson$outboundSchema: z.ZodType<
   ToolDefinitionJson$Outbound,
   ToolDefinitionJson
 > = z.object({
-  type: z.literal("function"),
+  type: z.literal('function'),
   function: z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
 });
 
-export function toolDefinitionJsonToJSON(
-  toolDefinitionJson: ToolDefinitionJson,
-): string {
-  return JSON.stringify(
-    ToolDefinitionJson$outboundSchema.parse(toolDefinitionJson),
-  );
+export function toolDefinitionJsonToJSON(toolDefinitionJson: ToolDefinitionJson): string {
+  return JSON.stringify(ToolDefinitionJson$outboundSchema.parse(toolDefinitionJson));
 }

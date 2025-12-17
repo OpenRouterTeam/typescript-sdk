@@ -3,21 +3,22 @@
  * @generated-id: 73d80db9cd46
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview = {
-  WebSearchPreview: "web_search_preview",
+  WebSearchPreview: 'web_search_preview',
 } as const;
 export type OpenAIResponsesToolChoiceTypeWebSearchPreview = ClosedEnum<
   typeof OpenAIResponsesToolChoiceTypeWebSearchPreview
 >;
 
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311 = {
-  WebSearchPreview20250311: "web_search_preview_2025_03_11",
+  WebSearchPreview20250311: 'web_search_preview_2025_03_11',
 } as const;
 export type OpenAIResponsesToolChoiceTypeWebSearchPreview20250311 = ClosedEnum<
   typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
@@ -34,7 +35,7 @@ export type OpenAIResponsesToolChoice = {
 };
 
 export const OpenAIResponsesToolChoiceTypeFunction = {
-  Function: "function",
+  Function: 'function',
 } as const;
 export type OpenAIResponsesToolChoiceTypeFunction = ClosedEnum<
   typeof OpenAIResponsesToolChoiceTypeFunction
@@ -46,25 +47,21 @@ export type OpenAIResponsesToolChoiceFunction = {
 };
 
 export const OpenAIResponsesToolChoiceRequired = {
-  Required: "required",
+  Required: 'required',
 } as const;
 export type OpenAIResponsesToolChoiceRequired = ClosedEnum<
   typeof OpenAIResponsesToolChoiceRequired
 >;
 
 export const OpenAIResponsesToolChoiceNone = {
-  None: "none",
+  None: 'none',
 } as const;
-export type OpenAIResponsesToolChoiceNone = ClosedEnum<
-  typeof OpenAIResponsesToolChoiceNone
->;
+export type OpenAIResponsesToolChoiceNone = ClosedEnum<typeof OpenAIResponsesToolChoiceNone>;
 
 export const OpenAIResponsesToolChoiceAuto = {
-  Auto: "auto",
+  Auto: 'auto',
 } as const;
-export type OpenAIResponsesToolChoiceAuto = ClosedEnum<
-  typeof OpenAIResponsesToolChoiceAuto
->;
+export type OpenAIResponsesToolChoiceAuto = ClosedEnum<typeof OpenAIResponsesToolChoiceAuto>;
 
 export type OpenAIResponsesToolChoiceUnion =
   | OpenAIResponsesToolChoiceFunction
@@ -74,23 +71,22 @@ export type OpenAIResponsesToolChoiceUnion =
   | OpenAIResponsesToolChoiceRequired;
 
 /** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> = z.enum(
-    OpenAIResponsesToolChoiceTypeWebSearchPreview,
-  );
+export const OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesToolChoiceTypeWebSearchPreview
+> = z.enum(OpenAIResponsesToolChoiceTypeWebSearchPreview);
 /** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview> =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema;
+export const OpenAIResponsesToolChoiceTypeWebSearchPreview$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesToolChoiceTypeWebSearchPreview
+> = OpenAIResponsesToolChoiceTypeWebSearchPreview$inboundSchema;
 
 /** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> = z
-    .enum(OpenAIResponsesToolChoiceTypeWebSearchPreview20250311);
+export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
+> = z.enum(OpenAIResponsesToolChoiceTypeWebSearchPreview20250311);
 /** @internal */
-export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311> =
-    OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema;
+export const OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$outboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesToolChoiceTypeWebSearchPreview20250311
+> = OpenAIResponsesToolChoiceTypeWebSearchPreview20250311$inboundSchema;
 
 /** @internal */
 export const Type$inboundSchema: z.ZodType<Type, unknown> = z.union([
@@ -109,9 +105,7 @@ export const Type$outboundSchema: z.ZodType<Type$Outbound, Type> = z.union([
 export function typeToJSON(type: Type): string {
   return JSON.stringify(Type$outboundSchema.parse(type));
 }
-export function typeFromJSON(
-  jsonString: string,
-): SafeParseResult<Type, SDKValidationError> {
+export function typeFromJSON(jsonString: string): SafeParseResult<Type, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Type$inboundSchema.parse(JSON.parse(x)),
@@ -148,9 +142,7 @@ export const OpenAIResponsesToolChoice$outboundSchema: z.ZodType<
 export function openAIResponsesToolChoiceToJSON(
   openAIResponsesToolChoice: OpenAIResponsesToolChoice,
 ): string {
-  return JSON.stringify(
-    OpenAIResponsesToolChoice$outboundSchema.parse(openAIResponsesToolChoice),
-  );
+  return JSON.stringify(OpenAIResponsesToolChoice$outboundSchema.parse(openAIResponsesToolChoice));
 }
 export function openAIResponsesToolChoiceFromJSON(
   jsonString: string,
@@ -198,9 +190,7 @@ export function openAIResponsesToolChoiceFunctionToJSON(
   openAIResponsesToolChoiceFunction: OpenAIResponsesToolChoiceFunction,
 ): string {
   return JSON.stringify(
-    OpenAIResponsesToolChoiceFunction$outboundSchema.parse(
-      openAIResponsesToolChoiceFunction,
-    ),
+    OpenAIResponsesToolChoiceFunction$outboundSchema.parse(openAIResponsesToolChoiceFunction),
   );
 }
 export function openAIResponsesToolChoiceFunctionFromJSON(
@@ -275,9 +265,7 @@ export function openAIResponsesToolChoiceUnionToJSON(
   openAIResponsesToolChoiceUnion: OpenAIResponsesToolChoiceUnion,
 ): string {
   return JSON.stringify(
-    OpenAIResponsesToolChoiceUnion$outboundSchema.parse(
-      openAIResponsesToolChoiceUnion,
-    ),
+    OpenAIResponsesToolChoiceUnion$outboundSchema.parse(openAIResponsesToolChoiceUnion),
   );
 }
 export function openAIResponsesToolChoiceUnionFromJSON(

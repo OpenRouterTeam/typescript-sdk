@@ -3,12 +3,14 @@
  * @generated-id: c56babc22a20
  */
 
-import { chatSend } from "../funcs/chatSend.js";
-import { EventStream } from "../lib/event-streams.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { EventStream } from '../lib/event-streams.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+import type * as operations from '../models/operations/index.js';
+
+import { chatSend } from '../funcs/chatSend.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Chat extends ClientSDK {
   /**
@@ -18,11 +20,15 @@ export class Chat extends ClientSDK {
    * Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
    */
   async send(
-    request: models.ChatGenerationParams & { stream?: false | undefined },
+    request: models.ChatGenerationParams & {
+      stream?: false | undefined;
+    },
     options?: RequestOptions,
   ): Promise<models.ChatResponse>;
   async send(
-    request: models.ChatGenerationParams & { stream: true },
+    request: models.ChatGenerationParams & {
+      stream: true;
+    },
     options?: RequestOptions,
   ): Promise<EventStream<models.ChatStreamingResponseChunkData>>;
   async send(
@@ -33,10 +39,6 @@ export class Chat extends ClientSDK {
     request: models.ChatGenerationParams,
     options?: RequestOptions,
   ): Promise<operations.SendChatCompletionRequestResponse> {
-    return unwrapAsync(chatSend(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(chatSend(this, request, options));
   }
 }

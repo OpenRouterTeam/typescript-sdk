@@ -3,23 +3,22 @@
  * @generated-id: 51f0104f0dbf
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ImageGenerationStatus } from './imagegenerationstatus.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ImageGenerationStatus,
   ImageGenerationStatus$inboundSchema,
   ImageGenerationStatus$outboundSchema,
-} from "./imagegenerationstatus.js";
+} from './imagegenerationstatus.js';
 
 export const ResponsesImageGenerationCallType = {
-  ImageGenerationCall: "image_generation_call",
+  ImageGenerationCall: 'image_generation_call',
 } as const;
-export type ResponsesImageGenerationCallType = ClosedEnum<
-  typeof ResponsesImageGenerationCallType
->;
+export type ResponsesImageGenerationCallType = ClosedEnum<typeof ResponsesImageGenerationCallType>;
 
 export type ResponsesImageGenerationCall = {
   type: ResponsesImageGenerationCallType;
@@ -70,9 +69,7 @@ export function responsesImageGenerationCallToJSON(
   responsesImageGenerationCall: ResponsesImageGenerationCall,
 ): string {
   return JSON.stringify(
-    ResponsesImageGenerationCall$outboundSchema.parse(
-      responsesImageGenerationCall,
-    ),
+    ResponsesImageGenerationCall$outboundSchema.parse(responsesImageGenerationCall),
   );
 }
 export function responsesImageGenerationCallFromJSON(

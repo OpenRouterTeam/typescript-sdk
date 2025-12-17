@@ -3,24 +3,20 @@
  * @generated-id: 7db13c3cc866
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  AssistantMessage,
-  AssistantMessage$inboundSchema,
-} from "./assistantmessage.js";
-import {
-  ChatCompletionFinishReason,
-  ChatCompletionFinishReason$inboundSchema,
-} from "./chatcompletionfinishreason.js";
-import {
-  ChatMessageTokenLogprobs,
-  ChatMessageTokenLogprobs$inboundSchema,
-} from "./chatmessagetokenlogprobs.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema3, Schema3$inboundSchema } from "./schema3.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { AssistantMessage } from './assistantmessage.js';
+import type { ChatCompletionFinishReason } from './chatcompletionfinishreason.js';
+import type { ChatMessageTokenLogprobs } from './chatmessagetokenlogprobs.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { Schema3 } from './schema3.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { AssistantMessage$inboundSchema } from './assistantmessage.js';
+import { ChatCompletionFinishReason$inboundSchema } from './chatcompletionfinishreason.js';
+import { ChatMessageTokenLogprobs$inboundSchema } from './chatmessagetokenlogprobs.js';
+import { Schema3$inboundSchema } from './schema3.js';
 
 export type ChatResponseChoice = {
   finishReason: ChatCompletionFinishReason | null;
@@ -31,21 +27,20 @@ export type ChatResponseChoice = {
 };
 
 /** @internal */
-export const ChatResponseChoice$inboundSchema: z.ZodType<
-  ChatResponseChoice,
-  unknown
-> = z.object({
-  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
-  index: z.number(),
-  message: AssistantMessage$inboundSchema,
-  reasoning_details: z.array(Schema3$inboundSchema).optional(),
-  logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "finish_reason": "finishReason",
-    "reasoning_details": "reasoningDetails",
+export const ChatResponseChoice$inboundSchema: z.ZodType<ChatResponseChoice, unknown> = z
+  .object({
+    finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
+    index: z.number(),
+    message: AssistantMessage$inboundSchema,
+    reasoning_details: z.array(Schema3$inboundSchema).optional(),
+    logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      finish_reason: 'finishReason',
+      reasoning_details: 'reasoningDetails',
+    });
   });
-});
 
 export function chatResponseChoiceFromJSON(
   jsonString: string,

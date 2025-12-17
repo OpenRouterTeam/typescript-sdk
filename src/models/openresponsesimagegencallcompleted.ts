@@ -3,17 +3,18 @@
  * @generated-id: 8f2a1c3fbf5d
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Image generation call completed
  */
 export type OpenResponsesImageGenCallCompleted = {
-  type: "response.image_generation_call.completed";
+  type: 'response.image_generation_call.completed';
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
@@ -23,26 +24,27 @@ export type OpenResponsesImageGenCallCompleted = {
 export const OpenResponsesImageGenCallCompleted$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallCompleted,
   unknown
-> = z.object({
-  type: z.literal("response.image_generation_call.completed"),
-  item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "item_id": "itemId",
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.image_generation_call.completed'),
+    item_id: z.string(),
+    output_index: z.number(),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesImageGenCallCompletedFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesImageGenCallCompleted, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesImageGenCallCompleted$inboundSchema.parse(JSON.parse(x)),
+    (x) => OpenResponsesImageGenCallCompleted$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesImageGenCallCompleted' from JSON`,
   );
 }

@@ -3,10 +3,11 @@
  * @generated-id: b294b44052da
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export type ChatMessageToolCallFunction = {
   name: string;
@@ -15,7 +16,7 @@ export type ChatMessageToolCallFunction = {
 
 export type ChatMessageToolCall = {
   id: string;
-  type: "function";
+  type: 'function';
   function: ChatMessageToolCallFunction;
 };
 
@@ -46,9 +47,7 @@ export function chatMessageToolCallFunctionToJSON(
   chatMessageToolCallFunction: ChatMessageToolCallFunction,
 ): string {
   return JSON.stringify(
-    ChatMessageToolCallFunction$outboundSchema.parse(
-      chatMessageToolCallFunction,
-    ),
+    ChatMessageToolCallFunction$outboundSchema.parse(chatMessageToolCallFunction),
   );
 }
 export function chatMessageToolCallFunctionFromJSON(
@@ -62,18 +61,15 @@ export function chatMessageToolCallFunctionFromJSON(
 }
 
 /** @internal */
-export const ChatMessageToolCall$inboundSchema: z.ZodType<
-  ChatMessageToolCall,
-  unknown
-> = z.object({
+export const ChatMessageToolCall$inboundSchema: z.ZodType<ChatMessageToolCall, unknown> = z.object({
   id: z.string(),
-  type: z.literal("function"),
+  type: z.literal('function'),
   function: z.lazy(() => ChatMessageToolCallFunction$inboundSchema),
 });
 /** @internal */
 export type ChatMessageToolCall$Outbound = {
   id: string;
-  type: "function";
+  type: 'function';
   function: ChatMessageToolCallFunction$Outbound;
 };
 
@@ -83,16 +79,12 @@ export const ChatMessageToolCall$outboundSchema: z.ZodType<
   ChatMessageToolCall
 > = z.object({
   id: z.string(),
-  type: z.literal("function"),
+  type: z.literal('function'),
   function: z.lazy(() => ChatMessageToolCallFunction$outboundSchema),
 });
 
-export function chatMessageToolCallToJSON(
-  chatMessageToolCall: ChatMessageToolCall,
-): string {
-  return JSON.stringify(
-    ChatMessageToolCall$outboundSchema.parse(chatMessageToolCall),
-  );
+export function chatMessageToolCallToJSON(chatMessageToolCall: ChatMessageToolCall): string {
+  return JSON.stringify(ChatMessageToolCall$outboundSchema.parse(chatMessageToolCall));
 }
 export function chatMessageToolCallFromJSON(
   jsonString: string,

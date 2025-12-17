@@ -3,10 +3,8 @@
  * @generated-id: f99be9c4bf14
  */
 
-export function isReadableStream<T = Uint8Array>(
-  val: unknown,
-): val is ReadableStream<T> {
-  if (typeof val !== "object" || val === null) {
+export function isReadableStream<T = Uint8Array>(val: unknown): val is ReadableStream<T> {
+  if (typeof val !== 'object' || val === null) {
     return false;
   }
 
@@ -15,8 +13,8 @@ export function isReadableStream<T = Uint8Array>(
 
   // ReadableStream has methods like getReader, cancel, and tee
   return (
-    typeof stream.getReader === "function" &&
-    typeof stream.cancel === "function" &&
-    typeof stream.tee === "function"
+    typeof stream.getReader === 'function' &&
+    typeof stream.cancel === 'function' &&
+    typeof stream.tee === 'function'
   );
 }

@@ -3,89 +3,54 @@
  * @generated-id: bdd51c7b4bd0
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenAIResponsesAnnotation,
-  OpenAIResponsesAnnotation$inboundSchema,
-} from "./openairesponsesannotation.js";
-import {
-  OpenAIResponsesRefusalContent,
-  OpenAIResponsesRefusalContent$inboundSchema,
-} from "./openairesponsesrefusalcontent.js";
-import {
-  OpenResponsesErrorEvent,
-  OpenResponsesErrorEvent$inboundSchema,
-} from "./openresponseserrorevent.js";
-import {
-  OpenResponsesImageGenCallCompleted,
-  OpenResponsesImageGenCallCompleted$inboundSchema,
-} from "./openresponsesimagegencallcompleted.js";
-import {
-  OpenResponsesImageGenCallGenerating,
-  OpenResponsesImageGenCallGenerating$inboundSchema,
-} from "./openresponsesimagegencallgenerating.js";
-import {
-  OpenResponsesImageGenCallInProgress,
-  OpenResponsesImageGenCallInProgress$inboundSchema,
-} from "./openresponsesimagegencallinprogress.js";
-import {
-  OpenResponsesImageGenCallPartialImage,
-  OpenResponsesImageGenCallPartialImage$inboundSchema,
-} from "./openresponsesimagegencallpartialimage.js";
-import {
-  OpenResponsesLogProbs,
-  OpenResponsesLogProbs$inboundSchema,
-} from "./openresponseslogprobs.js";
-import {
-  OpenResponsesNonStreamingResponse,
-  OpenResponsesNonStreamingResponse$inboundSchema,
-} from "./openresponsesnonstreamingresponse.js";
-import {
-  OpenResponsesReasoningDeltaEvent,
-  OpenResponsesReasoningDeltaEvent$inboundSchema,
-} from "./openresponsesreasoningdeltaevent.js";
-import {
-  OpenResponsesReasoningDoneEvent,
-  OpenResponsesReasoningDoneEvent$inboundSchema,
-} from "./openresponsesreasoningdoneevent.js";
-import {
-  OpenResponsesReasoningSummaryPartAddedEvent,
-  OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema,
-} from "./openresponsesreasoningsummarypartaddedevent.js";
-import {
-  OpenResponsesReasoningSummaryTextDeltaEvent,
-  OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema,
-} from "./openresponsesreasoningsummarytextdeltaevent.js";
-import {
-  OpenResponsesReasoningSummaryTextDoneEvent,
-  OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
-} from "./openresponsesreasoningsummarytextdoneevent.js";
-import {
-  ReasoningSummaryText,
-  ReasoningSummaryText$inboundSchema,
-} from "./reasoningsummarytext.js";
-import {
-  ReasoningTextContent,
-  ReasoningTextContent$inboundSchema,
-} from "./reasoningtextcontent.js";
-import {
-  ResponseOutputText,
-  ResponseOutputText$inboundSchema,
-} from "./responseoutputtext.js";
-import {
-  ResponsesOutputItem,
-  ResponsesOutputItem$inboundSchema,
-} from "./responsesoutputitem.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { OpenAIResponsesAnnotation } from './openairesponsesannotation.js';
+import type { OpenAIResponsesRefusalContent } from './openairesponsesrefusalcontent.js';
+import type { OpenResponsesErrorEvent } from './openresponseserrorevent.js';
+import type { OpenResponsesImageGenCallCompleted } from './openresponsesimagegencallcompleted.js';
+import type { OpenResponsesImageGenCallGenerating } from './openresponsesimagegencallgenerating.js';
+import type { OpenResponsesImageGenCallInProgress } from './openresponsesimagegencallinprogress.js';
+import type { OpenResponsesImageGenCallPartialImage } from './openresponsesimagegencallpartialimage.js';
+import type { OpenResponsesLogProbs } from './openresponseslogprobs.js';
+import type { OpenResponsesNonStreamingResponse } from './openresponsesnonstreamingresponse.js';
+import type { OpenResponsesReasoningDeltaEvent } from './openresponsesreasoningdeltaevent.js';
+import type { OpenResponsesReasoningDoneEvent } from './openresponsesreasoningdoneevent.js';
+import type { OpenResponsesReasoningSummaryPartAddedEvent } from './openresponsesreasoningsummarypartaddedevent.js';
+import type { OpenResponsesReasoningSummaryTextDeltaEvent } from './openresponsesreasoningsummarytextdeltaevent.js';
+import type { OpenResponsesReasoningSummaryTextDoneEvent } from './openresponsesreasoningsummarytextdoneevent.js';
+import type { ReasoningSummaryText } from './reasoningsummarytext.js';
+import type { ReasoningTextContent } from './reasoningtextcontent.js';
+import type { ResponseOutputText } from './responseoutputtext.js';
+import type { ResponsesOutputItem } from './responsesoutputitem.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { OpenAIResponsesAnnotation$inboundSchema } from './openairesponsesannotation.js';
+import { OpenAIResponsesRefusalContent$inboundSchema } from './openairesponsesrefusalcontent.js';
+import { OpenResponsesErrorEvent$inboundSchema } from './openresponseserrorevent.js';
+import { OpenResponsesImageGenCallCompleted$inboundSchema } from './openresponsesimagegencallcompleted.js';
+import { OpenResponsesImageGenCallGenerating$inboundSchema } from './openresponsesimagegencallgenerating.js';
+import { OpenResponsesImageGenCallInProgress$inboundSchema } from './openresponsesimagegencallinprogress.js';
+import { OpenResponsesImageGenCallPartialImage$inboundSchema } from './openresponsesimagegencallpartialimage.js';
+import { OpenResponsesLogProbs$inboundSchema } from './openresponseslogprobs.js';
+import { OpenResponsesNonStreamingResponse$inboundSchema } from './openresponsesnonstreamingresponse.js';
+import { OpenResponsesReasoningDeltaEvent$inboundSchema } from './openresponsesreasoningdeltaevent.js';
+import { OpenResponsesReasoningDoneEvent$inboundSchema } from './openresponsesreasoningdoneevent.js';
+import { OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema } from './openresponsesreasoningsummarypartaddedevent.js';
+import { OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema } from './openresponsesreasoningsummarytextdeltaevent.js';
+import { OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema } from './openresponsesreasoningsummarytextdoneevent.js';
+import { ReasoningSummaryText$inboundSchema } from './reasoningsummarytext.js';
+import { ReasoningTextContent$inboundSchema } from './reasoningtextcontent.js';
+import { ResponseOutputText$inboundSchema } from './responseoutputtext.js';
+import { ResponsesOutputItem$inboundSchema } from './responsesoutputitem.js';
 
 /**
  * Event emitted when a reasoning summary part is complete
  */
 export type OpenResponsesStreamEventResponseReasoningSummaryPartDone = {
-  type: "response.reasoning_summary_part.done";
+  type: 'response.reasoning_summary_part.done';
   outputIndex: number;
   itemId: string;
   summaryIndex: number;
@@ -97,7 +62,7 @@ export type OpenResponsesStreamEventResponseReasoningSummaryPartDone = {
  * Event emitted when function call arguments streaming is complete
  */
 export type OpenResponsesStreamEventResponseFunctionCallArgumentsDone = {
-  type: "response.function_call_arguments.done";
+  type: 'response.function_call_arguments.done';
   itemId: string;
   outputIndex: number;
   name: string;
@@ -109,7 +74,7 @@ export type OpenResponsesStreamEventResponseFunctionCallArgumentsDone = {
  * Event emitted when function call arguments are being streamed
  */
 export type OpenResponsesStreamEventResponseFunctionCallArgumentsDelta = {
-  type: "response.function_call_arguments.delta";
+  type: 'response.function_call_arguments.delta';
   itemId: string;
   outputIndex: number;
   delta: string;
@@ -120,7 +85,7 @@ export type OpenResponsesStreamEventResponseFunctionCallArgumentsDelta = {
  * Event emitted when a text annotation is added to output
  */
 export type OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
-  type: "response.output_text.annotation.added";
+  type: 'response.output_text.annotation.added';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -133,7 +98,7 @@ export type OpenResponsesStreamEventResponseOutputTextAnnotationAdded = {
  * Event emitted when refusal streaming is complete
  */
 export type OpenResponsesStreamEventResponseRefusalDone = {
-  type: "response.refusal.done";
+  type: 'response.refusal.done';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -145,7 +110,7 @@ export type OpenResponsesStreamEventResponseRefusalDone = {
  * Event emitted when a refusal delta is streamed
  */
 export type OpenResponsesStreamEventResponseRefusalDelta = {
-  type: "response.refusal.delta";
+  type: 'response.refusal.delta';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -157,7 +122,7 @@ export type OpenResponsesStreamEventResponseRefusalDelta = {
  * Event emitted when text streaming is complete
  */
 export type OpenResponsesStreamEventResponseOutputTextDone = {
-  type: "response.output_text.done";
+  type: 'response.output_text.done';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -170,7 +135,7 @@ export type OpenResponsesStreamEventResponseOutputTextDone = {
  * Event emitted when a text delta is streamed
  */
 export type OpenResponsesStreamEventResponseOutputTextDelta = {
-  type: "response.output_text.delta";
+  type: 'response.output_text.delta';
   logprobs: Array<OpenResponsesLogProbs>;
   outputIndex: number;
   itemId: string;
@@ -181,40 +146,48 @@ export type OpenResponsesStreamEventResponseOutputTextDelta = {
 
 export type Part2 =
   | ResponseOutputText
-  | (ReasoningTextContent & { type: "reasoning_text" })
+  | (ReasoningTextContent & {
+      type: 'reasoning_text';
+    })
   | OpenAIResponsesRefusalContent;
 
 /**
  * Event emitted when a content part is complete
  */
 export type OpenResponsesStreamEventResponseContentPartDone = {
-  type: "response.content_part.done";
+  type: 'response.content_part.done';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
   part:
     | ResponseOutputText
-    | (ReasoningTextContent & { type: "reasoning_text" })
+    | (ReasoningTextContent & {
+        type: 'reasoning_text';
+      })
     | OpenAIResponsesRefusalContent;
   sequenceNumber: number;
 };
 
 export type Part1 =
   | ResponseOutputText
-  | (ReasoningTextContent & { type: "reasoning_text" })
+  | (ReasoningTextContent & {
+      type: 'reasoning_text';
+    })
   | OpenAIResponsesRefusalContent;
 
 /**
  * Event emitted when a new content part is added to an output item
  */
 export type OpenResponsesStreamEventResponseContentPartAdded = {
-  type: "response.content_part.added";
+  type: 'response.content_part.added';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
   part:
     | ResponseOutputText
-    | (ReasoningTextContent & { type: "reasoning_text" })
+    | (ReasoningTextContent & {
+        type: 'reasoning_text';
+      })
     | OpenAIResponsesRefusalContent;
   sequenceNumber: number;
 };
@@ -223,7 +196,7 @@ export type OpenResponsesStreamEventResponseContentPartAdded = {
  * Event emitted when an output item is complete
  */
 export type OpenResponsesStreamEventResponseOutputItemDone = {
-  type: "response.output_item.done";
+  type: 'response.output_item.done';
   outputIndex: number;
   /**
    * An output item from the response
@@ -236,7 +209,7 @@ export type OpenResponsesStreamEventResponseOutputItemDone = {
  * Event emitted when a new output item is added to the response
  */
 export type OpenResponsesStreamEventResponseOutputItemAdded = {
-  type: "response.output_item.added";
+  type: 'response.output_item.added';
   outputIndex: number;
   /**
    * An output item from the response
@@ -249,7 +222,7 @@ export type OpenResponsesStreamEventResponseOutputItemAdded = {
  * Event emitted when a response has failed
  */
 export type OpenResponsesStreamEventResponseFailed = {
-  type: "response.failed";
+  type: 'response.failed';
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -261,7 +234,7 @@ export type OpenResponsesStreamEventResponseFailed = {
  * Event emitted when a response is incomplete
  */
 export type OpenResponsesStreamEventResponseIncomplete = {
-  type: "response.incomplete";
+  type: 'response.incomplete';
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -273,7 +246,7 @@ export type OpenResponsesStreamEventResponseIncomplete = {
  * Event emitted when a response has completed successfully
  */
 export type OpenResponsesStreamEventResponseCompleted = {
-  type: "response.completed";
+  type: 'response.completed';
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -285,7 +258,7 @@ export type OpenResponsesStreamEventResponseCompleted = {
  * Event emitted when a response is in progress
  */
 export type OpenResponsesStreamEventResponseInProgress = {
-  type: "response.in_progress";
+  type: 'response.in_progress';
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -297,7 +270,7 @@ export type OpenResponsesStreamEventResponseInProgress = {
  * Event emitted when a response is created
  */
 export type OpenResponsesStreamEventResponseCreated = {
-  type: "response.created";
+  type: 'response.created';
   /**
    * Complete non-streaming response from the Responses API
    */
@@ -338,283 +311,262 @@ export type OpenResponsesStreamEvent =
   | OpenResponsesImageGenCallCompleted;
 
 /** @internal */
-export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseReasoningSummaryPartDone, unknown> =
-    z.object({
-      type: z.literal("response.reasoning_summary_part.done"),
-      output_index: z.number(),
-      item_id: z.string(),
-      summary_index: z.number(),
-      part: ReasoningSummaryText$inboundSchema,
-      sequence_number: z.number(),
-    }).transform((v) => {
-      return remap$(v, {
-        "output_index": "outputIndex",
-        "item_id": "itemId",
-        "summary_index": "summaryIndex",
-        "sequence_number": "sequenceNumber",
-      });
+export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseReasoningSummaryPartDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.reasoning_summary_part.done'),
+    output_index: z.number(),
+    item_id: z.string(),
+    summary_index: z.number(),
+    part: ReasoningSummaryText$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      summary_index: 'summaryIndex',
+      sequence_number: 'sequenceNumber',
     });
+  });
 
 export function openResponsesStreamEventResponseReasoningSummaryPartDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseReasoningSummaryPartDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseReasoningSummaryPartDone, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema
-        .parse(JSON.parse(x)),
+      OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseReasoningSummaryPartDone' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
-    unknown
-  > = z.object({
-    type: z.literal("response.function_call_arguments.done"),
+export const OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.function_call_arguments.done'),
     item_id: z.string(),
     output_index: z.number(),
     name: z.string(),
     arguments: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "item_id": "itemId",
-      "output_index": "outputIndex",
-      "sequence_number": "sequenceNumber",
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseFunctionCallArgumentsDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseFunctionCallArgumentsDone, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema
-        .parse(JSON.parse(x)),
+      OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseFunctionCallArgumentsDone' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
-    unknown
-  > = z.object({
-    type: z.literal("response.function_call_arguments.delta"),
+export const OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.function_call_arguments.delta'),
     item_id: z.string(),
     output_index: z.number(),
     delta: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "item_id": "itemId",
-      "output_index": "outputIndex",
-      "sequence_number": "sequenceNumber",
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseFunctionCallArgumentsDeltaFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseFunctionCallArgumentsDelta, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema
-        .parse(JSON.parse(x)),
+      OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseFunctionCallArgumentsDelta' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema:
-  z.ZodType<
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded,
-    unknown
-  > = z.object({
-    type: z.literal("response.output_text.annotation.added"),
+export const OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseOutputTextAnnotationAdded,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.output_text.annotation.added'),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
     sequence_number: z.number(),
     annotation_index: z.number(),
     annotation: OpenAIResponsesAnnotation$inboundSchema,
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "item_id": "itemId",
-      "content_index": "contentIndex",
-      "sequence_number": "sequenceNumber",
-      "annotation_index": "annotationIndex",
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
+      annotation_index: 'annotationIndex',
     });
   });
 
 export function openResponsesStreamEventResponseOutputTextAnnotationAddedFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseOutputTextAnnotationAdded,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseOutputTextAnnotationAdded, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) =>
-      OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema
-        .parse(JSON.parse(x)),
+      OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseOutputTextAnnotationAdded' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseRefusalDone$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseRefusalDone, unknown> = z.object({
-    type: z.literal("response.refusal.done"),
+export const OpenResponsesStreamEventResponseRefusalDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseRefusalDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.refusal.done'),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
     refusal: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "item_id": "itemId",
-      "content_index": "contentIndex",
-      "sequence_number": "sequenceNumber",
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseRefusalDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseRefusalDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseRefusalDone, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseRefusalDone$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseRefusalDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseRefusalDone' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseRefusalDelta$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseRefusalDelta, unknown> = z.object({
-    type: z.literal("response.refusal.delta"),
+export const OpenResponsesStreamEventResponseRefusalDelta$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseRefusalDelta,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.refusal.delta'),
     output_index: z.number(),
     item_id: z.string(),
     content_index: z.number(),
     delta: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "item_id": "itemId",
-      "content_index": "contentIndex",
-      "sequence_number": "sequenceNumber",
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseRefusalDeltaFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseRefusalDelta,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseRefusalDelta, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseRefusalDelta$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseRefusalDelta$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseRefusalDelta' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseOutputTextDone, unknown> = z.object(
-    {
-      type: z.literal("response.output_text.done"),
-      output_index: z.number(),
-      item_id: z.string(),
-      content_index: z.number(),
-      text: z.string(),
-      sequence_number: z.number(),
-      logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
-    },
-  ).transform((v) => {
+export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseOutputTextDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.output_text.done'),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    text: z.string(),
+    sequence_number: z.number(),
+    logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "item_id": "itemId",
-      "content_index": "contentIndex",
-      "sequence_number": "sequenceNumber",
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseOutputTextDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseOutputTextDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseOutputTextDone, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseOutputTextDone$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseOutputTextDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseOutputTextDone' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseOutputTextDelta, unknown> = z
-    .object({
-      type: z.literal("response.output_text.delta"),
-      logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
-      output_index: z.number(),
-      item_id: z.string(),
-      content_index: z.number(),
-      delta: z.string(),
-      sequence_number: z.number(),
-    }).transform((v) => {
-      return remap$(v, {
-        "output_index": "outputIndex",
-        "item_id": "itemId",
-        "content_index": "contentIndex",
-        "sequence_number": "sequenceNumber",
-      });
+export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseOutputTextDelta,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.output_text.delta'),
+    logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    delta: z.string(),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
+  });
 
 export function openResponsesStreamEventResponseOutputTextDeltaFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseOutputTextDelta,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseOutputTextDelta, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseOutputTextDelta' from JSON`,
   );
 }
@@ -623,14 +575,14 @@ export function openResponsesStreamEventResponseOutputTextDeltaFromJSON(
 export const Part2$inboundSchema: z.ZodType<Part2, unknown> = z.union([
   ResponseOutputText$inboundSchema,
   ReasoningTextContent$inboundSchema.and(
-    z.object({ type: z.literal("reasoning_text") }),
+    z.object({
+      type: z.literal('reasoning_text'),
+    }),
   ),
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
 
-export function part2FromJSON(
-  jsonString: string,
-): SafeParseResult<Part2, SDKValidationError> {
+export function part2FromJSON(jsonString: string): SafeParseResult<Part2, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Part2$inboundSchema.parse(JSON.parse(x)),
@@ -639,42 +591,41 @@ export function part2FromJSON(
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseContentPartDone$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseContentPartDone, unknown> = z
-    .object({
-      type: z.literal("response.content_part.done"),
-      output_index: z.number(),
-      item_id: z.string(),
-      content_index: z.number(),
-      part: z.union([
-        ResponseOutputText$inboundSchema,
-        ReasoningTextContent$inboundSchema.and(
-          z.object({ type: z.literal("reasoning_text") }),
-        ),
-        OpenAIResponsesRefusalContent$inboundSchema,
-      ]),
-      sequence_number: z.number(),
-    }).transform((v) => {
-      return remap$(v, {
-        "output_index": "outputIndex",
-        "item_id": "itemId",
-        "content_index": "contentIndex",
-        "sequence_number": "sequenceNumber",
-      });
+export const OpenResponsesStreamEventResponseContentPartDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseContentPartDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.content_part.done'),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    part: z.union([
+      ResponseOutputText$inboundSchema,
+      ReasoningTextContent$inboundSchema.and(
+        z.object({
+          type: z.literal('reasoning_text'),
+        }),
+      ),
+      OpenAIResponsesRefusalContent$inboundSchema,
+    ]),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
+  });
 
 export function openResponsesStreamEventResponseContentPartDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseContentPartDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseContentPartDone, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseContentPartDone$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseContentPartDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseContentPartDone' from JSON`,
   );
 }
@@ -683,14 +634,14 @@ export function openResponsesStreamEventResponseContentPartDoneFromJSON(
 export const Part1$inboundSchema: z.ZodType<Part1, unknown> = z.union([
   ResponseOutputText$inboundSchema,
   ReasoningTextContent$inboundSchema.and(
-    z.object({ type: z.literal("reasoning_text") }),
+    z.object({
+      type: z.literal('reasoning_text'),
+    }),
   ),
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
 
-export function part1FromJSON(
-  jsonString: string,
-): SafeParseResult<Part1, SDKValidationError> {
+export function part1FromJSON(jsonString: string): SafeParseResult<Part1, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Part1$inboundSchema.parse(JSON.parse(x)),
@@ -699,105 +650,97 @@ export function part1FromJSON(
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseContentPartAdded$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseContentPartAdded, unknown> = z
-    .object({
-      type: z.literal("response.content_part.added"),
-      output_index: z.number(),
-      item_id: z.string(),
-      content_index: z.number(),
-      part: z.union([
-        ResponseOutputText$inboundSchema,
-        ReasoningTextContent$inboundSchema.and(
-          z.object({ type: z.literal("reasoning_text") }),
-        ),
-        OpenAIResponsesRefusalContent$inboundSchema,
-      ]),
-      sequence_number: z.number(),
-    }).transform((v) => {
-      return remap$(v, {
-        "output_index": "outputIndex",
-        "item_id": "itemId",
-        "content_index": "contentIndex",
-        "sequence_number": "sequenceNumber",
-      });
+export const OpenResponsesStreamEventResponseContentPartAdded$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseContentPartAdded,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.content_part.added'),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    part: z.union([
+      ResponseOutputText$inboundSchema,
+      ReasoningTextContent$inboundSchema.and(
+        z.object({
+          type: z.literal('reasoning_text'),
+        }),
+      ),
+      OpenAIResponsesRefusalContent$inboundSchema,
+    ]),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
     });
+  });
 
 export function openResponsesStreamEventResponseContentPartAddedFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseContentPartAdded,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseContentPartAdded, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseContentPartAdded$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseContentPartAdded$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseContentPartAdded' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseOutputItemDone$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseOutputItemDone, unknown> = z.object(
-    {
-      type: z.literal("response.output_item.done"),
-      output_index: z.number(),
-      item: ResponsesOutputItem$inboundSchema,
-      sequence_number: z.number(),
-    },
-  ).transform((v) => {
+export const OpenResponsesStreamEventResponseOutputItemDone$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseOutputItemDone,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.output_item.done'),
+    output_index: z.number(),
+    item: ResponsesOutputItem$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
     return remap$(v, {
-      "output_index": "outputIndex",
-      "sequence_number": "sequenceNumber",
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseOutputItemDoneFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseOutputItemDone,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseOutputItemDone, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseOutputItemDone$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseOutputItemDone$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseOutputItemDone' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseOutputItemAdded, unknown> = z
-    .object({
-      type: z.literal("response.output_item.added"),
-      output_index: z.number(),
-      item: ResponsesOutputItem$inboundSchema,
-      sequence_number: z.number(),
-    }).transform((v) => {
-      return remap$(v, {
-        "output_index": "outputIndex",
-        "sequence_number": "sequenceNumber",
-      });
+export const OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseOutputItemAdded,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.output_item.added'),
+    output_index: z.number(),
+    item: ResponsesOutputItem$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
     });
+  });
 
 export function openResponsesStreamEventResponseOutputItemAddedFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseOutputItemAdded,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseOutputItemAdded, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseOutputItemAdded' from JSON`,
   );
 }
@@ -806,51 +749,50 @@ export function openResponsesStreamEventResponseOutputItemAddedFromJSON(
 export const OpenResponsesStreamEventResponseFailed$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseFailed,
   unknown
-> = z.object({
-  type: z.literal("response.failed"),
-  response: OpenResponsesNonStreamingResponse$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.failed'),
+    response: OpenResponsesNonStreamingResponse$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesStreamEventResponseFailedFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesStreamEventResponseFailed, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseFailed$inboundSchema.parse(JSON.parse(x)),
+    (x) => OpenResponsesStreamEventResponseFailed$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseFailed' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseIncomplete$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseIncomplete, unknown> = z.object({
-    type: z.literal("response.incomplete"),
+export const OpenResponsesStreamEventResponseIncomplete$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseIncomplete,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.incomplete'),
     response: OpenResponsesNonStreamingResponse$inboundSchema,
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "sequence_number": "sequenceNumber",
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseIncompleteFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseIncomplete,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseIncomplete, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseIncomplete$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseIncomplete$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseIncomplete' from JSON`,
   );
 }
@@ -859,56 +801,50 @@ export function openResponsesStreamEventResponseIncompleteFromJSON(
 export const OpenResponsesStreamEventResponseCompleted$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCompleted,
   unknown
-> = z.object({
-  type: z.literal("response.completed"),
-  response: OpenResponsesNonStreamingResponse$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.completed'),
+    response: OpenResponsesNonStreamingResponse$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesStreamEventResponseCompletedFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseCompleted,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseCompleted, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseCompleted$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseCompleted$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseCompleted' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEventResponseInProgress$inboundSchema:
-  z.ZodType<OpenResponsesStreamEventResponseInProgress, unknown> = z.object({
-    type: z.literal("response.in_progress"),
+export const OpenResponsesStreamEventResponseInProgress$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventResponseInProgress,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.in_progress'),
     response: OpenResponsesNonStreamingResponse$inboundSchema,
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "sequence_number": "sequenceNumber",
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesStreamEventResponseInProgressFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseInProgress,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseInProgress, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseInProgress$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseInProgress$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseInProgress' from JSON`,
   );
 }
@@ -917,73 +853,59 @@ export function openResponsesStreamEventResponseInProgressFromJSON(
 export const OpenResponsesStreamEventResponseCreated$inboundSchema: z.ZodType<
   OpenResponsesStreamEventResponseCreated,
   unknown
-> = z.object({
-  type: z.literal("response.created"),
-  response: OpenResponsesNonStreamingResponse$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.created'),
+    response: OpenResponsesNonStreamingResponse$inboundSchema,
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesStreamEventResponseCreatedFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesStreamEventResponseCreated,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesStreamEventResponseCreated, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesStreamEventResponseCreated$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesStreamEventResponseCreated$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesStreamEventResponseCreated' from JSON`,
   );
 }
 
 /** @internal */
-export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<
-  OpenResponsesStreamEvent,
-  unknown
-> = z.union([
-  z.lazy(() => OpenResponsesStreamEventResponseCreated$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseInProgress$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseCompleted$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseIncomplete$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseFailed$inboundSchema),
-  OpenResponsesErrorEvent$inboundSchema,
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputItemDone$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartAdded$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseContentPartDone$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseOutputTextDone$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDelta$inboundSchema),
-  z.lazy(() => OpenResponsesStreamEventResponseRefusalDone$inboundSchema),
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema
-  ),
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema
-  ),
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema
-  ),
-  OpenResponsesReasoningDeltaEvent$inboundSchema,
-  OpenResponsesReasoningDoneEvent$inboundSchema,
-  OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema,
-  z.lazy(() =>
-    OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema
-  ),
-  OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema,
-  OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
-  OpenResponsesImageGenCallInProgress$inboundSchema,
-  OpenResponsesImageGenCallGenerating$inboundSchema,
-  OpenResponsesImageGenCallPartialImage$inboundSchema,
-  OpenResponsesImageGenCallCompleted$inboundSchema,
-]);
+export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<OpenResponsesStreamEvent, unknown> =
+  z.union([
+    z.lazy(() => OpenResponsesStreamEventResponseCreated$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseInProgress$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseCompleted$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseIncomplete$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseFailed$inboundSchema),
+    OpenResponsesErrorEvent$inboundSchema,
+    z.lazy(() => OpenResponsesStreamEventResponseOutputItemAdded$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseOutputItemDone$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseContentPartAdded$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseContentPartDone$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseOutputTextDone$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseRefusalDelta$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseRefusalDone$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseOutputTextAnnotationAdded$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseFunctionCallArgumentsDelta$inboundSchema),
+    z.lazy(() => OpenResponsesStreamEventResponseFunctionCallArgumentsDone$inboundSchema),
+    OpenResponsesReasoningDeltaEvent$inboundSchema,
+    OpenResponsesReasoningDoneEvent$inboundSchema,
+    OpenResponsesReasoningSummaryPartAddedEvent$inboundSchema,
+    z.lazy(() => OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema),
+    OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema,
+    OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
+    OpenResponsesImageGenCallInProgress$inboundSchema,
+    OpenResponsesImageGenCallGenerating$inboundSchema,
+    OpenResponsesImageGenCallPartialImage$inboundSchema,
+    OpenResponsesImageGenCallCompleted$inboundSchema,
+  ]);
 
 export function openResponsesStreamEventFromJSON(
   jsonString: string,

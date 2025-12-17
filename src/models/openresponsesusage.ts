@@ -3,11 +3,12 @@
  * @generated-id: 806527de3bfd
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type InputTokensDetails = {
   cachedTokens: number;
@@ -44,16 +45,15 @@ export type OpenResponsesUsage = {
 };
 
 /** @internal */
-export const InputTokensDetails$inboundSchema: z.ZodType<
-  InputTokensDetails,
-  unknown
-> = z.object({
-  cached_tokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "cached_tokens": "cachedTokens",
+export const InputTokensDetails$inboundSchema: z.ZodType<InputTokensDetails, unknown> = z
+  .object({
+    cached_tokens: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      cached_tokens: 'cachedTokens',
+    });
   });
-});
 
 export function inputTokensDetailsFromJSON(
   jsonString: string,
@@ -66,16 +66,15 @@ export function inputTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const OutputTokensDetails$inboundSchema: z.ZodType<
-  OutputTokensDetails,
-  unknown
-> = z.object({
-  reasoning_tokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "reasoning_tokens": "reasoningTokens",
+export const OutputTokensDetails$inboundSchema: z.ZodType<OutputTokensDetails, unknown> = z
+  .object({
+    reasoning_tokens: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      reasoning_tokens: 'reasoningTokens',
+    });
   });
-});
 
 export function outputTokensDetailsFromJSON(
   jsonString: string,
@@ -93,11 +92,12 @@ export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
     upstream_inference_cost: z.nullable(z.number()).optional(),
     upstream_inference_input_cost: z.number(),
     upstream_inference_output_cost: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "upstream_inference_cost": "upstreamInferenceCost",
-      "upstream_inference_input_cost": "upstreamInferenceInputCost",
-      "upstream_inference_output_cost": "upstreamInferenceOutputCost",
+      upstream_inference_cost: 'upstreamInferenceCost',
+      upstream_inference_input_cost: 'upstreamInferenceInputCost',
+      upstream_inference_output_cost: 'upstreamInferenceOutputCost',
     });
   });
 
@@ -112,29 +112,28 @@ export function costDetailsFromJSON(
 }
 
 /** @internal */
-export const OpenResponsesUsage$inboundSchema: z.ZodType<
-  OpenResponsesUsage,
-  unknown
-> = z.object({
-  input_tokens: z.number(),
-  input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
-  output_tokens: z.number(),
-  output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
-  total_tokens: z.number(),
-  cost: z.nullable(z.number()).optional(),
-  is_byok: z.boolean().optional(),
-  cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "input_tokens": "inputTokens",
-    "input_tokens_details": "inputTokensDetails",
-    "output_tokens": "outputTokens",
-    "output_tokens_details": "outputTokensDetails",
-    "total_tokens": "totalTokens",
-    "is_byok": "isByok",
-    "cost_details": "costDetails",
+export const OpenResponsesUsage$inboundSchema: z.ZodType<OpenResponsesUsage, unknown> = z
+  .object({
+    input_tokens: z.number(),
+    input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
+    output_tokens: z.number(),
+    output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
+    total_tokens: z.number(),
+    cost: z.nullable(z.number()).optional(),
+    is_byok: z.boolean().optional(),
+    cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      input_tokens: 'inputTokens',
+      input_tokens_details: 'inputTokensDetails',
+      output_tokens: 'outputTokens',
+      output_tokens_details: 'outputTokensDetails',
+      total_tokens: 'totalTokens',
+      is_byok: 'isByok',
+      cost_details: 'costDetails',
+    });
   });
-});
 
 export function openResponsesUsageFromJSON(
   jsonString: string,

@@ -3,28 +3,32 @@
  * @generated-id: 4408142ee314
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type {
   ResponsesFormatJSONObject,
-  ResponsesFormatJSONObject$inboundSchema,
   ResponsesFormatJSONObject$Outbound,
-  ResponsesFormatJSONObject$outboundSchema,
-} from "./responsesformatjsonobject.js";
-import {
-  ResponsesFormatText,
-  ResponsesFormatText$inboundSchema,
-  ResponsesFormatText$Outbound,
-  ResponsesFormatText$outboundSchema,
-} from "./responsesformattext.js";
-import {
+} from './responsesformatjsonobject.js';
+import type { ResponsesFormatText, ResponsesFormatText$Outbound } from './responsesformattext.js';
+import type {
   ResponsesFormatTextJSONSchemaConfig,
-  ResponsesFormatTextJSONSchemaConfig$inboundSchema,
   ResponsesFormatTextJSONSchemaConfig$Outbound,
+} from './responsesformattextjsonschemaconfig.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import {
+  ResponsesFormatJSONObject$inboundSchema,
+  ResponsesFormatJSONObject$outboundSchema,
+} from './responsesformatjsonobject.js';
+import {
+  ResponsesFormatText$inboundSchema,
+  ResponsesFormatText$outboundSchema,
+} from './responsesformattext.js';
+import {
+  ResponsesFormatTextJSONSchemaConfig$inboundSchema,
   ResponsesFormatTextJSONSchemaConfig$outboundSchema,
-} from "./responsesformattextjsonschemaconfig.js";
+} from './responsesformattextjsonschemaconfig.js';
 
 /**
  * Text response format configuration
@@ -35,14 +39,12 @@ export type ResponseFormatTextConfig =
   | ResponsesFormatTextJSONSchemaConfig;
 
 /** @internal */
-export const ResponseFormatTextConfig$inboundSchema: z.ZodType<
-  ResponseFormatTextConfig,
-  unknown
-> = z.union([
-  ResponsesFormatText$inboundSchema,
-  ResponsesFormatJSONObject$inboundSchema,
-  ResponsesFormatTextJSONSchemaConfig$inboundSchema,
-]);
+export const ResponseFormatTextConfig$inboundSchema: z.ZodType<ResponseFormatTextConfig, unknown> =
+  z.union([
+    ResponsesFormatText$inboundSchema,
+    ResponsesFormatJSONObject$inboundSchema,
+    ResponsesFormatTextJSONSchemaConfig$inboundSchema,
+  ]);
 /** @internal */
 export type ResponseFormatTextConfig$Outbound =
   | ResponsesFormatText$Outbound
@@ -62,9 +64,7 @@ export const ResponseFormatTextConfig$outboundSchema: z.ZodType<
 export function responseFormatTextConfigToJSON(
   responseFormatTextConfig: ResponseFormatTextConfig,
 ): string {
-  return JSON.stringify(
-    ResponseFormatTextConfig$outboundSchema.parse(responseFormatTextConfig),
-  );
+  return JSON.stringify(ResponseFormatTextConfig$outboundSchema.parse(responseFormatTextConfig));
 }
 export function responseFormatTextConfigFromJSON(
   jsonString: string,

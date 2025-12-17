@@ -3,23 +3,20 @@
  * @generated-id: 316ab9f7e558
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  CompletionChoice,
-  CompletionChoice$inboundSchema,
-} from "./completionchoice.js";
-import {
-  CompletionUsage,
-  CompletionUsage$inboundSchema,
-} from "./completionusage.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { CompletionChoice } from './completionchoice.js';
+import type { CompletionUsage } from './completionusage.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { CompletionChoice$inboundSchema } from './completionchoice.js';
+import { CompletionUsage$inboundSchema } from './completionusage.js';
 
 export type CompletionResponse = {
   id: string;
-  object: "text_completion";
+  object: 'text_completion';
   created: number;
   model: string;
   provider?: string | undefined;
@@ -29,23 +26,22 @@ export type CompletionResponse = {
 };
 
 /** @internal */
-export const CompletionResponse$inboundSchema: z.ZodType<
-  CompletionResponse,
-  unknown
-> = z.object({
-  id: z.string(),
-  object: z.literal("text_completion"),
-  created: z.number(),
-  model: z.string(),
-  provider: z.string().optional(),
-  system_fingerprint: z.string().optional(),
-  choices: z.array(CompletionChoice$inboundSchema),
-  usage: CompletionUsage$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "system_fingerprint": "systemFingerprint",
+export const CompletionResponse$inboundSchema: z.ZodType<CompletionResponse, unknown> = z
+  .object({
+    id: z.string(),
+    object: z.literal('text_completion'),
+    created: z.number(),
+    model: z.string(),
+    provider: z.string().optional(),
+    system_fingerprint: z.string().optional(),
+    choices: z.array(CompletionChoice$inboundSchema),
+    usage: CompletionUsage$inboundSchema.optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      system_fingerprint: 'systemFingerprint',
+    });
   });
-});
 
 export function completionResponseFromJSON(
   jsonString: string,

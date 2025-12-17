@@ -3,68 +3,78 @@
  * @generated-id: 4e7df3e415cd
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ResponsesImageGenerationCall,
-  ResponsesImageGenerationCall$inboundSchema,
-} from "./responsesimagegenerationcall.js";
-import {
-  ResponsesOutputItemFileSearchCall,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
-} from "./responsesoutputitemfilesearchcall.js";
-import {
-  ResponsesOutputItemFunctionCall,
-  ResponsesOutputItemFunctionCall$inboundSchema,
-} from "./responsesoutputitemfunctioncall.js";
-import {
-  ResponsesOutputItemReasoning,
-  ResponsesOutputItemReasoning$inboundSchema,
-} from "./responsesoutputitemreasoning.js";
-import {
-  ResponsesOutputMessage,
-  ResponsesOutputMessage$inboundSchema,
-} from "./responsesoutputmessage.js";
-import {
-  ResponsesWebSearchCallOutput,
-  ResponsesWebSearchCallOutput$inboundSchema,
-} from "./responseswebsearchcalloutput.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponsesImageGenerationCall } from './responsesimagegenerationcall.js';
+import type { ResponsesOutputItemFileSearchCall } from './responsesoutputitemfilesearchcall.js';
+import type { ResponsesOutputItemFunctionCall } from './responsesoutputitemfunctioncall.js';
+import type { ResponsesOutputItemReasoning } from './responsesoutputitemreasoning.js';
+import type { ResponsesOutputMessage } from './responsesoutputmessage.js';
+import type { ResponsesWebSearchCallOutput } from './responseswebsearchcalloutput.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { ResponsesImageGenerationCall$inboundSchema } from './responsesimagegenerationcall.js';
+import { ResponsesOutputItemFileSearchCall$inboundSchema } from './responsesoutputitemfilesearchcall.js';
+import { ResponsesOutputItemFunctionCall$inboundSchema } from './responsesoutputitemfunctioncall.js';
+import { ResponsesOutputItemReasoning$inboundSchema } from './responsesoutputitemreasoning.js';
+import { ResponsesOutputMessage$inboundSchema } from './responsesoutputmessage.js';
+import { ResponsesWebSearchCallOutput$inboundSchema } from './responseswebsearchcalloutput.js';
 
 /**
  * An output item from the response
  */
 export type ResponsesOutputItem =
-  | (ResponsesOutputMessage & { type: "message" })
-  | (ResponsesOutputItemReasoning & { type: "reasoning" })
-  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
-  | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
-  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
-  | (ResponsesImageGenerationCall & { type: "image_generation_call" });
+  | (ResponsesOutputMessage & {
+      type: 'message';
+    })
+  | (ResponsesOutputItemReasoning & {
+      type: 'reasoning';
+    })
+  | (ResponsesOutputItemFunctionCall & {
+      type: 'function_call';
+    })
+  | (ResponsesWebSearchCallOutput & {
+      type: 'web_search_call';
+    })
+  | (ResponsesOutputItemFileSearchCall & {
+      type: 'file_search_call';
+    })
+  | (ResponsesImageGenerationCall & {
+      type: 'image_generation_call';
+    });
 
 /** @internal */
-export const ResponsesOutputItem$inboundSchema: z.ZodType<
-  ResponsesOutputItem,
-  unknown
-> = z.union([
+export const ResponsesOutputItem$inboundSchema: z.ZodType<ResponsesOutputItem, unknown> = z.union([
   ResponsesOutputMessage$inboundSchema.and(
-    z.object({ type: z.literal("message") }),
+    z.object({
+      type: z.literal('message'),
+    }),
   ),
   ResponsesOutputItemReasoning$inboundSchema.and(
-    z.object({ type: z.literal("reasoning") }),
+    z.object({
+      type: z.literal('reasoning'),
+    }),
   ),
   ResponsesOutputItemFunctionCall$inboundSchema.and(
-    z.object({ type: z.literal("function_call") }),
+    z.object({
+      type: z.literal('function_call'),
+    }),
   ),
   ResponsesWebSearchCallOutput$inboundSchema.and(
-    z.object({ type: z.literal("web_search_call") }),
+    z.object({
+      type: z.literal('web_search_call'),
+    }),
   ),
   ResponsesOutputItemFileSearchCall$inboundSchema.and(
-    z.object({ type: z.literal("file_search_call") }),
+    z.object({
+      type: z.literal('file_search_call'),
+    }),
   ),
   ResponsesImageGenerationCall$inboundSchema.and(
-    z.object({ type: z.literal("image_generation_call") }),
+    z.object({
+      type: z.literal('image_generation_call'),
+    }),
   ),
 ]);
 

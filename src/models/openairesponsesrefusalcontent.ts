@@ -3,13 +3,14 @@
  * @generated-id: 5445ae4a5385
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export type OpenAIResponsesRefusalContent = {
-  type: "refusal";
+  type: 'refusal';
   refusal: string;
 };
 
@@ -18,12 +19,12 @@ export const OpenAIResponsesRefusalContent$inboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent,
   unknown
 > = z.object({
-  type: z.literal("refusal"),
+  type: z.literal('refusal'),
   refusal: z.string(),
 });
 /** @internal */
 export type OpenAIResponsesRefusalContent$Outbound = {
-  type: "refusal";
+  type: 'refusal';
   refusal: string;
 };
 
@@ -32,7 +33,7 @@ export const OpenAIResponsesRefusalContent$outboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent$Outbound,
   OpenAIResponsesRefusalContent
 > = z.object({
-  type: z.literal("refusal"),
+  type: z.literal('refusal'),
   refusal: z.string(),
 });
 
@@ -40,9 +41,7 @@ export function openAIResponsesRefusalContentToJSON(
   openAIResponsesRefusalContent: OpenAIResponsesRefusalContent,
 ): string {
   return JSON.stringify(
-    OpenAIResponsesRefusalContent$outboundSchema.parse(
-      openAIResponsesRefusalContent,
-    ),
+    OpenAIResponsesRefusalContent$outboundSchema.parse(openAIResponsesRefusalContent),
   );
 }
 export function openAIResponsesRefusalContentFromJSON(

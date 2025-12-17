@@ -3,9 +3,10 @@
  * @generated-id: fa417e9ad79a
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.
@@ -16,8 +17,8 @@ import { OpenEnum } from "../types/enums.js";
  * - deny: use only providers which do not collect user data.
  */
 export const DataCollection = {
-  Deny: "deny",
-  Allow: "allow",
+  Deny: 'deny',
+  Allow: 'allow',
 } as const;
 /**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.

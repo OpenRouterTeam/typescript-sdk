@@ -3,8 +3,8 @@
  * @generated-id: f1343fbaaed5
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
 
 export type GetModelsRequest = {
   category?: string | undefined;
@@ -21,19 +21,17 @@ export type GetModelsRequest$Outbound = {
 export const GetModelsRequest$outboundSchema: z.ZodType<
   GetModelsRequest$Outbound,
   GetModelsRequest
-> = z.object({
-  category: z.string().optional(),
-  supportedParameters: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    supportedParameters: "supported_parameters",
+> = z
+  .object({
+    category: z.string().optional(),
+    supportedParameters: z.string().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      supportedParameters: 'supported_parameters',
+    });
   });
-});
 
-export function getModelsRequestToJSON(
-  getModelsRequest: GetModelsRequest,
-): string {
-  return JSON.stringify(
-    GetModelsRequest$outboundSchema.parse(getModelsRequest),
-  );
+export function getModelsRequestToJSON(getModelsRequest: GetModelsRequest): string {
+  return JSON.stringify(GetModelsRequest$outboundSchema.parse(getModelsRequest));
 }

@@ -3,11 +3,12 @@
  * @generated-id: eed686a58eb1
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type TopLogprob = {
   token: string;
@@ -23,12 +24,11 @@ export type ChatMessageTokenLogprob = {
 };
 
 /** @internal */
-export const TopLogprob$inboundSchema: z.ZodType<TopLogprob, unknown> = z
-  .object({
-    token: z.string(),
-    logprob: z.number(),
-    bytes: z.nullable(z.array(z.number())),
-  });
+export const TopLogprob$inboundSchema: z.ZodType<TopLogprob, unknown> = z.object({
+  token: z.string(),
+  logprob: z.number(),
+  bytes: z.nullable(z.array(z.number())),
+});
 
 export function topLogprobFromJSON(
   jsonString: string,
@@ -41,19 +41,18 @@ export function topLogprobFromJSON(
 }
 
 /** @internal */
-export const ChatMessageTokenLogprob$inboundSchema: z.ZodType<
-  ChatMessageTokenLogprob,
-  unknown
-> = z.object({
-  token: z.string(),
-  logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
-  top_logprobs: z.array(z.lazy(() => TopLogprob$inboundSchema)),
-}).transform((v) => {
-  return remap$(v, {
-    "top_logprobs": "topLogprobs",
+export const ChatMessageTokenLogprob$inboundSchema: z.ZodType<ChatMessageTokenLogprob, unknown> = z
+  .object({
+    token: z.string(),
+    logprob: z.number(),
+    bytes: z.nullable(z.array(z.number())),
+    top_logprobs: z.array(z.lazy(() => TopLogprob$inboundSchema)),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      top_logprobs: 'topLogprobs',
+    });
   });
-});
 
 export function chatMessageTokenLogprobFromJSON(
   jsonString: string,

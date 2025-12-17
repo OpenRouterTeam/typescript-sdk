@@ -3,18 +3,19 @@
  * @generated-id: 5a81301cb4a7
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type VideoUrl2 = {
   url: string;
 };
 
 export type ChatMessageContentItemVideoVideoURL = {
-  type: "video_url";
+  type: 'video_url';
   videoUrl: VideoUrl2;
 };
 
@@ -23,7 +24,7 @@ export type VideoUrl1 = {
 };
 
 export type ChatMessageContentItemVideoInputVideo = {
-  type: "input_video";
+  type: 'input_video';
   videoUrl: VideoUrl1;
 };
 
@@ -41,10 +42,7 @@ export type VideoUrl2$Outbound = {
 };
 
 /** @internal */
-export const VideoUrl2$outboundSchema: z.ZodType<
-  VideoUrl2$Outbound,
-  VideoUrl2
-> = z.object({
+export const VideoUrl2$outboundSchema: z.ZodType<VideoUrl2$Outbound, VideoUrl2> = z.object({
   url: z.string(),
 });
 
@@ -65,17 +63,19 @@ export function videoUrl2FromJSON(
 export const ChatMessageContentItemVideoVideoURL$inboundSchema: z.ZodType<
   ChatMessageContentItemVideoVideoURL,
   unknown
-> = z.object({
-  type: z.literal("video_url"),
-  video_url: z.lazy(() => VideoUrl2$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "video_url": "videoUrl",
+> = z
+  .object({
+    type: z.literal('video_url'),
+    video_url: z.lazy(() => VideoUrl2$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      video_url: 'videoUrl',
+    });
   });
-});
 /** @internal */
 export type ChatMessageContentItemVideoVideoURL$Outbound = {
-  type: "video_url";
+  type: 'video_url';
   video_url: VideoUrl2$Outbound;
 };
 
@@ -83,22 +83,22 @@ export type ChatMessageContentItemVideoVideoURL$Outbound = {
 export const ChatMessageContentItemVideoVideoURL$outboundSchema: z.ZodType<
   ChatMessageContentItemVideoVideoURL$Outbound,
   ChatMessageContentItemVideoVideoURL
-> = z.object({
-  type: z.literal("video_url"),
-  videoUrl: z.lazy(() => VideoUrl2$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    videoUrl: "video_url",
+> = z
+  .object({
+    type: z.literal('video_url'),
+    videoUrl: z.lazy(() => VideoUrl2$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      videoUrl: 'video_url',
+    });
   });
-});
 
 export function chatMessageContentItemVideoVideoURLToJSON(
   chatMessageContentItemVideoVideoURL: ChatMessageContentItemVideoVideoURL,
 ): string {
   return JSON.stringify(
-    ChatMessageContentItemVideoVideoURL$outboundSchema.parse(
-      chatMessageContentItemVideoVideoURL,
-    ),
+    ChatMessageContentItemVideoVideoURL$outboundSchema.parse(chatMessageContentItemVideoVideoURL),
   );
 }
 export function chatMessageContentItemVideoVideoURLFromJSON(
@@ -106,8 +106,7 @@ export function chatMessageContentItemVideoVideoURLFromJSON(
 ): SafeParseResult<ChatMessageContentItemVideoVideoURL, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatMessageContentItemVideoVideoURL$inboundSchema.parse(JSON.parse(x)),
+    (x) => ChatMessageContentItemVideoVideoURL$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatMessageContentItemVideoVideoURL' from JSON`,
   );
 }
@@ -122,10 +121,7 @@ export type VideoUrl1$Outbound = {
 };
 
 /** @internal */
-export const VideoUrl1$outboundSchema: z.ZodType<
-  VideoUrl1$Outbound,
-  VideoUrl1
-> = z.object({
+export const VideoUrl1$outboundSchema: z.ZodType<VideoUrl1$Outbound, VideoUrl1> = z.object({
   url: z.string(),
 });
 
@@ -146,17 +142,19 @@ export function videoUrl1FromJSON(
 export const ChatMessageContentItemVideoInputVideo$inboundSchema: z.ZodType<
   ChatMessageContentItemVideoInputVideo,
   unknown
-> = z.object({
-  type: z.literal("input_video"),
-  video_url: z.lazy(() => VideoUrl1$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "video_url": "videoUrl",
+> = z
+  .object({
+    type: z.literal('input_video'),
+    video_url: z.lazy(() => VideoUrl1$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      video_url: 'videoUrl',
+    });
   });
-});
 /** @internal */
 export type ChatMessageContentItemVideoInputVideo$Outbound = {
-  type: "input_video";
+  type: 'input_video';
   video_url: VideoUrl1$Outbound;
 };
 
@@ -164,14 +162,16 @@ export type ChatMessageContentItemVideoInputVideo$Outbound = {
 export const ChatMessageContentItemVideoInputVideo$outboundSchema: z.ZodType<
   ChatMessageContentItemVideoInputVideo$Outbound,
   ChatMessageContentItemVideoInputVideo
-> = z.object({
-  type: z.literal("input_video"),
-  videoUrl: z.lazy(() => VideoUrl1$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    videoUrl: "video_url",
+> = z
+  .object({
+    type: z.literal('input_video'),
+    videoUrl: z.lazy(() => VideoUrl1$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      videoUrl: 'video_url',
+    });
   });
-});
 
 export function chatMessageContentItemVideoInputVideoToJSON(
   chatMessageContentItemVideoInputVideo: ChatMessageContentItemVideoInputVideo,
@@ -187,8 +187,7 @@ export function chatMessageContentItemVideoInputVideoFromJSON(
 ): SafeParseResult<ChatMessageContentItemVideoInputVideo, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatMessageContentItemVideoInputVideo$inboundSchema.parse(JSON.parse(x)),
+    (x) => ChatMessageContentItemVideoInputVideo$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatMessageContentItemVideoInputVideo' from JSON`,
   );
 }
@@ -219,9 +218,7 @@ export function chatMessageContentItemVideoToJSON(
   chatMessageContentItemVideo: ChatMessageContentItemVideo,
 ): string {
   return JSON.stringify(
-    ChatMessageContentItemVideo$outboundSchema.parse(
-      chatMessageContentItemVideo,
-    ),
+    ChatMessageContentItemVideo$outboundSchema.parse(chatMessageContentItemVideo),
   );
 }
 export function chatMessageContentItemVideoFromJSON(

@@ -3,24 +3,23 @@
  * @generated-id: 3c1dd9e04db4
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * Size of the search context for web search tools
  */
 export const ResponsesSearchContextSize = {
-  Low: "low",
-  Medium: "medium",
-  High: "high",
+  Low: 'low',
+  Medium: 'medium',
+  High: 'high',
 } as const;
 /**
  * Size of the search context for web search tools
  */
-export type ResponsesSearchContextSize = OpenEnum<
-  typeof ResponsesSearchContextSize
->;
+export type ResponsesSearchContextSize = OpenEnum<typeof ResponsesSearchContextSize>;
 
 /** @internal */
 export const ResponsesSearchContextSize$inboundSchema: z.ZodType<

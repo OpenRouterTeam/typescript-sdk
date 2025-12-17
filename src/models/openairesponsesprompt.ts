@@ -3,45 +3,35 @@
  * @generated-id: c583d897e9d2
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ResponseInputFile,
-  ResponseInputFile$inboundSchema,
-  ResponseInputFile$Outbound,
-  ResponseInputFile$outboundSchema,
-} from "./responseinputfile.js";
-import {
-  ResponseInputImage,
-  ResponseInputImage$inboundSchema,
-  ResponseInputImage$Outbound,
-  ResponseInputImage$outboundSchema,
-} from "./responseinputimage.js";
-import {
-  ResponseInputText,
-  ResponseInputText$inboundSchema,
-  ResponseInputText$Outbound,
-  ResponseInputText$outboundSchema,
-} from "./responseinputtext.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponseInputFile, ResponseInputFile$Outbound } from './responseinputfile.js';
+import type { ResponseInputImage, ResponseInputImage$Outbound } from './responseinputimage.js';
+import type { ResponseInputText, ResponseInputText$Outbound } from './responseinputtext.js';
 
-export type Variables =
-  | ResponseInputText
-  | ResponseInputImage
-  | ResponseInputFile
-  | string;
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import {
+  ResponseInputFile$inboundSchema,
+  ResponseInputFile$outboundSchema,
+} from './responseinputfile.js';
+import {
+  ResponseInputImage$inboundSchema,
+  ResponseInputImage$outboundSchema,
+} from './responseinputimage.js';
+import {
+  ResponseInputText$inboundSchema,
+  ResponseInputText$outboundSchema,
+} from './responseinputtext.js';
+
+export type Variables = ResponseInputText | ResponseInputImage | ResponseInputFile | string;
 
 export type OpenAIResponsesPrompt = {
   id: string;
   variables?:
     | {
-      [k: string]:
-        | ResponseInputText
-        | ResponseInputImage
-        | ResponseInputFile
-        | string;
-    }
+        [k: string]: ResponseInputText | ResponseInputImage | ResponseInputFile | string;
+      }
     | null
     | undefined;
 };
@@ -61,10 +51,7 @@ export type Variables$Outbound =
   | string;
 
 /** @internal */
-export const Variables$outboundSchema: z.ZodType<
-  Variables$Outbound,
-  Variables
-> = z.union([
+export const Variables$outboundSchema: z.ZodType<Variables$Outbound, Variables> = z.union([
   ResponseInputText$outboundSchema,
   ResponseInputImage$outboundSchema,
   ResponseInputFile$outboundSchema,
@@ -85,34 +72,34 @@ export function variablesFromJSON(
 }
 
 /** @internal */
-export const OpenAIResponsesPrompt$inboundSchema: z.ZodType<
-  OpenAIResponsesPrompt,
-  unknown
-> = z.object({
-  id: z.string(),
-  variables: z.nullable(
-    z.record(
-      z.string(),
-      z.union([
-        ResponseInputText$inboundSchema,
-        ResponseInputImage$inboundSchema,
-        ResponseInputFile$inboundSchema,
-        z.string(),
-      ]),
-    ),
-  ).optional(),
-});
+export const OpenAIResponsesPrompt$inboundSchema: z.ZodType<OpenAIResponsesPrompt, unknown> =
+  z.object({
+    id: z.string(),
+    variables: z
+      .nullable(
+        z.record(
+          z.string(),
+          z.union([
+            ResponseInputText$inboundSchema,
+            ResponseInputImage$inboundSchema,
+            ResponseInputFile$inboundSchema,
+            z.string(),
+          ]),
+        ),
+      )
+      .optional(),
+  });
 /** @internal */
 export type OpenAIResponsesPrompt$Outbound = {
   id: string;
   variables?:
     | {
-      [k: string]:
-        | ResponseInputText$Outbound
-        | ResponseInputImage$Outbound
-        | ResponseInputFile$Outbound
-        | string;
-    }
+        [k: string]:
+          | ResponseInputText$Outbound
+          | ResponseInputImage$Outbound
+          | ResponseInputFile$Outbound
+          | string;
+      }
     | null
     | undefined;
 };
@@ -123,25 +110,23 @@ export const OpenAIResponsesPrompt$outboundSchema: z.ZodType<
   OpenAIResponsesPrompt
 > = z.object({
   id: z.string(),
-  variables: z.nullable(
-    z.record(
-      z.string(),
-      z.union([
-        ResponseInputText$outboundSchema,
-        ResponseInputImage$outboundSchema,
-        ResponseInputFile$outboundSchema,
+  variables: z
+    .nullable(
+      z.record(
         z.string(),
-      ]),
-    ),
-  ).optional(),
+        z.union([
+          ResponseInputText$outboundSchema,
+          ResponseInputImage$outboundSchema,
+          ResponseInputFile$outboundSchema,
+          z.string(),
+        ]),
+      ),
+    )
+    .optional(),
 });
 
-export function openAIResponsesPromptToJSON(
-  openAIResponsesPrompt: OpenAIResponsesPrompt,
-): string {
-  return JSON.stringify(
-    OpenAIResponsesPrompt$outboundSchema.parse(openAIResponsesPrompt),
-  );
+export function openAIResponsesPromptToJSON(openAIResponsesPrompt: OpenAIResponsesPrompt): string {
+  return JSON.stringify(OpenAIResponsesPrompt$outboundSchema.parse(openAIResponsesPrompt));
 }
 export function openAIResponsesPromptFromJSON(
   jsonString: string,

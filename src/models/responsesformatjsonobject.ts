@@ -3,16 +3,17 @@
  * @generated-id: cd67052e598c
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * JSON object response format
  */
 export type ResponsesFormatJSONObject = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 /** @internal */
@@ -20,11 +21,11 @@ export const ResponsesFormatJSONObject$inboundSchema: z.ZodType<
   ResponsesFormatJSONObject,
   unknown
 > = z.object({
-  type: z.literal("json_object"),
+  type: z.literal('json_object'),
 });
 /** @internal */
 export type ResponsesFormatJSONObject$Outbound = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 /** @internal */
@@ -32,15 +33,13 @@ export const ResponsesFormatJSONObject$outboundSchema: z.ZodType<
   ResponsesFormatJSONObject$Outbound,
   ResponsesFormatJSONObject
 > = z.object({
-  type: z.literal("json_object"),
+  type: z.literal('json_object'),
 });
 
 export function responsesFormatJSONObjectToJSON(
   responsesFormatJSONObject: ResponsesFormatJSONObject,
 ): string {
-  return JSON.stringify(
-    ResponsesFormatJSONObject$outboundSchema.parse(responsesFormatJSONObject),
-  );
+  return JSON.stringify(ResponsesFormatJSONObject$outboundSchema.parse(responsesFormatJSONObject));
 }
 export function responsesFormatJSONObjectFromJSON(
   jsonString: string,

@@ -3,10 +3,10 @@
  * @generated-id: 6264bb9f01d6
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Bad Gateway - Provider/upstream API failure
@@ -34,33 +34,34 @@ export class BadGatewayResponseError extends OpenRouterError {
 
   constructor(
     err: BadGatewayResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "BadGatewayResponseError";
+    this.name = 'BadGatewayResponseError';
   }
 }
 
 /** @internal */
-export const BadGatewayResponseError$inboundSchema: z.ZodType<
-  BadGatewayResponseError,
-  unknown
-> = z.object({
-  error: models.BadGatewayResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+export const BadGatewayResponseError$inboundSchema: z.ZodType<BadGatewayResponseError, unknown> = z
+  .object({
+    error: models.BadGatewayResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new BadGatewayResponseError(remapped, {

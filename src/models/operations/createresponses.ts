@@ -3,12 +3,13 @@
  * @generated-id: 7ad611b27e9d
  */
 
-import * as z from "zod/v4";
-import { EventStream } from "../../lib/event-streams.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { EventStream } from '../../lib/event-streams.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as models from '../index.js';
 
 /**
  * Successful response
@@ -29,18 +30,21 @@ export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
   CreateResponsesResponseBody,
   unknown
 > = z.object({
-  data: z.string().transform((v, ctx) => {
-    try {
-      return JSON.parse(v);
-    } catch (err) {
-      ctx.addIssue({
-        input: v,
-        code: "custom",
-        message: `malformed json: ${err}`,
-      });
-      return z.NEVER;
-    }
-  }).pipe(models.OpenResponsesStreamEvent$inboundSchema),
+  data: z
+    .string()
+    .transform((v, ctx) => {
+      try {
+        return JSON.parse(v);
+      } catch (err) {
+        ctx.addIssue({
+          input: v,
+          code: 'custom',
+          message: `malformed json: ${err}`,
+        });
+        return z.NEVER;
+      }
+    })
+    .pipe(models.OpenResponsesStreamEvent$inboundSchema),
 });
 
 export function createResponsesResponseBodyFromJSON(
@@ -54,23 +58,23 @@ export function createResponsesResponseBodyFromJSON(
 }
 
 /** @internal */
-export const CreateResponsesResponse$inboundSchema: z.ZodType<
-  CreateResponsesResponse,
-  unknown
-> = z.union([
-  models.OpenResponsesNonStreamingResponse$inboundSchema,
-  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
-    .transform(stream => {
-      return new EventStream(stream, rawEvent => {
-        if (rawEvent.data === "[DONE]") return { done: true };
-        return {
-          value: z.lazy(() => CreateResponsesResponseBody$inboundSchema).parse(
-            rawEvent,
-          )?.data,
-        };
-      });
-    }),
-]);
+export const CreateResponsesResponse$inboundSchema: z.ZodType<CreateResponsesResponse, unknown> =
+  z.union([
+    models.OpenResponsesNonStreamingResponse$inboundSchema,
+    z
+      .custom<ReadableStream<Uint8Array>>((x) => x instanceof ReadableStream)
+      .transform((stream) => {
+        return new EventStream(stream, (rawEvent) => {
+          if (rawEvent.data === '[DONE]')
+            return {
+              done: true,
+            };
+          return {
+            value: z.lazy(() => CreateResponsesResponseBody$inboundSchema).parse(rawEvent)?.data,
+          };
+        });
+      }),
+  ]);
 
 export function createResponsesResponseFromJSON(
   jsonString: string,

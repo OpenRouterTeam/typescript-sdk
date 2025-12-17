@@ -3,16 +3,15 @@
  * @generated-id: 5e801f7b2903
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
-import {
-  ToolCallStatus,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { ToolCallStatus } from './toolcallstatus.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { ToolCallStatus$outboundSchema } from './toolcallstatus.js';
 
 export const OpenResponsesFunctionCallOutputType = {
-  FunctionCallOutput: "function_call_output",
+  FunctionCallOutput: 'function_call_output',
 } as const;
 export type OpenResponsesFunctionCallOutputType = ClosedEnum<
   typeof OpenResponsesFunctionCallOutputType
@@ -47,24 +46,24 @@ export type OpenResponsesFunctionCallOutput$Outbound = {
 export const OpenResponsesFunctionCallOutput$outboundSchema: z.ZodType<
   OpenResponsesFunctionCallOutput$Outbound,
   OpenResponsesFunctionCallOutput
-> = z.object({
-  type: OpenResponsesFunctionCallOutputType$outboundSchema,
-  id: z.nullable(z.string()).optional(),
-  callId: z.string(),
-  output: z.string(),
-  status: z.nullable(ToolCallStatus$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
+> = z
+  .object({
+    type: OpenResponsesFunctionCallOutputType$outboundSchema,
+    id: z.nullable(z.string()).optional(),
+    callId: z.string(),
+    output: z.string(),
+    status: z.nullable(ToolCallStatus$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      callId: 'call_id',
+    });
   });
-});
 
 export function openResponsesFunctionCallOutputToJSON(
   openResponsesFunctionCallOutput: OpenResponsesFunctionCallOutput,
 ): string {
   return JSON.stringify(
-    OpenResponsesFunctionCallOutput$outboundSchema.parse(
-      openResponsesFunctionCallOutput,
-    ),
+    OpenResponsesFunctionCallOutput$outboundSchema.parse(openResponsesFunctionCallOutput),
   );
 }

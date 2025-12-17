@@ -3,14 +3,13 @@
  * @generated-id: 2dbd9fc61ed8
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ChatMessageTokenLogprob,
-  ChatMessageTokenLogprob$inboundSchema,
-} from "./chatmessagetokenlogprob.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { ChatMessageTokenLogprob } from './chatmessagetokenlogprob.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { ChatMessageTokenLogprob$inboundSchema } from './chatmessagetokenlogprob.js';
 
 export type ChatMessageTokenLogprobs = {
   content: Array<ChatMessageTokenLogprob> | null;
@@ -18,13 +17,11 @@ export type ChatMessageTokenLogprobs = {
 };
 
 /** @internal */
-export const ChatMessageTokenLogprobs$inboundSchema: z.ZodType<
-  ChatMessageTokenLogprobs,
-  unknown
-> = z.object({
-  content: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
-  refusal: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
-});
+export const ChatMessageTokenLogprobs$inboundSchema: z.ZodType<ChatMessageTokenLogprobs, unknown> =
+  z.object({
+    content: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
+    refusal: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
+  });
 
 export function chatMessageTokenLogprobsFromJSON(
   jsonString: string,

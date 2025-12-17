@@ -3,17 +3,16 @@
  * @generated-id: 03de9ac74888
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const OpenAIResponsesTruncation = {
-  Auto: "auto",
-  Disabled: "disabled",
+  Auto: 'auto',
+  Disabled: 'disabled',
 } as const;
-export type OpenAIResponsesTruncation = OpenEnum<
-  typeof OpenAIResponsesTruncation
->;
+export type OpenAIResponsesTruncation = OpenEnum<typeof OpenAIResponsesTruncation>;
 
 /** @internal */
 export const OpenAIResponsesTruncation$inboundSchema: z.ZodType<

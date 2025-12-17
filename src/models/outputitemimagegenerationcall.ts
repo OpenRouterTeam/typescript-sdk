@@ -3,18 +3,17 @@
  * @generated-id: 9c3ac6a7a9ad
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ImageGenerationStatus,
-  ImageGenerationStatus$inboundSchema,
-} from "./imagegenerationstatus.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ImageGenerationStatus } from './imagegenerationstatus.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { ImageGenerationStatus$inboundSchema } from './imagegenerationstatus.js';
 
 export const OutputItemImageGenerationCallType = {
-  ImageGenerationCall: "image_generation_call",
+  ImageGenerationCall: 'image_generation_call',
 } as const;
 export type OutputItemImageGenerationCallType = ClosedEnum<
   typeof OutputItemImageGenerationCallType

@@ -3,10 +3,11 @@
  * @generated-id: de317517c298
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Error data for BadGatewayResponse
@@ -14,7 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type BadGatewayResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: any | null;
+      }
+    | null
+    | undefined;
 };
 
 /** @internal */

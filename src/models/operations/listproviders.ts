@@ -3,11 +3,12 @@
  * @generated-id: 76a35169de06
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 export type ListProvidersData = {
   /**
@@ -40,22 +41,21 @@ export type ListProvidersResponse = {
 };
 
 /** @internal */
-export const ListProvidersData$inboundSchema: z.ZodType<
-  ListProvidersData,
-  unknown
-> = z.object({
-  name: z.string(),
-  slug: z.string(),
-  privacy_policy_url: z.nullable(z.string()),
-  terms_of_service_url: z.nullable(z.string()).optional(),
-  status_page_url: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "privacy_policy_url": "privacyPolicyUrl",
-    "terms_of_service_url": "termsOfServiceUrl",
-    "status_page_url": "statusPageUrl",
+export const ListProvidersData$inboundSchema: z.ZodType<ListProvidersData, unknown> = z
+  .object({
+    name: z.string(),
+    slug: z.string(),
+    privacy_policy_url: z.nullable(z.string()),
+    terms_of_service_url: z.nullable(z.string()).optional(),
+    status_page_url: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      privacy_policy_url: 'privacyPolicyUrl',
+      terms_of_service_url: 'termsOfServiceUrl',
+      status_page_url: 'statusPageUrl',
+    });
   });
-});
 
 export function listProvidersDataFromJSON(
   jsonString: string,
@@ -68,12 +68,10 @@ export function listProvidersDataFromJSON(
 }
 
 /** @internal */
-export const ListProvidersResponse$inboundSchema: z.ZodType<
-  ListProvidersResponse,
-  unknown
-> = z.object({
-  data: z.array(z.lazy(() => ListProvidersData$inboundSchema)),
-});
+export const ListProvidersResponse$inboundSchema: z.ZodType<ListProvidersResponse, unknown> =
+  z.object({
+    data: z.array(z.lazy(() => ListProvidersData$inboundSchema)),
+  });
 
 export function listProvidersResponseFromJSON(
   jsonString: string,

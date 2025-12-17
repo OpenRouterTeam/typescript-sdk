@@ -3,10 +3,11 @@
  * @generated-id: 74ba154581ba
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export type ChatStreamingMessageToolCallFunction = {
   name?: string | undefined;
@@ -16,7 +17,7 @@ export type ChatStreamingMessageToolCallFunction = {
 export type ChatStreamingMessageToolCall = {
   index: number;
   id?: string | undefined;
-  type?: "function" | undefined;
+  type?: 'function' | undefined;
   function?: ChatStreamingMessageToolCallFunction | undefined;
 };
 
@@ -34,8 +35,7 @@ export function chatStreamingMessageToolCallFunctionFromJSON(
 ): SafeParseResult<ChatStreamingMessageToolCallFunction, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatStreamingMessageToolCallFunction$inboundSchema.parse(JSON.parse(x)),
+    (x) => ChatStreamingMessageToolCallFunction$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatStreamingMessageToolCallFunction' from JSON`,
   );
 }
@@ -47,9 +47,8 @@ export const ChatStreamingMessageToolCall$inboundSchema: z.ZodType<
 > = z.object({
   index: z.number(),
   id: z.string().optional(),
-  type: z.literal("function").optional(),
-  function: z.lazy(() => ChatStreamingMessageToolCallFunction$inboundSchema)
-    .optional(),
+  type: z.literal('function').optional(),
+  function: z.lazy(() => ChatStreamingMessageToolCallFunction$inboundSchema).optional(),
 });
 
 export function chatStreamingMessageToolCallFromJSON(

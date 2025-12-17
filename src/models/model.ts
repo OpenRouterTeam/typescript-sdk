@@ -3,29 +3,24 @@
  * @generated-id: b99d4c14e794
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  DefaultParameters,
-  DefaultParameters$inboundSchema,
-} from "./defaultparameters.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ModelArchitecture,
-  ModelArchitecture$inboundSchema,
-} from "./modelarchitecture.js";
-import { Parameter, Parameter$inboundSchema } from "./parameter.js";
-import {
-  PerRequestLimits,
-  PerRequestLimits$inboundSchema,
-} from "./perrequestlimits.js";
-import { PublicPricing, PublicPricing$inboundSchema } from "./publicpricing.js";
-import {
-  TopProviderInfo,
-  TopProviderInfo$inboundSchema,
-} from "./topproviderinfo.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { DefaultParameters } from './defaultparameters.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ModelArchitecture } from './modelarchitecture.js';
+import type { Parameter } from './parameter.js';
+import type { PerRequestLimits } from './perrequestlimits.js';
+import type { PublicPricing } from './publicpricing.js';
+import type { TopProviderInfo } from './topproviderinfo.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { DefaultParameters$inboundSchema } from './defaultparameters.js';
+import { ModelArchitecture$inboundSchema } from './modelarchitecture.js';
+import { Parameter$inboundSchema } from './parameter.js';
+import { PerRequestLimits$inboundSchema } from './perrequestlimits.js';
+import { PublicPricing$inboundSchema } from './publicpricing.js';
+import { TopProviderInfo$inboundSchema } from './topproviderinfo.js';
 
 /**
  * Information about an AI model available on OpenRouter
@@ -86,35 +81,35 @@ export type Model = {
 };
 
 /** @internal */
-export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
-  id: z.string(),
-  canonical_slug: z.string(),
-  hugging_face_id: z.nullable(z.string()).optional(),
-  name: z.string(),
-  created: z.number(),
-  description: z.string().optional(),
-  pricing: PublicPricing$inboundSchema,
-  context_length: z.nullable(z.number()),
-  architecture: ModelArchitecture$inboundSchema,
-  top_provider: TopProviderInfo$inboundSchema,
-  per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
-  supported_parameters: z.array(Parameter$inboundSchema),
-  default_parameters: z.nullable(DefaultParameters$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "canonical_slug": "canonicalSlug",
-    "hugging_face_id": "huggingFaceId",
-    "context_length": "contextLength",
-    "top_provider": "topProvider",
-    "per_request_limits": "perRequestLimits",
-    "supported_parameters": "supportedParameters",
-    "default_parameters": "defaultParameters",
+export const Model$inboundSchema: z.ZodType<Model, unknown> = z
+  .object({
+    id: z.string(),
+    canonical_slug: z.string(),
+    hugging_face_id: z.nullable(z.string()).optional(),
+    name: z.string(),
+    created: z.number(),
+    description: z.string().optional(),
+    pricing: PublicPricing$inboundSchema,
+    context_length: z.nullable(z.number()),
+    architecture: ModelArchitecture$inboundSchema,
+    top_provider: TopProviderInfo$inboundSchema,
+    per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
+    supported_parameters: z.array(Parameter$inboundSchema),
+    default_parameters: z.nullable(DefaultParameters$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      canonical_slug: 'canonicalSlug',
+      hugging_face_id: 'huggingFaceId',
+      context_length: 'contextLength',
+      top_provider: 'topProvider',
+      per_request_limits: 'perRequestLimits',
+      supported_parameters: 'supportedParameters',
+      default_parameters: 'defaultParameters',
+    });
   });
-});
 
-export function modelFromJSON(
-  jsonString: string,
-): SafeParseResult<Model, SDKValidationError> {
+export function modelFromJSON(jsonString: string): SafeParseResult<Model, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Model$inboundSchema.parse(JSON.parse(x)),

@@ -3,10 +3,11 @@
  * @generated-id: c342dc72d1f4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type { OpenEnum } from '../types/enums.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import * as openEnums from '../types/enums.js';
 
 export const ChainId = {
   One: 1,
@@ -25,8 +26,8 @@ export type CreateChargeRequest = {
 };
 
 /** @internal */
-export const ChainId$outboundSchema: z.ZodType<number, ChainId> = openEnums
-  .outboundSchemaInt(ChainId);
+export const ChainId$outboundSchema: z.ZodType<number, ChainId> =
+  openEnums.outboundSchemaInt(ChainId);
 
 /** @internal */
 export type CreateChargeRequest$Outbound = {
@@ -39,20 +40,18 @@ export type CreateChargeRequest$Outbound = {
 export const CreateChargeRequest$outboundSchema: z.ZodType<
   CreateChargeRequest$Outbound,
   CreateChargeRequest
-> = z.object({
-  amount: z.number(),
-  sender: z.string(),
-  chainId: ChainId$outboundSchema,
-}).transform((v) => {
-  return remap$(v, {
-    chainId: "chain_id",
+> = z
+  .object({
+    amount: z.number(),
+    sender: z.string(),
+    chainId: ChainId$outboundSchema,
+  })
+  .transform((v) => {
+    return remap$(v, {
+      chainId: 'chain_id',
+    });
   });
-});
 
-export function createChargeRequestToJSON(
-  createChargeRequest: CreateChargeRequest,
-): string {
-  return JSON.stringify(
-    CreateChargeRequest$outboundSchema.parse(createChargeRequest),
-  );
+export function createChargeRequestToJSON(createChargeRequest: CreateChargeRequest): string {
+  return JSON.stringify(CreateChargeRequest$outboundSchema.parse(createChargeRequest));
 }

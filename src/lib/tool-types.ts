@@ -131,7 +131,11 @@ export type Tool =
 /**
  * Extracts the input type from a tool definition
  */
-export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
+export type InferToolInput<T> = T extends {
+  function: {
+    inputSchema: infer S;
+  };
+}
   ? S extends ZodType
     ? z.infer<S>
     : unknown
@@ -140,7 +144,11 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
 /**
  * Extracts the output type from a tool definition
  */
-export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
+export type InferToolOutput<T> = T extends {
+  function: {
+    outputSchema: infer S;
+  };
+}
   ? S extends ZodType
     ? z.infer<S>
     : unknown
@@ -151,7 +159,13 @@ export type InferToolOutput<T> = T extends { function: { outputSchema: infer S }
  */
 export type TypedToolCall<T extends Tool> = {
   id: string;
-  name: T extends { function: { name: infer N } } ? N : string;
+  name: T extends {
+    function: {
+      name: infer N;
+    };
+  }
+    ? N
+    : string;
   arguments: InferToolInput<T>;
 };
 
@@ -166,7 +180,11 @@ export type TypedToolCallUnion<T extends readonly Tool[]> = {
  * Extracts the event type from a generator tool definition
  * Returns `never` for non-generator tools
  */
-export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
+export type InferToolEvent<T> = T extends {
+  function: {
+    eventSchema: infer S;
+  };
+}
   ? S extends ZodType
     ? z.infer<S>
     : never
@@ -183,9 +201,7 @@ export type InferToolEventsUnion<T extends readonly Tool[]> = {
 /**
  * Type guard to check if a tool has an execute function
  */
-export function hasExecuteFunction(
-  tool: Tool,
-): tool is ToolWithExecute | ToolWithGenerator {
+export function hasExecuteFunction(tool: Tool): tool is ToolWithExecute | ToolWithGenerator {
   return 'execute' in tool.function && typeof tool.function.execute === 'function';
 }
 

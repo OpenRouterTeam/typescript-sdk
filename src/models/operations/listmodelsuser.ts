@@ -3,7 +3,7 @@
  * @generated-id: 0846aac6be02
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type ListModelsUserSecurity = {
   bearer: string;
@@ -25,7 +25,5 @@ export const ListModelsUserSecurity$outboundSchema: z.ZodType<
 export function listModelsUserSecurityToJSON(
   listModelsUserSecurity: ListModelsUserSecurity,
 ): string {
-  return JSON.stringify(
-    ListModelsUserSecurity$outboundSchema.parse(listModelsUserSecurity),
-  );
+  return JSON.stringify(ListModelsUserSecurity$outboundSchema.parse(listModelsUserSecurity));
 }

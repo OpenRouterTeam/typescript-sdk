@@ -3,21 +3,22 @@
  * @generated-id: e7a250c8b7bb
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
 
 /**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
 export const CreateKeysLimitReset = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
+  Daily: 'daily',
+  Weekly: 'weekly',
+  Monthly: 'monthly',
 } as const;
 /**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
@@ -144,10 +145,8 @@ export type CreateKeysResponse = {
 };
 
 /** @internal */
-export const CreateKeysLimitReset$outboundSchema: z.ZodType<
-  string,
-  CreateKeysLimitReset
-> = openEnums.outboundSchema(CreateKeysLimitReset);
+export const CreateKeysLimitReset$outboundSchema: z.ZodType<string, CreateKeysLimitReset> =
+  openEnums.outboundSchema(CreateKeysLimitReset);
 
 /** @internal */
 export type CreateKeysRequest$Outbound = {
@@ -162,31 +161,29 @@ export type CreateKeysRequest$Outbound = {
 export const CreateKeysRequest$outboundSchema: z.ZodType<
   CreateKeysRequest$Outbound,
   CreateKeysRequest
-> = z.object({
-  name: z.string(),
-  limit: z.nullable(z.number()).optional(),
-  limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
-  includeByokInLimit: z.boolean().optional(),
-  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
-    expiresAt: "expires_at",
+> = z
+  .object({
+    name: z.string(),
+    limit: z.nullable(z.number()).optional(),
+    limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
+    includeByokInLimit: z.boolean().optional(),
+    expiresAt: z.nullable(z.date().transform((v) => v.toISOString())).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      limitReset: 'limit_reset',
+      includeByokInLimit: 'include_byok_in_limit',
+      expiresAt: 'expires_at',
+    });
   });
-});
 
-export function createKeysRequestToJSON(
-  createKeysRequest: CreateKeysRequest,
-): string {
-  return JSON.stringify(
-    CreateKeysRequest$outboundSchema.parse(createKeysRequest),
-  );
+export function createKeysRequestToJSON(createKeysRequest: CreateKeysRequest): string {
+  return JSON.stringify(CreateKeysRequest$outboundSchema.parse(createKeysRequest));
 }
 
 /** @internal */
-export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
-  z.object({
+export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> = z
+  .object({
     hash: z.string(),
     name: z.string(),
     label: z.string(),
@@ -205,24 +202,31 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
-    expires_at: z.nullable(
-      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
-    ).optional(),
-  }).transform((v) => {
+    expires_at: z
+      .nullable(
+        z.iso
+          .datetime({
+            offset: true,
+          })
+          .transform((v) => new Date(v)),
+      )
+      .optional(),
+  })
+  .transform((v) => {
     return remap$(v, {
-      "limit_remaining": "limitRemaining",
-      "limit_reset": "limitReset",
-      "include_byok_in_limit": "includeByokInLimit",
-      "usage_daily": "usageDaily",
-      "usage_weekly": "usageWeekly",
-      "usage_monthly": "usageMonthly",
-      "byok_usage": "byokUsage",
-      "byok_usage_daily": "byokUsageDaily",
-      "byok_usage_weekly": "byokUsageWeekly",
-      "byok_usage_monthly": "byokUsageMonthly",
-      "created_at": "createdAt",
-      "updated_at": "updatedAt",
-      "expires_at": "expiresAt",
+      limit_remaining: 'limitRemaining',
+      limit_reset: 'limitReset',
+      include_byok_in_limit: 'includeByokInLimit',
+      usage_daily: 'usageDaily',
+      usage_weekly: 'usageWeekly',
+      usage_monthly: 'usageMonthly',
+      byok_usage: 'byokUsage',
+      byok_usage_daily: 'byokUsageDaily',
+      byok_usage_weekly: 'byokUsageWeekly',
+      byok_usage_monthly: 'byokUsageMonthly',
+      created_at: 'createdAt',
+      updated_at: 'updatedAt',
+      expires_at: 'expiresAt',
     });
   });
 
@@ -237,10 +241,7 @@ export function createKeysDataFromJSON(
 }
 
 /** @internal */
-export const CreateKeysResponse$inboundSchema: z.ZodType<
-  CreateKeysResponse,
-  unknown
-> = z.object({
+export const CreateKeysResponse$inboundSchema: z.ZodType<CreateKeysResponse, unknown> = z.object({
   data: z.lazy(() => CreateKeysData$inboundSchema),
   key: z.string(),
 });

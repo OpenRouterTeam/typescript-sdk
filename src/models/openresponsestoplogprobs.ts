@@ -3,10 +3,11 @@
  * @generated-id: 9deb0a6359d1
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Alternative token with its log probability
@@ -17,13 +18,11 @@ export type OpenResponsesTopLogprobs = {
 };
 
 /** @internal */
-export const OpenResponsesTopLogprobs$inboundSchema: z.ZodType<
-  OpenResponsesTopLogprobs,
-  unknown
-> = z.object({
-  token: z.string().optional(),
-  logprob: z.number().optional(),
-});
+export const OpenResponsesTopLogprobs$inboundSchema: z.ZodType<OpenResponsesTopLogprobs, unknown> =
+  z.object({
+    token: z.string().optional(),
+    logprob: z.number().optional(),
+  });
 
 export function openResponsesTopLogprobsFromJSON(
   jsonString: string,

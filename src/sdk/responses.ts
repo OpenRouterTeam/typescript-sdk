@@ -3,12 +3,14 @@
  * @generated-id: fc4b535757c5
  */
 
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
-import { EventStream } from "../lib/event-streams.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { EventStream } from '../lib/event-streams.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+import type * as operations from '../models/operations/index.js';
+
+import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Responses extends ClientSDK {
   /**
@@ -18,11 +20,15 @@ export class Responses extends ClientSDK {
    * Creates a streaming or non-streaming response using OpenResponses API format
    */
   async send(
-    request: models.OpenResponsesRequest & { stream?: false | undefined },
+    request: models.OpenResponsesRequest & {
+      stream?: false | undefined;
+    },
     options?: RequestOptions,
   ): Promise<models.OpenResponsesNonStreamingResponse>;
   async send(
-    request: models.OpenResponsesRequest & { stream: true },
+    request: models.OpenResponsesRequest & {
+      stream: true;
+    },
     options?: RequestOptions,
   ): Promise<EventStream<models.OpenResponsesStreamEvent>>;
   async send(
@@ -33,10 +39,6 @@ export class Responses extends ClientSDK {
     request: models.OpenResponsesRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse> {
-    return unwrapAsync(betaResponsesSend(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(betaResponsesSend(this, request, options));
   }
 }

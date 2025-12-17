@@ -622,21 +622,19 @@ describe('Enhanced Tool Support for callModel', () => {
         },
       };
 
-      const response = await client.callModel(
-        {
-          model: 'openai/gpt-4o',
-          input: [
-            {
-              role: 'user',
-              content: 'What is 25 * 4?',
-            },
-          ],
-          tools: [
-            calculatorTool,
-          ],
-          maxToolRounds: 3,
-        },
-      );
+      const response = await client.callModel({
+        model: 'openai/gpt-4o',
+        input: [
+          {
+            role: 'user',
+            content: 'What is 25 * 4?',
+          },
+        ],
+        tools: [
+          calculatorTool,
+        ],
+        maxToolRounds: 3,
+      });
 
       const fullResponse = await response.getResponse();
       const finalMessage = toChatMessage(fullResponse);

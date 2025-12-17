@@ -3,10 +3,12 @@
  * @generated-id: b452d35d53b4
  */
 
-import { completionsGenerate } from "../funcs/completionsGenerate.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+
+import { completionsGenerate } from '../funcs/completionsGenerate.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Completions extends ClientSDK {
   /**
@@ -19,10 +21,6 @@ export class Completions extends ClientSDK {
     request: models.CompletionCreateParams,
     options?: RequestOptions,
   ): Promise<models.CompletionResponse> {
-    return unwrapAsync(completionsGenerate(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(completionsGenerate(this, request, options));
   }
 }

@@ -3,11 +3,12 @@
  * @generated-id: d52e6aeefb5e
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../../lib/schemas.js';
+import * as models from '../index.js';
 
 /**
  * Returns a list of endpoints
@@ -17,12 +18,10 @@ export type ListEndpointsZdrResponse = {
 };
 
 /** @internal */
-export const ListEndpointsZdrResponse$inboundSchema: z.ZodType<
-  ListEndpointsZdrResponse,
-  unknown
-> = z.object({
-  data: z.array(models.PublicEndpoint$inboundSchema),
-});
+export const ListEndpointsZdrResponse$inboundSchema: z.ZodType<ListEndpointsZdrResponse, unknown> =
+  z.object({
+    data: z.array(models.PublicEndpoint$inboundSchema),
+  });
 
 export function listEndpointsZdrResponseFromJSON(
   jsonString: string,

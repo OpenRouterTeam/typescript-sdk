@@ -9,8 +9,13 @@
 export class HTTPClientError extends Error {
   /** The underlying cause of the error. */
   override readonly cause: unknown;
-  override name = "HTTPClientError";
-  constructor(message: string, opts?: { cause?: unknown }) {
+  override name = 'HTTPClientError';
+  constructor(
+    message: string,
+    opts?: {
+      cause?: unknown;
+    },
+  ) {
     let msg = message;
     if (opts?.cause) {
       msg += `: ${opts.cause}`;
@@ -19,7 +24,7 @@ export class HTTPClientError extends Error {
     super(msg, opts);
     // In older runtimes, the cause field would not have been assigned through
     // the super() call.
-    if (typeof this.cause === "undefined") {
+    if (typeof this.cause === 'undefined') {
       this.cause = opts?.cause;
     }
   }
@@ -29,21 +34,21 @@ export class HTTPClientError extends Error {
  * An error to capture unrecognised or unexpected errors when making HTTP calls.
  */
 export class UnexpectedClientError extends HTTPClientError {
-  override name = "UnexpectedClientError";
+  override name = 'UnexpectedClientError';
 }
 
 /**
  * An error that is raised when any inputs used to create a request are invalid.
  */
 export class InvalidRequestError extends HTTPClientError {
-  override name = "InvalidRequestError";
+  override name = 'InvalidRequestError';
 }
 
 /**
  * An error that is raised when a HTTP request was aborted by the client error.
  */
 export class RequestAbortedError extends HTTPClientError {
-  override readonly name = "RequestAbortedError";
+  override readonly name = 'RequestAbortedError';
 }
 
 /**
@@ -51,7 +56,7 @@ export class RequestAbortedError extends HTTPClientError {
  * signal timeout.
  */
 export class RequestTimeoutError extends HTTPClientError {
-  override readonly name = "RequestTimeoutError";
+  override readonly name = 'RequestTimeoutError';
 }
 
 /**
@@ -59,5 +64,5 @@ export class RequestTimeoutError extends HTTPClientError {
  * a server.
  */
 export class ConnectionError extends HTTPClientError {
-  override readonly name = "ConnectionError";
+  override readonly name = 'ConnectionError';
 }

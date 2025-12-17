@@ -3,8 +3,8 @@
  * @generated-id: 83ba1c3db4bb
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
 
 export type ChatStreamOptions = {
   includeUsage?: boolean | undefined;
@@ -19,18 +19,16 @@ export type ChatStreamOptions$Outbound = {
 export const ChatStreamOptions$outboundSchema: z.ZodType<
   ChatStreamOptions$Outbound,
   ChatStreamOptions
-> = z.object({
-  includeUsage: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    includeUsage: "include_usage",
+> = z
+  .object({
+    includeUsage: z.boolean().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      includeUsage: 'include_usage',
+    });
   });
-});
 
-export function chatStreamOptionsToJSON(
-  chatStreamOptions: ChatStreamOptions,
-): string {
-  return JSON.stringify(
-    ChatStreamOptions$outboundSchema.parse(chatStreamOptions),
-  );
+export function chatStreamOptionsToJSON(chatStreamOptions: ChatStreamOptions): string {
+  return JSON.stringify(ChatStreamOptions$outboundSchema.parse(chatStreamOptions));
 }

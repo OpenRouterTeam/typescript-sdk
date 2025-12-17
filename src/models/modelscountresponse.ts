@@ -3,10 +3,11 @@
  * @generated-id: cf41f6279453
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Model count data
@@ -29,12 +30,10 @@ export type ModelsCountResponse = {
 };
 
 /** @internal */
-export const ModelsCountResponseData$inboundSchema: z.ZodType<
-  ModelsCountResponseData,
-  unknown
-> = z.object({
-  count: z.number(),
-});
+export const ModelsCountResponseData$inboundSchema: z.ZodType<ModelsCountResponseData, unknown> =
+  z.object({
+    count: z.number(),
+  });
 
 export function modelsCountResponseDataFromJSON(
   jsonString: string,
@@ -47,10 +46,7 @@ export function modelsCountResponseDataFromJSON(
 }
 
 /** @internal */
-export const ModelsCountResponse$inboundSchema: z.ZodType<
-  ModelsCountResponse,
-  unknown
-> = z.object({
+export const ModelsCountResponse$inboundSchema: z.ZodType<ModelsCountResponse, unknown> = z.object({
   data: z.lazy(() => ModelsCountResponseData$inboundSchema),
 });
 

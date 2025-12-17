@@ -3,12 +3,14 @@
  * @generated-id: c72074b5f165
  */
 
-import { creditsCreateCoinbaseCharge } from "../funcs/creditsCreateCoinbaseCharge.js";
-import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+import type * as operations from '../models/operations/index.js';
+
+import { creditsCreateCoinbaseCharge } from '../funcs/creditsCreateCoinbaseCharge.js';
+import { creditsGetCredits } from '../funcs/creditsGetCredits.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Credits extends ClientSDK {
   /**
@@ -17,13 +19,8 @@ export class Credits extends ClientSDK {
    * @remarks
    * Get total credits purchased and used for the authenticated user
    */
-  async getCredits(
-    options?: RequestOptions,
-  ): Promise<operations.GetCreditsResponse> {
-    return unwrapAsync(creditsGetCredits(
-      this,
-      options,
-    ));
+  async getCredits(options?: RequestOptions): Promise<operations.GetCreditsResponse> {
+    return unwrapAsync(creditsGetCredits(this, options));
   }
 
   /**
@@ -37,11 +34,6 @@ export class Credits extends ClientSDK {
     request: models.CreateChargeRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateCoinbaseChargeResponse> {
-    return unwrapAsync(creditsCreateCoinbaseCharge(
-      this,
-      security,
-      request,
-      options,
-    ));
+    return unwrapAsync(creditsCreateCoinbaseCharge(this, security, request, options));
   }
 }

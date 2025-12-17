@@ -3,11 +3,12 @@
  * @generated-id: 27d0f86c087f
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 export type GetKeyRequest = {
   /**
@@ -114,12 +115,10 @@ export type GetKeyRequest$Outbound = {
 };
 
 /** @internal */
-export const GetKeyRequest$outboundSchema: z.ZodType<
-  GetKeyRequest$Outbound,
-  GetKeyRequest
-> = z.object({
-  hash: z.string(),
-});
+export const GetKeyRequest$outboundSchema: z.ZodType<GetKeyRequest$Outbound, GetKeyRequest> =
+  z.object({
+    hash: z.string(),
+  });
 
 export function getKeyRequestToJSON(getKeyRequest: GetKeyRequest): string {
   return JSON.stringify(GetKeyRequest$outboundSchema.parse(getKeyRequest));
@@ -146,24 +145,31 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
-    expires_at: z.nullable(
-      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
-    ).optional(),
-  }).transform((v) => {
+    expires_at: z
+      .nullable(
+        z.iso
+          .datetime({
+            offset: true,
+          })
+          .transform((v) => new Date(v)),
+      )
+      .optional(),
+  })
+  .transform((v) => {
     return remap$(v, {
-      "limit_remaining": "limitRemaining",
-      "limit_reset": "limitReset",
-      "include_byok_in_limit": "includeByokInLimit",
-      "usage_daily": "usageDaily",
-      "usage_weekly": "usageWeekly",
-      "usage_monthly": "usageMonthly",
-      "byok_usage": "byokUsage",
-      "byok_usage_daily": "byokUsageDaily",
-      "byok_usage_weekly": "byokUsageWeekly",
-      "byok_usage_monthly": "byokUsageMonthly",
-      "created_at": "createdAt",
-      "updated_at": "updatedAt",
-      "expires_at": "expiresAt",
+      limit_remaining: 'limitRemaining',
+      limit_reset: 'limitReset',
+      include_byok_in_limit: 'includeByokInLimit',
+      usage_daily: 'usageDaily',
+      usage_weekly: 'usageWeekly',
+      usage_monthly: 'usageMonthly',
+      byok_usage: 'byokUsage',
+      byok_usage_daily: 'byokUsageDaily',
+      byok_usage_weekly: 'byokUsageWeekly',
+      byok_usage_monthly: 'byokUsageMonthly',
+      created_at: 'createdAt',
+      updated_at: 'updatedAt',
+      expires_at: 'expiresAt',
     });
   });
 
@@ -178,10 +184,9 @@ export function getKeyDataFromJSON(
 }
 
 /** @internal */
-export const GetKeyResponse$inboundSchema: z.ZodType<GetKeyResponse, unknown> =
-  z.object({
-    data: z.lazy(() => GetKeyData$inboundSchema),
-  });
+export const GetKeyResponse$inboundSchema: z.ZodType<GetKeyResponse, unknown> = z.object({
+  data: z.lazy(() => GetKeyData$inboundSchema),
+});
 
 export function getKeyResponseFromJSON(
   jsonString: string,

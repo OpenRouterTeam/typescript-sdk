@@ -3,10 +3,11 @@
  * @generated-id: b107ec938dc1
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export type Code = string | number;
 
@@ -23,9 +24,7 @@ export const Code$inboundSchema: z.ZodType<Code, unknown> = z.union([
   z.number(),
 ]);
 
-export function codeFromJSON(
-  jsonString: string,
-): SafeParseResult<Code, SDKValidationError> {
+export function codeFromJSON(jsonString: string): SafeParseResult<Code, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Code$inboundSchema.parse(JSON.parse(x)),
@@ -34,13 +33,17 @@ export function codeFromJSON(
 }
 
 /** @internal */
-export const ChatErrorError$inboundSchema: z.ZodType<ChatErrorError, unknown> =
-  z.object({
-    code: z.nullable(z.union([z.string(), z.number()])),
-    message: z.string(),
-    param: z.nullable(z.string()).optional(),
-    type: z.nullable(z.string()).optional(),
-  });
+export const ChatErrorError$inboundSchema: z.ZodType<ChatErrorError, unknown> = z.object({
+  code: z.nullable(
+    z.union([
+      z.string(),
+      z.number(),
+    ]),
+  ),
+  message: z.string(),
+  param: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
+});
 
 export function chatErrorErrorFromJSON(
   jsonString: string,

@@ -3,10 +3,10 @@
  * @generated-id: 2a02d86ec24f
  */
 
-import { SDKOptions } from "../lib/config.js";
-import { RequestInput } from "../lib/http.js";
-import { RetryConfig } from "../lib/retries.js";
-import { SecurityState } from "../lib/security.js";
+import type { SDKOptions } from '../lib/config.js';
+import type { RequestInput } from '../lib/http.js';
+import type { RetryConfig } from '../lib/retries.js';
+import type { SecurityState } from '../lib/security.js';
 
 export type HookContext = {
   baseURL: string | URL;
@@ -39,10 +39,7 @@ export interface BeforeCreateRequestHook {
    * can modify how a request is constructed since certain modifications, like
    * changing the request URL, cannot be done on a request object directly.
    */
-  beforeCreateRequest: (
-    hookCtx: BeforeCreateRequestContext,
-    input: RequestInput,
-  ) => RequestInput;
+  beforeCreateRequest: (hookCtx: BeforeCreateRequestContext, input: RequestInput) => RequestInput;
 }
 
 export interface BeforeRequestHook {
@@ -52,10 +49,7 @@ export interface BeforeRequestHook {
    * replace the request before it is sent or throw an error to stop the
    * request from being sent.
    */
-  beforeRequest: (
-    hookCtx: BeforeRequestContext,
-    request: Request,
-  ) => Awaitable<Request>;
+  beforeRequest: (hookCtx: BeforeRequestContext, request: Request) => Awaitable<Request>;
 }
 
 export interface AfterSuccessHook {
@@ -65,10 +59,7 @@ export interface AfterSuccessHook {
    * modify the response before it is handled or throw an error to stop the
    * response from being handled.
    */
-  afterSuccess: (
-    hookCtx: AfterSuccessContext,
-    response: Response,
-  ) => Awaitable<Response>;
+  afterSuccess: (hookCtx: AfterSuccessContext, response: Response) => Awaitable<Response>;
 }
 
 export interface AfterErrorHook {

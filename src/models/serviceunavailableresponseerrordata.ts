@@ -3,10 +3,11 @@
  * @generated-id: 842927f7dc14
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Error data for ServiceUnavailableResponse
@@ -14,7 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ServiceUnavailableResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: any | null;
+      }
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -32,8 +38,7 @@ export function serviceUnavailableResponseErrorDataFromJSON(
 ): SafeParseResult<ServiceUnavailableResponseErrorData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ServiceUnavailableResponseErrorData$inboundSchema.parse(JSON.parse(x)),
+    (x) => ServiceUnavailableResponseErrorData$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ServiceUnavailableResponseErrorData' from JSON`,
   );
 }

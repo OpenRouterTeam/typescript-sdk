@@ -3,11 +3,12 @@
  * @generated-id: 4d03ddfe5100
  */
 
-import * as z from "zod/v4";
-import { Unrecognized, unrecognized } from "./unrecognized.js";
+import type { Unrecognized } from './unrecognized.js';
 
-export type ClosedEnum<T extends Readonly<Record<string, string | number>>> =
-  T[keyof T];
+import * as z from 'zod/v4';
+import { unrecognized } from './unrecognized.js';
+
+export type ClosedEnum<T extends Readonly<Record<string, string | number>>> = T[keyof T];
 export type OpenEnum<T extends Readonly<Record<string, string | number>>> =
   | T[keyof T]
   | Unrecognized<T[keyof T] extends number ? number : string>;
@@ -17,8 +18,8 @@ export function inboundSchema<T extends Record<string, string>>(
 ): z.ZodType<OpenEnum<T>, unknown> {
   const options = Object.values(enumObj);
   return z.union([
-    ...options.map(x => z.literal(x)),
-    z.string().transform(x => unrecognized(x)),
+    ...options.map((x) => z.literal(x)),
+    z.string().transform((x) => unrecognized(x)),
   ] as any);
 }
 
@@ -26,10 +27,10 @@ export function inboundSchemaInt<T extends Record<string, number | string>>(
   enumObj: T,
 ): z.ZodType<OpenEnum<T>, unknown> {
   // For numeric enums, Object.values returns both numbers and string keys
-  const options = Object.values(enumObj).filter(v => typeof v === "number");
+  const options = Object.values(enumObj).filter((v) => typeof v === 'number');
   return z.union([
-    ...options.map(x => z.literal(x)),
-    z.int().transform(x => unrecognized(x)),
+    ...options.map((x) => z.literal(x)),
+    z.int().transform((x) => unrecognized(x)),
   ] as any);
 }
 

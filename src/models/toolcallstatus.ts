@@ -3,14 +3,15 @@
  * @generated-id: 54eb9c06bedb
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const ToolCallStatus = {
-  InProgress: "in_progress",
-  Completed: "completed",
-  Incomplete: "incomplete",
+  InProgress: 'in_progress',
+  Completed: 'completed',
+  Incomplete: 'incomplete',
 } as const;
 export type ToolCallStatus = OpenEnum<typeof ToolCallStatus>;
 

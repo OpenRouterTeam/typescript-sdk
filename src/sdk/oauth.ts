@@ -3,16 +3,18 @@
  * @generated-id: 37b7f9b2970b
  */
 
-import { oAuthCreateAuthCode } from "../funcs/oAuthCreateAuthCode.js";
-import { oAuthExchangeAuthCodeForAPIKey } from "../funcs/oAuthExchangeAuthCodeForAPIKey.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
 // #region imports
-import type { CreateAuthorizationUrlRequest } from "../funcs/oAuthCreateAuthorizationUrl.js";
-import { oAuthCreateAuthorizationUrl } from "../funcs/oAuthCreateAuthorizationUrl.js";
-import type { CreateSHA256CodeChallengeResponse } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
-import { oAuthCreateSHA256CodeChallenge } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+import type { CreateAuthorizationUrlRequest } from '../funcs/oAuthCreateAuthorizationUrl.js';
+import type { CreateSHA256CodeChallengeResponse } from '../funcs/oAuthCreateSHA256CodeChallenge.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { oAuthCreateAuthCode } from '../funcs/oAuthCreateAuthCode.js';
+import { oAuthCreateAuthorizationUrl } from '../funcs/oAuthCreateAuthorizationUrl.js';
+import { oAuthCreateSHA256CodeChallenge } from '../funcs/oAuthCreateSHA256CodeChallenge.js';
+import { oAuthExchangeAuthCodeForAPIKey } from '../funcs/oAuthExchangeAuthCodeForAPIKey.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 // #endregion imports
 
 export class OAuth extends ClientSDK {
@@ -27,9 +29,7 @@ export class OAuth extends ClientSDK {
    *
    * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
    */
-  async createAuthorizationUrl(
-    request: CreateAuthorizationUrlRequest,
-  ): Promise<string> {
+  async createAuthorizationUrl(request: CreateAuthorizationUrlRequest): Promise<string> {
     const result = oAuthCreateAuthorizationUrl(this, request);
 
     if (!result.ok) {
@@ -52,9 +52,7 @@ export class OAuth extends ClientSDK {
    * @see {@link https://openrouter.ai/docs/use-cases/oauth-pkce}
    * @see {@link https://datatracker.ietf.org/doc/html/rfc7636}
    */
-  async createSHA256CodeChallenge(): Promise<
-    CreateSHA256CodeChallengeResponse
-  > {
+  async createSHA256CodeChallenge(): Promise<CreateSHA256CodeChallengeResponse> {
     return unwrapAsync(oAuthCreateSHA256CodeChallenge());
   }
   // #endregion sdk-class-body
@@ -69,11 +67,7 @@ export class OAuth extends ClientSDK {
     request: operations.ExchangeAuthCodeForAPIKeyRequest,
     options?: RequestOptions,
   ): Promise<operations.ExchangeAuthCodeForAPIKeyResponse> {
-    return unwrapAsync(oAuthExchangeAuthCodeForAPIKey(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(oAuthExchangeAuthCodeForAPIKey(this, request, options));
   }
 
   /**
@@ -86,10 +80,6 @@ export class OAuth extends ClientSDK {
     request: operations.CreateAuthKeysCodeRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateAuthKeysCodeResponse> {
-    return unwrapAsync(oAuthCreateAuthCode(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(oAuthCreateAuthCode(this, request, options));
   }
 }

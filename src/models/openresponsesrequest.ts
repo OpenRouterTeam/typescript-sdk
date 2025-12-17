@@ -3,90 +3,81 @@
  * @generated-id: ff8a31d46b1c
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
-import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
-import {
-  OpenAIResponsesIncludable,
-  OpenAIResponsesIncludable$outboundSchema,
-} from "./openairesponsesincludable.js";
-import {
+import type { ClosedEnum, OpenEnum } from '../types/enums.js';
+import type { DataCollection } from './datacollection.js';
+import type { OpenAIResponsesIncludable } from './openairesponsesincludable.js';
+import type {
   OpenAIResponsesPrompt,
   OpenAIResponsesPrompt$Outbound,
-  OpenAIResponsesPrompt$outboundSchema,
-} from "./openairesponsesprompt.js";
-import {
+} from './openairesponsesprompt.js';
+import type {
   OpenAIResponsesToolChoiceUnion,
   OpenAIResponsesToolChoiceUnion$Outbound,
-  OpenAIResponsesToolChoiceUnion$outboundSchema,
-} from "./openairesponsestoolchoiceunion.js";
-import {
-  OpenResponsesInput,
-  OpenResponsesInput$Outbound,
-  OpenResponsesInput$outboundSchema,
-} from "./openresponsesinput.js";
-import {
+} from './openairesponsestoolchoiceunion.js';
+import type { OpenResponsesInput, OpenResponsesInput$Outbound } from './openresponsesinput.js';
+import type {
   OpenResponsesReasoningConfig,
   OpenResponsesReasoningConfig$Outbound,
-  OpenResponsesReasoningConfig$outboundSchema,
-} from "./openresponsesreasoningconfig.js";
-import {
+} from './openresponsesreasoningconfig.js';
+import type {
   OpenResponsesResponseText,
   OpenResponsesResponseText$Outbound,
-  OpenResponsesResponseText$outboundSchema,
-} from "./openresponsesresponsetext.js";
-import {
+} from './openresponsesresponsetext.js';
+import type {
   OpenResponsesWebSearch20250826Tool,
   OpenResponsesWebSearch20250826Tool$Outbound,
-  OpenResponsesWebSearch20250826Tool$outboundSchema,
-} from "./openresponseswebsearch20250826tool.js";
-import {
+} from './openresponseswebsearch20250826tool.js';
+import type {
   OpenResponsesWebSearchPreview20250311Tool,
   OpenResponsesWebSearchPreview20250311Tool$Outbound,
-  OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-} from "./openresponseswebsearchpreview20250311tool.js";
-import {
+} from './openresponseswebsearchpreview20250311tool.js';
+import type {
   OpenResponsesWebSearchPreviewTool,
   OpenResponsesWebSearchPreviewTool$Outbound,
-  OpenResponsesWebSearchPreviewTool$outboundSchema,
-} from "./openresponseswebsearchpreviewtool.js";
-import {
+} from './openresponseswebsearchpreviewtool.js';
+import type {
   OpenResponsesWebSearchTool,
   OpenResponsesWebSearchTool$Outbound,
-  OpenResponsesWebSearchTool$outboundSchema,
-} from "./openresponseswebsearchtool.js";
-import {
-  PDFParserOptions,
-  PDFParserOptions$Outbound,
-  PDFParserOptions$outboundSchema,
-} from "./pdfparseroptions.js";
-import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
-import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
-import {
-  ProviderSortConfig,
-  ProviderSortConfig$Outbound,
-  ProviderSortConfig$outboundSchema,
-} from "./providersortconfig.js";
-import { Quantization, Quantization$outboundSchema } from "./quantization.js";
-import {
-  WebSearchEngine,
-  WebSearchEngine$outboundSchema,
-} from "./websearchengine.js";
+} from './openresponseswebsearchtool.js';
+import type { PDFParserOptions, PDFParserOptions$Outbound } from './pdfparseroptions.js';
+import type { ProviderName } from './providername.js';
+import type { ProviderSort } from './providersort.js';
+import type { ProviderSortConfig, ProviderSortConfig$Outbound } from './providersortconfig.js';
+import type { Quantization } from './quantization.js';
+import type { WebSearchEngine } from './websearchengine.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import * as openEnums from '../types/enums.js';
+import { DataCollection$outboundSchema } from './datacollection.js';
+import { OpenAIResponsesIncludable$outboundSchema } from './openairesponsesincludable.js';
+import { OpenAIResponsesPrompt$outboundSchema } from './openairesponsesprompt.js';
+import { OpenAIResponsesToolChoiceUnion$outboundSchema } from './openairesponsestoolchoiceunion.js';
+import { OpenResponsesInput$outboundSchema } from './openresponsesinput.js';
+import { OpenResponsesReasoningConfig$outboundSchema } from './openresponsesreasoningconfig.js';
+import { OpenResponsesResponseText$outboundSchema } from './openresponsesresponsetext.js';
+import { OpenResponsesWebSearch20250826Tool$outboundSchema } from './openresponseswebsearch20250826tool.js';
+import { OpenResponsesWebSearchPreview20250311Tool$outboundSchema } from './openresponseswebsearchpreview20250311tool.js';
+import { OpenResponsesWebSearchPreviewTool$outboundSchema } from './openresponseswebsearchpreviewtool.js';
+import { OpenResponsesWebSearchTool$outboundSchema } from './openresponseswebsearchtool.js';
+import { PDFParserOptions$outboundSchema } from './pdfparseroptions.js';
+import { ProviderName$outboundSchema } from './providername.js';
+import { ProviderSort$outboundSchema } from './providersort.js';
+import { ProviderSortConfig$outboundSchema } from './providersortconfig.js';
+import { Quantization$outboundSchema } from './quantization.js';
+import { WebSearchEngine$outboundSchema } from './websearchengine.js';
 
 /**
  * Function tool definition
  */
 export type OpenResponsesRequestToolFunction = {
-  type: "function";
+  type: 'function';
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
-  parameters: { [k: string]: any | null } | null;
+  parameters: {
+    [k: string]: any | null;
+  } | null;
 };
 
 export type OpenResponsesRequestToolUnion =
@@ -97,13 +88,13 @@ export type OpenResponsesRequestToolUnion =
   | OpenResponsesWebSearch20250826Tool;
 
 export const ServiceTier = {
-  Auto: "auto",
+  Auto: 'auto',
 } as const;
 export type ServiceTier = ClosedEnum<typeof ServiceTier>;
 
 export const Truncation = {
-  Auto: "auto",
-  Disabled: "disabled",
+  Auto: 'auto',
+  Disabled: 'disabled',
 } as const;
 export type Truncation = OpenEnum<typeof Truncation>;
 
@@ -224,7 +215,7 @@ export type OpenResponsesRequestProvider = {
 };
 
 export type OpenResponsesRequestPluginResponseHealing = {
-  id: "response-healing";
+  id: 'response-healing';
   /**
    * Set to false to disable the response-healing plugin for this request. Defaults to true.
    */
@@ -232,7 +223,7 @@ export type OpenResponsesRequestPluginResponseHealing = {
 };
 
 export type OpenResponsesRequestPluginFileParser = {
-  id: "file-parser";
+  id: 'file-parser';
   /**
    * Set to false to disable the file-parser plugin for this request. Defaults to true.
    */
@@ -244,7 +235,7 @@ export type OpenResponsesRequestPluginFileParser = {
 };
 
 export type OpenResponsesRequestPluginWeb = {
-  id: "web";
+  id: 'web';
   /**
    * Set to false to disable the web-search plugin for this request. Defaults to true.
    */
@@ -258,7 +249,7 @@ export type OpenResponsesRequestPluginWeb = {
 };
 
 export type OpenResponsesRequestPluginModeration = {
-  id: "moderation";
+  id: 'moderation';
 };
 
 export type OpenResponsesRequestPluginUnion =
@@ -279,15 +270,20 @@ export type OpenResponsesRequest = {
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
-  metadata?: { [k: string]: string } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | null
+    | undefined;
   tools?:
     | Array<
-      | OpenResponsesRequestToolFunction
-      | OpenResponsesWebSearchPreviewTool
-      | OpenResponsesWebSearchPreview20250311Tool
-      | OpenResponsesWebSearchTool
-      | OpenResponsesWebSearch20250826Tool
-    >
+        | OpenResponsesRequestToolFunction
+        | OpenResponsesWebSearchPreviewTool
+        | OpenResponsesWebSearchPreview20250311Tool
+        | OpenResponsesWebSearchTool
+        | OpenResponsesWebSearch20250826Tool
+      >
     | undefined;
   toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
   parallelToolCalls?: boolean | null | undefined;
@@ -324,11 +320,11 @@ export type OpenResponsesRequest = {
    */
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginModeration
-      | OpenResponsesRequestPluginWeb
-      | OpenResponsesRequestPluginFileParser
-      | OpenResponsesRequestPluginResponseHealing
-    >
+        | OpenResponsesRequestPluginModeration
+        | OpenResponsesRequestPluginWeb
+        | OpenResponsesRequestPluginFileParser
+        | OpenResponsesRequestPluginResponseHealing
+      >
     | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
@@ -342,11 +338,13 @@ export type OpenResponsesRequest = {
 
 /** @internal */
 export type OpenResponsesRequestToolFunction$Outbound = {
-  type: "function";
+  type: 'function';
   name: string;
   description?: string | null | undefined;
   strict?: boolean | null | undefined;
-  parameters: { [k: string]: any | null } | null;
+  parameters: {
+    [k: string]: any | null;
+  } | null;
 };
 
 /** @internal */
@@ -354,7 +352,7 @@ export const OpenResponsesRequestToolFunction$outboundSchema: z.ZodType<
   OpenResponsesRequestToolFunction$Outbound,
   OpenResponsesRequestToolFunction
 > = z.object({
-  type: z.literal("function"),
+  type: z.literal('function'),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -365,9 +363,7 @@ export function openResponsesRequestToolFunctionToJSON(
   openResponsesRequestToolFunction: OpenResponsesRequestToolFunction,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestToolFunction$outboundSchema.parse(
-      openResponsesRequestToolFunction,
-    ),
+    OpenResponsesRequestToolFunction$outboundSchema.parse(openResponsesRequestToolFunction),
   );
 }
 
@@ -395,16 +391,12 @@ export function openResponsesRequestToolUnionToJSON(
   openResponsesRequestToolUnion: OpenResponsesRequestToolUnion,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestToolUnion$outboundSchema.parse(
-      openResponsesRequestToolUnion,
-    ),
+    OpenResponsesRequestToolUnion$outboundSchema.parse(openResponsesRequestToolUnion),
   );
 }
 
 /** @internal */
-export const ServiceTier$outboundSchema: z.ZodEnum<typeof ServiceTier> = z.enum(
-  ServiceTier,
-);
+export const ServiceTier$outboundSchema: z.ZodEnum<typeof ServiceTier> = z.enum(ServiceTier);
 
 /** @internal */
 export const Truncation$outboundSchema: z.ZodType<string, Truncation> =
@@ -417,14 +409,15 @@ export type OpenResponsesRequestOrder$Outbound = string | string;
 export const OpenResponsesRequestOrder$outboundSchema: z.ZodType<
   OpenResponsesRequestOrder$Outbound,
   OpenResponsesRequestOrder
-> = z.union([ProviderName$outboundSchema, z.string()]);
+> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
 
 export function openResponsesRequestOrderToJSON(
   openResponsesRequestOrder: OpenResponsesRequestOrder,
 ): string {
-  return JSON.stringify(
-    OpenResponsesRequestOrder$outboundSchema.parse(openResponsesRequestOrder),
-  );
+  return JSON.stringify(OpenResponsesRequestOrder$outboundSchema.parse(openResponsesRequestOrder));
 }
 
 /** @internal */
@@ -434,14 +427,15 @@ export type OpenResponsesRequestOnly$Outbound = string | string;
 export const OpenResponsesRequestOnly$outboundSchema: z.ZodType<
   OpenResponsesRequestOnly$Outbound,
   OpenResponsesRequestOnly
-> = z.union([ProviderName$outboundSchema, z.string()]);
+> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
 
 export function openResponsesRequestOnlyToJSON(
   openResponsesRequestOnly: OpenResponsesRequestOnly,
 ): string {
-  return JSON.stringify(
-    OpenResponsesRequestOnly$outboundSchema.parse(openResponsesRequestOnly),
-  );
+  return JSON.stringify(OpenResponsesRequestOnly$outboundSchema.parse(openResponsesRequestOnly));
 }
 
 /** @internal */
@@ -451,7 +445,10 @@ export type OpenResponsesRequestIgnore$Outbound = string | string;
 export const OpenResponsesRequestIgnore$outboundSchema: z.ZodType<
   OpenResponsesRequestIgnore$Outbound,
   OpenResponsesRequestIgnore
-> = z.union([ProviderName$outboundSchema, z.string()]);
+> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
 
 export function openResponsesRequestIgnoreToJSON(
   openResponsesRequestIgnore: OpenResponsesRequestIgnore,
@@ -462,10 +459,7 @@ export function openResponsesRequestIgnoreToJSON(
 }
 
 /** @internal */
-export type OpenResponsesRequestSort$Outbound =
-  | string
-  | ProviderSortConfig$Outbound
-  | any;
+export type OpenResponsesRequestSort$Outbound = string | ProviderSortConfig$Outbound | any;
 
 /** @internal */
 export const OpenResponsesRequestSort$outboundSchema: z.ZodType<
@@ -480,9 +474,7 @@ export const OpenResponsesRequestSort$outboundSchema: z.ZodType<
 export function openResponsesRequestSortToJSON(
   openResponsesRequestSort: OpenResponsesRequestSort,
 ): string {
-  return JSON.stringify(
-    OpenResponsesRequestSort$outboundSchema.parse(openResponsesRequestSort),
-  );
+  return JSON.stringify(OpenResponsesRequestSort$outboundSchema.parse(openResponsesRequestSort));
 }
 
 /** @internal */
@@ -510,9 +502,7 @@ export function openResponsesRequestMaxPriceToJSON(
   openResponsesRequestMaxPrice: OpenResponsesRequestMaxPrice,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestMaxPrice$outboundSchema.parse(
-      openResponsesRequestMaxPrice,
-    ),
+    OpenResponsesRequestMaxPrice$outboundSchema.parse(openResponsesRequestMaxPrice),
   );
 }
 
@@ -539,76 +529,98 @@ export type OpenResponsesRequestProvider$Outbound = {
 export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
   OpenResponsesRequestProvider$Outbound,
   OpenResponsesRequestProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(
-    z.array(z.union([ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([
-      ProviderSort$outboundSchema,
-      ProviderSortConfig$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
-  maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
-    .optional(),
-  preferredMinThroughput: z.nullable(z.number()).optional(),
-  preferredMaxLatency: z.nullable(z.number()).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
-    preferredMaxLatency: "preferred_max_latency",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
+> = z
+  .object({
+    allowFallbacks: z.nullable(z.boolean()).optional(),
+    requireParameters: z.nullable(z.boolean()).optional(),
+    dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+    zdr: z.nullable(z.boolean()).optional(),
+    enforceDistillableText: z.nullable(z.boolean()).optional(),
+    order: z
+      .nullable(
+        z.array(
+          z.union([
+            ProviderName$outboundSchema,
+            z.string(),
+          ]),
+        ),
+      )
+      .optional(),
+    only: z
+      .nullable(
+        z.array(
+          z.union([
+            ProviderName$outboundSchema,
+            z.string(),
+          ]),
+        ),
+      )
+      .optional(),
+    ignore: z
+      .nullable(
+        z.array(
+          z.union([
+            ProviderName$outboundSchema,
+            z.string(),
+          ]),
+        ),
+      )
+      .optional(),
+    quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+    sort: z
+      .nullable(
+        z.union([
+          ProviderSort$outboundSchema,
+          ProviderSortConfig$outboundSchema,
+          z.any(),
+        ]),
+      )
+      .optional(),
+    maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema).optional(),
+    preferredMinThroughput: z.nullable(z.number()).optional(),
+    preferredMaxLatency: z.nullable(z.number()).optional(),
+    minThroughput: z.nullable(z.number()).optional(),
+    maxLatency: z.nullable(z.number()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      allowFallbacks: 'allow_fallbacks',
+      requireParameters: 'require_parameters',
+      dataCollection: 'data_collection',
+      enforceDistillableText: 'enforce_distillable_text',
+      maxPrice: 'max_price',
+      preferredMinThroughput: 'preferred_min_throughput',
+      preferredMaxLatency: 'preferred_max_latency',
+      minThroughput: 'min_throughput',
+      maxLatency: 'max_latency',
+    });
   });
-});
 
 export function openResponsesRequestProviderToJSON(
   openResponsesRequestProvider: OpenResponsesRequestProvider,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestProvider$outboundSchema.parse(
-      openResponsesRequestProvider,
-    ),
+    OpenResponsesRequestProvider$outboundSchema.parse(openResponsesRequestProvider),
   );
 }
 
 /** @internal */
 export type OpenResponsesRequestPluginResponseHealing$Outbound = {
-  id: "response-healing";
+  id: 'response-healing';
   enabled?: boolean | undefined;
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginResponseHealing$outboundSchema:
-  z.ZodType<
-    OpenResponsesRequestPluginResponseHealing$Outbound,
-    OpenResponsesRequestPluginResponseHealing
-  > = z.object({
-    id: z.literal("response-healing"),
-    enabled: z.boolean().optional(),
-  });
+export const OpenResponsesRequestPluginResponseHealing$outboundSchema: z.ZodType<
+  OpenResponsesRequestPluginResponseHealing$Outbound,
+  OpenResponsesRequestPluginResponseHealing
+> = z.object({
+  id: z.literal('response-healing'),
+  enabled: z.boolean().optional(),
+});
 
 export function openResponsesRequestPluginResponseHealingToJSON(
-  openResponsesRequestPluginResponseHealing:
-    OpenResponsesRequestPluginResponseHealing,
+  openResponsesRequestPluginResponseHealing: OpenResponsesRequestPluginResponseHealing,
 ): string {
   return JSON.stringify(
     OpenResponsesRequestPluginResponseHealing$outboundSchema.parse(
@@ -619,7 +631,7 @@ export function openResponsesRequestPluginResponseHealingToJSON(
 
 /** @internal */
 export type OpenResponsesRequestPluginFileParser$Outbound = {
-  id: "file-parser";
+  id: 'file-parser';
   enabled?: boolean | undefined;
   pdf?: PDFParserOptions$Outbound | undefined;
 };
@@ -629,7 +641,7 @@ export const OpenResponsesRequestPluginFileParser$outboundSchema: z.ZodType<
   OpenResponsesRequestPluginFileParser$Outbound,
   OpenResponsesRequestPluginFileParser
 > = z.object({
-  id: z.literal("file-parser"),
+  id: z.literal('file-parser'),
   enabled: z.boolean().optional(),
   pdf: PDFParserOptions$outboundSchema.optional(),
 });
@@ -638,15 +650,13 @@ export function openResponsesRequestPluginFileParserToJSON(
   openResponsesRequestPluginFileParser: OpenResponsesRequestPluginFileParser,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginFileParser$outboundSchema.parse(
-      openResponsesRequestPluginFileParser,
-    ),
+    OpenResponsesRequestPluginFileParser$outboundSchema.parse(openResponsesRequestPluginFileParser),
   );
 }
 
 /** @internal */
 export type OpenResponsesRequestPluginWeb$Outbound = {
-  id: "web";
+  id: 'web';
   enabled?: boolean | undefined;
   max_results?: number | undefined;
   search_prompt?: string | undefined;
@@ -657,32 +667,32 @@ export type OpenResponsesRequestPluginWeb$Outbound = {
 export const OpenResponsesRequestPluginWeb$outboundSchema: z.ZodType<
   OpenResponsesRequestPluginWeb$Outbound,
   OpenResponsesRequestPluginWeb
-> = z.object({
-  id: z.literal("web"),
-  enabled: z.boolean().optional(),
-  maxResults: z.number().optional(),
-  searchPrompt: z.string().optional(),
-  engine: WebSearchEngine$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxResults: "max_results",
-    searchPrompt: "search_prompt",
+> = z
+  .object({
+    id: z.literal('web'),
+    enabled: z.boolean().optional(),
+    maxResults: z.number().optional(),
+    searchPrompt: z.string().optional(),
+    engine: WebSearchEngine$outboundSchema.optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      maxResults: 'max_results',
+      searchPrompt: 'search_prompt',
+    });
   });
-});
 
 export function openResponsesRequestPluginWebToJSON(
   openResponsesRequestPluginWeb: OpenResponsesRequestPluginWeb,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginWeb$outboundSchema.parse(
-      openResponsesRequestPluginWeb,
-    ),
+    OpenResponsesRequestPluginWeb$outboundSchema.parse(openResponsesRequestPluginWeb),
   );
 }
 
 /** @internal */
 export type OpenResponsesRequestPluginModeration$Outbound = {
-  id: "moderation";
+  id: 'moderation';
 };
 
 /** @internal */
@@ -690,16 +700,14 @@ export const OpenResponsesRequestPluginModeration$outboundSchema: z.ZodType<
   OpenResponsesRequestPluginModeration$Outbound,
   OpenResponsesRequestPluginModeration
 > = z.object({
-  id: z.literal("moderation"),
+  id: z.literal('moderation'),
 });
 
 export function openResponsesRequestPluginModerationToJSON(
   openResponsesRequestPluginModeration: OpenResponsesRequestPluginModeration,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginModeration$outboundSchema.parse(
-      openResponsesRequestPluginModeration,
-    ),
+    OpenResponsesRequestPluginModeration$outboundSchema.parse(openResponsesRequestPluginModeration),
   );
 }
 
@@ -725,9 +733,7 @@ export function openResponsesRequestPluginUnionToJSON(
   openResponsesRequestPluginUnion: OpenResponsesRequestPluginUnion,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginUnion$outboundSchema.parse(
-      openResponsesRequestPluginUnion,
-    ),
+    OpenResponsesRequestPluginUnion$outboundSchema.parse(openResponsesRequestPluginUnion),
   );
 }
 
@@ -735,15 +741,20 @@ export function openResponsesRequestPluginUnionToJSON(
 export type OpenResponsesRequest$Outbound = {
   input?: OpenResponsesInput$Outbound | undefined;
   instructions?: string | null | undefined;
-  metadata?: { [k: string]: string } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | null
+    | undefined;
   tools?:
     | Array<
-      | OpenResponsesRequestToolFunction$Outbound
-      | OpenResponsesWebSearchPreviewTool$Outbound
-      | OpenResponsesWebSearchPreview20250311Tool$Outbound
-      | OpenResponsesWebSearchTool$Outbound
-      | OpenResponsesWebSearch20250826Tool$Outbound
-    >
+        | OpenResponsesRequestToolFunction$Outbound
+        | OpenResponsesWebSearchPreviewTool$Outbound
+        | OpenResponsesWebSearchPreview20250311Tool$Outbound
+        | OpenResponsesWebSearchTool$Outbound
+        | OpenResponsesWebSearch20250826Tool$Outbound
+      >
     | undefined;
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
   parallel_tool_calls?: boolean | null | undefined;
@@ -768,11 +779,11 @@ export type OpenResponsesRequest$Outbound = {
   provider?: OpenResponsesRequestProvider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginModeration$Outbound
-      | OpenResponsesRequestPluginWeb$Outbound
-      | OpenResponsesRequestPluginFileParser$Outbound
-      | OpenResponsesRequestPluginResponseHealing$Outbound
-    >
+        | OpenResponsesRequestPluginModeration$Outbound
+        | OpenResponsesRequestPluginWeb$Outbound
+        | OpenResponsesRequestPluginFileParser$Outbound
+        | OpenResponsesRequestPluginResponseHealing$Outbound
+      >
     | undefined;
   user?: string | undefined;
   session_id?: string | undefined;
@@ -782,72 +793,71 @@ export type OpenResponsesRequest$Outbound = {
 export const OpenResponsesRequest$outboundSchema: z.ZodType<
   OpenResponsesRequest$Outbound,
   OpenResponsesRequest
-> = z.object({
-  input: OpenResponsesInput$outboundSchema.optional(),
-  instructions: z.nullable(z.string()).optional(),
-  metadata: z.nullable(z.record(z.string(), z.string())).optional(),
-  tools: z.array(
-    z.union([
-      z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
-      OpenResponsesWebSearchPreviewTool$outboundSchema,
-      OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
-      OpenResponsesWebSearchTool$outboundSchema,
-      OpenResponsesWebSearch20250826Tool$outboundSchema,
-    ]),
-  ).optional(),
-  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
-  parallelToolCalls: z.nullable(z.boolean()).optional(),
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  text: OpenResponsesResponseText$outboundSchema.optional(),
-  reasoning: z.nullable(OpenResponsesReasoningConfig$outboundSchema).optional(),
-  maxOutputTokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  topK: z.number().optional(),
-  promptCacheKey: z.nullable(z.string()).optional(),
-  previousResponseId: z.nullable(z.string()).optional(),
-  prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
-  include: z.nullable(z.array(OpenAIResponsesIncludable$outboundSchema))
-    .optional(),
-  background: z.nullable(z.boolean()).optional(),
-  safetyIdentifier: z.nullable(z.string()).optional(),
-  store: z.literal(false).default(false as const),
-  serviceTier: ServiceTier$outboundSchema.default("auto"),
-  truncation: z.nullable(Truncation$outboundSchema).optional(),
-  stream: z.boolean().default(false),
-  provider: z.nullable(
-    z.lazy(() => OpenResponsesRequestProvider$outboundSchema),
-  ).optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
-    ]),
-  ).optional(),
-  user: z.string().optional(),
-  sessionId: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    toolChoice: "tool_choice",
-    parallelToolCalls: "parallel_tool_calls",
-    maxOutputTokens: "max_output_tokens",
-    topP: "top_p",
-    topK: "top_k",
-    promptCacheKey: "prompt_cache_key",
-    previousResponseId: "previous_response_id",
-    safetyIdentifier: "safety_identifier",
-    serviceTier: "service_tier",
-    sessionId: "session_id",
+> = z
+  .object({
+    input: OpenResponsesInput$outboundSchema.optional(),
+    instructions: z.nullable(z.string()).optional(),
+    metadata: z.nullable(z.record(z.string(), z.string())).optional(),
+    tools: z
+      .array(
+        z.union([
+          z.lazy(() => OpenResponsesRequestToolFunction$outboundSchema),
+          OpenResponsesWebSearchPreviewTool$outboundSchema,
+          OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
+          OpenResponsesWebSearchTool$outboundSchema,
+          OpenResponsesWebSearch20250826Tool$outboundSchema,
+        ]),
+      )
+      .optional(),
+    toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
+    parallelToolCalls: z.nullable(z.boolean()).optional(),
+    model: z.string().optional(),
+    models: z.array(z.string()).optional(),
+    text: OpenResponsesResponseText$outboundSchema.optional(),
+    reasoning: z.nullable(OpenResponsesReasoningConfig$outboundSchema).optional(),
+    maxOutputTokens: z.nullable(z.number()).optional(),
+    temperature: z.nullable(z.number()).optional(),
+    topP: z.nullable(z.number()).optional(),
+    topK: z.number().optional(),
+    promptCacheKey: z.nullable(z.string()).optional(),
+    previousResponseId: z.nullable(z.string()).optional(),
+    prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
+    include: z.nullable(z.array(OpenAIResponsesIncludable$outboundSchema)).optional(),
+    background: z.nullable(z.boolean()).optional(),
+    safetyIdentifier: z.nullable(z.string()).optional(),
+    store: z.literal(false).default(false as const),
+    serviceTier: ServiceTier$outboundSchema.default('auto'),
+    truncation: z.nullable(Truncation$outboundSchema).optional(),
+    stream: z.boolean().default(false),
+    provider: z.nullable(z.lazy(() => OpenResponsesRequestProvider$outboundSchema)).optional(),
+    plugins: z
+      .array(
+        z.union([
+          z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
+          z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
+          z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
+          z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+        ]),
+      )
+      .optional(),
+    user: z.string().optional(),
+    sessionId: z.string().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      toolChoice: 'tool_choice',
+      parallelToolCalls: 'parallel_tool_calls',
+      maxOutputTokens: 'max_output_tokens',
+      topP: 'top_p',
+      topK: 'top_k',
+      promptCacheKey: 'prompt_cache_key',
+      previousResponseId: 'previous_response_id',
+      safetyIdentifier: 'safety_identifier',
+      serviceTier: 'service_tier',
+      sessionId: 'session_id',
+    });
   });
-});
 
-export function openResponsesRequestToJSON(
-  openResponsesRequest: OpenResponsesRequest,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequest$outboundSchema.parse(openResponsesRequest),
-  );
+export function openResponsesRequestToJSON(openResponsesRequest: OpenResponsesRequest): string {
+  return JSON.stringify(OpenResponsesRequest$outboundSchema.parse(openResponsesRequest));
 }

@@ -3,30 +3,28 @@
  * @generated-id: 841523070a3c
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Text input content item
  */
 export type ResponseInputText = {
-  type: "input_text";
+  type: 'input_text';
   text: string;
 };
 
 /** @internal */
-export const ResponseInputText$inboundSchema: z.ZodType<
-  ResponseInputText,
-  unknown
-> = z.object({
-  type: z.literal("input_text"),
+export const ResponseInputText$inboundSchema: z.ZodType<ResponseInputText, unknown> = z.object({
+  type: z.literal('input_text'),
   text: z.string(),
 });
 /** @internal */
 export type ResponseInputText$Outbound = {
-  type: "input_text";
+  type: 'input_text';
   text: string;
 };
 
@@ -35,16 +33,12 @@ export const ResponseInputText$outboundSchema: z.ZodType<
   ResponseInputText$Outbound,
   ResponseInputText
 > = z.object({
-  type: z.literal("input_text"),
+  type: z.literal('input_text'),
   text: z.string(),
 });
 
-export function responseInputTextToJSON(
-  responseInputText: ResponseInputText,
-): string {
-  return JSON.stringify(
-    ResponseInputText$outboundSchema.parse(responseInputText),
-  );
+export function responseInputTextToJSON(responseInputText: ResponseInputText): string {
+  return JSON.stringify(ResponseInputText$outboundSchema.parse(responseInputText));
 }
 export function responseInputTextFromJSON(
   jsonString: string,

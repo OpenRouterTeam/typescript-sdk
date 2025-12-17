@@ -3,38 +3,39 @@
  * @generated-id: 066287ded212
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const Parameter = {
-  Temperature: "temperature",
-  TopP: "top_p",
-  TopK: "top_k",
-  MinP: "min_p",
-  TopA: "top_a",
-  FrequencyPenalty: "frequency_penalty",
-  PresencePenalty: "presence_penalty",
-  RepetitionPenalty: "repetition_penalty",
-  MaxTokens: "max_tokens",
-  LogitBias: "logit_bias",
-  Logprobs: "logprobs",
-  TopLogprobs: "top_logprobs",
-  Seed: "seed",
-  ResponseFormat: "response_format",
-  StructuredOutputs: "structured_outputs",
-  Stop: "stop",
-  Tools: "tools",
-  ToolChoice: "tool_choice",
-  ParallelToolCalls: "parallel_tool_calls",
-  IncludeReasoning: "include_reasoning",
-  Reasoning: "reasoning",
-  ReasoningEffort: "reasoning_effort",
-  WebSearchOptions: "web_search_options",
-  Verbosity: "verbosity",
+  Temperature: 'temperature',
+  TopP: 'top_p',
+  TopK: 'top_k',
+  MinP: 'min_p',
+  TopA: 'top_a',
+  FrequencyPenalty: 'frequency_penalty',
+  PresencePenalty: 'presence_penalty',
+  RepetitionPenalty: 'repetition_penalty',
+  MaxTokens: 'max_tokens',
+  LogitBias: 'logit_bias',
+  Logprobs: 'logprobs',
+  TopLogprobs: 'top_logprobs',
+  Seed: 'seed',
+  ResponseFormat: 'response_format',
+  StructuredOutputs: 'structured_outputs',
+  Stop: 'stop',
+  Tools: 'tools',
+  ToolChoice: 'tool_choice',
+  ParallelToolCalls: 'parallel_tool_calls',
+  IncludeReasoning: 'include_reasoning',
+  Reasoning: 'reasoning',
+  ReasoningEffort: 'reasoning_effort',
+  WebSearchOptions: 'web_search_options',
+  Verbosity: 'verbosity',
 } as const;
 export type Parameter = OpenEnum<typeof Parameter>;
 
 /** @internal */
-export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> = openEnums
-  .inboundSchema(Parameter);
+export const Parameter$inboundSchema: z.ZodType<Parameter, unknown> =
+  openEnums.inboundSchema(Parameter);

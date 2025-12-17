@@ -3,20 +3,21 @@
  * @generated-id: 1443f6afbf40
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
 
 /**
  * The method used to generate the code challenge
  */
 export const CreateAuthKeysCodeCodeChallengeMethod = {
-  S256: "S256",
-  Plain: "plain",
+  S256: 'S256',
+  Plain: 'plain',
 } as const;
 /**
  * The method used to generate the code challenge
@@ -95,44 +96,42 @@ export type CreateAuthKeysCodeRequest$Outbound = {
 export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
   CreateAuthKeysCodeRequest$Outbound,
   CreateAuthKeysCodeRequest
-> = z.object({
-  callbackUrl: z.string(),
-  codeChallenge: z.string().optional(),
-  codeChallengeMethod: CreateAuthKeysCodeCodeChallengeMethod$outboundSchema
-    .optional(),
-  limit: z.number().optional(),
-  expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callbackUrl: "callback_url",
-    codeChallenge: "code_challenge",
-    codeChallengeMethod: "code_challenge_method",
-    expiresAt: "expires_at",
+> = z
+  .object({
+    callbackUrl: z.string(),
+    codeChallenge: z.string().optional(),
+    codeChallengeMethod: CreateAuthKeysCodeCodeChallengeMethod$outboundSchema.optional(),
+    limit: z.number().optional(),
+    expiresAt: z.nullable(z.date().transform((v) => v.toISOString())).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      callbackUrl: 'callback_url',
+      codeChallenge: 'code_challenge',
+      codeChallengeMethod: 'code_challenge_method',
+      expiresAt: 'expires_at',
+    });
   });
-});
 
 export function createAuthKeysCodeRequestToJSON(
   createAuthKeysCodeRequest: CreateAuthKeysCodeRequest,
 ): string {
-  return JSON.stringify(
-    CreateAuthKeysCodeRequest$outboundSchema.parse(createAuthKeysCodeRequest),
-  );
+  return JSON.stringify(CreateAuthKeysCodeRequest$outboundSchema.parse(createAuthKeysCodeRequest));
 }
 
 /** @internal */
-export const CreateAuthKeysCodeData$inboundSchema: z.ZodType<
-  CreateAuthKeysCodeData,
-  unknown
-> = z.object({
-  id: z.string(),
-  app_id: z.number(),
-  created_at: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "app_id": "appId",
-    "created_at": "createdAt",
+export const CreateAuthKeysCodeData$inboundSchema: z.ZodType<CreateAuthKeysCodeData, unknown> = z
+  .object({
+    id: z.string(),
+    app_id: z.number(),
+    created_at: z.string(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      app_id: 'appId',
+      created_at: 'createdAt',
+    });
   });
-});
 
 export function createAuthKeysCodeDataFromJSON(
   jsonString: string,

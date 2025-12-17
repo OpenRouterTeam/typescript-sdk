@@ -3,12 +3,16 @@
  * @generated-id: a5dbdd0305ec
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type JSONSchemaConfig = {
   name: string;
   description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
+  schema?:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -16,7 +20,11 @@ export type JSONSchemaConfig = {
 export type JSONSchemaConfig$Outbound = {
   name: string;
   description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
+  schema?:
+    | {
+        [k: string]: any;
+      }
+    | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -31,10 +39,6 @@ export const JSONSchemaConfig$outboundSchema: z.ZodType<
   strict: z.nullable(z.boolean()).optional(),
 });
 
-export function jsonSchemaConfigToJSON(
-  jsonSchemaConfig: JSONSchemaConfig,
-): string {
-  return JSON.stringify(
-    JSONSchemaConfig$outboundSchema.parse(jsonSchemaConfig),
-  );
+export function jsonSchemaConfigToJSON(jsonSchemaConfig: JSONSchemaConfig): string {
+  return JSON.stringify(JSONSchemaConfig$outboundSchema.parse(jsonSchemaConfig));
 }

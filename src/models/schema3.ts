@@ -3,24 +3,25 @@
  * @generated-id: 6f7380bcbcea
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const Schema5 = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
+  Unknown: 'unknown',
+  OpenaiResponsesV1: 'openai-responses-v1',
+  XaiResponsesV1: 'xai-responses-v1',
+  AnthropicClaudeV1: 'anthropic-claude-v1',
+  GoogleGeminiV1: 'google-gemini-v1',
 } as const;
 export type Schema5 = OpenEnum<typeof Schema5>;
 
 export type Schema3ReasoningText = {
-  type: "reasoning.text";
+  type: 'reasoning.text';
   text?: string | null | undefined;
   signature?: string | null | undefined;
   id?: string | null | undefined;
@@ -29,7 +30,7 @@ export type Schema3ReasoningText = {
 };
 
 export type Schema3ReasoningEncrypted = {
-  type: "reasoning.encrypted";
+  type: 'reasoning.encrypted';
   data: string;
   id?: string | null | undefined;
   format?: Schema5 | null | undefined;
@@ -37,34 +38,28 @@ export type Schema3ReasoningEncrypted = {
 };
 
 export type Schema3ReasoningSummary = {
-  type: "reasoning.summary";
+  type: 'reasoning.summary';
   summary: string;
   id?: string | null | undefined;
   format?: Schema5 | null | undefined;
   index?: number | undefined;
 };
 
-export type Schema3 =
-  | Schema3ReasoningSummary
-  | Schema3ReasoningEncrypted
-  | Schema3ReasoningText;
+export type Schema3 = Schema3ReasoningSummary | Schema3ReasoningEncrypted | Schema3ReasoningText;
 
 /** @internal */
-export const Schema5$inboundSchema: z.ZodType<Schema5, unknown> = openEnums
-  .inboundSchema(Schema5);
+export const Schema5$inboundSchema: z.ZodType<Schema5, unknown> = openEnums.inboundSchema(Schema5);
 
 /** @internal */
-export const Schema3ReasoningText$inboundSchema: z.ZodType<
-  Schema3ReasoningText,
-  unknown
-> = z.object({
-  type: z.literal("reasoning.text"),
-  text: z.nullable(z.string()).optional(),
-  signature: z.nullable(z.string()).optional(),
-  id: z.nullable(z.string()).optional(),
-  format: z.nullable(Schema5$inboundSchema).optional(),
-  index: z.number().optional(),
-});
+export const Schema3ReasoningText$inboundSchema: z.ZodType<Schema3ReasoningText, unknown> =
+  z.object({
+    type: z.literal('reasoning.text'),
+    text: z.nullable(z.string()).optional(),
+    signature: z.nullable(z.string()).optional(),
+    id: z.nullable(z.string()).optional(),
+    format: z.nullable(Schema5$inboundSchema).optional(),
+    index: z.number().optional(),
+  });
 
 export function schema3ReasoningTextFromJSON(
   jsonString: string,
@@ -81,7 +76,7 @@ export const Schema3ReasoningEncrypted$inboundSchema: z.ZodType<
   Schema3ReasoningEncrypted,
   unknown
 > = z.object({
-  type: z.literal("reasoning.encrypted"),
+  type: z.literal('reasoning.encrypted'),
   data: z.string(),
   id: z.nullable(z.string()).optional(),
   format: z.nullable(Schema5$inboundSchema).optional(),
@@ -99,16 +94,14 @@ export function schema3ReasoningEncryptedFromJSON(
 }
 
 /** @internal */
-export const Schema3ReasoningSummary$inboundSchema: z.ZodType<
-  Schema3ReasoningSummary,
-  unknown
-> = z.object({
-  type: z.literal("reasoning.summary"),
-  summary: z.string(),
-  id: z.nullable(z.string()).optional(),
-  format: z.nullable(Schema5$inboundSchema).optional(),
-  index: z.number().optional(),
-});
+export const Schema3ReasoningSummary$inboundSchema: z.ZodType<Schema3ReasoningSummary, unknown> =
+  z.object({
+    type: z.literal('reasoning.summary'),
+    summary: z.string(),
+    id: z.nullable(z.string()).optional(),
+    format: z.nullable(Schema5$inboundSchema).optional(),
+    index: z.number().optional(),
+  });
 
 export function schema3ReasoningSummaryFromJSON(
   jsonString: string,
@@ -127,9 +120,7 @@ export const Schema3$inboundSchema: z.ZodType<Schema3, unknown> = z.union([
   z.lazy(() => Schema3ReasoningText$inboundSchema),
 ]);
 
-export function schema3FromJSON(
-  jsonString: string,
-): SafeParseResult<Schema3, SDKValidationError> {
+export function schema3FromJSON(jsonString: string): SafeParseResult<Schema3, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Schema3$inboundSchema.parse(JSON.parse(x)),

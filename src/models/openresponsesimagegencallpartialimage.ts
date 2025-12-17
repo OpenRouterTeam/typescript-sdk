@@ -3,17 +3,18 @@
  * @generated-id: 053a18912617
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Image generation call with partial image
  */
 export type OpenResponsesImageGenCallPartialImage = {
-  type: "response.image_generation_call.partial_image";
+  type: 'response.image_generation_call.partial_image';
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
@@ -25,30 +26,31 @@ export type OpenResponsesImageGenCallPartialImage = {
 export const OpenResponsesImageGenCallPartialImage$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallPartialImage,
   unknown
-> = z.object({
-  type: z.literal("response.image_generation_call.partial_image"),
-  item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
-  partial_image_b64: z.string(),
-  partial_image_index: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "item_id": "itemId",
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
-    "partial_image_b64": "partialImageB64",
-    "partial_image_index": "partialImageIndex",
+> = z
+  .object({
+    type: z.literal('response.image_generation_call.partial_image'),
+    item_id: z.string(),
+    output_index: z.number(),
+    sequence_number: z.number(),
+    partial_image_b64: z.string(),
+    partial_image_index: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      sequence_number: 'sequenceNumber',
+      partial_image_b64: 'partialImageB64',
+      partial_image_index: 'partialImageIndex',
+    });
   });
-});
 
 export function openResponsesImageGenCallPartialImageFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenResponsesImageGenCallPartialImage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesImageGenCallPartialImage$inboundSchema.parse(JSON.parse(x)),
+    (x) => OpenResponsesImageGenCallPartialImage$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesImageGenCallPartialImage' from JSON`,
   );
 }

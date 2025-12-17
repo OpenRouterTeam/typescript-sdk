@@ -3,7 +3,7 @@
  * @generated-id: 598522066688
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export function bytesToBase64(u8arr: Uint8Array): string {
   return btoa(String.fromCodePoint(...u8arr));
@@ -29,8 +29,10 @@ export function stringFromBase64(b64str: string): string {
   return stringFromBytes(bytesFromBase64(b64str));
 }
 
-export const zodOutbound = z.custom<Uint8Array>(x => x instanceof Uint8Array)
+export const zodOutbound = z
+  .custom<Uint8Array>((x) => x instanceof Uint8Array)
   .or(z.string().transform(stringToBytes));
 
-export const zodInbound = z.custom<Uint8Array>(x => x instanceof Uint8Array)
+export const zodInbound = z
+  .custom<Uint8Array>((x) => x instanceof Uint8Array)
   .or(z.string().transform(bytesFromBase64));

@@ -3,11 +3,12 @@
  * @generated-id: 2b2b6cf6a019
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Per-request token limits
@@ -24,18 +25,17 @@ export type PerRequestLimits = {
 };
 
 /** @internal */
-export const PerRequestLimits$inboundSchema: z.ZodType<
-  PerRequestLimits,
-  unknown
-> = z.object({
-  prompt_tokens: z.number(),
-  completion_tokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "prompt_tokens": "promptTokens",
-    "completion_tokens": "completionTokens",
+export const PerRequestLimits$inboundSchema: z.ZodType<PerRequestLimits, unknown> = z
+  .object({
+    prompt_tokens: z.number(),
+    completion_tokens: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      prompt_tokens: 'promptTokens',
+      completion_tokens: 'completionTokens',
+    });
   });
-});
 
 export function perRequestLimitsFromJSON(
   jsonString: string,

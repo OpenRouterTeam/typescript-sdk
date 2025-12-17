@@ -3,14 +3,15 @@
  * @generated-id: ccd6ecd62c64
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type URLCitation = {
-  type: "url_citation";
+  type: 'url_citation';
   url: string;
   title: string;
   startIndex: number;
@@ -20,20 +21,21 @@ export type URLCitation = {
 /** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   .object({
-    type: z.literal("url_citation"),
+    type: z.literal('url_citation'),
     url: z.string(),
     title: z.string(),
     start_index: z.number(),
     end_index: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "start_index": "startIndex",
-      "end_index": "endIndex",
+      start_index: 'startIndex',
+      end_index: 'endIndex',
     });
   });
 /** @internal */
 export type URLCitation$Outbound = {
-  type: "url_citation";
+  type: 'url_citation';
   url: string;
   title: string;
   start_index: number;
@@ -41,21 +43,20 @@ export type URLCitation$Outbound = {
 };
 
 /** @internal */
-export const URLCitation$outboundSchema: z.ZodType<
-  URLCitation$Outbound,
-  URLCitation
-> = z.object({
-  type: z.literal("url_citation"),
-  url: z.string(),
-  title: z.string(),
-  startIndex: z.number(),
-  endIndex: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    startIndex: "start_index",
-    endIndex: "end_index",
+export const URLCitation$outboundSchema: z.ZodType<URLCitation$Outbound, URLCitation> = z
+  .object({
+    type: z.literal('url_citation'),
+    url: z.string(),
+    title: z.string(),
+    startIndex: z.number(),
+    endIndex: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      startIndex: 'start_index',
+      endIndex: 'end_index',
+    });
   });
-});
 
 export function urlCitationToJSON(urlCitation: URLCitation): string {
   return JSON.stringify(URLCitation$outboundSchema.parse(urlCitation));

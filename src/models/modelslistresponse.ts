@@ -3,11 +3,13 @@
  * @generated-id: ea0e62a13d8d
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Model, Model$inboundSchema } from "./model.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { Model } from './model.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { Model$inboundSchema } from './model.js';
 
 /**
  * List of available models
@@ -20,10 +22,7 @@ export type ModelsListResponse = {
 };
 
 /** @internal */
-export const ModelsListResponse$inboundSchema: z.ZodType<
-  ModelsListResponse,
-  unknown
-> = z.object({
+export const ModelsListResponse$inboundSchema: z.ZodType<ModelsListResponse, unknown> = z.object({
   data: z.array(Model$inboundSchema),
 });
 

@@ -3,25 +3,22 @@
  * @generated-id: 55795920a937
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const WebSearchStatus = {
-  Completed: "completed",
-  Searching: "searching",
-  InProgress: "in_progress",
-  Failed: "failed",
+  Completed: 'completed',
+  Searching: 'searching',
+  InProgress: 'in_progress',
+  Failed: 'failed',
 } as const;
 export type WebSearchStatus = OpenEnum<typeof WebSearchStatus>;
 
 /** @internal */
-export const WebSearchStatus$inboundSchema: z.ZodType<
-  WebSearchStatus,
-  unknown
-> = openEnums.inboundSchema(WebSearchStatus);
+export const WebSearchStatus$inboundSchema: z.ZodType<WebSearchStatus, unknown> =
+  openEnums.inboundSchema(WebSearchStatus);
 /** @internal */
-export const WebSearchStatus$outboundSchema: z.ZodType<
-  string,
-  WebSearchStatus
-> = openEnums.outboundSchema(WebSearchStatus);
+export const WebSearchStatus$outboundSchema: z.ZodType<string, WebSearchStatus> =
+  openEnums.outboundSchema(WebSearchStatus);

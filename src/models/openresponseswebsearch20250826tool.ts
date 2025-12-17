@@ -3,22 +3,25 @@
  * @generated-id: 7650f38c7184
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponsesSearchContextSize } from './responsessearchcontextsize.js';
+import type {
+  ResponsesWebSearchUserLocation,
+  ResponsesWebSearchUserLocation$Outbound,
+} from './responseswebsearchuserlocation.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ResponsesSearchContextSize,
   ResponsesSearchContextSize$inboundSchema,
   ResponsesSearchContextSize$outboundSchema,
-} from "./responsessearchcontextsize.js";
+} from './responsessearchcontextsize.js';
 import {
-  ResponsesWebSearchUserLocation,
   ResponsesWebSearchUserLocation$inboundSchema,
-  ResponsesWebSearchUserLocation$Outbound,
   ResponsesWebSearchUserLocation$outboundSchema,
-} from "./responseswebsearchuserlocation.js";
+} from './responseswebsearchuserlocation.js';
 
 export type OpenResponsesWebSearch20250826ToolFilters = {
   allowedDomains?: Array<string> | null | undefined;
@@ -28,7 +31,7 @@ export type OpenResponsesWebSearch20250826ToolFilters = {
  * Web search tool configuration (2025-08-26 version)
  */
 export type OpenResponsesWebSearch20250826Tool = {
-  type: "web_search_2025_08_26";
+  type: 'web_search_2025_08_26';
   filters?: OpenResponsesWebSearch20250826ToolFilters | null | undefined;
   /**
    * Size of the search context for web search tools
@@ -44,34 +47,36 @@ export type OpenResponsesWebSearch20250826Tool = {
 export const OpenResponsesWebSearch20250826ToolFilters$inboundSchema: z.ZodType<
   OpenResponsesWebSearch20250826ToolFilters,
   unknown
-> = z.object({
-  allowed_domains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allowed_domains": "allowedDomains",
+> = z
+  .object({
+    allowed_domains: z.nullable(z.array(z.string())).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      allowed_domains: 'allowedDomains',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearch20250826ToolFilters$Outbound = {
   allowed_domains?: Array<string> | null | undefined;
 };
 
 /** @internal */
-export const OpenResponsesWebSearch20250826ToolFilters$outboundSchema:
-  z.ZodType<
-    OpenResponsesWebSearch20250826ToolFilters$Outbound,
-    OpenResponsesWebSearch20250826ToolFilters
-  > = z.object({
+export const OpenResponsesWebSearch20250826ToolFilters$outboundSchema: z.ZodType<
+  OpenResponsesWebSearch20250826ToolFilters$Outbound,
+  OpenResponsesWebSearch20250826ToolFilters
+> = z
+  .object({
     allowedDomains: z.nullable(z.array(z.string())).optional(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      allowedDomains: "allowed_domains",
+      allowedDomains: 'allowed_domains',
     });
   });
 
 export function openResponsesWebSearch20250826ToolFiltersToJSON(
-  openResponsesWebSearch20250826ToolFilters:
-    OpenResponsesWebSearch20250826ToolFilters,
+  openResponsesWebSearch20250826ToolFilters: OpenResponsesWebSearch20250826ToolFilters,
 ): string {
   return JSON.stringify(
     OpenResponsesWebSearch20250826ToolFilters$outboundSchema.parse(
@@ -81,16 +86,10 @@ export function openResponsesWebSearch20250826ToolFiltersToJSON(
 }
 export function openResponsesWebSearch20250826ToolFiltersFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesWebSearch20250826ToolFilters,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesWebSearch20250826ToolFilters, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesWebSearch20250826ToolFilters$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesWebSearch20250826ToolFilters$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesWebSearch20250826ToolFilters' from JSON`,
   );
 }
@@ -99,27 +98,25 @@ export function openResponsesWebSearch20250826ToolFiltersFromJSON(
 export const OpenResponsesWebSearch20250826Tool$inboundSchema: z.ZodType<
   OpenResponsesWebSearch20250826Tool,
   unknown
-> = z.object({
-  type: z.literal("web_search_2025_08_26"),
-  filters: z.nullable(
-    z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$inboundSchema),
-  ).optional(),
-  search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
-  user_location: z.nullable(ResponsesWebSearchUserLocation$inboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "search_context_size": "searchContextSize",
-    "user_location": "userLocation",
+> = z
+  .object({
+    type: z.literal('web_search_2025_08_26'),
+    filters: z
+      .nullable(z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$inboundSchema))
+      .optional(),
+    search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
+    user_location: z.nullable(ResponsesWebSearchUserLocation$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      search_context_size: 'searchContextSize',
+      user_location: 'userLocation',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearch20250826Tool$Outbound = {
-  type: "web_search_2025_08_26";
-  filters?:
-    | OpenResponsesWebSearch20250826ToolFilters$Outbound
-    | null
-    | undefined;
+  type: 'web_search_2025_08_26';
+  filters?: OpenResponsesWebSearch20250826ToolFilters$Outbound | null | undefined;
   search_context_size?: string | undefined;
   user_location?: ResponsesWebSearchUserLocation$Outbound | null | undefined;
 };
@@ -128,28 +125,27 @@ export type OpenResponsesWebSearch20250826Tool$Outbound = {
 export const OpenResponsesWebSearch20250826Tool$outboundSchema: z.ZodType<
   OpenResponsesWebSearch20250826Tool$Outbound,
   OpenResponsesWebSearch20250826Tool
-> = z.object({
-  type: z.literal("web_search_2025_08_26"),
-  filters: z.nullable(
-    z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$outboundSchema),
-  ).optional(),
-  searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
-  userLocation: z.nullable(ResponsesWebSearchUserLocation$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    searchContextSize: "search_context_size",
-    userLocation: "user_location",
+> = z
+  .object({
+    type: z.literal('web_search_2025_08_26'),
+    filters: z
+      .nullable(z.lazy(() => OpenResponsesWebSearch20250826ToolFilters$outboundSchema))
+      .optional(),
+    searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
+    userLocation: z.nullable(ResponsesWebSearchUserLocation$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      searchContextSize: 'search_context_size',
+      userLocation: 'user_location',
+    });
   });
-});
 
 export function openResponsesWebSearch20250826ToolToJSON(
   openResponsesWebSearch20250826Tool: OpenResponsesWebSearch20250826Tool,
 ): string {
   return JSON.stringify(
-    OpenResponsesWebSearch20250826Tool$outboundSchema.parse(
-      openResponsesWebSearch20250826Tool,
-    ),
+    OpenResponsesWebSearch20250826Tool$outboundSchema.parse(openResponsesWebSearch20250826Tool),
   );
 }
 export function openResponsesWebSearch20250826ToolFromJSON(
@@ -157,8 +153,7 @@ export function openResponsesWebSearch20250826ToolFromJSON(
 ): SafeParseResult<OpenResponsesWebSearch20250826Tool, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesWebSearch20250826Tool$inboundSchema.parse(JSON.parse(x)),
+    (x) => OpenResponsesWebSearch20250826Tool$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesWebSearch20250826Tool' from JSON`,
   );
 }

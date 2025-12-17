@@ -3,24 +3,22 @@
  * @generated-id: 44cf2d277540
  */
 
-import * as z from "zod/v4";
-import { startCountingUnrecognized } from "./unrecognized.js";
+import * as z from 'zod/v4';
+import { startCountingUnrecognized } from './unrecognized.js';
 
-const UNKNOWN = Symbol("UNKNOWN");
+const UNKNOWN = Symbol('UNKNOWN');
 
-export type Unknown<Discriminator extends string, UnknownValue = "UNKNOWN"> =
-  & {
-    [K in Discriminator]: UnknownValue;
-  }
-  & {
-    raw: unknown;
-    isUnknown: true;
-  };
+export type Unknown<Discriminator extends string, UnknownValue = 'UNKNOWN'> = {
+  [K in Discriminator]: UnknownValue;
+} & {
+  raw: unknown;
+  isUnknown: true;
+};
 
 export function isUnknown<Discriminator extends string>(
   value: unknown,
 ): value is Unknown<Discriminator> {
-  return typeof value === "object" && value !== null && UNKNOWN in value;
+  return typeof value === 'object' && value !== null && UNKNOWN in value;
 }
 
 /**
@@ -38,7 +36,7 @@ export function isUnknown<Discriminator extends string>(
 export function discriminatedUnion<
   InputDiscriminator extends string,
   TOptions extends Readonly<Record<string, z.ZodType>>,
-  UnknownValue extends string = "UNKNOWN",
+  UnknownValue extends string = 'UNKNOWN',
   OutputDiscriminator extends string = InputDiscriminator,
 >(
   inputPropertyName: InputDiscriminator,
@@ -48,11 +46,10 @@ export function discriminatedUnion<
     outputPropertyName?: OutputDiscriminator;
   } = {},
 ): z.ZodType<
-  | z.output<TOptions[keyof TOptions]>
-  | Unknown<OutputDiscriminator, UnknownValue>,
+  z.output<TOptions[keyof TOptions]> | Unknown<OutputDiscriminator, UnknownValue>,
   unknown
 > {
-  const { unknownValue = "UNKNOWN" as UnknownValue, outputPropertyName } = opts;
+  const { unknownValue = 'UNKNOWN' as UnknownValue, outputPropertyName } = opts;
   return z.unknown().transform((input) => {
     const fallback = Object.defineProperties(
       {
@@ -60,14 +57,20 @@ export function discriminatedUnion<
         [outputPropertyName ?? inputPropertyName]: unknownValue,
         isUnknown: true as const,
       },
-      { [UNKNOWN]: { value: true, enumerable: false, configurable: false } },
+      {
+        [UNKNOWN]: {
+          value: true,
+          enumerable: false,
+          configurable: false,
+        },
+      },
     );
 
-    const isObject = typeof input === "object" && input !== null;
+    const isObject = typeof input === 'object' && input !== null;
     if (!isObject) return fallback;
 
     const discriminator = input[inputPropertyName as keyof typeof input];
-    if (typeof discriminator !== "string") return fallback;
+    if (typeof discriminator !== 'string') return fallback;
     if (!(discriminator in options)) return fallback;
 
     const schema = options[discriminator];

@@ -13,7 +13,9 @@ describe('tool', () => {
           input: z.string(),
         }),
         execute: async (params) => {
-          return { result: params.input };
+          return {
+            result: params.input,
+          };
         },
       });
 
@@ -28,17 +30,28 @@ describe('tool', () => {
         name: 'weather',
         inputSchema: z.object({
           location: z.string(),
-          units: z.enum(['celsius', 'fahrenheit']).optional(),
+          units: z
+            .enum([
+              'celsius',
+              'fahrenheit',
+            ])
+            .optional(),
         }),
         execute: async (params) => {
           // params should be typed as { location: string; units?: 'celsius' | 'fahrenheit' }
           const location: string = params.location;
           const units: 'celsius' | 'fahrenheit' | undefined = params.units;
-          return { location, units };
+          return {
+            location,
+            units,
+          };
         },
       });
 
-      const result = await weatherTool.function.execute({ location: 'NYC', units: 'fahrenheit' });
+      const result = await weatherTool.function.execute({
+        location: 'NYC',
+        units: 'fahrenheit',
+      });
       expect(result.location).toBe('NYC');
       expect(result.units).toBe('fahrenheit');
     });
@@ -62,7 +75,9 @@ describe('tool', () => {
         },
       });
 
-      const result = await tempTool.function.execute({ location: 'NYC' });
+      const result = await tempTool.function.execute({
+        location: 'NYC',
+      });
       expect(result.temperature).toBe(72);
       expect(result.description).toBe('Sunny');
     });
@@ -75,12 +90,19 @@ describe('tool', () => {
           b: z.number(),
         }),
         execute: (params) => {
-          return { sum: params.a + params.b };
+          return {
+            sum: params.a + params.b,
+          };
         },
       });
 
-      const result = syncTool.function.execute({ a: 5, b: 3 });
-      expect(result).toEqual({ sum: 8 });
+      const result = syncTool.function.execute({
+        a: 5,
+        b: 3,
+      });
+      expect(result).toEqual({
+        sum: 8,
+      });
     });
 
     it('should pass context to execute function', async () => {
@@ -121,8 +143,12 @@ describe('tool', () => {
           result: z.string(),
         }),
         execute: async function* (_params) {
-          yield { progress: 50 };
-          yield { result: 'done' };
+          yield {
+            progress: 50,
+          };
+          yield {
+            result: 'done',
+          };
         },
       });
 
@@ -147,22 +173,48 @@ describe('tool', () => {
           result: z.string(),
         }),
         execute: async function* (params) {
-          yield { status: 'started', progress: 0 };
-          yield { status: 'processing', progress: 50 };
-          yield { completed: true, result: `Processed: ${params.data}` };
+          yield {
+            status: 'started',
+            progress: 0,
+          };
+          yield {
+            status: 'processing',
+            progress: 50,
+          };
+          yield {
+            completed: true,
+            result: `Processed: ${params.data}`,
+          };
         },
       });
 
       const results: unknown[] = [];
-      const mockContext = { numberOfTurns: 1, messageHistory: [] };
-      for await (const event of progressTool.function.execute({ data: 'test' }, mockContext)) {
+      const mockContext = {
+        numberOfTurns: 1,
+        messageHistory: [],
+      };
+      for await (const event of progressTool.function.execute(
+        {
+          data: 'test',
+        },
+        mockContext,
+      )) {
         results.push(event);
       }
 
       expect(results).toHaveLength(3);
-      expect(results[0]).toEqual({ status: 'started', progress: 0 });
-      expect(results[1]).toEqual({ status: 'processing', progress: 50 });
-      expect(results[2]).toEqual({ completed: true, result: 'Processed: test' });
+      expect(results[0]).toEqual({
+        status: 'started',
+        progress: 0,
+      });
+      expect(results[1]).toEqual({
+        status: 'processing',
+        progress: 50,
+      });
+      expect(results[2]).toEqual({
+        completed: true,
+        result: 'Processed: test',
+      });
     });
   });
 

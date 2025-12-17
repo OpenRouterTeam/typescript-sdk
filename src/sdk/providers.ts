@@ -3,21 +3,18 @@
  * @generated-id: fb8faa7013d0
  */
 
-import { providersList } from "../funcs/providersList.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { providersList } from '../funcs/providersList.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Providers extends ClientSDK {
   /**
    * List all providers
    */
-  async list(
-    options?: RequestOptions,
-  ): Promise<operations.ListProvidersResponse> {
-    return unwrapAsync(providersList(
-      this,
-      options,
-    ));
+  async list(options?: RequestOptions): Promise<operations.ListProvidersResponse> {
+    return unwrapAsync(providersList(this, options));
   }
 }

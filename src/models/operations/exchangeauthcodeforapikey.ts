@@ -3,20 +3,21 @@
  * @generated-id: 440595fac2ad
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
 
 /**
  * The method used to generate the code challenge
  */
 export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod = {
-  S256: "S256",
-  Plain: "plain",
+  S256: 'S256',
+  Plain: 'plain',
 } as const;
 /**
  * The method used to generate the code challenge
@@ -37,10 +38,7 @@ export type ExchangeAuthCodeForAPIKeyRequest = {
   /**
    * The method used to generate the code challenge
    */
-  codeChallengeMethod?:
-    | ExchangeAuthCodeForAPIKeyCodeChallengeMethod
-    | null
-    | undefined;
+  codeChallengeMethod?: ExchangeAuthCodeForAPIKeyCodeChallengeMethod | null | undefined;
 };
 
 /**
@@ -58,9 +56,10 @@ export type ExchangeAuthCodeForAPIKeyResponse = {
 };
 
 /** @internal */
-export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema:
-  z.ZodType<string, ExchangeAuthCodeForAPIKeyCodeChallengeMethod> = openEnums
-    .outboundSchema(ExchangeAuthCodeForAPIKeyCodeChallengeMethod);
+export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema: z.ZodType<
+  string,
+  ExchangeAuthCodeForAPIKeyCodeChallengeMethod
+> = openEnums.outboundSchema(ExchangeAuthCodeForAPIKeyCodeChallengeMethod);
 
 /** @internal */
 export type ExchangeAuthCodeForAPIKeyRequest$Outbound = {
@@ -73,26 +72,26 @@ export type ExchangeAuthCodeForAPIKeyRequest$Outbound = {
 export const ExchangeAuthCodeForAPIKeyRequest$outboundSchema: z.ZodType<
   ExchangeAuthCodeForAPIKeyRequest$Outbound,
   ExchangeAuthCodeForAPIKeyRequest
-> = z.object({
-  code: z.string(),
-  codeVerifier: z.string().optional(),
-  codeChallengeMethod: z.nullable(
-    ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema,
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    codeVerifier: "code_verifier",
-    codeChallengeMethod: "code_challenge_method",
+> = z
+  .object({
+    code: z.string(),
+    codeVerifier: z.string().optional(),
+    codeChallengeMethod: z
+      .nullable(ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema)
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      codeVerifier: 'code_verifier',
+      codeChallengeMethod: 'code_challenge_method',
+    });
   });
-});
 
 export function exchangeAuthCodeForAPIKeyRequestToJSON(
   exchangeAuthCodeForAPIKeyRequest: ExchangeAuthCodeForAPIKeyRequest,
 ): string {
   return JSON.stringify(
-    ExchangeAuthCodeForAPIKeyRequest$outboundSchema.parse(
-      exchangeAuthCodeForAPIKeyRequest,
-    ),
+    ExchangeAuthCodeForAPIKeyRequest$outboundSchema.parse(exchangeAuthCodeForAPIKeyRequest),
   );
 }
 
@@ -100,14 +99,16 @@ export function exchangeAuthCodeForAPIKeyRequestToJSON(
 export const ExchangeAuthCodeForAPIKeyResponse$inboundSchema: z.ZodType<
   ExchangeAuthCodeForAPIKeyResponse,
   unknown
-> = z.object({
-  key: z.string(),
-  user_id: z.nullable(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    "user_id": "userId",
+> = z
+  .object({
+    key: z.string(),
+    user_id: z.nullable(z.string()),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      user_id: 'userId',
+    });
   });
-});
 
 export function exchangeAuthCodeForAPIKeyResponseFromJSON(
   jsonString: string,

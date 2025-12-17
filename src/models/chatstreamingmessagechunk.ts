@@ -3,24 +3,22 @@
  * @generated-id: 339ee7e4b920
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ChatStreamingMessageToolCall,
-  ChatStreamingMessageToolCall$inboundSchema,
-} from "./chatstreamingmessagetoolcall.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema3, Schema3$inboundSchema } from "./schema3.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { ChatStreamingMessageToolCall } from './chatstreamingmessagetoolcall.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { Schema3 } from './schema3.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { ChatStreamingMessageToolCall$inboundSchema } from './chatstreamingmessagetoolcall.js';
+import { Schema3$inboundSchema } from './schema3.js';
 
 export const ChatStreamingMessageChunkRole = {
-  Assistant: "assistant",
+  Assistant: 'assistant',
 } as const;
-export type ChatStreamingMessageChunkRole = ClosedEnum<
-  typeof ChatStreamingMessageChunkRole
->;
+export type ChatStreamingMessageChunkRole = ClosedEnum<typeof ChatStreamingMessageChunkRole>;
 
 export type ChatStreamingMessageChunk = {
   role?: ChatStreamingMessageChunkRole | undefined;
@@ -40,19 +38,21 @@ export const ChatStreamingMessageChunkRole$inboundSchema: z.ZodEnum<
 export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   ChatStreamingMessageChunk,
   unknown
-> = z.object({
-  role: ChatStreamingMessageChunkRole$inboundSchema.optional(),
-  content: z.nullable(z.string()).optional(),
-  reasoning: z.nullable(z.string()).optional(),
-  refusal: z.nullable(z.string()).optional(),
-  tool_calls: z.array(ChatStreamingMessageToolCall$inboundSchema).optional(),
-  reasoning_details: z.array(Schema3$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_calls": "toolCalls",
-    "reasoning_details": "reasoningDetails",
+> = z
+  .object({
+    role: ChatStreamingMessageChunkRole$inboundSchema.optional(),
+    content: z.nullable(z.string()).optional(),
+    reasoning: z.nullable(z.string()).optional(),
+    refusal: z.nullable(z.string()).optional(),
+    tool_calls: z.array(ChatStreamingMessageToolCall$inboundSchema).optional(),
+    reasoning_details: z.array(Schema3$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      tool_calls: 'toolCalls',
+      reasoning_details: 'reasoningDetails',
+    });
   });
-});
 
 export function chatStreamingMessageChunkFromJSON(
   jsonString: string,

@@ -3,14 +3,15 @@
  * @generated-id: 08377a5f88b1
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export const ResponsesWebSearchUserLocationType = {
-  Approximate: "approximate",
+  Approximate: 'approximate',
 } as const;
 export type ResponsesWebSearchUserLocationType = ClosedEnum<
   typeof ResponsesWebSearchUserLocationType
@@ -72,9 +73,7 @@ export function responsesWebSearchUserLocationToJSON(
   responsesWebSearchUserLocation: ResponsesWebSearchUserLocation,
 ): string {
   return JSON.stringify(
-    ResponsesWebSearchUserLocation$outboundSchema.parse(
-      responsesWebSearchUserLocation,
-    ),
+    ResponsesWebSearchUserLocation$outboundSchema.parse(responsesWebSearchUserLocation),
   );
 }
 export function responsesWebSearchUserLocationFromJSON(

@@ -3,14 +3,15 @@
  * @generated-id: 7d1e919d1ec3
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const ProviderSort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
+  Price: 'price',
+  Throughput: 'throughput',
+  Latency: 'latency',
 } as const;
 export type ProviderSort = OpenEnum<typeof ProviderSort>;
 

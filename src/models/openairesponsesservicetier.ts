@@ -3,20 +3,19 @@
  * @generated-id: 88b4cb1f9919
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const OpenAIResponsesServiceTier = {
-  Auto: "auto",
-  Default: "default",
-  Flex: "flex",
-  Priority: "priority",
-  Scale: "scale",
+  Auto: 'auto',
+  Default: 'default',
+  Flex: 'flex',
+  Priority: 'priority',
+  Scale: 'scale',
 } as const;
-export type OpenAIResponsesServiceTier = OpenEnum<
-  typeof OpenAIResponsesServiceTier
->;
+export type OpenAIResponsesServiceTier = OpenEnum<typeof OpenAIResponsesServiceTier>;
 
 /** @internal */
 export const OpenAIResponsesServiceTier$inboundSchema: z.ZodType<

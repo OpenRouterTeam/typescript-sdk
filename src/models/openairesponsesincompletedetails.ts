@@ -3,16 +3,17 @@
  * @generated-id: f2aabee6a438
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const Reason = {
-  MaxOutputTokens: "max_output_tokens",
-  ContentFilter: "content_filter",
+  MaxOutputTokens: 'max_output_tokens',
+  ContentFilter: 'content_filter',
 } as const;
 export type Reason = OpenEnum<typeof Reason>;
 
@@ -21,8 +22,7 @@ export type OpenAIResponsesIncompleteDetails = {
 };
 
 /** @internal */
-export const Reason$inboundSchema: z.ZodType<Reason, unknown> = openEnums
-  .inboundSchema(Reason);
+export const Reason$inboundSchema: z.ZodType<Reason, unknown> = openEnums.inboundSchema(Reason);
 
 /** @internal */
 export const OpenAIResponsesIncompleteDetails$inboundSchema: z.ZodType<

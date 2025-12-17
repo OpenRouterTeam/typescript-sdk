@@ -3,33 +3,34 @@
  * @generated-id: b65482ec4223
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * Tokenizer type used by the model
  */
 export const ModelGroup = {
-  Router: "Router",
-  Media: "Media",
-  Other: "Other",
-  Gpt: "GPT",
-  Claude: "Claude",
-  Gemini: "Gemini",
-  Grok: "Grok",
-  Cohere: "Cohere",
-  Nova: "Nova",
-  Qwen: "Qwen",
-  Yi: "Yi",
-  DeepSeek: "DeepSeek",
-  Mistral: "Mistral",
-  Llama2: "Llama2",
-  Llama3: "Llama3",
-  Llama4: "Llama4",
-  PaLM: "PaLM",
-  Rwkv: "RWKV",
-  Qwen3: "Qwen3",
+  Router: 'Router',
+  Media: 'Media',
+  Other: 'Other',
+  Gpt: 'GPT',
+  Claude: 'Claude',
+  Gemini: 'Gemini',
+  Grok: 'Grok',
+  Cohere: 'Cohere',
+  Nova: 'Nova',
+  Qwen: 'Qwen',
+  Yi: 'Yi',
+  DeepSeek: 'DeepSeek',
+  Mistral: 'Mistral',
+  Llama2: 'Llama2',
+  Llama3: 'Llama3',
+  Llama4: 'Llama4',
+  PaLM: 'PaLM',
+  Rwkv: 'RWKV',
+  Qwen3: 'Qwen3',
 } as const;
 /**
  * Tokenizer type used by the model

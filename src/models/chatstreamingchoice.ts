@@ -3,23 +3,18 @@
  * @generated-id: 15346f0b1bc4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ChatCompletionFinishReason,
-  ChatCompletionFinishReason$inboundSchema,
-} from "./chatcompletionfinishreason.js";
-import {
-  ChatMessageTokenLogprobs,
-  ChatMessageTokenLogprobs$inboundSchema,
-} from "./chatmessagetokenlogprobs.js";
-import {
-  ChatStreamingMessageChunk,
-  ChatStreamingMessageChunk$inboundSchema,
-} from "./chatstreamingmessagechunk.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { ChatCompletionFinishReason } from './chatcompletionfinishreason.js';
+import type { ChatMessageTokenLogprobs } from './chatmessagetokenlogprobs.js';
+import type { ChatStreamingMessageChunk } from './chatstreamingmessagechunk.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { ChatCompletionFinishReason$inboundSchema } from './chatcompletionfinishreason.js';
+import { ChatMessageTokenLogprobs$inboundSchema } from './chatmessagetokenlogprobs.js';
+import { ChatStreamingMessageChunk$inboundSchema } from './chatstreamingmessagechunk.js';
 
 export type ChatStreamingChoice = {
   delta: ChatStreamingMessageChunk;
@@ -29,19 +24,18 @@ export type ChatStreamingChoice = {
 };
 
 /** @internal */
-export const ChatStreamingChoice$inboundSchema: z.ZodType<
-  ChatStreamingChoice,
-  unknown
-> = z.object({
-  delta: ChatStreamingMessageChunk$inboundSchema,
-  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
-  index: z.number(),
-  logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "finish_reason": "finishReason",
+export const ChatStreamingChoice$inboundSchema: z.ZodType<ChatStreamingChoice, unknown> = z
+  .object({
+    delta: ChatStreamingMessageChunk$inboundSchema,
+    finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
+    index: z.number(),
+    logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      finish_reason: 'finishReason',
+    });
   });
-});
 
 export function chatStreamingChoiceFromJSON(
   jsonString: string,

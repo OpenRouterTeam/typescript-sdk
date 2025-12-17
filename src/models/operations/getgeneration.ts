@@ -3,13 +3,14 @@
  * @generated-id: 5cdb2959d2a5
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
 
 export type GetGenerationRequest = {
   id: string;
@@ -19,8 +20,8 @@ export type GetGenerationRequest = {
  * Type of API used for the generation
  */
 export const ApiType = {
-  Completions: "completions",
-  Embeddings: "embeddings",
+  Completions: 'completions',
+  Embeddings: 'embeddings',
 } as const;
 /**
  * Type of API used for the generation
@@ -184,84 +185,78 @@ export const GetGenerationRequest$outboundSchema: z.ZodType<
   id: z.string(),
 });
 
-export function getGenerationRequestToJSON(
-  getGenerationRequest: GetGenerationRequest,
-): string {
-  return JSON.stringify(
-    GetGenerationRequest$outboundSchema.parse(getGenerationRequest),
-  );
+export function getGenerationRequestToJSON(getGenerationRequest: GetGenerationRequest): string {
+  return JSON.stringify(GetGenerationRequest$outboundSchema.parse(getGenerationRequest));
 }
 
 /** @internal */
-export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
-  .inboundSchema(ApiType);
+export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums.inboundSchema(ApiType);
 
 /** @internal */
-export const GetGenerationData$inboundSchema: z.ZodType<
-  GetGenerationData,
-  unknown
-> = z.object({
-  id: z.string(),
-  upstream_id: z.nullable(z.string()),
-  total_cost: z.number(),
-  cache_discount: z.nullable(z.number()),
-  upstream_inference_cost: z.nullable(z.number()),
-  created_at: z.string(),
-  model: z.string(),
-  app_id: z.nullable(z.number()),
-  streamed: z.nullable(z.boolean()),
-  cancelled: z.nullable(z.boolean()),
-  provider_name: z.nullable(z.string()),
-  latency: z.nullable(z.number()),
-  moderation_latency: z.nullable(z.number()),
-  generation_time: z.nullable(z.number()),
-  finish_reason: z.nullable(z.string()),
-  tokens_prompt: z.nullable(z.number()),
-  tokens_completion: z.nullable(z.number()),
-  native_tokens_prompt: z.nullable(z.number()),
-  native_tokens_completion: z.nullable(z.number()),
-  native_tokens_completion_images: z.nullable(z.number()),
-  native_tokens_reasoning: z.nullable(z.number()),
-  native_tokens_cached: z.nullable(z.number()),
-  num_media_prompt: z.nullable(z.number()),
-  num_input_audio_prompt: z.nullable(z.number()),
-  num_media_completion: z.nullable(z.number()),
-  num_search_results: z.nullable(z.number()),
-  origin: z.string(),
-  usage: z.number(),
-  is_byok: z.boolean(),
-  native_finish_reason: z.nullable(z.string()),
-  external_user: z.nullable(z.string()),
-  api_type: z.nullable(ApiType$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "upstream_id": "upstreamId",
-    "total_cost": "totalCost",
-    "cache_discount": "cacheDiscount",
-    "upstream_inference_cost": "upstreamInferenceCost",
-    "created_at": "createdAt",
-    "app_id": "appId",
-    "provider_name": "providerName",
-    "moderation_latency": "moderationLatency",
-    "generation_time": "generationTime",
-    "finish_reason": "finishReason",
-    "tokens_prompt": "tokensPrompt",
-    "tokens_completion": "tokensCompletion",
-    "native_tokens_prompt": "nativeTokensPrompt",
-    "native_tokens_completion": "nativeTokensCompletion",
-    "native_tokens_completion_images": "nativeTokensCompletionImages",
-    "native_tokens_reasoning": "nativeTokensReasoning",
-    "native_tokens_cached": "nativeTokensCached",
-    "num_media_prompt": "numMediaPrompt",
-    "num_input_audio_prompt": "numInputAudioPrompt",
-    "num_media_completion": "numMediaCompletion",
-    "num_search_results": "numSearchResults",
-    "is_byok": "isByok",
-    "native_finish_reason": "nativeFinishReason",
-    "external_user": "externalUser",
-    "api_type": "apiType",
+export const GetGenerationData$inboundSchema: z.ZodType<GetGenerationData, unknown> = z
+  .object({
+    id: z.string(),
+    upstream_id: z.nullable(z.string()),
+    total_cost: z.number(),
+    cache_discount: z.nullable(z.number()),
+    upstream_inference_cost: z.nullable(z.number()),
+    created_at: z.string(),
+    model: z.string(),
+    app_id: z.nullable(z.number()),
+    streamed: z.nullable(z.boolean()),
+    cancelled: z.nullable(z.boolean()),
+    provider_name: z.nullable(z.string()),
+    latency: z.nullable(z.number()),
+    moderation_latency: z.nullable(z.number()),
+    generation_time: z.nullable(z.number()),
+    finish_reason: z.nullable(z.string()),
+    tokens_prompt: z.nullable(z.number()),
+    tokens_completion: z.nullable(z.number()),
+    native_tokens_prompt: z.nullable(z.number()),
+    native_tokens_completion: z.nullable(z.number()),
+    native_tokens_completion_images: z.nullable(z.number()),
+    native_tokens_reasoning: z.nullable(z.number()),
+    native_tokens_cached: z.nullable(z.number()),
+    num_media_prompt: z.nullable(z.number()),
+    num_input_audio_prompt: z.nullable(z.number()),
+    num_media_completion: z.nullable(z.number()),
+    num_search_results: z.nullable(z.number()),
+    origin: z.string(),
+    usage: z.number(),
+    is_byok: z.boolean(),
+    native_finish_reason: z.nullable(z.string()),
+    external_user: z.nullable(z.string()),
+    api_type: z.nullable(ApiType$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      upstream_id: 'upstreamId',
+      total_cost: 'totalCost',
+      cache_discount: 'cacheDiscount',
+      upstream_inference_cost: 'upstreamInferenceCost',
+      created_at: 'createdAt',
+      app_id: 'appId',
+      provider_name: 'providerName',
+      moderation_latency: 'moderationLatency',
+      generation_time: 'generationTime',
+      finish_reason: 'finishReason',
+      tokens_prompt: 'tokensPrompt',
+      tokens_completion: 'tokensCompletion',
+      native_tokens_prompt: 'nativeTokensPrompt',
+      native_tokens_completion: 'nativeTokensCompletion',
+      native_tokens_completion_images: 'nativeTokensCompletionImages',
+      native_tokens_reasoning: 'nativeTokensReasoning',
+      native_tokens_cached: 'nativeTokensCached',
+      num_media_prompt: 'numMediaPrompt',
+      num_input_audio_prompt: 'numInputAudioPrompt',
+      num_media_completion: 'numMediaCompletion',
+      num_search_results: 'numSearchResults',
+      is_byok: 'isByok',
+      native_finish_reason: 'nativeFinishReason',
+      external_user: 'externalUser',
+      api_type: 'apiType',
+    });
   });
-});
 
 export function getGenerationDataFromJSON(
   jsonString: string,
@@ -274,12 +269,10 @@ export function getGenerationDataFromJSON(
 }
 
 /** @internal */
-export const GetGenerationResponse$inboundSchema: z.ZodType<
-  GetGenerationResponse,
-  unknown
-> = z.object({
-  data: z.lazy(() => GetGenerationData$inboundSchema),
-});
+export const GetGenerationResponse$inboundSchema: z.ZodType<GetGenerationResponse, unknown> =
+  z.object({
+    data: z.lazy(() => GetGenerationData$inboundSchema),
+  });
 
 export function getGenerationResponseFromJSON(
   jsonString: string,

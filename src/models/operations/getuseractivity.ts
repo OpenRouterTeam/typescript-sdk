@@ -3,11 +3,12 @@
  * @generated-id: 19535b4511a4
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../../lib/schemas.js';
+import * as models from '../index.js';
 
 export type GetUserActivityRequest = {
   /**
@@ -42,18 +43,14 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
 export function getUserActivityRequestToJSON(
   getUserActivityRequest: GetUserActivityRequest,
 ): string {
-  return JSON.stringify(
-    GetUserActivityRequest$outboundSchema.parse(getUserActivityRequest),
-  );
+  return JSON.stringify(GetUserActivityRequest$outboundSchema.parse(getUserActivityRequest));
 }
 
 /** @internal */
-export const GetUserActivityResponse$inboundSchema: z.ZodType<
-  GetUserActivityResponse,
-  unknown
-> = z.object({
-  data: z.array(models.ActivityItem$inboundSchema),
-});
+export const GetUserActivityResponse$inboundSchema: z.ZodType<GetUserActivityResponse, unknown> =
+  z.object({
+    data: z.array(models.ActivityItem$inboundSchema),
+  });
 
 export function getUserActivityResponseFromJSON(
   jsonString: string,

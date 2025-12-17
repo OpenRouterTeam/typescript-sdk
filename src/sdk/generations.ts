@@ -3,10 +3,12 @@
  * @generated-id: e28b205da063
  */
 
-import { generationsGetGeneration } from "../funcs/generationsGetGeneration.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { generationsGetGeneration } from '../funcs/generationsGetGeneration.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Generations extends ClientSDK {
   /**
@@ -16,10 +18,6 @@ export class Generations extends ClientSDK {
     request: operations.GetGenerationRequest,
     options?: RequestOptions,
   ): Promise<operations.GetGenerationResponse> {
-    return unwrapAsync(generationsGetGeneration(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(generationsGetGeneration(this, request, options));
   }
 }

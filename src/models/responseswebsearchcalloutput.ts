@@ -3,23 +3,22 @@
  * @generated-id: c1c0ab68e92c
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { WebSearchStatus } from './websearchstatus.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 import {
-  WebSearchStatus,
   WebSearchStatus$inboundSchema,
   WebSearchStatus$outboundSchema,
-} from "./websearchstatus.js";
+} from './websearchstatus.js';
 
 export const ResponsesWebSearchCallOutputType = {
-  WebSearchCall: "web_search_call",
+  WebSearchCall: 'web_search_call',
 } as const;
-export type ResponsesWebSearchCallOutputType = ClosedEnum<
-  typeof ResponsesWebSearchCallOutputType
->;
+export type ResponsesWebSearchCallOutputType = ClosedEnum<typeof ResponsesWebSearchCallOutputType>;
 
 export type ResponsesWebSearchCallOutput = {
   type: ResponsesWebSearchCallOutputType;
@@ -66,9 +65,7 @@ export function responsesWebSearchCallOutputToJSON(
   responsesWebSearchCallOutput: ResponsesWebSearchCallOutput,
 ): string {
   return JSON.stringify(
-    ResponsesWebSearchCallOutput$outboundSchema.parse(
-      responsesWebSearchCallOutput,
-    ),
+    ResponsesWebSearchCallOutput$outboundSchema.parse(responsesWebSearchCallOutput),
   );
 }
 export function responsesWebSearchCallOutputFromJSON(

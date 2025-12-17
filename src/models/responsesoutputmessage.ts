@@ -3,54 +3,52 @@
  * @generated-id: 32cb33488ea2
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type {
   OpenAIResponsesRefusalContent,
-  OpenAIResponsesRefusalContent$inboundSchema,
   OpenAIResponsesRefusalContent$Outbound,
-  OpenAIResponsesRefusalContent$outboundSchema,
-} from "./openairesponsesrefusalcontent.js";
+} from './openairesponsesrefusalcontent.js';
+import type { ResponseOutputText, ResponseOutputText$Outbound } from './responseoutputtext.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ResponseOutputText,
+  OpenAIResponsesRefusalContent$inboundSchema,
+  OpenAIResponsesRefusalContent$outboundSchema,
+} from './openairesponsesrefusalcontent.js';
+import {
   ResponseOutputText$inboundSchema,
-  ResponseOutputText$Outbound,
   ResponseOutputText$outboundSchema,
-} from "./responseoutputtext.js";
+} from './responseoutputtext.js';
 
 export const ResponsesOutputMessageRole = {
-  Assistant: "assistant",
+  Assistant: 'assistant',
 } as const;
-export type ResponsesOutputMessageRole = ClosedEnum<
-  typeof ResponsesOutputMessageRole
->;
+export type ResponsesOutputMessageRole = ClosedEnum<typeof ResponsesOutputMessageRole>;
 
 export const ResponsesOutputMessageType = {
-  Message: "message",
+  Message: 'message',
 } as const;
-export type ResponsesOutputMessageType = ClosedEnum<
-  typeof ResponsesOutputMessageType
->;
+export type ResponsesOutputMessageType = ClosedEnum<typeof ResponsesOutputMessageType>;
 
 export const ResponsesOutputMessageStatusInProgress = {
-  InProgress: "in_progress",
+  InProgress: 'in_progress',
 } as const;
 export type ResponsesOutputMessageStatusInProgress = ClosedEnum<
   typeof ResponsesOutputMessageStatusInProgress
 >;
 
 export const ResponsesOutputMessageStatusIncomplete = {
-  Incomplete: "incomplete",
+  Incomplete: 'incomplete',
 } as const;
 export type ResponsesOutputMessageStatusIncomplete = ClosedEnum<
   typeof ResponsesOutputMessageStatusIncomplete
 >;
 
 export const ResponsesOutputMessageStatusCompleted = {
-  Completed: "completed",
+  Completed: 'completed',
 } as const;
 export type ResponsesOutputMessageStatusCompleted = ClosedEnum<
   typeof ResponsesOutputMessageStatusCompleted
@@ -61,9 +59,7 @@ export type ResponsesOutputMessageStatusUnion =
   | ResponsesOutputMessageStatusIncomplete
   | ResponsesOutputMessageStatusInProgress;
 
-export type ResponsesOutputMessageContent =
-  | ResponseOutputText
-  | OpenAIResponsesRefusalContent;
+export type ResponsesOutputMessageContent = ResponseOutputText | OpenAIResponsesRefusalContent;
 
 /**
  * An output message item
@@ -135,10 +131,7 @@ export const ResponsesOutputMessageStatusUnion$inboundSchema: z.ZodType<
   ResponsesOutputMessageStatusInProgress$inboundSchema,
 ]);
 /** @internal */
-export type ResponsesOutputMessageStatusUnion$Outbound =
-  | string
-  | string
-  | string;
+export type ResponsesOutputMessageStatusUnion$Outbound = string | string | string;
 
 /** @internal */
 export const ResponsesOutputMessageStatusUnion$outboundSchema: z.ZodType<
@@ -154,9 +147,7 @@ export function responsesOutputMessageStatusUnionToJSON(
   responsesOutputMessageStatusUnion: ResponsesOutputMessageStatusUnion,
 ): string {
   return JSON.stringify(
-    ResponsesOutputMessageStatusUnion$outboundSchema.parse(
-      responsesOutputMessageStatusUnion,
-    ),
+    ResponsesOutputMessageStatusUnion$outboundSchema.parse(responsesOutputMessageStatusUnion),
   );
 }
 export function responsesOutputMessageStatusUnionFromJSON(
@@ -195,9 +186,7 @@ export function responsesOutputMessageContentToJSON(
   responsesOutputMessageContent: ResponsesOutputMessageContent,
 ): string {
   return JSON.stringify(
-    ResponsesOutputMessageContent$outboundSchema.parse(
-      responsesOutputMessageContent,
-    ),
+    ResponsesOutputMessageContent$outboundSchema.parse(responsesOutputMessageContent),
   );
 }
 export function responsesOutputMessageContentFromJSON(
@@ -211,34 +200,32 @@ export function responsesOutputMessageContentFromJSON(
 }
 
 /** @internal */
-export const ResponsesOutputMessage$inboundSchema: z.ZodType<
-  ResponsesOutputMessage,
-  unknown
-> = z.object({
-  id: z.string(),
-  role: ResponsesOutputMessageRole$inboundSchema,
-  type: ResponsesOutputMessageType$inboundSchema,
-  status: z.union([
-    ResponsesOutputMessageStatusCompleted$inboundSchema,
-    ResponsesOutputMessageStatusIncomplete$inboundSchema,
-    ResponsesOutputMessageStatusInProgress$inboundSchema,
-  ]).optional(),
-  content: z.array(
-    z.union([
-      ResponseOutputText$inboundSchema,
-      OpenAIResponsesRefusalContent$inboundSchema,
-    ]),
-  ),
-});
+export const ResponsesOutputMessage$inboundSchema: z.ZodType<ResponsesOutputMessage, unknown> =
+  z.object({
+    id: z.string(),
+    role: ResponsesOutputMessageRole$inboundSchema,
+    type: ResponsesOutputMessageType$inboundSchema,
+    status: z
+      .union([
+        ResponsesOutputMessageStatusCompleted$inboundSchema,
+        ResponsesOutputMessageStatusIncomplete$inboundSchema,
+        ResponsesOutputMessageStatusInProgress$inboundSchema,
+      ])
+      .optional(),
+    content: z.array(
+      z.union([
+        ResponseOutputText$inboundSchema,
+        OpenAIResponsesRefusalContent$inboundSchema,
+      ]),
+    ),
+  });
 /** @internal */
 export type ResponsesOutputMessage$Outbound = {
   id: string;
   role: string;
   type: string;
   status?: string | string | string | undefined;
-  content: Array<
-    ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
-  >;
+  content: Array<ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound>;
 };
 
 /** @internal */
@@ -249,11 +236,13 @@ export const ResponsesOutputMessage$outboundSchema: z.ZodType<
   id: z.string(),
   role: ResponsesOutputMessageRole$outboundSchema,
   type: ResponsesOutputMessageType$outboundSchema,
-  status: z.union([
-    ResponsesOutputMessageStatusCompleted$outboundSchema,
-    ResponsesOutputMessageStatusIncomplete$outboundSchema,
-    ResponsesOutputMessageStatusInProgress$outboundSchema,
-  ]).optional(),
+  status: z
+    .union([
+      ResponsesOutputMessageStatusCompleted$outboundSchema,
+      ResponsesOutputMessageStatusIncomplete$outboundSchema,
+      ResponsesOutputMessageStatusInProgress$outboundSchema,
+    ])
+    .optional(),
   content: z.array(
     z.union([
       ResponseOutputText$outboundSchema,
@@ -265,9 +254,7 @@ export const ResponsesOutputMessage$outboundSchema: z.ZodType<
 export function responsesOutputMessageToJSON(
   responsesOutputMessage: ResponsesOutputMessage,
 ): string {
-  return JSON.stringify(
-    ResponsesOutputMessage$outboundSchema.parse(responsesOutputMessage),
-  );
+  return JSON.stringify(ResponsesOutputMessage$outboundSchema.parse(responsesOutputMessage));
 }
 export function responsesOutputMessageFromJSON(
   jsonString: string,

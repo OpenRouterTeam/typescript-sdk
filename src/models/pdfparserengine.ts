@@ -3,17 +3,18 @@
  * @generated-id: 3c0c5ac60652
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * The engine to use for parsing PDF files.
  */
 export const PDFParserEngine = {
-  MistralOcr: "mistral-ocr",
-  PdfText: "pdf-text",
-  Native: "native",
+  MistralOcr: 'mistral-ocr',
+  PdfText: 'pdf-text',
+  Native: 'native',
 } as const;
 /**
  * The engine to use for parsing PDF files.
@@ -21,7 +22,5 @@ export const PDFParserEngine = {
 export type PDFParserEngine = OpenEnum<typeof PDFParserEngine>;
 
 /** @internal */
-export const PDFParserEngine$outboundSchema: z.ZodType<
-  string,
-  PDFParserEngine
-> = openEnums.outboundSchema(PDFParserEngine);
+export const PDFParserEngine$outboundSchema: z.ZodType<string, PDFParserEngine> =
+  openEnums.outboundSchema(PDFParserEngine);

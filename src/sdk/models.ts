@@ -3,25 +3,22 @@
  * @generated-id: 8c761ab180fd
  */
 
-import { modelsCount } from "../funcs/modelsCount.js";
-import { modelsList } from "../funcs/modelsList.js";
-import { modelsListForUser } from "../funcs/modelsListForUser.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as models from '../models/index.js';
+import type * as operations from '../models/operations/index.js';
+
+import { modelsCount } from '../funcs/modelsCount.js';
+import { modelsList } from '../funcs/modelsList.js';
+import { modelsListForUser } from '../funcs/modelsListForUser.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Models extends ClientSDK {
   /**
    * Get total count of available models
    */
-  async count(
-    options?: RequestOptions,
-  ): Promise<models.ModelsCountResponse> {
-    return unwrapAsync(modelsCount(
-      this,
-      options,
-    ));
+  async count(options?: RequestOptions): Promise<models.ModelsCountResponse> {
+    return unwrapAsync(modelsCount(this, options));
   }
 
   /**
@@ -31,11 +28,7 @@ export class Models extends ClientSDK {
     request?: operations.GetModelsRequest | undefined,
     options?: RequestOptions,
   ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsList(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(modelsList(this, request, options));
   }
 
   /**
@@ -45,10 +38,6 @@ export class Models extends ClientSDK {
     security: operations.ListModelsUserSecurity,
     options?: RequestOptions,
   ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsListForUser(
-      this,
-      security,
-      options,
-    ));
+    return unwrapAsync(modelsListForUser(this, security, options));
   }
 }

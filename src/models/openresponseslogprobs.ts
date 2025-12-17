@@ -3,15 +3,14 @@
  * @generated-id: 7ec69a3158fc
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenResponsesTopLogprobs,
-  OpenResponsesTopLogprobs$inboundSchema,
-} from "./openresponsestoplogprobs.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { OpenResponsesTopLogprobs } from './openresponsestoplogprobs.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { OpenResponsesTopLogprobs$inboundSchema } from './openresponsestoplogprobs.js';
 
 /**
  * Log probability information for a token
@@ -23,18 +22,17 @@ export type OpenResponsesLogProbs = {
 };
 
 /** @internal */
-export const OpenResponsesLogProbs$inboundSchema: z.ZodType<
-  OpenResponsesLogProbs,
-  unknown
-> = z.object({
-  logprob: z.number(),
-  token: z.string(),
-  top_logprobs: z.array(OpenResponsesTopLogprobs$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "top_logprobs": "topLogprobs",
+export const OpenResponsesLogProbs$inboundSchema: z.ZodType<OpenResponsesLogProbs, unknown> = z
+  .object({
+    logprob: z.number(),
+    token: z.string(),
+    top_logprobs: z.array(OpenResponsesTopLogprobs$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      top_logprobs: 'topLogprobs',
+    });
   });
-});
 
 export function openResponsesLogProbsFromJSON(
   jsonString: string,

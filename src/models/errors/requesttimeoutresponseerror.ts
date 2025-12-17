@@ -3,10 +3,10 @@
  * @generated-id: 3a4a755c8536
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Request Timeout - Operation exceeded time limit
@@ -34,16 +34,19 @@ export class RequestTimeoutResponseError extends OpenRouterError {
 
   constructor(
     err: RequestTimeoutResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "RequestTimeoutResponseError";
+    this.name = 'RequestTimeoutResponseError';
   }
 }
 
@@ -51,16 +54,17 @@ export class RequestTimeoutResponseError extends OpenRouterError {
 export const RequestTimeoutResponseError$inboundSchema: z.ZodType<
   RequestTimeoutResponseError,
   unknown
-> = z.object({
-  error: models.RequestTimeoutResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+> = z
+  .object({
+    error: models.RequestTimeoutResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new RequestTimeoutResponseError(remapped, {

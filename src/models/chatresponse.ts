@@ -3,26 +3,23 @@
  * @generated-id: 76c3703fa3d5
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  ChatGenerationTokenUsage,
-  ChatGenerationTokenUsage$inboundSchema,
-} from "./chatgenerationtokenusage.js";
-import {
-  ChatResponseChoice,
-  ChatResponseChoice$inboundSchema,
-} from "./chatresponsechoice.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { ChatGenerationTokenUsage } from './chatgenerationtokenusage.js';
+import type { ChatResponseChoice } from './chatresponsechoice.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { ChatGenerationTokenUsage$inboundSchema } from './chatgenerationtokenusage.js';
+import { ChatResponseChoice$inboundSchema } from './chatresponsechoice.js';
 
 export type ChatResponse = {
   id: string;
   choices: Array<ChatResponseChoice>;
   created: number;
   model: string;
-  object: "chat.completion";
+  object: 'chat.completion';
   systemFingerprint?: string | null | undefined;
   usage?: ChatGenerationTokenUsage | undefined;
 };
@@ -34,12 +31,13 @@ export const ChatResponse$inboundSchema: z.ZodType<ChatResponse, unknown> = z
     choices: z.array(ChatResponseChoice$inboundSchema),
     created: z.number(),
     model: z.string(),
-    object: z.literal("chat.completion"),
+    object: z.literal('chat.completion'),
     system_fingerprint: z.nullable(z.string()).optional(),
     usage: ChatGenerationTokenUsage$inboundSchema.optional(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "system_fingerprint": "systemFingerprint",
+      system_fingerprint: 'systemFingerprint',
     });
   });
 

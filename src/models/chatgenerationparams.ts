@@ -3,68 +3,52 @@
  * @generated-id: f98a2a558f3f
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import {
-  ChatStreamOptions,
-  ChatStreamOptions$Outbound,
-  ChatStreamOptions$outboundSchema,
-} from "./chatstreamoptions.js";
-import {
-  Message,
-  Message$Outbound,
-  Message$outboundSchema,
-} from "./message.js";
-import {
-  ProviderSortUnion,
-  ProviderSortUnion$Outbound,
-  ProviderSortUnion$outboundSchema,
-} from "./providersortunion.js";
-import {
-  ReasoningSummaryVerbosity,
-  ReasoningSummaryVerbosity$outboundSchema,
-} from "./reasoningsummaryverbosity.js";
-import {
+import type { OpenEnum } from '../types/enums.js';
+import type { ChatStreamOptions, ChatStreamOptions$Outbound } from './chatstreamoptions.js';
+import type { Message, Message$Outbound } from './message.js';
+import type { ProviderSortUnion, ProviderSortUnion$Outbound } from './providersortunion.js';
+import type { ReasoningSummaryVerbosity } from './reasoningsummaryverbosity.js';
+import type {
   ResponseFormatJSONSchema,
   ResponseFormatJSONSchema$Outbound,
-  ResponseFormatJSONSchema$outboundSchema,
-} from "./responseformatjsonschema.js";
-import {
+} from './responseformatjsonschema.js';
+import type {
   ResponseFormatTextGrammar,
   ResponseFormatTextGrammar$Outbound,
-  ResponseFormatTextGrammar$outboundSchema,
-} from "./responseformattextgrammar.js";
-import {
-  Schema0,
-  Schema0$Outbound,
-  Schema0$outboundSchema,
-} from "./schema0.js";
-import {
-  ToolDefinitionJson,
-  ToolDefinitionJson$Outbound,
-  ToolDefinitionJson$outboundSchema,
-} from "./tooldefinitionjson.js";
+} from './responseformattextgrammar.js';
+import type { Schema0, Schema0$Outbound } from './schema0.js';
+import type { ToolDefinitionJson, ToolDefinitionJson$Outbound } from './tooldefinitionjson.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import * as openEnums from '../types/enums.js';
+import { ChatStreamOptions$outboundSchema } from './chatstreamoptions.js';
+import { Message$outboundSchema } from './message.js';
+import { ProviderSortUnion$outboundSchema } from './providersortunion.js';
+import { ReasoningSummaryVerbosity$outboundSchema } from './reasoningsummaryverbosity.js';
+import { ResponseFormatJSONSchema$outboundSchema } from './responseformatjsonschema.js';
+import { ResponseFormatTextGrammar$outboundSchema } from './responseformattextgrammar.js';
+import { Schema0$outboundSchema } from './schema0.js';
+import { ToolDefinitionJson$outboundSchema } from './tooldefinitionjson.js';
 
 export const ChatGenerationParamsDataCollection = {
-  Deny: "deny",
-  Allow: "allow",
+  Deny: 'deny',
+  Allow: 'allow',
 } as const;
 export type ChatGenerationParamsDataCollection = OpenEnum<
   typeof ChatGenerationParamsDataCollection
 >;
 
 export const Quantizations = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
+  Int4: 'int4',
+  Int8: 'int8',
+  Fp4: 'fp4',
+  Fp6: 'fp6',
+  Fp8: 'fp8',
+  Fp16: 'fp16',
+  Bf16: 'bf16',
+  Fp32: 'fp32',
+  Unknown: 'unknown',
 } as const;
 export type Quantizations = OpenEnum<typeof Quantizations>;
 
@@ -134,14 +118,14 @@ export type ChatGenerationParamsProvider = {
 };
 
 export type ChatGenerationParamsPluginResponseHealing = {
-  id: "response-healing";
+  id: 'response-healing';
   enabled?: boolean | undefined;
 };
 
 export const PdfEngine = {
-  MistralOcr: "mistral-ocr",
-  PdfText: "pdf-text",
-  Native: "native",
+  MistralOcr: 'mistral-ocr',
+  PdfText: 'pdf-text',
+  Native: 'native',
 } as const;
 export type PdfEngine = OpenEnum<typeof PdfEngine>;
 
@@ -150,19 +134,19 @@ export type Pdf = {
 };
 
 export type ChatGenerationParamsPluginFileParser = {
-  id: "file-parser";
+  id: 'file-parser';
   enabled?: boolean | undefined;
   pdf?: Pdf | undefined;
 };
 
 export const Engine = {
-  Native: "native",
-  Exa: "exa",
+  Native: 'native',
+  Exa: 'exa',
 } as const;
 export type Engine = OpenEnum<typeof Engine>;
 
 export type ChatGenerationParamsPluginWeb = {
-  id: "web";
+  id: 'web';
   enabled?: boolean | undefined;
   maxResults?: number | undefined;
   searchPrompt?: string | undefined;
@@ -170,7 +154,7 @@ export type ChatGenerationParamsPluginWeb = {
 };
 
 export type ChatGenerationParamsPluginModeration = {
-  id: "moderation";
+  id: 'moderation';
 };
 
 export type ChatGenerationParamsPluginUnion =
@@ -180,18 +164,18 @@ export type ChatGenerationParamsPluginUnion =
   | ChatGenerationParamsPluginResponseHealing;
 
 export const Route = {
-  Fallback: "fallback",
-  Sort: "sort",
+  Fallback: 'fallback',
+  Sort: 'sort',
 } as const;
 export type Route = OpenEnum<typeof Route>;
 
 export const Effort = {
-  Xhigh: "xhigh",
-  High: "high",
-  Medium: "medium",
-  Low: "low",
-  Minimal: "minimal",
-  None: "none",
+  Xhigh: 'xhigh',
+  High: 'high',
+  Medium: 'medium',
+  Low: 'low',
+  Minimal: 'minimal',
+  None: 'none',
 } as const;
 export type Effort = OpenEnum<typeof Effort>;
 
@@ -201,15 +185,15 @@ export type Reasoning = {
 };
 
 export type ChatGenerationParamsResponseFormatPython = {
-  type: "python";
+  type: 'python';
 };
 
 export type ChatGenerationParamsResponseFormatJSONObject = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 export type ChatGenerationParamsResponseFormatText = {
-  type: "text";
+  type: 'text';
 };
 
 export type ChatGenerationParamsResponseFormatUnion =
@@ -235,11 +219,11 @@ export type ChatGenerationParams = {
    */
   plugins?:
     | Array<
-      | ChatGenerationParamsPluginModeration
-      | ChatGenerationParamsPluginWeb
-      | ChatGenerationParamsPluginFileParser
-      | ChatGenerationParamsPluginResponseHealing
-    >
+        | ChatGenerationParamsPluginModeration
+        | ChatGenerationParamsPluginWeb
+        | ChatGenerationParamsPluginFileParser
+        | ChatGenerationParamsPluginResponseHealing
+      >
     | undefined;
   route?: Route | null | undefined;
   user?: string | undefined;
@@ -251,12 +235,21 @@ export type ChatGenerationParams = {
   model?: string | undefined;
   models?: Array<string> | undefined;
   frequencyPenalty?: number | null | undefined;
-  logitBias?: { [k: string]: number } | null | undefined;
+  logitBias?:
+    | {
+        [k: string]: number;
+      }
+    | null
+    | undefined;
   logprobs?: boolean | null | undefined;
   topLogprobs?: number | null | undefined;
   maxCompletionTokens?: number | null | undefined;
   maxTokens?: number | null | undefined;
-  metadata?: { [k: string]: string } | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | undefined;
   presencePenalty?: number | null | undefined;
   reasoning?: Reasoning | undefined;
   responseFormat?:
@@ -312,9 +305,7 @@ export function chatGenerationParamsMaxPriceToJSON(
   chatGenerationParamsMaxPrice: ChatGenerationParamsMaxPrice,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsMaxPrice$outboundSchema.parse(
-      chatGenerationParamsMaxPrice,
-    ),
+    ChatGenerationParamsMaxPrice$outboundSchema.parse(chatGenerationParamsMaxPrice),
   );
 }
 
@@ -341,67 +332,63 @@ export type ChatGenerationParamsProvider$Outbound = {
 export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
   ChatGenerationParamsProvider$Outbound,
   ChatGenerationParamsProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(ChatGenerationParamsDataCollection$outboundSchema)
-    .optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(Schema0$outboundSchema)).optional(),
-  only: z.nullable(z.array(Schema0$outboundSchema)).optional(),
-  ignore: z.nullable(z.array(Schema0$outboundSchema)).optional(),
-  quantizations: z.nullable(z.array(Quantizations$outboundSchema)).optional(),
-  sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
-  maxPrice: z.lazy(() => ChatGenerationParamsMaxPrice$outboundSchema)
-    .optional(),
-  preferredMinThroughput: z.nullable(z.number()).optional(),
-  preferredMaxLatency: z.nullable(z.number()).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
-    preferredMaxLatency: "preferred_max_latency",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
+> = z
+  .object({
+    allowFallbacks: z.nullable(z.boolean()).optional(),
+    requireParameters: z.nullable(z.boolean()).optional(),
+    dataCollection: z.nullable(ChatGenerationParamsDataCollection$outboundSchema).optional(),
+    zdr: z.nullable(z.boolean()).optional(),
+    enforceDistillableText: z.nullable(z.boolean()).optional(),
+    order: z.nullable(z.array(Schema0$outboundSchema)).optional(),
+    only: z.nullable(z.array(Schema0$outboundSchema)).optional(),
+    ignore: z.nullable(z.array(Schema0$outboundSchema)).optional(),
+    quantizations: z.nullable(z.array(Quantizations$outboundSchema)).optional(),
+    sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
+    maxPrice: z.lazy(() => ChatGenerationParamsMaxPrice$outboundSchema).optional(),
+    preferredMinThroughput: z.nullable(z.number()).optional(),
+    preferredMaxLatency: z.nullable(z.number()).optional(),
+    minThroughput: z.nullable(z.number()).optional(),
+    maxLatency: z.nullable(z.number()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      allowFallbacks: 'allow_fallbacks',
+      requireParameters: 'require_parameters',
+      dataCollection: 'data_collection',
+      enforceDistillableText: 'enforce_distillable_text',
+      maxPrice: 'max_price',
+      preferredMinThroughput: 'preferred_min_throughput',
+      preferredMaxLatency: 'preferred_max_latency',
+      minThroughput: 'min_throughput',
+      maxLatency: 'max_latency',
+    });
   });
-});
 
 export function chatGenerationParamsProviderToJSON(
   chatGenerationParamsProvider: ChatGenerationParamsProvider,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsProvider$outboundSchema.parse(
-      chatGenerationParamsProvider,
-    ),
+    ChatGenerationParamsProvider$outboundSchema.parse(chatGenerationParamsProvider),
   );
 }
 
 /** @internal */
 export type ChatGenerationParamsPluginResponseHealing$Outbound = {
-  id: "response-healing";
+  id: 'response-healing';
   enabled?: boolean | undefined;
 };
 
 /** @internal */
-export const ChatGenerationParamsPluginResponseHealing$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsPluginResponseHealing$Outbound,
-    ChatGenerationParamsPluginResponseHealing
-  > = z.object({
-    id: z.literal("response-healing"),
-    enabled: z.boolean().optional(),
-  });
+export const ChatGenerationParamsPluginResponseHealing$outboundSchema: z.ZodType<
+  ChatGenerationParamsPluginResponseHealing$Outbound,
+  ChatGenerationParamsPluginResponseHealing
+> = z.object({
+  id: z.literal('response-healing'),
+  enabled: z.boolean().optional(),
+});
 
 export function chatGenerationParamsPluginResponseHealingToJSON(
-  chatGenerationParamsPluginResponseHealing:
-    ChatGenerationParamsPluginResponseHealing,
+  chatGenerationParamsPluginResponseHealing: ChatGenerationParamsPluginResponseHealing,
 ): string {
   return JSON.stringify(
     ChatGenerationParamsPluginResponseHealing$outboundSchema.parse(
@@ -411,8 +398,8 @@ export function chatGenerationParamsPluginResponseHealingToJSON(
 }
 
 /** @internal */
-export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> = openEnums
-  .outboundSchema(PdfEngine);
+export const PdfEngine$outboundSchema: z.ZodType<string, PdfEngine> =
+  openEnums.outboundSchema(PdfEngine);
 
 /** @internal */
 export type Pdf$Outbound = {
@@ -430,7 +417,7 @@ export function pdfToJSON(pdf: Pdf): string {
 
 /** @internal */
 export type ChatGenerationParamsPluginFileParser$Outbound = {
-  id: "file-parser";
+  id: 'file-parser';
   enabled?: boolean | undefined;
   pdf?: Pdf$Outbound | undefined;
 };
@@ -440,7 +427,7 @@ export const ChatGenerationParamsPluginFileParser$outboundSchema: z.ZodType<
   ChatGenerationParamsPluginFileParser$Outbound,
   ChatGenerationParamsPluginFileParser
 > = z.object({
-  id: z.literal("file-parser"),
+  id: z.literal('file-parser'),
   enabled: z.boolean().optional(),
   pdf: z.lazy(() => Pdf$outboundSchema).optional(),
 });
@@ -449,19 +436,16 @@ export function chatGenerationParamsPluginFileParserToJSON(
   chatGenerationParamsPluginFileParser: ChatGenerationParamsPluginFileParser,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsPluginFileParser$outboundSchema.parse(
-      chatGenerationParamsPluginFileParser,
-    ),
+    ChatGenerationParamsPluginFileParser$outboundSchema.parse(chatGenerationParamsPluginFileParser),
   );
 }
 
 /** @internal */
-export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums
-  .outboundSchema(Engine);
+export const Engine$outboundSchema: z.ZodType<string, Engine> = openEnums.outboundSchema(Engine);
 
 /** @internal */
 export type ChatGenerationParamsPluginWeb$Outbound = {
-  id: "web";
+  id: 'web';
   enabled?: boolean | undefined;
   max_results?: number | undefined;
   search_prompt?: string | undefined;
@@ -472,32 +456,32 @@ export type ChatGenerationParamsPluginWeb$Outbound = {
 export const ChatGenerationParamsPluginWeb$outboundSchema: z.ZodType<
   ChatGenerationParamsPluginWeb$Outbound,
   ChatGenerationParamsPluginWeb
-> = z.object({
-  id: z.literal("web"),
-  enabled: z.boolean().optional(),
-  maxResults: z.number().optional(),
-  searchPrompt: z.string().optional(),
-  engine: Engine$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxResults: "max_results",
-    searchPrompt: "search_prompt",
+> = z
+  .object({
+    id: z.literal('web'),
+    enabled: z.boolean().optional(),
+    maxResults: z.number().optional(),
+    searchPrompt: z.string().optional(),
+    engine: Engine$outboundSchema.optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      maxResults: 'max_results',
+      searchPrompt: 'search_prompt',
+    });
   });
-});
 
 export function chatGenerationParamsPluginWebToJSON(
   chatGenerationParamsPluginWeb: ChatGenerationParamsPluginWeb,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsPluginWeb$outboundSchema.parse(
-      chatGenerationParamsPluginWeb,
-    ),
+    ChatGenerationParamsPluginWeb$outboundSchema.parse(chatGenerationParamsPluginWeb),
   );
 }
 
 /** @internal */
 export type ChatGenerationParamsPluginModeration$Outbound = {
-  id: "moderation";
+  id: 'moderation';
 };
 
 /** @internal */
@@ -505,16 +489,14 @@ export const ChatGenerationParamsPluginModeration$outboundSchema: z.ZodType<
   ChatGenerationParamsPluginModeration$Outbound,
   ChatGenerationParamsPluginModeration
 > = z.object({
-  id: z.literal("moderation"),
+  id: z.literal('moderation'),
 });
 
 export function chatGenerationParamsPluginModerationToJSON(
   chatGenerationParamsPluginModeration: ChatGenerationParamsPluginModeration,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsPluginModeration$outboundSchema.parse(
-      chatGenerationParamsPluginModeration,
-    ),
+    ChatGenerationParamsPluginModeration$outboundSchema.parse(chatGenerationParamsPluginModeration),
   );
 }
 
@@ -540,19 +522,15 @@ export function chatGenerationParamsPluginUnionToJSON(
   chatGenerationParamsPluginUnion: ChatGenerationParamsPluginUnion,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsPluginUnion$outboundSchema.parse(
-      chatGenerationParamsPluginUnion,
-    ),
+    ChatGenerationParamsPluginUnion$outboundSchema.parse(chatGenerationParamsPluginUnion),
   );
 }
 
 /** @internal */
-export const Route$outboundSchema: z.ZodType<string, Route> = openEnums
-  .outboundSchema(Route);
+export const Route$outboundSchema: z.ZodType<string, Route> = openEnums.outboundSchema(Route);
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
-  .outboundSchema(Effort);
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums.outboundSchema(Effort);
 
 /** @internal */
 export type Reasoning$Outbound = {
@@ -561,10 +539,7 @@ export type Reasoning$Outbound = {
 };
 
 /** @internal */
-export const Reasoning$outboundSchema: z.ZodType<
-  Reasoning$Outbound,
-  Reasoning
-> = z.object({
+export const Reasoning$outboundSchema: z.ZodType<Reasoning$Outbound, Reasoning> = z.object({
   effort: z.nullable(Effort$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
 });
@@ -575,7 +550,7 @@ export function reasoningToJSON(reasoning: Reasoning): string {
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatPython$Outbound = {
-  type: "python";
+  type: 'python';
 };
 
 /** @internal */
@@ -583,12 +558,11 @@ export const ChatGenerationParamsResponseFormatPython$outboundSchema: z.ZodType<
   ChatGenerationParamsResponseFormatPython$Outbound,
   ChatGenerationParamsResponseFormatPython
 > = z.object({
-  type: z.literal("python"),
+  type: z.literal('python'),
 });
 
 export function chatGenerationParamsResponseFormatPythonToJSON(
-  chatGenerationParamsResponseFormatPython:
-    ChatGenerationParamsResponseFormatPython,
+  chatGenerationParamsResponseFormatPython: ChatGenerationParamsResponseFormatPython,
 ): string {
   return JSON.stringify(
     ChatGenerationParamsResponseFormatPython$outboundSchema.parse(
@@ -599,21 +573,19 @@ export function chatGenerationParamsResponseFormatPythonToJSON(
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatJSONObject$Outbound = {
-  type: "json_object";
+  type: 'json_object';
 };
 
 /** @internal */
-export const ChatGenerationParamsResponseFormatJSONObject$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsResponseFormatJSONObject$Outbound,
-    ChatGenerationParamsResponseFormatJSONObject
-  > = z.object({
-    type: z.literal("json_object"),
-  });
+export const ChatGenerationParamsResponseFormatJSONObject$outboundSchema: z.ZodType<
+  ChatGenerationParamsResponseFormatJSONObject$Outbound,
+  ChatGenerationParamsResponseFormatJSONObject
+> = z.object({
+  type: z.literal('json_object'),
+});
 
 export function chatGenerationParamsResponseFormatJSONObjectToJSON(
-  chatGenerationParamsResponseFormatJSONObject:
-    ChatGenerationParamsResponseFormatJSONObject,
+  chatGenerationParamsResponseFormatJSONObject: ChatGenerationParamsResponseFormatJSONObject,
 ): string {
   return JSON.stringify(
     ChatGenerationParamsResponseFormatJSONObject$outboundSchema.parse(
@@ -624,7 +596,7 @@ export function chatGenerationParamsResponseFormatJSONObjectToJSON(
 
 /** @internal */
 export type ChatGenerationParamsResponseFormatText$Outbound = {
-  type: "text";
+  type: 'text';
 };
 
 /** @internal */
@@ -632,12 +604,11 @@ export const ChatGenerationParamsResponseFormatText$outboundSchema: z.ZodType<
   ChatGenerationParamsResponseFormatText$Outbound,
   ChatGenerationParamsResponseFormatText
 > = z.object({
-  type: z.literal("text"),
+  type: z.literal('text'),
 });
 
 export function chatGenerationParamsResponseFormatTextToJSON(
-  chatGenerationParamsResponseFormatText:
-    ChatGenerationParamsResponseFormatText,
+  chatGenerationParamsResponseFormatText: ChatGenerationParamsResponseFormatText,
 ): string {
   return JSON.stringify(
     ChatGenerationParamsResponseFormatText$outboundSchema.parse(
@@ -667,8 +638,7 @@ export const ChatGenerationParamsResponseFormatUnion$outboundSchema: z.ZodType<
 ]);
 
 export function chatGenerationParamsResponseFormatUnionToJSON(
-  chatGenerationParamsResponseFormatUnion:
-    ChatGenerationParamsResponseFormatUnion,
+  chatGenerationParamsResponseFormatUnion: ChatGenerationParamsResponseFormatUnion,
 ): string {
   return JSON.stringify(
     ChatGenerationParamsResponseFormatUnion$outboundSchema.parse(
@@ -684,14 +654,15 @@ export type ChatGenerationParamsStop$Outbound = string | Array<string>;
 export const ChatGenerationParamsStop$outboundSchema: z.ZodType<
   ChatGenerationParamsStop$Outbound,
   ChatGenerationParamsStop
-> = z.union([z.string(), z.array(z.string())]);
+> = z.union([
+  z.string(),
+  z.array(z.string()),
+]);
 
 export function chatGenerationParamsStopToJSON(
   chatGenerationParamsStop: ChatGenerationParamsStop,
 ): string {
-  return JSON.stringify(
-    ChatGenerationParamsStop$outboundSchema.parse(chatGenerationParamsStop),
-  );
+  return JSON.stringify(ChatGenerationParamsStop$outboundSchema.parse(chatGenerationParamsStop));
 }
 
 /** @internal */
@@ -700,13 +671,15 @@ export type Debug$Outbound = {
 };
 
 /** @internal */
-export const Debug$outboundSchema: z.ZodType<Debug$Outbound, Debug> = z.object({
-  echoUpstreamBody: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    echoUpstreamBody: "echo_upstream_body",
+export const Debug$outboundSchema: z.ZodType<Debug$Outbound, Debug> = z
+  .object({
+    echoUpstreamBody: z.boolean().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      echoUpstreamBody: 'echo_upstream_body',
+    });
   });
-});
 
 export function debugToJSON(debug: Debug): string {
   return JSON.stringify(Debug$outboundSchema.parse(debug));
@@ -717,11 +690,11 @@ export type ChatGenerationParams$Outbound = {
   provider?: ChatGenerationParamsProvider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | ChatGenerationParamsPluginModeration$Outbound
-      | ChatGenerationParamsPluginWeb$Outbound
-      | ChatGenerationParamsPluginFileParser$Outbound
-      | ChatGenerationParamsPluginResponseHealing$Outbound
-    >
+        | ChatGenerationParamsPluginModeration$Outbound
+        | ChatGenerationParamsPluginWeb$Outbound
+        | ChatGenerationParamsPluginFileParser$Outbound
+        | ChatGenerationParamsPluginResponseHealing$Outbound
+      >
     | undefined;
   route?: string | null | undefined;
   user?: string | undefined;
@@ -730,12 +703,21 @@ export type ChatGenerationParams$Outbound = {
   model?: string | undefined;
   models?: Array<string> | undefined;
   frequency_penalty?: number | null | undefined;
-  logit_bias?: { [k: string]: number } | null | undefined;
+  logit_bias?:
+    | {
+        [k: string]: number;
+      }
+    | null
+    | undefined;
   logprobs?: boolean | null | undefined;
   top_logprobs?: number | null | undefined;
   max_completion_tokens?: number | null | undefined;
   max_tokens?: number | null | undefined;
-  metadata?: { [k: string]: string } | undefined;
+  metadata?:
+    | {
+        [k: string]: string;
+      }
+    | undefined;
   presence_penalty?: number | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
@@ -760,69 +742,76 @@ export type ChatGenerationParams$Outbound = {
 export const ChatGenerationParams$outboundSchema: z.ZodType<
   ChatGenerationParams$Outbound,
   ChatGenerationParams
-> = z.object({
-  provider: z.nullable(
-    z.lazy(() => ChatGenerationParamsProvider$outboundSchema),
-  ).optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => ChatGenerationParamsPluginModeration$outboundSchema),
-      z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
-      z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
-      z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
-    ]),
-  ).optional(),
-  route: z.nullable(Route$outboundSchema).optional(),
-  user: z.string().optional(),
-  sessionId: z.string().optional(),
-  messages: z.array(Message$outboundSchema),
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
-  logprobs: z.nullable(z.boolean()).optional(),
-  topLogprobs: z.nullable(z.number()).optional(),
-  maxCompletionTokens: z.nullable(z.number()).optional(),
-  maxTokens: z.nullable(z.number()).optional(),
-  metadata: z.record(z.string(), z.string()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
-  responseFormat: z.union([
-    z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
-    z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
-    ResponseFormatJSONSchema$outboundSchema,
-    ResponseFormatTextGrammar$outboundSchema,
-    z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
-  ]).optional(),
-  seed: z.nullable(z.int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
-  stream: z.boolean().default(false),
-  streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  toolChoice: z.any().optional(),
-  tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
-  topP: z.nullable(z.number()).optional(),
-  debug: z.lazy(() => Debug$outboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    sessionId: "session_id",
-    frequencyPenalty: "frequency_penalty",
-    logitBias: "logit_bias",
-    topLogprobs: "top_logprobs",
-    maxCompletionTokens: "max_completion_tokens",
-    maxTokens: "max_tokens",
-    presencePenalty: "presence_penalty",
-    responseFormat: "response_format",
-    streamOptions: "stream_options",
-    toolChoice: "tool_choice",
-    topP: "top_p",
+> = z
+  .object({
+    provider: z.nullable(z.lazy(() => ChatGenerationParamsProvider$outboundSchema)).optional(),
+    plugins: z
+      .array(
+        z.union([
+          z.lazy(() => ChatGenerationParamsPluginModeration$outboundSchema),
+          z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
+          z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
+          z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
+        ]),
+      )
+      .optional(),
+    route: z.nullable(Route$outboundSchema).optional(),
+    user: z.string().optional(),
+    sessionId: z.string().optional(),
+    messages: z.array(Message$outboundSchema),
+    model: z.string().optional(),
+    models: z.array(z.string()).optional(),
+    frequencyPenalty: z.nullable(z.number()).optional(),
+    logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
+    logprobs: z.nullable(z.boolean()).optional(),
+    topLogprobs: z.nullable(z.number()).optional(),
+    maxCompletionTokens: z.nullable(z.number()).optional(),
+    maxTokens: z.nullable(z.number()).optional(),
+    metadata: z.record(z.string(), z.string()).optional(),
+    presencePenalty: z.nullable(z.number()).optional(),
+    reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
+    responseFormat: z
+      .union([
+        z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
+        z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+        ResponseFormatJSONSchema$outboundSchema,
+        ResponseFormatTextGrammar$outboundSchema,
+        z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
+      ])
+      .optional(),
+    seed: z.nullable(z.int()).optional(),
+    stop: z
+      .nullable(
+        z.union([
+          z.string(),
+          z.array(z.string()),
+        ]),
+      )
+      .optional(),
+    stream: z.boolean().default(false),
+    streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
+    temperature: z.nullable(z.number()).optional(),
+    toolChoice: z.any().optional(),
+    tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
+    topP: z.nullable(z.number()).optional(),
+    debug: z.lazy(() => Debug$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      sessionId: 'session_id',
+      frequencyPenalty: 'frequency_penalty',
+      logitBias: 'logit_bias',
+      topLogprobs: 'top_logprobs',
+      maxCompletionTokens: 'max_completion_tokens',
+      maxTokens: 'max_tokens',
+      presencePenalty: 'presence_penalty',
+      responseFormat: 'response_format',
+      streamOptions: 'stream_options',
+      toolChoice: 'tool_choice',
+      topP: 'top_p',
+    });
   });
-});
 
-export function chatGenerationParamsToJSON(
-  chatGenerationParams: ChatGenerationParams,
-): string {
-  return JSON.stringify(
-    ChatGenerationParams$outboundSchema.parse(chatGenerationParams),
-  );
+export function chatGenerationParamsToJSON(chatGenerationParams: ChatGenerationParams): string {
+  return JSON.stringify(ChatGenerationParams$outboundSchema.parse(chatGenerationParams));
 }

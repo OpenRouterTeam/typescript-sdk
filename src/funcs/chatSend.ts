@@ -3,30 +3,32 @@
  * @generated-id: 8c3aa3c963bf
  */
 
-import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
-import { EventStream } from "../lib/event-streams.js";
-import * as M from "../lib/matchers.js";
-import { compactMap } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
-import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
-import {
+import type { OpenRouterCore } from '../core.js';
+import type { EventStream } from '../lib/event-streams.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type {
   ConnectionError,
   InvalidRequestError,
   RequestAbortedError,
   RequestTimeoutError,
   UnexpectedClientError,
-} from "../models/errors/httpclienterrors.js";
-import * as errors from "../models/errors/index.js";
-import { OpenRouterError } from "../models/errors/openroutererror.js";
-import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
-import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
-import { APICall, APIPromise } from "../types/async.js";
-import { Result } from "../types/fp.js";
+} from '../models/errors/httpclienterrors.js';
+import type { OpenRouterError } from '../models/errors/openroutererror.js';
+import type { ResponseValidationError } from '../models/errors/responsevalidationerror.js';
+import type { SDKValidationError } from '../models/errors/sdkvalidationerror.js';
+import type { APICall } from '../types/async.js';
+import type { Result } from '../types/fp.js';
+
+import { encodeJSON } from '../lib/encodings.js';
+import * as M from '../lib/matchers.js';
+import { compactMap } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { extractSecurity, resolveGlobalSecurity } from '../lib/security.js';
+import { pathToFunc } from '../lib/url.js';
+import * as errors from '../models/errors/index.js';
+import * as models from '../models/index.js';
+import * as operations from '../models/operations/index.js';
+import { APIPromise } from '../types/async.js';
 
 /**
  * Create a chat completion
@@ -36,7 +38,9 @@ import { Result } from "../types/fp.js";
  */
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams & { stream?: false },
+  request: models.ChatGenerationParams & {
+    stream?: false;
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -54,7 +58,9 @@ export function chatSend(
 >;
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams & { stream: true },
+  request: models.ChatGenerationParams & {
+    stream: true;
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -106,11 +112,7 @@ export function chatSend(
     | SDKValidationError
   >
 > {
-  return new APIPromise($do(
-    client,
-    request,
-    options,
-  ));
+  return new APIPromise($do(client, request, options));
 }
 
 async function $do(
@@ -137,68 +139,114 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) => models.ChatGenerationParams$outboundSchema.parse(value),
-    "Input validation failed",
+    'Input validation failed',
   );
   if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
+    return [
+      parsed,
+      {
+        status: 'invalid',
+      },
+    ];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON('body', payload, {
+    explode: true,
+  });
 
-  const path = pathToFunc("/chat/completions")();
+  const path = pathToFunc('/chat/completions')();
 
-  const headers = new Headers(compactMap({
-    "Content-Type": "application/json",
-    Accept: request?.stream ? "text/event-stream" : "application/json",
-  }));
+  const headers = new Headers(
+    compactMap({
+      'Content-Type': 'application/json',
+      Accept: request?.stream ? 'text/event-stream' : 'application/json',
+    }),
+  );
 
   const secConfig = await extractSecurity(client._options.apiKey);
-  const securityInput = secConfig == null ? {} : { apiKey: secConfig };
+  const securityInput =
+    secConfig == null
+      ? {}
+      : {
+          apiKey: secConfig,
+        };
   const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
     options: client._options,
-    baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "sendChatCompletionRequest",
+    baseURL: options?.serverURL ?? client._baseURL ?? '',
+    operationID: 'sendChatCompletionRequest',
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
     securitySource: client._options.apiKey,
-    retryConfig: options?.retries
-      || client._options.retryConfig
-      || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryConfig: options?.retries ||
+      client._options.retryConfig || {
+        strategy: 'none',
+      },
+    retryCodes: options?.retryCodes || [
+      '429',
+      '500',
+      '502',
+      '503',
+      '504',
+    ],
   };
 
-  const requestRes = client._createRequest(context, {
-    security: requestSecurity,
-    method: "POST",
-    baseURL: options?.serverURL,
-    path: path,
-    headers: headers,
-    body: body,
-    userAgent: client._options.userAgent,
-    timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
-  }, options);
+  const requestRes = client._createRequest(
+    context,
+    {
+      security: requestSecurity,
+      method: 'POST',
+      baseURL: options?.serverURL,
+      path: path,
+      headers: headers,
+      body: body,
+      userAgent: client._options.userAgent,
+      timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
+    },
+    options,
+  );
   if (!requestRes.ok) {
-    return [requestRes, { status: "invalid" }];
+    return [
+      requestRes,
+      {
+        status: 'invalid',
+      },
+    ];
   }
   const req = requestRes.value;
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "429", "4XX", "500", "5XX"],
+    errorCodes: [
+      '400',
+      '401',
+      '429',
+      '4XX',
+      '500',
+      '5XX',
+    ],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
-    return [doResult, { status: "request-error", request: req }];
+    return [
+      doResult,
+      {
+        status: 'request-error',
+        request: req,
+      },
+    ];
   }
   const response = doResult.value;
 
   const responseFields = {
-    HttpMeta: { Response: response, Request: req },
+    HttpMeta: {
+      Response: response,
+      Request: req,
+    },
   };
 
   const [result] = await M.match<
@@ -215,14 +263,37 @@ async function $do(
   >(
     M.json(200, operations.SendChatCompletionRequestResponse$inboundSchema),
     M.sse(200, operations.SendChatCompletionRequestResponse$inboundSchema),
-    M.jsonErr([400, 401, 429], errors.ChatError$inboundSchema),
+    M.jsonErr(
+      [
+        400,
+        401,
+        429,
+      ],
+      errors.ChatError$inboundSchema,
+    ),
     M.jsonErr(500, errors.ChatError$inboundSchema),
-    M.fail("4XX"),
-    M.fail("5XX"),
-  )(response, req, { extraFields: responseFields });
+    M.fail('4XX'),
+    M.fail('5XX'),
+  )(response, req, {
+    extraFields: responseFields,
+  });
   if (!result.ok) {
-    return [result, { status: "complete", request: req, response }];
+    return [
+      result,
+      {
+        status: 'complete',
+        request: req,
+        response,
+      },
+    ];
   }
 
-  return [result, { status: "complete", request: req, response }];
+  return [
+    result,
+    {
+      status: 'complete',
+      request: req,
+      response,
+    },
+  ];
 }

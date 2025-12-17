@@ -7,18 +7,18 @@
  * Reason why the model stopped generating.
  */
 export type ClaudeStopReason =
-  | "end_turn"
-  | "max_tokens"
-  | "stop_sequence"
-  | "tool_use"
-  | "pause_turn"
-  | "refusal";
+  | 'end_turn'
+  | 'max_tokens'
+  | 'stop_sequence'
+  | 'tool_use'
+  | 'pause_turn'
+  | 'refusal';
 
 /**
  * Character-level citation location within a document.
  */
 export type ClaudeCitationCharLocation = {
-  type: "char_location";
+  type: 'char_location';
   cited_text: string;
   document_index: number;
   document_title: string;
@@ -31,7 +31,7 @@ export type ClaudeCitationCharLocation = {
  * Page-level citation location within a document.
  */
 export type ClaudeCitationPageLocation = {
-  type: "page_location";
+  type: 'page_location';
   cited_text: string;
   document_index: number;
   document_title: string;
@@ -44,7 +44,7 @@ export type ClaudeCitationPageLocation = {
  * Content block citation location within a document.
  */
 export type ClaudeCitationContentBlockLocation = {
-  type: "content_block_location";
+  type: 'content_block_location';
   cited_text: string;
   document_index: number;
   document_title: string;
@@ -57,7 +57,7 @@ export type ClaudeCitationContentBlockLocation = {
  * Web search result citation location.
  */
 export type ClaudeCitationWebSearchResultLocation = {
-  type: "web_search_result_location";
+  type: 'web_search_result_location';
   cited_text: string;
   title: string;
   url: string;
@@ -68,7 +68,7 @@ export type ClaudeCitationWebSearchResultLocation = {
  * Search result citation location.
  */
 export type ClaudeCitationSearchResultLocation = {
-  type: "search_result_location";
+  type: 'search_result_location';
   cited_text: string;
   title: string;
   source: string;
@@ -91,7 +91,7 @@ export type ClaudeTextCitation =
  * Text content block.
  */
 export type ClaudeTextBlock = {
-  type: "text";
+  type: 'text';
   text: string;
   citations?: ClaudeTextCitation[];
 };
@@ -100,7 +100,7 @@ export type ClaudeTextBlock = {
  * Extended thinking content block.
  */
 export type ClaudeThinkingBlock = {
-  type: "thinking";
+  type: 'thinking';
   thinking: string;
   signature: string;
 };
@@ -109,7 +109,7 @@ export type ClaudeThinkingBlock = {
  * Redacted thinking content block.
  */
 export type ClaudeRedactedThinkingBlock = {
-  type: "redacted_thinking";
+  type: 'redacted_thinking';
   data: string;
 };
 
@@ -117,7 +117,7 @@ export type ClaudeRedactedThinkingBlock = {
  * Tool use content block.
  */
 export type ClaudeToolUseBlock = {
-  type: "tool_use";
+  type: 'tool_use';
   id: string;
   name: string;
   input: Record<string, unknown>;
@@ -127,9 +127,9 @@ export type ClaudeToolUseBlock = {
  * Server-side tool use content block (e.g., web_search).
  */
 export type ClaudeServerToolUseBlock = {
-  type: "server_tool_use";
+  type: 'server_tool_use';
   id: string;
-  name: "web_search";
+  name: 'web_search';
   input: Record<string, unknown>;
 };
 
@@ -159,8 +159,8 @@ export type ClaudeUsage = {
  */
 export type ClaudeMessage = {
   id: string;
-  type: "message";
-  role: "assistant";
+  type: 'message';
+  role: 'assistant';
   model: string;
   content: ClaudeContentBlock[];
   stop_reason: ClaudeStopReason | null;
@@ -177,14 +177,14 @@ export type ClaudeMessage = {
  * Cache control for prompt caching.
  */
 export type ClaudeCacheControl = {
-  type: "ephemeral";
+  type: 'ephemeral';
 };
 
 /**
  * Text content block parameter for input.
  */
 export type ClaudeTextBlockParam = {
-  type: "text";
+  type: 'text';
   text: string;
   cache_control?: ClaudeCacheControl | null;
 };
@@ -193,8 +193,8 @@ export type ClaudeTextBlockParam = {
  * Base64-encoded image source.
  */
 export type ClaudeBase64ImageSource = {
-  type: "base64";
-  media_type: "image/jpeg" | "image/png" | "image/gif" | "image/webp";
+  type: 'base64';
+  media_type: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp';
   data: string;
 };
 
@@ -202,7 +202,7 @@ export type ClaudeBase64ImageSource = {
  * URL-based image source.
  */
 export type ClaudeURLImageSource = {
-  type: "url";
+  type: 'url';
   url: string;
 };
 
@@ -210,7 +210,7 @@ export type ClaudeURLImageSource = {
  * Image content block parameter for input.
  */
 export type ClaudeImageBlockParam = {
-  type: "image";
+  type: 'image';
   source: ClaudeBase64ImageSource | ClaudeURLImageSource;
   cache_control?: ClaudeCacheControl | null;
 };
@@ -219,7 +219,7 @@ export type ClaudeImageBlockParam = {
  * Tool use content block parameter for input (when passing assistant's tool use back).
  */
 export type ClaudeToolUseBlockParam = {
-  type: "tool_use";
+  type: 'tool_use';
   id: string;
   name: string;
   input: Record<string, unknown>;
@@ -230,7 +230,7 @@ export type ClaudeToolUseBlockParam = {
  * Tool result content block parameter for input.
  */
 export type ClaudeToolResultBlockParam = {
-  type: "tool_result";
+  type: 'tool_result';
   tool_use_id: string;
   content: string | Array<ClaudeTextBlockParam | ClaudeImageBlockParam>;
   is_error?: boolean;
@@ -251,7 +251,7 @@ export type ClaudeContentBlockParam =
  * This represents a message in a conversation for the Claude API.
  */
 export type ClaudeMessageParam = {
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string | Array<ClaudeContentBlockParam>;
 };
 

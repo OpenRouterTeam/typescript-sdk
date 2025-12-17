@@ -3,9 +3,10 @@
  * @generated-id: c52972a3b198
  */
 
-import * as z from "zod/v4";
-import { SDKOptions } from "./config.js";
-import { dlv } from "./dlv.js";
+import type { SDKOptions } from './config.js';
+
+import * as z from 'zod/v4';
+import { dlv } from './dlv.js';
 
 export interface Env {
   OPENROUTER_API_KEY?: string | undefined;
@@ -37,14 +38,14 @@ export const envSchema: z.ZodType<Env, unknown> = z.object({
  * @returns {boolean} True if the runtime is Deno, false otherwise.
  */
 function isDeno() {
-  if ("Deno" in globalThis) {
+  if ('Deno' in globalThis) {
     return true;
   }
 
   return false;
 }
 
-let envMemo: Env | undefined = undefined;
+let envMemo: Env | undefined;
 /**
  * Reads and validates environment variables.
  */
@@ -57,7 +58,7 @@ export function env(): Env {
   if (isDeno()) {
     envObject = (globalThis as any).Deno?.env?.toObject?.() ?? {};
   } else {
-    envObject = dlv(globalThis, "process.env") ?? {};
+    envObject = dlv(globalThis, 'process.env') ?? {};
   }
 
   envMemo = envSchema.parse(envObject);
@@ -75,14 +76,16 @@ export function resetEnv() {
  * Populates global parameters with environment variables.
  */
 export function fillGlobals(options: SDKOptions): SDKOptions {
-  const clone = { ...options };
+  const clone = {
+    ...options,
+  };
 
   const envVars = env();
 
-  if (typeof envVars.OPENROUTER_HTTP_REFERER !== "undefined") {
+  if (typeof envVars.OPENROUTER_HTTP_REFERER !== 'undefined') {
     clone.httpReferer ??= envVars.OPENROUTER_HTTP_REFERER;
   }
-  if (typeof envVars.OPENROUTER_X_TITLE !== "undefined") {
+  if (typeof envVars.OPENROUTER_X_TITLE !== 'undefined') {
     clone.xTitle ??= envVars.OPENROUTER_X_TITLE;
   }
 

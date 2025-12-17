@@ -4,7 +4,9 @@
  */
 
 declare const __brand: unique symbol;
-export type Unrecognized<T> = T & { [__brand]: "unrecognized" };
+export type Unrecognized<T> = T & {
+  [__brand]: 'unrecognized';
+};
 
 function unrecognized<T>(value: T): Unrecognized<T> {
   globalCount++;

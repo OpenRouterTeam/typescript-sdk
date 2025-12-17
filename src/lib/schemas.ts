@@ -3,20 +3,18 @@
  * @generated-id: deb4b531fae1
  */
 
-import * as z from "zod/v4";
-import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import { ERR, OK, Result } from "../types/fp.js";
+import type { Result } from '../types/fp.js';
+
+import * as z from 'zod/v4';
+import { SDKValidationError } from '../models/errors/sdkvalidationerror.js';
+import { ERR, OK } from '../types/fp.js';
 
 /**
  * Utility function that executes some code which may throw a ZodError. It
  * intercepts this error and converts it to an SDKValidationError so as to not
  * leak Zod implementation details to user code.
  */
-export function parse<Inp, Out>(
-  rawValue: Inp,
-  fn: (value: Inp) => Out,
-  errorMessage: string,
-): Out {
+export function parse<Inp, Out>(rawValue: Inp, fn: (value: Inp) => Out, errorMessage: string): Out {
   try {
     return fn(rawValue);
   } catch (err) {
@@ -56,13 +54,14 @@ export function collectExtraKeys<
 ): z.ZodPipe<
   z.ZodObject<Shape, z.core.$catchall<Catchall>>,
   z.ZodTransform<
-    & z.output<z.ZodObject<Shape, z.core.$strip>>
-    & (Optional extends false ? {
-        [k in K]: Record<string, z.output<Catchall>>;
-      }
-      : {
-        [k in K]?: Record<string, z.output<Catchall>> | undefined;
-      }),
+    z.output<z.ZodObject<Shape, z.core.$strip>> &
+      (Optional extends false
+        ? {
+            [k in K]: Record<string, z.output<Catchall>>;
+          }
+        : {
+            [k in K]?: Record<string, z.output<Catchall>> | undefined;
+          }),
     z.output<z.ZodObject<Shape, z.core.$catchall<Catchall>>>
   >
 > {
@@ -75,7 +74,7 @@ export function collectExtraKeys<
       }
 
       const v = val[key];
-      if (typeof v === "undefined") {
+      if (typeof v === 'undefined') {
         continue;
       }
 
@@ -87,6 +86,9 @@ export function collectExtraKeys<
       return val;
     }
 
-    return { ...val, [extrasKey]: extras };
+    return {
+      ...val,
+      [extrasKey]: extras,
+    };
   });
 }

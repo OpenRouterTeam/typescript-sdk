@@ -3,10 +3,10 @@
  * @generated-id: d81e01bbb5e3
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Unprocessable Entity - Semantic validation failure
@@ -34,16 +34,19 @@ export class UnprocessableEntityResponseError extends OpenRouterError {
 
   constructor(
     err: UnprocessableEntityResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "UnprocessableEntityResponseError";
+    this.name = 'UnprocessableEntityResponseError';
   }
 }
 
@@ -51,16 +54,17 @@ export class UnprocessableEntityResponseError extends OpenRouterError {
 export const UnprocessableEntityResponseError$inboundSchema: z.ZodType<
   UnprocessableEntityResponseError,
   unknown
-> = z.object({
-  error: models.UnprocessableEntityResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+> = z
+  .object({
+    error: models.UnprocessableEntityResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new UnprocessableEntityResponseError(remapped, {

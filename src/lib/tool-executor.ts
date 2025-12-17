@@ -1,8 +1,8 @@
 import type { ZodType } from 'zod/v4';
 import type {
   APITool,
-  Tool,
   ParsedToolCall,
+  Tool,
   ToolExecutionResult,
   TurnContext,
 } from './tool-types.js';
@@ -145,9 +145,7 @@ export async function executeGeneratorTool(
     }
 
     if (yielded.length === 0) {
-      throw new Error(
-        `Generator tool "${toolCall.name}" completed without emitting any values`,
-      );
+      throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
     }
 
     const finalCandidate = yielded[yielded.length - 1];
@@ -162,10 +160,7 @@ export async function executeGeneratorTool(
       }
     }
 
-    const finalResult = validateToolOutput(
-      tool.function.outputSchema,
-      finalCandidate,
-    );
+    const finalResult = validateToolOutput(tool.function.outputSchema, finalCandidate);
 
     return {
       toolCallId: toolCall.id,

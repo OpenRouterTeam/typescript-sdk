@@ -28,9 +28,9 @@ export class OpenRouterError extends Error {
     this.statusCode = httpMeta.response.status;
     this.body = httpMeta.body;
     this.headers = httpMeta.response.headers;
-    this.contentType = httpMeta.response.headers.get("content-type") || "";
+    this.contentType = httpMeta.response.headers.get('content-type') || '';
     this.rawResponse = httpMeta.response;
 
-    this.name = "OpenRouterError";
+    this.name = 'OpenRouterError';
   }
 }

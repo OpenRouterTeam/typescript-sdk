@@ -47,7 +47,6 @@ describe('Embeddings E2E Tests', () => {
       if (response.usage) {
         expect(response.usage.totalTokens).toBeGreaterThan(0);
       }
-      
     });
 
     it('should generate embeddings for multiple text inputs', async () => {
@@ -81,7 +80,6 @@ describe('Embeddings E2E Tests', () => {
 
         expect(embedding?.index).toBe(index);
       });
-      
     });
 
     it('should generate consistent embedding dimensions', async () => {
@@ -146,7 +144,6 @@ describe('Embeddings E2E Tests', () => {
         expect(typeof response.usage.totalTokens).toBe('number');
         expect(response.usage.totalTokens).toBeGreaterThan(0);
       }
-    
     });
   });
 });

@@ -3,18 +3,15 @@
  * @generated-id: 60a66fbc6068
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenAIResponsesReasoningEffort,
-  OpenAIResponsesReasoningEffort$inboundSchema,
-} from "./openairesponsesreasoningeffort.js";
-import {
-  ReasoningSummaryVerbosity,
-  ReasoningSummaryVerbosity$inboundSchema,
-} from "./reasoningsummaryverbosity.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { OpenAIResponsesReasoningEffort } from './openairesponsesreasoningeffort.js';
+import type { ReasoningSummaryVerbosity } from './reasoningsummaryverbosity.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { OpenAIResponsesReasoningEffort$inboundSchema } from './openairesponsesreasoningeffort.js';
+import { ReasoningSummaryVerbosity$inboundSchema } from './reasoningsummaryverbosity.js';
 
 export type OpenAIResponsesReasoningConfig = {
   effort?: OpenAIResponsesReasoningEffort | null | undefined;

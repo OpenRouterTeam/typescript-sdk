@@ -2,10 +2,10 @@
  * Claude content block types used in message content arrays
  */
 export const ClaudeContentBlockType = {
-  Text: "text",
-  Image: "image",
-  ToolUse: "tool_use",
-  ToolResult: "tool_result",
+  Text: 'text',
+  Image: 'image',
+  ToolUse: 'tool_use',
+  ToolResult: 'tool_result',
 } as const;
 
 export type ClaudeContentBlockType =
@@ -16,10 +16,9 @@ export type ClaudeContentBlockType =
  * Used to distinguish between the two message formats.
  */
 export const NonClaudeMessageRole = {
-  System: "system",
-  Developer: "developer",
-  Tool: "tool",
+  System: 'system',
+  Developer: 'developer',
+  Tool: 'tool',
 } as const;
 
-export type NonClaudeMessageRole =
-  (typeof NonClaudeMessageRole)[keyof typeof NonClaudeMessageRole];
+export type NonClaudeMessageRole = (typeof NonClaudeMessageRole)[keyof typeof NonClaudeMessageRole];

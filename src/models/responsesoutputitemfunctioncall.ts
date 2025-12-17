@@ -3,36 +3,37 @@
  * @generated-id: ff553c6d83b4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export const ResponsesOutputItemFunctionCallType = {
-  FunctionCall: "function_call",
+  FunctionCall: 'function_call',
 } as const;
 export type ResponsesOutputItemFunctionCallType = ClosedEnum<
   typeof ResponsesOutputItemFunctionCallType
 >;
 
 export const ResponsesOutputItemFunctionCallStatusInProgress = {
-  InProgress: "in_progress",
+  InProgress: 'in_progress',
 } as const;
 export type ResponsesOutputItemFunctionCallStatusInProgress = ClosedEnum<
   typeof ResponsesOutputItemFunctionCallStatusInProgress
 >;
 
 export const ResponsesOutputItemFunctionCallStatusIncomplete = {
-  Incomplete: "incomplete",
+  Incomplete: 'incomplete',
 } as const;
 export type ResponsesOutputItemFunctionCallStatusIncomplete = ClosedEnum<
   typeof ResponsesOutputItemFunctionCallStatusIncomplete
 >;
 
 export const ResponsesOutputItemFunctionCallStatusCompleted = {
-  Completed: "completed",
+  Completed: 'completed',
 } as const;
 export type ResponsesOutputItemFunctionCallStatusCompleted = ClosedEnum<
   typeof ResponsesOutputItemFunctionCallStatusCompleted
@@ -66,62 +67,56 @@ export const ResponsesOutputItemFunctionCallType$outboundSchema: z.ZodEnum<
 > = ResponsesOutputItemFunctionCallType$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusInProgress> = z.enum(
-    ResponsesOutputItemFunctionCallStatusInProgress,
-  );
+export const ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusInProgress
+> = z.enum(ResponsesOutputItemFunctionCallStatusInProgress);
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusInProgress> =
-    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema;
+export const ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusInProgress
+> = ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusIncomplete> = z.enum(
-    ResponsesOutputItemFunctionCallStatusIncomplete,
-  );
+export const ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusIncomplete
+> = z.enum(ResponsesOutputItemFunctionCallStatusIncomplete);
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusIncomplete> =
-    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema;
+export const ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusIncomplete
+> = ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusCompleted> = z.enum(
-    ResponsesOutputItemFunctionCallStatusCompleted,
-  );
+export const ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusCompleted
+> = z.enum(ResponsesOutputItemFunctionCallStatusCompleted);
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemFunctionCallStatusCompleted> =
-    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema;
+export const ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemFunctionCallStatusCompleted
+> = ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusUnion$inboundSchema:
-  z.ZodType<ResponsesOutputItemFunctionCallStatusUnion, unknown> = z.union([
-    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
-    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
-    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
-  ]);
+export const ResponsesOutputItemFunctionCallStatusUnion$inboundSchema: z.ZodType<
+  ResponsesOutputItemFunctionCallStatusUnion,
+  unknown
+> = z.union([
+  ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
+  ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
+  ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
+]);
 /** @internal */
-export type ResponsesOutputItemFunctionCallStatusUnion$Outbound =
-  | string
-  | string
-  | string;
+export type ResponsesOutputItemFunctionCallStatusUnion$Outbound = string | string | string;
 
 /** @internal */
-export const ResponsesOutputItemFunctionCallStatusUnion$outboundSchema:
-  z.ZodType<
-    ResponsesOutputItemFunctionCallStatusUnion$Outbound,
-    ResponsesOutputItemFunctionCallStatusUnion
-  > = z.union([
-    ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
-    ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
-    ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
-  ]);
+export const ResponsesOutputItemFunctionCallStatusUnion$outboundSchema: z.ZodType<
+  ResponsesOutputItemFunctionCallStatusUnion$Outbound,
+  ResponsesOutputItemFunctionCallStatusUnion
+> = z.union([
+  ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
+  ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
+  ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
+]);
 
 export function responsesOutputItemFunctionCallStatusUnionToJSON(
-  responsesOutputItemFunctionCallStatusUnion:
-    ResponsesOutputItemFunctionCallStatusUnion,
+  responsesOutputItemFunctionCallStatusUnion: ResponsesOutputItemFunctionCallStatusUnion,
 ): string {
   return JSON.stringify(
     ResponsesOutputItemFunctionCallStatusUnion$outboundSchema.parse(
@@ -131,16 +126,10 @@ export function responsesOutputItemFunctionCallStatusUnionToJSON(
 }
 export function responsesOutputItemFunctionCallStatusUnionFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ResponsesOutputItemFunctionCallStatusUnion,
-  SDKValidationError
-> {
+): SafeParseResult<ResponsesOutputItemFunctionCallStatusUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ResponsesOutputItemFunctionCallStatusUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => ResponsesOutputItemFunctionCallStatusUnion$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ResponsesOutputItemFunctionCallStatusUnion' from JSON`,
   );
 }
@@ -149,22 +138,26 @@ export function responsesOutputItemFunctionCallStatusUnionFromJSON(
 export const ResponsesOutputItemFunctionCall$inboundSchema: z.ZodType<
   ResponsesOutputItemFunctionCall,
   unknown
-> = z.object({
-  type: ResponsesOutputItemFunctionCallType$inboundSchema,
-  id: z.string().optional(),
-  name: z.string(),
-  arguments: z.string(),
-  call_id: z.string(),
-  status: z.union([
-    ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
-    ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
-    ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
-  ]).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
+> = z
+  .object({
+    type: ResponsesOutputItemFunctionCallType$inboundSchema,
+    id: z.string().optional(),
+    name: z.string(),
+    arguments: z.string(),
+    call_id: z.string(),
+    status: z
+      .union([
+        ResponsesOutputItemFunctionCallStatusCompleted$inboundSchema,
+        ResponsesOutputItemFunctionCallStatusIncomplete$inboundSchema,
+        ResponsesOutputItemFunctionCallStatusInProgress$inboundSchema,
+      ])
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      call_id: 'callId',
+    });
   });
-});
 /** @internal */
 export type ResponsesOutputItemFunctionCall$Outbound = {
   type: string;
@@ -179,30 +172,32 @@ export type ResponsesOutputItemFunctionCall$Outbound = {
 export const ResponsesOutputItemFunctionCall$outboundSchema: z.ZodType<
   ResponsesOutputItemFunctionCall$Outbound,
   ResponsesOutputItemFunctionCall
-> = z.object({
-  type: ResponsesOutputItemFunctionCallType$outboundSchema,
-  id: z.string().optional(),
-  name: z.string(),
-  arguments: z.string(),
-  callId: z.string(),
-  status: z.union([
-    ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
-    ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
-    ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
-  ]).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    callId: "call_id",
+> = z
+  .object({
+    type: ResponsesOutputItemFunctionCallType$outboundSchema,
+    id: z.string().optional(),
+    name: z.string(),
+    arguments: z.string(),
+    callId: z.string(),
+    status: z
+      .union([
+        ResponsesOutputItemFunctionCallStatusCompleted$outboundSchema,
+        ResponsesOutputItemFunctionCallStatusIncomplete$outboundSchema,
+        ResponsesOutputItemFunctionCallStatusInProgress$outboundSchema,
+      ])
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      callId: 'call_id',
+    });
   });
-});
 
 export function responsesOutputItemFunctionCallToJSON(
   responsesOutputItemFunctionCall: ResponsesOutputItemFunctionCall,
 ): string {
   return JSON.stringify(
-    ResponsesOutputItemFunctionCall$outboundSchema.parse(
-      responsesOutputItemFunctionCall,
-    ),
+    ResponsesOutputItemFunctionCall$outboundSchema.parse(responsesOutputItemFunctionCall),
   );
 }
 export function responsesOutputItemFunctionCallFromJSON(

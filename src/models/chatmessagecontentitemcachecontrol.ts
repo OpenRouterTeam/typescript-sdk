@@ -3,42 +3,41 @@
  * @generated-id: b5c18e04e19c
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const Ttl = {
-  Fivem: "5m",
-  Oneh: "1h",
+  Fivem: '5m',
+  Oneh: '1h',
 } as const;
 export type Ttl = OpenEnum<typeof Ttl>;
 
 export type ChatMessageContentItemCacheControl = {
-  type: "ephemeral";
+  type: 'ephemeral';
   ttl?: Ttl | undefined;
 };
 
 /** @internal */
-export const Ttl$inboundSchema: z.ZodType<Ttl, unknown> = openEnums
-  .inboundSchema(Ttl);
+export const Ttl$inboundSchema: z.ZodType<Ttl, unknown> = openEnums.inboundSchema(Ttl);
 /** @internal */
-export const Ttl$outboundSchema: z.ZodType<string, Ttl> = openEnums
-  .outboundSchema(Ttl);
+export const Ttl$outboundSchema: z.ZodType<string, Ttl> = openEnums.outboundSchema(Ttl);
 
 /** @internal */
 export const ChatMessageContentItemCacheControl$inboundSchema: z.ZodType<
   ChatMessageContentItemCacheControl,
   unknown
 > = z.object({
-  type: z.literal("ephemeral"),
+  type: z.literal('ephemeral'),
   ttl: Ttl$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatMessageContentItemCacheControl$Outbound = {
-  type: "ephemeral";
+  type: 'ephemeral';
   ttl?: string | undefined;
 };
 
@@ -47,7 +46,7 @@ export const ChatMessageContentItemCacheControl$outboundSchema: z.ZodType<
   ChatMessageContentItemCacheControl$Outbound,
   ChatMessageContentItemCacheControl
 > = z.object({
-  type: z.literal("ephemeral"),
+  type: z.literal('ephemeral'),
   ttl: Ttl$outboundSchema.optional(),
 });
 
@@ -55,9 +54,7 @@ export function chatMessageContentItemCacheControlToJSON(
   chatMessageContentItemCacheControl: ChatMessageContentItemCacheControl,
 ): string {
   return JSON.stringify(
-    ChatMessageContentItemCacheControl$outboundSchema.parse(
-      chatMessageContentItemCacheControl,
-    ),
+    ChatMessageContentItemCacheControl$outboundSchema.parse(chatMessageContentItemCacheControl),
   );
 }
 export function chatMessageContentItemCacheControlFromJSON(
@@ -65,8 +62,7 @@ export function chatMessageContentItemCacheControlFromJSON(
 ): SafeParseResult<ChatMessageContentItemCacheControl, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ChatMessageContentItemCacheControl$inboundSchema.parse(JSON.parse(x)),
+    (x) => ChatMessageContentItemCacheControl$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ChatMessageContentItemCacheControl' from JSON`,
   );
 }

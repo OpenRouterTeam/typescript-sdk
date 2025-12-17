@@ -3,14 +3,16 @@
  * @generated-id: 1491329aae16
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { ProviderSort } from './providersort.js';
+
+import * as z from 'zod/v4';
+import * as openEnums from '../types/enums.js';
+import { ProviderSort$outboundSchema } from './providersort.js';
 
 export const Partition = {
-  Model: "model",
-  None: "none",
+  Model: 'model',
+  None: 'none',
 } as const;
 export type Partition = OpenEnum<typeof Partition>;
 
@@ -20,8 +22,8 @@ export type ProviderSortConfig = {
 };
 
 /** @internal */
-export const Partition$outboundSchema: z.ZodType<string, Partition> = openEnums
-  .outboundSchema(Partition);
+export const Partition$outboundSchema: z.ZodType<string, Partition> =
+  openEnums.outboundSchema(Partition);
 
 /** @internal */
 export type ProviderSortConfig$Outbound = {
@@ -38,10 +40,6 @@ export const ProviderSortConfig$outboundSchema: z.ZodType<
   partition: z.nullable(Partition$outboundSchema).optional(),
 });
 
-export function providerSortConfigToJSON(
-  providerSortConfig: ProviderSortConfig,
-): string {
-  return JSON.stringify(
-    ProviderSortConfig$outboundSchema.parse(providerSortConfig),
-  );
+export function providerSortConfigToJSON(providerSortConfig: ProviderSortConfig): string {
+  return JSON.stringify(ProviderSortConfig$outboundSchema.parse(providerSortConfig));
 }

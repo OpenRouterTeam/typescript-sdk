@@ -3,20 +3,23 @@
  * @generated-id: 631c61a1b658
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * JSON schema constrained response format
  */
 export type ResponsesFormatTextJSONSchemaConfig = {
-  type: "json_schema";
+  type: 'json_schema';
   name: string;
   description?: string | undefined;
   strict?: boolean | null | undefined;
-  schema: { [k: string]: any | null };
+  schema: {
+    [k: string]: any | null;
+  };
 };
 
 /** @internal */
@@ -24,7 +27,7 @@ export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
   ResponsesFormatTextJSONSchemaConfig,
   unknown
 > = z.object({
-  type: z.literal("json_schema"),
+  type: z.literal('json_schema'),
   name: z.string(),
   description: z.string().optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -32,11 +35,13 @@ export const ResponsesFormatTextJSONSchemaConfig$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ResponsesFormatTextJSONSchemaConfig$Outbound = {
-  type: "json_schema";
+  type: 'json_schema';
   name: string;
   description?: string | undefined;
   strict?: boolean | null | undefined;
-  schema: { [k: string]: any | null };
+  schema: {
+    [k: string]: any | null;
+  };
 };
 
 /** @internal */
@@ -44,7 +49,7 @@ export const ResponsesFormatTextJSONSchemaConfig$outboundSchema: z.ZodType<
   ResponsesFormatTextJSONSchemaConfig$Outbound,
   ResponsesFormatTextJSONSchemaConfig
 > = z.object({
-  type: z.literal("json_schema"),
+  type: z.literal('json_schema'),
   name: z.string(),
   description: z.string().optional(),
   strict: z.nullable(z.boolean()).optional(),
@@ -55,9 +60,7 @@ export function responsesFormatTextJSONSchemaConfigToJSON(
   responsesFormatTextJSONSchemaConfig: ResponsesFormatTextJSONSchemaConfig,
 ): string {
   return JSON.stringify(
-    ResponsesFormatTextJSONSchemaConfig$outboundSchema.parse(
-      responsesFormatTextJSONSchemaConfig,
-    ),
+    ResponsesFormatTextJSONSchemaConfig$outboundSchema.parse(responsesFormatTextJSONSchemaConfig),
   );
 }
 export function responsesFormatTextJSONSchemaConfigFromJSON(
@@ -65,8 +68,7 @@ export function responsesFormatTextJSONSchemaConfigFromJSON(
 ): SafeParseResult<ResponsesFormatTextJSONSchemaConfig, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ResponsesFormatTextJSONSchemaConfig$inboundSchema.parse(JSON.parse(x)),
+    (x) => ResponsesFormatTextJSONSchemaConfig$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ResponsesFormatTextJSONSchemaConfig' from JSON`,
   );
 }

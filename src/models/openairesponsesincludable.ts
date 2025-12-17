@@ -3,20 +3,19 @@
  * @generated-id: 3b5ed15267fc
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const OpenAIResponsesIncludable = {
-  FileSearchCallResults: "file_search_call.results",
-  MessageInputImageImageUrl: "message.input_image.image_url",
-  ComputerCallOutputOutputImageUrl: "computer_call_output.output.image_url",
-  ReasoningEncryptedContent: "reasoning.encrypted_content",
-  CodeInterpreterCallOutputs: "code_interpreter_call.outputs",
+  FileSearchCallResults: 'file_search_call.results',
+  MessageInputImageImageUrl: 'message.input_image.image_url',
+  ComputerCallOutputOutputImageUrl: 'computer_call_output.output.image_url',
+  ReasoningEncryptedContent: 'reasoning.encrypted_content',
+  CodeInterpreterCallOutputs: 'code_interpreter_call.outputs',
 } as const;
-export type OpenAIResponsesIncludable = OpenEnum<
-  typeof OpenAIResponsesIncludable
->;
+export type OpenAIResponsesIncludable = OpenEnum<typeof OpenAIResponsesIncludable>;
 
 /** @internal */
 export const OpenAIResponsesIncludable$outboundSchema: z.ZodType<

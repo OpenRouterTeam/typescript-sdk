@@ -3,11 +3,12 @@
  * @generated-id: 7439c7b1a9c6
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Information about the top provider for this model
@@ -28,20 +29,19 @@ export type TopProviderInfo = {
 };
 
 /** @internal */
-export const TopProviderInfo$inboundSchema: z.ZodType<
-  TopProviderInfo,
-  unknown
-> = z.object({
-  context_length: z.nullable(z.number()).optional(),
-  max_completion_tokens: z.nullable(z.number()).optional(),
-  is_moderated: z.boolean(),
-}).transform((v) => {
-  return remap$(v, {
-    "context_length": "contextLength",
-    "max_completion_tokens": "maxCompletionTokens",
-    "is_moderated": "isModerated",
+export const TopProviderInfo$inboundSchema: z.ZodType<TopProviderInfo, unknown> = z
+  .object({
+    context_length: z.nullable(z.number()).optional(),
+    max_completion_tokens: z.nullable(z.number()).optional(),
+    is_moderated: z.boolean(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      context_length: 'contextLength',
+      max_completion_tokens: 'maxCompletionTokens',
+      is_moderated: 'isModerated',
+    });
   });
-});
 
 export function topProviderInfoFromJSON(
   jsonString: string,

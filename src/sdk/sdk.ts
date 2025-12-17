@@ -3,28 +3,27 @@
  * @generated-id: 784571af2f69
  */
 
-import { ClientSDK } from "../lib/sdks.js";
-import { Analytics } from "./analytics.js";
-import { APIKeys } from "./apikeys.js";
-import { Beta } from "./beta.js";
-import { Chat } from "./chat.js";
-import { Completions } from "./completions.js";
-import { Credits } from "./credits.js";
-import { Embeddings } from "./embeddings.js";
-import { Endpoints } from "./endpoints.js";
-import { Generations } from "./generations.js";
-import { Models } from "./models.js";
-import { OAuth } from "./oauth.js";
-import { ParametersT } from "./parameters.js";
-import { Providers } from "./providers.js";
-// #region imports
-import {
-  callModel as callModelFunc,
-  type CallModelInput,
-} from "../funcs/call-model.js";
-import type { ModelResult } from "../lib/model-result.js";
-import type { RequestOptions } from "../lib/sdks.js";
-import { type MaxToolRounds, ToolType } from "../lib/tool-types.js";
+import type { CallModelInput } from '../funcs/call-model.js';
+import type { ModelResult } from '../lib/model-result.js';
+import type { RequestOptions } from '../lib/sdks.js';
+import type { MaxToolRounds } from '../lib/tool-types.js';
+
+import { callModel as callModelFunc } from '../funcs/call-model.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { ToolType } from '../lib/tool-types.js';
+import { Analytics } from './analytics.js';
+import { APIKeys } from './apikeys.js';
+import { Beta } from './beta.js';
+import { Chat } from './chat.js';
+import { Completions } from './completions.js';
+import { Credits } from './credits.js';
+import { Embeddings } from './embeddings.js';
+import { Endpoints } from './endpoints.js';
+import { Generations } from './generations.js';
+import { Models } from './models.js';
+import { OAuth } from './oauth.js';
+import { ParametersT } from './parameters.js';
+import { Providers } from './providers.js';
 
 export { ToolType };
 export type { MaxToolRounds };
@@ -97,10 +96,7 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel(
-    request: CallModelInput,
-    options?: RequestOptions,
-  ): ModelResult {
+  callModel(request: CallModelInput, options?: RequestOptions): ModelResult {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body

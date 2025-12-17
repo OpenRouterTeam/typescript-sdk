@@ -1,15 +1,15 @@
 import type { ChatStreamEvent, EnhancedResponseStreamEvent } from '../../src/lib/tool-types.js';
 import type { ClaudeMessageParam } from '../../src/models/claude-message.js';
-import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 import type { OpenResponsesFunctionCallOutput } from '../../src/models/openresponsesfunctioncalloutput.js';
+import type { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
+import type { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { OpenRouter, ToolType } from '../../src/sdk/sdk.js';
-import { fromChatMessages, toChatMessage } from '../../src/lib/chat-compat.js';
 import { fromClaudeMessages } from '../../src/lib/anthropic-compat.js';
-import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
-import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import { fromChatMessages, toChatMessage } from '../../src/lib/chat-compat.js';
+import { OpenRouter, ToolType } from '../../src/sdk/sdk.js';
 
 describe('callModel E2E Tests', () => {
   let client: OpenRouter;
@@ -233,7 +233,7 @@ describe('callModel E2E Tests', () => {
         },
         {
           role: 'assistant',
-          content: "Nice to meet you, Alice! How can I help you today?",
+          content: 'Nice to meet you, Alice! How can I help you today?',
         },
         {
           role: 'user',
@@ -592,7 +592,14 @@ describe('callModel E2E Tests', () => {
         // Extract text from content array
         const getTextFromContent = (msg: ResponsesOutputMessage) => {
           return msg.content
-            .filter((c): c is { type: 'output_text'; text: string } => 'type' in c && c.type === 'output_text')
+            .filter(
+              (
+                c,
+              ): c is {
+                type: 'output_text';
+                text: string;
+              } => 'type' in c && c.type === 'output_text',
+            )
             .map((c) => c.text)
             .join('');
         };
@@ -635,12 +642,19 @@ describe('callModel E2E Tests', () => {
             expect(item).toHaveProperty('type');
             expect(typeof item.type).toBe('string');
             // Content items should be output_text or refusal
-            expect(['output_text', 'refusal']).toContain(item.type);
+            expect([
+              'output_text',
+              'refusal',
+            ]).toContain(item.type);
           }
 
           // Validate optional status field
           if (outputMessage.status !== undefined) {
-            expect(['completed', 'incomplete', 'in_progress']).toContain(outputMessage.status);
+            expect([
+              'completed',
+              'incomplete',
+              'in_progress',
+            ]).toContain(outputMessage.status);
           }
         }
       }
@@ -765,7 +779,10 @@ describe('callModel E2E Tests', () => {
       for await (const message of response.getNewMessagesStream()) {
         // type must be a string and one of the valid values
         expect(typeof message.type).toBe('string');
-        expect(['message', 'function_call_output']).toContain(message.type);
+        expect([
+          'message',
+          'function_call_output',
+        ]).toContain(message.type);
 
         if (message.type === 'message') {
           const outputMessage = message as ResponsesOutputMessage;
@@ -933,7 +950,7 @@ describe('callModel E2E Tests', () => {
 
       // Verify delta events have the expected structure
       const firstDelta = textDeltaEvents[0];
-      if(firstDelta.type === 'response.output_text.delta') {
+      if (firstDelta.type === 'response.output_text.delta') {
         expect(firstDelta.delta).toBeDefined();
         expect(typeof firstDelta.delta).toBe('string');
       } else {
@@ -994,8 +1011,20 @@ describe('callModel E2E Tests', () => {
           case 'content.delta':
             hasContentDelta = true;
             // Must have delta property
-            expect((event as { delta: string }).delta).toBeDefined();
-            expect(typeof (event as { delta: string }).delta).toBe('string');
+            expect(
+              (
+                event as {
+                  delta: string;
+                }
+              ).delta,
+            ).toBeDefined();
+            expect(
+              typeof (
+                event as {
+                  delta: string;
+                }
+              ).delta,
+            ).toBe('string');
             // Delta can be empty string but must be string
             break;
 
@@ -1003,25 +1032,61 @@ describe('callModel E2E Tests', () => {
             _hasMessageComplete = true;
             // Must have response property
             expect(event).toHaveProperty('response');
-            expect((event as { response: OpenResponsesNonStreamingResponse }).response).toBeDefined();
+            expect(
+              (
+                event as {
+                  response: OpenResponsesNonStreamingResponse;
+                }
+              ).response,
+            ).toBeDefined();
             // Response should be an object (the full response)
-            expect(typeof (event as { response: OpenResponsesNonStreamingResponse }).response).toBe('object');
-            expect((event as { response: OpenResponsesNonStreamingResponse }).response).not.toBeNull();
+            expect(
+              typeof (
+                event as {
+                  response: OpenResponsesNonStreamingResponse;
+                }
+              ).response,
+            ).toBe('object');
+            expect(
+              (
+                event as {
+                  response: OpenResponsesNonStreamingResponse;
+                }
+              ).response,
+            ).not.toBeNull();
             break;
 
           case 'tool.preliminary_result':
             // Must have toolCallId and result
             expect(event).toHaveProperty('toolCallId');
             expect(event).toHaveProperty('result');
-            expect(typeof (event as { toolCallId: string }).toolCallId).toBe('string');
-            expect((event as { toolCallId: string }).toolCallId.length).toBeGreaterThan(0);
+            expect(
+              typeof (
+                event as {
+                  toolCallId: string;
+                }
+              ).toolCallId,
+            ).toBe('string');
+            expect(
+              (
+                event as {
+                  toolCallId: string;
+                }
+              ).toolCallId.length,
+            ).toBeGreaterThan(0);
             // result can be any type
             break;
 
           default:
             // Pass-through events must have event property
             expect(event).toHaveProperty('event');
-            expect((event as { event: OpenResponsesStreamEvent }).event).toBeDefined();
+            expect(
+              (
+                event as {
+                  event: OpenResponsesStreamEvent;
+                }
+              ).event,
+            ).toBeDefined();
             break;
         }
       }
@@ -1056,14 +1121,29 @@ describe('callModel E2E Tests', () => {
           expect(event.type).toBe('content.delta');
 
           // delta must be a string
-          expect(typeof (event as { delta: string }).delta).toBe('string');
+          expect(
+            typeof (
+              event as {
+                delta: string;
+              }
+            ).delta,
+          ).toBe('string');
         }
       }
 
       expect(contentDeltas.length).toBeGreaterThan(0);
 
       // Concatenated deltas should form readable text
-      const fullText = contentDeltas.map((e) => (e as { delta: string }).delta).join('');
+      const fullText = contentDeltas
+        .map(
+          (e) =>
+            (
+              e as {
+                delta: string;
+              }
+            ).delta,
+        )
+        .join('');
       expect(fullText.length).toBeGreaterThan(0);
     }, 15000);
 
@@ -1127,11 +1207,29 @@ describe('callModel E2E Tests', () => {
           expect(event).toHaveProperty('result');
 
           // toolCallId must be non-empty string
-          expect(typeof (event as { toolCallId: string }).toolCallId).toBe('string');
-          expect((event as { toolCallId: string }).toolCallId.length).toBeGreaterThan(0);
+          expect(
+            typeof (
+              event as {
+                toolCallId: string;
+              }
+            ).toolCallId,
+          ).toBe('string');
+          expect(
+            (
+              event as {
+                toolCallId: string;
+              }
+            ).toolCallId.length,
+          ).toBeGreaterThan(0);
 
           // result is defined
-          expect((event as { result: unknown }).result).toBeDefined();
+          expect(
+            (
+              event as {
+                result: unknown;
+              }
+            ).result,
+          ).toBeDefined();
         }
       }
 
@@ -1232,7 +1330,14 @@ describe('callModel E2E Tests', () => {
       const lastMessage = messages[messages.length - 1] as ResponsesOutputMessage;
       // Extract text from ResponsesOutputMessage content array
       const textFromMessage = lastMessage.content
-        .filter((c): c is { type: 'output_text'; text: string } => 'type' in c && c.type === 'output_text')
+        .filter(
+          (
+            c,
+          ): c is {
+            type: 'output_text';
+            text: string;
+          } => 'type' in c && c.type === 'output_text',
+        )
         .map((c) => c.text)
         .join('');
 
@@ -1357,7 +1462,13 @@ describe('callModel E2E Tests', () => {
       // Verify output items have correct shape
       for (const item of fullResponse.output) {
         expect(item).toHaveProperty('type');
-        expect(typeof (item as { type: string }).type).toBe('string');
+        expect(
+          typeof (
+            item as {
+              type: string;
+            }
+          ).type,
+        ).toBe('string');
       }
 
       // Verify temperature and topP are present (can be null)

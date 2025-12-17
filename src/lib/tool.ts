@@ -1,19 +1,12 @@
-import type { ZodObject, ZodRawShape, ZodType, z } from "zod/v4";
-import {
-  ToolType,
-  type TurnContext,
-  type ToolWithExecute,
-  type ToolWithGenerator,
-  type ManualTool,
-} from "./tool-types.js";
+import type { ZodObject, ZodRawShape, ZodType, z } from 'zod/v4';
+import type { ManualTool, ToolWithExecute, ToolWithGenerator, TurnContext } from './tool-types.js';
+
+import { ToolType } from './tool-types.js';
 
 /**
  * Configuration for a regular tool with outputSchema
  */
-type RegularToolConfigWithOutput<
-  TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType,
-> = {
+type RegularToolConfigWithOutput<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType> = {
   name: string;
   description?: string;
   inputSchema: TInput;
@@ -21,26 +14,20 @@ type RegularToolConfigWithOutput<
   eventSchema?: undefined;
   execute: (
     params: z.infer<TInput>,
-    context?: TurnContext
+    context?: TurnContext,
   ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
 };
 
 /**
  * Configuration for a regular tool without outputSchema (infers return type from execute)
  */
-type RegularToolConfigWithoutOutput<
-  TInput extends ZodObject<ZodRawShape>,
-  TReturn,
-> = {
+type RegularToolConfigWithoutOutput<TInput extends ZodObject<ZodRawShape>, TReturn> = {
   name: string;
   description?: string;
   inputSchema: TInput;
   outputSchema?: undefined;
   eventSchema?: undefined;
-  execute: (
-    params: z.infer<TInput>,
-    context?: TurnContext
-  ) => Promise<TReturn> | TReturn;
+  execute: (params: z.infer<TInput>, context?: TurnContext) => Promise<TReturn> | TReturn;
 };
 
 /**
@@ -58,7 +45,7 @@ type GeneratorToolConfig<
   outputSchema: TOutput;
   execute: (
     params: z.infer<TInput>,
-    context?: TurnContext
+    context?: TurnContext,
   ) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
 };
 
@@ -91,9 +78,9 @@ function isGeneratorConfig<
   config:
     | GeneratorToolConfig<TInput, TEvent, TOutput>
     | RegularToolConfig<TInput, TOutput, TReturn>
-    | ManualToolConfig<TInput>
+    | ManualToolConfig<TInput>,
 ): config is GeneratorToolConfig<TInput, TEvent, TOutput> {
-  return "eventSchema" in config && config.eventSchema !== undefined;
+  return 'eventSchema' in config && config.eventSchema !== undefined;
 }
 
 /**
@@ -103,7 +90,7 @@ function isManualConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends Z
   config:
     | GeneratorToolConfig<TInput, ZodType, ZodType>
     | RegularToolConfig<TInput, TOutput, TReturn>
-    | ManualToolConfig<TInput>
+    | ManualToolConfig<TInput>,
 ): config is ManualToolConfig<TInput> {
   return config.execute === false;
 }
@@ -158,26 +145,22 @@ export function tool<
   TInput extends ZodObject<ZodRawShape>,
   TEvent extends ZodType,
   TOutput extends ZodType,
->(
-  config: GeneratorToolConfig<TInput, TEvent, TOutput>
-): ToolWithGenerator<TInput, TEvent, TOutput>;
+>(config: GeneratorToolConfig<TInput, TEvent, TOutput>): ToolWithGenerator<TInput, TEvent, TOutput>;
 
 // Overload for manual tools (execute: false)
 export function tool<TInput extends ZodObject<ZodRawShape>>(
-  config: ManualToolConfig<TInput>
+  config: ManualToolConfig<TInput>,
 ): ManualTool<TInput>;
 
 // Overload for regular tools with outputSchema
-export function tool<
-  TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType,
->(config: RegularToolConfigWithOutput<TInput, TOutput>): ToolWithExecute<TInput, TOutput>;
+export function tool<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType>(
+  config: RegularToolConfigWithOutput<TInput, TOutput>,
+): ToolWithExecute<TInput, TOutput>;
 
 // Overload for regular tools without outputSchema (infers return type)
-export function tool<
-  TInput extends ZodObject<ZodRawShape>,
-  TReturn,
->(config: RegularToolConfigWithoutOutput<TInput, TReturn>): ToolWithExecute<TInput, ZodType<TReturn>>;
+export function tool<TInput extends ZodObject<ZodRawShape>, TReturn>(
+  config: RegularToolConfigWithoutOutput<TInput, TReturn>,
+): ToolWithExecute<TInput, ZodType<TReturn>>;
 
 // Implementation
 export function tool<
@@ -189,7 +172,7 @@ export function tool<
   config:
     | GeneratorToolConfig<TInput, TEvent, TOutput>
     | RegularToolConfig<TInput, TOutput, TReturn>
-    | ManualToolConfig<TInput>
+    | ManualToolConfig<TInput>,
 ):
   | ToolWithGenerator<TInput, TEvent, TOutput>
   | ToolWithExecute<TInput, TOutput>
@@ -197,7 +180,7 @@ export function tool<
   | ManualTool<TInput> {
   // Check for manual tool first (execute === false)
   if (isManualConfig(config)) {
-    const fn: ManualTool<TInput>["function"] = {
+    const fn: ManualTool<TInput>['function'] = {
       name: config.name,
       inputSchema: config.inputSchema,
     };
@@ -214,18 +197,14 @@ export function tool<
 
   // Check for generator tool (has eventSchema)
   if (isGeneratorConfig(config)) {
-    const fn: ToolWithGenerator<TInput, TEvent, TOutput>["function"] = {
+    const fn: ToolWithGenerator<TInput, TEvent, TOutput>['function'] = {
       name: config.name,
       inputSchema: config.inputSchema,
       eventSchema: config.eventSchema,
       outputSchema: config.outputSchema,
       // The config execute allows yielding both events and output,
       // but the interface only types for events (output is extracted separately)
-      execute: config.execute as ToolWithGenerator<
-        TInput,
-        TEvent,
-        TOutput
-      >["function"]["execute"],
+      execute: config.execute as ToolWithGenerator<TInput, TEvent, TOutput>['function']['execute'],
     };
 
     if (config.description !== undefined) {
@@ -245,7 +224,7 @@ export function tool<
     name: config.name,
     inputSchema: config.inputSchema,
     execute: config.execute,
-  } as ToolWithExecute<TInput, TOutput>["function"];
+  } as ToolWithExecute<TInput, TOutput>['function'];
 
   if (config.description !== undefined) {
     fn.description = config.description;

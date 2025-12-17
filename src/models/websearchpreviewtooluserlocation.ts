@@ -3,14 +3,15 @@
  * @generated-id: cb1960e09942
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export const WebSearchPreviewToolUserLocationType = {
-  Approximate: "approximate",
+  Approximate: 'approximate',
 } as const;
 export type WebSearchPreviewToolUserLocationType = ClosedEnum<
   typeof WebSearchPreviewToolUserLocationType
@@ -69,9 +70,7 @@ export function webSearchPreviewToolUserLocationToJSON(
   webSearchPreviewToolUserLocation: WebSearchPreviewToolUserLocation,
 ): string {
   return JSON.stringify(
-    WebSearchPreviewToolUserLocation$outboundSchema.parse(
-      webSearchPreviewToolUserLocation,
-    ),
+    WebSearchPreviewToolUserLocation$outboundSchema.parse(webSearchPreviewToolUserLocation),
   );
 }
 export function webSearchPreviewToolUserLocationFromJSON(

@@ -3,18 +3,17 @@
  * @generated-id: 9c06c18de6d6
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export const ReasoningSummaryTextType = {
-  SummaryText: "summary_text",
+  SummaryText: 'summary_text',
 } as const;
-export type ReasoningSummaryTextType = ClosedEnum<
-  typeof ReasoningSummaryTextType
->;
+export type ReasoningSummaryTextType = ClosedEnum<typeof ReasoningSummaryTextType>;
 
 export type ReasoningSummaryText = {
   type: ReasoningSummaryTextType;
@@ -22,22 +21,18 @@ export type ReasoningSummaryText = {
 };
 
 /** @internal */
-export const ReasoningSummaryTextType$inboundSchema: z.ZodEnum<
-  typeof ReasoningSummaryTextType
-> = z.enum(ReasoningSummaryTextType);
+export const ReasoningSummaryTextType$inboundSchema: z.ZodEnum<typeof ReasoningSummaryTextType> =
+  z.enum(ReasoningSummaryTextType);
 /** @internal */
-export const ReasoningSummaryTextType$outboundSchema: z.ZodEnum<
-  typeof ReasoningSummaryTextType
-> = ReasoningSummaryTextType$inboundSchema;
+export const ReasoningSummaryTextType$outboundSchema: z.ZodEnum<typeof ReasoningSummaryTextType> =
+  ReasoningSummaryTextType$inboundSchema;
 
 /** @internal */
-export const ReasoningSummaryText$inboundSchema: z.ZodType<
-  ReasoningSummaryText,
-  unknown
-> = z.object({
-  type: ReasoningSummaryTextType$inboundSchema,
-  text: z.string(),
-});
+export const ReasoningSummaryText$inboundSchema: z.ZodType<ReasoningSummaryText, unknown> =
+  z.object({
+    type: ReasoningSummaryTextType$inboundSchema,
+    text: z.string(),
+  });
 /** @internal */
 export type ReasoningSummaryText$Outbound = {
   type: string;
@@ -53,12 +48,8 @@ export const ReasoningSummaryText$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-export function reasoningSummaryTextToJSON(
-  reasoningSummaryText: ReasoningSummaryText,
-): string {
-  return JSON.stringify(
-    ReasoningSummaryText$outboundSchema.parse(reasoningSummaryText),
-  );
+export function reasoningSummaryTextToJSON(reasoningSummaryText: ReasoningSummaryText): string {
+  return JSON.stringify(ReasoningSummaryText$outboundSchema.parse(reasoningSummaryText));
 }
 export function reasoningSummaryTextFromJSON(
   jsonString: string,

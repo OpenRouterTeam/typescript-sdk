@@ -3,19 +3,20 @@
  * @generated-id: aded1ce23b04
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import {
+import type { OpenEnum } from '../types/enums.js';
+import type {
   ResponseFormatTextConfig,
   ResponseFormatTextConfig$Outbound,
-  ResponseFormatTextConfig$outboundSchema,
-} from "./responseformattextconfig.js";
+} from './responseformattextconfig.js';
+
+import * as z from 'zod/v4';
+import * as openEnums from '../types/enums.js';
+import { ResponseFormatTextConfig$outboundSchema } from './responseformattextconfig.js';
 
 export const OpenResponsesResponseTextVerbosity = {
-  High: "high",
-  Low: "low",
-  Medium: "medium",
+  High: 'high',
+  Low: 'low',
+  Medium: 'medium',
 } as const;
 export type OpenResponsesResponseTextVerbosity = OpenEnum<
   typeof OpenResponsesResponseTextVerbosity
@@ -50,14 +51,11 @@ export const OpenResponsesResponseText$outboundSchema: z.ZodType<
   OpenResponsesResponseText
 > = z.object({
   format: ResponseFormatTextConfig$outboundSchema.optional(),
-  verbosity: z.nullable(OpenResponsesResponseTextVerbosity$outboundSchema)
-    .optional(),
+  verbosity: z.nullable(OpenResponsesResponseTextVerbosity$outboundSchema).optional(),
 });
 
 export function openResponsesResponseTextToJSON(
   openResponsesResponseText: OpenResponsesResponseText,
 ): string {
-  return JSON.stringify(
-    OpenResponsesResponseText$outboundSchema.parse(openResponsesResponseText),
-  );
+  return JSON.stringify(OpenResponsesResponseText$outboundSchema.parse(openResponsesResponseText));
 }

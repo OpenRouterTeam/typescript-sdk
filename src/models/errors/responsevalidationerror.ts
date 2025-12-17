@@ -3,9 +3,9 @@
  * @generated-id: 88ff98a41be9
  */
 
-import * as z from "zod/v4/core";
-import { OpenRouterError } from "./openroutererror.js";
-import { formatZodError } from "./sdkvalidationerror.js";
+import * as z from 'zod/v4/core';
+import { OpenRouterError } from './openroutererror.js';
+import { formatZodError } from './sdkvalidationerror.js';
 
 export class ResponseValidationError extends OpenRouterError {
   /**
@@ -30,7 +30,7 @@ export class ResponseValidationError extends OpenRouterError {
     },
   ) {
     super(message, extra);
-    this.name = "ResponseValidationError";
+    this.name = 'ResponseValidationError';
     this.cause = extra.cause;
     this.rawValue = extra.rawValue;
     this.rawMessage = extra.rawMessage;
@@ -44,8 +44,7 @@ export class ResponseValidationError extends OpenRouterError {
   public pretty(): string {
     if (this.cause instanceof z.$ZodError) {
       return `${this.rawMessage}\n${formatZodError(this.cause)}`;
-    } else {
-      return this.toString();
     }
+    return this.toString();
   }
 }

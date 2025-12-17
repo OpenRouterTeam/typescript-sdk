@@ -1,8 +1,8 @@
 import type { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
-import { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 
 describe('Beta Responses E2E Tests', () => {
   let client: OpenRouter;

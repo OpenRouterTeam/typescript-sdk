@@ -3,17 +3,18 @@
  * @generated-id: f76803b0bdd0
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Event emitted when reasoning text streaming is complete
  */
 export type OpenResponsesReasoningDoneEvent = {
-  type: "response.reasoning_text.done";
+  type: 'response.reasoning_text.done';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -25,21 +26,23 @@ export type OpenResponsesReasoningDoneEvent = {
 export const OpenResponsesReasoningDoneEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDoneEvent,
   unknown
-> = z.object({
-  type: z.literal("response.reasoning_text.done"),
-  output_index: z.number(),
-  item_id: z.string(),
-  content_index: z.number(),
-  text: z.string(),
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "item_id": "itemId",
-    "content_index": "contentIndex",
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.reasoning_text.done'),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    text: z.string(),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesReasoningDoneEventFromJSON(
   jsonString: string,

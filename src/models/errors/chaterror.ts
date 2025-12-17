@@ -3,9 +3,9 @@
  * @generated-id: a3b18e48f494
  */
 
-import * as z from "zod/v4";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 export type ChatErrorData = {
   error: models.ChatErrorError;
@@ -19,25 +19,29 @@ export class ChatError extends OpenRouterError {
 
   constructor(
     err: ChatErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
 
-    this.name = "ChatError";
+    this.name = 'ChatError';
   }
 }
 
 /** @internal */
-export const ChatError$inboundSchema: z.ZodType<ChatError, unknown> = z.object({
-  error: z.lazy(() => models.ChatErrorError$inboundSchema),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+export const ChatError$inboundSchema: z.ZodType<ChatError, unknown> = z
+  .object({
+    error: z.lazy(() => models.ChatErrorError$inboundSchema),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     return new ChatError(v, {
       request: v.request$,

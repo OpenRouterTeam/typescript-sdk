@@ -3,16 +3,17 @@
  * @generated-id: 771d5d4c91ec
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const InputModality = {
-  Text: "text",
-  Image: "image",
-  File: "file",
-  Audio: "audio",
-  Video: "video",
+  Text: 'text',
+  Image: 'image',
+  File: 'file',
+  Audio: 'audio',
+  Video: 'video',
 } as const;
 export type InputModality = OpenEnum<typeof InputModality>;
 

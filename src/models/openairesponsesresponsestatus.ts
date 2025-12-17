@@ -3,21 +3,20 @@
  * @generated-id: b721d7085e40
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const OpenAIResponsesResponseStatus = {
-  Completed: "completed",
-  Incomplete: "incomplete",
-  InProgress: "in_progress",
-  Failed: "failed",
-  Cancelled: "cancelled",
-  Queued: "queued",
+  Completed: 'completed',
+  Incomplete: 'incomplete',
+  InProgress: 'in_progress',
+  Failed: 'failed',
+  Cancelled: 'cancelled',
+  Queued: 'queued',
 } as const;
-export type OpenAIResponsesResponseStatus = OpenEnum<
-  typeof OpenAIResponsesResponseStatus
->;
+export type OpenAIResponsesResponseStatus = OpenEnum<typeof OpenAIResponsesResponseStatus>;
 
 /** @internal */
 export const OpenAIResponsesResponseStatus$inboundSchema: z.ZodType<

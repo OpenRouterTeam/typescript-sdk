@@ -3,35 +3,37 @@
  * @generated-id: b6552175348e
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type CompletionLogprobs = {
   tokens: Array<string>;
   tokenLogprobs: Array<number>;
-  topLogprobs: Array<{ [k: string]: number }> | null;
+  topLogprobs: Array<{
+    [k: string]: number;
+  }> | null;
   textOffset: Array<number>;
 };
 
 /** @internal */
-export const CompletionLogprobs$inboundSchema: z.ZodType<
-  CompletionLogprobs,
-  unknown
-> = z.object({
-  tokens: z.array(z.string()),
-  token_logprobs: z.array(z.number()),
-  top_logprobs: z.nullable(z.array(z.record(z.string(), z.number()))),
-  text_offset: z.array(z.number()),
-}).transform((v) => {
-  return remap$(v, {
-    "token_logprobs": "tokenLogprobs",
-    "top_logprobs": "topLogprobs",
-    "text_offset": "textOffset",
+export const CompletionLogprobs$inboundSchema: z.ZodType<CompletionLogprobs, unknown> = z
+  .object({
+    tokens: z.array(z.string()),
+    token_logprobs: z.array(z.number()),
+    top_logprobs: z.nullable(z.array(z.record(z.string(), z.number()))),
+    text_offset: z.array(z.number()),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      token_logprobs: 'tokenLogprobs',
+      top_logprobs: 'topLogprobs',
+      text_offset: 'textOffset',
+    });
   });
-});
 
 export function completionLogprobsFromJSON(
   jsonString: string,

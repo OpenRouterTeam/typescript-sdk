@@ -3,12 +3,13 @@
  * @generated-id: 52a55a780d2d
  */
 
-import * as z from "zod/v4";
-import { EventStream } from "../../lib/event-streams.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { EventStream } from '../../lib/event-streams.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as models from '../index.js';
 
 export type SendChatCompletionRequestResponse =
   | models.ChatResponse
@@ -20,13 +21,16 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   models.ChatResponse$inboundSchema,
-  z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
-    .transform(stream => {
-      return new EventStream(stream, rawEvent => {
-        if (rawEvent.data === "[DONE]") return { done: true };
+  z
+    .custom<ReadableStream<Uint8Array>>((x) => x instanceof ReadableStream)
+    .transform((stream) => {
+      return new EventStream(stream, (rawEvent) => {
+        if (rawEvent.data === '[DONE]')
+          return {
+            done: true,
+          };
         return {
-          value: models.ChatStreamingResponseChunk$inboundSchema.parse(rawEvent)
-            ?.data,
+          value: models.ChatStreamingResponseChunk$inboundSchema.parse(rawEvent)?.data,
         };
       });
     }),

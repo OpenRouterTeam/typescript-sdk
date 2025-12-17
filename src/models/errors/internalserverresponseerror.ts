@@ -3,10 +3,10 @@
  * @generated-id: 02b76cec85f0
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Internal Server Error - Unexpected server error
@@ -34,16 +34,19 @@ export class InternalServerResponseError extends OpenRouterError {
 
   constructor(
     err: InternalServerResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "InternalServerResponseError";
+    this.name = 'InternalServerResponseError';
   }
 }
 
@@ -51,16 +54,17 @@ export class InternalServerResponseError extends OpenRouterError {
 export const InternalServerResponseError$inboundSchema: z.ZodType<
   InternalServerResponseError,
   unknown
-> = z.object({
-  error: models.InternalServerResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+> = z
+  .object({
+    error: models.InternalServerResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new InternalServerResponseError(remapped, {

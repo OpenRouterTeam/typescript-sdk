@@ -3,11 +3,10 @@
  * @generated-id: 704f51d4a5f7
  */
 
-import * as z from "zod/v4";
-import {
-  PDFParserEngine,
-  PDFParserEngine$outboundSchema,
-} from "./pdfparserengine.js";
+import type { PDFParserEngine } from './pdfparserengine.js';
+
+import * as z from 'zod/v4';
+import { PDFParserEngine$outboundSchema } from './pdfparserengine.js';
 
 /**
  * Options for PDF parsing.
@@ -32,10 +31,6 @@ export const PDFParserOptions$outboundSchema: z.ZodType<
   engine: PDFParserEngine$outboundSchema.optional(),
 });
 
-export function pdfParserOptionsToJSON(
-  pdfParserOptions: PDFParserOptions,
-): string {
-  return JSON.stringify(
-    PDFParserOptions$outboundSchema.parse(pdfParserOptions),
-  );
+export function pdfParserOptionsToJSON(pdfParserOptions: PDFParserOptions): string {
+  return JSON.stringify(PDFParserOptions$outboundSchema.parse(pdfParserOptions));
 }

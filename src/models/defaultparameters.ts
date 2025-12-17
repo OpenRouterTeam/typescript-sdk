@@ -3,11 +3,12 @@
  * @generated-id: 8da6fac53cb5
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Default parameters for this model
@@ -19,19 +20,18 @@ export type DefaultParameters = {
 };
 
 /** @internal */
-export const DefaultParameters$inboundSchema: z.ZodType<
-  DefaultParameters,
-  unknown
-> = z.object({
-  temperature: z.nullable(z.number()).optional(),
-  top_p: z.nullable(z.number()).optional(),
-  frequency_penalty: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "top_p": "topP",
-    "frequency_penalty": "frequencyPenalty",
+export const DefaultParameters$inboundSchema: z.ZodType<DefaultParameters, unknown> = z
+  .object({
+    temperature: z.nullable(z.number()).optional(),
+    top_p: z.nullable(z.number()).optional(),
+    frequency_penalty: z.nullable(z.number()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      top_p: 'topP',
+      frequency_penalty: 'frequencyPenalty',
+    });
   });
-});
 
 export function defaultParametersFromJSON(
   jsonString: string,

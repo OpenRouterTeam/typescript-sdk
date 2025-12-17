@@ -3,40 +3,30 @@
  * @generated-id: 0b061e126936
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OutputItemImageGenerationCall,
-  OutputItemImageGenerationCall$inboundSchema,
-} from "./outputitemimagegenerationcall.js";
-import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
-import {
-  ResponseInputAudio,
-  ResponseInputAudio$inboundSchema,
-} from "./responseinputaudio.js";
-import {
-  ResponseInputFile,
-  ResponseInputFile$inboundSchema,
-} from "./responseinputfile.js";
-import {
-  ResponseInputImage,
-  ResponseInputImage$inboundSchema,
-} from "./responseinputimage.js";
-import {
-  ResponseInputText,
-  ResponseInputText$inboundSchema,
-} from "./responseinputtext.js";
-import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-} from "./toolcallstatus.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { OutputItemImageGenerationCall } from './outputitemimagegenerationcall.js';
+import type { OutputMessage } from './outputmessage.js';
+import type { ResponseInputAudio } from './responseinputaudio.js';
+import type { ResponseInputFile } from './responseinputfile.js';
+import type { ResponseInputImage } from './responseinputimage.js';
+import type { ResponseInputText } from './responseinputtext.js';
+import type { ToolCallStatus } from './toolcallstatus.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import { OutputItemImageGenerationCall$inboundSchema } from './outputitemimagegenerationcall.js';
+import { OutputMessage$inboundSchema } from './outputmessage.js';
+import { ResponseInputAudio$inboundSchema } from './responseinputaudio.js';
+import { ResponseInputFile$inboundSchema } from './responseinputfile.js';
+import { ResponseInputImage$inboundSchema } from './responseinputimage.js';
+import { ResponseInputText$inboundSchema } from './responseinputtext.js';
+import { ToolCallStatus$inboundSchema } from './toolcallstatus.js';
 
 export const OpenAIResponsesInputTypeFunctionCall = {
-  FunctionCall: "function_call",
+  FunctionCall: 'function_call',
 } as const;
 export type OpenAIResponsesInputTypeFunctionCall = ClosedEnum<
   typeof OpenAIResponsesInputTypeFunctionCall
@@ -52,7 +42,7 @@ export type OpenAIResponsesInputFunctionCall = {
 };
 
 export const OpenAIResponsesInputTypeFunctionCallOutput = {
-  FunctionCallOutput: "function_call_output",
+  FunctionCallOutput: 'function_call_output',
 } as const;
 export type OpenAIResponsesInputTypeFunctionCallOutput = ClosedEnum<
   typeof OpenAIResponsesInputTypeFunctionCallOutput
@@ -67,32 +57,26 @@ export type OpenAIResponsesInputFunctionCallOutput = {
 };
 
 export const OpenAIResponsesInputTypeMessage2 = {
-  Message: "message",
+  Message: 'message',
 } as const;
-export type OpenAIResponsesInputTypeMessage2 = ClosedEnum<
-  typeof OpenAIResponsesInputTypeMessage2
->;
+export type OpenAIResponsesInputTypeMessage2 = ClosedEnum<typeof OpenAIResponsesInputTypeMessage2>;
 
 export const OpenAIResponsesInputRoleDeveloper2 = {
-  Developer: "developer",
+  Developer: 'developer',
 } as const;
 export type OpenAIResponsesInputRoleDeveloper2 = ClosedEnum<
   typeof OpenAIResponsesInputRoleDeveloper2
 >;
 
 export const OpenAIResponsesInputRoleSystem2 = {
-  System: "system",
+  System: 'system',
 } as const;
-export type OpenAIResponsesInputRoleSystem2 = ClosedEnum<
-  typeof OpenAIResponsesInputRoleSystem2
->;
+export type OpenAIResponsesInputRoleSystem2 = ClosedEnum<typeof OpenAIResponsesInputRoleSystem2>;
 
 export const OpenAIResponsesInputRoleUser2 = {
-  User: "user",
+  User: 'user',
 } as const;
-export type OpenAIResponsesInputRoleUser2 = ClosedEnum<
-  typeof OpenAIResponsesInputRoleUser2
->;
+export type OpenAIResponsesInputRoleUser2 = ClosedEnum<typeof OpenAIResponsesInputRoleUser2>;
 
 export type OpenAIResponsesInputRoleUnion2 =
   | OpenAIResponsesInputRoleUser2
@@ -112,48 +96,37 @@ export type OpenAIResponsesInputMessage2 = {
     | OpenAIResponsesInputRoleUser2
     | OpenAIResponsesInputRoleSystem2
     | OpenAIResponsesInputRoleDeveloper2;
-  content: Array<
-    | ResponseInputText
-    | ResponseInputImage
-    | ResponseInputFile
-    | ResponseInputAudio
-  >;
+  content: Array<ResponseInputText | ResponseInputImage | ResponseInputFile | ResponseInputAudio>;
 };
 
 export const OpenAIResponsesInputTypeMessage1 = {
-  Message: "message",
+  Message: 'message',
 } as const;
-export type OpenAIResponsesInputTypeMessage1 = ClosedEnum<
-  typeof OpenAIResponsesInputTypeMessage1
->;
+export type OpenAIResponsesInputTypeMessage1 = ClosedEnum<typeof OpenAIResponsesInputTypeMessage1>;
 
 export const OpenAIResponsesInputRoleDeveloper1 = {
-  Developer: "developer",
+  Developer: 'developer',
 } as const;
 export type OpenAIResponsesInputRoleDeveloper1 = ClosedEnum<
   typeof OpenAIResponsesInputRoleDeveloper1
 >;
 
 export const OpenAIResponsesInputRoleAssistant = {
-  Assistant: "assistant",
+  Assistant: 'assistant',
 } as const;
 export type OpenAIResponsesInputRoleAssistant = ClosedEnum<
   typeof OpenAIResponsesInputRoleAssistant
 >;
 
 export const OpenAIResponsesInputRoleSystem1 = {
-  System: "system",
+  System: 'system',
 } as const;
-export type OpenAIResponsesInputRoleSystem1 = ClosedEnum<
-  typeof OpenAIResponsesInputRoleSystem1
->;
+export type OpenAIResponsesInputRoleSystem1 = ClosedEnum<typeof OpenAIResponsesInputRoleSystem1>;
 
 export const OpenAIResponsesInputRoleUser1 = {
-  User: "user",
+  User: 'user',
 } as const;
-export type OpenAIResponsesInputRoleUser1 = ClosedEnum<
-  typeof OpenAIResponsesInputRoleUser1
->;
+export type OpenAIResponsesInputRoleUser1 = ClosedEnum<typeof OpenAIResponsesInputRoleUser1>;
 
 export type OpenAIResponsesInputRoleUnion1 =
   | OpenAIResponsesInputRoleUser1
@@ -168,12 +141,7 @@ export type OpenAIResponsesInputContent1 =
   | ResponseInputAudio;
 
 export type OpenAIResponsesInputContent2 =
-  | Array<
-    | ResponseInputText
-    | ResponseInputImage
-    | ResponseInputFile
-    | ResponseInputAudio
-  >
+  | Array<ResponseInputText | ResponseInputImage | ResponseInputFile | ResponseInputAudio>
   | string;
 
 export type OpenAIResponsesInputMessage1 = {
@@ -184,12 +152,7 @@ export type OpenAIResponsesInputMessage1 = {
     | OpenAIResponsesInputRoleAssistant
     | OpenAIResponsesInputRoleDeveloper1;
   content:
-    | Array<
-      | ResponseInputText
-      | ResponseInputImage
-      | ResponseInputFile
-      | ResponseInputAudio
-    >
+    | Array<ResponseInputText | ResponseInputImage | ResponseInputFile | ResponseInputAudio>
     | string;
 };
 
@@ -204,13 +167,13 @@ export type OpenAIResponsesInputUnion1 =
 export type OpenAIResponsesInputUnion =
   | string
   | Array<
-    | OpenAIResponsesInputFunctionCall
-    | OutputMessage
-    | OpenAIResponsesInputMessage2
-    | OpenAIResponsesInputFunctionCallOutput
-    | OutputItemImageGenerationCall
-    | OpenAIResponsesInputMessage1
-  >
+      | OpenAIResponsesInputFunctionCall
+      | OutputMessage
+      | OpenAIResponsesInputMessage2
+      | OpenAIResponsesInputFunctionCallOutput
+      | OutputItemImageGenerationCall
+      | OpenAIResponsesInputMessage1
+    >
   | any;
 
 /** @internal */
@@ -222,18 +185,20 @@ export const OpenAIResponsesInputTypeFunctionCall$inboundSchema: z.ZodEnum<
 export const OpenAIResponsesInputFunctionCall$inboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCall,
   unknown
-> = z.object({
-  type: OpenAIResponsesInputTypeFunctionCall$inboundSchema,
-  call_id: z.string(),
-  name: z.string(),
-  arguments: z.string(),
-  id: z.string().optional(),
-  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
+> = z
+  .object({
+    type: OpenAIResponsesInputTypeFunctionCall$inboundSchema,
+    call_id: z.string(),
+    name: z.string(),
+    arguments: z.string(),
+    id: z.string().optional(),
+    status: z.nullable(ToolCallStatus$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      call_id: 'callId',
+    });
   });
-});
 
 export function openAIResponsesInputFunctionCallFromJSON(
   jsonString: string,
@@ -246,34 +211,34 @@ export function openAIResponsesInputFunctionCallFromJSON(
 }
 
 /** @internal */
-export const OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema:
-  z.ZodEnum<typeof OpenAIResponsesInputTypeFunctionCallOutput> = z.enum(
-    OpenAIResponsesInputTypeFunctionCallOutput,
-  );
+export const OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputTypeFunctionCallOutput
+> = z.enum(OpenAIResponsesInputTypeFunctionCallOutput);
 
 /** @internal */
 export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCallOutput,
   unknown
-> = z.object({
-  type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
-  id: z.nullable(z.string()).optional(),
-  call_id: z.string(),
-  output: z.string(),
-  status: z.nullable(ToolCallStatus$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
+> = z
+  .object({
+    type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
+    id: z.nullable(z.string()).optional(),
+    call_id: z.string(),
+    output: z.string(),
+    status: z.nullable(ToolCallStatus$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      call_id: 'callId',
+    });
   });
-});
 
 export function openAIResponsesInputFunctionCallOutputFromJSON(
   jsonString: string,
 ): SafeParseResult<OpenAIResponsesInputFunctionCallOutput, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenAIResponsesInputFunctionCallOutput$inboundSchema.parse(JSON.parse(x)),
+    (x) => OpenAIResponsesInputFunctionCallOutput$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenAIResponsesInputFunctionCallOutput' from JSON`,
   );
 }
@@ -528,14 +493,16 @@ export const OpenAIResponsesInputUnion$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   z.string(),
-  z.array(z.union([
-    z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
-    OutputMessage$inboundSchema,
-    z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
-    z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
-    OutputItemImageGenerationCall$inboundSchema,
-    z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
-  ])),
+  z.array(
+    z.union([
+      z.lazy(() => OpenAIResponsesInputFunctionCall$inboundSchema),
+      OutputMessage$inboundSchema,
+      z.lazy(() => OpenAIResponsesInputMessage2$inboundSchema),
+      z.lazy(() => OpenAIResponsesInputFunctionCallOutput$inboundSchema),
+      OutputItemImageGenerationCall$inboundSchema,
+      z.lazy(() => OpenAIResponsesInputMessage1$inboundSchema),
+    ]),
+  ),
   z.any(),
 ]);
 

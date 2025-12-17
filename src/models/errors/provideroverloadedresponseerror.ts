@@ -3,10 +3,10 @@
  * @generated-id: ba8edf813fa0
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Provider Overloaded - Provider is temporarily overloaded
@@ -34,16 +34,19 @@ export class ProviderOverloadedResponseError extends OpenRouterError {
 
   constructor(
     err: ProviderOverloadedResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "ProviderOverloadedResponseError";
+    this.name = 'ProviderOverloadedResponseError';
   }
 }
 
@@ -51,16 +54,17 @@ export class ProviderOverloadedResponseError extends OpenRouterError {
 export const ProviderOverloadedResponseError$inboundSchema: z.ZodType<
   ProviderOverloadedResponseError,
   unknown
-> = z.object({
-  error: models.ProviderOverloadedResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+> = z
+  .object({
+    error: models.ProviderOverloadedResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new ProviderOverloadedResponseError(remapped, {

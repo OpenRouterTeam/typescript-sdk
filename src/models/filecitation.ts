@@ -3,14 +3,15 @@
  * @generated-id: 0e609723dbc8
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type FileCitation = {
-  type: "file_citation";
+  type: 'file_citation';
   fileId: string;
   filename: string;
   index: number;
@@ -19,37 +20,37 @@ export type FileCitation = {
 /** @internal */
 export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
   .object({
-    type: z.literal("file_citation"),
+    type: z.literal('file_citation'),
     file_id: z.string(),
     filename: z.string(),
     index: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "file_id": "fileId",
+      file_id: 'fileId',
     });
   });
 /** @internal */
 export type FileCitation$Outbound = {
-  type: "file_citation";
+  type: 'file_citation';
   file_id: string;
   filename: string;
   index: number;
 };
 
 /** @internal */
-export const FileCitation$outboundSchema: z.ZodType<
-  FileCitation$Outbound,
-  FileCitation
-> = z.object({
-  type: z.literal("file_citation"),
-  fileId: z.string(),
-  filename: z.string(),
-  index: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    fileId: "file_id",
+export const FileCitation$outboundSchema: z.ZodType<FileCitation$Outbound, FileCitation> = z
+  .object({
+    type: z.literal('file_citation'),
+    fileId: z.string(),
+    filename: z.string(),
+    index: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      fileId: 'file_id',
+    });
   });
-});
 
 export function fileCitationToJSON(fileCitation: FileCitation): string {
   return JSON.stringify(FileCitation$outboundSchema.parse(fileCitation));

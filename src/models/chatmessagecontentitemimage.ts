@@ -3,22 +3,21 @@
  * @generated-id: 3989cdc41817
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const ChatMessageContentItemImageDetail = {
-  Auto: "auto",
-  Low: "low",
-  High: "high",
+  Auto: 'auto',
+  Low: 'low',
+  High: 'high',
 } as const;
-export type ChatMessageContentItemImageDetail = OpenEnum<
-  typeof ChatMessageContentItemImageDetail
->;
+export type ChatMessageContentItemImageDetail = OpenEnum<typeof ChatMessageContentItemImageDetail>;
 
 export type ImageUrl = {
   url: string;
@@ -26,7 +25,7 @@ export type ImageUrl = {
 };
 
 export type ChatMessageContentItemImage = {
-  type: "image_url";
+  type: 'image_url';
   imageUrl: ImageUrl;
 };
 
@@ -53,11 +52,10 @@ export type ImageUrl$Outbound = {
 };
 
 /** @internal */
-export const ImageUrl$outboundSchema: z.ZodType<ImageUrl$Outbound, ImageUrl> = z
-  .object({
-    url: z.string(),
-    detail: ChatMessageContentItemImageDetail$outboundSchema.optional(),
-  });
+export const ImageUrl$outboundSchema: z.ZodType<ImageUrl$Outbound, ImageUrl> = z.object({
+  url: z.string(),
+  detail: ChatMessageContentItemImageDetail$outboundSchema.optional(),
+});
 
 export function imageUrlToJSON(imageUrl: ImageUrl): string {
   return JSON.stringify(ImageUrl$outboundSchema.parse(imageUrl));
@@ -76,17 +74,19 @@ export function imageUrlFromJSON(
 export const ChatMessageContentItemImage$inboundSchema: z.ZodType<
   ChatMessageContentItemImage,
   unknown
-> = z.object({
-  type: z.literal("image_url"),
-  image_url: z.lazy(() => ImageUrl$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "image_url": "imageUrl",
+> = z
+  .object({
+    type: z.literal('image_url'),
+    image_url: z.lazy(() => ImageUrl$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      image_url: 'imageUrl',
+    });
   });
-});
 /** @internal */
 export type ChatMessageContentItemImage$Outbound = {
-  type: "image_url";
+  type: 'image_url';
   image_url: ImageUrl$Outbound;
 };
 
@@ -94,22 +94,22 @@ export type ChatMessageContentItemImage$Outbound = {
 export const ChatMessageContentItemImage$outboundSchema: z.ZodType<
   ChatMessageContentItemImage$Outbound,
   ChatMessageContentItemImage
-> = z.object({
-  type: z.literal("image_url"),
-  imageUrl: z.lazy(() => ImageUrl$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    imageUrl: "image_url",
+> = z
+  .object({
+    type: z.literal('image_url'),
+    imageUrl: z.lazy(() => ImageUrl$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      imageUrl: 'image_url',
+    });
   });
-});
 
 export function chatMessageContentItemImageToJSON(
   chatMessageContentItemImage: ChatMessageContentItemImage,
 ): string {
   return JSON.stringify(
-    ChatMessageContentItemImage$outboundSchema.parse(
-      chatMessageContentItemImage,
-    ),
+    ChatMessageContentItemImage$outboundSchema.parse(chatMessageContentItemImage),
   );
 }
 export function chatMessageContentItemImageFromJSON(

@@ -3,19 +3,20 @@
  * @generated-id: 396ce3186017
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
-  EndpointStatus,
-  EndpointStatus$inboundSchema,
-} from "./endpointstatus.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Parameter, Parameter$inboundSchema } from "./parameter.js";
-import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { EndpointStatus } from './endpointstatus.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { Parameter } from './parameter.js';
+import type { ProviderName } from './providername.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
+import { EndpointStatus$inboundSchema } from './endpointstatus.js';
+import { Parameter$inboundSchema } from './parameter.js';
+import { ProviderName$inboundSchema } from './providername.js';
 
 export type Pricing = {
   /**
@@ -70,19 +71,17 @@ export type Pricing = {
 };
 
 export const PublicEndpointQuantization = {
-  Int4: "int4",
-  Int8: "int8",
-  Fp4: "fp4",
-  Fp6: "fp6",
-  Fp8: "fp8",
-  Fp16: "fp16",
-  Bf16: "bf16",
-  Fp32: "fp32",
-  Unknown: "unknown",
+  Int4: 'int4',
+  Int8: 'int8',
+  Fp4: 'fp4',
+  Fp6: 'fp6',
+  Fp8: 'fp8',
+  Fp16: 'fp16',
+  Bf16: 'bf16',
+  Fp32: 'fp32',
+  Unknown: 'unknown',
 } as const;
-export type PublicEndpointQuantization = OpenEnum<
-  typeof PublicEndpointQuantization
->;
+export type PublicEndpointQuantization = OpenEnum<typeof PublicEndpointQuantization>;
 
 /**
  * Information about a specific model endpoint
@@ -104,35 +103,35 @@ export type PublicEndpoint = {
 };
 
 /** @internal */
-export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
-  prompt: z.string(),
-  completion: z.string(),
-  request: z.string().optional(),
-  image: z.string().optional(),
-  image_token: z.string().optional(),
-  image_output: z.string().optional(),
-  audio: z.string().optional(),
-  input_audio_cache: z.string().optional(),
-  web_search: z.string().optional(),
-  internal_reasoning: z.string().optional(),
-  input_cache_read: z.string().optional(),
-  input_cache_write: z.string().optional(),
-  discount: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "image_token": "imageToken",
-    "image_output": "imageOutput",
-    "input_audio_cache": "inputAudioCache",
-    "web_search": "webSearch",
-    "internal_reasoning": "internalReasoning",
-    "input_cache_read": "inputCacheRead",
-    "input_cache_write": "inputCacheWrite",
+export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z
+  .object({
+    prompt: z.string(),
+    completion: z.string(),
+    request: z.string().optional(),
+    image: z.string().optional(),
+    image_token: z.string().optional(),
+    image_output: z.string().optional(),
+    audio: z.string().optional(),
+    input_audio_cache: z.string().optional(),
+    web_search: z.string().optional(),
+    internal_reasoning: z.string().optional(),
+    input_cache_read: z.string().optional(),
+    input_cache_write: z.string().optional(),
+    discount: z.number().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      image_token: 'imageToken',
+      image_output: 'imageOutput',
+      input_audio_cache: 'inputAudioCache',
+      web_search: 'webSearch',
+      internal_reasoning: 'internalReasoning',
+      input_cache_read: 'inputCacheRead',
+      input_cache_write: 'inputCacheWrite',
+    });
   });
-});
 
-export function pricingFromJSON(
-  jsonString: string,
-): SafeParseResult<Pricing, SDKValidationError> {
+export function pricingFromJSON(jsonString: string): SafeParseResult<Pricing, SDKValidationError> {
   return safeParse(
     jsonString,
     (x) => Pricing$inboundSchema.parse(JSON.parse(x)),
@@ -147,8 +146,8 @@ export const PublicEndpointQuantization$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(PublicEndpointQuantization);
 
 /** @internal */
-export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
-  z.object({
+export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> = z
+  .object({
     name: z.string(),
     model_name: z.string(),
     context_length: z.number(),
@@ -162,16 +161,17 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     status: EndpointStatus$inboundSchema.optional(),
     uptime_last_30m: z.nullable(z.number()),
     supports_implicit_caching: z.boolean(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "model_name": "modelName",
-      "context_length": "contextLength",
-      "provider_name": "providerName",
-      "max_completion_tokens": "maxCompletionTokens",
-      "max_prompt_tokens": "maxPromptTokens",
-      "supported_parameters": "supportedParameters",
-      "uptime_last_30m": "uptimeLast30m",
-      "supports_implicit_caching": "supportsImplicitCaching",
+      model_name: 'modelName',
+      context_length: 'contextLength',
+      provider_name: 'providerName',
+      max_completion_tokens: 'maxCompletionTokens',
+      max_prompt_tokens: 'maxPromptTokens',
+      supported_parameters: 'supportedParameters',
+      uptime_last_30m: 'uptimeLast30m',
+      supports_implicit_caching: 'supportsImplicitCaching',
     });
   });
 

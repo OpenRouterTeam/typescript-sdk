@@ -3,8 +3,8 @@
  * @generated-id: afeac65e28f8
  */
 
-import { ClientSDK } from "../lib/sdks.js";
-import { Responses } from "./responses.js";
+import { ClientSDK } from '../lib/sdks.js';
+import { Responses } from './responses.js';
 
 export class Beta extends ClientSDK {
   private _responses?: Responses;

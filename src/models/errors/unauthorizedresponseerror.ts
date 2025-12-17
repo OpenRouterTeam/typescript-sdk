@@ -3,10 +3,10 @@
  * @generated-id: 79ab0861cf08
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import * as models from "../index.js";
-import { OpenRouterError } from "./openroutererror.js";
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import * as models from '../index.js';
+import { OpenRouterError } from './openroutererror.js';
 
 /**
  * Unauthorized - Authentication required or invalid credentials
@@ -34,16 +34,19 @@ export class UnauthorizedResponseError extends OpenRouterError {
 
   constructor(
     err: UnauthorizedResponseErrorData,
-    httpMeta: { response: Response; request: Request; body: string },
+    httpMeta: {
+      response: Response;
+      request: Request;
+      body: string;
+    },
   ) {
-    const message = err.error?.message
-      || `API error occurred: ${JSON.stringify(err)}`;
+    const message = err.error?.message || `API error occurred: ${JSON.stringify(err)}`;
     super(message, httpMeta);
     this.data$ = err;
     this.error = err.error;
     if (err.userId != null) this.userId = err.userId;
 
-    this.name = "UnauthorizedResponseError";
+    this.name = 'UnauthorizedResponseError';
   }
 }
 
@@ -51,16 +54,17 @@ export class UnauthorizedResponseError extends OpenRouterError {
 export const UnauthorizedResponseError$inboundSchema: z.ZodType<
   UnauthorizedResponseError,
   unknown
-> = z.object({
-  error: models.UnauthorizedResponseErrorData$inboundSchema,
-  user_id: z.nullable(z.string()).optional(),
-  request$: z.custom<Request>(x => x instanceof Request),
-  response$: z.custom<Response>(x => x instanceof Response),
-  body$: z.string(),
-})
+> = z
+  .object({
+    error: models.UnauthorizedResponseErrorData$inboundSchema,
+    user_id: z.nullable(z.string()).optional(),
+    request$: z.custom<Request>((x) => x instanceof Request),
+    response$: z.custom<Response>((x) => x instanceof Response),
+    body$: z.string(),
+  })
   .transform((v) => {
     const remapped = remap$(v, {
-      "user_id": "userId",
+      user_id: 'userId',
     });
 
     return new UnauthorizedResponseError(remapped, {

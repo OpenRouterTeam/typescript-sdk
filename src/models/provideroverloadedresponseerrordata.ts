@@ -3,10 +3,11 @@
  * @generated-id: 379f1256314f
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Error data for ProviderOverloadedResponse
@@ -14,7 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ProviderOverloadedResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: any | null;
+      }
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -32,8 +38,7 @@ export function providerOverloadedResponseErrorDataFromJSON(
 ): SafeParseResult<ProviderOverloadedResponseErrorData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ProviderOverloadedResponseErrorData$inboundSchema.parse(JSON.parse(x)),
+    (x) => ProviderOverloadedResponseErrorData$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ProviderOverloadedResponseErrorData' from JSON`,
   );
 }

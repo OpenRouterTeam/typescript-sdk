@@ -3,11 +3,12 @@
  * @generated-id: ee2d86453873
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type ActivityItem = {
   /**
@@ -70,15 +71,16 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
     prompt_tokens: z.number(),
     completion_tokens: z.number(),
     reasoning_tokens: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "model_permaslug": "modelPermaslug",
-      "endpoint_id": "endpointId",
-      "provider_name": "providerName",
-      "byok_usage_inference": "byokUsageInference",
-      "prompt_tokens": "promptTokens",
-      "completion_tokens": "completionTokens",
-      "reasoning_tokens": "reasoningTokens",
+      model_permaslug: 'modelPermaslug',
+      endpoint_id: 'endpointId',
+      provider_name: 'providerName',
+      byok_usage_inference: 'byokUsageInference',
+      prompt_tokens: 'promptTokens',
+      completion_tokens: 'completionTokens',
+      reasoning_tokens: 'reasoningTokens',
     });
   });
 

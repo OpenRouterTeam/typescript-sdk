@@ -3,16 +3,13 @@
  * @generated-id: c2f9d074fbd4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import {
-  OpenAIResponsesReasoningEffort,
-  OpenAIResponsesReasoningEffort$outboundSchema,
-} from "./openairesponsesreasoningeffort.js";
-import {
-  ReasoningSummaryVerbosity,
-  ReasoningSummaryVerbosity$outboundSchema,
-} from "./reasoningsummaryverbosity.js";
+import type { OpenAIResponsesReasoningEffort } from './openairesponsesreasoningeffort.js';
+import type { ReasoningSummaryVerbosity } from './reasoningsummaryverbosity.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { OpenAIResponsesReasoningEffort$outboundSchema } from './openairesponsesreasoningeffort.js';
+import { ReasoningSummaryVerbosity$outboundSchema } from './reasoningsummaryverbosity.js';
 
 /**
  * Configuration for reasoning mode in the response
@@ -36,23 +33,23 @@ export type OpenResponsesReasoningConfig$Outbound = {
 export const OpenResponsesReasoningConfig$outboundSchema: z.ZodType<
   OpenResponsesReasoningConfig$Outbound,
   OpenResponsesReasoningConfig
-> = z.object({
-  effort: z.nullable(OpenAIResponsesReasoningEffort$outboundSchema).optional(),
-  summary: ReasoningSummaryVerbosity$outboundSchema.optional(),
-  maxTokens: z.nullable(z.number()).optional(),
-  enabled: z.nullable(z.boolean()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxTokens: "max_tokens",
+> = z
+  .object({
+    effort: z.nullable(OpenAIResponsesReasoningEffort$outboundSchema).optional(),
+    summary: ReasoningSummaryVerbosity$outboundSchema.optional(),
+    maxTokens: z.nullable(z.number()).optional(),
+    enabled: z.nullable(z.boolean()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      maxTokens: 'max_tokens',
+    });
   });
-});
 
 export function openResponsesReasoningConfigToJSON(
   openResponsesReasoningConfig: OpenResponsesReasoningConfig,
 ): string {
   return JSON.stringify(
-    OpenResponsesReasoningConfig$outboundSchema.parse(
-      openResponsesReasoningConfig,
-    ),
+    OpenResponsesReasoningConfig$outboundSchema.parse(openResponsesReasoningConfig),
   );
 }

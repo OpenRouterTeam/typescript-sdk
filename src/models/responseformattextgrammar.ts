@@ -3,16 +3,16 @@
  * @generated-id: 5bc0a32fad4c
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type ResponseFormatTextGrammar = {
-  type: "grammar";
+  type: 'grammar';
   grammar: string;
 };
 
 /** @internal */
 export type ResponseFormatTextGrammar$Outbound = {
-  type: "grammar";
+  type: 'grammar';
   grammar: string;
 };
 
@@ -21,14 +21,12 @@ export const ResponseFormatTextGrammar$outboundSchema: z.ZodType<
   ResponseFormatTextGrammar$Outbound,
   ResponseFormatTextGrammar
 > = z.object({
-  type: z.literal("grammar"),
+  type: z.literal('grammar'),
   grammar: z.string(),
 });
 
 export function responseFormatTextGrammarToJSON(
   responseFormatTextGrammar: ResponseFormatTextGrammar,
 ): string {
-  return JSON.stringify(
-    ResponseFormatTextGrammar$outboundSchema.parse(responseFormatTextGrammar),
-  );
+  return JSON.stringify(ResponseFormatTextGrammar$outboundSchema.parse(responseFormatTextGrammar));
 }

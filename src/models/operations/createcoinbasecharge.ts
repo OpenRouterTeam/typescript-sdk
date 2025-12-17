@@ -3,11 +3,12 @@
  * @generated-id: 1e75ac2debf2
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 export type CreateCoinbaseChargeSecurity = {
   bearer: string;
@@ -72,32 +73,32 @@ export function createCoinbaseChargeSecurityToJSON(
   createCoinbaseChargeSecurity: CreateCoinbaseChargeSecurity,
 ): string {
   return JSON.stringify(
-    CreateCoinbaseChargeSecurity$outboundSchema.parse(
-      createCoinbaseChargeSecurity,
-    ),
+    CreateCoinbaseChargeSecurity$outboundSchema.parse(createCoinbaseChargeSecurity),
   );
 }
 
 /** @internal */
-export const CallData$inboundSchema: z.ZodType<CallData, unknown> = z.object({
-  deadline: z.string(),
-  fee_amount: z.string(),
-  id: z.string(),
-  operator: z.string(),
-  prefix: z.string(),
-  recipient: z.string(),
-  recipient_amount: z.string(),
-  recipient_currency: z.string(),
-  refund_destination: z.string(),
-  signature: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "fee_amount": "feeAmount",
-    "recipient_amount": "recipientAmount",
-    "recipient_currency": "recipientCurrency",
-    "refund_destination": "refundDestination",
+export const CallData$inboundSchema: z.ZodType<CallData, unknown> = z
+  .object({
+    deadline: z.string(),
+    fee_amount: z.string(),
+    id: z.string(),
+    operator: z.string(),
+    prefix: z.string(),
+    recipient: z.string(),
+    recipient_amount: z.string(),
+    recipient_currency: z.string(),
+    refund_destination: z.string(),
+    signature: z.string(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      fee_amount: 'feeAmount',
+      recipient_amount: 'recipientAmount',
+      recipient_currency: 'recipientCurrency',
+      refund_destination: 'refundDestination',
+    });
   });
-});
 
 export function callDataFromJSON(
   jsonString: string,
@@ -110,16 +111,18 @@ export function callDataFromJSON(
 }
 
 /** @internal */
-export const Metadata$inboundSchema: z.ZodType<Metadata, unknown> = z.object({
-  chain_id: z.number(),
-  contract_address: z.string(),
-  sender: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "chain_id": "chainId",
-    "contract_address": "contractAddress",
+export const Metadata$inboundSchema: z.ZodType<Metadata, unknown> = z
+  .object({
+    chain_id: z.number(),
+    contract_address: z.string(),
+    sender: z.string(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      chain_id: 'chainId',
+      contract_address: 'contractAddress',
+    });
   });
-});
 
 export function metadataFromJSON(
   jsonString: string,
@@ -132,13 +135,14 @@ export function metadataFromJSON(
 }
 
 /** @internal */
-export const TransferIntent$inboundSchema: z.ZodType<TransferIntent, unknown> =
-  z.object({
+export const TransferIntent$inboundSchema: z.ZodType<TransferIntent, unknown> = z
+  .object({
     call_data: z.lazy(() => CallData$inboundSchema),
     metadata: z.lazy(() => Metadata$inboundSchema),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "call_data": "callData",
+      call_data: 'callData',
     });
   });
 
@@ -153,13 +157,15 @@ export function transferIntentFromJSON(
 }
 
 /** @internal */
-export const Web3Data$inboundSchema: z.ZodType<Web3Data, unknown> = z.object({
-  transfer_intent: z.lazy(() => TransferIntent$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "transfer_intent": "transferIntent",
+export const Web3Data$inboundSchema: z.ZodType<Web3Data, unknown> = z
+  .object({
+    transfer_intent: z.lazy(() => TransferIntent$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      transfer_intent: 'transferIntent',
+    });
   });
-});
 
 export function web3DataFromJSON(
   jsonString: string,
@@ -172,21 +178,21 @@ export function web3DataFromJSON(
 }
 
 /** @internal */
-export const CreateCoinbaseChargeData$inboundSchema: z.ZodType<
-  CreateCoinbaseChargeData,
-  unknown
-> = z.object({
-  id: z.string(),
-  created_at: z.string(),
-  expires_at: z.string(),
-  web3_data: z.lazy(() => Web3Data$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "created_at": "createdAt",
-    "expires_at": "expiresAt",
-    "web3_data": "web3Data",
-  });
-});
+export const CreateCoinbaseChargeData$inboundSchema: z.ZodType<CreateCoinbaseChargeData, unknown> =
+  z
+    .object({
+      id: z.string(),
+      created_at: z.string(),
+      expires_at: z.string(),
+      web3_data: z.lazy(() => Web3Data$inboundSchema),
+    })
+    .transform((v) => {
+      return remap$(v, {
+        created_at: 'createdAt',
+        expires_at: 'expiresAt',
+        web3_data: 'web3Data',
+      });
+    });
 
 export function createCoinbaseChargeDataFromJSON(
   jsonString: string,

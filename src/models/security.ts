@@ -3,7 +3,7 @@
  * @generated-id: d90c6c784ca5
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type Security = {
   apiKey?: string | undefined;
@@ -15,10 +15,9 @@ export type Security$Outbound = {
 };
 
 /** @internal */
-export const Security$outboundSchema: z.ZodType<Security$Outbound, Security> = z
-  .object({
-    apiKey: z.string().optional(),
-  });
+export const Security$outboundSchema: z.ZodType<Security$Outbound, Security> = z.object({
+  apiKey: z.string().optional(),
+});
 
 export function securityToJSON(security: Security): string {
   return JSON.stringify(Security$outboundSchema.parse(security));

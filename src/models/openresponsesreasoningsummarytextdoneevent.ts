@@ -3,17 +3,18 @@
  * @generated-id: 0519f084cea8
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Event emitted when reasoning summary text streaming is complete
  */
 export type OpenResponsesReasoningSummaryTextDoneEvent = {
-  type: "response.reasoning_summary_text.done";
+  type: 'response.reasoning_summary_text.done';
   itemId: string;
   outputIndex: number;
   summaryIndex: number;
@@ -22,35 +23,33 @@ export type OpenResponsesReasoningSummaryTextDoneEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema:
-  z.ZodType<OpenResponsesReasoningSummaryTextDoneEvent, unknown> = z.object({
-    type: z.literal("response.reasoning_summary_text.done"),
+export const OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema: z.ZodType<
+  OpenResponsesReasoningSummaryTextDoneEvent,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.reasoning_summary_text.done'),
     item_id: z.string(),
     output_index: z.number(),
     summary_index: z.number(),
     text: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "item_id": "itemId",
-      "output_index": "outputIndex",
-      "summary_index": "summaryIndex",
-      "sequence_number": "sequenceNumber",
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      summary_index: 'summaryIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesReasoningSummaryTextDoneEventFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesReasoningSummaryTextDoneEvent,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesReasoningSummaryTextDoneEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesReasoningSummaryTextDoneEvent' from JSON`,
   );
 }

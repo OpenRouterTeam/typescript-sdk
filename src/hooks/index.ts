@@ -3,5 +3,5 @@
  * @generated-id: 5f2dab62b520
  */
 
-export * from "./hooks.js";
-export * from "./types.js";
+export * from './hooks.js';
+export * from './types.js';

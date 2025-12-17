@@ -3,11 +3,12 @@
  * @generated-id: 0a44a1c3bab5
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Pricing information for the model
@@ -80,15 +81,16 @@ export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
     input_cache_read: z.string().optional(),
     input_cache_write: z.string().optional(),
     discount: z.number().optional(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "image_token": "imageToken",
-      "image_output": "imageOutput",
-      "input_audio_cache": "inputAudioCache",
-      "web_search": "webSearch",
-      "internal_reasoning": "internalReasoning",
-      "input_cache_read": "inputCacheRead",
-      "input_cache_write": "inputCacheWrite",
+      image_token: 'imageToken',
+      image_output: 'imageOutput',
+      input_audio_cache: 'inputAudioCache',
+      web_search: 'webSearch',
+      internal_reasoning: 'internalReasoning',
+      input_cache_read: 'inputCacheRead',
+      input_cache_write: 'inputCacheWrite',
     });
   });
 

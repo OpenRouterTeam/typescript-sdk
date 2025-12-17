@@ -3,19 +3,20 @@
  * @generated-id: e5ac80adf28b
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { WebSearchStatus } from './websearchstatus.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 import {
-  WebSearchStatus,
   WebSearchStatus$inboundSchema,
   WebSearchStatus$outboundSchema,
-} from "./websearchstatus.js";
+} from './websearchstatus.js';
 
 export const ResponsesOutputItemFileSearchCallType = {
-  FileSearchCall: "file_search_call",
+  FileSearchCall: 'file_search_call',
 } as const;
 export type ResponsesOutputItemFileSearchCallType = ClosedEnum<
   typeof ResponsesOutputItemFileSearchCallType
@@ -70,9 +71,7 @@ export function responsesOutputItemFileSearchCallToJSON(
   responsesOutputItemFileSearchCall: ResponsesOutputItemFileSearchCall,
 ): string {
   return JSON.stringify(
-    ResponsesOutputItemFileSearchCall$outboundSchema.parse(
-      responsesOutputItemFileSearchCall,
-    ),
+    ResponsesOutputItemFileSearchCall$outboundSchema.parse(responsesOutputItemFileSearchCall),
   );
 }
 export function responsesOutputItemFileSearchCallFromJSON(

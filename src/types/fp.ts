@@ -13,15 +13,29 @@
  * inspect and more verbose work with due to try-catch blocks.
  */
 export type Result<T, E = unknown> =
-  | { ok: true; value: T; error?: never }
-  | { ok: false; value?: never; error: E };
+  | {
+      ok: true;
+      value: T;
+      error?: never;
+    }
+  | {
+      ok: false;
+      value?: never;
+      error: E;
+    };
 
 export function OK<V>(value: V): Result<V, never> {
-  return { ok: true, value };
+  return {
+    ok: true,
+    value,
+  };
 }
 
 export function ERR<E>(error: E): Result<never, E> {
-  return { ok: false, error };
+  return {
+    ok: false,
+    error,
+  };
 }
 
 /**
@@ -39,9 +53,7 @@ export function unwrap<T>(r: Result<T, unknown>): T {
  * unwrapAsync is a convenience function for resolving a value from a Promise
  * of a result or rejecting if an error occurred.
  */
-export async function unwrapAsync<T>(
-  pr: Promise<Result<T, unknown>>,
-): Promise<T> {
+export async function unwrapAsync<T>(pr: Promise<Result<T, unknown>>): Promise<T> {
   const r = await pr;
   if (!r.ok) {
     throw r.error;

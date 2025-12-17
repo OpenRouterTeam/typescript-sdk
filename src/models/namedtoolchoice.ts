@@ -3,14 +3,14 @@
  * @generated-id: db68e36b6a77
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
 export type NamedToolChoiceFunction = {
   name: string;
 };
 
 export type NamedToolChoice = {
-  type: "function";
+  type: 'function';
   function: NamedToolChoiceFunction;
 };
 
@@ -30,28 +30,22 @@ export const NamedToolChoiceFunction$outboundSchema: z.ZodType<
 export function namedToolChoiceFunctionToJSON(
   namedToolChoiceFunction: NamedToolChoiceFunction,
 ): string {
-  return JSON.stringify(
-    NamedToolChoiceFunction$outboundSchema.parse(namedToolChoiceFunction),
-  );
+  return JSON.stringify(NamedToolChoiceFunction$outboundSchema.parse(namedToolChoiceFunction));
 }
 
 /** @internal */
 export type NamedToolChoice$Outbound = {
-  type: "function";
+  type: 'function';
   function: NamedToolChoiceFunction$Outbound;
 };
 
 /** @internal */
-export const NamedToolChoice$outboundSchema: z.ZodType<
-  NamedToolChoice$Outbound,
-  NamedToolChoice
-> = z.object({
-  type: z.literal("function"),
-  function: z.lazy(() => NamedToolChoiceFunction$outboundSchema),
-});
+export const NamedToolChoice$outboundSchema: z.ZodType<NamedToolChoice$Outbound, NamedToolChoice> =
+  z.object({
+    type: z.literal('function'),
+    function: z.lazy(() => NamedToolChoiceFunction$outboundSchema),
+  });
 
-export function namedToolChoiceToJSON(
-  namedToolChoice: NamedToolChoice,
-): string {
+export function namedToolChoiceToJSON(namedToolChoice: NamedToolChoice): string {
   return JSON.stringify(NamedToolChoice$outboundSchema.parse(namedToolChoice));
 }

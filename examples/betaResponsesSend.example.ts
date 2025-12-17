@@ -3,8 +3,10 @@
  * @generated-id: 66896eb477c6
  */
 
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
+
 dotenv.config();
+
 /**
  * Example usage of the @openrouter/sdk SDK
  *
@@ -12,10 +14,10 @@ dotenv.config();
  * npm run build && npx tsx betaResponsesSend.example.ts
  */
 
-import { OpenRouter } from "@openrouter/sdk";
+import { OpenRouter } from '@openrouter/sdk';
 
 const openRouter = new OpenRouter({
-  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+  apiKey: process.env['OPENROUTER_API_KEY'] ?? '',
 });
 
 async function main() {

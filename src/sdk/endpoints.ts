@@ -3,11 +3,13 @@
  * @generated-id: f159be23d878
  */
 
-import { endpointsList } from "../funcs/endpointsList.js";
-import { endpointsListZdrEndpoints } from "../funcs/endpointsListZdrEndpoints.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { endpointsList } from '../funcs/endpointsList.js';
+import { endpointsListZdrEndpoints } from '../funcs/endpointsListZdrEndpoints.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Endpoints extends ClientSDK {
   /**
@@ -17,22 +19,13 @@ export class Endpoints extends ClientSDK {
     request: operations.ListEndpointsRequest,
     options?: RequestOptions,
   ): Promise<operations.ListEndpointsResponse> {
-    return unwrapAsync(endpointsList(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(endpointsList(this, request, options));
   }
 
   /**
    * Preview the impact of ZDR on the available endpoints
    */
-  async listZdrEndpoints(
-    options?: RequestOptions,
-  ): Promise<operations.ListEndpointsZdrResponse> {
-    return unwrapAsync(endpointsListZdrEndpoints(
-      this,
-      options,
-    ));
+  async listZdrEndpoints(options?: RequestOptions): Promise<operations.ListEndpointsZdrResponse> {
+    return unwrapAsync(endpointsListZdrEndpoints(this, options));
   }
 }

@@ -3,7 +3,7 @@
  * @generated-id: fb6b2b49c445
  */
 
-import * as z from "zod/v4/core";
+import * as z from 'zod/v4/core';
 
 export class SDKValidationError extends Error {
   /**
@@ -17,20 +17,18 @@ export class SDKValidationError extends Error {
   public readonly rawMessage: unknown;
 
   // Allows for backwards compatibility for `instanceof` checks of `ResponseValidationError`
-  static override [Symbol.hasInstance](
-    instance: unknown,
-  ): instance is SDKValidationError {
+  static override [Symbol.hasInstance](instance: unknown): instance is SDKValidationError {
     if (!(instance instanceof Error)) return false;
-    if (!("rawValue" in instance)) return false;
-    if (!("rawMessage" in instance)) return false;
-    if (!("pretty" in instance)) return false;
-    if (typeof instance.pretty !== "function") return false;
+    if (!('rawValue' in instance)) return false;
+    if (!('rawMessage' in instance)) return false;
+    if (!('pretty' in instance)) return false;
+    if (typeof instance.pretty !== 'function') return false;
     return true;
   }
 
   constructor(message: string, cause: unknown, rawValue: unknown) {
     super(`${message}: ${cause}`);
-    this.name = "SDKValidationError";
+    this.name = 'SDKValidationError';
     this.cause = cause;
     this.rawValue = rawValue;
     this.rawMessage = message;
@@ -44,9 +42,8 @@ export class SDKValidationError extends Error {
   public pretty(): string {
     if (this.cause instanceof z.$ZodError) {
       return `${this.rawMessage}\n${formatZodError(this.cause)}`;
-    } else {
-      return this.toString();
     }
+    return this.toString();
   }
 }
 

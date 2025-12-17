@@ -3,53 +3,48 @@
  * @generated-id: e34f73b285e1
  */
 
-import * as z from "zod/v4";
-import {
+import type {
   ChatMessageContentItem,
   ChatMessageContentItem$Outbound,
-  ChatMessageContentItem$outboundSchema,
-} from "./chatmessagecontentitem.js";
+} from './chatmessagecontentitem.js';
+
+import * as z from 'zod/v4';
+import { ChatMessageContentItem$outboundSchema } from './chatmessagecontentitem.js';
 
 export type UserMessageContent = string | Array<ChatMessageContentItem>;
 
 export type UserMessage = {
-  role: "user";
+  role: 'user';
   content: string | Array<ChatMessageContentItem>;
   name?: string | undefined;
 };
 
 /** @internal */
-export type UserMessageContent$Outbound =
-  | string
-  | Array<ChatMessageContentItem$Outbound>;
+export type UserMessageContent$Outbound = string | Array<ChatMessageContentItem$Outbound>;
 
 /** @internal */
 export const UserMessageContent$outboundSchema: z.ZodType<
   UserMessageContent$Outbound,
   UserMessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItem$outboundSchema),
+]);
 
-export function userMessageContentToJSON(
-  userMessageContent: UserMessageContent,
-): string {
-  return JSON.stringify(
-    UserMessageContent$outboundSchema.parse(userMessageContent),
-  );
+export function userMessageContentToJSON(userMessageContent: UserMessageContent): string {
+  return JSON.stringify(UserMessageContent$outboundSchema.parse(userMessageContent));
 }
 
 /** @internal */
 export type UserMessage$Outbound = {
-  role: "user";
+  role: 'user';
   content: string | Array<ChatMessageContentItem$Outbound>;
   name?: string | undefined;
 };
 
 /** @internal */
-export const UserMessage$outboundSchema: z.ZodType<
-  UserMessage$Outbound,
-  UserMessage
-> = z.object({
-  role: z.literal("user"),
+export const UserMessage$outboundSchema: z.ZodType<UserMessage$Outbound, UserMessage> = z.object({
+  role: z.literal('user'),
   content: z.union([
     z.string(),
     z.array(ChatMessageContentItem$outboundSchema),

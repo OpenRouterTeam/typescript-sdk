@@ -3,21 +3,22 @@
  * @generated-id: 30a0942aa2b9
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../../types/enums.js';
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
+import * as openEnums from '../../types/enums.js';
 
 /**
  * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
 export const UpdateKeysLimitReset = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
+  Daily: 'daily',
+  Weekly: 'weekly',
+  Monthly: 'monthly',
 } as const;
 /**
  * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
@@ -148,10 +149,8 @@ export type UpdateKeysResponse = {
 };
 
 /** @internal */
-export const UpdateKeysLimitReset$outboundSchema: z.ZodType<
-  string,
-  UpdateKeysLimitReset
-> = openEnums.outboundSchema(UpdateKeysLimitReset);
+export const UpdateKeysLimitReset$outboundSchema: z.ZodType<string, UpdateKeysLimitReset> =
+  openEnums.outboundSchema(UpdateKeysLimitReset);
 
 /** @internal */
 export type UpdateKeysRequestBody$Outbound = {
@@ -166,25 +165,23 @@ export type UpdateKeysRequestBody$Outbound = {
 export const UpdateKeysRequestBody$outboundSchema: z.ZodType<
   UpdateKeysRequestBody$Outbound,
   UpdateKeysRequestBody
-> = z.object({
-  name: z.string().optional(),
-  disabled: z.boolean().optional(),
-  limit: z.nullable(z.number()).optional(),
-  limitReset: z.nullable(UpdateKeysLimitReset$outboundSchema).optional(),
-  includeByokInLimit: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
+> = z
+  .object({
+    name: z.string().optional(),
+    disabled: z.boolean().optional(),
+    limit: z.nullable(z.number()).optional(),
+    limitReset: z.nullable(UpdateKeysLimitReset$outboundSchema).optional(),
+    includeByokInLimit: z.boolean().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      limitReset: 'limit_reset',
+      includeByokInLimit: 'include_byok_in_limit',
+    });
   });
-});
 
-export function updateKeysRequestBodyToJSON(
-  updateKeysRequestBody: UpdateKeysRequestBody,
-): string {
-  return JSON.stringify(
-    UpdateKeysRequestBody$outboundSchema.parse(updateKeysRequestBody),
-  );
+export function updateKeysRequestBodyToJSON(updateKeysRequestBody: UpdateKeysRequestBody): string {
+  return JSON.stringify(UpdateKeysRequestBody$outboundSchema.parse(updateKeysRequestBody));
 }
 
 /** @internal */
@@ -197,26 +194,24 @@ export type UpdateKeysRequest$Outbound = {
 export const UpdateKeysRequest$outboundSchema: z.ZodType<
   UpdateKeysRequest$Outbound,
   UpdateKeysRequest
-> = z.object({
-  hash: z.string(),
-  requestBody: z.lazy(() => UpdateKeysRequestBody$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    requestBody: "RequestBody",
+> = z
+  .object({
+    hash: z.string(),
+    requestBody: z.lazy(() => UpdateKeysRequestBody$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      requestBody: 'RequestBody',
+    });
   });
-});
 
-export function updateKeysRequestToJSON(
-  updateKeysRequest: UpdateKeysRequest,
-): string {
-  return JSON.stringify(
-    UpdateKeysRequest$outboundSchema.parse(updateKeysRequest),
-  );
+export function updateKeysRequestToJSON(updateKeysRequest: UpdateKeysRequest): string {
+  return JSON.stringify(UpdateKeysRequest$outboundSchema.parse(updateKeysRequest));
 }
 
 /** @internal */
-export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
-  z.object({
+export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> = z
+  .object({
     hash: z.string(),
     name: z.string(),
     label: z.string(),
@@ -235,24 +230,31 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
     byok_usage_monthly: z.number(),
     created_at: z.string(),
     updated_at: z.nullable(z.string()),
-    expires_at: z.nullable(
-      z.iso.datetime({ offset: true }).transform(v => new Date(v)),
-    ).optional(),
-  }).transform((v) => {
+    expires_at: z
+      .nullable(
+        z.iso
+          .datetime({
+            offset: true,
+          })
+          .transform((v) => new Date(v)),
+      )
+      .optional(),
+  })
+  .transform((v) => {
     return remap$(v, {
-      "limit_remaining": "limitRemaining",
-      "limit_reset": "limitReset",
-      "include_byok_in_limit": "includeByokInLimit",
-      "usage_daily": "usageDaily",
-      "usage_weekly": "usageWeekly",
-      "usage_monthly": "usageMonthly",
-      "byok_usage": "byokUsage",
-      "byok_usage_daily": "byokUsageDaily",
-      "byok_usage_weekly": "byokUsageWeekly",
-      "byok_usage_monthly": "byokUsageMonthly",
-      "created_at": "createdAt",
-      "updated_at": "updatedAt",
-      "expires_at": "expiresAt",
+      limit_remaining: 'limitRemaining',
+      limit_reset: 'limitReset',
+      include_byok_in_limit: 'includeByokInLimit',
+      usage_daily: 'usageDaily',
+      usage_weekly: 'usageWeekly',
+      usage_monthly: 'usageMonthly',
+      byok_usage: 'byokUsage',
+      byok_usage_daily: 'byokUsageDaily',
+      byok_usage_weekly: 'byokUsageWeekly',
+      byok_usage_monthly: 'byokUsageMonthly',
+      created_at: 'createdAt',
+      updated_at: 'updatedAt',
+      expires_at: 'expiresAt',
     });
   });
 
@@ -267,10 +269,7 @@ export function updateKeysDataFromJSON(
 }
 
 /** @internal */
-export const UpdateKeysResponse$inboundSchema: z.ZodType<
-  UpdateKeysResponse,
-  unknown
-> = z.object({
+export const UpdateKeysResponse$inboundSchema: z.ZodType<UpdateKeysResponse, unknown> = z.object({
   data: z.lazy(() => UpdateKeysData$inboundSchema),
 });
 

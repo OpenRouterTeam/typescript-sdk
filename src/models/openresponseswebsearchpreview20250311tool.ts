@@ -3,28 +3,31 @@
  * @generated-id: d450efb8b660
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponsesSearchContextSize } from './responsessearchcontextsize.js';
+import type {
+  WebSearchPreviewToolUserLocation,
+  WebSearchPreviewToolUserLocation$Outbound,
+} from './websearchpreviewtooluserlocation.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ResponsesSearchContextSize,
   ResponsesSearchContextSize$inboundSchema,
   ResponsesSearchContextSize$outboundSchema,
-} from "./responsessearchcontextsize.js";
+} from './responsessearchcontextsize.js';
 import {
-  WebSearchPreviewToolUserLocation,
   WebSearchPreviewToolUserLocation$inboundSchema,
-  WebSearchPreviewToolUserLocation$Outbound,
   WebSearchPreviewToolUserLocation$outboundSchema,
-} from "./websearchpreviewtooluserlocation.js";
+} from './websearchpreviewtooluserlocation.js';
 
 /**
  * Web search preview tool configuration (2025-03-11 version)
  */
 export type OpenResponsesWebSearchPreview20250311Tool = {
-  type: "web_search_preview_2025_03_11";
+  type: 'web_search_preview_2025_03_11';
   /**
    * Size of the search context for web search tools
    */
@@ -36,44 +39,44 @@ export type OpenResponsesWebSearchPreview20250311Tool = {
 export const OpenResponsesWebSearchPreview20250311Tool$inboundSchema: z.ZodType<
   OpenResponsesWebSearchPreview20250311Tool,
   unknown
-> = z.object({
-  type: z.literal("web_search_preview_2025_03_11"),
-  search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
-  user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "search_context_size": "searchContextSize",
-    "user_location": "userLocation",
+> = z
+  .object({
+    type: z.literal('web_search_preview_2025_03_11'),
+    search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
+    user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      search_context_size: 'searchContextSize',
+      user_location: 'userLocation',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearchPreview20250311Tool$Outbound = {
-  type: "web_search_preview_2025_03_11";
+  type: 'web_search_preview_2025_03_11';
   search_context_size?: string | undefined;
   user_location?: WebSearchPreviewToolUserLocation$Outbound | null | undefined;
 };
 
 /** @internal */
-export const OpenResponsesWebSearchPreview20250311Tool$outboundSchema:
-  z.ZodType<
-    OpenResponsesWebSearchPreview20250311Tool$Outbound,
-    OpenResponsesWebSearchPreview20250311Tool
-  > = z.object({
-    type: z.literal("web_search_preview_2025_03_11"),
+export const OpenResponsesWebSearchPreview20250311Tool$outboundSchema: z.ZodType<
+  OpenResponsesWebSearchPreview20250311Tool$Outbound,
+  OpenResponsesWebSearchPreview20250311Tool
+> = z
+  .object({
+    type: z.literal('web_search_preview_2025_03_11'),
     searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
-    userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema)
-      .optional(),
-  }).transform((v) => {
+    userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema).optional(),
+  })
+  .transform((v) => {
     return remap$(v, {
-      searchContextSize: "search_context_size",
-      userLocation: "user_location",
+      searchContextSize: 'search_context_size',
+      userLocation: 'user_location',
     });
   });
 
 export function openResponsesWebSearchPreview20250311ToolToJSON(
-  openResponsesWebSearchPreview20250311Tool:
-    OpenResponsesWebSearchPreview20250311Tool,
+  openResponsesWebSearchPreview20250311Tool: OpenResponsesWebSearchPreview20250311Tool,
 ): string {
   return JSON.stringify(
     OpenResponsesWebSearchPreview20250311Tool$outboundSchema.parse(
@@ -83,16 +86,10 @@ export function openResponsesWebSearchPreview20250311ToolToJSON(
 }
 export function openResponsesWebSearchPreview20250311ToolFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesWebSearchPreview20250311Tool,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesWebSearchPreview20250311Tool, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesWebSearchPreview20250311Tool$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesWebSearchPreview20250311Tool$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesWebSearchPreview20250311Tool' from JSON`,
   );
 }

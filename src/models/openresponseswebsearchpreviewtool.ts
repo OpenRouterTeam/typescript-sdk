@@ -3,28 +3,31 @@
  * @generated-id: 7d594dd37b72
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponsesSearchContextSize } from './responsessearchcontextsize.js';
+import type {
+  WebSearchPreviewToolUserLocation,
+  WebSearchPreviewToolUserLocation$Outbound,
+} from './websearchpreviewtooluserlocation.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ResponsesSearchContextSize,
   ResponsesSearchContextSize$inboundSchema,
   ResponsesSearchContextSize$outboundSchema,
-} from "./responsessearchcontextsize.js";
+} from './responsessearchcontextsize.js';
 import {
-  WebSearchPreviewToolUserLocation,
   WebSearchPreviewToolUserLocation$inboundSchema,
-  WebSearchPreviewToolUserLocation$Outbound,
   WebSearchPreviewToolUserLocation$outboundSchema,
-} from "./websearchpreviewtooluserlocation.js";
+} from './websearchpreviewtooluserlocation.js';
 
 /**
  * Web search preview tool configuration
  */
 export type OpenResponsesWebSearchPreviewTool = {
-  type: "web_search_preview";
+  type: 'web_search_preview';
   /**
    * Size of the search context for web search tools
    */
@@ -36,20 +39,21 @@ export type OpenResponsesWebSearchPreviewTool = {
 export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
   OpenResponsesWebSearchPreviewTool,
   unknown
-> = z.object({
-  type: z.literal("web_search_preview"),
-  search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
-  user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "search_context_size": "searchContextSize",
-    "user_location": "userLocation",
+> = z
+  .object({
+    type: z.literal('web_search_preview'),
+    search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
+    user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      search_context_size: 'searchContextSize',
+      user_location: 'userLocation',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearchPreviewTool$Outbound = {
-  type: "web_search_preview";
+  type: 'web_search_preview';
   search_context_size?: string | undefined;
   user_location?: WebSearchPreviewToolUserLocation$Outbound | null | undefined;
 };
@@ -58,25 +62,24 @@ export type OpenResponsesWebSearchPreviewTool$Outbound = {
 export const OpenResponsesWebSearchPreviewTool$outboundSchema: z.ZodType<
   OpenResponsesWebSearchPreviewTool$Outbound,
   OpenResponsesWebSearchPreviewTool
-> = z.object({
-  type: z.literal("web_search_preview"),
-  searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
-  userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    searchContextSize: "search_context_size",
-    userLocation: "user_location",
+> = z
+  .object({
+    type: z.literal('web_search_preview'),
+    searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
+    userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      searchContextSize: 'search_context_size',
+      userLocation: 'user_location',
+    });
   });
-});
 
 export function openResponsesWebSearchPreviewToolToJSON(
   openResponsesWebSearchPreviewTool: OpenResponsesWebSearchPreviewTool,
 ): string {
   return JSON.stringify(
-    OpenResponsesWebSearchPreviewTool$outboundSchema.parse(
-      openResponsesWebSearchPreviewTool,
-    ),
+    OpenResponsesWebSearchPreviewTool$outboundSchema.parse(openResponsesWebSearchPreviewTool),
   );
 }
 export function openResponsesWebSearchPreviewToolFromJSON(

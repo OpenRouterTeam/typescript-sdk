@@ -3,9 +3,9 @@
  * @generated-id: a2463fc6f69b
  */
 
-import { SDKOptions } from "../lib/config.js";
-import { RequestInput } from "../lib/http.js";
-import {
+import type { SDKOptions } from '../lib/config.js';
+import type { RequestInput } from '../lib/http.js';
+import type {
   AfterErrorContext,
   AfterErrorHook,
   AfterSuccessContext,
@@ -17,9 +17,9 @@ import {
   Hook,
   Hooks,
   SDKInitHook,
-} from "./types.js";
+} from './types.js';
 
-import { initHooks } from "./registration.js";
+import { initHooks } from './registration.js';
 
 export class SDKHooks implements Hooks {
   sdkInitHooks: SDKInitHook[] = [];
@@ -32,19 +32,19 @@ export class SDKHooks implements Hooks {
     const presetHooks: Array<Hook> = [];
 
     for (const hook of presetHooks) {
-      if ("sdkInit" in hook) {
+      if ('sdkInit' in hook) {
         this.registerSDKInitHook(hook);
       }
-      if ("beforeCreateRequest" in hook) {
+      if ('beforeCreateRequest' in hook) {
         this.registerBeforeCreateRequestHook(hook);
       }
-      if ("beforeRequest" in hook) {
+      if ('beforeRequest' in hook) {
         this.registerBeforeRequestHook(hook);
       }
-      if ("afterSuccess" in hook) {
+      if ('afterSuccess' in hook) {
         this.registerAfterSuccessHook(hook);
       }
-      if ("afterError" in hook) {
+      if ('afterError' in hook) {
         this.registerAfterErrorHook(hook);
       }
     }
@@ -75,10 +75,7 @@ export class SDKHooks implements Hooks {
     return this.sdkInitHooks.reduce((opts, hook) => hook.sdkInit(opts), opts);
   }
 
-  beforeCreateRequest(
-    hookCtx: BeforeCreateRequestContext,
-    input: RequestInput,
-  ): RequestInput {
+  beforeCreateRequest(hookCtx: BeforeCreateRequestContext, input: RequestInput): RequestInput {
     let inp = input;
 
     for (const hook of this.beforeCreateRequestHooks) {
@@ -88,10 +85,7 @@ export class SDKHooks implements Hooks {
     return inp;
   }
 
-  async beforeRequest(
-    hookCtx: BeforeRequestContext,
-    request: Request,
-  ): Promise<Request> {
+  async beforeRequest(hookCtx: BeforeRequestContext, request: Request): Promise<Request> {
     let req = request;
 
     for (const hook of this.beforeRequestHooks) {
@@ -101,10 +95,7 @@ export class SDKHooks implements Hooks {
     return req;
   }
 
-  async afterSuccess(
-    hookCtx: AfterSuccessContext,
-    response: Response,
-  ): Promise<Response> {
+  async afterSuccess(hookCtx: AfterSuccessContext, response: Response): Promise<Response> {
     let res = response;
 
     for (const hook of this.afterSuccessHooks) {
@@ -118,7 +109,10 @@ export class SDKHooks implements Hooks {
     hookCtx: AfterErrorContext,
     response: Response | null,
     error: unknown,
-  ): Promise<{ response: Response | null; error: unknown }> {
+  ): Promise<{
+    response: Response | null;
+    error: unknown;
+  }> {
     let res = response;
     let err = error;
 
@@ -128,6 +122,9 @@ export class SDKHooks implements Hooks {
       err = result.error;
     }
 
-    return { response: res, error: err };
+    return {
+      response: res,
+      error: err,
+    };
   }
 }

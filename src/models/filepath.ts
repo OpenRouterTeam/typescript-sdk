@@ -3,31 +3,34 @@
  * @generated-id: 0f8d4008ed8e
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type FilePath = {
-  type: "file_path";
+  type: 'file_path';
   fileId: string;
   index: number;
 };
 
 /** @internal */
-export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
-  type: z.literal("file_path"),
-  file_id: z.string(),
-  index: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "file_id": "fileId",
+export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z
+  .object({
+    type: z.literal('file_path'),
+    file_id: z.string(),
+    index: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      file_id: 'fileId',
+    });
   });
-});
 /** @internal */
 export type FilePath$Outbound = {
-  type: "file_path";
+  type: 'file_path';
   file_id: string;
   index: number;
 };
@@ -35,12 +38,13 @@ export type FilePath$Outbound = {
 /** @internal */
 export const FilePath$outboundSchema: z.ZodType<FilePath$Outbound, FilePath> = z
   .object({
-    type: z.literal("file_path"),
+    type: z.literal('file_path'),
     fileId: z.string(),
     index: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      fileId: "file_id",
+      fileId: 'file_id',
     });
   });
 

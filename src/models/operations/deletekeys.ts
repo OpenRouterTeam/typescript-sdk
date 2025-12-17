@@ -3,10 +3,11 @@
  * @generated-id: efa22339a3d6
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../../lib/schemas.js';
 
 export type DeleteKeysRequest = {
   /**
@@ -38,19 +39,12 @@ export const DeleteKeysRequest$outboundSchema: z.ZodType<
   hash: z.string(),
 });
 
-export function deleteKeysRequestToJSON(
-  deleteKeysRequest: DeleteKeysRequest,
-): string {
-  return JSON.stringify(
-    DeleteKeysRequest$outboundSchema.parse(deleteKeysRequest),
-  );
+export function deleteKeysRequestToJSON(deleteKeysRequest: DeleteKeysRequest): string {
+  return JSON.stringify(DeleteKeysRequest$outboundSchema.parse(deleteKeysRequest));
 }
 
 /** @internal */
-export const DeleteKeysResponse$inboundSchema: z.ZodType<
-  DeleteKeysResponse,
-  unknown
-> = z.object({
+export const DeleteKeysResponse$inboundSchema: z.ZodType<DeleteKeysResponse, unknown> = z.object({
   deleted: z.literal(true),
 });
 

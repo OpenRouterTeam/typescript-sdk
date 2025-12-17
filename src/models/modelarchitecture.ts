@@ -3,53 +3,52 @@
  * @generated-id: 57607576095f
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { InputModality, InputModality$inboundSchema } from "./inputmodality.js";
-import { ModelGroup, ModelGroup$inboundSchema } from "./modelgroup.js";
-import {
-  OutputModality,
-  OutputModality$inboundSchema,
-} from "./outputmodality.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { InputModality } from './inputmodality.js';
+import type { ModelGroup } from './modelgroup.js';
+import type { OutputModality } from './outputmodality.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
+import { InputModality$inboundSchema } from './inputmodality.js';
+import { ModelGroup$inboundSchema } from './modelgroup.js';
+import { OutputModality$inboundSchema } from './outputmodality.js';
 
 /**
  * Instruction format type
  */
 export const ModelArchitectureInstructType = {
-  None: "none",
-  Airoboros: "airoboros",
-  Alpaca: "alpaca",
-  AlpacaModif: "alpaca-modif",
-  Chatml: "chatml",
-  Claude: "claude",
-  CodeLlama: "code-llama",
-  Gemma: "gemma",
-  Llama2: "llama2",
-  Llama3: "llama3",
-  Mistral: "mistral",
-  Nemotron: "nemotron",
-  Neural: "neural",
-  Openchat: "openchat",
-  Phi3: "phi3",
-  Rwkv: "rwkv",
-  Vicuna: "vicuna",
-  Zephyr: "zephyr",
-  DeepseekR1: "deepseek-r1",
-  DeepseekV31: "deepseek-v3.1",
-  Qwq: "qwq",
-  Qwen3: "qwen3",
+  None: 'none',
+  Airoboros: 'airoboros',
+  Alpaca: 'alpaca',
+  AlpacaModif: 'alpaca-modif',
+  Chatml: 'chatml',
+  Claude: 'claude',
+  CodeLlama: 'code-llama',
+  Gemma: 'gemma',
+  Llama2: 'llama2',
+  Llama3: 'llama3',
+  Mistral: 'mistral',
+  Nemotron: 'nemotron',
+  Neural: 'neural',
+  Openchat: 'openchat',
+  Phi3: 'phi3',
+  Rwkv: 'rwkv',
+  Vicuna: 'vicuna',
+  Zephyr: 'zephyr',
+  DeepseekR1: 'deepseek-r1',
+  DeepseekV31: 'deepseek-v3.1',
+  Qwq: 'qwq',
+  Qwen3: 'qwen3',
 } as const;
 /**
  * Instruction format type
  */
-export type ModelArchitectureInstructType = OpenEnum<
-  typeof ModelArchitectureInstructType
->;
+export type ModelArchitectureInstructType = OpenEnum<typeof ModelArchitectureInstructType>;
 
 /**
  * Model architecture information
@@ -84,23 +83,21 @@ export const ModelArchitectureInstructType$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(ModelArchitectureInstructType);
 
 /** @internal */
-export const ModelArchitecture$inboundSchema: z.ZodType<
-  ModelArchitecture,
-  unknown
-> = z.object({
-  tokenizer: ModelGroup$inboundSchema.optional(),
-  instruct_type: z.nullable(ModelArchitectureInstructType$inboundSchema)
-    .optional(),
-  modality: z.nullable(z.string()),
-  input_modalities: z.array(InputModality$inboundSchema),
-  output_modalities: z.array(OutputModality$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "instruct_type": "instructType",
-    "input_modalities": "inputModalities",
-    "output_modalities": "outputModalities",
+export const ModelArchitecture$inboundSchema: z.ZodType<ModelArchitecture, unknown> = z
+  .object({
+    tokenizer: ModelGroup$inboundSchema.optional(),
+    instruct_type: z.nullable(ModelArchitectureInstructType$inboundSchema).optional(),
+    modality: z.nullable(z.string()),
+    input_modalities: z.array(InputModality$inboundSchema),
+    output_modalities: z.array(OutputModality$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      instruct_type: 'instructType',
+      input_modalities: 'inputModalities',
+      output_modalities: 'outputModalities',
+    });
   });
-});
 
 export function modelArchitectureFromJSON(
   jsonString: string,

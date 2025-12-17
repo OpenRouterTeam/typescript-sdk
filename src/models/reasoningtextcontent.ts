@@ -3,18 +3,17 @@
  * @generated-id: e5520210e3cb
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 export const ReasoningTextContentType = {
-  ReasoningText: "reasoning_text",
+  ReasoningText: 'reasoning_text',
 } as const;
-export type ReasoningTextContentType = ClosedEnum<
-  typeof ReasoningTextContentType
->;
+export type ReasoningTextContentType = ClosedEnum<typeof ReasoningTextContentType>;
 
 export type ReasoningTextContent = {
   type: ReasoningTextContentType;
@@ -22,22 +21,18 @@ export type ReasoningTextContent = {
 };
 
 /** @internal */
-export const ReasoningTextContentType$inboundSchema: z.ZodEnum<
-  typeof ReasoningTextContentType
-> = z.enum(ReasoningTextContentType);
+export const ReasoningTextContentType$inboundSchema: z.ZodEnum<typeof ReasoningTextContentType> =
+  z.enum(ReasoningTextContentType);
 /** @internal */
-export const ReasoningTextContentType$outboundSchema: z.ZodEnum<
-  typeof ReasoningTextContentType
-> = ReasoningTextContentType$inboundSchema;
+export const ReasoningTextContentType$outboundSchema: z.ZodEnum<typeof ReasoningTextContentType> =
+  ReasoningTextContentType$inboundSchema;
 
 /** @internal */
-export const ReasoningTextContent$inboundSchema: z.ZodType<
-  ReasoningTextContent,
-  unknown
-> = z.object({
-  type: ReasoningTextContentType$inboundSchema,
-  text: z.string(),
-});
+export const ReasoningTextContent$inboundSchema: z.ZodType<ReasoningTextContent, unknown> =
+  z.object({
+    type: ReasoningTextContentType$inboundSchema,
+    text: z.string(),
+  });
 /** @internal */
 export type ReasoningTextContent$Outbound = {
   type: string;
@@ -53,12 +48,8 @@ export const ReasoningTextContent$outboundSchema: z.ZodType<
   text: z.string(),
 });
 
-export function reasoningTextContentToJSON(
-  reasoningTextContent: ReasoningTextContent,
-): string {
-  return JSON.stringify(
-    ReasoningTextContent$outboundSchema.parse(reasoningTextContent),
-  );
+export function reasoningTextContentToJSON(reasoningTextContent: ReasoningTextContent): string {
+  return JSON.stringify(ReasoningTextContent$outboundSchema.parse(reasoningTextContent));
 }
 export function reasoningTextContentFromJSON(
   jsonString: string,

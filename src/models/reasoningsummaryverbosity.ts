@@ -3,18 +3,17 @@
  * @generated-id: a51c85f04729
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 export const ReasoningSummaryVerbosity = {
-  Auto: "auto",
-  Concise: "concise",
-  Detailed: "detailed",
+  Auto: 'auto',
+  Concise: 'concise',
+  Detailed: 'detailed',
 } as const;
-export type ReasoningSummaryVerbosity = OpenEnum<
-  typeof ReasoningSummaryVerbosity
->;
+export type ReasoningSummaryVerbosity = OpenEnum<typeof ReasoningSummaryVerbosity>;
 
 /** @internal */
 export const ReasoningSummaryVerbosity$inboundSchema: z.ZodType<

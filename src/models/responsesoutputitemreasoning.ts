@@ -3,48 +3,51 @@
  * @generated-id: 191f7f61ea84
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type {
   ReasoningSummaryText,
-  ReasoningSummaryText$inboundSchema,
   ReasoningSummaryText$Outbound,
-  ReasoningSummaryText$outboundSchema,
-} from "./reasoningsummarytext.js";
-import {
+} from './reasoningsummarytext.js';
+import type {
   ReasoningTextContent,
-  ReasoningTextContent$inboundSchema,
   ReasoningTextContent$Outbound,
+} from './reasoningtextcontent.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import {
+  ReasoningSummaryText$inboundSchema,
+  ReasoningSummaryText$outboundSchema,
+} from './reasoningsummarytext.js';
+import {
+  ReasoningTextContent$inboundSchema,
   ReasoningTextContent$outboundSchema,
-} from "./reasoningtextcontent.js";
+} from './reasoningtextcontent.js';
 
 export const ResponsesOutputItemReasoningType = {
-  Reasoning: "reasoning",
+  Reasoning: 'reasoning',
 } as const;
-export type ResponsesOutputItemReasoningType = ClosedEnum<
-  typeof ResponsesOutputItemReasoningType
->;
+export type ResponsesOutputItemReasoningType = ClosedEnum<typeof ResponsesOutputItemReasoningType>;
 
 export const ResponsesOutputItemReasoningStatusInProgress = {
-  InProgress: "in_progress",
+  InProgress: 'in_progress',
 } as const;
 export type ResponsesOutputItemReasoningStatusInProgress = ClosedEnum<
   typeof ResponsesOutputItemReasoningStatusInProgress
 >;
 
 export const ResponsesOutputItemReasoningStatusIncomplete = {
-  Incomplete: "incomplete",
+  Incomplete: 'incomplete',
 } as const;
 export type ResponsesOutputItemReasoningStatusIncomplete = ClosedEnum<
   typeof ResponsesOutputItemReasoningStatusIncomplete
 >;
 
 export const ResponsesOutputItemReasoningStatusCompleted = {
-  Completed: "completed",
+  Completed: 'completed',
 } as const;
 export type ResponsesOutputItemReasoningStatusCompleted = ClosedEnum<
   typeof ResponsesOutputItemReasoningStatusCompleted
@@ -81,34 +84,31 @@ export const ResponsesOutputItemReasoningType$outboundSchema: z.ZodEnum<
 > = ResponsesOutputItemReasoningType$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> = z.enum(
-    ResponsesOutputItemReasoningStatusInProgress,
-  );
+export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusInProgress
+> = z.enum(ResponsesOutputItemReasoningStatusInProgress);
 /** @internal */
-export const ResponsesOutputItemReasoningStatusInProgress$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> =
-    ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
+export const ResponsesOutputItemReasoningStatusInProgress$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusInProgress
+> = ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemReasoningStatusIncomplete$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> = z.enum(
-    ResponsesOutputItemReasoningStatusIncomplete,
-  );
+export const ResponsesOutputItemReasoningStatusIncomplete$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusIncomplete
+> = z.enum(ResponsesOutputItemReasoningStatusIncomplete);
 /** @internal */
-export const ResponsesOutputItemReasoningStatusIncomplete$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> =
-    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
+export const ResponsesOutputItemReasoningStatusIncomplete$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusIncomplete
+> = ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
 
 /** @internal */
-export const ResponsesOutputItemReasoningStatusCompleted$inboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> = z.enum(
-    ResponsesOutputItemReasoningStatusCompleted,
-  );
+export const ResponsesOutputItemReasoningStatusCompleted$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusCompleted
+> = z.enum(ResponsesOutputItemReasoningStatusCompleted);
 /** @internal */
-export const ResponsesOutputItemReasoningStatusCompleted$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> =
-    ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
+export const ResponsesOutputItemReasoningStatusCompleted$outboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningStatusCompleted
+> = ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
@@ -120,10 +120,7 @@ export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
 ]);
 /** @internal */
-export type ResponsesOutputItemReasoningStatusUnion$Outbound =
-  | string
-  | string
-  | string;
+export type ResponsesOutputItemReasoningStatusUnion$Outbound = string | string | string;
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusUnion$outboundSchema: z.ZodType<
@@ -136,8 +133,7 @@ export const ResponsesOutputItemReasoningStatusUnion$outboundSchema: z.ZodType<
 ]);
 
 export function responsesOutputItemReasoningStatusUnionToJSON(
-  responsesOutputItemReasoningStatusUnion:
-    ResponsesOutputItemReasoningStatusUnion,
+  responsesOutputItemReasoningStatusUnion: ResponsesOutputItemReasoningStatusUnion,
 ): string {
   return JSON.stringify(
     ResponsesOutputItemReasoningStatusUnion$outboundSchema.parse(
@@ -147,16 +143,10 @@ export function responsesOutputItemReasoningStatusUnionToJSON(
 }
 export function responsesOutputItemReasoningStatusUnionFromJSON(
   jsonString: string,
-): SafeParseResult<
-  ResponsesOutputItemReasoningStatusUnion,
-  SDKValidationError
-> {
+): SafeParseResult<ResponsesOutputItemReasoningStatusUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      ResponsesOutputItemReasoningStatusUnion$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => ResponsesOutputItemReasoningStatusUnion$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'ResponsesOutputItemReasoningStatusUnion' from JSON`,
   );
 }
@@ -165,22 +155,26 @@ export function responsesOutputItemReasoningStatusUnionFromJSON(
 export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoning,
   unknown
-> = z.object({
-  type: ResponsesOutputItemReasoningType$inboundSchema,
-  id: z.string(),
-  content: z.array(ReasoningTextContent$inboundSchema).optional(),
-  summary: z.array(ReasoningSummaryText$inboundSchema),
-  encrypted_content: z.nullable(z.string()).optional(),
-  status: z.union([
-    ResponsesOutputItemReasoningStatusCompleted$inboundSchema,
-    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
-    ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
-  ]).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "encrypted_content": "encryptedContent",
+> = z
+  .object({
+    type: ResponsesOutputItemReasoningType$inboundSchema,
+    id: z.string(),
+    content: z.array(ReasoningTextContent$inboundSchema).optional(),
+    summary: z.array(ReasoningSummaryText$inboundSchema),
+    encrypted_content: z.nullable(z.string()).optional(),
+    status: z
+      .union([
+        ResponsesOutputItemReasoningStatusCompleted$inboundSchema,
+        ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
+        ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
+      ])
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      encrypted_content: 'encryptedContent',
+    });
   });
-});
 /** @internal */
 export type ResponsesOutputItemReasoning$Outbound = {
   type: string;
@@ -195,30 +189,32 @@ export type ResponsesOutputItemReasoning$Outbound = {
 export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
   ResponsesOutputItemReasoning$Outbound,
   ResponsesOutputItemReasoning
-> = z.object({
-  type: ResponsesOutputItemReasoningType$outboundSchema,
-  id: z.string(),
-  content: z.array(ReasoningTextContent$outboundSchema).optional(),
-  summary: z.array(ReasoningSummaryText$outboundSchema),
-  encryptedContent: z.nullable(z.string()).optional(),
-  status: z.union([
-    ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
-    ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
-    ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
-  ]).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    encryptedContent: "encrypted_content",
+> = z
+  .object({
+    type: ResponsesOutputItemReasoningType$outboundSchema,
+    id: z.string(),
+    content: z.array(ReasoningTextContent$outboundSchema).optional(),
+    summary: z.array(ReasoningSummaryText$outboundSchema),
+    encryptedContent: z.nullable(z.string()).optional(),
+    status: z
+      .union([
+        ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
+        ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
+        ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
+      ])
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      encryptedContent: 'encrypted_content',
+    });
   });
-});
 
 export function responsesOutputItemReasoningToJSON(
   responsesOutputItemReasoning: ResponsesOutputItemReasoning,
 ): string {
   return JSON.stringify(
-    ResponsesOutputItemReasoning$outboundSchema.parse(
-      responsesOutputItemReasoning,
-    ),
+    ResponsesOutputItemReasoning$outboundSchema.parse(responsesOutputItemReasoning),
   );
 }
 export function responsesOutputItemReasoningFromJSON(

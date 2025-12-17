@@ -3,35 +3,35 @@
  * @generated-id: 2d5e61e53c46
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type {
   OpenAIResponsesAnnotation,
-  OpenAIResponsesAnnotation$inboundSchema,
   OpenAIResponsesAnnotation$Outbound,
+} from './openairesponsesannotation.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import {
+  OpenAIResponsesAnnotation$inboundSchema,
   OpenAIResponsesAnnotation$outboundSchema,
-} from "./openairesponsesannotation.js";
+} from './openairesponsesannotation.js';
 
 export type ResponseOutputText = {
-  type: "output_text";
+  type: 'output_text';
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation> | undefined;
 };
 
 /** @internal */
-export const ResponseOutputText$inboundSchema: z.ZodType<
-  ResponseOutputText,
-  unknown
-> = z.object({
-  type: z.literal("output_text"),
+export const ResponseOutputText$inboundSchema: z.ZodType<ResponseOutputText, unknown> = z.object({
+  type: z.literal('output_text'),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
-  type: "output_text";
+  type: 'output_text';
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
 };
@@ -41,17 +41,13 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   ResponseOutputText$Outbound,
   ResponseOutputText
 > = z.object({
-  type: z.literal("output_text"),
+  type: z.literal('output_text'),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
 });
 
-export function responseOutputTextToJSON(
-  responseOutputText: ResponseOutputText,
-): string {
-  return JSON.stringify(
-    ResponseOutputText$outboundSchema.parse(responseOutputText),
-  );
+export function responseOutputTextToJSON(responseOutputText: ResponseOutputText): string {
+  return JSON.stringify(ResponseOutputText$outboundSchema.parse(responseOutputText));
 }
 export function responseOutputTextFromJSON(
   jsonString: string,

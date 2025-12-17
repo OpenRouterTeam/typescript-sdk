@@ -1,14 +1,12 @@
-import type * as models from "../models/index.js";
-import {
-  ClaudeContentBlockType,
-  NonClaudeMessageRole,
-} from "./claude-constants.js";
+import type * as models from '../models/index.js';
+
+import { ClaudeContentBlockType, NonClaudeMessageRole } from './claude-constants.js';
 
 /**
  * Type guard: checks if a value is a valid object (not null, not array)
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === "object" && !Array.isArray(value);
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 /**
@@ -27,7 +25,7 @@ function isNonClaudeRole(role: unknown): boolean {
  */
 function isClaudeToolResultBlock(block: unknown): boolean {
   if (!isRecord(block)) return false;
-  return block["type"] === ClaudeContentBlockType.ToolResult;
+  return block['type'] === ClaudeContentBlockType.ToolResult;
 }
 
 /**
@@ -37,9 +35,7 @@ function isClaudeToolResultBlock(block: unknown): boolean {
 function isClaudeImageBlockWithSource(block: unknown): boolean {
   if (!isRecord(block)) return false;
   return (
-    block["type"] === ClaudeContentBlockType.Image &&
-    "source" in block &&
-    isRecord(block["source"])
+    block['type'] === ClaudeContentBlockType.Image && 'source' in block && isRecord(block['source'])
   );
 }
 
@@ -50,9 +46,9 @@ function isClaudeImageBlockWithSource(block: unknown): boolean {
 function isClaudeToolUseBlockWithId(block: unknown): boolean {
   if (!isRecord(block)) return false;
   return (
-    block["type"] === ClaudeContentBlockType.ToolUse &&
-    "id" in block &&
-    typeof block["id"] === "string"
+    block['type'] === ClaudeContentBlockType.ToolUse &&
+    'id' in block &&
+    typeof block['id'] === 'string'
   );
 }
 
@@ -79,9 +75,7 @@ function hasClaudeSpecificBlocks(content: unknown[]): boolean {
  * - 'image' blocks with 'source' object (Claude-specific structure)
  * - 'tool_use' blocks with 'id' (Claude-specific; OpenAI uses 'tool_calls' array on message)
  */
-export function isClaudeStyleMessages(
-  input: unknown
-): input is models.ClaudeMessageParam[] {
+export function isClaudeStyleMessages(input: unknown): input is models.ClaudeMessageParam[] {
   if (!Array.isArray(input) || input.length === 0) {
     return false;
   }
@@ -91,19 +85,19 @@ export function isClaudeStyleMessages(
     if (!isRecord(msg)) continue;
 
     // Must have role property
-    if (!("role" in msg)) continue;
+    if (!('role' in msg)) continue;
 
     // Claude messages don't have top-level 'type' field
-    if ("type" in msg) continue;
+    if ('type' in msg) continue;
 
     // OpenAI has 'system', 'developer', 'tool' roles that Claude doesn't have
     // If we see these roles, it's definitely NOT Claude format
-    if (isNonClaudeRole(msg["role"])) {
+    if (isNonClaudeRole(msg['role'])) {
       return false;
     }
 
     // Check for Claude-specific content blocks
-    const content = msg["content"];
+    const content = msg['content'];
     if (Array.isArray(content) && hasClaudeSpecificBlocks(content)) {
       return true;
     }

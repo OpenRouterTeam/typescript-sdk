@@ -3,11 +3,12 @@
  * @generated-id: 4a222248409d
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type CompletionUsage = {
   promptTokens: number;
@@ -16,20 +17,19 @@ export type CompletionUsage = {
 };
 
 /** @internal */
-export const CompletionUsage$inboundSchema: z.ZodType<
-  CompletionUsage,
-  unknown
-> = z.object({
-  prompt_tokens: z.number(),
-  completion_tokens: z.number(),
-  total_tokens: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "prompt_tokens": "promptTokens",
-    "completion_tokens": "completionTokens",
-    "total_tokens": "totalTokens",
+export const CompletionUsage$inboundSchema: z.ZodType<CompletionUsage, unknown> = z
+  .object({
+    prompt_tokens: z.number(),
+    completion_tokens: z.number(),
+    total_tokens: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      prompt_tokens: 'promptTokens',
+      completion_tokens: 'completionTokens',
+      total_tokens: 'totalTokens',
+    });
   });
-});
 
 export function completionUsageFromJSON(
   jsonString: string,

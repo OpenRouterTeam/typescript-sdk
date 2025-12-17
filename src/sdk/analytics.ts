@@ -3,10 +3,12 @@
  * @generated-id: 411d91261be3
  */
 
-import { analyticsGetUserActivity } from "../funcs/analyticsGetUserActivity.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { analyticsGetUserActivity } from '../funcs/analyticsGetUserActivity.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class Analytics extends ClientSDK {
   /**
@@ -19,10 +21,6 @@ export class Analytics extends ClientSDK {
     request?: operations.GetUserActivityRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.GetUserActivityResponse> {
-    return unwrapAsync(analyticsGetUserActivity(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(analyticsGetUserActivity(this, request, options));
   }
 }

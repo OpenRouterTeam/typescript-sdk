@@ -3,11 +3,12 @@
  * @generated-id: ce11386ad30f
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 export type ListRequest = {
   /**
@@ -116,62 +117,69 @@ export type ListRequest$Outbound = {
 };
 
 /** @internal */
-export const ListRequest$outboundSchema: z.ZodType<
-  ListRequest$Outbound,
-  ListRequest
-> = z.object({
-  includeDisabled: z.string().optional(),
-  offset: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    includeDisabled: "include_disabled",
+export const ListRequest$outboundSchema: z.ZodType<ListRequest$Outbound, ListRequest> = z
+  .object({
+    includeDisabled: z.string().optional(),
+    offset: z.string().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      includeDisabled: 'include_disabled',
+    });
   });
-});
 
 export function listRequestToJSON(listRequest: ListRequest): string {
   return JSON.stringify(ListRequest$outboundSchema.parse(listRequest));
 }
 
 /** @internal */
-export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
-  hash: z.string(),
-  name: z.string(),
-  label: z.string(),
-  disabled: z.boolean(),
-  limit: z.nullable(z.number()),
-  limit_remaining: z.nullable(z.number()),
-  limit_reset: z.nullable(z.string()),
-  include_byok_in_limit: z.boolean(),
-  usage: z.number(),
-  usage_daily: z.number(),
-  usage_weekly: z.number(),
-  usage_monthly: z.number(),
-  byok_usage: z.number(),
-  byok_usage_daily: z.number(),
-  byok_usage_weekly: z.number(),
-  byok_usage_monthly: z.number(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()),
-  expires_at: z.nullable(
-    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "limit_remaining": "limitRemaining",
-    "limit_reset": "limitReset",
-    "include_byok_in_limit": "includeByokInLimit",
-    "usage_daily": "usageDaily",
-    "usage_weekly": "usageWeekly",
-    "usage_monthly": "usageMonthly",
-    "byok_usage": "byokUsage",
-    "byok_usage_daily": "byokUsageDaily",
-    "byok_usage_weekly": "byokUsageWeekly",
-    "byok_usage_monthly": "byokUsageMonthly",
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-    "expires_at": "expiresAt",
+export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z
+  .object({
+    hash: z.string(),
+    name: z.string(),
+    label: z.string(),
+    disabled: z.boolean(),
+    limit: z.nullable(z.number()),
+    limit_remaining: z.nullable(z.number()),
+    limit_reset: z.nullable(z.string()),
+    include_byok_in_limit: z.boolean(),
+    usage: z.number(),
+    usage_daily: z.number(),
+    usage_weekly: z.number(),
+    usage_monthly: z.number(),
+    byok_usage: z.number(),
+    byok_usage_daily: z.number(),
+    byok_usage_weekly: z.number(),
+    byok_usage_monthly: z.number(),
+    created_at: z.string(),
+    updated_at: z.nullable(z.string()),
+    expires_at: z
+      .nullable(
+        z.iso
+          .datetime({
+            offset: true,
+          })
+          .transform((v) => new Date(v)),
+      )
+      .optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      limit_remaining: 'limitRemaining',
+      limit_reset: 'limitReset',
+      include_byok_in_limit: 'includeByokInLimit',
+      usage_daily: 'usageDaily',
+      usage_weekly: 'usageWeekly',
+      usage_monthly: 'usageMonthly',
+      byok_usage: 'byokUsage',
+      byok_usage_daily: 'byokUsageDaily',
+      byok_usage_weekly: 'byokUsageWeekly',
+      byok_usage_monthly: 'byokUsageMonthly',
+      created_at: 'createdAt',
+      updated_at: 'updatedAt',
+      expires_at: 'expiresAt',
+    });
   });
-});
 
 export function listDataFromJSON(
   jsonString: string,
@@ -184,10 +192,9 @@ export function listDataFromJSON(
 }
 
 /** @internal */
-export const ListResponse$inboundSchema: z.ZodType<ListResponse, unknown> = z
-  .object({
-    data: z.array(z.lazy(() => ListData$inboundSchema)),
-  });
+export const ListResponse$inboundSchema: z.ZodType<ListResponse, unknown> = z.object({
+  data: z.array(z.lazy(() => ListData$inboundSchema)),
+});
 
 export function listResponseFromJSON(
   jsonString: string,

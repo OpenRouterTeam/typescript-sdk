@@ -3,17 +3,18 @@
  * @generated-id: f449677cc221
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * File input content item
  */
 export type ResponseInputFile = {
-  type: "input_file";
+  type: 'input_file';
   fileId?: string | null | undefined;
   fileData?: string | undefined;
   filename?: string | undefined;
@@ -21,25 +22,24 @@ export type ResponseInputFile = {
 };
 
 /** @internal */
-export const ResponseInputFile$inboundSchema: z.ZodType<
-  ResponseInputFile,
-  unknown
-> = z.object({
-  type: z.literal("input_file"),
-  file_id: z.nullable(z.string()).optional(),
-  file_data: z.string().optional(),
-  filename: z.string().optional(),
-  file_url: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "file_id": "fileId",
-    "file_data": "fileData",
-    "file_url": "fileUrl",
+export const ResponseInputFile$inboundSchema: z.ZodType<ResponseInputFile, unknown> = z
+  .object({
+    type: z.literal('input_file'),
+    file_id: z.nullable(z.string()).optional(),
+    file_data: z.string().optional(),
+    filename: z.string().optional(),
+    file_url: z.string().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      file_id: 'fileId',
+      file_data: 'fileData',
+      file_url: 'fileUrl',
+    });
   });
-});
 /** @internal */
 export type ResponseInputFile$Outbound = {
-  type: "input_file";
+  type: 'input_file';
   file_id?: string | null | undefined;
   file_data?: string | undefined;
   filename?: string | undefined;
@@ -50,26 +50,24 @@ export type ResponseInputFile$Outbound = {
 export const ResponseInputFile$outboundSchema: z.ZodType<
   ResponseInputFile$Outbound,
   ResponseInputFile
-> = z.object({
-  type: z.literal("input_file"),
-  fileId: z.nullable(z.string()).optional(),
-  fileData: z.string().optional(),
-  filename: z.string().optional(),
-  fileUrl: z.string().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    fileId: "file_id",
-    fileData: "file_data",
-    fileUrl: "file_url",
+> = z
+  .object({
+    type: z.literal('input_file'),
+    fileId: z.nullable(z.string()).optional(),
+    fileData: z.string().optional(),
+    filename: z.string().optional(),
+    fileUrl: z.string().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      fileId: 'file_id',
+      fileData: 'file_data',
+      fileUrl: 'file_url',
+    });
   });
-});
 
-export function responseInputFileToJSON(
-  responseInputFile: ResponseInputFile,
-): string {
-  return JSON.stringify(
-    ResponseInputFile$outboundSchema.parse(responseInputFile),
-  );
+export function responseInputFileToJSON(responseInputFile: ResponseInputFile): string {
+  return JSON.stringify(ResponseInputFile$outboundSchema.parse(responseInputFile));
 }
 export function responseInputFileFromJSON(
   jsonString: string,

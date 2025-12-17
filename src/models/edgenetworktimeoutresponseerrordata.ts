@@ -3,10 +3,11 @@
  * @generated-id: d86e84250105
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Error data for EdgeNetworkTimeoutResponse
@@ -14,7 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type EdgeNetworkTimeoutResponseErrorData = {
   code: number;
   message: string;
-  metadata?: { [k: string]: any | null } | null | undefined;
+  metadata?:
+    | {
+        [k: string]: any | null;
+      }
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -32,8 +38,7 @@ export function edgeNetworkTimeoutResponseErrorDataFromJSON(
 ): SafeParseResult<EdgeNetworkTimeoutResponseErrorData, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      EdgeNetworkTimeoutResponseErrorData$inboundSchema.parse(JSON.parse(x)),
+    (x) => EdgeNetworkTimeoutResponseErrorData$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'EdgeNetworkTimeoutResponseErrorData' from JSON`,
   );
 }

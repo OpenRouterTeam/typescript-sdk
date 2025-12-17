@@ -3,17 +3,18 @@
  * @generated-id: 32b751d1d3d7
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Event emitted when reasoning text delta is streamed
  */
 export type OpenResponsesReasoningDeltaEvent = {
-  type: "response.reasoning_text.delta";
+  type: 'response.reasoning_text.delta';
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -25,21 +26,23 @@ export type OpenResponsesReasoningDeltaEvent = {
 export const OpenResponsesReasoningDeltaEvent$inboundSchema: z.ZodType<
   OpenResponsesReasoningDeltaEvent,
   unknown
-> = z.object({
-  type: z.literal("response.reasoning_text.delta"),
-  output_index: z.number(),
-  item_id: z.string(),
-  content_index: z.number(),
-  delta: z.string(),
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "item_id": "itemId",
-    "content_index": "contentIndex",
-    "sequence_number": "sequenceNumber",
+> = z
+  .object({
+    type: z.literal('response.reasoning_text.delta'),
+    output_index: z.number(),
+    item_id: z.string(),
+    content_index: z.number(),
+    delta: z.string(),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      output_index: 'outputIndex',
+      item_id: 'itemId',
+      content_index: 'contentIndex',
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesReasoningDeltaEventFromJSON(
   jsonString: string,

@@ -3,10 +3,12 @@
  * @generated-id: 6e4ef00c29b7
  */
 
-import { parametersGetParameters } from "../funcs/parametersGetParameters.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { parametersGetParameters } from '../funcs/parametersGetParameters.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class ParametersT extends ClientSDK {
   /**
@@ -17,11 +19,6 @@ export class ParametersT extends ClientSDK {
     request: operations.GetParametersRequest,
     options?: RequestOptions,
   ): Promise<operations.GetParametersResponse> {
-    return unwrapAsync(parametersGetParameters(
-      this,
-      security,
-      request,
-      options,
-    ));
+    return unwrapAsync(parametersGetParameters(this, security, request, options));
   }
 }

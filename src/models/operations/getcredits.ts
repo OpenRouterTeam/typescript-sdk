@@ -3,11 +3,12 @@
  * @generated-id: 0e5a438307ae
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 export type GetCreditsData = {
   /**
@@ -28,14 +29,15 @@ export type GetCreditsResponse = {
 };
 
 /** @internal */
-export const GetCreditsData$inboundSchema: z.ZodType<GetCreditsData, unknown> =
-  z.object({
+export const GetCreditsData$inboundSchema: z.ZodType<GetCreditsData, unknown> = z
+  .object({
     total_credits: z.number(),
     total_usage: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "total_credits": "totalCredits",
-      "total_usage": "totalUsage",
+      total_credits: 'totalCredits',
+      total_usage: 'totalUsage',
     });
   });
 
@@ -50,10 +52,7 @@ export function getCreditsDataFromJSON(
 }
 
 /** @internal */
-export const GetCreditsResponse$inboundSchema: z.ZodType<
-  GetCreditsResponse,
-  unknown
-> = z.object({
+export const GetCreditsResponse$inboundSchema: z.ZodType<GetCreditsResponse, unknown> = z.object({
   data: z.lazy(() => GetCreditsData$inboundSchema),
 });
 

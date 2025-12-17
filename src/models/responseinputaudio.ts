@@ -3,21 +3,20 @@
  * @generated-id: 259dfb8718b4
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const ResponseInputAudioFormat = {
-  Mp3: "mp3",
-  Wav: "wav",
+  Mp3: 'mp3',
+  Wav: 'wav',
 } as const;
-export type ResponseInputAudioFormat = OpenEnum<
-  typeof ResponseInputAudioFormat
->;
+export type ResponseInputAudioFormat = OpenEnum<typeof ResponseInputAudioFormat>;
 
 export type ResponseInputAudioInputAudio = {
   data: string;
@@ -28,20 +27,16 @@ export type ResponseInputAudioInputAudio = {
  * Audio input content item
  */
 export type ResponseInputAudio = {
-  type: "input_audio";
+  type: 'input_audio';
   inputAudio: ResponseInputAudioInputAudio;
 };
 
 /** @internal */
-export const ResponseInputAudioFormat$inboundSchema: z.ZodType<
-  ResponseInputAudioFormat,
-  unknown
-> = openEnums.inboundSchema(ResponseInputAudioFormat);
+export const ResponseInputAudioFormat$inboundSchema: z.ZodType<ResponseInputAudioFormat, unknown> =
+  openEnums.inboundSchema(ResponseInputAudioFormat);
 /** @internal */
-export const ResponseInputAudioFormat$outboundSchema: z.ZodType<
-  string,
-  ResponseInputAudioFormat
-> = openEnums.outboundSchema(ResponseInputAudioFormat);
+export const ResponseInputAudioFormat$outboundSchema: z.ZodType<string, ResponseInputAudioFormat> =
+  openEnums.outboundSchema(ResponseInputAudioFormat);
 
 /** @internal */
 export const ResponseInputAudioInputAudio$inboundSchema: z.ZodType<
@@ -70,9 +65,7 @@ export function responseInputAudioInputAudioToJSON(
   responseInputAudioInputAudio: ResponseInputAudioInputAudio,
 ): string {
   return JSON.stringify(
-    ResponseInputAudioInputAudio$outboundSchema.parse(
-      responseInputAudioInputAudio,
-    ),
+    ResponseInputAudioInputAudio$outboundSchema.parse(responseInputAudioInputAudio),
   );
 }
 export function responseInputAudioInputAudioFromJSON(
@@ -86,20 +79,19 @@ export function responseInputAudioInputAudioFromJSON(
 }
 
 /** @internal */
-export const ResponseInputAudio$inboundSchema: z.ZodType<
-  ResponseInputAudio,
-  unknown
-> = z.object({
-  type: z.literal("input_audio"),
-  input_audio: z.lazy(() => ResponseInputAudioInputAudio$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "input_audio": "inputAudio",
+export const ResponseInputAudio$inboundSchema: z.ZodType<ResponseInputAudio, unknown> = z
+  .object({
+    type: z.literal('input_audio'),
+    input_audio: z.lazy(() => ResponseInputAudioInputAudio$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      input_audio: 'inputAudio',
+    });
   });
-});
 /** @internal */
 export type ResponseInputAudio$Outbound = {
-  type: "input_audio";
+  type: 'input_audio';
   input_audio: ResponseInputAudioInputAudio$Outbound;
 };
 
@@ -107,21 +99,19 @@ export type ResponseInputAudio$Outbound = {
 export const ResponseInputAudio$outboundSchema: z.ZodType<
   ResponseInputAudio$Outbound,
   ResponseInputAudio
-> = z.object({
-  type: z.literal("input_audio"),
-  inputAudio: z.lazy(() => ResponseInputAudioInputAudio$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    inputAudio: "input_audio",
+> = z
+  .object({
+    type: z.literal('input_audio'),
+    inputAudio: z.lazy(() => ResponseInputAudioInputAudio$outboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      inputAudio: 'input_audio',
+    });
   });
-});
 
-export function responseInputAudioToJSON(
-  responseInputAudio: ResponseInputAudio,
-): string {
-  return JSON.stringify(
-    ResponseInputAudio$outboundSchema.parse(responseInputAudio),
-  );
+export function responseInputAudioToJSON(responseInputAudio: ResponseInputAudio): string {
+  return JSON.stringify(ResponseInputAudio$outboundSchema.parse(responseInputAudio));
 }
 export function responseInputAudioFromJSON(
   jsonString: string,

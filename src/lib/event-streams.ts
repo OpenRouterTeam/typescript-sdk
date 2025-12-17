@@ -32,7 +32,7 @@ export class EventStream<T> extends ReadableStream<T> {
             const item = parseMessage(message, parse);
             if (item && !item.done) return downstream.enqueue(item.value);
             if (item?.done) {
-              await upstream.cancel("done");
+              await upstream.cancel('done');
               return downstream.close();
             }
           }
@@ -41,33 +41,45 @@ export class EventStream<T> extends ReadableStream<T> {
           await upstream.cancel(e);
         }
       },
-      cancel: reason => upstream.cancel(reason),
+      cancel: (reason) => upstream.cancel(reason),
     });
   }
 
   // Polyfill for older browsers
   [Symbol.asyncIterator](): AsyncIterableIterator<T> {
     const fn = (ReadableStream.prototype as any)[Symbol.asyncIterator];
-    if (typeof fn === "function") return fn.call(this);
+    if (typeof fn === 'function') return fn.call(this);
     const reader = this.getReader();
     return {
       next: async () => {
         const r = await reader.read();
         if (r.done) {
           reader.releaseLock();
-          return { done: true, value: undefined };
+          return {
+            done: true,
+            value: undefined,
+          };
         }
-        return { done: false, value: r.value };
+        return {
+          done: false,
+          value: r.value,
+        };
       },
       throw: async (e) => {
         await reader.cancel(e);
         reader.releaseLock();
-        return { done: true, value: undefined };
+        return {
+          done: true,
+          value: undefined,
+        };
       },
       return: async () => {
-        await reader.cancel("done");
+        await reader.cancel('done');
         reader.releaseLock();
-        return { done: true, value: undefined };
+        return {
+          done: true,
+          value: undefined,
+        };
       },
       [Symbol.asyncIterator]() {
         return this;
@@ -84,23 +96,35 @@ function concatBuffer(a: Uint8Array, b: Uint8Array): Uint8Array {
 }
 
 /** Finds the first (CR,LF,CR,LF) or (CR,CR) or (LF,LF) */
-function findBoundary(
-  buf: Uint8Array,
-): { index: number; length: number } | null {
+function findBoundary(buf: Uint8Array): {
+  index: number;
+  length: number;
+} | null {
   const len = buf.length;
   for (let i = 0; i < len; i++) {
     if (
-      i <= len - 4
-      && buf[i] === 13 && buf[i + 1] === 10 && buf[i + 2] === 13
-      && buf[i + 3] === 10
+      i <= len - 4 &&
+      buf[i] === 13 &&
+      buf[i + 1] === 10 &&
+      buf[i + 2] === 13 &&
+      buf[i + 3] === 10
     ) {
-      return { index: i, length: 4 };
+      return {
+        index: i,
+        length: 4,
+      };
     }
     if (i <= len - 2 && buf[i] === 13 && buf[i + 1] === 13) {
-      return { index: i, length: 2 };
+      return {
+        index: i,
+        length: 2,
+      };
     }
     if (i <= len - 2 && buf[i] === 10 && buf[i + 1] === 10) {
-      return { index: i, length: 2 };
+      return {
+        index: i,
+        length: 2,
+      };
     }
   }
   return null;
@@ -115,20 +139,20 @@ function parseMessage<T>(
   const ret: SseMessage<string> = {};
   let ignore = true;
   for (const line of lines) {
-    if (!line || line.startsWith(":")) continue;
+    if (!line || line.startsWith(':')) continue;
     ignore = false;
-    const i = line.indexOf(":");
+    const i = line.indexOf(':');
     const field = line.slice(0, i);
-    const value = line[i + 1] === " " ? line.slice(i + 2) : line.slice(i + 1);
-    if (field === "data") dataLines.push(value);
-    else if (field === "event") ret.event = value;
-    else if (field === "id") ret.id = value;
-    else if (field === "retry") {
+    const value = line[i + 1] === ' ' ? line.slice(i + 2) : line.slice(i + 1);
+    if (field === 'data') dataLines.push(value);
+    else if (field === 'event') ret.event = value;
+    else if (field === 'id') ret.id = value;
+    else if (field === 'retry') {
       const n = Number(value);
       if (!isNaN(n)) ret.retry = n;
     }
   }
   if (ignore) return;
-  if (dataLines.length) ret.data = dataLines.join("\n");
+  if (dataLines.length) ret.data = dataLines.join('\n');
   return parse(ret);
 }

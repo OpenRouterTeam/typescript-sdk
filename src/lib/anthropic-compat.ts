@@ -5,7 +5,10 @@ import {
   OpenResponsesEasyInputMessageRoleUser,
 } from '../models/openresponseseasyinputmessage.js';
 import { OpenResponsesFunctionCallOutputType } from '../models/openresponsesfunctioncalloutput.js';
-import { OpenResponsesInputMessageItemRoleUser, OpenResponsesInputMessageItemRoleDeveloper } from '../models/openresponsesinputmessageitem.js';
+import {
+  OpenResponsesInputMessageItemRoleDeveloper,
+  OpenResponsesInputMessageItemRoleUser,
+} from '../models/openresponsesinputmessageitem.js';
 import { convertToClaudeMessage } from './stream-transformers.js';
 
 /**

@@ -3,11 +3,12 @@
  * @generated-id: 253a81bc10af
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../../lib/schemas.js';
+import * as models from '../index.js';
 
 export type ListEndpointsRequest = {
   author: string;
@@ -39,21 +40,15 @@ export const ListEndpointsRequest$outboundSchema: z.ZodType<
   slug: z.string(),
 });
 
-export function listEndpointsRequestToJSON(
-  listEndpointsRequest: ListEndpointsRequest,
-): string {
-  return JSON.stringify(
-    ListEndpointsRequest$outboundSchema.parse(listEndpointsRequest),
-  );
+export function listEndpointsRequestToJSON(listEndpointsRequest: ListEndpointsRequest): string {
+  return JSON.stringify(ListEndpointsRequest$outboundSchema.parse(listEndpointsRequest));
 }
 
 /** @internal */
-export const ListEndpointsResponse$inboundSchema: z.ZodType<
-  ListEndpointsResponse,
-  unknown
-> = z.object({
-  data: models.ListEndpointsResponse$inboundSchema,
-});
+export const ListEndpointsResponse$inboundSchema: z.ZodType<ListEndpointsResponse, unknown> =
+  z.object({
+    data: models.ListEndpointsResponse$inboundSchema,
+  });
 
 export function listEndpointsResponseFromJSON(
   jsonString: string,

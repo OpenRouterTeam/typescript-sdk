@@ -3,59 +3,53 @@
  * @generated-id: 9c7a50d121df
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
 
 export const ResponseInputImageDetail = {
-  Auto: "auto",
-  High: "high",
-  Low: "low",
+  Auto: 'auto',
+  High: 'high',
+  Low: 'low',
 } as const;
-export type ResponseInputImageDetail = OpenEnum<
-  typeof ResponseInputImageDetail
->;
+export type ResponseInputImageDetail = OpenEnum<typeof ResponseInputImageDetail>;
 
 /**
  * Image input content item
  */
 export type ResponseInputImage = {
-  type: "input_image";
+  type: 'input_image';
   detail: ResponseInputImageDetail;
   imageUrl?: string | null | undefined;
 };
 
 /** @internal */
-export const ResponseInputImageDetail$inboundSchema: z.ZodType<
-  ResponseInputImageDetail,
-  unknown
-> = openEnums.inboundSchema(ResponseInputImageDetail);
+export const ResponseInputImageDetail$inboundSchema: z.ZodType<ResponseInputImageDetail, unknown> =
+  openEnums.inboundSchema(ResponseInputImageDetail);
 /** @internal */
-export const ResponseInputImageDetail$outboundSchema: z.ZodType<
-  string,
-  ResponseInputImageDetail
-> = openEnums.outboundSchema(ResponseInputImageDetail);
+export const ResponseInputImageDetail$outboundSchema: z.ZodType<string, ResponseInputImageDetail> =
+  openEnums.outboundSchema(ResponseInputImageDetail);
 
 /** @internal */
-export const ResponseInputImage$inboundSchema: z.ZodType<
-  ResponseInputImage,
-  unknown
-> = z.object({
-  type: z.literal("input_image"),
-  detail: ResponseInputImageDetail$inboundSchema,
-  image_url: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "image_url": "imageUrl",
+export const ResponseInputImage$inboundSchema: z.ZodType<ResponseInputImage, unknown> = z
+  .object({
+    type: z.literal('input_image'),
+    detail: ResponseInputImageDetail$inboundSchema,
+    image_url: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      image_url: 'imageUrl',
+    });
   });
-});
 /** @internal */
 export type ResponseInputImage$Outbound = {
-  type: "input_image";
+  type: 'input_image';
   detail: string;
   image_url?: string | null | undefined;
 };
@@ -64,22 +58,20 @@ export type ResponseInputImage$Outbound = {
 export const ResponseInputImage$outboundSchema: z.ZodType<
   ResponseInputImage$Outbound,
   ResponseInputImage
-> = z.object({
-  type: z.literal("input_image"),
-  detail: ResponseInputImageDetail$outboundSchema,
-  imageUrl: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    imageUrl: "image_url",
+> = z
+  .object({
+    type: z.literal('input_image'),
+    detail: ResponseInputImageDetail$outboundSchema,
+    imageUrl: z.nullable(z.string()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      imageUrl: 'image_url',
+    });
   });
-});
 
-export function responseInputImageToJSON(
-  responseInputImage: ResponseInputImage,
-): string {
-  return JSON.stringify(
-    ResponseInputImage$outboundSchema.parse(responseInputImage),
-  );
+export function responseInputImageToJSON(responseInputImage: ResponseInputImage): string {
+  return JSON.stringify(ResponseInputImage$outboundSchema.parse(responseInputImage));
 }
 export function responseInputImageFromJSON(
   jsonString: string,

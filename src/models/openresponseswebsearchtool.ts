@@ -3,22 +3,25 @@
  * @generated-id: 510ab58460c2
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponsesSearchContextSize } from './responsessearchcontextsize.js';
+import type {
+  ResponsesWebSearchUserLocation,
+  ResponsesWebSearchUserLocation$Outbound,
+} from './responseswebsearchuserlocation.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 import {
-  ResponsesSearchContextSize,
   ResponsesSearchContextSize$inboundSchema,
   ResponsesSearchContextSize$outboundSchema,
-} from "./responsessearchcontextsize.js";
+} from './responsessearchcontextsize.js';
 import {
-  ResponsesWebSearchUserLocation,
   ResponsesWebSearchUserLocation$inboundSchema,
-  ResponsesWebSearchUserLocation$Outbound,
   ResponsesWebSearchUserLocation$outboundSchema,
-} from "./responseswebsearchuserlocation.js";
+} from './responseswebsearchuserlocation.js';
 
 export type OpenResponsesWebSearchToolFilters = {
   allowedDomains?: Array<string> | null | undefined;
@@ -28,7 +31,7 @@ export type OpenResponsesWebSearchToolFilters = {
  * Web search tool configuration
  */
 export type OpenResponsesWebSearchTool = {
-  type: "web_search";
+  type: 'web_search';
   filters?: OpenResponsesWebSearchToolFilters | null | undefined;
   /**
    * Size of the search context for web search tools
@@ -44,13 +47,15 @@ export type OpenResponsesWebSearchTool = {
 export const OpenResponsesWebSearchToolFilters$inboundSchema: z.ZodType<
   OpenResponsesWebSearchToolFilters,
   unknown
-> = z.object({
-  allowed_domains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allowed_domains": "allowedDomains",
+> = z
+  .object({
+    allowed_domains: z.nullable(z.array(z.string())).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      allowed_domains: 'allowedDomains',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearchToolFilters$Outbound = {
   allowed_domains?: Array<string> | null | undefined;
@@ -60,21 +65,21 @@ export type OpenResponsesWebSearchToolFilters$Outbound = {
 export const OpenResponsesWebSearchToolFilters$outboundSchema: z.ZodType<
   OpenResponsesWebSearchToolFilters$Outbound,
   OpenResponsesWebSearchToolFilters
-> = z.object({
-  allowedDomains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedDomains: "allowed_domains",
+> = z
+  .object({
+    allowedDomains: z.nullable(z.array(z.string())).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      allowedDomains: 'allowed_domains',
+    });
   });
-});
 
 export function openResponsesWebSearchToolFiltersToJSON(
   openResponsesWebSearchToolFilters: OpenResponsesWebSearchToolFilters,
 ): string {
   return JSON.stringify(
-    OpenResponsesWebSearchToolFilters$outboundSchema.parse(
-      openResponsesWebSearchToolFilters,
-    ),
+    OpenResponsesWebSearchToolFilters$outboundSchema.parse(openResponsesWebSearchToolFilters),
   );
 }
 export function openResponsesWebSearchToolFiltersFromJSON(
@@ -91,23 +96,22 @@ export function openResponsesWebSearchToolFiltersFromJSON(
 export const OpenResponsesWebSearchTool$inboundSchema: z.ZodType<
   OpenResponsesWebSearchTool,
   unknown
-> = z.object({
-  type: z.literal("web_search"),
-  filters: z.nullable(
-    z.lazy(() => OpenResponsesWebSearchToolFilters$inboundSchema),
-  ).optional(),
-  search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
-  user_location: z.nullable(ResponsesWebSearchUserLocation$inboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "search_context_size": "searchContextSize",
-    "user_location": "userLocation",
+> = z
+  .object({
+    type: z.literal('web_search'),
+    filters: z.nullable(z.lazy(() => OpenResponsesWebSearchToolFilters$inboundSchema)).optional(),
+    search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
+    user_location: z.nullable(ResponsesWebSearchUserLocation$inboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      search_context_size: 'searchContextSize',
+      user_location: 'userLocation',
+    });
   });
-});
 /** @internal */
 export type OpenResponsesWebSearchTool$Outbound = {
-  type: "web_search";
+  type: 'web_search';
   filters?: OpenResponsesWebSearchToolFilters$Outbound | null | undefined;
   search_context_size?: string | undefined;
   user_location?: ResponsesWebSearchUserLocation$Outbound | null | undefined;
@@ -117,20 +121,19 @@ export type OpenResponsesWebSearchTool$Outbound = {
 export const OpenResponsesWebSearchTool$outboundSchema: z.ZodType<
   OpenResponsesWebSearchTool$Outbound,
   OpenResponsesWebSearchTool
-> = z.object({
-  type: z.literal("web_search"),
-  filters: z.nullable(
-    z.lazy(() => OpenResponsesWebSearchToolFilters$outboundSchema),
-  ).optional(),
-  searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
-  userLocation: z.nullable(ResponsesWebSearchUserLocation$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    searchContextSize: "search_context_size",
-    userLocation: "user_location",
+> = z
+  .object({
+    type: z.literal('web_search'),
+    filters: z.nullable(z.lazy(() => OpenResponsesWebSearchToolFilters$outboundSchema)).optional(),
+    searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
+    userLocation: z.nullable(ResponsesWebSearchUserLocation$outboundSchema).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      searchContextSize: 'search_context_size',
+      userLocation: 'user_location',
+    });
   });
-});
 
 export function openResponsesWebSearchToolToJSON(
   openResponsesWebSearchTool: OpenResponsesWebSearchTool,

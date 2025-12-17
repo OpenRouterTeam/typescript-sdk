@@ -3,14 +3,10 @@
  * @generated-id: 0f7b6f513917
  */
 
-import * as z from "zod/v4";
+import * as z from 'zod/v4';
 
-export function constDateTime(
-  val: string,
-): z.ZodType<string, unknown> {
+export function constDateTime(val: string): z.ZodType<string, unknown> {
   return z.custom<string>((v) => {
-    return (
-      typeof v === "string" && new Date(v).getTime() === new Date(val).getTime()
-    );
+    return typeof v === 'string' && new Date(v).getTime() === new Date(val).getTime();
   }, `Value must be equivalent to ${val}`);
 }

@@ -3,62 +3,63 @@
  * @generated-id: cc6c94fdea13
  */
 
-import * as z from "zod/v4";
-import {
+import type {
   OpenResponsesEasyInputMessage,
   OpenResponsesEasyInputMessage$Outbound,
-  OpenResponsesEasyInputMessage$outboundSchema,
-} from "./openresponseseasyinputmessage.js";
-import {
+} from './openresponseseasyinputmessage.js';
+import type {
   OpenResponsesFunctionCallOutput,
   OpenResponsesFunctionCallOutput$Outbound,
-  OpenResponsesFunctionCallOutput$outboundSchema,
-} from "./openresponsesfunctioncalloutput.js";
-import {
+} from './openresponsesfunctioncalloutput.js';
+import type {
   OpenResponsesFunctionToolCall,
   OpenResponsesFunctionToolCall$Outbound,
-  OpenResponsesFunctionToolCall$outboundSchema,
-} from "./openresponsesfunctiontoolcall.js";
-import {
+} from './openresponsesfunctiontoolcall.js';
+import type {
   OpenResponsesInputMessageItem,
   OpenResponsesInputMessageItem$Outbound,
-  OpenResponsesInputMessageItem$outboundSchema,
-} from "./openresponsesinputmessageitem.js";
-import {
+} from './openresponsesinputmessageitem.js';
+import type {
   OpenResponsesReasoning,
   OpenResponsesReasoning$Outbound,
-  OpenResponsesReasoning$outboundSchema,
-} from "./openresponsesreasoning.js";
-import {
+} from './openresponsesreasoning.js';
+import type {
   ResponsesImageGenerationCall,
   ResponsesImageGenerationCall$Outbound,
-  ResponsesImageGenerationCall$outboundSchema,
-} from "./responsesimagegenerationcall.js";
-import {
+} from './responsesimagegenerationcall.js';
+import type {
   ResponsesOutputItemFileSearchCall,
   ResponsesOutputItemFileSearchCall$Outbound,
-  ResponsesOutputItemFileSearchCall$outboundSchema,
-} from "./responsesoutputitemfilesearchcall.js";
-import {
+} from './responsesoutputitemfilesearchcall.js';
+import type {
   ResponsesOutputItemFunctionCall,
   ResponsesOutputItemFunctionCall$Outbound,
-  ResponsesOutputItemFunctionCall$outboundSchema,
-} from "./responsesoutputitemfunctioncall.js";
-import {
+} from './responsesoutputitemfunctioncall.js';
+import type {
   ResponsesOutputItemReasoning,
   ResponsesOutputItemReasoning$Outbound,
-  ResponsesOutputItemReasoning$outboundSchema,
-} from "./responsesoutputitemreasoning.js";
-import {
+} from './responsesoutputitemreasoning.js';
+import type {
   ResponsesOutputMessage,
   ResponsesOutputMessage$Outbound,
-  ResponsesOutputMessage$outboundSchema,
-} from "./responsesoutputmessage.js";
-import {
+} from './responsesoutputmessage.js';
+import type {
   ResponsesWebSearchCallOutput,
   ResponsesWebSearchCallOutput$Outbound,
-  ResponsesWebSearchCallOutput$outboundSchema,
-} from "./responseswebsearchcalloutput.js";
+} from './responseswebsearchcalloutput.js';
+
+import * as z from 'zod/v4';
+import { OpenResponsesEasyInputMessage$outboundSchema } from './openresponseseasyinputmessage.js';
+import { OpenResponsesFunctionCallOutput$outboundSchema } from './openresponsesfunctioncalloutput.js';
+import { OpenResponsesFunctionToolCall$outboundSchema } from './openresponsesfunctiontoolcall.js';
+import { OpenResponsesInputMessageItem$outboundSchema } from './openresponsesinputmessageitem.js';
+import { OpenResponsesReasoning$outboundSchema } from './openresponsesreasoning.js';
+import { ResponsesImageGenerationCall$outboundSchema } from './responsesimagegenerationcall.js';
+import { ResponsesOutputItemFileSearchCall$outboundSchema } from './responsesoutputitemfilesearchcall.js';
+import { ResponsesOutputItemFunctionCall$outboundSchema } from './responsesoutputitemfunctioncall.js';
+import { ResponsesOutputItemReasoning$outboundSchema } from './responsesoutputitemreasoning.js';
+import { ResponsesOutputMessage$outboundSchema } from './responsesoutputmessage.js';
+import { ResponsesWebSearchCallOutput$outboundSchema } from './responseswebsearchcalloutput.js';
 
 export type OpenResponsesInput1 =
   | OpenResponsesFunctionToolCall
@@ -79,18 +80,18 @@ export type OpenResponsesInput1 =
 export type OpenResponsesInput =
   | string
   | Array<
-    | OpenResponsesFunctionToolCall
-    | ResponsesOutputMessage
-    | ResponsesOutputItemFunctionCall
-    | ResponsesOutputItemFileSearchCall
-    | OpenResponsesReasoning
-    | OpenResponsesFunctionCallOutput
-    | ResponsesOutputItemReasoning
-    | ResponsesWebSearchCallOutput
-    | ResponsesImageGenerationCall
-    | OpenResponsesEasyInputMessage
-    | OpenResponsesInputMessageItem
-  >;
+      | OpenResponsesFunctionToolCall
+      | ResponsesOutputMessage
+      | ResponsesOutputItemFunctionCall
+      | ResponsesOutputItemFileSearchCall
+      | OpenResponsesReasoning
+      | OpenResponsesFunctionCallOutput
+      | ResponsesOutputItemReasoning
+      | ResponsesWebSearchCallOutput
+      | ResponsesImageGenerationCall
+      | OpenResponsesEasyInputMessage
+      | OpenResponsesInputMessageItem
+    >;
 
 /** @internal */
 export type OpenResponsesInput1$Outbound =
@@ -124,30 +125,26 @@ export const OpenResponsesInput1$outboundSchema: z.ZodType<
   OpenResponsesInputMessageItem$outboundSchema,
 ]);
 
-export function openResponsesInput1ToJSON(
-  openResponsesInput1: OpenResponsesInput1,
-): string {
-  return JSON.stringify(
-    OpenResponsesInput1$outboundSchema.parse(openResponsesInput1),
-  );
+export function openResponsesInput1ToJSON(openResponsesInput1: OpenResponsesInput1): string {
+  return JSON.stringify(OpenResponsesInput1$outboundSchema.parse(openResponsesInput1));
 }
 
 /** @internal */
 export type OpenResponsesInput$Outbound =
   | string
   | Array<
-    | OpenResponsesFunctionToolCall$Outbound
-    | ResponsesOutputMessage$Outbound
-    | ResponsesOutputItemFunctionCall$Outbound
-    | ResponsesOutputItemFileSearchCall$Outbound
-    | OpenResponsesReasoning$Outbound
-    | OpenResponsesFunctionCallOutput$Outbound
-    | ResponsesOutputItemReasoning$Outbound
-    | ResponsesWebSearchCallOutput$Outbound
-    | ResponsesImageGenerationCall$Outbound
-    | OpenResponsesEasyInputMessage$Outbound
-    | OpenResponsesInputMessageItem$Outbound
-  >;
+      | OpenResponsesFunctionToolCall$Outbound
+      | ResponsesOutputMessage$Outbound
+      | ResponsesOutputItemFunctionCall$Outbound
+      | ResponsesOutputItemFileSearchCall$Outbound
+      | OpenResponsesReasoning$Outbound
+      | OpenResponsesFunctionCallOutput$Outbound
+      | ResponsesOutputItemReasoning$Outbound
+      | ResponsesWebSearchCallOutput$Outbound
+      | ResponsesImageGenerationCall$Outbound
+      | OpenResponsesEasyInputMessage$Outbound
+      | OpenResponsesInputMessageItem$Outbound
+    >;
 
 /** @internal */
 export const OpenResponsesInput$outboundSchema: z.ZodType<
@@ -172,10 +169,6 @@ export const OpenResponsesInput$outboundSchema: z.ZodType<
   ),
 ]);
 
-export function openResponsesInputToJSON(
-  openResponsesInput: OpenResponsesInput,
-): string {
-  return JSON.stringify(
-    OpenResponsesInput$outboundSchema.parse(openResponsesInput),
-  );
+export function openResponsesInputToJSON(openResponsesInput: OpenResponsesInput): string {
+  return JSON.stringify(OpenResponsesInput$outboundSchema.parse(openResponsesInput));
 }

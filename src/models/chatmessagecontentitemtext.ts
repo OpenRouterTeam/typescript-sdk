@@ -3,20 +3,23 @@
  * @generated-id: 27089860fd98
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import {
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type {
   ChatMessageContentItemCacheControl,
-  ChatMessageContentItemCacheControl$inboundSchema,
   ChatMessageContentItemCacheControl$Outbound,
+} from './chatmessagecontentitemcachecontrol.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
+import {
+  ChatMessageContentItemCacheControl$inboundSchema,
   ChatMessageContentItemCacheControl$outboundSchema,
-} from "./chatmessagecontentitemcachecontrol.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+} from './chatmessagecontentitemcachecontrol.js';
 
 export type ChatMessageContentItemText = {
-  type: "text";
+  type: 'text';
   text: string;
   cacheControl?: ChatMessageContentItemCacheControl | undefined;
 };
@@ -25,18 +28,20 @@ export type ChatMessageContentItemText = {
 export const ChatMessageContentItemText$inboundSchema: z.ZodType<
   ChatMessageContentItemText,
   unknown
-> = z.object({
-  type: z.literal("text"),
-  text: z.string(),
-  cache_control: ChatMessageContentItemCacheControl$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "cache_control": "cacheControl",
+> = z
+  .object({
+    type: z.literal('text'),
+    text: z.string(),
+    cache_control: ChatMessageContentItemCacheControl$inboundSchema.optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      cache_control: 'cacheControl',
+    });
   });
-});
 /** @internal */
 export type ChatMessageContentItemText$Outbound = {
-  type: "text";
+  type: 'text';
   text: string;
   cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
 };
@@ -45,15 +50,17 @@ export type ChatMessageContentItemText$Outbound = {
 export const ChatMessageContentItemText$outboundSchema: z.ZodType<
   ChatMessageContentItemText$Outbound,
   ChatMessageContentItemText
-> = z.object({
-  type: z.literal("text"),
-  text: z.string(),
-  cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    cacheControl: "cache_control",
+> = z
+  .object({
+    type: z.literal('text'),
+    text: z.string(),
+    cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      cacheControl: 'cache_control',
+    });
   });
-});
 
 export function chatMessageContentItemTextToJSON(
   chatMessageContentItemText: ChatMessageContentItemText,

@@ -3,16 +3,17 @@
  * @generated-id: 49b0152fd59a
  */
 
-import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import type * as z from 'zod/v4';
+import type { OpenEnum } from '../types/enums.js';
+
+import * as openEnums from '../types/enums.js';
 
 /**
  * The search engine to use for web search.
  */
 export const WebSearchEngine = {
-  Native: "native",
-  Exa: "exa",
+  Native: 'native',
+  Exa: 'exa',
 } as const;
 /**
  * The search engine to use for web search.
@@ -20,7 +21,5 @@ export const WebSearchEngine = {
 export type WebSearchEngine = OpenEnum<typeof WebSearchEngine>;
 
 /** @internal */
-export const WebSearchEngine$outboundSchema: z.ZodType<
-  string,
-  WebSearchEngine
-> = openEnums.outboundSchema(WebSearchEngine);
+export const WebSearchEngine$outboundSchema: z.ZodType<string, WebSearchEngine> =
+  openEnums.outboundSchema(WebSearchEngine);

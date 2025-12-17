@@ -3,25 +3,22 @@
  * @generated-id: 0f516033ff9c
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  ResponseFormatTextConfig,
-  ResponseFormatTextConfig$inboundSchema,
-} from "./responseformattextconfig.js";
+import type { OpenEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { ResponseFormatTextConfig } from './responseformattextconfig.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import * as openEnums from '../types/enums.js';
+import { ResponseFormatTextConfig$inboundSchema } from './responseformattextconfig.js';
 
 export const ResponseTextConfigVerbosity = {
-  High: "high",
-  Low: "low",
-  Medium: "medium",
+  High: 'high',
+  Low: 'low',
+  Medium: 'medium',
 } as const;
-export type ResponseTextConfigVerbosity = OpenEnum<
-  typeof ResponseTextConfigVerbosity
->;
+export type ResponseTextConfigVerbosity = OpenEnum<typeof ResponseTextConfigVerbosity>;
 
 /**
  * Text output configuration including format and verbosity
@@ -41,10 +38,7 @@ export const ResponseTextConfigVerbosity$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(ResponseTextConfigVerbosity);
 
 /** @internal */
-export const ResponseTextConfig$inboundSchema: z.ZodType<
-  ResponseTextConfig,
-  unknown
-> = z.object({
+export const ResponseTextConfig$inboundSchema: z.ZodType<ResponseTextConfig, unknown> = z.object({
   format: ResponseFormatTextConfig$inboundSchema.optional(),
   verbosity: z.nullable(ResponseTextConfigVerbosity$inboundSchema).optional(),
 });

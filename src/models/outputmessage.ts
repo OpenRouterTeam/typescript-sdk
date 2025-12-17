@@ -3,59 +3,48 @@
  * @generated-id: fa128cf87d51
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import {
-  OpenAIResponsesRefusalContent,
-  OpenAIResponsesRefusalContent$inboundSchema,
-} from "./openairesponsesrefusalcontent.js";
-import {
-  ResponseOutputText,
-  ResponseOutputText$inboundSchema,
-} from "./responseoutputtext.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+import type { OpenAIResponsesRefusalContent } from './openairesponsesrefusalcontent.js';
+import type { ResponseOutputText } from './responseoutputtext.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
+import { OpenAIResponsesRefusalContent$inboundSchema } from './openairesponsesrefusalcontent.js';
+import { ResponseOutputText$inboundSchema } from './responseoutputtext.js';
 
 export const OutputMessageRole = {
-  Assistant: "assistant",
+  Assistant: 'assistant',
 } as const;
 export type OutputMessageRole = ClosedEnum<typeof OutputMessageRole>;
 
 export const OutputMessageType = {
-  Message: "message",
+  Message: 'message',
 } as const;
 export type OutputMessageType = ClosedEnum<typeof OutputMessageType>;
 
 export const OutputMessageStatusInProgress = {
-  InProgress: "in_progress",
+  InProgress: 'in_progress',
 } as const;
-export type OutputMessageStatusInProgress = ClosedEnum<
-  typeof OutputMessageStatusInProgress
->;
+export type OutputMessageStatusInProgress = ClosedEnum<typeof OutputMessageStatusInProgress>;
 
 export const OutputMessageStatusIncomplete = {
-  Incomplete: "incomplete",
+  Incomplete: 'incomplete',
 } as const;
-export type OutputMessageStatusIncomplete = ClosedEnum<
-  typeof OutputMessageStatusIncomplete
->;
+export type OutputMessageStatusIncomplete = ClosedEnum<typeof OutputMessageStatusIncomplete>;
 
 export const OutputMessageStatusCompleted = {
-  Completed: "completed",
+  Completed: 'completed',
 } as const;
-export type OutputMessageStatusCompleted = ClosedEnum<
-  typeof OutputMessageStatusCompleted
->;
+export type OutputMessageStatusCompleted = ClosedEnum<typeof OutputMessageStatusCompleted>;
 
 export type OutputMessageStatusUnion =
   | OutputMessageStatusCompleted
   | OutputMessageStatusIncomplete
   | OutputMessageStatusInProgress;
 
-export type OutputMessageContent =
-  | ResponseOutputText
-  | OpenAIResponsesRefusalContent;
+export type OutputMessageContent = ResponseOutputText | OpenAIResponsesRefusalContent;
 
 export type OutputMessage = {
   id: string;
@@ -70,14 +59,12 @@ export type OutputMessage = {
 };
 
 /** @internal */
-export const OutputMessageRole$inboundSchema: z.ZodEnum<
-  typeof OutputMessageRole
-> = z.enum(OutputMessageRole);
+export const OutputMessageRole$inboundSchema: z.ZodEnum<typeof OutputMessageRole> =
+  z.enum(OutputMessageRole);
 
 /** @internal */
-export const OutputMessageType$inboundSchema: z.ZodEnum<
-  typeof OutputMessageType
-> = z.enum(OutputMessageType);
+export const OutputMessageType$inboundSchema: z.ZodEnum<typeof OutputMessageType> =
+  z.enum(OutputMessageType);
 
 /** @internal */
 export const OutputMessageStatusInProgress$inboundSchema: z.ZodEnum<
@@ -95,14 +82,12 @@ export const OutputMessageStatusCompleted$inboundSchema: z.ZodEnum<
 > = z.enum(OutputMessageStatusCompleted);
 
 /** @internal */
-export const OutputMessageStatusUnion$inboundSchema: z.ZodType<
-  OutputMessageStatusUnion,
-  unknown
-> = z.union([
-  OutputMessageStatusCompleted$inboundSchema,
-  OutputMessageStatusIncomplete$inboundSchema,
-  OutputMessageStatusInProgress$inboundSchema,
-]);
+export const OutputMessageStatusUnion$inboundSchema: z.ZodType<OutputMessageStatusUnion, unknown> =
+  z.union([
+    OutputMessageStatusCompleted$inboundSchema,
+    OutputMessageStatusIncomplete$inboundSchema,
+    OutputMessageStatusInProgress$inboundSchema,
+  ]);
 
 export function outputMessageStatusUnionFromJSON(
   jsonString: string,
@@ -115,13 +100,12 @@ export function outputMessageStatusUnionFromJSON(
 }
 
 /** @internal */
-export const OutputMessageContent$inboundSchema: z.ZodType<
-  OutputMessageContent,
-  unknown
-> = z.union([
-  ResponseOutputText$inboundSchema,
-  OpenAIResponsesRefusalContent$inboundSchema,
-]);
+export const OutputMessageContent$inboundSchema: z.ZodType<OutputMessageContent, unknown> = z.union(
+  [
+    ResponseOutputText$inboundSchema,
+    OpenAIResponsesRefusalContent$inboundSchema,
+  ],
+);
 
 export function outputMessageContentFromJSON(
   jsonString: string,
@@ -134,23 +118,24 @@ export function outputMessageContentFromJSON(
 }
 
 /** @internal */
-export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
-  .object({
-    id: z.string(),
-    role: OutputMessageRole$inboundSchema,
-    type: OutputMessageType$inboundSchema,
-    status: z.union([
+export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z.object({
+  id: z.string(),
+  role: OutputMessageRole$inboundSchema,
+  type: OutputMessageType$inboundSchema,
+  status: z
+    .union([
       OutputMessageStatusCompleted$inboundSchema,
       OutputMessageStatusIncomplete$inboundSchema,
       OutputMessageStatusInProgress$inboundSchema,
-    ]).optional(),
-    content: z.array(
-      z.union([
-        ResponseOutputText$inboundSchema,
-        OpenAIResponsesRefusalContent$inboundSchema,
-      ]),
-    ),
-  });
+    ])
+    .optional(),
+  content: z.array(
+    z.union([
+      ResponseOutputText$inboundSchema,
+      OpenAIResponsesRefusalContent$inboundSchema,
+    ]),
+  ),
+});
 
 export function outputMessageFromJSON(
   jsonString: string,

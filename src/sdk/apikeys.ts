@@ -3,15 +3,17 @@
  * @generated-id: 5dda931501e1
  */
 
-import { apiKeysCreate } from "../funcs/apiKeysCreate.js";
-import { apiKeysDelete } from "../funcs/apiKeysDelete.js";
-import { apiKeysGet } from "../funcs/apiKeysGet.js";
-import { apiKeysGetCurrentKeyMetadata } from "../funcs/apiKeysGetCurrentKeyMetadata.js";
-import { apiKeysList } from "../funcs/apiKeysList.js";
-import { apiKeysUpdate } from "../funcs/apiKeysUpdate.js";
-import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as operations from "../models/operations/index.js";
-import { unwrapAsync } from "../types/fp.js";
+import type { RequestOptions } from '../lib/sdks.js';
+import type * as operations from '../models/operations/index.js';
+
+import { apiKeysCreate } from '../funcs/apiKeysCreate.js';
+import { apiKeysDelete } from '../funcs/apiKeysDelete.js';
+import { apiKeysGet } from '../funcs/apiKeysGet.js';
+import { apiKeysGetCurrentKeyMetadata } from '../funcs/apiKeysGetCurrentKeyMetadata.js';
+import { apiKeysList } from '../funcs/apiKeysList.js';
+import { apiKeysUpdate } from '../funcs/apiKeysUpdate.js';
+import { ClientSDK } from '../lib/sdks.js';
+import { unwrapAsync } from '../types/fp.js';
 
 export class APIKeys extends ClientSDK {
   /**
@@ -21,11 +23,7 @@ export class APIKeys extends ClientSDK {
     request?: operations.ListRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.ListResponse> {
-    return unwrapAsync(apiKeysList(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(apiKeysList(this, request, options));
   }
 
   /**
@@ -35,11 +33,7 @@ export class APIKeys extends ClientSDK {
     request: operations.CreateKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateKeysResponse> {
-    return unwrapAsync(apiKeysCreate(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(apiKeysCreate(this, request, options));
   }
 
   /**
@@ -49,11 +43,7 @@ export class APIKeys extends ClientSDK {
     request: operations.UpdateKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.UpdateKeysResponse> {
-    return unwrapAsync(apiKeysUpdate(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(apiKeysUpdate(this, request, options));
   }
 
   /**
@@ -63,11 +53,7 @@ export class APIKeys extends ClientSDK {
     request: operations.DeleteKeysRequest,
     options?: RequestOptions,
   ): Promise<operations.DeleteKeysResponse> {
-    return unwrapAsync(apiKeysDelete(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(apiKeysDelete(this, request, options));
   }
 
   /**
@@ -77,11 +63,7 @@ export class APIKeys extends ClientSDK {
     request: operations.GetKeyRequest,
     options?: RequestOptions,
   ): Promise<operations.GetKeyResponse> {
-    return unwrapAsync(apiKeysGet(
-      this,
-      request,
-      options,
-    ));
+    return unwrapAsync(apiKeysGet(this, request, options));
   }
 
   /**
@@ -90,12 +72,7 @@ export class APIKeys extends ClientSDK {
    * @remarks
    * Get information on the API key associated with the current authentication session
    */
-  async getCurrentKeyMetadata(
-    options?: RequestOptions,
-  ): Promise<operations.GetCurrentKeyResponse> {
-    return unwrapAsync(apiKeysGetCurrentKeyMetadata(
-      this,
-      options,
-    ));
+  async getCurrentKeyMetadata(options?: RequestOptions): Promise<operations.GetCurrentKeyResponse> {
+    return unwrapAsync(apiKeysGetCurrentKeyMetadata(this, options));
   }
 }

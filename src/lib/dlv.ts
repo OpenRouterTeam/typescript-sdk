@@ -45,7 +45,7 @@ export function dlv<T = any>(
   p?: number,
   undef?: never,
 ): T | undefined {
-  key = Array.isArray(key) ? key : key.split(".");
+  key = Array.isArray(key) ? key : key.split('.');
   for (p = 0; p < key.length; p++) {
     const k = key[p];
     obj = k != null && obj ? obj[k] : undef;

@@ -3,17 +3,18 @@
  * @generated-id: 508880501ed2
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Event emitted when an error occurs during streaming
  */
 export type OpenResponsesErrorEvent = {
-  type: "error";
+  type: 'error';
   code: string | null;
   message: string;
   param: string | null;
@@ -21,20 +22,19 @@ export type OpenResponsesErrorEvent = {
 };
 
 /** @internal */
-export const OpenResponsesErrorEvent$inboundSchema: z.ZodType<
-  OpenResponsesErrorEvent,
-  unknown
-> = z.object({
-  type: z.literal("error"),
-  code: z.nullable(z.string()),
-  message: z.string(),
-  param: z.nullable(z.string()),
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
+export const OpenResponsesErrorEvent$inboundSchema: z.ZodType<OpenResponsesErrorEvent, unknown> = z
+  .object({
+    type: z.literal('error'),
+    code: z.nullable(z.string()),
+    message: z.string(),
+    param: z.nullable(z.string()),
+    sequence_number: z.number(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      sequence_number: 'sequenceNumber',
+    });
   });
-});
 
 export function openResponsesErrorEventFromJSON(
   jsonString: string,

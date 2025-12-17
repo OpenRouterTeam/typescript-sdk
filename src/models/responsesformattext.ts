@@ -3,28 +3,26 @@
  * @generated-id: 30c4a4421b1d
  */
 
-import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Plain text response format
  */
 export type ResponsesFormatText = {
-  type: "text";
+  type: 'text';
 };
 
 /** @internal */
-export const ResponsesFormatText$inboundSchema: z.ZodType<
-  ResponsesFormatText,
-  unknown
-> = z.object({
-  type: z.literal("text"),
+export const ResponsesFormatText$inboundSchema: z.ZodType<ResponsesFormatText, unknown> = z.object({
+  type: z.literal('text'),
 });
 /** @internal */
 export type ResponsesFormatText$Outbound = {
-  type: "text";
+  type: 'text';
 };
 
 /** @internal */
@@ -32,15 +30,11 @@ export const ResponsesFormatText$outboundSchema: z.ZodType<
   ResponsesFormatText$Outbound,
   ResponsesFormatText
 > = z.object({
-  type: z.literal("text"),
+  type: z.literal('text'),
 });
 
-export function responsesFormatTextToJSON(
-  responsesFormatText: ResponsesFormatText,
-): string {
-  return JSON.stringify(
-    ResponsesFormatText$outboundSchema.parse(responsesFormatText),
-  );
+export function responsesFormatTextToJSON(responsesFormatText: ResponsesFormatText): string {
+  return JSON.stringify(ResponsesFormatText$outboundSchema.parse(responsesFormatText));
 }
 export function responsesFormatTextFromJSON(
   jsonString: string,

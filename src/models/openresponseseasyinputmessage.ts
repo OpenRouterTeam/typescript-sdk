@@ -3,59 +3,48 @@
  * @generated-id: 9cae543ceb47
  */
 
-import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
-import {
-  ResponseInputAudio,
-  ResponseInputAudio$Outbound,
-  ResponseInputAudio$outboundSchema,
-} from "./responseinputaudio.js";
-import {
-  ResponseInputFile,
-  ResponseInputFile$Outbound,
-  ResponseInputFile$outboundSchema,
-} from "./responseinputfile.js";
-import {
-  ResponseInputImage,
-  ResponseInputImage$Outbound,
-  ResponseInputImage$outboundSchema,
-} from "./responseinputimage.js";
-import {
-  ResponseInputText,
-  ResponseInputText$Outbound,
-  ResponseInputText$outboundSchema,
-} from "./responseinputtext.js";
+import type { ClosedEnum } from '../types/enums.js';
+import type { ResponseInputAudio, ResponseInputAudio$Outbound } from './responseinputaudio.js';
+import type { ResponseInputFile, ResponseInputFile$Outbound } from './responseinputfile.js';
+import type { ResponseInputImage, ResponseInputImage$Outbound } from './responseinputimage.js';
+import type { ResponseInputText, ResponseInputText$Outbound } from './responseinputtext.js';
+
+import * as z from 'zod/v4';
+import { ResponseInputAudio$outboundSchema } from './responseinputaudio.js';
+import { ResponseInputFile$outboundSchema } from './responseinputfile.js';
+import { ResponseInputImage$outboundSchema } from './responseinputimage.js';
+import { ResponseInputText$outboundSchema } from './responseinputtext.js';
 
 export const OpenResponsesEasyInputMessageType = {
-  Message: "message",
+  Message: 'message',
 } as const;
 export type OpenResponsesEasyInputMessageType = ClosedEnum<
   typeof OpenResponsesEasyInputMessageType
 >;
 
 export const OpenResponsesEasyInputMessageRoleDeveloper = {
-  Developer: "developer",
+  Developer: 'developer',
 } as const;
 export type OpenResponsesEasyInputMessageRoleDeveloper = ClosedEnum<
   typeof OpenResponsesEasyInputMessageRoleDeveloper
 >;
 
 export const OpenResponsesEasyInputMessageRoleAssistant = {
-  Assistant: "assistant",
+  Assistant: 'assistant',
 } as const;
 export type OpenResponsesEasyInputMessageRoleAssistant = ClosedEnum<
   typeof OpenResponsesEasyInputMessageRoleAssistant
 >;
 
 export const OpenResponsesEasyInputMessageRoleSystem = {
-  System: "system",
+  System: 'system',
 } as const;
 export type OpenResponsesEasyInputMessageRoleSystem = ClosedEnum<
   typeof OpenResponsesEasyInputMessageRoleSystem
 >;
 
 export const OpenResponsesEasyInputMessageRoleUser = {
-  User: "user",
+  User: 'user',
 } as const;
 export type OpenResponsesEasyInputMessageRoleUser = ClosedEnum<
   typeof OpenResponsesEasyInputMessageRoleUser
@@ -74,12 +63,7 @@ export type OpenResponsesEasyInputMessageContent1 =
   | ResponseInputAudio;
 
 export type OpenResponsesEasyInputMessageContent2 =
-  | Array<
-    | ResponseInputText
-    | ResponseInputImage
-    | ResponseInputFile
-    | ResponseInputAudio
-  >
+  | Array<ResponseInputText | ResponseInputImage | ResponseInputFile | ResponseInputAudio>
   | string;
 
 export type OpenResponsesEasyInputMessage = {
@@ -90,12 +74,7 @@ export type OpenResponsesEasyInputMessage = {
     | OpenResponsesEasyInputMessageRoleAssistant
     | OpenResponsesEasyInputMessageRoleDeveloper;
   content:
-    | Array<
-      | ResponseInputText
-      | ResponseInputImage
-      | ResponseInputFile
-      | ResponseInputAudio
-    >
+    | Array<ResponseInputText | ResponseInputImage | ResponseInputFile | ResponseInputAudio>
     | string;
 };
 
@@ -105,16 +84,14 @@ export const OpenResponsesEasyInputMessageType$outboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesEasyInputMessageType);
 
 /** @internal */
-export const OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleDeveloper> = z.enum(
-    OpenResponsesEasyInputMessageRoleDeveloper,
-  );
+export const OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema: z.ZodEnum<
+  typeof OpenResponsesEasyInputMessageRoleDeveloper
+> = z.enum(OpenResponsesEasyInputMessageRoleDeveloper);
 
 /** @internal */
-export const OpenResponsesEasyInputMessageRoleAssistant$outboundSchema:
-  z.ZodEnum<typeof OpenResponsesEasyInputMessageRoleAssistant> = z.enum(
-    OpenResponsesEasyInputMessageRoleAssistant,
-  );
+export const OpenResponsesEasyInputMessageRoleAssistant$outboundSchema: z.ZodEnum<
+  typeof OpenResponsesEasyInputMessageRoleAssistant
+> = z.enum(OpenResponsesEasyInputMessageRoleAssistant);
 
 /** @internal */
 export const OpenResponsesEasyInputMessageRoleSystem$outboundSchema: z.ZodEnum<
@@ -127,11 +104,7 @@ export const OpenResponsesEasyInputMessageRoleUser$outboundSchema: z.ZodEnum<
 > = z.enum(OpenResponsesEasyInputMessageRoleUser);
 
 /** @internal */
-export type OpenResponsesEasyInputMessageRoleUnion$Outbound =
-  | string
-  | string
-  | string
-  | string;
+export type OpenResponsesEasyInputMessageRoleUnion$Outbound = string | string | string | string;
 
 /** @internal */
 export const OpenResponsesEasyInputMessageRoleUnion$outboundSchema: z.ZodType<
@@ -145,8 +118,7 @@ export const OpenResponsesEasyInputMessageRoleUnion$outboundSchema: z.ZodType<
 ]);
 
 export function openResponsesEasyInputMessageRoleUnionToJSON(
-  openResponsesEasyInputMessageRoleUnion:
-    OpenResponsesEasyInputMessageRoleUnion,
+  openResponsesEasyInputMessageRoleUnion: OpenResponsesEasyInputMessageRoleUnion,
 ): string {
   return JSON.stringify(
     OpenResponsesEasyInputMessageRoleUnion$outboundSchema.parse(
@@ -186,11 +158,11 @@ export function openResponsesEasyInputMessageContent1ToJSON(
 /** @internal */
 export type OpenResponsesEasyInputMessageContent2$Outbound =
   | Array<
-    | ResponseInputText$Outbound
-    | ResponseInputImage$Outbound
-    | ResponseInputFile$Outbound
-    | ResponseInputAudio$Outbound
-  >
+      | ResponseInputText$Outbound
+      | ResponseInputImage$Outbound
+      | ResponseInputFile$Outbound
+      | ResponseInputAudio$Outbound
+    >
   | string;
 
 /** @internal */
@@ -225,11 +197,11 @@ export type OpenResponsesEasyInputMessage$Outbound = {
   role: string | string | string | string;
   content:
     | Array<
-      | ResponseInputText$Outbound
-      | ResponseInputImage$Outbound
-      | ResponseInputFile$Outbound
-      | ResponseInputAudio$Outbound
-    >
+        | ResponseInputText$Outbound
+        | ResponseInputImage$Outbound
+        | ResponseInputFile$Outbound
+        | ResponseInputAudio$Outbound
+      >
     | string;
 };
 
@@ -262,8 +234,6 @@ export function openResponsesEasyInputMessageToJSON(
   openResponsesEasyInputMessage: OpenResponsesEasyInputMessage,
 ): string {
   return JSON.stringify(
-    OpenResponsesEasyInputMessage$outboundSchema.parse(
-      openResponsesEasyInputMessage,
-    ),
+    OpenResponsesEasyInputMessage$outboundSchema.parse(openResponsesEasyInputMessage),
   );
 }

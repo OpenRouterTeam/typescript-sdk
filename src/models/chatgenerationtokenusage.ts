@@ -3,11 +3,12 @@
  * @generated-id: 1d57b0d238b8
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 export type CompletionTokensDetails = {
   reasoningTokens?: number | null | undefined;
@@ -31,22 +32,21 @@ export type ChatGenerationTokenUsage = {
 };
 
 /** @internal */
-export const CompletionTokensDetails$inboundSchema: z.ZodType<
-  CompletionTokensDetails,
-  unknown
-> = z.object({
-  reasoning_tokens: z.nullable(z.number()).optional(),
-  audio_tokens: z.nullable(z.number()).optional(),
-  accepted_prediction_tokens: z.nullable(z.number()).optional(),
-  rejected_prediction_tokens: z.nullable(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "reasoning_tokens": "reasoningTokens",
-    "audio_tokens": "audioTokens",
-    "accepted_prediction_tokens": "acceptedPredictionTokens",
-    "rejected_prediction_tokens": "rejectedPredictionTokens",
+export const CompletionTokensDetails$inboundSchema: z.ZodType<CompletionTokensDetails, unknown> = z
+  .object({
+    reasoning_tokens: z.nullable(z.number()).optional(),
+    audio_tokens: z.nullable(z.number()).optional(),
+    accepted_prediction_tokens: z.nullable(z.number()).optional(),
+    rejected_prediction_tokens: z.nullable(z.number()).optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      reasoning_tokens: 'reasoningTokens',
+      audio_tokens: 'audioTokens',
+      accepted_prediction_tokens: 'acceptedPredictionTokens',
+      rejected_prediction_tokens: 'rejectedPredictionTokens',
+    });
   });
-});
 
 export function completionTokensDetailsFromJSON(
   jsonString: string,
@@ -59,20 +59,19 @@ export function completionTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const PromptTokensDetails$inboundSchema: z.ZodType<
-  PromptTokensDetails,
-  unknown
-> = z.object({
-  cached_tokens: z.number().optional(),
-  audio_tokens: z.number().optional(),
-  video_tokens: z.number().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "cached_tokens": "cachedTokens",
-    "audio_tokens": "audioTokens",
-    "video_tokens": "videoTokens",
+export const PromptTokensDetails$inboundSchema: z.ZodType<PromptTokensDetails, unknown> = z
+  .object({
+    cached_tokens: z.number().optional(),
+    audio_tokens: z.number().optional(),
+    video_tokens: z.number().optional(),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      cached_tokens: 'cachedTokens',
+      audio_tokens: 'audioTokens',
+      video_tokens: 'videoTokens',
+    });
   });
-});
 
 export function promptTokensDetailsFromJSON(
   jsonString: string,
@@ -85,28 +84,26 @@ export function promptTokensDetailsFromJSON(
 }
 
 /** @internal */
-export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
-  ChatGenerationTokenUsage,
-  unknown
-> = z.object({
-  completion_tokens: z.number(),
-  prompt_tokens: z.number(),
-  total_tokens: z.number(),
-  completion_tokens_details: z.nullable(
-    z.lazy(() => CompletionTokensDetails$inboundSchema),
-  ).optional(),
-  prompt_tokens_details: z.nullable(
-    z.lazy(() => PromptTokensDetails$inboundSchema),
-  ).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "completion_tokens": "completionTokens",
-    "prompt_tokens": "promptTokens",
-    "total_tokens": "totalTokens",
-    "completion_tokens_details": "completionTokensDetails",
-    "prompt_tokens_details": "promptTokensDetails",
-  });
-});
+export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<ChatGenerationTokenUsage, unknown> =
+  z
+    .object({
+      completion_tokens: z.number(),
+      prompt_tokens: z.number(),
+      total_tokens: z.number(),
+      completion_tokens_details: z
+        .nullable(z.lazy(() => CompletionTokensDetails$inboundSchema))
+        .optional(),
+      prompt_tokens_details: z.nullable(z.lazy(() => PromptTokensDetails$inboundSchema)).optional(),
+    })
+    .transform((v) => {
+      return remap$(v, {
+        completion_tokens: 'completionTokens',
+        prompt_tokens: 'promptTokens',
+        total_tokens: 'totalTokens',
+        completion_tokens_details: 'completionTokensDetails',
+        prompt_tokens_details: 'promptTokensDetails',
+      });
+    });
 
 export function chatGenerationTokenUsageFromJSON(
   jsonString: string,

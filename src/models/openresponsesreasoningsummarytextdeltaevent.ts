@@ -3,17 +3,18 @@
  * @generated-id: 61ee69f0a41f
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../types/fp.js';
+import type { SDKValidationError } from './errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../lib/primitives.js';
+import { safeParse } from '../lib/schemas.js';
 
 /**
  * Event emitted when reasoning summary text delta is streamed
  */
 export type OpenResponsesReasoningSummaryTextDeltaEvent = {
-  type: "response.reasoning_summary_text.delta";
+  type: 'response.reasoning_summary_text.delta';
   itemId: string;
   outputIndex: number;
   summaryIndex: number;
@@ -22,35 +23,33 @@ export type OpenResponsesReasoningSummaryTextDeltaEvent = {
 };
 
 /** @internal */
-export const OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema:
-  z.ZodType<OpenResponsesReasoningSummaryTextDeltaEvent, unknown> = z.object({
-    type: z.literal("response.reasoning_summary_text.delta"),
+export const OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema: z.ZodType<
+  OpenResponsesReasoningSummaryTextDeltaEvent,
+  unknown
+> = z
+  .object({
+    type: z.literal('response.reasoning_summary_text.delta'),
     item_id: z.string(),
     output_index: z.number(),
     summary_index: z.number(),
     delta: z.string(),
     sequence_number: z.number(),
-  }).transform((v) => {
+  })
+  .transform((v) => {
     return remap$(v, {
-      "item_id": "itemId",
-      "output_index": "outputIndex",
-      "summary_index": "summaryIndex",
-      "sequence_number": "sequenceNumber",
+      item_id: 'itemId',
+      output_index: 'outputIndex',
+      summary_index: 'summaryIndex',
+      sequence_number: 'sequenceNumber',
     });
   });
 
 export function openResponsesReasoningSummaryTextDeltaEventFromJSON(
   jsonString: string,
-): SafeParseResult<
-  OpenResponsesReasoningSummaryTextDeltaEvent,
-  SDKValidationError
-> {
+): SafeParseResult<OpenResponsesReasoningSummaryTextDeltaEvent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema.parse(
-        JSON.parse(x),
-      ),
+    (x) => OpenResponsesReasoningSummaryTextDeltaEvent$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'OpenResponsesReasoningSummaryTextDeltaEvent' from JSON`,
   );
 }

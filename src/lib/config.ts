@@ -3,20 +3,22 @@
  * @generated-id: 320761608fb3
  */
 
-import { HTTPClient } from "./http.js";
-import { Logger } from "./logger.js";
-import { RetryConfig } from "./retries.js";
-import { Params, pathToFunc } from "./url.js";
+import type { HTTPClient } from './http.js';
+import type { Logger } from './logger.js';
+import type { RetryConfig } from './retries.js';
+import type { Params } from './url.js';
+
+import { pathToFunc } from './url.js';
 
 /**
  * Production server
  */
-export const ServerProduction = "production";
+export const ServerProduction = 'production';
 /**
  * Contains the list of servers available to the SDK
  */
 export const ServerList = {
-  [ServerProduction]: "https://openrouter.ai/api/v1",
+  [ServerProduction]: 'https://openrouter.ai/api/v1',
 } as const;
 
 export type SDKOptions = {
@@ -60,7 +62,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 
   if (!serverURL) {
     const server = options.server ?? ServerProduction;
-    serverURL = ServerList[server] || "";
+    serverURL = ServerList[server] || '';
   }
 
   const u = pathToFunc(serverURL)(params);
@@ -68,9 +70,9 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 }
 
 export const SDK_METADATA = {
-  language: "typescript",
-  openapiDocVersion: "1.0.0",
-  sdkVersion: "0.3.7",
-  genVersion: "2.788.4",
-  userAgent: "speakeasy-sdk/typescript 0.3.7 2.788.4 1.0.0 @openrouter/sdk",
+  language: 'typescript',
+  openapiDocVersion: '1.0.0',
+  sdkVersion: '0.3.7',
+  genVersion: '2.788.4',
+  userAgent: 'speakeasy-sdk/typescript 0.3.7 2.788.4 1.0.0 @openrouter/sdk',
 } as const;

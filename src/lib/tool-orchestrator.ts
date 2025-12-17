@@ -118,7 +118,7 @@ export async function executeToolLoop(
       const toolCall = toolCalls[i];
       if (!toolCall) return;
 
-      if (settled.status === "fulfilled") {
+      if (settled.status === 'fulfilled') {
         if (settled.value !== null) {
           roundResults.push(settled.value);
         }
@@ -128,9 +128,8 @@ export async function executeToolLoop(
           toolCallId: toolCall.id,
           toolName: toolCall.name,
           result: null,
-          error: settled.reason instanceof Error
-            ? settled.reason
-            : new Error(String(settled.reason)),
+          error:
+            settled.reason instanceof Error ? settled.reason : new Error(String(settled.reason)),
         });
       }
     });

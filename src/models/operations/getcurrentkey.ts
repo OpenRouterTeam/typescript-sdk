@@ -3,11 +3,12 @@
  * @generated-id: ddb4fa558414
  */
 
-import * as z from "zod/v4";
-import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import type { Result as SafeParseResult } from '../../types/fp.js';
+import type { SDKValidationError } from '../errors/sdkvalidationerror.js';
+
+import * as z from 'zod/v4';
+import { remap as remap$ } from '../../lib/primitives.js';
+import { safeParse } from '../../lib/schemas.js';
 
 /**
  * Legacy rate limit information about a key. Will always return -1.
@@ -133,47 +134,52 @@ export function rateLimitFromJSON(
 }
 
 /** @internal */
-export const GetCurrentKeyData$inboundSchema: z.ZodType<
-  GetCurrentKeyData,
-  unknown
-> = z.object({
-  label: z.string(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  usage_daily: z.number(),
-  usage_weekly: z.number(),
-  usage_monthly: z.number(),
-  byok_usage: z.number(),
-  byok_usage_daily: z.number(),
-  byok_usage_weekly: z.number(),
-  byok_usage_monthly: z.number(),
-  is_free_tier: z.boolean(),
-  is_provisioning_key: z.boolean(),
-  limit_remaining: z.nullable(z.number()),
-  limit_reset: z.nullable(z.string()),
-  include_byok_in_limit: z.boolean(),
-  expires_at: z.nullable(
-    z.iso.datetime({ offset: true }).transform(v => new Date(v)),
-  ).optional(),
-  rate_limit: z.lazy(() => RateLimit$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "usage_daily": "usageDaily",
-    "usage_weekly": "usageWeekly",
-    "usage_monthly": "usageMonthly",
-    "byok_usage": "byokUsage",
-    "byok_usage_daily": "byokUsageDaily",
-    "byok_usage_weekly": "byokUsageWeekly",
-    "byok_usage_monthly": "byokUsageMonthly",
-    "is_free_tier": "isFreeTier",
-    "is_provisioning_key": "isProvisioningKey",
-    "limit_remaining": "limitRemaining",
-    "limit_reset": "limitReset",
-    "include_byok_in_limit": "includeByokInLimit",
-    "expires_at": "expiresAt",
-    "rate_limit": "rateLimit",
+export const GetCurrentKeyData$inboundSchema: z.ZodType<GetCurrentKeyData, unknown> = z
+  .object({
+    label: z.string(),
+    limit: z.nullable(z.number()),
+    usage: z.number(),
+    usage_daily: z.number(),
+    usage_weekly: z.number(),
+    usage_monthly: z.number(),
+    byok_usage: z.number(),
+    byok_usage_daily: z.number(),
+    byok_usage_weekly: z.number(),
+    byok_usage_monthly: z.number(),
+    is_free_tier: z.boolean(),
+    is_provisioning_key: z.boolean(),
+    limit_remaining: z.nullable(z.number()),
+    limit_reset: z.nullable(z.string()),
+    include_byok_in_limit: z.boolean(),
+    expires_at: z
+      .nullable(
+        z.iso
+          .datetime({
+            offset: true,
+          })
+          .transform((v) => new Date(v)),
+      )
+      .optional(),
+    rate_limit: z.lazy(() => RateLimit$inboundSchema),
+  })
+  .transform((v) => {
+    return remap$(v, {
+      usage_daily: 'usageDaily',
+      usage_weekly: 'usageWeekly',
+      usage_monthly: 'usageMonthly',
+      byok_usage: 'byokUsage',
+      byok_usage_daily: 'byokUsageDaily',
+      byok_usage_weekly: 'byokUsageWeekly',
+      byok_usage_monthly: 'byokUsageMonthly',
+      is_free_tier: 'isFreeTier',
+      is_provisioning_key: 'isProvisioningKey',
+      limit_remaining: 'limitRemaining',
+      limit_reset: 'limitReset',
+      include_byok_in_limit: 'includeByokInLimit',
+      expires_at: 'expiresAt',
+      rate_limit: 'rateLimit',
+    });
   });
-});
 
 export function getCurrentKeyDataFromJSON(
   jsonString: string,
@@ -186,12 +192,10 @@ export function getCurrentKeyDataFromJSON(
 }
 
 /** @internal */
-export const GetCurrentKeyResponse$inboundSchema: z.ZodType<
-  GetCurrentKeyResponse,
-  unknown
-> = z.object({
-  data: z.lazy(() => GetCurrentKeyData$inboundSchema),
-});
+export const GetCurrentKeyResponse$inboundSchema: z.ZodType<GetCurrentKeyResponse, unknown> =
+  z.object({
+    data: z.lazy(() => GetCurrentKeyData$inboundSchema),
+  });
 
 export function getCurrentKeyResponseFromJSON(
   jsonString: string,

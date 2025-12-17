@@ -3,20 +3,26 @@
  * @generated-id: 8a6d91f1218d
  */
 
-import { SDKHooks } from "../hooks/hooks.js";
-import { HookContext } from "../hooks/types.js";
+import type { HookContext } from '../hooks/types.js';
+import type { Result } from '../types/fp.js';
+import type { SDKOptions } from './config.js';
+import type { Logger } from './logger.js';
+import type { RetryConfig } from './retries.js';
+import type { SecurityState } from './security.js';
+
+import { SDKHooks } from '../hooks/hooks.js';
 import {
   ConnectionError,
   InvalidRequestError,
   RequestAbortedError,
   RequestTimeoutError,
   UnexpectedClientError,
-} from "../models/errors/httpclienterrors.js";
-import { ERR, OK, Result } from "../types/fp.js";
-import { stringToBase64 } from "./base64.js";
-import { SDK_METADATA, SDKOptions, serverURLFromOptions } from "./config.js";
-import { encodeForm } from "./encodings.js";
-import { env, fillGlobals } from "./env.js";
+} from '../models/errors/httpclienterrors.js';
+import { ERR, OK } from '../types/fp.js';
+import { stringToBase64 } from './base64.js';
+import { SDK_METADATA, serverURLFromOptions } from './config.js';
+import { encodeForm } from './encodings.js';
+import { env, fillGlobals } from './env.js';
 import {
   HTTPClient,
   isAbortError,
@@ -24,10 +30,8 @@ import {
   isTimeoutError,
   matchContentType,
   matchStatusCode,
-} from "./http.js";
-import { Logger } from "./logger.js";
-import { retry, RetryConfig } from "./retries.js";
-import { SecurityState } from "./security.js";
+} from './http.js';
+import { retry } from './retries.js';
 
 export type RequestOptions = {
   /**
@@ -54,15 +58,15 @@ export type RequestOptions = {
    *
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options|Request}
    */
-  fetchOptions?: Omit<RequestInit, "method" | "body">;
-} & Omit<RequestInit, "method" | "body">;
+  fetchOptions?: Omit<RequestInit, 'method' | 'body'>;
+} & Omit<RequestInit, 'method' | 'body'>;
 
 type RequestConfig = {
   method: string;
   path: string;
   baseURL?: string | URL | undefined;
   query?: string;
-  body?: RequestInit["body"];
+  body?: RequestInit['body'];
   headers?: HeadersInit;
   security?: SecurityState | null;
   uaHeader?: string;
@@ -70,30 +74,29 @@ type RequestConfig = {
   timeoutMs?: number;
 };
 
-const gt: unknown = typeof globalThis === "undefined" ? null : globalThis;
-const webWorkerLike = typeof gt === "object"
-  && gt != null
-  && "importScripts" in gt
-  && typeof gt["importScripts"] === "function";
-const isBrowserLike = webWorkerLike
-  || (typeof navigator !== "undefined" && "serviceWorker" in navigator)
-  || (typeof window === "object" && typeof window.document !== "undefined");
+const gt: unknown = typeof globalThis === 'undefined' ? null : globalThis;
+const webWorkerLike =
+  typeof gt === 'object' &&
+  gt != null &&
+  'importScripts' in gt &&
+  typeof gt['importScripts'] === 'function';
+const isBrowserLike =
+  webWorkerLike ||
+  (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) ||
+  (typeof window === 'object' && typeof window.document !== 'undefined');
 
 export class ClientSDK {
   readonly #httpClient: HTTPClient;
   readonly #hooks: SDKHooks;
   readonly #logger?: Logger | undefined;
   public readonly _baseURL: URL | null;
-  public readonly _options: SDKOptions & { hooks?: SDKHooks };
+  public readonly _options: SDKOptions & {
+    hooks?: SDKHooks;
+  };
 
   constructor(options: SDKOptions = {}) {
     const opt = options as unknown;
-    if (
-      typeof opt === "object"
-      && opt != null
-      && "hooks" in opt
-      && opt.hooks instanceof SDKHooks
-    ) {
+    if (typeof opt === 'object' && opt != null && 'hooks' in opt && opt.hooks instanceof SDKHooks) {
       this.#hooks = opt.hooks;
     } else {
       this.#hooks = new SDKHooks();
@@ -104,12 +107,15 @@ export class ClientSDK {
 
     const url = serverURLFromOptions(options);
     if (url) {
-      url.pathname = url.pathname.replace(/\/+$/, "") + "/";
+      url.pathname = url.pathname.replace(/\/+$/, '') + '/';
     }
     this._baseURL = url;
     this.#httpClient = options.httpClient || defaultHttpClient;
 
-    this._options = { ...fillGlobals(options), hooks: this.#hooks };
+    this._options = {
+      ...fillGlobals(options),
+      hooks: this.#hooks,
+    };
 
     this.#logger = this._options.debugLogger;
     if (!this.#logger && env().OPENROUTER_DEBUG) {
@@ -126,31 +132,33 @@ export class ClientSDK {
 
     const base = conf.baseURL ?? this._baseURL;
     if (!base) {
-      return ERR(new InvalidRequestError("No base URL provided for operation"));
+      return ERR(new InvalidRequestError('No base URL provided for operation'));
     }
     const reqURL = new URL(base);
     const inputURL = new URL(path, reqURL);
 
     if (path) {
-      reqURL.pathname += reqURL.pathname.endsWith("/") ? "" : "/";
-      reqURL.pathname += inputURL.pathname.replace(/^\/+/, "");
+      reqURL.pathname += reqURL.pathname.endsWith('/') ? '' : '/';
+      reqURL.pathname += inputURL.pathname.replace(/^\/+/, '');
     }
 
-    let finalQuery = query || "";
+    let finalQuery = query || '';
 
     const secQuery: string[] = [];
     for (const [k, v] of Object.entries(security?.queryParams || {})) {
-      const q = encodeForm(k, v, { charEncoding: "percent" });
-      if (typeof q !== "undefined") {
+      const q = encodeForm(k, v, {
+        charEncoding: 'percent',
+      });
+      if (typeof q !== 'undefined') {
         secQuery.push(q);
       }
     }
     if (secQuery.length) {
-      finalQuery += `&${secQuery.join("&")}`;
+      finalQuery += `&${secQuery.join('&')}`;
     }
 
     if (finalQuery) {
-      const q = finalQuery.startsWith("&") ? finalQuery.slice(1) : finalQuery;
+      const q = finalQuery.startsWith('&') ? finalQuery.slice(1) : finalQuery;
       reqURL.search = `?${q}`;
     }
 
@@ -160,9 +168,12 @@ export class ClientSDK {
     const password = security?.basic.password;
     if (username != null || password != null) {
       const encoded = stringToBase64(
-        [username || "", password || ""].join(":"),
+        [
+          username || '',
+          password || '',
+        ].join(':'),
       );
-      headers.set("Authorization", `Basic ${encoded}`);
+      headers.set('Authorization', `Basic ${encoded}`);
     }
 
     const securityHeaders = new Headers(security?.headers || {});
@@ -170,16 +181,14 @@ export class ClientSDK {
       headers.set(k, v);
     }
 
-    let cookie = headers.get("cookie") || "";
+    let cookie = headers.get('cookie') || '';
     for (const [k, v] of Object.entries(security?.cookies || {})) {
       cookie += `; ${k}=${v}`;
     }
-    cookie = cookie.startsWith("; ") ? cookie.slice(2) : cookie;
-    headers.set("cookie", cookie);
+    cookie = cookie.startsWith('; ') ? cookie.slice(2) : cookie;
+    headers.set('cookie', cookie);
 
-    const userHeaders = new Headers(
-      options?.headers ?? options?.fetchOptions?.headers,
-    );
+    const userHeaders = new Headers(options?.headers ?? options?.fetchOptions?.headers);
     for (const [k, v] of userHeaders) {
       headers.set(k, v);
     }
@@ -187,13 +196,10 @@ export class ClientSDK {
     // Only set user agent header in non-browser-like environments since CORS
     // policy disallows setting it in browsers e.g. Chrome throws an error.
     if (!isBrowserLike) {
-      headers.set(
-        conf.uaHeader ?? "user-agent",
-        conf.userAgent ?? SDK_METADATA.userAgent,
-      );
+      headers.set(conf.uaHeader ?? 'user-agent', conf.userAgent ?? SDK_METADATA.userAgent);
     }
 
-    const fetchOptions: Omit<RequestInit, "method" | "body"> = {
+    const fetchOptions: Omit<RequestInit, 'method' | 'body'> = {
       ...options?.fetchOptions,
       ...options,
     };
@@ -203,7 +209,9 @@ export class ClientSDK {
     }
 
     if (conf.body instanceof ReadableStream) {
-      Object.assign(fetchOptions, { duplex: "half" });
+      Object.assign(fetchOptions, {
+        duplex: 'half',
+      });
     }
 
     let input;
@@ -219,7 +227,7 @@ export class ClientSDK {
       });
     } catch (err: unknown) {
       return ERR(
-        new UnexpectedClientError("Create request hook failed to execute", {
+        new UnexpectedClientError('Create request hook failed to execute', {
           cause: err,
         }),
       );
@@ -239,10 +247,7 @@ export class ClientSDK {
   ): Promise<
     Result<
       Response,
-      | RequestAbortedError
-      | RequestTimeoutError
-      | ConnectionError
-      | UnexpectedClientError
+      RequestAbortedError | RequestTimeoutError | ConnectionError | UnexpectedClientError
     >
   > {
     const { context, errorCodes } = options;
@@ -251,18 +256,14 @@ export class ClientSDK {
       async () => {
         const req = await this.#hooks.beforeRequest(context, request.clone());
         await logRequest(this.#logger, req).catch((e) =>
-          this.#logger?.log("Failed to log request:", e)
+          this.#logger?.log('Failed to log request:', e),
         );
 
         let response = await this.#httpClient.request(req);
 
         try {
           if (matchStatusCode(response, errorCodes)) {
-            const result = await this.#hooks.afterError(
-              context,
-              response,
-              null,
-            );
+            const result = await this.#hooks.afterError(context, response, null);
             if (result.error) {
               throw result.error;
             }
@@ -271,34 +272,42 @@ export class ClientSDK {
             response = await this.#hooks.afterSuccess(context, response);
           }
         } finally {
-          await logResponse(this.#logger, response, req)
-            .catch(e => this.#logger?.log("Failed to log response:", e));
+          await logResponse(this.#logger, response, req).catch((e) =>
+            this.#logger?.log('Failed to log response:', e),
+          );
         }
 
         return response;
       },
-      { config: options.retryConfig, statusCodes: options.retryCodes },
+      {
+        config: options.retryConfig,
+        statusCodes: options.retryCodes,
+      },
     ).then(
       (r) => OK(r),
       (err) => {
         switch (true) {
           case isAbortError(err):
             return ERR(
-              new RequestAbortedError("Request aborted by client", {
+              new RequestAbortedError('Request aborted by client', {
                 cause: err,
               }),
             );
           case isTimeoutError(err):
             return ERR(
-              new RequestTimeoutError("Request timed out", { cause: err }),
+              new RequestTimeoutError('Request timed out', {
+                cause: err,
+              }),
             );
           case isConnectionError(err):
             return ERR(
-              new ConnectionError("Unable to make request", { cause: err }),
+              new ConnectionError('Unable to make request', {
+                cause: err,
+              }),
             );
           default:
             return ERR(
-              new UnexpectedClientError("Unexpected HTTP client error", {
+              new UnexpectedClientError('Unexpected HTTP client error', {
                 cause: err,
               }),
             );
@@ -309,36 +318,35 @@ export class ClientSDK {
 }
 
 const jsonLikeContentTypeRE = /(application|text)\/.*?\+*json.*/;
-const jsonlLikeContentTypeRE =
-  /(application|text)\/(.*?\+*\bjsonl\b.*|.*?\+*\bx-ndjson\b.*)/;
+const jsonlLikeContentTypeRE = /(application|text)\/(.*?\+*\bjsonl\b.*|.*?\+*\bx-ndjson\b.*)/;
 async function logRequest(logger: Logger | undefined, req: Request) {
   if (!logger) {
     return;
   }
 
-  const contentType = req.headers.get("content-type");
-  const ct = contentType?.split(";")[0] || "";
+  const contentType = req.headers.get('content-type');
+  const ct = contentType?.split(';')[0] || '';
 
   logger.group(`> Request: ${req.method} ${req.url}`);
 
-  logger.group("Headers:");
+  logger.group('Headers:');
   for (const [k, v] of req.headers.entries()) {
     logger.log(`${k}: ${v}`);
   }
   logger.groupEnd();
 
-  logger.group("Body:");
+  logger.group('Body:');
   switch (true) {
     case jsonLikeContentTypeRE.test(ct):
       logger.log(await req.clone().json());
       break;
-    case ct.startsWith("text/"):
+    case ct.startsWith('text/'):
       logger.log(await req.clone().text());
       break;
-    case ct === "multipart/form-data": {
+    case ct === 'multipart/form-data': {
       const body = await req.clone().formData();
       for (const [k, v] of body) {
-        const vlabel = v instanceof Blob ? "<Blob>" : v;
+        const vlabel = v instanceof Blob ? '<Blob>' : v;
         logger.log(`${k}: ${vlabel}`);
       }
       break;
@@ -352,47 +360,42 @@ async function logRequest(logger: Logger | undefined, req: Request) {
   logger.groupEnd();
 }
 
-async function logResponse(
-  logger: Logger | undefined,
-  res: Response,
-  req: Request,
-) {
+async function logResponse(logger: Logger | undefined, res: Response, req: Request) {
   if (!logger) {
     return;
   }
 
-  const contentType = res.headers.get("content-type");
-  const ct = contentType?.split(";")[0] || "";
+  const contentType = res.headers.get('content-type');
+  const ct = contentType?.split(';')[0] || '';
 
   logger.group(`< Response: ${req.method} ${req.url}`);
-  logger.log("Status Code:", res.status, res.statusText);
+  logger.log('Status Code:', res.status, res.statusText);
 
-  logger.group("Headers:");
+  logger.group('Headers:');
   for (const [k, v] of res.headers.entries()) {
     logger.log(`${k}: ${v}`);
   }
   logger.groupEnd();
 
-  logger.group("Body:");
+  logger.group('Body:');
   switch (true) {
-    case matchContentType(res, "application/json")
-      || jsonLikeContentTypeRE.test(ct) && !jsonlLikeContentTypeRE.test(ct):
+    case matchContentType(res, 'application/json') ||
+      (jsonLikeContentTypeRE.test(ct) && !jsonlLikeContentTypeRE.test(ct)):
       logger.log(await res.clone().json());
       break;
-    case matchContentType(res, "application/jsonl")
-      || jsonlLikeContentTypeRE.test(ct):
+    case matchContentType(res, 'application/jsonl') || jsonlLikeContentTypeRE.test(ct):
       logger.log(await res.clone().text());
       break;
-    case matchContentType(res, "text/event-stream"):
+    case matchContentType(res, 'text/event-stream'):
       logger.log(`<${contentType}>`);
       break;
-    case matchContentType(res, "text/*"):
+    case matchContentType(res, 'text/*'):
       logger.log(await res.clone().text());
       break;
-    case matchContentType(res, "multipart/form-data"): {
+    case matchContentType(res, 'multipart/form-data'): {
       const body = await res.clone().formData();
       for (const [k, v] of body) {
-        const vlabel = v instanceof Blob ? "<Blob>" : v;
+        const vlabel = v instanceof Blob ? '<Blob>' : v;
         logger.log(`${k}: ${vlabel}`);
       }
       break;

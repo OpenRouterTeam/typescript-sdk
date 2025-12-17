@@ -3,7 +3,7 @@
  * @generated-id: f431fdbcd144
  */
 
-import { ClientSDK } from "./lib/sdks.js";
+import { ClientSDK } from './lib/sdks.js';
 
 /**
  * A minimal client to use when calling standalone SDK functions. Typically, an
