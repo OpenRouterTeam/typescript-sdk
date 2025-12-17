@@ -1,5 +1,4 @@
 # Analytics
-(*analytics*)
 
 ## Overview
 

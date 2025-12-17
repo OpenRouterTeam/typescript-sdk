@@ -6211,7 +6211,22 @@ components:
         - model
         - choices
       additionalProperties: false
-  parameters: {AppIdentifier: {name: HTTP-Referer, in: header, schema: {type: string}, description: "The app identifier should be your app's URL and is used as the primary identifier for rankings.\nThis is used to track API usage per application.\n"}, AppDisplayName: {name: X-Title, in: header, schema: {type: string}, description: "The app display name allows you to customize how your app appears in OpenRouter's dashboard.\n"}}
+  parameters:
+    AppIdentifier:
+      name: HTTP-Referer
+      in: header
+      schema:
+        type: string
+      description: |
+        The app identifier should be your app's URL and is used as the primary identifier for rankings.
+        This is used to track API usage per application.
+    AppDisplayName:
+      name: X-Title
+      in: header
+      schema:
+        type: string
+      description: |
+        The app display name allows you to customize how your app appears in OpenRouter's dashboard.
   securitySchemes:
     apiKey:
       type: http
