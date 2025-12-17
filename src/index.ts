@@ -12,3 +12,61 @@ export * from "./sdk/sdk.js";
 export { fromClaudeMessages, toClaudeMessage } from "./lib/anthropic-compat.js";
 export { fromChatMessages, toChatMessage } from "./lib/chat-compat.js";
 export { extractUnsupportedContent, hasUnsupportedContent, getUnsupportedContentSummary } from "./lib/stream-transformers.js";
+
+// Claude message types
+export type {
+  ClaudeMessage,
+  ClaudeMessageParam,
+  ClaudeContentBlock,
+  ClaudeContentBlockParam,
+  ClaudeTextBlock,
+  ClaudeThinkingBlock,
+  ClaudeRedactedThinkingBlock,
+  ClaudeToolUseBlock,
+  ClaudeServerToolUseBlock,
+  ClaudeTextBlockParam,
+  ClaudeImageBlockParam,
+  ClaudeToolUseBlockParam,
+  ClaudeToolResultBlockParam,
+  ClaudeStopReason,
+  ClaudeUsage,
+  ClaudeCacheControl,
+  ClaudeTextCitation,
+  ClaudeCitationCharLocation,
+  ClaudeCitationPageLocation,
+  ClaudeCitationContentBlockLocation,
+  ClaudeCitationWebSearchResultLocation,
+  ClaudeCitationSearchResultLocation,
+  ClaudeBase64ImageSource,
+  ClaudeURLImageSource,
+} from "./models/claude-message.js";
+
+// Tool creation helpers
+export { tool } from "./lib/tool.js";
+
+// Tool types
+export type {
+  Tool,
+  ToolWithExecute,
+  ToolWithGenerator,
+  ManualTool,
+  TurnContext,
+  InferToolInput,
+  InferToolOutput,
+  InferToolEvent,
+  InferToolEventsUnion,
+  TypedToolCall,
+  TypedToolCallUnion,
+  ToolStreamEvent,
+  ChatStreamEvent,
+  EnhancedResponseStreamEvent,
+  ToolPreliminaryResultEvent,
+} from "./lib/tool-types.js";
+
+export {
+  ToolType,
+  hasExecuteFunction,
+  isGeneratorTool,
+  isRegularExecuteTool,
+  isToolPreliminaryResultEvent,
+} from "./lib/tool-types.js";

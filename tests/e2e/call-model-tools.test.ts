@@ -64,8 +64,7 @@ describe('Enhanced Tool Support for callModel', () => {
         target: 'openapi-3.0',
       });
 
-      // @ts-expect-error - description is not a property of _JSONSchema
-      expect(jsonSchema.properties?.location?.description).toBe(
+      expect(jsonSchema.properties?.location?.['description']).toBe(
         'City and country e.g. Bogotá, Colombia',
       );
     });
