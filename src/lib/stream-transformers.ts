@@ -3,6 +3,65 @@ import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall } from './tool-types.js';
 
 /**
+ * Type guard for response.output_text.delta events
+ */
+function isOutputTextDeltaEvent(
+  event: models.OpenResponsesStreamEvent,
+): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
+  return 'type' in event && event.type === 'response.output_text.delta';
+}
+
+/**
+ * Type guard for response.reasoning_text.delta events
+ */
+function isReasoningDeltaEvent(
+  event: models.OpenResponsesStreamEvent,
+): event is models.OpenResponsesReasoningDeltaEvent {
+  return 'type' in event && event.type === 'response.reasoning_text.delta';
+}
+
+/**
+ * Type guard for response.function_call_arguments.delta events
+ */
+function isFunctionCallArgumentsDeltaEvent(
+  event: models.OpenResponsesStreamEvent,
+): event is models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta {
+  return 'type' in event && event.type === 'response.function_call_arguments.delta';
+}
+
+/**
+ * Type guard for response.output_item.added events
+ */
+function isOutputItemAddedEvent(
+  event: models.OpenResponsesStreamEvent,
+): event is models.OpenResponsesStreamEventResponseOutputItemAdded {
+  return 'type' in event && event.type === 'response.output_item.added';
+}
+
+/**
+ * Type guard for response.output_item.done events
+ */
+function isOutputItemDoneEvent(
+  event: models.OpenResponsesStreamEvent,
+): event is models.OpenResponsesStreamEventResponseOutputItemDone {
+  return 'type' in event && event.type === 'response.output_item.done';
+}
+
+/**
+ * Type guard to check if an output item is a message
+ */
+function isOutputMessage(
+  item: unknown,
+): item is models.ResponsesOutputMessage {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    'type' in item &&
+    item.type === 'message'
+  );
+}
+
+/**
  * Extract text deltas from responses stream events
  */
 export async function* extractTextDeltas(
@@ -11,10 +70,9 @@ export async function* extractTextDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.output_text.delta') {
-      const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isOutputTextDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
@@ -29,10 +87,9 @@ export async function* extractReasoningDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.reasoning_text.delta') {
-      const deltaEvent = event as models.OpenResponsesReasoningDeltaEvent;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isReasoningDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
@@ -47,10 +104,9 @@ export async function* extractToolDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.function_call_arguments.delta') {
-      const deltaEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isFunctionCallArgumentsDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
@@ -82,44 +138,46 @@ async function* buildMessageStreamCore(
 
     switch (event.type) {
       case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
-          hasStarted = true;
-          currentText = '';
-          const msgItem = itemEvent.item as models.ResponsesOutputMessage;
-          currentId = msgItem.id;
+        if (isOutputItemAddedEvent(event)) {
+          if (event.item && isOutputMessage(event.item)) {
+            hasStarted = true;
+            currentText = '';
+            currentId = event.item.id;
+          }
         }
         break;
       }
 
       case 'response.output_text.delta': {
-        const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-        if (hasStarted && deltaEvent.delta) {
-          currentText += deltaEvent.delta;
-          yield {
-            type: 'delta' as const,
-            text: currentText,
-            messageId: currentId,
-          };
+        if (isOutputTextDeltaEvent(event)) {
+          if (hasStarted && event.delta) {
+            currentText += event.delta;
+            yield {
+              type: 'delta' as const,
+              text: currentText,
+              messageId: currentId,
+            };
+          }
         }
         break;
       }
 
       case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'message'
-        ) {
-          const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
-          yield {
-            type: 'complete' as const,
-            completeMessage: outputMessage,
-          };
+        if (isOutputItemDoneEvent(event)) {
+          if (event.item && isOutputMessage(event.item)) {
+            yield {
+              type: 'complete' as const,
+              completeMessage: event.item,
+            };
+          }
         }
         break;
       }
+
+      default:
+        // Ignore other event types - this is intentionally not exhaustive
+        // as we only care about specific events for message building
+        break;
     }
   }
 }

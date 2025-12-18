@@ -56,12 +56,12 @@ export function normalizeInputToArray(
   input: models.OpenResponsesInput
 ): Array<models.OpenResponsesInput1> {
   if (typeof input === 'string') {
-    return [
-      {
-        role: models.OpenResponsesEasyInputMessageRoleUser.User,
-        content: input,
-      } as models.OpenResponsesEasyInputMessage,
-    ];
+    // Construct object with all required fields - type is optional
+    const message: models.OpenResponsesEasyInputMessage = {
+      role: models.OpenResponsesEasyInputMessageRoleUser.User,
+      content: input,
+    };
+    return [message];
   }
   return input;
 }

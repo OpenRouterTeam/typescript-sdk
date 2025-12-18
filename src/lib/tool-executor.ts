@@ -22,8 +22,9 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
 
 /**
  * Convert tools to OpenRouter API format
+ * Accepts readonly arrays for better type compatibility
  */
-export function convertToolsToAPIFormat(tools: Tool[]): APITool[] {
+export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
   return tools.map((tool) => ({
     type: 'function' as const,
     name: tool.function.name,
@@ -133,10 +134,11 @@ export async function executeGeneratorTool(
 
   try {
     // Validate input - the schema validation ensures type safety at runtime
+    // The inputSchema's inferred type matches the execute function's parameter type by construction
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
       toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+    );
 
     // Execute generator and collect all results
     const preliminaryResults: unknown[] = [];

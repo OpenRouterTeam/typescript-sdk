@@ -2,6 +2,17 @@ import type * as models from '../models/index.js';
 import type { StopWhen, Tool, TurnContext } from './tool-types.js';
 
 /**
+ * Type-safe Object.fromEntries that preserves key-value type relationships
+ */
+const typeSafeObjectFromEntries = <
+  const T extends ReadonlyArray<readonly [PropertyKey, unknown]>
+>(
+  entries: T
+): { [K in T[number] as K[0]]: K[1] } => {
+  return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
+};
+
+/**
  * A field can be either a value of type T or a function that computes T
  */
 export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise<T>);
@@ -53,8 +64,8 @@ export async function resolveAsyncFunctions(
   input: CallModelInput,
   context: TurnContext,
 ): Promise<ResolvedCallModelInput> {
-  // Build the resolved object by processing each field
-  const resolvedEntries: Array<[string, unknown]> = [];
+  // Build array of resolved entries
+  const resolvedEntries: Array<readonly [string, unknown]> = [];
 
   // Iterate over all keys in the input
   for (const [key, value] of Object.entries(input)) {
@@ -66,10 +77,10 @@ export async function resolveAsyncFunctions(
     if (typeof value === 'function') {
       try {
         // Execute the function with context and store the result
-        // Safe to cast because we've filtered out stopWhen and tools
+        // Type guard ensures value is a function
         const fn = value as (context: TurnContext) => unknown;
         const result = await Promise.resolve(fn(context));
-        resolvedEntries.push([key, result]);
+        resolvedEntries.push([key, result] as const);
       } catch (error) {
         // Wrap errors with context about which field failed
         throw new Error(
@@ -79,14 +90,14 @@ export async function resolveAsyncFunctions(
       }
     } else {
       // Not a function, use as-is
-      resolvedEntries.push([key, value]);
+      resolvedEntries.push([key, value] as const);
     }
   }
 
-  // Build the final object from entries
-  // Type safety is ensured by the input type - each key in CallModelInput
-  // corresponds to the same key in ResolvedCallModelInput with resolved type
-  return Object.fromEntries(resolvedEntries) as ResolvedCallModelInput;
+  // Use type-safe fromEntries - the result type is inferred from the entries
+  // We still need the final cast to ResolvedCallModelInput because TypeScript can't prove
+  // that the dynamic keys match the static type, but this is safer than before
+  return typeSafeObjectFromEntries(resolvedEntries) as ResolvedCallModelInput;
 }
 
 /**

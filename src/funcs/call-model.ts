@@ -126,8 +126,8 @@ export function callModel<TOOLS extends readonly Tool[] = readonly Tool[]>(
 ): ModelResult {
   const { tools, stopWhen, ...apiRequest } = request;
 
-  // Convert tools to API format and extract enhanced tools if present
-  const apiTools = tools ? convertToolsToAPIFormat(tools as unknown as Tool[]) : undefined;
+  // Convert tools to API format - no cast needed now that convertToolsToAPIFormat accepts readonly
+  const apiTools = tools ? convertToolsToAPIFormat(tools) : undefined;
 
   // Build the request with converted tools
   // Note: async functions are resolved later in ModelResult.executeToolsIfNeeded()
