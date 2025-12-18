@@ -104,12 +104,31 @@ export async function executeToolLoop(
         return null;
       }
 
-      // Build turn context
+      // Find the raw tool call from the response output
+      const rawToolCall = currentResponse.output.find(
+        (item): item is models.ResponsesOutputItemFunctionCall =>
+          'type' in item && item.type === 'function_call' && item.callId === toolCall.id
+      );
+
+      if (!rawToolCall) {
+        throw new Error(`Could not find raw tool call for ${toolCall.id}`);
+      }
+
+      // Convert to OpenResponsesFunctionToolCall format
+      const openResponsesToolCall: models.OpenResponsesFunctionToolCall = {
+        type: 'function_call' as const,
+        callId: rawToolCall.callId,
+        name: rawToolCall.name,
+        arguments: rawToolCall.arguments,
+        id: rawToolCall.callId,
+        status: rawToolCall.status,
+      };
+
+      // Build turn context with full information
       const turnContext = buildTurnContext({
         numberOfTurns: currentRound,
-        messageHistory: conversationInput,
-        model: currentRequest.model,
-        models: currentRequest.models,
+        toolCall: openResponsesToolCall,
+        turnRequest: currentRequest,
       });
 
       // Execute the tool

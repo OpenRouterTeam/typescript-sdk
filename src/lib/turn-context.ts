@@ -5,38 +5,49 @@ import type { TurnContext } from './tool-types.js';
  * Options for building a turn context
  */
 export interface BuildTurnContextOptions {
-  /** Number of turns so far (1-indexed) */
+  /** Number of turns so far (1-indexed for tool execution, 0 for initial request) */
   numberOfTurns: number;
-  /** Current message history */
-  messageHistory: models.OpenResponsesInput;
-  /** Current model (if set) */
-  model?: string | undefined;
-  /** Current models array (if set) */
-  models?: string[] | undefined;
+  /** The specific tool call being executed (optional for initial/async resolution contexts) */
+  toolCall?: models.OpenResponsesFunctionToolCall;
+  /** The full request being sent to the API (optional for initial/async resolution contexts) */
+  turnRequest?: models.OpenResponsesRequest;
 }
 
 /**
- * Build a turn context for tool execution
+ * Build a turn context for tool execution or async parameter resolution
  *
  * @param options - Options for building the context
  * @returns A TurnContext object
  *
  * @example
  * ```typescript
+ * // For tool execution with full context
  * const context = buildTurnContext({
  *   numberOfTurns: 1,
- *   messageHistory: input,
- *   model: 'anthropic/claude-3-sonnet',
+ *   toolCall: rawToolCall,
+ *   turnRequest: currentRequest,
+ * });
+ *
+ * // For async parameter resolution (partial context)
+ * const context = buildTurnContext({
+ *   numberOfTurns: 0,
  * });
  * ```
  */
 export function buildTurnContext(options: BuildTurnContextOptions): TurnContext {
-  return {
+  const context: TurnContext = {
     numberOfTurns: options.numberOfTurns,
-    input: options.messageHistory,
-    model: options.model,
-    models: options.models,
   };
+
+  if (options.toolCall !== undefined) {
+    context.toolCall = options.toolCall;
+  }
+
+  if (options.turnRequest !== undefined) {
+    context.turnRequest = options.turnRequest;
+  }
+
+  return context;
 }
 
 /**

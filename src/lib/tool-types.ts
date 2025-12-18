@@ -11,14 +11,16 @@ export enum ToolType {
 }
 
 /**
- * Turn context passed to tool execute functions
+ * Turn context passed to tool execute functions and async parameter resolution
  * Contains information about the current conversation state
  */
 export interface TurnContext {
-  toolCall: models.OpenResponsesFunctionToolCall;
-  /** Number of tool execution turns so far (1-indexed: first turn = 1) */
+  /** The specific tool call being executed (only available during tool execution) */
+  toolCall?: models.OpenResponsesFunctionToolCall;
+  /** Number of tool execution turns so far (1-indexed: first turn = 1, 0 = initial request) */
   numberOfTurns: number;
-  turnRequest: models.OpenResponsesRequest;
+  /** The full request being sent to the API (only available during tool execution) */
+  turnRequest?: models.OpenResponsesRequest;
 }
 
 /**
@@ -55,16 +57,6 @@ export type NextTurnParamsFunctions<TInput> = {
     context: NextTurnParamsContext
   ) => NextTurnParamsContext[K] | Promise<NextTurnParamsContext[K]>;
 };
-
-/**
- * Information about a tool call needed for nextTurnParams execution
- */
-export interface ToolCallInfo {
-  id: string;
-  name: string;
-  arguments: unknown;
-  tool: Tool;
-}
 
 /**
  * Base tool function interface with inputSchema

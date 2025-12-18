@@ -157,9 +157,6 @@ export class ModelResult {
       // Build initial turn context (turn 0 for initial request)
       const initialContext: TurnContext = {
         numberOfTurns: 0,
-        input: [],
-        model: undefined,
-        models: undefined,
       };
 
       // Resolve any async functions first
@@ -248,8 +245,6 @@ export class ModelResult {
 
       let currentResponse = initialResponse;
       let currentRound = 0;
-      let currentInput: models.OpenResponsesInput =
-        (this.options.request as models.OpenResponsesRequest).input || [];
 
       while (true) {
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
@@ -274,17 +269,9 @@ export class ModelResult {
           response: currentResponse,
         });
 
-        // Build turn context for this round
-        const resolvedRequest = this.options.request as models.OpenResponsesRequest;
+        // Build turn context for this round (for async parameter resolution only)
         const turnContext: TurnContext = {
           numberOfTurns: currentRound + 1, // 1-indexed
-          input: currentInput,
-          ...(resolvedRequest.model && {
-            model: resolvedRequest.model,
-          }),
-          ...(resolvedRequest.models && {
-            models: resolvedRequest.models,
-          }),
         };
 
         // Resolve async functions for this turn
@@ -352,9 +339,6 @@ export class ModelResult {
             ]),
           ...toolResults,
         ];
-
-        // Update current input for next iteration
-        currentInput = newInput;
 
         // Make new request with tool results
         const newRequest: models.OpenResponsesRequest = {

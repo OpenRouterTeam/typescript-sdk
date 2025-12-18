@@ -24,7 +24,6 @@ export type {
   StopCondition,
   StopWhen,
   Tool,
-  ToolCallInfo,
   ToolPreliminaryResultEvent,
   ToolStreamEvent,
   ToolWithExecute,
