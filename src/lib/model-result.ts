@@ -1,19 +1,21 @@
-import type { OpenRouterCore } from "../core.js";
-import type * as models from "../models/index.js";
-import type { EventStream } from "./event-streams.js";
-import type { RequestOptions } from "./sdks.js";
+import type { OpenRouterCore } from '../core.js';
+import type * as models from '../models/index.js';
+import type { AsyncCallModelInput } from './async-params.js';
+import type { EventStream } from './event-streams.js';
+import type { RequestOptions } from './sdks.js';
 import type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
-  Tool,
   MaxToolRounds,
   ParsedToolCall,
+  Tool,
   ToolStreamEvent,
   TurnContext,
-} from "./tool-types.js";
+} from './tool-types.js';
 
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
-import { ReusableReadableStream } from "./reusable-stream.js";
+import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
+import { hasAsyncFunctions, resolveAsyncFunctions } from './async-params.js';
+import { ReusableReadableStream } from './reusable-stream.js';
 import {
   buildResponsesMessageStream,
   buildToolCallStream,
@@ -24,22 +26,23 @@ import {
   extractTextFromResponse,
   extractToolCallsFromResponse,
   extractToolDeltas,
-} from "./stream-transformers.js";
-import { executeTool } from "./tool-executor.js";
-import { hasExecuteFunction } from "./tool-types.js";
+} from './stream-transformers.js';
+import { executeTool } from './tool-executor.js';
+import { hasExecuteFunction } from './tool-types.js';
 
 /**
  * Type guard for stream event with toReadableStream method
  */
-function isEventStream(
-  value: unknown
-): value is EventStream<models.OpenResponsesStreamEvent> {
+function isEventStream(value: unknown): value is EventStream<models.OpenResponsesStreamEvent> {
   return (
     value !== null &&
-    typeof value === "object" &&
-    "toReadableStream" in value &&
-    typeof (value as { toReadableStream: unknown }).toReadableStream ===
-      "function"
+    typeof value === 'object' &&
+    'toReadableStream' in value &&
+    typeof (
+      value as {
+        toReadableStream: unknown;
+      }
+    ).toReadableStream === 'function'
   );
 }
 
@@ -47,36 +50,40 @@ function isEventStream(
  * Type guard for response.output_text.delta events
  */
 function isOutputTextDeltaEvent(
-  event: models.OpenResponsesStreamEvent
+  event: models.OpenResponsesStreamEvent,
 ): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
-  return "type" in event && event.type === "response.output_text.delta";
+  return 'type' in event && event.type === 'response.output_text.delta';
 }
 
 /**
  * Type guard for response.completed events
  */
 function isResponseCompletedEvent(
-  event: models.OpenResponsesStreamEvent
+  event: models.OpenResponsesStreamEvent,
 ): event is models.OpenResponsesStreamEventResponseCompleted {
-  return "type" in event && event.type === "response.completed";
+  return 'type' in event && event.type === 'response.completed';
 }
 
 /**
  * Type guard for output items with a type property
  */
-function hasTypeProperty(
-  item: unknown
-): item is { type: string } {
+function hasTypeProperty(item: unknown): item is {
+  type: string;
+} {
   return (
-    typeof item === "object" &&
+    typeof item === 'object' &&
     item !== null &&
-    "type" in item &&
-    typeof (item as { type: unknown }).type === "string"
+    'type' in item &&
+    typeof (
+      item as {
+        type: unknown;
+      }
+    ).type === 'string'
   );
 }
 
 export interface GetResponseOptions {
-  request: models.OpenResponsesRequest;
+  request: models.OpenResponsesRequest | AsyncCallModelInput;
   client: OpenRouterCore;
   options?: RequestOptions;
   tools?: Tool[];
@@ -101,11 +108,8 @@ export interface GetResponseOptions {
  * ReusableReadableStream implementation.
  */
 export class ModelResult {
-  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null =
-    null;
-  private streamPromise: Promise<
-    EventStream<models.OpenResponsesStreamEvent>
-  > | null = null;
+  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
+  private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
   private textPromise: Promise<string> | null = null;
   private options: GetResponseOptions;
   private initPromise: Promise<void> | null = null;
@@ -126,15 +130,15 @@ export class ModelResult {
    * Type guard to check if a value is a non-streaming response
    */
   private isNonStreamingResponse(
-    value: unknown
+    value: unknown,
   ): value is models.OpenResponsesNonStreamingResponse {
     return (
       value !== null &&
-      typeof value === "object" &&
-      "id" in value &&
-      "object" in value &&
-      "output" in value &&
-      !("toReadableStream" in value)
+      typeof value === 'object' &&
+      'id' in value &&
+      'object' in value &&
+      'output' in value &&
+      !('toReadableStream' in value)
     );
   }
 
@@ -148,9 +152,27 @@ export class ModelResult {
     }
 
     this.initPromise = (async () => {
+      // Resolve async functions before initial request
+      // Build initial turn context (turn 0 for initial request)
+      const initialContext: TurnContext = {
+        numberOfTurns: 0,
+        messageHistory: [],
+        model: undefined,
+        models: undefined,
+      };
+
+      // Resolve any async functions first
+      if (hasAsyncFunctions(this.options.request)) {
+        const resolved = await resolveAsyncFunctions(
+          this.options.request as AsyncCallModelInput,
+          initialContext,
+        );
+        this.options.request = resolved as models.OpenResponsesRequest;
+      }
+
       // Force stream mode
       const request = {
-        ...this.options.request,
+        ...(this.options.request as models.OpenResponsesRequest),
         stream: true as const,
       };
 
@@ -158,7 +180,7 @@ export class ModelResult {
       this.streamPromise = betaResponsesSend(
         this.options.client,
         request,
-        this.options.options
+        this.options.options,
       ).then((result) => {
         if (!result.ok) {
           throw result.error;
@@ -187,20 +209,19 @@ export class ModelResult {
       await this.initStream();
 
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
+      // Note: Async functions already resolved in initStream()
       // Get the initial response
-      const initialResponse = await consumeStreamForCompletion(
-        this.reusableStream
-      );
+      const initialResponse = await consumeStreamForCompletion(this.reusableStream);
 
       // Check if we have tools and if auto-execution is enabled
       const shouldAutoExecute =
         this.options.tools &&
         this.options.tools.length > 0 &&
         initialResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "function_call"
+          (item) => hasTypeProperty(item) && item.type === 'function_call',
         );
 
       if (!shouldAutoExecute) {
@@ -214,9 +235,7 @@ export class ModelResult {
 
       // Check if any have execute functions
       const executableTools = toolCalls.filter((toolCall) => {
-        const tool = this.options.tools?.find(
-          (t) => t.function.name === toolCall.name
-        );
+        const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
         return tool && hasExecuteFunction(tool);
       });
 
@@ -232,7 +251,7 @@ export class ModelResult {
       let currentResponse = initialResponse;
       let currentRound = 0;
       let currentInput: models.OpenResponsesInput =
-        this.options.request.input || [];
+        (this.options.request as models.OpenResponsesRequest).input || [];
 
       while (true) {
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
@@ -242,9 +261,7 @@ export class ModelResult {
         }
 
         const hasExecutable = currentToolCalls.some((toolCall) => {
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
           return tool && hasExecuteFunction(tool);
         });
 
@@ -253,20 +270,21 @@ export class ModelResult {
         }
 
         // Check if we should continue based on maxToolRounds
-        if (typeof maxToolRounds === "number") {
+        if (typeof maxToolRounds === 'number') {
           if (currentRound >= maxToolRounds) {
             break;
           }
-        } else if (typeof maxToolRounds === "function") {
+        } else if (typeof maxToolRounds === 'function') {
           // Function signature: (context: TurnContext) => boolean
+          const resolvedRequest = this.options.request as models.OpenResponsesRequest;
           const turnContext: TurnContext = {
             numberOfTurns: currentRound + 1,
             messageHistory: currentInput,
-            ...(this.options.request.model && {
-              model: this.options.request.model,
+            ...(resolvedRequest.model && {
+              model: resolvedRequest.model,
             }),
-            ...(this.options.request.models && {
-              models: this.options.request.models,
+            ...(resolvedRequest.models && {
+              models: resolvedRequest.models,
             }),
           };
           const shouldContinue = maxToolRounds(turnContext);
@@ -282,25 +300,33 @@ export class ModelResult {
           response: currentResponse,
         });
 
-        // Build turn context for tool execution
+        // Build turn context for this round
+        const resolvedRequest = this.options.request as models.OpenResponsesRequest;
         const turnContext: TurnContext = {
           numberOfTurns: currentRound + 1, // 1-indexed
           messageHistory: currentInput,
-          ...(this.options.request.model && {
-            model: this.options.request.model,
+          ...(resolvedRequest.model && {
+            model: resolvedRequest.model,
           }),
-          ...(this.options.request.models && {
-            models: this.options.request.models,
+          ...(resolvedRequest.models && {
+            models: resolvedRequest.models,
           }),
         };
+
+        // Resolve async functions for this turn
+        if (hasAsyncFunctions(this.options.request)) {
+          const resolved = await resolveAsyncFunctions(
+            this.options.request as AsyncCallModelInput,
+            turnContext,
+          );
+          this.options.request = resolved as models.OpenResponsesRequest;
+        }
 
         // Execute all tool calls
         const toolResults: Array<models.OpenResponsesFunctionCallOutput> = [];
 
         for (const toolCall of currentToolCalls) {
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
 
           if (!tool || !hasExecuteFunction(tool)) {
             continue;
@@ -309,15 +335,12 @@ export class ModelResult {
           const result = await executeTool(tool, toolCall, turnContext);
 
           // Store preliminary results
-          if (
-            result.preliminaryResults &&
-            result.preliminaryResults.length > 0
-          ) {
+          if (result.preliminaryResults && result.preliminaryResults.length > 0) {
             this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
           }
 
           toolResults.push({
-            type: "function_call_output" as const,
+            type: 'function_call_output' as const,
             id: `output_${toolCall.id}`,
             callId: toolCall.id,
             output: result.error
@@ -333,7 +356,9 @@ export class ModelResult {
         const newInput: models.OpenResponsesInput = [
           ...(Array.isArray(currentResponse.output)
             ? currentResponse.output
-            : [currentResponse.output]),
+            : [
+                currentResponse.output,
+              ]),
           ...toolResults,
         ];
 
@@ -342,7 +367,7 @@ export class ModelResult {
 
         // Make new request with tool results
         const newRequest: models.OpenResponsesRequest = {
-          ...this.options.request,
+          ...(this.options.request as models.OpenResponsesRequest),
           input: newInput,
           stream: false,
         };
@@ -350,7 +375,7 @@ export class ModelResult {
         const newResult = await betaResponsesSend(
           this.options.client,
           newRequest,
-          this.options.options
+          this.options.options,
         );
 
         if (!newResult.ok) {
@@ -366,7 +391,7 @@ export class ModelResult {
         } else if (this.isNonStreamingResponse(value)) {
           currentResponse = value;
         } else {
-          throw new Error("Unexpected response type from API");
+          throw new Error('Unexpected response type from API');
         }
 
         currentRound++;
@@ -374,15 +399,12 @@ export class ModelResult {
 
       // Validate the final response has required fields
       if (!currentResponse || !currentResponse.id || !currentResponse.output) {
-        throw new Error("Invalid final response: missing required fields");
+        throw new Error('Invalid final response: missing required fields');
       }
 
       // Ensure the response is in a completed state (has output content)
-      if (
-        !Array.isArray(currentResponse.output) ||
-        currentResponse.output.length === 0
-      ) {
-        throw new Error("Invalid final response: empty or invalid output");
+      if (!Array.isArray(currentResponse.output) || currentResponse.output.length === 0) {
+        throw new Error('Invalid final response: empty or invalid output');
       }
 
       this.finalResponse = currentResponse;
@@ -398,7 +420,7 @@ export class ModelResult {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error("Response not available");
+      throw new Error('Response not available');
     }
 
     return extractTextFromResponse(this.finalResponse);
@@ -426,7 +448,7 @@ export class ModelResult {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error("Response not available");
+      throw new Error('Response not available');
     }
 
     return this.finalResponse;
@@ -441,7 +463,7 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       const consumer = this.reusableStream.createConsumer();
@@ -458,7 +480,7 @@ export class ModelResult {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: "tool.preliminary_result" as const,
+            type: 'tool.preliminary_result' as const,
             toolCallId,
             result,
             timestamp: Date.now(),
@@ -476,7 +498,7 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       yield* extractTextDeltas(this.reusableStream);
@@ -495,7 +517,7 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       // First yield messages from the stream in responses format
@@ -508,9 +530,7 @@ export class ModelResult {
       for (const round of this.allToolExecutionRounds) {
         for (const toolCall of round.toolCalls) {
           // Find the tool to check if it was executed
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
           if (!tool || !hasExecuteFunction(tool)) {
             continue;
           }
@@ -524,10 +544,10 @@ export class ModelResult {
 
           // Yield function call output in responses format
           yield {
-            type: "function_call_output" as const,
+            type: 'function_call_output' as const,
             id: `output_${toolCall.id}`,
             callId: toolCall.id,
-            output: result !== undefined ? JSON.stringify(result) : "",
+            output: result !== undefined ? JSON.stringify(result) : '',
           } as models.OpenResponsesFunctionCallOutput;
         }
       }
@@ -536,7 +556,7 @@ export class ModelResult {
       if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
         // Check if the final response contains a message
         const hasMessage = this.finalResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "message"
+          (item) => hasTypeProperty(item) && item.type === 'message',
         );
         if (hasMessage) {
           yield extractResponsesMessageFromResponse(this.finalResponse);
@@ -553,7 +573,7 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       yield* extractReasoningDeltas(this.reusableStream);
@@ -570,13 +590,13 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       // Yield tool deltas as structured events
       for await (const delta of extractToolDeltas(this.reusableStream)) {
         yield {
-          type: "delta" as const,
+          type: 'delta' as const,
           content: delta,
         };
       }
@@ -588,7 +608,7 @@ export class ModelResult {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: "preliminary_result" as const,
+            type: 'preliminary_result' as const,
             toolCallId,
             result,
           };
@@ -611,25 +631,25 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       const consumer = this.reusableStream.createConsumer();
 
       for await (const event of consumer) {
-        if (!("type" in event)) {
+        if (!('type' in event)) {
           continue;
         }
 
         // Transform responses events to chat-like format using type guards
         if (isOutputTextDeltaEvent(event)) {
           yield {
-            type: "content.delta" as const,
+            type: 'content.delta' as const,
             delta: event.delta,
           };
         } else if (isResponseCompletedEvent(event)) {
           yield {
-            type: "message.complete" as const,
+            type: 'message.complete' as const,
             response: event.response,
           };
         } else {
@@ -648,7 +668,7 @@ export class ModelResult {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: "tool.preliminary_result" as const,
+            type: 'tool.preliminary_result' as const,
             toolCallId,
             result,
           };
@@ -666,12 +686,10 @@ export class ModelResult {
   async getToolCalls(): Promise<ParsedToolCall[]> {
     await this.initStream();
     if (!this.reusableStream) {
-      throw new Error("Stream not initialized");
+      throw new Error('Stream not initialized');
     }
 
-    const completedResponse = await consumeStreamForCompletion(
-      this.reusableStream
-    );
+    const completedResponse = await consumeStreamForCompletion(this.reusableStream);
     return extractToolCallsFromResponse(completedResponse);
   }
 
@@ -683,7 +701,7 @@ export class ModelResult {
     return async function* (this: ModelResult) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       yield* buildToolCallStream(this.reusableStream);
