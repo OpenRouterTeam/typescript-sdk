@@ -69,9 +69,9 @@ export function parseToolCallArguments(argumentsString: string): unknown {
  */
 export async function executeRegularTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!isRegularExecuteTool(tool)) {
     throw new Error(
       `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`,
@@ -124,10 +124,10 @@ export async function executeRegularTool(
  */
 export async function executeGeneratorTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!isGeneratorTool(tool)) {
     throw new Error(`Tool "${toolCall.name}" is not a generator tool`);
   }
@@ -193,10 +193,10 @@ export async function executeGeneratorTool(
  */
 export async function executeTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!hasExecuteFunction(tool)) {
     throw new Error(`Tool "${toolCall.name}" has no execute function. Use manual tool execution.`);
   }
@@ -218,7 +218,7 @@ export function findToolByName(tools: Tool[], name: string): Tool | undefined {
 /**
  * Format tool execution result as a string for sending to the model
  */
-export function formatToolResultForModel(result: ToolExecutionResult): string {
+export function formatToolResultForModel(result: ToolExecutionResult<Tool>): string {
   if (result.error) {
     return JSON.stringify({
       error: result.error.message,
@@ -232,7 +232,7 @@ export function formatToolResultForModel(result: ToolExecutionResult): string {
 /**
  * Create a user-friendly error message for tool execution errors
  */
-export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall): string {
+export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall<Tool>): string {
   if (error instanceof ZodError) {
     const issues = error.issues.map((issue) => ({
       path: issue.path.join('.'),

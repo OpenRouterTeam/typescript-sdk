@@ -12,7 +12,7 @@ export type { Fetcher, HTTPClientOptions } from './lib/http.js';
 // Tool types
 export type {
   ChatStreamEvent,
-  EnhancedResponseStreamEvent,
+  ResponseStreamEvent as EnhancedResponseStreamEvent,
   InferToolEvent,
   InferToolEventsUnion,
   InferToolInput,
@@ -20,10 +20,13 @@ export type {
   ManualTool,
   NextTurnParamsContext,
   NextTurnParamsFunctions,
+  ParsedToolCall,
   StepResult,
   StopCondition,
   StopWhen,
   Tool,
+  ToolExecutionResult,
+  ToolExecutionResultUnion,
   ToolPreliminaryResultEvent,
   ToolStreamEvent,
   ToolWithExecute,

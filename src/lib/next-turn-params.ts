@@ -40,8 +40,8 @@ export function buildNextTurnParamsContext(
  * @returns Object with computed parameter values
  */
 export async function executeNextTurnParamsFunctions(
-  toolCalls: ParsedToolCall[],
-  tools: Tool[],
+  toolCalls: ParsedToolCall<Tool>[],
+  tools: readonly Tool[],
   currentRequest: models.OpenResponsesRequest
 ): Promise<Partial<NextTurnParamsContext>> {
   // Build initial context from current request

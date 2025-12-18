@@ -3,7 +3,7 @@ import type { CallModelInput } from '../lib/async-params.js';
 import type { RequestOptions } from '../lib/sdks.js';
 import type { Tool } from '../lib/tool-types.js';
 
-import { ModelResult } from '../lib/model-result.js';
+import { ModelResult, type GetResponseOptions } from '../lib/model-result.js';
 import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
 
 // Re-export CallModelInput for convenience
@@ -119,11 +119,11 @@ export type { CallModelInput } from '../lib/async-params.js';
  *
  * Default: `stepCountIs(5)` if not specified
  */
-export function callModel<TOOLS extends readonly Tool[] = readonly Tool[]>(
+export function callModel<TOOLS extends readonly Tool[]>(
   client: OpenRouterCore,
   request: CallModelInput<TOOLS>,
   options?: RequestOptions,
-): ModelResult {
+): ModelResult<TOOLS> {
   const { tools, stopWhen, ...apiRequest } = request;
 
   // Convert tools to API format - no cast needed now that convertToolsToAPIFormat accepts readonly
@@ -140,15 +140,14 @@ export function callModel<TOOLS extends readonly Tool[] = readonly Tool[]>(
     finalRequest['tools'] = apiTools;
   }
 
-  return new ModelResult({
+  return new ModelResult<TOOLS>({
     client,
     request: finalRequest,
     options: options ?? {},
-    // Cast to Tool[] because ModelResult expects mutable array internally
-    // The readonly constraint is maintained at the callModel interface level
-    tools: (tools ?? []) as Tool[],
+    // Preserve the exact TOOLS type instead of widening to Tool[]
+    tools: tools as TOOLS | undefined,
     ...(stopWhen !== undefined && {
       stopWhen,
     }),
-  });
+  } as GetResponseOptions<TOOLS>);
 }

@@ -1,4 +1,4 @@
-import type { ChatStreamEvent, EnhancedResponseStreamEvent } from '../../src/lib/tool-types.js';
+import type { ChatStreamEvent, ResponseStreamEvent } from '../../src/lib/tool-types.js';
 import type { ClaudeMessageParam } from '../../src/models/claude-message.js';
 import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 import type { OpenResponsesFunctionCallOutput } from '../../src/models/openresponsesfunctioncalloutput.js';
@@ -11,6 +11,31 @@ import { fromClaudeMessages } from '../../src/lib/anthropic-compat.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
 import { stepCountIs } from '../../src/lib/stop-conditions.js';
+import {
+  isOutputTextDeltaEvent,
+  isResponseCompletedEvent,
+  isResponseIncompleteEvent,
+} from '../../src/lib/stream-type-guards.js';
+import { isToolPreliminaryResultEvent } from '../../src/lib/tool-types.js';
+
+/**
+ * Helper to transform ResponseStreamEvent to ChatStreamEvent
+ */
+function transformToChatStreamEvent(event: ResponseStreamEvent): ChatStreamEvent {
+  if (isToolPreliminaryResultEvent(event)) {
+    // Pass through tool preliminary results as-is
+    return event;
+  } else if (isOutputTextDeltaEvent(event)) {
+    // Transform text deltas to content.delta
+    return { type: 'content.delta', delta: event.delta };
+  } else if (isResponseCompletedEvent(event) || isResponseIncompleteEvent(event)) {
+    // Transform completion events to message.complete
+    return { type: 'message.complete', response: event.response };
+  } else {
+    // Pass-through all other events with original event wrapped
+    return { type: event.type, event };
+  }
+}
 
 describe('callModel E2E Tests', () => {
   let client: OpenRouter;
@@ -816,7 +841,7 @@ describe('callModel E2E Tests', () => {
         ]),
       });
 
-      const events: EnhancedResponseStreamEvent[] = [];
+      const events: ResponseStreamEvent[] = [];
 
       for await (const event of response.getFullResponsesStream()) {
         expect(event).toBeDefined();
@@ -848,7 +873,7 @@ describe('callModel E2E Tests', () => {
         ]),
       });
 
-      const textDeltaEvents: EnhancedResponseStreamEvent[] = [];
+      const textDeltaEvents: ResponseStreamEvent[] = [];
 
       for await (const event of response.getFullResponsesStream()) {
         if (event.type === 'response.output_text.delta') {
@@ -883,7 +908,8 @@ describe('callModel E2E Tests', () => {
 
       const chunks: ChatStreamEvent[] = [];
 
-      for await (const chunk of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const chunk = transformToChatStreamEvent(rawEvent);
         expect(chunk).toBeDefined();
         expect(chunk.type).toBeDefined();
         chunks.push(chunk);
@@ -910,7 +936,8 @@ describe('callModel E2E Tests', () => {
       let hasContentDelta = false;
       let _hasMessageComplete = false;
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         // Every event must have a type
         expect(event).toHaveProperty('type');
         expect(typeof event.type).toBe('string');
@@ -970,7 +997,8 @@ describe('callModel E2E Tests', () => {
 
       const contentDeltas: ChatStreamEvent[] = [];
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         if (event.type === 'content.delta') {
           contentDeltas.push(event);
 
@@ -1041,7 +1069,8 @@ describe('callModel E2E Tests', () => {
       let hasPreliminaryResult = false;
       const preliminaryResults: ChatStreamEvent[] = [];
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         expect(event).toHaveProperty('type');
         expect(typeof event.type).toBe('string');
 

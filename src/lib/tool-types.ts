@@ -202,6 +202,13 @@ export type TypedToolCallUnion<T extends readonly Tool[]> = {
 }[number];
 
 /**
+ * Union of typed tool execution results for a tuple of tools
+ */
+export type ToolExecutionResultUnion<T extends readonly Tool[]> = {
+  [K in keyof T]: T[K] extends Tool ? ToolExecutionResult<T[K]> : never;
+}[number];
+
+/**
  * Extracts the event type from a generator tool definition
  * Returns `never` for non-generator tools
  */
@@ -251,21 +258,27 @@ export function isManualTool(tool: Tool): tool is ManualTool {
 
 /**
  * Parsed tool call from API response
+ * @template T - The tool type to infer argument types from
  */
-export interface ParsedToolCall {
+export interface ParsedToolCall<T extends Tool> {
   id: string;
-  name: string;
-  arguments: unknown; // Parsed from JSON string
+  name: T extends { function: { name: infer N } } ? N : string;
+  arguments: InferToolInput<T>; // Typed based on tool's inputSchema
 }
 
 /**
  * Result of tool execution
+ * @template T - The tool type to infer result types from
  */
-export interface ToolExecutionResult {
+export interface ToolExecutionResult<T extends Tool> {
   toolCallId: string;
   toolName: string;
-  result: unknown; // Final result (sent to model)
-  preliminaryResults?: unknown[]; // All yielded values from generator
+  result: T extends ToolWithExecute<any, infer O> | ToolWithGenerator<any, any, infer O>
+  ? z.infer<O>
+  : unknown; // Final result (sent to model)
+  preliminaryResults?: T extends ToolWithGenerator<any, infer E, any>
+  ? z.infer<E>[]
+  : undefined; // All yielded values from generator
   error?: Error;
 }
 
@@ -281,11 +294,11 @@ export interface Warning {
  * Result of a single step in the tool execution loop
  * Compatible with Vercel AI SDK pattern
  */
-export interface StepResult<_TOOLS extends readonly Tool[] = readonly Tool[]> {
+export interface StepResult<TOOLS extends readonly Tool[] = readonly Tool[]> {
   readonly stepType: 'initial' | 'continue';
   readonly text: string;
-  readonly toolCalls: ParsedToolCall[];
-  readonly toolResults: ToolExecutionResult[];
+  readonly toolCalls: TypedToolCallUnion<TOOLS>[];
+  readonly toolResults: ToolExecutionResultUnion<TOOLS>[];
   readonly response: models.OpenResponsesNonStreamingResponse;
   readonly usage?: models.OpenResponsesUsage | undefined;
   readonly finishReason?: string | undefined;
@@ -313,9 +326,9 @@ export type StopWhen<TOOLS extends readonly Tool[] = readonly Tool[]> =
 /**
  * Result of executeTools operation
  */
-export interface ExecuteToolsResult {
-  finalResponse: ModelResult;
-  allResponses: ModelResult[];
+export interface ExecuteToolsResult<TOOLS extends readonly Tool[]> {
+  finalResponse: ModelResult<TOOLS>;
+  allResponses: ModelResult<TOOLS>[];
   toolResults: Map<
     string,
     {
@@ -355,7 +368,7 @@ export type ToolPreliminaryResultEvent<TEvent = unknown> = {
  * Extends OpenResponsesStreamEvent with tool preliminary results
  * @template TEvent - The event type from generator tools
  */
-export type EnhancedResponseStreamEvent<TEvent = unknown> =
+export type ResponseStreamEvent<TEvent = unknown> =
   | OpenResponsesStreamEvent
   | ToolPreliminaryResultEvent<TEvent>;
 
@@ -363,7 +376,7 @@ export type EnhancedResponseStreamEvent<TEvent = unknown> =
  * Type guard to check if an event is a tool preliminary result event
  */
 export function isToolPreliminaryResultEvent<TEvent = unknown>(
-  event: EnhancedResponseStreamEvent<TEvent>,
+  event: ResponseStreamEvent<TEvent>,
 ): event is ToolPreliminaryResultEvent<TEvent> {
   return event.type === 'tool.preliminary_result';
 }

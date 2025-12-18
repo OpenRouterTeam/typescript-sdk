@@ -1,6 +1,6 @@
 import type * as models from '../models/index.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
-import type { ParsedToolCall } from './tool-types.js';
+import type { ParsedToolCall, Tool } from './tool-types.js';
 import {
   isOutputTextDeltaEvent,
   isReasoningDeltaEvent,
@@ -325,8 +325,8 @@ export function extractTextFromResponse(
  */
 export function extractToolCallsFromResponse(
   response: models.OpenResponsesNonStreamingResponse,
-): ParsedToolCall[] {
-  const toolCalls: ParsedToolCall[] = [];
+): ParsedToolCall<Tool>[] {
+  const toolCalls: ParsedToolCall<Tool>[] = [];
 
   for (const item of response.output) {
     if (isFunctionCallOutputItem(item)) {
@@ -348,8 +348,8 @@ export function extractToolCallsFromResponse(
         toolCalls.push({
           id: item.callId,
           name: item.name,
-          arguments: item.arguments, // Keep as string if parsing fails
-        });
+          arguments: item.arguments as unknown, // Keep as string if parsing fails
+        } as ParsedToolCall<Tool>);
       }
     }
   }
@@ -363,7 +363,7 @@ export function extractToolCallsFromResponse(
  */
 export async function* buildToolCallStream(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<ParsedToolCall> {
+): AsyncIterableIterator<ParsedToolCall<Tool>> {
   const consumer = stream.createConsumer();
 
   // Track tool calls being built
@@ -426,8 +426,8 @@ export async function* buildToolCallStream(
               yield {
                 id: toolCall.id,
                 name: event.name,
-                arguments: event.arguments,
-              };
+                arguments: event.arguments as unknown,
+              } as ParsedToolCall<Tool>;
             }
 
             // Clean up
@@ -452,8 +452,8 @@ export async function* buildToolCallStream(
               yield {
                 id: event.item.callId,
                 name: event.item.name,
-                arguments: event.item.arguments,
-              };
+                arguments: event.item.arguments as unknown,
+              } as ParsedToolCall<Tool>;
             }
 
             toolCallsInProgress.delete(event.item.callId);

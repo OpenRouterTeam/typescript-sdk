@@ -20,7 +20,7 @@ export interface ToolExecutionOptions {
 export interface ToolOrchestrationResult {
   finalResponse: models.OpenResponsesNonStreamingResponse;
   allResponses: models.OpenResponsesNonStreamingResponse[];
-  toolExecutionResults: ToolExecutionResult[];
+  toolExecutionResults: ToolExecutionResult<Tool>[];
   conversationInput: models.OpenResponsesInput;
 }
 
@@ -50,7 +50,7 @@ export async function executeToolLoop(
   const onPreliminaryResult = options.onPreliminaryResult;
 
   const allResponses: models.OpenResponsesNonStreamingResponse[] = [];
-  const toolExecutionResults: ToolExecutionResult[] = [];
+  const toolExecutionResults: ToolExecutionResult<Tool>[] = [];
   let conversationInput: models.OpenResponsesInput = initialInput;
   let currentRequest: models.OpenResponsesRequest = { ...initialRequest };
 
@@ -94,7 +94,7 @@ export async function executeToolLoop(
           toolName: toolCall.name,
           result: null,
           error: new Error(`Tool "${toolCall.name}" not found in tool definitions`),
-        } as ToolExecutionResult;
+        } as ToolExecutionResult<Tool>;
       }
 
       if (!hasExecuteFunction(tool)) {
@@ -137,7 +137,7 @@ export async function executeToolLoop(
     const settledResults = await Promise.allSettled(toolCallPromises);
 
     // Process settled results, handling both fulfilled and rejected promises
-    const roundResults: ToolExecutionResult[] = [];
+    const roundResults: ToolExecutionResult<Tool>[] = [];
     settledResults.forEach((settled, i) => {
       const toolCall = toolCalls[i];
       if (!toolCall) return;
@@ -198,7 +198,7 @@ export async function executeToolLoop(
 /**
  * Convert tool execution results to a map for easy lookup
  */
-export function toolResultsToMap(results: ToolExecutionResult[]): Map<
+export function toolResultsToMap(results: ToolExecutionResult<Tool>[]): Map<
   string,
   {
     result: unknown;
@@ -220,7 +220,7 @@ export function toolResultsToMap(results: ToolExecutionResult[]): Map<
 /**
  * Build a summary of tool executions for debugging/logging
  */
-export function summarizeToolExecutions(results: ToolExecutionResult[]): string {
+export function summarizeToolExecutions(results: ToolExecutionResult<Tool>[]): string {
   const lines: string[] = [];
 
   for (const result of results) {
@@ -239,16 +239,16 @@ export function summarizeToolExecutions(results: ToolExecutionResult[]): string 
 /**
  * Check if any tool executions had errors
  */
-export function hasToolExecutionErrors(results: ToolExecutionResult[]): boolean {
+export function hasToolExecutionErrors(results: ToolExecutionResult<Tool>[]): boolean {
   return results.some((result) => result.error !== undefined);
 }
 
 /**
  * Get all tool execution errors
  */
-export function getToolExecutionErrors(results: ToolExecutionResult[]): Error[] {
+export function getToolExecutionErrors(results: ToolExecutionResult<Tool>[]): Error[] {
   return results
-    .filter((result): result is ToolExecutionResult & { error: Error } =>
+    .filter((result): result is ToolExecutionResult<Tool> & { error: Error } =>
       result.error !== undefined
     )
     .map((result) => result.error);

@@ -24,7 +24,7 @@ import {
 } from "../funcs/call-model.js";
 import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
-import { ToolType } from "../lib/tool-types.js";
+import { ToolType, type Tool } from "../lib/tool-types.js";
 
 export { ToolType };
 // #endregion imports
@@ -96,10 +96,10 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel(
-    request: CallModelInput,
+  callModel<TOOLS extends readonly Tool[]>(
+    request: CallModelInput<TOOLS>,
     options?: RequestOptions,
-  ): ModelResult {
+  ): ModelResult<TOOLS> {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body
