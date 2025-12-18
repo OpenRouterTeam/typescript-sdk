@@ -117,12 +117,8 @@ describe('callModel E2E Tests', () => {
                 temperature: z.number(),
                 condition: z.string(),
               }),
-              execute: async (_params) => {
-                return {
-                  temperature: 22,
-                  condition: 'Sunny',
-                };
-              },
+              // Don't auto-execute so we can test getToolCalls()
+              execute: false,
             },
           },
         ],
@@ -597,10 +593,13 @@ describe('callModel E2E Tests', () => {
                 temperature: z.number(),
                 condition: z.string(),
               }),
-              execute: async (_params) => {
+              // Enable auto-execution so we test the full flow
+              execute: async (params) => {
+                // Return weather data that will be yielded
                 return {
                   temperature: 22,
                   condition: 'Sunny',
+                  location: params.location,
                 };
               },
             },
