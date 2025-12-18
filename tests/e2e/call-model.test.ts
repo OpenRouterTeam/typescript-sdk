@@ -96,13 +96,14 @@ describe('callModel E2E Tests', () => {
 
     it('should accept chat-style tools (ToolDefinitionJson)', async () => {
       const response = client.callModel({
-        model: 'qwen/qwen3-vl-8b-instruct',
+        model: 'anthropic/claude-sonnet-4.5',
         input: fromChatMessages([
           {
             role: 'user',
-            content: "What's the weather in Paris? Use the get_weather tool.",
+            content: "What's the weather in Paris?",
           },
         ]),
+        toolChoice: 'required',
         tools: [
           {
             type: ToolType.Function,
@@ -575,13 +576,14 @@ describe('callModel E2E Tests', () => {
 
     it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
-        model: 'openai/gpt-4o-mini',
+        model: 'anthropic/claude-sonnet-4.5',
         input: fromChatMessages([
           {
             role: 'user',
-            content: "What's the weather in Tokyo? Use the get_weather tool.",
+            content: "What's the weather in Tokyo?",
           },
         ]),
+        toolChoice: 'required',
         tools: [
           {
             type: ToolType.Function,

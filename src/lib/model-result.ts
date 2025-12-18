@@ -178,8 +178,8 @@ export class ModelResult {
         // Since request is CallModelInput, we need to filter out tools/stopWhen
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { tools, stopWhen, ...rest } = this.options.request;
-        // Use satisfies to validate type compatibility while maintaining the target type
-        baseRequest = rest as ResolvedCallModelInput satisfies ResolvedCallModelInput;
+        // Cast to ResolvedCallModelInput - we know it's resolved if hasAsyncFunctions returned false
+        baseRequest = rest as ResolvedCallModelInput;
       }
 
       // Store resolved request with stream mode
