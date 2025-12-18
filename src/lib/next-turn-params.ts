@@ -103,10 +103,12 @@ async function processNextTurnParamsForCall(
 
     // Validate that paramKey is actually a key of NextTurnParamsContext
     if (!isValidNextTurnParamKey(paramKey)) {
-      console.warn(
-        `Invalid nextTurnParams key "${paramKey}" in tool "${toolName}". ` +
-        `Valid keys: input, model, models, temperature, maxOutputTokens, topP, topK, instructions`
-      );
+      if (process.env['NODE_ENV'] !== 'production') {
+        console.warn(
+          `Invalid nextTurnParams key "${paramKey}" in tool "${toolName}". ` +
+          `Valid keys: input, model, models, temperature, maxOutputTokens, topP, topK, instructions`
+        );
+      }
       continue;
     }
 
