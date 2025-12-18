@@ -79,7 +79,7 @@ export async function isStopConditionMet<TOOLS extends readonly Tool[]>(options:
  * stopWhen: maxTokensUsed(10000) // Stop when total tokens exceed 10,000
  * ```
  */
-export function maxTokensUsed(maxTokens: number): StopCondition<any> {
+export function maxTokensUsed(maxTokens: number): StopCondition {
   return ({ steps }: { readonly steps: ReadonlyArray<StepResult> }) => {
     const totalTokens = steps.reduce(
       (sum: number, step: StepResult) => sum + (step.usage?.totalTokens ?? 0),

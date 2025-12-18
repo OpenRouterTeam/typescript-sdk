@@ -33,7 +33,7 @@ export interface BuildTurnContextOptions {
 export function buildTurnContext(options: BuildTurnContextOptions): TurnContext {
   return {
     numberOfTurns: options.numberOfTurns,
-    messageHistory: options.messageHistory,
+    input: options.messageHistory,
     model: options.model,
     models: options.models,
   };

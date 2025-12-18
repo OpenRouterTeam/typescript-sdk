@@ -144,6 +144,8 @@ export function callModel<TOOLS extends readonly Tool[] = readonly Tool[]>(
     client,
     request: finalRequest,
     options: options ?? {},
+    // Cast to Tool[] because ModelResult expects mutable array internally
+    // The readonly constraint is maintained at the callModel interface level
     tools: (tools ?? []) as Tool[],
     ...(stopWhen !== undefined && {
       stopWhen,

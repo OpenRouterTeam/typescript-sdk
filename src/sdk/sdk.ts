@@ -24,10 +24,9 @@ import {
 } from "../funcs/call-model.js";
 import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
-import { type MaxToolRounds, ToolType } from "../lib/tool-types.js";
+import { ToolType } from "../lib/tool-types.js";
 
 export { ToolType };
-export type { MaxToolRounds };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {

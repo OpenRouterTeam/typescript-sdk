@@ -37,7 +37,6 @@ export type CallModelInput<TOOLS extends readonly Tool[] = readonly Tool[]> = {
  */
 export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' | 'tools'> & {
   tools?: never;
-  maxToolRounds?: never;
 };
 
 /**
@@ -77,8 +76,9 @@ export async function resolveAsyncFunctions(
     if (typeof value === 'function') {
       try {
         // Execute the function with context and store the result
-        // Type guard ensures value is a function
-        const fn = value as (context: TurnContext) => unknown;
+        // We've already filtered out stopWhen at line 73, so this is a parameter function
+        // that accepts TurnContext (not a StopCondition which needs steps)
+        const fn = value as (context: TurnContext) => unknown | Promise<unknown>;
         const result = await Promise.resolve(fn(context));
         resolvedEntries.push([key, result] as const);
       } catch (error) {
@@ -95,8 +95,9 @@ export async function resolveAsyncFunctions(
   }
 
   // Use type-safe fromEntries - the result type is inferred from the entries
-  // We still need the final cast to ResolvedCallModelInput because TypeScript can't prove
-  // that the dynamic keys match the static type, but this is safer than before
+  // TypeScript can't prove that dynamic keys match the static type at compile time,
+  // but we know all keys come from the input object (minus stopWhen/tools)
+  // and all values are properly resolved through the function above
   return typeSafeObjectFromEntries(resolvedEntries) as ResolvedCallModelInput;
 }
 

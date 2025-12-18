@@ -15,14 +15,10 @@ export enum ToolType {
  * Contains information about the current conversation state
  */
 export interface TurnContext {
+  toolCall: models.OpenResponsesFunctionToolCall;
   /** Number of tool execution turns so far (1-indexed: first turn = 1) */
   numberOfTurns: number;
-  /** Current message history being sent to the API */
-  messageHistory: models.OpenResponsesInput;
-  /** Model name if request.model is set */
-  model?: string | undefined;
-  /** Model names if request.models is set */
-  models?: string[] | undefined;
+  turnRequest: models.OpenResponsesRequest;
 }
 
 /**
@@ -44,7 +40,7 @@ export type NextTurnParamsContext = {
   /** Current topP */
   topP: number | null;
   /** Current topK */
-  topK: number;
+  topK?: number | undefined;
   /** Current instructions */
   instructions: string | null;
 };
@@ -184,8 +180,8 @@ export type Tool =
  */
 export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : unknown
+  ? z.infer<S>
+  : unknown
   : unknown;
 
 /**
@@ -193,8 +189,8 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
  */
 export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : unknown
+  ? z.infer<S>
+  : unknown
   : unknown;
 
 /**
@@ -219,8 +215,8 @@ export type TypedToolCallUnion<T extends readonly Tool[]> = {
  */
 export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : never
+  ? z.infer<S>
+  : never
   : never;
 
 /**
@@ -255,6 +251,13 @@ export function isRegularExecuteTool(tool: Tool): tool is ToolWithExecute {
 }
 
 /**
+ * Type guard to check if a tool is a manual tool (no execute function)
+ */
+export function isManualTool(tool: Tool): tool is ManualTool {
+  return !('execute' in tool.function);
+}
+
+/**
  * Parsed tool call from API response
  */
 export interface ParsedToolCall {
@@ -273,11 +276,6 @@ export interface ToolExecutionResult {
   preliminaryResults?: unknown[]; // All yielded values from generator
   error?: Error;
 }
-
-/**
- * Type for maxToolRounds - can be a number or a function that determines if execution should continue
- */
-export type MaxToolRounds = number | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
 
 /**
  * Warning from step execution
@@ -385,14 +383,14 @@ export function isToolPreliminaryResultEvent<TEvent = unknown>(
  */
 export type ToolStreamEvent<TEvent = unknown> =
   | {
-      type: 'delta';
-      content: string;
-    }
+    type: 'delta';
+    content: string;
+  }
   | {
-      type: 'preliminary_result';
-      toolCallId: string;
-      result: TEvent;
-    };
+    type: 'preliminary_result';
+    toolCallId: string;
+    result: TEvent;
+  };
 
 /**
  * Chat stream event types for getFullChatStream
@@ -401,19 +399,19 @@ export type ToolStreamEvent<TEvent = unknown> =
  */
 export type ChatStreamEvent<TEvent = unknown> =
   | {
-      type: 'content.delta';
-      delta: string;
-    }
+    type: 'content.delta';
+    delta: string;
+  }
   | {
-      type: 'message.complete';
-      response: models.OpenResponsesNonStreamingResponse;
-    }
+    type: 'message.complete';
+    response: models.OpenResponsesNonStreamingResponse;
+  }
   | {
-      type: 'tool.preliminary_result';
-      toolCallId: string;
-      result: TEvent;
-    }
+    type: 'tool.preliminary_result';
+    toolCallId: string;
+    result: TEvent;
+  }
   | {
-      type: string;
-      event: OpenResponsesStreamEvent;
-    }; // Pass-through for other events
+    type: string;
+    event: OpenResponsesStreamEvent;
+  }; // Pass-through for other events

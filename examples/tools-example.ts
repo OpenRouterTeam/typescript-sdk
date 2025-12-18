@@ -6,22 +6,20 @@
  * 1. Validated using Zod schemas
  * 2. Executed when the model calls them
  * 3. Results sent back to the model
- * 4. Process repeats until no more tool calls (up to maxToolRounds)
+ * 4. Process repeats until stopWhen condition is met (default: stepCountIs(5))
  *
  * The API is simple: just call callModel() with tools, and await the result.
  * Tools are executed transparently before getMessage() or getText() returns!
  *
- * maxToolRounds can be:
- * - A number: Maximum number of tool execution rounds (default: 5)
- * - A function: (context: TurnContext) => boolean
- *   - Return true to allow another turn
- *   - Return false to stop execution
- *   - Context includes: numberOfTurns, messageHistory, model/models
+ * stopWhen can be:
+ * - A single condition: stepCountIs(3), hasToolCall('finalize'), maxCost(0.50)
+ * - An array of conditions: [stepCountIs(10), maxCost(1.00)] (OR logic - stops if ANY is true)
+ * - A custom function: ({ steps }) => steps.length >= 5 || steps.some(s => s.finishReason === 'length')
  */
 
 import * as dotenv from 'dotenv';
 import { z } from 'zod/v4';
-import { OpenRouter, ToolType } from '../src/index.js';
+import { OpenRouter, ToolType, stepCountIs } from '../src/index.js';
 
 // Type declaration for ShadowRealm (TC39 Stage 3 proposal)
 // See: https://tc39.es/proposal-shadowrealm/
@@ -78,10 +76,8 @@ async function basicToolExample() {
     tools: [
       weatherTool,
     ],
-    // Example: limit to 3 turns using a function
-    maxToolRounds: (context) => {
-      return context.numberOfTurns < 3; // Allow up to 3 turns
-    },
+    // Example: limit to 3 steps
+    stopWhen: stepCountIs(3),
   });
 
   // Tools are automatically executed! Just get the final message

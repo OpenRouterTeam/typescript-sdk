@@ -364,7 +364,12 @@ export function extractToolCallsFromResponse(
           name: functionCallItem.name,
           arguments: parsedArguments,
         });
-      } catch (_error) {
+      } catch (error) {
+        console.warn(
+          `Failed to parse tool call arguments for ${functionCallItem.name}:`,
+          error instanceof Error ? error.message : String(error),
+          `\nArguments: ${functionCallItem.arguments.substring(0, 100)}${functionCallItem.arguments.length > 100 ? '...' : ''}`
+        );
         // Include the tool call with unparsed arguments
         toolCalls.push({
           id: functionCallItem.callId,
@@ -439,7 +444,12 @@ export async function* buildToolCallStream(
               name: doneEvent.name,
               arguments: parsedArguments,
             };
-          } catch (_error) {
+          } catch (error) {
+            console.warn(
+              `Failed to parse tool call arguments for ${doneEvent.name}:`,
+              error instanceof Error ? error.message : String(error),
+              `\nArguments: ${doneEvent.arguments.substring(0, 100)}${doneEvent.arguments.length > 100 ? '...' : ''}`
+            );
             // Yield with unparsed arguments if parsing fails
             yield {
               id: toolCall.id,
@@ -557,10 +567,11 @@ function mapAnnotationsToCitations(
       default: {
         // Exhaustiveness check - TypeScript will error if we don't handle all annotation types
         const exhaustiveCheck: never = annotation;
+        // Cast to unknown for runtime debugging if type system bypassed
         // This should never execute - throw with JSON of the unhandled value
         throw new Error(
           `Unhandled annotation type. This indicates a new annotation type was added. ` +
-          `Annotation: ${JSON.stringify(exhaustiveCheck)}`
+          `Annotation: ${JSON.stringify(exhaustiveCheck as unknown)}`
         );
       }
     }
@@ -683,12 +694,12 @@ export function convertToClaudeMessage(
         try {
           parsedInput = JSON.parse(fnCall.arguments);
         } catch (error) {
+          console.warn(
+            `Failed to parse tool call arguments for ${fnCall.name}:`,
+            error instanceof Error ? error.message : String(error),
+            `\nArguments: ${fnCall.arguments.substring(0, 100)}${fnCall.arguments.length > 100 ? '...' : ''}`
+          );
           // Preserve raw arguments if JSON parsing fails
-          // Log warning in development/debug environments
-          if (typeof process !== 'undefined' && process.env?.['NODE_ENV'] === 'development') {
-            // biome-ignore lint/suspicious/noConsole: needed for debugging in development
-            console.warn(`Failed to parse tool call arguments for ${fnCall.name}:`, error);
-          }
           parsedInput = {
             _raw_arguments: fnCall.arguments,
           };

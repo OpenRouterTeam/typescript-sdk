@@ -25,7 +25,7 @@ export function buildNextTurnParamsContext(
     temperature: request.temperature ?? null,
     maxOutputTokens: request.maxOutputTokens ?? null,
     topP: request.topP ?? null,
-    topK: request.topK ?? 0,
+    topK: request.topK,
     instructions: request.instructions ?? null,
   };
 }
@@ -66,13 +66,16 @@ export async function executeNextTurnParamsFunctions(
 
       // Validate that call.arguments is a record using type guard
       if (!isRecord(call.arguments)) {
+        const typeStr = Array.isArray(call.arguments)
+          ? 'array'
+          : typeof call.arguments;
         throw new Error(
-          `Tool call arguments for ${tool.function.name} must be an object, got ${typeof call.arguments}`
+          `Tool call arguments for ${tool.function.name} must be an object, got ${typeStr}`
         );
       }
 
       // Process each parameter key with proper typing
-      await processNextTurnParamsForCall(nextParams, call.arguments, workingContext, result);
+      await processNextTurnParamsForCall(nextParams, call.arguments, workingContext, result, tool.function.name);
     }
   }
 
@@ -86,7 +89,8 @@ async function processNextTurnParamsForCall(
   nextParams: Record<string, unknown>,
   params: Record<string, unknown>,
   workingContext: NextTurnParamsContext,
-  result: Partial<NextTurnParamsContext>
+  result: Partial<NextTurnParamsContext>,
+  toolName: string
 ): Promise<void> {
   // Type-safe processing for each known parameter key
   // We iterate through keys and use runtime checks instead of casts
@@ -99,15 +103,20 @@ async function processNextTurnParamsForCall(
 
     // Validate that paramKey is actually a key of NextTurnParamsContext
     if (!isValidNextTurnParamKey(paramKey)) {
-      // Skip invalid keys silently - they're not part of the API
+      console.warn(
+        `Invalid nextTurnParams key "${paramKey}" in tool "${toolName}". ` +
+        `Valid keys: input, model, models, temperature, maxOutputTokens, topP, topK, instructions`
+      );
       continue;
     }
 
     // Execute the function and await the result
     const newValue = await Promise.resolve(fn(params, workingContext));
 
-    // Update the result using type-safe assignment
+    // Update both result and workingContext to enable composition
+    // Later tools will see modifications made by earlier tools
     setNextTurnParam(result, paramKey, newValue);
+    setNextTurnParam(workingContext, paramKey, newValue);
   }
 }
 
@@ -130,7 +139,8 @@ function isValidNextTurnParamKey(key: string): key is keyof NextTurnParamsContex
 
 /**
  * Type-safe setter for NextTurnParamsContext
- * Ensures the value type matches the key type
+ * This wrapper is needed because TypeScript doesn't properly narrow the type
+ * after the type guard, even though we've validated the key
  */
 function setNextTurnParam<K extends keyof NextTurnParamsContext>(
   target: Partial<NextTurnParamsContext>,

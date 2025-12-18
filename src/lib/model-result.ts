@@ -6,7 +6,6 @@ import type { RequestOptions } from './sdks.js';
 import type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
-  MaxToolRounds,
   ParsedToolCall,
   Tool,
   ToolStreamEvent,
@@ -90,7 +89,6 @@ export interface GetResponseOptions {
   client: OpenRouterCore;
   options?: RequestOptions;
   tools?: Tool[];
-  maxToolRounds?: MaxToolRounds;
 }
 
 /**
@@ -159,7 +157,7 @@ export class ModelResult {
       // Build initial turn context (turn 0 for initial request)
       const initialContext: TurnContext = {
         numberOfTurns: 0,
-        messageHistory: [],
+        input: [],
         model: undefined,
         models: undefined,
       };
@@ -248,9 +246,6 @@ export class ModelResult {
         return;
       }
 
-      // Get maxToolRounds configuration
-      const maxToolRounds = this.options.maxToolRounds ?? 5;
-
       let currentResponse = initialResponse;
       let currentRound = 0;
       let currentInput: models.OpenResponsesInput =
@@ -272,30 +267,6 @@ export class ModelResult {
           break;
         }
 
-        // Check if we should continue based on maxToolRounds
-        if (typeof maxToolRounds === 'number') {
-          if (currentRound >= maxToolRounds) {
-            break;
-          }
-        } else if (typeof maxToolRounds === 'function') {
-          // Function signature: (context: TurnContext) => boolean
-          const resolvedRequest = this.options.request as models.OpenResponsesRequest;
-          const turnContext: TurnContext = {
-            numberOfTurns: currentRound + 1,
-            messageHistory: currentInput,
-            ...(resolvedRequest.model && {
-              model: resolvedRequest.model,
-            }),
-            ...(resolvedRequest.models && {
-              models: resolvedRequest.models,
-            }),
-          };
-          const shouldContinue = maxToolRounds(turnContext);
-          if (!shouldContinue) {
-            break;
-          }
-        }
-
         // Store execution round info
         this.allToolExecutionRounds.push({
           round: currentRound,
@@ -307,7 +278,7 @@ export class ModelResult {
         const resolvedRequest = this.options.request as models.OpenResponsesRequest;
         const turnContext: TurnContext = {
           numberOfTurns: currentRound + 1, // 1-indexed
-          messageHistory: currentInput,
+          input: currentInput,
           ...(resolvedRequest.model && {
             model: resolvedRequest.model,
           }),
@@ -348,8 +319,8 @@ export class ModelResult {
             callId: toolCall.id,
             output: result.error
               ? JSON.stringify({
-                  error: result.error.message,
-                })
+                error: result.error.message,
+              })
               : JSON.stringify(result.result),
           });
         }
@@ -377,8 +348,8 @@ export class ModelResult {
           ...(Array.isArray(currentResponse.output)
             ? currentResponse.output
             : [
-                currentResponse.output,
-              ]),
+              currentResponse.output,
+            ]),
           ...toolResults,
         ];
 

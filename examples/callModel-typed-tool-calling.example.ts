@@ -98,7 +98,7 @@ async function main() {
     model: "openai/gpt-4o-mini",
     input: "What's the weather like in Paris?",
     tools: [weatherTool] as const,
-    maxToolRounds: 0, // Don't auto-execute, just get the tool calls
+    stopWhen: ({ steps }) => steps.length >= 0, // Stop immediately - don't auto-execute, just get the tool calls
   });
 
   // Tool calls are now typed based on the tool definitions!
@@ -117,7 +117,7 @@ async function main() {
     model: "openai/gpt-4o-mini",
     input: "What's the weather in Tokyo?",
     tools: [weatherTool] as const,
-    maxToolRounds: 0,
+    stopWhen: ({ steps }) => steps.length >= 0, // Stop immediately
   });
 
   // Stream tool calls with typed arguments

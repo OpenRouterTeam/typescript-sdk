@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { toJSONSchema, z } from 'zod/v4';
-import { OpenRouter, ToolType, toChatMessage } from '../../src/index.js';
+import { OpenRouter, ToolType, toChatMessage, stepCountIs } from '../../src/index.js';
 
 dotenv.config();
 
@@ -634,7 +634,7 @@ describe('Enhanced Tool Support for callModel', () => {
           tools: [
             calculatorTool,
           ],
-          maxToolRounds: 3,
+          stopWhen: stepCountIs(3),
         },
       );
 
