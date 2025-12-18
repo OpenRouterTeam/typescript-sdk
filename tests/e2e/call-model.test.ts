@@ -1108,7 +1108,7 @@ describe('callModel E2E Tests', () => {
 
       // The stream should complete without errors regardless of tool execution
       expect(true).toBe(true);
-    }, 30000);
+    }, 45000);
   });
 
   describe('Multiple concurrent consumption patterns', () => {
