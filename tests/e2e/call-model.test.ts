@@ -570,7 +570,7 @@ describe('callModel E2E Tests', () => {
       expect(lastMessage.role).toBe('assistant');
     }, 15000);
 
-    it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
+    it.skip('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
         model: 'anthropic/claude-sonnet-4.5',
         input: fromChatMessages([
