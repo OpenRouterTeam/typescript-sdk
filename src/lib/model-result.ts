@@ -28,6 +28,7 @@ import {
   extractToolDeltas,
 } from './stream-transformers.js';
 import { executeTool } from './tool-executor.js';
+import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 import { hasExecuteFunction } from './tool-types.js';
 
 /**
@@ -351,6 +352,23 @@ export class ModelResult {
                 })
               : JSON.stringify(result.result),
           });
+        }
+
+        // Execute nextTurnParams functions for tools that were called
+        if (this.options.tools && currentToolCalls.length > 0) {
+          const computedParams = await executeNextTurnParamsFunctions(
+            currentToolCalls,
+            this.options.tools,
+            this.options.request as models.OpenResponsesRequest
+          );
+
+          // Apply computed parameters to the request for next turn
+          if (Object.keys(computedParams).length > 0) {
+            this.options.request = applyNextTurnParamsToRequest(
+              this.options.request as models.OpenResponsesRequest,
+              computedParams
+            );
+          }
         }
 
         // Build new input with tool results
