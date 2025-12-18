@@ -1,0 +1,307 @@
+---
+title: Dynamic Parameters
+subtitle: Use async functions for adaptive model behavior across turns
+headline: 'Dynamic Parameters | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/dynamic-parameters
+og:site_name: OpenRouter Documentation
+og:title: 'Dynamic Parameters - OpenRouter SDK'
+og:description: 'Use async functions to dynamically compute callModel parameters. Adapt model selection, temperature, and instructions based on conversation state.'
+og:image: https://openrouter.ai/dynamic-og?title=Dynamic%20Parameters&description=Adaptive%20Model%20Behavior
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Dynamic Parameters
+
+Any parameter in `callModel` can be a function that computes its value based on conversation context. This enables adaptive behavior - changing models, adjusting temperature, or modifying instructions as the conversation evolves.
+
+## Basic Usage
+
+Pass a function instead of a static value:
+
+```typescript
+import { OpenRouter } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  // Dynamic model selection based on turn count
+  model: (ctx) => {
+    return ctx.numberOfTurns > 3 ? 'openai/gpt-4' : 'openai/gpt-4o-mini';
+  },
+  input: 'Hello!',
+  tools: [myTool],
+});
+```
+
+## Function Signature
+
+Parameter functions receive a `TurnContext` and return the parameter value:
+
+```typescript
+type ParameterFunction<T> = (context: TurnContext) => T | Promise<T>;
+```
+
+### TurnContext
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `numberOfTurns` | `number` | Current turn number (1-indexed) |
+| `messageHistory` | `OpenResponsesInput` | Current message history |
+| `model` | `string \| undefined` | Model (if static) |
+| `models` | `string[] \| undefined` | Models array (if static) |
+
+## Async Functions
+
+Functions can be async for fetching external data:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+
+  // Fetch user preferences from database
+  temperature: async (ctx) => {
+    const prefs = await fetchUserPreferences(userId);
+    return prefs.preferredTemperature ?? 0.7;
+  },
+
+  // Load dynamic instructions
+  instructions: async (ctx) => {
+    const rules = await fetchBusinessRules();
+    return `Follow these rules:\n${rules.join('\n')}`;
+  },
+
+  input: 'Hello!',
+});
+```
+
+## Common Patterns
+
+### Progressive Model Upgrade
+
+Start with a fast model, upgrade for complex tasks:
+
+```typescript
+const result = openrouter.callModel({
+  model: (ctx) => {
+    // First few turns: fast model
+    if (ctx.numberOfTurns <= 2) {
+      return 'openai/gpt-4o-mini';
+    }
+
+    // Complex conversations: capable model
+    return 'openai/gpt-4';
+  },
+  input: 'Let me think through this problem...',
+  tools: [analysisTool],
+});
+```
+
+### Adaptive Temperature
+
+Adjust creativity based on context:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  temperature: (ctx) => {
+    // Analyze recent messages for task type
+    const lastMessage = JSON.stringify(ctx.messageHistory).toLowerCase();
+
+    if (lastMessage.includes('creative') || lastMessage.includes('brainstorm')) {
+      return 1.0; // Creative tasks
+    }
+    if (lastMessage.includes('code') || lastMessage.includes('calculate')) {
+      return 0.2; // Precise tasks
+    }
+    return 0.7; // Default
+  },
+  input: 'Write a creative story',
+});
+```
+
+### Context-Aware Instructions
+
+Build instructions based on conversation state:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  instructions: (ctx) => {
+    const base = 'You are a helpful assistant.';
+    const turnInfo = `This is turn ${ctx.numberOfTurns} of the conversation.`;
+
+    // Add context based on history length
+    if (ctx.numberOfTurns > 5) {
+      return `${base}\n${turnInfo}\nKeep responses concise - this is a long conversation.`;
+    }
+
+    return `${base}\n${turnInfo}`;
+  },
+  input: 'Continue helping me...',
+  tools: [helpTool],
+});
+```
+
+### Dynamic Max Tokens
+
+Adjust output length based on task:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  maxTokens: (ctx) => {
+    const lastMessage = JSON.stringify(ctx.messageHistory).toLowerCase();
+
+    if (lastMessage.includes('summarize') || lastMessage.includes('brief')) {
+      return 200;
+    }
+    if (lastMessage.includes('detailed') || lastMessage.includes('explain')) {
+      return 2000;
+    }
+    return 500;
+  },
+  input: 'Give me a detailed explanation',
+});
+```
+
+### Feature Flags
+
+Enable features dynamically:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+
+  // Enable thinking for complex turns
+  provider: async (ctx) => {
+    const enableThinking = ctx.numberOfTurns > 2;
+
+    return enableThinking ? {
+      anthropic: {
+        thinking: { type: 'enabled', budgetTokens: 1000 },
+      },
+    } : undefined;
+  },
+
+  input: 'Solve this complex problem',
+  tools: [analysisTool],
+});
+```
+
+## Combining with Tools
+
+Dynamic parameters work alongside tool execution:
+
+```typescript
+const smartAssistant = openrouter.callModel({
+  // Upgrade model if tools have been used
+  model: (ctx) => {
+    const hasToolUse = JSON.stringify(ctx.messageHistory).includes('function_call');
+    return hasToolUse ? 'anthropic/claude-sonnet-4' : 'openai/gpt-4o-mini';
+  },
+
+  // Lower temperature after tool execution
+  temperature: (ctx) => {
+    return ctx.numberOfTurns > 1 ? 0.3 : 0.7;
+  },
+
+  input: 'Research and analyze this topic',
+  tools: [searchTool, analysisTool],
+});
+```
+
+## Execution Order
+
+Dynamic parameters are resolved at the start of each turn:
+
+```
+1. Resolve all parameter functions with current TurnContext
+2. Build request with resolved values
+3. Send to model
+4. Execute tools (if any)
+5. Check stop conditions
+6. Update TurnContext for next turn
+7. Repeat from step 1
+```
+
+## Error Handling
+
+Handle errors in async parameter functions:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+
+  instructions: async (ctx) => {
+    try {
+      const rules = await fetchRules();
+      return `Follow these rules: ${rules}`;
+    } catch (error) {
+      // Fallback on error
+      console.error('Failed to fetch rules:', error);
+      return 'You are a helpful assistant.';
+    }
+  },
+
+  input: 'Hello!',
+});
+```
+
+## Best Practices
+
+### Keep Functions Pure
+
+Avoid side effects in parameter functions:
+
+```typescript
+// Good: Pure function
+model: (ctx) => ctx.numberOfTurns > 3 ? 'gpt-4' : 'gpt-4o-mini',
+
+// Avoid: Side effects
+model: (ctx) => {
+  logToDatabase(ctx); // Side effect
+  return 'gpt-4';
+},
+```
+
+### Cache Expensive Operations
+
+Cache results for repeated calls:
+
+```typescript
+let cachedRules: string | null = null;
+
+const result = openrouter.callModel({
+  instructions: async (ctx) => {
+    if (!cachedRules) {
+      cachedRules = await fetchExpensiveRules();
+    }
+    return cachedRules;
+  },
+  input: 'Hello!',
+});
+```
+
+### Use Sensible Defaults
+
+Always have fallback values:
+
+```typescript
+model: (ctx) => {
+  const preferredModel = getPreferredModel();
+  return preferredModel ?? 'openai/gpt-4o-mini'; // Default fallback
+},
+```
+
+## See Also
+
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Tool-driven parameter modification
+- **[Stop Conditions](/docs/guides/stop-conditions)** - Dynamic execution control
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn orchestration

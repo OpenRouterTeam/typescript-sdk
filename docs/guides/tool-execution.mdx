@@ -1,0 +1,357 @@
+---
+title: Tool Execution
+subtitle: Automatic multi-turn tool execution and orchestration
+headline: 'Tool Execution | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/tool-execution
+og:site_name: OpenRouter Documentation
+og:title: 'Tool Execution - OpenRouter SDK'
+og:description: 'Learn how callModel automatically executes tools, handles multi-turn conversations, and provides streaming access to tool results.'
+og:image: https://openrouter.ai/dynamic-og?title=Tool%20Execution&description=Multi-turn%20Tool%20Orchestration
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Tool Execution
+
+callModel automatically executes tools and handles multi-turn conversations. When the model calls a tool, the SDK executes it, sends the result back, and continues until the model provides a final response.
+
+## Automatic Execution Flow
+
+When you provide tools with execute functions:
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { z } from 'zod';
+
+const weatherTool = tool({
+  name: 'get_weather',
+  inputSchema: z.object({ location: z.string() }),
+  outputSchema: z.object({ temperature: z.number() }),
+  execute: async ({ location }) => {
+    return { temperature: await fetchTemperature(location) };
+  },
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the weather in Paris?',
+  tools: [weatherTool],
+});
+
+// getText() waits for all tool execution to complete
+const text = await result.getText();
+// "The weather in Paris is 18°C."
+```
+
+### Execution Sequence
+
+1. Model receives prompt and generates tool call
+2. SDK extracts tool call and validates arguments
+3. Tool's execute function runs
+4. Result is formatted and sent back to model
+5. Model generates final response (or more tool calls)
+6. Process repeats until model is done
+
+## Controlling Execution Rounds
+
+### maxToolRounds (Number)
+
+Limit the maximum number of tool execution rounds:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Research this topic thoroughly',
+  tools: [searchTool, analyzeTool],
+  maxToolRounds: 3, // Stop after 3 rounds of tool execution
+});
+```
+
+Setting `maxToolRounds: 0` disables automatic execution - you get raw tool calls.
+
+### maxToolRounds (Function)
+
+Use a function for dynamic control:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Research and analyze',
+  tools: [searchTool],
+  maxToolRounds: (context) => {
+    // Continue if under 5 turns
+    return context.numberOfTurns < 5;
+  },
+});
+```
+
+The function receives `TurnContext` and returns `true` to continue or `false` to stop.
+
+## Accessing Tool Calls
+
+### getToolCalls()
+
+Get all tool calls from the initial response (before auto-execution):
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the weather in Tokyo and Paris?',
+  tools: [weatherTool],
+  maxToolRounds: 0, // Don't auto-execute
+});
+
+const toolCalls = await result.getToolCalls();
+
+for (const call of toolCalls) {
+  console.log(`Tool: ${call.name}`);
+  console.log(`ID: ${call.id}`);
+  console.log(`Arguments:`, call.arguments);
+}
+```
+
+### getToolCallsStream()
+
+Stream tool calls as they complete:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Check weather in multiple cities',
+  tools: [weatherTool],
+  maxToolRounds: 0,
+});
+
+for await (const toolCall of result.getToolCallsStream()) {
+  console.log(`Received tool call: ${toolCall.name}`);
+
+  // Process each tool call as it arrives
+  const weatherResult = await processWeatherRequest(toolCall.arguments);
+  console.log('Result:', weatherResult);
+}
+```
+
+## Tool Stream Events
+
+### getToolStream()
+
+Stream both argument deltas and preliminary results:
+
+```typescript
+const searchTool = tool({
+  name: 'search',
+  inputSchema: z.object({ query: z.string() }),
+  eventSchema: z.object({ progress: z.number(), status: z.string() }),
+  outputSchema: z.object({ results: z.array(z.string()) }),
+  execute: async function* ({ query }) {
+    yield { progress: 25, status: 'Searching...' };
+    yield { progress: 50, status: 'Processing...' };
+    yield { progress: 75, status: 'Ranking...' };
+    yield { progress: 100, status: 'Complete' };
+    return { results: ['result1', 'result2'] };
+  },
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for TypeScript tutorials',
+  tools: [searchTool],
+});
+
+for await (const event of result.getToolStream()) {
+  switch (event.type) {
+    case 'delta':
+      // Raw argument delta from the model
+      process.stdout.write(event.content);
+      break;
+    case 'preliminary_result':
+      // Progress from generator tool
+      console.log(`Progress: ${event.result.progress}% - ${event.result.status}`);
+      break;
+  }
+}
+```
+
+### Event Types
+
+| Type | Description |
+|------|-------------|
+| `delta` | Raw tool call argument chunks from model |
+| `preliminary_result` | Progress events from generator tools |
+
+## Parallel Tool Execution
+
+When the model calls multiple tools, they execute in parallel:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Get weather in Paris, Tokyo, and New York simultaneously',
+  tools: [weatherTool],
+});
+
+// All three weather calls execute in parallel
+const text = await result.getText();
+```
+
+## Error Handling
+
+### Tool Execution Errors
+
+Errors in execute functions are caught and sent back to the model:
+
+```typescript
+const riskyTool = tool({
+  name: 'risky_operation',
+  inputSchema: z.object({ input: z.string() }),
+  outputSchema: z.object({ result: z.string() }),
+  execute: async (params) => {
+    if (params.input === 'fail') {
+      throw new Error('Operation failed: invalid input');
+    }
+    return { result: 'success' };
+  },
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Try the risky operation with "fail"',
+  tools: [riskyTool],
+});
+
+// Model receives error message and can respond appropriately
+const text = await result.getText();
+// "I tried the operation but it failed with: Operation failed: invalid input"
+```
+
+### Validation Errors
+
+Invalid tool arguments are caught before execution:
+
+```typescript
+const strictTool = tool({
+  name: 'strict',
+  inputSchema: z.object({
+    email: z.string().email(),
+    age: z.number().min(0).max(150),
+  }),
+  execute: async (params) => {
+    // Only runs with valid input
+    return { valid: true };
+  },
+});
+```
+
+## Manual Tool Handling
+
+For tools without execute functions:
+
+```typescript
+const confirmTool = tool({
+  name: 'send_email',
+  description: 'Send an email (requires confirmation)',
+  inputSchema: z.object({
+    to: z.string().email(),
+    subject: z.string(),
+    body: z.string(),
+  }),
+  execute: false, // Manual handling
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Send an email to alice@example.com',
+  tools: [confirmTool],
+  maxToolRounds: 0,
+});
+
+const toolCalls = await result.getToolCalls();
+
+for (const call of toolCalls) {
+  if (call.name === 'send_email') {
+    // Show confirmation UI
+    const confirmed = await showConfirmDialog(call.arguments);
+
+    if (confirmed) {
+      await sendEmail(call.arguments);
+    }
+  }
+}
+```
+
+## Execution Results
+
+Access execution metadata through getResponse():
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is 2+2 and the weather in Paris?',
+  tools: [calculatorTool, weatherTool],
+});
+
+const response = await result.getResponse();
+
+// Response includes all execution rounds
+console.log('Final output:', response.output);
+console.log('Usage:', response.usage);
+```
+
+## Best Practices
+
+### Idempotent Tools
+
+Design tools to be safely re-executable:
+
+```typescript
+const createUserTool = tool({
+  name: 'create_user',
+  inputSchema: z.object({
+    email: z.string().email(),
+    name: z.string(),
+  }),
+  execute: async (params) => {
+    // Check if user exists first
+    const existing = await findUserByEmail(params.email);
+    if (existing) {
+      return { userId: existing.id, created: false };
+    }
+
+    const user = await createUser(params);
+    return { userId: user.id, created: true };
+  },
+});
+```
+
+### Timeout Handling
+
+Wrap long-running operations:
+
+```typescript
+const longRunningTool = tool({
+  name: 'process_data',
+  inputSchema: z.object({ dataId: z.string() }),
+  execute: async (params) => {
+    const timeoutMs = 30000;
+
+    const result = await Promise.race([
+      processData(params.dataId),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Operation timed out')), timeoutMs)
+      ),
+    ]);
+
+    return result;
+  },
+});
+```
+
+## Next Steps
+
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Tool-driven context injection
+- **[Stop Conditions](/docs/guides/stop-conditions)** - Advanced execution control
+- **[Examples](/docs/guides/examples)** - Complete tool implementations

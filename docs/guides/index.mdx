@@ -1,0 +1,157 @@
+---
+title: callModel Overview
+subtitle: A unified API for calling any LLM with automatic tool execution and multiple consumption patterns
+headline: 'callModel Overview | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/overview
+og:site_name: OpenRouter Documentation
+og:title: 'callModel Overview - OpenRouter SDK'
+og:description: 'Learn how to use callModel for text generation, streaming, and tool calling with automatic execution. Access 300+ LLMs through a single API.'
+og:image: https://openrouter.ai/dynamic-og?title=callModel%20Overview&description=Unified%20LLM%20API%20with%20Tools
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# callModel Overview
+
+`callModel` is the primary API for interacting with language models through OpenRouter. It provides a unified interface for text generation, streaming, and tool calling with automatic execution across 300+ models.
+
+## Why callModel?
+
+- **Multiple Consumption Patterns**: Get text, stream responses, or access structured data - all from a single call
+- **Automatic Tool Execution**: Define tools with Zod schemas and let the SDK handle execution loops
+- **Type Safety**: Full TypeScript inference for tool inputs, outputs, and events
+- **Format Compatibility**: Convert to/from OpenAI chat and Anthropic Claude message formats
+- **Streaming First**: Built on a reusable stream architecture that supports concurrent consumers
+
+## Quick Start
+
+```typescript
+import { OpenRouter } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the capital of France?',
+});
+
+// Get text (simplest pattern)
+const text = await result.getText();
+console.log(text); // "The capital of France is Paris."
+```
+
+## Consumption Patterns
+
+callModel returns a `ModelResult` object that provides multiple ways to consume the response:
+
+### Text Methods
+
+```typescript
+// Get just the text content
+const text = await result.getText();
+
+// Get the full response with usage data
+const response = await result.getResponse();
+console.log(response.usage); // { inputTokens, outputTokens, cachedTokens }
+```
+
+### Streaming Methods
+
+```typescript
+// Stream text deltas
+for await (const delta of result.getTextStream()) {
+  process.stdout.write(delta);
+}
+
+// Stream reasoning (for reasoning models)
+for await (const delta of result.getReasoningStream()) {
+  console.log('Reasoning:', delta);
+}
+
+// Stream incremental message updates
+for await (const message of result.getNewMessagesStream()) {
+  console.log('Message update:', message);
+}
+
+// Stream all events (including tool preliminary results)
+for await (const event of result.getFullResponsesStream()) {
+  console.log('Event:', event.type);
+}
+```
+
+### Tool Methods
+
+```typescript
+// Get all tool calls from the response
+const toolCalls = await result.getToolCalls();
+
+// Stream tool calls as they complete
+for await (const toolCall of result.getToolCallsStream()) {
+  console.log(`Tool: ${toolCall.name}`, toolCall.arguments);
+}
+
+// Stream tool deltas and preliminary results
+for await (const event of result.getToolStream()) {
+  if (event.type === 'delta') {
+    process.stdout.write(event.content);
+  } else if (event.type === 'preliminary_result') {
+    console.log('Progress:', event.result);
+  }
+}
+```
+
+## Input Formats
+
+callModel accepts multiple input formats:
+
+```typescript
+// Simple string
+const result1 = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello!',
+});
+
+// Message array (OpenResponses format)
+const result2 = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: [
+    { role: 'user', content: 'Hello!' },
+  ],
+});
+
+// With system instructions
+const result3 = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  instructions: 'You are a helpful assistant.',
+  input: 'Hello!',
+});
+```
+
+## What's Next?
+
+Explore the guides to learn more about specific features:
+
+- **[Text Generation](/docs/guides/text-generation)** - Input formats, model selection, and response handling
+- **[Streaming](/docs/guides/streaming)** - All streaming methods and patterns
+- **[Tools](/docs/guides/tools)** - Creating typed tools with Zod schemas
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn orchestration and tool loops
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Tool-driven context injection for skills and plugins
+- **[Message Formats](/docs/guides/message-formats)** - Converting to/from OpenAI and Claude formats
+- **[Dynamic Parameters](/docs/guides/dynamic-parameters)** - Async functions for adaptive behavior
+- **[Stop Conditions](/docs/guides/stop-conditions)** - Intelligent execution control
+- **[API Reference](/docs/guides/api-reference)** - Complete type definitions and method signatures
+
+### Example Tools
+
+Ready-to-use tool implementations:
+
+- **[Weather Tool](/docs/guides/examples/weather-tool)** - Basic API integration
+- **[Database Search](/docs/guides/examples/database-search)** - Generator tools with progress
+- **[Skills Loader](/docs/guides/examples/skills-loader)** - Claude Code skills pattern
+- **[File Operations](/docs/guides/examples/file-operations)** - File system tools

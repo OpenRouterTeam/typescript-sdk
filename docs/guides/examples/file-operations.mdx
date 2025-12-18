@@ -1,0 +1,550 @@
+---
+title: File Operations
+subtitle: File system tools with proper error handling and validation
+headline: 'File Operations Example | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/examples/file-operations
+og:site_name: OpenRouter Documentation
+og:title: 'File Operations Example - OpenRouter SDK'
+og:description: 'Build file system tools for reading, writing, and listing files with proper error handling, encoding support, and path validation.'
+og:image: https://openrouter.ai/dynamic-og?title=File%20Operations&description=File%20System%20Tools
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# File Operations
+
+A complete set of file system tools demonstrating proper error handling, encoding support, and path validation.
+
+## Prerequisites
+
+```bash
+pnpm add @openrouter/sdk zod
+```
+
+## Read File Tool
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { readFile, stat } from 'fs/promises';
+import { existsSync } from 'fs';
+import path from 'path';
+import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const readFileTool = tool({
+  name: 'read_file',
+  description: 'Read contents of a file from the filesystem',
+
+  inputSchema: z.object({
+    path: z.string().describe('Absolute or relative file path'),
+    encoding: z
+      .enum(['utf-8', 'base64', 'hex', 'ascii', 'latin1'])
+      .default('utf-8')
+      .describe('File encoding'),
+    maxLines: z
+      .number()
+      .positive()
+      .optional()
+      .describe('Limit lines returned (for large files)'),
+    startLine: z
+      .number()
+      .min(1)
+      .optional()
+      .describe('Start reading from this line (1-indexed)'),
+  }),
+
+  outputSchema: z.object({
+    content: z.string(),
+    path: z.string(),
+    size: z.number(),
+    encoding: z.string(),
+    lineCount: z.number(),
+    truncated: z.boolean(),
+  }),
+
+  execute: async ({ path: filePath, encoding, maxLines, startLine }) => {
+    const resolvedPath = path.resolve(filePath);
+
+    // Security: Prevent directory traversal
+    if (resolvedPath.includes('..')) {
+      throw new Error('Directory traversal not allowed');
+    }
+
+    if (!existsSync(resolvedPath)) {
+      throw new Error(`File not found: ${resolvedPath}`);
+    }
+
+    const stats = await stat(resolvedPath);
+
+    if (stats.isDirectory()) {
+      throw new Error(`Path is a directory, not a file: ${resolvedPath}`);
+    }
+
+    let content = await readFile(resolvedPath, encoding as BufferEncoding);
+    let truncated = false;
+    let lineCount = 0;
+
+    if (encoding === 'utf-8' || encoding === 'ascii' || encoding === 'latin1') {
+      const lines = content.split('\n');
+      lineCount = lines.length;
+
+      // Apply line range
+      let selectedLines = lines;
+
+      if (startLine) {
+        selectedLines = lines.slice(startLine - 1);
+      }
+
+      if (maxLines && selectedLines.length > maxLines) {
+        selectedLines = selectedLines.slice(0, maxLines);
+        truncated = true;
+      }
+
+      content = selectedLines.join('\n');
+    }
+
+    return {
+      content,
+      path: resolvedPath,
+      size: stats.size,
+      encoding,
+      lineCount,
+      truncated,
+    };
+  },
+});
+```
+
+## Write File Tool
+
+```typescript
+import { writeFile, mkdir } from 'fs/promises';
+
+const writeFileTool = tool({
+  name: 'write_file',
+  description: 'Write content to a file',
+
+  inputSchema: z.object({
+    path: z.string().describe('File path to write to'),
+    content: z.string().describe('Content to write'),
+    mode: z
+      .enum(['overwrite', 'append', 'create-only'])
+      .default('overwrite')
+      .describe('Write mode'),
+    createDirs: z
+      .boolean()
+      .default(true)
+      .describe('Create parent directories if needed'),
+    encoding: z.enum(['utf-8', 'base64']).default('utf-8'),
+  }),
+
+  outputSchema: z.object({
+    success: z.boolean(),
+    path: z.string(),
+    bytesWritten: z.number(),
+    created: z.boolean(),
+  }),
+
+  execute: async ({ path: filePath, content, mode, createDirs, encoding }) => {
+    const resolvedPath = path.resolve(filePath);
+
+    // Security check
+    if (resolvedPath.includes('..')) {
+      throw new Error('Directory traversal not allowed');
+    }
+
+    const fileExisted = existsSync(resolvedPath);
+
+    if (mode === 'create-only' && fileExisted) {
+      throw new Error(`File already exists: ${resolvedPath}`);
+    }
+
+    // Create parent directories if needed
+    if (createDirs) {
+      const dir = path.dirname(resolvedPath);
+      await mkdir(dir, { recursive: true });
+    }
+
+    // Determine write flag
+    const flag = mode === 'append' ? 'a' : 'w';
+
+    // Handle base64 content
+    const finalContent =
+      encoding === 'base64' ? Buffer.from(content, 'base64') : content;
+
+    await writeFile(resolvedPath, finalContent, { flag });
+
+    return {
+      success: true,
+      path: resolvedPath,
+      bytesWritten: Buffer.byteLength(content),
+      created: !fileExisted,
+    };
+  },
+});
+```
+
+## List Directory Tool
+
+```typescript
+import { readdir, stat } from 'fs/promises';
+
+const listDirectoryTool = tool({
+  name: 'list_directory',
+  description: 'List files and directories in a path',
+
+  inputSchema: z.object({
+    path: z.string().describe('Directory path to list'),
+    recursive: z.boolean().default(false).describe('List recursively'),
+    includeHidden: z.boolean().default(false).describe('Include hidden files'),
+    pattern: z.string().optional().describe('Glob pattern to filter (e.g., "*.ts")'),
+    maxDepth: z
+      .number()
+      .min(1)
+      .max(10)
+      .default(3)
+      .describe('Maximum recursion depth'),
+  }),
+
+  outputSchema: z.object({
+    entries: z.array(
+      z.object({
+        name: z.string(),
+        type: z.enum(['file', 'directory', 'symlink', 'other']),
+        size: z.number().optional(),
+        path: z.string(),
+        depth: z.number(),
+      })
+    ),
+    totalCount: z.number(),
+    totalSize: z.number(),
+  }),
+
+  execute: async ({ path: dirPath, recursive, includeHidden, pattern, maxDepth }) => {
+    const resolvedPath = path.resolve(dirPath);
+
+    if (!existsSync(resolvedPath)) {
+      throw new Error(`Directory not found: ${resolvedPath}`);
+    }
+
+    const dirStats = await stat(resolvedPath);
+    if (!dirStats.isDirectory()) {
+      throw new Error(`Not a directory: ${resolvedPath}`);
+    }
+
+    const entries: Array<{
+      name: string;
+      type: 'file' | 'directory' | 'symlink' | 'other';
+      size?: number;
+      path: string;
+      depth: number;
+    }> = [];
+
+    let totalSize = 0;
+
+    const listDir = async (currentPath: string, depth: number) => {
+      if (depth > maxDepth) return;
+
+      const items = await readdir(currentPath, { withFileTypes: true });
+
+      for (const item of items) {
+        // Skip hidden files unless requested
+        if (!includeHidden && item.name.startsWith('.')) continue;
+
+        // Apply pattern filter
+        if (pattern && !matchGlob(item.name, pattern)) continue;
+
+        const itemPath = path.join(currentPath, item.name);
+        const itemStats = await stat(itemPath).catch(() => null);
+
+        let type: 'file' | 'directory' | 'symlink' | 'other' = 'other';
+        let size: number | undefined;
+
+        if (item.isDirectory()) {
+          type = 'directory';
+        } else if (item.isSymbolicLink()) {
+          type = 'symlink';
+        } else if (item.isFile()) {
+          type = 'file';
+          size = itemStats?.size;
+          if (size) totalSize += size;
+        }
+
+        entries.push({
+          name: item.name,
+          type,
+          size,
+          path: itemPath,
+          depth,
+        });
+
+        // Recurse into directories
+        if (recursive && type === 'directory') {
+          await listDir(itemPath, depth + 1);
+        }
+      }
+    };
+
+    await listDir(resolvedPath, 1);
+
+    return {
+      entries,
+      totalCount: entries.length,
+      totalSize,
+    };
+  },
+});
+
+// Simple glob matching
+const matchGlob = (name: string, pattern: string): boolean => {
+  const regex = new RegExp(
+    '^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$'
+  );
+  return regex.test(name);
+};
+```
+
+## Delete File Tool
+
+```typescript
+import { unlink, rm } from 'fs/promises';
+
+const deleteFileTool = tool({
+  name: 'delete_file',
+  description: 'Delete a file or directory',
+
+  inputSchema: z.object({
+    path: z.string().describe('Path to delete'),
+    recursive: z
+      .boolean()
+      .default(false)
+      .describe('Delete directories recursively'),
+    force: z
+      .boolean()
+      .default(false)
+      .describe('Ignore errors if path does not exist'),
+  }),
+
+  outputSchema: z.object({
+    success: z.boolean(),
+    path: z.string(),
+    wasDirectory: z.boolean(),
+  }),
+
+  execute: async ({ path: targetPath, recursive, force }) => {
+    const resolvedPath = path.resolve(targetPath);
+
+    // Safety checks
+    if (resolvedPath === '/' || resolvedPath === process.env.HOME) {
+      throw new Error('Cannot delete root or home directory');
+    }
+
+    if (!existsSync(resolvedPath)) {
+      if (force) {
+        return { success: true, path: resolvedPath, wasDirectory: false };
+      }
+      throw new Error(`Path not found: ${resolvedPath}`);
+    }
+
+    const stats = await stat(resolvedPath);
+    const wasDirectory = stats.isDirectory();
+
+    if (wasDirectory && !recursive) {
+      throw new Error('Cannot delete directory without recursive flag');
+    }
+
+    if (wasDirectory) {
+      await rm(resolvedPath, { recursive: true, force });
+    } else {
+      await unlink(resolvedPath);
+    }
+
+    return {
+      success: true,
+      path: resolvedPath,
+      wasDirectory,
+    };
+  },
+});
+```
+
+## Copy File Tool
+
+```typescript
+import { copyFile, mkdir } from 'fs/promises';
+
+const copyFileTool = tool({
+  name: 'copy_file',
+  description: 'Copy a file to a new location',
+
+  inputSchema: z.object({
+    source: z.string().describe('Source file path'),
+    destination: z.string().describe('Destination file path'),
+    overwrite: z
+      .boolean()
+      .default(false)
+      .describe('Overwrite if destination exists'),
+    createDirs: z
+      .boolean()
+      .default(true)
+      .describe('Create parent directories'),
+  }),
+
+  outputSchema: z.object({
+    success: z.boolean(),
+    source: z.string(),
+    destination: z.string(),
+    bytescopied: z.number(),
+  }),
+
+  execute: async ({ source, destination, overwrite, createDirs }) => {
+    const sourcePath = path.resolve(source);
+    const destPath = path.resolve(destination);
+
+    if (!existsSync(sourcePath)) {
+      throw new Error(`Source not found: ${sourcePath}`);
+    }
+
+    const sourceStats = await stat(sourcePath);
+    if (sourceStats.isDirectory()) {
+      throw new Error('Cannot copy directories with this tool');
+    }
+
+    if (existsSync(destPath) && !overwrite) {
+      throw new Error(`Destination exists: ${destPath}`);
+    }
+
+    if (createDirs) {
+      await mkdir(path.dirname(destPath), { recursive: true });
+    }
+
+    await copyFile(sourcePath, destPath);
+
+    return {
+      success: true,
+      source: sourcePath,
+      destination: destPath,
+      bytescopied: sourceStats.size,
+    };
+  },
+});
+```
+
+## Usage Example
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: `Please help me:
+1. List all TypeScript files in the src directory
+2. Read the contents of the main index.ts file
+3. Create a backup copy at backup/index.ts.bak`,
+  tools: [readFileTool, writeFileTool, listDirectoryTool, copyFileTool],
+});
+
+const text = await result.getText();
+```
+
+## Complete File Operations Suite
+
+```typescript
+// Export all tools together
+const fileOperationsTools = [
+  readFileTool,
+  writeFileTool,
+  listDirectoryTool,
+  deleteFileTool,
+  copyFileTool,
+];
+
+// Use with callModel
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'Organize the project files by moving all test files to a tests/ directory',
+  tools: fileOperationsTools,
+  stopWhen: stepCountIs(20), // Limit for safety
+});
+```
+
+## Error Handling Patterns
+
+### Graceful Error Returns
+
+```typescript
+const safeReadFileTool = tool({
+  name: 'safe_read_file',
+  inputSchema: z.object({ path: z.string() }),
+  outputSchema: z.object({
+    content: z.string().optional(),
+    error: z.string().optional(),
+    success: z.boolean(),
+  }),
+  execute: async ({ path: filePath }) => {
+    try {
+      const content = await readFile(filePath, 'utf-8');
+      return { content, success: true };
+    } catch (error) {
+      return {
+        error: `Failed to read: ${(error as Error).message}`,
+        success: false,
+      };
+    }
+  },
+});
+```
+
+### Permission Checks
+
+```typescript
+import { access, constants } from 'fs/promises';
+
+const checkPermissions = async (filePath: string) => {
+  try {
+    await access(filePath, constants.R_OK);
+    return { readable: true };
+  } catch {
+    return { readable: false };
+  }
+};
+```
+
+## Security Considerations
+
+1. **Path Validation**: Always resolve and validate paths
+2. **Directory Traversal**: Block `..` in paths
+3. **Protected Paths**: Prevent deletion of critical directories
+4. **Size Limits**: Limit file sizes for read operations
+5. **Permissions**: Check file permissions before operations
+
+```typescript
+const validatePath = (filePath: string): string => {
+  const resolved = path.resolve(filePath);
+
+  // Block directory traversal
+  if (filePath.includes('..')) {
+    throw new Error('Directory traversal not allowed');
+  }
+
+  // Block sensitive paths
+  const blocked = ['/etc', '/var', '/usr', '/bin', '/sbin'];
+  if (blocked.some((p) => resolved.startsWith(p))) {
+    throw new Error('Access to system directories not allowed');
+  }
+
+  return resolved;
+};
+```
+
+## See Also
+
+- **[Tools Guide](/docs/guides/tools)** - Tool creation fundamentals
+- **[Weather Tool](/docs/guides/examples/weather-tool)** - API integration
+- **[Skills Loader](/docs/guides/examples/skills-loader)** - Context injection
+

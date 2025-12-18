@@ -1,0 +1,366 @@
+---
+title: Tools
+subtitle: Create type-safe tools with Zod schemas and automatic execution
+headline: 'Tools | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/tools
+og:site_name: OpenRouter Documentation
+og:title: 'Tools - OpenRouter SDK'
+og:description: 'Create strongly-typed tools for LLMs with Zod schemas. Learn about regular tools, generator tools with progress, and manual tools.'
+og:image: https://openrouter.ai/dynamic-og?title=Tools&description=Type-safe%20Tool%20Creation
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Tools
+
+Tools extend LLM capabilities by allowing models to call functions you define. The OpenRouter SDK provides the `tool()` helper for creating strongly-typed tools with full TypeScript inference.
+
+## The tool() Helper
+
+The `tool()` function creates type-safe tools with Zod schema validation:
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { z } from 'zod';
+
+const weatherTool = tool({
+  name: 'get_weather',
+  description: 'Get the current weather for a location',
+  inputSchema: z.object({
+    location: z.string().describe('City name, e.g., "San Francisco, CA"'),
+  }),
+  outputSchema: z.object({
+    temperature: z.number(),
+    conditions: z.string(),
+  }),
+  execute: async (params) => {
+    // params is typed as { location: string }
+    const weather = await fetchWeather(params.location);
+    return {
+      temperature: weather.temp,
+      conditions: weather.description,
+    };
+  },
+});
+```
+
+## Tool Types
+
+The SDK supports three types of tools, automatically detected from your configuration:
+
+### Regular Tools
+
+Standard tools with an execute function:
+
+```typescript
+const calculatorTool = tool({
+  name: 'calculate',
+  description: 'Perform a mathematical calculation',
+  inputSchema: z.object({
+    expression: z.string().describe('Math expression like "2 + 2"'),
+  }),
+  outputSchema: z.object({
+    result: z.number(),
+  }),
+  execute: async (params) => {
+    const result = eval(params.expression); // Use a safer eval in production
+    return { result };
+  },
+});
+```
+
+### Generator Tools
+
+Tools that yield progress updates during execution. Add `eventSchema` to enable generator mode:
+
+```typescript
+const searchTool = tool({
+  name: 'search_database',
+  description: 'Search documents with progress updates',
+  inputSchema: z.object({
+    query: z.string(),
+    limit: z.number().default(10),
+  }),
+  // eventSchema triggers generator mode
+  eventSchema: z.object({
+    progress: z.number().min(0).max(100),
+    message: z.string(),
+  }),
+  outputSchema: z.object({
+    results: z.array(z.string()),
+    totalFound: z.number(),
+  }),
+  // execute is now an async generator
+  execute: async function* (params) {
+    yield { progress: 0, message: 'Starting search...' };
+
+    const results = [];
+    for (let i = 0; i < 5; i++) {
+      yield { progress: (i + 1) * 20, message: `Searching batch ${i + 1}...` };
+      results.push(...await searchBatch(params.query, i));
+    }
+
+    // Final yield is the output
+    yield { progress: 100, message: 'Complete!' };
+
+    // Return the final result (or yield it as last value)
+    return {
+      results: results.slice(0, params.limit),
+      totalFound: results.length,
+    };
+  },
+});
+```
+
+Progress events are streamed to consumers via `getToolStream()` and `getFullResponsesStream()`.
+
+### Manual Tools
+
+Tools without automatic execution - you handle the tool calls yourself:
+
+```typescript
+const manualTool = tool({
+  name: 'send_email',
+  description: 'Send an email (requires user confirmation)',
+  inputSchema: z.object({
+    to: z.string().email(),
+    subject: z.string(),
+    body: z.string(),
+  }),
+  execute: false, // Manual handling required
+});
+```
+
+Use `getToolCalls()` to retrieve manual tool calls for processing.
+
+## Schema Definition
+
+### Input Schema
+
+Define what parameters the tool accepts:
+
+```typescript
+const inputSchema = z.object({
+  // Required parameters
+  query: z.string().describe('Search query'),
+
+  // Optional with default
+  limit: z.number().default(10).describe('Max results'),
+
+  // Optional without default
+  filter: z.string().optional().describe('Filter expression'),
+
+  // Enum values
+  sortBy: z.enum(['relevance', 'date', 'popularity']).default('relevance'),
+
+  // Nested objects
+  options: z.object({
+    caseSensitive: z.boolean().default(false),
+    wholeWord: z.boolean().default(false),
+  }).optional(),
+
+  // Arrays
+  tags: z.array(z.string()).optional(),
+});
+```
+
+### Output Schema
+
+Define the structure of results returned to the model:
+
+```typescript
+const outputSchema = z.object({
+  results: z.array(z.object({
+    id: z.string(),
+    title: z.string(),
+    score: z.number(),
+  })),
+  metadata: z.object({
+    totalCount: z.number(),
+    searchTimeMs: z.number(),
+  }),
+});
+```
+
+### Event Schema (Generator Tools)
+
+Define progress/status events for generator tools:
+
+```typescript
+const eventSchema = z.object({
+  stage: z.enum(['initializing', 'processing', 'finalizing']),
+  progress: z.number(),
+  currentItem: z.string().optional(),
+});
+```
+
+## Type Inference
+
+The SDK provides utilities to extract types from tools:
+
+```typescript
+import type { InferToolInput, InferToolOutput, InferToolEvent } from '@openrouter/sdk';
+
+// Get the input type
+type WeatherInput = InferToolInput<typeof weatherTool>;
+// { location: string }
+
+// Get the output type
+type WeatherOutput = InferToolOutput<typeof weatherTool>;
+// { temperature: number; conditions: string }
+
+// Get event type (generator tools only)
+type SearchEvent = InferToolEvent<typeof searchTool>;
+// { progress: number; message: string }
+```
+
+## Using Tools with callModel
+
+### Single Tool
+
+```typescript
+const openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the weather in Tokyo?',
+  tools: [weatherTool],
+});
+
+// Tools are automatically executed
+const text = await result.getText();
+// "The weather in Tokyo is 22°C and sunny."
+```
+
+### Multiple Tools
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for TypeScript tutorials and calculate 2+2',
+  tools: [searchTool, calculatorTool],
+});
+```
+
+### Type-Safe Tool Calls with `as const`
+
+Use `as const` for full type inference on tool calls:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the weather?',
+  tools: [weatherTool, searchTool] as const,
+  maxToolRounds: 0, // Get tool calls without executing
+});
+
+// Tool calls are typed as union of tool inputs
+for await (const toolCall of result.getToolCallsStream()) {
+  if (toolCall.name === 'get_weather') {
+    // toolCall.arguments is typed as { location: string }
+    console.log('Weather for:', toolCall.arguments.location);
+  }
+}
+```
+
+## TurnContext
+
+Tool execute functions receive a `TurnContext` with conversation state:
+
+```typescript
+const contextAwareTool = tool({
+  name: 'context_tool',
+  inputSchema: z.object({ data: z.string() }),
+  outputSchema: z.object({ result: z.string() }),
+  execute: async (params, context) => {
+    console.log('Turn number:', context?.numberOfTurns);
+    console.log('Message history:', context?.messageHistory);
+    console.log('Model:', context?.model);
+
+    return { result: `Processed on turn ${context?.numberOfTurns}` };
+  },
+});
+```
+
+### TurnContext Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `numberOfTurns` | `number` | Current turn number (1-indexed) |
+| `messageHistory` | `OpenResponsesInput` | Current message history |
+| `model` | `string \| undefined` | Model being used |
+| `models` | `string[] \| undefined` | Models array if using fallback |
+
+## Tool Best Practices
+
+### Descriptive Names and Descriptions
+
+```typescript
+// Good: Clear name and description
+const tool1 = tool({
+  name: 'search_knowledge_base',
+  description: 'Search the company knowledge base for documents, FAQs, and policies. Returns relevant articles with snippets.',
+  // ...
+});
+
+// Avoid: Vague or generic
+const tool2 = tool({
+  name: 'search',
+  description: 'Searches stuff',
+  // ...
+});
+```
+
+### Schema Descriptions
+
+Add `.describe()` to help the model understand parameters:
+
+```typescript
+const inputSchema = z.object({
+  query: z.string().describe('Natural language search query'),
+  maxResults: z.number()
+    .min(1)
+    .max(100)
+    .default(10)
+    .describe('Maximum number of results to return (1-100)'),
+  dateRange: z.enum(['day', 'week', 'month', 'year', 'all'])
+    .default('all')
+    .describe('Filter results by time period'),
+});
+```
+
+### Error Handling
+
+Handle errors gracefully in execute functions:
+
+```typescript
+const robustTool = tool({
+  name: 'fetch_data',
+  inputSchema: z.object({ url: z.string().url() }),
+  outputSchema: z.object({
+    data: z.unknown().optional(),
+    error: z.string().optional(),
+  }),
+  execute: async (params) => {
+    try {
+      const response = await fetch(params.url);
+      if (!response.ok) {
+        return { error: `HTTP ${response.status}: ${response.statusText}` };
+      }
+      return { data: await response.json() };
+    } catch (error) {
+      return { error: `Failed to fetch: ${error.message}` };
+    }
+  },
+});
+```
+
+## Next Steps
+
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn execution and orchestration
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Tool-driven context injection
+- **[Examples](/docs/guides/examples)** - Complete tool implementations

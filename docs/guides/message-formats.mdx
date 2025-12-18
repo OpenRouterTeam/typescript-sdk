@@ -1,0 +1,335 @@
+---
+title: Message Formats
+subtitle: Convert between OpenAI chat and Anthropic Claude message formats
+headline: 'Message Formats | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/message-formats
+og:site_name: OpenRouter Documentation
+og:title: 'Message Formats - OpenRouter SDK'
+og:description: 'Convert between OpenAI chat format, Anthropic Claude format, and OpenResponses format. Easy migration from other SDKs.'
+og:image: https://openrouter.ai/dynamic-og?title=Message%20Formats&description=Format%20Conversion%20Helpers
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Message Formats
+
+The OpenRouter SDK provides helper functions to convert between popular message formats. This makes it easy to migrate existing code or integrate with different APIs.
+
+## OpenAI Chat Format
+
+### fromChatMessages()
+
+Convert OpenAI chat-style messages to OpenResponses input:
+
+```typescript
+import { OpenRouter, fromChatMessages } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+// OpenAI chat format
+const chatMessages = [
+  { role: 'system', content: 'You are a helpful assistant.' },
+  { role: 'user', content: 'Hello!' },
+  { role: 'assistant', content: 'Hi there! How can I help you?' },
+  { role: 'user', content: 'What is the weather like?' },
+];
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: fromChatMessages(chatMessages),
+});
+
+const text = await result.getText();
+```
+
+### toChatMessage()
+
+Convert an OpenResponses response to chat message format:
+
+```typescript
+import { toChatMessage } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello!',
+});
+
+const response = await result.getResponse();
+const chatMessage = toChatMessage(response);
+
+// chatMessage is now: { role: 'assistant', content: '...' }
+console.log(chatMessage.role);    // 'assistant'
+console.log(chatMessage.content); // Response text
+```
+
+### Supported Message Types
+
+| Chat Role | Description |
+|-----------|-------------|
+| `system` | System instructions |
+| `user` | User messages |
+| `assistant` | Assistant responses |
+| `developer` | Developer instructions |
+| `tool` | Tool response messages |
+
+### Tool Messages
+
+Tool responses are converted to function call outputs:
+
+```typescript
+const chatMessages = [
+  { role: 'user', content: 'What is the weather?' },
+  {
+    role: 'assistant',
+    content: null,
+    tool_calls: [{
+      id: 'call_123',
+      type: 'function',
+      function: { name: 'get_weather', arguments: '{"location":"Paris"}' },
+    }],
+  },
+  {
+    role: 'tool',
+    tool_call_id: 'call_123',
+    content: '{"temperature": 20}',
+  },
+];
+
+const input = fromChatMessages(chatMessages);
+```
+
+## Anthropic Claude Format
+
+### fromClaudeMessages()
+
+Convert Anthropic Claude-style messages to OpenResponses input:
+
+```typescript
+import { OpenRouter, fromClaudeMessages } from '@openrouter/sdk';
+
+// Claude format
+const claudeMessages = [
+  { role: 'user', content: 'Hello!' },
+  { role: 'assistant', content: 'Hi there!' },
+  { role: 'user', content: 'Tell me about TypeScript.' },
+];
+
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: fromClaudeMessages(claudeMessages),
+});
+```
+
+### toClaudeMessage()
+
+Convert an OpenResponses response to Claude message format:
+
+```typescript
+import { toClaudeMessage } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'Hello!',
+});
+
+const response = await result.getResponse();
+const claudeMessage = toClaudeMessage(response);
+
+// Compatible with Anthropic SDK types
+```
+
+### Content Blocks
+
+Claude's content block format is supported:
+
+```typescript
+const claudeMessages = [
+  {
+    role: 'user',
+    content: [
+      { type: 'text', text: 'What is in this image?' },
+      {
+        type: 'image',
+        source: {
+          type: 'url',
+          url: 'https://example.com/image.jpg',
+        },
+      },
+    ],
+  },
+];
+
+const input = fromClaudeMessages(claudeMessages);
+```
+
+### Tool Use Blocks
+
+Claude's tool use format is converted:
+
+```typescript
+const claudeMessages = [
+  { role: 'user', content: 'What is the weather?' },
+  {
+    role: 'assistant',
+    content: [
+      {
+        type: 'tool_use',
+        id: 'tool_123',
+        name: 'get_weather',
+        input: { location: 'Paris' },
+      },
+    ],
+  },
+  {
+    role: 'user',
+    content: [
+      {
+        type: 'tool_result',
+        tool_use_id: 'tool_123',
+        content: '{"temperature": 20}',
+      },
+    ],
+  },
+];
+
+const input = fromClaudeMessages(claudeMessages);
+```
+
+### Base64 Images
+
+Both URL and base64 images are supported:
+
+```typescript
+const claudeMessages = [
+  {
+    role: 'user',
+    content: [
+      { type: 'text', text: 'Describe this image.' },
+      {
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: 'image/png',
+          data: 'iVBORw0KGgo...',
+        },
+      },
+    ],
+  },
+];
+```
+
+### Limitations
+
+Some Claude features are not preserved in conversion:
+
+- `cache_control` on content blocks
+- `is_error` flag on tool_result blocks
+
+These features are Claude-specific and not supported by OpenRouter.
+
+## Migration Examples
+
+### From OpenAI SDK
+
+```typescript
+// Before: OpenAI SDK
+import OpenAI from 'openai';
+
+const openai = new OpenAI();
+const completion = await openai.chat.completions.create({
+  model: 'gpt-4',
+  messages: [
+    { role: 'system', content: 'You are helpful.' },
+    { role: 'user', content: 'Hello!' },
+  ],
+});
+
+// After: OpenRouter SDK
+import { OpenRouter, fromChatMessages } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
+const result = openrouter.callModel({
+  model: 'openai/gpt-4',
+  input: fromChatMessages([
+    { role: 'system', content: 'You are helpful.' },
+    { role: 'user', content: 'Hello!' },
+  ]),
+});
+
+const text = await result.getText();
+```
+
+### From Anthropic SDK
+
+```typescript
+// Before: Anthropic SDK
+import Anthropic from '@anthropic-ai/sdk';
+
+const anthropic = new Anthropic();
+const message = await anthropic.messages.create({
+  model: 'claude-sonnet-4-20250514',
+  max_tokens: 1024,
+  messages: [
+    { role: 'user', content: 'Hello!' },
+  ],
+});
+
+// After: OpenRouter SDK
+import { OpenRouter, fromClaudeMessages } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: fromClaudeMessages([
+    { role: 'user', content: 'Hello!' },
+  ]),
+  maxTokens: 1024,
+});
+
+const text = await result.getText();
+```
+
+## Building Conversations
+
+Accumulate messages across multiple calls:
+
+```typescript
+import { fromChatMessages, toChatMessage } from '@openrouter/sdk';
+
+// Start with initial message
+let messages = [
+  { role: 'system', content: 'You are a helpful assistant.' },
+  { role: 'user', content: 'Hello!' },
+];
+
+// First call
+let result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: fromChatMessages(messages),
+});
+
+let response = await result.getResponse();
+let assistantMessage = toChatMessage(response);
+
+// Add to history
+messages.push(assistantMessage);
+messages.push({ role: 'user', content: 'What can you help me with?' });
+
+// Continue conversation
+result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: fromChatMessages(messages),
+});
+```
+
+## Next Steps
+
+- **[Text Generation](/docs/guides/text-generation)** - Input formats and parameters
+- **[Tools](/docs/guides/tools)** - Add tool capabilities
+- **[Streaming](/docs/guides/streaming)** - Stream format-converted responses

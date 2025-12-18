@@ -1,0 +1,413 @@
+---
+title: Database Search
+subtitle: Generator tool with real-time progress streaming
+headline: 'Database Search Example | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/examples/database-search
+og:site_name: OpenRouter Documentation
+og:title: 'Database Search Example - OpenRouter SDK'
+og:description: 'Build a database search tool with generator functions, progress events, pagination, and real-time streaming updates.'
+og:image: https://openrouter.ai/dynamic-og?title=Database%20Search&description=Progress%20Streaming%20Example
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Database Search
+
+A generator tool that streams progress updates during long-running search operations. This pattern is ideal for operations where users benefit from seeing intermediate progress.
+
+## Prerequisites
+
+```bash
+pnpm add @openrouter/sdk zod
+```
+
+## Basic Implementation
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const databaseSearchTool = tool({
+  name: 'search_database',
+  description: 'Search across documents with real-time progress updates',
+  inputSchema: z.object({
+    query: z.string().describe('Search query'),
+    limit: z.number().min(1).max(100).default(10).describe('Maximum results'),
+    filters: z
+      .object({
+        category: z.string().optional(),
+        dateFrom: z.string().optional(),
+        dateTo: z.string().optional(),
+      })
+      .optional(),
+  }),
+  eventSchema: z.object({
+    progress: z.number().min(0).max(100),
+    message: z.string(),
+    currentPage: z.number().optional(),
+    resultsFound: z.number().optional(),
+  }),
+  outputSchema: z.object({
+    results: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        snippet: z.string(),
+        relevance: z.number(),
+        category: z.string(),
+      })
+    ),
+    totalFound: z.number(),
+    searchTimeMs: z.number(),
+  }),
+  execute: async function* ({ query, limit, filters }) {
+    const startTime = Date.now();
+
+    yield { progress: 0, message: 'Initializing search...' };
+
+    // Simulate index lookup
+    await delay(100);
+    yield { progress: 10, message: 'Querying search index...' };
+
+    // Calculate pages needed
+    const pageSize = 10;
+    const totalPages = Math.ceil(limit / pageSize);
+    const allResults: SearchResult[] = [];
+
+    // Search each page with progress updates
+    for (let page = 1; page <= totalPages; page++) {
+      yield {
+        progress: 10 + (page / totalPages) * 70,
+        message: `Searching page ${page} of ${totalPages}...`,
+        currentPage: page,
+        resultsFound: allResults.length,
+      };
+
+      const pageResults = await searchPage(query, page, pageSize, filters);
+      allResults.push(...pageResults);
+
+      await delay(50); // Simulate network latency
+    }
+
+    yield { progress: 85, message: 'Ranking results...' };
+    const ranked = rankByRelevance(allResults, query);
+
+    yield { progress: 95, message: 'Preparing response...' };
+
+    const searchTimeMs = Date.now() - startTime;
+
+    yield { progress: 100, message: 'Search complete!' };
+
+    return {
+      results: ranked.slice(0, limit),
+      totalFound: allResults.length,
+      searchTimeMs,
+    };
+  },
+});
+
+// Helper types and functions
+type SearchResult = {
+  id: string;
+  title: string;
+  snippet: string;
+  relevance: number;
+  category: string;
+};
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const searchPage = async (
+  query: string,
+  page: number,
+  pageSize: number,
+  filters?: { category?: string; dateFrom?: string; dateTo?: string }
+): Promise<SearchResult[]> => {
+  // Replace with actual database query
+  return mockSearchResults(query, page, pageSize);
+};
+
+const rankByRelevance = (results: SearchResult[], query: string): SearchResult[] => {
+  return results.sort((a, b) => b.relevance - a.relevance);
+};
+
+const mockSearchResults = (query: string, page: number, pageSize: number): SearchResult[] => {
+  return Array.from({ length: pageSize }, (_, i) => ({
+    id: `doc_${page}_${i}`,
+    title: `Document about ${query} #${(page - 1) * pageSize + i + 1}`,
+    snippet: `This document contains information about ${query}...`,
+    relevance: Math.random(),
+    category: ['tech', 'business', 'science'][Math.floor(Math.random() * 3)],
+  }));
+};
+```
+
+## Usage
+
+### Basic Search
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for documents about machine learning',
+  tools: [databaseSearchTool],
+});
+
+const text = await result.getText();
+```
+
+### Streaming Progress Updates
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for recent AI research papers',
+  tools: [databaseSearchTool],
+});
+
+// Stream tool events to show progress
+for await (const event of result.getToolStream()) {
+  if (event.type === 'preliminary_result') {
+    console.log(`Progress: ${event.result.progress}% - ${event.result.message}`);
+  }
+}
+```
+
+Output:
+```
+Progress: 0% - Initializing search...
+Progress: 10% - Querying search index...
+Progress: 45% - Searching page 1 of 2...
+Progress: 80% - Searching page 2 of 2...
+Progress: 85% - Ranking results...
+Progress: 95% - Preparing response...
+Progress: 100% - Search complete!
+```
+
+### With Full Stream Events
+
+```typescript
+for await (const event of result.getFullResponsesStream()) {
+  if (event.type === 'tool.preliminary_result') {
+    const { progress, message } = event.result as { progress: number; message: string };
+    updateProgressBar(progress);
+    updateStatusMessage(message);
+  }
+}
+```
+
+## Advanced: Multi-Source Search
+
+Search across multiple data sources with aggregated progress:
+
+```typescript
+const multiSourceSearchTool = tool({
+  name: 'multi_search',
+  description: 'Search across multiple data sources simultaneously',
+  inputSchema: z.object({
+    query: z.string(),
+    sources: z
+      .array(z.enum(['documents', 'emails', 'tickets', 'wiki']))
+      .default(['documents']),
+    limit: z.number().default(20),
+  }),
+  eventSchema: z.object({
+    progress: z.number(),
+    message: z.string(),
+    source: z.string().optional(),
+    sourceProgress: z
+      .record(z.string(), z.number())
+      .optional()
+      .describe('Progress per source'),
+  }),
+  outputSchema: z.object({
+    results: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        snippet: z.string(),
+        source: z.string(),
+        relevance: z.number(),
+      })
+    ),
+    totalBySource: z.record(z.string(), z.number()),
+    searchTimeMs: z.number(),
+  }),
+  execute: async function* ({ query, sources, limit }) {
+    const startTime = Date.now();
+    const sourceProgress: Record<string, number> = {};
+    const allResults: any[] = [];
+
+    yield { progress: 0, message: 'Starting multi-source search...' };
+
+    // Initialize progress for each source
+    sources.forEach((source) => (sourceProgress[source] = 0));
+
+    // Search each source
+    for (let i = 0; i < sources.length; i++) {
+      const source = sources[i];
+      const baseProgress = (i / sources.length) * 80;
+
+      yield {
+        progress: baseProgress,
+        message: `Searching ${source}...`,
+        source,
+        sourceProgress: { ...sourceProgress },
+      };
+
+      // Simulate searching with incremental progress
+      for (let p = 0; p <= 100; p += 25) {
+        sourceProgress[source] = p;
+        await delay(50);
+
+        yield {
+          progress: baseProgress + (p / 100) * (80 / sources.length),
+          message: `Searching ${source}... ${p}%`,
+          source,
+          sourceProgress: { ...sourceProgress },
+        };
+      }
+
+      const sourceResults = await searchSource(source, query);
+      allResults.push(...sourceResults.map((r) => ({ ...r, source })));
+    }
+
+    yield { progress: 85, message: 'Merging and ranking results...' };
+    const ranked = allResults.sort((a, b) => b.relevance - a.relevance);
+
+    yield { progress: 95, message: 'Finalizing...' };
+
+    const totalBySource = sources.reduce(
+      (acc, source) => {
+        acc[source] = allResults.filter((r) => r.source === source).length;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    return {
+      results: ranked.slice(0, limit),
+      totalBySource,
+      searchTimeMs: Date.now() - startTime,
+    };
+  },
+});
+
+const searchSource = async (source: string, query: string) => {
+  // Replace with actual source-specific search
+  return mockSearchResults(query, 1, 10);
+};
+```
+
+## Progress UI Integration
+
+### React Example
+
+```typescript
+import { useState, useEffect } from 'react';
+
+function SearchProgress({ result }: { result: ModelResult }) {
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState('Starting...');
+
+  useEffect(() => {
+    const stream = async () => {
+      for await (const event of result.getToolStream()) {
+        if (event.type === 'preliminary_result') {
+          setProgress(event.result.progress);
+          setMessage(event.result.message);
+        }
+      }
+    };
+    stream();
+  }, [result]);
+
+  return (
+    <div>
+      <div className="progress-bar">
+        <div style={{ width: `${progress}%` }} />
+      </div>
+      <p>{message}</p>
+    </div>
+  );
+}
+```
+
+### CLI Example
+
+```typescript
+const progressBar = (progress: number, message: string) => {
+  const width = 40;
+  const filled = Math.round((progress / 100) * width);
+  const empty = width - filled;
+  const bar = '█'.repeat(filled) + '░'.repeat(empty);
+  process.stdout.write(`\r[${bar}] ${progress}% - ${message}`);
+};
+
+for await (const event of result.getToolStream()) {
+  if (event.type === 'preliminary_result') {
+    progressBar(event.result.progress, event.result.message);
+  }
+}
+console.log(); // New line after completion
+```
+
+## Error Handling with Progress
+
+```typescript
+const resilientSearchTool = tool({
+  name: 'resilient_search',
+  inputSchema: z.object({ query: z.string() }),
+  eventSchema: z.object({
+    progress: z.number(),
+    message: z.string(),
+    warning: z.string().optional(),
+  }),
+  outputSchema: z.object({
+    results: z.array(z.object({ id: z.string(), title: z.string() })),
+    errors: z.array(z.string()),
+  }),
+  execute: async function* ({ query }) {
+    const errors: string[] = [];
+
+    yield { progress: 0, message: 'Starting search...' };
+
+    try {
+      yield { progress: 30, message: 'Searching primary index...' };
+      const primary = await searchPrimaryIndex(query);
+    } catch (error) {
+      errors.push(`Primary index error: ${error.message}`);
+      yield {
+        progress: 30,
+        message: 'Primary index failed, trying backup...',
+        warning: 'Primary index unavailable',
+      };
+    }
+
+    yield { progress: 60, message: 'Searching secondary sources...' };
+    // ... continue with fallback logic
+
+    yield { progress: 100, message: 'Search complete' };
+
+    return {
+      results: [],
+      errors,
+    };
+  },
+});
+```
+
+## See Also
+
+- **[Tools Guide](/docs/guides/tools)** - Generator tool fundamentals
+- **[Streaming](/docs/guides/streaming)** - Stream consumption patterns
+- **[Weather Tool](/docs/guides/examples/weather-tool)** - Basic tool example
+

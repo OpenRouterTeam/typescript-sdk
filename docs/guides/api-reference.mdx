@@ -1,0 +1,463 @@
+---
+title: API Reference
+subtitle: Complete reference for callModel types and methods
+headline: 'API Reference | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/api-reference
+og:site_name: OpenRouter Documentation
+og:title: 'API Reference - OpenRouter SDK'
+og:description: 'Complete API reference for callModel, ModelResult, tool types, and helper functions in the OpenRouter SDK.'
+og:image: https://openrouter.ai/dynamic-og?title=API%20Reference&description=Complete%20Type%20Reference
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# API Reference
+
+Complete reference for the callModel API, ModelResult class, tool types, and helper functions.
+
+## callModel
+
+```typescript
+function callModel(request: CallModelInput, options?: RequestOptions): ModelResult
+```
+
+Creates a response using the OpenResponses API with multiple consumption patterns.
+
+### CallModelInput
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `model` | `string \| ((ctx: TurnContext) => string)` | Yes* | Model ID (e.g., "openai/gpt-4o-mini") |
+| `models` | `string[]` | Yes* | Model fallback array |
+| `input` | `OpenResponsesInput` | Yes | Input messages or string |
+| `instructions` | `string \| ((ctx: TurnContext) => string)` | No | System instructions |
+| `tools` | `Tool[]` | No | Tools available to the model |
+| `maxToolRounds` | `MaxToolRounds` | No | Tool execution limit (deprecated) |
+| `stopWhen` | `StopWhen` | No | Stop conditions |
+| `temperature` | `number \| ((ctx: TurnContext) => number)` | No | Sampling temperature (0-2) |
+| `maxTokens` | `number \| ((ctx: TurnContext) => number)` | No | Maximum tokens to generate |
+| `topP` | `number` | No | Top-p sampling |
+| `frequencyPenalty` | `number` | No | Frequency penalty (-2 to 2) |
+| `presencePenalty` | `number` | No | Presence penalty (-2 to 2) |
+| `stop` | `string[]` | No | Stop sequences |
+| `text` | `ResponseTextConfig` | No | Text format configuration |
+| `provider` | `object` | No | Provider-specific options |
+
+*Either `model` or `models` is required.
+
+### RequestOptions
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `timeout` | `number` | Request timeout in milliseconds |
+| `signal` | `AbortSignal` | Abort signal for cancellation |
+
+---
+
+## ModelResult
+
+Wrapper providing multiple consumption patterns for a response.
+
+### Methods
+
+#### getText()
+
+```typescript
+getText(): Promise<string>
+```
+
+Get text content after tool execution completes.
+
+#### getResponse()
+
+```typescript
+getResponse(): Promise<OpenResponsesNonStreamingResponse>
+```
+
+Get full response with usage data (inputTokens, outputTokens, cachedTokens).
+
+#### getTextStream()
+
+```typescript
+getTextStream(): AsyncIterableIterator<string>
+```
+
+Stream text deltas.
+
+#### getReasoningStream()
+
+```typescript
+getReasoningStream(): AsyncIterableIterator<string>
+```
+
+Stream reasoning deltas (for reasoning models).
+
+#### getNewMessagesStream()
+
+```typescript
+getNewMessagesStream(): AsyncIterableIterator<ResponsesOutputMessage | OpenResponsesFunctionCallOutput>
+```
+
+Stream incremental message updates in OpenResponses format.
+
+#### getFullResponsesStream()
+
+```typescript
+getFullResponsesStream(): AsyncIterableIterator<EnhancedResponseStreamEvent>
+```
+
+Stream all events including tool preliminary results.
+
+#### getFullChatStream()
+
+```typescript
+getFullChatStream(): AsyncIterableIterator<ChatStreamEvent>
+```
+
+Stream in chat-compatible format.
+
+#### getToolCalls()
+
+```typescript
+getToolCalls(): Promise<ParsedToolCall[]>
+```
+
+Get all tool calls from initial response.
+
+#### getToolCallsStream()
+
+```typescript
+getToolCallsStream(): AsyncIterableIterator<ParsedToolCall>
+```
+
+Stream tool calls as they complete.
+
+#### getToolStream()
+
+```typescript
+getToolStream(): AsyncIterableIterator<ToolStreamEvent>
+```
+
+Stream tool deltas and preliminary results.
+
+#### cancel()
+
+```typescript
+cancel(): Promise<void>
+```
+
+Cancel the stream and all consumers.
+
+---
+
+## Tool Types
+
+### tool()
+
+```typescript
+function tool<TInput, TOutput>(config: ToolConfig): Tool
+```
+
+Create a typed tool with Zod schema validation.
+
+### ToolConfig
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `name` | `string` | Yes | Tool name |
+| `description` | `string` | No | Tool description |
+| `inputSchema` | `ZodObject` | Yes | Input parameter schema |
+| `outputSchema` | `ZodType` | No | Output schema |
+| `eventSchema` | `ZodType` | No | Event schema (triggers generator mode) |
+| `execute` | `function \| false` | Yes | Execute function or false for manual |
+| `nextTurnParams` | `NextTurnParamsFunctions` | No | Parameters to modify next turn |
+
+### Tool
+
+Union type of all tool types:
+
+```typescript
+type Tool =
+  | ToolWithExecute<ZodObject, ZodType>
+  | ToolWithGenerator<ZodObject, ZodType, ZodType>
+  | ManualTool<ZodObject, ZodType>;
+```
+
+### ToolWithExecute
+
+Regular tool with execute function:
+
+```typescript
+interface ToolWithExecute<TInput, TOutput> {
+  type: ToolType.Function;
+  function: {
+    name: string;
+    description?: string;
+    inputSchema: TInput;
+    outputSchema?: TOutput;
+    execute: (params: z.infer<TInput>, context?: TurnContext) => Promise<z.infer<TOutput>>;
+  };
+}
+```
+
+### ToolWithGenerator
+
+Generator tool with eventSchema:
+
+```typescript
+interface ToolWithGenerator<TInput, TEvent, TOutput> {
+  type: ToolType.Function;
+  function: {
+    name: string;
+    description?: string;
+    inputSchema: TInput;
+    eventSchema: TEvent;
+    outputSchema: TOutput;
+    execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent>>;
+  };
+}
+```
+
+### ManualTool
+
+Tool without execute function:
+
+```typescript
+interface ManualTool<TInput, TOutput> {
+  type: ToolType.Function;
+  function: {
+    name: string;
+    description?: string;
+    inputSchema: TInput;
+    outputSchema?: TOutput;
+  };
+}
+```
+
+---
+
+## Context Types
+
+### TurnContext
+
+```typescript
+interface TurnContext {
+  numberOfTurns: number;
+  messageHistory: OpenResponsesInput;
+  model?: string;
+  models?: string[];
+}
+```
+
+### NextTurnParamsContext
+
+```typescript
+interface NextTurnParamsContext extends Partial<CallModelInput> {
+  input: OpenResponsesInput;
+}
+```
+
+---
+
+## Stream Event Types
+
+### EnhancedResponseStreamEvent
+
+```typescript
+type EnhancedResponseStreamEvent =
+  | OpenResponsesStreamEvent
+  | ToolPreliminaryResultEvent;
+```
+
+### ToolStreamEvent
+
+```typescript
+type ToolStreamEvent =
+  | { type: 'delta'; content: string }
+  | { type: 'preliminary_result'; toolCallId: string; result: unknown };
+```
+
+### ChatStreamEvent
+
+```typescript
+type ChatStreamEvent =
+  | { type: 'content.delta'; delta: string }
+  | { type: 'message.complete'; response: OpenResponsesNonStreamingResponse }
+  | { type: 'tool.preliminary_result'; toolCallId: string; result: unknown }
+  | { type: string; event: OpenResponsesStreamEvent };
+```
+
+### ParsedToolCall
+
+```typescript
+interface ParsedToolCall {
+  id: string;
+  name: string;
+  arguments: unknown;
+}
+```
+
+### ToolExecutionResult
+
+```typescript
+interface ToolExecutionResult {
+  toolCallId: string;
+  toolName: string;
+  result: unknown;
+  preliminaryResults?: unknown[];
+  error?: Error;
+}
+```
+
+---
+
+## Stop Conditions
+
+### StopWhen
+
+```typescript
+type StopWhen =
+  | StopCondition
+  | StopCondition[];
+```
+
+### StopCondition
+
+```typescript
+type StopCondition = (context: StopConditionContext) => boolean;
+```
+
+### StopConditionContext
+
+```typescript
+interface StopConditionContext {
+  steps: StepResult[];
+  totalTokens: number;
+  totalCost: number;
+  lastResponse: Response;
+}
+```
+
+### Built-in Helpers
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `stepCountIs` | `(n: number) => StopCondition` | Stop after n steps |
+| `hasToolCall` | `(name: string) => StopCondition` | Stop when tool is called |
+| `maxTokensUsed` | `(n: number) => StopCondition` | Stop after n tokens |
+| `maxCost` | `(amount: number) => StopCondition` | Stop after cost limit |
+| `finishReasonIs` | `(reason: string) => StopCondition` | Stop on finish reason |
+
+---
+
+## Format Helpers
+
+### fromChatMessages
+
+```typescript
+function fromChatMessages(messages: Message[]): OpenResponsesInput
+```
+
+Convert OpenAI chat format to OpenResponses input.
+
+### toChatMessage
+
+```typescript
+function toChatMessage(response: OpenResponsesNonStreamingResponse): AssistantMessage
+```
+
+Convert response to chat message format.
+
+### fromClaudeMessages
+
+```typescript
+function fromClaudeMessages(messages: ClaudeMessageParam[]): OpenResponsesInput
+```
+
+Convert Anthropic Claude format to OpenResponses input.
+
+### toClaudeMessage
+
+```typescript
+function toClaudeMessage(response: OpenResponsesNonStreamingResponse): ClaudeMessage
+```
+
+Convert response to Claude message format.
+
+---
+
+## Type Utilities
+
+### InferToolInput
+
+```typescript
+type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
+  ? S extends ZodType ? z.infer<S> : unknown
+  : unknown;
+```
+
+### InferToolOutput
+
+```typescript
+type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
+  ? S extends ZodType ? z.infer<S> : unknown
+  : unknown;
+```
+
+### InferToolEvent
+
+```typescript
+type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
+  ? S extends ZodType ? z.infer<S> : never
+  : never;
+```
+
+### TypedToolCall
+
+```typescript
+type TypedToolCall<T extends Tool> = {
+  id: string;
+  name: T extends { function: { name: infer N } } ? N : string;
+  arguments: InferToolInput<T>;
+};
+```
+
+---
+
+## Exports
+
+```typescript
+// Main SDK
+export { OpenRouter } from '@openrouter/sdk';
+
+// Tool helpers
+export { tool, ToolType } from '@openrouter/sdk';
+
+// Format helpers
+export { fromChatMessages, toChatMessage, fromClaudeMessages, toClaudeMessage } from '@openrouter/sdk';
+
+// Stop condition helpers
+export { stepCountIs, hasToolCall, maxTokensUsed, maxCost, finishReasonIs } from '@openrouter/sdk';
+
+// Types
+export type {
+  CallModelInput,
+  Tool,
+  ToolWithExecute,
+  ToolWithGenerator,
+  ManualTool,
+  TurnContext,
+  ParsedToolCall,
+  ToolExecutionResult,
+  StopCondition,
+  StopWhen,
+  MaxToolRounds,
+  InferToolInput,
+  InferToolOutput,
+  InferToolEvent,
+} from '@openrouter/sdk';
+```

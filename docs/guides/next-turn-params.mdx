@@ -1,0 +1,419 @@
+---
+title: nextTurnParams
+subtitle: Tool-driven context injection for skills, plugins, and adaptive behavior
+headline: 'nextTurnParams | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/next-turn-params
+og:site_name: OpenRouter Documentation
+og:title: 'nextTurnParams - OpenRouter SDK'
+og:description: 'Build encapsulated, context-aware tools with nextTurnParams. Create skills systems, plugins, and adaptive multi-turn agents.'
+og:image: https://openrouter.ai/dynamic-og?title=nextTurnParams&description=Tool-Driven%20Context%20Injection
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# nextTurnParams
+
+`nextTurnParams` enables tools to modify conversation context for subsequent turns. This powerful feature allows you to build encapsulated tools that manage their own context - perfect for skills systems, plugins, and adaptive agents.
+
+## Why nextTurnParams?
+
+Traditional tool execution returns results to the model, but sometimes you need more:
+
+- **Skills/Plugins**: Load domain-specific instructions when a skill is activated
+- **Progressive Context**: Build up context as tools are used
+- **Adaptive Behavior**: Adjust model parameters based on tool results
+- **Clean Separation**: Tools manage their own context requirements
+
+With `nextTurnParams`, tools can modify any `callModel` parameter for the next turn.
+
+## Basic Example
+
+```typescript
+import { tool } from '@openrouter/sdk';
+import { z } from 'zod';
+
+const expertModeTool = tool({
+  name: 'enable_expert_mode',
+  description: 'Enable expert mode for detailed technical responses',
+  inputSchema: z.object({
+    domain: z.string().describe('Technical domain (e.g., "kubernetes", "react")'),
+  }),
+  outputSchema: z.object({ enabled: z.boolean() }),
+
+  nextTurnParams: {
+    instructions: (params, context) => {
+      const base = context.instructions ?? '';
+      return `${base}
+
+EXPERT MODE ENABLED for ${params.domain}:
+- Provide detailed technical explanations
+- Include code examples and best practices
+- Reference official documentation
+- Assume advanced knowledge`;
+    },
+    temperature: () => 0.3, // More precise for technical content
+  },
+
+  execute: async (params) => {
+    return { enabled: true };
+  },
+});
+```
+
+## The Claude Code Skills Pattern
+
+This example shows how to recreate Claude Code's skills system as a single encapsulated tool:
+
+```typescript
+import { tool } from '@openrouter/sdk';
+import { readFileSync } from 'fs';
+import { z } from 'zod';
+
+const SkillsTool = tool({
+  name: "Skill",
+  description: `Load a specialized skill to enhance the assistant's capabilities.
+Available skills: pdf-processing, data-analysis, code-review, etc.
+Each skill provides domain-specific instructions and capabilities.`,
+  inputSchema: z.object({
+    type: z.string().describe("The skill type to load (e.g., 'pdf-processing')"),
+  }),
+  outputSchema: z.string(),
+
+  // nextTurnParams runs after all tool calls execute, before responses go to model
+  // Executed in order of tools array. This is where the magic happens.
+  nextTurnParams: {
+    input: (params, context) => {
+      // Prevent duplicate skill loading
+      if (JSON.stringify(context.input).includes(`Skill ${params.type} is already loaded`)) {
+        return context.input;
+      }
+
+      // Load the skill's instructions from file system
+      const skill = readFileSync(
+        `~/.claude/skills/${params.type}/SKILL.md`,
+        "utf-8"
+      );
+
+      // Inject skill context into the conversation
+      return [
+        ...context.input,
+        {
+          role: "user",
+          content: `Base directory for this skill: ~/.claude/skills/${params.type}/
+
+${skill}`,
+        },
+      ];
+    },
+  },
+
+  execute: async (params, context) => {
+    // Check if already loaded
+    if (JSON.stringify(context.input).includes(`Skill ${params.type} is already loaded`)) {
+      return `Skill ${params.type} is already loaded`;
+    }
+
+    return `Launching skill ${params.type}`;
+  },
+});
+
+// Usage - the skill automatically enriches future turns
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'Process this PDF and extract the key findings',
+  tools: [SkillsTool],
+});
+```
+
+### Key Benefits
+
+1. **Encapsulation**: Skill loading logic is entirely contained in the tool
+2. **Idempotency**: Built-in check prevents loading the same skill twice
+3. **Clean API**: Callers don't need to know about skill file locations
+4. **Composability**: Multiple skills can be loaded across turns
+
+## Execution Order
+
+Understanding when `nextTurnParams` runs is crucial:
+
+```
+1. Model generates tool calls
+   ↓
+2. All tool `execute` functions run
+   ↓
+3. `nextTurnParams` functions run for each tool (in tools array order)
+   ↓
+4. Modified parameters used for next model turn
+   ↓
+5. Repeat until model stops calling tools
+```
+
+## Available Context
+
+`nextTurnParams` functions receive two arguments:
+
+### params
+
+The validated input parameters that were passed to the tool:
+
+```typescript
+nextTurnParams: {
+  instructions: (params, context) => {
+    // params is typed based on inputSchema
+    console.log(params.type); // e.g., "pdf-processing"
+    return `Handle ${params.type}`;
+  },
+},
+```
+
+### context
+
+The current request context, including:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `input` | `OpenResponsesInput` | Current message history |
+| `model` | `string \| undefined` | Current model selection |
+| `models` | `string[] \| undefined` | Model fallback array |
+| `instructions` | `string \| undefined` | Current system instructions |
+| `temperature` | `number \| undefined` | Current temperature |
+| `maxTokens` | `number \| undefined` | Current max tokens |
+| And all other `CallModelInput` properties... |
+
+## Modifiable Parameters
+
+You can modify any `CallModelInput` parameter:
+
+```typescript
+nextTurnParams: {
+  // Modify message history
+  input: (params, ctx) => [...ctx.input, newMessage],
+
+  // Change model
+  model: (params, ctx) => 'anthropic/claude-sonnet-4',
+
+  // Update instructions
+  instructions: (params, ctx) => `${ctx.instructions}\n\nNew context...`,
+
+  // Adjust generation parameters
+  temperature: (params, ctx) => 0.5,
+  maxTokens: (params, ctx) => 2000,
+
+  // Provider-specific options
+  provider: (params, ctx) => ({
+    ...ctx.provider,
+    anthropic: { thinking: { type: 'enabled' } },
+  }),
+},
+```
+
+## Patterns
+
+### Research Context Accumulation
+
+Build up context as research progresses:
+
+```typescript
+const ResearchTool = tool({
+  name: "research",
+  inputSchema: z.object({ topic: z.string() }),
+  outputSchema: z.object({ findings: z.array(z.string()) }),
+
+  nextTurnParams: {
+    instructions: (params, context) => {
+      const base = context.instructions ?? '';
+      return `${base}
+
+Previous research on "${params.topic}" found important context.
+Build upon these findings in your response.`;
+    },
+  },
+
+  execute: async (params) => {
+    const results = await searchDatabase(params.topic);
+    return { findings: results };
+  },
+});
+```
+
+### Complexity-Based Model Selection
+
+Upgrade to better models when needed:
+
+```typescript
+const ComplexityAnalyzer = tool({
+  name: "analyze_complexity",
+  inputSchema: z.object({ code: z.string() }),
+  outputSchema: z.object({ complexity: z.enum(['low', 'medium', 'high']) }),
+
+  nextTurnParams: {
+    model: (params, context) => {
+      // Upgrade to more capable model for complex code
+      if (params.complexity === 'high') {
+        return 'anthropic/claude-sonnet-4';
+      }
+      return context.model ?? 'openai/gpt-4o-mini';
+    },
+    temperature: (params, context) => {
+      // Lower temperature for complex analysis
+      return params.complexity === 'high' ? 0.3 : 0.7;
+    },
+  },
+
+  execute: async (params) => {
+    return analyzeCodeComplexity(params.code);
+  },
+});
+```
+
+### Multi-Skill Loading
+
+Load multiple skills at once:
+
+```typescript
+const MultiSkillLoader = tool({
+  name: 'load_skills',
+  description: 'Load multiple skills at once',
+  inputSchema: z.object({
+    skills: z.array(z.string()).describe('Array of skill names to load'),
+  }),
+  outputSchema: z.object({
+    loaded: z.array(z.string()),
+    failed: z.array(z.object({ name: z.string(), reason: z.string() })),
+  }),
+
+  nextTurnParams: {
+    input: (params, context) => {
+      let newInput = context.input;
+
+      for (const skillName of params.skills) {
+        const skillPath = `~/.skills/${skillName}/SKILL.md`;
+        if (!existsSync(skillPath)) continue;
+
+        const skillMarker = `[Skill: ${skillName}]`;
+        if (JSON.stringify(newInput).includes(skillMarker)) continue;
+
+        const skillContent = readFileSync(skillPath, 'utf-8');
+        newInput = [
+          ...(Array.isArray(newInput) ? newInput : [newInput]),
+          { role: 'user', content: `${skillMarker}\n${skillContent}` },
+        ];
+      }
+
+      return newInput;
+    },
+  },
+
+  execute: async ({ skills }) => {
+    const loaded = [];
+    const failed = [];
+
+    for (const skill of skills) {
+      if (existsSync(`~/.skills/${skill}/SKILL.md`)) {
+        loaded.push(skill);
+      } else {
+        failed.push({ name: skill, reason: 'Not found' });
+      }
+    }
+
+    return { loaded, failed };
+  },
+});
+```
+
+### Language/Locale Switching
+
+Adapt to user language preferences:
+
+```typescript
+const LanguageTool = tool({
+  name: 'set_language',
+  inputSchema: z.object({
+    language: z.enum(['en', 'es', 'fr', 'de', 'ja']),
+  }),
+  outputSchema: z.object({ set: z.boolean() }),
+
+  nextTurnParams: {
+    instructions: (params, context) => {
+      const base = context.instructions ?? '';
+      const languageInstructions = {
+        en: 'Respond in English.',
+        es: 'Responde en español.',
+        fr: 'Répondez en français.',
+        de: 'Antworten Sie auf Deutsch.',
+        ja: '日本語で回答してください。',
+      };
+
+      return `${base}\n\n${languageInstructions[params.language]}`;
+    },
+  },
+
+  execute: async (params) => ({ set: true }),
+});
+```
+
+## Best Practices
+
+### Idempotency Checks
+
+Always check if context was already added:
+
+```typescript
+nextTurnParams: {
+  input: (params, context) => {
+    const marker = `[Context: ${params.id}]`;
+
+    // Don't add if already present
+    if (JSON.stringify(context.input).includes(marker)) {
+      return context.input;
+    }
+
+    return [...context.input, {
+      role: 'user',
+      content: `${marker}\n${newContent}`,
+    }];
+  },
+},
+```
+
+### Type Safety
+
+Use proper typing for context access:
+
+```typescript
+nextTurnParams: {
+  instructions: (params, context) => {
+    // Safe access with fallback
+    const base = context.instructions ?? 'You are a helpful assistant.';
+    return `${base}\n\nAdditional context: ${params.data}`;
+  },
+},
+```
+
+### Minimal Modifications
+
+Only modify what's necessary:
+
+```typescript
+// Good: Minimal, targeted change
+nextTurnParams: {
+  temperature: (params) => params.needsPrecision ? 0.2 : undefined,
+},
+
+// Avoid: Unnecessary spreading
+nextTurnParams: {
+  temperature: (params, ctx) => {
+    return params.needsPrecision ? 0.2 : ctx.temperature;
+  },
+},
+```
+
+## See Also
+
+- **[Skills Loader Example](/docs/guides/examples/skills-loader)** - Complete implementation
+- **[Dynamic Parameters](/docs/guides/dynamic-parameters)** - Async parameter functions
+- **[Stop Conditions](/docs/guides/stop-conditions)** - Execution control

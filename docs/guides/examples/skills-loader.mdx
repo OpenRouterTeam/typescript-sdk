@@ -1,0 +1,500 @@
+---
+title: Skills Loader
+subtitle: Complete Claude Code skills system using nextTurnParams
+headline: 'Skills Loader Example | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/examples/skills-loader
+og:site_name: OpenRouter Documentation
+og:title: 'Skills Loader Example - OpenRouter SDK'
+og:description: 'Build a complete skills system like Claude Code using nextTurnParams for context injection, idempotency, and multi-skill loading.'
+og:image: https://openrouter.ai/dynamic-og?title=Skills%20Loader&description=Context%20Injection%20Pattern
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Skills Loader
+
+A complete implementation of a skills system similar to Claude Code, demonstrating the power of `nextTurnParams` for context injection.
+
+## Overview
+
+This example shows how to build encapsulated, self-managing tools that inject domain-specific context into conversations. When a skill is loaded, it automatically enriches subsequent turns with specialized instructions.
+
+## Prerequisites
+
+```bash
+pnpm add @openrouter/sdk zod
+```
+
+Create a skills directory:
+
+```bash
+mkdir -p ~/.claude/skills/pdf-processing
+mkdir -p ~/.claude/skills/data-analysis
+mkdir -p ~/.claude/skills/code-review
+```
+
+## Basic Skills Tool
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { readFileSync, existsSync, readdirSync } from 'fs';
+import path from 'path';
+import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const SKILLS_DIR = path.join(process.env.HOME || '~', '.claude', 'skills');
+
+// List available skills
+const listAvailableSkills = (): string[] => {
+  if (!existsSync(SKILLS_DIR)) return [];
+  return readdirSync(SKILLS_DIR, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .filter((dirent) => existsSync(path.join(SKILLS_DIR, dirent.name, 'SKILL.md')))
+    .map((dirent) => dirent.name);
+};
+
+const SkillsTool = tool({
+  name: 'Skill',
+  description: `Load a specialized skill to enhance the assistant's capabilities.
+Available skills: ${listAvailableSkills().join(', ') || 'none configured'}
+Each skill provides domain-specific instructions and capabilities.`,
+
+  inputSchema: z.object({
+    type: z.string().describe("The skill type to load (e.g., 'pdf-processing')"),
+  }),
+
+  outputSchema: z.string(),
+
+  // This is where the magic happens - modify context for next turn
+  nextTurnParams: {
+    input: (params, context) => {
+      // Prevent duplicate skill loading
+      const skillMarker = `[Skill: ${params.type}]`;
+      if (JSON.stringify(context.input).includes(skillMarker)) {
+        return context.input;
+      }
+
+      // Load the skill's instructions
+      const skillPath = path.join(SKILLS_DIR, params.type, 'SKILL.md');
+      if (!existsSync(skillPath)) {
+        return context.input;
+      }
+
+      const skill = readFileSync(skillPath, 'utf-8');
+      const skillDir = path.join(SKILLS_DIR, params.type);
+
+      // Inject skill context into the conversation
+      const currentInput = Array.isArray(context.input) ? context.input : [context.input];
+
+      return [
+        ...currentInput,
+        {
+          role: 'user',
+          content: `${skillMarker}
+Base directory for this skill: ${skillDir}
+
+${skill}`,
+        },
+      ];
+    },
+  },
+
+  execute: async (params, context) => {
+    const skillMarker = `[Skill: ${params.type}]`;
+
+    // Check if already loaded
+    if (JSON.stringify(context?.messageHistory || []).includes(skillMarker)) {
+      return `Skill ${params.type} is already loaded`;
+    }
+
+    const skillPath = path.join(SKILLS_DIR, params.type, 'SKILL.md');
+    if (!existsSync(skillPath)) {
+      const available = listAvailableSkills();
+      return `Skill "${params.type}" not found. Available skills: ${available.join(', ') || 'none'}`;
+    }
+
+    return `Launching skill ${params.type}`;
+  },
+});
+```
+
+## Usage
+
+```typescript
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'I need to process a PDF and extract tables from it',
+  tools: [SkillsTool],
+});
+
+const text = await result.getText();
+// The model will call the Skill tool, loading pdf-processing context
+// Subsequent responses will have access to the skill's instructions
+```
+
+## Example Skill File
+
+Create `~/.claude/skills/pdf-processing/SKILL.md`:
+
+```markdown
+# PDF Processing Skill
+
+You are now equipped with PDF processing capabilities.
+
+## Available Tools
+When processing PDFs, you have access to:
+- `extract_text`: Extract all text from a PDF
+- `extract_tables`: Extract tables as structured data
+- `extract_images`: Extract embedded images
+- `split_pdf`: Split PDF into individual pages
+
+## Best Practices
+1. Always check PDF file size before processing
+2. For large PDFs (>50 pages), process in chunks
+3. OCR may be needed for scanned documents
+4. Tables may span multiple pages - handle accordingly
+
+## Output Formats
+- Text: Plain text or markdown
+- Tables: JSON, CSV, or markdown tables
+- Images: PNG with sequential naming
+
+## Error Handling
+- If a PDF is encrypted, request the password
+- If OCR fails, suggest alternative approaches
+- Report page numbers for any extraction errors
+```
+
+## Extended: Multi-Skill Loader
+
+Load multiple skills in a single call:
+
+```typescript
+const MultiSkillLoader = tool({
+  name: 'load_skills',
+  description: 'Load multiple skills at once for complex tasks',
+
+  inputSchema: z.object({
+    skills: z.array(z.string()).describe('Array of skill names to load'),
+  }),
+
+  outputSchema: z.object({
+    loaded: z.array(z.string()),
+    failed: z.array(
+      z.object({
+        name: z.string(),
+        reason: z.string(),
+      })
+    ),
+  }),
+
+  nextTurnParams: {
+    input: (params, context) => {
+      let newInput = Array.isArray(context.input) ? context.input : [context.input];
+
+      for (const skillName of params.skills) {
+        const skillMarker = `[Skill: ${skillName}]`;
+
+        // Skip if already loaded
+        if (JSON.stringify(newInput).includes(skillMarker)) {
+          continue;
+        }
+
+        const skillPath = path.join(SKILLS_DIR, skillName, 'SKILL.md');
+        if (!existsSync(skillPath)) {
+          continue;
+        }
+
+        const skillContent = readFileSync(skillPath, 'utf-8');
+        const skillDir = path.join(SKILLS_DIR, skillName);
+
+        newInput = [
+          ...newInput,
+          {
+            role: 'user',
+            content: `${skillMarker}
+Base directory: ${skillDir}
+
+${skillContent}`,
+          },
+        ];
+      }
+
+      return newInput;
+    },
+  },
+
+  execute: async ({ skills }) => {
+    const loaded: string[] = [];
+    const failed: Array<{ name: string; reason: string }> = [];
+
+    for (const skill of skills) {
+      const skillPath = path.join(SKILLS_DIR, skill, 'SKILL.md');
+      if (existsSync(skillPath)) {
+        loaded.push(skill);
+      } else {
+        failed.push({ name: skill, reason: 'Skill not found' });
+      }
+    }
+
+    return { loaded, failed };
+  },
+});
+
+// Usage
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'I need to analyze a PDF report and create visualizations',
+  tools: [MultiSkillLoader],
+});
+// Model might call: load_skills({ skills: ['pdf-processing', 'data-analysis'] })
+```
+
+## Extended: Skill with Options
+
+Skills that accept configuration:
+
+```typescript
+const ConfigurableSkillLoader = tool({
+  name: 'configure_skill',
+  description: 'Load a skill with custom configuration options',
+
+  inputSchema: z.object({
+    skillName: z.string(),
+    options: z
+      .object({
+        verbosity: z.enum(['minimal', 'normal', 'detailed']).default('normal'),
+        strictMode: z.boolean().default(false),
+        outputFormat: z.enum(['json', 'markdown', 'plain']).default('markdown'),
+      })
+      .optional(),
+  }),
+
+  outputSchema: z.object({
+    status: z.enum(['loaded', 'already_loaded', 'not_found']),
+    message: z.string(),
+    configuration: z.record(z.unknown()).optional(),
+  }),
+
+  nextTurnParams: {
+    input: (params, context) => {
+      const skillMarker = `[Skill: ${params.skillName}]`;
+      if (JSON.stringify(context.input).includes(skillMarker)) {
+        return context.input;
+      }
+
+      const skillPath = path.join(SKILLS_DIR, params.skillName, 'SKILL.md');
+      if (!existsSync(skillPath)) {
+        return context.input;
+      }
+
+      const skillContent = readFileSync(skillPath, 'utf-8');
+      const options = params.options || {};
+
+      // Build configuration header
+      const configHeader = `
+## Skill Configuration
+- Verbosity: ${options.verbosity || 'normal'}
+- Strict Mode: ${options.strictMode || false}
+- Output Format: ${options.outputFormat || 'markdown'}
+`;
+
+      const currentInput = Array.isArray(context.input) ? context.input : [context.input];
+
+      return [
+        ...currentInput,
+        {
+          role: 'user',
+          content: `${skillMarker}
+${configHeader}
+
+${skillContent}`,
+        },
+      ];
+    },
+
+    // Adjust model behavior based on skill
+    temperature: (params, context) => {
+      // Lower temperature for strict mode
+      if (params.options?.strictMode) {
+        return 0.3;
+      }
+      return context.temperature;
+    },
+  },
+
+  execute: async ({ skillName, options }) => {
+    const skillPath = path.join(SKILLS_DIR, skillName, 'SKILL.md');
+
+    if (!existsSync(skillPath)) {
+      return {
+        status: 'not_found' as const,
+        message: `Skill "${skillName}" not found`,
+      };
+    }
+
+    return {
+      status: 'loaded' as const,
+      message: `Skill "${skillName}" loaded with configuration`,
+      configuration: options || {},
+    };
+  },
+});
+```
+
+## Skill Discovery Tool
+
+List and describe available skills:
+
+```typescript
+const SkillDiscoveryTool = tool({
+  name: 'list_skills',
+  description: 'List all available skills with their descriptions',
+
+  inputSchema: z.object({
+    category: z.string().optional().describe('Filter by category'),
+  }),
+
+  outputSchema: z.object({
+    skills: z.array(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+        hasConfig: z.boolean(),
+      })
+    ),
+    totalCount: z.number(),
+  }),
+
+  execute: async ({ category }) => {
+    const availableSkills = listAvailableSkills();
+    const skills = [];
+
+    for (const skillName of availableSkills) {
+      const skillPath = path.join(SKILLS_DIR, skillName, 'SKILL.md');
+      const content = readFileSync(skillPath, 'utf-8');
+
+      // Extract first paragraph as description
+      const lines = content.split('\n').filter((l) => l.trim());
+      const description = lines.find((l) => !l.startsWith('#')) || 'No description';
+
+      // Check for config file
+      const configPath = path.join(SKILLS_DIR, skillName, 'config.json');
+      const hasConfig = existsSync(configPath);
+
+      skills.push({
+        name: skillName,
+        description: description.slice(0, 100),
+        hasConfig,
+      });
+    }
+
+    return {
+      skills,
+      totalCount: skills.length,
+    };
+  },
+});
+```
+
+## Complete Example
+
+Putting it all together:
+
+```typescript
+import { OpenRouter, tool, stepCountIs } from '@openrouter/sdk';
+import { readFileSync, existsSync, readdirSync } from 'fs';
+import path from 'path';
+import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const SKILLS_DIR = path.join(process.env.HOME || '~', '.claude', 'skills');
+
+// ... (include SkillsTool, MultiSkillLoader, SkillDiscoveryTool from above)
+
+// Use all skill tools together
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: `I have a complex task:
+1. First, show me what skills are available
+2. Load the appropriate skills for PDF analysis
+3. Then help me extract and analyze data from report.pdf`,
+  tools: [SkillDiscoveryTool, SkillsTool, MultiSkillLoader],
+  stopWhen: stepCountIs(10),
+});
+
+const text = await result.getText();
+console.log(text);
+```
+
+## Key Patterns
+
+### 1. Idempotency
+
+Always check if a skill is already loaded:
+
+```typescript
+nextTurnParams: {
+  input: (params, context) => {
+    const marker = `[Skill: ${params.type}]`;
+    if (JSON.stringify(context.input).includes(marker)) {
+      return context.input; // Don't add again
+    }
+    // ... add skill
+  },
+},
+```
+
+### 2. Graceful Fallbacks
+
+Handle missing skills gracefully:
+
+```typescript
+execute: async (params) => {
+  if (!existsSync(skillPath)) {
+    return `Skill not found. Available: ${listAvailableSkills().join(', ')}`;
+  }
+  // ...
+},
+```
+
+### 3. Context Preservation
+
+Always preserve existing input:
+
+```typescript
+nextTurnParams: {
+  input: (params, context) => {
+    const currentInput = Array.isArray(context.input)
+      ? context.input
+      : [context.input];
+    return [...currentInput, newMessage]; // Append, don't replace
+  },
+},
+```
+
+### 4. Clear Markers
+
+Use unique markers to identify injected content:
+
+```typescript
+const skillMarker = `[Skill: ${params.type}]`;
+// Makes detection reliable and content clearly labeled
+```
+
+## See Also
+
+- **[nextTurnParams Guide](/docs/guides/next-turn-params)** - Context injection patterns
+- **[Dynamic Parameters](/docs/guides/dynamic-parameters)** - Adaptive behavior
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn orchestration
+

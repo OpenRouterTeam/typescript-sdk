@@ -1,0 +1,268 @@
+---
+title: Text Generation
+subtitle: Generate text with callModel using various input formats and model configurations
+headline: 'Text Generation | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/text-generation
+og:site_name: OpenRouter Documentation
+og:title: 'Text Generation - OpenRouter SDK'
+og:description: 'Learn how to generate text with callModel. Covers input formats, model selection, system instructions, and response handling.'
+og:image: https://openrouter.ai/dynamic-og?title=Text%20Generation&description=Generate%20Text%20with%20callModel
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Text Generation
+
+callModel provides flexible text generation with support for multiple input formats, model selection strategies, and response consumption patterns.
+
+## Basic Usage
+
+The simplest way to generate text:
+
+```typescript
+import { OpenRouter } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Explain quantum computing in one sentence.',
+});
+
+const text = await result.getText();
+```
+
+## Input Formats
+
+callModel accepts several input formats to match your use case.
+
+### String Input
+
+The simplest format - a single string becomes a user message:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the speed of light?',
+});
+```
+
+### Message Array
+
+For multi-turn conversations, pass an array of messages:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: [
+    { role: 'user', content: 'My name is Alice.' },
+    { role: 'assistant', content: 'Hello Alice! How can I help you today?' },
+    { role: 'user', content: 'What is my name?' },
+  ],
+});
+```
+
+### Structured Messages
+
+For rich content including images:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o',
+  input: [
+    {
+      type: 'message',
+      role: 'user',
+      content: [
+        { type: 'input_text', text: 'What is in this image?' },
+        {
+          type: 'input_image',
+          imageUrl: 'https://example.com/image.jpg',
+          detail: 'auto',
+        },
+      ],
+    },
+  ],
+});
+```
+
+## System Instructions
+
+Set the model's behavior with the `instructions` parameter:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  instructions: 'You are a helpful coding assistant. Be concise and provide working code examples.',
+  input: 'How do I read a file in Node.js?',
+});
+```
+
+## Model Selection
+
+### Single Model
+
+Specify a model by its OpenRouter ID:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'Hello!',
+});
+```
+
+### Model Fallback
+
+Provide multiple models for automatic fallback:
+
+```typescript
+const result = openrouter.callModel({
+  models: ['anthropic/claude-sonnet-4', 'openai/gpt-4o', 'google/gemini-pro'],
+  input: 'Hello!',
+});
+```
+
+The SDK will try each model in order until one succeeds.
+
+## Response Methods
+
+### getText()
+
+Returns just the text content after tool execution completes:
+
+```typescript
+const text = await result.getText();
+console.log(text); // "The speed of light is approximately 299,792 km/s."
+```
+
+### getResponse()
+
+Returns the full response object including usage data:
+
+```typescript
+const response = await result.getResponse();
+
+console.log(response.output);     // Full output array
+console.log(response.usage);      // Token usage information
+
+// Usage includes:
+// - inputTokens: tokens in the prompt
+// - outputTokens: tokens generated
+// - cachedTokens: tokens served from cache (cost savings)
+```
+
+## Generation Parameters
+
+Control the generation behavior:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Write a creative story.',
+
+  // Temperature: 0 = deterministic, 2 = very creative
+  temperature: 0.7,
+
+  // Maximum tokens to generate
+  maxTokens: 1000,
+
+  // Stop sequences
+  stop: ['\n\n', 'THE END'],
+
+  // Top-p sampling
+  topP: 0.9,
+
+  // Frequency penalty (-2 to 2)
+  frequencyPenalty: 0.5,
+
+  // Presence penalty (-2 to 2)
+  presencePenalty: 0.5,
+});
+```
+
+## Response Format
+
+Request structured output:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'List three programming languages.',
+  text: {
+    format: {
+      type: 'json_object',
+    },
+  },
+});
+
+const text = await result.getText();
+const data = JSON.parse(text);
+```
+
+## Provider-Specific Options
+
+Pass options to specific providers:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'anthropic/claude-sonnet-4',
+  input: 'Hello!',
+  provider: {
+    anthropic: {
+      thinking: {
+        type: 'enabled',
+        budgetTokens: 1000,
+      },
+    },
+  },
+});
+```
+
+## Error Handling
+
+Handle common error cases:
+
+```typescript
+try {
+  const result = openrouter.callModel({
+    model: 'openai/gpt-4o-mini',
+    input: 'Hello!',
+  });
+
+  const text = await result.getText();
+} catch (error) {
+  if (error.statusCode === 401) {
+    console.error('Invalid API key');
+  } else if (error.statusCode === 429) {
+    console.error('Rate limited - try again later');
+  } else if (error.statusCode === 503) {
+    console.error('Model unavailable');
+  } else {
+    console.error('Unexpected error:', error.message);
+  }
+}
+```
+
+## Concurrent Requests
+
+Each callModel invocation is independent:
+
+```typescript
+const [result1, result2, result3] = await Promise.all([
+  openrouter.callModel({ model: 'openai/gpt-4o-mini', input: 'Question 1' }).getText(),
+  openrouter.callModel({ model: 'openai/gpt-4o-mini', input: 'Question 2' }).getText(),
+  openrouter.callModel({ model: 'openai/gpt-4o-mini', input: 'Question 3' }).getText(),
+]);
+```
+
+## Next Steps
+
+- **[Streaming](/docs/guides/streaming)** - Stream responses in real-time
+- **[Tools](/docs/guides/tools)** - Add tool capabilities to your generation
+- **[Message Formats](/docs/guides/message-formats)** - Convert from OpenAI/Claude formats

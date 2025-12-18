@@ -1,0 +1,372 @@
+---
+title: Stop Conditions
+subtitle: Control execution with intelligent stopping conditions
+headline: 'Stop Conditions | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/stop-conditions
+og:site_name: OpenRouter Documentation
+og:title: 'Stop Conditions - OpenRouter SDK'
+og:description: 'Control multi-turn execution with stopWhen. Use built-in helpers or custom conditions to stop by step count, tool calls, cost, or tokens.'
+og:image: https://openrouter.ai/dynamic-og?title=Stop%20Conditions&description=Intelligent%20Execution%20Control
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Stop Conditions
+
+The `stopWhen` parameter provides intelligent control over multi-turn execution. Instead of simple round limits, you can stop based on tool calls, token usage, cost, or any custom condition.
+
+## Basic Usage
+
+```typescript
+import { OpenRouter, stepCountIs } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Research this topic thoroughly',
+  tools: [searchTool, analysisTool],
+  stopWhen: stepCountIs(5), // Stop after 5 steps
+});
+```
+
+## Built-in Stop Conditions
+
+### stepCountIs(n)
+
+Stop after a specific number of steps:
+
+```typescript
+import { stepCountIs } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Analyze this data',
+  tools: [analysisTool],
+  stopWhen: stepCountIs(10), // Stop after 10 steps
+});
+```
+
+### hasToolCall(name)
+
+Stop when a specific tool is called:
+
+```typescript
+import { hasToolCall } from '@openrouter/sdk';
+
+const finishTool = tool({
+  name: 'finish',
+  description: 'Call this when the task is complete',
+  inputSchema: z.object({
+    summary: z.string(),
+  }),
+  execute: async (params) => ({ done: true }),
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Research until you have enough information, then call finish',
+  tools: [searchTool, finishTool],
+  stopWhen: hasToolCall('finish'), // Stop when finish tool is called
+});
+```
+
+### maxTokensUsed(n)
+
+Stop after using a certain number of tokens:
+
+```typescript
+import { maxTokensUsed } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Generate content',
+  tools: [writingTool],
+  stopWhen: maxTokensUsed(5000), // Stop after 5000 total tokens
+});
+```
+
+### maxCost(amount)
+
+Stop after reaching a cost threshold:
+
+```typescript
+import { maxCost } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4',
+  input: 'Perform extensive analysis',
+  tools: [analysisTool],
+  stopWhen: maxCost(1.00), // Stop after $1.00 spent
+});
+```
+
+### finishReasonIs(reason)
+
+Stop on a specific finish reason:
+
+```typescript
+import { finishReasonIs } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Complete this task',
+  tools: [taskTool],
+  stopWhen: finishReasonIs('stop'), // Stop when model finishes naturally
+});
+```
+
+## Combining Conditions
+
+Pass an array to stop on any condition:
+
+```typescript
+import { stepCountIs, hasToolCall, maxCost } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4',
+  input: 'Research thoroughly but stay within budget',
+  tools: [searchTool, finishTool],
+  stopWhen: [
+    stepCountIs(10),        // Maximum 10 steps
+    maxCost(0.50),          // Maximum $0.50
+    hasToolCall('finish'),  // Or when finish is called
+  ],
+});
+```
+
+Execution stops when **any** condition is met.
+
+## Custom Stop Conditions
+
+Create custom conditions with a function:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Process data',
+  tools: [processTool],
+  stopWhen: ({ steps, totalTokens, totalCost }) => {
+    // Stop after 20 steps
+    if (steps.length >= 20) return true;
+
+    // Stop if last step had no tool calls
+    const lastStep = steps[steps.length - 1];
+    if (lastStep && !lastStep.toolCalls?.length) return true;
+
+    // Continue otherwise
+    return false;
+  },
+});
+```
+
+### StopConditionContext
+
+Custom functions receive:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `steps` | `StepResult[]` | All completed steps |
+| `totalTokens` | `number` | Total tokens used |
+| `totalCost` | `number` | Total cost incurred |
+| `lastResponse` | `Response` | Most recent response |
+
+### StepResult
+
+Each step contains:
+
+```typescript
+interface StepResult {
+  response: Response;
+  toolCalls?: ParsedToolCall[];
+  toolResults?: ToolExecutionResult[];
+  tokens: {
+    input: number;
+    output: number;
+    cached: number;
+  };
+  cost: number;
+}
+```
+
+## Advanced Patterns
+
+### Time-Based Stopping
+
+Stop after a time limit:
+
+```typescript
+const startTime = Date.now();
+const maxDuration = 30000; // 30 seconds
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Work on this task',
+  tools: [workTool],
+  stopWhen: () => {
+    return Date.now() - startTime > maxDuration;
+  },
+});
+```
+
+### Content-Based Stopping
+
+Stop based on response content:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search until you find the answer',
+  tools: [searchTool],
+  stopWhen: ({ steps }) => {
+    const lastStep = steps[steps.length - 1];
+    if (!lastStep) return false;
+
+    // Check if response contains certain keywords
+    const content = JSON.stringify(lastStep.response);
+    return content.includes('ANSWER FOUND') || content.includes('TASK COMPLETE');
+  },
+});
+```
+
+### Quality-Based Stopping
+
+Stop when results meet quality threshold:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Improve this text until it scores above 0.9',
+  tools: [improverTool, scorerTool],
+  stopWhen: ({ steps }) => {
+    // Look for score in tool results
+    for (const step of steps) {
+      for (const result of step.toolResults ?? []) {
+        if (result.toolName === 'scorer' && result.result?.score > 0.9) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+});
+```
+
+### Combination with Early Exit
+
+Combine conditions for complex logic:
+
+```typescript
+import { stepCountIs, maxCost } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4',
+  input: 'Complex research task',
+  tools: [searchTool, analysisTool, summarizeTool],
+  stopWhen: [
+    // Hard limits
+    stepCountIs(50),
+    maxCost(5.00),
+
+    // Custom success condition
+    ({ steps }) => {
+      const lastStep = steps[steps.length - 1];
+      const hasSummary = lastStep?.toolCalls?.some(
+        tc => tc.name === 'summarize'
+      );
+      return hasSummary;
+    },
+  ],
+});
+```
+
+## Migration from maxToolRounds
+
+If you were using `maxToolRounds`, migrate to `stopWhen`:
+
+```typescript
+// Before: maxToolRounds
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello',
+  tools: [myTool],
+  maxToolRounds: 5,
+});
+
+// After: stopWhen
+import { stepCountIs } from '@openrouter/sdk';
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello',
+  tools: [myTool],
+  stopWhen: stepCountIs(5),
+});
+```
+
+### Default Behavior
+
+If `stopWhen` is not specified, the default is `stepCountIs(5)`.
+
+## Best Practices
+
+### Always Set Limits
+
+Always include a hard limit to prevent runaway execution:
+
+```typescript
+stopWhen: [
+  stepCountIs(100),    // Hard limit
+  maxCost(10.00),      // Budget limit
+  customCondition,     // Your logic
+],
+```
+
+### Log Stop Reasons
+
+Track why execution stopped:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Task',
+  tools: [taskTool],
+  stopWhen: ({ steps, totalCost }) => {
+    if (steps.length >= 10) {
+      console.log('Stopped: step limit');
+      return true;
+    }
+    if (totalCost >= 1.00) {
+      console.log('Stopped: cost limit');
+      return true;
+    }
+    return false;
+  },
+});
+```
+
+### Test Conditions
+
+Verify conditions work as expected:
+
+```typescript
+// Test with low limits first
+const testResult = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Test task',
+  tools: [testTool],
+  stopWhen: stepCountIs(2), // Low limit for testing
+});
+```
+
+## See Also
+
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn orchestration
+- **[Dynamic Parameters](/docs/guides/dynamic-parameters)** - Adaptive behavior
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Tool-driven modifications

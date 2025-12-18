@@ -1,0 +1,348 @@
+---
+title: Streaming
+subtitle: Stream responses in real-time with multiple consumption patterns
+headline: 'Streaming | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/streaming
+og:site_name: OpenRouter Documentation
+og:title: 'Streaming - OpenRouter SDK'
+og:description: 'Learn to stream LLM responses with callModel. Covers text streaming, reasoning streams, message updates, and concurrent consumers.'
+og:image: https://openrouter.ai/dynamic-og?title=Streaming&description=Real-time%20Response%20Streaming
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Streaming
+
+callModel provides multiple streaming methods to consume responses in real-time. All streams are built on a reusable stream architecture that supports concurrent consumers.
+
+## Text Streaming
+
+### getTextStream()
+
+Stream text content as it's generated:
+
+```typescript
+import { OpenRouter } from '@openrouter/sdk';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Write a short poem about the ocean.',
+});
+
+for await (const delta of result.getTextStream()) {
+  process.stdout.write(delta);
+}
+```
+
+Each iteration yields a small chunk of text (typically a few characters or a word).
+
+## Reasoning Streaming
+
+### getReasoningStream()
+
+For models that support reasoning (like o1 or Claude with thinking), stream the reasoning process:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/o1-preview',
+  input: 'Solve this step by step: If x + 5 = 12, what is x?',
+});
+
+console.log('Reasoning:');
+for await (const delta of result.getReasoningStream()) {
+  process.stdout.write(delta);
+}
+
+console.log('\n\nFinal answer:');
+const text = await result.getText();
+console.log(text);
+```
+
+## Message Streaming
+
+### getNewMessagesStream()
+
+Stream incremental message updates in the OpenResponses format:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello!',
+  tools: [myTool],
+});
+
+for await (const message of result.getNewMessagesStream()) {
+  if (message.type === 'message') {
+    console.log('Assistant message:', message.content);
+  } else if (message.type === 'function_call_output') {
+    console.log('Tool result:', message.output);
+  }
+}
+```
+
+This stream yields:
+- `ResponsesOutputMessage` - Assistant text/content updates
+- `OpenResponsesFunctionCallOutput` - Tool execution results (after tools complete)
+
+## Full Event Streaming
+
+### getFullResponsesStream()
+
+Stream all response events including tool preliminary results:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for documents',
+  tools: [searchTool], // Generator tool with eventSchema
+});
+
+for await (const event of result.getFullResponsesStream()) {
+  switch (event.type) {
+    case 'response.output_text.delta':
+      process.stdout.write(event.delta);
+      break;
+    case 'response.function_call_arguments.delta':
+      console.log('Tool argument delta:', event.delta);
+      break;
+    case 'response.completed':
+      console.log('Response complete');
+      break;
+    case 'tool.preliminary_result':
+      // From generator tools
+      console.log('Progress:', event.result);
+      break;
+  }
+}
+```
+
+### Event Types
+
+The full stream includes these event types:
+
+| Event Type | Description |
+|-----------|-------------|
+| `response.created` | Response object created |
+| `response.in_progress` | Generation started |
+| `response.output_text.delta` | Text content chunk |
+| `response.output_text.done` | Text content complete |
+| `response.reasoning.delta` | Reasoning content chunk |
+| `response.reasoning.done` | Reasoning complete |
+| `response.function_call_arguments.delta` | Tool call argument chunk |
+| `response.function_call_arguments.done` | Tool call arguments complete |
+| `response.completed` | Full response complete |
+| `tool.preliminary_result` | Progress from generator tools |
+
+## Chat-Compatible Streaming
+
+### getFullChatStream()
+
+Stream in a simplified chat-like format:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Hello!',
+});
+
+for await (const event of result.getFullChatStream()) {
+  switch (event.type) {
+    case 'content.delta':
+      process.stdout.write(event.delta);
+      break;
+    case 'message.complete':
+      console.log('\nComplete:', event.response.id);
+      break;
+    case 'tool.preliminary_result':
+      console.log('Tool progress:', event.result);
+      break;
+  }
+}
+```
+
+## Tool Call Streaming
+
+### getToolCallsStream()
+
+Stream structured tool calls as they complete:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'What is the weather in Paris and Tokyo?',
+  tools: [weatherTool],
+  maxToolRounds: 0, // Don't auto-execute, just get tool calls
+});
+
+for await (const toolCall of result.getToolCallsStream()) {
+  console.log(`Tool: ${toolCall.name}`);
+  console.log(`Arguments:`, toolCall.arguments);
+  console.log(`ID: ${toolCall.id}`);
+}
+```
+
+### getToolStream()
+
+Stream tool deltas and preliminary results:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Search for TypeScript tutorials',
+  tools: [searchTool], // Generator tool
+});
+
+for await (const event of result.getToolStream()) {
+  if (event.type === 'delta') {
+    // Raw argument deltas
+    process.stdout.write(event.content);
+  } else if (event.type === 'preliminary_result') {
+    // Progress from generator tools
+    console.log(`\nProgress (${event.toolCallId}):`, event.result);
+  }
+}
+```
+
+## Concurrent Consumers
+
+Multiple consumers can read from the same result:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Write a story.',
+});
+
+// Start both consumers concurrently
+const [text, response] = await Promise.all([
+  // Consumer 1: Collect text
+  (async () => {
+    let text = '';
+    for await (const delta of result.getTextStream()) {
+      text += delta;
+    }
+    return text;
+  })(),
+
+  // Consumer 2: Get full response
+  result.getResponse(),
+]);
+
+console.log('Text length:', text.length);
+console.log('Token usage:', response.usage);
+```
+
+The underlying `ReusableReadableStream` ensures each consumer receives all events.
+
+## Cancellation
+
+Cancel a stream to stop generation:
+
+```typescript
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Write a very long essay...',
+});
+
+// Start streaming
+const streamPromise = (async () => {
+  let charCount = 0;
+  for await (const delta of result.getTextStream()) {
+    process.stdout.write(delta);
+    charCount += delta.length;
+
+    // Cancel after 500 characters
+    if (charCount > 500) {
+      await result.cancel();
+      break;
+    }
+  }
+})();
+
+await streamPromise;
+console.log('\nCancelled!');
+```
+
+## Streaming with UI Frameworks
+
+### React Example
+
+```typescript
+import { useState, useEffect } from 'react';
+
+function ChatResponse({ prompt }: { prompt: string }) {
+  const [text, setText] = useState('');
+  const [isStreaming, setIsStreaming] = useState(true);
+
+  useEffect(() => {
+    const openrouter = new OpenRouter({ apiKey: API_KEY });
+
+    const result = openrouter.callModel({
+      model: 'openai/gpt-4o-mini',
+      input: prompt,
+    });
+
+    (async () => {
+      for await (const delta of result.getTextStream()) {
+        setText(prev => prev + delta);
+      }
+      setIsStreaming(false);
+    })();
+
+    return () => {
+      result.cancel();
+    };
+  }, [prompt]);
+
+  return (
+    <div>
+      <p>{text}</p>
+      {isStreaming && <span className="cursor">|</span>}
+    </div>
+  );
+}
+```
+
+### Server-Sent Events (SSE)
+
+```typescript
+import { Hono } from 'hono';
+import { streamSSE } from 'hono/streaming';
+
+const app = new Hono();
+
+app.get('/stream', (c) => {
+  return streamSSE(c, async (stream) => {
+    const result = openrouter.callModel({
+      model: 'openai/gpt-4o-mini',
+      input: c.req.query('prompt') || 'Hello!',
+    });
+
+    for await (const delta of result.getTextStream()) {
+      await stream.writeSSE({
+        data: JSON.stringify({ delta }),
+        event: 'delta',
+      });
+    }
+
+    await stream.writeSSE({
+      data: JSON.stringify({ done: true }),
+      event: 'done',
+    });
+  });
+});
+```
+
+## Next Steps
+
+- **[Tools](/docs/guides/tools)** - Create tools that integrate with streaming
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn streaming with tools
+- **[Examples](/docs/guides/examples)** - Complete streaming implementations

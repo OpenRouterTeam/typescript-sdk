@@ -1,0 +1,162 @@
+---
+title: Example Tools
+subtitle: Copy-paste ready tool implementations for common use cases
+headline: 'Example Tools | OpenRouter SDK'
+canonical-url: https://openrouter.ai/docs/guides/examples
+og:site_name: OpenRouter Documentation
+og:title: 'Example Tools - OpenRouter SDK'
+og:description: 'Production-ready tool implementations including weather APIs, database search with progress, skills systems, and file operations.'
+og:image: https://openrouter.ai/dynamic-og?title=Example%20Tools&description=Production-Ready%20Implementations
+og:image:width: 1200
+og:image:height: 630
+twitter:card: summary_large_image
+twitter:site: '@OpenRouterAI'
+noindex: false
+nofollow: false
+---
+
+# Example Tools
+
+Production-ready tool implementations that demonstrate real-world patterns. Each example is copy-paste ready with complete type definitions.
+
+## Available Examples
+
+### [Weather Tool](/docs/guides/examples/weather-tool)
+
+Classic introductory tool with external API integration.
+
+- Input/output validation with Zod
+- Error handling patterns
+- Environment variable setup
+
+```typescript
+const weatherTool = tool({
+  name: 'get_weather',
+  description: 'Get current weather for any city',
+  inputSchema: z.object({ city: z.string() }),
+  outputSchema: z.object({ temperature: z.number(), conditions: z.string() }),
+  execute: async ({ city }) => fetchWeather(city),
+});
+```
+
+---
+
+### [Database Search](/docs/guides/examples/database-search)
+
+Generator tool with real-time progress streaming.
+
+- Progress events during execution
+- Pagination handling
+- Search result aggregation
+
+```typescript
+const searchTool = tool({
+  name: 'search',
+  inputSchema: z.object({ query: z.string() }),
+  eventSchema: z.object({ progress: z.number() }),
+  outputSchema: z.object({ results: z.array(z.string()) }),
+  execute: async function* ({ query }) {
+    yield { progress: 50 };
+    return { results: await search(query) };
+  },
+});
+```
+
+---
+
+### [Skills Loader](/docs/guides/examples/skills-loader) ⭐ Featured
+
+Complete Claude Code skills system using `nextTurnParams`.
+
+- Context injection patterns
+- Idempotency checks
+- Multi-skill loading
+- File system integration
+
+```typescript
+const skillsTool = tool({
+  name: 'load_skill',
+  inputSchema: z.object({ skillName: z.string() }),
+  nextTurnParams: {
+    input: (params, ctx) => injectSkillContext(params, ctx),
+  },
+  execute: async ({ skillName }) => loadSkill(skillName),
+});
+```
+
+---
+
+### [File Operations](/docs/guides/examples/file-operations)
+
+File system tools with proper error handling.
+
+- Read files with encoding options
+- Write with backup/overwrite modes
+- Directory listing
+- Path validation
+
+```typescript
+const readFileTool = tool({
+  name: 'read_file',
+  inputSchema: z.object({ path: z.string() }),
+  outputSchema: z.object({ content: z.string(), size: z.number() }),
+  execute: async ({ path }) => readFileContent(path),
+});
+```
+
+## Prerequisites
+
+All examples require:
+
+```bash
+pnpm add @openrouter/sdk zod
+```
+
+## Usage Pattern
+
+Examples follow this common structure:
+
+```typescript
+import { OpenRouter, tool } from '@openrouter/sdk';
+import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+// Create tool
+const myTool = tool({
+  name: 'tool_name',
+  description: 'What the tool does',
+  inputSchema: z.object({ /* inputs */ }),
+  outputSchema: z.object({ /* outputs */ }),
+  execute: async (params) => {
+    // Implementation
+  },
+});
+
+// Use with callModel
+const result = openrouter.callModel({
+  model: 'openai/gpt-4o-mini',
+  input: 'Use the tool to...',
+  tools: [myTool],
+});
+
+const text = await result.getText();
+```
+
+## Example Categories
+
+| Category | Examples | Key Pattern |
+|----------|----------|-------------|
+| **API Integration** | Weather Tool | External HTTP APIs |
+| **Progress Streaming** | Database Search | Generator tools, eventSchema |
+| **Context Injection** | Skills Loader | nextTurnParams |
+| **File System** | File Operations | Error handling, validation |
+
+## Next Steps
+
+- **[Tools Guide](/docs/guides/tools)** - Learn tool creation in depth
+- **[Tool Execution](/docs/guides/tool-execution)** - Multi-turn orchestration
+- **[nextTurnParams](/docs/guides/next-turn-params)** - Context injection patterns
+
