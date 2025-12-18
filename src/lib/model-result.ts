@@ -175,9 +175,10 @@ export class ModelResult {
         );
       } else {
         // Already resolved, extract non-function fields
-        // Since request is CallModelInput, we need to filter out tools/stopWhen
+        // Since request is CallModelInput, we need to filter out stopWhen
+        // Note: tools are already in API format at this point (converted in callModel())
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { tools, stopWhen, ...rest } = this.options.request;
+        const { stopWhen, ...rest } = this.options.request;
         // Cast to ResolvedCallModelInput - we know it's resolved if hasAsyncFunctions returned false
         baseRequest = rest as ResolvedCallModelInput;
       }

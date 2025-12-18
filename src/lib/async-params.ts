@@ -79,8 +79,9 @@ export async function resolveAsyncFunctions(
 
   // Iterate over all keys in the input
   for (const [key, value] of Object.entries(input)) {
-    // Skip stopWhen and tools - they're handled separately
-    if (key === 'stopWhen' || key === 'tools') {
+    // Skip stopWhen - it's handled separately in ModelResult
+    // Note: tools are already in API format at this point (converted in callModel()), so we include them
+    if (key === 'stopWhen') {
       continue;
     }
 
