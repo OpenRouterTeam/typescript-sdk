@@ -10,9 +10,16 @@ import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 // #region imports
 import type { CreateAuthorizationUrlRequest } from "../funcs/oAuthCreateAuthorizationUrl.js";
-import { oAuthCreateAuthorizationUrl } from "../funcs/oAuthCreateAuthorizationUrl.js";
 import type { CreateSHA256CodeChallengeResponse } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+import type { RequestOptions } from "../lib/sdks.js";
+import type * as operations from "../models/operations/index.js";
+
+import { oAuthCreateAuthCode } from "../funcs/oAuthCreateAuthCode.js";
+import { oAuthCreateAuthorizationUrl } from "../funcs/oAuthCreateAuthorizationUrl.js";
 import { oAuthCreateSHA256CodeChallenge } from "../funcs/oAuthCreateSHA256CodeChallenge.js";
+import { oAuthExchangeAuthCodeForAPIKey } from "../funcs/oAuthExchangeAuthCodeForAPIKey.js";
+import { ClientSDK } from "../lib/sdks.js";
+import { unwrapAsync } from "../types/fp.js";
 // #endregion imports
 
 export class OAuth extends ClientSDK {
