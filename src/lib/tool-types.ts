@@ -20,9 +20,54 @@ export interface TurnContext {
   /** Current message history being sent to the API */
   messageHistory: models.OpenResponsesInput;
   /** Model name if request.model is set */
-  model?: string;
+  model?: string | undefined;
   /** Model names if request.models is set */
-  models?: string[];
+  models?: string[] | undefined;
+}
+
+/**
+ * Context passed to nextTurnParams functions
+ * Contains current request state for parameter computation
+ * Allows modification of key request parameters between turns
+ */
+export type NextTurnParamsContext = {
+  /** Current input (messages) */
+  input: models.OpenResponsesInput;
+  /** Current model selection */
+  model: string;
+  /** Current models array */
+  models: string[];
+  /** Current temperature */
+  temperature: number | null;
+  /** Current maxOutputTokens */
+  maxOutputTokens: number | null;
+  /** Current topP */
+  topP: number | null;
+  /** Current topK */
+  topK: number;
+  /** Current instructions */
+  instructions: string | null;
+};
+
+/**
+ * Functions to compute next turn parameters
+ * Each function receives the tool's input params and current request context
+ */
+export type NextTurnParamsFunctions<TInput> = {
+  [K in keyof NextTurnParamsContext]?: (
+    params: TInput,
+    context: NextTurnParamsContext
+  ) => NextTurnParamsContext[K] | Promise<NextTurnParamsContext[K]>;
+};
+
+/**
+ * Information about a tool call needed for nextTurnParams execution
+ */
+export interface ToolCallInfo {
+  id: string;
+  name: string;
+  arguments: unknown;
+  tool: Tool;
 }
 
 /**
@@ -32,6 +77,7 @@ export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
   name: string;
   description?: string;
   inputSchema: TInput;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
 }
 
 /**

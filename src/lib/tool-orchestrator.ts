@@ -4,6 +4,8 @@ import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
 import { executeTool, findToolByName } from './tool-executor.js';
 import { hasExecuteFunction } from './tool-types.js';
+import { buildTurnContext } from './turn-context.js';
+import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 
 /**
  * Options for tool execution
@@ -29,6 +31,7 @@ export interface ToolOrchestrationResult {
  *
  * @param sendRequest - Function to send a request and get a response
  * @param initialInput - Starting input for the conversation
+ * @param initialRequest - Full initial request with all parameters
  * @param tools - Enhanced tools with Zod schemas and execute functions
  * @param apiTools - Converted tools in API format (JSON Schema)
  * @param options - Execution options
@@ -40,6 +43,7 @@ export async function executeToolLoop(
     tools: APITool[],
   ) => Promise<models.OpenResponsesNonStreamingResponse>,
   initialInput: models.OpenResponsesInput,
+  initialRequest: models.OpenResponsesRequest,
   tools: Tool[],
   apiTools: APITool[],
   options: ToolExecutionOptions = {},
@@ -50,6 +54,7 @@ export async function executeToolLoop(
   const allResponses: models.OpenResponsesNonStreamingResponse[] = [];
   const toolExecutionResults: ToolExecutionResult[] = [];
   let conversationInput: models.OpenResponsesInput = initialInput;
+  let currentRequest: models.OpenResponsesRequest = { ...initialRequest };
 
   let currentRound = 0;
   let currentResponse: models.OpenResponsesNonStreamingResponse;
@@ -100,10 +105,12 @@ export async function executeToolLoop(
       }
 
       // Build turn context
-      const turnContext: import('./tool-types.js').TurnContext = {
+      const turnContext = buildTurnContext({
         numberOfTurns: currentRound,
         messageHistory: conversationInput,
-      };
+        model: currentRequest.model,
+        models: currentRequest.models,
+      });
 
       // Execute the tool
       return executeTool(tool, toolCall, turnContext, onPreliminaryResult);
@@ -137,10 +144,23 @@ export async function executeToolLoop(
 
     toolExecutionResults.push(...roundResults);
 
+    // Execute nextTurnParams functions for tools that were called
+    const computedParams = await executeNextTurnParamsFunctions(
+      toolCalls,
+      tools,
+      currentRequest
+    );
+
+    // Apply computed parameters to request
+    if (Object.keys(computedParams).length > 0) {
+      currentRequest = applyNextTurnParamsToRequest(currentRequest, computedParams);
+      conversationInput = currentRequest.input ?? conversationInput;
+    }
+
     // Build array input with all output from previous response plus tool results
     // The API expects continuation via previousResponseId, not by including outputs
     // For now, we'll keep the conversation going via previousResponseId
-    conversationInput = initialInput; // Keep original input
+    // conversationInput is updated above if nextTurnParams modified it
 
     // Note: The OpenRouter Responses API uses previousResponseId for continuation
     // Tool results are automatically associated with the previous response's tool calls

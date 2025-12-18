@@ -5,6 +5,7 @@ import {
   type ToolWithExecute,
   type ToolWithGenerator,
   type ManualTool,
+  type NextTurnParamsFunctions,
 } from "./tool-types.js";
 
 /**
@@ -19,6 +20,7 @@ type RegularToolConfigWithOutput<
   inputSchema: TInput;
   outputSchema: TOutput;
   eventSchema?: undefined;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -37,6 +39,7 @@ type RegularToolConfigWithoutOutput<
   inputSchema: TInput;
   outputSchema?: undefined;
   eventSchema?: undefined;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -56,6 +59,7 @@ type GeneratorToolConfig<
   inputSchema: TInput;
   eventSchema: TEvent;
   outputSchema: TOutput;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -69,6 +73,7 @@ type ManualToolConfig<TInput extends ZodObject<ZodRawShape>> = {
   name: string;
   description?: string;
   inputSchema: TInput;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
   execute: false;
 };
 
@@ -206,6 +211,10 @@ export function tool<
       fn.description = config.description;
     }
 
+    if (config.nextTurnParams !== undefined) {
+      fn.nextTurnParams = config.nextTurnParams;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -232,6 +241,10 @@ export function tool<
       fn.description = config.description;
     }
 
+    if (config.nextTurnParams !== undefined) {
+      fn.nextTurnParams = config.nextTurnParams;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -253,6 +266,10 @@ export function tool<
 
   if (config.outputSchema !== undefined) {
     fn.outputSchema = config.outputSchema;
+  }
+
+  if (config.nextTurnParams !== undefined) {
+    fn.nextTurnParams = config.nextTurnParams;
   }
 
   return {

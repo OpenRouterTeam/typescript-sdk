@@ -61,6 +61,9 @@ export type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
   ToolPreliminaryResultEvent,
+  NextTurnParamsContext,
+  NextTurnParamsFunctions,
+  ToolCallInfo,
 } from "./lib/tool-types.js";
 
 export {
@@ -70,3 +73,18 @@ export {
   isRegularExecuteTool,
   isToolPreliminaryResultEvent,
 } from "./lib/tool-types.js";
+
+// Turn context helpers
+export { buildTurnContext, normalizeInputToArray } from "./lib/turn-context.js";
+export type { BuildTurnContextOptions } from "./lib/turn-context.js";
+
+// Next turn params helpers
+export {
+  buildNextTurnParamsContext,
+  executeNextTurnParamsFunctions,
+  applyNextTurnParamsToRequest,
+} from "./lib/next-turn-params.js";
+
+// Claude constants and type guards
+export { ClaudeContentBlockType, NonClaudeMessageRole } from "./lib/claude-constants.js";
+export { isClaudeStyleMessages } from "./lib/claude-type-guards.js";
