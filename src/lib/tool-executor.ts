@@ -17,7 +17,7 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
   const jsonSchema = toJSONSchema(zodSchema, {
     target: 'openapi-3.0',
   });
-  return jsonSchema as Record<string, unknown>;
+  return jsonSchema;
 }
 
 /**
@@ -57,8 +57,7 @@ export function parseToolCallArguments(argumentsString: string): unknown {
     return JSON.parse(argumentsString);
   } catch (error) {
     throw new Error(
-      `Failed to parse tool call arguments: ${
-        error instanceof Error ? error.message : String(error)
+      `Failed to parse tool call arguments: ${error instanceof Error ? error.message : String(error)
       }`,
     );
   }
@@ -80,10 +79,12 @@ export async function executeRegularTool(
 
   try {
     // Validate input - the schema validation ensures type safety at runtime
+    // validateToolInput returns z.infer<typeof tool.function.inputSchema>
+    // which is exactly the type expected by execute
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
       toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+    );
 
     // Execute tool with context
     const result = await Promise.resolve(tool.function.execute(validatedInput, context));

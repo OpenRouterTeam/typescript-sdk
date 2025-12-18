@@ -228,13 +228,8 @@ export function tool<
       inputSchema: config.inputSchema,
       eventSchema: config.eventSchema,
       outputSchema: config.outputSchema,
-      // The config execute allows yielding both events and output,
-      // but the interface only types for events (output is extracted separately)
-      execute: config.execute as ToolWithGenerator<
-        TInput,
-        TEvent,
-        TOutput
-      >["function"]["execute"],
+      // Types now align - config.execute matches the interface type
+      execute: config.execute,
     };
 
     if (config.description !== undefined) {
@@ -252,28 +247,20 @@ export function tool<
   }
 
   // Regular tool (has execute function, no eventSchema)
-  // Type assertion needed because we have two overloads (with/without outputSchema)
-  // and the implementation needs to handle both cases
-  const fn = {
+  // TypeScript can't infer the relationship between TReturn and TOutput
+  // So we build the object without type annotation, then return with correct type
+  const functionObj = {
     name: config.name,
     inputSchema: config.inputSchema,
     execute: config.execute,
-  } as ToolWithExecute<TInput, TOutput>["function"];
+    ...(config.description !== undefined && { description: config.description }),
+    ...(config.outputSchema !== undefined && { outputSchema: config.outputSchema }),
+    ...(config.nextTurnParams !== undefined && { nextTurnParams: config.nextTurnParams }),
+  };
 
-  if (config.description !== undefined) {
-    fn.description = config.description;
-  }
-
-  if (config.outputSchema !== undefined) {
-    fn.outputSchema = config.outputSchema;
-  }
-
-  if (config.nextTurnParams !== undefined) {
-    fn.nextTurnParams = config.nextTurnParams;
-  }
-
+  // The function signature guarantees this is type-safe via overloads
   return {
     type: ToolType.Function,
-    function: fn,
+    function: functionObj,
   };
 }

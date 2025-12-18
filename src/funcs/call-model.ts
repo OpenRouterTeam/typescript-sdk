@@ -1,22 +1,12 @@
 import type { OpenRouterCore } from '../core.js';
-import type { AsyncCallModelInput } from '../lib/async-params.js';
+import type { CallModelInput } from '../lib/async-params.js';
 import type { RequestOptions } from '../lib/sdks.js';
-import type { MaxToolRounds, Tool } from '../lib/tool-types.js';
-import type * as models from '../models/index.js';
 
 import { ModelResult } from '../lib/model-result.js';
 import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
 
-/**
- * Input type for callModel function
- */
-export type CallModelInput = Omit<models.OpenResponsesRequest, 'stream' | 'tools'> & {
-  tools?: Tool[];
-  maxToolRounds?: MaxToolRounds;
-};
-
-// Re-export AsyncCallModelInput for convenience
-export type { AsyncCallModelInput } from '../lib/async-params.js';
+// Re-export CallModelInput for convenience
+export type { CallModelInput } from '../lib/async-params.js';
 
 /**
  * Get a response with multiple consumption patterns
@@ -44,16 +34,17 @@ export type { AsyncCallModelInput } from '../lib/async-params.js';
  * **Async Function Support:**
  *
  * Any field in CallModelInput can be a function that computes the value dynamically
- * based on the conversation context. Functions are resolved before EVERY turn, allowing
- * parameters to adapt as the conversation progresses.
+ * based on the conversation context. You can mix static values and functions in the
+ * same request. Functions are resolved before EVERY turn, allowing parameters to
+ * adapt as the conversation progresses.
  *
  * @example
  * ```typescript
- * // Increase temperature over turns
+ * // Mix static and dynamic values
  * const result = callModel(client, {
- *   model: 'gpt-4',
- *   temperature: (ctx) => Math.min(ctx.numberOfTurns * 0.2, 1.0),
- *   input: [{ type: 'text', text: 'Hello' }],
+ *   model: 'gpt-4',  // static
+ *   temperature: (ctx) => Math.min(ctx.numberOfTurns * 0.2, 1.0),  // dynamic
+ *   input: [{ type: 'text', text: 'Hello' }],  // static
  * });
  * ```
  *
@@ -94,7 +85,7 @@ export type { AsyncCallModelInput } from '../lib/async-params.js';
  */
 export function callModel(
   client: OpenRouterCore,
-  request: CallModelInput | AsyncCallModelInput,
+  request: CallModelInput,
   options?: RequestOptions,
 ): ModelResult {
   const { tools, maxToolRounds, ...apiRequest } = request;
@@ -104,12 +95,14 @@ export function callModel(
 
   // Build the request with converted tools
   // Note: async functions are resolved later in ModelResult.executeToolsIfNeeded()
-  const finalRequest: models.OpenResponsesRequest | AsyncCallModelInput = {
+  // The request can have async fields (functions) or sync fields, and the tools are converted to API format
+  const finalRequest: Record<string, unknown> = {
     ...apiRequest,
-    ...(apiTools !== undefined && {
-      tools: apiTools,
-    }),
-  } as any;
+  };
+
+  if (apiTools !== undefined) {
+    finalRequest['tools'] = apiTools;
+  }
 
   return new ModelResult({
     client,

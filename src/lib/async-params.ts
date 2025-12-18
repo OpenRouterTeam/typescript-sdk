@@ -1,5 +1,5 @@
-import type { CallModelInput } from '../funcs/call-model.js';
-import type { TurnContext } from './tool-types.js';
+import type * as models from '../models/index.js';
+import type { MaxToolRounds, Tool, TurnContext } from './tool-types.js';
 
 /**
  * A field can be either a value of type T or a function that computes T
@@ -7,23 +7,22 @@ import type { TurnContext } from './tool-types.js';
 export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise<T>);
 
 /**
- * CallModelInput with async function support for API parameter fields
- * Excludes tools and maxToolRounds which should not be dynamic
+ * Input type for callModel function
+ * Each field can independently be a static value or a function that computes the value
  */
-export type AsyncCallModelInput = {
-  [K in keyof Omit<CallModelInput, 'tools' | 'maxToolRounds'>]: FieldOrAsyncFunction<
-    CallModelInput[K]
-  >;
+export type CallModelInput = {
+  [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?:
+    FieldOrAsyncFunction<models.OpenResponsesRequest[K]>;
 } & {
-  tools?: CallModelInput['tools'];
-  maxToolRounds?: CallModelInput['maxToolRounds'];
+  tools?: Tool[];
+  maxToolRounds?: MaxToolRounds;
 };
 
 /**
- * Resolved AsyncCallModelInput (all functions evaluated to values)
- * This strips out the function types, leaving only the resolved value types
+ * Resolved CallModelInput (all functions evaluated to values)
+ * This is the type after all async functions have been resolved to their values
  */
-export type ResolvedAsyncCallModelInput = Omit<CallModelInput, 'tools' | 'maxToolRounds'> & {
+export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' | 'tools'> & {
   tools?: never;
   maxToolRounds?: never;
 };
@@ -49,32 +48,36 @@ export type ResolvedAsyncCallModelInput = Omit<CallModelInput, 'tools' | 'maxToo
  * ```
  */
 export async function resolveAsyncFunctions(
-  input: AsyncCallModelInput,
+  input: CallModelInput,
   context: TurnContext,
-): Promise<ResolvedAsyncCallModelInput> {
-  const resolved: Record<string, unknown> = {};
+): Promise<ResolvedCallModelInput> {
+  // Build the resolved object by processing each field
+  const resolvedEntries: Array<[string, unknown]> = [];
 
   // Iterate over all keys in the input
   for (const [key, value] of Object.entries(input)) {
     if (typeof value === 'function') {
       try {
-        // Execute the function with context
-        resolved[key] = await Promise.resolve(value(context));
+        // Execute the function with context and store the result
+        const result = await Promise.resolve(value(context));
+        resolvedEntries.push([key, result]);
       } catch (error) {
         // Wrap errors with context about which field failed
         throw new Error(
-          `Failed to resolve async function for field "${key}": ${
-            error instanceof Error ? error.message : String(error)
+          `Failed to resolve async function for field "${key}": ${error instanceof Error ? error.message : String(error)
           }`,
         );
       }
     } else {
       // Not a function, use as-is
-      resolved[key] = value;
+      resolvedEntries.push([key, value]);
     }
   }
 
-  return resolved as ResolvedAsyncCallModelInput;
+  // Build the final object from entries
+  // Type safety is ensured by the input type - each key in CallModelInput
+  // corresponds to the same key in ResolvedCallModelInput with resolved type
+  return Object.fromEntries(resolvedEntries) as ResolvedCallModelInput;
 }
 
 /**
@@ -83,7 +86,7 @@ export async function resolveAsyncFunctions(
  * @param input - Input to check
  * @returns True if any field is a function
  */
-export function hasAsyncFunctions(input: any): boolean {
+export function hasAsyncFunctions(input: unknown): boolean {
   if (!input || typeof input !== 'object') {
     return false;
   }

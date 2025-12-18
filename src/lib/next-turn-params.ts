@@ -2,6 +2,13 @@ import type * as models from '../models/index.js';
 import type { NextTurnParamsContext, ParsedToolCall, Tool } from './tool-types.js';
 
 /**
+ * Type guard to check if a value is a Record<string, unknown>
+ */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/**
  * Build a NextTurnParamsContext from the current request
  * Extracts relevant fields that can be modified by nextTurnParams functions
  *
@@ -40,13 +47,10 @@ export async function executeNextTurnParamsFunctions(
   // Build initial context from current request
   const context = buildNextTurnParamsContext(currentRequest);
 
-  // Group tool calls by parameter they modify
-  const paramFunctions = new Map<
-    keyof NextTurnParamsContext,
-    Array<{ params: Record<string, unknown>; fn: (params: Record<string, unknown>, context: NextTurnParamsContext) => unknown }>
-  >();
-
   // Collect all nextTurnParams functions from tools (in tools array order)
+  const result: Partial<NextTurnParamsContext> = {};
+  let workingContext = { ...context };
+
   for (const tool of tools) {
     if (!tool.function.nextTurnParams) {
       continue;
@@ -57,41 +61,83 @@ export async function executeNextTurnParamsFunctions(
 
     for (const call of callsForTool) {
       // For each parameter function in this tool's nextTurnParams
-      for (const [paramKey, fn] of Object.entries(tool.function.nextTurnParams)) {
-        if (!paramFunctions.has(paramKey as keyof NextTurnParamsContext)) {
-          paramFunctions.set(paramKey as keyof NextTurnParamsContext, []);
-        }
-        paramFunctions.get(paramKey as keyof NextTurnParamsContext)!.push({
-          params: call.arguments as Record<string, unknown>,
-          fn: fn as (params: Record<string, unknown>, context: NextTurnParamsContext) => unknown,
-        });
+      // We need to process each key individually to maintain type safety
+      const nextParams = tool.function.nextTurnParams;
+
+      // Validate that call.arguments is a record using type guard
+      if (!isRecord(call.arguments)) {
+        throw new Error(
+          `Tool call arguments for ${tool.function.name} must be an object, got ${typeof call.arguments}`
+        );
       }
+
+      // Process each parameter key with proper typing
+      await processNextTurnParamsForCall(nextParams, call.arguments, workingContext, result);
     }
-  }
-
-  // Compose and execute functions for each parameter
-  const result: Partial<NextTurnParamsContext> = {};
-  let workingContext = { ...context };
-
-  for (const [paramKey, functions] of paramFunctions.entries()) {
-    // Compose all functions for this parameter
-    let currentValue = workingContext[paramKey];
-
-    for (const { params, fn } of functions) {
-      // Update context with current value
-      workingContext = { ...workingContext, [paramKey]: currentValue };
-
-      // Execute function with composition
-      // Type assertion needed because fn returns unknown but we know it returns the correct type
-      currentValue = await Promise.resolve(fn(params, workingContext)) as typeof currentValue;
-    }
-
-    // TypeScript can't infer that paramKey corresponds to the correct value type
-    // so we use a type assertion here
-    (result as any)[paramKey] = currentValue;
   }
 
   return result;
+}
+
+/**
+ * Process nextTurnParams for a single tool call with full type safety
+ */
+async function processNextTurnParamsForCall(
+  nextParams: Record<string, unknown>,
+  params: Record<string, unknown>,
+  workingContext: NextTurnParamsContext,
+  result: Partial<NextTurnParamsContext>
+): Promise<void> {
+  // Type-safe processing for each known parameter key
+  // We iterate through keys and use runtime checks instead of casts
+  for (const paramKey of Object.keys(nextParams)) {
+    const fn = nextParams[paramKey];
+
+    if (typeof fn !== 'function') {
+      continue;
+    }
+
+    // Validate that paramKey is actually a key of NextTurnParamsContext
+    if (!isValidNextTurnParamKey(paramKey)) {
+      // Skip invalid keys silently - they're not part of the API
+      continue;
+    }
+
+    // Execute the function and await the result
+    const newValue = await Promise.resolve(fn(params, workingContext));
+
+    // Update the result using type-safe assignment
+    setNextTurnParam(result, paramKey, newValue);
+  }
+}
+
+/**
+ * Type guard to check if a string is a valid NextTurnParamsContext key
+ */
+function isValidNextTurnParamKey(key: string): key is keyof NextTurnParamsContext {
+  const validKeys: ReadonlySet<string> = new Set([
+    'input',
+    'model',
+    'models',
+    'temperature',
+    'maxOutputTokens',
+    'topP',
+    'topK',
+    'instructions',
+  ]);
+  return validKeys.has(key);
+}
+
+/**
+ * Type-safe setter for NextTurnParamsContext
+ * Ensures the value type matches the key type
+ */
+function setNextTurnParam<K extends keyof NextTurnParamsContext>(
+  target: Partial<NextTurnParamsContext>,
+  key: K,
+  value: NextTurnParamsContext[K]
+): void {
+  target[key] = value;
 }
 
 /**

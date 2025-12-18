@@ -1,6 +1,6 @@
 import type { OpenRouterCore } from '../core.js';
 import type * as models from '../models/index.js';
-import type { AsyncCallModelInput } from './async-params.js';
+import type { CallModelInput } from './async-params.js';
 import type { EventStream } from './event-streams.js';
 import type { RequestOptions } from './sdks.js';
 import type {
@@ -83,7 +83,9 @@ function hasTypeProperty(item: unknown): item is {
 }
 
 export interface GetResponseOptions {
-  request: models.OpenResponsesRequest | AsyncCallModelInput;
+  // Request can be a mix of sync and async fields
+  // The actual type will be narrowed during async function resolution
+  request: models.OpenResponsesRequest | CallModelInput | Record<string, unknown>;
   client: OpenRouterCore;
   options?: RequestOptions;
   tools?: Tool[];
@@ -164,7 +166,7 @@ export class ModelResult {
       // Resolve any async functions first
       if (hasAsyncFunctions(this.options.request)) {
         const resolved = await resolveAsyncFunctions(
-          this.options.request as AsyncCallModelInput,
+          this.options.request as CallModelInput,
           initialContext,
         );
         this.options.request = resolved as models.OpenResponsesRequest;
@@ -316,7 +318,7 @@ export class ModelResult {
         // Resolve async functions for this turn
         if (hasAsyncFunctions(this.options.request)) {
           const resolved = await resolveAsyncFunctions(
-            this.options.request as AsyncCallModelInput,
+            this.options.request as CallModelInput,
             turnContext,
           );
           this.options.request = resolved as models.OpenResponsesRequest;

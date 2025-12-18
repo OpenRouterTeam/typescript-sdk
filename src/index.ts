@@ -4,9 +4,9 @@
 
 // Async params support
 export type {
-  AsyncCallModelInput,
+  CallModelInput,
   FieldOrAsyncFunction,
-  ResolvedAsyncCallModelInput,
+  ResolvedCallModelInput,
 } from './lib/async-params.js';
 export type { Fetcher, HTTPClientOptions } from './lib/http.js';
 // Tool types

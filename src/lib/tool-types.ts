@@ -99,6 +99,10 @@ export interface ToolFunctionWithExecute<
  * Emits preliminary events (validated by eventSchema) during execution
  * and a final output (validated by outputSchema) as the last emission
  *
+ * The generator can yield both events and the final output.
+ * All yields are validated against eventSchema (which should be a union of event and output types),
+ * and the last yield is additionally validated against outputSchema.
+ *
  * @example
  * ```typescript
  * {
@@ -119,7 +123,8 @@ export interface ToolFunctionWithGenerator<
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
-  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent>>;
+  // Generator can yield both events (TEvent) and the final output (TOutput)
+  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
 }
 
 /**

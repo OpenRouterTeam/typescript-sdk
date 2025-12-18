@@ -57,12 +57,17 @@ export async function* extractToolDeltas(
 }
 
 /**
- * Build incremental message updates from responses stream events
- * Returns ResponsesOutputMessage (assistant/responses format)
+ * Core message stream builder - shared logic for both formats
+ * Accumulates text deltas and yields updates
  */
-export async function* buildResponsesMessageStream(
+async function* buildMessageStreamCore(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<models.ResponsesOutputMessage> {
+): AsyncIterableIterator<{
+  type: 'delta' | 'complete';
+  text?: string;
+  messageId?: string;
+  completeMessage?: models.ResponsesOutputMessage;
+}> {
   const consumer = stream.createConsumer();
 
   // Track the accumulated text and message info
@@ -91,20 +96,10 @@ export async function* buildResponsesMessageStream(
         const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
         if (hasStarted && deltaEvent.delta) {
           currentText += deltaEvent.delta;
-
-          // Yield updated message in ResponsesOutputMessage format
           yield {
-            id: currentId,
-            type: 'message' as const,
-            role: 'assistant' as const,
-            status: 'in_progress' as const,
-            content: [
-              {
-                type: 'output_text' as const,
-                text: currentText,
-                annotations: [],
-              },
-            ],
+            type: 'delta' as const,
+            text: currentText,
+            messageId: currentId,
           };
         }
         break;
@@ -117,12 +112,44 @@ export async function* buildResponsesMessageStream(
           'type' in itemDoneEvent.item &&
           itemDoneEvent.item.type === 'message'
         ) {
-          // Yield final complete message in ResponsesOutputMessage format
           const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
-          yield outputMessage;
+          yield {
+            type: 'complete' as const,
+            completeMessage: outputMessage,
+          };
         }
         break;
       }
+    }
+  }
+}
+
+/**
+ * Build incremental message updates from responses stream events
+ * Returns ResponsesOutputMessage (assistant/responses format)
+ */
+export async function* buildResponsesMessageStream(
+  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+): AsyncIterableIterator<models.ResponsesOutputMessage> {
+  for await (const update of buildMessageStreamCore(stream)) {
+    if (update.type === 'delta' && update.text !== undefined && update.messageId !== undefined) {
+      // Yield incremental update in ResponsesOutputMessage format
+      yield {
+        id: update.messageId,
+        type: 'message' as const,
+        role: 'assistant' as const,
+        status: 'in_progress' as const,
+        content: [
+          {
+            type: 'output_text' as const,
+            text: update.text,
+            annotations: [],
+          },
+        ],
+      };
+    } else if (update.type === 'complete' && update.completeMessage) {
+      // Yield final complete message
+      yield update.completeMessage;
     }
   }
 }
@@ -134,54 +161,16 @@ export async function* buildResponsesMessageStream(
 export async function* buildMessageStream(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
 ): AsyncIterableIterator<models.AssistantMessage> {
-  const consumer = stream.createConsumer();
-
-  // Track the accumulated text
-  let currentText = '';
-  let hasStarted = false;
-
-  for await (const event of consumer) {
-    if (!('type' in event)) {
-      continue;
-    }
-
-    switch (event.type) {
-      case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
-          hasStarted = true;
-          currentText = '';
-        }
-        break;
-      }
-
-      case 'response.output_text.delta': {
-        const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-        if (hasStarted && deltaEvent.delta) {
-          currentText += deltaEvent.delta;
-
-          // Yield updated message
-          yield {
-            role: 'assistant' as const,
-            content: currentText,
-          };
-        }
-        break;
-      }
-
-      case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'message'
-        ) {
-          // Yield final complete message
-          const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
-          yield convertToAssistantMessage(outputMessage);
-        }
-        break;
-      }
+  for await (const update of buildMessageStreamCore(stream)) {
+    if (update.type === 'delta' && update.text !== undefined) {
+      // Yield incremental update in chat format
+      yield {
+        role: 'assistant' as const,
+        content: update.text,
+      };
+    } else if (update.type === 'complete' && update.completeMessage) {
+      // Yield final complete message converted to chat format
+      yield convertToAssistantMessage(update.completeMessage);
     }
   }
 }
@@ -508,15 +497,12 @@ function mapAnnotationsToCitations(
       }
 
       default: {
-        const _exhaustiveCheck: never = annotation;
+        // Exhaustiveness check - TypeScript will error if we don't handle all annotation types
+        const exhaustiveCheck: never = annotation;
+        // This should never execute - throw with JSON of the unhandled value
         throw new Error(
-          `Unhandled annotation type: ${
-            (
-              _exhaustiveCheck as {
-                type: string;
-              }
-            ).type
-          }`,
+          `Unhandled annotation type. This indicates a new annotation type was added. ` +
+          `Annotation: ${JSON.stringify(exhaustiveCheck)}`
         );
       }
     }
@@ -570,9 +556,13 @@ export function convertToClaudeMessage(
   for (const item of response.output) {
     if (!('type' in item)) {
       // Handle items without type field
+      // Convert unknown item to a record format for storage
+      const itemData = typeof item === 'object' && item !== null
+        ? item
+        : { value: item };
       unsupportedContent.push({
         original_type: 'unknown',
-        data: item as Record<string, unknown>,
+        data: itemData,
         reason: 'Output item missing type field',
       });
       continue;
@@ -583,9 +573,13 @@ export function convertToClaudeMessage(
         const msgItem = item as models.ResponsesOutputMessage;
         for (const part of msgItem.content) {
           if (!('type' in part)) {
+            // Convert unknown part to a record format for storage
+            const partData = typeof part === 'object' && part !== null
+              ? part
+              : { value: part };
             unsupportedContent.push({
               original_type: 'unknown_message_part',
-              data: part as Record<string, unknown>,
+              data: partData,
               reason: 'Message content part missing type field',
             });
             continue;
@@ -612,18 +606,13 @@ export function convertToClaudeMessage(
               reason: 'Claude does not have a native refusal content type',
             });
           } else {
-            // Handle unknown message content types
-            unsupportedContent.push({
-              original_type: `message_content_${
-                (
-                  part as {
-                    type: string;
-                  }
-                ).type
-              }`,
-              data: part as Record<string, unknown>,
-              reason: 'Unknown message content type',
-            });
+            // Exhaustiveness check - TypeScript will error if we don't handle all part types
+            const exhaustiveCheck: never = part;
+            // This should never execute - new content type was added
+            throw new Error(
+              `Unhandled message content type. This indicates a new content type was added. ` +
+              `Part: ${JSON.stringify(exhaustiveCheck)}`
+            );
           }
         }
         break;
@@ -726,13 +715,14 @@ export function convertToClaudeMessage(
       }
 
       default: {
+        // Exhaustiveness check - if a new output type is added, TypeScript will error here
         const exhaustiveCheck: never = item;
-        unsupportedContent.push({
-          original_type: 'unknown_output_item',
-          data: exhaustiveCheck as Record<string, unknown>,
-          reason: 'Unknown output item type',
-        });
-        break;
+        // This line should never execute - it means a new type was added to the union
+        // Throw an error instead of silently continuing to ensure we catch new types
+        throw new Error(
+          `Unhandled output item type. This indicates a new output type was added to the API. ` +
+          `Item: ${JSON.stringify(exhaustiveCheck)}`
+        );
       }
     }
   }
