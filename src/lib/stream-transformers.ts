@@ -298,6 +298,16 @@ export function extractTextFromResponse(
     return response.outputText;
   }
 
+  // Check if there's a message in the output
+  const hasMessage = response.output.some(
+    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+  );
+
+  if (!hasMessage) {
+    // No message in response (e.g., only function calls)
+    return '';
+  }
+
   // Otherwise, extract from the first message (convert to AssistantMessage which has string content)
   const message = extractMessageFromResponse(response);
 

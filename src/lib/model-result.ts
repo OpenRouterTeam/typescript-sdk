@@ -7,6 +7,7 @@ import type {
   ChatStreamEvent,
   EnhancedResponseStreamEvent,
   ParsedToolCall,
+  StopWhen,
   Tool,
   ToolStreamEvent,
   TurnContext,
@@ -93,6 +94,7 @@ export interface GetResponseOptions {
   client: OpenRouterCore;
   options?: RequestOptions;
   tools?: Tool[];
+  stopWhen?: StopWhen;
 }
 
 /**
@@ -269,10 +271,10 @@ export class ModelResult {
 
       while (true) {
         // Check stopWhen conditions
-        if (this.options.request.stopWhen) {
-          const stopConditions = Array.isArray(this.options.request.stopWhen)
-            ? this.options.request.stopWhen
-            : [this.options.request.stopWhen];
+        if (this.options.stopWhen) {
+          const stopConditions = Array.isArray(this.options.stopWhen)
+            ? this.options.stopWhen
+            : [this.options.stopWhen];
 
           const shouldStop = await isStopConditionMet({
             stopConditions,

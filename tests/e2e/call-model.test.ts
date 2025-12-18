@@ -10,6 +10,7 @@ import { fromChatMessages, toChatMessage } from '../../src/lib/chat-compat.js';
 import { fromClaudeMessages } from '../../src/lib/anthropic-compat.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import { stepCountIs } from '../../src/lib/stop-conditions.js';
 
 describe('callModel E2E Tests', () => {
   let client: OpenRouter;
@@ -132,7 +133,7 @@ describe('callModel E2E Tests', () => {
       expect(toolCalls[0].arguments).toBeDefined();
     }, 30000);
 
-    it.skip('should work with chat-style messages and chat-style tools together', async () => {
+    it('should work with chat-style messages and chat-style tools together', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.1-8b-instruct',
         input: fromChatMessages([
@@ -343,8 +344,8 @@ describe('callModel E2E Tests', () => {
       expect(message.role).toBe('assistant');
       expect(
         Array.isArray(message.content) ||
-          typeof message.content === 'string' ||
-          message.content === null,
+        typeof message.content === 'string' ||
+        message.content === null,
       ).toBe(true);
 
       if (Array.isArray(message.content)) {
@@ -570,9 +571,10 @@ describe('callModel E2E Tests', () => {
       expect(lastMessage.role).toBe('assistant');
     }, 15000);
 
-    it.skip('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
+    it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
         model: 'anthropic/claude-sonnet-4.5',
+        instructions: 'You are a weather assistant. You can use the get_weather tool to get the weather for a location.',
         input: fromChatMessages([
           {
             role: 'user',
@@ -580,6 +582,7 @@ describe('callModel E2E Tests', () => {
           },
         ]),
         toolChoice: 'required',
+        stopWhen: stepCountIs(2),
         tools: [
           {
             type: ToolType.Function,
@@ -592,6 +595,7 @@ describe('callModel E2E Tests', () => {
               outputSchema: z.object({
                 temperature: z.number(),
                 condition: z.string(),
+                location: z.string().describe('City name'),
               }),
               // Enable auto-execution so we test the full flow
               execute: async (params) => {
@@ -612,6 +616,7 @@ describe('callModel E2E Tests', () => {
       let hasFunctionCallOutput = false;
 
       for await (const message of response.getNewMessagesStream()) {
+        console.log('Message received:', message);
         messages.push(message);
 
         // Validate each message has correct shape based on type
@@ -670,7 +675,7 @@ describe('callModel E2E Tests', () => {
           expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
-    }, 60000); // Increased timeout for tool execution which involves multiple API calls
+    }, 6000);
 
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
@@ -713,7 +718,7 @@ describe('callModel E2E Tests', () => {
   });
 
   describe('response.reasoningStream - Streaming reasoning deltas', () => {
-    it.skip('should successfully stream reasoning deltas for reasoning models', async () => {
+    it('should successfully stream reasoning deltas for reasoning models', async () => {
       const response = client.callModel({
         model: 'minimax/minimax-m2',
         input: fromChatMessages([
@@ -730,7 +735,12 @@ describe('callModel E2E Tests', () => {
 
       const reasoningDeltas: string[] = [];
 
+      for await (const event of response.getFullResponsesStream()) {
+        console.log('Event received:', event);
+      }
+
       for await (const delta of response.getReasoningStream()) {
+        console.log('Reasoning delta received:', delta);
         expect(typeof delta).toBe('string');
         reasoningDeltas.push(delta);
       }
@@ -854,7 +864,7 @@ describe('callModel E2E Tests', () => {
 
       // Verify delta events have the expected structure
       const firstDelta = textDeltaEvents[0];
-      if(firstDelta.type === 'response.output_text.delta') {
+      if (firstDelta.type === 'response.output_text.delta') {
         expect(firstDelta.delta).toBeDefined();
         expect(typeof firstDelta.delta).toBe('string');
       } else {
