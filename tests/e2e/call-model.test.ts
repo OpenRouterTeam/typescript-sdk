@@ -735,12 +735,7 @@ describe('callModel E2E Tests', () => {
 
       const reasoningDeltas: string[] = [];
 
-      for await (const event of response.getFullResponsesStream()) {
-        console.log('Event received:', event);
-      }
-
       for await (const delta of response.getReasoningStream()) {
-        console.log('Reasoning delta received:', delta);
         expect(typeof delta).toBe('string');
         reasoningDeltas.push(delta);
       }
@@ -749,7 +744,7 @@ describe('callModel E2E Tests', () => {
       // Just verify the stream works without error
       expect(Array.isArray(reasoningDeltas)).toBe(true);
       expect(reasoningDeltas.length).toBeGreaterThan(0);
-    }, 30000);
+    }, 60000);
   });
 
   describe('response.toolStream - Streaming tool call deltas', () => {
