@@ -670,7 +670,7 @@ describe('callModel E2E Tests', () => {
           expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
-    }, 30000);
+    }, 60000); // Increased timeout for tool execution which involves multiple API calls
 
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
