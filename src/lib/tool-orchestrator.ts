@@ -11,7 +11,6 @@ import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './
  * Options for tool execution
  */
 export interface ToolExecutionOptions {
-  maxRounds?: number;
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void;
 }
 
@@ -48,7 +47,6 @@ export async function executeToolLoop(
   apiTools: APITool[],
   options: ToolExecutionOptions = {},
 ): Promise<ToolOrchestrationResult> {
-  const maxRounds = options.maxRounds ?? 5;
   const onPreliminaryResult = options.onPreliminaryResult;
 
   const allResponses: models.OpenResponsesNonStreamingResponse[] = [];
@@ -63,8 +61,8 @@ export async function executeToolLoop(
   currentResponse = await sendRequest(conversationInput, apiTools);
   allResponses.push(currentResponse);
 
-  // Loop until no more tool calls or max rounds reached
-  while (responseHasToolCalls(currentResponse) && currentRound < maxRounds) {
+  // Loop until no more tool calls (model decides when to stop)
+  while (responseHasToolCalls(currentResponse)) {
     currentRound++;
 
     // Extract tool calls from response
@@ -249,5 +247,9 @@ export function hasToolExecutionErrors(results: ToolExecutionResult[]): boolean 
  * Get all tool execution errors
  */
 export function getToolExecutionErrors(results: ToolExecutionResult[]): Error[] {
-  return results.filter((result) => result.error !== undefined).map((result) => result.error!);
+  return results
+    .filter((result): result is ToolExecutionResult & { error: Error } =>
+      result.error !== undefined
+    )
+    .map((result) => result.error);
 }

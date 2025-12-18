@@ -1,65 +1,28 @@
 import type * as models from '../models/index.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall } from './tool-types.js';
-
-/**
- * Type guard for response.output_text.delta events
- */
-function isOutputTextDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
-  return 'type' in event && event.type === 'response.output_text.delta';
-}
-
-/**
- * Type guard for response.reasoning_text.delta events
- */
-function isReasoningDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesReasoningDeltaEvent {
-  return 'type' in event && event.type === 'response.reasoning_text.delta';
-}
-
-/**
- * Type guard for response.function_call_arguments.delta events
- */
-function isFunctionCallArgumentsDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta {
-  return 'type' in event && event.type === 'response.function_call_arguments.delta';
-}
-
-/**
- * Type guard for response.output_item.added events
- */
-function isOutputItemAddedEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputItemAdded {
-  return 'type' in event && event.type === 'response.output_item.added';
-}
-
-/**
- * Type guard for response.output_item.done events
- */
-function isOutputItemDoneEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputItemDone {
-  return 'type' in event && event.type === 'response.output_item.done';
-}
-
-/**
- * Type guard to check if an output item is a message
- */
-function isOutputMessage(
-  item: unknown,
-): item is models.ResponsesOutputMessage {
-  return (
-    typeof item === 'object' &&
-    item !== null &&
-    'type' in item &&
-    item.type === 'message'
-  );
-}
+import {
+  isOutputTextDeltaEvent,
+  isReasoningDeltaEvent,
+  isFunctionCallArgumentsDeltaEvent,
+  isOutputItemAddedEvent,
+  isOutputItemDoneEvent,
+  isResponseCompletedEvent,
+  isResponseFailedEvent,
+  isResponseIncompleteEvent,
+  isFunctionCallArgumentsDoneEvent,
+  isOutputMessage,
+  isFunctionCallOutputItem,
+  isReasoningOutputItem,
+  isWebSearchCallOutputItem,
+  isFileSearchCallOutputItem,
+  isImageGenerationCallOutputItem,
+  isOutputTextPart,
+  isRefusalPart,
+  isFileCitationAnnotation,
+  isURLCitationAnnotation,
+  isFilePathAnnotation,
+} from './stream-type-guards.js';
 
 /**
  * Extract text deltas from responses stream events
@@ -246,21 +209,18 @@ export async function consumeStreamForCompletion(
       continue;
     }
 
-    if (event.type === 'response.completed') {
-      const completedEvent = event as models.OpenResponsesStreamEventResponseCompleted;
-      return completedEvent.response;
+    if (isResponseCompletedEvent(event)) {
+      return event.response;
     }
 
-    if (event.type === 'response.failed') {
-      const failedEvent = event as models.OpenResponsesStreamEventResponseFailed;
+    if (isResponseFailedEvent(event)) {
       // The failed event contains the full response with error information
-      throw new Error(`Response failed: ${JSON.stringify(failedEvent.response.error)}`);
+      throw new Error(`Response failed: ${JSON.stringify(event.response.error)}`);
     }
 
-    if (event.type === 'response.incomplete') {
-      const incompleteEvent = event as models.OpenResponsesStreamEventResponseIncomplete;
+    if (isResponseIncompleteEvent(event)) {
       // Return the incomplete response
-      return incompleteEvent.response;
+      return event.response;
     }
   }
 
@@ -353,28 +313,26 @@ export function extractToolCallsFromResponse(
   const toolCalls: ParsedToolCall[] = [];
 
   for (const item of response.output) {
-    if ('type' in item && item.type === 'function_call') {
-      const functionCallItem = item as models.ResponsesOutputItemFunctionCall;
-
+    if (isFunctionCallOutputItem(item)) {
       try {
-        const parsedArguments = JSON.parse(functionCallItem.arguments);
+        const parsedArguments = JSON.parse(item.arguments);
 
         toolCalls.push({
-          id: functionCallItem.callId,
-          name: functionCallItem.name,
+          id: item.callId,
+          name: item.name,
           arguments: parsedArguments,
         });
       } catch (error) {
         console.warn(
-          `Failed to parse tool call arguments for ${functionCallItem.name}:`,
+          `Failed to parse tool call arguments for ${item.name}:`,
           error instanceof Error ? error.message : String(error),
-          `\nArguments: ${functionCallItem.arguments.substring(0, 100)}${functionCallItem.arguments.length > 100 ? '...' : ''}`
+          `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
         );
         // Include the tool call with unparsed arguments
         toolCalls.push({
-          id: functionCallItem.callId,
-          name: functionCallItem.name,
-          arguments: functionCallItem.arguments, // Keep as string if parsing fails
+          id: item.callId,
+          name: item.name,
+          arguments: item.arguments, // Keep as string if parsing fails
         });
       }
     }
@@ -409,12 +367,10 @@ export async function* buildToolCallStream(
 
     switch (event.type) {
       case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'function_call') {
-          const functionCallItem = itemEvent.item as models.ResponsesOutputItemFunctionCall;
-          toolCallsInProgress.set(functionCallItem.callId, {
-            id: functionCallItem.callId,
-            name: functionCallItem.name,
+        if (isOutputItemAddedEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
+          toolCallsInProgress.set(event.item.callId, {
+            id: event.item.callId,
+            name: event.item.name,
             argumentsAccumulated: '',
           });
         }
@@ -422,75 +378,69 @@ export async function* buildToolCallStream(
       }
 
       case 'response.function_call_arguments.delta': {
-        const deltaEvent =
-          event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
-        const toolCall = toolCallsInProgress.get(deltaEvent.itemId);
-        if (toolCall && deltaEvent.delta) {
-          toolCall.argumentsAccumulated += deltaEvent.delta;
+        if (isFunctionCallArgumentsDeltaEvent(event)) {
+          const toolCall = toolCallsInProgress.get(event.itemId);
+          if (toolCall && event.delta) {
+            toolCall.argumentsAccumulated += event.delta;
+          }
         }
         break;
       }
 
       case 'response.function_call_arguments.done': {
-        const doneEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone;
-        const toolCall = toolCallsInProgress.get(doneEvent.itemId);
+        if (isFunctionCallArgumentsDoneEvent(event)) {
+          const toolCall = toolCallsInProgress.get(event.itemId);
 
-        if (toolCall) {
-          // Parse complete arguments
-          try {
-            const parsedArguments = JSON.parse(doneEvent.arguments);
-            yield {
-              id: toolCall.id,
-              name: doneEvent.name,
-              arguments: parsedArguments,
-            };
-          } catch (error) {
-            console.warn(
-              `Failed to parse tool call arguments for ${doneEvent.name}:`,
-              error instanceof Error ? error.message : String(error),
-              `\nArguments: ${doneEvent.arguments.substring(0, 100)}${doneEvent.arguments.length > 100 ? '...' : ''}`
-            );
-            // Yield with unparsed arguments if parsing fails
-            yield {
-              id: toolCall.id,
-              name: doneEvent.name,
-              arguments: doneEvent.arguments,
-            };
+          if (toolCall) {
+            // Parse complete arguments
+            try {
+              const parsedArguments = JSON.parse(event.arguments);
+              yield {
+                id: toolCall.id,
+                name: event.name,
+                arguments: parsedArguments,
+              };
+            } catch (error) {
+              console.warn(
+                `Failed to parse tool call arguments for ${event.name}:`,
+                error instanceof Error ? error.message : String(error),
+                `\nArguments: ${event.arguments.substring(0, 100)}${event.arguments.length > 100 ? '...' : ''}`
+              );
+              // Yield with unparsed arguments if parsing fails
+              yield {
+                id: toolCall.id,
+                name: event.name,
+                arguments: event.arguments,
+              };
+            }
+
+            // Clean up
+            toolCallsInProgress.delete(event.itemId);
           }
-
-          // Clean up
-          toolCallsInProgress.delete(doneEvent.itemId);
         }
         break;
       }
 
       case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'function_call'
-        ) {
-          const functionCallItem = itemDoneEvent.item as models.ResponsesOutputItemFunctionCall;
-
+        if (isOutputItemDoneEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
           // Yield final tool call if we haven't already
-          if (toolCallsInProgress.has(functionCallItem.callId)) {
+          if (toolCallsInProgress.has(event.item.callId)) {
             try {
-              const parsedArguments = JSON.parse(functionCallItem.arguments);
+              const parsedArguments = JSON.parse(event.item.arguments);
               yield {
-                id: functionCallItem.callId,
-                name: functionCallItem.name,
+                id: event.item.callId,
+                name: event.item.name,
                 arguments: parsedArguments,
               };
             } catch (_error) {
               yield {
-                id: functionCallItem.callId,
-                name: functionCallItem.name,
-                arguments: functionCallItem.arguments,
+                id: event.item.callId,
+                name: event.item.name,
+                arguments: event.item.arguments,
               };
             }
 
-            toolCallsInProgress.delete(functionCallItem.callId);
+            toolCallsInProgress.delete(event.item.callId);
           }
         }
         break;
@@ -525,42 +475,45 @@ function mapAnnotationsToCitations(
 
     switch (annotation.type) {
       case 'file_citation': {
-        const fileCite = annotation as models.FileCitation;
-        citations.push({
-          type: 'char_location',
-          cited_text: '',
-          document_index: fileCite.index,
-          document_title: fileCite.filename,
-          file_id: fileCite.fileId,
-          start_char_index: 0,
-          end_char_index: 0,
-        });
+        if (isFileCitationAnnotation(annotation)) {
+          citations.push({
+            type: 'char_location',
+            cited_text: '',
+            document_index: annotation.index,
+            document_title: annotation.filename,
+            file_id: annotation.fileId,
+            start_char_index: 0,
+            end_char_index: 0,
+          });
+        }
         break;
       }
 
       case 'url_citation': {
-        const urlCite = annotation as models.URLCitation;
-        citations.push({
-          type: 'web_search_result_location',
-          cited_text: '',
-          title: urlCite.title,
-          url: urlCite.url,
-          encrypted_index: '',
-        });
+        if (isURLCitationAnnotation(annotation)) {
+          citations.push({
+            type: 'web_search_result_location',
+            cited_text: '',
+            title: annotation.title,
+            url: annotation.url,
+            encrypted_index: '',
+          });
+        }
         break;
       }
 
       case 'file_path': {
-        const pathCite = annotation as models.FilePath;
-        citations.push({
-          type: 'char_location',
-          cited_text: '',
-          document_index: pathCite.index,
-          document_title: '',
-          file_id: pathCite.fileId,
-          start_char_index: 0,
-          end_char_index: 0,
-        });
+        if (isFilePathAnnotation(annotation)) {
+          citations.push({
+            type: 'char_location',
+            cited_text: '',
+            document_index: annotation.index,
+            document_title: '',
+            file_id: annotation.fileId,
+            start_char_index: 0,
+            end_char_index: 0,
+          });
+        }
         break;
       }
 
@@ -639,147 +592,150 @@ export function convertToClaudeMessage(
 
     switch (item.type) {
       case 'message': {
-        const msgItem = item as models.ResponsesOutputMessage;
-        for (const part of msgItem.content) {
-          if (!('type' in part)) {
-            // Convert unknown part to a record format for storage
-            const partData = typeof part === 'object' && part !== null
-              ? part
-              : { value: part };
-            unsupportedContent.push({
-              original_type: 'unknown_message_part',
-              data: partData,
-              reason: 'Message content part missing type field',
-            });
-            continue;
-          }
+        if (isOutputMessage(item)) {
+          for (const part of item.content) {
+            if (!('type' in part)) {
+              // Convert unknown part to a record format for storage
+              const partData = typeof part === 'object' && part !== null
+                ? part
+                : { value: part };
+              unsupportedContent.push({
+                original_type: 'unknown_message_part',
+                data: partData,
+                reason: 'Message content part missing type field',
+              });
+              continue;
+            }
 
-          if (part.type === 'output_text') {
-            const textPart = part as models.ResponseOutputText;
-            const citations = mapAnnotationsToCitations(textPart.annotations);
+            if (isOutputTextPart(part)) {
+              const citations = mapAnnotationsToCitations(part.annotations);
 
-            content.push({
-              type: 'text',
-              text: textPart.text,
-              ...(citations && {
-                citations,
-              }),
-            });
-          } else if (part.type === 'refusal') {
-            const refusalPart = part as models.OpenAIResponsesRefusalContent;
-            unsupportedContent.push({
-              original_type: 'refusal',
-              data: {
-                refusal: refusalPart.refusal,
-              },
-              reason: 'Claude does not have a native refusal content type',
-            });
-          } else {
-            // Exhaustiveness check - TypeScript will error if we don't handle all part types
-            const exhaustiveCheck: never = part;
-            // This should never execute - new content type was added
-            throw new Error(
-              `Unhandled message content type. This indicates a new content type was added. ` +
-              `Part: ${JSON.stringify(exhaustiveCheck)}`
-            );
+              content.push({
+                type: 'text',
+                text: part.text,
+                ...(citations && {
+                  citations,
+                }),
+              });
+            } else if (isRefusalPart(part)) {
+              unsupportedContent.push({
+                original_type: 'refusal',
+                data: {
+                  refusal: part.refusal,
+                },
+                reason: 'Claude does not have a native refusal content type',
+              });
+            } else {
+              // Exhaustiveness check - TypeScript will error if we don't handle all part types
+              const exhaustiveCheck: never = part;
+              // This should never execute - new content type was added
+              throw new Error(
+                `Unhandled message content type. This indicates a new content type was added. ` +
+                `Part: ${JSON.stringify(exhaustiveCheck)}`
+              );
+            }
           }
         }
         break;
       }
 
       case 'function_call': {
-        const fnCall = item as models.ResponsesOutputItemFunctionCall;
-        let parsedInput: Record<string, unknown>;
+        if (isFunctionCallOutputItem(item)) {
+          let parsedInput: Record<string, unknown>;
 
-        try {
-          parsedInput = JSON.parse(fnCall.arguments);
-        } catch (error) {
-          console.warn(
-            `Failed to parse tool call arguments for ${fnCall.name}:`,
-            error instanceof Error ? error.message : String(error),
-            `\nArguments: ${fnCall.arguments.substring(0, 100)}${fnCall.arguments.length > 100 ? '...' : ''}`
-          );
-          // Preserve raw arguments if JSON parsing fails
-          parsedInput = {
-            _raw_arguments: fnCall.arguments,
-          };
-        }
-
-        content.push({
-          type: 'tool_use',
-          id: fnCall.callId,
-          name: fnCall.name,
-          input: parsedInput,
-        });
-        break;
-      }
-
-      case 'reasoning': {
-        const reasoningItem = item as models.ResponsesOutputItemReasoning;
-
-        if (reasoningItem.summary && reasoningItem.summary.length > 0) {
-          for (const summaryItem of reasoningItem.summary) {
-            if (summaryItem.type === 'summary_text' && summaryItem.text) {
-              content.push({
-                type: 'thinking',
-                thinking: summaryItem.text,
-                signature: '',
-              });
-            }
+          try {
+            parsedInput = JSON.parse(item.arguments);
+          } catch (error) {
+            console.warn(
+              `Failed to parse tool call arguments for ${item.name}:`,
+              error instanceof Error ? error.message : String(error),
+              `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
+            );
+            // Preserve raw arguments if JSON parsing fails
+            parsedInput = {
+              _raw_arguments: item.arguments,
+            };
           }
-        }
 
-        if (reasoningItem.encryptedContent) {
-          unsupportedContent.push({
-            original_type: 'reasoning_encrypted',
-            data: {
-              id: reasoningItem.id,
-              encrypted_content: reasoningItem.encryptedContent,
-            },
-            reason: 'Encrypted reasoning content preserved for round-trip',
+          content.push({
+            type: 'tool_use',
+            id: item.callId,
+            name: item.name,
+            input: parsedInput,
           });
         }
         break;
       }
 
+      case 'reasoning': {
+        if (isReasoningOutputItem(item)) {
+          if (item.summary && item.summary.length > 0) {
+            for (const summaryItem of item.summary) {
+              if (summaryItem.type === 'summary_text' && summaryItem.text) {
+                content.push({
+                  type: 'thinking',
+                  thinking: summaryItem.text,
+                  signature: '',
+                });
+              }
+            }
+          }
+
+          if (item.encryptedContent) {
+            unsupportedContent.push({
+              original_type: 'reasoning_encrypted',
+              data: {
+                id: item.id,
+                encrypted_content: item.encryptedContent,
+              },
+              reason: 'Encrypted reasoning content preserved for round-trip',
+            });
+          }
+        }
+        break;
+      }
+
       case 'web_search_call': {
-        const webSearchItem = item as models.ResponsesWebSearchCallOutput;
-        content.push({
-          type: 'server_tool_use',
-          id: webSearchItem.id,
-          name: 'web_search',
-          input: {
-            status: webSearchItem.status,
-          },
-        });
+        if (isWebSearchCallOutputItem(item)) {
+          content.push({
+            type: 'server_tool_use',
+            id: item.id,
+            name: 'web_search',
+            input: {
+              status: item.status,
+            },
+          });
+        }
         break;
       }
 
       case 'file_search_call': {
-        const fileSearchItem = item as models.ResponsesOutputItemFileSearchCall;
-        content.push({
-          type: 'tool_use',
-          id: fileSearchItem.id,
-          name: 'file_search',
-          input: {
-            queries: fileSearchItem.queries,
-            status: fileSearchItem.status,
-          },
-        });
+        if (isFileSearchCallOutputItem(item)) {
+          content.push({
+            type: 'tool_use',
+            id: item.id,
+            name: 'file_search',
+            input: {
+              queries: item.queries,
+              status: item.status,
+            },
+          });
+        }
         break;
       }
 
       case 'image_generation_call': {
-        const imageGenItem = item as models.ResponsesImageGenerationCall;
-        unsupportedContent.push({
-          original_type: 'image_generation_call',
-          data: {
-            id: imageGenItem.id,
-            result: imageGenItem.result,
-            status: imageGenItem.status,
-          },
-          reason: 'Claude does not support image outputs in assistant messages',
-        });
+        if (isImageGenerationCallOutputItem(item)) {
+          unsupportedContent.push({
+            original_type: 'image_generation_call',
+            data: {
+              id: item.id,
+              result: item.result,
+              status: item.status,
+            },
+            reason: 'Claude does not support image outputs in assistant messages',
+          });
+        }
         break;
       }
 

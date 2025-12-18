@@ -2,15 +2,26 @@ import type * as models from '../models/index.js';
 import type { StopWhen, Tool, TurnContext } from './tool-types.js';
 
 /**
- * Type-safe Object.fromEntries that preserves key-value type relationships
+ * Type guard to check if a value is a parameter function
+ * Parameter functions take TurnContext and return a value or promise
  */
-const typeSafeObjectFromEntries = <
-  const T extends ReadonlyArray<readonly [PropertyKey, unknown]>
->(
-  entries: T
-): { [K in T[number] as K[0]]: K[1] } => {
-  return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
-};
+function isParameterFunction(
+  value: unknown
+): value is (context: TurnContext) => unknown | Promise<unknown> {
+  return typeof value === 'function';
+}
+
+/**
+ * Build a resolved request object from entries
+ * This validates the structure matches the expected ResolvedCallModelInput shape
+ */
+function buildResolvedRequest(
+  entries: ReadonlyArray<readonly [string, unknown]>
+): ResolvedCallModelInput {
+  const obj = Object.fromEntries(entries);
+
+  return obj satisfies ResolvedCallModelInput;
+}
 
 /**
  * A field can be either a value of type T or a function that computes T
@@ -73,13 +84,10 @@ export async function resolveAsyncFunctions(
       continue;
     }
 
-    if (typeof value === 'function') {
+    if (isParameterFunction(value)) {
       try {
         // Execute the function with context and store the result
-        // We've already filtered out stopWhen at line 73, so this is a parameter function
-        // that accepts TurnContext (not a StopCondition which needs steps)
-        const fn = value as (context: TurnContext) => unknown | Promise<unknown>;
-        const result = await Promise.resolve(fn(context));
+        const result = await Promise.resolve(value(context));
         resolvedEntries.push([key, result] as const);
       } catch (error) {
         // Wrap errors with context about which field failed
@@ -94,11 +102,7 @@ export async function resolveAsyncFunctions(
     }
   }
 
-  // Use type-safe fromEntries - the result type is inferred from the entries
-  // TypeScript can't prove that dynamic keys match the static type at compile time,
-  // but we know all keys come from the input object (minus stopWhen/tools)
-  // and all values are properly resolved through the function above
-  return typeSafeObjectFromEntries(resolvedEntries) as ResolvedCallModelInput;
+  return buildResolvedRequest(resolvedEntries);
 }
 
 /**

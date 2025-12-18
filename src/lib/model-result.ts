@@ -13,7 +13,11 @@ import type {
 } from './tool-types.js';
 
 import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
-import { hasAsyncFunctions, resolveAsyncFunctions } from './async-params.js';
+import {
+  hasAsyncFunctions,
+  resolveAsyncFunctions,
+  type ResolvedCallModelInput,
+} from './async-params.js';
 import { ReusableReadableStream } from './reusable-stream.js';
 import {
   buildResponsesMessageStream,
@@ -83,9 +87,8 @@ function hasTypeProperty(item: unknown): item is {
 }
 
 export interface GetResponseOptions {
-  // Request can be a mix of sync and async fields
-  // The actual type will be narrowed during async function resolution
-  request: models.OpenResponsesRequest | CallModelInput | Record<string, unknown>;
+  // Request can have async functions that will be resolved before sending to API
+  request: CallModelInput;
   client: OpenRouterCore;
   options?: RequestOptions;
   tools?: Tool[];
@@ -122,6 +125,8 @@ export class ModelResult {
     toolCalls: ParsedToolCall[];
     response: models.OpenResponsesNonStreamingResponse;
   }> = [];
+  // Track resolved request after async function resolution
+  private resolvedRequest: models.OpenResponsesRequest | null = null;
 
   constructor(options: GetResponseOptions) {
     this.options = options;
@@ -160,19 +165,29 @@ export class ModelResult {
       };
 
       // Resolve any async functions first
+      let baseRequest: ResolvedCallModelInput;
       if (hasAsyncFunctions(this.options.request)) {
-        const resolved = await resolveAsyncFunctions(
-          this.options.request as CallModelInput,
+        baseRequest = await resolveAsyncFunctions(
+          this.options.request,
           initialContext,
         );
-        this.options.request = resolved as models.OpenResponsesRequest;
+      } else {
+        // Already resolved, extract non-function fields
+        // Since request is CallModelInput, we need to filter out tools/stopWhen
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { tools, stopWhen, ...rest } = this.options.request;
+        // Use satisfies to validate type compatibility while maintaining the target type
+        baseRequest = rest as ResolvedCallModelInput satisfies ResolvedCallModelInput;
       }
 
-      // Force stream mode
-      const request = {
-        ...(this.options.request as models.OpenResponsesRequest),
+      // Store resolved request with stream mode
+      this.resolvedRequest = {
+        ...baseRequest,
         stream: true as const,
       };
+
+      // Force stream mode for initial request
+      const request = this.resolvedRequest;
 
       // Create the stream promise
       this.streamPromise = betaResponsesSend(
@@ -183,7 +198,10 @@ export class ModelResult {
         if (!result.ok) {
           throw result.error;
         }
-        return result.value;
+        // When stream: true, the API returns EventStream
+        // TypeScript can't narrow the union type based on runtime parameter values,
+        // so we assert the type here based on our knowledge that stream=true
+        return result.value as EventStream<models.OpenResponsesStreamEvent>;
       });
 
       // Wait for the stream and create the reusable stream
@@ -277,10 +295,14 @@ export class ModelResult {
         // Resolve async functions for this turn
         if (hasAsyncFunctions(this.options.request)) {
           const resolved = await resolveAsyncFunctions(
-            this.options.request as CallModelInput,
+            this.options.request,
             turnContext,
           );
-          this.options.request = resolved as models.OpenResponsesRequest;
+          // Update resolved request with new values
+          this.resolvedRequest = {
+            ...resolved,
+            stream: false, // Tool execution turns don't need streaming
+          };
         }
 
         // Execute all tool calls
@@ -314,16 +336,20 @@ export class ModelResult {
 
         // Execute nextTurnParams functions for tools that were called
         if (this.options.tools && currentToolCalls.length > 0) {
+          if (!this.resolvedRequest) {
+            throw new Error('Request not initialized');
+          }
+
           const computedParams = await executeNextTurnParamsFunctions(
             currentToolCalls,
             this.options.tools,
-            this.options.request as models.OpenResponsesRequest
+            this.resolvedRequest
           );
 
-          // Apply computed parameters to the request for next turn
+          // Apply computed parameters to the resolved request for next turn
           if (Object.keys(computedParams).length > 0) {
-            this.options.request = applyNextTurnParamsToRequest(
-              this.options.request as models.OpenResponsesRequest,
+            this.resolvedRequest = applyNextTurnParamsToRequest(
+              this.resolvedRequest,
               computedParams
             );
           }
@@ -341,8 +367,12 @@ export class ModelResult {
         ];
 
         // Make new request with tool results
+        if (!this.resolvedRequest) {
+          throw new Error('Request not initialized');
+        }
+
         const newRequest: models.OpenResponsesRequest = {
-          ...(this.options.request as models.OpenResponsesRequest),
+          ...this.resolvedRequest,
           input: newInput,
           stream: false,
         };
