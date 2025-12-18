@@ -43,12 +43,14 @@ export async function executeNextTurnParamsFunctions(
   // Group tool calls by parameter they modify
   const paramFunctions = new Map<
     keyof NextTurnParamsContext,
-    Array<{ params: unknown; fn: Function }>
+    Array<{ params: Record<string, unknown>; fn: (params: Record<string, unknown>, context: NextTurnParamsContext) => unknown }>
   >();
 
   // Collect all nextTurnParams functions from tools (in tools array order)
   for (const tool of tools) {
-    if (!tool.function.nextTurnParams) continue;
+    if (!tool.function.nextTurnParams) {
+      continue;
+    }
 
     // Find tool calls for this tool
     const callsForTool = toolCalls.filter(tc => tc.name === tool.function.name);
@@ -60,8 +62,8 @@ export async function executeNextTurnParamsFunctions(
           paramFunctions.set(paramKey as keyof NextTurnParamsContext, []);
         }
         paramFunctions.get(paramKey as keyof NextTurnParamsContext)!.push({
-          params: call.arguments,
-          fn,
+          params: call.arguments as Record<string, unknown>,
+          fn: fn as (params: Record<string, unknown>, context: NextTurnParamsContext) => unknown,
         });
       }
     }
@@ -80,7 +82,8 @@ export async function executeNextTurnParamsFunctions(
       workingContext = { ...workingContext, [paramKey]: currentValue };
 
       // Execute function with composition
-      currentValue = await Promise.resolve(fn(params, workingContext));
+      // Type assertion needed because fn returns unknown but we know it returns the correct type
+      currentValue = await Promise.resolve(fn(params, workingContext)) as typeof currentValue;
     }
 
     // TypeScript can't infer that paramKey corresponds to the correct value type
