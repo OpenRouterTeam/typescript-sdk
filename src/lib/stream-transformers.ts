@@ -137,6 +137,12 @@ async function* buildMessageStreamCore(
         break;
       }
 
+      case 'response.completed':
+      case 'response.failed':
+      case 'response.incomplete':
+        // Stream is complete, stop consuming
+        return;
+
       default:
         // Ignore other event types - this is intentionally not exhaustive
         // as we only care about specific events for message building

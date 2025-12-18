@@ -33,6 +33,7 @@ import {
 import { executeTool } from './tool-executor.js';
 import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 import { hasExecuteFunction } from './tool-types.js';
+import { isStopConditionMet } from './stop-conditions.js';
 
 /**
  * Type guard for stream event with toReadableStream method
@@ -124,6 +125,7 @@ export class ModelResult {
     round: number;
     toolCalls: ParsedToolCall[];
     response: models.OpenResponsesNonStreamingResponse;
+    toolResults: Array<models.OpenResponsesFunctionCallOutput>;
   }> = [];
   // Track resolved request after async function resolution
   private resolvedRequest: models.OpenResponsesRequest | null = null;
@@ -265,6 +267,34 @@ export class ModelResult {
       let currentRound = 0;
 
       while (true) {
+        // Check stopWhen conditions
+        if (this.options.request.stopWhen) {
+          const stopConditions = Array.isArray(this.options.request.stopWhen)
+            ? this.options.request.stopWhen
+            : [this.options.request.stopWhen];
+
+          const shouldStop = await isStopConditionMet({
+            stopConditions,
+            steps: this.allToolExecutionRounds.map((round) => ({
+              stepType: 'continue' as const,
+              text: extractTextFromResponse(round.response),
+              toolCalls: round.toolCalls,
+              toolResults: round.toolResults.map((tr) => ({
+                toolCallId: tr.callId,
+                toolName: round.toolCalls.find((tc) => tc.id === tr.callId)?.name ?? '',
+                result: JSON.parse(tr.output),
+              })),
+              response: round.response,
+              usage: round.response.usage,
+              finishReason: undefined, // OpenResponsesNonStreamingResponse doesn't have finishReason
+            })),
+          });
+
+          if (shouldStop) {
+            break;
+          }
+        }
+
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
 
         if (currentToolCalls.length === 0) {
@@ -279,13 +309,6 @@ export class ModelResult {
         if (!hasExecutable) {
           break;
         }
-
-        // Store execution round info
-        this.allToolExecutionRounds.push({
-          round: currentRound,
-          toolCalls: currentToolCalls,
-          response: currentResponse,
-        });
 
         // Build turn context for this round (for async parameter resolution only)
         const turnContext: TurnContext = {
@@ -333,6 +356,14 @@ export class ModelResult {
               : JSON.stringify(result.result),
           });
         }
+
+        // Store execution round info including tool results
+        this.allToolExecutionRounds.push({
+          round: currentRound,
+          toolCalls: currentToolCalls,
+          response: currentResponse,
+          toolResults,
+        });
 
         // Execute nextTurnParams functions for tools that were called
         if (this.options.tools && currentToolCalls.length > 0) {
@@ -531,29 +562,10 @@ export class ModelResult {
       // Execute tools if needed
       await this.executeToolsIfNeeded();
 
-      // Yield function call output for each executed tool
+      // Yield function call outputs for each executed tool
       for (const round of this.allToolExecutionRounds) {
-        for (const toolCall of round.toolCalls) {
-          // Find the tool to check if it was executed
-          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
-          if (!tool || !hasExecuteFunction(tool)) {
-            continue;
-          }
-
-          // Get the result from preliminary results or construct from the response
-          const prelimResults = this.preliminaryResults.get(toolCall.id);
-          const result =
-            prelimResults && prelimResults.length > 0
-              ? prelimResults[prelimResults.length - 1] // Last result is the final output
-              : undefined;
-
-          // Yield function call output in responses format
-          yield {
-            type: 'function_call_output' as const,
-            id: `output_${toolCall.id}`,
-            callId: toolCall.id,
-            output: result !== undefined ? JSON.stringify(result) : '',
-          } as models.OpenResponsesFunctionCallOutput;
+        for (const toolResult of round.toolResults) {
+          yield toolResult;
         }
       }
 
