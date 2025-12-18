@@ -119,6 +119,7 @@ describe('callModel E2E Tests', () => {
                 condition: z.string(),
               }),
               // Don't auto-execute so we can test getToolCalls()
+              // @ts-expect-error - execute is not a function here
               execute: false,
             },
           },
@@ -694,7 +695,7 @@ describe('callModel E2E Tests', () => {
         expect(['message', 'function_call_output']).toContain(message.type);
 
         if (message.type === 'message') {
-          const outputMessage = message as ResponsesOutputMessage;
+          const outputMessage = message;
           // ResponsesOutputMessage specific validations
           expect(outputMessage.role).toBe('assistant');
           expect(outputMessage.id).toBeDefined();
