@@ -547,7 +547,7 @@ describe('Enhanced Tool Support for callModel', () => {
   });
 
   describe('Integration with OpenRouter API', () => {
-    it.skip('should send tool call to API and receive tool call response', async () => {
+    it('should send tool call to API and receive tool call response', async () => {
       // This test requires actual API integration which we'll implement
       const weatherTool = {
         type: ToolType.Function,
@@ -593,7 +593,7 @@ describe('Enhanced Tool Support for callModel', () => {
       expect(message).toBeDefined();
     }, 30000);
 
-    it.skip('should handle multi-turn conversation with tool execution', async () => {
+    it('should handle multi-turn conversation with tool execution', async () => {
       // This will test the full loop: request -> tool call -> execute -> send result -> final response
       const calculatorTool = {
         type: ToolType.Function,
