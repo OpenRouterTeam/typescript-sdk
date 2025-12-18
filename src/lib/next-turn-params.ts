@@ -49,7 +49,7 @@ export async function executeNextTurnParamsFunctions(
 
   // Collect all nextTurnParams functions from tools (in tools array order)
   const result: Partial<NextTurnParamsContext> = {};
-  let workingContext = { ...context };
+  const workingContext = { ...context };
 
   for (const tool of tools) {
     if (!tool.function.nextTurnParams) {

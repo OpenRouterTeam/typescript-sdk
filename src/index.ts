@@ -20,6 +20,9 @@ export type {
   ManualTool,
   NextTurnParamsContext,
   NextTurnParamsFunctions,
+  StepResult,
+  StopCondition,
+  StopWhen,
   Tool,
   ToolCallInfo,
   ToolPreliminaryResultEvent,
@@ -29,6 +32,7 @@ export type {
   TurnContext,
   TypedToolCall,
   TypedToolCallUnion,
+  Warning,
 } from './lib/tool-types.js';
 export type { BuildTurnContextOptions } from './lib/turn-context.js';
 // Claude message types
@@ -78,6 +82,15 @@ export {
   buildNextTurnParamsContext,
   executeNextTurnParamsFunctions,
 } from './lib/next-turn-params.js';
+// Stop condition helpers
+export {
+  finishReasonIs,
+  hasToolCall,
+  isStopConditionMet,
+  maxCost,
+  maxTokensUsed,
+  stepCountIs,
+} from './lib/stop-conditions.js';
 export {
   extractUnsupportedContent,
   getUnsupportedContentSummary,

@@ -1,5 +1,5 @@
 import type * as models from '../models/index.js';
-import type { MaxToolRounds, Tool, TurnContext } from './tool-types.js';
+import type { StopWhen, Tool, TurnContext } from './tool-types.js';
 
 /**
  * A field can be either a value of type T or a function that computes T
@@ -9,13 +9,15 @@ export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise
 /**
  * Input type for callModel function
  * Each field can independently be a static value or a function that computes the value
+ * Generic over TOOLS to enable proper type inference for stopWhen conditions
  */
-export type CallModelInput = {
-  [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?:
-    FieldOrAsyncFunction<models.OpenResponsesRequest[K]>;
+export type CallModelInput<TOOLS extends readonly Tool[] = readonly Tool[]> = {
+  [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
+    models.OpenResponsesRequest[K]
+  >;
 } & {
-  tools?: Tool[];
-  maxToolRounds?: MaxToolRounds;
+  tools?: TOOLS;
+  stopWhen?: StopWhen<TOOLS>;
 };
 
 /**
@@ -56,10 +58,17 @@ export async function resolveAsyncFunctions(
 
   // Iterate over all keys in the input
   for (const [key, value] of Object.entries(input)) {
+    // Skip stopWhen and tools - they're handled separately
+    if (key === 'stopWhen' || key === 'tools') {
+      continue;
+    }
+
     if (typeof value === 'function') {
       try {
         // Execute the function with context and store the result
-        const result = await Promise.resolve(value(context));
+        // Safe to cast because we've filtered out stopWhen and tools
+        const fn = value as (context: TurnContext) => unknown;
+        const result = await Promise.resolve(fn(context));
         resolvedEntries.push([key, result]);
       } catch (error) {
         // Wrap errors with context about which field failed

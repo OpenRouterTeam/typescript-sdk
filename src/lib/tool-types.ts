@@ -280,6 +280,47 @@ export interface ToolExecutionResult {
 export type MaxToolRounds = number | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
 
 /**
+ * Warning from step execution
+ */
+export interface Warning {
+  type: string;
+  message: string;
+}
+
+/**
+ * Result of a single step in the tool execution loop
+ * Compatible with Vercel AI SDK pattern
+ */
+export interface StepResult<_TOOLS extends readonly Tool[] = readonly Tool[]> {
+  readonly stepType: 'initial' | 'continue';
+  readonly text: string;
+  readonly toolCalls: ParsedToolCall[];
+  readonly toolResults: ToolExecutionResult[];
+  readonly response: models.OpenResponsesNonStreamingResponse;
+  readonly usage?: models.OpenResponsesUsage | undefined;
+  readonly finishReason?: string | undefined;
+  readonly warnings?: Warning[] | undefined;
+  readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
+}
+
+/**
+ * A condition function that determines whether to stop tool execution
+ * Returns true to STOP execution, false to CONTINUE
+ * (Matches Vercel AI SDK semantics)
+ */
+export type StopCondition<TOOLS extends readonly Tool[] = readonly Tool[]> = (options: {
+  readonly steps: ReadonlyArray<StepResult<TOOLS>>;
+}) => boolean | Promise<boolean>;
+
+/**
+ * Stop condition configuration
+ * Can be a single condition or array of conditions
+ */
+export type StopWhen<TOOLS extends readonly Tool[] = readonly Tool[]> =
+  | StopCondition<TOOLS>
+  | ReadonlyArray<StopCondition<TOOLS>>;
+
+/**
  * Result of executeTools operation
  */
 export interface ExecuteToolsResult {

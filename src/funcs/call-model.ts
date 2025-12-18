@@ -1,6 +1,7 @@
 import type { OpenRouterCore } from '../core.js';
 import type { CallModelInput } from '../lib/async-params.js';
 import type { RequestOptions } from '../lib/sdks.js';
+import type { Tool } from '../lib/tool-types.js';
 
 import { ModelResult } from '../lib/model-result.js';
 import { convertToolsToAPIFormat } from '../lib/tool-executor.js';
@@ -82,16 +83,51 @@ export type { CallModelInput } from '../lib/async-params.js';
  * 2. Tool execution (if tools called by model)
  * 3. nextTurnParams functions (if defined on tools)
  * 4. API request with resolved values
+ *
+ * **Stop Conditions:**
+ *
+ * Control when tool execution stops using the `stopWhen` parameter:
+ *
+ * @example
+ * ```typescript
+ * // Stop after 3 steps
+ * stopWhen: stepCountIs(3)
+ *
+ * // Stop when a specific tool is called
+ * stopWhen: hasToolCall('finalizeResults')
+ *
+ * // Multiple conditions (OR logic - stops if ANY is true)
+ * stopWhen: [
+ *   stepCountIs(10),        // Safety: max 10 steps
+ *   maxCost(0.50),          // Budget: max $0.50
+ *   hasToolCall('finalize') // Logic: stop when finalize called
+ * ]
+ *
+ * // Custom condition with full step history
+ * stopWhen: ({ steps }) => {
+ *   const totalCalls = steps.reduce((sum, s) => sum + s.toolCalls.length, 0);
+ *   return totalCalls >= 20; // Stop after 20 total tool calls
+ * }
+ * ```
+ *
+ * Available helper functions:
+ * - `stepCountIs(n)` - Stop after n steps
+ * - `hasToolCall(name)` - Stop when tool is called
+ * - `maxTokensUsed(n)` - Stop when token usage exceeds n
+ * - `maxCost(n)` - Stop when cost exceeds n dollars
+ * - `finishReasonIs(reason)` - Stop on specific finish reason
+ *
+ * Default: `stepCountIs(5)` if not specified
  */
-export function callModel(
+export function callModel<TOOLS extends readonly Tool[] = readonly Tool[]>(
   client: OpenRouterCore,
-  request: CallModelInput,
+  request: CallModelInput<TOOLS>,
   options?: RequestOptions,
 ): ModelResult {
-  const { tools, maxToolRounds, ...apiRequest } = request;
+  const { tools, stopWhen, ...apiRequest } = request;
 
   // Convert tools to API format and extract enhanced tools if present
-  const apiTools = tools ? convertToolsToAPIFormat(tools) : undefined;
+  const apiTools = tools ? convertToolsToAPIFormat(tools as unknown as Tool[]) : undefined;
 
   // Build the request with converted tools
   // Note: async functions are resolved later in ModelResult.executeToolsIfNeeded()
@@ -108,9 +144,9 @@ export function callModel(
     client,
     request: finalRequest,
     options: options ?? {},
-    tools: tools ?? [],
-    ...(maxToolRounds !== undefined && {
-      maxToolRounds,
+    tools: (tools ?? []) as Tool[],
+    ...(stopWhen !== undefined && {
+      stopWhen,
     }),
   });
 }
