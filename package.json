@@ -67,6 +67,7 @@
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
