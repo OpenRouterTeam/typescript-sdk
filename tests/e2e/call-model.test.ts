@@ -171,6 +171,7 @@ describe('callModel E2E Tests', () => {
             content: 'Get the weather in Tokyo using the weather tool.',
           },
         ]),
+        toolChoice: "required",
         tools: [
           {
             type: ToolType.Function,
