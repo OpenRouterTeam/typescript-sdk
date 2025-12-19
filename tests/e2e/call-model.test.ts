@@ -144,7 +144,6 @@ describe('callModel E2E Tests', () => {
                 condition: z.string(),
               }),
               // Don't auto-execute so we can test getToolCalls()
-              // @ts-expect-error - execute is not a function here
               execute: false,
             },
           },
