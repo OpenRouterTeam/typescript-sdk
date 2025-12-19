@@ -482,7 +482,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
    * Multiple consumers can iterate over this stream concurrently.
    * Includes preliminary tool result events after tool execution.
    */
-  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools {
+  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools>>> {
     return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
