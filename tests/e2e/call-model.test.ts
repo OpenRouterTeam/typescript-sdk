@@ -1,4 +1,4 @@
-import type { ChatStreamEvent, EnhancedResponseStreamEvent } from '../../src/lib/tool-types.js';
+import type { ChatStreamEvent, ResponseStreamEvent } from '../../src/lib/tool-types.js';
 import type { ClaudeMessageParam } from '../../src/models/claude-message.js';
 import type { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
 import type { OpenResponsesFunctionCallOutput } from '../../src/models/openresponsesfunctioncalloutput.js';
@@ -10,6 +10,32 @@ import { fromChatMessages, toChatMessage } from '../../src/lib/chat-compat.js';
 import { fromClaudeMessages } from '../../src/lib/anthropic-compat.js';
 import { OpenResponsesNonStreamingResponse } from '../../src/models/openresponsesnonstreamingresponse.js';
 import { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import { stepCountIs } from '../../src/lib/stop-conditions.js';
+import {
+  isOutputTextDeltaEvent,
+  isResponseCompletedEvent,
+  isResponseIncompleteEvent,
+} from '../../src/lib/stream-type-guards.js';
+import { isToolPreliminaryResultEvent } from '../../src/lib/tool-types.js';
+
+/**
+ * Helper to transform ResponseStreamEvent to ChatStreamEvent
+ */
+function transformToChatStreamEvent(event: ResponseStreamEvent): ChatStreamEvent {
+  if (isToolPreliminaryResultEvent(event)) {
+    // Pass through tool preliminary results as-is
+    return event;
+  } else if (isOutputTextDeltaEvent(event)) {
+    // Transform text deltas to content.delta
+    return { type: 'content.delta', delta: event.delta };
+  } else if (isResponseCompletedEvent(event) || isResponseIncompleteEvent(event)) {
+    // Transform completion events to message.complete
+    return { type: 'message.complete', response: event.response };
+  } else {
+    // Pass-through all other events with original event wrapped
+    return { type: event.type, event };
+  }
+}
 
 describe('callModel E2E Tests', () => {
   let client: OpenRouter;
@@ -96,13 +122,14 @@ describe('callModel E2E Tests', () => {
 
     it('should accept chat-style tools (ToolDefinitionJson)', async () => {
       const response = client.callModel({
-        model: 'qwen/qwen3-vl-8b-instruct',
+        model: 'anthropic/claude-sonnet-4.5',
         input: fromChatMessages([
           {
             role: 'user',
-            content: "What's the weather in Paris? Use the get_weather tool.",
+            content: "What's the weather in Paris?",
           },
         ]),
+        toolChoice: 'required',
         tools: [
           {
             type: ToolType.Function,
@@ -116,12 +143,8 @@ describe('callModel E2E Tests', () => {
                 temperature: z.number(),
                 condition: z.string(),
               }),
-              execute: async (_params) => {
-                return {
-                  temperature: 22,
-                  condition: 'Sunny',
-                };
-              },
+              // Don't auto-execute so we can test getToolCalls()
+              execute: false,
             },
           },
         ],
@@ -135,7 +158,7 @@ describe('callModel E2E Tests', () => {
       expect(toolCalls[0].arguments).toBeDefined();
     }, 30000);
 
-    it.skip('should work with chat-style messages and chat-style tools together', async () => {
+    it('should work with chat-style messages and chat-style tools together', async () => {
       const response = client.callModel({
         model: 'meta-llama/llama-3.1-8b-instruct',
         input: fromChatMessages([
@@ -148,6 +171,7 @@ describe('callModel E2E Tests', () => {
             content: 'Get the weather in Tokyo using the weather tool.',
           },
         ]),
+        toolChoice: "required",
         tools: [
           {
             type: ToolType.Function,
@@ -346,8 +370,8 @@ describe('callModel E2E Tests', () => {
       expect(message.role).toBe('assistant');
       expect(
         Array.isArray(message.content) ||
-          typeof message.content === 'string' ||
-          message.content === null,
+        typeof message.content === 'string' ||
+        message.content === null,
       ).toBe(true);
 
       if (Array.isArray(message.content)) {
@@ -575,13 +599,16 @@ describe('callModel E2E Tests', () => {
 
     it('should include OpenResponsesFunctionCallOutput with correct shape when tools are executed', async () => {
       const response = client.callModel({
-        model: 'openai/gpt-4o-mini',
+        model: 'anthropic/claude-sonnet-4.5',
+        instructions: 'You are a weather assistant. You can use the get_weather tool to get the weather for a location.',
         input: fromChatMessages([
           {
             role: 'user',
-            content: "What's the weather in Tokyo? Use the get_weather tool.",
+            content: "What's the weather in Tokyo?",
           },
         ]),
+        toolChoice: 'required',
+        stopWhen: stepCountIs(2),
         tools: [
           {
             type: ToolType.Function,
@@ -594,11 +621,15 @@ describe('callModel E2E Tests', () => {
               outputSchema: z.object({
                 temperature: z.number(),
                 condition: z.string(),
+                location: z.string().describe('City name'),
               }),
-              execute: async (_params) => {
+              // Enable auto-execution so we test the full flow
+              execute: async (params) => {
+                // Return weather data that will be yielded
                 return {
                   temperature: 22,
                   condition: 'Sunny',
+                  location: params.location,
                 };
               },
             },
@@ -611,6 +642,7 @@ describe('callModel E2E Tests', () => {
       let hasFunctionCallOutput = false;
 
       for await (const message of response.getNewMessagesStream()) {
+        console.log('Message received:', message);
         messages.push(message);
 
         // Validate each message has correct shape based on type
@@ -669,7 +701,7 @@ describe('callModel E2E Tests', () => {
           expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
-    }, 30000);
+    }, 6000);
 
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
@@ -688,7 +720,7 @@ describe('callModel E2E Tests', () => {
         expect(['message', 'function_call_output']).toContain(message.type);
 
         if (message.type === 'message') {
-          const outputMessage = message as ResponsesOutputMessage;
+          const outputMessage = message;
           // ResponsesOutputMessage specific validations
           expect(outputMessage.role).toBe('assistant');
           expect(outputMessage.id).toBeDefined();
@@ -712,7 +744,7 @@ describe('callModel E2E Tests', () => {
   });
 
   describe('response.reasoningStream - Streaming reasoning deltas', () => {
-    it.skip('should successfully stream reasoning deltas for reasoning models', async () => {
+    it('should successfully stream reasoning deltas for reasoning models', async () => {
       const response = client.callModel({
         model: 'minimax/minimax-m2',
         input: fromChatMessages([
@@ -738,7 +770,7 @@ describe('callModel E2E Tests', () => {
       // Just verify the stream works without error
       expect(Array.isArray(reasoningDeltas)).toBe(true);
       expect(reasoningDeltas.length).toBeGreaterThan(0);
-    }, 30000);
+    }, 60000);
   });
 
   describe('response.toolStream - Streaming tool call deltas', () => {
@@ -809,7 +841,7 @@ describe('callModel E2E Tests', () => {
         ]),
       });
 
-      const events: EnhancedResponseStreamEvent[] = [];
+      const events: ResponseStreamEvent[] = [];
 
       for await (const event of response.getFullResponsesStream()) {
         expect(event).toBeDefined();
@@ -841,7 +873,7 @@ describe('callModel E2E Tests', () => {
         ]),
       });
 
-      const textDeltaEvents: EnhancedResponseStreamEvent[] = [];
+      const textDeltaEvents: ResponseStreamEvent[] = [];
 
       for await (const event of response.getFullResponsesStream()) {
         if (event.type === 'response.output_text.delta') {
@@ -853,7 +885,7 @@ describe('callModel E2E Tests', () => {
 
       // Verify delta events have the expected structure
       const firstDelta = textDeltaEvents[0];
-      if(firstDelta.type === 'response.output_text.delta') {
+      if (firstDelta.type === 'response.output_text.delta') {
         expect(firstDelta.delta).toBeDefined();
         expect(typeof firstDelta.delta).toBe('string');
       } else {
@@ -876,7 +908,8 @@ describe('callModel E2E Tests', () => {
 
       const chunks: ChatStreamEvent[] = [];
 
-      for await (const chunk of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const chunk = transformToChatStreamEvent(rawEvent);
         expect(chunk).toBeDefined();
         expect(chunk.type).toBeDefined();
         chunks.push(chunk);
@@ -903,7 +936,8 @@ describe('callModel E2E Tests', () => {
       let hasContentDelta = false;
       let _hasMessageComplete = false;
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         // Every event must have a type
         expect(event).toHaveProperty('type');
         expect(typeof event.type).toBe('string');
@@ -963,7 +997,8 @@ describe('callModel E2E Tests', () => {
 
       const contentDeltas: ChatStreamEvent[] = [];
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         if (event.type === 'content.delta') {
           contentDeltas.push(event);
 
@@ -1034,7 +1069,8 @@ describe('callModel E2E Tests', () => {
       let hasPreliminaryResult = false;
       const preliminaryResults: ChatStreamEvent[] = [];
 
-      for await (const event of response.getFullChatStream()) {
+      for await (const rawEvent of response.getFullResponsesStream()) {
+        const event = transformToChatStreamEvent(rawEvent);
         expect(event).toHaveProperty('type');
         expect(typeof event.type).toBe('string');
 
@@ -1072,7 +1108,7 @@ describe('callModel E2E Tests', () => {
 
       // The stream should complete without errors regardless of tool execution
       expect(true).toBe(true);
-    }, 30000);
+    }, 45000);
   });
 
   describe('Multiple concurrent consumption patterns', () => {

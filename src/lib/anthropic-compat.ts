@@ -98,20 +98,21 @@ export function fromClaudeMessages(
     for (const block of content) {
       switch (block.type) {
         case 'text':
-          textBlocks.push(block as models.ClaudeTextBlockParam);
+          textBlocks.push(block);
           break;
         case 'image':
-          imageBlocks.push(block as models.ClaudeImageBlockParam);
+          imageBlocks.push(block);
           break;
         case 'tool_use':
-          toolUseBlocks.push(block as models.ClaudeToolUseBlockParam);
+          toolUseBlocks.push(block);
           break;
         case 'tool_result':
-          toolResultBlocks.push(block as models.ClaudeToolResultBlockParam);
+          toolResultBlocks.push(block);
           break;
         default: {
+          // Exhaustiveness check - TypeScript will error if we don't handle all block types
           const exhaustiveCheck: never = block;
-          throw new Error(`Unhandled content block type: ${exhaustiveCheck}`);
+          throw new Error(`Unhandled content block type: ${JSON.stringify(exhaustiveCheck)}`);
         }
       }
     }

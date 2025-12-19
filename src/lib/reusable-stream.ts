@@ -83,25 +83,26 @@ export class ReusableReadableStream<T> {
           throw self.sourceError;
         }
 
-        // Wait for more data - but check conditions after setting up the promise
-        // to avoid race condition where source completes between check and wait
+        // Set up the waiting promise FIRST to avoid race condition
+        // where source completes after the check but before promise is set
         const waitPromise = new Promise<void>((resolve, reject) => {
           consumer.waitingPromise = {
             resolve,
             reject,
           };
+
+          // Immediately check if we should resolve after setting up the promise
+          // This handles the case where data arrived or source completed
+          // between our initial checks and promise creation
+          if (self.sourceComplete || self.sourceError || consumer.position < self.buffer.length) {
+            resolve();
+          }
         });
 
-        // Double-check conditions after setting up promise to handle race
-        if (self.sourceComplete || self.sourceError || consumer.position < self.buffer.length) {
-          // Resolve immediately if conditions changed
-          if (consumer.waitingPromise) {
-            consumer.waitingPromise.resolve();
-            consumer.waitingPromise = null;
-          }
-        }
-
         await waitPromise;
+
+        // Clear the promise reference after it resolves
+        consumer.waitingPromise = null;
 
         // Recursively try again after waking up
         return this.next();

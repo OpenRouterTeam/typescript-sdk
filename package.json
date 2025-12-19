@@ -67,10 +67,13 @@
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
-    
+
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

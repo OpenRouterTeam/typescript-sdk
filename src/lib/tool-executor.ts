@@ -17,13 +17,14 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
   const jsonSchema = toJSONSchema(zodSchema, {
     target: 'openapi-3.0',
   });
-  return jsonSchema as Record<string, unknown>;
+  return jsonSchema;
 }
 
 /**
  * Convert tools to OpenRouter API format
+ * Accepts readonly arrays for better type compatibility
  */
-export function convertToolsToAPIFormat(tools: Tool[]): APITool[] {
+export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
   return tools.map((tool) => ({
     type: 'function' as const,
     name: tool.function.name,
@@ -57,8 +58,7 @@ export function parseToolCallArguments(argumentsString: string): unknown {
     return JSON.parse(argumentsString);
   } catch (error) {
     throw new Error(
-      `Failed to parse tool call arguments: ${
-        error instanceof Error ? error.message : String(error)
+      `Failed to parse tool call arguments: ${error instanceof Error ? error.message : String(error)
       }`,
     );
   }
@@ -69,9 +69,9 @@ export function parseToolCallArguments(argumentsString: string): unknown {
  */
 export async function executeRegularTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!isRegularExecuteTool(tool)) {
     throw new Error(
       `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`,
@@ -80,10 +80,12 @@ export async function executeRegularTool(
 
   try {
     // Validate input - the schema validation ensures type safety at runtime
+    // validateToolInput returns z.infer<typeof tool.function.inputSchema>
+    // which is exactly the type expected by execute
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
       toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+    );
 
     // Execute tool with context
     const result = await Promise.resolve(tool.function.execute(validatedInput, context));
@@ -122,20 +124,21 @@ export async function executeRegularTool(
  */
 export async function executeGeneratorTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!isGeneratorTool(tool)) {
     throw new Error(`Tool "${toolCall.name}" is not a generator tool`);
   }
 
   try {
     // Validate input - the schema validation ensures type safety at runtime
+    // The inputSchema's inferred type matches the execute function's parameter type by construction
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
       toolCall.arguments,
-    ) as Parameters<typeof tool.function.execute>[0];
+    );
 
     // Execute generator and collect all results
     const preliminaryResults: unknown[] = [];
@@ -190,10 +193,10 @@ export async function executeGeneratorTool(
  */
 export async function executeTool(
   tool: Tool,
-  toolCall: ParsedToolCall,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
-): Promise<ToolExecutionResult> {
+): Promise<ToolExecutionResult<Tool>> {
   if (!hasExecuteFunction(tool)) {
     throw new Error(`Tool "${toolCall.name}" has no execute function. Use manual tool execution.`);
   }
@@ -215,7 +218,7 @@ export function findToolByName(tools: Tool[], name: string): Tool | undefined {
 /**
  * Format tool execution result as a string for sending to the model
  */
-export function formatToolResultForModel(result: ToolExecutionResult): string {
+export function formatToolResultForModel(result: ToolExecutionResult<Tool>): string {
   if (result.error) {
     return JSON.stringify({
       error: result.error.message,
@@ -229,7 +232,7 @@ export function formatToolResultForModel(result: ToolExecutionResult): string {
 /**
  * Create a user-friendly error message for tool execution errors
  */
-export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall): string {
+export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall<Tool>): string {
   if (error instanceof ZodError) {
     const issues = error.issues.map((issue) => ({
       path: issue.path.join('.'),

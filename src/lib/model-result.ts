@@ -1,19 +1,25 @@
-import type { OpenRouterCore } from "../core.js";
-import type * as models from "../models/index.js";
-import type { EventStream } from "./event-streams.js";
-import type { RequestOptions } from "./sdks.js";
+import type { OpenRouterCore } from '../core.js';
+import type * as models from '../models/index.js';
+import type { CallModelInput } from './async-params.js';
+import type { EventStream } from './event-streams.js';
+import type { RequestOptions } from './sdks.js';
 import type {
-  ChatStreamEvent,
-  EnhancedResponseStreamEvent,
-  Tool,
-  MaxToolRounds,
+  ResponseStreamEvent,
+  InferToolEventsUnion,
   ParsedToolCall,
+  StopWhen,
+  Tool,
   ToolStreamEvent,
   TurnContext,
-} from "./tool-types.js";
+} from './tool-types.js';
 
-import { betaResponsesSend } from "../funcs/betaResponsesSend.js";
-import { ReusableReadableStream } from "./reusable-stream.js";
+import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
+import {
+  hasAsyncFunctions,
+  resolveAsyncFunctions,
+  type ResolvedCallModelInput,
+} from './async-params.js';
+import { ReusableReadableStream } from './reusable-stream.js';
 import {
   buildResponsesMessageStream,
   buildToolCallStream,
@@ -24,63 +30,53 @@ import {
   extractTextFromResponse,
   extractToolCallsFromResponse,
   extractToolDeltas,
-} from "./stream-transformers.js";
-import { executeTool } from "./tool-executor.js";
-import { hasExecuteFunction } from "./tool-types.js";
+} from './stream-transformers.js';
+import { executeTool } from './tool-executor.js';
+import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
+import { hasExecuteFunction } from './tool-types.js';
+import { isStopConditionMet } from './stop-conditions.js';
 
 /**
  * Type guard for stream event with toReadableStream method
  */
-function isEventStream(
-  value: unknown
-): value is EventStream<models.OpenResponsesStreamEvent> {
+function isEventStream(value: unknown): value is EventStream<models.OpenResponsesStreamEvent> {
   return (
     value !== null &&
-    typeof value === "object" &&
-    "toReadableStream" in value &&
-    typeof (value as { toReadableStream: unknown }).toReadableStream ===
-      "function"
+    typeof value === 'object' &&
+    'toReadableStream' in value &&
+    typeof (
+      value as {
+        toReadableStream: unknown;
+      }
+    ).toReadableStream === 'function'
   );
-}
-
-/**
- * Type guard for response.output_text.delta events
- */
-function isOutputTextDeltaEvent(
-  event: models.OpenResponsesStreamEvent
-): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
-  return "type" in event && event.type === "response.output_text.delta";
-}
-
-/**
- * Type guard for response.completed events
- */
-function isResponseCompletedEvent(
-  event: models.OpenResponsesStreamEvent
-): event is models.OpenResponsesStreamEventResponseCompleted {
-  return "type" in event && event.type === "response.completed";
 }
 
 /**
  * Type guard for output items with a type property
  */
-function hasTypeProperty(
-  item: unknown
-): item is { type: string } {
+function hasTypeProperty(item: unknown): item is {
+  type: string;
+} {
   return (
-    typeof item === "object" &&
+    typeof item === 'object' &&
     item !== null &&
-    "type" in item &&
-    typeof (item as { type: unknown }).type === "string"
+    'type' in item &&
+    typeof (
+      item as {
+        type: unknown;
+      }
+    ).type === 'string'
   );
 }
 
-export interface GetResponseOptions {
-  request: models.OpenResponsesRequest;
+export interface GetResponseOptions<TTools extends readonly Tool[]> {
+  // Request can have async functions that will be resolved before sending to API
+  request: CallModelInput<TTools>;
   client: OpenRouterCore;
   options?: RequestOptions;
-  tools?: Tool[];
-  maxToolRounds?: MaxToolRounds;
+  tools?: TTools;
+  stopWhen?: StopWhen<TTools>;
 }
 
 /**
@@ -99,26 +95,28 @@ export interface GetResponseOptions {
  *
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
+ *
+ * @template TTools - The tools array type to enable typed tool calls and results
  */
-export class ModelResult {
-  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null =
-    null;
-  private streamPromise: Promise<
-    EventStream<models.OpenResponsesStreamEvent>
-  > | null = null;
+export class ModelResult<TTools extends readonly Tool[]> {
+  private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
+  private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
   private textPromise: Promise<string> | null = null;
-  private options: GetResponseOptions;
+  private options: GetResponseOptions<TTools>;
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
   private finalResponse: models.OpenResponsesNonStreamingResponse | null = null;
   private preliminaryResults: Map<string, unknown[]> = new Map();
   private allToolExecutionRounds: Array<{
     round: number;
-    toolCalls: ParsedToolCall[];
+    toolCalls: ParsedToolCall<Tool>[];
     response: models.OpenResponsesNonStreamingResponse;
+    toolResults: Array<models.OpenResponsesFunctionCallOutput>;
   }> = [];
+  // Track resolved request after async function resolution
+  private resolvedRequest: models.OpenResponsesRequest | null = null;
 
-  constructor(options: GetResponseOptions) {
+  constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
   }
 
@@ -126,15 +124,15 @@ export class ModelResult {
    * Type guard to check if a value is a non-streaming response
    */
   private isNonStreamingResponse(
-    value: unknown
+    value: unknown,
   ): value is models.OpenResponsesNonStreamingResponse {
     return (
       value !== null &&
-      typeof value === "object" &&
-      "id" in value &&
-      "object" in value &&
-      "output" in value &&
-      !("toReadableStream" in value)
+      typeof value === 'object' &&
+      'id' in value &&
+      'object' in value &&
+      'output' in value &&
+      !('toReadableStream' in value)
     );
   }
 
@@ -148,22 +146,51 @@ export class ModelResult {
     }
 
     this.initPromise = (async () => {
-      // Force stream mode
-      const request = {
-        ...this.options.request,
+      // Resolve async functions before initial request
+      // Build initial turn context (turn 0 for initial request)
+      const initialContext: TurnContext = {
+        numberOfTurns: 0,
+      };
+
+      // Resolve any async functions first
+      let baseRequest: ResolvedCallModelInput;
+      if (hasAsyncFunctions(this.options.request)) {
+        baseRequest = await resolveAsyncFunctions(
+          this.options.request,
+          initialContext,
+        );
+      } else {
+        // Already resolved, extract non-function fields
+        // Since request is CallModelInput, we need to filter out stopWhen
+        // Note: tools are already in API format at this point (converted in callModel())
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { stopWhen, ...rest } = this.options.request;
+        // Cast to ResolvedCallModelInput - we know it's resolved if hasAsyncFunctions returned false
+        baseRequest = rest as ResolvedCallModelInput;
+      }
+
+      // Store resolved request with stream mode
+      this.resolvedRequest = {
+        ...baseRequest,
         stream: true as const,
       };
+
+      // Force stream mode for initial request
+      const request = this.resolvedRequest;
 
       // Create the stream promise
       this.streamPromise = betaResponsesSend(
         this.options.client,
         request,
-        this.options.options
+        this.options.options,
       ).then((result) => {
         if (!result.ok) {
           throw result.error;
         }
-        return result.value;
+        // When stream: true, the API returns EventStream
+        // TypeScript can't narrow the union type based on runtime parameter values,
+        // so we assert the type here based on our knowledge that stream=true
+        return result.value as EventStream<models.OpenResponsesStreamEvent>;
       });
 
       // Wait for the stream and create the reusable stream
@@ -187,20 +214,19 @@ export class ModelResult {
       await this.initStream();
 
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
+      // Note: Async functions already resolved in initStream()
       // Get the initial response
-      const initialResponse = await consumeStreamForCompletion(
-        this.reusableStream
-      );
+      const initialResponse = await consumeStreamForCompletion(this.reusableStream);
 
       // Check if we have tools and if auto-execution is enabled
       const shouldAutoExecute =
         this.options.tools &&
         this.options.tools.length > 0 &&
         initialResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "function_call"
+          (item) => hasTypeProperty(item) && item.type === 'function_call',
         );
 
       if (!shouldAutoExecute) {
@@ -214,9 +240,7 @@ export class ModelResult {
 
       // Check if any have execute functions
       const executableTools = toolCalls.filter((toolCall) => {
-        const tool = this.options.tools?.find(
-          (t) => t.function.name === toolCall.name
-        );
+        const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
         return tool && hasExecuteFunction(tool);
       });
 
@@ -226,15 +250,38 @@ export class ModelResult {
         return;
       }
 
-      // Get maxToolRounds configuration
-      const maxToolRounds = this.options.maxToolRounds ?? 5;
-
       let currentResponse = initialResponse;
       let currentRound = 0;
-      let currentInput: models.OpenResponsesInput =
-        this.options.request.input || [];
 
       while (true) {
+        // Check stopWhen conditions
+        if (this.options.stopWhen) {
+          const stopConditions = Array.isArray(this.options.stopWhen)
+            ? this.options.stopWhen
+            : [this.options.stopWhen];
+
+          const shouldStop = await isStopConditionMet({
+            stopConditions,
+            steps: this.allToolExecutionRounds.map((round) => ({
+              stepType: 'continue' as const,
+              text: extractTextFromResponse(round.response),
+              toolCalls: round.toolCalls,
+              toolResults: round.toolResults.map((tr) => ({
+                toolCallId: tr.callId,
+                toolName: round.toolCalls.find((tc) => tc.id === tr.callId)?.name ?? '',
+                result: JSON.parse(tr.output),
+              })),
+              response: round.response,
+              usage: round.response.usage,
+              finishReason: undefined, // OpenResponsesNonStreamingResponse doesn't have finishReason
+            })),
+          });
+
+          if (shouldStop) {
+            break;
+          }
+        }
+
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
 
         if (currentToolCalls.length === 0) {
@@ -242,9 +289,7 @@ export class ModelResult {
         }
 
         const hasExecutable = currentToolCalls.some((toolCall) => {
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
           return tool && hasExecuteFunction(tool);
         });
 
@@ -252,55 +297,29 @@ export class ModelResult {
           break;
         }
 
-        // Check if we should continue based on maxToolRounds
-        if (typeof maxToolRounds === "number") {
-          if (currentRound >= maxToolRounds) {
-            break;
-          }
-        } else if (typeof maxToolRounds === "function") {
-          // Function signature: (context: TurnContext) => boolean
-          const turnContext: TurnContext = {
-            numberOfTurns: currentRound + 1,
-            messageHistory: currentInput,
-            ...(this.options.request.model && {
-              model: this.options.request.model,
-            }),
-            ...(this.options.request.models && {
-              models: this.options.request.models,
-            }),
-          };
-          const shouldContinue = maxToolRounds(turnContext);
-          if (!shouldContinue) {
-            break;
-          }
-        }
-
-        // Store execution round info
-        this.allToolExecutionRounds.push({
-          round: currentRound,
-          toolCalls: currentToolCalls,
-          response: currentResponse,
-        });
-
-        // Build turn context for tool execution
+        // Build turn context for this round (for async parameter resolution only)
         const turnContext: TurnContext = {
           numberOfTurns: currentRound + 1, // 1-indexed
-          messageHistory: currentInput,
-          ...(this.options.request.model && {
-            model: this.options.request.model,
-          }),
-          ...(this.options.request.models && {
-            models: this.options.request.models,
-          }),
         };
+
+        // Resolve async functions for this turn
+        if (hasAsyncFunctions(this.options.request)) {
+          const resolved = await resolveAsyncFunctions(
+            this.options.request,
+            turnContext,
+          );
+          // Update resolved request with new values
+          this.resolvedRequest = {
+            ...resolved,
+            stream: false, // Tool execution turns don't need streaming
+          };
+        }
 
         // Execute all tool calls
         const toolResults: Array<models.OpenResponsesFunctionCallOutput> = [];
 
         for (const toolCall of currentToolCalls) {
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
+          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
 
           if (!tool || !hasExecuteFunction(tool)) {
             continue;
@@ -309,23 +328,49 @@ export class ModelResult {
           const result = await executeTool(tool, toolCall, turnContext);
 
           // Store preliminary results
-          if (
-            result.preliminaryResults &&
-            result.preliminaryResults.length > 0
-          ) {
+          if (result.preliminaryResults && result.preliminaryResults.length > 0) {
             this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
           }
 
           toolResults.push({
-            type: "function_call_output" as const,
+            type: 'function_call_output' as const,
             id: `output_${toolCall.id}`,
             callId: toolCall.id,
             output: result.error
               ? JSON.stringify({
-                  error: result.error.message,
-                })
+                error: result.error.message,
+              })
               : JSON.stringify(result.result),
           });
+        }
+
+        // Store execution round info including tool results
+        this.allToolExecutionRounds.push({
+          round: currentRound,
+          toolCalls: currentToolCalls,
+          response: currentResponse,
+          toolResults,
+        });
+
+        // Execute nextTurnParams functions for tools that were called
+        if (this.options.tools && currentToolCalls.length > 0) {
+          if (!this.resolvedRequest) {
+            throw new Error('Request not initialized');
+          }
+
+          const computedParams = await executeNextTurnParamsFunctions(
+            currentToolCalls,
+            this.options.tools,
+            this.resolvedRequest
+          );
+
+          // Apply computed parameters to the resolved request for next turn
+          if (Object.keys(computedParams).length > 0) {
+            this.resolvedRequest = applyNextTurnParamsToRequest(
+              this.resolvedRequest,
+              computedParams
+            );
+          }
         }
 
         // Build new input with tool results
@@ -333,16 +378,19 @@ export class ModelResult {
         const newInput: models.OpenResponsesInput = [
           ...(Array.isArray(currentResponse.output)
             ? currentResponse.output
-            : [currentResponse.output]),
+            : [
+              currentResponse.output,
+            ]),
           ...toolResults,
         ];
 
-        // Update current input for next iteration
-        currentInput = newInput;
-
         // Make new request with tool results
+        if (!this.resolvedRequest) {
+          throw new Error('Request not initialized');
+        }
+
         const newRequest: models.OpenResponsesRequest = {
-          ...this.options.request,
+          ...this.resolvedRequest,
           input: newInput,
           stream: false,
         };
@@ -350,7 +398,7 @@ export class ModelResult {
         const newResult = await betaResponsesSend(
           this.options.client,
           newRequest,
-          this.options.options
+          this.options.options,
         );
 
         if (!newResult.ok) {
@@ -366,7 +414,7 @@ export class ModelResult {
         } else if (this.isNonStreamingResponse(value)) {
           currentResponse = value;
         } else {
-          throw new Error("Unexpected response type from API");
+          throw new Error('Unexpected response type from API');
         }
 
         currentRound++;
@@ -374,15 +422,12 @@ export class ModelResult {
 
       // Validate the final response has required fields
       if (!currentResponse || !currentResponse.id || !currentResponse.output) {
-        throw new Error("Invalid final response: missing required fields");
+        throw new Error('Invalid final response: missing required fields');
       }
 
       // Ensure the response is in a completed state (has output content)
-      if (
-        !Array.isArray(currentResponse.output) ||
-        currentResponse.output.length === 0
-      ) {
-        throw new Error("Invalid final response: empty or invalid output");
+      if (!Array.isArray(currentResponse.output) || currentResponse.output.length === 0) {
+        throw new Error('Invalid final response: empty or invalid output');
       }
 
       this.finalResponse = currentResponse;
@@ -398,7 +443,7 @@ export class ModelResult {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error("Response not available");
+      throw new Error('Response not available');
     }
 
     return extractTextFromResponse(this.finalResponse);
@@ -426,7 +471,7 @@ export class ModelResult {
     await this.executeToolsIfNeeded();
 
     if (!this.finalResponse) {
-      throw new Error("Response not available");
+      throw new Error('Response not available');
     }
 
     return this.finalResponse;
@@ -437,11 +482,11 @@ export class ModelResult {
    * Multiple consumers can iterate over this stream concurrently.
    * Includes preliminary tool result events after tool execution.
    */
-  getFullResponsesStream(): AsyncIterableIterator<EnhancedResponseStreamEvent> {
-    return async function* (this: ModelResult) {
+  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools>>> {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       const consumer = this.reusableStream.createConsumer();
@@ -458,9 +503,9 @@ export class ModelResult {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: "tool.preliminary_result" as const,
+            type: 'tool.preliminary_result' as const,
             toolCallId,
-            result,
+            result: result as InferToolEventsUnion<TTools>,
             timestamp: Date.now(),
           };
         }
@@ -473,10 +518,10 @@ export class ModelResult {
    * This filters the full event stream to only yield text content.
    */
   getTextStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       yield* extractTextDeltas(this.reusableStream);
@@ -492,10 +537,10 @@ export class ModelResult {
   getNewMessagesStream(): AsyncIterableIterator<
     models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput
   > {
-    return async function* (this: ModelResult) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       // First yield messages from the stream in responses format
@@ -504,31 +549,10 @@ export class ModelResult {
       // Execute tools if needed
       await this.executeToolsIfNeeded();
 
-      // Yield function call output for each executed tool
+      // Yield function call outputs for each executed tool
       for (const round of this.allToolExecutionRounds) {
-        for (const toolCall of round.toolCalls) {
-          // Find the tool to check if it was executed
-          const tool = this.options.tools?.find(
-            (t) => t.function.name === toolCall.name
-          );
-          if (!tool || !hasExecuteFunction(tool)) {
-            continue;
-          }
-
-          // Get the result from preliminary results or construct from the response
-          const prelimResults = this.preliminaryResults.get(toolCall.id);
-          const result =
-            prelimResults && prelimResults.length > 0
-              ? prelimResults[prelimResults.length - 1] // Last result is the final output
-              : undefined;
-
-          // Yield function call output in responses format
-          yield {
-            type: "function_call_output" as const,
-            id: `output_${toolCall.id}`,
-            callId: toolCall.id,
-            output: result !== undefined ? JSON.stringify(result) : "",
-          } as models.OpenResponsesFunctionCallOutput;
+        for (const toolResult of round.toolResults) {
+          yield toolResult;
         }
       }
 
@@ -536,7 +560,7 @@ export class ModelResult {
       if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
         // Check if the final response contains a message
         const hasMessage = this.finalResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === "message"
+          (item: unknown) => hasTypeProperty(item) && item.type === 'message',
         );
         if (hasMessage) {
           yield extractResponsesMessageFromResponse(this.finalResponse);
@@ -545,15 +569,16 @@ export class ModelResult {
     }.call(this);
   }
 
+
   /**
    * Stream only reasoning deltas as they arrive.
    * This filters the full event stream to only yield reasoning content.
    */
   getReasoningStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       yield* extractReasoningDeltas(this.reusableStream);
@@ -566,17 +591,17 @@ export class ModelResult {
    * - Tool call argument deltas as { type: "delta", content: string }
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
-  getToolStream(): AsyncIterableIterator<ToolStreamEvent> {
-    return async function* (this: ModelResult) {
+  getToolStream(): AsyncIterableIterator<ToolStreamEvent<InferToolEventsUnion<TTools>>> {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
       // Yield tool deltas as structured events
       for await (const delta of extractToolDeltas(this.reusableStream)) {
         yield {
-          type: "delta" as const,
+          type: 'delta' as const,
           content: delta,
         };
       }
@@ -588,69 +613,9 @@ export class ModelResult {
       for (const [toolCallId, results] of this.preliminaryResults) {
         for (const result of results) {
           yield {
-            type: "preliminary_result" as const,
+            type: 'preliminary_result' as const,
             toolCallId,
-            result,
-          };
-        }
-      }
-    }.call(this);
-  }
-
-  /**
-   * Stream events in chat format (compatibility layer).
-   * Note: This transforms responses API events into a chat-like format.
-   * Includes preliminary tool result events after tool execution.
-   *
-   * @remarks
-   * This is a compatibility method that attempts to transform the responses API
-   * stream into a format similar to the chat API. Due to differences in the APIs,
-   * this may not be a perfect mapping.
-   */
-  getFullChatStream(): AsyncIterableIterator<ChatStreamEvent> {
-    return async function* (this: ModelResult) {
-      await this.initStream();
-      if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
-      }
-
-      const consumer = this.reusableStream.createConsumer();
-
-      for await (const event of consumer) {
-        if (!("type" in event)) {
-          continue;
-        }
-
-        // Transform responses events to chat-like format using type guards
-        if (isOutputTextDeltaEvent(event)) {
-          yield {
-            type: "content.delta" as const,
-            delta: event.delta,
-          };
-        } else if (isResponseCompletedEvent(event)) {
-          yield {
-            type: "message.complete" as const,
-            response: event.response,
-          };
-        } else {
-          // Pass through other events
-          yield {
-            type: event.type,
-            event,
-          };
-        }
-      }
-
-      // After stream completes, check if tools were executed and emit preliminary results
-      await this.executeToolsIfNeeded();
-
-      // Emit all preliminary results
-      for (const [toolCallId, results] of this.preliminaryResults) {
-        for (const result of results) {
-          yield {
-            type: "tool.preliminary_result" as const,
-            toolCallId,
-            result,
+            result: result as InferToolEventsUnion<TTools>,
           };
         }
       }
@@ -663,30 +628,28 @@ export class ModelResult {
    * and this will return the tool calls from the initial response.
    * Returns structured tool calls with parsed arguments.
    */
-  async getToolCalls(): Promise<ParsedToolCall[]> {
+  async getToolCalls(): Promise<ParsedToolCall<TTools[number]>[]> {
     await this.initStream();
     if (!this.reusableStream) {
-      throw new Error("Stream not initialized");
+      throw new Error('Stream not initialized');
     }
 
-    const completedResponse = await consumeStreamForCompletion(
-      this.reusableStream
-    );
-    return extractToolCallsFromResponse(completedResponse);
+    const completedResponse = await consumeStreamForCompletion(this.reusableStream);
+    return extractToolCallsFromResponse(completedResponse) as ParsedToolCall<TTools[number]>[];
   }
 
   /**
    * Stream structured tool call objects as they're completed.
    * Each iteration yields a complete tool call with parsed arguments.
    */
-  getToolCallsStream(): AsyncIterableIterator<ParsedToolCall> {
-    return async function* (this: ModelResult) {
+  getToolCallsStream(): AsyncIterableIterator<ParsedToolCall<TTools[number]>> {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
-        throw new Error("Stream not initialized");
+        throw new Error('Stream not initialized');
       }
 
-      yield* buildToolCallStream(this.reusableStream);
+      yield* buildToolCallStream(this.reusableStream) as AsyncIterableIterator<ParsedToolCall<TTools[number]>>;
     }.call(this);
   }
 

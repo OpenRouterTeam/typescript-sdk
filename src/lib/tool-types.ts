@@ -11,19 +11,52 @@ export enum ToolType {
 }
 
 /**
- * Turn context passed to tool execute functions
+ * Turn context passed to tool execute functions and async parameter resolution
  * Contains information about the current conversation state
  */
 export interface TurnContext {
-  /** Number of tool execution turns so far (1-indexed: first turn = 1) */
+  /** The specific tool call being executed (only available during tool execution) */
+  toolCall?: models.OpenResponsesFunctionToolCall;
+  /** Number of tool execution turns so far (1-indexed: first turn = 1, 0 = initial request) */
   numberOfTurns: number;
-  /** Current message history being sent to the API */
-  messageHistory: models.OpenResponsesInput;
-  /** Model name if request.model is set */
-  model?: string;
-  /** Model names if request.models is set */
-  models?: string[];
+  /** The full request being sent to the API (only available during tool execution) */
+  turnRequest?: models.OpenResponsesRequest;
 }
+
+/**
+ * Context passed to nextTurnParams functions
+ * Contains current request state for parameter computation
+ * Allows modification of key request parameters between turns
+ */
+export type NextTurnParamsContext = {
+  /** Current input (messages) */
+  input: models.OpenResponsesInput;
+  /** Current model selection */
+  model: string;
+  /** Current models array */
+  models: string[];
+  /** Current temperature */
+  temperature: number | null;
+  /** Current maxOutputTokens */
+  maxOutputTokens: number | null;
+  /** Current topP */
+  topP: number | null;
+  /** Current topK */
+  topK?: number | undefined;
+  /** Current instructions */
+  instructions: string | null;
+};
+
+/**
+ * Functions to compute next turn parameters
+ * Each function receives the tool's input params and current request context
+ */
+export type NextTurnParamsFunctions<TInput> = {
+  [K in keyof NextTurnParamsContext]?: (
+    params: TInput,
+    context: NextTurnParamsContext
+  ) => NextTurnParamsContext[K] | Promise<NextTurnParamsContext[K]>;
+};
 
 /**
  * Base tool function interface with inputSchema
@@ -32,6 +65,7 @@ export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
   name: string;
   description?: string;
   inputSchema: TInput;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
 }
 
 /**
@@ -53,6 +87,10 @@ export interface ToolFunctionWithExecute<
  * Emits preliminary events (validated by eventSchema) during execution
  * and a final output (validated by outputSchema) as the last emission
  *
+ * The generator can yield both events and the final output.
+ * All yields are validated against eventSchema (which should be a union of event and output types),
+ * and the last yield is additionally validated against outputSchema.
+ *
  * @example
  * ```typescript
  * {
@@ -73,7 +111,8 @@ export interface ToolFunctionWithGenerator<
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
-  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent>>;
+  // Generator can yield both events (TEvent) and the final output (TOutput)
+  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
 }
 
 /**
@@ -133,8 +172,8 @@ export type Tool =
  */
 export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : unknown
+  ? z.infer<S>
+  : unknown
   : unknown;
 
 /**
@@ -142,8 +181,8 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
  */
 export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : unknown
+  ? z.infer<S>
+  : unknown
   : unknown;
 
 /**
@@ -163,13 +202,20 @@ export type TypedToolCallUnion<T extends readonly Tool[]> = {
 }[number];
 
 /**
+ * Union of typed tool execution results for a tuple of tools
+ */
+export type ToolExecutionResultUnion<T extends readonly Tool[]> = {
+  [K in keyof T]: T[K] extends Tool ? ToolExecutionResult<T[K]> : never;
+}[number];
+
+/**
  * Extracts the event type from a generator tool definition
  * Returns `never` for non-generator tools
  */
 export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
   ? S extends ZodType
-    ? z.infer<S>
-    : never
+  ? z.infer<S>
+  : never
   : never;
 
 /**
@@ -204,36 +250,85 @@ export function isRegularExecuteTool(tool: Tool): tool is ToolWithExecute {
 }
 
 /**
- * Parsed tool call from API response
+ * Type guard to check if a tool is a manual tool (no execute function)
  */
-export interface ParsedToolCall {
+export function isManualTool(tool: Tool): tool is ManualTool {
+  return !('execute' in tool.function);
+}
+
+/**
+ * Parsed tool call from API response
+ * @template T - The tool type to infer argument types from
+ */
+export interface ParsedToolCall<T extends Tool> {
   id: string;
-  name: string;
-  arguments: unknown; // Parsed from JSON string
+  name: T extends { function: { name: infer N } } ? N : string;
+  arguments: InferToolInput<T>; // Typed based on tool's inputSchema
 }
 
 /**
  * Result of tool execution
+ * @template T - The tool type to infer result types from
  */
-export interface ToolExecutionResult {
+export interface ToolExecutionResult<T extends Tool> {
   toolCallId: string;
   toolName: string;
-  result: unknown; // Final result (sent to model)
-  preliminaryResults?: unknown[]; // All yielded values from generator
+  result: T extends ToolWithExecute<any, infer O> | ToolWithGenerator<any, any, infer O>
+  ? z.infer<O>
+  : unknown; // Final result (sent to model)
+  preliminaryResults?: T extends ToolWithGenerator<any, infer E, any>
+  ? z.infer<E>[]
+  : undefined; // All yielded values from generator
   error?: Error;
 }
 
 /**
- * Type for maxToolRounds - can be a number or a function that determines if execution should continue
+ * Warning from step execution
  */
-export type MaxToolRounds = number | ((context: TurnContext) => boolean); // Return true to allow another turn, false to stop
+export interface Warning {
+  type: string;
+  message: string;
+}
+
+/**
+ * Result of a single step in the tool execution loop
+ * Compatible with Vercel AI SDK pattern
+ */
+export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
+  readonly stepType: 'initial' | 'continue';
+  readonly text: string;
+  readonly toolCalls: TypedToolCallUnion<TTools>[];
+  readonly toolResults: ToolExecutionResultUnion<TTools>[];
+  readonly response: models.OpenResponsesNonStreamingResponse;
+  readonly usage?: models.OpenResponsesUsage | undefined;
+  readonly finishReason?: string | undefined;
+  readonly warnings?: Warning[] | undefined;
+  readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
+}
+
+/**
+ * A condition function that determines whether to stop tool execution
+ * Returns true to STOP execution, false to CONTINUE
+ * (Matches Vercel AI SDK semantics)
+ */
+export type StopCondition<TTools extends readonly Tool[] = readonly Tool[]> = (options: {
+  readonly steps: ReadonlyArray<StepResult<TTools>>;
+}) => boolean | Promise<boolean>;
+
+/**
+ * Stop condition configuration
+ * Can be a single condition or array of conditions
+ */
+export type StopWhen<TTools extends readonly Tool[] = readonly Tool[]> =
+  | StopCondition<TTools>
+  | ReadonlyArray<StopCondition<TTools>>;
 
 /**
  * Result of executeTools operation
  */
-export interface ExecuteToolsResult {
-  finalResponse: ModelResult;
-  allResponses: ModelResult[];
+export interface ExecuteToolsResult<TTools extends readonly Tool[]> {
+  finalResponse: ModelResult<TTools>;
+  allResponses: ModelResult<TTools>[];
   toolResults: Map<
     string,
     {
@@ -273,7 +368,7 @@ export type ToolPreliminaryResultEvent<TEvent = unknown> = {
  * Extends OpenResponsesStreamEvent with tool preliminary results
  * @template TEvent - The event type from generator tools
  */
-export type EnhancedResponseStreamEvent<TEvent = unknown> =
+export type ResponseStreamEvent<TEvent = unknown> =
   | OpenResponsesStreamEvent
   | ToolPreliminaryResultEvent<TEvent>;
 
@@ -281,7 +376,7 @@ export type EnhancedResponseStreamEvent<TEvent = unknown> =
  * Type guard to check if an event is a tool preliminary result event
  */
 export function isToolPreliminaryResultEvent<TEvent = unknown>(
-  event: EnhancedResponseStreamEvent<TEvent>,
+  event: ResponseStreamEvent<TEvent>,
 ): event is ToolPreliminaryResultEvent<TEvent> {
   return event.type === 'tool.preliminary_result';
 }
@@ -293,14 +388,14 @@ export function isToolPreliminaryResultEvent<TEvent = unknown>(
  */
 export type ToolStreamEvent<TEvent = unknown> =
   | {
-      type: 'delta';
-      content: string;
-    }
+    type: 'delta';
+    content: string;
+  }
   | {
-      type: 'preliminary_result';
-      toolCallId: string;
-      result: TEvent;
-    };
+    type: 'preliminary_result';
+    toolCallId: string;
+    result: TEvent;
+  };
 
 /**
  * Chat stream event types for getFullChatStream
@@ -309,19 +404,19 @@ export type ToolStreamEvent<TEvent = unknown> =
  */
 export type ChatStreamEvent<TEvent = unknown> =
   | {
-      type: 'content.delta';
-      delta: string;
-    }
+    type: 'content.delta';
+    delta: string;
+  }
   | {
-      type: 'message.complete';
-      response: models.OpenResponsesNonStreamingResponse;
-    }
+    type: 'message.complete';
+    response: models.OpenResponsesNonStreamingResponse;
+  }
   | {
-      type: 'tool.preliminary_result';
-      toolCallId: string;
-      result: TEvent;
-    }
+    type: 'tool.preliminary_result';
+    toolCallId: string;
+    result: TEvent;
+  }
   | {
-      type: string;
-      event: OpenResponsesStreamEvent;
-    }; // Pass-through for other events
+    type: string;
+    event: OpenResponsesStreamEvent;
+  }; // Pass-through for other events

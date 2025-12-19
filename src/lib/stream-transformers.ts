@@ -1,6 +1,28 @@
 import type * as models from '../models/index.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
-import type { ParsedToolCall } from './tool-types.js';
+import type { ParsedToolCall, Tool } from './tool-types.js';
+import {
+  isOutputTextDeltaEvent,
+  isReasoningDeltaEvent,
+  isFunctionCallArgumentsDeltaEvent,
+  isOutputItemAddedEvent,
+  isOutputItemDoneEvent,
+  isResponseCompletedEvent,
+  isResponseFailedEvent,
+  isResponseIncompleteEvent,
+  isFunctionCallArgumentsDoneEvent,
+  isOutputMessage,
+  isFunctionCallOutputItem,
+  isReasoningOutputItem,
+  isWebSearchCallOutputItem,
+  isFileSearchCallOutputItem,
+  isImageGenerationCallOutputItem,
+  isOutputTextPart,
+  isRefusalPart,
+  isFileCitationAnnotation,
+  isURLCitationAnnotation,
+  isFilePathAnnotation,
+} from './stream-type-guards.js';
 
 /**
  * Extract text deltas from responses stream events
@@ -11,10 +33,9 @@ export async function* extractTextDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.output_text.delta') {
-      const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isOutputTextDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
@@ -29,10 +50,9 @@ export async function* extractReasoningDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.reasoning_text.delta') {
-      const deltaEvent = event as models.OpenResponsesReasoningDeltaEvent;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isReasoningDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
@@ -47,22 +67,26 @@ export async function* extractToolDeltas(
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
-    if ('type' in event && event.type === 'response.function_call_arguments.delta') {
-      const deltaEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
-      if (deltaEvent.delta) {
-        yield deltaEvent.delta;
+    if (isFunctionCallArgumentsDeltaEvent(event)) {
+      if (event.delta) {
+        yield event.delta;
       }
     }
   }
 }
 
 /**
- * Build incremental message updates from responses stream events
- * Returns ResponsesOutputMessage (assistant/responses format)
+ * Core message stream builder - shared logic for both formats
+ * Accumulates text deltas and yields updates
  */
-export async function* buildResponsesMessageStream(
+async function* buildMessageStreamCore(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<models.ResponsesOutputMessage> {
+): AsyncIterableIterator<{
+  type: 'delta' | 'complete';
+  text?: string;
+  messageId?: string;
+  completeMessage?: models.ResponsesOutputMessage;
+}> {
   const consumer = stream.createConsumer();
 
   // Track the accumulated text and message info
@@ -77,52 +101,82 @@ export async function* buildResponsesMessageStream(
 
     switch (event.type) {
       case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
-          hasStarted = true;
-          currentText = '';
-          const msgItem = itemEvent.item as models.ResponsesOutputMessage;
-          currentId = msgItem.id;
+        if (isOutputItemAddedEvent(event)) {
+          if (event.item && isOutputMessage(event.item)) {
+            hasStarted = true;
+            currentText = '';
+            currentId = event.item.id;
+          }
         }
         break;
       }
 
       case 'response.output_text.delta': {
-        const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-        if (hasStarted && deltaEvent.delta) {
-          currentText += deltaEvent.delta;
-
-          // Yield updated message in ResponsesOutputMessage format
-          yield {
-            id: currentId,
-            type: 'message' as const,
-            role: 'assistant' as const,
-            status: 'in_progress' as const,
-            content: [
-              {
-                type: 'output_text' as const,
-                text: currentText,
-                annotations: [],
-              },
-            ],
-          };
+        if (isOutputTextDeltaEvent(event)) {
+          if (hasStarted && event.delta) {
+            currentText += event.delta;
+            yield {
+              type: 'delta' as const,
+              text: currentText,
+              messageId: currentId,
+            };
+          }
         }
         break;
       }
 
       case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'message'
-        ) {
-          // Yield final complete message in ResponsesOutputMessage format
-          const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
-          yield outputMessage;
+        if (isOutputItemDoneEvent(event)) {
+          if (event.item && isOutputMessage(event.item)) {
+            yield {
+              type: 'complete' as const,
+              completeMessage: event.item,
+            };
+          }
         }
         break;
       }
+
+      case 'response.completed':
+      case 'response.failed':
+      case 'response.incomplete':
+        // Stream is complete, stop consuming
+        return;
+
+      default:
+        // Ignore other event types - this is intentionally not exhaustive
+        // as we only care about specific events for message building
+        break;
+    }
+  }
+}
+
+/**
+ * Build incremental message updates from responses stream events
+ * Returns ResponsesOutputMessage (assistant/responses format)
+ */
+export async function* buildResponsesMessageStream(
+  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+): AsyncIterableIterator<models.ResponsesOutputMessage> {
+  for await (const update of buildMessageStreamCore(stream)) {
+    if (update.type === 'delta' && update.text !== undefined && update.messageId !== undefined) {
+      // Yield incremental update in ResponsesOutputMessage format
+      yield {
+        id: update.messageId,
+        type: 'message' as const,
+        role: 'assistant' as const,
+        status: 'in_progress' as const,
+        content: [
+          {
+            type: 'output_text' as const,
+            text: update.text,
+            annotations: [],
+          },
+        ],
+      };
+    } else if (update.type === 'complete' && update.completeMessage) {
+      // Yield final complete message
+      yield update.completeMessage;
     }
   }
 }
@@ -134,54 +188,16 @@ export async function* buildResponsesMessageStream(
 export async function* buildMessageStream(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
 ): AsyncIterableIterator<models.AssistantMessage> {
-  const consumer = stream.createConsumer();
-
-  // Track the accumulated text
-  let currentText = '';
-  let hasStarted = false;
-
-  for await (const event of consumer) {
-    if (!('type' in event)) {
-      continue;
-    }
-
-    switch (event.type) {
-      case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'message') {
-          hasStarted = true;
-          currentText = '';
-        }
-        break;
-      }
-
-      case 'response.output_text.delta': {
-        const deltaEvent = event as models.OpenResponsesStreamEventResponseOutputTextDelta;
-        if (hasStarted && deltaEvent.delta) {
-          currentText += deltaEvent.delta;
-
-          // Yield updated message
-          yield {
-            role: 'assistant' as const,
-            content: currentText,
-          };
-        }
-        break;
-      }
-
-      case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'message'
-        ) {
-          // Yield final complete message
-          const outputMessage = itemDoneEvent.item as models.ResponsesOutputMessage;
-          yield convertToAssistantMessage(outputMessage);
-        }
-        break;
-      }
+  for await (const update of buildMessageStreamCore(stream)) {
+    if (update.type === 'delta' && update.text !== undefined) {
+      // Yield incremental update in chat format
+      yield {
+        role: 'assistant' as const,
+        content: update.text,
+      };
+    } else if (update.type === 'complete' && update.completeMessage) {
+      // Yield final complete message converted to chat format
+      yield convertToAssistantMessage(update.completeMessage);
     }
   }
 }
@@ -199,21 +215,18 @@ export async function consumeStreamForCompletion(
       continue;
     }
 
-    if (event.type === 'response.completed') {
-      const completedEvent = event as models.OpenResponsesStreamEventResponseCompleted;
-      return completedEvent.response;
+    if (isResponseCompletedEvent(event)) {
+      return event.response;
     }
 
-    if (event.type === 'response.failed') {
-      const failedEvent = event as models.OpenResponsesStreamEventResponseFailed;
+    if (isResponseFailedEvent(event)) {
       // The failed event contains the full response with error information
-      throw new Error(`Response failed: ${JSON.stringify(failedEvent.response.error)}`);
+      throw new Error(`Response failed: ${JSON.stringify(event.response.error)}`);
     }
 
-    if (event.type === 'response.incomplete') {
-      const incompleteEvent = event as models.OpenResponsesStreamEventResponseIncomplete;
+    if (isResponseIncompleteEvent(event)) {
       // Return the incomplete response
-      return incompleteEvent.response;
+      return event.response;
     }
   }
 
@@ -285,6 +298,16 @@ export function extractTextFromResponse(
     return response.outputText;
   }
 
+  // Check if there's a message in the output
+  const hasMessage = response.output.some(
+    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+  );
+
+  if (!hasMessage) {
+    // No message in response (e.g., only function calls)
+    return '';
+  }
+
   // Otherwise, extract from the first message (convert to AssistantMessage which has string content)
   const message = extractMessageFromResponse(response);
 
@@ -302,28 +325,31 @@ export function extractTextFromResponse(
  */
 export function extractToolCallsFromResponse(
   response: models.OpenResponsesNonStreamingResponse,
-): ParsedToolCall[] {
-  const toolCalls: ParsedToolCall[] = [];
+): ParsedToolCall<Tool>[] {
+  const toolCalls: ParsedToolCall<Tool>[] = [];
 
   for (const item of response.output) {
-    if ('type' in item && item.type === 'function_call') {
-      const functionCallItem = item as models.ResponsesOutputItemFunctionCall;
-
+    if (isFunctionCallOutputItem(item)) {
       try {
-        const parsedArguments = JSON.parse(functionCallItem.arguments);
+        const parsedArguments = JSON.parse(item.arguments);
 
         toolCalls.push({
-          id: functionCallItem.callId,
-          name: functionCallItem.name,
+          id: item.callId,
+          name: item.name,
           arguments: parsedArguments,
         });
-      } catch (_error) {
+      } catch (error) {
+        console.warn(
+          `Failed to parse tool call arguments for ${item.name}:`,
+          error instanceof Error ? error.message : String(error),
+          `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
+        );
         // Include the tool call with unparsed arguments
         toolCalls.push({
-          id: functionCallItem.callId,
-          name: functionCallItem.name,
-          arguments: functionCallItem.arguments, // Keep as string if parsing fails
-        });
+          id: item.callId,
+          name: item.name,
+          arguments: item.arguments as unknown, // Keep as string if parsing fails
+        } as ParsedToolCall<Tool>);
       }
     }
   }
@@ -337,7 +363,7 @@ export function extractToolCallsFromResponse(
  */
 export async function* buildToolCallStream(
   stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<ParsedToolCall> {
+): AsyncIterableIterator<ParsedToolCall<Tool>> {
   const consumer = stream.createConsumer();
 
   // Track tool calls being built
@@ -357,12 +383,10 @@ export async function* buildToolCallStream(
 
     switch (event.type) {
       case 'response.output_item.added': {
-        const itemEvent = event as models.OpenResponsesStreamEventResponseOutputItemAdded;
-        if (itemEvent.item && 'type' in itemEvent.item && itemEvent.item.type === 'function_call') {
-          const functionCallItem = itemEvent.item as models.ResponsesOutputItemFunctionCall;
-          toolCallsInProgress.set(functionCallItem.callId, {
-            id: functionCallItem.callId,
-            name: functionCallItem.name,
+        if (isOutputItemAddedEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
+          toolCallsInProgress.set(event.item.callId, {
+            id: event.item.callId,
+            name: event.item.name,
             argumentsAccumulated: '',
           });
         }
@@ -370,70 +394,69 @@ export async function* buildToolCallStream(
       }
 
       case 'response.function_call_arguments.delta': {
-        const deltaEvent =
-          event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta;
-        const toolCall = toolCallsInProgress.get(deltaEvent.itemId);
-        if (toolCall && deltaEvent.delta) {
-          toolCall.argumentsAccumulated += deltaEvent.delta;
+        if (isFunctionCallArgumentsDeltaEvent(event)) {
+          const toolCall = toolCallsInProgress.get(event.itemId);
+          if (toolCall && event.delta) {
+            toolCall.argumentsAccumulated += event.delta;
+          }
         }
         break;
       }
 
       case 'response.function_call_arguments.done': {
-        const doneEvent = event as models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone;
-        const toolCall = toolCallsInProgress.get(doneEvent.itemId);
+        if (isFunctionCallArgumentsDoneEvent(event)) {
+          const toolCall = toolCallsInProgress.get(event.itemId);
 
-        if (toolCall) {
-          // Parse complete arguments
-          try {
-            const parsedArguments = JSON.parse(doneEvent.arguments);
-            yield {
-              id: toolCall.id,
-              name: doneEvent.name,
-              arguments: parsedArguments,
-            };
-          } catch (_error) {
-            // Yield with unparsed arguments if parsing fails
-            yield {
-              id: toolCall.id,
-              name: doneEvent.name,
-              arguments: doneEvent.arguments,
-            };
+          if (toolCall) {
+            // Parse complete arguments
+            try {
+              const parsedArguments = JSON.parse(event.arguments);
+              yield {
+                id: toolCall.id,
+                name: event.name,
+                arguments: parsedArguments,
+              };
+            } catch (error) {
+              console.warn(
+                `Failed to parse tool call arguments for ${event.name}:`,
+                error instanceof Error ? error.message : String(error),
+                `\nArguments: ${event.arguments.substring(0, 100)}${event.arguments.length > 100 ? '...' : ''}`
+              );
+              // Yield with unparsed arguments if parsing fails
+              yield {
+                id: toolCall.id,
+                name: event.name,
+                arguments: event.arguments as unknown,
+              } as ParsedToolCall<Tool>;
+            }
+
+            // Clean up
+            toolCallsInProgress.delete(event.itemId);
           }
-
-          // Clean up
-          toolCallsInProgress.delete(doneEvent.itemId);
         }
         break;
       }
 
       case 'response.output_item.done': {
-        const itemDoneEvent = event as models.OpenResponsesStreamEventResponseOutputItemDone;
-        if (
-          itemDoneEvent.item &&
-          'type' in itemDoneEvent.item &&
-          itemDoneEvent.item.type === 'function_call'
-        ) {
-          const functionCallItem = itemDoneEvent.item as models.ResponsesOutputItemFunctionCall;
-
+        if (isOutputItemDoneEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
           // Yield final tool call if we haven't already
-          if (toolCallsInProgress.has(functionCallItem.callId)) {
+          if (toolCallsInProgress.has(event.item.callId)) {
             try {
-              const parsedArguments = JSON.parse(functionCallItem.arguments);
+              const parsedArguments = JSON.parse(event.item.arguments);
               yield {
-                id: functionCallItem.callId,
-                name: functionCallItem.name,
+                id: event.item.callId,
+                name: event.item.name,
                 arguments: parsedArguments,
               };
             } catch (_error) {
               yield {
-                id: functionCallItem.callId,
-                name: functionCallItem.name,
-                arguments: functionCallItem.arguments,
-              };
+                id: event.item.callId,
+                name: event.item.name,
+                arguments: event.item.arguments as unknown,
+              } as ParsedToolCall<Tool>;
             }
 
-            toolCallsInProgress.delete(functionCallItem.callId);
+            toolCallsInProgress.delete(event.item.callId);
           }
         }
         break;
@@ -468,55 +491,56 @@ function mapAnnotationsToCitations(
 
     switch (annotation.type) {
       case 'file_citation': {
-        const fileCite = annotation as models.FileCitation;
-        citations.push({
-          type: 'char_location',
-          cited_text: '',
-          document_index: fileCite.index,
-          document_title: fileCite.filename,
-          file_id: fileCite.fileId,
-          start_char_index: 0,
-          end_char_index: 0,
-        });
+        if (isFileCitationAnnotation(annotation)) {
+          citations.push({
+            type: 'char_location',
+            cited_text: '',
+            document_index: annotation.index,
+            document_title: annotation.filename,
+            file_id: annotation.fileId,
+            start_char_index: 0,
+            end_char_index: 0,
+          });
+        }
         break;
       }
 
       case 'url_citation': {
-        const urlCite = annotation as models.URLCitation;
-        citations.push({
-          type: 'web_search_result_location',
-          cited_text: '',
-          title: urlCite.title,
-          url: urlCite.url,
-          encrypted_index: '',
-        });
+        if (isURLCitationAnnotation(annotation)) {
+          citations.push({
+            type: 'web_search_result_location',
+            cited_text: '',
+            title: annotation.title,
+            url: annotation.url,
+            encrypted_index: '',
+          });
+        }
         break;
       }
 
       case 'file_path': {
-        const pathCite = annotation as models.FilePath;
-        citations.push({
-          type: 'char_location',
-          cited_text: '',
-          document_index: pathCite.index,
-          document_title: '',
-          file_id: pathCite.fileId,
-          start_char_index: 0,
-          end_char_index: 0,
-        });
+        if (isFilePathAnnotation(annotation)) {
+          citations.push({
+            type: 'char_location',
+            cited_text: '',
+            document_index: annotation.index,
+            document_title: '',
+            file_id: annotation.fileId,
+            start_char_index: 0,
+            end_char_index: 0,
+          });
+        }
         break;
       }
 
       default: {
-        const _exhaustiveCheck: never = annotation;
+        // Exhaustiveness check - TypeScript will error if we don't handle all annotation types
+        const exhaustiveCheck: never = annotation;
+        // Cast to unknown for runtime debugging if type system bypassed
+        // This should never execute - throw with JSON of the unhandled value
         throw new Error(
-          `Unhandled annotation type: ${
-            (
-              _exhaustiveCheck as {
-                type: string;
-              }
-            ).type
-          }`,
+          `Unhandled annotation type. This indicates a new annotation type was added. ` +
+          `Annotation: ${JSON.stringify(exhaustiveCheck as unknown)}`
         );
       }
     }
@@ -570,9 +594,13 @@ export function convertToClaudeMessage(
   for (const item of response.output) {
     if (!('type' in item)) {
       // Handle items without type field
+      // Convert unknown item to a record format for storage
+      const itemData = typeof item === 'object' && item !== null
+        ? item
+        : { value: item };
       unsupportedContent.push({
         original_type: 'unknown',
-        data: item as Record<string, unknown>,
+        data: itemData,
         reason: 'Output item missing type field',
       });
       continue;
@@ -580,159 +608,162 @@ export function convertToClaudeMessage(
 
     switch (item.type) {
       case 'message': {
-        const msgItem = item as models.ResponsesOutputMessage;
-        for (const part of msgItem.content) {
-          if (!('type' in part)) {
-            unsupportedContent.push({
-              original_type: 'unknown_message_part',
-              data: part as Record<string, unknown>,
-              reason: 'Message content part missing type field',
-            });
-            continue;
-          }
+        if (isOutputMessage(item)) {
+          for (const part of item.content) {
+            if (!('type' in part)) {
+              // Convert unknown part to a record format for storage
+              const partData = typeof part === 'object' && part !== null
+                ? part
+                : { value: part };
+              unsupportedContent.push({
+                original_type: 'unknown_message_part',
+                data: partData,
+                reason: 'Message content part missing type field',
+              });
+              continue;
+            }
 
-          if (part.type === 'output_text') {
-            const textPart = part as models.ResponseOutputText;
-            const citations = mapAnnotationsToCitations(textPart.annotations);
+            if (isOutputTextPart(part)) {
+              const citations = mapAnnotationsToCitations(part.annotations);
 
-            content.push({
-              type: 'text',
-              text: textPart.text,
-              ...(citations && {
-                citations,
-              }),
-            });
-          } else if (part.type === 'refusal') {
-            const refusalPart = part as models.OpenAIResponsesRefusalContent;
-            unsupportedContent.push({
-              original_type: 'refusal',
-              data: {
-                refusal: refusalPart.refusal,
-              },
-              reason: 'Claude does not have a native refusal content type',
-            });
-          } else {
-            // Handle unknown message content types
-            unsupportedContent.push({
-              original_type: `message_content_${
-                (
-                  part as {
-                    type: string;
-                  }
-                ).type
-              }`,
-              data: part as Record<string, unknown>,
-              reason: 'Unknown message content type',
-            });
+              content.push({
+                type: 'text',
+                text: part.text,
+                ...(citations && {
+                  citations,
+                }),
+              });
+            } else if (isRefusalPart(part)) {
+              unsupportedContent.push({
+                original_type: 'refusal',
+                data: {
+                  refusal: part.refusal,
+                },
+                reason: 'Claude does not have a native refusal content type',
+              });
+            } else {
+              // Exhaustiveness check - TypeScript will error if we don't handle all part types
+              const exhaustiveCheck: never = part;
+              // This should never execute - new content type was added
+              throw new Error(
+                `Unhandled message content type. This indicates a new content type was added. ` +
+                `Part: ${JSON.stringify(exhaustiveCheck)}`
+              );
+            }
           }
         }
         break;
       }
 
       case 'function_call': {
-        const fnCall = item as models.ResponsesOutputItemFunctionCall;
-        let parsedInput: Record<string, unknown>;
+        if (isFunctionCallOutputItem(item)) {
+          let parsedInput: Record<string, unknown>;
 
-        try {
-          parsedInput = JSON.parse(fnCall.arguments);
-        } catch (error) {
-          // Preserve raw arguments if JSON parsing fails
-          // Log warning in development/debug environments
-          if (typeof process !== 'undefined' && process.env?.['NODE_ENV'] === 'development') {
-            // biome-ignore lint/suspicious/noConsole: needed for debugging in development
-            console.warn(`Failed to parse tool call arguments for ${fnCall.name}:`, error);
+          try {
+            parsedInput = JSON.parse(item.arguments);
+          } catch (error) {
+            console.warn(
+              `Failed to parse tool call arguments for ${item.name}:`,
+              error instanceof Error ? error.message : String(error),
+              `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
+            );
+            // Preserve raw arguments if JSON parsing fails
+            parsedInput = {
+              _raw_arguments: item.arguments,
+            };
           }
-          parsedInput = {
-            _raw_arguments: fnCall.arguments,
-          };
-        }
 
-        content.push({
-          type: 'tool_use',
-          id: fnCall.callId,
-          name: fnCall.name,
-          input: parsedInput,
-        });
-        break;
-      }
-
-      case 'reasoning': {
-        const reasoningItem = item as models.ResponsesOutputItemReasoning;
-
-        if (reasoningItem.summary && reasoningItem.summary.length > 0) {
-          for (const summaryItem of reasoningItem.summary) {
-            if (summaryItem.type === 'summary_text' && summaryItem.text) {
-              content.push({
-                type: 'thinking',
-                thinking: summaryItem.text,
-                signature: '',
-              });
-            }
-          }
-        }
-
-        if (reasoningItem.encryptedContent) {
-          unsupportedContent.push({
-            original_type: 'reasoning_encrypted',
-            data: {
-              id: reasoningItem.id,
-              encrypted_content: reasoningItem.encryptedContent,
-            },
-            reason: 'Encrypted reasoning content preserved for round-trip',
+          content.push({
+            type: 'tool_use',
+            id: item.callId,
+            name: item.name,
+            input: parsedInput,
           });
         }
         break;
       }
 
+      case 'reasoning': {
+        if (isReasoningOutputItem(item)) {
+          if (item.summary && item.summary.length > 0) {
+            for (const summaryItem of item.summary) {
+              if (summaryItem.type === 'summary_text' && summaryItem.text) {
+                content.push({
+                  type: 'thinking',
+                  thinking: summaryItem.text,
+                  signature: '',
+                });
+              }
+            }
+          }
+
+          if (item.encryptedContent) {
+            unsupportedContent.push({
+              original_type: 'reasoning_encrypted',
+              data: {
+                id: item.id,
+                encrypted_content: item.encryptedContent,
+              },
+              reason: 'Encrypted reasoning content preserved for round-trip',
+            });
+          }
+        }
+        break;
+      }
+
       case 'web_search_call': {
-        const webSearchItem = item as models.ResponsesWebSearchCallOutput;
-        content.push({
-          type: 'server_tool_use',
-          id: webSearchItem.id,
-          name: 'web_search',
-          input: {
-            status: webSearchItem.status,
-          },
-        });
+        if (isWebSearchCallOutputItem(item)) {
+          content.push({
+            type: 'server_tool_use',
+            id: item.id,
+            name: 'web_search',
+            input: {
+              status: item.status,
+            },
+          });
+        }
         break;
       }
 
       case 'file_search_call': {
-        const fileSearchItem = item as models.ResponsesOutputItemFileSearchCall;
-        content.push({
-          type: 'tool_use',
-          id: fileSearchItem.id,
-          name: 'file_search',
-          input: {
-            queries: fileSearchItem.queries,
-            status: fileSearchItem.status,
-          },
-        });
+        if (isFileSearchCallOutputItem(item)) {
+          content.push({
+            type: 'tool_use',
+            id: item.id,
+            name: 'file_search',
+            input: {
+              queries: item.queries,
+              status: item.status,
+            },
+          });
+        }
         break;
       }
 
       case 'image_generation_call': {
-        const imageGenItem = item as models.ResponsesImageGenerationCall;
-        unsupportedContent.push({
-          original_type: 'image_generation_call',
-          data: {
-            id: imageGenItem.id,
-            result: imageGenItem.result,
-            status: imageGenItem.status,
-          },
-          reason: 'Claude does not support image outputs in assistant messages',
-        });
+        if (isImageGenerationCallOutputItem(item)) {
+          unsupportedContent.push({
+            original_type: 'image_generation_call',
+            data: {
+              id: item.id,
+              result: item.result,
+              status: item.status,
+            },
+            reason: 'Claude does not support image outputs in assistant messages',
+          });
+        }
         break;
       }
 
       default: {
+        // Exhaustiveness check - if a new output type is added, TypeScript will error here
         const exhaustiveCheck: never = item;
-        unsupportedContent.push({
-          original_type: 'unknown_output_item',
-          data: exhaustiveCheck as Record<string, unknown>,
-          reason: 'Unknown output item type',
-        });
-        break;
+        // This line should never execute - it means a new type was added to the union
+        // Throw an error instead of silently continuing to ensure we catch new types
+        throw new Error(
+          `Unhandled output item type. This indicates a new output type was added to the API. ` +
+          `Item: ${JSON.stringify(exhaustiveCheck)}`
+        );
       }
     }
   }

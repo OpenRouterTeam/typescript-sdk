@@ -2,14 +2,16 @@ import type * as models from '../models/index.js';
 import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
+import { isFunctionCallOutputItem } from './stream-type-guards.js';
 import { executeTool, findToolByName } from './tool-executor.js';
 import { hasExecuteFunction } from './tool-types.js';
+import { buildTurnContext } from './turn-context.js';
+import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 
 /**
  * Options for tool execution
  */
 export interface ToolExecutionOptions {
-  maxRounds?: number;
   onPreliminaryResult?: (toolCallId: string, result: unknown) => void;
 }
 
@@ -19,7 +21,7 @@ export interface ToolExecutionOptions {
 export interface ToolOrchestrationResult {
   finalResponse: models.OpenResponsesNonStreamingResponse;
   allResponses: models.OpenResponsesNonStreamingResponse[];
-  toolExecutionResults: ToolExecutionResult[];
+  toolExecutionResults: ToolExecutionResult<Tool>[];
   conversationInput: models.OpenResponsesInput;
 }
 
@@ -29,6 +31,7 @@ export interface ToolOrchestrationResult {
  *
  * @param sendRequest - Function to send a request and get a response
  * @param initialInput - Starting input for the conversation
+ * @param initialRequest - Full initial request with all parameters
  * @param tools - Enhanced tools with Zod schemas and execute functions
  * @param apiTools - Converted tools in API format (JSON Schema)
  * @param options - Execution options
@@ -40,16 +43,17 @@ export async function executeToolLoop(
     tools: APITool[],
   ) => Promise<models.OpenResponsesNonStreamingResponse>,
   initialInput: models.OpenResponsesInput,
+  initialRequest: models.OpenResponsesRequest,
   tools: Tool[],
   apiTools: APITool[],
   options: ToolExecutionOptions = {},
 ): Promise<ToolOrchestrationResult> {
-  const maxRounds = options.maxRounds ?? 5;
   const onPreliminaryResult = options.onPreliminaryResult;
 
   const allResponses: models.OpenResponsesNonStreamingResponse[] = [];
-  const toolExecutionResults: ToolExecutionResult[] = [];
+  const toolExecutionResults: ToolExecutionResult<Tool>[] = [];
   let conversationInput: models.OpenResponsesInput = initialInput;
+  let currentRequest: models.OpenResponsesRequest = { ...initialRequest };
 
   let currentRound = 0;
   let currentResponse: models.OpenResponsesNonStreamingResponse;
@@ -58,8 +62,8 @@ export async function executeToolLoop(
   currentResponse = await sendRequest(conversationInput, apiTools);
   allResponses.push(currentResponse);
 
-  // Loop until no more tool calls or max rounds reached
-  while (responseHasToolCalls(currentResponse) && currentRound < maxRounds) {
+  // Loop until no more tool calls (model decides when to stop)
+  while (responseHasToolCalls(currentResponse)) {
     currentRound++;
 
     // Extract tool calls from response
@@ -91,7 +95,7 @@ export async function executeToolLoop(
           toolName: toolCall.name,
           result: null,
           error: new Error(`Tool "${toolCall.name}" not found in tool definitions`),
-        } as ToolExecutionResult;
+        } as ToolExecutionResult<Tool>;
       }
 
       if (!hasExecuteFunction(tool)) {
@@ -99,11 +103,32 @@ export async function executeToolLoop(
         return null;
       }
 
-      // Build turn context
-      const turnContext: import('./tool-types.js').TurnContext = {
-        numberOfTurns: currentRound,
-        messageHistory: conversationInput,
+      // Find the raw tool call from the response output
+      const rawToolCall = currentResponse.output.find(
+        (item): item is models.ResponsesOutputItemFunctionCall =>
+          isFunctionCallOutputItem(item) && item.callId === toolCall.id,
+      );
+
+      if (!rawToolCall) {
+        throw new Error(`Could not find raw tool call for ${toolCall.id}`);
+      }
+
+      // Convert to OpenResponsesFunctionToolCall format
+      const openResponsesToolCall: models.OpenResponsesFunctionToolCall = {
+        type: 'function_call' as const,
+        callId: rawToolCall.callId,
+        name: rawToolCall.name,
+        arguments: rawToolCall.arguments,
+        id: rawToolCall.callId,
+        status: rawToolCall.status,
       };
+
+      // Build turn context with full information
+      const turnContext = buildTurnContext({
+        numberOfTurns: currentRound,
+        toolCall: openResponsesToolCall,
+        turnRequest: currentRequest,
+      });
 
       // Execute the tool
       return executeTool(tool, toolCall, turnContext, onPreliminaryResult);
@@ -113,7 +138,7 @@ export async function executeToolLoop(
     const settledResults = await Promise.allSettled(toolCallPromises);
 
     // Process settled results, handling both fulfilled and rejected promises
-    const roundResults: ToolExecutionResult[] = [];
+    const roundResults: ToolExecutionResult<Tool>[] = [];
     settledResults.forEach((settled, i) => {
       const toolCall = toolCalls[i];
       if (!toolCall) return;
@@ -137,10 +162,23 @@ export async function executeToolLoop(
 
     toolExecutionResults.push(...roundResults);
 
+    // Execute nextTurnParams functions for tools that were called
+    const computedParams = await executeNextTurnParamsFunctions(
+      toolCalls,
+      tools,
+      currentRequest
+    );
+
+    // Apply computed parameters to request
+    if (Object.keys(computedParams).length > 0) {
+      currentRequest = applyNextTurnParamsToRequest(currentRequest, computedParams);
+      conversationInput = currentRequest.input ?? conversationInput;
+    }
+
     // Build array input with all output from previous response plus tool results
     // The API expects continuation via previousResponseId, not by including outputs
     // For now, we'll keep the conversation going via previousResponseId
-    conversationInput = initialInput; // Keep original input
+    // conversationInput is updated above if nextTurnParams modified it
 
     // Note: The OpenRouter Responses API uses previousResponseId for continuation
     // Tool results are automatically associated with the previous response's tool calls
@@ -161,7 +199,7 @@ export async function executeToolLoop(
 /**
  * Convert tool execution results to a map for easy lookup
  */
-export function toolResultsToMap(results: ToolExecutionResult[]): Map<
+export function toolResultsToMap(results: ToolExecutionResult<Tool>[]): Map<
   string,
   {
     result: unknown;
@@ -183,7 +221,7 @@ export function toolResultsToMap(results: ToolExecutionResult[]): Map<
 /**
  * Build a summary of tool executions for debugging/logging
  */
-export function summarizeToolExecutions(results: ToolExecutionResult[]): string {
+export function summarizeToolExecutions(results: ToolExecutionResult<Tool>[]): string {
   const lines: string[] = [];
 
   for (const result of results) {
@@ -202,13 +240,17 @@ export function summarizeToolExecutions(results: ToolExecutionResult[]): string 
 /**
  * Check if any tool executions had errors
  */
-export function hasToolExecutionErrors(results: ToolExecutionResult[]): boolean {
+export function hasToolExecutionErrors(results: ToolExecutionResult<Tool>[]): boolean {
   return results.some((result) => result.error !== undefined);
 }
 
 /**
  * Get all tool execution errors
  */
-export function getToolExecutionErrors(results: ToolExecutionResult[]): Error[] {
-  return results.filter((result) => result.error !== undefined).map((result) => result.error!);
+export function getToolExecutionErrors(results: ToolExecutionResult<Tool>[]): Error[] {
+  return results
+    .filter((result): result is ToolExecutionResult<Tool> & { error: Error } =>
+      result.error !== undefined
+    )
+    .map((result) => result.error);
 }
