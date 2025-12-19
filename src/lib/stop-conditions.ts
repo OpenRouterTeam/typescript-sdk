@@ -46,15 +46,15 @@ export function hasToolCall(toolName: string): StopCondition {
  * });
  * ```
  */
-export async function isStopConditionMet<TOOLS extends readonly Tool[]>(options: {
-  readonly stopConditions: ReadonlyArray<StopCondition<TOOLS>>;
-  readonly steps: ReadonlyArray<StepResult<TOOLS>>;
+export async function isStopConditionMet<TTools extends readonly Tool[]>(options: {
+  readonly stopConditions: ReadonlyArray<StopCondition<TTools>>;
+  readonly steps: ReadonlyArray<StepResult<TTools>>;
 }): Promise<boolean> {
   const { stopConditions, steps } = options;
 
   // Evaluate all conditions in parallel
   const results = await Promise.all(
-    stopConditions.map((condition: StopCondition<TOOLS>) =>
+    stopConditions.map((condition: StopCondition<TTools>) =>
       Promise.resolve(
         condition({
           steps,

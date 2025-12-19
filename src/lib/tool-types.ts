@@ -294,11 +294,11 @@ export interface Warning {
  * Result of a single step in the tool execution loop
  * Compatible with Vercel AI SDK pattern
  */
-export interface StepResult<TOOLS extends readonly Tool[] = readonly Tool[]> {
+export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
   readonly stepType: 'initial' | 'continue';
   readonly text: string;
-  readonly toolCalls: TypedToolCallUnion<TOOLS>[];
-  readonly toolResults: ToolExecutionResultUnion<TOOLS>[];
+  readonly toolCalls: TypedToolCallUnion<TTools>[];
+  readonly toolResults: ToolExecutionResultUnion<TTools>[];
   readonly response: models.OpenResponsesNonStreamingResponse;
   readonly usage?: models.OpenResponsesUsage | undefined;
   readonly finishReason?: string | undefined;
@@ -311,24 +311,24 @@ export interface StepResult<TOOLS extends readonly Tool[] = readonly Tool[]> {
  * Returns true to STOP execution, false to CONTINUE
  * (Matches Vercel AI SDK semantics)
  */
-export type StopCondition<TOOLS extends readonly Tool[] = readonly Tool[]> = (options: {
-  readonly steps: ReadonlyArray<StepResult<TOOLS>>;
+export type StopCondition<TTools extends readonly Tool[] = readonly Tool[]> = (options: {
+  readonly steps: ReadonlyArray<StepResult<TTools>>;
 }) => boolean | Promise<boolean>;
 
 /**
  * Stop condition configuration
  * Can be a single condition or array of conditions
  */
-export type StopWhen<TOOLS extends readonly Tool[] = readonly Tool[]> =
-  | StopCondition<TOOLS>
-  | ReadonlyArray<StopCondition<TOOLS>>;
+export type StopWhen<TTools extends readonly Tool[] = readonly Tool[]> =
+  | StopCondition<TTools>
+  | ReadonlyArray<StopCondition<TTools>>;
 
 /**
  * Result of executeTools operation
  */
-export interface ExecuteToolsResult<TOOLS extends readonly Tool[]> {
-  finalResponse: ModelResult<TOOLS>;
-  allResponses: ModelResult<TOOLS>[];
+export interface ExecuteToolsResult<TTools extends readonly Tool[]> {
+  finalResponse: ModelResult<TTools>;
+  allResponses: ModelResult<TTools>[];
   toolResults: Map<
     string,
     {

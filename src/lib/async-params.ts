@@ -31,15 +31,15 @@ export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise
 /**
  * Input type for callModel function
  * Each field can independently be a static value or a function that computes the value
- * Generic over TOOLS to enable proper type inference for stopWhen conditions
+ * Generic over TTools to enable proper type inference for stopWhen conditions
  */
-export type CallModelInput<TOOLS extends readonly Tool[] = readonly Tool[]> = {
+export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
   [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
     models.OpenResponsesRequest[K]
   >;
 } & {
-  tools?: TOOLS;
-  stopWhen?: StopWhen<TOOLS>;
+  tools?: TTools;
+  stopWhen?: StopWhen<TTools>;
 };
 
 /**

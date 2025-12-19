@@ -96,10 +96,10 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel<TOOLS extends readonly Tool[]>(
-    request: CallModelInput<TOOLS>,
+  callModel<TTools extends readonly Tool[]>(
+    request: CallModelInput<TTools>,
     options?: RequestOptions,
-  ): ModelResult<TOOLS> {
+  ): ModelResult<TTools> {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body

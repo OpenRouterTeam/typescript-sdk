@@ -70,13 +70,13 @@ function hasTypeProperty(item: unknown): item is {
   );
 }
 
-export interface GetResponseOptions<TOOLS extends readonly Tool[]> {
+export interface GetResponseOptions<TTools extends readonly Tool[]> {
   // Request can have async functions that will be resolved before sending to API
-  request: CallModelInput<TOOLS>;
+  request: CallModelInput<TTools>;
   client: OpenRouterCore;
   options?: RequestOptions;
-  tools?: TOOLS;
-  stopWhen?: StopWhen<TOOLS>;
+  tools?: TTools;
+  stopWhen?: StopWhen<TTools>;
 }
 
 /**
@@ -96,13 +96,13 @@ export interface GetResponseOptions<TOOLS extends readonly Tool[]> {
  * All consumption patterns can be used concurrently thanks to the underlying
  * ReusableReadableStream implementation.
  *
- * @template TOOLS - The tools array type to enable typed tool calls and results
+ * @template TTools - The tools array type to enable typed tool calls and results
  */
-export class ModelResult<TOOLS extends readonly Tool[]> {
+export class ModelResult<TTools extends readonly Tool[]> {
   private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
   private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
   private textPromise: Promise<string> | null = null;
-  private options: GetResponseOptions<TOOLS>;
+  private options: GetResponseOptions<TTools>;
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
   private finalResponse: models.OpenResponsesNonStreamingResponse | null = null;
@@ -116,7 +116,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
   // Track resolved request after async function resolution
   private resolvedRequest: models.OpenResponsesRequest | null = null;
 
-  constructor(options: GetResponseOptions<TOOLS>) {
+  constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
   }
 
@@ -482,8 +482,8 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
    * Multiple consumers can iterate over this stream concurrently.
    * Includes preliminary tool result events after tool execution.
    */
-  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TOOLS>>> {
-    return async function* (this: ModelResult<TOOLS>) {
+  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
@@ -505,7 +505,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
           yield {
             type: 'tool.preliminary_result' as const,
             toolCallId,
-            result: result as InferToolEventsUnion<TOOLS>,
+            result: result as InferToolEventsUnion<TTools>,
             timestamp: Date.now(),
           };
         }
@@ -518,7 +518,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
    * This filters the full event stream to only yield text content.
    */
   getTextStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult<TOOLS>) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
@@ -537,7 +537,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
   getNewMessagesStream(): AsyncIterableIterator<
     models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput
   > {
-    return async function* (this: ModelResult<TOOLS>) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
@@ -575,7 +575,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
    * This filters the full event stream to only yield reasoning content.
    */
   getReasoningStream(): AsyncIterableIterator<string> {
-    return async function* (this: ModelResult<TOOLS>) {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
@@ -591,8 +591,8 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
    * - Tool call argument deltas as { type: "delta", content: string }
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
-  getToolStream(): AsyncIterableIterator<ToolStreamEvent<InferToolEventsUnion<TOOLS>>> {
-    return async function* (this: ModelResult<TOOLS>) {
+  getToolStream(): AsyncIterableIterator<ToolStreamEvent<InferToolEventsUnion<TTools>>> {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
@@ -615,7 +615,7 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
           yield {
             type: 'preliminary_result' as const,
             toolCallId,
-            result: result as InferToolEventsUnion<TOOLS>,
+            result: result as InferToolEventsUnion<TTools>,
           };
         }
       }
@@ -628,28 +628,28 @@ export class ModelResult<TOOLS extends readonly Tool[]> {
    * and this will return the tool calls from the initial response.
    * Returns structured tool calls with parsed arguments.
    */
-  async getToolCalls(): Promise<ParsedToolCall<TOOLS[number]>[]> {
+  async getToolCalls(): Promise<ParsedToolCall<TTools[number]>[]> {
     await this.initStream();
     if (!this.reusableStream) {
       throw new Error('Stream not initialized');
     }
 
     const completedResponse = await consumeStreamForCompletion(this.reusableStream);
-    return extractToolCallsFromResponse(completedResponse) as ParsedToolCall<TOOLS[number]>[];
+    return extractToolCallsFromResponse(completedResponse) as ParsedToolCall<TTools[number]>[];
   }
 
   /**
    * Stream structured tool call objects as they're completed.
    * Each iteration yields a complete tool call with parsed arguments.
    */
-  getToolCallsStream(): AsyncIterableIterator<ParsedToolCall<TOOLS[number]>> {
-    return async function* (this: ModelResult<TOOLS>) {
+  getToolCallsStream(): AsyncIterableIterator<ParsedToolCall<TTools[number]>> {
+    return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
         throw new Error('Stream not initialized');
       }
 
-      yield* buildToolCallStream(this.reusableStream) as AsyncIterableIterator<ParsedToolCall<TOOLS[number]>>;
+      yield* buildToolCallStream(this.reusableStream) as AsyncIterableIterator<ParsedToolCall<TTools[number]>>;
     }.call(this);
   }
 

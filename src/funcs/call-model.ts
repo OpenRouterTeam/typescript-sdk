@@ -119,11 +119,11 @@ export type { CallModelInput } from '../lib/async-params.js';
  *
  * Default: `stepCountIs(5)` if not specified
  */
-export function callModel<TOOLS extends readonly Tool[]>(
+export function callModel<TTools extends readonly Tool[]>(
   client: OpenRouterCore,
-  request: CallModelInput<TOOLS>,
+  request: CallModelInput<TTools>,
   options?: RequestOptions,
-): ModelResult<TOOLS> {
+): ModelResult<TTools> {
   const { tools, stopWhen, ...apiRequest } = request;
 
   // Convert tools to API format - no cast needed now that convertToolsToAPIFormat accepts readonly
@@ -140,14 +140,14 @@ export function callModel<TOOLS extends readonly Tool[]>(
     finalRequest['tools'] = apiTools;
   }
 
-  return new ModelResult<TOOLS>({
+  return new ModelResult<TTools>({
     client,
     request: finalRequest,
     options: options ?? {},
-    // Preserve the exact TOOLS type instead of widening to Tool[]
-    tools: tools as TOOLS | undefined,
+    // Preserve the exact TTools type instead of widening to Tool[]
+    tools: tools as TTools | undefined,
     ...(stopWhen !== undefined && {
       stopWhen,
     }),
-  } as GetResponseOptions<TOOLS>);
+  } as GetResponseOptions<TTools>);
 }
