@@ -137,11 +137,13 @@ These converters handle content types, tool calls, and format-specific features.
 ## Streaming Architecture
 
 **ReusableReadableStream** (`src/lib/reusable-stream.ts`)
+
 - Caches stream events to enable multiple independent consumers
 - Critical for allowing parallel consumption patterns (text + tools + reasoning)
 - Handles both SSE and standard ReadableStream
 
 **Stream Transformers** (`src/lib/stream-transformers.ts`)
+
 - Extract specific data from response streams
 - `extractTextDeltas()`, `extractReasoningDeltas()`, `extractToolDeltas()`
 - Build higher-level streams for different consumption patterns
