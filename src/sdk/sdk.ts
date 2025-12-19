@@ -24,11 +24,9 @@ import {
 } from "../funcs/call-model.js";
 import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
-import { type MaxToolRounds, Tool, ToolType } from "../lib/tool-types.js";
-import type { OpenResponsesRequest } from "../models/openresponsesrequest.js";
+import { type Tool, ToolType } from "../lib/tool-types.js";
 
 export { ToolType };
-export type { MaxToolRounds };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
@@ -98,14 +96,10 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel(
-    request: Omit<OpenResponsesRequest, "stream" | "tools" | "input"> & {
-      input?: CallModelInput;
-      tools?: Tool[];
-      maxToolRounds?: MaxToolRounds;
-    },
+  callModel<TTools extends readonly Tool[]>(
+    request: CallModelInput<TTools>,
     options?: RequestOptions,
-  ): ModelResult {
+  ): ModelResult<TTools> {
     return callModelFunc(this, request, options);
   }
   // #endregion sdk-class-body
