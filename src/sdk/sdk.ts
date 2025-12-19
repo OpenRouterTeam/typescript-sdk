@@ -24,7 +24,7 @@ import {
 } from "../funcs/call-model.js";
 import type { ModelResult } from "../lib/model-result.js";
 import type { RequestOptions } from "../lib/sdks.js";
-import { ToolType, type Tool } from "../lib/tool-types.js";
+import { type Tool, ToolType } from "../lib/tool-types.js";
 
 export { ToolType };
 // #endregion imports
