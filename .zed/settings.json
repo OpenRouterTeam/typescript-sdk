@@ -1,0 +1,10 @@
+{
+  "tab_size": 2,
+  "project_name": "@openrouter/sdk",
+  "formatter": {
+    "language_server": {
+      "name": "eslint"
+    }
+  },
+  "language_servers": ["!biome", "..."]
+}
