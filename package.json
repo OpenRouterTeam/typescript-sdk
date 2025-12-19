@@ -65,13 +65,13 @@
     "url": "https://github.com/OpenRouterTeam/typescript-sdk.git"
   },
   "scripts": {
-    "lint": "eslint --cache --max-warnings=0 src",
+    "lint": "eslint --cache --max-warnings=0 src && biome check",
     "lint-fix": "biome check --fix && eslint --cache --fix src",
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    
+
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
