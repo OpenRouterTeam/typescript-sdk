@@ -12,15 +12,13 @@ This is the OpenRouter TypeScript SDK - a type-safe toolkit for building AI appl
 
 ### Building
 ```bash
-npm run build
-# or
 pnpm run build
 ```
 Compiles TypeScript to `esm/` directory using `tsc`.
 
 ### Linting
 ```bash
-npm run lint
+pnpm run lint
 ```
 **Note**: This project uses **ESLint** (not Biome). Configuration is in `eslint.config.mjs`.
 
@@ -47,7 +45,7 @@ Test organization:
 
 ### Publishing
 ```bash
-npm run prepublishOnly
+pnpm run prepublishOnly
 ```
 This runs the build automatically before publishing.
 
@@ -126,7 +124,7 @@ This reads configuration from `.speakeasy/gen.yaml` and workflow from `.speakeas
 - Custom conditions receive full step history
 - Default: `stepCountIs(5)` if not specified
 
-### Message Format Compatibility
+## Message Format Compatibility
 
 The SDK supports multiple message formats:
 
@@ -136,7 +134,7 @@ The SDK supports multiple message formats:
 
 These converters handle content types, tool calls, and format-specific features.
 
-### Streaming Architecture
+## Streaming Architecture
 
 **ReusableReadableStream** (`src/lib/reusable-stream.ts`)
 - Caches stream events to enable multiple independent consumers
@@ -169,12 +167,12 @@ These converters handle content types, tool calls, and format-specific features.
 ```bash
 cd examples
 # Set your API key in .env first
-node --loader ts-node/esm callModel.example.ts
+node --loader ts-node/esm call-model.example.ts
 ```
 
 Examples demonstrate:
-- `callModel.example.ts` - Basic usage
-- `callModel-typed-tool-calling.example.ts` - Type-safe tools
+- `call-model.example.ts` - Basic usage
+- `call-model-typed-tool-calling.example.ts` - Type-safe tools
 - `anthropic-multimodal-tools.example.ts` - Multimodal inputs with tools
 - `anthropic-reasoning.example.ts` - Extended thinking/reasoning
 - `chat-reasoning.example.ts` - Reasoning with chat format
