@@ -19,7 +19,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CompletionResponse = {
   id: string;
-  object: "text_completion";
+  object: "text_completion" | "chat.completion";
   created: number;
   model: string;
   provider?: string | undefined;
@@ -34,7 +34,7 @@ export const CompletionResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  object: z.literal("text_completion"),
+  object: z.enum(["text_completion", "chat.completion"]),
   created: z.number(),
   model: z.string(),
   provider: z.string().optional(),
