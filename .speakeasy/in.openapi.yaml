@@ -6716,11 +6716,6 @@ paths:
                   - object
                   - data
                   - model
-            text/event-stream:
-              schema:
-                type: string
-                description: Not used for embeddings - embeddings do not support streaming
-              x-speakeasy-sse-sentinel: '[DONE]'
         '400':
           description: Bad Request - Invalid request parameters or malformed input
           content:
