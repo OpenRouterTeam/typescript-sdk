@@ -21,6 +21,8 @@ type RegularToolConfigWithOutput<
   outputSchema: TOutput;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  /** Whether this tool requires human approval before execution */
+  requireApproval?: boolean;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -40,6 +42,8 @@ type RegularToolConfigWithoutOutput<
   outputSchema?: undefined;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  /** Whether this tool requires human approval before execution */
+  requireApproval?: boolean;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -60,6 +64,8 @@ type GeneratorToolConfig<
   eventSchema: TEvent;
   outputSchema: TOutput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  /** Whether this tool requires human approval before execution */
+  requireApproval?: boolean;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -74,6 +80,8 @@ type ManualToolConfig<TInput extends ZodObject<ZodRawShape>> = {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  /** Whether this tool requires human approval before execution */
+  requireApproval?: boolean;
   execute: false;
 };
 
@@ -215,6 +223,10 @@ export function tool<
       fn.nextTurnParams = config.nextTurnParams;
     }
 
+    if (config.requireApproval !== undefined) {
+      fn.requireApproval = config.requireApproval;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -240,6 +252,10 @@ export function tool<
       fn.nextTurnParams = config.nextTurnParams;
     }
 
+    if (config.requireApproval !== undefined) {
+      fn.requireApproval = config.requireApproval;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -256,6 +272,7 @@ export function tool<
     ...(config.description !== undefined && { description: config.description }),
     ...(config.outputSchema !== undefined && { outputSchema: config.outputSchema }),
     ...(config.nextTurnParams !== undefined && { nextTurnParams: config.nextTurnParams }),
+    ...(config.requireApproval !== undefined && { requireApproval: config.requireApproval }),
   };
 
   // The function signature guarantees this is type-safe via overloads

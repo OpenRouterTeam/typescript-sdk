@@ -1,5 +1,8 @@
 import type * as models from '../models/index.js';
-import type { StopWhen, Tool, TurnContext } from './tool-types.js';
+import type { ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
+
+// Re-export Tool type for convenience
+export type { Tool } from './tool-types.js';
 
 /**
  * Type guard to check if a value is a parameter function
@@ -40,6 +43,14 @@ export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
 } & {
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  /** State accessor for multi-turn persistence and approval gates */
+  state?: StateAccessor<TTools>;
+  /** Call-level approval check - overrides tool-level requireApproval setting */
+  requireApproval?: (toolCall: ParsedToolCall<TTools[number]>) => boolean;
+  /** Tool call IDs to approve (for resuming from awaiting_approval status) */
+  approveToolCalls?: string[];
+  /** Tool call IDs to reject (for resuming from awaiting_approval status) */
+  rejectToolCalls?: string[];
 };
 
 /**
@@ -70,8 +81,8 @@ export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' 
  * // resolved.temperature === 0.2
  * ```
  */
-export async function resolveAsyncFunctions(
-  input: CallModelInput,
+export async function resolveAsyncFunctions<TTools extends readonly Tool[] = readonly Tool[]>(
+  input: CallModelInput<TTools>,
   context: TurnContext,
 ): Promise<ResolvedCallModelInput> {
   // Build array of resolved entries

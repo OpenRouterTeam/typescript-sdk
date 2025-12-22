@@ -12,6 +12,8 @@ export type { Fetcher, HTTPClientOptions } from './lib/http.js';
 // Tool types
 export type {
   ChatStreamEvent,
+  ConversationState,
+  ConversationStatus,
   ResponseStreamEvent as EnhancedResponseStreamEvent,
   InferToolEvent,
   InferToolEventsUnion,
@@ -21,6 +23,8 @@ export type {
   NextTurnParamsContext,
   NextTurnParamsFunctions,
   ParsedToolCall,
+  PartialResponse,
+  StateAccessor,
   StepResult,
   StopCondition,
   StopWhen,
@@ -34,6 +38,7 @@ export type {
   TurnContext,
   TypedToolCall,
   TypedToolCallUnion,
+  UnsentToolResult,
   Warning,
 } from './lib/tool-types.js';
 export type { BuildTurnContextOptions } from './lib/turn-context.js';
@@ -109,4 +114,15 @@ export {
 } from './lib/tool-types.js';
 // Turn context helpers
 export { buildTurnContext, normalizeInputToArray } from './lib/turn-context.js';
+// Conversation state helpers
+export {
+  appendToMessages,
+  createInitialState,
+  createRejectedResult,
+  createUnsentResult,
+  generateConversationId,
+  partitionToolCalls,
+  toolRequiresApproval,
+  updateState,
+} from './lib/conversation-state.js';
 export * from './sdk/sdk.js';

@@ -66,6 +66,8 @@ export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  /** Whether this tool requires human approval before execution */
+  requireApproval?: boolean;
 }
 
 /**
@@ -420,3 +422,82 @@ export type ChatStreamEvent<TEvent = unknown> =
     type: string;
     event: OpenResponsesStreamEvent;
   }; // Pass-through for other events
+
+// =============================================================================
+// Multi-Turn Conversation State Types
+// =============================================================================
+
+/**
+ * Result of a tool execution that hasn't been sent to the model yet
+ * Used for interrupted or awaiting approval states
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface UnsentToolResult<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** The ID of the tool call this result is for */
+  callId: string;
+  /** The name of the tool that was executed */
+  name: TTools[number]['function']['name'];
+  /** The output of the tool execution */
+  output: unknown;
+  /** Error message if the tool call was rejected or failed */
+  error?: string;
+}
+
+/**
+ * Partial response captured during interruption
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface PartialResponse<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Partial text response accumulated before interruption */
+  text?: string;
+  /** Tool calls that were in progress when interrupted */
+  toolCalls?: Array<ParsedToolCall<TTools[number]>>;
+}
+
+/**
+ * Status of a conversation state
+ */
+export type ConversationStatus =
+  | 'complete'
+  | 'interrupted'
+  | 'awaiting_approval'
+  | 'in_progress';
+
+/**
+ * State for multi-turn conversations with persistence and approval gates
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface ConversationState<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Unique identifier for this conversation */
+  id: string;
+  /** Full message history */
+  messages: models.OpenResponsesInput;
+  /** Previous response ID for chaining (OpenRouter server-side optimization) */
+  previousResponseId?: string;
+  /** Tool calls awaiting human approval */
+  pendingToolCalls?: Array<ParsedToolCall<TTools[number]>>;
+  /** Tool results executed but not yet sent to the model */
+  unsentToolResults?: Array<UnsentToolResult<TTools>>;
+  /** Partial response data captured during interruption */
+  partialResponse?: PartialResponse<TTools>;
+  /** Signal from a new request to interrupt this conversation */
+  interruptedBy?: string;
+  /** Current status of the conversation */
+  status: ConversationStatus;
+  /** Creation timestamp (Unix ms) */
+  createdAt: number;
+  /** Last update timestamp (Unix ms) */
+  updatedAt: number;
+}
+
+/**
+ * State accessor for loading and saving conversation state
+ * Enables any storage backend (memory, Redis, database, etc.)
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface StateAccessor<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Load the current conversation state, or null if none exists */
+  load: () => Promise<ConversationState<TTools> | null>;
+  /** Save the conversation state */
+  save: (state: ConversationState<TTools>) => Promise<void>;
+}
