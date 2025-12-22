@@ -154,6 +154,19 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
   constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
+
+    // Runtime validation: approval decisions require state
+    const hasApprovalDecisions =
+      (options.approveToolCalls && options.approveToolCalls.length > 0) ||
+      (options.rejectToolCalls && options.rejectToolCalls.length > 0);
+
+    if (hasApprovalDecisions && !options.state) {
+      throw new Error(
+        'approveToolCalls and rejectToolCalls require a state accessor. ' +
+        'Provide a StateAccessor via the "state" parameter to persist approval decisions.'
+      );
+    }
+
     // Initialize state management
     this.stateAccessor = options.state ?? null;
     this.requireApprovalFn = options.requireApproval ?? null;
@@ -355,11 +368,20 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
     if (needsApproval.length === 0) return false;
 
+    // Validate: approval requires state accessor
+    if (!this.stateAccessor) {
+      const toolNames = needsApproval.map(tc => tc.name).join(', ');
+      throw new Error(
+        `Tool(s) require approval but no state accessor is configured: ${toolNames}. ` +
+        'Provide a StateAccessor via the "state" parameter to enable approval workflows.'
+      );
+    }
+
     // Execute auto-approve tools
     const unsentResults = await this.executeAutoApproveTools(autoExecute, turnContext);
 
     // Save state with pending approvals
-    if (this.stateAccessor && this.currentState) {
+    if (this.currentState) {
       const stateUpdates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>> = {
         pendingToolCalls: needsApproval,
         status: 'awaiting_approval',

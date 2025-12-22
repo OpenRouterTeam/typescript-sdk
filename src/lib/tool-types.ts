@@ -514,3 +514,47 @@ export interface StateAccessor<TTools extends readonly Tool[] = readonly Tool[]>
   /** Save the conversation state */
   save: (state: ConversationState<TTools>) => Promise<void>;
 }
+
+// =============================================================================
+// Approval Detection Helper Types
+// =============================================================================
+
+/**
+ * Check if a single tool has approval configured (non-false, non-undefined)
+ * Returns true if the tool definitely requires approval,
+ * false if it definitely doesn't, or boolean if it's uncertain
+ */
+export type ToolHasApproval<T extends Tool> =
+  T extends { function: { requireApproval: true | ToolApprovalCheck<unknown> } }
+    ? true
+    : T extends { function: { requireApproval: false } }
+      ? false
+      : T extends { function: { requireApproval: undefined } }
+        ? false
+        : boolean; // Could be either (optional property)
+
+/**
+ * Check if ANY tool in an array has approval configured
+ * Returns true if at least one tool might require approval
+ */
+export type HasApprovalTools<TTools extends readonly Tool[]> =
+  TTools extends readonly [infer First extends Tool, ...infer Rest extends Tool[]]
+    ? ToolHasApproval<First> extends true
+      ? true
+      : HasApprovalTools<Rest>
+    : false;
+
+/**
+ * Type guard to check if a tool has approval configured at runtime
+ */
+export function toolHasApprovalConfigured(tool: Tool): boolean {
+  const requireApproval = tool.function.requireApproval;
+  return requireApproval === true || typeof requireApproval === 'function';
+}
+
+/**
+ * Type guard to check if any tools in array have approval configured at runtime
+ */
+export function hasApprovalRequiredTools(tools: readonly Tool[]): boolean {
+  return tools.some(toolHasApprovalConfigured);
+}

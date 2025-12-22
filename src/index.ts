@@ -5,6 +5,7 @@
 // Async params support
 export type {
   CallModelInput,
+  CallModelInputWithApprovalTools,
   FieldOrAsyncFunction,
   ResolvedCallModelInput,
 } from './lib/async-params.js';
@@ -15,6 +16,7 @@ export type {
   ConversationState,
   ConversationStatus,
   ResponseStreamEvent as EnhancedResponseStreamEvent,
+  HasApprovalTools,
   InferToolEvent,
   InferToolEventsUnion,
   InferToolInput,
@@ -32,6 +34,7 @@ export type {
   ToolApprovalCheck,
   ToolExecutionResult,
   ToolExecutionResultUnion,
+  ToolHasApproval,
   ToolPreliminaryResultEvent,
   ToolStreamEvent,
   ToolWithExecute,
@@ -107,10 +110,12 @@ export {
 // Tool creation helpers
 export { tool } from './lib/tool.js';
 export {
+  hasApprovalRequiredTools,
   hasExecuteFunction,
   isGeneratorTool,
   isRegularExecuteTool,
   isToolPreliminaryResultEvent,
+  toolHasApprovalConfigured,
   ToolType,
 } from './lib/tool-types.js';
 // Turn context helpers

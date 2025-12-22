@@ -11,6 +11,10 @@ import {
   appendToMessages,
 } from '../../src/lib/conversation-state.js';
 import { tool } from '../../src/lib/tool.js';
+import {
+  toolHasApprovalConfigured,
+  hasApprovalRequiredTools,
+} from '../../src/lib/tool-types.js';
 
 describe('Conversation State Utilities', () => {
   describe('generateConversationId', () => {
@@ -325,6 +329,79 @@ describe('Conversation State Utilities', () => {
       ]);
 
       expect(result).toHaveLength(2);
+    });
+  });
+
+  describe('Approval Detection Type Guards', () => {
+    const toolWithBooleanApproval = tool({
+      name: 'needs_approval',
+      inputSchema: z.object({}),
+      requireApproval: true,
+      execute: async () => ({}),
+    });
+
+    const toolWithFunctionApproval = tool({
+      name: 'conditional_approval',
+      inputSchema: z.object({ dangerous: z.boolean() }),
+      requireApproval: (params) => params.dangerous,
+      execute: async () => ({}),
+    });
+
+    const toolWithoutApproval = tool({
+      name: 'safe_tool',
+      inputSchema: z.object({}),
+      execute: async () => ({}),
+    });
+
+    const toolWithFalseApproval = tool({
+      name: 'explicitly_safe',
+      inputSchema: z.object({}),
+      requireApproval: false,
+      execute: async () => ({}),
+    });
+
+    describe('toolHasApprovalConfigured', () => {
+      it('should return true for tools with requireApproval: true', () => {
+        expect(toolHasApprovalConfigured(toolWithBooleanApproval)).toBe(true);
+      });
+
+      it('should return true for tools with requireApproval function', () => {
+        expect(toolHasApprovalConfigured(toolWithFunctionApproval)).toBe(true);
+      });
+
+      it('should return false for tools without requireApproval', () => {
+        expect(toolHasApprovalConfigured(toolWithoutApproval)).toBe(false);
+      });
+
+      it('should return false for tools with requireApproval: false', () => {
+        expect(toolHasApprovalConfigured(toolWithFalseApproval)).toBe(false);
+      });
+    });
+
+    describe('hasApprovalRequiredTools', () => {
+      it('should return true if any tool has approval configured', () => {
+        expect(hasApprovalRequiredTools([
+          toolWithoutApproval,
+          toolWithBooleanApproval,
+        ])).toBe(true);
+      });
+
+      it('should return true for function-based approval', () => {
+        expect(hasApprovalRequiredTools([
+          toolWithFunctionApproval,
+        ])).toBe(true);
+      });
+
+      it('should return false if no tools have approval configured', () => {
+        expect(hasApprovalRequiredTools([
+          toolWithoutApproval,
+          toolWithFalseApproval,
+        ])).toBe(false);
+      });
+
+      it('should return false for empty array', () => {
+        expect(hasApprovalRequiredTools([])).toBe(false);
+      });
     });
   });
 });
