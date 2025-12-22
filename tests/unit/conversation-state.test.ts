@@ -110,34 +110,48 @@ describe('Conversation State Utilities', () => {
       execute: async () => ({}),
     });
 
-    it('should return true for tools with requireApproval', () => {
+    const context = { numberOfTurns: 1 };
+
+    it('should return true for tools with requireApproval', async () => {
       const toolCall = { id: '1', name: 'dangerous_action', arguments: {} };
-      expect(toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval])).toBe(true);
+      expect(await toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval], context)).toBe(true);
     });
 
-    it('should return false for tools without requireApproval', () => {
+    it('should return false for tools without requireApproval', async () => {
       const toolCall = { id: '1', name: 'safe_action', arguments: {} };
-      expect(toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval])).toBe(false);
+      expect(await toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval], context)).toBe(false);
     });
 
-    it('should return false for unknown tools', () => {
+    it('should return false for unknown tools', async () => {
       const toolCall = { id: '1', name: 'unknown_tool', arguments: {} };
-      expect(toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval])).toBe(false);
+      expect(await toolRequiresApproval(toolCall, [toolWithApproval, toolWithoutApproval], context)).toBe(false);
     });
 
-    it('should use call-level check when provided', () => {
+    it('should use call-level check when provided', async () => {
       const toolCall = { id: '1', name: 'safe_action', arguments: {} };
       const alwaysRequire = () => true;
 
-      expect(toolRequiresApproval(toolCall, [toolWithoutApproval], alwaysRequire)).toBe(true);
+      expect(await toolRequiresApproval(toolCall, [toolWithoutApproval], context, alwaysRequire)).toBe(true);
     });
 
-    it('should call-level check can override tool-level approval', () => {
+    it('should call-level check can override tool-level approval', async () => {
       const toolCall = { id: '1', name: 'dangerous_action', arguments: {} };
       const neverRequire = () => false;
 
       // Call-level check takes precedence
-      expect(toolRequiresApproval(toolCall, [toolWithApproval], neverRequire)).toBe(false);
+      expect(await toolRequiresApproval(toolCall, [toolWithApproval], context, neverRequire)).toBe(false);
+    });
+
+    it('should support async call-level check', async () => {
+      const toolCall = { id: '1', name: 'safe_action', arguments: {} };
+      const asyncCheck = async (_tc: unknown, ctx: { numberOfTurns: number }) => {
+        // Simulate async operation
+        await Promise.resolve();
+        return ctx.numberOfTurns > 0;
+      };
+
+      expect(await toolRequiresApproval(toolCall, [toolWithoutApproval], context, asyncCheck)).toBe(true);
+      expect(await toolRequiresApproval(toolCall, [toolWithoutApproval], { numberOfTurns: 0 }, asyncCheck)).toBe(false);
     });
   });
 
@@ -155,15 +169,18 @@ describe('Conversation State Utilities', () => {
       execute: async () => ({}),
     });
 
-    it('should partition tool calls correctly', () => {
+    const context = { numberOfTurns: 1 };
+
+    it('should partition tool calls correctly', async () => {
       const toolCalls = [
         { id: '1', name: 'needs_approval', arguments: {} },
         { id: '2', name: 'auto_execute', arguments: {} },
       ];
 
-      const { requiresApproval, autoExecute } = partitionToolCalls(
+      const { requiresApproval, autoExecute } = await partitionToolCalls(
         toolCalls,
-        [approvalTool, autoTool]
+        [approvalTool, autoTool],
+        context
       );
 
       expect(requiresApproval).toHaveLength(1);
@@ -172,38 +189,41 @@ describe('Conversation State Utilities', () => {
       expect(autoExecute[0]?.name).toBe('auto_execute');
     });
 
-    it('should handle all tools requiring approval', () => {
+    it('should handle all tools requiring approval', async () => {
       const toolCalls = [
         { id: '1', name: 'needs_approval', arguments: {} },
       ];
 
-      const { requiresApproval, autoExecute } = partitionToolCalls(
+      const { requiresApproval, autoExecute } = await partitionToolCalls(
         toolCalls,
-        [approvalTool, autoTool]
+        [approvalTool, autoTool],
+        context
       );
 
       expect(requiresApproval).toHaveLength(1);
       expect(autoExecute).toHaveLength(0);
     });
 
-    it('should handle all tools auto-executing', () => {
+    it('should handle all tools auto-executing', async () => {
       const toolCalls = [
         { id: '1', name: 'auto_execute', arguments: {} },
       ];
 
-      const { requiresApproval, autoExecute } = partitionToolCalls(
+      const { requiresApproval, autoExecute } = await partitionToolCalls(
         toolCalls,
-        [approvalTool, autoTool]
+        [approvalTool, autoTool],
+        context
       );
 
       expect(requiresApproval).toHaveLength(0);
       expect(autoExecute).toHaveLength(1);
     });
 
-    it('should handle empty tool calls', () => {
-      const { requiresApproval, autoExecute } = partitionToolCalls(
+    it('should handle empty tool calls', async () => {
+      const { requiresApproval, autoExecute } = await partitionToolCalls(
         [],
-        [approvalTool, autoTool]
+        [approvalTool, autoTool],
+        context
       );
 
       expect(requiresApproval).toHaveLength(0);

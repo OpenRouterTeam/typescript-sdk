@@ -96,7 +96,14 @@ export interface GetResponseOptions<TTools extends readonly Tool[]> {
   stopWhen?: StopWhen<TTools>;
   // State management for multi-turn conversations
   state?: StateAccessor<TTools>;
-  requireApproval?: (toolCall: ParsedToolCall<TTools[number]>) => boolean;
+  /**
+   * Call-level approval check - overrides tool-level requireApproval setting
+   * Receives the tool call and turn context, can be sync or async
+   */
+  requireApproval?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext
+  ) => boolean | Promise<boolean>;
   approveToolCalls?: string[];
   rejectToolCalls?: string[];
 }
@@ -140,7 +147,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
   // State management for multi-turn conversations
   private stateAccessor: StateAccessor<TTools> | null = null;
   private currentState: ConversationState<TTools> | null = null;
-  private requireApprovalFn: ((toolCall: ParsedToolCall<TTools[number]>) => boolean) | null = null;
+  private requireApprovalFn: ((toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>) | null = null;
   private approvedToolCalls: string[] = [];
   private rejectedToolCalls: string[] = [];
   private isResumingFromApproval = false;
@@ -337,16 +344,18 @@ export class ModelResult<TTools extends readonly Tool[]> {
   ): Promise<boolean> {
     if (!this.options.tools) return false;
 
-    const { requiresApproval: needsApproval, autoExecute } = partitionToolCalls(
+    const turnContext: TurnContext = { numberOfTurns: currentRound };
+
+    const { requiresApproval: needsApproval, autoExecute } = await partitionToolCalls(
       toolCalls as ParsedToolCall<TTools[number]>[],
       this.options.tools,
+      turnContext,
       this.requireApprovalFn ?? undefined
     );
 
     if (needsApproval.length === 0) return false;
 
     // Execute auto-approve tools
-    const turnContext: TurnContext = { numberOfTurns: currentRound };
     const unsentResults = await this.executeAutoApproveTools(autoExecute, turnContext);
 
     // Save state with pending approvals

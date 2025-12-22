@@ -154,7 +154,8 @@ describe('State Management Integration', () => {
       });
 
       // Custom function that requires approval for all tools
-      const customRequireApproval = (toolCall: { name: string }) => {
+      // Accepts toolCall and context (TurnContext) as per the updated signature
+      const customRequireApproval = (toolCall: { name: string }, _context: { numberOfTurns: number }) => {
         checkedTools.push(toolCall.name);
         return true; // Always require approval
       };

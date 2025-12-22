@@ -3,6 +3,7 @@ import type {
   ConversationState,
   ParsedToolCall,
   Tool,
+  TurnContext,
   UnsentToolResult,
 } from './tool-types.js';
 import { normalizeInputToArray } from './turn-context.js';
@@ -96,16 +97,18 @@ export function appendToMessages(
  * Check if a tool call requires approval
  * @param toolCall - The tool call to check
  * @param tools - Available tools
- * @param callLevelCheck - Optional call-level approval function (overrides tool-level)
+ * @param context - Turn context for the approval check
+ * @param callLevelCheck - Optional call-level approval function (overrides tool-level), can be async
  */
-export function toolRequiresApproval<TTools extends readonly Tool[]>(
+export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   toolCall: ParsedToolCall<TTools[number]>,
   tools: TTools,
-  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>) => boolean
-): boolean {
+  context: TurnContext,
+  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
+): Promise<boolean> {
   // Call-level check takes precedence
   if (callLevelCheck) {
-    return callLevelCheck(toolCall);
+    return callLevelCheck(toolCall, context);
   }
 
   // Fall back to tool-level setting
@@ -115,20 +118,25 @@ export function toolRequiresApproval<TTools extends readonly Tool[]>(
 
 /**
  * Partition tool calls into those requiring approval and those that can auto-execute
+ * @param toolCalls - Tool calls to partition
+ * @param tools - Available tools
+ * @param context - Turn context for the approval check
+ * @param callLevelCheck - Optional call-level approval function (overrides tool-level), can be async
  */
-export function partitionToolCalls<TTools extends readonly Tool[]>(
+export async function partitionToolCalls<TTools extends readonly Tool[]>(
   toolCalls: ParsedToolCall<TTools[number]>[],
   tools: TTools,
-  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>) => boolean
-): {
+  context: TurnContext,
+  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
+): Promise<{
   requiresApproval: ParsedToolCall<TTools[number]>[];
   autoExecute: ParsedToolCall<TTools[number]>[];
-} {
+}> {
   const requiresApproval: ParsedToolCall<TTools[number]>[] = [];
   const autoExecute: ParsedToolCall<TTools[number]>[] = [];
 
   for (const tc of toolCalls) {
-    if (toolRequiresApproval(tc, tools, callLevelCheck)) {
+    if (await toolRequiresApproval(tc, tools, context, callLevelCheck)) {
       requiresApproval.push(tc);
     } else {
       autoExecute.push(tc);

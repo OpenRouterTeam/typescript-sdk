@@ -45,8 +45,14 @@ export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
   stopWhen?: StopWhen<TTools>;
   /** State accessor for multi-turn persistence and approval gates */
   state?: StateAccessor<TTools>;
-  /** Call-level approval check - overrides tool-level requireApproval setting */
-  requireApproval?: (toolCall: ParsedToolCall<TTools[number]>) => boolean;
+  /**
+   * Call-level approval check - overrides tool-level requireApproval setting
+   * Receives the tool call and turn context, can be sync or async
+   */
+  requireApproval?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext
+  ) => boolean | Promise<boolean>;
   /** Tool call IDs to approve (for resuming from awaiting_approval status) */
   approveToolCalls?: string[];
   /** Tool call IDs to reject (for resuming from awaiting_approval status) */
