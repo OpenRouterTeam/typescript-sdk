@@ -113,7 +113,17 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
 
   // Fall back to tool-level setting
   const tool = tools.find(t => t.function.name === toolCall.name);
-  return tool?.function.requireApproval ?? false;
+  if (!tool) return false;
+
+  const requireApproval = tool.function.requireApproval;
+
+  // If it's a function, call it with the tool's arguments and context
+  if (typeof requireApproval === 'function') {
+    return requireApproval(toolCall.arguments, context);
+  }
+
+  // Otherwise treat as boolean
+  return requireApproval ?? false;
 }
 
 /**

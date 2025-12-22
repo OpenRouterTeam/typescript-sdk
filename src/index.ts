@@ -29,6 +29,7 @@ export type {
   StopCondition,
   StopWhen,
   Tool,
+  ToolApprovalCheck,
   ToolExecutionResult,
   ToolExecutionResultUnion,
   ToolPreliminaryResultEvent,

@@ -6,6 +6,7 @@ import {
   type ToolWithGenerator,
   type ManualTool,
   type NextTurnParamsFunctions,
+  type ToolApprovalCheck,
 } from "./tool-types.js";
 
 /**
@@ -21,8 +22,11 @@ type RegularToolConfigWithOutput<
   outputSchema: TOutput;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
-  /** Whether this tool requires human approval before execution */
-  requireApproval?: boolean;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -42,8 +46,11 @@ type RegularToolConfigWithoutOutput<
   outputSchema?: undefined;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
-  /** Whether this tool requires human approval before execution */
-  requireApproval?: boolean;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -64,8 +71,11 @@ type GeneratorToolConfig<
   eventSchema: TEvent;
   outputSchema: TOutput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
-  /** Whether this tool requires human approval before execution */
-  requireApproval?: boolean;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<z.infer<TInput>>;
   execute: (
     params: z.infer<TInput>,
     context?: TurnContext
@@ -80,8 +90,11 @@ type ManualToolConfig<TInput extends ZodObject<ZodRawShape>> = {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
-  /** Whether this tool requires human approval before execution */
-  requireApproval?: boolean;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<z.infer<TInput>>;
   execute: false;
 };
 

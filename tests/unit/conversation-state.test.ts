@@ -153,6 +153,74 @@ describe('Conversation State Utilities', () => {
       expect(await toolRequiresApproval(toolCall, [toolWithoutApproval], context, asyncCheck)).toBe(true);
       expect(await toolRequiresApproval(toolCall, [toolWithoutApproval], { numberOfTurns: 0 }, asyncCheck)).toBe(false);
     });
+
+    it('should support function-based tool-level requireApproval', async () => {
+      // Tool with function-based approval that checks params
+      const toolWithFunctionApproval = tool({
+        name: 'conditional_action',
+        inputSchema: z.object({ dangerous: z.boolean() }),
+        requireApproval: (params) => params.dangerous === true,
+        execute: async () => ({}),
+      });
+
+      // Safe action - should not require approval
+      const safeCall = { id: '1', name: 'conditional_action', arguments: { dangerous: false } };
+      expect(await toolRequiresApproval(safeCall, [toolWithFunctionApproval], context)).toBe(false);
+
+      // Dangerous action - should require approval
+      const dangerousCall = { id: '2', name: 'conditional_action', arguments: { dangerous: true } };
+      expect(await toolRequiresApproval(dangerousCall, [toolWithFunctionApproval], context)).toBe(true);
+    });
+
+    it('should support async function-based tool-level requireApproval', async () => {
+      // Tool with async function-based approval
+      const toolWithAsyncApproval = tool({
+        name: 'async_conditional',
+        inputSchema: z.object({ value: z.number() }),
+        requireApproval: async (params, ctx) => {
+          // Simulate async operation
+          await Promise.resolve();
+          // Require approval if value > 100 OR after first turn
+          return params.value > 100 || ctx.numberOfTurns > 1;
+        },
+        execute: async () => ({}),
+      });
+
+      // Low value, first turn - no approval needed
+      const lowValueCall = { id: '1', name: 'async_conditional', arguments: { value: 50 } };
+      expect(await toolRequiresApproval(lowValueCall, [toolWithAsyncApproval], { numberOfTurns: 1 })).toBe(false);
+
+      // High value - approval needed
+      const highValueCall = { id: '2', name: 'async_conditional', arguments: { value: 150 } };
+      expect(await toolRequiresApproval(highValueCall, [toolWithAsyncApproval], { numberOfTurns: 1 })).toBe(true);
+
+      // Low value but second turn - approval needed
+      expect(await toolRequiresApproval(lowValueCall, [toolWithAsyncApproval], { numberOfTurns: 2 })).toBe(true);
+    });
+
+    it('should pass context to function-based tool-level approval', async () => {
+      const receivedContexts: Array<{ numberOfTurns: number }> = [];
+
+      const toolWithContextCheck = tool({
+        name: 'context_checker',
+        inputSchema: z.object({}),
+        requireApproval: (_params, ctx) => {
+          receivedContexts.push(ctx);
+          return ctx.numberOfTurns > 2;
+        },
+        execute: async () => ({}),
+      });
+
+      const toolCall = { id: '1', name: 'context_checker', arguments: {} };
+
+      await toolRequiresApproval(toolCall, [toolWithContextCheck], { numberOfTurns: 1 });
+      await toolRequiresApproval(toolCall, [toolWithContextCheck], { numberOfTurns: 3 });
+
+      expect(receivedContexts).toEqual([
+        { numberOfTurns: 1 },
+        { numberOfTurns: 3 },
+      ]);
+    });
   });
 
   describe('partitionToolCalls', () => {

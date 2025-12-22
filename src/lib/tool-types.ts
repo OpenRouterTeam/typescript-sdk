@@ -59,6 +59,16 @@ export type NextTurnParamsFunctions<TInput> = {
 };
 
 /**
+ * Tool-level approval check function type
+ * Receives the tool's input params and turn context
+ * Returns true if approval is required, false otherwise
+ */
+export type ToolApprovalCheck<TInput> = (
+  params: TInput,
+  context: TurnContext
+) => boolean | Promise<boolean>;
+
+/**
  * Base tool function interface with inputSchema
  */
 export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
@@ -66,8 +76,11 @@ export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
-  /** Whether this tool requires human approval before execution */
-  requireApproval?: boolean;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<z.infer<TInput>>;
 }
 
 /**
