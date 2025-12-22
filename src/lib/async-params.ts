@@ -88,9 +88,9 @@ export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> =
   BaseCallModelInput<TTools> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
 
 /**
- * Strict version that requires state - use when tools have approval configured
+ * CallModelInput variant that requires state - use when approval workflows are needed
  */
-export type CallModelInputWithApprovalTools<TTools extends readonly Tool[] = readonly Tool[]> =
+export type CallModelInputWithState<TTools extends readonly Tool[] = readonly Tool[]> =
   BaseCallModelInput<TTools> & ApprovalParamsWithState<TTools>;
 
 /**

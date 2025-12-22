@@ -5,7 +5,7 @@
 // Async params support
 export type {
   CallModelInput,
-  CallModelInputWithApprovalTools,
+  CallModelInputWithState,
   FieldOrAsyncFunction,
   ResolvedCallModelInput,
 } from './lib/async-params.js';
