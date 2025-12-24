@@ -4,13 +4,16 @@ import type { CallModelInput } from './async-params.js';
 import type { EventStream } from './event-streams.js';
 import type { RequestOptions } from './sdks.js';
 import type {
+  ConversationState,
   ResponseStreamEvent,
   InferToolEventsUnion,
   ParsedToolCall,
+  StateAccessor,
   StopWhen,
   Tool,
   ToolStreamEvent,
   TurnContext,
+  UnsentToolResult,
 } from './tool-types.js';
 
 import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
@@ -19,6 +22,16 @@ import {
   resolveAsyncFunctions,
   type ResolvedCallModelInput,
 } from './async-params.js';
+import {
+  appendToMessages,
+  createInitialState,
+  createRejectedResult,
+  createUnsentResult,
+  extractTextFromResponse as extractTextFromResponseState,
+  partitionToolCalls,
+  unsentResultsToAPIFormat,
+  updateState,
+} from './conversation-state.js';
 import { ReusableReadableStream } from './reusable-stream.js';
 import {
   buildResponsesMessageStream,
@@ -34,22 +47,26 @@ import {
 import { executeTool } from './tool-executor.js';
 import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 import { hasExecuteFunction } from './tool-types.js';
-import { isStopConditionMet } from './stop-conditions.js';
+import { isStopConditionMet, stepCountIs } from './stop-conditions.js';
 
 /**
  * Type guard for stream event with toReadableStream method
+ * Checks constructor name, prototype, and method availability
  */
 function isEventStream(value: unknown): value is EventStream<models.OpenResponsesStreamEvent> {
-  return (
-    value !== null &&
-    typeof value === 'object' &&
-    'toReadableStream' in value &&
-    typeof (
-      value as {
-        toReadableStream: unknown;
-      }
-    ).toReadableStream === 'function'
-  );
+  if (value === null || typeof value !== 'object') {
+    return false;
+  }
+
+  // Check constructor name for EventStream
+  const constructorName = Object.getPrototypeOf(value)?.constructor?.name;
+  if (constructorName === 'EventStream') {
+    return true;
+  }
+
+  // Fallback: check for toReadableStream method (may be on prototype)
+  const maybeStream = value as { toReadableStream?: unknown };
+  return typeof maybeStream.toReadableStream === 'function';
 }
 
 /**
@@ -77,6 +94,18 @@ export interface GetResponseOptions<TTools extends readonly Tool[]> {
   options?: RequestOptions;
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  // State management for multi-turn conversations
+  state?: StateAccessor<TTools>;
+  /**
+   * Call-level approval check - overrides tool-level requireApproval setting
+   * Receives the tool call and turn context, can be sync or async
+   */
+  requireApproval?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext
+  ) => boolean | Promise<boolean>;
+  approveToolCalls?: string[];
+  rejectToolCalls?: string[];
 }
 
 /**
@@ -100,7 +129,6 @@ export interface GetResponseOptions<TTools extends readonly Tool[]> {
  */
 export class ModelResult<TTools extends readonly Tool[]> {
   private reusableStream: ReusableReadableStream<models.OpenResponsesStreamEvent> | null = null;
-  private streamPromise: Promise<EventStream<models.OpenResponsesStreamEvent>> | null = null;
   private textPromise: Promise<string> | null = null;
   private options: GetResponseOptions<TTools>;
   private initPromise: Promise<void> | null = null;
@@ -116,12 +144,39 @@ export class ModelResult<TTools extends readonly Tool[]> {
   // Track resolved request after async function resolution
   private resolvedRequest: models.OpenResponsesRequest | null = null;
 
+  // State management for multi-turn conversations
+  private stateAccessor: StateAccessor<TTools> | null = null;
+  private currentState: ConversationState<TTools> | null = null;
+  private requireApprovalFn: ((toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>) | null = null;
+  private approvedToolCalls: string[] = [];
+  private rejectedToolCalls: string[] = [];
+  private isResumingFromApproval = false;
+
   constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
+
+    // Runtime validation: approval decisions require state
+    const hasApprovalDecisions =
+      (options.approveToolCalls && options.approveToolCalls.length > 0) ||
+      (options.rejectToolCalls && options.rejectToolCalls.length > 0);
+
+    if (hasApprovalDecisions && !options.state) {
+      throw new Error(
+        'approveToolCalls and rejectToolCalls require a state accessor. ' +
+        'Provide a StateAccessor via the "state" parameter to persist approval decisions.'
+      );
+    }
+
+    // Initialize state management
+    this.stateAccessor = options.state ?? null;
+    this.requireApprovalFn = options.requireApproval ?? null;
+    this.approvedToolCalls = options.approveToolCalls ?? [];
+    this.rejectedToolCalls = options.rejectToolCalls ?? [];
   }
 
   /**
    * Type guard to check if a value is a non-streaming response
+   * Only requires 'output' field and absence of 'toReadableStream' method
    */
   private isNonStreamingResponse(
     value: unknown,
@@ -129,12 +184,352 @@ export class ModelResult<TTools extends readonly Tool[]> {
     return (
       value !== null &&
       typeof value === 'object' &&
-      'id' in value &&
-      'object' in value &&
       'output' in value &&
       !('toReadableStream' in value)
     );
   }
+
+  // =========================================================================
+  // Extracted Helper Methods for executeToolsIfNeeded
+  // =========================================================================
+
+  /**
+   * Get initial response from stream or cached final response
+   */
+  private async getInitialResponse(): Promise<models.OpenResponsesNonStreamingResponse> {
+    if (this.finalResponse) {
+      return this.finalResponse;
+    }
+    if (this.reusableStream) {
+      return consumeStreamForCompletion(this.reusableStream);
+    }
+    throw new Error('Neither stream nor response initialized');
+  }
+
+  /**
+   * Save response output to state
+   */
+  private async saveResponseToState(
+    response: models.OpenResponsesNonStreamingResponse
+  ): Promise<void> {
+    if (!this.stateAccessor || !this.currentState) return;
+
+    const outputItems = Array.isArray(response.output)
+      ? response.output
+      : [response.output];
+
+    this.currentState = updateState(this.currentState, {
+      messages: appendToMessages(
+        this.currentState.messages,
+        outputItems as models.OpenResponsesInput1[]
+      ),
+      previousResponseId: response.id,
+    });
+    await this.stateAccessor.save(this.currentState);
+  }
+
+  /**
+   * Mark state as complete
+   */
+  private async markStateComplete(): Promise<void> {
+    if (this.stateAccessor && this.currentState) {
+      this.currentState = updateState(this.currentState, { status: 'complete' });
+      await this.stateAccessor.save(this.currentState);
+    }
+  }
+
+  /**
+   * Save tool results to state
+   */
+  private async saveToolResultsToState(
+    toolResults: models.OpenResponsesFunctionCallOutput[]
+  ): Promise<void> {
+    if (this.stateAccessor && this.currentState) {
+      this.currentState = updateState(this.currentState, {
+        messages: appendToMessages(this.currentState.messages, toolResults),
+      });
+      await this.stateAccessor.save(this.currentState);
+    }
+  }
+
+  /**
+   * Check if execution should be interrupted
+   * Returns true if interrupted (caller should exit)
+   */
+  private async checkForInterruption(
+    currentResponse: models.OpenResponsesNonStreamingResponse
+  ): Promise<boolean> {
+    if (!this.stateAccessor) return false;
+
+    const freshState = await this.stateAccessor.load();
+    if (!freshState?.interruptedBy) return false;
+
+    // Save partial state
+    if (this.currentState) {
+      const currentToolCalls = extractToolCallsFromResponse(currentResponse);
+      this.currentState = updateState(this.currentState, {
+        status: 'interrupted',
+        partialResponse: {
+          text: extractTextFromResponseState(currentResponse),
+          toolCalls: currentToolCalls as ParsedToolCall<TTools[number]>[],
+        },
+      });
+      await this.stateAccessor.save(this.currentState);
+    }
+
+    this.finalResponse = currentResponse;
+    return true;
+  }
+
+  /**
+   * Check if stop conditions are met
+   * Returns true if execution should stop
+   * Default: stepCountIs(5) if no stopWhen is specified
+   */
+  private async shouldStopExecution(): Promise<boolean> {
+    // Use default of stepCountIs(5) if no stopWhen is specified
+    const stopWhen = this.options.stopWhen ?? stepCountIs(5);
+
+    const stopConditions = Array.isArray(stopWhen)
+      ? stopWhen
+      : [stopWhen];
+
+    return isStopConditionMet({
+      stopConditions,
+      steps: this.allToolExecutionRounds.map((round) => ({
+        stepType: 'continue' as const,
+        text: extractTextFromResponse(round.response),
+        toolCalls: round.toolCalls,
+        toolResults: round.toolResults.map((tr) => ({
+          toolCallId: tr.callId,
+          toolName: round.toolCalls.find((tc) => tc.id === tr.callId)?.name ?? '',
+          result: JSON.parse(tr.output),
+        })),
+        response: round.response,
+        usage: round.response.usage,
+        finishReason: undefined,
+      })),
+    });
+  }
+
+  /**
+   * Check if any tool calls have execute functions
+   */
+  private hasExecutableToolCalls(toolCalls: ParsedToolCall<Tool>[]): boolean {
+    return toolCalls.some((toolCall) => {
+      const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
+      return tool && hasExecuteFunction(tool);
+    });
+  }
+
+  /**
+   * Execute tools that can auto-execute (don't require approval)
+   * Returns array of unsent tool results
+   */
+  private async executeAutoApproveTools(
+    toolCalls: ParsedToolCall<TTools[number]>[],
+    turnContext: TurnContext
+  ): Promise<UnsentToolResult<TTools>[]> {
+    const results: UnsentToolResult<TTools>[] = [];
+
+    for (const tc of toolCalls) {
+      const tool = this.options.tools?.find(t => t.function.name === tc.name);
+      if (!tool || !hasExecuteFunction(tool)) continue;
+
+      const result = await executeTool(tool, tc as ParsedToolCall<Tool>, turnContext);
+
+      if (result.error) {
+        results.push(createRejectedResult(tc.id, String(tc.name), result.error.message));
+      } else {
+        results.push(createUnsentResult(tc.id, String(tc.name), result.result));
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Check for tools requiring approval and handle accordingly
+   * Returns true if execution should pause for approval
+   */
+  private async handleApprovalCheck(
+    toolCalls: ParsedToolCall<Tool>[],
+    currentRound: number,
+    currentResponse: models.OpenResponsesNonStreamingResponse
+  ): Promise<boolean> {
+    if (!this.options.tools) return false;
+
+    const turnContext: TurnContext = { numberOfTurns: currentRound };
+
+    const { requiresApproval: needsApproval, autoExecute } = await partitionToolCalls(
+      toolCalls as ParsedToolCall<TTools[number]>[],
+      this.options.tools,
+      turnContext,
+      this.requireApprovalFn ?? undefined
+    );
+
+    if (needsApproval.length === 0) return false;
+
+    // Validate: approval requires state accessor
+    if (!this.stateAccessor) {
+      const toolNames = needsApproval.map(tc => tc.name).join(', ');
+      throw new Error(
+        `Tool(s) require approval but no state accessor is configured: ${toolNames}. ` +
+        'Provide a StateAccessor via the "state" parameter to enable approval workflows.'
+      );
+    }
+
+    // Execute auto-approve tools
+    const unsentResults = await this.executeAutoApproveTools(autoExecute, turnContext);
+
+    // Save state with pending approvals
+    if (this.currentState) {
+      const stateUpdates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>> = {
+        pendingToolCalls: needsApproval,
+        status: 'awaiting_approval',
+      };
+      if (unsentResults.length > 0) {
+        stateUpdates.unsentToolResults = unsentResults;
+      }
+      this.currentState = updateState(this.currentState, stateUpdates);
+      await this.stateAccessor.save(this.currentState);
+    }
+
+    this.finalResponse = currentResponse;
+    return true; // Pause for approval
+  }
+
+  /**
+   * Execute all tools in a single round
+   * Returns the tool results for API submission
+   */
+  private async executeToolRound(
+    toolCalls: ParsedToolCall<Tool>[],
+    turnContext: TurnContext
+  ): Promise<models.OpenResponsesFunctionCallOutput[]> {
+    const toolResults: models.OpenResponsesFunctionCallOutput[] = [];
+
+    for (const toolCall of toolCalls) {
+      const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
+      if (!tool || !hasExecuteFunction(tool)) continue;
+
+      const result = await executeTool(tool, toolCall, turnContext);
+
+      // Store preliminary results for streaming
+      if (result.preliminaryResults && result.preliminaryResults.length > 0) {
+        this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
+      }
+
+      toolResults.push({
+        type: 'function_call_output' as const,
+        id: `output_${toolCall.id}`,
+        callId: toolCall.id,
+        output: result.error
+          ? JSON.stringify({ error: result.error.message })
+          : JSON.stringify(result.result),
+      });
+    }
+
+    return toolResults;
+  }
+
+  /**
+   * Resolve async functions for the current turn
+   */
+  private async resolveAsyncFunctionsForTurn(turnContext: TurnContext): Promise<void> {
+    if (hasAsyncFunctions(this.options.request)) {
+      const resolved = await resolveAsyncFunctions(this.options.request, turnContext);
+      this.resolvedRequest = { ...resolved, stream: false };
+    }
+  }
+
+  /**
+   * Apply nextTurnParams from executed tools
+   */
+  private async applyNextTurnParams(toolCalls: ParsedToolCall<Tool>[]): Promise<void> {
+    if (!this.options.tools || toolCalls.length === 0 || !this.resolvedRequest) {
+      return;
+    }
+
+    const computedParams = await executeNextTurnParamsFunctions(
+      toolCalls,
+      this.options.tools,
+      this.resolvedRequest
+    );
+
+    if (Object.keys(computedParams).length > 0) {
+      this.resolvedRequest = applyNextTurnParamsToRequest(
+        this.resolvedRequest,
+        computedParams
+      );
+    }
+  }
+
+  /**
+   * Make a follow-up API request with tool results
+   * Returns the new response
+   */
+  private async makeFollowupRequest(
+    currentResponse: models.OpenResponsesNonStreamingResponse,
+    toolResults: models.OpenResponsesFunctionCallOutput[]
+  ): Promise<models.OpenResponsesNonStreamingResponse> {
+    // Build new input with tool results
+    const newInput: models.OpenResponsesInput = [
+      ...(Array.isArray(currentResponse.output)
+        ? currentResponse.output
+        : [currentResponse.output]),
+      ...toolResults,
+    ];
+
+    if (!this.resolvedRequest) {
+      throw new Error('Request not initialized');
+    }
+
+    const newRequest: models.OpenResponsesRequest = {
+      ...this.resolvedRequest,
+      input: newInput,
+      stream: false,
+    };
+
+    const newResult = await betaResponsesSend(
+      this.options.client,
+      newRequest,
+      this.options.options,
+    );
+
+    if (!newResult.ok) {
+      throw newResult.error;
+    }
+
+    // Handle streaming or non-streaming response
+    const value = newResult.value;
+    if (isEventStream(value)) {
+      const stream = new ReusableReadableStream(value);
+      return consumeStreamForCompletion(stream);
+    } else if (this.isNonStreamingResponse(value)) {
+      return value;
+    } else {
+      throw new Error('Unexpected response type from API');
+    }
+  }
+
+  /**
+   * Validate the final response has required fields
+   */
+  private validateFinalResponse(
+    response: models.OpenResponsesNonStreamingResponse
+  ): void {
+    if (!response?.id || !response?.output) {
+      throw new Error('Invalid final response: missing required fields');
+    }
+    if (!Array.isArray(response.output) || response.output.length === 0) {
+      throw new Error('Invalid final response: empty or invalid output');
+    }
+  }
+
+  // =========================================================================
+  // Core Methods
+  // =========================================================================
 
   /**
    * Initialize the stream if not already started
@@ -146,6 +541,38 @@ export class ModelResult<TTools extends readonly Tool[]> {
     }
 
     this.initPromise = (async () => {
+      // Load or create state if accessor provided
+      if (this.stateAccessor) {
+        const loadedState = await this.stateAccessor.load();
+        if (loadedState) {
+          this.currentState = loadedState;
+
+          // Check if we're resuming from awaiting_approval with decisions
+          if (loadedState.status === 'awaiting_approval' &&
+              (this.approvedToolCalls.length > 0 || this.rejectedToolCalls.length > 0)) {
+            this.isResumingFromApproval = true;
+            await this.processApprovalDecisions();
+            return; // Skip normal initialization, we're resuming
+          }
+
+          // Check for interruption flag and handle
+          if (loadedState.interruptedBy) {
+            // Clear interruption flag and continue from saved state
+            // Use delete to remove the optional property rather than setting to undefined
+            const updatedState = { ...loadedState, status: 'in_progress' as const, updatedAt: Date.now() };
+            delete updatedState.interruptedBy;
+            this.currentState = updatedState;
+            await this.stateAccessor.save(this.currentState);
+          }
+        } else {
+          this.currentState = createInitialState<TTools>();
+        }
+
+        // Update status to in_progress
+        this.currentState = updateState(this.currentState, { status: 'in_progress' });
+        await this.stateAccessor.save(this.currentState);
+      }
+
       // Resolve async functions before initial request
       // Build initial turn context (turn 0 for initial request)
       const initialContext: TurnContext = {
@@ -161,12 +588,30 @@ export class ModelResult<TTools extends readonly Tool[]> {
         );
       } else {
         // Already resolved, extract non-function fields
-        // Since request is CallModelInput, we need to filter out stopWhen
+        // Since request is CallModelInput, we need to filter out stopWhen and state-related fields
         // Note: tools are already in API format at this point (converted in callModel())
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { stopWhen, ...rest } = this.options.request;
+        const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, ...rest } = this.options.request;
         // Cast to ResolvedCallModelInput - we know it's resolved if hasAsyncFunctions returned false
         baseRequest = rest as ResolvedCallModelInput;
+      }
+
+      // If we have state with existing messages, use those as input
+      if (this.currentState && this.currentState.messages &&
+          Array.isArray(this.currentState.messages) && this.currentState.messages.length > 0) {
+        // Append new input to existing messages
+        const newInput = baseRequest.input;
+        if (newInput) {
+          const inputArray = Array.isArray(newInput) ? newInput : [newInput];
+          baseRequest = {
+            ...baseRequest,
+            input: appendToMessages(this.currentState.messages, inputArray as models.OpenResponsesInput1[]),
+          };
+        } else {
+          baseRequest = {
+            ...baseRequest,
+            input: this.currentState.messages,
+          };
+        }
       }
 
       // Store resolved request with stream mode
@@ -178,27 +623,178 @@ export class ModelResult<TTools extends readonly Tool[]> {
       // Force stream mode for initial request
       const request = this.resolvedRequest;
 
-      // Create the stream promise
-      this.streamPromise = betaResponsesSend(
+      // Make the API request
+      const apiResult = await betaResponsesSend(
         this.options.client,
         request,
         this.options.options,
-      ).then((result) => {
-        if (!result.ok) {
-          throw result.error;
-        }
-        // When stream: true, the API returns EventStream
-        // TypeScript can't narrow the union type based on runtime parameter values,
-        // so we assert the type here based on our knowledge that stream=true
-        return result.value as EventStream<models.OpenResponsesStreamEvent>;
-      });
+      );
 
-      // Wait for the stream and create the reusable stream
-      const eventStream = await this.streamPromise;
-      this.reusableStream = new ReusableReadableStream(eventStream);
+      if (!apiResult.ok) {
+        throw apiResult.error;
+      }
+
+      // Handle both streaming and non-streaming responses
+      // The API may return a non-streaming response even when stream: true is requested
+      if (isEventStream(apiResult.value)) {
+        this.reusableStream = new ReusableReadableStream(apiResult.value);
+      } else if (this.isNonStreamingResponse(apiResult.value)) {
+        // API returned a complete response directly - use it as the final response
+        this.finalResponse = apiResult.value;
+      } else {
+        throw new Error('Unexpected response type from API');
+      }
     })();
 
     return this.initPromise;
+  }
+
+  /**
+   * Process approval/rejection decisions and resume execution
+   */
+  private async processApprovalDecisions(): Promise<void> {
+    if (!this.currentState || !this.stateAccessor) {
+      throw new Error('Cannot process approval decisions without state');
+    }
+
+    const pendingCalls = this.currentState.pendingToolCalls ?? [];
+    const unsentResults = [...(this.currentState.unsentToolResults ?? [])];
+
+    // Process approvals - execute the approved tools
+    for (const callId of this.approvedToolCalls) {
+      const toolCall = pendingCalls.find(tc => tc.id === callId);
+      if (!toolCall) continue;
+
+      const tool = this.options.tools?.find(t => t.function.name === toolCall.name);
+      if (!tool || !hasExecuteFunction(tool)) {
+        // Can't execute, create error result
+        unsentResults.push(createRejectedResult(callId, String(toolCall.name), 'Tool not found or not executable'));
+        continue;
+      }
+
+      // Build context and execute
+      const turnContext: TurnContext = {
+        numberOfTurns: this.currentState.messages ?
+          (Array.isArray(this.currentState.messages) ? this.currentState.messages.length : 1) : 0,
+      };
+
+      const result = await executeTool(tool, toolCall as ParsedToolCall<Tool>, turnContext);
+
+      if (result.error) {
+        unsentResults.push(createRejectedResult(callId, String(toolCall.name), result.error.message));
+      } else {
+        unsentResults.push(createUnsentResult(callId, String(toolCall.name), result.result));
+      }
+    }
+
+    // Process rejections
+    for (const callId of this.rejectedToolCalls) {
+      const toolCall = pendingCalls.find(tc => tc.id === callId);
+      if (!toolCall) continue;
+
+      unsentResults.push(createRejectedResult(callId, String(toolCall.name), 'Rejected by user'));
+    }
+
+    // Remove processed calls from pending
+    const processedIds = new Set([...this.approvedToolCalls, ...this.rejectedToolCalls]);
+    const remainingPending = pendingCalls.filter(tc => !processedIds.has(tc.id));
+
+    // Update state - conditionally include optional properties only if they have values
+    const stateUpdates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>> = {
+      status: remainingPending.length > 0 ? 'awaiting_approval' : 'in_progress',
+    };
+    if (remainingPending.length > 0) {
+      stateUpdates.pendingToolCalls = remainingPending;
+    }
+    if (unsentResults.length > 0) {
+      stateUpdates.unsentToolResults = unsentResults as UnsentToolResult<TTools>[];
+    }
+    this.currentState = updateState(this.currentState, stateUpdates);
+    // Remove optional properties if they should be cleared
+    if (remainingPending.length === 0) {
+      delete this.currentState.pendingToolCalls;
+    }
+    if (unsentResults.length === 0) {
+      delete this.currentState.unsentToolResults;
+    }
+    await this.stateAccessor.save(this.currentState);
+
+    // If we still have pending approvals, stop here
+    if (remainingPending.length > 0) {
+      return;
+    }
+
+    // Otherwise, continue with tool execution using unsent results
+    await this.continueWithUnsentResults();
+  }
+
+  /**
+   * Continue execution with unsent tool results
+   */
+  private async continueWithUnsentResults(): Promise<void> {
+    if (!this.currentState || !this.stateAccessor) return;
+
+    const unsentResults = this.currentState.unsentToolResults ?? [];
+    if (unsentResults.length === 0) return;
+
+    // Convert to API format
+    const toolOutputs = unsentResultsToAPIFormat(unsentResults);
+
+    // Build new input with tool results
+    const currentMessages = this.currentState.messages;
+    const newInput = appendToMessages(currentMessages, toolOutputs);
+
+    // Clear unsent results from state
+    this.currentState = updateState(this.currentState, {
+      messages: newInput,
+    });
+    delete this.currentState.unsentToolResults;
+    await this.stateAccessor.save(this.currentState);
+
+    // Build request with the updated input
+    const initialContext: TurnContext = {
+      numberOfTurns: Array.isArray(newInput) ? newInput.length : 1,
+    };
+
+    let baseRequest: ResolvedCallModelInput;
+    if (hasAsyncFunctions(this.options.request)) {
+      baseRequest = await resolveAsyncFunctions(
+        this.options.request,
+        initialContext,
+      );
+    } else {
+      const { stopWhen: _, state: _s, requireApproval: _r, approveToolCalls: _a, rejectToolCalls: _rj, ...rest } = this.options.request;
+      baseRequest = rest as ResolvedCallModelInput;
+    }
+
+    // Create request with the accumulated messages
+    const request: models.OpenResponsesRequest = {
+      ...baseRequest,
+      input: newInput,
+      stream: true,
+    };
+
+    this.resolvedRequest = request;
+
+    // Make the API request
+    const apiResult = await betaResponsesSend(
+      this.options.client,
+      request,
+      this.options.options,
+    );
+
+    if (!apiResult.ok) {
+      throw apiResult.error;
+    }
+
+    // Handle both streaming and non-streaming responses
+    if (isEventStream(apiResult.value)) {
+      this.reusableStream = new ReusableReadableStream(apiResult.value);
+    } else if (this.isNonStreamingResponse(apiResult.value)) {
+      this.finalResponse = apiResult.value;
+    } else {
+      throw new Error('Unexpected response type from API');
+    }
   }
 
   /**
@@ -213,138 +809,80 @@ export class ModelResult<TTools extends readonly Tool[]> {
     this.toolExecutionPromise = (async () => {
       await this.initStream();
 
-      if (!this.reusableStream) {
-        throw new Error('Stream not initialized');
-      }
-
-      // Note: Async functions already resolved in initStream()
-      // Get the initial response
-      const initialResponse = await consumeStreamForCompletion(this.reusableStream);
-
-      // Check if we have tools and if auto-execution is enabled
-      const shouldAutoExecute =
-        this.options.tools &&
-        this.options.tools.length > 0 &&
-        initialResponse.output.some(
-          (item) => hasTypeProperty(item) && item.type === 'function_call',
-        );
-
-      if (!shouldAutoExecute) {
-        // No tools to execute, use initial response
-        this.finalResponse = initialResponse;
+      // If resuming from approval and still pending, don't continue
+      if (this.isResumingFromApproval && this.currentState?.status === 'awaiting_approval') {
         return;
       }
 
-      // Extract tool calls
-      const toolCalls = extractToolCallsFromResponse(initialResponse);
+      // Get initial response
+      let currentResponse = await this.getInitialResponse();
 
-      // Check if any have execute functions
-      const executableTools = toolCalls.filter((toolCall) => {
-        const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
-        return tool && hasExecuteFunction(tool);
-      });
+      // Save initial response to state
+      await this.saveResponseToState(currentResponse);
 
-      if (executableTools.length === 0) {
-        // No executable tools, use initial response
-        this.finalResponse = initialResponse;
+      // Check if tools should be executed
+      const hasToolCalls = currentResponse.output.some(
+        (item) => hasTypeProperty(item) && item.type === 'function_call'
+      );
+
+      if (!this.options.tools?.length || !hasToolCalls) {
+        this.finalResponse = currentResponse;
+        await this.markStateComplete();
         return;
       }
 
-      let currentResponse = initialResponse;
+      // Extract and check tool calls
+      const toolCalls = extractToolCallsFromResponse(currentResponse);
+
+      // Check for approval requirements
+      if (await this.handleApprovalCheck(toolCalls, 0, currentResponse)) {
+        return; // Paused for approval
+      }
+
+      if (!this.hasExecutableToolCalls(toolCalls)) {
+        this.finalResponse = currentResponse;
+        await this.markStateComplete();
+        return;
+      }
+
+      // Main execution loop
       let currentRound = 0;
 
       while (true) {
-        // Check stopWhen conditions
-        if (this.options.stopWhen) {
-          const stopConditions = Array.isArray(this.options.stopWhen)
-            ? this.options.stopWhen
-            : [this.options.stopWhen];
+        // Check for external interruption
+        if (await this.checkForInterruption(currentResponse)) {
+          return;
+        }
 
-          const shouldStop = await isStopConditionMet({
-            stopConditions,
-            steps: this.allToolExecutionRounds.map((round) => ({
-              stepType: 'continue' as const,
-              text: extractTextFromResponse(round.response),
-              toolCalls: round.toolCalls,
-              toolResults: round.toolResults.map((tr) => ({
-                toolCallId: tr.callId,
-                toolName: round.toolCalls.find((tc) => tc.id === tr.callId)?.name ?? '',
-                result: JSON.parse(tr.output),
-              })),
-              response: round.response,
-              usage: round.response.usage,
-              finishReason: undefined, // OpenResponsesNonStreamingResponse doesn't have finishReason
-            })),
-          });
-
-          if (shouldStop) {
-            break;
-          }
+        // Check stop conditions
+        if (await this.shouldStopExecution()) {
+          break;
         }
 
         const currentToolCalls = extractToolCallsFromResponse(currentResponse);
-
         if (currentToolCalls.length === 0) {
           break;
         }
 
-        const hasExecutable = currentToolCalls.some((toolCall) => {
-          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
-          return tool && hasExecuteFunction(tool);
-        });
+        // Check for approval requirements
+        if (await this.handleApprovalCheck(currentToolCalls, currentRound + 1, currentResponse)) {
+          return;
+        }
 
-        if (!hasExecutable) {
+        if (!this.hasExecutableToolCalls(currentToolCalls)) {
           break;
         }
 
-        // Build turn context for this round (for async parameter resolution only)
-        const turnContext: TurnContext = {
-          numberOfTurns: currentRound + 1, // 1-indexed
-        };
+        // Build turn context
+        const turnContext: TurnContext = { numberOfTurns: currentRound + 1 };
 
         // Resolve async functions for this turn
-        if (hasAsyncFunctions(this.options.request)) {
-          const resolved = await resolveAsyncFunctions(
-            this.options.request,
-            turnContext,
-          );
-          // Update resolved request with new values
-          this.resolvedRequest = {
-            ...resolved,
-            stream: false, // Tool execution turns don't need streaming
-          };
-        }
+        await this.resolveAsyncFunctionsForTurn(turnContext);
 
-        // Execute all tool calls
-        const toolResults: Array<models.OpenResponsesFunctionCallOutput> = [];
+        // Execute tools
+        const toolResults = await this.executeToolRound(currentToolCalls, turnContext);
 
-        for (const toolCall of currentToolCalls) {
-          const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
-
-          if (!tool || !hasExecuteFunction(tool)) {
-            continue;
-          }
-
-          const result = await executeTool(tool, toolCall, turnContext);
-
-          // Store preliminary results
-          if (result.preliminaryResults && result.preliminaryResults.length > 0) {
-            this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
-          }
-
-          toolResults.push({
-            type: 'function_call_output' as const,
-            id: `output_${toolCall.id}`,
-            callId: toolCall.id,
-            output: result.error
-              ? JSON.stringify({
-                error: result.error.message,
-              })
-              : JSON.stringify(result.result),
-          });
-        }
-
-        // Store execution round info including tool results
+        // Track execution round
         this.allToolExecutionRounds.push({
           round: currentRound,
           toolCalls: currentToolCalls,
@@ -352,85 +890,25 @@ export class ModelResult<TTools extends readonly Tool[]> {
           toolResults,
         });
 
-        // Execute nextTurnParams functions for tools that were called
-        if (this.options.tools && currentToolCalls.length > 0) {
-          if (!this.resolvedRequest) {
-            throw new Error('Request not initialized');
-          }
+        // Save tool results to state
+        await this.saveToolResultsToState(toolResults);
 
-          const computedParams = await executeNextTurnParamsFunctions(
-            currentToolCalls,
-            this.options.tools,
-            this.resolvedRequest
-          );
+        // Apply nextTurnParams
+        await this.applyNextTurnParams(currentToolCalls);
 
-          // Apply computed parameters to the resolved request for next turn
-          if (Object.keys(computedParams).length > 0) {
-            this.resolvedRequest = applyNextTurnParamsToRequest(
-              this.resolvedRequest,
-              computedParams
-            );
-          }
-        }
+        // Make follow-up request
+        currentResponse = await this.makeFollowupRequest(currentResponse, toolResults);
 
-        // Build new input with tool results
-        // For the Responses API, we need to include the tool results in the input
-        const newInput: models.OpenResponsesInput = [
-          ...(Array.isArray(currentResponse.output)
-            ? currentResponse.output
-            : [
-              currentResponse.output,
-            ]),
-          ...toolResults,
-        ];
-
-        // Make new request with tool results
-        if (!this.resolvedRequest) {
-          throw new Error('Request not initialized');
-        }
-
-        const newRequest: models.OpenResponsesRequest = {
-          ...this.resolvedRequest,
-          input: newInput,
-          stream: false,
-        };
-
-        const newResult = await betaResponsesSend(
-          this.options.client,
-          newRequest,
-          this.options.options,
-        );
-
-        if (!newResult.ok) {
-          throw newResult.error;
-        }
-
-        // Handle the result - it might be a stream or a response
-        const value = newResult.value;
-        if (isEventStream(value)) {
-          // It's a stream, consume it
-          const stream = new ReusableReadableStream(value);
-          currentResponse = await consumeStreamForCompletion(stream);
-        } else if (this.isNonStreamingResponse(value)) {
-          currentResponse = value;
-        } else {
-          throw new Error('Unexpected response type from API');
-        }
+        // Save new response to state
+        await this.saveResponseToState(currentResponse);
 
         currentRound++;
       }
 
-      // Validate the final response has required fields
-      if (!currentResponse || !currentResponse.id || !currentResponse.output) {
-        throw new Error('Invalid final response: missing required fields');
-      }
-
-      // Ensure the response is in a completed state (has output content)
-      if (!Array.isArray(currentResponse.output) || currentResponse.output.length === 0) {
-        throw new Error('Invalid final response: empty or invalid output');
-      }
-
+      // Validate and finalize
+      this.validateFinalResponse(currentResponse);
       this.finalResponse = currentResponse;
+      await this.markStateComplete();
     })();
 
     return this.toolExecutionPromise;
@@ -660,5 +1138,61 @@ export class ModelResult<TTools extends readonly Tool[]> {
     if (this.reusableStream) {
       await this.reusableStream.cancel();
     }
+  }
+
+  // =========================================================================
+  // Multi-Turn Conversation State Methods
+  // =========================================================================
+
+  /**
+   * Check if the conversation requires human approval to continue.
+   * Returns true if there are pending tool calls awaiting approval.
+   */
+  async requiresApproval(): Promise<boolean> {
+    await this.initStream();
+
+    // If we have pending tool calls in state, approval is required
+    if (this.currentState?.status === 'awaiting_approval') {
+      return true;
+    }
+
+    // Also check if pendingToolCalls is populated
+    return (this.currentState?.pendingToolCalls?.length ?? 0) > 0;
+  }
+
+  /**
+   * Get the pending tool calls that require approval.
+   * Returns empty array if no approvals needed.
+   */
+  async getPendingToolCalls(): Promise<ParsedToolCall<TTools[number]>[]> {
+    await this.initStream();
+
+    // Try to trigger tool execution to populate pending calls
+    if (!this.isResumingFromApproval) {
+      await this.executeToolsIfNeeded();
+    }
+
+    return (this.currentState?.pendingToolCalls ?? []) as ParsedToolCall<TTools[number]>[];
+  }
+
+  /**
+   * Get the current conversation state.
+   * Useful for inspection, debugging, or custom persistence.
+   * Note: This returns the raw ConversationState for inspection only.
+   * To resume a conversation, use the StateAccessor pattern.
+   */
+  async getState(): Promise<ConversationState<TTools>> {
+    await this.initStream();
+
+    // Ensure tool execution has been attempted (to populate final state)
+    if (!this.isResumingFromApproval) {
+      await this.executeToolsIfNeeded();
+    }
+
+    if (!this.currentState) {
+      throw new Error('State not initialized. Make sure a StateAccessor was provided to callModel.');
+    }
+
+    return this.currentState;
   }
 }

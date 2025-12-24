@@ -26,7 +26,7 @@ describe('Enhanced Tool Support for callModel', () => {
       });
 
       const jsonSchema = toJSONSchema(schema, {
-        target: 'openapi-3.0',
+        target: 'draft-7',
       });
 
       expect(jsonSchema).toHaveProperty('type', 'object');
@@ -48,7 +48,7 @@ describe('Enhanced Tool Support for callModel', () => {
       });
 
       const jsonSchema = toJSONSchema(schema, {
-        target: 'openapi-3.0',
+        target: 'draft-7',
       });
 
       expect(jsonSchema.properties?.user).toBeDefined();
@@ -61,7 +61,7 @@ describe('Enhanced Tool Support for callModel', () => {
       });
 
       const jsonSchema = toJSONSchema(schema, {
-        target: 'openapi-3.0',
+        target: 'draft-7',
       });
 
       expect(jsonSchema.properties?.location?.['description']).toBe(
