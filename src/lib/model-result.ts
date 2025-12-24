@@ -47,7 +47,7 @@ import {
 import { executeTool } from './tool-executor.js';
 import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 import { hasExecuteFunction } from './tool-types.js';
-import { isStopConditionMet } from './stop-conditions.js';
+import { isStopConditionMet, stepCountIs } from './stop-conditions.js';
 
 /**
  * Type guard for stream event with toReadableStream method
@@ -284,13 +284,15 @@ export class ModelResult<TTools extends readonly Tool[]> {
   /**
    * Check if stop conditions are met
    * Returns true if execution should stop
+   * Default: stepCountIs(5) if no stopWhen is specified
    */
   private async shouldStopExecution(): Promise<boolean> {
-    if (!this.options.stopWhen) return false;
+    // Use default of stepCountIs(5) if no stopWhen is specified
+    const stopWhen = this.options.stopWhen ?? stepCountIs(5);
 
-    const stopConditions = Array.isArray(this.options.stopWhen)
-      ? this.options.stopWhen
-      : [this.options.stopWhen];
+    const stopConditions = Array.isArray(stopWhen)
+      ? stopWhen
+      : [stopWhen];
 
     return isStopConditionMet({
       stopConditions,

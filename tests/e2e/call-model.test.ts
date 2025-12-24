@@ -160,7 +160,7 @@ describe('callModel E2E Tests', () => {
 
     it('should work with chat-style messages and chat-style tools together', async () => {
       const response = client.callModel({
-        model: 'meta-llama/llama-3.1-8b-instruct',
+        model: 'anthropic/claude-sonnet-4.5',
         input: fromChatMessages([
           {
             role: 'system',
