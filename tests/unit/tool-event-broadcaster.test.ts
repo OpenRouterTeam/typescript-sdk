@@ -221,6 +221,51 @@ describe('ToolEventBroadcaster', () => {
     });
   });
 
+  describe('completion between iterations', () => {
+    it('should handle completion between consumer iterations', async () => {
+      const broadcaster = new ToolEventBroadcaster<number>();
+      const consumer = broadcaster.createConsumer();
+
+      broadcaster.push(1);
+      const first = await consumer.next();
+      expect(first.done).toBe(false);
+      expect(first.value).toBe(1);
+
+      // Complete while consumer is between iterations
+      broadcaster.complete();
+
+      const second = await consumer.next();
+      expect(second.done).toBe(true);
+    });
+
+    it('should handle completion with remaining buffered events', async () => {
+      const broadcaster = new ToolEventBroadcaster<number>();
+      const consumer = broadcaster.createConsumer();
+
+      broadcaster.push(1);
+      broadcaster.push(2);
+      broadcaster.push(3);
+
+      // Read first event
+      const first = await consumer.next();
+      expect(first.value).toBe(1);
+
+      // Complete with events still in buffer
+      broadcaster.complete();
+
+      // Should still get remaining buffered events
+      const second = await consumer.next();
+      expect(second.value).toBe(2);
+
+      const third = await consumer.next();
+      expect(third.value).toBe(3);
+
+      // Now should be done
+      const fourth = await consumer.next();
+      expect(fourth.done).toBe(true);
+    });
+  });
+
   describe('typed events', () => {
     it('should work with typed tool events', async () => {
       type ToolEvent =
