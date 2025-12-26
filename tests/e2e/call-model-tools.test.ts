@@ -525,6 +525,105 @@ describe('Enhanced Tool Support for callModel', () => {
     });
   });
 
+  describe('Real-Time Generator Tool Streaming', () => {
+    it('should stream preliminary results in real-time via getToolStream', async () => {
+      const receivedEvents: unknown[] = [];
+      const timestamps: number[] = [];
+
+      const progressTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'progress_task',
+          description: 'A task with progress updates',
+          inputSchema: z.object({ task: z.string() }),
+          eventSchema: z.object({ progress: z.number(), message: z.string() }),
+          outputSchema: z.object({ completed: z.boolean() }),
+          execute: async function* (_params: { task: string }) {
+            yield { progress: 25, message: 'Starting' };
+            await new Promise((r) => setTimeout(r, 50));
+            yield { progress: 50, message: 'Halfway' };
+            await new Promise((r) => setTimeout(r, 50));
+            yield { progress: 75, message: 'Almost done' };
+            yield { completed: true };
+          },
+        },
+      };
+
+      const response = await client.callModel({
+        model: 'openai/gpt-4o',
+        input: 'Run the progress task for testing',
+        tools: [progressTool],
+        stopWhen: stepCountIs(2),
+      });
+
+      for await (const event of response.getToolStream()) {
+        if (event.type === 'preliminary_result') {
+          receivedEvents.push(event.result);
+          timestamps.push(Date.now());
+        }
+      }
+
+      // Should have received 3 preliminary events (not counting final output)
+      expect(receivedEvents.length).toBeGreaterThanOrEqual(3);
+
+      // Verify the events contain expected progress data
+      expect(receivedEvents[0]).toHaveProperty('progress', 25);
+      expect(receivedEvents[1]).toHaveProperty('progress', 50);
+      expect(receivedEvents[2]).toHaveProperty('progress', 75);
+
+      // Events should have arrived over time (not all at once)
+      // Since we have 50ms delays, there should be measurable time between events
+      if (timestamps.length > 1) {
+        const timeDiff = timestamps[timestamps.length - 1]! - timestamps[0]!;
+        expect(timeDiff).toBeGreaterThan(50); // At least 50ms between first and last
+      }
+    }, 30000);
+
+    it('should stream preliminary results via getFullResponsesStream', async () => {
+      const receivedPreliminaryEvents: unknown[] = [];
+
+      const progressTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'streaming_progress',
+          description: 'Stream progress updates',
+          inputSchema: z.object({ input: z.string() }),
+          eventSchema: z.object({ step: z.number() }),
+          outputSchema: z.object({ done: z.boolean() }),
+          execute: async function* (_params: { input: string }) {
+            yield { step: 1 };
+            yield { step: 2 };
+            yield { step: 3 };
+            yield { done: true };
+          },
+        },
+      };
+
+      const response = await client.callModel({
+        model: 'openai/gpt-4o',
+        input: 'Run streaming progress',
+        tools: [progressTool],
+        stopWhen: stepCountIs(2),
+      });
+
+      for await (const event of response.getFullResponsesStream()) {
+        if (event.type === 'tool.preliminary_result') {
+          receivedPreliminaryEvents.push(event);
+        }
+      }
+
+      // Should have received preliminary events
+      expect(receivedPreliminaryEvents.length).toBeGreaterThanOrEqual(3);
+
+      // Each event should have toolCallId and result
+      for (const event of receivedPreliminaryEvents) {
+        expect(event).toHaveProperty('toolCallId');
+        expect(event).toHaveProperty('result');
+        expect(event).toHaveProperty('timestamp');
+      }
+    }, 30000);
+  });
+
   describe('Manual Tool Execution', () => {
     it('should define tool without execute function', () => {
       const manualTool = {

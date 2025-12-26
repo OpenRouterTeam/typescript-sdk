@@ -109,6 +109,8 @@ export {
 } from './lib/stream-transformers.js';
 // Tool creation helpers
 export { tool } from './lib/tool.js';
+// Real-time tool event broadcasting
+export { ToolEventBroadcaster } from './lib/tool-event-broadcaster.js';
 export {
   hasApprovalRequiredTools,
   hasExecuteFunction,
