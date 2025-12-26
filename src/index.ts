@@ -109,4 +109,6 @@ export {
 } from './lib/tool-types.js';
 // Turn context helpers
 export { buildTurnContext, normalizeInputToArray } from './lib/turn-context.js';
+// Real-time tool event broadcasting
+export { ToolEventBroadcaster } from './lib/tool-event-broadcaster.js';
 export * from './sdk/sdk.js';
