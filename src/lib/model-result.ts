@@ -126,6 +126,21 @@ export class ModelResult<TTools extends readonly Tool[]> {
   }
 
   /**
+   * Get or create the tool event broadcaster (lazy initialization).
+   * Ensures only one broadcaster exists for the lifetime of this ModelResult.
+   */
+  private ensureBroadcaster(): ToolEventBroadcaster<{
+    type: 'preliminary_result';
+    toolCallId: string;
+    result: InferToolEventsUnion<TTools>;
+  }> {
+    if (!this.toolEventBroadcaster) {
+      this.toolEventBroadcaster = new ToolEventBroadcaster();
+    }
+    return this.toolEventBroadcaster;
+  }
+
+  /**
    * Type guard to check if a value is a non-streaming response
    */
   private isNonStreamingResponse(
@@ -332,11 +347,15 @@ export class ModelResult<TTools extends readonly Tool[]> {
           // Create callback for real-time preliminary results
           const onPreliminaryResult = this.toolEventBroadcaster
             ? (callId: string, resultValue: unknown) => {
-                this.toolEventBroadcaster!.push({
-                  type: 'preliminary_result' as const,
-                  toolCallId: callId,
-                  result: resultValue as InferToolEventsUnion<TTools>,
-                });
+                try {
+                  this.toolEventBroadcaster!.push({
+                    type: 'preliminary_result' as const,
+                    toolCallId: callId,
+                    result: resultValue as InferToolEventsUnion<TTools>,
+                  });
+                } catch {
+                  // Don't crash tool execution if broadcasting fails
+                }
               }
             : undefined;
 
@@ -499,13 +518,13 @@ export class ModelResult<TTools extends readonly Tool[]> {
         throw new Error('Stream not initialized');
       }
 
-      // Create broadcaster for real-time tool events
-      this.toolEventBroadcaster = new ToolEventBroadcaster();
-      const toolEventConsumer = this.toolEventBroadcaster.createConsumer();
+      // Get or create broadcaster for real-time tool events (lazy init prevents race conditions)
+      const broadcaster = this.ensureBroadcaster();
+      const toolEventConsumer = broadcaster.createConsumer();
 
       // Start tool execution in background (completes broadcaster when done)
       const executionPromise = this.executeToolsIfNeeded().finally(() => {
-        this.toolEventBroadcaster?.complete();
+        broadcaster.complete();
       });
 
       const consumer = this.reusableStream.createConsumer();
@@ -615,13 +634,13 @@ export class ModelResult<TTools extends readonly Tool[]> {
         throw new Error('Stream not initialized');
       }
 
-      // Create broadcaster for real-time tool events
-      this.toolEventBroadcaster = new ToolEventBroadcaster();
-      const toolEventConsumer = this.toolEventBroadcaster.createConsumer();
+      // Get or create broadcaster for real-time tool events (lazy init prevents race conditions)
+      const broadcaster = this.ensureBroadcaster();
+      const toolEventConsumer = broadcaster.createConsumer();
 
       // Start tool execution in background (completes broadcaster when done)
       const executionPromise = this.executeToolsIfNeeded().finally(() => {
-        this.toolEventBroadcaster?.complete();
+        broadcaster.complete();
       });
 
       // Yield tool deltas from API stream

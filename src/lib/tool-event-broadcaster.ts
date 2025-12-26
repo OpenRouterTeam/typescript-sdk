@@ -28,11 +28,25 @@ export class ToolEventBroadcaster<T> {
   /**
    * Mark the broadcaster as complete - no more events will be pushed.
    * Optionally pass an error to signal failure to all consumers.
+   * Cleans up buffer and consumers after completion.
    */
   complete(error?: Error): void {
     this.isComplete = true;
     this.completionError = error ?? null;
     this.notifyWaitingConsumers();
+    // Schedule cleanup after consumers have processed completion
+    queueMicrotask(() => this.cleanup());
+  }
+
+  /**
+   * Clean up resources after all consumers have finished.
+   * Called automatically after complete(), but can be called manually.
+   */
+  private cleanup(): void {
+    // Only cleanup if complete and all consumers are done
+    if (this.isComplete && this.consumers.size === 0) {
+      this.buffer = [];
+    }
   }
 
   /**
@@ -73,6 +87,7 @@ export class ToolEventBroadcaster<T> {
         // If complete and caught up, we're done
         if (self.isComplete) {
           self.consumers.delete(consumerId);
+          self.cleanup();
           if (self.completionError) {
             throw self.completionError;
           }
@@ -105,6 +120,7 @@ export class ToolEventBroadcaster<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.cleanup();
         }
         return { done: true, value: undefined };
       },
@@ -114,6 +130,7 @@ export class ToolEventBroadcaster<T> {
         if (consumer) {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
+          self.cleanup();
         }
         throw e;
       },
