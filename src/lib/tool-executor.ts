@@ -14,8 +14,9 @@ import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './too
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
+  // Use draft-7 as it's closest to OpenAPI 3.0's JSON Schema variant
   const jsonSchema = toJSONSchema(zodSchema, {
-    target: 'openapi-3.0',
+    target: 'draft-7',
   });
   return jsonSchema;
 }
