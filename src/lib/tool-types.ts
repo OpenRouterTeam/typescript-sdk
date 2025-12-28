@@ -1,4 +1,4 @@
-import type { ZodObject, ZodRawShape, ZodType, z } from 'zod/v4';
+import type { ZodObject, ZodRawShape, ZodType, z } from 'zod';
 import type * as models from '../models/index.js';
 import type { OpenResponsesStreamEvent } from '../models/index.js';
 import type { ModelResult } from './model-result.js';

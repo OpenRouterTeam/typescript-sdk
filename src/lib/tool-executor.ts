@@ -1,4 +1,4 @@
-import type { ZodType } from 'zod/v4';
+import type { ZodType } from 'zod';
 import type {
   APITool,
   Tool,
@@ -12,10 +12,12 @@ import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './too
 
 /**
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
+ * Uses type assertion to bridge zod (user schemas) and zod/v4 (toJSONSchema)
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
-  const jsonSchema = toJSONSchema(zodSchema, {
-    target: 'openapi-3.0',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const jsonSchema = toJSONSchema(zodSchema as any, {
+    target: 'draft-7',
   });
   return jsonSchema;
 }
