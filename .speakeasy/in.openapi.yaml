@@ -6189,7 +6189,9 @@ components:
           type: string
         object:
           type: string
-          const: text_completion
+          enum:
+            - text_completion
+            - chat.completion
         created:
           type: number
         model:
