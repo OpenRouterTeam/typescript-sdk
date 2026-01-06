@@ -347,15 +347,11 @@ export class ModelResult<TTools extends readonly Tool[]> {
           // Create callback for real-time preliminary results
           const onPreliminaryResult = this.toolEventBroadcaster
             ? (callId: string, resultValue: unknown) => {
-                try {
-                  this.toolEventBroadcaster!.push({
-                    type: 'preliminary_result' as const,
-                    toolCallId: callId,
-                    result: resultValue as InferToolEventsUnion<TTools>,
-                  });
-                } catch {
-                  // Don't crash tool execution if broadcasting fails
-                }
+                this.toolEventBroadcaster?.push({
+                  type: 'preliminary_result' as const,
+                  toolCallId: callId,
+                  result: resultValue as InferToolEventsUnion<TTools>,
+                });
               }
             : undefined;
 
