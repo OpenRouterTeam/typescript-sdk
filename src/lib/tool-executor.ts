@@ -7,16 +7,37 @@ import type {
   TurnContext,
 } from './tool-types.js';
 
-import { toJSONSchema, ZodError } from 'zod/v4';
+import * as z4 from 'zod/v4';
 import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './tool-types.js';
 
+// Re-export ZodError for convenience
+export const ZodError = z4.ZodError;
+
 /**
- * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
- * Uses type assertion to bridge zod (user schemas) and zod/v4 (toJSONSchema)
+ * Typeguard to check if a value is a valid Zod schema compatible with zod/v4.
+ * Zod schemas have a _zod property that contains schema metadata.
+ */
+function isZodSchema(value: unknown): value is z4.ZodType {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  if (!('_zod' in value)) {
+    return false;
+  }
+  // After the 'in' check, TypeScript knows value has _zod property
+  return typeof value._zod === 'object';
+}
+
+/**
+ * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function.
+ * Accepts ZodType from the main zod package for user compatibility.
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const jsonSchema = toJSONSchema(zodSchema as any, {
+  if (!isZodSchema(zodSchema)) {
+    throw new Error('Invalid Zod schema provided');
+  }
+  // Use draft-7 as it's closest to OpenAPI 3.0's JSON Schema variant
+  const jsonSchema = z4.toJSONSchema(zodSchema, {
     target: 'draft-7',
   });
   return jsonSchema;

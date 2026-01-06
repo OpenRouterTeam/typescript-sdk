@@ -12,6 +12,7 @@ import type {
   ToolStreamEvent,
   TurnContext,
 } from './tool-types.js';
+import { ToolEventBroadcaster } from './tool-event-broadcaster.js';
 
 import { betaResponsesSend } from '../funcs/betaResponsesSend.js';
 import {
@@ -106,7 +107,11 @@ export class ModelResult<TTools extends readonly Tool[]> {
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
   private finalResponse: models.OpenResponsesNonStreamingResponse | null = null;
-  private preliminaryResults: Map<string, unknown[]> = new Map();
+  private toolEventBroadcaster: ToolEventBroadcaster<{
+    type: 'preliminary_result';
+    toolCallId: string;
+    result: InferToolEventsUnion<TTools>;
+  }> | null = null;
   private allToolExecutionRounds: Array<{
     round: number;
     toolCalls: ParsedToolCall<Tool>[];
@@ -118,6 +123,21 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
   constructor(options: GetResponseOptions<TTools>) {
     this.options = options;
+  }
+
+  /**
+   * Get or create the tool event broadcaster (lazy initialization).
+   * Ensures only one broadcaster exists for the lifetime of this ModelResult.
+   */
+  private ensureBroadcaster(): ToolEventBroadcaster<{
+    type: 'preliminary_result';
+    toolCallId: string;
+    result: InferToolEventsUnion<TTools>;
+  }> {
+    if (!this.toolEventBroadcaster) {
+      this.toolEventBroadcaster = new ToolEventBroadcaster();
+    }
+    return this.toolEventBroadcaster;
   }
 
   /**
@@ -163,8 +183,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
         // Already resolved, extract non-function fields
         // Since request is CallModelInput, we need to filter out stopWhen
         // Note: tools are already in API format at this point (converted in callModel())
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { stopWhen, ...rest } = this.options.request;
+        const { stopWhen: _, ...rest } = this.options.request;
         // Cast to ResolvedCallModelInput - we know it's resolved if hasAsyncFunctions returned false
         baseRequest = rest as ResolvedCallModelInput;
       }
@@ -325,12 +344,18 @@ export class ModelResult<TTools extends readonly Tool[]> {
             continue;
           }
 
-          const result = await executeTool(tool, toolCall, turnContext);
+          // Create callback for real-time preliminary results
+          const onPreliminaryResult = this.toolEventBroadcaster
+            ? (callId: string, resultValue: unknown) => {
+                this.toolEventBroadcaster?.push({
+                  type: 'preliminary_result' as const,
+                  toolCallId: callId,
+                  result: resultValue as InferToolEventsUnion<TTools>,
+                });
+              }
+            : undefined;
 
-          // Store preliminary results
-          if (result.preliminaryResults && result.preliminaryResults.length > 0) {
-            this.preliminaryResults.set(toolCall.id, result.preliminaryResults);
-          }
+          const result = await executeTool(tool, toolCall, turnContext, onPreliminaryResult);
 
           toolResults.push({
             type: 'function_call_output' as const,
@@ -480,7 +505,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
   /**
    * Stream all response events as they arrive.
    * Multiple consumers can iterate over this stream concurrently.
-   * Includes preliminary tool result events after tool execution.
+   * Preliminary tool results are streamed in REAL-TIME as generator tools yield.
    */
   getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools>>> {
     return async function* (this: ModelResult<TTools>) {
@@ -489,27 +514,34 @@ export class ModelResult<TTools extends readonly Tool[]> {
         throw new Error('Stream not initialized');
       }
 
+      // Get or create broadcaster for real-time tool events (lazy init prevents race conditions)
+      const broadcaster = this.ensureBroadcaster();
+      const toolEventConsumer = broadcaster.createConsumer();
+
+      // Start tool execution in background (completes broadcaster when done)
+      const executionPromise = this.executeToolsIfNeeded().finally(() => {
+        broadcaster.complete();
+      });
+
       const consumer = this.reusableStream.createConsumer();
 
-      // Yield original events directly
+      // Yield original API events
       for await (const event of consumer) {
         yield event;
       }
 
-      // After stream completes, check if tools were executed and emit preliminary results
-      await this.executeToolsIfNeeded();
-
-      // Emit all preliminary results as new event types
-      for (const [toolCallId, results] of this.preliminaryResults) {
-        for (const result of results) {
-          yield {
-            type: 'tool.preliminary_result' as const,
-            toolCallId,
-            result: result as InferToolEventsUnion<TTools>,
-            timestamp: Date.now(),
-          };
-        }
+      // Yield tool preliminary results as they arrive (real-time!)
+      for await (const event of toolEventConsumer) {
+        yield {
+          type: 'tool.preliminary_result' as const,
+          toolCallId: event.toolCallId,
+          result: event.result,
+          timestamp: Date.now(),
+        };
       }
+
+      // Ensure execution completed (handles errors)
+      await executionPromise;
     }.call(this);
   }
 
@@ -587,7 +619,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
   /**
    * Stream tool call argument deltas and preliminary results.
-   * This filters the full event stream to yield:
+   * Preliminary results are streamed in REAL-TIME as generator tools yield.
    * - Tool call argument deltas as { type: "delta", content: string }
    * - Preliminary results as { type: "preliminary_result", toolCallId, result }
    */
@@ -598,7 +630,16 @@ export class ModelResult<TTools extends readonly Tool[]> {
         throw new Error('Stream not initialized');
       }
 
-      // Yield tool deltas as structured events
+      // Get or create broadcaster for real-time tool events (lazy init prevents race conditions)
+      const broadcaster = this.ensureBroadcaster();
+      const toolEventConsumer = broadcaster.createConsumer();
+
+      // Start tool execution in background (completes broadcaster when done)
+      const executionPromise = this.executeToolsIfNeeded().finally(() => {
+        broadcaster.complete();
+      });
+
+      // Yield tool deltas from API stream
       for await (const delta of extractToolDeltas(this.reusableStream)) {
         yield {
           type: 'delta' as const,
@@ -606,19 +647,13 @@ export class ModelResult<TTools extends readonly Tool[]> {
         };
       }
 
-      // After stream completes, check if tools were executed and emit preliminary results
-      await this.executeToolsIfNeeded();
-
-      // Emit all preliminary results
-      for (const [toolCallId, results] of this.preliminaryResults) {
-        for (const result of results) {
-          yield {
-            type: 'preliminary_result' as const,
-            toolCallId,
-            result: result as InferToolEventsUnion<TTools>,
-          };
-        }
+      // Yield tool events as they arrive (real-time!)
+      for await (const event of toolEventConsumer) {
+        yield event;
       }
+
+      // Ensure execution completed (handles errors)
+      await executionPromise;
     }.call(this);
   }
 
