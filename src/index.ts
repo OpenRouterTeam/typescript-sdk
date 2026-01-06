@@ -131,4 +131,6 @@ export {
   toolRequiresApproval,
   updateState,
 } from './lib/conversation-state.js';
+// Real-time tool event broadcasting
+export { ToolEventBroadcaster } from './lib/tool-event-broadcaster.js';
 export * from './sdk/sdk.js';
