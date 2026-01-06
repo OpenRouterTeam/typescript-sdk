@@ -20,7 +20,9 @@ export class ToolEventBroadcaster<T> {
    * Events are buffered so late-joining consumers can catch up.
    */
   push(event: T): void {
-    if (this.isComplete) return;
+    if (this.isComplete) {
+      return;
+    }
     this.buffer.push(event);
     this.notifyWaitingConsumers();
   }
