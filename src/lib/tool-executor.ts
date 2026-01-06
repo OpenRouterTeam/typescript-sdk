@@ -15,7 +15,6 @@ import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './too
  * Uses type assertion to bridge zod (user schemas) and zod/v4 (toJSONSchema)
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const jsonSchema = toJSONSchema(zodSchema as any, {
     target: 'draft-7',
   });

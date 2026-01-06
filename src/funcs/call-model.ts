@@ -153,8 +153,7 @@ export function callModel<TTools extends readonly Tool[]>(
     client,
     request: finalRequest,
     options: options ?? {},
-    // Preserve the exact TTools type instead of widening to Tool[]
-    tools: tools as TTools | undefined,
+    tools,
     ...(stopWhen !== undefined && { stopWhen }),
     // Pass state management options
     ...(state !== undefined && { state }),
