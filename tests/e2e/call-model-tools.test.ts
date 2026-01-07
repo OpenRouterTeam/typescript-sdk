@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { toJSONSchema, z } from 'zod/v4';
 import { OpenRouter, ToolType, toChatMessage, stepCountIs } from '../../src/index.js';
 import { convertZodToJsonSchema } from '../../src/lib/tool-executor.js';
+import { assertNoTildeKeys } from '../utils/schema-test-helpers.js';
 
 dotenv.config();
 
@@ -81,25 +82,7 @@ describe('Enhanced Tool Support for callModel', () => {
       const jsonSchema = convertZodToJsonSchema(schema);
 
       // Recursively check that no ~ prefixed keys exist
-      const checkNoTildeKeys = (obj: unknown): void => {
-        if (obj === null || typeof obj !== 'object') {
-          return;
-        }
-
-        if (Array.isArray(obj)) {
-          for (const item of obj) {
-            checkNoTildeKeys(item);
-          }
-          return;
-        }
-
-        for (const key of Object.keys(obj)) {
-          expect(key.startsWith('~')).toBe(false);
-          checkNoTildeKeys((obj as Record<string, unknown>)[key]);
-        }
-      };
-
-      checkNoTildeKeys(jsonSchema);
+      assertNoTildeKeys(jsonSchema);
 
       // Verify schema is still valid
       expect(jsonSchema).toHaveProperty('type', 'object');

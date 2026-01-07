@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { sanitizeJsonSchema, convertZodToJsonSchema } from '../../src/lib/tool-executor.js';
 import { z } from 'zod/v4';
+import { assertNoTildeKeys } from '../utils/schema-test-helpers.js';
 
 describe('sanitizeJsonSchema', () => {
   it('should remove ~standard property from root level', () => {
@@ -111,25 +112,7 @@ describe('convertZodToJsonSchema', () => {
     expect(jsonSchema).toHaveProperty('properties');
 
     // Check that no ~ prefixed keys exist anywhere in the schema
-    const checkNoTildeKeys = (obj: unknown): void => {
-      if (obj === null || typeof obj !== 'object') {
-        return;
-      }
-
-      if (Array.isArray(obj)) {
-        for (const item of obj) {
-          checkNoTildeKeys(item);
-        }
-        return;
-      }
-
-      for (const key of Object.keys(obj)) {
-        expect(key.startsWith('~')).toBe(false);
-        checkNoTildeKeys((obj as Record<string, unknown>)[key]);
-      }
-    };
-
-    checkNoTildeKeys(jsonSchema);
+    assertNoTildeKeys(jsonSchema);
   });
 
   it('should preserve all valid JSON Schema properties', () => {
