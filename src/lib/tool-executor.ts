@@ -14,11 +14,23 @@ import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './too
 export const ZodError = z4.ZodError;
 
 /**
+ * Typeguard to check if a value is a non-null object (not an array).
+ */
+function isNonNullObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/**
  * Recursively remove keys prefixed with ~ from an object.
  * These are metadata properties (like ~standard from Standard Schema)
  * that should not be sent to downstream providers.
  * @see https://github.com/OpenRouterTeam/typescript-sdk/issues/131
+ *
+ * When given a Record<string, unknown>, returns Record<string, unknown>.
+ * When given unknown, returns unknown (preserves primitives, null, etc).
  */
+export function sanitizeJsonSchema(obj: Record<string, unknown>): Record<string, unknown>;
+export function sanitizeJsonSchema(obj: unknown): unknown;
 export function sanitizeJsonSchema(obj: unknown): unknown {
   if (obj === null || typeof obj !== 'object') {
     return obj;
@@ -28,10 +40,16 @@ export function sanitizeJsonSchema(obj: unknown): unknown {
     return obj.map(sanitizeJsonSchema);
   }
 
+  // At this point, obj is a non-null, non-array object
+  // Use typeguard to narrow the type for type-safe property access
+  if (!isNonNullObject(obj)) {
+    return obj;
+  }
+
   const result: Record<string, unknown> = {};
   for (const key of Object.keys(obj)) {
     if (!key.startsWith('~')) {
-      result[key] = sanitizeJsonSchema((obj as Record<string, unknown>)[key]);
+      result[key] = sanitizeJsonSchema(obj[key]);
     }
   }
   return result;
@@ -66,7 +84,9 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
   const jsonSchema = z4.toJSONSchema(zodSchema, {
     target: 'draft-7',
   });
-  return sanitizeJsonSchema(jsonSchema) as Record<string, unknown>;
+  // jsonSchema is always a Record<string, unknown> from toJSONSchema
+  // The overloaded sanitizeJsonSchema preserves this type
+  return sanitizeJsonSchema(jsonSchema);
 }
 
 /**
