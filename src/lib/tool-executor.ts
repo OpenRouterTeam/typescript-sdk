@@ -14,6 +14,30 @@ import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './too
 export const ZodError = z4.ZodError;
 
 /**
+ * Recursively remove keys prefixed with ~ from an object.
+ * These are metadata properties (like ~standard from Standard Schema)
+ * that should not be sent to downstream providers.
+ * @see https://github.com/OpenRouterTeam/typescript-sdk/issues/131
+ */
+export function sanitizeJsonSchema(obj: unknown): unknown {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeJsonSchema);
+  }
+
+  const result: Record<string, unknown> = {};
+  for (const key of Object.keys(obj)) {
+    if (!key.startsWith('~')) {
+      result[key] = sanitizeJsonSchema((obj as Record<string, unknown>)[key]);
+    }
+  }
+  return result;
+}
+
+/**
  * Typeguard to check if a value is a valid Zod schema compatible with zod/v4.
  * Zod schemas have a _zod property that contains schema metadata.
  */
@@ -31,6 +55,8 @@ function isZodSchema(value: unknown): value is z4.ZodType {
 /**
  * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function.
  * Accepts ZodType from the main zod package for user compatibility.
+ * The resulting schema is sanitized to remove metadata properties (like ~standard)
+ * that would cause 400 errors with downstream providers.
  */
 export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
   if (!isZodSchema(zodSchema)) {
@@ -40,7 +66,7 @@ export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unkno
   const jsonSchema = z4.toJSONSchema(zodSchema, {
     target: 'draft-7',
   });
-  return jsonSchema;
+  return sanitizeJsonSchema(jsonSchema) as Record<string, unknown>;
 }
 
 /**

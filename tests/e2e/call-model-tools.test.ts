@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { toJSONSchema, z } from 'zod/v4';
 import { OpenRouter, ToolType, toChatMessage, stepCountIs } from '../../src/index.js';
+import { convertZodToJsonSchema } from '../../src/lib/tool-executor.js';
 
 dotenv.config();
 
@@ -67,6 +68,42 @@ describe('Enhanced Tool Support for callModel', () => {
       expect(jsonSchema.properties?.location?.['description']).toBe(
         'City and country e.g. Bogotá, Colombia',
       );
+    });
+
+    it('should sanitize ~ prefixed metadata properties from Zod v4 schemas (fixes #131)', () => {
+      // Zod v4's toJSONSchema may include ~standard or other ~ prefixed properties
+      // that cause 400 errors with downstream providers
+      const schema = z.object({
+        name: z.string(),
+        age: z.number(),
+      });
+
+      const jsonSchema = convertZodToJsonSchema(schema);
+
+      // Recursively check that no ~ prefixed keys exist
+      const checkNoTildeKeys = (obj: unknown): void => {
+        if (obj === null || typeof obj !== 'object') {
+          return;
+        }
+
+        if (Array.isArray(obj)) {
+          for (const item of obj) {
+            checkNoTildeKeys(item);
+          }
+          return;
+        }
+
+        for (const key of Object.keys(obj)) {
+          expect(key.startsWith('~')).toBe(false);
+          checkNoTildeKeys((obj as Record<string, unknown>)[key]);
+        }
+      };
+
+      checkNoTildeKeys(jsonSchema);
+
+      // Verify schema is still valid
+      expect(jsonSchema).toHaveProperty('type', 'object');
+      expect(jsonSchema).toHaveProperty('properties');
     });
   });
 
