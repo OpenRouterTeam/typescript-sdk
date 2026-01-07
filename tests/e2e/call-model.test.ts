@@ -1024,7 +1024,7 @@ describe('callModel E2E Tests', () => {
 
     it('should include tool.preliminary_result events with correct shape when generator tools are executed', async () => {
       const response = client.callModel({
-        model: 'openai/gpt-4o-mini',
+        model: 'anthropic/claude-haiku-4.5',
         input: fromChatMessages([
           {
             role: 'user',
