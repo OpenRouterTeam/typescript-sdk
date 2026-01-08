@@ -69,12 +69,11 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "test": "vitest --run",
-    "test:watch": "vitest"
+    "test": "vitest --run --project unit",
+    "test:e2e": "vitest --run --project e2e",
+    "test:watch": "vitest --watch --project unit"
   },
-  "peerDependencies": {
-
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.12",
@@ -87,5 +86,6 @@
   },
   "dependencies": {
     "zod": "^3.25.0 || ^4.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6"
 }
