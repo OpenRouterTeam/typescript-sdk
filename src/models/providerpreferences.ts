@@ -11,6 +11,16 @@ import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
+import {
+  PreferredMaxLatency,
+  PreferredMaxLatency$Outbound,
+  PreferredMaxLatency$outboundSchema,
+} from "./preferredmaxlatency.js";
+import {
+  PreferredMinThroughput,
+  PreferredMinThroughput$Outbound,
+  PreferredMinThroughput$outboundSchema,
+} from "./preferredminthroughput.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
@@ -157,25 +167,13 @@ export type ProviderPreferences = {
    */
   maxPrice?: ProviderPreferencesMaxPrice | undefined;
   /**
-   * Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMinThroughput?: number | null | undefined;
+  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
   /**
-   * Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMaxLatency?: number | null | undefined;
-  /**
-   * **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-   *
-   * @deprecated field: Use preferred_min_throughput instead..
-   */
-  minThroughput?: number | null | undefined;
-  /**
-   * **DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.
-   *
-   * @deprecated field: Use preferred_max_latency instead..
-   */
-  maxLatency?: number | null | undefined;
+  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
 /** @internal */
@@ -377,10 +375,8 @@ export type ProviderPreferences$Outbound = {
     | null
     | undefined;
   max_price?: ProviderPreferencesMaxPrice$Outbound | undefined;
-  preferred_min_throughput?: number | null | undefined;
-  preferred_max_latency?: number | null | undefined;
-  min_throughput?: number | null | undefined;
-  max_latency?: number | null | undefined;
+  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -412,10 +408,10 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     ]),
   ).optional(),
   maxPrice: z.lazy(() => ProviderPreferencesMaxPrice$outboundSchema).optional(),
-  preferredMinThroughput: z.nullable(z.number()).optional(),
-  preferredMaxLatency: z.nullable(z.number()).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
+  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+    .optional(),
+  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -425,8 +421,6 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     maxPrice: "max_price",
     preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
   });
 });
 
