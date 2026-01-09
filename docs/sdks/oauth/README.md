@@ -1,5 +1,4 @@
 # OAuth
-(*oAuth*)
 
 ## Overview
 

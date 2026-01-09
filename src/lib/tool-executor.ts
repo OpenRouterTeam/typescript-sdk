@@ -1,37 +1,105 @@
-import { ZodError, toJSONSchema, type ZodType } from "zod/v4";
-import {
-  EnhancedTool,
-  ToolExecutionResult,
-  ParsedToolCall,
+import type { ZodType } from 'zod';
+import type {
   APITool,
+  Tool,
+  ParsedToolCall,
+  ToolExecutionResult,
   TurnContext,
-  hasExecuteFunction,
-  isGeneratorTool,
-  isRegularExecuteTool,
-} from "./tool-types.js";
+} from './tool-types.js';
+
+import * as z4 from 'zod/v4';
+import { hasExecuteFunction, isGeneratorTool, isRegularExecuteTool } from './tool-types.js';
+
+// Re-export ZodError for convenience
+export const ZodError = z4.ZodError;
 
 /**
- * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function
+ * Typeguard to check if a value is a non-null object (not an array).
  */
-export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, any> {
-  const jsonSchema = toJSONSchema(zodSchema as any, {
-    target: "openapi-3.0",
-  } as any);
-  return jsonSchema as Record<string, any>;
+function isNonNullObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /**
- * Convert enhanced tools to OpenRouter API format
+ * Recursively remove keys prefixed with ~ from an object.
+ * These are metadata properties (like ~standard from Standard Schema)
+ * that should not be sent to downstream providers.
+ * @see https://github.com/OpenRouterTeam/typescript-sdk/issues/131
+ *
+ * When given a Record<string, unknown>, returns Record<string, unknown>.
+ * When given unknown, returns unknown (preserves primitives, null, etc).
  */
-export function convertEnhancedToolsToAPIFormat(
-  tools: EnhancedTool[]
-): APITool[] {
+export function sanitizeJsonSchema(obj: Record<string, unknown>): Record<string, unknown>;
+export function sanitizeJsonSchema(obj: unknown): unknown;
+export function sanitizeJsonSchema(obj: unknown): unknown {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeJsonSchema);
+  }
+
+  // At this point, obj is a non-null, non-array object
+  // Use typeguard to narrow the type for type-safe property access
+  if (!isNonNullObject(obj)) {
+    return obj;
+  }
+
+  const result: Record<string, unknown> = {};
+  for (const key of Object.keys(obj)) {
+    if (!key.startsWith('~')) {
+      result[key] = sanitizeJsonSchema(obj[key]);
+    }
+  }
+  return result;
+}
+
+/**
+ * Typeguard to check if a value is a valid Zod schema compatible with zod/v4.
+ * Zod schemas have a _zod property that contains schema metadata.
+ */
+function isZodSchema(value: unknown): value is z4.ZodType {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  if (!('_zod' in value)) {
+    return false;
+  }
+  // After the 'in' check, TypeScript knows value has _zod property
+  return typeof value._zod === 'object';
+}
+
+/**
+ * Convert a Zod schema to JSON Schema using Zod v4's toJSONSchema function.
+ * Accepts ZodType from the main zod package for user compatibility.
+ * The resulting schema is sanitized to remove metadata properties (like ~standard)
+ * that would cause 400 errors with downstream providers.
+ */
+export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
+  if (!isZodSchema(zodSchema)) {
+    throw new Error('Invalid Zod schema provided');
+  }
+  // Use draft-7 as it's closest to OpenAPI 3.0's JSON Schema variant
+  const jsonSchema = z4.toJSONSchema(zodSchema, {
+    target: 'draft-7',
+  });
+  // jsonSchema is always a Record<string, unknown> from toJSONSchema
+  // The overloaded sanitizeJsonSchema preserves this type
+  return sanitizeJsonSchema(jsonSchema);
+}
+
+/**
+ * Convert tools to OpenRouter API format
+ * Accepts readonly arrays for better type compatibility
+ */
+export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
   return tools.map((tool) => ({
-    type: "function" as const,
+    type: 'function' as const,
     name: tool.function.name,
     description: tool.function.description || null,
     strict: null,
-    parameters: convertZodToJsonSchema(tool.function.inputSchema as any),
+    parameters: convertZodToJsonSchema(tool.function.inputSchema),
   }));
 }
 
@@ -59,9 +127,8 @@ export function parseToolCallArguments(argumentsString: string): unknown {
     return JSON.parse(argumentsString);
   } catch (error) {
     throw new Error(
-      `Failed to parse tool call arguments: ${
-        error instanceof Error ? error.message : String(error)
-      }`
+      `Failed to parse tool call arguments: ${error instanceof Error ? error.message : String(error)
+      }`,
     );
   }
 }
@@ -70,34 +137,31 @@ export function parseToolCallArguments(argumentsString: string): unknown {
  * Execute a regular (non-generator) tool
  */
 export async function executeRegularTool(
-  tool: EnhancedTool,
-  toolCall: ParsedToolCall,
-  context: TurnContext
-): Promise<ToolExecutionResult> {
+  tool: Tool,
+  toolCall: ParsedToolCall<Tool>,
+  context: TurnContext,
+): Promise<ToolExecutionResult<Tool>> {
   if (!isRegularExecuteTool(tool)) {
     throw new Error(
-      `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`
+      `Tool "${toolCall.name}" is not a regular execute tool or has no execute function`,
     );
   }
 
   try {
-    // Validate input
+    // Validate input - the schema validation ensures type safety at runtime
+    // validateToolInput returns z.infer<typeof tool.function.inputSchema>
+    // which is exactly the type expected by execute
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
-      toolCall.arguments
+      toolCall.arguments,
     );
 
     // Execute tool with context
-    const result = await Promise.resolve(
-      tool.function.execute(validatedInput as any, context)
-    );
+    const result = await Promise.resolve(tool.function.execute(validatedInput, context));
 
     // Validate output if schema is provided
     if (tool.function.outputSchema) {
-      const validatedOutput = validateToolOutput(
-        tool.function.outputSchema,
-        result
-      );
+      const validatedOutput = validateToolOutput(tool.function.outputSchema, result);
 
       return {
         toolCallId: toolCall.id,
@@ -128,20 +192,21 @@ export async function executeRegularTool(
  * - Generator must emit at least one value
  */
 export async function executeGeneratorTool(
-  tool: EnhancedTool,
-  toolCall: ParsedToolCall,
+  tool: Tool,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
-  onPreliminaryResult?: (toolCallId: string, result: unknown) => void
-): Promise<ToolExecutionResult> {
+  onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
+): Promise<ToolExecutionResult<Tool>> {
   if (!isGeneratorTool(tool)) {
     throw new Error(`Tool "${toolCall.name}" is not a generator tool`);
   }
 
   try {
-    // Validate input
+    // Validate input - the schema validation ensures type safety at runtime
+    // The inputSchema's inferred type matches the execute function's parameter type by construction
     const validatedInput = validateToolInput(
       tool.function.inputSchema,
-      toolCall.arguments
+      toolCall.arguments,
     );
 
     // Execute generator and collect all results
@@ -149,7 +214,7 @@ export async function executeGeneratorTool(
     let lastEmittedValue: unknown = null;
     let hasEmittedValue = false;
 
-    for await (const event of tool.function.execute(validatedInput as any, context)) {
+    for await (const event of tool.function.execute(validatedInput, context)) {
       hasEmittedValue = true;
 
       // Validate event against eventSchema
@@ -166,16 +231,11 @@ export async function executeGeneratorTool(
 
     // Generator must emit at least one value
     if (!hasEmittedValue) {
-      throw new Error(
-        `Generator tool "${toolCall.name}" completed without emitting any values`
-      );
+      throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
     }
 
     // Validate the last emitted value against outputSchema (this is the final result)
-    const finalResult = validateToolOutput(
-      tool.function.outputSchema,
-      lastEmittedValue
-    );
+    const finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
 
     // Remove last item from preliminaryResults since it's the final output
     preliminaryResults.pop();
@@ -201,15 +261,13 @@ export async function executeGeneratorTool(
  * Automatically detects if it's a regular or generator tool
  */
 export async function executeTool(
-  tool: EnhancedTool,
-  toolCall: ParsedToolCall,
+  tool: Tool,
+  toolCall: ParsedToolCall<Tool>,
   context: TurnContext,
-  onPreliminaryResult?: (toolCallId: string, result: unknown) => void
-): Promise<ToolExecutionResult> {
+  onPreliminaryResult?: (toolCallId: string, result: unknown) => void,
+): Promise<ToolExecutionResult<Tool>> {
   if (!hasExecuteFunction(tool)) {
-    throw new Error(
-      `Tool "${toolCall.name}" has no execute function. Use manual tool execution.`
-    );
+    throw new Error(`Tool "${toolCall.name}" has no execute function. Use manual tool execution.`);
   }
 
   if (isGeneratorTool(tool)) {
@@ -222,17 +280,14 @@ export async function executeTool(
 /**
  * Find a tool by name in the tools array
  */
-export function findToolByName(
-  tools: EnhancedTool[],
-  name: string
-): EnhancedTool | undefined {
+export function findToolByName(tools: Tool[], name: string): Tool | undefined {
   return tools.find((tool) => tool.function.name === name);
 }
 
 /**
  * Format tool execution result as a string for sending to the model
  */
-export function formatToolResultForModel(result: ToolExecutionResult): string {
+export function formatToolResultForModel(result: ToolExecutionResult<Tool>): string {
   if (result.error) {
     return JSON.stringify({
       error: result.error.message,
@@ -246,21 +301,14 @@ export function formatToolResultForModel(result: ToolExecutionResult): string {
 /**
  * Create a user-friendly error message for tool execution errors
  */
-export function formatToolExecutionError(
-  error: Error,
-  toolCall: ParsedToolCall
-): string {
+export function formatToolExecutionError(error: Error, toolCall: ParsedToolCall<Tool>): string {
   if (error instanceof ZodError) {
     const issues = error.issues.map((issue) => ({
-      path: issue.path.join("."),
+      path: issue.path.join('.'),
       message: issue.message,
     }));
 
-    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(
-      issues,
-      null,
-      2
-    )}`;
+    return `Tool "${toolCall.name}" validation error:\n${JSON.stringify(issues, null, 2)}`;
   }
 
   return `Tool "${toolCall.name}" execution error: ${error.message}`;

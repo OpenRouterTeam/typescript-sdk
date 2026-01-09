@@ -1,9 +1,0 @@
-lintVersion: 1.0.0
-defaultRuleset: openrouter
-rulesets:
-  openrouter:
-    rulesets:
-      - speakeasy-generation
-    rules:
-      oas3-missing-example:
-        severity: "off"

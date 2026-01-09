@@ -44,11 +44,17 @@ export class ReusableReadableStream<T> {
       async next(): Promise<IteratorResult<T>> {
         const consumer = self.consumers.get(consumerId);
         if (!consumer) {
-          return { done: true, value: undefined };
+          return {
+            done: true,
+            value: undefined,
+          };
         }
 
         if (consumer.cancelled) {
-          return { done: true, value: undefined };
+          return {
+            done: true,
+            value: undefined,
+          };
         }
 
         // If we have buffered data at this position, return it
@@ -56,13 +62,19 @@ export class ReusableReadableStream<T> {
           const value = self.buffer[consumer.position]!;
           consumer.position++;
           // Note: We don't clean up buffer to allow sequential/reusable access
-          return { done: false, value };
+          return {
+            done: false,
+            value,
+          };
         }
 
         // If source is complete and we've read everything, we're done
         if (self.sourceComplete) {
           self.consumers.delete(consumerId);
-          return { done: true, value: undefined };
+          return {
+            done: true,
+            value: undefined,
+          };
         }
 
         // If source had an error, propagate it
@@ -71,22 +83,26 @@ export class ReusableReadableStream<T> {
           throw self.sourceError;
         }
 
-        // Wait for more data - but check conditions after setting up the promise
-        // to avoid race condition where source completes between check and wait
+        // Set up the waiting promise FIRST to avoid race condition
+        // where source completes after the check but before promise is set
         const waitPromise = new Promise<void>((resolve, reject) => {
-          consumer.waitingPromise = { resolve, reject };
+          consumer.waitingPromise = {
+            resolve,
+            reject,
+          };
+
+          // Immediately check if we should resolve after setting up the promise
+          // This handles the case where data arrived or source completed
+          // between our initial checks and promise creation
+          if (self.sourceComplete || self.sourceError || consumer.position < self.buffer.length) {
+            resolve();
+          }
         });
 
-        // Double-check conditions after setting up promise to handle race
-        if (self.sourceComplete || self.sourceError || consumer.position < self.buffer.length) {
-          // Resolve immediately if conditions changed
-          if (consumer.waitingPromise) {
-            consumer.waitingPromise.resolve();
-            consumer.waitingPromise = null;
-          }
-        }
-
         await waitPromise;
+
+        // Clear the promise reference after it resolves
+        consumer.waitingPromise = null;
 
         // Recursively try again after waking up
         return this.next();
@@ -98,10 +114,13 @@ export class ReusableReadableStream<T> {
           consumer.cancelled = true;
           self.consumers.delete(consumerId);
         }
-        return { done: true, value: undefined };
+        return {
+          done: true,
+          value: undefined,
+        };
       },
 
-      async throw(e?: any): Promise<IteratorResult<T>> {
+      async throw(e?: unknown): Promise<IteratorResult<T>> {
         const consumer = self.consumers.get(consumerId);
         if (consumer) {
           consumer.cancelled = true;
@@ -120,7 +139,9 @@ export class ReusableReadableStream<T> {
    * Start pumping data from the source stream into the buffer
    */
   private startPump(): void {
-    if (this.pumpStarted) return;
+    if (this.pumpStarted) {
+      return;
+    }
     this.pumpStarted = true;
     this.sourceReader = this.sourceStream.getReader();
 
@@ -168,7 +189,6 @@ export class ReusableReadableStream<T> {
     }
   }
 
-
   /**
    * Cancel the source stream and all consumers
    */
@@ -192,6 +212,9 @@ export class ReusableReadableStream<T> {
 
 interface ConsumerState {
   position: number;
-  waitingPromise: { resolve: () => void; reject: (error: Error) => void } | null;
+  waitingPromise: {
+    resolve: () => void;
+    reject: (error: Error) => void;
+  } | null;
   cancelled: boolean;
 }

@@ -1,5 +1,4 @@
 # Endpoints
-(*endpoints*)
 
 ## Overview
 
