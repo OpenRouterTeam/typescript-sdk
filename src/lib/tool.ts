@@ -1,4 +1,4 @@
-import type { ZodObject, ZodRawShape, ZodType, z } from "zod";
+import type { $ZodObject, $ZodShape, $ZodType, infer as zodInfer } from 'zod/v4/core';
 import {
   ToolType,
   type TurnContext,
@@ -12,26 +12,26 @@ import {
  * Configuration for a regular tool with outputSchema
  */
 type RegularToolConfigWithOutput<
-  TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TOutput extends $ZodType,
 > = {
   name: string;
   description?: string;
   inputSchema: TInput;
   outputSchema: TOutput;
   eventSchema?: undefined;
-  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
   execute: (
-    params: z.infer<TInput>,
+    params: zodInfer<TInput>,
     context?: TurnContext
-  ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
+  ) => Promise<zodInfer<TOutput>> | zodInfer<TOutput>;
 };
 
 /**
  * Configuration for a regular tool without outputSchema (infers return type from execute)
  */
 type RegularToolConfigWithoutOutput<
-  TInput extends ZodObject<ZodRawShape>,
+  TInput extends $ZodObject<$ZodShape>,
   TReturn,
 > = {
   name: string;
@@ -39,9 +39,9 @@ type RegularToolConfigWithoutOutput<
   inputSchema: TInput;
   outputSchema?: undefined;
   eventSchema?: undefined;
-  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
   execute: (
-    params: z.infer<TInput>,
+    params: zodInfer<TInput>,
     context?: TurnContext
   ) => Promise<TReturn> | TReturn;
 };
@@ -50,37 +50,37 @@ type RegularToolConfigWithoutOutput<
  * Configuration for a generator tool (with eventSchema)
  */
 type GeneratorToolConfig<
-  TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TEvent extends $ZodType,
+  TOutput extends $ZodType,
 > = {
   name: string;
   description?: string;
   inputSchema: TInput;
   eventSchema: TEvent;
   outputSchema: TOutput;
-  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
   execute: (
-    params: z.infer<TInput>,
+    params: zodInfer<TInput>,
     context?: TurnContext
-  ) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
+  ) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>>;
 };
 
 /**
  * Configuration for a manual tool (execute: false, no eventSchema or outputSchema)
  */
-type ManualToolConfig<TInput extends ZodObject<ZodRawShape>> = {
+type ManualToolConfig<TInput extends $ZodObject<$ZodShape>> = {
   name: string;
   description?: string;
   inputSchema: TInput;
-  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
   execute: false;
 };
 
 /**
  * Union type for all regular tool configs
  */
-type RegularToolConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType, TReturn> =
+type RegularToolConfig<TInput extends $ZodObject<$ZodShape>, TOutput extends $ZodType, TReturn> =
   | RegularToolConfigWithOutput<TInput, TOutput>
   | RegularToolConfigWithoutOutput<TInput, TReturn>;
 
@@ -88,9 +88,9 @@ type RegularToolConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends Zo
  * Type guard to check if config is a generator tool config (has eventSchema)
  */
 function isGeneratorConfig<
-  TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TEvent extends $ZodType,
+  TOutput extends $ZodType,
   TReturn,
 >(
   config:
@@ -104,9 +104,9 @@ function isGeneratorConfig<
 /**
  * Type guard to check if config is a manual tool config (execute === false)
  */
-function isManualConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends ZodType, TReturn>(
+function isManualConfig<TInput extends $ZodObject<$ZodShape>, TOutput extends $ZodType, TReturn>(
   config:
-    | GeneratorToolConfig<TInput, ZodType, ZodType>
+    | GeneratorToolConfig<TInput, $ZodType, $ZodType>
     | RegularToolConfig<TInput, TOutput, TReturn>
     | ManualToolConfig<TInput>
 ): config is ManualToolConfig<TInput> {
@@ -160,35 +160,35 @@ function isManualConfig<TInput extends ZodObject<ZodRawShape>, TOutput extends Z
  */
 // Overload for generator tools (when eventSchema is provided)
 export function tool<
-  TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TEvent extends $ZodType,
+  TOutput extends $ZodType,
 >(
   config: GeneratorToolConfig<TInput, TEvent, TOutput>
 ): ToolWithGenerator<TInput, TEvent, TOutput>;
 
 // Overload for manual tools (execute: false)
-export function tool<TInput extends ZodObject<ZodRawShape>>(
+export function tool<TInput extends $ZodObject<$ZodShape>>(
   config: ManualToolConfig<TInput>
 ): ManualTool<TInput>;
 
 // Overload for regular tools with outputSchema
 export function tool<
-  TInput extends ZodObject<ZodRawShape>,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TOutput extends $ZodType,
 >(config: RegularToolConfigWithOutput<TInput, TOutput>): ToolWithExecute<TInput, TOutput>;
 
 // Overload for regular tools without outputSchema (infers return type)
 export function tool<
-  TInput extends ZodObject<ZodRawShape>,
+  TInput extends $ZodObject<$ZodShape>,
   TReturn,
->(config: RegularToolConfigWithoutOutput<TInput, TReturn>): ToolWithExecute<TInput, ZodType<TReturn>>;
+>(config: RegularToolConfigWithoutOutput<TInput, TReturn>): ToolWithExecute<TInput, $ZodType<TReturn>>;
 
 // Implementation
 export function tool<
-  TInput extends ZodObject<ZodRawShape>,
-  TEvent extends ZodType,
-  TOutput extends ZodType,
+  TInput extends $ZodObject<$ZodShape>,
+  TEvent extends $ZodType,
+  TOutput extends $ZodType,
   TReturn,
 >(
   config:
@@ -198,7 +198,7 @@ export function tool<
 ):
   | ToolWithGenerator<TInput, TEvent, TOutput>
   | ToolWithExecute<TInput, TOutput>
-  | ToolWithExecute<TInput, ZodType<TReturn>>
+  | ToolWithExecute<TInput, $ZodType<TReturn>>
   | ManualTool<TInput> {
   // Check for manual tool first (execute === false)
   if (isManualConfig(config)) {
