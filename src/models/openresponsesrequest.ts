@@ -65,16 +65,6 @@ import {
   PDFParserOptions$Outbound,
   PDFParserOptions$outboundSchema,
 } from "./pdfparseroptions.js";
-import {
-  PreferredMaxLatency,
-  PreferredMaxLatency$Outbound,
-  PreferredMaxLatency$outboundSchema,
-} from "./preferredmaxlatency.js";
-import {
-  PreferredMinThroughput,
-  PreferredMinThroughput$Outbound,
-  PreferredMinThroughput$outboundSchema,
-} from "./preferredminthroughput.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import {
@@ -83,10 +73,6 @@ import {
   ProviderSortConfig$outboundSchema,
 } from "./providersortconfig.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
-import {
-  ResponsesOutputModality,
-  ResponsesOutputModality$outboundSchema,
-} from "./responsesoutputmodality.js";
 import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
@@ -109,8 +95,6 @@ export type OpenResponsesRequestToolUnion =
   | OpenResponsesWebSearchPreview20250311Tool
   | OpenResponsesWebSearchTool
   | OpenResponsesWebSearch20250826Tool;
-
-export type OpenResponsesRequestImageConfig = string | number;
 
 export const ServiceTier = {
   Auto: "auto",
@@ -218,13 +202,25 @@ export type OpenResponsesRequestProvider = {
    */
   maxPrice?: OpenResponsesRequestMaxPrice | undefined;
   /**
-   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   * Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
+  preferredMinThroughput?: number | null | undefined;
   /**
-   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   * Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
-  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
+  preferredMaxLatency?: number | null | undefined;
+  /**
+   * **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
+   *
+   * @deprecated field: Use preferred_min_throughput instead..
+   */
+  minThroughput?: number | null | undefined;
+  /**
+   * **DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.
+   *
+   * @deprecated field: Use preferred_max_latency instead..
+   */
+  maxLatency?: number | null | undefined;
 };
 
 export type OpenResponsesRequestPluginResponseHealing = {
@@ -265,20 +261,7 @@ export type OpenResponsesRequestPluginModeration = {
   id: "moderation";
 };
 
-export type OpenResponsesRequestPluginAutoRouter = {
-  id: "auto-router";
-  /**
-   * Set to false to disable the auto-router plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
-   */
-  allowedModels?: Array<string> | undefined;
-};
-
 export type OpenResponsesRequestPluginUnion =
-  | OpenResponsesRequestPluginAutoRouter
   | OpenResponsesRequestPluginModeration
   | OpenResponsesRequestPluginWeb
   | OpenResponsesRequestPluginFileParser
@@ -322,14 +305,6 @@ export type OpenResponsesRequest = {
   temperature?: number | null | undefined;
   topP?: number | null | undefined;
   topK?: number | undefined;
-  /**
-   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
-   */
-  imageConfig?: { [k: string]: string | number } | undefined;
-  /**
-   * Output modalities for the response. Supported values are "text" and "image".
-   */
-  modalities?: Array<ResponsesOutputModality> | undefined;
   promptCacheKey?: string | null | undefined;
   previousResponseId?: string | null | undefined;
   prompt?: OpenAIResponsesPrompt | null | undefined;
@@ -349,7 +324,6 @@ export type OpenResponsesRequest = {
    */
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginAutoRouter
       | OpenResponsesRequestPluginModeration
       | OpenResponsesRequestPluginWeb
       | OpenResponsesRequestPluginFileParser
@@ -423,25 +397,6 @@ export function openResponsesRequestToolUnionToJSON(
   return JSON.stringify(
     OpenResponsesRequestToolUnion$outboundSchema.parse(
       openResponsesRequestToolUnion,
-    ),
-  );
-}
-
-/** @internal */
-export type OpenResponsesRequestImageConfig$Outbound = string | number;
-
-/** @internal */
-export const OpenResponsesRequestImageConfig$outboundSchema: z.ZodType<
-  OpenResponsesRequestImageConfig$Outbound,
-  OpenResponsesRequestImageConfig
-> = z.union([z.string(), z.number()]);
-
-export function openResponsesRequestImageConfigToJSON(
-  openResponsesRequestImageConfig: OpenResponsesRequestImageConfig,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestImageConfig$outboundSchema.parse(
-      openResponsesRequestImageConfig,
     ),
   );
 }
@@ -574,8 +529,10 @@ export type OpenResponsesRequestProvider$Outbound = {
   quantizations?: Array<string> | null | undefined;
   sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
   max_price?: OpenResponsesRequestMaxPrice$Outbound | undefined;
-  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
-  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
+  preferred_min_throughput?: number | null | undefined;
+  preferred_max_latency?: number | null | undefined;
+  min_throughput?: number | null | undefined;
+  max_latency?: number | null | undefined;
 };
 
 /** @internal */
@@ -605,10 +562,10 @@ export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
   ).optional(),
   maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
     .optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
-    .optional(),
-  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
-    .optional(),
+  preferredMinThroughput: z.nullable(z.number()).optional(),
+  preferredMaxLatency: z.nullable(z.number()).optional(),
+  minThroughput: z.nullable(z.number()).optional(),
+  maxLatency: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -618,6 +575,8 @@ export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
     maxPrice: "max_price",
     preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
+    minThroughput: "min_throughput",
+    maxLatency: "max_latency",
   });
 });
 
@@ -745,39 +704,7 @@ export function openResponsesRequestPluginModerationToJSON(
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginAutoRouter$Outbound = {
-  id: "auto-router";
-  enabled?: boolean | undefined;
-  allowed_models?: Array<string> | undefined;
-};
-
-/** @internal */
-export const OpenResponsesRequestPluginAutoRouter$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginAutoRouter$Outbound,
-  OpenResponsesRequestPluginAutoRouter
-> = z.object({
-  id: z.literal("auto-router"),
-  enabled: z.boolean().optional(),
-  allowedModels: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedModels: "allowed_models",
-  });
-});
-
-export function openResponsesRequestPluginAutoRouterToJSON(
-  openResponsesRequestPluginAutoRouter: OpenResponsesRequestPluginAutoRouter,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestPluginAutoRouter$outboundSchema.parse(
-      openResponsesRequestPluginAutoRouter,
-    ),
-  );
-}
-
-/** @internal */
 export type OpenResponsesRequestPluginUnion$Outbound =
-  | OpenResponsesRequestPluginAutoRouter$Outbound
   | OpenResponsesRequestPluginModeration$Outbound
   | OpenResponsesRequestPluginWeb$Outbound
   | OpenResponsesRequestPluginFileParser$Outbound
@@ -788,7 +715,6 @@ export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
   OpenResponsesRequestPluginUnion$Outbound,
   OpenResponsesRequestPluginUnion
 > = z.union([
-  z.lazy(() => OpenResponsesRequestPluginAutoRouter$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
@@ -829,8 +755,6 @@ export type OpenResponsesRequest$Outbound = {
   temperature?: number | null | undefined;
   top_p?: number | null | undefined;
   top_k?: number | undefined;
-  image_config?: { [k: string]: string | number } | undefined;
-  modalities?: Array<string> | undefined;
   prompt_cache_key?: string | null | undefined;
   previous_response_id?: string | null | undefined;
   prompt?: OpenAIResponsesPrompt$Outbound | null | undefined;
@@ -844,7 +768,6 @@ export type OpenResponsesRequest$Outbound = {
   provider?: OpenResponsesRequestProvider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginAutoRouter$Outbound
       | OpenResponsesRequestPluginModeration$Outbound
       | OpenResponsesRequestPluginWeb$Outbound
       | OpenResponsesRequestPluginFileParser$Outbound
@@ -882,9 +805,6 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   temperature: z.nullable(z.number()).optional(),
   topP: z.nullable(z.number()).optional(),
   topK: z.number().optional(),
-  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
-    .optional(),
-  modalities: z.array(ResponsesOutputModality$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
   previousResponseId: z.nullable(z.string()).optional(),
   prompt: z.nullable(OpenAIResponsesPrompt$outboundSchema).optional(),
@@ -901,7 +821,6 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   ).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => OpenResponsesRequestPluginAutoRouter$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
@@ -917,7 +836,6 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
     maxOutputTokens: "max_output_tokens",
     topP: "top_p",
     topK: "top_k",
-    imageConfig: "image_config",
     promptCacheKey: "prompt_cache_key",
     previousResponseId: "previous_response_id",
     safetyIdentifier: "safety_identifier",

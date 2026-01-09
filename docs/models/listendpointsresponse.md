@@ -47,18 +47,6 @@ let value: ListEndpointsResponse = {
       ],
       uptimeLast30m: 99.5,
       supportsImplicitCaching: true,
-      latencyLast30m: {
-        p50: 0.25,
-        p75: 0.35,
-        p90: 0.48,
-        p99: 0.85,
-      },
-      throughputLast30m: {
-        p50: 45.2,
-        p75: 38.5,
-        p90: 28.3,
-        p99: 15.1,
-      },
     },
   ],
 };

@@ -3,14 +3,6 @@
 
 ## Supported Types
 
-### `models.ChatGenerationParamsPluginAutoRouter`
-
-```typescript
-const value: models.ChatGenerationParamsPluginAutoRouter = {
-  id: "auto-router",
-};
-```
-
 ### `models.ChatGenerationParamsPluginModeration`
 
 ```typescript

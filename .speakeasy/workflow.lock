@@ -1,4 +1,4 @@
-speakeasyVersion: 1.678.0
+speakeasyVersion: 1.680.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:fccf091e833389805928266c716991f5c53b34b651903e341937498c065c7f8d
         tags:
             - latest
+            - subtree-sync-import-typescript-sdk
             - 1.0.0
 targets:
     openrouter:

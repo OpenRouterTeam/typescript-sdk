@@ -79,28 +79,6 @@ export type ChatGenerationParamsMaxPrice = {
   request?: any | undefined;
 };
 
-export type ChatGenerationParamsPreferredMinThroughput = {
-  p50?: number | null | undefined;
-  p75?: number | null | undefined;
-  p90?: number | null | undefined;
-  p99?: number | null | undefined;
-};
-
-export type ChatGenerationParamsPreferredMinThroughputUnion =
-  | number
-  | ChatGenerationParamsPreferredMinThroughput;
-
-export type ChatGenerationParamsPreferredMaxLatency = {
-  p50?: number | null | undefined;
-  p75?: number | null | undefined;
-  p90?: number | null | undefined;
-  p99?: number | null | undefined;
-};
-
-export type ChatGenerationParamsPreferredMaxLatencyUnion =
-  | number
-  | ChatGenerationParamsPreferredMaxLatency;
-
 export type ChatGenerationParamsProvider = {
   /**
    * Whether to allow backup providers to serve requests
@@ -149,22 +127,10 @@ export type ChatGenerationParamsProvider = {
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
   maxPrice?: ChatGenerationParamsMaxPrice | undefined;
-  /**
-   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMinThroughput?:
-    | number
-    | ChatGenerationParamsPreferredMinThroughput
-    | null
-    | undefined;
-  /**
-   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMaxLatency?:
-    | number
-    | ChatGenerationParamsPreferredMaxLatency
-    | null
-    | undefined;
+  preferredMinThroughput?: number | null | undefined;
+  preferredMaxLatency?: number | null | undefined;
+  minThroughput?: number | null | undefined;
+  maxLatency?: number | null | undefined;
 };
 
 export type ChatGenerationParamsPluginResponseHealing = {
@@ -207,14 +173,7 @@ export type ChatGenerationParamsPluginModeration = {
   id: "moderation";
 };
 
-export type ChatGenerationParamsPluginAutoRouter = {
-  id: "auto-router";
-  enabled?: boolean | undefined;
-  allowedModels?: Array<string> | undefined;
-};
-
 export type ChatGenerationParamsPluginUnion =
-  | ChatGenerationParamsPluginAutoRouter
   | ChatGenerationParamsPluginModeration
   | ChatGenerationParamsPluginWeb
   | ChatGenerationParamsPluginFileParser
@@ -266,14 +225,6 @@ export type Debug = {
   echoUpstreamBody?: boolean | undefined;
 };
 
-export type ChatGenerationParamsImageConfig = string | number;
-
-export const Modality = {
-  Text: "text",
-  Image: "image",
-} as const;
-export type Modality = OpenEnum<typeof Modality>;
-
 export type ChatGenerationParams = {
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
@@ -284,7 +235,6 @@ export type ChatGenerationParams = {
    */
   plugins?:
     | Array<
-      | ChatGenerationParamsPluginAutoRouter
       | ChatGenerationParamsPluginModeration
       | ChatGenerationParamsPluginWeb
       | ChatGenerationParamsPluginFileParser
@@ -325,8 +275,6 @@ export type ChatGenerationParams = {
   tools?: Array<ToolDefinitionJson> | undefined;
   topP?: number | null | undefined;
   debug?: Debug | undefined;
-  imageConfig?: { [k: string]: string | number } | undefined;
-  modalities?: Array<Modality> | undefined;
 };
 
 /** @internal */
@@ -371,119 +319,6 @@ export function chatGenerationParamsMaxPriceToJSON(
 }
 
 /** @internal */
-export type ChatGenerationParamsPreferredMinThroughput$Outbound = {
-  p50?: number | null | undefined;
-  p75?: number | null | undefined;
-  p90?: number | null | undefined;
-  p99?: number | null | undefined;
-};
-
-/** @internal */
-export const ChatGenerationParamsPreferredMinThroughput$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsPreferredMinThroughput$Outbound,
-    ChatGenerationParamsPreferredMinThroughput
-  > = z.object({
-    p50: z.nullable(z.number()).optional(),
-    p75: z.nullable(z.number()).optional(),
-    p90: z.nullable(z.number()).optional(),
-    p99: z.nullable(z.number()).optional(),
-  });
-
-export function chatGenerationParamsPreferredMinThroughputToJSON(
-  chatGenerationParamsPreferredMinThroughput:
-    ChatGenerationParamsPreferredMinThroughput,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsPreferredMinThroughput$outboundSchema.parse(
-      chatGenerationParamsPreferredMinThroughput,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatGenerationParamsPreferredMinThroughputUnion$Outbound =
-  | number
-  | ChatGenerationParamsPreferredMinThroughput$Outbound;
-
-/** @internal */
-export const ChatGenerationParamsPreferredMinThroughputUnion$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsPreferredMinThroughputUnion$Outbound,
-    ChatGenerationParamsPreferredMinThroughputUnion
-  > = z.union([
-    z.number(),
-    z.lazy(() => ChatGenerationParamsPreferredMinThroughput$outboundSchema),
-  ]);
-
-export function chatGenerationParamsPreferredMinThroughputUnionToJSON(
-  chatGenerationParamsPreferredMinThroughputUnion:
-    ChatGenerationParamsPreferredMinThroughputUnion,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsPreferredMinThroughputUnion$outboundSchema.parse(
-      chatGenerationParamsPreferredMinThroughputUnion,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatGenerationParamsPreferredMaxLatency$Outbound = {
-  p50?: number | null | undefined;
-  p75?: number | null | undefined;
-  p90?: number | null | undefined;
-  p99?: number | null | undefined;
-};
-
-/** @internal */
-export const ChatGenerationParamsPreferredMaxLatency$outboundSchema: z.ZodType<
-  ChatGenerationParamsPreferredMaxLatency$Outbound,
-  ChatGenerationParamsPreferredMaxLatency
-> = z.object({
-  p50: z.nullable(z.number()).optional(),
-  p75: z.nullable(z.number()).optional(),
-  p90: z.nullable(z.number()).optional(),
-  p99: z.nullable(z.number()).optional(),
-});
-
-export function chatGenerationParamsPreferredMaxLatencyToJSON(
-  chatGenerationParamsPreferredMaxLatency:
-    ChatGenerationParamsPreferredMaxLatency,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsPreferredMaxLatency$outboundSchema.parse(
-      chatGenerationParamsPreferredMaxLatency,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatGenerationParamsPreferredMaxLatencyUnion$Outbound =
-  | number
-  | ChatGenerationParamsPreferredMaxLatency$Outbound;
-
-/** @internal */
-export const ChatGenerationParamsPreferredMaxLatencyUnion$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsPreferredMaxLatencyUnion$Outbound,
-    ChatGenerationParamsPreferredMaxLatencyUnion
-  > = z.union([
-    z.number(),
-    z.lazy(() => ChatGenerationParamsPreferredMaxLatency$outboundSchema),
-  ]);
-
-export function chatGenerationParamsPreferredMaxLatencyUnionToJSON(
-  chatGenerationParamsPreferredMaxLatencyUnion:
-    ChatGenerationParamsPreferredMaxLatencyUnion,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsPreferredMaxLatencyUnion$outboundSchema.parse(
-      chatGenerationParamsPreferredMaxLatencyUnion,
-    ),
-  );
-}
-
-/** @internal */
 export type ChatGenerationParamsProvider$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   require_parameters?: boolean | null | undefined;
@@ -496,16 +331,10 @@ export type ChatGenerationParamsProvider$Outbound = {
   quantizations?: Array<string> | null | undefined;
   sort?: ProviderSortUnion$Outbound | null | undefined;
   max_price?: ChatGenerationParamsMaxPrice$Outbound | undefined;
-  preferred_min_throughput?:
-    | number
-    | ChatGenerationParamsPreferredMinThroughput$Outbound
-    | null
-    | undefined;
-  preferred_max_latency?:
-    | number
-    | ChatGenerationParamsPreferredMaxLatency$Outbound
-    | null
-    | undefined;
+  preferred_min_throughput?: number | null | undefined;
+  preferred_max_latency?: number | null | undefined;
+  min_throughput?: number | null | undefined;
+  max_latency?: number | null | undefined;
 };
 
 /** @internal */
@@ -526,18 +355,10 @@ export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
   sort: z.nullable(ProviderSortUnion$outboundSchema).optional(),
   maxPrice: z.lazy(() => ChatGenerationParamsMaxPrice$outboundSchema)
     .optional(),
-  preferredMinThroughput: z.nullable(
-    z.union([
-      z.number(),
-      z.lazy(() => ChatGenerationParamsPreferredMinThroughput$outboundSchema),
-    ]),
-  ).optional(),
-  preferredMaxLatency: z.nullable(
-    z.union([
-      z.number(),
-      z.lazy(() => ChatGenerationParamsPreferredMaxLatency$outboundSchema),
-    ]),
-  ).optional(),
+  preferredMinThroughput: z.nullable(z.number()).optional(),
+  preferredMaxLatency: z.nullable(z.number()).optional(),
+  minThroughput: z.nullable(z.number()).optional(),
+  maxLatency: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -547,6 +368,8 @@ export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
     maxPrice: "max_price",
     preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
+    minThroughput: "min_throughput",
+    maxLatency: "max_latency",
   });
 });
 
@@ -696,39 +519,7 @@ export function chatGenerationParamsPluginModerationToJSON(
 }
 
 /** @internal */
-export type ChatGenerationParamsPluginAutoRouter$Outbound = {
-  id: "auto-router";
-  enabled?: boolean | undefined;
-  allowed_models?: Array<string> | undefined;
-};
-
-/** @internal */
-export const ChatGenerationParamsPluginAutoRouter$outboundSchema: z.ZodType<
-  ChatGenerationParamsPluginAutoRouter$Outbound,
-  ChatGenerationParamsPluginAutoRouter
-> = z.object({
-  id: z.literal("auto-router"),
-  enabled: z.boolean().optional(),
-  allowedModels: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedModels: "allowed_models",
-  });
-});
-
-export function chatGenerationParamsPluginAutoRouterToJSON(
-  chatGenerationParamsPluginAutoRouter: ChatGenerationParamsPluginAutoRouter,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsPluginAutoRouter$outboundSchema.parse(
-      chatGenerationParamsPluginAutoRouter,
-    ),
-  );
-}
-
-/** @internal */
 export type ChatGenerationParamsPluginUnion$Outbound =
-  | ChatGenerationParamsPluginAutoRouter$Outbound
   | ChatGenerationParamsPluginModeration$Outbound
   | ChatGenerationParamsPluginWeb$Outbound
   | ChatGenerationParamsPluginFileParser$Outbound
@@ -739,7 +530,6 @@ export const ChatGenerationParamsPluginUnion$outboundSchema: z.ZodType<
   ChatGenerationParamsPluginUnion$Outbound,
   ChatGenerationParamsPluginUnion
 > = z.union([
-  z.lazy(() => ChatGenerationParamsPluginAutoRouter$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginModeration$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
@@ -923,34 +713,10 @@ export function debugToJSON(debug: Debug): string {
 }
 
 /** @internal */
-export type ChatGenerationParamsImageConfig$Outbound = string | number;
-
-/** @internal */
-export const ChatGenerationParamsImageConfig$outboundSchema: z.ZodType<
-  ChatGenerationParamsImageConfig$Outbound,
-  ChatGenerationParamsImageConfig
-> = z.union([z.string(), z.number()]);
-
-export function chatGenerationParamsImageConfigToJSON(
-  chatGenerationParamsImageConfig: ChatGenerationParamsImageConfig,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsImageConfig$outboundSchema.parse(
-      chatGenerationParamsImageConfig,
-    ),
-  );
-}
-
-/** @internal */
-export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
-  .outboundSchema(Modality);
-
-/** @internal */
 export type ChatGenerationParams$Outbound = {
   provider?: ChatGenerationParamsProvider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | ChatGenerationParamsPluginAutoRouter$Outbound
       | ChatGenerationParamsPluginModeration$Outbound
       | ChatGenerationParamsPluginWeb$Outbound
       | ChatGenerationParamsPluginFileParser$Outbound
@@ -988,8 +754,6 @@ export type ChatGenerationParams$Outbound = {
   tools?: Array<ToolDefinitionJson$Outbound> | undefined;
   top_p?: number | null | undefined;
   debug?: Debug$Outbound | undefined;
-  image_config?: { [k: string]: string | number } | undefined;
-  modalities?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -1002,7 +766,6 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   ).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => ChatGenerationParamsPluginAutoRouter$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginModeration$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
@@ -1040,9 +803,6 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
   topP: z.nullable(z.number()).optional(),
   debug: z.lazy(() => Debug$outboundSchema).optional(),
-  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
-    .optional(),
-  modalities: z.array(Modality$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     sessionId: "session_id",
@@ -1056,7 +816,6 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topP: "top_p",
-    imageConfig: "image_config",
   });
 });
 
