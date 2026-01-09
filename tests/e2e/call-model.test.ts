@@ -700,7 +700,7 @@ describe('callModel E2E Tests', () => {
           expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
-    }, 20000);
+    }, 6000);
 
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
