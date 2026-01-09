@@ -111,7 +111,7 @@ async function $do(
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "application/json;q=1, text/event-stream;q=0",
+    Accept: "application/json",
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -198,9 +198,6 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.CreateEmbeddingsResponse$inboundSchema),
-    M.text(200, operations.CreateEmbeddingsResponse$inboundSchema, {
-      ctype: "text/event-stream",
-    }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),

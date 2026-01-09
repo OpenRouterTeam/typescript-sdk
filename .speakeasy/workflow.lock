@@ -2,8 +2,8 @@ speakeasyVersion: 1.680.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:9825a9d9dd018739535efcfcd22e5cad96efd1ce991aeaa4b4e7fe5b9d40f0fa
-        sourceBlobDigest: sha256:6f9ef0c822dc240348641c51d5824e49681a2e3ac0132d2c19cd2abb3bcfdd03
+        sourceRevisionDigest: sha256:c5978a7c024e8451d8d77ddae37865c01a6fef9e47f8bc2a00bc8c368eb9e5c7
+        sourceBlobDigest: sha256:f55e81a263f98292dacbb187f6b96b74f050e7c504285472a37790877c6e7221
         tags:
             - latest
             - 1.0.0
@@ -11,8 +11,8 @@ targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:9825a9d9dd018739535efcfcd22e5cad96efd1ce991aeaa4b4e7fe5b9d40f0fa
-        sourceBlobDigest: sha256:6f9ef0c822dc240348641c51d5824e49681a2e3ac0132d2c19cd2abb3bcfdd03
+        sourceRevisionDigest: sha256:c5978a7c024e8451d8d77ddae37865c01a6fef9e47f8bc2a00bc8c368eb9e5c7
+        sourceBlobDigest: sha256:f55e81a263f98292dacbb187f6b96b74f050e7c504285472a37790877c6e7221
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.680.0
@@ -24,6 +24,7 @@ workflow:
                 - location: .speakeasy/overlays/open-enums.overlay.yaml
                 - location: .speakeasy/overlays/remove-rss-responses.overlay.yaml
                 - location: .speakeasy/overlays/add-headers.overlay.yaml
+                - location: .speakeasy/overlays/fix-embeddings-types.overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

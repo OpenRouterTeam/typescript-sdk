@@ -1,0 +1,10 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Fix embeddings response types
+  version: 0.0.0
+actions:
+  - target: '$.paths["/embeddings"].post.responses["200"].content["text/event-stream"]'
+    description: 'Remove unused text/event-stream response for embeddings (prevents CreateEmbeddingsResponse = ... | string)'
+    remove: true
+

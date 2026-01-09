@@ -8,6 +8,7 @@ sources:
             - location: .speakeasy/overlays/open-enums.overlay.yaml
             - location: .speakeasy/overlays/remove-rss-responses.overlay.yaml
             - location: .speakeasy/overlays/add-headers.overlay.yaml
+            - location: .speakeasy/overlays/fix-embeddings-types.overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

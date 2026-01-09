@@ -1,21 +1,30 @@
 # CreateEmbeddingsResponse
 
+Embedding response
 
-## Supported Types
-
-### `operations.CreateEmbeddingsResponseBody`
+## Example Usage
 
 ```typescript
-const value: operations.CreateEmbeddingsResponseBody = {
+import { CreateEmbeddingsResponse } from "@openrouter/sdk/models/operations";
+
+let value: CreateEmbeddingsResponse = {
   object: "list",
-  data: [],
-  model: "Focus",
+  data: [
+    {
+      object: "embedding",
+      embedding: "<value>",
+    },
+  ],
+  model: "Mustang",
 };
 ```
 
-### `string`
+## Fields
 
-```typescript
-const value: string = "<value>";
-```
-
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `id`                                                                                 | *string*                                                                             | :heavy_minus_sign:                                                                   | N/A                                                                                  |
+| `object`                                                                             | [operations.ObjectT](../../models/operations/objectt.md)                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `data`                                                                               | [operations.CreateEmbeddingsData](../../models/operations/createembeddingsdata.md)[] | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `model`                                                                              | *string*                                                                             | :heavy_check_mark:                                                                   | N/A                                                                                  |
+| `usage`                                                                              | [operations.Usage](../../models/operations/usage.md)                                 | :heavy_minus_sign:                                                                   | N/A                                                                                  |

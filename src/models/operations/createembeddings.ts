@@ -90,15 +90,13 @@ export type Usage = {
 /**
  * Embedding response
  */
-export type CreateEmbeddingsResponseBody = {
+export type CreateEmbeddingsResponse = {
   id?: string | undefined;
   object: ObjectT;
   data: Array<CreateEmbeddingsData>;
   model: string;
   usage?: Usage | undefined;
 };
-
-export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
 
 /** @internal */
 export type ImageUrl$Outbound = {
@@ -335,8 +333,8 @@ export function usageFromJSON(
 }
 
 /** @internal */
-export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
-  CreateEmbeddingsResponseBody,
+export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
+  CreateEmbeddingsResponse,
   unknown
 > = z.object({
   id: z.string().optional(),
@@ -345,25 +343,6 @@ export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
   model: z.string(),
   usage: z.lazy(() => Usage$inboundSchema).optional(),
 });
-
-export function createEmbeddingsResponseBodyFromJSON(
-  jsonString: string,
-): SafeParseResult<CreateEmbeddingsResponseBody, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => CreateEmbeddingsResponseBody$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CreateEmbeddingsResponseBody' from JSON`,
-  );
-}
-
-/** @internal */
-export const CreateEmbeddingsResponse$inboundSchema: z.ZodType<
-  CreateEmbeddingsResponse,
-  unknown
-> = z.union([
-  z.lazy(() => CreateEmbeddingsResponseBody$inboundSchema),
-  z.string(),
-]);
 
 export function createEmbeddingsResponseFromJSON(
   jsonString: string,

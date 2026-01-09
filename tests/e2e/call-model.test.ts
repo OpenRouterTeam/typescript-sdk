@@ -642,7 +642,6 @@ describe('callModel E2E Tests', () => {
       let hasFunctionCallOutput = false;
 
       for await (const message of response.getNewMessagesStream()) {
-        console.log('Message received:', message);
         messages.push(message);
 
         // Validate each message has correct shape based on type
@@ -701,7 +700,7 @@ describe('callModel E2E Tests', () => {
           expect(lastMessageIndex).toBeGreaterThan(lastFnOutputIndex);
         }
       }
-    }, 6000);
+    }, 20000);
 
     it('should return messages with all required fields and correct types', async () => {
       const response = client.callModel({
