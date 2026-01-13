@@ -269,7 +269,24 @@ components:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
-          properties: {}
+          properties:
+            signature:
+              type: string
+              nullable: true
+              description: A signature for the reasoning content, used for verification
+              example: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
+            format:
+              type: string
+              nullable: true
+              enum:
+                - unknown
+                - openai-responses-v1
+                - xai-responses-v1
+                - anthropic-claude-v1
+                - google-gemini-v1
+              description: The format of the reasoning content
+              example: anthropic-claude-v1
+              x-speakeasy-unknown-values: allow
       example:
         id: reasoning-123
         type: reasoning
@@ -280,6 +297,8 @@ components:
         content:
           - type: reasoning_text
             text: First, we analyze the problem...
+        signature: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
+        format: anthropic-claude-v1
       description: An output item containing reasoning
     OutputItemFunctionCall:
       type: object
@@ -3517,6 +3536,7 @@ components:
         - Phala
         - Relace
         - SambaNova
+        - Seed
         - SiliconFlow
         - Sourceful
         - Stealth
@@ -3799,21 +3819,6 @@ components:
               description: >-
                 Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
               example: 5
-            min_throughput:
-              type: number
-              nullable: true
-              deprecated: true
-              description: >-
-                **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-              example: 100
-              x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
-            max_latency:
-              type: number
-              nullable: true
-              deprecated: true
-              description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
-              example: 5
-              x-speakeasy-deprecation-message: Use preferred_max_latency instead.
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
@@ -4140,21 +4145,6 @@ components:
           description: >-
             Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
           example: 5
-        min_throughput:
-          type: number
-          nullable: true
-          deprecated: true
-          description: >-
-            **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-          example: 100
-          x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
-        max_latency:
-          type: number
-          nullable: true
-          deprecated: true
-          description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
-          example: 5
-          x-speakeasy-deprecation-message: Use preferred_max_latency instead.
       description: Provider routing preferences for the request.
     PublicPricing:
       type: object
@@ -4861,6 +4851,7 @@ components:
               - Phala
               - Relace
               - SambaNova
+              - Seed
               - SiliconFlow
               - Sourceful
               - Stealth
@@ -5175,6 +5166,8 @@ components:
             - type: object
               properties:
                 cached_tokens:
+                  type: number
+                cache_write_tokens:
                   type: number
                 audio_tokens:
                   type: number
@@ -5525,14 +5518,6 @@ components:
                   anyOf:
                     - type: number
                     - type: 'null'
-                min_throughput:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                max_latency:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
               additionalProperties: false
             - type: 'null'
         plugins:
@@ -5759,6 +5744,22 @@ components:
           properties:
             echo_upstream_body:
               type: boolean
+        image_config:
+          type: object
+          propertyNames:
+            type: string
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+        modalities:
+          type: array
+          items:
+            type: string
+            enum:
+              - text
+              - image
+            x-speakeasy-unknown-values: allow
       required:
         - messages
     ProviderSortUnion:

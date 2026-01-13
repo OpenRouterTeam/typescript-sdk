@@ -164,18 +164,6 @@ export type ProviderPreferences = {
    * Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
   preferredMaxLatency?: number | null | undefined;
-  /**
-   * **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-   *
-   * @deprecated field: Use preferred_min_throughput instead..
-   */
-  minThroughput?: number | null | undefined;
-  /**
-   * **DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.
-   *
-   * @deprecated field: Use preferred_max_latency instead..
-   */
-  maxLatency?: number | null | undefined;
 };
 
 /** @internal */
@@ -379,8 +367,6 @@ export type ProviderPreferences$Outbound = {
   max_price?: ProviderPreferencesMaxPrice$Outbound | undefined;
   preferred_min_throughput?: number | null | undefined;
   preferred_max_latency?: number | null | undefined;
-  min_throughput?: number | null | undefined;
-  max_latency?: number | null | undefined;
 };
 
 /** @internal */
@@ -414,8 +400,6 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   maxPrice: z.lazy(() => ProviderPreferencesMaxPrice$outboundSchema).optional(),
   preferredMinThroughput: z.nullable(z.number()).optional(),
   preferredMaxLatency: z.nullable(z.number()).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -425,8 +409,6 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
     maxPrice: "max_price",
     preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
   });
 });
 

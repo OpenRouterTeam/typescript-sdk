@@ -13,5 +13,6 @@ let value: PromptTokensDetails = {};
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `cachedTokens`     | *number*           | :heavy_minus_sign: | N/A                |
+| `cacheWriteTokens` | *number*           | :heavy_minus_sign: | N/A                |
 | `audioTokens`      | *number*           | :heavy_minus_sign: | N/A                |
 | `videoTokens`      | *number*           | :heavy_minus_sign: | N/A                |

@@ -64,6 +64,7 @@ export const ProviderName = {
   Phala: "Phala",
   Relace: "Relace",
   SambaNova: "SambaNova",
+  Seed: "Seed",
   SiliconFlow: "SiliconFlow",
   Sourceful: "Sourceful",
   Stealth: "Stealth",

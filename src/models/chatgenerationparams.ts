@@ -129,8 +129,6 @@ export type ChatGenerationParamsProvider = {
   maxPrice?: ChatGenerationParamsMaxPrice | undefined;
   preferredMinThroughput?: number | null | undefined;
   preferredMaxLatency?: number | null | undefined;
-  minThroughput?: number | null | undefined;
-  maxLatency?: number | null | undefined;
 };
 
 export type ChatGenerationParamsPluginResponseHealing = {
@@ -225,6 +223,14 @@ export type Debug = {
   echoUpstreamBody?: boolean | undefined;
 };
 
+export type ImageConfig = string | number;
+
+export const Modality = {
+  Text: "text",
+  Image: "image",
+} as const;
+export type Modality = OpenEnum<typeof Modality>;
+
 export type ChatGenerationParams = {
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
@@ -275,6 +281,8 @@ export type ChatGenerationParams = {
   tools?: Array<ToolDefinitionJson> | undefined;
   topP?: number | null | undefined;
   debug?: Debug | undefined;
+  imageConfig?: { [k: string]: string | number } | undefined;
+  modalities?: Array<Modality> | undefined;
 };
 
 /** @internal */
@@ -333,8 +341,6 @@ export type ChatGenerationParamsProvider$Outbound = {
   max_price?: ChatGenerationParamsMaxPrice$Outbound | undefined;
   preferred_min_throughput?: number | null | undefined;
   preferred_max_latency?: number | null | undefined;
-  min_throughput?: number | null | undefined;
-  max_latency?: number | null | undefined;
 };
 
 /** @internal */
@@ -357,8 +363,6 @@ export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
     .optional(),
   preferredMinThroughput: z.nullable(z.number()).optional(),
   preferredMaxLatency: z.nullable(z.number()).optional(),
-  minThroughput: z.nullable(z.number()).optional(),
-  maxLatency: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
@@ -368,8 +372,6 @@ export const ChatGenerationParamsProvider$outboundSchema: z.ZodType<
     maxPrice: "max_price",
     preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
-    minThroughput: "min_throughput",
-    maxLatency: "max_latency",
   });
 });
 
@@ -713,6 +715,23 @@ export function debugToJSON(debug: Debug): string {
 }
 
 /** @internal */
+export type ImageConfig$Outbound = string | number;
+
+/** @internal */
+export const ImageConfig$outboundSchema: z.ZodType<
+  ImageConfig$Outbound,
+  ImageConfig
+> = z.union([z.string(), z.number()]);
+
+export function imageConfigToJSON(imageConfig: ImageConfig): string {
+  return JSON.stringify(ImageConfig$outboundSchema.parse(imageConfig));
+}
+
+/** @internal */
+export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
+  .outboundSchema(Modality);
+
+/** @internal */
 export type ChatGenerationParams$Outbound = {
   provider?: ChatGenerationParamsProvider$Outbound | null | undefined;
   plugins?:
@@ -754,6 +773,8 @@ export type ChatGenerationParams$Outbound = {
   tools?: Array<ToolDefinitionJson$Outbound> | undefined;
   top_p?: number | null | undefined;
   debug?: Debug$Outbound | undefined;
+  image_config?: { [k: string]: string | number } | undefined;
+  modalities?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -803,6 +824,9 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   tools: z.array(ToolDefinitionJson$outboundSchema).optional(),
   topP: z.nullable(z.number()).optional(),
   debug: z.lazy(() => Debug$outboundSchema).optional(),
+  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
+    .optional(),
+  modalities: z.array(Modality$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     sessionId: "session_id",
@@ -816,6 +840,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
     topP: "top_p",
+    imageConfig: "image_config",
   });
 });
 
