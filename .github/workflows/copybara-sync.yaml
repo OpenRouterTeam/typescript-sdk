@@ -1,0 +1,41 @@
+name: Copybara Sync
+
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  copybara:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: olivr/copybara-action@v1.2.5
+        with:
+          ssh_key: ${{ secrets.COPYBARA_SSH_KEY }}
+          access_token: ${{ secrets.MONOREPO_SYNC_TOKEN }}
+          sot_repo: OpenRouterTeam/typescript-sdk
+          destination_repo: OpenRouterTeam/openrouter-web
+          push_move: '||sdks/typescript||**'
+          push_exclude: '.github/workflows/copybara-sync.yaml .github/workflows/sdk_publish.yaml'
+
+  trigger-sdk-regen:
+    needs: copybara
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch SDK regeneration
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.MONOREPO_SYNC_TOKEN }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'OpenRouterTeam',
+              repo: 'openrouter-web',
+              event_type: 'sdk-regen-typescript',
+              client_payload: { sha: context.sha }
+            });
