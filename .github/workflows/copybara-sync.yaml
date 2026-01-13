@@ -1,4 +1,4 @@
-name: Copybara Sync
+name: Copybara Sync to Monorepo
 
 on:
   push:
@@ -7,35 +7,25 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  copybara:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # For PRs, checkout the PR head to sync the actual changes
+          ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
 
-      - uses: olivr/copybara-action@v1.2.5
+      - name: Sync to Monorepo
+        uses: olivr/copybara-action@v1.2.5
         with:
           ssh_key: ${{ secrets.COPYBARA_SSH_KEY }}
           access_token: ${{ secrets.MONOREPO_SYNC_TOKEN }}
           sot_repo: OpenRouterTeam/typescript-sdk
           destination_repo: OpenRouterTeam/openrouter-web
+          workflow: push
           push_move: '||sdks/typescript||**'
-          push_exclude: '.github/workflows/copybara-sync.yaml .github/workflows/sdk_publish.yaml'
-
-  trigger-sdk-regen:
-    needs: copybara
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dispatch SDK regeneration
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.MONOREPO_SYNC_TOKEN }}
-          script: |
-            await github.rest.repos.createDispatchEvent({
-              owner: 'OpenRouterTeam',
-              repo: 'openrouter-web',
-              event_type: 'sdk-regen-typescript',
-              client_payload: { sha: context.sha }
-            });
+          # Exclude .speakeasy/ to preserve monorepo's gen.lock (contains repo-specific git hashes)
+          push_exclude: '.github/workflows/copybara-sync.yaml,.speakeasy'
+          # For PRs, create a PR in monorepo; for pushes to main, push directly
+          copybara_options: ${{ github.event_name == 'pull_request_target' && '--force' || '' }}
