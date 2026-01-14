@@ -300,7 +300,7 @@ export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
   readonly toolCalls: TypedToolCallUnion<TTools>[];
   readonly toolResults: ToolExecutionResultUnion<TTools>[];
   readonly response: models.OpenResponsesNonStreamingResponse;
-  readonly usage?: models.OpenResponsesUsage | undefined;
+  readonly usage?: models.OpenResponsesUsage | null | undefined;
   readonly finishReason?: string | undefined;
   readonly warnings?: Warning[] | undefined;
   readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
