@@ -6,6 +6,7 @@ sources:
         sourceBlobDigest: sha256:7947538e5ccee796a2a352fa3abd6dc2b062d18cd8271149028ae1324d132f20
         tags:
             - latest
+            - fix-update-openapi-schema
             - 1.0.0
 targets:
     openrouter:
