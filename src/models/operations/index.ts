@@ -15,7 +15,6 @@ export * from "./getcurrentkey.js";
 export * from "./getgeneration.js";
 export * from "./getkey.js";
 export * from "./getmodels.js";
-export * from "./getparameters.js";
 export * from "./getuseractivity.js";
 export * from "./list.js";
 export * from "./listendpoints.js";

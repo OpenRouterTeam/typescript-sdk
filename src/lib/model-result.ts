@@ -291,7 +291,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
                 result: JSON.parse(tr.output),
               })),
               response: round.response,
-              usage: round.response.usage,
+              usage: round.response.usage ?? undefined,
               finishReason: undefined, // OpenResponsesNonStreamingResponse doesn't have finishReason
             })),
           });

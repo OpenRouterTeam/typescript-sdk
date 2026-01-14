@@ -3,6 +3,14 @@
 
 ## Supported Types
 
+### `models.OpenResponsesRequestPluginAutoRouter`
+
+```typescript
+const value: models.OpenResponsesRequestPluginAutoRouter = {
+  id: "auto-router",
+};
+```
+
 ### `models.OpenResponsesRequestPluginModeration`
 
 ```typescript

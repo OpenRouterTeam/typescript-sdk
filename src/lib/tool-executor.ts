@@ -1,4 +1,4 @@
-import type { $ZodType } from 'zod/v4/core';
+import type { ZodType } from 'zod';
 import type {
   APITool,
   Tool,
@@ -76,7 +76,7 @@ function isZodSchema(value: unknown): value is z4.ZodType {
  * The resulting schema is sanitized to remove metadata properties (like ~standard)
  * that would cause 400 errors with downstream providers.
  */
-export function convertZodToJsonSchema(zodSchema: $ZodType): Record<string, unknown> {
+export function convertZodToJsonSchema(zodSchema: ZodType): Record<string, unknown> {
   if (!isZodSchema(zodSchema)) {
     throw new Error('Invalid Zod schema provided');
   }
@@ -107,16 +107,16 @@ export function convertToolsToAPIFormat(tools: readonly Tool[]): APITool[] {
  * Validate tool input against Zod schema
  * @throws ZodError if validation fails
  */
-export function validateToolInput<T>(schema: $ZodType<T>, args: unknown): T {
-  return z4.parse(schema, args);
+export function validateToolInput<T>(schema: ZodType<T>, args: unknown): T {
+  return schema.parse(args);
 }
 
 /**
  * Validate tool output against Zod schema
  * @throws ZodError if validation fails
  */
-export function validateToolOutput<T>(schema: $ZodType<T>, result: unknown): T {
-  return z4.parse(schema, result);
+export function validateToolOutput<T>(schema: ZodType<T>, result: unknown): T {
+  return schema.parse(result);
 }
 
 /**

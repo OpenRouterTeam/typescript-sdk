@@ -7,9 +7,14 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const ResponseInputImageType = {
+  InputImage: "input_image",
+} as const;
+export type ResponseInputImageType = ClosedEnum<typeof ResponseInputImageType>;
 
 export const ResponseInputImageDetail = {
   Auto: "auto",
@@ -24,10 +29,19 @@ export type ResponseInputImageDetail = OpenEnum<
  * Image input content item
  */
 export type ResponseInputImage = {
-  type: "input_image";
+  type: ResponseInputImageType;
   detail: ResponseInputImageDetail;
   imageUrl?: string | null | undefined;
 };
+
+/** @internal */
+export const ResponseInputImageType$inboundSchema: z.ZodEnum<
+  typeof ResponseInputImageType
+> = z.enum(ResponseInputImageType);
+/** @internal */
+export const ResponseInputImageType$outboundSchema: z.ZodEnum<
+  typeof ResponseInputImageType
+> = ResponseInputImageType$inboundSchema;
 
 /** @internal */
 export const ResponseInputImageDetail$inboundSchema: z.ZodType<
@@ -45,7 +59,7 @@ export const ResponseInputImage$inboundSchema: z.ZodType<
   ResponseInputImage,
   unknown
 > = z.object({
-  type: z.literal("input_image"),
+  type: ResponseInputImageType$inboundSchema,
   detail: ResponseInputImageDetail$inboundSchema,
   image_url: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -55,7 +69,7 @@ export const ResponseInputImage$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ResponseInputImage$Outbound = {
-  type: "input_image";
+  type: string;
   detail: string;
   image_url?: string | null | undefined;
 };
@@ -65,7 +79,7 @@ export const ResponseInputImage$outboundSchema: z.ZodType<
   ResponseInputImage$Outbound,
   ResponseInputImage
 > = z.object({
-  type: z.literal("input_image"),
+  type: ResponseInputImageType$outboundSchema,
   detail: ResponseInputImageDetail$outboundSchema,
   imageUrl: z.nullable(z.string()).optional(),
 }).transform((v) => {

@@ -15,7 +15,6 @@ import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
-import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
 import {
@@ -63,11 +62,6 @@ export class OpenRouter extends ClientSDK {
   private _endpoints?: Endpoints;
   get endpoints(): Endpoints {
     return (this._endpoints ??= new Endpoints(this._options));
-  }
-
-  private _parameters?: ParametersT;
-  get parameters(): ParametersT {
-    return (this._parameters ??= new ParametersT(this._options));
   }
 
   private _providers?: Providers;

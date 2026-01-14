@@ -33,11 +33,10 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.3.14
+  version: 0.3.11
   acceptHeaderEnum: false
   additionalDependencies:
-    dependencies:
-      zod: ^3.25.0 || ^4.0.0
+    dependencies: {}
     devDependencies:
       '@types/node': ^22.13.12
       dotenv: ^16.4.7

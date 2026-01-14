@@ -108,6 +108,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OpenAIResponsesAnnotation'
+        logprobs:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+              bytes:
+                type: array
+                items:
+                  type: number
+              logprob:
+                type: number
+              top_logprobs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                    bytes:
+                      type: array
+                      items:
+                        type: number
+                    logprob:
+                      type: number
+                  required:
+                    - token
+                    - bytes
+                    - logprob
+            required:
+              - token
+              - bytes
+              - logprob
+              - top_logprobs
       required:
         - type
         - text
@@ -557,6 +592,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesUsage'
         - type: object
+          nullable: true
           properties:
             cost:
               type: number
@@ -1208,6 +1244,9 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/OpenAIResponsesResponseStatus'
+        completed_at:
+          type: number
+          nullable: true
         output:
           type: array
           items:
@@ -1256,6 +1295,12 @@ components:
           type: number
           nullable: true
         top_p:
+          type: number
+          nullable: true
+        presence_penalty:
+          type: number
+          nullable: true
+        frequency_penalty:
           type: number
           nullable: true
         instructions:
@@ -1319,11 +1364,15 @@ components:
         - object
         - created_at
         - model
+        - status
+        - completed_at
         - output
         - error
         - incomplete_details
         - temperature
         - top_p
+        - presence_penalty
+        - frequency_penalty
         - instructions
         - metadata
         - tools
@@ -3254,6 +3303,23 @@ components:
           - type: summary_text
             text: Step by step analysis
       description: Reasoning output item with signature and format extensions
+    ResponseInputVideo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_video
+        video_url:
+          type: string
+          description: A base64 data URL or remote URL that resolves to a video file
+      required:
+        - type
+        - video_url
+      description: Video input content item
+      example:
+        type: input_video
+        video_url: https://example.com/video.mp4
     OpenResponsesEasyInputMessage:
       type: object
       properties:
@@ -3281,16 +3347,18 @@ components:
               items:
                 oneOf:
                   - $ref: '#/components/schemas/ResponseInputText'
-                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - allOf:
+                      - $ref: '#/components/schemas/ResponseInputImage'
+                      - type: object
+                        properties: {}
+                    description: Image input content item
+                    example:
+                      type: input_image
+                      detail: auto
+                      image_url: https://example.com/image.jpg
                   - $ref: '#/components/schemas/ResponseInputFile'
                   - $ref: '#/components/schemas/ResponseInputAudio'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    input_text: '#/components/schemas/ResponseInputText'
-                    input_image: '#/components/schemas/ResponseInputImage'
-                    input_file: '#/components/schemas/ResponseInputFile'
-                    input_audio: '#/components/schemas/ResponseInputAudio'
+                  - $ref: '#/components/schemas/ResponseInputVideo'
             - type: string
       required:
         - role
@@ -3320,16 +3388,18 @@ components:
           items:
             oneOf:
               - $ref: '#/components/schemas/ResponseInputText'
-              - $ref: '#/components/schemas/ResponseInputImage'
+              - allOf:
+                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - type: object
+                    properties: {}
+                description: Image input content item
+                example:
+                  type: input_image
+                  detail: auto
+                  image_url: https://example.com/image.jpg
               - $ref: '#/components/schemas/ResponseInputFile'
               - $ref: '#/components/schemas/ResponseInputAudio'
-            discriminator:
-              propertyName: type
-              mapping:
-                input_text: '#/components/schemas/ResponseInputText'
-                input_image: '#/components/schemas/ResponseInputImage'
-                input_file: '#/components/schemas/ResponseInputFile'
-                input_audio: '#/components/schemas/ResponseInputAudio'
+              - $ref: '#/components/schemas/ResponseInputVideo'
       required:
         - role
         - content
@@ -3731,6 +3801,24 @@ components:
           type: number
           nullable: true
           minimum: 0
+        top_logprobs:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 20
+        max_tool_calls:
+          type: integer
+          nullable: true
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
         top_k:
           type: number
         image_config:
@@ -7198,6 +7286,11 @@ paths:
                           - completions
                           - embeddings
                         description: Type of API used for the generation
+                      router:
+                        type: string
+                        nullable: true
+                        description: Router used for the request (e.g., openrouter/auto)
+                        example: openrouter/auto
                     required:
                       - id
                       - upstream_id
@@ -7231,6 +7324,7 @@ paths:
                       - native_finish_reason
                       - external_user
                       - api_type
+                      - router
                     description: Generation data
                 required:
                   - data
@@ -7451,116 +7545,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEndpointsZdr
-  /parameters/{author}/{slug}:
-    get:
-      tags:
-        - Parameters
-      summary: Get a model's supported parameters and data about which are most popular
-      security:
-        - bearer: []
-      parameters:
-        - schema:
-            type: string
-          required: true
-          name: author
-          in: path
-        - schema:
-            type: string
-          required: true
-          name: slug
-          in: path
-        - schema:
-            $ref: '#/components/schemas/ProviderName'
-          required: false
-          name: provider
-          in: query
-      responses:
-        '200':
-          description: Returns the parameters for the specified model
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      model:
-                        type: string
-                        description: Model identifier
-                        example: openai/gpt-4
-                      supported_parameters:
-                        type: array
-                        items:
-                          type: string
-                          enum:
-                            - temperature
-                            - top_p
-                            - top_k
-                            - min_p
-                            - top_a
-                            - frequency_penalty
-                            - presence_penalty
-                            - repetition_penalty
-                            - max_tokens
-                            - logit_bias
-                            - logprobs
-                            - top_logprobs
-                            - seed
-                            - response_format
-                            - structured_outputs
-                            - stop
-                            - tools
-                            - tool_choice
-                            - parallel_tool_calls
-                            - include_reasoning
-                            - reasoning
-                            - reasoning_effort
-                            - web_search_options
-                            - verbosity
-                        description: List of parameters supported by this model
-                        example:
-                          - temperature
-                          - top_p
-                          - max_tokens
-                    required:
-                      - model
-                      - supported_parameters
-                    example:
-                      model: openai/gpt-4
-                      supported_parameters:
-                        - temperature
-                        - top_p
-                        - max_tokens
-                    description: Parameter analytics data
-                required:
-                  - data
-                example:
-                  data:
-                    model: openai/gpt-4
-                    supported_parameters:
-                      - temperature
-                      - top_p
-                      - max_tokens
-        '401':
-          description: Unauthorized - Authentication required or invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-        '404':
-          description: Not Found - Model or provider does not exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundResponse'
-        '500':
-          description: Internal Server Error - Unexpected server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-      operationId: getParameters
   /providers:
     get:
       tags:
@@ -9056,8 +9040,6 @@ tags:
     description: Model information endpoints
   - name: OAuth
     description: OAuth authentication endpoints
-  - name: Parameters
-    description: Parameters endpoints
   - name: Providers
     description: Provider information endpoints
   - name: beta.responses

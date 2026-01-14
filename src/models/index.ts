@@ -128,6 +128,7 @@ export * from "./responseinputaudio.js";
 export * from "./responseinputfile.js";
 export * from "./responseinputimage.js";
 export * from "./responseinputtext.js";
+export * from "./responseinputvideo.js";
 export * from "./responseoutputtext.js";
 export * from "./responseserrorfield.js";
 export * from "./responsesformatjsonobject.js";
