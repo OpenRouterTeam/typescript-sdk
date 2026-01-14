@@ -40,6 +40,7 @@ let value: GetGenerationData = {
   nativeFinishReason: "stop",
   externalUser: "user-123",
   apiType: "completions",
+  router: "openrouter/auto",
 };
 ```
 
@@ -79,3 +80,4 @@ let value: GetGenerationData = {
 | `nativeFinishReason`                                     | *string*                                                 | :heavy_check_mark:                                       | Native finish reason as reported by provider             | stop                                                     |
 | `externalUser`                                           | *string*                                                 | :heavy_check_mark:                                       | External user identifier                                 | user-123                                                 |
 | `apiType`                                                | [operations.ApiType](../../models/operations/apitype.md) | :heavy_check_mark:                                       | Type of API used for the generation                      |                                                          |
+| `router`                                                 | *string*                                                 | :heavy_check_mark:                                       | Router used for the request (e.g., openrouter/auto)      | openrouter/auto                                          |

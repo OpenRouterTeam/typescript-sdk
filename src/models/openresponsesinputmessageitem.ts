@@ -4,7 +4,9 @@
  */
 
 import * as z from "zod/v4";
-import { ClosedEnum } from "../types/enums.js";
+import { remap as remap$ } from "../lib/primitives.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
   ResponseInputAudio,
   ResponseInputAudio$Outbound,
@@ -16,21 +18,21 @@ import {
   ResponseInputFile$outboundSchema,
 } from "./responseinputfile.js";
 import {
-  ResponseInputImage,
-  ResponseInputImage$Outbound,
-  ResponseInputImage$outboundSchema,
-} from "./responseinputimage.js";
-import {
   ResponseInputText,
   ResponseInputText$Outbound,
   ResponseInputText$outboundSchema,
 } from "./responseinputtext.js";
+import {
+  ResponseInputVideo,
+  ResponseInputVideo$Outbound,
+  ResponseInputVideo$outboundSchema,
+} from "./responseinputvideo.js";
 
-export const OpenResponsesInputMessageItemType = {
+export const OpenResponsesInputMessageItemTypeMessage = {
   Message: "message",
 } as const;
-export type OpenResponsesInputMessageItemType = ClosedEnum<
-  typeof OpenResponsesInputMessageItemType
+export type OpenResponsesInputMessageItemTypeMessage = ClosedEnum<
+  typeof OpenResponsesInputMessageItemTypeMessage
 >;
 
 export const OpenResponsesInputMessageItemRoleDeveloper = {
@@ -59,31 +61,51 @@ export type OpenResponsesInputMessageItemRoleUnion =
   | OpenResponsesInputMessageItemRoleSystem
   | OpenResponsesInputMessageItemRoleDeveloper;
 
-export type OpenResponsesInputMessageItemContent =
+export const OpenResponsesInputMessageItemDetail = {
+  Auto: "auto",
+  High: "high",
+  Low: "low",
+} as const;
+export type OpenResponsesInputMessageItemDetail = OpenEnum<
+  typeof OpenResponsesInputMessageItemDetail
+>;
+
+/**
+ * Image input content item
+ */
+export type OpenResponsesInputMessageItemContentInputImage = {
+  type: "input_image";
+  detail: OpenResponsesInputMessageItemDetail;
+  imageUrl?: string | null | undefined;
+};
+
+export type OpenResponsesInputMessageItemContentUnion =
   | ResponseInputText
-  | ResponseInputImage
+  | OpenResponsesInputMessageItemContentInputImage
   | ResponseInputFile
-  | ResponseInputAudio;
+  | ResponseInputAudio
+  | ResponseInputVideo;
 
 export type OpenResponsesInputMessageItem = {
   id?: string | undefined;
-  type?: OpenResponsesInputMessageItemType | undefined;
+  type?: OpenResponsesInputMessageItemTypeMessage | undefined;
   role:
     | OpenResponsesInputMessageItemRoleUser
     | OpenResponsesInputMessageItemRoleSystem
     | OpenResponsesInputMessageItemRoleDeveloper;
   content: Array<
     | ResponseInputText
-    | ResponseInputImage
+    | OpenResponsesInputMessageItemContentInputImage
     | ResponseInputFile
     | ResponseInputAudio
+    | ResponseInputVideo
   >;
 };
 
 /** @internal */
-export const OpenResponsesInputMessageItemType$outboundSchema: z.ZodEnum<
-  typeof OpenResponsesInputMessageItemType
-> = z.enum(OpenResponsesInputMessageItemType);
+export const OpenResponsesInputMessageItemTypeMessage$outboundSchema: z.ZodEnum<
+  typeof OpenResponsesInputMessageItemTypeMessage
+> = z.enum(OpenResponsesInputMessageItemTypeMessage);
 
 /** @internal */
 export const OpenResponsesInputMessageItemRoleDeveloper$outboundSchema:
@@ -129,29 +151,72 @@ export function openResponsesInputMessageItemRoleUnionToJSON(
 }
 
 /** @internal */
-export type OpenResponsesInputMessageItemContent$Outbound =
-  | ResponseInputText$Outbound
-  | ResponseInputImage$Outbound
-  | ResponseInputFile$Outbound
-  | ResponseInputAudio$Outbound;
+export const OpenResponsesInputMessageItemDetail$outboundSchema: z.ZodType<
+  string,
+  OpenResponsesInputMessageItemDetail
+> = openEnums.outboundSchema(OpenResponsesInputMessageItemDetail);
 
 /** @internal */
-export const OpenResponsesInputMessageItemContent$outboundSchema: z.ZodType<
-  OpenResponsesInputMessageItemContent$Outbound,
-  OpenResponsesInputMessageItemContent
-> = z.union([
-  ResponseInputText$outboundSchema,
-  ResponseInputImage$outboundSchema,
-  ResponseInputFile$outboundSchema,
-  ResponseInputAudio$outboundSchema,
-]);
+export type OpenResponsesInputMessageItemContentInputImage$Outbound = {
+  type: "input_image";
+  detail: string;
+  image_url?: string | null | undefined;
+};
 
-export function openResponsesInputMessageItemContentToJSON(
-  openResponsesInputMessageItemContent: OpenResponsesInputMessageItemContent,
+/** @internal */
+export const OpenResponsesInputMessageItemContentInputImage$outboundSchema:
+  z.ZodType<
+    OpenResponsesInputMessageItemContentInputImage$Outbound,
+    OpenResponsesInputMessageItemContentInputImage
+  > = z.object({
+    type: z.literal("input_image"),
+    detail: OpenResponsesInputMessageItemDetail$outboundSchema,
+    imageUrl: z.nullable(z.string()).optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      imageUrl: "image_url",
+    });
+  });
+
+export function openResponsesInputMessageItemContentInputImageToJSON(
+  openResponsesInputMessageItemContentInputImage:
+    OpenResponsesInputMessageItemContentInputImage,
 ): string {
   return JSON.stringify(
-    OpenResponsesInputMessageItemContent$outboundSchema.parse(
-      openResponsesInputMessageItemContent,
+    OpenResponsesInputMessageItemContentInputImage$outboundSchema.parse(
+      openResponsesInputMessageItemContentInputImage,
+    ),
+  );
+}
+
+/** @internal */
+export type OpenResponsesInputMessageItemContentUnion$Outbound =
+  | ResponseInputText$Outbound
+  | OpenResponsesInputMessageItemContentInputImage$Outbound
+  | ResponseInputFile$Outbound
+  | ResponseInputAudio$Outbound
+  | ResponseInputVideo$Outbound;
+
+/** @internal */
+export const OpenResponsesInputMessageItemContentUnion$outboundSchema:
+  z.ZodType<
+    OpenResponsesInputMessageItemContentUnion$Outbound,
+    OpenResponsesInputMessageItemContentUnion
+  > = z.union([
+    ResponseInputText$outboundSchema,
+    z.lazy(() => OpenResponsesInputMessageItemContentInputImage$outboundSchema),
+    ResponseInputFile$outboundSchema,
+    ResponseInputAudio$outboundSchema,
+    ResponseInputVideo$outboundSchema,
+  ]);
+
+export function openResponsesInputMessageItemContentUnionToJSON(
+  openResponsesInputMessageItemContentUnion:
+    OpenResponsesInputMessageItemContentUnion,
+): string {
+  return JSON.stringify(
+    OpenResponsesInputMessageItemContentUnion$outboundSchema.parse(
+      openResponsesInputMessageItemContentUnion,
     ),
   );
 }
@@ -163,9 +228,10 @@ export type OpenResponsesInputMessageItem$Outbound = {
   role: string | string | string;
   content: Array<
     | ResponseInputText$Outbound
-    | ResponseInputImage$Outbound
+    | OpenResponsesInputMessageItemContentInputImage$Outbound
     | ResponseInputFile$Outbound
     | ResponseInputAudio$Outbound
+    | ResponseInputVideo$Outbound
   >;
 };
 
@@ -175,7 +241,7 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
   OpenResponsesInputMessageItem
 > = z.object({
   id: z.string().optional(),
-  type: OpenResponsesInputMessageItemType$outboundSchema.optional(),
+  type: OpenResponsesInputMessageItemTypeMessage$outboundSchema.optional(),
   role: z.union([
     OpenResponsesInputMessageItemRoleUser$outboundSchema,
     OpenResponsesInputMessageItemRoleSystem$outboundSchema,
@@ -184,9 +250,12 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
   content: z.array(
     z.union([
       ResponseInputText$outboundSchema,
-      ResponseInputImage$outboundSchema,
+      z.lazy(() =>
+        OpenResponsesInputMessageItemContentInputImage$outboundSchema
+      ),
       ResponseInputFile$outboundSchema,
       ResponseInputAudio$outboundSchema,
+      ResponseInputVideo$outboundSchema,
     ]),
   ),
 });
