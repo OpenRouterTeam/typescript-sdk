@@ -105,7 +105,8 @@ export type OpenResponsesNonStreamingResponse = {
   object: ObjectT;
   createdAt: number;
   model: string;
-  status?: OpenAIResponsesResponseStatus | undefined;
+  status: OpenAIResponsesResponseStatus;
+  completedAt: number | null;
   output: Array<ResponsesOutputItem>;
   user?: string | null | undefined;
   outputText?: string | undefined;
@@ -119,12 +120,14 @@ export type OpenResponsesNonStreamingResponse = {
   /**
    * Token usage information for the response
    */
-  usage?: OpenResponsesUsage | undefined;
+  usage?: OpenResponsesUsage | null | undefined;
   maxToolCalls?: number | null | undefined;
   topLogprobs?: number | undefined;
   maxOutputTokens?: number | null | undefined;
   temperature: number | null;
   topP: number | null;
+  presencePenalty: number | null;
+  frequencyPenalty: number | null;
   instructions?: OpenAIResponsesInputUnion | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
@@ -216,7 +219,8 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   object: ObjectT$inboundSchema,
   created_at: z.number(),
   model: z.string(),
-  status: OpenAIResponsesResponseStatus$inboundSchema.optional(),
+  status: OpenAIResponsesResponseStatus$inboundSchema,
+  completed_at: z.nullable(z.number()),
   output: z.array(ResponsesOutputItem$inboundSchema),
   user: z.nullable(z.string()).optional(),
   output_text: z.string().optional(),
@@ -226,12 +230,14 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   incomplete_details: z.nullable(
     OpenAIResponsesIncompleteDetails$inboundSchema,
   ),
-  usage: OpenResponsesUsage$inboundSchema.optional(),
+  usage: z.nullable(OpenResponsesUsage$inboundSchema).optional(),
   max_tool_calls: z.nullable(z.number()).optional(),
   top_logprobs: z.number().optional(),
   max_output_tokens: z.nullable(z.number()).optional(),
   temperature: z.nullable(z.number()),
   top_p: z.nullable(z.number()),
+  presence_penalty: z.nullable(z.number()),
+  frequency_penalty: z.nullable(z.number()),
   instructions: z.nullable(OpenAIResponsesInputUnion$inboundSchema).optional(),
   metadata: z.nullable(z.record(z.string(), z.string())),
   tools: z.array(
@@ -257,6 +263,7 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
+    "completed_at": "completedAt",
     "output_text": "outputText",
     "prompt_cache_key": "promptCacheKey",
     "safety_identifier": "safetyIdentifier",
@@ -265,6 +272,8 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
     "top_logprobs": "topLogprobs",
     "max_output_tokens": "maxOutputTokens",
     "top_p": "topP",
+    "presence_penalty": "presencePenalty",
+    "frequency_penalty": "frequencyPenalty",
     "tool_choice": "toolChoice",
     "parallel_tool_calls": "parallelToolCalls",
     "previous_response_id": "previousResponseId",

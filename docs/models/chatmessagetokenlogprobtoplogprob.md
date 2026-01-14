@@ -1,13 +1,13 @@
-# TopLogprob
+# ChatMessageTokenLogprobTopLogprob
 
 ## Example Usage
 
 ```typescript
-import { TopLogprob } from "@openrouter/sdk/models";
+import { ChatMessageTokenLogprobTopLogprob } from "@openrouter/sdk/models";
 
-let value: TopLogprob = {
+let value: ChatMessageTokenLogprobTopLogprob = {
   token: "<value>",
-  logprob: 88.94,
+  logprob: 6197.03,
   bytes: [],
 };
 ```

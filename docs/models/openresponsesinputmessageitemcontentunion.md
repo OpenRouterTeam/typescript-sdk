@@ -1,4 +1,4 @@
-# OpenResponsesInputMessageItemContent
+# OpenResponsesInputMessageItemContentUnion
 
 
 ## Supported Types
@@ -12,10 +12,10 @@ const value: models.ResponseInputText = {
 };
 ```
 
-### `models.ResponseInputImage`
+### `models.OpenResponsesInputMessageItemContentInputImage`
 
 ```typescript
-const value: models.ResponseInputImage = {
+const value: models.OpenResponsesInputMessageItemContentInputImage = {
   type: "input_image",
   detail: "auto",
 };
@@ -38,6 +38,15 @@ const value: models.ResponseInputAudio = {
     data: "SGVsbG8gV29ybGQ=",
     format: "mp3",
   },
+};
+```
+
+### `models.ResponseInputVideo`
+
+```typescript
+const value: models.ResponseInputVideo = {
+  type: "input_video",
+  videoUrl: "https://example.com/video.mp4",
 };
 ```
 

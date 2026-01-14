@@ -11,6 +11,8 @@ const value: models.OpenResponsesNonStreamingResponse = {
   object: "response",
   createdAt: 1704067200,
   model: "gpt-4",
+  status: "completed",
+  completedAt: 288.81,
   output: [
     {
       id: "msg-abc123",
@@ -28,6 +30,8 @@ const value: models.OpenResponsesNonStreamingResponse = {
   incompleteDetails: null,
   temperature: null,
   topP: null,
+  presencePenalty: 1980.95,
+  frequencyPenalty: 5982.72,
   instructions: null,
   metadata: null,
   tools: [],

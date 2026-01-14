@@ -1,4 +1,4 @@
-# OpenResponsesEasyInputMessageContent1
+# OpenResponsesEasyInputMessageContentUnion1
 
 
 ## Supported Types
@@ -12,10 +12,10 @@ const value: models.ResponseInputText = {
 };
 ```
 
-### `models.ResponseInputImage`
+### `models.OpenResponsesEasyInputMessageContentInputImage`
 
 ```typescript
-const value: models.ResponseInputImage = {
+const value: models.OpenResponsesEasyInputMessageContentInputImage = {
   type: "input_image",
   detail: "auto",
 };
@@ -38,6 +38,15 @@ const value: models.ResponseInputAudio = {
     data: "SGVsbG8gV29ybGQ=",
     format: "mp3",
   },
+};
+```
+
+### `models.ResponseInputVideo`
+
+```typescript
+const value: models.ResponseInputVideo = {
+  type: "input_video",
+  videoUrl: "https://example.com/video.mp4",
 };
 ```
 

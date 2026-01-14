@@ -159,6 +159,10 @@ export type GetGenerationData = {
    * Type of API used for the generation
    */
   apiType: ApiType | null;
+  /**
+   * Router used for the request (e.g., openrouter/auto)
+   */
+  router: string | null;
 };
 
 /**
@@ -233,6 +237,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   native_finish_reason: z.nullable(z.string()),
   external_user: z.nullable(z.string()),
   api_type: z.nullable(ApiType$inboundSchema),
+  router: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "upstream_id": "upstreamId",

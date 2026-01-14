@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -56,6 +57,24 @@ export type ResponsesOutputItemReasoningStatusUnion =
   | ResponsesOutputItemReasoningStatusInProgress;
 
 /**
+ * The format of the reasoning content
+ */
+export const ResponsesOutputItemReasoningFormat = {
+  Unknown: "unknown",
+  OpenaiResponsesV1: "openai-responses-v1",
+  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
+  XaiResponsesV1: "xai-responses-v1",
+  AnthropicClaudeV1: "anthropic-claude-v1",
+  GoogleGeminiV1: "google-gemini-v1",
+} as const;
+/**
+ * The format of the reasoning content
+ */
+export type ResponsesOutputItemReasoningFormat = OpenEnum<
+  typeof ResponsesOutputItemReasoningFormat
+>;
+
+/**
  * An output item containing reasoning
  */
 export type ResponsesOutputItemReasoning = {
@@ -69,6 +88,14 @@ export type ResponsesOutputItemReasoning = {
     | ResponsesOutputItemReasoningStatusIncomplete
     | ResponsesOutputItemReasoningStatusInProgress
     | undefined;
+  /**
+   * A signature for the reasoning content, used for verification
+   */
+  signature?: string | null | undefined;
+  /**
+   * The format of the reasoning content
+   */
+  format?: ResponsesOutputItemReasoningFormat | null | undefined;
 };
 
 /** @internal */
@@ -162,6 +189,17 @@ export function responsesOutputItemReasoningStatusUnionFromJSON(
 }
 
 /** @internal */
+export const ResponsesOutputItemReasoningFormat$inboundSchema: z.ZodType<
+  ResponsesOutputItemReasoningFormat,
+  unknown
+> = openEnums.inboundSchema(ResponsesOutputItemReasoningFormat);
+/** @internal */
+export const ResponsesOutputItemReasoningFormat$outboundSchema: z.ZodType<
+  string,
+  ResponsesOutputItemReasoningFormat
+> = openEnums.outboundSchema(ResponsesOutputItemReasoningFormat);
+
+/** @internal */
 export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoning,
   unknown
@@ -176,6 +214,9 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
     ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
     ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
   ]).optional(),
+  signature: z.nullable(z.string()).optional(),
+  format: z.nullable(ResponsesOutputItemReasoningFormat$inboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",
@@ -189,6 +230,8 @@ export type ResponsesOutputItemReasoning$Outbound = {
   summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
   status?: string | string | string | undefined;
+  signature?: string | null | undefined;
+  format?: string | null | undefined;
 };
 
 /** @internal */
@@ -206,6 +249,9 @@ export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
     ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
     ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
   ]).optional(),
+  signature: z.nullable(z.string()).optional(),
+  format: z.nullable(ResponsesOutputItemReasoningFormat$outboundSchema)
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",
