@@ -109,6 +109,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OpenAIResponsesAnnotation'
+        logprobs:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+              bytes:
+                type: array
+                items:
+                  type: number
+              logprob:
+                type: number
+              top_logprobs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                    bytes:
+                      type: array
+                      items:
+                        type: number
+                    logprob:
+                      type: number
+                  required:
+                    - token
+                    - bytes
+                    - logprob
+            required:
+              - token
+              - bytes
+              - logprob
+              - top_logprobs
       required:
         - type
         - text
@@ -269,7 +304,25 @@ components:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
-          properties: {}
+          properties:
+            signature:
+              type: string
+              nullable: true
+              description: A signature for the reasoning content, used for verification
+              example: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
+            format:
+              type: string
+              nullable: true
+              enum:
+                - unknown
+                - openai-responses-v1
+                - azure-openai-responses-v1
+                - xai-responses-v1
+                - anthropic-claude-v1
+                - google-gemini-v1
+              description: The format of the reasoning content
+              example: anthropic-claude-v1
+              x-speakeasy-unknown-values: allow
       example:
         id: reasoning-123
         type: reasoning
@@ -280,6 +333,8 @@ components:
         content:
           - type: reasoning_text
             text: First, we analyze the problem...
+        signature: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
+        format: anthropic-claude-v1
       description: An output item containing reasoning
     OutputItemFunctionCall:
       type: object
@@ -543,6 +598,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesUsage'
         - type: object
+          nullable: true
           properties:
             cost:
               type: number
@@ -1203,6 +1259,9 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/OpenAIResponsesResponseStatus'
+        completed_at:
+          type: number
+          nullable: true
         output:
           type: array
           items:
@@ -1251,6 +1310,12 @@ components:
           type: number
           nullable: true
         top_p:
+          type: number
+          nullable: true
+        presence_penalty:
+          type: number
+          nullable: true
+        frequency_penalty:
           type: number
           nullable: true
         instructions:
@@ -1315,11 +1380,15 @@ components:
         - object
         - created_at
         - model
+        - status
+        - completed_at
         - output
         - error
         - incomplete_details
         - temperature
         - top_p
+        - presence_penalty
+        - frequency_penalty
         - instructions
         - metadata
         - tools
@@ -3239,6 +3308,7 @@ components:
               enum:
                 - unknown
                 - openai-responses-v1
+                - azure-openai-responses-v1
                 - xai-responses-v1
                 - anthropic-claude-v1
                 - google-gemini-v1
@@ -3250,6 +3320,23 @@ components:
           - type: summary_text
             text: Step by step analysis
       description: Reasoning output item with signature and format extensions
+    ResponseInputVideo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_video
+        video_url:
+          type: string
+          description: A base64 data URL or remote URL that resolves to a video file
+      required:
+        - type
+        - video_url
+      description: Video input content item
+      example:
+        type: input_video
+        video_url: https://example.com/video.mp4
     OpenResponsesEasyInputMessage:
       type: object
       properties:
@@ -3277,16 +3364,18 @@ components:
               items:
                 oneOf:
                   - $ref: '#/components/schemas/ResponseInputText'
-                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - allOf:
+                      - $ref: '#/components/schemas/ResponseInputImage'
+                      - type: object
+                        properties: {}
+                    description: Image input content item
+                    example:
+                      type: input_image
+                      detail: auto
+                      image_url: https://example.com/image.jpg
                   - $ref: '#/components/schemas/ResponseInputFile'
                   - $ref: '#/components/schemas/ResponseInputAudio'
-                discriminator:
-                  propertyName: type
-                  mapping:
-                    input_text: '#/components/schemas/ResponseInputText'
-                    input_image: '#/components/schemas/ResponseInputImage'
-                    input_file: '#/components/schemas/ResponseInputFile'
-                    input_audio: '#/components/schemas/ResponseInputAudio'
+                  - $ref: '#/components/schemas/ResponseInputVideo'
             - type: string
       required:
         - role
@@ -3316,16 +3405,18 @@ components:
           items:
             oneOf:
               - $ref: '#/components/schemas/ResponseInputText'
-              - $ref: '#/components/schemas/ResponseInputImage'
+              - allOf:
+                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - type: object
+                    properties: {}
+                description: Image input content item
+                example:
+                  type: input_image
+                  detail: auto
+                  image_url: https://example.com/image.jpg
               - $ref: '#/components/schemas/ResponseInputFile'
               - $ref: '#/components/schemas/ResponseInputAudio'
-            discriminator:
-              propertyName: type
-              mapping:
-                input_text: '#/components/schemas/ResponseInputText'
-                input_image: '#/components/schemas/ResponseInputImage'
-                input_file: '#/components/schemas/ResponseInputFile'
-                input_audio: '#/components/schemas/ResponseInputAudio'
+              - $ref: '#/components/schemas/ResponseInputVideo'
       required:
         - role
         - content
@@ -3434,6 +3525,12 @@ components:
       example:
         summary: auto
         enabled: true
+    ResponsesOutputModality:
+      type: string
+      enum:
+        - text
+        - image
+      x-speakeasy-unknown-values: allow
     OpenAIResponsesIncludable:
       type: string
       enum:
@@ -3487,12 +3584,12 @@ components:
         - Fireworks
         - Friendli
         - GMICloud
-        - GoPomelo
         - Google
         - Google AI Studio
         - Groq
         - Hyperbolic
         - Inception
+        - Inceptron
         - InferenceNet
         - Infermatic
         - Inflection
@@ -3517,13 +3614,14 @@ components:
         - Phala
         - Relace
         - SambaNova
+        - Seed
         - SiliconFlow
         - Sourceful
         - Stealth
         - StreamLake
         - Switchpoint
-        - Targon
         - Together
+        - Upstage
         - Venice
         - WandB
         - Xiaomi
@@ -3572,6 +3670,68 @@ components:
       type: string
       description: A value in string format that is a large number
       example: 1000
+    PercentileThroughputCutoffs:
+      type: object
+      properties:
+        p50:
+          type: number
+          nullable: true
+          description: Minimum p50 throughput (tokens/sec)
+        p75:
+          type: number
+          nullable: true
+          description: Minimum p75 throughput (tokens/sec)
+        p90:
+          type: number
+          nullable: true
+          description: Minimum p90 throughput (tokens/sec)
+        p99:
+          type: number
+          nullable: true
+          description: Minimum p99 throughput (tokens/sec)
+      description: Percentile-based throughput cutoffs. All specified cutoffs must be met for an endpoint to be preferred.
+      example:
+        p50: 100
+        p90: 50
+    PreferredMinThroughput:
+      anyOf:
+        - type: number
+        - $ref: '#/components/schemas/PercentileThroughputCutoffs'
+        - nullable: true
+      description: >-
+        Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+      example: 100
+    PercentileLatencyCutoffs:
+      type: object
+      properties:
+        p50:
+          type: number
+          nullable: true
+          description: Maximum p50 latency (seconds)
+        p75:
+          type: number
+          nullable: true
+          description: Maximum p75 latency (seconds)
+        p90:
+          type: number
+          nullable: true
+          description: Maximum p90 latency (seconds)
+        p99:
+          type: number
+          nullable: true
+          description: Maximum p99 latency (seconds)
+      description: Percentile-based latency cutoffs. All specified cutoffs must be met for an endpoint to be preferred.
+      example:
+        p50: 5
+        p90: 10
+    PreferredMaxLatency:
+      anyOf:
+        - type: number
+        - $ref: '#/components/schemas/PercentileLatencyCutoffs'
+        - nullable: true
+      description: >-
+        Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+      example: 5
     WebSearchEngine:
       type: string
       enum:
@@ -3661,8 +3821,44 @@ components:
           type: number
           nullable: true
           minimum: 0
+        top_logprobs:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 20
+        max_tool_calls:
+          type: integer
+          nullable: true
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
         top_k:
           type: number
+        image_config:
+          type: object
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+          description: >-
+            Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
+          example:
+            aspect_ratio: '16:9'
+        modalities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponsesOutputModality'
+          description: Output modalities for the response. Supported values are "text" and "image".
+          example:
+            - text
+            - image
         prompt_cache_key:
           type: string
           nullable: true
@@ -3788,38 +3984,36 @@ components:
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
             preferred_min_throughput:
-              type: number
-              nullable: true
-              description: >-
-                Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-              example: 100
+              $ref: '#/components/schemas/PreferredMinThroughput'
             preferred_max_latency:
-              type: number
-              nullable: true
-              description: >-
-                Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-              example: 5
-            min_throughput:
-              type: number
-              nullable: true
-              deprecated: true
-              description: >-
-                **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-              example: 100
-              x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
-            max_latency:
-              type: number
-              nullable: true
-              deprecated: true
-              description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
-              example: 5
-              x-speakeasy-deprecation-message: Use preferred_max_latency instead.
+              $ref: '#/components/schemas/PreferredMaxLatency'
           additionalProperties: false
           description: When multiple model providers are available, optionally indicate your routing preference.
         plugins:
           type: array
           items:
             oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - auto-router
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the auto-router plugin for this request. Defaults to true.
+                  allowed_models:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
+                    example:
+                      - anthropic/*
+                      - openai/gpt-4o
+                      - google/*
+                required:
+                  - id
               - type: object
                 properties:
                   id:
@@ -4129,32 +4323,9 @@ components:
           description: >-
             The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
         preferred_min_throughput:
-          type: number
-          nullable: true
-          description: >-
-            Preferred minimum throughput (in tokens per second). Endpoints below this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-          example: 100
+          $ref: '#/components/schemas/PreferredMinThroughput'
         preferred_max_latency:
-          type: number
-          nullable: true
-          description: >-
-            Preferred maximum latency (in seconds). Endpoints above this threshold may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-          example: 5
-        min_throughput:
-          type: number
-          nullable: true
-          deprecated: true
-          description: >-
-            **DEPRECATED** Use preferred_min_throughput instead. Backwards-compatible alias for preferred_min_throughput.
-          example: 100
-          x-speakeasy-deprecation-message: Use preferred_min_throughput instead.
-        max_latency:
-          type: number
-          nullable: true
-          deprecated: true
-          description: '**DEPRECATED** Use preferred_max_latency instead. Backwards-compatible alias for preferred_max_latency.'
-          example: 5
-          x-speakeasy-deprecation-message: Use preferred_max_latency instead.
+          $ref: '#/components/schemas/PreferredMaxLatency'
       description: Provider routing preferences for the request.
     PublicPricing:
       type: object
@@ -4594,6 +4765,33 @@ components:
         - -10
       example: 0
       x-speakeasy-unknown-values: allow
+    PercentileStats:
+      type: object
+      nullable: true
+      properties:
+        p50:
+          type: number
+          description: Median (50th percentile)
+          example: 25.5
+        p75:
+          type: number
+          description: 75th percentile
+          example: 35.2
+        p90:
+          type: number
+          description: 90th percentile
+          example: 48.7
+        p99:
+          type: number
+          description: 99th percentile
+          example: 85.3
+      required:
+        - p50
+        - p75
+        - p90
+        - p99
+      description: >-
+        Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
     PublicEndpoint:
       type: object
       properties:
@@ -4661,6 +4859,13 @@ components:
           nullable: true
         supports_implicit_caching:
           type: boolean
+        latency_last_30m:
+          $ref: '#/components/schemas/PercentileStats'
+        throughput_last_30m:
+          allOf:
+            - $ref: '#/components/schemas/PercentileStats'
+            - description: >-
+                Throughput percentiles in tokens per second over the last 30 minutes. Throughput measures output token generation speed. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
       required:
         - name
         - model_name
@@ -4674,6 +4879,8 @@ components:
         - supported_parameters
         - uptime_last_30m
         - supports_implicit_caching
+        - latency_last_30m
+        - throughput_last_30m
       description: Information about a specific model endpoint
       example:
         name: 'OpenAI: GPT-4'
@@ -4696,6 +4903,16 @@ components:
         status: 0
         uptime_last_30m: 99.5
         supports_implicit_caching: true
+        latency_last_30m:
+          p50: 0.25
+          p75: 0.35
+          p90: 0.48
+          p99: 0.85
+        throughput_last_30m:
+          p50: 45.2
+          p75: 38.5
+          p90: 28.3
+          p99: 15.1
     ListEndpointsResponse:
       type: object
       properties:
@@ -4799,6 +5016,16 @@ components:
             status: default
             uptime_last_30m: 99.5
             supports_implicit_caching: true
+            latency_last_30m:
+              p50: 0.25
+              p75: 0.35
+              p90: 0.48
+              p99: 0.85
+            throughput_last_30m:
+              p50: 45.2
+              p75: 38.5
+              p90: 28.3
+              p99: 15.1
     __schema0:
       type: array
       items:
@@ -4831,12 +5058,12 @@ components:
               - Fireworks
               - Friendli
               - GMICloud
-              - GoPomelo
               - Google
               - Google AI Studio
               - Groq
               - Hyperbolic
               - Inception
+              - Inceptron
               - InferenceNet
               - Infermatic
               - Inflection
@@ -4861,13 +5088,14 @@ components:
               - Phala
               - Relace
               - SambaNova
+              - Seed
               - SiliconFlow
               - Sourceful
               - Stealth
               - StreamLake
               - Switchpoint
-              - Targon
               - Together
+              - Upstage
               - Venice
               - WandB
               - Xiaomi
@@ -4951,6 +5179,7 @@ components:
           enum:
             - unknown
             - openai-responses-v1
+            - azure-openai-responses-v1
             - xai-responses-v1
             - anthropic-claude-v1
             - google-gemini-v1
@@ -5175,6 +5404,8 @@ components:
             - type: object
               properties:
                 cached_tokens:
+                  type: number
+                cache_write_tokens:
                   type: number
                 audio_tokens:
                   type: number
@@ -5518,20 +5749,54 @@ components:
                     request:
                       $ref: '#/components/schemas/__schema1'
                 preferred_min_throughput:
+                  description: >-
+                    Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
                   anyOf:
-                    - type: number
+                    - anyOf:
+                        - type: number
+                        - type: object
+                          properties:
+                            p50:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p75:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p90:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p99:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
                     - type: 'null'
                 preferred_max_latency:
+                  description: >-
+                    Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
                   anyOf:
-                    - type: number
-                    - type: 'null'
-                min_throughput:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                max_latency:
-                  anyOf:
-                    - type: number
+                    - anyOf:
+                        - type: number
+                        - type: object
+                          properties:
+                            p50:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p75:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p90:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
+                            p99:
+                              anyOf:
+                                - type: number
+                                - type: 'null'
                     - type: 'null'
               additionalProperties: false
             - type: 'null'
@@ -5540,6 +5805,19 @@ components:
           type: array
           items:
             oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    const: auto-router
+                  enabled:
+                    type: boolean
+                  allowed_models:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - id
               - type: object
                 properties:
                   id:
@@ -5759,6 +6037,22 @@ components:
           properties:
             echo_upstream_body:
               type: boolean
+        image_config:
+          type: object
+          propertyNames:
+            type: string
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+        modalities:
+          type: array
+          items:
+            type: string
+            enum:
+              - text
+              - image
+            x-speakeasy-unknown-values: allow
       required:
         - messages
     ProviderSortUnion:
@@ -7004,6 +7298,11 @@ paths:
                           - embeddings
                         description: Type of API used for the generation
                         x-speakeasy-unknown-values: allow
+                      router:
+                        type: string
+                        nullable: true
+                        description: Router used for the request (e.g., openrouter/auto)
+                        example: openrouter/auto
                     required:
                       - id
                       - upstream_id
@@ -7037,6 +7336,7 @@ paths:
                       - native_finish_reason
                       - external_user
                       - api_type
+                      - router
                     description: Generation data
                 required:
                   - data

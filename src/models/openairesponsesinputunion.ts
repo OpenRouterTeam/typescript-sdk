@@ -101,7 +101,7 @@ export type OpenAIResponsesInputRoleUnion2 =
 
 export type OpenAIResponsesInputContent3 =
   | ResponseInputText
-  | ResponseInputImage
+  | (ResponseInputImage & { type: "input_image" })
   | ResponseInputFile
   | ResponseInputAudio;
 
@@ -114,7 +114,7 @@ export type OpenAIResponsesInputMessage2 = {
     | OpenAIResponsesInputRoleDeveloper2;
   content: Array<
     | ResponseInputText
-    | ResponseInputImage
+    | (ResponseInputImage & { type: "input_image" })
     | ResponseInputFile
     | ResponseInputAudio
   >;
@@ -163,14 +163,14 @@ export type OpenAIResponsesInputRoleUnion1 =
 
 export type OpenAIResponsesInputContent1 =
   | ResponseInputText
-  | ResponseInputImage
+  | (ResponseInputImage & { type: "input_image" })
   | ResponseInputFile
   | ResponseInputAudio;
 
 export type OpenAIResponsesInputContent2 =
   | Array<
     | ResponseInputText
-    | ResponseInputImage
+    | (ResponseInputImage & { type: "input_image" })
     | ResponseInputFile
     | ResponseInputAudio
   >
@@ -186,7 +186,7 @@ export type OpenAIResponsesInputMessage1 = {
   content:
     | Array<
       | ResponseInputText
-      | ResponseInputImage
+      | (ResponseInputImage & { type: "input_image" })
       | ResponseInputFile
       | ResponseInputAudio
     >
@@ -324,7 +324,9 @@ export const OpenAIResponsesInputContent3$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema,
-  ResponseInputImage$inboundSchema,
+  ResponseInputImage$inboundSchema.and(
+    z.object({ type: z.literal("input_image") }),
+  ),
   ResponseInputFile$inboundSchema,
   ResponseInputAudio$inboundSchema,
 ]);
@@ -354,7 +356,9 @@ export const OpenAIResponsesInputMessage2$inboundSchema: z.ZodType<
   content: z.array(
     z.union([
       ResponseInputText$inboundSchema,
-      ResponseInputImage$inboundSchema,
+      ResponseInputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
       ResponseInputFile$inboundSchema,
       ResponseInputAudio$inboundSchema,
     ]),
@@ -423,7 +427,9 @@ export const OpenAIResponsesInputContent1$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponseInputText$inboundSchema,
-  ResponseInputImage$inboundSchema,
+  ResponseInputImage$inboundSchema.and(
+    z.object({ type: z.literal("input_image") }),
+  ),
   ResponseInputFile$inboundSchema,
   ResponseInputAudio$inboundSchema,
 ]);
@@ -446,7 +452,9 @@ export const OpenAIResponsesInputContent2$inboundSchema: z.ZodType<
   z.array(
     z.union([
       ResponseInputText$inboundSchema,
-      ResponseInputImage$inboundSchema,
+      ResponseInputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
       ResponseInputFile$inboundSchema,
       ResponseInputAudio$inboundSchema,
     ]),
@@ -480,7 +488,9 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
     z.array(
       z.union([
         ResponseInputText$inboundSchema,
-        ResponseInputImage$inboundSchema,
+        ResponseInputImage$inboundSchema.and(
+          z.object({ type: z.literal("input_image") }),
+        ),
         ResponseInputFile$inboundSchema,
         ResponseInputAudio$inboundSchema,
       ]),

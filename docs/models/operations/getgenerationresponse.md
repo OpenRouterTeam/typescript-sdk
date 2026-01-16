@@ -41,6 +41,7 @@ let value: GetGenerationResponse = {
     nativeFinishReason: "stop",
     externalUser: "user-123",
     apiType: null,
+    router: "openrouter/auto",
   },
 };
 ```

@@ -14,6 +14,8 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
+    status: "completed",
+    completedAt: 6756.82,
     output: [
       {
         id: "item-1",
@@ -31,6 +33,8 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     incompleteDetails: null,
     temperature: null,
     topP: null,
+    presencePenalty: 5218.67,
+    frequencyPenalty: 9449.97,
     instructions: null,
     metadata: null,
     tools: [],

@@ -9,7 +9,7 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type TopLogprob = {
+export type ChatMessageTokenLogprobTopLogprob = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
@@ -19,24 +19,26 @@ export type ChatMessageTokenLogprob = {
   token: string;
   logprob: number;
   bytes: Array<number> | null;
-  topLogprobs: Array<TopLogprob>;
+  topLogprobs: Array<ChatMessageTokenLogprobTopLogprob>;
 };
 
 /** @internal */
-export const TopLogprob$inboundSchema: z.ZodType<TopLogprob, unknown> = z
-  .object({
-    token: z.string(),
-    logprob: z.number(),
-    bytes: z.nullable(z.array(z.number())),
-  });
+export const ChatMessageTokenLogprobTopLogprob$inboundSchema: z.ZodType<
+  ChatMessageTokenLogprobTopLogprob,
+  unknown
+> = z.object({
+  token: z.string(),
+  logprob: z.number(),
+  bytes: z.nullable(z.array(z.number())),
+});
 
-export function topLogprobFromJSON(
+export function chatMessageTokenLogprobTopLogprobFromJSON(
   jsonString: string,
-): SafeParseResult<TopLogprob, SDKValidationError> {
+): SafeParseResult<ChatMessageTokenLogprobTopLogprob, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => TopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TopLogprob' from JSON`,
+    (x) => ChatMessageTokenLogprobTopLogprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatMessageTokenLogprobTopLogprob' from JSON`,
   );
 }
 
@@ -48,7 +50,9 @@ export const ChatMessageTokenLogprob$inboundSchema: z.ZodType<
   token: z.string(),
   logprob: z.number(),
   bytes: z.nullable(z.array(z.number())),
-  top_logprobs: z.array(z.lazy(() => TopLogprob$inboundSchema)),
+  top_logprobs: z.array(
+    z.lazy(() => ChatMessageTokenLogprobTopLogprob$inboundSchema),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
