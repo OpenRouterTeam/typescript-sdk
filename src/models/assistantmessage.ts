@@ -30,6 +30,11 @@ export type AssistantMessage = {
   toolCalls?: Array<ChatMessageToolCall> | undefined;
   refusal?: string | null | undefined;
   reasoning?: string | null | undefined;
+  images?: Array<{
+    image_url: {
+      url: string;
+    }
+  }>
 };
 
 /** @internal */
@@ -78,6 +83,11 @@ export const AssistantMessage$inboundSchema: z.ZodType<
   tool_calls: z.array(ChatMessageToolCall$inboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
+  images: z.array(z.object({
+    image_url: z.object({
+      url: z.string(),
+    }),
+  })).optional()
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
@@ -106,6 +116,11 @@ export const AssistantMessage$outboundSchema: z.ZodType<
   toolCalls: z.array(ChatMessageToolCall$outboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
+  images: z.array(z.object({
+    image_url: z.object({
+      url: z.string(),
+    }),
+  })).optional()
 }).transform((v) => {
   return remap$(v, {
     toolCalls: "tool_calls",
