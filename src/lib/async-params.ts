@@ -1,5 +1,8 @@
 import type * as models from '../models/index.js';
-import type { StopWhen, Tool, TurnContext } from './tool-types.js';
+import type { ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
+
+// Re-export Tool type for convenience
+export type { Tool } from './tool-types.js';
 
 /**
  * Type guard to check if a value is a parameter function
@@ -29,18 +32,66 @@ function buildResolvedRequest(
 export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise<T>);
 
 /**
- * Input type for callModel function
- * Each field can independently be a static value or a function that computes the value
- * Generic over TTools to enable proper type inference for stopWhen conditions
+ * Base input type for callModel without approval-related fields
  */
-export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
+type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
   [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
     models.OpenResponsesRequest[K]
   >;
 } & {
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  /**
+   * Call-level approval check - overrides tool-level requireApproval setting
+   * Receives the tool call and turn context, can be sync or async
+   */
+  requireApproval?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext
+  ) => boolean | Promise<boolean>;
 };
+
+/**
+ * Approval params when state is provided (allows approve/reject)
+ */
+type ApprovalParamsWithState<TTools extends readonly Tool[] = readonly Tool[]> = {
+  /** State accessor for multi-turn persistence and approval gates */
+  state: StateAccessor<TTools>;
+  /** Tool call IDs to approve (for resuming from awaiting_approval status) */
+  approveToolCalls?: string[];
+  /** Tool call IDs to reject (for resuming from awaiting_approval status) */
+  rejectToolCalls?: string[];
+};
+
+/**
+ * Approval params when state is NOT provided (forbids approve/reject)
+ */
+type ApprovalParamsWithoutState = {
+  /** State accessor for multi-turn persistence and approval gates */
+  state?: undefined;
+  /** Not allowed without state - will cause type error */
+  approveToolCalls?: never;
+  /** Not allowed without state - will cause type error */
+  rejectToolCalls?: never;
+};
+
+/**
+ * Input type for callModel function
+ * Each field can independently be a static value or a function that computes the value
+ * Generic over TTools to enable proper type inference for stopWhen conditions
+ *
+ * Type enforcement:
+ * - `approveToolCalls` and `rejectToolCalls` are only valid when `state` is provided
+ * - Using these without `state` will cause a TypeScript error
+ */
+export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> =
+  BaseCallModelInput<TTools> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
+
+/**
+ * CallModelInput variant that requires state - use when approval workflows are needed
+ */
+export type CallModelInputWithState<TTools extends readonly Tool[] = readonly Tool[]> =
+  BaseCallModelInput<TTools> & ApprovalParamsWithState<TTools>;
 
 /**
  * Resolved CallModelInput (all functions evaluated to values)
@@ -70,8 +121,8 @@ export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' 
  * // resolved.temperature === 0.2
  * ```
  */
-export async function resolveAsyncFunctions(
-  input: CallModelInput,
+export async function resolveAsyncFunctions<TTools extends readonly Tool[] = readonly Tool[]>(
+  input: CallModelInput<TTools>,
   context: TurnContext,
 ): Promise<ResolvedCallModelInput> {
   // Build array of resolved entries

@@ -6,6 +6,7 @@ import {
   type ToolWithGenerator,
   type ManualTool,
   type NextTurnParamsFunctions,
+  type ToolApprovalCheck,
 } from "./tool-types.js";
 
 /**
@@ -21,6 +22,11 @@ type RegularToolConfigWithOutput<
   outputSchema: TOutput;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
   execute: (
     params: zodInfer<TInput>,
     context?: TurnContext
@@ -40,6 +46,11 @@ type RegularToolConfigWithoutOutput<
   outputSchema?: undefined;
   eventSchema?: undefined;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
   execute: (
     params: zodInfer<TInput>,
     context?: TurnContext
@@ -60,6 +71,11 @@ type GeneratorToolConfig<
   eventSchema: TEvent;
   outputSchema: TOutput;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
   execute: (
     params: zodInfer<TInput>,
     context?: TurnContext
@@ -74,6 +90,11 @@ type ManualToolConfig<TInput extends $ZodObject<$ZodShape>> = {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
   execute: false;
 };
 
@@ -215,6 +236,10 @@ export function tool<
       fn.nextTurnParams = config.nextTurnParams;
     }
 
+    if (config.requireApproval !== undefined) {
+      fn.requireApproval = config.requireApproval;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -240,6 +265,10 @@ export function tool<
       fn.nextTurnParams = config.nextTurnParams;
     }
 
+    if (config.requireApproval !== undefined) {
+      fn.requireApproval = config.requireApproval;
+    }
+
     return {
       type: ToolType.Function,
       function: fn,
@@ -256,6 +285,7 @@ export function tool<
     ...(config.description !== undefined && { description: config.description }),
     ...(config.outputSchema !== undefined && { outputSchema: config.outputSchema }),
     ...(config.nextTurnParams !== undefined && { nextTurnParams: config.nextTurnParams }),
+    ...(config.requireApproval !== undefined && { requireApproval: config.requireApproval }),
   };
 
   // The function signature guarantees this is type-safe via overloads

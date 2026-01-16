@@ -59,6 +59,16 @@ export type NextTurnParamsFunctions<TInput> = {
 };
 
 /**
+ * Tool-level approval check function type
+ * Receives the tool's input params and turn context
+ * Returns true if approval is required, false otherwise
+ */
+export type ToolApprovalCheck<TInput> = (
+  params: TInput,
+  context: TurnContext
+) => boolean | Promise<boolean>;
+
+/**
  * Base tool function interface with inputSchema
  */
 export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
@@ -66,6 +76,11 @@ export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
   description?: string;
   inputSchema: TInput;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
+  /**
+   * Whether this tool requires human approval before execution
+   * Can be a boolean or an async function that receives the tool's input params and context
+   */
+  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
 }
 
 /**
@@ -420,3 +435,126 @@ export type ChatStreamEvent<TEvent = unknown> =
     type: string;
     event: OpenResponsesStreamEvent;
   }; // Pass-through for other events
+
+// =============================================================================
+// Multi-Turn Conversation State Types
+// =============================================================================
+
+/**
+ * Result of a tool execution that hasn't been sent to the model yet
+ * Used for interrupted or awaiting approval states
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface UnsentToolResult<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** The ID of the tool call this result is for */
+  callId: string;
+  /** The name of the tool that was executed */
+  name: TTools[number]['function']['name'];
+  /** The output of the tool execution */
+  output: unknown;
+  /** Error message if the tool call was rejected or failed */
+  error?: string;
+}
+
+/**
+ * Partial response captured during interruption
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface PartialResponse<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Partial text response accumulated before interruption */
+  text?: string;
+  /** Tool calls that were in progress when interrupted */
+  toolCalls?: Array<ParsedToolCall<TTools[number]>>;
+}
+
+/**
+ * Status of a conversation state
+ */
+export type ConversationStatus =
+  | 'complete'
+  | 'interrupted'
+  | 'awaiting_approval'
+  | 'in_progress';
+
+/**
+ * State for multi-turn conversations with persistence and approval gates
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface ConversationState<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Unique identifier for this conversation */
+  id: string;
+  /** Full message history */
+  messages: models.OpenResponsesInput;
+  /** Previous response ID for chaining (OpenRouter server-side optimization) */
+  previousResponseId?: string;
+  /** Tool calls awaiting human approval */
+  pendingToolCalls?: Array<ParsedToolCall<TTools[number]>>;
+  /** Tool results executed but not yet sent to the model */
+  unsentToolResults?: Array<UnsentToolResult<TTools>>;
+  /** Partial response data captured during interruption */
+  partialResponse?: PartialResponse<TTools>;
+  /** Signal from a new request to interrupt this conversation */
+  interruptedBy?: string;
+  /** Current status of the conversation */
+  status: ConversationStatus;
+  /** Creation timestamp (Unix ms) */
+  createdAt: number;
+  /** Last update timestamp (Unix ms) */
+  updatedAt: number;
+}
+
+/**
+ * State accessor for loading and saving conversation state
+ * Enables any storage backend (memory, Redis, database, etc.)
+ * @template TTools - The tools array type for proper type inference
+ */
+export interface StateAccessor<TTools extends readonly Tool[] = readonly Tool[]> {
+  /** Load the current conversation state, or null if none exists */
+  load: () => Promise<ConversationState<TTools> | null>;
+  /** Save the conversation state */
+  save: (state: ConversationState<TTools>) => Promise<void>;
+}
+
+// =============================================================================
+// Approval Detection Helper Types
+// =============================================================================
+
+/**
+ * Check if a single tool has approval configured (non-false, non-undefined)
+ * Returns true if the tool definitely requires approval,
+ * false if it definitely doesn't, or boolean if it's uncertain
+ */
+export type ToolHasApproval<T extends Tool> =
+  T extends { function: { requireApproval: true | ToolApprovalCheck<unknown> } }
+    ? true
+    : T extends { function: { requireApproval: false } }
+      ? false
+      : T extends { function: { requireApproval: undefined } }
+        ? false
+        : boolean; // Could be either (optional property)
+
+/**
+ * Check if ANY tool in an array has approval configured
+ * Returns true if at least one tool might require approval
+ */
+export type HasApprovalTools<TTools extends readonly Tool[]> =
+  TTools extends readonly [infer First extends Tool, ...infer Rest extends Tool[]]
+    ? ToolHasApproval<First> extends true
+      ? true
+      : HasApprovalTools<Rest>
+    : false;
+
+/**
+ * Type guard to check if a tool has approval configured at runtime
+ */
+export function toolHasApprovalConfigured(tool: Tool): boolean {
+  const requireApproval = tool.function.requireApproval;
+  return requireApproval === true || typeof requireApproval === 'function';
+}
+
+/**
+ * Type guard to check if any tools in array have approval configured at runtime
+ */
+export function hasApprovalRequiredTools(tools: readonly Tool[]): boolean {
+  return tools.some(toolHasApprovalConfigured);
+}
