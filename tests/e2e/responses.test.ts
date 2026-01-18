@@ -21,7 +21,7 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Non-streaming', () => {
     it('should successfully send a responses request and get a response', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -58,7 +58,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -100,7 +100,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should respect maxOutputTokens parameter', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -118,7 +118,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle metadata in request', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -141,7 +141,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle instructions parameter', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -162,7 +162,7 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Streaming', () => {
     it('should successfully stream responses', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -197,7 +197,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -231,7 +231,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should include response.completed event in stream', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -259,7 +259,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle streaming with metadata', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',
@@ -287,7 +287,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should concatenate streaming chunks into complete sentence', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         input: [
           {
             type: 'message',

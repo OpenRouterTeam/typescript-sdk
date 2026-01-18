@@ -124,16 +124,7 @@ export function callModel<TTools extends readonly Tool[]>(
   request: CallModelInput<TTools>,
   options?: RequestOptions,
 ): ModelResult<TTools> {
-  // Destructure state management options along with tools and stopWhen
-  const {
-    tools,
-    stopWhen,
-    state,
-    requireApproval,
-    approveToolCalls,
-    rejectToolCalls,
-    ...apiRequest
-  } = request;
+  const { tools, stopWhen, ...apiRequest } = request;
 
   // Convert tools to API format - no cast needed now that convertToolsToAPIFormat accepts readonly
   const apiTools = tools ? convertToolsToAPIFormat(tools) : undefined;
@@ -153,12 +144,10 @@ export function callModel<TTools extends readonly Tool[]>(
     client,
     request: finalRequest,
     options: options ?? {},
-    tools,
-    ...(stopWhen !== undefined && { stopWhen }),
-    // Pass state management options
-    ...(state !== undefined && { state }),
-    ...(requireApproval !== undefined && { requireApproval }),
-    ...(approveToolCalls !== undefined && { approveToolCalls }),
-    ...(rejectToolCalls !== undefined && { rejectToolCalls }),
+    // Preserve the exact TTools type instead of widening to Tool[]
+    tools: tools as TTools | undefined,
+    ...(stopWhen !== undefined && {
+      stopWhen,
+    }),
   } as GetResponseOptions<TTools>);
 }

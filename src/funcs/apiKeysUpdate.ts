@@ -28,6 +28,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Update an API key
+ *
+ * @remarks
+ * Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
  */
 export function apiKeysUpdate(
   client: OpenRouterCore,

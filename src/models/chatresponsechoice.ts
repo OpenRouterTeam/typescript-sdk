@@ -20,13 +20,11 @@ import {
   ChatMessageTokenLogprobs$inboundSchema,
 } from "./chatmessagetokenlogprobs.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema3, Schema3$inboundSchema } from "./schema3.js";
 
 export type ChatResponseChoice = {
   finishReason: ChatCompletionFinishReason | null;
   index: number;
   message: AssistantMessage;
-  reasoningDetails?: Array<Schema3> | undefined;
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
 
@@ -38,12 +36,10 @@ export const ChatResponseChoice$inboundSchema: z.ZodType<
   finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
   index: z.number(),
   message: AssistantMessage$inboundSchema,
-  reasoning_details: z.array(Schema3$inboundSchema).optional(),
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "finish_reason": "finishReason",
-    "reasoning_details": "reasoningDetails",
   });
 });
 

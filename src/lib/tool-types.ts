@@ -1,4 +1,4 @@
-import type { $ZodObject, $ZodShape, $ZodType, infer as zodInfer } from 'zod/v4/core';
+import type { ZodObject, ZodRawShape, ZodType, z } from 'zod';
 import type * as models from '../models/index.js';
 import type { OpenResponsesStreamEvent } from '../models/index.js';
 import type { ModelResult } from './model-result.js';
@@ -59,42 +59,27 @@ export type NextTurnParamsFunctions<TInput> = {
 };
 
 /**
- * Tool-level approval check function type
- * Receives the tool's input params and turn context
- * Returns true if approval is required, false otherwise
- */
-export type ToolApprovalCheck<TInput> = (
-  params: TInput,
-  context: TurnContext
-) => boolean | Promise<boolean>;
-
-/**
  * Base tool function interface with inputSchema
  */
-export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
+export interface BaseToolFunction<TInput extends ZodObject<ZodRawShape>> {
   name: string;
   description?: string;
   inputSchema: TInput;
-  nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
-  /**
-   * Whether this tool requires human approval before execution
-   * Can be a boolean or an async function that receives the tool's input params and context
-   */
-  requireApproval?: boolean | ToolApprovalCheck<zodInfer<TInput>>;
+  nextTurnParams?: NextTurnParamsFunctions<z.infer<TInput>>;
 }
 
 /**
  * Regular tool with synchronous or asynchronous execute function and optional outputSchema
  */
 export interface ToolFunctionWithExecute<
-  TInput extends $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape>,
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
   execute: (
-    params: zodInfer<TInput>,
+    params: z.infer<TInput>,
     context?: TurnContext,
-  ) => Promise<zodInfer<TOutput>> | zodInfer<TOutput>;
+  ) => Promise<z.infer<TOutput>> | z.infer<TOutput>;
 }
 
 /**
@@ -120,22 +105,22 @@ export interface ToolFunctionWithExecute<
  * ```
  */
 export interface ToolFunctionWithGenerator<
-  TInput extends $ZodObject<$ZodShape>,
-  TEvent extends $ZodType = $ZodType<unknown>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape>,
+  TEvent extends ZodType = ZodType<unknown>,
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
   // Generator can yield both events (TEvent) and the final output (TOutput)
-  execute: (params: zodInfer<TInput>, context?: TurnContext) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>>;
+  execute: (params: z.infer<TInput>, context?: TurnContext) => AsyncGenerator<z.infer<TEvent> | z.infer<TOutput>>;
 }
 
 /**
  * Manual tool without execute function - requires manual handling by developer
  */
 export interface ManualToolFunction<
-  TInput extends $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape>,
+  TOutput extends ZodType = ZodType<unknown>,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
 }
@@ -144,8 +129,8 @@ export interface ManualToolFunction<
  * Tool with execute function (regular or generator)
  */
 export type ToolWithExecute<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ToolFunctionWithExecute<TInput, TOutput>;
@@ -155,9 +140,9 @@ export type ToolWithExecute<
  * Tool with generator execute function
  */
 export type ToolWithGenerator<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TEvent extends $ZodType = $ZodType<unknown>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
+  TEvent extends ZodType = ZodType<unknown>,
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ToolFunctionWithGenerator<TInput, TEvent, TOutput>;
@@ -167,8 +152,8 @@ export type ToolWithGenerator<
  * Tool without execute function (manual handling)
  */
 export type ManualTool<
-  TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
-  TOutput extends $ZodType = $ZodType<unknown>,
+  TInput extends ZodObject<ZodRawShape> = ZodObject<ZodRawShape>,
+  TOutput extends ZodType = ZodType<unknown>,
 > = {
   type: ToolType.Function;
   function: ManualToolFunction<TInput, TOutput>;
@@ -178,16 +163,16 @@ export type ManualTool<
  * Union type of all enhanced tool types
  */
 export type Tool =
-  | ToolWithExecute<$ZodObject<$ZodShape>, $ZodType<unknown>>
-  | ToolWithGenerator<$ZodObject<$ZodShape>, $ZodType<unknown>, $ZodType<unknown>>
-  | ManualTool<$ZodObject<$ZodShape>, $ZodType<unknown>>;
+  | ToolWithExecute<ZodObject<ZodRawShape>, ZodType<unknown>>
+  | ToolWithGenerator<ZodObject<ZodRawShape>, ZodType<unknown>, ZodType<unknown>>
+  | ManualTool<ZodObject<ZodRawShape>, ZodType<unknown>>;
 
 /**
  * Extracts the input type from a tool definition
  */
 export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
+  ? S extends ZodType
+  ? z.infer<S>
   : unknown
   : unknown;
 
@@ -195,8 +180,8 @@ export type InferToolInput<T> = T extends { function: { inputSchema: infer S } }
  * Extracts the output type from a tool definition
  */
 export type InferToolOutput<T> = T extends { function: { outputSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
+  ? S extends ZodType
+  ? z.infer<S>
   : unknown
   : unknown;
 
@@ -228,8 +213,8 @@ export type ToolExecutionResultUnion<T extends readonly Tool[]> = {
  * Returns `never` for non-generator tools
  */
 export type InferToolEvent<T> = T extends { function: { eventSchema: infer S } }
-  ? S extends $ZodType
-  ? zodInfer<S>
+  ? S extends ZodType
+  ? z.infer<S>
   : never
   : never;
 
@@ -289,10 +274,10 @@ export interface ToolExecutionResult<T extends Tool> {
   toolCallId: string;
   toolName: string;
   result: T extends ToolWithExecute<any, infer O> | ToolWithGenerator<any, any, infer O>
-  ? zodInfer<O>
+  ? z.infer<O>
   : unknown; // Final result (sent to model)
   preliminaryResults?: T extends ToolWithGenerator<any, infer E, any>
-  ? zodInfer<E>[]
+  ? z.infer<E>[]
   : undefined; // All yielded values from generator
   error?: Error;
 }
@@ -315,7 +300,7 @@ export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
   readonly toolCalls: TypedToolCallUnion<TTools>[];
   readonly toolResults: ToolExecutionResultUnion<TTools>[];
   readonly response: models.OpenResponsesNonStreamingResponse;
-  readonly usage?: models.OpenResponsesUsage | null | undefined;
+  readonly usage?: models.OpenResponsesUsage | undefined;
   readonly finishReason?: string | undefined;
   readonly warnings?: Warning[] | undefined;
   readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
@@ -435,126 +420,3 @@ export type ChatStreamEvent<TEvent = unknown> =
     type: string;
     event: OpenResponsesStreamEvent;
   }; // Pass-through for other events
-
-// =============================================================================
-// Multi-Turn Conversation State Types
-// =============================================================================
-
-/**
- * Result of a tool execution that hasn't been sent to the model yet
- * Used for interrupted or awaiting approval states
- * @template TTools - The tools array type for proper type inference
- */
-export interface UnsentToolResult<TTools extends readonly Tool[] = readonly Tool[]> {
-  /** The ID of the tool call this result is for */
-  callId: string;
-  /** The name of the tool that was executed */
-  name: TTools[number]['function']['name'];
-  /** The output of the tool execution */
-  output: unknown;
-  /** Error message if the tool call was rejected or failed */
-  error?: string;
-}
-
-/**
- * Partial response captured during interruption
- * @template TTools - The tools array type for proper type inference
- */
-export interface PartialResponse<TTools extends readonly Tool[] = readonly Tool[]> {
-  /** Partial text response accumulated before interruption */
-  text?: string;
-  /** Tool calls that were in progress when interrupted */
-  toolCalls?: Array<ParsedToolCall<TTools[number]>>;
-}
-
-/**
- * Status of a conversation state
- */
-export type ConversationStatus =
-  | 'complete'
-  | 'interrupted'
-  | 'awaiting_approval'
-  | 'in_progress';
-
-/**
- * State for multi-turn conversations with persistence and approval gates
- * @template TTools - The tools array type for proper type inference
- */
-export interface ConversationState<TTools extends readonly Tool[] = readonly Tool[]> {
-  /** Unique identifier for this conversation */
-  id: string;
-  /** Full message history */
-  messages: models.OpenResponsesInput;
-  /** Previous response ID for chaining (OpenRouter server-side optimization) */
-  previousResponseId?: string;
-  /** Tool calls awaiting human approval */
-  pendingToolCalls?: Array<ParsedToolCall<TTools[number]>>;
-  /** Tool results executed but not yet sent to the model */
-  unsentToolResults?: Array<UnsentToolResult<TTools>>;
-  /** Partial response data captured during interruption */
-  partialResponse?: PartialResponse<TTools>;
-  /** Signal from a new request to interrupt this conversation */
-  interruptedBy?: string;
-  /** Current status of the conversation */
-  status: ConversationStatus;
-  /** Creation timestamp (Unix ms) */
-  createdAt: number;
-  /** Last update timestamp (Unix ms) */
-  updatedAt: number;
-}
-
-/**
- * State accessor for loading and saving conversation state
- * Enables any storage backend (memory, Redis, database, etc.)
- * @template TTools - The tools array type for proper type inference
- */
-export interface StateAccessor<TTools extends readonly Tool[] = readonly Tool[]> {
-  /** Load the current conversation state, or null if none exists */
-  load: () => Promise<ConversationState<TTools> | null>;
-  /** Save the conversation state */
-  save: (state: ConversationState<TTools>) => Promise<void>;
-}
-
-// =============================================================================
-// Approval Detection Helper Types
-// =============================================================================
-
-/**
- * Check if a single tool has approval configured (non-false, non-undefined)
- * Returns true if the tool definitely requires approval,
- * false if it definitely doesn't, or boolean if it's uncertain
- */
-export type ToolHasApproval<T extends Tool> =
-  T extends { function: { requireApproval: true | ToolApprovalCheck<unknown> } }
-    ? true
-    : T extends { function: { requireApproval: false } }
-      ? false
-      : T extends { function: { requireApproval: undefined } }
-        ? false
-        : boolean; // Could be either (optional property)
-
-/**
- * Check if ANY tool in an array has approval configured
- * Returns true if at least one tool might require approval
- */
-export type HasApprovalTools<TTools extends readonly Tool[]> =
-  TTools extends readonly [infer First extends Tool, ...infer Rest extends Tool[]]
-    ? ToolHasApproval<First> extends true
-      ? true
-      : HasApprovalTools<Rest>
-    : false;
-
-/**
- * Type guard to check if a tool has approval configured at runtime
- */
-export function toolHasApprovalConfigured(tool: Tool): boolean {
-  const requireApproval = tool.function.requireApproval;
-  return requireApproval === true || typeof requireApproval === 'function';
-}
-
-/**
- * Type guard to check if any tools in array have approval configured at runtime
- */
-export function hasApprovalRequiredTools(tools: readonly Tool[]): boolean {
-  return tools.some(toolHasApprovalConfigured);
-}

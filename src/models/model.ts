@@ -83,6 +83,10 @@ export type Model = {
    * Default parameters for this model
    */
   defaultParameters: DefaultParameters | null;
+  /**
+   * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
+   */
+  expirationDate?: string | null | undefined;
 };
 
 /** @internal */
@@ -100,6 +104,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   supported_parameters: z.array(Parameter$inboundSchema),
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
+  expiration_date: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "canonical_slug": "canonicalSlug",
@@ -109,6 +114,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "per_request_limits": "perRequestLimits",
     "supported_parameters": "supportedParameters",
     "default_parameters": "defaultParameters",
+    "expiration_date": "expirationDate",
   });
 });
 

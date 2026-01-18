@@ -5,7 +5,6 @@
 // Async params support
 export type {
   CallModelInput,
-  CallModelInputWithState,
   FieldOrAsyncFunction,
   ResolvedCallModelInput,
 } from './lib/async-params.js';
@@ -13,10 +12,7 @@ export type { Fetcher, HTTPClientOptions } from './lib/http.js';
 // Tool types
 export type {
   ChatStreamEvent,
-  ConversationState,
-  ConversationStatus,
   ResponseStreamEvent as EnhancedResponseStreamEvent,
-  HasApprovalTools,
   InferToolEvent,
   InferToolEventsUnion,
   InferToolInput,
@@ -25,16 +21,12 @@ export type {
   NextTurnParamsContext,
   NextTurnParamsFunctions,
   ParsedToolCall,
-  PartialResponse,
-  StateAccessor,
   StepResult,
   StopCondition,
   StopWhen,
   Tool,
-  ToolApprovalCheck,
   ToolExecutionResult,
   ToolExecutionResultUnion,
-  ToolHasApproval,
   ToolPreliminaryResultEvent,
   ToolStreamEvent,
   ToolWithExecute,
@@ -42,7 +34,6 @@ export type {
   TurnContext,
   TypedToolCall,
   TypedToolCallUnion,
-  UnsentToolResult,
   Warning,
 } from './lib/tool-types.js';
 export type { BuildTurnContextOptions } from './lib/turn-context.js';
@@ -110,27 +101,14 @@ export {
 // Tool creation helpers
 export { tool } from './lib/tool.js';
 export {
-  hasApprovalRequiredTools,
   hasExecuteFunction,
   isGeneratorTool,
   isRegularExecuteTool,
   isToolPreliminaryResultEvent,
-  toolHasApprovalConfigured,
   ToolType,
 } from './lib/tool-types.js';
 // Turn context helpers
 export { buildTurnContext, normalizeInputToArray } from './lib/turn-context.js';
-// Conversation state helpers
-export {
-  appendToMessages,
-  createInitialState,
-  createRejectedResult,
-  createUnsentResult,
-  generateConversationId,
-  partitionToolCalls,
-  toolRequiresApproval,
-  updateState,
-} from './lib/conversation-state.js';
 // Real-time tool event broadcasting
 export { ToolEventBroadcaster } from './lib/tool-event-broadcaster.js';
 export * from './sdk/sdk.js';

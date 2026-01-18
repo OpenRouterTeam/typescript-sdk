@@ -13,7 +13,7 @@ export class Analytics extends ClientSDK {
    * Get user activity grouped by endpoint
    *
    * @remarks
-   * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days
+   * Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async getUserActivity(
     request?: operations.GetUserActivityRequest | undefined,

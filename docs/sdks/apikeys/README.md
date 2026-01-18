@@ -15,7 +15,7 @@ API key management endpoints
 
 ## list
 
-List API keys
+List all API keys for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
 
 ### Example Usage
 
@@ -87,7 +87,7 @@ run();
 
 ## create
 
-Create a new API key
+Create a new API key for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
 
 ### Example Usage
 
@@ -164,7 +164,7 @@ run();
 
 ## update
 
-Update an API key
+Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
 
 ### Example Usage
 
@@ -178,7 +178,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.update({
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
     requestBody: {},
   });
 
@@ -204,7 +204,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysUpdate(openRouter, {
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
     requestBody: {},
   });
   if (res.ok) {
@@ -244,7 +244,7 @@ run();
 
 ## delete
 
-Delete an API key
+Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
 
 ### Example Usage
 
@@ -258,7 +258,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.delete({
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
   });
 
   console.log(result);
@@ -283,7 +283,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysDelete(openRouter, {
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
   });
   if (res.ok) {
     const { value: result } = res;
@@ -321,7 +321,7 @@ run();
 
 ## get
 
-Get a single API key
+Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
 
 ### Example Usage
 
@@ -335,7 +335,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.apiKeys.get({
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
   });
 
   console.log(result);
@@ -360,7 +360,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await apiKeysGet(openRouter, {
-    hash: "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",
+    hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
   });
   if (res.ok) {
     const { value: result } = res;

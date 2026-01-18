@@ -15,7 +15,7 @@ export class Credits extends ClientSDK {
    * Get remaining credits
    *
    * @remarks
-   * Get total credits purchased and used for the authenticated user
+   * Get total credits purchased and used for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async getCredits(
     options?: RequestOptions,

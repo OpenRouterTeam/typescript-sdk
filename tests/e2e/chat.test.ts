@@ -20,7 +20,7 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Non-streaming', () => {
     it('should successfully send a chat request and get a response', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',
@@ -48,7 +48,7 @@ describe('Chat E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',
@@ -81,7 +81,7 @@ describe('Chat E2E Tests', () => {
 
     it('should respect max_tokens parameter', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',
@@ -101,7 +101,7 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Streaming', () => {
     it('should successfully stream chat responses', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',
@@ -130,7 +130,7 @@ describe('Chat E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',
@@ -159,7 +159,7 @@ describe('Chat E2E Tests', () => {
 
     it('should include finish_reason in final chunk', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
+        model: 'meta-llama/llama-3.2-1b-instruct',
         messages: [
           {
             role: 'user',

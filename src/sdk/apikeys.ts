@@ -16,6 +16,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class APIKeys extends ClientSDK {
   /**
    * List API keys
+   *
+   * @remarks
+   * List all API keys for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async list(
     request?: operations.ListRequest | undefined,
@@ -30,6 +33,9 @@ export class APIKeys extends ClientSDK {
 
   /**
    * Create a new API key
+   *
+   * @remarks
+   * Create a new API key for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async create(
     request: operations.CreateKeysRequest,
@@ -44,6 +50,9 @@ export class APIKeys extends ClientSDK {
 
   /**
    * Update an API key
+   *
+   * @remarks
+   * Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async update(
     request: operations.UpdateKeysRequest,
@@ -58,6 +67,9 @@ export class APIKeys extends ClientSDK {
 
   /**
    * Delete an API key
+   *
+   * @remarks
+   * Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async delete(
     request: operations.DeleteKeysRequest,
@@ -72,6 +84,9 @@ export class APIKeys extends ClientSDK {
 
   /**
    * Get a single API key
+   *
+   * @remarks
+   * Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async get(
     request: operations.GetKeyRequest,
