@@ -74,6 +74,6 @@ The e2e test suite includes:
 
 - Tests make real API calls to OpenRouter, so you need a valid API key
 - Tests may consume API credits
-- Chat tests use the `meta-llama/llama-3.2-1b-instruct` model by default
+- Chat tests use the `anthropic/claude-haiku-4.5` model by default
 - Embeddings tests use the `openai/text-embedding-3-small` model by default
 - The beta responses endpoint has limited test coverage as it's still in development

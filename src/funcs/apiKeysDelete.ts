@@ -28,6 +28,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Delete an API key
+ *
+ * @remarks
+ * Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
  */
 export function apiKeysDelete(
   client: OpenRouterCore,

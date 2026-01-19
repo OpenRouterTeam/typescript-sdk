@@ -5,11 +5,42 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import * as openEnums from "../../types/enums.js";
+import { OpenEnum } from "../../types/enums.js";
+
+/**
+ * Filter models by use case category
+ */
+export const Category = {
+  Programming: "programming",
+  Roleplay: "roleplay",
+  Marketing: "marketing",
+  MarketingSeo: "marketing/seo",
+  Technology: "technology",
+  Science: "science",
+  Translation: "translation",
+  Legal: "legal",
+  Finance: "finance",
+  Health: "health",
+  Trivia: "trivia",
+  Academia: "academia",
+} as const;
+/**
+ * Filter models by use case category
+ */
+export type Category = OpenEnum<typeof Category>;
 
 export type GetModelsRequest = {
-  category?: string | undefined;
+  /**
+   * Filter models by use case category
+   */
+  category?: Category | undefined;
   supportedParameters?: string | undefined;
 };
+
+/** @internal */
+export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
+  .outboundSchema(Category);
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
@@ -22,7 +53,7 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   GetModelsRequest$Outbound,
   GetModelsRequest
 > = z.object({
-  category: z.string().optional(),
+  category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

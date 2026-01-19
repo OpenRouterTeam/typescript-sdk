@@ -1,6 +1,6 @@
 {
   "name": "@openrouter/sdk",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "author": "OpenRouter",
   "description": "The OpenRouter TypeScript SDK is a type-safe toolkit for building AI applications with access to 300+ language models through a unified API.",
   "keywords": [
@@ -64,15 +64,17 @@
     "type": "git",
     "url": "https://github.com/OpenRouterTeam/typescript-sdk.git"
   },
-  "scripts": {
-    "lint": "eslint --cache --max-warnings=0 src",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build",
-    "test": "vitest --run --project unit",
-    "test:e2e": "vitest --run --project e2e",
-    "test:watch": "vitest --watch --project unit"
-  },
+    "scripts": {
+      "lint": "eslint --cache --max-warnings=0 src",
+      "build": "tsc",
+      "typecheck": "tsc --noEmit",
+      "prepublishOnly": "npm run build",
+      "postinstall": "node scripts/check-types.js || true",
+      "test": "vitest --run --project unit",
+      "test:e2e": "vitest --run --project e2e",
+      "test:watch": "vitest --watch --project unit"
+    },
+  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.12",

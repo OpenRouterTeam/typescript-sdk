@@ -28,6 +28,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Get a single API key
+ *
+ * @remarks
+ * Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
  */
 export function apiKeysGet(
   client: OpenRouterCore,

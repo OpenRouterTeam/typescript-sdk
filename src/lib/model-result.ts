@@ -1219,6 +1219,12 @@ export class ModelResult<TTools extends readonly Tool[]> {
    */
   async getToolCalls(): Promise<ParsedToolCall<TTools[number]>[]> {
     await this.initStream();
+
+    // Handle non-streaming response case - use finalResponse directly
+    if (this.finalResponse) {
+      return extractToolCallsFromResponse(this.finalResponse) as ParsedToolCall<TTools[number]>[];
+    }
+
     if (!this.reusableStream) {
       throw new Error('Stream not initialized');
     }

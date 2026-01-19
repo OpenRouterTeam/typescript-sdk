@@ -4616,6 +4616,11 @@ components:
           description: List of supported parameters for this model
         default_parameters:
           $ref: '#/components/schemas/DefaultParameters'
+        expiration_date:
+          type: string
+          nullable: true
+          description: The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
+          example: '2025-06-01'
       required:
         - id
         - canonical_slug
@@ -4659,6 +4664,7 @@ components:
           - top_p
           - max_tokens
         default_parameters: null
+        expiration_date: null
     ModelsListResponseData:
       type: array
       items:
@@ -4705,6 +4711,7 @@ components:
               - frequency_penalty
               - presence_penalty
             default_parameters: null
+            expiration_date: null
     ModelsCountResponse:
       type: object
       properties:
@@ -5110,10 +5117,6 @@ components:
         - type: string
         - type: number
     __schema2:
-      anyOf:
-        - $ref: '#/components/schemas/ChatCompletionFinishReason'
-        - type: 'null'
-    __schema3:
       oneOf:
         - type: object
           properties:
@@ -5123,11 +5126,11 @@ components:
             summary:
               type: string
             id:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema3'
             format:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema4'
             index:
-              $ref: '#/components/schemas/__schema6'
+              $ref: '#/components/schemas/__schema5'
           required:
             - type
             - summary
@@ -5139,11 +5142,11 @@ components:
             data:
               type: string
             id:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema3'
             format:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema4'
             index:
-              $ref: '#/components/schemas/__schema6'
+              $ref: '#/components/schemas/__schema5'
           required:
             - type
             - data
@@ -5161,19 +5164,19 @@ components:
                 - type: string
                 - type: 'null'
             id:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema3'
             format:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema4'
             index:
-              $ref: '#/components/schemas/__schema6'
+              $ref: '#/components/schemas/__schema5'
           required:
             - type
       type: object
-    __schema4:
+    __schema3:
       anyOf:
         - type: string
         - type: 'null'
-    __schema5:
+    __schema4:
       anyOf:
         - type: string
           enum:
@@ -5184,8 +5187,12 @@ components:
             - anthropic-claude-v1
             - google-gemini-v1
         - type: 'null'
-    __schema6:
+    __schema5:
       type: number
+    __schema6:
+      anyOf:
+        - $ref: '#/components/schemas/ChatCompletionFinishReason'
+        - type: 'null'
     ModelName:
       type: string
     ChatMessageContentItemText:
@@ -5538,6 +5545,24 @@ components:
           anyOf:
             - type: string
             - type: 'null'
+        reasoning_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/__schema2'
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              image_url:
+                type: object
+                properties:
+                  url:
+                    type: string
+                required:
+                  - url
+            required:
+              - image_url
       required:
         - role
     ToolResponseMessage:
@@ -6069,15 +6094,11 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema2'
+          $ref: '#/components/schemas/__schema6'
         index:
           type: number
         message:
           $ref: '#/components/schemas/AssistantMessage'
-        reasoning_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/__schema3'
         logprobs:
           anyOf:
             - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
@@ -6131,14 +6152,14 @@ components:
         reasoning_details:
           type: array
           items:
-            $ref: '#/components/schemas/__schema3'
+            $ref: '#/components/schemas/__schema2'
     ChatStreamingChoice:
       type: object
       properties:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema2'
+          $ref: '#/components/schemas/__schema6'
         index:
           type: number
         logprobs:
@@ -6636,7 +6657,9 @@ paths:
         - Analytics
       operationId: getUserActivity
       summary: Get user activity grouped by endpoint
-      description: Returns user activity data grouped by endpoint for the last 30 (completed) UTC days
+      description: >-
+        Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -6705,7 +6728,9 @@ paths:
         - Credits
       summary: Get remaining credits
       operationId: getCredits
-      description: Get total credits purchased and used for the authenticated user
+      description: >-
+        Get total credits purchased and used for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
       responses:
         '200':
           description: Returns the total credits purchased and used
@@ -7407,7 +7432,23 @@ paths:
       parameters:
         - schema:
             type: string
+            enum:
+              - programming
+              - roleplay
+              - marketing
+              - marketing/seo
+              - technology
+              - science
+              - translation
+              - legal
+              - finance
+              - health
+              - trivia
+              - academia
+            description: Filter models by use case category
+            example: programming
           required: false
+          description: Filter models by use case category
           name: category
           in: query
         - schema:
@@ -7545,116 +7586,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEndpointsZdr
-  /parameters/{author}/{slug}:
-    get:
-      tags:
-        - Parameters
-      summary: Get a model's supported parameters and data about which are most popular
-      security:
-        - bearer: []
-      parameters:
-        - schema:
-            type: string
-          required: true
-          name: author
-          in: path
-        - schema:
-            type: string
-          required: true
-          name: slug
-          in: path
-        - schema:
-            $ref: '#/components/schemas/ProviderName'
-          required: false
-          name: provider
-          in: query
-      responses:
-        '200':
-          description: Returns the parameters for the specified model
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      model:
-                        type: string
-                        description: Model identifier
-                        example: openai/gpt-4
-                      supported_parameters:
-                        type: array
-                        items:
-                          type: string
-                          enum:
-                            - temperature
-                            - top_p
-                            - top_k
-                            - min_p
-                            - top_a
-                            - frequency_penalty
-                            - presence_penalty
-                            - repetition_penalty
-                            - max_tokens
-                            - logit_bias
-                            - logprobs
-                            - top_logprobs
-                            - seed
-                            - response_format
-                            - structured_outputs
-                            - stop
-                            - tools
-                            - tool_choice
-                            - parallel_tool_calls
-                            - include_reasoning
-                            - reasoning
-                            - reasoning_effort
-                            - web_search_options
-                            - verbosity
-                        description: List of parameters supported by this model
-                        example:
-                          - temperature
-                          - top_p
-                          - max_tokens
-                    required:
-                      - model
-                      - supported_parameters
-                    example:
-                      model: openai/gpt-4
-                      supported_parameters:
-                        - temperature
-                        - top_p
-                        - max_tokens
-                    description: Parameter analytics data
-                required:
-                  - data
-                example:
-                  data:
-                    model: openai/gpt-4
-                    supported_parameters:
-                      - temperature
-                      - top_p
-                      - max_tokens
-        '401':
-          description: Unauthorized - Authentication required or invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-        '404':
-          description: Not Found - Model or provider does not exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundResponse'
-        '500':
-          description: Internal Server Error - Unexpected server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
-      operationId: getParameters
   /providers:
     get:
       tags:
@@ -7723,6 +7654,9 @@ paths:
       tags:
         - API Keys
       summary: List API keys
+      description: >-
+        List all API keys for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -7756,7 +7690,7 @@ paths:
                         hash:
                           type: string
                           description: Unique hash identifier for the API key
-                          example: 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
+                          example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                         name:
                           type: string
                           description: Name of the API key
@@ -7764,7 +7698,7 @@ paths:
                         label:
                           type: string
                           description: Human-readable label for the API key
-                          example: Production API Key
+                          example: sk-or-v1-0e6...1c96
                         disabled:
                           type: boolean
                           description: Whether the API key is disabled
@@ -7855,9 +7789,9 @@ paths:
                         - created_at
                         - updated_at
                       example:
-                        hash: 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
+                        hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                         name: My Production Key
-                        label: Production API Key
+                        label: sk-or-v1-0e6...1c96
                         disabled: false
                         limit: 100
                         limit_remaining: 74.5
@@ -7879,7 +7813,7 @@ paths:
                   - data
                 example:
                   data:
-                    - hash: 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
+                    - hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
                       label: Production API Key
                       disabled: false
@@ -7921,6 +7855,9 @@ paths:
       tags:
         - API Keys
       summary: Create a new API key
+      description: >-
+        Create a new API key for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
       requestBody:
         content:
           application/json:
@@ -7983,7 +7920,7 @@ paths:
                       hash:
                         type: string
                         description: Unique hash identifier for the API key
-                        example: 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
+                        example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name:
                         type: string
                         description: Name of the API key
@@ -7991,7 +7928,7 @@ paths:
                       label:
                         type: string
                         description: Human-readable label for the API key
-                        example: Production API Key
+                        example: sk-or-v1-0e6...1c96
                       disabled:
                         type: boolean
                         description: Whether the API key is disabled
@@ -8082,9 +8019,9 @@ paths:
                       - created_at
                       - updated_at
                     example:
-                      hash: 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
+                      hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
-                      label: Production API Key
+                      label: sk-or-v1-0e6...1c96
                       disabled: false
                       limit: 100
                       limit_remaining: 74.5
@@ -8111,7 +8048,7 @@ paths:
                   - key
                 example:
                   data:
-                    hash: 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
+                    hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                     name: My New API Key
                     label: My New API Key
                     disabled: false
@@ -8162,11 +8099,12 @@ paths:
       tags:
         - API Keys
       summary: Update an API key
+      description: Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
       parameters:
         - schema:
             type: string
             description: The hash identifier of the API key to update
-            example: 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
+            example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
           required: true
           description: The hash identifier of the API key to update
           name: hash
@@ -8226,7 +8164,7 @@ paths:
                       hash:
                         type: string
                         description: Unique hash identifier for the API key
-                        example: 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
+                        example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name:
                         type: string
                         description: Name of the API key
@@ -8234,7 +8172,7 @@ paths:
                       label:
                         type: string
                         description: Human-readable label for the API key
-                        example: Production API Key
+                        example: sk-or-v1-0e6...1c96
                       disabled:
                         type: boolean
                         description: Whether the API key is disabled
@@ -8325,9 +8263,9 @@ paths:
                       - created_at
                       - updated_at
                     example:
-                      hash: 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
+                      hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
-                      label: Production API Key
+                      label: sk-or-v1-0e6...1c96
                       disabled: false
                       limit: 100
                       limit_remaining: 74.5
@@ -8349,7 +8287,7 @@ paths:
                   - data
                 example:
                   data:
-                    hash: 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
+                    hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                     name: Updated API Key Name
                     label: Updated API Key Name
                     disabled: false
@@ -8404,11 +8342,12 @@ paths:
       tags:
         - API Keys
       summary: Delete an API key
+      description: Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
       parameters:
         - schema:
             type: string
             description: The hash identifier of the API key to delete
-            example: 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
+            example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
           required: true
           description: The hash identifier of the API key to delete
           name: hash
@@ -8461,11 +8400,12 @@ paths:
       tags:
         - API Keys
       summary: Get a single API key
+      description: Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
       parameters:
         - schema:
             type: string
             description: The hash identifier of the API key to retrieve
-            example: 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
+            example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
           required: true
           description: The hash identifier of the API key to retrieve
           name: hash
@@ -8484,7 +8424,7 @@ paths:
                       hash:
                         type: string
                         description: Unique hash identifier for the API key
-                        example: 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
+                        example: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name:
                         type: string
                         description: Name of the API key
@@ -8492,7 +8432,7 @@ paths:
                       label:
                         type: string
                         description: Human-readable label for the API key
-                        example: Production API Key
+                        example: sk-or-v1-0e6...1c96
                       disabled:
                         type: boolean
                         description: Whether the API key is disabled
@@ -8583,9 +8523,9 @@ paths:
                       - created_at
                       - updated_at
                     example:
-                      hash: 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
+                      hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
-                      label: Production API Key
+                      label: sk-or-v1-0e6...1c96
                       disabled: false
                       limit: 100
                       limit_remaining: 74.5
@@ -8607,7 +8547,7 @@ paths:
                   - data
                 example:
                   data:
-                    hash: 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
+                    hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                     name: My Production Key
                     label: Production API Key
                     disabled: false
@@ -8650,6 +8590,1511 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails:
+    get:
+      operationId: listGuardrails
+      x-speakeasy-name-override: list
+      tags:
+        - Guardrails
+      summary: List guardrails
+      description: >-
+        List all guardrails for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            description: Number of records to skip for pagination
+            example: '0'
+          required: false
+          description: Number of records to skip for pagination
+          name: offset
+          in: query
+        - schema:
+            type: string
+            description: Maximum number of records to return (max 100)
+            example: '50'
+          required: false
+          description: Maximum number of records to return (max 100)
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: List of guardrails
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the guardrail
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        name:
+                          type: string
+                          description: Name of the guardrail
+                          example: Production Guardrail
+                        description:
+                          type: string
+                          nullable: true
+                          description: Description of the guardrail
+                          example: Guardrail for production environment
+                        limit_usd:
+                          type: number
+                          nullable: true
+                          minimum: 0
+                          exclusiveMinimum: true
+                          description: Spending limit in USD
+                          example: 100
+                        reset_interval:
+                          type: string
+                          nullable: true
+                          enum:
+                            - daily
+                            - weekly
+                            - monthly
+                          description: Interval at which the limit resets (daily, weekly, monthly)
+                          example: monthly
+                        allowed_providers:
+                          type: array
+                          nullable: true
+                          items:
+                            type: string
+                          description: List of allowed provider IDs
+                          example:
+                            - openai
+                            - anthropic
+                            - google
+                        allowed_models:
+                          type: array
+                          nullable: true
+                          items:
+                            type: string
+                          description: Array of model canonical_slugs (immutable identifiers)
+                          example:
+                            - openai/gpt-5.2-20251211
+                            - anthropic/claude-4.5-opus-20251124
+                            - deepseek/deepseek-r1-0528:free
+                        enforce_zdr:
+                          type: boolean
+                          nullable: true
+                          description: Whether to enforce zero data retention
+                          example: false
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp of when the guardrail was created
+                          example: '2025-08-24T10:30:00Z'
+                        updated_at:
+                          type: string
+                          nullable: true
+                          description: ISO 8601 timestamp of when the guardrail was last updated
+                          example: '2025-08-24T15:45:00Z'
+                      required:
+                        - id
+                        - name
+                        - created_at
+                      example:
+                        id: 550e8400-e29b-41d4-a716-446655440000
+                        name: Production Guardrail
+                        description: Guardrail for production environment
+                        limit_usd: 100
+                        reset_interval: monthly
+                        allowed_providers:
+                          - openai
+                          - anthropic
+                          - google
+                        allowed_models: null
+                        enforce_zdr: false
+                        created_at: '2025-08-24T10:30:00Z'
+                        updated_at: '2025-08-24T15:45:00Z'
+                    description: List of guardrails
+                  total_count:
+                    type: number
+                    description: Total number of guardrails
+                    example: 25
+                required:
+                  - data
+                  - total_count
+                example:
+                  data:
+                    - id: 550e8400-e29b-41d4-a716-446655440000
+                      name: Production Guardrail
+                      description: Guardrail for production environment
+                      limit_usd: 100
+                      reset_interval: monthly
+                      allowed_providers:
+                        - openai
+                        - anthropic
+                        - google
+                      allowed_models: null
+                      enforce_zdr: false
+                      created_at: '2025-08-24T10:30:00Z'
+                      updated_at: '2025-08-24T15:45:00Z'
+                  total_count: 1
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+    post:
+      operationId: createGuardrail
+      x-speakeasy-name-override: create
+      tags:
+        - Guardrails
+      summary: Create a guardrail
+      description: >-
+        Create a new guardrail for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                  description: Name for the new guardrail
+                  example: My New Guardrail
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 1000
+                  description: Description of the guardrail
+                  example: A guardrail for limiting API usage
+                limit_usd:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                  exclusiveMinimum: true
+                  description: Spending limit in USD
+                  example: 50
+                reset_interval:
+                  type: string
+                  nullable: true
+                  enum:
+                    - daily
+                    - weekly
+                    - monthly
+                  description: Interval at which the limit resets (daily, weekly, monthly)
+                  example: monthly
+                allowed_providers:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                  minItems: 1
+                  description: List of allowed provider IDs
+                  example:
+                    - openai
+                    - anthropic
+                    - deepseek
+                allowed_models:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                  minItems: 1
+                  description: Array of model identifiers (slug or canonical_slug accepted)
+                  example:
+                    - openai/gpt-5.2
+                    - anthropic/claude-4.5-opus-20251124
+                    - deepseek/deepseek-r1-0528:free
+                enforce_zdr:
+                  type: boolean
+                  nullable: true
+                  description: Whether to enforce zero data retention
+                  example: false
+              required:
+                - name
+              example:
+                name: My New Guardrail
+                description: A guardrail for limiting API usage
+                limit_usd: 50
+                reset_interval: monthly
+                allowed_providers:
+                  - openai
+                  - anthropic
+                  - deepseek
+                allowed_models: null
+                enforce_zdr: false
+        required: true
+      responses:
+        '201':
+          description: Guardrail created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the guardrail
+                        example: 550e8400-e29b-41d4-a716-446655440000
+                      name:
+                        type: string
+                        description: Name of the guardrail
+                        example: Production Guardrail
+                      description:
+                        type: string
+                        nullable: true
+                        description: Description of the guardrail
+                        example: Guardrail for production environment
+                      limit_usd:
+                        type: number
+                        nullable: true
+                        minimum: 0
+                        exclusiveMinimum: true
+                        description: Spending limit in USD
+                        example: 100
+                      reset_interval:
+                        type: string
+                        nullable: true
+                        enum:
+                          - daily
+                          - weekly
+                          - monthly
+                        description: Interval at which the limit resets (daily, weekly, monthly)
+                        example: monthly
+                      allowed_providers:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: List of allowed provider IDs
+                        example:
+                          - openai
+                          - anthropic
+                          - google
+                      allowed_models:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: Array of model canonical_slugs (immutable identifiers)
+                        example:
+                          - openai/gpt-5.2-20251211
+                          - anthropic/claude-4.5-opus-20251124
+                          - deepseek/deepseek-r1-0528:free
+                      enforce_zdr:
+                        type: boolean
+                        nullable: true
+                        description: Whether to enforce zero data retention
+                        example: false
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the guardrail was created
+                        example: '2025-08-24T10:30:00Z'
+                      updated_at:
+                        type: string
+                        nullable: true
+                        description: ISO 8601 timestamp of when the guardrail was last updated
+                        example: '2025-08-24T15:45:00Z'
+                    required:
+                      - id
+                      - name
+                      - created_at
+                    example:
+                      id: 550e8400-e29b-41d4-a716-446655440000
+                      name: Production Guardrail
+                      description: Guardrail for production environment
+                      limit_usd: 100
+                      reset_interval: monthly
+                      allowed_providers:
+                        - openai
+                        - anthropic
+                        - google
+                      allowed_models: null
+                      enforce_zdr: false
+                      created_at: '2025-08-24T10:30:00Z'
+                      updated_at: '2025-08-24T15:45:00Z'
+                    description: The created guardrail
+                required:
+                  - data
+                example:
+                  data:
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    name: My New Guardrail
+                    description: A guardrail for limiting API usage
+                    limit_usd: 50
+                    reset_interval: monthly
+                    allowed_providers:
+                      - openai
+                      - anthropic
+                      - google
+                    allowed_models: null
+                    enforce_zdr: false
+                    created_at: '2025-08-24T10:30:00Z'
+                    updated_at: null
+        '400':
+          description: Bad Request - Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/{id}:
+    get:
+      operationId: getGuardrail
+      x-speakeasy-name-override: get
+      tags:
+        - Guardrails
+      summary: Get a guardrail
+      description: Get a single guardrail by ID. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail to retrieve
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail to retrieve
+          name: id
+          in: path
+      responses:
+        '200':
+          description: Guardrail details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the guardrail
+                        example: 550e8400-e29b-41d4-a716-446655440000
+                      name:
+                        type: string
+                        description: Name of the guardrail
+                        example: Production Guardrail
+                      description:
+                        type: string
+                        nullable: true
+                        description: Description of the guardrail
+                        example: Guardrail for production environment
+                      limit_usd:
+                        type: number
+                        nullable: true
+                        minimum: 0
+                        exclusiveMinimum: true
+                        description: Spending limit in USD
+                        example: 100
+                      reset_interval:
+                        type: string
+                        nullable: true
+                        enum:
+                          - daily
+                          - weekly
+                          - monthly
+                        description: Interval at which the limit resets (daily, weekly, monthly)
+                        example: monthly
+                      allowed_providers:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: List of allowed provider IDs
+                        example:
+                          - openai
+                          - anthropic
+                          - google
+                      allowed_models:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: Array of model canonical_slugs (immutable identifiers)
+                        example:
+                          - openai/gpt-5.2-20251211
+                          - anthropic/claude-4.5-opus-20251124
+                          - deepseek/deepseek-r1-0528:free
+                      enforce_zdr:
+                        type: boolean
+                        nullable: true
+                        description: Whether to enforce zero data retention
+                        example: false
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the guardrail was created
+                        example: '2025-08-24T10:30:00Z'
+                      updated_at:
+                        type: string
+                        nullable: true
+                        description: ISO 8601 timestamp of when the guardrail was last updated
+                        example: '2025-08-24T15:45:00Z'
+                    required:
+                      - id
+                      - name
+                      - created_at
+                    example:
+                      id: 550e8400-e29b-41d4-a716-446655440000
+                      name: Production Guardrail
+                      description: Guardrail for production environment
+                      limit_usd: 100
+                      reset_interval: monthly
+                      allowed_providers:
+                        - openai
+                        - anthropic
+                        - google
+                      allowed_models: null
+                      enforce_zdr: false
+                      created_at: '2025-08-24T10:30:00Z'
+                      updated_at: '2025-08-24T15:45:00Z'
+                    description: The guardrail
+                required:
+                  - data
+                example:
+                  data:
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    name: Production Guardrail
+                    description: Guardrail for production environment
+                    limit_usd: 100
+                    reset_interval: monthly
+                    allowed_providers:
+                      - openai
+                      - anthropic
+                      - google
+                    allowed_models: null
+                    enforce_zdr: false
+                    created_at: '2025-08-24T10:30:00Z'
+                    updated_at: '2025-08-24T15:45:00Z'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - Guardrail does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+    patch:
+      operationId: updateGuardrail
+      x-speakeasy-name-override: update
+      tags:
+        - Guardrails
+      summary: Update a guardrail
+      description: Update an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail to update
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail to update
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                  description: New name for the guardrail
+                  example: Updated Guardrail Name
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 1000
+                  description: New description for the guardrail
+                  example: Updated description
+                limit_usd:
+                  type: number
+                  nullable: true
+                  minimum: 0
+                  exclusiveMinimum: true
+                  description: New spending limit in USD
+                  example: 75
+                reset_interval:
+                  type: string
+                  nullable: true
+                  enum:
+                    - daily
+                    - weekly
+                    - monthly
+                  description: Interval at which the limit resets (daily, weekly, monthly)
+                  example: monthly
+                allowed_providers:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                  minItems: 1
+                  description: New list of allowed provider IDs
+                  example:
+                    - openai
+                    - anthropic
+                    - deepseek
+                allowed_models:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                  minItems: 1
+                  description: Array of model identifiers (slug or canonical_slug accepted)
+                  example:
+                    - openai/gpt-5.2
+                enforce_zdr:
+                  type: boolean
+                  nullable: true
+                  description: Whether to enforce zero data retention
+                  example: true
+              example:
+                name: Updated Guardrail Name
+                description: Updated description
+                limit_usd: 75
+                reset_interval: weekly
+        required: true
+      responses:
+        '200':
+          description: Guardrail updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the guardrail
+                        example: 550e8400-e29b-41d4-a716-446655440000
+                      name:
+                        type: string
+                        description: Name of the guardrail
+                        example: Production Guardrail
+                      description:
+                        type: string
+                        nullable: true
+                        description: Description of the guardrail
+                        example: Guardrail for production environment
+                      limit_usd:
+                        type: number
+                        nullable: true
+                        minimum: 0
+                        exclusiveMinimum: true
+                        description: Spending limit in USD
+                        example: 100
+                      reset_interval:
+                        type: string
+                        nullable: true
+                        enum:
+                          - daily
+                          - weekly
+                          - monthly
+                        description: Interval at which the limit resets (daily, weekly, monthly)
+                        example: monthly
+                      allowed_providers:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: List of allowed provider IDs
+                        example:
+                          - openai
+                          - anthropic
+                          - google
+                      allowed_models:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                        description: Array of model canonical_slugs (immutable identifiers)
+                        example:
+                          - openai/gpt-5.2-20251211
+                          - anthropic/claude-4.5-opus-20251124
+                          - deepseek/deepseek-r1-0528:free
+                      enforce_zdr:
+                        type: boolean
+                        nullable: true
+                        description: Whether to enforce zero data retention
+                        example: false
+                      created_at:
+                        type: string
+                        description: ISO 8601 timestamp of when the guardrail was created
+                        example: '2025-08-24T10:30:00Z'
+                      updated_at:
+                        type: string
+                        nullable: true
+                        description: ISO 8601 timestamp of when the guardrail was last updated
+                        example: '2025-08-24T15:45:00Z'
+                    required:
+                      - id
+                      - name
+                      - created_at
+                    example:
+                      id: 550e8400-e29b-41d4-a716-446655440000
+                      name: Production Guardrail
+                      description: Guardrail for production environment
+                      limit_usd: 100
+                      reset_interval: monthly
+                      allowed_providers:
+                        - openai
+                        - anthropic
+                        - google
+                      allowed_models: null
+                      enforce_zdr: false
+                      created_at: '2025-08-24T10:30:00Z'
+                      updated_at: '2025-08-24T15:45:00Z'
+                    description: The updated guardrail
+                required:
+                  - data
+                example:
+                  data:
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    name: Updated Guardrail Name
+                    description: Updated description
+                    limit_usd: 75
+                    reset_interval: weekly
+                    allowed_providers:
+                      - openai
+                    allowed_models: null
+                    enforce_zdr: true
+                    created_at: '2025-08-24T10:30:00Z'
+                    updated_at: '2025-08-24T16:00:00Z'
+        '400':
+          description: Bad Request - Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - Guardrail does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+    delete:
+      operationId: deleteGuardrail
+      x-speakeasy-name-override: delete
+      tags:
+        - Guardrails
+      summary: Delete a guardrail
+      description: Delete an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail to delete
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail to delete
+          name: id
+          in: path
+      responses:
+        '200':
+          description: Guardrail deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: boolean
+                    const: true
+                    description: Confirmation that the guardrail was deleted
+                    example: true
+                required:
+                  - deleted
+                example:
+                  deleted: true
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - Guardrail does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/assignments/keys:
+    get:
+      operationId: listKeyAssignments
+      x-speakeasy-name-override: listKeyAssignments
+      tags:
+        - Guardrails
+      summary: List all key assignments
+      description: >-
+        List all API key guardrail assignments for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            description: Number of records to skip for pagination
+            example: '0'
+          required: false
+          description: Number of records to skip for pagination
+          name: offset
+          in: query
+        - schema:
+            type: string
+            description: Maximum number of records to return (max 100)
+            example: '50'
+          required: false
+          description: Maximum number of records to return (max 100)
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: List of key assignments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the assignment
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        key_hash:
+                          type: string
+                          description: Hash of the assigned API key
+                          example: c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93
+                        guardrail_id:
+                          type: string
+                          format: uuid
+                          description: ID of the guardrail
+                          example: 550e8400-e29b-41d4-a716-446655440001
+                        key_name:
+                          type: string
+                          description: Name of the API key
+                          example: Production Key
+                        key_label:
+                          type: string
+                          description: Label of the API key
+                          example: prod-key
+                        assigned_by:
+                          type: string
+                          nullable: true
+                          description: User ID of who made the assignment
+                          example: user_abc123
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp of when the assignment was created
+                          example: '2025-08-24T10:30:00Z'
+                      required:
+                        - id
+                        - key_hash
+                        - guardrail_id
+                        - key_name
+                        - key_label
+                        - assigned_by
+                        - created_at
+                    description: List of key assignments
+                  total_count:
+                    type: number
+                    description: Total number of key assignments for this guardrail
+                    example: 25
+                required:
+                  - data
+                  - total_count
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/assignments/members:
+    get:
+      operationId: listMemberAssignments
+      x-speakeasy-name-override: listMemberAssignments
+      tags:
+        - Guardrails
+      summary: List all member assignments
+      description: >-
+        List all organization member guardrail assignments for the authenticated user. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            description: Number of records to skip for pagination
+            example: '0'
+          required: false
+          description: Number of records to skip for pagination
+          name: offset
+          in: query
+        - schema:
+            type: string
+            description: Maximum number of records to return (max 100)
+            example: '50'
+          required: false
+          description: Maximum number of records to return (max 100)
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: List of member assignments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the assignment
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        user_id:
+                          type: string
+                          description: Clerk user ID of the assigned member
+                          example: user_abc123
+                        organization_id:
+                          type: string
+                          description: Organization ID
+                          example: org_xyz789
+                        guardrail_id:
+                          type: string
+                          format: uuid
+                          description: ID of the guardrail
+                          example: 550e8400-e29b-41d4-a716-446655440001
+                        assigned_by:
+                          type: string
+                          nullable: true
+                          description: User ID of who made the assignment
+                          example: user_abc123
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp of when the assignment was created
+                          example: '2025-08-24T10:30:00Z'
+                      required:
+                        - id
+                        - user_id
+                        - organization_id
+                        - guardrail_id
+                        - assigned_by
+                        - created_at
+                    description: List of member assignments
+                  total_count:
+                    type: number
+                    description: Total number of member assignments
+                    example: 10
+                required:
+                  - data
+                  - total_count
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/{id}/assignments/keys:
+    get:
+      operationId: listGuardrailKeyAssignments
+      x-speakeasy-name-override: listGuardrailKeyAssignments
+      tags:
+        - Guardrails
+      summary: List key assignments for a guardrail
+      description: >-
+        List all API key assignments for a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+        - schema:
+            type: string
+            description: Number of records to skip for pagination
+            example: '0'
+          required: false
+          description: Number of records to skip for pagination
+          name: offset
+          in: query
+        - schema:
+            type: string
+            description: Maximum number of records to return (max 100)
+            example: '50'
+          required: false
+          description: Maximum number of records to return (max 100)
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: List of key assignments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the assignment
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        key_hash:
+                          type: string
+                          description: Hash of the assigned API key
+                          example: c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93
+                        guardrail_id:
+                          type: string
+                          format: uuid
+                          description: ID of the guardrail
+                          example: 550e8400-e29b-41d4-a716-446655440001
+                        key_name:
+                          type: string
+                          description: Name of the API key
+                          example: Production Key
+                        key_label:
+                          type: string
+                          description: Label of the API key
+                          example: prod-key
+                        assigned_by:
+                          type: string
+                          nullable: true
+                          description: User ID of who made the assignment
+                          example: user_abc123
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp of when the assignment was created
+                          example: '2025-08-24T10:30:00Z'
+                      required:
+                        - id
+                        - key_hash
+                        - guardrail_id
+                        - key_name
+                        - key_label
+                        - assigned_by
+                        - created_at
+                    description: List of key assignments
+                  total_count:
+                    type: number
+                    description: Total number of key assignments for this guardrail
+                    example: 25
+                required:
+                  - data
+                  - total_count
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+    post:
+      operationId: bulkAssignKeysToGuardrail
+      x-speakeasy-name-override: bulkAssignKeys
+      tags:
+        - Guardrails
+      summary: Bulk assign keys to a guardrail
+      description: >-
+        Assign multiple API keys to a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_hashes:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                  minItems: 1
+                  description: Array of API key hashes to assign to the guardrail
+                  example:
+                    - c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93
+              required:
+                - key_hashes
+        required: true
+      responses:
+        '200':
+          description: Assignment result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assigned_count:
+                    type: number
+                    description: Number of keys successfully assigned
+                    example: 3
+                required:
+                  - assigned_count
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/{id}/assignments/members:
+    get:
+      operationId: listGuardrailMemberAssignments
+      x-speakeasy-name-override: listGuardrailMemberAssignments
+      tags:
+        - Guardrails
+      summary: List member assignments for a guardrail
+      description: >-
+        List all organization member assignments for a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+        - schema:
+            type: string
+            description: Number of records to skip for pagination
+            example: '0'
+          required: false
+          description: Number of records to skip for pagination
+          name: offset
+          in: query
+        - schema:
+            type: string
+            description: Maximum number of records to return (max 100)
+            example: '50'
+          required: false
+          description: Maximum number of records to return (max 100)
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: List of member assignments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          description: Unique identifier for the assignment
+                          example: 550e8400-e29b-41d4-a716-446655440000
+                        user_id:
+                          type: string
+                          description: Clerk user ID of the assigned member
+                          example: user_abc123
+                        organization_id:
+                          type: string
+                          description: Organization ID
+                          example: org_xyz789
+                        guardrail_id:
+                          type: string
+                          format: uuid
+                          description: ID of the guardrail
+                          example: 550e8400-e29b-41d4-a716-446655440001
+                        assigned_by:
+                          type: string
+                          nullable: true
+                          description: User ID of who made the assignment
+                          example: user_abc123
+                        created_at:
+                          type: string
+                          description: ISO 8601 timestamp of when the assignment was created
+                          example: '2025-08-24T10:30:00Z'
+                      required:
+                        - id
+                        - user_id
+                        - organization_id
+                        - guardrail_id
+                        - assigned_by
+                        - created_at
+                    description: List of member assignments
+                  total_count:
+                    type: number
+                    description: Total number of member assignments
+                    example: 10
+                required:
+                  - data
+                  - total_count
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+    post:
+      operationId: bulkAssignMembersToGuardrail
+      x-speakeasy-name-override: bulkAssignMembers
+      tags:
+        - Guardrails
+      summary: Bulk assign members to a guardrail
+      description: >-
+        Assign multiple organization members to a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_user_ids:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                  minItems: 1
+                  description: Array of member user IDs to assign to the guardrail
+                  example:
+                    - user_abc123
+                    - user_def456
+              required:
+                - member_user_ids
+        required: true
+      responses:
+        '200':
+          description: Assignment result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assigned_count:
+                    type: number
+                    description: Number of members successfully assigned
+                    example: 2
+                required:
+                  - assigned_count
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/{id}/assignments/keys/remove:
+    post:
+      operationId: bulkUnassignKeysFromGuardrail
+      x-speakeasy-name-override: bulkUnassignKeys
+      tags:
+        - Guardrails
+      summary: Bulk unassign keys from a guardrail
+      description: >-
+        Unassign multiple API keys from a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_hashes:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                  minItems: 1
+                  description: Array of API key hashes to unassign from the guardrail
+                  example:
+                    - c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93
+              required:
+                - key_hashes
+        required: true
+      responses:
+        '200':
+          description: Unassignment result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unassigned_count:
+                    type: number
+                    description: Number of keys successfully unassigned
+                    example: 3
+                required:
+                  - unassigned_count
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+  /guardrails/{id}/assignments/members/remove:
+    post:
+      operationId: bulkUnassignMembersFromGuardrail
+      x-speakeasy-name-override: bulkUnassignMembers
+      tags:
+        - Guardrails
+      summary: Bulk unassign members from a guardrail
+      description: >-
+        Unassign multiple organization members from a specific guardrail. [Provisioning
+        key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            description: The unique identifier of the guardrail
+            example: 550e8400-e29b-41d4-a716-446655440000
+          required: true
+          description: The unique identifier of the guardrail
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_user_ids:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                  minItems: 1
+                  description: Array of member user IDs to unassign from the guardrail
+                  example:
+                    - user_abc123
+                    - user_def456
+              required:
+                - member_user_ids
+        required: true
+      responses:
+        '200':
+          description: Unassignment result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unassigned_count:
+                    type: number
+                    description: Number of members successfully unassigned
+                    example: 2
+                required:
+                  - unassigned_count
+        '400':
+          description: Bad Request - Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Guardrail not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
   /key:
     get:
       operationId: getCurrentKey
@@ -8672,7 +10117,7 @@ paths:
                       label:
                         type: string
                         description: Human-readable label for the API key
-                        example: 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
+                        example: sk-or-v1-0e6...1c96
                       limit:
                         type: number
                         nullable: true
@@ -8782,7 +10227,7 @@ paths:
                       - rate_limit
                     description: Current API key information
                     example:
-                      label: sk-or-v1-au78b3456789012345678901234567890
+                      label: sk-or-v1-au7...890
                       limit: 100
                       usage: 25.5
                       usage_daily: 25.5
@@ -8806,7 +10251,7 @@ paths:
                   - data
                 example:
                   data:
-                    label: sk-or-v1-au78b3456789012345678901234567890
+                    label: sk-or-v1-au7...890
                     limit: 100
                     usage: 25.5
                     usage_daily: 25.5
@@ -9146,12 +10591,12 @@ tags:
     description: Endpoint information
   - name: Generations
     description: Generation history endpoints
+  - name: Guardrails
+    description: Guardrails endpoints
   - name: Models
     description: Model information endpoints
   - name: OAuth
     description: OAuth authentication endpoints
-  - name: Parameters
-    description: Parameters endpoints
   - name: Providers
     description: Provider information endpoints
   - name: beta.responses

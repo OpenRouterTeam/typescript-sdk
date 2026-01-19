@@ -10,7 +10,7 @@ let value: GetModelsRequest = {};
 
 ## Fields
 
-| Field                 | Type                  | Required              | Description           |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| `category`            | *string*              | :heavy_minus_sign:    | N/A                   |
-| `supportedParameters` | *string*              | :heavy_minus_sign:    | N/A                   |
+| Field                                                      | Type                                                       | Required                                                   | Description                                                | Example                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `category`                                                 | [operations.Category](../../models/operations/category.md) | :heavy_minus_sign:                                         | Filter models by use case category                         | programming                                                |
+| `supportedParameters`                                      | *string*                                                   | :heavy_minus_sign:                                         | N/A                                                        |                                                            |

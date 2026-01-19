@@ -28,6 +28,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Create a new API key
+ *
+ * @remarks
+ * Create a new API key for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
  */
 export function apiKeysCreate(
   client: OpenRouterCore,

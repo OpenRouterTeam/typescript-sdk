@@ -248,12 +248,25 @@ export function extractToolCallsFromResponse<TTools extends readonly Tool[]>(
 
   for (const item of outputs) {
     if (item.type === 'function_call') {
+      let parsedArguments: unknown;
+      if (typeof item.arguments === 'string') {
+        try {
+          parsedArguments = JSON.parse(item.arguments);
+        } catch (error) {
+          // Log warning and skip malformed tool call, similar to stream-transformers.ts
+          console.warn(
+            `Failed to parse arguments for tool call "${item.name}": ${error instanceof Error ? error.message : String(error)}`
+          );
+          continue;
+        }
+      } else {
+        parsedArguments = item.arguments;
+      }
+
       const toolCall = {
         id: item.callId ?? item.id ?? '',
         name: item.name ?? '',
-        arguments: typeof item.arguments === 'string'
-          ? JSON.parse(item.arguments)
-          : item.arguments,
+        arguments: parsedArguments,
       };
       if (!isValidParsedToolCall<TTools>(toolCall)) {
         throw new Error(`Invalid tool call structure for tool: ${item.name}`);
