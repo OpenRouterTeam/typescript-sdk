@@ -827,6 +827,89 @@ describe('callModel E2E Tests', () => {
         expect(fullToolCall.length).toBeGreaterThan(0);
       }
     }, 30000);
+
+    it('should stream preliminary results from generator tools via getToolStream', async () => {
+      const progressTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'search_with_progress',
+          description: 'Search with progress updates',
+          inputSchema: z.object({
+            query: z.string().describe('Search query'),
+          }),
+          eventSchema: z.object({
+            status: z.string(),
+            progress: z.number().min(0).max(100),
+          }),
+          outputSchema: z.object({
+            results: z.array(z.string()),
+            totalFound: z.number(),
+          }),
+          execute: async function* (params: { query: string }) {
+            // Preliminary event 1
+            yield { status: 'Starting search...', progress: 0 };
+
+            await new Promise((r) => setTimeout(r, 100));
+
+            // Preliminary event 2
+            yield { status: 'Searching...', progress: 50 };
+
+            await new Promise((r) => setTimeout(r, 100));
+
+            // Preliminary event 3
+            yield { status: 'Almost done...', progress: 90 };
+
+            // Final result
+            yield {
+              results: [`Found: ${params.query}`],
+              totalFound: 1,
+            };
+          },
+        },
+      };
+
+      const response = client.callModel({
+        model: 'anthropic/claude-haiku-4.5',
+        input: fromChatMessages([
+          {
+            role: 'user',
+            content: 'Search for TypeScript documentation using the search_with_progress tool.',
+          },
+        ]),
+        tools: [progressTool],
+        toolChoice: 'required',
+        stopWhen: stepCountIs(1), // Limit to single turn to ensure one tool call
+      });
+
+      const preliminaryResults: Array<{ status: string; progress: number }> = [];
+      let toolCallId: string | undefined;
+
+      for await (const event of response.getToolStream()) {
+        if (event.type === 'preliminary_result') {
+          if (!toolCallId) {
+            toolCallId = event.toolCallId;
+          }
+          expect(event.toolCallId).toBe(toolCallId); // Same tool call
+          preliminaryResults.push(event.result as { status: string; progress: number });
+        }
+      }
+
+      // Verify preliminary results were received
+      expect(preliminaryResults.length).toBeGreaterThanOrEqual(3);
+
+      // Verify events came in order (progress should be increasing)
+      for (let i = 1; i < preliminaryResults.length; i++) {
+        const current = preliminaryResults[i];
+        const previous = preliminaryResults[i - 1];
+        if (current && previous) {
+          expect(current.progress).toBeGreaterThanOrEqual(previous.progress);
+        }
+      }
+
+      // Verify final response
+      const finalResponse = await response.getResponse();
+      expect(finalResponse).toBeDefined();
+    }, 60000);
   });
 
   describe('response.fullResponsesStream - Streaming all events', () => {
