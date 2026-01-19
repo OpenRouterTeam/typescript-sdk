@@ -10,8 +10,7 @@ import { ListResponse } from "@openrouter/sdk/models/operations";
 let value: ListResponse = {
   data: [
     {
-      hash:
-        "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",
+      hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
       name: "My Production Key",
       label: "Production API Key",
       disabled: false,

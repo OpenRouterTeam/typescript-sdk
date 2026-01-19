@@ -13,9 +13,9 @@ import { Credits } from "./credits.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { Generations } from "./generations.js";
+import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
-import { ParametersT } from "./parameters.js";
 import { Providers } from "./providers.js";
 // #region imports
 import {
@@ -65,11 +65,6 @@ export class OpenRouter extends ClientSDK {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
-  private _parameters?: ParametersT;
-  get parameters(): ParametersT {
-    return (this._parameters ??= new ParametersT(this._options));
-  }
-
   private _providers?: Providers;
   get providers(): Providers {
     return (this._providers ??= new Providers(this._options));
@@ -78,6 +73,11 @@ export class OpenRouter extends ClientSDK {
   private _apiKeys?: APIKeys;
   get apiKeys(): APIKeys {
     return (this._apiKeys ??= new APIKeys(this._options));
+  }
+
+  private _guardrails?: Guardrails;
+  get guardrails(): Guardrails {
+    return (this._guardrails ??= new Guardrails(this._options));
   }
 
   private _oAuth?: OAuth;

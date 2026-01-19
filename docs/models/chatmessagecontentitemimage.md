@@ -15,7 +15,7 @@ let value: ChatMessageContentItemImage = {
 
 ## Fields
 
-| Field                                    | Type                                     | Required                                 | Description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `type`                                   | *"image_url"*                            | :heavy_check_mark:                       | N/A                                      |
-| `imageUrl`                               | [models.ImageUrl](../models/imageurl.md) | :heavy_check_mark:                       | N/A                                      |
+| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `type`                                                                                         | *"image_url"*                                                                                  | :heavy_check_mark:                                                                             | N/A                                                                                            |
+| `imageUrl`                                                                                     | [models.ChatMessageContentItemImageImageUrl](../models/chatmessagecontentitemimageimageurl.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |

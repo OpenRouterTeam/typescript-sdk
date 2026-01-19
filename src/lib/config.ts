@@ -3,7 +3,6 @@
  * @generated-id: 320761608fb3
  */
 
-import { SDKHooks } from "../hooks/hooks.js";
 import { HTTPClient } from "./http.js";
 import { Logger } from "./logger.js";
 import { RetryConfig } from "./retries.js";
@@ -52,7 +51,6 @@ export type SDKOptions = {
   retryConfig?: RetryConfig;
   timeoutMs?: number;
   debugLogger?: Logger;
-  hooks?: SDKHooks;
 };
 
 export function serverURLFromOptions(options: SDKOptions): URL | null {
@@ -72,7 +70,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "1.0.0",
-  sdkVersion: "0.3.14",
+  sdkVersion: "0.3.15",
   genVersion: "2.788.4",
-  userAgent: "speakeasy-sdk/typescript 0.3.14 2.788.4 1.0.0 @openrouter/sdk",
+  userAgent: "speakeasy-sdk/typescript 0.3.15 2.788.4 1.0.0 @openrouter/sdk",
 } as const;

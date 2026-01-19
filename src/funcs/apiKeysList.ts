@@ -28,6 +28,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * List API keys
+ *
+ * @remarks
+ * List all API keys for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
  */
 export function apiKeysList(
   client: OpenRouterCore,

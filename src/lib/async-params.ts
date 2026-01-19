@@ -128,11 +128,20 @@ export async function resolveAsyncFunctions<TTools extends readonly Tool[] = rea
   // Build array of resolved entries
   const resolvedEntries: Array<readonly [string, unknown]> = [];
 
+  // Fields that should not be sent to the API (client-side only)
+  const clientOnlyFields = new Set([
+    'stopWhen',           // Handled separately in ModelResult
+    'state',              // Client-side state management
+    'requireApproval',    // Client-side approval check function
+    'approveToolCalls',   // Client-side approval decisions
+    'rejectToolCalls',    // Client-side rejection decisions
+  ]);
+
   // Iterate over all keys in the input
   for (const [key, value] of Object.entries(input)) {
-    // Skip stopWhen - it's handled separately in ModelResult
+    // Skip client-only fields - they're handled separately and shouldn't be sent to the API
     // Note: tools are already in API format at this point (converted in callModel()), so we include them
-    if (key === 'stopWhen') {
+    if (clientOnlyFields.has(key)) {
       continue;
     }
 
