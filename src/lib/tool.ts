@@ -85,7 +85,9 @@ type GeneratorToolConfig<
 /**
  * Configuration for a manual tool (execute: false, no eventSchema or outputSchema)
  */
-type ManualToolConfig<TInput extends $ZodObject<$ZodShape>> = {
+type ManualToolConfig<
+  TInput extends $ZodObject<$ZodShape>,
+> = {
   name: string;
   description?: string;
   inputSchema: TInput;
@@ -101,7 +103,11 @@ type ManualToolConfig<TInput extends $ZodObject<$ZodShape>> = {
 /**
  * Union type for all regular tool configs
  */
-type RegularToolConfig<TInput extends $ZodObject<$ZodShape>, TOutput extends $ZodType, TReturn> =
+type RegularToolConfig<
+  TInput extends $ZodObject<$ZodShape>,
+  TOutput extends $ZodType,
+  TReturn,
+> =
   | RegularToolConfigWithOutput<TInput, TOutput>
   | RegularToolConfigWithoutOutput<TInput, TReturn>;
 
@@ -125,7 +131,11 @@ function isGeneratorConfig<
 /**
  * Type guard to check if config is a manual tool config (execute === false)
  */
-function isManualConfig<TInput extends $ZodObject<$ZodShape>, TOutput extends $ZodType, TReturn>(
+function isManualConfig<
+  TInput extends $ZodObject<$ZodShape>,
+  TOutput extends $ZodType,
+  TReturn,
+>(
   config:
     | GeneratorToolConfig<TInput, $ZodType, $ZodType>
     | RegularToolConfig<TInput, TOutput, TReturn>

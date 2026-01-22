@@ -1,11 +1,11 @@
-# ChatGenerationParamsResponseFormatText
+# ResponseFormatText
 
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParamsResponseFormatText } from "@openrouter/sdk/models";
+import { ResponseFormatText } from "@openrouter/sdk/models";
 
-let value: ChatGenerationParamsResponseFormatText = {
+let value: ResponseFormatText = {
   type: "text",
 };
 ```

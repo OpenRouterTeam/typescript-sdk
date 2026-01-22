@@ -1,4 +1,4 @@
-# ChatGenerationParamsStop
+# Stop
 
 
 ## Supported Types

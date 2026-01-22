@@ -8,7 +8,7 @@ Model information endpoints
 
 * [count](#count) - Get total count of available models
 * [list](#list) - List all models and their properties
-* [listForUser](#listforuser) - List models filtered by user provider preferences
+* [listForUser](#listforuser) - List models filtered by user provider preferences, privacy settings, and guardrails
 
 ## count
 
@@ -152,7 +152,7 @@ run();
 
 ## listForUser
 
-List models filtered by user provider preferences
+List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/logging#enterprise-eu-in-region-routing).
 
 ### Example Usage
 
@@ -218,5 +218,6 @@ run();
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

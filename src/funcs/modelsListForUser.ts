@@ -26,7 +26,10 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List models filtered by user provider preferences
+ * List models filtered by user provider preferences, privacy settings, and guardrails
+ *
+ * @remarks
+ * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/logging#enterprise-eu-in-region-routing).
  */
 export function modelsListForUser(
   client: OpenRouterCore,
@@ -36,6 +39,7 @@ export function modelsListForUser(
   Result<
     models.ModelsListResponse,
     | errors.UnauthorizedResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -63,6 +67,7 @@ async function $do(
     Result<
       models.ModelsListResponse,
       | errors.UnauthorizedResponseError
+      | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -123,7 +128,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["401", "4XX", "500", "5XX"],
+    errorCodes: ["401", "404", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -139,6 +144,7 @@ async function $do(
   const [result] = await M.match<
     models.ModelsListResponse,
     | errors.UnauthorizedResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -151,6 +157,7 @@ async function $do(
   >(
     M.json(200, models.ModelsListResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
