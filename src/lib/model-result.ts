@@ -36,6 +36,7 @@ import {
 } from './conversation-state.js';
 import { ReusableReadableStream } from './reusable-stream.js';
 import {
+  buildItemsStream,
   buildResponsesMessageStream,
   buildToolCallStream,
   consumeStreamForCompletion,
@@ -45,11 +46,21 @@ import {
   extractTextFromResponse,
   extractToolCallsFromResponse,
   extractToolDeltas,
+  type StreamableOutputItem,
 } from './stream-transformers.js';
 import { executeTool } from './tool-executor.js';
 import { executeNextTurnParamsFunctions, applyNextTurnParamsToRequest } from './next-turn-params.js';
 import { hasExecuteFunction } from './tool-types.js';
 import { isStopConditionMet, stepCountIs } from './stop-conditions.js';
+import {
+  isOutputMessage,
+  isFunctionCallOutputItem,
+  isReasoningOutputItem,
+  isWebSearchCallOutputItem,
+  isFileSearchCallOutputItem,
+  isImageGenerationCallOutputItem,
+  hasTypeProperty,
+} from './stream-type-guards.js';
 
 /**
  * Default maximum number of tool execution steps if no stopWhen is specified.
@@ -77,25 +88,9 @@ function isEventStream(value: unknown): value is EventStream<models.OpenResponse
   return typeof maybeStream.toReadableStream === 'function';
 }
 
-/**
- * Type guard for output items with a type property
- */
-function hasTypeProperty(item: unknown): item is {
-  type: string;
-} {
-  return (
-    typeof item === 'object' &&
-    item !== null &&
-    'type' in item &&
-    typeof (
-      item as {
-        type: unknown;
-      }
-    ).type === 'string'
-  );
-}
-
-export interface GetResponseOptions<TTools extends readonly Tool[]> {
+export interface GetResponseOptions<
+  TTools extends readonly Tool[],
+> {
   // Request can have async functions that will be resolved before sending to API
   request: CallModelInput<TTools>;
   client: OpenRouterCore;
@@ -104,6 +99,7 @@ export interface GetResponseOptions<TTools extends readonly Tool[]> {
   stopWhen?: StopWhen<TTools>;
   // State management for multi-turn conversations
   state?: StateAccessor<TTools>;
+
   /**
    * Call-level approval check - overrides tool-level requireApproval setting
    * Receives the tool call and turn context, can be sync or async
@@ -1162,6 +1158,62 @@ export class ModelResult<TTools extends readonly Tool[]> {
   }
 
   /**
+   * Stream all output items cumulatively as they arrive.
+   * Items are emitted with the same ID but progressively updated content as streaming progresses.
+   * Also yields tool results (function_call_output) after tool execution completes.
+   *
+   * Item types include:
+   * - message: Assistant text responses (emitted cumulatively as text streams)
+   * - function_call: Tool calls (emitted cumulatively as arguments stream)
+   * - reasoning: Model reasoning (emitted cumulatively as thinking streams)
+   * - web_search_call: Web search operations
+   * - file_search_call: File search operations
+   * - image_generation_call: Image generation operations
+   * - function_call_output: Results from executed tools
+   */
+  getItemsStream(): AsyncIterableIterator<StreamableOutputItem> {
+    return async function* (this: ModelResult<TTools>) {
+      await this.initStream();
+      if (!this.reusableStream) {
+        throw new Error('Stream not initialized');
+      }
+
+      // Stream all items from the API response cumulatively
+      yield* buildItemsStream(this.reusableStream);
+
+      // Execute tools if needed
+      await this.executeToolsIfNeeded();
+
+      // Yield function call outputs for each executed tool
+      for (const round of this.allToolExecutionRounds) {
+        for (const toolResult of round.toolResults) {
+          yield toolResult;
+        }
+      }
+
+      // If tools were executed, yield all items from the final response
+      if (this.finalResponse && this.allToolExecutionRounds.length > 0) {
+        for (const item of this.finalResponse.output) {
+          if (
+            isOutputMessage(item) ||
+            isFunctionCallOutputItem(item) ||
+            isReasoningOutputItem(item) ||
+            isWebSearchCallOutputItem(item) ||
+            isFileSearchCallOutputItem(item) ||
+            isImageGenerationCallOutputItem(item)
+          ) {
+            yield item;
+          }
+        }
+      }
+    }.call(this);
+  }
+
+  /**
+   * @deprecated Use `getItemsStream()` instead. This method only streams messages,
+   * while `getItemsStream()` streams all output item types (messages, function_calls,
+   * reasoning, etc.) with cumulative updates.
+   *
    * Stream incremental message updates as content is added in responses format.
    * Each iteration yields an updated version of the message with new content.
    * Also yields OpenResponsesFunctionCallOutput after tool execution completes.

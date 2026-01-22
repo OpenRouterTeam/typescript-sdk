@@ -1,11 +1,11 @@
-# CompletionCreateParamsResponseFormatJSONObject
+# ResponseFormatJSONObject
 
 ## Example Usage
 
 ```typescript
-import { CompletionCreateParamsResponseFormatJSONObject } from "@openrouter/sdk/models";
+import { ResponseFormatJSONObject } from "@openrouter/sdk/models";
 
-let value: CompletionCreateParamsResponseFormatJSONObject = {
+let value: ResponseFormatJSONObject = {
   type: "json_object",
 };
 ```

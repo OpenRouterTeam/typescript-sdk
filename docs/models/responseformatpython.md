@@ -1,11 +1,11 @@
-# ChatGenerationParamsResponseFormatPython
+# ResponseFormatPython
 
 ## Example Usage
 
 ```typescript
-import { ChatGenerationParamsResponseFormatPython } from "@openrouter/sdk/models";
+import { ResponseFormatPython } from "@openrouter/sdk/models";
 
-let value: ChatGenerationParamsResponseFormatPython = {
+let value: ResponseFormatPython = {
   type: "python",
 };
 ```

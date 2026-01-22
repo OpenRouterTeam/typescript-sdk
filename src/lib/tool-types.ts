@@ -70,6 +70,7 @@ export type ToolApprovalCheck<TInput> = (
 
 /**
  * Base tool function interface with inputSchema
+ * @template TInput - Zod schema for tool input
  */
 export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
   name: string;

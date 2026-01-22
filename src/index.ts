@@ -109,6 +109,7 @@ export {
   getUnsupportedContentSummary,
   hasUnsupportedContent,
 } from './lib/stream-transformers.js';
+export type { StreamableOutputItem } from './lib/stream-transformers.js';
 // Tool creation helpers
 export { tool } from './lib/tool.js';
 export {

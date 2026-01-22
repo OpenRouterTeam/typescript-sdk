@@ -8,7 +8,6 @@ import { Analytics } from "./analytics.js";
 import { APIKeys } from "./apikeys.js";
 import { Beta } from "./beta.js";
 import { Chat } from "./chat.js";
-import { Completions } from "./completions.js";
 import { Credits } from "./credits.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
@@ -88,11 +87,6 @@ export class OpenRouter extends ClientSDK {
   private _chat?: Chat;
   get chat(): Chat {
     return (this._chat ??= new Chat(this._options));
-  }
-
-  private _completions?: Completions;
-  get completions(): Completions {
-    return (this._completions ??= new Completions(this._options));
   }
 
   // #region sdk-class-body

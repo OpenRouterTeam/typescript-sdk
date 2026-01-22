@@ -182,6 +182,293 @@ export async function* buildResponsesMessageStream(
 }
 
 /**
+ * Output item types that can be streamed from a response.
+ * This is the union of all item types that appear in response output,
+ * plus function_call_output for tool results.
+ */
+export type StreamableOutputItem =
+  | models.ResponsesOutputMessage // type: "message"
+  | models.ResponsesOutputItemFunctionCall // type: "function_call"
+  | models.ResponsesOutputItemReasoning // type: "reasoning"
+  | models.ResponsesWebSearchCallOutput // type: "web_search_call"
+  | models.ResponsesOutputItemFileSearchCall // type: "file_search_call"
+  | models.ResponsesImageGenerationCall // type: "image_generation_call"
+  | models.OpenResponsesFunctionCallOutput; // type: "function_call_output" (tool results)
+
+//#region ItemsStream Types and Handlers
+
+/**
+ * Discriminated union for tracking items in progress.
+ * Each variant has only the fields relevant to that item type.
+ */
+type ItemInProgress =
+  | { type: 'message'; id: string; textContent: string }
+  | { type: 'function_call'; id: string; name: string; callId: string; argumentsAccumulated: string }
+  | { type: 'reasoning'; id: string; reasoningContent: string };
+
+/**
+ * Handle output_item.added event - Initialize tracking for new items
+ */
+function handleOutputItemAdded(
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+): StreamableOutputItem | undefined {
+  if (!isOutputItemAddedEvent(event) || !event.item) {
+    return undefined;
+  }
+
+  const item = event.item;
+
+  if (isOutputMessage(item)) {
+    itemsInProgress.set(item.id, {
+      type: 'message',
+      id: item.id,
+      textContent: '',
+    });
+    return {
+      id: item.id,
+      type: 'message' as const,
+      role: 'assistant' as const,
+      status: 'in_progress' as const,
+      content: [],
+    };
+  }
+
+  if (isFunctionCallOutputItem(item)) {
+    // Use item.id if available (matches itemId in delta events), fall back to callId
+    const itemKey = item.id ?? item.callId;
+    itemsInProgress.set(itemKey, {
+      type: 'function_call',
+      id: itemKey,
+      name: item.name,
+      callId: item.callId,
+      argumentsAccumulated: '',
+    });
+    return {
+      type: 'function_call' as const,
+      id: item.id,
+      callId: item.callId,
+      name: item.name,
+      arguments: '',
+      status: 'in_progress' as const,
+    };
+  }
+
+  if (isReasoningOutputItem(item)) {
+    itemsInProgress.set(item.id, {
+      type: 'reasoning',
+      id: item.id,
+      reasoningContent: '',
+    });
+    return {
+      type: 'reasoning' as const,
+      id: item.id,
+      status: 'in_progress' as const,
+      summary: [],
+    };
+  }
+
+  if (isWebSearchCallOutputItem(item)) {
+    return item;
+  }
+
+  if (isFileSearchCallOutputItem(item)) {
+    return item;
+  }
+
+  if (isImageGenerationCallOutputItem(item)) {
+    return item;
+  }
+
+  return undefined;
+}
+
+/**
+ * Handle text delta event for messages
+ */
+function handleTextDelta(
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+): StreamableOutputItem | undefined {
+  if (!isOutputTextDeltaEvent(event) || !event.delta) {
+    return undefined;
+  }
+
+  const item = itemsInProgress.get(event.itemId);
+  if (item?.type === 'message') {
+    item.textContent += event.delta;
+    return {
+      id: item.id,
+      type: 'message' as const,
+      role: 'assistant' as const,
+      status: 'in_progress' as const,
+      content: [
+        {
+          type: 'output_text' as const,
+          text: item.textContent,
+          annotations: [],
+        },
+      ],
+    };
+  }
+
+  return undefined;
+}
+
+/**
+ * Handle function call argument delta event
+ */
+function handleFunctionCallDelta(
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+): StreamableOutputItem | undefined {
+  if (!isFunctionCallArgumentsDeltaEvent(event) || !event.delta) {
+    return undefined;
+  }
+
+  const item = itemsInProgress.get(event.itemId);
+  if (item?.type === 'function_call') {
+    item.argumentsAccumulated += event.delta;
+    return {
+      type: 'function_call' as const,
+      // Include id if it differs from callId (means API provided an id)
+      id: item.id !== item.callId ? item.id : undefined,
+      callId: item.callId,
+      name: item.name,
+      arguments: item.argumentsAccumulated,
+      status: 'in_progress' as const,
+    };
+  }
+
+  return undefined;
+}
+
+/**
+ * Handle reasoning text delta event
+ */
+function handleReasoningDelta(
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+): StreamableOutputItem | undefined {
+  if (!isReasoningDeltaEvent(event) || !event.delta) {
+    return undefined;
+  }
+
+  const item = itemsInProgress.get(event.itemId);
+  if (item?.type === 'reasoning') {
+    item.reasoningContent += event.delta;
+    return {
+      type: 'reasoning' as const,
+      id: item.id,
+      status: 'in_progress' as const,
+      summary: [
+        {
+          type: 'summary_text' as const,
+          text: item.reasoningContent,
+        },
+      ],
+    };
+  }
+
+  return undefined;
+}
+
+/**
+ * Handle output_item.done event - Yield final complete item
+ */
+function handleOutputItemDone(
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+): StreamableOutputItem | undefined {
+  if (!isOutputItemDoneEvent(event) || !event.item) {
+    return undefined;
+  }
+
+  const item = event.item;
+
+  if (isOutputMessage(item)) {
+    itemsInProgress.delete(item.id);
+    return item;
+  }
+
+  if (isFunctionCallOutputItem(item)) {
+    // Use item.id if available (matches itemId in delta events), fall back to callId
+    itemsInProgress.delete(item.id ?? item.callId);
+    return item;
+  }
+
+  if (isReasoningOutputItem(item)) {
+    itemsInProgress.delete(item.id);
+    return item;
+  }
+
+  if (isWebSearchCallOutputItem(item)) {
+    return item;
+  }
+
+  if (isFileSearchCallOutputItem(item)) {
+    return item;
+  }
+
+  if (isImageGenerationCallOutputItem(item)) {
+    return item;
+  }
+
+  return undefined;
+}
+
+type ItemsStreamHandler = (
+  event: models.OpenResponsesStreamEvent,
+  itemsInProgress: Map<string, ItemInProgress>,
+) => StreamableOutputItem | undefined;
+
+const itemsStreamHandlers: Record<string, ItemsStreamHandler> = {
+  'response.output_item.added': handleOutputItemAdded,
+  'response.output_text.delta': handleTextDelta,
+  'response.function_call_arguments.delta': handleFunctionCallDelta,
+  'response.reasoning_text.delta': handleReasoningDelta,
+  'response.output_item.done': handleOutputItemDone,
+};
+
+const streamTerminationEvents = new Set([
+  'response.completed',
+  'response.failed',
+  'response.incomplete',
+]);
+
+//#endregion
+
+/**
+ * Build incremental output item updates from responses stream events.
+ * Yields all item types cumulatively - same item may be emitted multiple times
+ * with the same ID but progressively updated content as streaming progresses.
+ */
+export async function* buildItemsStream(
+  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+): AsyncIterableIterator<StreamableOutputItem> {
+  const consumer = stream.createConsumer();
+  const itemsInProgress = new Map<string, ItemInProgress>();
+
+  for await (const event of consumer) {
+    if (!('type' in event)) {
+      continue;
+    }
+
+    if (streamTerminationEvents.has(event.type)) {
+      return;
+    }
+
+    const handler = itemsStreamHandlers[event.type];
+    if (handler) {
+      const result = handler(event, itemsInProgress);
+      if (result) {
+        yield result;
+      }
+    }
+  }
+}
+
+/**
  * Build incremental message updates from responses stream events
  * Returns AssistantMessage (chat format) instead of ResponsesOutputMessage
  */

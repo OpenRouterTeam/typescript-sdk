@@ -1,20 +1,20 @@
-# CompletionCreateParamsResponseFormatUnion
+# ResponseFormat
 
 
 ## Supported Types
 
-### `models.CompletionCreateParamsResponseFormatText`
+### `models.ResponseFormatText`
 
 ```typescript
-const value: models.CompletionCreateParamsResponseFormatText = {
+const value: models.ResponseFormatText = {
   type: "text",
 };
 ```
 
-### `models.CompletionCreateParamsResponseFormatJSONObject`
+### `models.ResponseFormatJSONObject`
 
 ```typescript
-const value: models.CompletionCreateParamsResponseFormatJSONObject = {
+const value: models.ResponseFormatJSONObject = {
   type: "json_object",
 };
 ```
@@ -39,10 +39,10 @@ const value: models.ResponseFormatTextGrammar = {
 };
 ```
 
-### `models.CompletionCreateParamsResponseFormatPython`
+### `models.ResponseFormatPython`
 
 ```typescript
-const value: models.CompletionCreateParamsResponseFormatPython = {
+const value: models.ResponseFormatPython = {
   type: "python",
 };
 ```

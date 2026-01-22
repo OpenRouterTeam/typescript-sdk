@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: OpenRouter API
   version: 1.0.0
-  description: OpenAI-compatible Chat Completions and Completions API with additional OpenRouter features
+  description: OpenAI-compatible API with additional OpenRouter features
   contact:
     name: OpenRouter Support
     url: https://openrouter.ai/docs
@@ -9341,263 +9341,6 @@ components:
       required:
         - data
       additionalProperties: false
-    CompletionFinishReason:
-      anyOf:
-        - type: string
-          enum:
-            - stop
-            - length
-            - content_filter
-        - type: 'null'
-    CompletionLogprobs:
-      type: object
-      properties:
-        tokens:
-          type: array
-          items:
-            type: string
-        token_logprobs:
-          type: array
-          items:
-            type: number
-        top_logprobs:
-          anyOf:
-            - type: array
-              items:
-                type: object
-                propertyNames:
-                  type: string
-                additionalProperties:
-                  type: number
-            - type: 'null'
-        text_offset:
-          type: array
-          items:
-            type: number
-      required:
-        - tokens
-        - token_logprobs
-        - top_logprobs
-        - text_offset
-    CompletionUsage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: number
-        completion_tokens:
-          type: number
-        total_tokens:
-          type: number
-      required:
-        - prompt_tokens
-        - completion_tokens
-        - total_tokens
-    CompletionCreateParams:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ModelName'
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelName'
-        prompt:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                type: string
-            - type: array
-              items:
-                type: number
-            - type: array
-              items:
-                type: array
-                items:
-                  type: number
-        best_of:
-          anyOf:
-            - type: integer
-              minimum: 1
-              maximum: 20
-            - type: 'null'
-        echo:
-          anyOf:
-            - type: boolean
-            - type: 'null'
-        frequency_penalty:
-          anyOf:
-            - type: number
-              minimum: -2
-              maximum: 2
-            - type: 'null'
-        logit_bias:
-          anyOf:
-            - type: object
-              propertyNames:
-                type: string
-              additionalProperties:
-                type: number
-            - type: 'null'
-        logprobs:
-          anyOf:
-            - type: integer
-              minimum: 0
-              maximum: 5
-            - type: 'null'
-        max_tokens:
-          anyOf:
-            - type: integer
-              minimum: 1
-              maximum: 9007199254740991
-            - type: 'null'
-        'n':
-          anyOf:
-            - type: integer
-              minimum: 1
-              maximum: 128
-            - type: 'null'
-        presence_penalty:
-          anyOf:
-            - type: number
-              minimum: -2
-              maximum: 2
-            - type: 'null'
-        seed:
-          anyOf:
-            - type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-            - type: 'null'
-        stop:
-          anyOf:
-            - anyOf:
-                - type: string
-                - type: array
-                  items:
-                    type: string
-            - type: 'null'
-        stream:
-          default: false
-          type: boolean
-        stream_options:
-          anyOf:
-            - type: object
-              properties:
-                include_usage:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-            - type: 'null'
-        suffix:
-          anyOf:
-            - type: string
-            - type: 'null'
-        temperature:
-          anyOf:
-            - type: number
-              minimum: 0
-              maximum: 2
-            - type: 'null'
-        top_p:
-          anyOf:
-            - type: number
-              minimum: 0
-              maximum: 1
-            - type: 'null'
-        user:
-          type: string
-        metadata:
-          anyOf:
-            - type: object
-              propertyNames:
-                type: string
-              additionalProperties:
-                type: string
-            - type: 'null'
-        response_format:
-          anyOf:
-            - oneOf:
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      const: text
-                  required:
-                    - type
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      const: json_object
-                  required:
-                    - type
-                - $ref: '#/components/schemas/ResponseFormatJSONSchema'
-                - $ref: '#/components/schemas/ResponseFormatTextGrammar'
-                - type: object
-                  properties:
-                    type:
-                      type: string
-                      const: python
-                  required:
-                    - type
-              type: object
-            - type: 'null'
-      required:
-        - prompt
-    CompletionChoice:
-      type: object
-      properties:
-        text:
-          type: string
-        index:
-          type: number
-        logprobs:
-          anyOf:
-            - $ref: '#/components/schemas/CompletionLogprobs'
-            - type: 'null'
-        finish_reason:
-          $ref: '#/components/schemas/CompletionFinishReason'
-        native_finish_reason:
-          type: string
-        reasoning:
-          anyOf:
-            - type: string
-            - type: 'null'
-      required:
-        - text
-        - index
-        - logprobs
-        - finish_reason
-    CompletionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          const: text_completion
-        created:
-          type: number
-        model:
-          type: string
-        provider:
-          type: string
-        system_fingerprint:
-          type: string
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompletionChoice'
-        usage:
-          $ref: '#/components/schemas/CompletionUsage'
-      required:
-        - id
-        - object
-        - created
-        - model
-        - choices
-      additionalProperties: false
   parameters: {}
   securitySchemes:
     apiKey:
@@ -10790,7 +10533,13 @@ paths:
       tags:
         - Models
       x-speakeasy-name-override: listForUser
-      summary: List models filtered by user provider preferences
+      description: >-
+        List models filtered by user provider preferences, [privacy
+        settings](https://openrouter.ai/docs/guides/privacy/logging), and
+        [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through
+        `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region
+        routing](https://openrouter.ai/docs/guides/privacy/logging#enterprise-eu-in-region-routing).
+      summary: List models filtered by user provider preferences, privacy settings, and guardrails
       security:
         - bearer: []
       responses:
@@ -10806,6 +10555,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
+        '404':
+          description: Not Found - No eligible endpoints found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
         '500':
           description: Internal Server Error
           content:
@@ -13812,55 +13567,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatError'
-  /completions:
-    post:
-      summary: Create a completion
-      x-speakeasy-group: completions
-      x-speakeasy-name-override: generate
-      x-speakeasy-stream-request-field: stream
-      description: Creates a completion for the provided prompt and parameters. Supports both streaming and non-streaming modes.
-      tags:
-        - Completions
-      requestBody:
-        required: true
-        description: Completion request parameters
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompletionCreateParams'
-      responses:
-        '200':
-          description: Successful completion response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CompletionResponse'
-                description: Completion response
-        '400':
-          description: Bad request - invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '401':
-          description: Unauthorized - invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '429':
-          description: Too many requests - rate limit exceeded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-      operationId: createCompletions
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server
@@ -13877,8 +13583,6 @@ tags:
     description: Analytics and usage endpoints
   - name: Chat
     description: Chat completion endpoints
-  - name: Completions
-    description: Text completion endpoints
   - name: Credits
     description: Credit management endpoints
   - name: Embeddings

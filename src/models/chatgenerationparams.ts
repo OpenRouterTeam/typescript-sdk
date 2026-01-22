@@ -241,26 +241,26 @@ export type Reasoning = {
   summary?: ReasoningSummaryVerbosity | null | undefined;
 };
 
-export type ChatGenerationParamsResponseFormatPython = {
+export type ResponseFormatPython = {
   type: "python";
 };
 
-export type ChatGenerationParamsResponseFormatJSONObject = {
+export type ResponseFormatJSONObject = {
   type: "json_object";
 };
 
-export type ChatGenerationParamsResponseFormatText = {
+export type ResponseFormatText = {
   type: "text";
 };
 
-export type ChatGenerationParamsResponseFormatUnion =
-  | ChatGenerationParamsResponseFormatText
-  | ChatGenerationParamsResponseFormatJSONObject
+export type ResponseFormat =
+  | ResponseFormatText
+  | ResponseFormatJSONObject
   | ResponseFormatJSONSchema
   | ResponseFormatTextGrammar
-  | ChatGenerationParamsResponseFormatPython;
+  | ResponseFormatPython;
 
-export type ChatGenerationParamsStop = string | Array<string>;
+export type Stop = string | Array<string>;
 
 export type Debug = {
   echoUpstreamBody?: boolean | undefined;
@@ -310,11 +310,11 @@ export type ChatGenerationParams = {
   presencePenalty?: number | null | undefined;
   reasoning?: Reasoning | undefined;
   responseFormat?:
-    | ChatGenerationParamsResponseFormatText
-    | ChatGenerationParamsResponseFormatJSONObject
+    | ResponseFormatText
+    | ResponseFormatJSONObject
     | ResponseFormatJSONSchema
     | ResponseFormatTextGrammar
-    | ChatGenerationParamsResponseFormatPython
+    | ResponseFormatPython
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -784,124 +784,103 @@ export function reasoningToJSON(reasoning: Reasoning): string {
 }
 
 /** @internal */
-export type ChatGenerationParamsResponseFormatPython$Outbound = {
+export type ResponseFormatPython$Outbound = {
   type: "python";
 };
 
 /** @internal */
-export const ChatGenerationParamsResponseFormatPython$outboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatPython$Outbound,
-  ChatGenerationParamsResponseFormatPython
+export const ResponseFormatPython$outboundSchema: z.ZodType<
+  ResponseFormatPython$Outbound,
+  ResponseFormatPython
 > = z.object({
   type: z.literal("python"),
 });
 
-export function chatGenerationParamsResponseFormatPythonToJSON(
-  chatGenerationParamsResponseFormatPython:
-    ChatGenerationParamsResponseFormatPython,
+export function responseFormatPythonToJSON(
+  responseFormatPython: ResponseFormatPython,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsResponseFormatPython$outboundSchema.parse(
-      chatGenerationParamsResponseFormatPython,
-    ),
+    ResponseFormatPython$outboundSchema.parse(responseFormatPython),
   );
 }
 
 /** @internal */
-export type ChatGenerationParamsResponseFormatJSONObject$Outbound = {
+export type ResponseFormatJSONObject$Outbound = {
   type: "json_object";
 };
 
 /** @internal */
-export const ChatGenerationParamsResponseFormatJSONObject$outboundSchema:
-  z.ZodType<
-    ChatGenerationParamsResponseFormatJSONObject$Outbound,
-    ChatGenerationParamsResponseFormatJSONObject
-  > = z.object({
-    type: z.literal("json_object"),
-  });
+export const ResponseFormatJSONObject$outboundSchema: z.ZodType<
+  ResponseFormatJSONObject$Outbound,
+  ResponseFormatJSONObject
+> = z.object({
+  type: z.literal("json_object"),
+});
 
-export function chatGenerationParamsResponseFormatJSONObjectToJSON(
-  chatGenerationParamsResponseFormatJSONObject:
-    ChatGenerationParamsResponseFormatJSONObject,
+export function responseFormatJSONObjectToJSON(
+  responseFormatJSONObject: ResponseFormatJSONObject,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsResponseFormatJSONObject$outboundSchema.parse(
-      chatGenerationParamsResponseFormatJSONObject,
-    ),
+    ResponseFormatJSONObject$outboundSchema.parse(responseFormatJSONObject),
   );
 }
 
 /** @internal */
-export type ChatGenerationParamsResponseFormatText$Outbound = {
+export type ResponseFormatText$Outbound = {
   type: "text";
 };
 
 /** @internal */
-export const ChatGenerationParamsResponseFormatText$outboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatText$Outbound,
-  ChatGenerationParamsResponseFormatText
+export const ResponseFormatText$outboundSchema: z.ZodType<
+  ResponseFormatText$Outbound,
+  ResponseFormatText
 > = z.object({
   type: z.literal("text"),
 });
 
-export function chatGenerationParamsResponseFormatTextToJSON(
-  chatGenerationParamsResponseFormatText:
-    ChatGenerationParamsResponseFormatText,
+export function responseFormatTextToJSON(
+  responseFormatText: ResponseFormatText,
 ): string {
   return JSON.stringify(
-    ChatGenerationParamsResponseFormatText$outboundSchema.parse(
-      chatGenerationParamsResponseFormatText,
-    ),
+    ResponseFormatText$outboundSchema.parse(responseFormatText),
   );
 }
 
 /** @internal */
-export type ChatGenerationParamsResponseFormatUnion$Outbound =
-  | ChatGenerationParamsResponseFormatText$Outbound
-  | ChatGenerationParamsResponseFormatJSONObject$Outbound
+export type ResponseFormat$Outbound =
+  | ResponseFormatText$Outbound
+  | ResponseFormatJSONObject$Outbound
   | ResponseFormatJSONSchema$Outbound
   | ResponseFormatTextGrammar$Outbound
-  | ChatGenerationParamsResponseFormatPython$Outbound;
+  | ResponseFormatPython$Outbound;
 
 /** @internal */
-export const ChatGenerationParamsResponseFormatUnion$outboundSchema: z.ZodType<
-  ChatGenerationParamsResponseFormatUnion$Outbound,
-  ChatGenerationParamsResponseFormatUnion
+export const ResponseFormat$outboundSchema: z.ZodType<
+  ResponseFormat$Outbound,
+  ResponseFormat
 > = z.union([
-  z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
-  z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+  z.lazy(() => ResponseFormatText$outboundSchema),
+  z.lazy(() => ResponseFormatJSONObject$outboundSchema),
   ResponseFormatJSONSchema$outboundSchema,
   ResponseFormatTextGrammar$outboundSchema,
-  z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
+  z.lazy(() => ResponseFormatPython$outboundSchema),
 ]);
 
-export function chatGenerationParamsResponseFormatUnionToJSON(
-  chatGenerationParamsResponseFormatUnion:
-    ChatGenerationParamsResponseFormatUnion,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsResponseFormatUnion$outboundSchema.parse(
-      chatGenerationParamsResponseFormatUnion,
-    ),
-  );
+export function responseFormatToJSON(responseFormat: ResponseFormat): string {
+  return JSON.stringify(ResponseFormat$outboundSchema.parse(responseFormat));
 }
 
 /** @internal */
-export type ChatGenerationParamsStop$Outbound = string | Array<string>;
+export type Stop$Outbound = string | Array<string>;
 
 /** @internal */
-export const ChatGenerationParamsStop$outboundSchema: z.ZodType<
-  ChatGenerationParamsStop$Outbound,
-  ChatGenerationParamsStop
-> = z.union([z.string(), z.array(z.string())]);
+export const Stop$outboundSchema: z.ZodType<Stop$Outbound, Stop> = z.union([
+  z.string(),
+  z.array(z.string()),
+]);
 
-export function chatGenerationParamsStopToJSON(
-  chatGenerationParamsStop: ChatGenerationParamsStop,
-): string {
-  return JSON.stringify(
-    ChatGenerationParamsStop$outboundSchema.parse(chatGenerationParamsStop),
-  );
+export function stopToJSON(stop: Stop): string {
+  return JSON.stringify(Stop$outboundSchema.parse(stop));
 }
 
 /** @internal */
@@ -973,11 +952,11 @@ export type ChatGenerationParams$Outbound = {
   presence_penalty?: number | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
-    | ChatGenerationParamsResponseFormatText$Outbound
-    | ChatGenerationParamsResponseFormatJSONObject$Outbound
+    | ResponseFormatText$Outbound
+    | ResponseFormatJSONObject$Outbound
     | ResponseFormatJSONSchema$Outbound
     | ResponseFormatTextGrammar$Outbound
-    | ChatGenerationParamsResponseFormatPython$Outbound
+    | ResponseFormatPython$Outbound
     | undefined;
   seed?: number | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -1025,11 +1004,11 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   presencePenalty: z.nullable(z.number()).optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
-    z.lazy(() => ChatGenerationParamsResponseFormatText$outboundSchema),
-    z.lazy(() => ChatGenerationParamsResponseFormatJSONObject$outboundSchema),
+    z.lazy(() => ResponseFormatText$outboundSchema),
+    z.lazy(() => ResponseFormatJSONObject$outboundSchema),
     ResponseFormatJSONSchema$outboundSchema,
     ResponseFormatTextGrammar$outboundSchema,
-    z.lazy(() => ChatGenerationParamsResponseFormatPython$outboundSchema),
+    z.lazy(() => ResponseFormatPython$outboundSchema),
   ]).optional(),
   seed: z.nullable(z.int()).optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string())])).optional(),
