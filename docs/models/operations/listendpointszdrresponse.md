@@ -11,6 +11,7 @@ let value: ListEndpointsZdrResponse = {
   data: [
     {
       name: "OpenAI: GPT-4",
+      modelId: "openai/gpt-4",
       modelName: "GPT-4",
       contextLength: 8192,
       pricing: {

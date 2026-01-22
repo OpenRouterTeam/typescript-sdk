@@ -120,6 +120,15 @@ export function validateToolOutput<T>(schema: $ZodType<T>, result: unknown): T {
 }
 
 /**
+ * Try to validate a value against a Zod schema without throwing
+ * @returns true if validation succeeds, false otherwise
+ */
+function tryValidate(schema: $ZodType, value: unknown): boolean {
+  const result = z4.safeParse(schema, value);
+  return result.success;
+}
+
+/**
  * Parse tool call arguments from JSON string
  */
 export function parseToolCallArguments(argumentsString: string): unknown {
@@ -209,23 +218,36 @@ export async function executeGeneratorTool(
       toolCall.arguments,
     );
 
-    // Execute generator and collect all results
+    // Stream preliminary results in realtime
+    // Final result is identified by: matches outputSchema BUT NOT eventSchema
+    // All other yields are preliminary results (validated against eventSchema)
+    // If no explicit final result is found, the last emitted value is used as the final result
     const preliminaryResults: unknown[] = [];
-    let lastEmittedValue: unknown = null;
+    let finalResult: unknown = undefined;
+    let hasFinalResult = false;
+    let lastEmittedValue: unknown = undefined;
     let hasEmittedValue = false;
 
     for await (const event of tool.function.execute(validatedInput, context)) {
+      lastEmittedValue = event;
       hasEmittedValue = true;
 
-      // Validate event against eventSchema
-      const validatedEvent = validateToolOutput(tool.function.eventSchema, event);
+      // Try to determine if this is the final result:
+      // It must match outputSchema but NOT match eventSchema
+      const matchesOutputSchema = tryValidate(tool.function.outputSchema, event);
+      const matchesEventSchema = tryValidate(tool.function.eventSchema, event);
 
-      preliminaryResults.push(validatedEvent);
-      lastEmittedValue = validatedEvent;
-
-      // Emit preliminary result via callback
-      if (onPreliminaryResult) {
-        onPreliminaryResult(toolCall.id, validatedEvent);
+      if (matchesOutputSchema && !matchesEventSchema && !hasFinalResult) {
+        // This is the final result - matches output but not event schema
+        finalResult = validateToolOutput(tool.function.outputSchema, event);
+        hasFinalResult = true;
+      } else {
+        // This is a preliminary result - validate against eventSchema and emit in realtime
+        const validatedPreliminary = validateToolOutput(tool.function.eventSchema, event);
+        preliminaryResults.push(validatedPreliminary);
+        if (onPreliminaryResult) {
+          onPreliminaryResult(toolCall.id, validatedPreliminary);
+        }
       }
     }
 
@@ -234,11 +256,11 @@ export async function executeGeneratorTool(
       throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
     }
 
-    // Validate the last emitted value against outputSchema (this is the final result)
-    const finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
-
-    // Remove last item from preliminaryResults since it's the final output
-    preliminaryResults.pop();
+    // If no explicit final result was found (no yield matched outputSchema but not eventSchema),
+    // use the last emitted value as the final result
+    if (!hasFinalResult) {
+      finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
+    }
 
     return {
       toolCallId: toolCall.id,

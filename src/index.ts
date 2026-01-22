@@ -21,6 +21,7 @@ export type {
   InferToolEventsUnion,
   InferToolInput,
   InferToolOutput,
+  InferToolOutputsUnion,
   ManualTool,
   NextTurnParamsContext,
   NextTurnParamsFunctions,
@@ -36,6 +37,7 @@ export type {
   ToolExecutionResultUnion,
   ToolHasApproval,
   ToolPreliminaryResultEvent,
+  ToolResultEvent,
   ToolStreamEvent,
   ToolWithExecute,
   ToolWithGenerator,
@@ -115,6 +117,7 @@ export {
   isGeneratorTool,
   isRegularExecuteTool,
   isToolPreliminaryResultEvent,
+  isToolResultEvent,
   toolHasApprovalConfigured,
   ToolType,
 } from './lib/tool-types.js';

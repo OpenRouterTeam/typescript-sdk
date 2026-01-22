@@ -7,6 +7,7 @@ import type {
   ConversationState,
   ResponseStreamEvent,
   InferToolEventsUnion,
+  InferToolOutputsUnion,
   ParsedToolCall,
   StateAccessor,
   StopWhen,
@@ -141,11 +142,19 @@ export class ModelResult<TTools extends readonly Tool[]> {
   private initPromise: Promise<void> | null = null;
   private toolExecutionPromise: Promise<void> | null = null;
   private finalResponse: models.OpenResponsesNonStreamingResponse | null = null;
-  private toolEventBroadcaster: ToolEventBroadcaster<{
-    type: 'preliminary_result';
-    toolCallId: string;
-    result: InferToolEventsUnion<TTools>;
-  }> | null = null;
+  private toolEventBroadcaster: ToolEventBroadcaster<
+    | {
+        type: 'preliminary_result';
+        toolCallId: string;
+        result: InferToolEventsUnion<TTools>;
+      }
+    | {
+        type: 'tool_result';
+        toolCallId: string;
+        result: InferToolOutputsUnion<TTools>;
+        preliminaryResults?: InferToolEventsUnion<TTools>[];
+      }
+  > | null = null;
   private allToolExecutionRounds: Array<{
     round: number;
     toolCalls: ParsedToolCall<Tool>[];
@@ -188,12 +197,21 @@ export class ModelResult<TTools extends readonly Tool[]> {
   /**
    * Get or create the tool event broadcaster (lazy initialization).
    * Ensures only one broadcaster exists for the lifetime of this ModelResult.
+   * Broadcasts both preliminary results and final tool results.
    */
-  private ensureBroadcaster(): ToolEventBroadcaster<{
-    type: 'preliminary_result';
-    toolCallId: string;
-    result: InferToolEventsUnion<TTools>;
-  }> {
+  private ensureBroadcaster(): ToolEventBroadcaster<
+    | {
+        type: 'preliminary_result';
+        toolCallId: string;
+        result: InferToolEventsUnion<TTools>;
+      }
+    | {
+        type: 'tool_result';
+        toolCallId: string;
+        result: InferToolOutputsUnion<TTools>;
+        preliminaryResults?: InferToolEventsUnion<TTools>[];
+      }
+  > {
     if (!this.toolEventBroadcaster) {
       this.toolEventBroadcaster = new ToolEventBroadcaster();
     }
@@ -448,6 +466,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
   /**
    * Execute all tools in a single round.
    * Runs each tool call sequentially and collects results for API submission.
+   * Emits tool.result events after each tool execution completes.
    *
    * @param toolCalls - The tool calls to execute
    * @param turnContext - The current turn context
@@ -463,18 +482,36 @@ export class ModelResult<TTools extends readonly Tool[]> {
       const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
       if (!tool || !hasExecuteFunction(tool)) continue;
 
+      // Track preliminary results for this specific tool call
+      const preliminaryResultsForCall: InferToolEventsUnion<TTools>[] = [];
+
       // Create callback for real-time preliminary results
       const onPreliminaryResult = this.toolEventBroadcaster
         ? (callId: string, resultValue: unknown) => {
+            // Track preliminary results for the tool.result event
+            const typedResult = resultValue as InferToolEventsUnion<TTools>;
+            preliminaryResultsForCall.push(typedResult);
+            // Emit preliminary result event
             this.toolEventBroadcaster?.push({
               type: 'preliminary_result' as const,
               toolCallId: callId,
-              result: resultValue as InferToolEventsUnion<TTools>,
+              result: typedResult,
             });
           }
         : undefined;
 
       const result = await executeTool(tool, toolCall, turnContext, onPreliminaryResult);
+
+      // Emit tool.result event with final result and any preliminary results
+      if (this.toolEventBroadcaster) {
+        const toolResultEvent = {
+          type: 'tool_result' as const,
+          toolCallId: toolCall.id,
+          result: (result.error ? { error: result.error.message } : result.result) as InferToolOutputsUnion<TTools>,
+          ...(preliminaryResultsForCall.length > 0 && { preliminaryResults: preliminaryResultsForCall }),
+        };
+        this.toolEventBroadcaster.push(toolResultEvent);
+      }
 
       toolResults.push({
         type: 'function_call_output' as const,
@@ -1059,9 +1096,9 @@ export class ModelResult<TTools extends readonly Tool[]> {
   /**
    * Stream all response events as they arrive.
    * Multiple consumers can iterate over this stream concurrently.
-   * Preliminary tool results are streamed in REAL-TIME as generator tools yield.
+   * Preliminary tool results and tool results are streamed in REAL-TIME as generator tools yield.
    */
-  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools>>> {
+  getFullResponsesStream(): AsyncIterableIterator<ResponseStreamEvent<InferToolEventsUnion<TTools>, InferToolOutputsUnion<TTools>>> {
     return async function* (this: ModelResult<TTools>) {
       await this.initStream();
       if (!this.reusableStream) {
@@ -1084,14 +1121,24 @@ export class ModelResult<TTools extends readonly Tool[]> {
         yield event;
       }
 
-      // Yield tool preliminary results as they arrive (real-time!)
+      // Yield tool events as they arrive (real-time!)
       for await (const event of toolEventConsumer) {
-        yield {
-          type: 'tool.preliminary_result' as const,
-          toolCallId: event.toolCallId,
-          result: event.result,
-          timestamp: Date.now(),
-        };
+        if (event.type === 'preliminary_result') {
+          yield {
+            type: 'tool.preliminary_result' as const,
+            toolCallId: event.toolCallId,
+            result: event.result,
+            timestamp: Date.now(),
+          };
+        } else if (event.type === 'tool_result') {
+          yield {
+            type: 'tool.result' as const,
+            toolCallId: event.toolCallId,
+            result: event.result,
+            timestamp: Date.now(),
+            ...(event.preliminaryResults && { preliminaryResults: event.preliminaryResults }),
+          };
+        }
       }
 
       // Ensure execution completed (handles errors)
@@ -1201,9 +1248,11 @@ export class ModelResult<TTools extends readonly Tool[]> {
         };
       }
 
-      // Yield tool events as they arrive (real-time!)
+      // Yield only preliminary_result events (filter out tool_result events)
       for await (const event of toolEventConsumer) {
-        yield event;
+        if (event.type === 'preliminary_result') {
+          yield event;
+        }
       }
 
       // Ensure execution completed (handles errors)
