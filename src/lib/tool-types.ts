@@ -224,6 +224,14 @@ export type ToolExecutionResultUnion<T extends readonly Tool[]> = {
 }[number];
 
 /**
+ * Union of output types for all tools in a tuple
+ * Used for typing tool result events
+ */
+export type InferToolOutputsUnion<T extends readonly Tool[]> = {
+  [K in keyof T]: T[K] extends Tool ? InferToolOutput<T[K]> : never;
+}[number];
+
+/**
  * Extracts the event type from a generator tool definition
  * Returns `never` for non-generator tools
  */
@@ -379,13 +387,29 @@ export type ToolPreliminaryResultEvent<TEvent = unknown> = {
 };
 
 /**
- * Enhanced stream event types for getFullResponsesStream
- * Extends OpenResponsesStreamEvent with tool preliminary results
- * @template TEvent - The event type from generator tools
+ * Tool result event emitted when a tool execution completes
+ * Contains the final result and any preliminary results that were emitted
+ * @template TResult - The result type from the tool's outputSchema
+ * @template TPreliminaryResults - The event type from generator tools' eventSchema
  */
-export type ResponseStreamEvent<TEvent = unknown> =
+export type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = {
+  type: 'tool.result';
+  toolCallId: string;
+  result: TResult;
+  timestamp: number;
+  preliminaryResults?: TPreliminaryResults[];
+};
+
+/**
+ * Enhanced stream event types for getFullResponsesStream
+ * Extends OpenResponsesStreamEvent with tool preliminary results and tool results
+ * @template TEvent - The event type from generator tools
+ * @template TResult - The result type from tool execution
+ */
+export type ResponseStreamEvent<TEvent = unknown, TResult = unknown> =
   | OpenResponsesStreamEvent
-  | ToolPreliminaryResultEvent<TEvent>;
+  | ToolPreliminaryResultEvent<TEvent>
+  | ToolResultEvent<TResult, TEvent>;
 
 /**
  * Type guard to check if an event is a tool preliminary result event
@@ -394,6 +418,15 @@ export function isToolPreliminaryResultEvent<TEvent = unknown>(
   event: ResponseStreamEvent<TEvent>,
 ): event is ToolPreliminaryResultEvent<TEvent> {
   return event.type === 'tool.preliminary_result';
+}
+
+/**
+ * Type guard to check if an event is a tool result event
+ */
+export function isToolResultEvent<TResult = unknown, TPreliminaryResults = unknown>(
+  event: ResponseStreamEvent<TPreliminaryResults, TResult>,
+): event is ToolResultEvent<TResult, TPreliminaryResults> {
+  return event.type === 'tool.result';
 }
 
 /**

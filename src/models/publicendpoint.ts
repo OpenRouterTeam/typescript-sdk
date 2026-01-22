@@ -53,6 +53,10 @@ export type Pricing = {
   /**
    * A value in string format that is a large number
    */
+  audioOutput?: string | undefined;
+  /**
+   * A value in string format that is a large number
+   */
   inputAudioCache?: string | undefined;
   /**
    * A value in string format that is a large number
@@ -93,6 +97,10 @@ export type PublicEndpointQuantization = OpenEnum<
  */
 export type PublicEndpoint = {
   name: string;
+  /**
+   * The unique identifier for the model (permaslug)
+   */
+  modelId: string;
   modelName: string;
   contextLength: number;
   pricing: Pricing;
@@ -121,6 +129,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   image_token: z.string().optional(),
   image_output: z.string().optional(),
   audio: z.string().optional(),
+  audio_output: z.string().optional(),
   input_audio_cache: z.string().optional(),
   web_search: z.string().optional(),
   internal_reasoning: z.string().optional(),
@@ -131,6 +140,7 @@ export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
   return remap$(v, {
     "image_token": "imageToken",
     "image_output": "imageOutput",
+    "audio_output": "audioOutput",
     "input_audio_cache": "inputAudioCache",
     "web_search": "webSearch",
     "internal_reasoning": "internalReasoning",
@@ -159,6 +169,7 @@ export const PublicEndpointQuantization$inboundSchema: z.ZodType<
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
     name: z.string(),
+    model_id: z.string(),
     model_name: z.string(),
     context_length: z.number(),
     pricing: z.lazy(() => Pricing$inboundSchema),
@@ -175,6 +186,7 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
+      "model_id": "modelId",
       "model_name": "modelName",
       "context_length": "contextLength",
       "provider_name": "providerName",

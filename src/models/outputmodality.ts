@@ -11,6 +11,7 @@ export const OutputModality = {
   Text: "text",
   Image: "image",
   Embeddings: "embeddings",
+  Audio: "audio",
 } as const;
 export type OutputModality = OpenEnum<typeof OutputModality>;
 

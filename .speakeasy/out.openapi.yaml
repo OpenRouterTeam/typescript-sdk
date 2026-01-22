@@ -4105,6 +4105,3077 @@ components:
               properties:
                 location:
                   type: string
+    BaseAnthropicMessagesResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - text
+                  text:
+                    type: string
+                  citations:
+                    type: array
+                    nullable: true
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - char_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_char_index:
+                              type: number
+                            end_char_index:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_char_index
+                            - end_char_index
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - page_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_page_number:
+                              type: number
+                            end_page_number:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_page_number
+                            - end_page_number
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - content_block_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_block_index
+                            - end_block_index
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_result_location
+                            cited_text:
+                              type: string
+                            encrypted_index:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            url:
+                              type: string
+                          required:
+                            - type
+                            - cited_text
+                            - encrypted_index
+                            - title
+                            - url
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - search_result_location
+                            cited_text:
+                              type: string
+                            search_result_index:
+                              type: number
+                            source:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - search_result_index
+                            - source
+                            - title
+                            - start_block_index
+                            - end_block_index
+                required:
+                  - type
+                  - text
+                  - citations
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tool_use
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  input:
+                    nullable: true
+                required:
+                  - type
+                  - id
+                  - name
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - thinking
+                  thinking:
+                    type: string
+                  signature:
+                    type: string
+                required:
+                  - type
+                  - thinking
+                  - signature
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - redacted_thinking
+                  data:
+                    type: string
+                required:
+                  - type
+                  - data
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - server_tool_use
+                  id:
+                    type: string
+                  name:
+                    type: string
+                    enum:
+                      - web_search
+                  input:
+                    nullable: true
+                required:
+                  - type
+                  - id
+                  - name
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - web_search_tool_result
+                  tool_use_id:
+                    type: string
+                  content:
+                    anyOf:
+                      - type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_result
+                            encrypted_content:
+                              type: string
+                            page_age:
+                              type: string
+                              nullable: true
+                            title:
+                              type: string
+                            url:
+                              type: string
+                          required:
+                            - type
+                            - encrypted_content
+                            - page_age
+                            - title
+                            - url
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search_tool_result_error
+                          error_code:
+                            type: string
+                            enum:
+                              - invalid_tool_input
+                              - unavailable
+                              - max_uses_exceeded
+                              - too_many_requests
+                              - query_too_long
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                          - error_code
+                required:
+                  - type
+                  - tool_use_id
+                  - content
+        model:
+          type: string
+        stop_reason:
+          type: string
+          nullable: true
+          enum:
+            - end_turn
+            - max_tokens
+            - stop_sequence
+            - tool_use
+            - pause_turn
+            - refusal
+            - model_context_window_exceeded
+          x-speakeasy-unknown-values: allow
+        stop_sequence:
+          type: string
+          nullable: true
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: number
+            output_tokens:
+              type: number
+            cache_creation_input_tokens:
+              type: number
+              nullable: true
+            cache_read_input_tokens:
+              type: number
+              nullable: true
+            cache_creation:
+              type: object
+              nullable: true
+              properties:
+                ephemeral_5m_input_tokens:
+                  type: number
+                ephemeral_1h_input_tokens:
+                  type: number
+              required:
+                - ephemeral_5m_input_tokens
+                - ephemeral_1h_input_tokens
+            server_tool_use:
+              type: object
+              nullable: true
+              properties:
+                web_search_requests:
+                  type: number
+              required:
+                - web_search_requests
+            service_tier:
+              type: string
+              nullable: true
+              enum:
+                - standard
+                - priority
+                - batch
+              x-speakeasy-unknown-values: allow
+          required:
+            - input_tokens
+            - output_tokens
+            - cache_creation_input_tokens
+            - cache_read_input_tokens
+            - cache_creation
+            - server_tool_use
+            - service_tier
+      required:
+        - id
+        - type
+        - role
+        - content
+        - model
+        - stop_reason
+        - stop_sequence
+        - usage
+    AnthropicMessagesResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnthropicMessagesResponse'
+        - type: object
+          properties: {}
+      description: Non-streaming response from the Anthropic Messages API with OpenRouter extensions
+      example:
+        id: msg_01XFDUDYJgAACzvnptvVoYEL
+        type: message
+        role: assistant
+        content:
+          - type: text
+            text: Hello! I'm doing well, thank you for asking.
+            citations: null
+        model: claude-sonnet-4-5-20250929
+        stop_reason: end_turn
+        stop_sequence: null
+        usage:
+          input_tokens: 12
+          output_tokens: 15
+          cache_creation_input_tokens: null
+          cache_read_input_tokens: null
+          cache_creation: null
+          server_tool_use: null
+          service_tier: standard
+    AnthropicMessagesStreamEvent:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - message_start
+            message:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - message
+                role:
+                  type: string
+                  enum:
+                    - assistant
+                content:
+                  type: array
+                  items:
+                    oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - text
+                          text:
+                            type: string
+                          citations:
+                            type: array
+                            nullable: true
+                            items:
+                              oneOf:
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - char_location
+                                    cited_text:
+                                      type: string
+                                    document_index:
+                                      type: number
+                                    document_title:
+                                      type: string
+                                      nullable: true
+                                    start_char_index:
+                                      type: number
+                                    end_char_index:
+                                      type: number
+                                    file_id:
+                                      type: string
+                                      nullable: true
+                                  required:
+                                    - type
+                                    - cited_text
+                                    - document_index
+                                    - document_title
+                                    - start_char_index
+                                    - end_char_index
+                                    - file_id
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - page_location
+                                    cited_text:
+                                      type: string
+                                    document_index:
+                                      type: number
+                                    document_title:
+                                      type: string
+                                      nullable: true
+                                    start_page_number:
+                                      type: number
+                                    end_page_number:
+                                      type: number
+                                    file_id:
+                                      type: string
+                                      nullable: true
+                                  required:
+                                    - type
+                                    - cited_text
+                                    - document_index
+                                    - document_title
+                                    - start_page_number
+                                    - end_page_number
+                                    - file_id
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - content_block_location
+                                    cited_text:
+                                      type: string
+                                    document_index:
+                                      type: number
+                                    document_title:
+                                      type: string
+                                      nullable: true
+                                    start_block_index:
+                                      type: number
+                                    end_block_index:
+                                      type: number
+                                    file_id:
+                                      type: string
+                                      nullable: true
+                                  required:
+                                    - type
+                                    - cited_text
+                                    - document_index
+                                    - document_title
+                                    - start_block_index
+                                    - end_block_index
+                                    - file_id
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - web_search_result_location
+                                    cited_text:
+                                      type: string
+                                    encrypted_index:
+                                      type: string
+                                    title:
+                                      type: string
+                                      nullable: true
+                                    url:
+                                      type: string
+                                  required:
+                                    - type
+                                    - cited_text
+                                    - encrypted_index
+                                    - title
+                                    - url
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - search_result_location
+                                    cited_text:
+                                      type: string
+                                    search_result_index:
+                                      type: number
+                                    source:
+                                      type: string
+                                    title:
+                                      type: string
+                                      nullable: true
+                                    start_block_index:
+                                      type: number
+                                    end_block_index:
+                                      type: number
+                                  required:
+                                    - type
+                                    - cited_text
+                                    - search_result_index
+                                    - source
+                                    - title
+                                    - start_block_index
+                                    - end_block_index
+                        required:
+                          - type
+                          - text
+                          - citations
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - tool_use
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          input:
+                            nullable: true
+                        required:
+                          - type
+                          - id
+                          - name
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - thinking
+                          thinking:
+                            type: string
+                          signature:
+                            type: string
+                        required:
+                          - type
+                          - thinking
+                          - signature
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - redacted_thinking
+                          data:
+                            type: string
+                        required:
+                          - type
+                          - data
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - server_tool_use
+                          id:
+                            type: string
+                          name:
+                            type: string
+                            enum:
+                              - web_search
+                          input:
+                            nullable: true
+                        required:
+                          - type
+                          - id
+                          - name
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - web_search_tool_result
+                          tool_use_id:
+                            type: string
+                          content:
+                            anyOf:
+                              - type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - web_search_result
+                                    encrypted_content:
+                                      type: string
+                                    page_age:
+                                      type: string
+                                      nullable: true
+                                    title:
+                                      type: string
+                                    url:
+                                      type: string
+                                  required:
+                                    - type
+                                    - encrypted_content
+                                    - page_age
+                                    - title
+                                    - url
+                              - type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                      - web_search_tool_result_error
+                                  error_code:
+                                    type: string
+                                    enum:
+                                      - invalid_tool_input
+                                      - unavailable
+                                      - max_uses_exceeded
+                                      - too_many_requests
+                                      - query_too_long
+                                    x-speakeasy-unknown-values: allow
+                                required:
+                                  - type
+                                  - error_code
+                        required:
+                          - type
+                          - tool_use_id
+                          - content
+                model:
+                  type: string
+                stop_reason:
+                  nullable: true
+                stop_sequence:
+                  nullable: true
+                usage:
+                  type: object
+                  properties:
+                    input_tokens:
+                      type: number
+                    output_tokens:
+                      type: number
+                    cache_creation_input_tokens:
+                      type: number
+                      nullable: true
+                    cache_read_input_tokens:
+                      type: number
+                      nullable: true
+                    cache_creation:
+                      type: object
+                      nullable: true
+                      properties:
+                        ephemeral_5m_input_tokens:
+                          type: number
+                        ephemeral_1h_input_tokens:
+                          type: number
+                      required:
+                        - ephemeral_5m_input_tokens
+                        - ephemeral_1h_input_tokens
+                    server_tool_use:
+                      type: object
+                      nullable: true
+                      properties:
+                        web_search_requests:
+                          type: number
+                      required:
+                        - web_search_requests
+                    service_tier:
+                      type: string
+                      nullable: true
+                      enum:
+                        - standard
+                        - priority
+                        - batch
+                      x-speakeasy-unknown-values: allow
+                  required:
+                    - input_tokens
+                    - output_tokens
+                    - cache_creation_input_tokens
+                    - cache_read_input_tokens
+                    - cache_creation
+                    - server_tool_use
+                    - service_tier
+              required:
+                - id
+                - type
+                - role
+                - content
+                - model
+                - stop_reason
+                - stop_sequence
+                - usage
+          required:
+            - type
+            - message
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - message_delta
+            delta:
+              type: object
+              properties:
+                stop_reason:
+                  type: string
+                  nullable: true
+                  enum:
+                    - end_turn
+                    - max_tokens
+                    - stop_sequence
+                    - tool_use
+                    - pause_turn
+                    - refusal
+                    - model_context_window_exceeded
+                  x-speakeasy-unknown-values: allow
+                stop_sequence:
+                  type: string
+                  nullable: true
+              required:
+                - stop_reason
+                - stop_sequence
+            usage:
+              type: object
+              properties:
+                input_tokens:
+                  type: number
+                  nullable: true
+                output_tokens:
+                  type: number
+                cache_creation_input_tokens:
+                  type: number
+                  nullable: true
+                cache_read_input_tokens:
+                  type: number
+                  nullable: true
+                server_tool_use:
+                  type: object
+                  nullable: true
+                  properties:
+                    web_search_requests:
+                      type: number
+                  required:
+                    - web_search_requests
+              required:
+                - input_tokens
+                - output_tokens
+                - cache_creation_input_tokens
+                - cache_read_input_tokens
+                - server_tool_use
+          required:
+            - type
+            - delta
+            - usage
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - message_stop
+          required:
+            - type
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - content_block_start
+            index:
+              type: number
+            content_block:
+              oneOf:
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - text
+                    text:
+                      type: string
+                    citations:
+                      type: array
+                      nullable: true
+                      items:
+                        oneOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - char_location
+                              cited_text:
+                                type: string
+                              document_index:
+                                type: number
+                              document_title:
+                                type: string
+                                nullable: true
+                              start_char_index:
+                                type: number
+                              end_char_index:
+                                type: number
+                              file_id:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                              - cited_text
+                              - document_index
+                              - document_title
+                              - start_char_index
+                              - end_char_index
+                              - file_id
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - page_location
+                              cited_text:
+                                type: string
+                              document_index:
+                                type: number
+                              document_title:
+                                type: string
+                                nullable: true
+                              start_page_number:
+                                type: number
+                              end_page_number:
+                                type: number
+                              file_id:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                              - cited_text
+                              - document_index
+                              - document_title
+                              - start_page_number
+                              - end_page_number
+                              - file_id
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - content_block_location
+                              cited_text:
+                                type: string
+                              document_index:
+                                type: number
+                              document_title:
+                                type: string
+                                nullable: true
+                              start_block_index:
+                                type: number
+                              end_block_index:
+                                type: number
+                              file_id:
+                                type: string
+                                nullable: true
+                            required:
+                              - type
+                              - cited_text
+                              - document_index
+                              - document_title
+                              - start_block_index
+                              - end_block_index
+                              - file_id
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - web_search_result_location
+                              cited_text:
+                                type: string
+                              encrypted_index:
+                                type: string
+                              title:
+                                type: string
+                                nullable: true
+                              url:
+                                type: string
+                            required:
+                              - type
+                              - cited_text
+                              - encrypted_index
+                              - title
+                              - url
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - search_result_location
+                              cited_text:
+                                type: string
+                              search_result_index:
+                                type: number
+                              source:
+                                type: string
+                              title:
+                                type: string
+                                nullable: true
+                              start_block_index:
+                                type: number
+                              end_block_index:
+                                type: number
+                            required:
+                              - type
+                              - cited_text
+                              - search_result_index
+                              - source
+                              - title
+                              - start_block_index
+                              - end_block_index
+                  required:
+                    - type
+                    - text
+                    - citations
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - tool_use
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    input:
+                      nullable: true
+                  required:
+                    - type
+                    - id
+                    - name
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - thinking
+                    thinking:
+                      type: string
+                    signature:
+                      type: string
+                  required:
+                    - type
+                    - thinking
+                    - signature
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - redacted_thinking
+                    data:
+                      type: string
+                  required:
+                    - type
+                    - data
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - server_tool_use
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      enum:
+                        - web_search
+                    input:
+                      nullable: true
+                  required:
+                    - type
+                    - id
+                    - name
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - web_search_tool_result
+                    tool_use_id:
+                      type: string
+                    content:
+                      anyOf:
+                        - type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - web_search_result
+                              encrypted_content:
+                                type: string
+                              page_age:
+                                type: string
+                                nullable: true
+                              title:
+                                type: string
+                              url:
+                                type: string
+                            required:
+                              - type
+                              - encrypted_content
+                              - page_age
+                              - title
+                              - url
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_tool_result_error
+                            error_code:
+                              type: string
+                              enum:
+                                - invalid_tool_input
+                                - unavailable
+                                - max_uses_exceeded
+                                - too_many_requests
+                                - query_too_long
+                              x-speakeasy-unknown-values: allow
+                          required:
+                            - type
+                            - error_code
+                  required:
+                    - type
+                    - tool_use_id
+                    - content
+          required:
+            - type
+            - index
+            - content_block
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - content_block_delta
+            index:
+              type: number
+            delta:
+              oneOf:
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - text_delta
+                    text:
+                      type: string
+                  required:
+                    - type
+                    - text
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - input_json_delta
+                    partial_json:
+                      type: string
+                  required:
+                    - type
+                    - partial_json
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - thinking_delta
+                    thinking:
+                      type: string
+                  required:
+                    - type
+                    - thinking
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - signature_delta
+                    signature:
+                      type: string
+                  required:
+                    - type
+                    - signature
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - citations_delta
+                    citation:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - char_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_char_index:
+                              type: number
+                            end_char_index:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_char_index
+                            - end_char_index
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - page_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_page_number:
+                              type: number
+                            end_page_number:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_page_number
+                            - end_page_number
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - content_block_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                            file_id:
+                              type: string
+                              nullable: true
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_block_index
+                            - end_block_index
+                            - file_id
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_result_location
+                            cited_text:
+                              type: string
+                            encrypted_index:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            url:
+                              type: string
+                          required:
+                            - type
+                            - cited_text
+                            - encrypted_index
+                            - title
+                            - url
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - search_result_location
+                            cited_text:
+                              type: string
+                            search_result_index:
+                              type: number
+                            source:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - search_result_index
+                            - source
+                            - title
+                            - start_block_index
+                            - end_block_index
+                  required:
+                    - type
+                    - citation
+          required:
+            - type
+            - index
+            - delta
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - content_block_stop
+            index:
+              type: number
+          required:
+            - type
+            - index
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - ping
+          required:
+            - type
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - error
+            error:
+              type: object
+              properties:
+                type:
+                  type: string
+                message:
+                  type: string
+              required:
+                - type
+                - message
+          required:
+            - type
+            - error
+      description: Union of all possible streaming events
+    OpenRouterAnthropicMessageParam:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+            - assistant
+          x-speakeasy-unknown-values: allow
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                oneOf:
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - text
+                      text:
+                        type: string
+                      citations:
+                        type: array
+                        nullable: true
+                        items:
+                          oneOf:
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - char_location
+                                cited_text:
+                                  type: string
+                                document_index:
+                                  type: number
+                                document_title:
+                                  type: string
+                                  nullable: true
+                                start_char_index:
+                                  type: number
+                                end_char_index:
+                                  type: number
+                              required:
+                                - type
+                                - cited_text
+                                - document_index
+                                - document_title
+                                - start_char_index
+                                - end_char_index
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - page_location
+                                cited_text:
+                                  type: string
+                                document_index:
+                                  type: number
+                                document_title:
+                                  type: string
+                                  nullable: true
+                                start_page_number:
+                                  type: number
+                                end_page_number:
+                                  type: number
+                              required:
+                                - type
+                                - cited_text
+                                - document_index
+                                - document_title
+                                - start_page_number
+                                - end_page_number
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - content_block_location
+                                cited_text:
+                                  type: string
+                                document_index:
+                                  type: number
+                                document_title:
+                                  type: string
+                                  nullable: true
+                                start_block_index:
+                                  type: number
+                                end_block_index:
+                                  type: number
+                              required:
+                                - type
+                                - cited_text
+                                - document_index
+                                - document_title
+                                - start_block_index
+                                - end_block_index
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - web_search_result_location
+                                cited_text:
+                                  type: string
+                                encrypted_index:
+                                  type: string
+                                title:
+                                  type: string
+                                  nullable: true
+                                url:
+                                  type: string
+                              required:
+                                - type
+                                - cited_text
+                                - encrypted_index
+                                - title
+                                - url
+                            - type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - search_result_location
+                                cited_text:
+                                  type: string
+                                search_result_index:
+                                  type: number
+                                source:
+                                  type: string
+                                title:
+                                  type: string
+                                  nullable: true
+                                start_block_index:
+                                  type: number
+                                end_block_index:
+                                  type: number
+                              required:
+                                - type
+                                - cited_text
+                                - search_result_index
+                                - source
+                                - title
+                                - start_block_index
+                                - end_block_index
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - text
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - image
+                      source:
+                        oneOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - base64
+                              media_type:
+                                type: string
+                                enum:
+                                  - image/jpeg
+                                  - image/png
+                                  - image/gif
+                                  - image/webp
+                                x-speakeasy-unknown-values: allow
+                              data:
+                                type: string
+                            required:
+                              - type
+                              - media_type
+                              - data
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - url
+                              url:
+                                type: string
+                            required:
+                              - type
+                              - url
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - source
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - document
+                      source:
+                        oneOf:
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - base64
+                              media_type:
+                                type: string
+                                enum:
+                                  - application/pdf
+                              data:
+                                type: string
+                            required:
+                              - type
+                              - media_type
+                              - data
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - text
+                              media_type:
+                                type: string
+                                enum:
+                                  - text/plain
+                              data:
+                                type: string
+                            required:
+                              - type
+                              - media_type
+                              - data
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - content
+                              content:
+                                anyOf:
+                                  - type: string
+                                  - type: array
+                                    items:
+                                      oneOf:
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - text
+                                            text:
+                                              type: string
+                                            citations:
+                                              type: array
+                                              nullable: true
+                                              items:
+                                                oneOf:
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - char_location
+                                                      cited_text:
+                                                        type: string
+                                                      document_index:
+                                                        type: number
+                                                      document_title:
+                                                        type: string
+                                                        nullable: true
+                                                      start_char_index:
+                                                        type: number
+                                                      end_char_index:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - cited_text
+                                                      - document_index
+                                                      - document_title
+                                                      - start_char_index
+                                                      - end_char_index
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - page_location
+                                                      cited_text:
+                                                        type: string
+                                                      document_index:
+                                                        type: number
+                                                      document_title:
+                                                        type: string
+                                                        nullable: true
+                                                      start_page_number:
+                                                        type: number
+                                                      end_page_number:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - cited_text
+                                                      - document_index
+                                                      - document_title
+                                                      - start_page_number
+                                                      - end_page_number
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - content_block_location
+                                                      cited_text:
+                                                        type: string
+                                                      document_index:
+                                                        type: number
+                                                      document_title:
+                                                        type: string
+                                                        nullable: true
+                                                      start_block_index:
+                                                        type: number
+                                                      end_block_index:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - cited_text
+                                                      - document_index
+                                                      - document_title
+                                                      - start_block_index
+                                                      - end_block_index
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - web_search_result_location
+                                                      cited_text:
+                                                        type: string
+                                                      encrypted_index:
+                                                        type: string
+                                                      title:
+                                                        type: string
+                                                        nullable: true
+                                                      url:
+                                                        type: string
+                                                    required:
+                                                      - type
+                                                      - cited_text
+                                                      - encrypted_index
+                                                      - title
+                                                      - url
+                                                  - type: object
+                                                    properties:
+                                                      type:
+                                                        type: string
+                                                        enum:
+                                                          - search_result_location
+                                                      cited_text:
+                                                        type: string
+                                                      search_result_index:
+                                                        type: number
+                                                      source:
+                                                        type: string
+                                                      title:
+                                                        type: string
+                                                        nullable: true
+                                                      start_block_index:
+                                                        type: number
+                                                      end_block_index:
+                                                        type: number
+                                                    required:
+                                                      - type
+                                                      - cited_text
+                                                      - search_result_index
+                                                      - source
+                                                      - title
+                                                      - start_block_index
+                                                      - end_block_index
+                                            cache_control:
+                                              type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  enum:
+                                                    - ephemeral
+                                                ttl:
+                                                  type: string
+                                                  enum:
+                                                    - 5m
+                                                    - 1h
+                                                  x-speakeasy-unknown-values: allow
+                                              required:
+                                                - type
+                                          required:
+                                            - type
+                                            - text
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - image
+                                            source:
+                                              oneOf:
+                                                - type: object
+                                                  properties:
+                                                    type:
+                                                      type: string
+                                                      enum:
+                                                        - base64
+                                                    media_type:
+                                                      type: string
+                                                      enum:
+                                                        - image/jpeg
+                                                        - image/png
+                                                        - image/gif
+                                                        - image/webp
+                                                      x-speakeasy-unknown-values: allow
+                                                    data:
+                                                      type: string
+                                                  required:
+                                                    - type
+                                                    - media_type
+                                                    - data
+                                                - type: object
+                                                  properties:
+                                                    type:
+                                                      type: string
+                                                      enum:
+                                                        - url
+                                                    url:
+                                                      type: string
+                                                  required:
+                                                    - type
+                                                    - url
+                                            cache_control:
+                                              type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  enum:
+                                                    - ephemeral
+                                                ttl:
+                                                  type: string
+                                                  enum:
+                                                    - 5m
+                                                    - 1h
+                                                  x-speakeasy-unknown-values: allow
+                                              required:
+                                                - type
+                                          required:
+                                            - type
+                                            - source
+                            required:
+                              - type
+                              - content
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - url
+                              url:
+                                type: string
+                            required:
+                              - type
+                              - url
+                      citations:
+                        type: object
+                        nullable: true
+                        properties:
+                          enabled:
+                            type: boolean
+                      context:
+                        type: string
+                        nullable: true
+                      title:
+                        type: string
+                        nullable: true
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - source
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - tool_use
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      input:
+                        nullable: true
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - id
+                      - name
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - tool_result
+                      tool_use_id:
+                        type: string
+                      content:
+                        anyOf:
+                          - type: string
+                          - type: array
+                            items:
+                              anyOf:
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - text
+                                    text:
+                                      type: string
+                                    citations:
+                                      type: array
+                                      nullable: true
+                                      items:
+                                        oneOf:
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - char_location
+                                              cited_text:
+                                                type: string
+                                              document_index:
+                                                type: number
+                                              document_title:
+                                                type: string
+                                                nullable: true
+                                              start_char_index:
+                                                type: number
+                                              end_char_index:
+                                                type: number
+                                            required:
+                                              - type
+                                              - cited_text
+                                              - document_index
+                                              - document_title
+                                              - start_char_index
+                                              - end_char_index
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - page_location
+                                              cited_text:
+                                                type: string
+                                              document_index:
+                                                type: number
+                                              document_title:
+                                                type: string
+                                                nullable: true
+                                              start_page_number:
+                                                type: number
+                                              end_page_number:
+                                                type: number
+                                            required:
+                                              - type
+                                              - cited_text
+                                              - document_index
+                                              - document_title
+                                              - start_page_number
+                                              - end_page_number
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - content_block_location
+                                              cited_text:
+                                                type: string
+                                              document_index:
+                                                type: number
+                                              document_title:
+                                                type: string
+                                                nullable: true
+                                              start_block_index:
+                                                type: number
+                                              end_block_index:
+                                                type: number
+                                            required:
+                                              - type
+                                              - cited_text
+                                              - document_index
+                                              - document_title
+                                              - start_block_index
+                                              - end_block_index
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - web_search_result_location
+                                              cited_text:
+                                                type: string
+                                              encrypted_index:
+                                                type: string
+                                              title:
+                                                type: string
+                                                nullable: true
+                                              url:
+                                                type: string
+                                            required:
+                                              - type
+                                              - cited_text
+                                              - encrypted_index
+                                              - title
+                                              - url
+                                          - type: object
+                                            properties:
+                                              type:
+                                                type: string
+                                                enum:
+                                                  - search_result_location
+                                              cited_text:
+                                                type: string
+                                              search_result_index:
+                                                type: number
+                                              source:
+                                                type: string
+                                              title:
+                                                type: string
+                                                nullable: true
+                                              start_block_index:
+                                                type: number
+                                              end_block_index:
+                                                type: number
+                                            required:
+                                              - type
+                                              - cited_text
+                                              - search_result_index
+                                              - source
+                                              - title
+                                              - start_block_index
+                                              - end_block_index
+                                    cache_control:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - ephemeral
+                                        ttl:
+                                          type: string
+                                          enum:
+                                            - 5m
+                                            - 1h
+                                          x-speakeasy-unknown-values: allow
+                                      required:
+                                        - type
+                                  required:
+                                    - type
+                                    - text
+                                - type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                        - image
+                                    source:
+                                      oneOf:
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - base64
+                                            media_type:
+                                              type: string
+                                              enum:
+                                                - image/jpeg
+                                                - image/png
+                                                - image/gif
+                                                - image/webp
+                                              x-speakeasy-unknown-values: allow
+                                            data:
+                                              type: string
+                                          required:
+                                            - type
+                                            - media_type
+                                            - data
+                                        - type: object
+                                          properties:
+                                            type:
+                                              type: string
+                                              enum:
+                                                - url
+                                            url:
+                                              type: string
+                                          required:
+                                            - type
+                                            - url
+                                    cache_control:
+                                      type: object
+                                      properties:
+                                        type:
+                                          type: string
+                                          enum:
+                                            - ephemeral
+                                        ttl:
+                                          type: string
+                                          enum:
+                                            - 5m
+                                            - 1h
+                                          x-speakeasy-unknown-values: allow
+                                      required:
+                                        - type
+                                  required:
+                                    - type
+                                    - source
+                      is_error:
+                        type: boolean
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - tool_use_id
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - thinking
+                      thinking:
+                        type: string
+                      signature:
+                        type: string
+                    required:
+                      - type
+                      - thinking
+                      - signature
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - redacted_thinking
+                      data:
+                        type: string
+                    required:
+                      - type
+                      - data
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - server_tool_use
+                      id:
+                        type: string
+                      name:
+                        type: string
+                        enum:
+                          - web_search
+                      input:
+                        nullable: true
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - id
+                      - name
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - web_search_tool_result
+                      tool_use_id:
+                        type: string
+                      content:
+                        anyOf:
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - web_search_result
+                                encrypted_content:
+                                  type: string
+                                title:
+                                  type: string
+                                url:
+                                  type: string
+                                page_age:
+                                  type: string
+                                  nullable: true
+                              required:
+                                - type
+                                - encrypted_content
+                                - title
+                                - url
+                          - type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - web_search_tool_result_error
+                              error_code:
+                                type: string
+                                enum:
+                                  - invalid_tool_input
+                                  - unavailable
+                                  - max_uses_exceeded
+                                  - too_many_requests
+                                  - query_too_long
+                                x-speakeasy-unknown-values: allow
+                            required:
+                              - type
+                              - error_code
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - tool_use_id
+                      - content
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - search_result
+                      source:
+                        type: string
+                      title:
+                        type: string
+                      content:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - text
+                            text:
+                              type: string
+                            citations:
+                              type: array
+                              nullable: true
+                              items:
+                                oneOf:
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - char_location
+                                      cited_text:
+                                        type: string
+                                      document_index:
+                                        type: number
+                                      document_title:
+                                        type: string
+                                        nullable: true
+                                      start_char_index:
+                                        type: number
+                                      end_char_index:
+                                        type: number
+                                    required:
+                                      - type
+                                      - cited_text
+                                      - document_index
+                                      - document_title
+                                      - start_char_index
+                                      - end_char_index
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - page_location
+                                      cited_text:
+                                        type: string
+                                      document_index:
+                                        type: number
+                                      document_title:
+                                        type: string
+                                        nullable: true
+                                      start_page_number:
+                                        type: number
+                                      end_page_number:
+                                        type: number
+                                    required:
+                                      - type
+                                      - cited_text
+                                      - document_index
+                                      - document_title
+                                      - start_page_number
+                                      - end_page_number
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - content_block_location
+                                      cited_text:
+                                        type: string
+                                      document_index:
+                                        type: number
+                                      document_title:
+                                        type: string
+                                        nullable: true
+                                      start_block_index:
+                                        type: number
+                                      end_block_index:
+                                        type: number
+                                    required:
+                                      - type
+                                      - cited_text
+                                      - document_index
+                                      - document_title
+                                      - start_block_index
+                                      - end_block_index
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - web_search_result_location
+                                      cited_text:
+                                        type: string
+                                      encrypted_index:
+                                        type: string
+                                      title:
+                                        type: string
+                                        nullable: true
+                                      url:
+                                        type: string
+                                    required:
+                                      - type
+                                      - cited_text
+                                      - encrypted_index
+                                      - title
+                                      - url
+                                  - type: object
+                                    properties:
+                                      type:
+                                        type: string
+                                        enum:
+                                          - search_result_location
+                                      cited_text:
+                                        type: string
+                                      search_result_index:
+                                        type: number
+                                      source:
+                                        type: string
+                                      title:
+                                        type: string
+                                        nullable: true
+                                      start_block_index:
+                                        type: number
+                                      end_block_index:
+                                        type: number
+                                    required:
+                                      - type
+                                      - cited_text
+                                      - search_result_index
+                                      - source
+                                      - title
+                                      - start_block_index
+                                      - end_block_index
+                            cache_control:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                    - ephemeral
+                                ttl:
+                                  type: string
+                                  enum:
+                                    - 5m
+                                    - 1h
+                                  x-speakeasy-unknown-values: allow
+                              required:
+                                - type
+                          required:
+                            - type
+                            - text
+                      citations:
+                        type: object
+                        properties:
+                          enabled:
+                            type: boolean
+                      cache_control:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ephemeral
+                          ttl:
+                            type: string
+                            enum:
+                              - 5m
+                              - 1h
+                            x-speakeasy-unknown-values: allow
+                        required:
+                          - type
+                    required:
+                      - type
+                      - source
+                      - title
+                      - content
+      required:
+        - role
+        - content
+      description: Anthropic message with OpenRouter extensions
+    AnthropicMessagesRequest:
+      type: object
+      properties:
+        model:
+          type: string
+        max_tokens:
+          type: number
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenRouterAnthropicMessageParam'
+        system:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - text
+                  text:
+                    type: string
+                  citations:
+                    type: array
+                    nullable: true
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - char_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_char_index:
+                              type: number
+                            end_char_index:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_char_index
+                            - end_char_index
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - page_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_page_number:
+                              type: number
+                            end_page_number:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_page_number
+                            - end_page_number
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - content_block_location
+                            cited_text:
+                              type: string
+                            document_index:
+                              type: number
+                            document_title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - document_index
+                            - document_title
+                            - start_block_index
+                            - end_block_index
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - web_search_result_location
+                            cited_text:
+                              type: string
+                            encrypted_index:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            url:
+                              type: string
+                          required:
+                            - type
+                            - cited_text
+                            - encrypted_index
+                            - title
+                            - url
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - search_result_location
+                            cited_text:
+                              type: string
+                            search_result_index:
+                              type: number
+                            source:
+                              type: string
+                            title:
+                              type: string
+                              nullable: true
+                            start_block_index:
+                              type: number
+                            end_block_index:
+                              type: number
+                          required:
+                            - type
+                            - cited_text
+                            - search_result_index
+                            - source
+                            - title
+                            - start_block_index
+                            - end_block_index
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - type
+                  - text
+        metadata:
+          type: object
+          properties:
+            user_id:
+              type: string
+              nullable: true
+        stop_sequences:
+          type: array
+          items:
+            type: string
+        stream:
+          type: boolean
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        tools:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  input_schema:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - object
+                      properties:
+                        nullable: true
+                      required:
+                        type: array
+                        nullable: true
+                        items:
+                          type: string
+                    required:
+                      - type
+                    additionalProperties:
+                      nullable: true
+                  type:
+                    type: string
+                    enum:
+                      - custom
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - name
+                  - input_schema
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - bash_20250124
+                  name:
+                    type: string
+                    enum:
+                      - bash
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - type
+                  - name
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - text_editor_20250124
+                  name:
+                    type: string
+                    enum:
+                      - str_replace_editor
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - type
+                  - name
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - web_search_20250305
+                  name:
+                    type: string
+                    enum:
+                      - web_search
+                  allowed_domains:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  blocked_domains:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  max_uses:
+                    type: number
+                    nullable: true
+                  user_location:
+                    type: object
+                    nullable: true
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - approximate
+                      city:
+                        type: string
+                        nullable: true
+                      country:
+                        type: string
+                        nullable: true
+                      region:
+                        type: string
+                        nullable: true
+                      timezone:
+                        type: string
+                        nullable: true
+                    required:
+                      - type
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - type
+                  - name
+        tool_choice:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - auto
+                disable_parallel_tool_use:
+                  type: boolean
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - any
+                disable_parallel_tool_use:
+                  type: boolean
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - none
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - tool
+                name:
+                  type: string
+                disable_parallel_tool_use:
+                  type: boolean
+              required:
+                - type
+                - name
+        thinking:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - enabled
+                budget_tokens:
+                  type: number
+              required:
+                - type
+                - budget_tokens
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - disabled
+              required:
+                - type
+        service_tier:
+          type: string
+          enum:
+            - auto
+            - standard_only
+          x-speakeasy-unknown-values: allow
+        provider:
+          type: object
+          nullable: true
+          properties:
+            allow_fallbacks:
+              type: boolean
+              nullable: true
+              description: >
+                Whether to allow backup providers to serve requests
+
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+
+                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+
+            require_parameters:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+            data_collection:
+              $ref: '#/components/schemas/DataCollection'
+            zdr:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+              example: true
+            enforce_distillable_text:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
+              example: true
+            order:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+            only:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+            ignore:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+            quantizations:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/Quantization'
+              description: A list of quantization levels to filter the provider by.
+            sort:
+              allOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - anyOf:
+                    - $ref: '#/components/schemas/ProviderSort'
+                    - $ref: '#/components/schemas/ProviderSortConfig'
+                    - nullable: true
+                  description: >-
+                    The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+            max_price:
+              type: object
+              properties:
+                prompt:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                completion:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                image:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                audio:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                request:
+                  $ref: '#/components/schemas/BigNumberUnion'
+              description: >-
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+            preferred_min_throughput:
+              $ref: '#/components/schemas/PreferredMinThroughput'
+            preferred_max_latency:
+              $ref: '#/components/schemas/PreferredMaxLatency'
+          additionalProperties: false
+          description: When multiple model providers are available, optionally indicate your routing preference.
+        plugins:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - auto-router
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the auto-router plugin for this request. Defaults to true.
+                  allowed_models:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
+                    example:
+                      - anthropic/*
+                      - openai/gpt-4o
+                      - google/*
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - moderation
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - web
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the web-search plugin for this request. Defaults to true.
+                  max_results:
+                    type: number
+                  search_prompt:
+                    type: string
+                  engine:
+                    $ref: '#/components/schemas/WebSearchEngine'
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - file-parser
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the file-parser plugin for this request. Defaults to true.
+                  pdf:
+                    $ref: '#/components/schemas/PDFParserOptions'
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - response-healing
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the response-healing plugin for this request. Defaults to true.
+                required:
+                  - id
+          description: Plugins you want to enable for this request, including their settings.
+        route:
+          type: string
+          nullable: true
+          enum:
+            - fallback
+            - sort
+          deprecated: true
+          description: >-
+            **DEPRECATED** Use providers.sort.partition instead. Backwards-compatible alias for providers.sort.partition. Accepts legacy values: "fallback" (maps to "model"), "sort" (maps to "none").
+          x-speakeasy-deprecation-message: Use providers.sort.partition instead.
+          x-speakeasy-ignore: true
+          x-fern-ignore: true
+          x-speakeasy-unknown-values: allow
+        user:
+          type: string
+          maxLength: 128
+          description: >-
+            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
+        session_id:
+          type: string
+          maxLength: 128
+          description: >-
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+        models:
+          type: array
+          items:
+            type: string
+      required:
+        - model
+        - max_tokens
+        - messages
+      description: Request schema for Anthropic Messages API endpoint
+      example:
+        model: anthropic/claude-4.5-sonnet-20250929
+        max_tokens: 1024
+        messages:
+          - role: user
+            content: Hello, how are you?
+        temperature: 0.7
     ActivityItem:
       type: object
       properties:
@@ -4344,6 +7415,8 @@ components:
           $ref: '#/components/schemas/BigNumberUnion'
         audio:
           $ref: '#/components/schemas/BigNumberUnion'
+        audio_output:
+          $ref: '#/components/schemas/BigNumberUnion'
         input_audio_cache:
           $ref: '#/components/schemas/BigNumberUnion'
         web_search:
@@ -4407,6 +7480,7 @@ components:
         - text
         - image
         - embeddings
+        - audio
       example: text
       x-speakeasy-unknown-values: allow
     ModelArchitecture:
@@ -4804,6 +7878,10 @@ components:
       properties:
         name:
           type: string
+        model_id:
+          type: string
+          description: The unique identifier for the model (permaslug)
+          example: openai/gpt-4
         model_name:
           type: string
         context_length:
@@ -4824,6 +7902,8 @@ components:
             image_output:
               $ref: '#/components/schemas/BigNumberUnion'
             audio:
+              $ref: '#/components/schemas/BigNumberUnion'
+            audio_output:
               $ref: '#/components/schemas/BigNumberUnion'
             input_audio_cache:
               $ref: '#/components/schemas/BigNumberUnion'
@@ -4875,6 +7955,7 @@ components:
                 Throughput percentiles in tokens per second over the last 30 minutes. Throughput measures output token generation speed. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
       required:
         - name
+        - model_id
         - model_name
         - context_length
         - pricing
@@ -4891,6 +7972,7 @@ components:
       description: Information about a specific model endpoint
       example:
         name: 'OpenAI: GPT-4'
+        model_id: openai/gpt-4
         model_name: GPT-4
         context_length: 8192
         pricing:
@@ -6661,6 +9743,234 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createResponses
+  /messages:
+    post:
+      x-speakeasy-ignore: true
+      x-speakeasy-name-override: create
+      x-speakeasy-stream-request-field: stream
+      tags:
+        - anthropic.messages
+      summary: Create a message
+      description: >-
+        Creates a message using the Anthropic Messages API format. Supports text, images, PDFs, tools, and extended thinking.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnthropicMessagesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnthropicMessagesResponse'
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  event:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/AnthropicMessagesStreamEvent'
+                required:
+                  - event
+                  - data
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
+          description: Invalid request error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '401':
+          description: Authentication error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '403':
+          description: Permission denied error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '404':
+          description: Not found error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '429':
+          description: Rate limit error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '503':
+          description: Overloaded error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+        '529':
+          description: Overloaded error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - error
+                  error:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      message:
+                        type: string
+                    required:
+                      - type
+                      - message
+                required:
+                  - type
+                  - error
+      operationId: createMessages
   /activity:
     get:
       tags:
@@ -10590,6 +13900,8 @@ tags:
     description: OAuth authentication endpoints
   - name: Providers
     description: Provider information endpoints
+  - name: anthropic.messages
+    description: anthropic.messages endpoints
   - name: beta.responses
     description: beta.responses endpoints
 x-fern-base-path: /
