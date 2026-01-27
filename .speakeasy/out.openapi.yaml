@@ -9491,7 +9491,7 @@ paths:
       x-speakeasy-name-override: create
       x-speakeasy-stream-request-field: stream
       tags:
-        - anthropic.messages
+        - Anthropic Messages
       summary: Create a message
       description: >-
         Creates a message using the Anthropic Messages API format. Supports text, images, PDFs, tools, and extended thinking.
@@ -13581,6 +13581,8 @@ tags:
     description: API key management endpoints
   - name: Analytics
     description: Analytics and usage endpoints
+  - name: Anthropic Messages
+    description: Anthropic Messages endpoints
   - name: Chat
     description: Chat completion endpoints
   - name: Credits
@@ -13599,8 +13601,6 @@ tags:
     description: OAuth authentication endpoints
   - name: Providers
     description: Provider information endpoints
-  - name: anthropic.messages
-    description: anthropic.messages endpoints
   - name: beta.responses
     description: beta.responses endpoints
 x-fern-base-path: /

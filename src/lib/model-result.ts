@@ -54,7 +54,7 @@ import { hasExecuteFunction } from './tool-types.js';
 import { isStopConditionMet, stepCountIs } from './stop-conditions.js';
 import {
   isOutputMessage,
-  isFunctionCallOutputItem,
+  isFunctionCallItem,
   isReasoningOutputItem,
   isWebSearchCallOutputItem,
   isFileSearchCallOutputItem,
@@ -478,6 +478,35 @@ export class ModelResult<TTools extends readonly Tool[]> {
       const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
       if (!tool || !hasExecuteFunction(tool)) continue;
 
+      // Check if arguments failed to parse (remained as string instead of object)
+      // This happens when the model returns invalid JSON for tool call arguments
+      // We use 'unknown' cast because the type system doesn't know arguments can be a string
+      // when JSON parsing fails in stream-transformers.ts
+      const args: unknown = toolCall.arguments;
+      if (typeof args === 'string') {
+        const rawArgs = args;
+        const errorMessage = `Failed to parse tool call arguments for "${toolCall.name}": The model provided invalid JSON. ` +
+          `Raw arguments received: "${rawArgs}". ` +
+          `Please provide valid JSON arguments for this tool call.`;
+
+        // Emit error event if broadcaster exists
+        if (this.toolEventBroadcaster) {
+          this.toolEventBroadcaster.push({
+            type: 'tool_result' as const,
+            toolCallId: toolCall.id,
+            result: { error: errorMessage } as InferToolOutputsUnion<TTools>,
+          });
+        }
+
+        toolResults.push({
+          type: 'function_call_output' as const,
+          id: `output_${toolCall.id}`,
+          callId: toolCall.id,
+          output: JSON.stringify({ error: errorMessage }),
+        });
+        continue;
+      }
+
       // Track preliminary results for this specific tool call
       const preliminaryResultsForCall: InferToolEventsUnion<TTools>[] = [];
 
@@ -531,7 +560,13 @@ export class ModelResult<TTools extends readonly Tool[]> {
   private async resolveAsyncFunctionsForTurn(turnContext: TurnContext): Promise<void> {
     if (hasAsyncFunctions(this.options.request)) {
       const resolved = await resolveAsyncFunctions(this.options.request, turnContext);
-      this.resolvedRequest = { ...resolved, stream: false };
+      // Preserve accumulated input from previous turns
+      const preservedInput = this.resolvedRequest?.input;
+      this.resolvedRequest = {
+        ...resolved,
+        stream: false,
+        ...(preservedInput !== undefined && { input: preservedInput }),
+      };
     }
   }
 
@@ -572,8 +607,17 @@ export class ModelResult<TTools extends readonly Tool[]> {
     currentResponse: models.OpenResponsesNonStreamingResponse,
     toolResults: models.OpenResponsesFunctionCallOutput[]
   ): Promise<models.OpenResponsesNonStreamingResponse> {
-    // Build new input with tool results
+    // Build new input preserving original conversation + tool results
+    const originalInput = this.resolvedRequest?.input;
+    const normalizedOriginalInput: models.OpenResponsesInput1[] =
+      Array.isArray(originalInput)
+        ? originalInput
+        : originalInput
+          ? [{ role: 'user', content: originalInput }]
+          : [];
+
     const newInput: models.OpenResponsesInput = [
+      ...normalizedOriginalInput,
       ...(Array.isArray(currentResponse.output)
         ? currentResponse.output
         : [currentResponse.output]),
@@ -584,9 +628,14 @@ export class ModelResult<TTools extends readonly Tool[]> {
       throw new Error('Request not initialized');
     }
 
-    const newRequest: models.OpenResponsesRequest = {
+    // Update resolvedRequest.input with accumulated conversation for next turn
+    this.resolvedRequest = {
       ...this.resolvedRequest,
       input: newInput,
+    };
+
+    const newRequest: models.OpenResponsesRequest = {
+      ...this.resolvedRequest,
       stream: false,
     };
 
@@ -1184,8 +1233,16 @@ export class ModelResult<TTools extends readonly Tool[]> {
       // Execute tools if needed
       await this.executeToolsIfNeeded();
 
-      // Yield function call outputs for each executed tool
+      // Yield function calls and outputs for each tool round
       for (const round of this.allToolExecutionRounds) {
+        // Round 0's function_calls already yielded via buildItemsStream
+        if (round.round > 0) {
+          for (const item of round.response.output) {
+            if (isFunctionCallItem(item)) {
+              yield item;
+            }
+          }
+        }
         for (const toolResult of round.toolResults) {
           yield toolResult;
         }
@@ -1196,7 +1253,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
         for (const item of this.finalResponse.output) {
           if (
             isOutputMessage(item) ||
-            isFunctionCallOutputItem(item) ||
+            isFunctionCallItem(item) ||
             isReasoningOutputItem(item) ||
             isWebSearchCallOutputItem(item) ||
             isFileSearchCallOutputItem(item) ||
@@ -1216,11 +1273,12 @@ export class ModelResult<TTools extends readonly Tool[]> {
    *
    * Stream incremental message updates as content is added in responses format.
    * Each iteration yields an updated version of the message with new content.
-   * Also yields OpenResponsesFunctionCallOutput after tool execution completes.
-   * Returns ResponsesOutputMessage or OpenResponsesFunctionCallOutput compatible with OpenAI Responses API format.
+   * Also yields function_call items and OpenResponsesFunctionCallOutput after tool execution completes.
+   * Returns ResponsesOutputMessage, ResponsesOutputItemFunctionCall, or OpenResponsesFunctionCallOutput
+   * compatible with OpenAI Responses API format.
    */
   getNewMessagesStream(): AsyncIterableIterator<
-    models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput
+    models.ResponsesOutputMessage | models.OpenResponsesFunctionCallOutput | models.ResponsesOutputItemFunctionCall
   > {
     return async function* (this: ModelResult<TTools>) {
       await this.initStream();
@@ -1234,8 +1292,15 @@ export class ModelResult<TTools extends readonly Tool[]> {
       // Execute tools if needed
       await this.executeToolsIfNeeded();
 
-      // Yield function call outputs for each executed tool
+      // Yield function calls and their outputs for each executed tool
       for (const round of this.allToolExecutionRounds) {
+        // First yield the function_call items from the response that triggered tool execution
+        for (const item of round.response.output) {
+          if (isFunctionCallItem(item)) {
+            yield item;
+          }
+        }
+        // Then yield the function_call_output results
         for (const toolResult of round.toolResults) {
           yield toolResult;
         }
