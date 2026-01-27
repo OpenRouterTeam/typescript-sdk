@@ -127,8 +127,10 @@ export interface ToolFunctionWithGenerator<
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
-  // Generator can yield both events (TEvent) and the final output (TOutput)
-  execute: (params: zodInfer<TInput>, context?: TurnContext) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>>;
+  execute: (
+    params: zodInfer<TInput>,
+    context?: TurnContext,
+  ) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>, zodInfer<TOutput> | void>;
 }
 
 /**
@@ -469,11 +471,6 @@ export type ChatStreamEvent<TEvent = unknown> =
     type: string;
     event: OpenResponsesStreamEvent;
   }; // Pass-through for other events
-
-// =============================================================================
-// Multi-Turn Conversation State Types
-// =============================================================================
-
 /**
  * Result of a tool execution that hasn't been sent to the model yet
  * Used for interrupted or awaiting approval states
@@ -548,11 +545,6 @@ export interface StateAccessor<TTools extends readonly Tool[] = readonly Tool[]>
   /** Save the conversation state */
   save: (state: ConversationState<TTools>) => Promise<void>;
 }
-
-// =============================================================================
-// Approval Detection Helper Types
-// =============================================================================
-
 /**
  * Check if a single tool has approval configured (non-false, non-undefined)
  * Returns true if the tool definitely requires approval,

@@ -12,7 +12,7 @@ import {
   isResponseIncompleteEvent,
   isFunctionCallArgumentsDoneEvent,
   isOutputMessage,
-  isFunctionCallOutputItem,
+  isFunctionCallItem,
   isReasoningOutputItem,
   isWebSearchCallOutputItem,
   isFileSearchCallOutputItem,
@@ -234,7 +234,7 @@ function handleOutputItemAdded(
     };
   }
 
-  if (isFunctionCallOutputItem(item)) {
+  if (isFunctionCallItem(item)) {
     // Use item.id if available (matches itemId in delta events), fall back to callId
     const itemKey = item.id ?? item.callId;
     itemsInProgress.set(itemKey, {
@@ -391,7 +391,7 @@ function handleOutputItemDone(
     return item;
   }
 
-  if (isFunctionCallOutputItem(item)) {
+  if (isFunctionCallItem(item)) {
     // Use item.id if available (matches itemId in delta events), fall back to callId
     itemsInProgress.delete(item.id ?? item.callId);
     return item;
@@ -616,7 +616,7 @@ export function extractToolCallsFromResponse(
   const toolCalls: ParsedToolCall<Tool>[] = [];
 
   for (const item of response.output) {
-    if (isFunctionCallOutputItem(item)) {
+    if (isFunctionCallItem(item)) {
       try {
         const parsedArguments = JSON.parse(item.arguments);
 
@@ -670,7 +670,7 @@ export async function* buildToolCallStream(
 
     switch (event.type) {
       case 'response.output_item.added': {
-        if (isOutputItemAddedEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
+        if (isOutputItemAddedEvent(event) && event.item && isFunctionCallItem(event.item)) {
           toolCallsInProgress.set(event.item.callId, {
             id: event.item.callId,
             name: event.item.name,
@@ -725,7 +725,7 @@ export async function* buildToolCallStream(
       }
 
       case 'response.output_item.done': {
-        if (isOutputItemDoneEvent(event) && event.item && isFunctionCallOutputItem(event.item)) {
+        if (isOutputItemDoneEvent(event) && event.item && isFunctionCallItem(event.item)) {
           // Yield final tool call if we haven't already
           if (toolCallsInProgress.has(event.item.callId)) {
             try {
@@ -943,7 +943,7 @@ export function convertToClaudeMessage(
       }
 
       case 'function_call': {
-        if (isFunctionCallOutputItem(item)) {
+        if (isFunctionCallItem(item)) {
           let parsedInput: Record<string, unknown>;
 
           try {
