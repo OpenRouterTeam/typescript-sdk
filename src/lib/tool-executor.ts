@@ -218,47 +218,46 @@ export async function executeGeneratorTool(
       toolCall.arguments,
     );
 
-    // Stream preliminary results in realtime
-    // Final result is identified by: matches outputSchema BUT NOT eventSchema
-    // All other yields are preliminary results (validated against eventSchema)
-    // If no explicit final result is found, the last emitted value is used as the final result
     const preliminaryResults: unknown[] = [];
     let finalResult: unknown = undefined;
     let hasFinalResult = false;
     let lastEmittedValue: unknown = undefined;
     let hasEmittedValue = false;
 
-    for await (const event of tool.function.execute(validatedInput, context)) {
+    const iterator = tool.function.execute(validatedInput, context);
+    let iterResult = await iterator.next();
+
+    while (!iterResult.done) {
+      const event = iterResult.value;
       lastEmittedValue = event;
       hasEmittedValue = true;
 
-      // Try to determine if this is the final result:
-      // It must match outputSchema but NOT match eventSchema
       const matchesOutputSchema = tryValidate(tool.function.outputSchema, event);
       const matchesEventSchema = tryValidate(tool.function.eventSchema, event);
 
       if (matchesOutputSchema && !matchesEventSchema && !hasFinalResult) {
-        // This is the final result - matches output but not event schema
         finalResult = validateToolOutput(tool.function.outputSchema, event);
         hasFinalResult = true;
       } else {
-        // This is a preliminary result - validate against eventSchema and emit in realtime
         const validatedPreliminary = validateToolOutput(tool.function.eventSchema, event);
         preliminaryResults.push(validatedPreliminary);
         if (onPreliminaryResult) {
           onPreliminaryResult(toolCall.id, validatedPreliminary);
         }
       }
+
+      iterResult = await iterator.next();
     }
 
-    // Generator must emit at least one value
-    if (!hasEmittedValue) {
-      throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values`);
+    if (iterResult.value !== undefined) {
+      finalResult = validateToolOutput(tool.function.outputSchema, iterResult.value);
+      hasFinalResult = true;
     }
 
-    // If no explicit final result was found (no yield matched outputSchema but not eventSchema),
-    // use the last emitted value as the final result
     if (!hasFinalResult) {
+      if (!hasEmittedValue) {
+        throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values or returning a result`);
+      }
       finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
     }
 

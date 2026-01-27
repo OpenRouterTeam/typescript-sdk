@@ -74,7 +74,7 @@ export function isOutputMessage(
   );
 }
 
-export function isFunctionCallOutputItem(
+export function isFunctionCallItem(
   item: unknown
 ): item is models.ResponsesOutputItemFunctionCall {
   return (

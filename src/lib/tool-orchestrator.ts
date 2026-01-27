@@ -2,7 +2,7 @@ import type * as models from '../models/index.js';
 import type { APITool, Tool, ToolExecutionResult } from './tool-types.js';
 
 import { extractToolCallsFromResponse, responseHasToolCalls } from './stream-transformers.js';
-import { isFunctionCallOutputItem } from './stream-type-guards.js';
+import { isFunctionCallItem } from './stream-type-guards.js';
 import { executeTool, findToolByName } from './tool-executor.js';
 import { hasExecuteFunction } from './tool-types.js';
 import { buildTurnContext } from './turn-context.js';
@@ -106,7 +106,7 @@ export async function executeToolLoop(
       // Find the raw tool call from the response output
       const rawToolCall = currentResponse.output.find(
         (item): item is models.ResponsesOutputItemFunctionCall =>
-          isFunctionCallOutputItem(item) && item.callId === toolCall.id,
+          isFunctionCallItem(item) && item.callId === toolCall.id,
       );
 
       if (!rawToolCall) {
