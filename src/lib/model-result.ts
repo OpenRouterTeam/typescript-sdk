@@ -54,7 +54,7 @@ import { hasExecuteFunction } from './tool-types.js';
 import { isStopConditionMet, stepCountIs } from './stop-conditions.js';
 import {
   isOutputMessage,
-  isFunctionCallOutputItem,
+  isFunctionCallItem,
   isReasoningOutputItem,
   isWebSearchCallOutputItem,
   isFileSearchCallOutputItem,
@@ -477,6 +477,35 @@ export class ModelResult<TTools extends readonly Tool[]> {
     for (const toolCall of toolCalls) {
       const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
       if (!tool || !hasExecuteFunction(tool)) continue;
+
+      // Check if arguments failed to parse (remained as string instead of object)
+      // This happens when the model returns invalid JSON for tool call arguments
+      // We use 'unknown' cast because the type system doesn't know arguments can be a string
+      // when JSON parsing fails in stream-transformers.ts
+      const args: unknown = toolCall.arguments;
+      if (typeof args === 'string') {
+        const rawArgs = args;
+        const errorMessage = `Failed to parse tool call arguments for "${toolCall.name}": The model provided invalid JSON. ` +
+          `Raw arguments received: "${rawArgs}". ` +
+          `Please provide valid JSON arguments for this tool call.`;
+
+        // Emit error event if broadcaster exists
+        if (this.toolEventBroadcaster) {
+          this.toolEventBroadcaster.push({
+            type: 'tool_result' as const,
+            toolCallId: toolCall.id,
+            result: { error: errorMessage } as InferToolOutputsUnion<TTools>,
+          });
+        }
+
+        toolResults.push({
+          type: 'function_call_output' as const,
+          id: `output_${toolCall.id}`,
+          callId: toolCall.id,
+          output: JSON.stringify({ error: errorMessage }),
+        });
+        continue;
+      }
 
       // Track preliminary results for this specific tool call
       const preliminaryResultsForCall: InferToolEventsUnion<TTools>[] = [];
@@ -1184,8 +1213,16 @@ export class ModelResult<TTools extends readonly Tool[]> {
       // Execute tools if needed
       await this.executeToolsIfNeeded();
 
-      // Yield function call outputs for each executed tool
+      // Yield function calls and outputs for each tool round
       for (const round of this.allToolExecutionRounds) {
+        // Round 0's function_calls already yielded via buildItemsStream
+        if (round.round > 0) {
+          for (const item of round.response.output) {
+            if (isFunctionCallItem(item)) {
+              yield item;
+            }
+          }
+        }
         for (const toolResult of round.toolResults) {
           yield toolResult;
         }
@@ -1196,7 +1233,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
         for (const item of this.finalResponse.output) {
           if (
             isOutputMessage(item) ||
-            isFunctionCallOutputItem(item) ||
+            isFunctionCallItem(item) ||
             isReasoningOutputItem(item) ||
             isWebSearchCallOutputItem(item) ||
             isFileSearchCallOutputItem(item) ||
