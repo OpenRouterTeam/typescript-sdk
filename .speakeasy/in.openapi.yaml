@@ -3542,6 +3542,7 @@ components:
         - AI21
         - AionLabs
         - Alibaba
+        - Ambient
         - Amazon Bedrock
         - Amazon Nova
         - Anthropic
@@ -8110,6 +8111,7 @@ components:
               - AI21
               - AionLabs
               - Alibaba
+              - Ambient
               - Amazon Bedrock
               - Amazon Nova
               - Anthropic
@@ -10355,6 +10357,130 @@ paths:
                         nullable: true
                         description: Router used for the request (e.g., openrouter/auto)
                         example: openrouter/auto
+                      provider_responses:
+                        type: array
+                        nullable: true
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            endpoint_id:
+                              type: string
+                            model_permaslug:
+                              type: string
+                            provider_name:
+                              type: string
+                              enum:
+                                - AnyScale
+                                - Atoma
+                                - Cent-ML
+                                - CrofAI
+                                - Enfer
+                                - GoPomelo
+                                - HuggingFace
+                                - Hyperbolic 2
+                                - InoCloud
+                                - Kluster
+                                - Lambda
+                                - Lepton
+                                - Lynn 2
+                                - Lynn
+                                - Mancer
+                                - Meta
+                                - Modal
+                                - Nineteen
+                                - OctoAI
+                                - Recursal
+                                - Reflection
+                                - Replicate
+                                - SambaNova 2
+                                - SF Compute
+                                - Targon
+                                - Together 2
+                                - Ubicloud
+                                - 01.AI
+                                - AI21
+                                - AionLabs
+                                - Alibaba
+                                - Ambient
+                                - Amazon Bedrock
+                                - Amazon Nova
+                                - Anthropic
+                                - Arcee AI
+                                - AtlasCloud
+                                - Avian
+                                - Azure
+                                - BaseTen
+                                - BytePlus
+                                - Black Forest Labs
+                                - Cerebras
+                                - Chutes
+                                - Cirrascale
+                                - Clarifai
+                                - Cloudflare
+                                - Cohere
+                                - Crusoe
+                                - DeepInfra
+                                - DeepSeek
+                                - Featherless
+                                - Fireworks
+                                - Friendli
+                                - GMICloud
+                                - Google
+                                - Google AI Studio
+                                - Groq
+                                - Hyperbolic
+                                - Inception
+                                - Inceptron
+                                - InferenceNet
+                                - Infermatic
+                                - Inflection
+                                - Liquid
+                                - Mara
+                                - Mancer 2
+                                - Minimax
+                                - ModelRun
+                                - Mistral
+                                - Modular
+                                - Moonshot AI
+                                - Morph
+                                - NCompass
+                                - Nebius
+                                - NextBit
+                                - Novita
+                                - Nvidia
+                                - OpenAI
+                                - OpenInference
+                                - Parasail
+                                - Perplexity
+                                - Phala
+                                - Relace
+                                - SambaNova
+                                - Seed
+                                - SiliconFlow
+                                - Sourceful
+                                - Stealth
+                                - StreamLake
+                                - Switchpoint
+                                - Together
+                                - Upstage
+                                - Venice
+                                - WandB
+                                - Xiaomi
+                                - xAI
+                                - Z.AI
+                                - FakeProvider
+                            status:
+                              type: number
+                              nullable: true
+                            latency:
+                              type: number
+                            is_byok:
+                              type: boolean
+                          required:
+                            - status
+                        description: List of provider responses for this generation, including fallback attempts
                     required:
                       - id
                       - upstream_id
@@ -10389,6 +10515,7 @@ paths:
                       - external_user
                       - api_type
                       - router
+                      - provider_responses
                     description: Generation data
                 required:
                   - data

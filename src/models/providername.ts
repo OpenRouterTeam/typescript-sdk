@@ -11,6 +11,7 @@ export const ProviderName = {
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",
+  Ambient: "Ambient",
   AmazonBedrock: "Amazon Bedrock",
   AmazonNova: "Amazon Nova",
   Anthropic: "Anthropic",
