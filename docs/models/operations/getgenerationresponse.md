@@ -42,6 +42,7 @@ let value: GetGenerationResponse = {
     externalUser: "user-123",
     apiType: null,
     router: "openrouter/auto",
+    providerResponses: null,
   },
 };
 ```

@@ -27,6 +27,119 @@ export const ApiType = {
  */
 export type ApiType = OpenEnum<typeof ApiType>;
 
+export const ProviderName = {
+  AnyScale: "AnyScale",
+  Atoma: "Atoma",
+  CentML: "Cent-ML",
+  CrofAI: "CrofAI",
+  Enfer: "Enfer",
+  GoPomelo: "GoPomelo",
+  HuggingFace: "HuggingFace",
+  Hyperbolic2: "Hyperbolic 2",
+  InoCloud: "InoCloud",
+  Kluster: "Kluster",
+  Lambda: "Lambda",
+  Lepton: "Lepton",
+  Lynn2: "Lynn 2",
+  Lynn: "Lynn",
+  Mancer: "Mancer",
+  Meta: "Meta",
+  Modal: "Modal",
+  Nineteen: "Nineteen",
+  OctoAI: "OctoAI",
+  Recursal: "Recursal",
+  Reflection: "Reflection",
+  Replicate: "Replicate",
+  SambaNova2: "SambaNova 2",
+  SFCompute: "SF Compute",
+  Targon: "Targon",
+  Together2: "Together 2",
+  Ubicloud: "Ubicloud",
+  OneDotAI: "01.AI",
+  Ai21: "AI21",
+  AionLabs: "AionLabs",
+  Alibaba: "Alibaba",
+  Ambient: "Ambient",
+  AmazonBedrock: "Amazon Bedrock",
+  AmazonNova: "Amazon Nova",
+  Anthropic: "Anthropic",
+  ArceeAI: "Arcee AI",
+  AtlasCloud: "AtlasCloud",
+  Avian: "Avian",
+  Azure: "Azure",
+  BaseTen: "BaseTen",
+  BytePlus: "BytePlus",
+  BlackForestLabs: "Black Forest Labs",
+  Cerebras: "Cerebras",
+  Chutes: "Chutes",
+  Cirrascale: "Cirrascale",
+  Clarifai: "Clarifai",
+  Cloudflare: "Cloudflare",
+  Cohere: "Cohere",
+  Crusoe: "Crusoe",
+  DeepInfra: "DeepInfra",
+  DeepSeek: "DeepSeek",
+  Featherless: "Featherless",
+  Fireworks: "Fireworks",
+  Friendli: "Friendli",
+  GMICloud: "GMICloud",
+  Google: "Google",
+  GoogleAIStudio: "Google AI Studio",
+  Groq: "Groq",
+  Hyperbolic: "Hyperbolic",
+  Inception: "Inception",
+  Inceptron: "Inceptron",
+  InferenceNet: "InferenceNet",
+  Infermatic: "Infermatic",
+  Inflection: "Inflection",
+  Liquid: "Liquid",
+  Mara: "Mara",
+  Mancer2: "Mancer 2",
+  Minimax: "Minimax",
+  ModelRun: "ModelRun",
+  Mistral: "Mistral",
+  Modular: "Modular",
+  MoonshotAI: "Moonshot AI",
+  Morph: "Morph",
+  NCompass: "NCompass",
+  Nebius: "Nebius",
+  NextBit: "NextBit",
+  Novita: "Novita",
+  Nvidia: "Nvidia",
+  OpenAI: "OpenAI",
+  OpenInference: "OpenInference",
+  Parasail: "Parasail",
+  Perplexity: "Perplexity",
+  Phala: "Phala",
+  Relace: "Relace",
+  SambaNova: "SambaNova",
+  Seed: "Seed",
+  SiliconFlow: "SiliconFlow",
+  Sourceful: "Sourceful",
+  Stealth: "Stealth",
+  StreamLake: "StreamLake",
+  Switchpoint: "Switchpoint",
+  Together: "Together",
+  Upstage: "Upstage",
+  Venice: "Venice",
+  WandB: "WandB",
+  Xiaomi: "Xiaomi",
+  XAI: "xAI",
+  ZAi: "Z.AI",
+  FakeProvider: "FakeProvider",
+} as const;
+export type ProviderName = OpenEnum<typeof ProviderName>;
+
+export type ProviderResponse = {
+  id?: string | undefined;
+  endpointId?: string | undefined;
+  modelPermaslug?: string | undefined;
+  providerName?: ProviderName | undefined;
+  status: number | null;
+  latency?: number | undefined;
+  isByok?: boolean | undefined;
+};
+
 /**
  * Generation data
  */
@@ -163,6 +276,10 @@ export type GetGenerationData = {
    * Router used for the request (e.g., openrouter/auto)
    */
   router: string | null;
+  /**
+   * List of provider responses for this generation, including fallback attempts
+   */
+  providerResponses: Array<ProviderResponse> | null;
 };
 
 /**
@@ -199,6 +316,41 @@ export function getGenerationRequestToJSON(
 /** @internal */
 export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
+
+/** @internal */
+export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
+  openEnums.inboundSchema(ProviderName);
+
+/** @internal */
+export const ProviderResponse$inboundSchema: z.ZodType<
+  ProviderResponse,
+  unknown
+> = z.object({
+  id: z.string().optional(),
+  endpoint_id: z.string().optional(),
+  model_permaslug: z.string().optional(),
+  provider_name: ProviderName$inboundSchema.optional(),
+  status: z.nullable(z.number()),
+  latency: z.number().optional(),
+  is_byok: z.boolean().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "endpoint_id": "endpointId",
+    "model_permaslug": "modelPermaslug",
+    "provider_name": "providerName",
+    "is_byok": "isByok",
+  });
+});
+
+export function providerResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<ProviderResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ProviderResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ProviderResponse' from JSON`,
+  );
+}
 
 /** @internal */
 export const GetGenerationData$inboundSchema: z.ZodType<
@@ -238,6 +390,9 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   external_user: z.nullable(z.string()),
   api_type: z.nullable(ApiType$inboundSchema),
   router: z.nullable(z.string()),
+  provider_responses: z.nullable(
+    z.array(z.lazy(() => ProviderResponse$inboundSchema)),
+  ),
 }).transform((v) => {
   return remap$(v, {
     "upstream_id": "upstreamId",
@@ -265,6 +420,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "native_finish_reason": "nativeFinishReason",
     "external_user": "externalUser",
     "api_type": "apiType",
+    "provider_responses": "providerResponses",
   });
 });
 
