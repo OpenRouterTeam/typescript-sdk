@@ -21,10 +21,10 @@ const value: models.UserMessage = {
 };
 ```
 
-### `models.MessageDeveloper`
+### `models.DeveloperMessage`
 
 ```typescript
-const value: models.MessageDeveloper = {
+const value: models.DeveloperMessage = {
   role: "developer",
   content: [],
 };

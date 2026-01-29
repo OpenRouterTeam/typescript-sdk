@@ -13,57 +13,18 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Pricing information for the model
  */
 export type PublicPricing = {
-  /**
-   * A value in string format that is a large number
-   */
   prompt: string;
-  /**
-   * A value in string format that is a large number
-   */
   completion: string;
-  /**
-   * A value in string format that is a large number
-   */
   request?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   image?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   imageToken?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   imageOutput?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   audio?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   audioOutput?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   inputAudioCache?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   webSearch?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   internalReasoning?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   inputCacheRead?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   inputCacheWrite?: string | undefined;
   discount?: number | undefined;
 };

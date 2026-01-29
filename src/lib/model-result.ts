@@ -376,8 +376,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
   }
 
   /**
-   * Execute tools that can auto-execute (don't require approval).
-   * Processes tool calls that are approved for automatic execution.
+   * Execute tools that can auto-execute (don't require approval) in parallel.
    *
    * @param toolCalls - The tool calls to execute
    * @param turnContext - The current turn context
@@ -387,18 +386,38 @@ export class ModelResult<TTools extends readonly Tool[]> {
     toolCalls: ParsedToolCall<TTools[number]>[],
     turnContext: TurnContext
   ): Promise<UnsentToolResult<TTools>[]> {
-    const results: UnsentToolResult<TTools>[] = [];
-
-    for (const tc of toolCalls) {
+    const toolCallPromises = toolCalls.map(async (tc) => {
       const tool = this.options.tools?.find(t => t.function.name === tc.name);
-      if (!tool || !hasExecuteFunction(tool)) continue;
+      if (!tool || !hasExecuteFunction(tool)) {
+        return null;
+      }
 
       const result = await executeTool(tool, tc as ParsedToolCall<Tool>, turnContext);
 
       if (result.error) {
-        results.push(createRejectedResult(tc.id, String(tc.name), result.error.message));
-      } else {
-        results.push(createUnsentResult(tc.id, String(tc.name), result.result));
+        return createRejectedResult(tc.id, String(tc.name), result.error.message);
+      }
+      return createUnsentResult(tc.id, String(tc.name), result.result);
+    });
+
+    const settledResults = await Promise.allSettled(toolCallPromises);
+
+    const results: UnsentToolResult<TTools>[] = [];
+    for (let i = 0; i < settledResults.length; i++) {
+      const settled = settledResults[i];
+      const tc = toolCalls[i];
+      if (!settled || !tc) continue;
+
+      if (settled.status === 'rejected') {
+        const errorMessage = settled.reason instanceof Error
+          ? settled.reason.message
+          : String(settled.reason);
+        results.push(createRejectedResult(tc.id, String(tc.name), errorMessage) as UnsentToolResult<TTools>);
+        continue;
+      }
+
+      if (settled.value) {
+        results.push(settled.value as UnsentToolResult<TTools>);
       }
     }
 
@@ -460,9 +479,8 @@ export class ModelResult<TTools extends readonly Tool[]> {
   }
 
   /**
-   * Execute all tools in a single round.
-   * Runs each tool call sequentially and collects results for API submission.
-   * Emits tool.result events after each tool execution completes.
+   * Execute all tools in a single round in parallel.
+   * Emits tool.result events after tool execution completes.
    *
    * @param toolCalls - The tool calls to execute
    * @param turnContext - The current turn context
@@ -472,16 +490,13 @@ export class ModelResult<TTools extends readonly Tool[]> {
     toolCalls: ParsedToolCall<Tool>[],
     turnContext: TurnContext
   ): Promise<models.OpenResponsesFunctionCallOutput[]> {
-    const toolResults: models.OpenResponsesFunctionCallOutput[] = [];
-
-    for (const toolCall of toolCalls) {
+    const toolCallPromises = toolCalls.map(async (toolCall) => {
       const tool = this.options.tools?.find((t) => t.function.name === toolCall.name);
-      if (!tool || !hasExecuteFunction(tool)) continue;
+      if (!tool || !hasExecuteFunction(tool)) {
+        return null;
+      }
 
       // Check if arguments failed to parse (remained as string instead of object)
-      // This happens when the model returns invalid JSON for tool call arguments
-      // We use 'unknown' cast because the type system doesn't know arguments can be a string
-      // when JSON parsing fails in stream-transformers.ts
       const args: unknown = toolCall.arguments;
       if (typeof args === 'string') {
         const rawArgs = args;
@@ -489,7 +504,6 @@ export class ModelResult<TTools extends readonly Tool[]> {
           `Raw arguments received: "${rawArgs}". ` +
           `Please provide valid JSON arguments for this tool call.`;
 
-        // Emit error event if broadcaster exists
         if (this.toolEventBroadcaster) {
           this.toolEventBroadcaster.push({
             type: 'tool_result' as const,
@@ -498,25 +512,24 @@ export class ModelResult<TTools extends readonly Tool[]> {
           });
         }
 
-        toolResults.push({
-          type: 'function_call_output' as const,
-          id: `output_${toolCall.id}`,
-          callId: toolCall.id,
-          output: JSON.stringify({ error: errorMessage }),
-        });
-        continue;
+        return {
+          type: 'parse_error' as const,
+          toolCall,
+          output: {
+            type: 'function_call_output' as const,
+            id: `output_${toolCall.id}`,
+            callId: toolCall.id,
+            output: JSON.stringify({ error: errorMessage }),
+          },
+        };
       }
 
-      // Track preliminary results for this specific tool call
       const preliminaryResultsForCall: InferToolEventsUnion<TTools>[] = [];
 
-      // Create callback for real-time preliminary results
       const onPreliminaryResult = this.toolEventBroadcaster
         ? (callId: string, resultValue: unknown) => {
-            // Track preliminary results for the tool.result event
             const typedResult = resultValue as InferToolEventsUnion<TTools>;
             preliminaryResultsForCall.push(typedResult);
-            // Emit preliminary result event
             this.toolEventBroadcaster?.push({
               type: 'preliminary_result' as const,
               toolCallId: callId,
@@ -527,24 +540,73 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
       const result = await executeTool(tool, toolCall, turnContext, onPreliminaryResult);
 
-      // Emit tool.result event with final result and any preliminary results
+      return {
+        type: 'execution' as const,
+        toolCall,
+        tool,
+        result,
+        preliminaryResultsForCall,
+      };
+    });
+
+    const settledResults = await Promise.allSettled(toolCallPromises);
+    const toolResults: models.OpenResponsesFunctionCallOutput[] = [];
+
+    for (let i = 0; i < settledResults.length; i++) {
+      const settled = settledResults[i];
+      const originalToolCall = toolCalls[i];
+      if (!settled || !originalToolCall) continue;
+
+      if (settled.status === 'rejected') {
+        const errorMessage = settled.reason instanceof Error
+          ? settled.reason.message
+          : String(settled.reason);
+
+        if (this.toolEventBroadcaster) {
+          this.toolEventBroadcaster.push({
+            type: 'tool_result' as const,
+            toolCallId: originalToolCall.id,
+            result: { error: errorMessage } as InferToolOutputsUnion<TTools>,
+          });
+        }
+
+        toolResults.push({
+          type: 'function_call_output' as const,
+          id: `output_${originalToolCall.id}`,
+          callId: originalToolCall.id,
+          output: JSON.stringify({ error: errorMessage }),
+        });
+        continue;
+      }
+
+      const value = settled.value;
+      if (!value) continue;
+
+      if (value.type === 'parse_error') {
+        toolResults.push(value.output);
+        continue;
+      }
+
       if (this.toolEventBroadcaster) {
-        const toolResultEvent = {
+        this.toolEventBroadcaster.push({
           type: 'tool_result' as const,
-          toolCallId: toolCall.id,
-          result: (result.error ? { error: result.error.message } : result.result) as InferToolOutputsUnion<TTools>,
-          ...(preliminaryResultsForCall.length > 0 && { preliminaryResults: preliminaryResultsForCall }),
-        };
-        this.toolEventBroadcaster.push(toolResultEvent);
+          toolCallId: value.toolCall.id,
+          result: (value.result.error
+            ? { error: value.result.error.message }
+            : value.result.result) as InferToolOutputsUnion<TTools>,
+          ...(value.preliminaryResultsForCall.length > 0 && {
+            preliminaryResults: value.preliminaryResultsForCall,
+          }),
+        });
       }
 
       toolResults.push({
         type: 'function_call_output' as const,
-        id: `output_${toolCall.id}`,
-        callId: toolCall.id,
-        output: result.error
-          ? JSON.stringify({ error: result.error.message })
-          : JSON.stringify(result.result),
+        id: `output_${value.toolCall.id}`,
+        callId: value.toolCall.id,
+        output: value.result.error
+          ? JSON.stringify({ error: value.result.error.message })
+          : JSON.stringify(value.result.result),
       });
     }
 

@@ -13,7 +13,7 @@ import {
   ChatStreamingMessageToolCall$inboundSchema,
 } from "./chatstreamingmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema2, Schema2$inboundSchema } from "./schema2.js";
+import { Schema19, Schema19$inboundSchema } from "./schema19.js";
 
 export const ChatStreamingMessageChunkRole = {
   Assistant: "assistant",
@@ -28,7 +28,7 @@ export type ChatStreamingMessageChunk = {
   reasoning?: string | null | undefined;
   refusal?: string | null | undefined;
   toolCalls?: Array<ChatStreamingMessageToolCall> | undefined;
-  reasoningDetails?: Array<Schema2> | undefined;
+  reasoningDetails?: Array<Schema19> | undefined;
 };
 
 /** @internal */
@@ -46,7 +46,7 @@ export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),
   tool_calls: z.array(ChatStreamingMessageToolCall$inboundSchema).optional(),
-  reasoning_details: z.array(Schema2$inboundSchema).optional(),
+  reasoning_details: z.array(Schema19$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
