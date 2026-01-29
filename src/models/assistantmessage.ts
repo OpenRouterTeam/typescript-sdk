@@ -21,11 +21,11 @@ import {
 } from "./chatmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  Schema2,
-  Schema2$inboundSchema,
-  Schema2$Outbound,
-  Schema2$outboundSchema,
-} from "./schema2.js";
+  Schema19,
+  Schema19$inboundSchema,
+  Schema19$Outbound,
+  Schema19$outboundSchema,
+} from "./schema19.js";
 
 export type AssistantMessageContent = string | Array<ChatMessageContentItem>;
 
@@ -44,7 +44,7 @@ export type AssistantMessage = {
   toolCalls?: Array<ChatMessageToolCall> | undefined;
   refusal?: string | null | undefined;
   reasoning?: string | null | undefined;
-  reasoningDetails?: Array<Schema2> | undefined;
+  reasoningDetails?: Array<Schema19> | undefined;
   images?: Array<Image> | undefined;
 };
 
@@ -166,7 +166,7 @@ export const AssistantMessage$inboundSchema: z.ZodType<
   tool_calls: z.array(ChatMessageToolCall$inboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
-  reasoning_details: z.array(Schema2$inboundSchema).optional(),
+  reasoning_details: z.array(Schema19$inboundSchema).optional(),
   images: z.array(z.lazy(() => Image$inboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -182,7 +182,7 @@ export type AssistantMessage$Outbound = {
   tool_calls?: Array<ChatMessageToolCall$Outbound> | undefined;
   refusal?: string | null | undefined;
   reasoning?: string | null | undefined;
-  reasoning_details?: Array<Schema2$Outbound> | undefined;
+  reasoning_details?: Array<Schema19$Outbound> | undefined;
   images?: Array<Image$Outbound> | undefined;
 };
 
@@ -199,7 +199,7 @@ export const AssistantMessage$outboundSchema: z.ZodType<
   toolCalls: z.array(ChatMessageToolCall$outboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
-  reasoningDetails: z.array(Schema2$outboundSchema).optional(),
+  reasoningDetails: z.array(Schema19$outboundSchema).optional(),
   images: z.array(z.lazy(() => Image$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {

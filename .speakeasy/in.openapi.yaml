@@ -3542,6 +3542,7 @@ components:
         - AI21
         - AionLabs
         - Alibaba
+        - Ambient
         - Amazon Bedrock
         - Amazon Nova
         - Anthropic
@@ -3598,6 +3599,7 @@ components:
         - Seed
         - SiliconFlow
         - Sourceful
+        - StepFun
         - Stealth
         - StreamLake
         - Switchpoint
@@ -3645,7 +3647,7 @@ components:
             - type: 'null'
     BigNumberUnion:
       type: string
-      description: A value in string format that is a large number
+      description: Price per million prompt tokens
       example: 1000
     PercentileThroughputCutoffs:
       type: object
@@ -3964,13 +3966,21 @@ components:
                 prompt:
                   $ref: '#/components/schemas/BigNumberUnion'
                 completion:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per million completion tokens
                 image:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per image
                 audio:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per audio unit
                 request:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per request
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens,
                 for prompt and completion.
@@ -7022,13 +7032,21 @@ components:
                 prompt:
                   $ref: '#/components/schemas/BigNumberUnion'
                 completion:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per million completion tokens
                 image:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per image
                 audio:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per audio unit
                 request:
-                  $ref: '#/components/schemas/BigNumberUnion'
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per request
               description: >-
                 The object specifying the maximum price you want to pay for this request. USD price per million tokens,
                 for prompt and completion.
@@ -7373,13 +7391,21 @@ components:
             prompt:
               $ref: '#/components/schemas/BigNumberUnion'
             completion:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: Price per million completion tokens
             image:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: Price per image
             audio:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: Price per audio unit
             request:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: Price per request
           description: >-
             The object specifying the maximum price you want to pay for this request. USD price per million tokens, for
             prompt and completion.
@@ -7392,31 +7418,57 @@ components:
       type: object
       properties:
         prompt:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         completion:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         request:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         image:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         image_token:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         image_output:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         audio:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         audio_output:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         input_audio_cache:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         web_search:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         internal_reasoning:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         input_cache_read:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         input_cache_write:
-          $ref: '#/components/schemas/BigNumberUnion'
+          allOf:
+            - $ref: '#/components/schemas/BigNumberUnion'
+            - description: A number or string value representing a large number
         discount:
           type: number
       required:
@@ -7874,31 +7926,57 @@ components:
           type: object
           properties:
             prompt:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             completion:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             request:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             image:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             image_token:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             image_output:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             audio:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             audio_output:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             input_audio_cache:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             web_search:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             internal_reasoning:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             input_cache_read:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             input_cache_write:
-              $ref: '#/components/schemas/BigNumberUnion'
+              allOf:
+                - $ref: '#/components/schemas/BigNumberUnion'
+                - description: A number or string value representing a large number
             discount:
               type: number
           required:
@@ -8102,6 +8180,103 @@ components:
               p90: 28.3
               p99: 15.1
     __schema0:
+      anyOf:
+        - type: object
+          properties:
+            allow_fallbacks:
+              description: >
+                Whether to allow backup providers to serve requests
+
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use
+                the next best provider.
+
+                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+              $ref: '#/components/schemas/__schema1'
+            require_parameters:
+              description: >-
+                Whether to filter providers to only those that support the parameters you've provided. If this setting
+                is omitted or set to false, then providers will receive only the parameters they support, and ignore the
+                rest.
+              $ref: '#/components/schemas/__schema1'
+            data_collection:
+              description: >-
+                Data collection setting. If no available model provider meets the requirement, your request will return
+                an error.
+
+                - allow: (default) allow providers which store user data non-transiently and may train on it
+
+
+                - deny: use only providers which do not collect user data.
+              $ref: '#/components/schemas/__schema3'
+            zdr:
+              anyOf:
+                - type: boolean
+                - type: 'null'
+            enforce_distillable_text:
+              anyOf:
+                - type: boolean
+                - type: 'null'
+            order:
+              description: >-
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of
+                this list that supports your requested model, and fall back to the next if it is unavailable. If no
+                providers are available, the request will fail with an error message.
+              $ref: '#/components/schemas/__schema4'
+            only:
+              description: >-
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
+                provider settings for this request.
+              $ref: '#/components/schemas/__schema4'
+            ignore:
+              description: >-
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
+                provider settings for this request.
+              $ref: '#/components/schemas/__schema4'
+            quantizations:
+              description: A list of quantization levels to filter the provider by.
+              $ref: '#/components/schemas/__schema8'
+            sort:
+              description: >-
+                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
+                is performed.
+              $ref: '#/components/schemas/__schema9'
+            max_price:
+              description: >-
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens,
+                for prompt and completion.
+              $ref: '#/components/schemas/__schema10'
+            preferred_min_throughput:
+              description: >-
+                Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with
+                percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized
+                in routing. When using fallback models, this may cause a fallback model to be used instead of the
+                primary model if it meets the threshold.
+              $ref: '#/components/schemas/__schema15'
+            preferred_max_latency:
+              description: >-
+                Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with
+                percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized
+                in routing. When using fallback models, this may cause a fallback model to be used instead of the
+                primary model if it meets the threshold.
+              $ref: '#/components/schemas/__schema15'
+          additionalProperties: false
+        - type: 'null'
+    __schema1:
+      anyOf:
+        - type: boolean
+        - type: 'null'
+    __schema3:
+      anyOf:
+        - type: string
+          enum:
+            - deny
+            - allow
+        - type: 'null'
+    __schema4:
+      anyOf:
+        - $ref: '#/components/schemas/__schema5'
+        - type: 'null'
+    __schema5:
       type: array
       items:
         anyOf:
@@ -8110,6 +8285,7 @@ components:
               - AI21
               - AionLabs
               - Alibaba
+              - Ambient
               - Amazon Bedrock
               - Amazon Nova
               - Anthropic
@@ -8166,6 +8342,7 @@ components:
               - Seed
               - SiliconFlow
               - Sourceful
+              - StepFun
               - Stealth
               - StreamLake
               - Switchpoint
@@ -8178,12 +8355,150 @@ components:
               - Z.AI
               - FakeProvider
           - type: string
-    __schema1:
+    __schema8:
       anyOf:
-        - type: number
-        - type: string
-        - type: number
-    __schema2:
+        - type: array
+          items:
+            type: string
+            enum:
+              - int4
+              - int8
+              - fp4
+              - fp6
+              - fp8
+              - fp16
+              - bf16
+              - fp32
+              - unknown
+        - type: 'null'
+    __schema9:
+      anyOf:
+        - $ref: '#/components/schemas/ProviderSortUnion'
+        - type: 'null'
+    __schema10:
+      type: object
+      properties:
+        prompt:
+          anyOf:
+            - $ref: '#/components/schemas/__schema11'
+            - $ref: '#/components/schemas/ModelName'
+            - $ref: '#/components/schemas/__schema13'
+        completion:
+          anyOf:
+            - $ref: '#/components/schemas/__schema11'
+            - $ref: '#/components/schemas/ModelName'
+            - $ref: '#/components/schemas/__schema13'
+        image:
+          $ref: '#/components/schemas/__schema14'
+        audio:
+          $ref: '#/components/schemas/__schema14'
+        request:
+          $ref: '#/components/schemas/__schema14'
+    __schema11:
+      type: number
+    __schema13: {}
+    __schema14:
+      anyOf:
+        - $ref: '#/components/schemas/__schema11'
+        - $ref: '#/components/schemas/ModelName'
+        - $ref: '#/components/schemas/__schema13'
+    __schema15:
+      anyOf:
+        - anyOf:
+            - type: number
+            - type: object
+              properties:
+                p50:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                p75:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                p90:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+                p99:
+                  anyOf:
+                    - type: number
+                    - type: 'null'
+        - type: 'null'
+    __schema17:
+      type: array
+      items:
+        oneOf:
+          - type: object
+            properties:
+              id:
+                type: string
+                const: auto-router
+              enabled:
+                type: boolean
+              allowed_models:
+                type: array
+                items:
+                  type: string
+            required:
+              - id
+          - type: object
+            properties:
+              id:
+                type: string
+                const: moderation
+            required:
+              - id
+          - type: object
+            properties:
+              id:
+                type: string
+                const: web
+              enabled:
+                type: boolean
+              max_results:
+                type: number
+              search_prompt:
+                type: string
+              engine:
+                type: string
+                enum:
+                  - native
+                  - exa
+            required:
+              - id
+          - type: object
+            properties:
+              id:
+                type: string
+                const: file-parser
+              enabled:
+                type: boolean
+              pdf:
+                type: object
+                properties:
+                  engine:
+                    type: string
+                    enum:
+                      - mistral-ocr
+                      - pdf-text
+                      - native
+            required:
+              - id
+          - type: object
+            properties:
+              id:
+                type: string
+                const: response-healing
+              enabled:
+                type: boolean
+            required:
+              - id
+        type: object
+    __schema18:
+      type: string
+      maxLength: 128
+    __schema19:
       oneOf:
         - type: object
           properties:
@@ -8193,11 +8508,11 @@ components:
             summary:
               type: string
             id:
-              $ref: '#/components/schemas/__schema3'
+              $ref: '#/components/schemas/__schema20'
             format:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema21'
             index:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema11'
           required:
             - type
             - summary
@@ -8209,11 +8524,11 @@ components:
             data:
               type: string
             id:
-              $ref: '#/components/schemas/__schema3'
+              $ref: '#/components/schemas/__schema20'
             format:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema21'
             index:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema11'
           required:
             - type
             - data
@@ -8231,19 +8546,19 @@ components:
                 - type: string
                 - type: 'null'
             id:
-              $ref: '#/components/schemas/__schema3'
+              $ref: '#/components/schemas/__schema20'
             format:
-              $ref: '#/components/schemas/__schema4'
+              $ref: '#/components/schemas/__schema21'
             index:
-              $ref: '#/components/schemas/__schema5'
+              $ref: '#/components/schemas/__schema11'
           required:
             - type
       type: object
-    __schema3:
+    __schema20:
       anyOf:
         - type: string
         - type: 'null'
-    __schema4:
+    __schema21:
       anyOf:
         - type: string
           enum:
@@ -8254,9 +8569,7 @@ components:
             - anthropic-claude-v1
             - google-gemini-v1
         - type: 'null'
-    __schema5:
-      type: number
-    __schema6:
+    __schema25:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
         - type: 'null'
@@ -8584,6 +8897,23 @@ components:
       required:
         - role
         - content
+    DeveloperMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          const: developer
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItemText'
+        name:
+          type: string
+      required:
+        - role
+        - content
     AssistantMessage:
       type: object
       properties:
@@ -8615,7 +8945,7 @@ components:
         reasoning_details:
           type: array
           items:
-            $ref: '#/components/schemas/__schema2'
+            $ref: '#/components/schemas/__schema19'
         images:
           type: array
           items:
@@ -8654,25 +8984,18 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SystemMessage'
         - $ref: '#/components/schemas/UserMessage'
-        - type: object
-          properties:
-            role:
-              type: string
-              const: developer
-            content:
-              anyOf:
-                - type: string
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/ChatMessageContentItemText'
-            name:
-              type: string
-          required:
-            - role
-            - content
+        - $ref: '#/components/schemas/DeveloperMessage'
         - $ref: '#/components/schemas/AssistantMessage'
         - $ref: '#/components/schemas/ToolResponseMessage'
       type: object
+      discriminator:
+        propertyName: role
+        mapping:
+          system: '#/components/schemas/SystemMessage'
+          user: '#/components/schemas/UserMessage'
+          developer: '#/components/schemas/DeveloperMessage'
+          assistant: '#/components/schemas/AssistantMessage'
+          tool: '#/components/schemas/ToolResponseMessage'
     ToolDefinitionJson:
       type: object
       properties:
@@ -8736,242 +9059,10 @@ components:
       properties:
         provider:
           description: When multiple model providers are available, optionally indicate your routing preference.
-          anyOf:
-            - type: object
-              properties:
-                allow_fallbacks:
-                  description: >
-                    Whether to allow backup providers to serve requests
-
-                    - true: (default) when the primary provider (or your custom providers in "order") is unavailable,
-                    use the next best provider.
-
-                    - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                require_parameters:
-                  description: >-
-                    Whether to filter providers to only those that support the parameters you've provided. If this
-                    setting is omitted or set to false, then providers will receive only the parameters they support,
-                    and ignore the rest.
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                data_collection:
-                  description: >-
-                    Data collection setting. If no available model provider meets the requirement, your request will
-                    return an error.
-
-                    - allow: (default) allow providers which store user data non-transiently and may train on it
-
-
-                    - deny: use only providers which do not collect user data.
-                  anyOf:
-                    - type: string
-                      enum:
-                        - deny
-                        - allow
-                    - type: 'null'
-                zdr:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                enforce_distillable_text:
-                  anyOf:
-                    - type: boolean
-                    - type: 'null'
-                order:
-                  description: >-
-                    An ordered list of provider slugs. The router will attempt to use the first provider in the subset
-                    of this list that supports your requested model, and fall back to the next if it is unavailable. If
-                    no providers are available, the request will fail with an error message.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                only:
-                  description: >-
-                    List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                ignore:
-                  description: >-
-                    List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
-                    provider settings for this request.
-                  anyOf:
-                    - $ref: '#/components/schemas/__schema0'
-                    - type: 'null'
-                quantizations:
-                  description: A list of quantization levels to filter the provider by.
-                  anyOf:
-                    - type: array
-                      items:
-                        type: string
-                        enum:
-                          - int4
-                          - int8
-                          - fp4
-                          - fp6
-                          - fp8
-                          - fp16
-                          - bf16
-                          - fp32
-                          - unknown
-                    - type: 'null'
-                sort:
-                  description: >-
-                    The sorting strategy to use for this request, if "order" is not specified. When set, no load
-                    balancing is performed.
-                  anyOf:
-                    - $ref: '#/components/schemas/ProviderSortUnion'
-                    - type: 'null'
-                max_price:
-                  description: >-
-                    The object specifying the maximum price you want to pay for this request. USD price per million
-                    tokens, for prompt and completion.
-                  type: object
-                  properties:
-                    prompt:
-                      $ref: '#/components/schemas/__schema1'
-                    completion:
-                      $ref: '#/components/schemas/__schema1'
-                    image:
-                      $ref: '#/components/schemas/__schema1'
-                    audio:
-                      $ref: '#/components/schemas/__schema1'
-                    request:
-                      $ref: '#/components/schemas/__schema1'
-                preferred_min_throughput:
-                  description: >-
-                    Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object
-                    with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are
-                    deprioritized in routing. When using fallback models, this may cause a fallback model to be used
-                    instead of the primary model if it meets the threshold.
-                  anyOf:
-                    - anyOf:
-                        - type: number
-                        - type: object
-                          properties:
-                            p50:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p75:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p90:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p99:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                    - type: 'null'
-                preferred_max_latency:
-                  description: >-
-                    Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with
-                    percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are
-                    deprioritized in routing. When using fallback models, this may cause a fallback model to be used
-                    instead of the primary model if it meets the threshold.
-                  anyOf:
-                    - anyOf:
-                        - type: number
-                        - type: object
-                          properties:
-                            p50:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p75:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p90:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                            p99:
-                              anyOf:
-                                - type: number
-                                - type: 'null'
-                    - type: 'null'
-              additionalProperties: false
-            - type: 'null'
+          $ref: '#/components/schemas/__schema0'
         plugins:
           description: Plugins you want to enable for this request, including their settings.
-          type: array
-          items:
-            oneOf:
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: auto-router
-                  enabled:
-                    type: boolean
-                  allowed_models:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: moderation
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: web
-                  enabled:
-                    type: boolean
-                  max_results:
-                    type: number
-                  search_prompt:
-                    type: string
-                  engine:
-                    type: string
-                    enum:
-                      - native
-                      - exa
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: file-parser
-                  enabled:
-                    type: boolean
-                  pdf:
-                    type: object
-                    properties:
-                      engine:
-                        type: string
-                        enum:
-                          - mistral-ocr
-                          - pdf-text
-                          - native
-                required:
-                  - id
-              - type: object
-                properties:
-                  id:
-                    type: string
-                    const: response-healing
-                  enabled:
-                    type: boolean
-                required:
-                  - id
-            type: object
+          $ref: '#/components/schemas/__schema17'
         route:
           anyOf:
             - type: string
@@ -8986,8 +9077,7 @@ components:
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for
             observability. If provided in both the request body and the x-session-id header, the body value takes
             precedence. Maximum of 128 characters.
-          type: string
-          maxLength: 128
+          $ref: '#/components/schemas/__schema18'
         messages:
           minItems: 1
           type: array
@@ -9102,7 +9192,7 @@ components:
                 - maxItems: 4
                   type: array
                   items:
-                    type: string
+                    $ref: '#/components/schemas/ModelName'
             - type: 'null'
         stream:
           default: false
@@ -9161,7 +9251,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema6'
+          $ref: '#/components/schemas/__schema25'
         index:
           type: number
         message:
@@ -9219,14 +9309,14 @@ components:
         reasoning_details:
           type: array
           items:
-            $ref: '#/components/schemas/__schema2'
+            $ref: '#/components/schemas/__schema19'
     ChatStreamingChoice:
       type: object
       properties:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema6'
+          $ref: '#/components/schemas/__schema25'
         index:
           type: number
         logprobs:
@@ -10355,6 +10445,131 @@ paths:
                         nullable: true
                         description: Router used for the request (e.g., openrouter/auto)
                         example: openrouter/auto
+                      provider_responses:
+                        type: array
+                        nullable: true
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            endpoint_id:
+                              type: string
+                            model_permaslug:
+                              type: string
+                            provider_name:
+                              type: string
+                              enum:
+                                - AnyScale
+                                - Atoma
+                                - Cent-ML
+                                - CrofAI
+                                - Enfer
+                                - GoPomelo
+                                - HuggingFace
+                                - Hyperbolic 2
+                                - InoCloud
+                                - Kluster
+                                - Lambda
+                                - Lepton
+                                - Lynn 2
+                                - Lynn
+                                - Mancer
+                                - Meta
+                                - Modal
+                                - Nineteen
+                                - OctoAI
+                                - Recursal
+                                - Reflection
+                                - Replicate
+                                - SambaNova 2
+                                - SF Compute
+                                - Targon
+                                - Together 2
+                                - Ubicloud
+                                - 01.AI
+                                - AI21
+                                - AionLabs
+                                - Alibaba
+                                - Ambient
+                                - Amazon Bedrock
+                                - Amazon Nova
+                                - Anthropic
+                                - Arcee AI
+                                - AtlasCloud
+                                - Avian
+                                - Azure
+                                - BaseTen
+                                - BytePlus
+                                - Black Forest Labs
+                                - Cerebras
+                                - Chutes
+                                - Cirrascale
+                                - Clarifai
+                                - Cloudflare
+                                - Cohere
+                                - Crusoe
+                                - DeepInfra
+                                - DeepSeek
+                                - Featherless
+                                - Fireworks
+                                - Friendli
+                                - GMICloud
+                                - Google
+                                - Google AI Studio
+                                - Groq
+                                - Hyperbolic
+                                - Inception
+                                - Inceptron
+                                - InferenceNet
+                                - Infermatic
+                                - Inflection
+                                - Liquid
+                                - Mara
+                                - Mancer 2
+                                - Minimax
+                                - ModelRun
+                                - Mistral
+                                - Modular
+                                - Moonshot AI
+                                - Morph
+                                - NCompass
+                                - Nebius
+                                - NextBit
+                                - Novita
+                                - Nvidia
+                                - OpenAI
+                                - OpenInference
+                                - Parasail
+                                - Perplexity
+                                - Phala
+                                - Relace
+                                - SambaNova
+                                - Seed
+                                - SiliconFlow
+                                - Sourceful
+                                - StepFun
+                                - Stealth
+                                - StreamLake
+                                - Switchpoint
+                                - Together
+                                - Upstage
+                                - Venice
+                                - WandB
+                                - Xiaomi
+                                - xAI
+                                - Z.AI
+                                - FakeProvider
+                            status:
+                              type: number
+                              nullable: true
+                            latency:
+                              type: number
+                            is_byok:
+                              type: boolean
+                          required:
+                            - status
+                        description: List of provider responses for this generation, including fallback attempts
                     required:
                       - id
                       - upstream_id
@@ -10389,6 +10604,7 @@ paths:
                       - external_user
                       - api_type
                       - router
+                      - provider_responses
                     description: Generation data
                 required:
                   - data
