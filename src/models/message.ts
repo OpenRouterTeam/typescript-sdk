@@ -10,10 +10,10 @@ import {
   AssistantMessage$outboundSchema,
 } from "./assistantmessage.js";
 import {
-  ChatMessageContentItemText,
-  ChatMessageContentItemText$Outbound,
-  ChatMessageContentItemText$outboundSchema,
-} from "./chatmessagecontentitemtext.js";
+  DeveloperMessage,
+  DeveloperMessage$Outbound,
+  DeveloperMessage$outboundSchema,
+} from "./developermessage.js";
 import {
   SystemMessage,
   SystemMessage$Outbound,
@@ -30,69 +30,18 @@ import {
   UserMessage$outboundSchema,
 } from "./usermessage.js";
 
-export type MessageContent = string | Array<ChatMessageContentItemText>;
-
-export type MessageDeveloper = {
-  role: "developer";
-  content: string | Array<ChatMessageContentItemText>;
-  name?: string | undefined;
-};
-
 export type Message =
   | SystemMessage
   | UserMessage
-  | MessageDeveloper
+  | DeveloperMessage
   | AssistantMessage
   | ToolResponseMessage;
-
-/** @internal */
-export type MessageContent$Outbound =
-  | string
-  | Array<ChatMessageContentItemText$Outbound>;
-
-/** @internal */
-export const MessageContent$outboundSchema: z.ZodType<
-  MessageContent$Outbound,
-  MessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItemText$outboundSchema)]);
-
-export function messageContentToJSON(messageContent: MessageContent): string {
-  return JSON.stringify(MessageContent$outboundSchema.parse(messageContent));
-}
-
-/** @internal */
-export type MessageDeveloper$Outbound = {
-  role: "developer";
-  content: string | Array<ChatMessageContentItemText$Outbound>;
-  name?: string | undefined;
-};
-
-/** @internal */
-export const MessageDeveloper$outboundSchema: z.ZodType<
-  MessageDeveloper$Outbound,
-  MessageDeveloper
-> = z.object({
-  role: z.literal("developer"),
-  content: z.union([
-    z.string(),
-    z.array(ChatMessageContentItemText$outboundSchema),
-  ]),
-  name: z.string().optional(),
-});
-
-export function messageDeveloperToJSON(
-  messageDeveloper: MessageDeveloper,
-): string {
-  return JSON.stringify(
-    MessageDeveloper$outboundSchema.parse(messageDeveloper),
-  );
-}
 
 /** @internal */
 export type Message$Outbound =
   | SystemMessage$Outbound
   | UserMessage$Outbound
-  | MessageDeveloper$Outbound
+  | DeveloperMessage$Outbound
   | AssistantMessage$Outbound
   | ToolResponseMessage$Outbound;
 
@@ -101,7 +50,7 @@ export const Message$outboundSchema: z.ZodType<Message$Outbound, Message> = z
   .union([
     SystemMessage$outboundSchema,
     UserMessage$outboundSchema,
-    z.lazy(() => MessageDeveloper$outboundSchema),
+    DeveloperMessage$outboundSchema,
     AssistantMessage$outboundSchema,
     ToolResponseMessage$outboundSchema,
   ]);

@@ -15,3 +15,13 @@ const value: string = "<value>";
 const value: number = 1284.03;
 ```
 
+### `any[]`
+
+```typescript
+const value: any[] = [
+  "<value 1>",
+  "<value 2>",
+  "<value 3>",
+];
+```
+
