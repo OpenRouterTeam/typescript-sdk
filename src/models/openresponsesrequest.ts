@@ -139,31 +139,19 @@ export type OpenResponsesRequestSort = ProviderSort | ProviderSortConfig | any;
  */
 export type OpenResponsesRequestMaxPrice = {
   /**
-   * A value in string format that is a large number
+   * Price per million prompt tokens
    */
   prompt?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   completion?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   image?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   audio?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   request?: string | undefined;
 };
 
 /**
  * When multiple model providers are available, optionally indicate your routing preference.
  */
-export type OpenResponsesRequestProvider = {
+export type Provider = {
   /**
    * Whether to allow backup providers to serve requests
    *
@@ -227,7 +215,7 @@ export type OpenResponsesRequestProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
-export type OpenResponsesRequestPluginResponseHealing = {
+export type PluginResponseHealing = {
   id: "response-healing";
   /**
    * Set to false to disable the response-healing plugin for this request. Defaults to true.
@@ -235,7 +223,7 @@ export type OpenResponsesRequestPluginResponseHealing = {
   enabled?: boolean | undefined;
 };
 
-export type OpenResponsesRequestPluginFileParser = {
+export type PluginFileParser = {
   id: "file-parser";
   /**
    * Set to false to disable the file-parser plugin for this request. Defaults to true.
@@ -247,7 +235,7 @@ export type OpenResponsesRequestPluginFileParser = {
   pdf?: PDFParserOptions | undefined;
 };
 
-export type OpenResponsesRequestPluginWeb = {
+export type PluginWeb = {
   id: "web";
   /**
    * Set to false to disable the web-search plugin for this request. Defaults to true.
@@ -261,11 +249,11 @@ export type OpenResponsesRequestPluginWeb = {
   engine?: WebSearchEngine | undefined;
 };
 
-export type OpenResponsesRequestPluginModeration = {
+export type PluginModeration = {
   id: "moderation";
 };
 
-export type OpenResponsesRequestPluginAutoRouter = {
+export type PluginAutoRouter = {
   id: "auto-router";
   /**
    * Set to false to disable the auto-router plugin for this request. Defaults to true.
@@ -277,12 +265,12 @@ export type OpenResponsesRequestPluginAutoRouter = {
   allowedModels?: Array<string> | undefined;
 };
 
-export type OpenResponsesRequestPluginUnion =
-  | OpenResponsesRequestPluginAutoRouter
-  | OpenResponsesRequestPluginModeration
-  | OpenResponsesRequestPluginWeb
-  | OpenResponsesRequestPluginFileParser
-  | OpenResponsesRequestPluginResponseHealing;
+export type Plugin =
+  | PluginAutoRouter
+  | PluginModeration
+  | PluginWeb
+  | PluginFileParser
+  | PluginResponseHealing;
 
 /**
  * Request schema for Responses endpoint
@@ -347,17 +335,17 @@ export type OpenResponsesRequest = {
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
-  provider?: OpenResponsesRequestProvider | null | undefined;
+  provider?: Provider | null | undefined;
   /**
    * Plugins you want to enable for this request, including their settings.
    */
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginAutoRouter
-      | OpenResponsesRequestPluginModeration
-      | OpenResponsesRequestPluginWeb
-      | OpenResponsesRequestPluginFileParser
-      | OpenResponsesRequestPluginResponseHealing
+      | PluginAutoRouter
+      | PluginModeration
+      | PluginWeb
+      | PluginFileParser
+      | PluginResponseHealing
     >
     | undefined;
   /**
@@ -566,7 +554,7 @@ export function openResponsesRequestMaxPriceToJSON(
 }
 
 /** @internal */
-export type OpenResponsesRequestProvider$Outbound = {
+export type Provider$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
   require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
@@ -583,114 +571,102 @@ export type OpenResponsesRequestProvider$Outbound = {
 };
 
 /** @internal */
-export const OpenResponsesRequestProvider$outboundSchema: z.ZodType<
-  OpenResponsesRequestProvider$Outbound,
-  OpenResponsesRequestProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(
-    z.array(z.union([ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([
-      ProviderSort$outboundSchema,
-      ProviderSortConfig$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
-  maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
-    .optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
-    .optional(),
-  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
-    preferredMaxLatency: "preferred_max_latency",
+export const Provider$outboundSchema: z.ZodType<Provider$Outbound, Provider> = z
+  .object({
+    allowFallbacks: z.nullable(z.boolean()).optional(),
+    requireParameters: z.nullable(z.boolean()).optional(),
+    dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+    zdr: z.nullable(z.boolean()).optional(),
+    enforceDistillableText: z.nullable(z.boolean()).optional(),
+    order: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    only: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    ignore: z.nullable(
+      z.array(z.union([ProviderName$outboundSchema, z.string()])),
+    ).optional(),
+    quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+    sort: z.nullable(
+      z.union([
+        ProviderSort$outboundSchema,
+        ProviderSortConfig$outboundSchema,
+        z.any(),
+      ]),
+    ).optional(),
+    maxPrice: z.lazy(() => OpenResponsesRequestMaxPrice$outboundSchema)
+      .optional(),
+    preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+      .optional(),
+    preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
+      .optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      allowFallbacks: "allow_fallbacks",
+      requireParameters: "require_parameters",
+      dataCollection: "data_collection",
+      enforceDistillableText: "enforce_distillable_text",
+      maxPrice: "max_price",
+      preferredMinThroughput: "preferred_min_throughput",
+      preferredMaxLatency: "preferred_max_latency",
+    });
   });
-});
 
-export function openResponsesRequestProviderToJSON(
-  openResponsesRequestProvider: OpenResponsesRequestProvider,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestProvider$outboundSchema.parse(
-      openResponsesRequestProvider,
-    ),
-  );
+export function providerToJSON(provider: Provider): string {
+  return JSON.stringify(Provider$outboundSchema.parse(provider));
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginResponseHealing$Outbound = {
+export type PluginResponseHealing$Outbound = {
   id: "response-healing";
   enabled?: boolean | undefined;
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginResponseHealing$outboundSchema:
-  z.ZodType<
-    OpenResponsesRequestPluginResponseHealing$Outbound,
-    OpenResponsesRequestPluginResponseHealing
-  > = z.object({
-    id: z.literal("response-healing"),
-    enabled: z.boolean().optional(),
-  });
+export const PluginResponseHealing$outboundSchema: z.ZodType<
+  PluginResponseHealing$Outbound,
+  PluginResponseHealing
+> = z.object({
+  id: z.literal("response-healing"),
+  enabled: z.boolean().optional(),
+});
 
-export function openResponsesRequestPluginResponseHealingToJSON(
-  openResponsesRequestPluginResponseHealing:
-    OpenResponsesRequestPluginResponseHealing,
+export function pluginResponseHealingToJSON(
+  pluginResponseHealing: PluginResponseHealing,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginResponseHealing$outboundSchema.parse(
-      openResponsesRequestPluginResponseHealing,
-    ),
+    PluginResponseHealing$outboundSchema.parse(pluginResponseHealing),
   );
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginFileParser$Outbound = {
+export type PluginFileParser$Outbound = {
   id: "file-parser";
   enabled?: boolean | undefined;
   pdf?: PDFParserOptions$Outbound | undefined;
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginFileParser$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginFileParser$Outbound,
-  OpenResponsesRequestPluginFileParser
+export const PluginFileParser$outboundSchema: z.ZodType<
+  PluginFileParser$Outbound,
+  PluginFileParser
 > = z.object({
   id: z.literal("file-parser"),
   enabled: z.boolean().optional(),
   pdf: PDFParserOptions$outboundSchema.optional(),
 });
 
-export function openResponsesRequestPluginFileParserToJSON(
-  openResponsesRequestPluginFileParser: OpenResponsesRequestPluginFileParser,
+export function pluginFileParserToJSON(
+  pluginFileParser: PluginFileParser,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginFileParser$outboundSchema.parse(
-      openResponsesRequestPluginFileParser,
-    ),
+    PluginFileParser$outboundSchema.parse(pluginFileParser),
   );
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginWeb$Outbound = {
+export type PluginWeb$Outbound = {
   id: "web";
   enabled?: boolean | undefined;
   max_results?: number | undefined;
@@ -699,9 +675,9 @@ export type OpenResponsesRequestPluginWeb$Outbound = {
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginWeb$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginWeb$Outbound,
-  OpenResponsesRequestPluginWeb
+export const PluginWeb$outboundSchema: z.ZodType<
+  PluginWeb$Outbound,
+  PluginWeb
 > = z.object({
   id: z.literal("web"),
   enabled: z.boolean().optional(),
@@ -715,50 +691,42 @@ export const OpenResponsesRequestPluginWeb$outboundSchema: z.ZodType<
   });
 });
 
-export function openResponsesRequestPluginWebToJSON(
-  openResponsesRequestPluginWeb: OpenResponsesRequestPluginWeb,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestPluginWeb$outboundSchema.parse(
-      openResponsesRequestPluginWeb,
-    ),
-  );
+export function pluginWebToJSON(pluginWeb: PluginWeb): string {
+  return JSON.stringify(PluginWeb$outboundSchema.parse(pluginWeb));
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginModeration$Outbound = {
+export type PluginModeration$Outbound = {
   id: "moderation";
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginModeration$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginModeration$Outbound,
-  OpenResponsesRequestPluginModeration
+export const PluginModeration$outboundSchema: z.ZodType<
+  PluginModeration$Outbound,
+  PluginModeration
 > = z.object({
   id: z.literal("moderation"),
 });
 
-export function openResponsesRequestPluginModerationToJSON(
-  openResponsesRequestPluginModeration: OpenResponsesRequestPluginModeration,
+export function pluginModerationToJSON(
+  pluginModeration: PluginModeration,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginModeration$outboundSchema.parse(
-      openResponsesRequestPluginModeration,
-    ),
+    PluginModeration$outboundSchema.parse(pluginModeration),
   );
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginAutoRouter$Outbound = {
+export type PluginAutoRouter$Outbound = {
   id: "auto-router";
   enabled?: boolean | undefined;
   allowed_models?: Array<string> | undefined;
 };
 
 /** @internal */
-export const OpenResponsesRequestPluginAutoRouter$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginAutoRouter$Outbound,
-  OpenResponsesRequestPluginAutoRouter
+export const PluginAutoRouter$outboundSchema: z.ZodType<
+  PluginAutoRouter$Outbound,
+  PluginAutoRouter
 > = z.object({
   id: z.literal("auto-router"),
   enabled: z.boolean().optional(),
@@ -769,44 +737,34 @@ export const OpenResponsesRequestPluginAutoRouter$outboundSchema: z.ZodType<
   });
 });
 
-export function openResponsesRequestPluginAutoRouterToJSON(
-  openResponsesRequestPluginAutoRouter: OpenResponsesRequestPluginAutoRouter,
+export function pluginAutoRouterToJSON(
+  pluginAutoRouter: PluginAutoRouter,
 ): string {
   return JSON.stringify(
-    OpenResponsesRequestPluginAutoRouter$outboundSchema.parse(
-      openResponsesRequestPluginAutoRouter,
-    ),
+    PluginAutoRouter$outboundSchema.parse(pluginAutoRouter),
   );
 }
 
 /** @internal */
-export type OpenResponsesRequestPluginUnion$Outbound =
-  | OpenResponsesRequestPluginAutoRouter$Outbound
-  | OpenResponsesRequestPluginModeration$Outbound
-  | OpenResponsesRequestPluginWeb$Outbound
-  | OpenResponsesRequestPluginFileParser$Outbound
-  | OpenResponsesRequestPluginResponseHealing$Outbound;
+export type Plugin$Outbound =
+  | PluginAutoRouter$Outbound
+  | PluginModeration$Outbound
+  | PluginWeb$Outbound
+  | PluginFileParser$Outbound
+  | PluginResponseHealing$Outbound;
 
 /** @internal */
-export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
-  OpenResponsesRequestPluginUnion$Outbound,
-  OpenResponsesRequestPluginUnion
-> = z.union([
-  z.lazy(() => OpenResponsesRequestPluginAutoRouter$outboundSchema),
-  z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
-  z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
-  z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
-  z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
-]);
+export const Plugin$outboundSchema: z.ZodType<Plugin$Outbound, Plugin> = z
+  .union([
+    z.lazy(() => PluginAutoRouter$outboundSchema),
+    z.lazy(() => PluginModeration$outboundSchema),
+    z.lazy(() => PluginWeb$outboundSchema),
+    z.lazy(() => PluginFileParser$outboundSchema),
+    z.lazy(() => PluginResponseHealing$outboundSchema),
+  ]);
 
-export function openResponsesRequestPluginUnionToJSON(
-  openResponsesRequestPluginUnion: OpenResponsesRequestPluginUnion,
-): string {
-  return JSON.stringify(
-    OpenResponsesRequestPluginUnion$outboundSchema.parse(
-      openResponsesRequestPluginUnion,
-    ),
-  );
+export function pluginToJSON(plugin: Plugin): string {
+  return JSON.stringify(Plugin$outboundSchema.parse(plugin));
 }
 
 /** @internal */
@@ -849,14 +807,14 @@ export type OpenResponsesRequest$Outbound = {
   service_tier: string;
   truncation?: string | null | undefined;
   stream: boolean;
-  provider?: OpenResponsesRequestProvider$Outbound | null | undefined;
+  provider?: Provider$Outbound | null | undefined;
   plugins?:
     | Array<
-      | OpenResponsesRequestPluginAutoRouter$Outbound
-      | OpenResponsesRequestPluginModeration$Outbound
-      | OpenResponsesRequestPluginWeb$Outbound
-      | OpenResponsesRequestPluginFileParser$Outbound
-      | OpenResponsesRequestPluginResponseHealing$Outbound
+      | PluginAutoRouter$Outbound
+      | PluginModeration$Outbound
+      | PluginWeb$Outbound
+      | PluginFileParser$Outbound
+      | PluginResponseHealing$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -908,16 +866,14 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   serviceTier: ServiceTier$outboundSchema.default("auto"),
   truncation: z.nullable(Truncation$outboundSchema).optional(),
   stream: z.boolean().default(false),
-  provider: z.nullable(
-    z.lazy(() => OpenResponsesRequestProvider$outboundSchema),
-  ).optional(),
+  provider: z.nullable(z.lazy(() => Provider$outboundSchema)).optional(),
   plugins: z.array(
     z.union([
-      z.lazy(() => OpenResponsesRequestPluginAutoRouter$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginModeration$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
-      z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+      z.lazy(() => PluginAutoRouter$outboundSchema),
+      z.lazy(() => PluginModeration$outboundSchema),
+      z.lazy(() => PluginWeb$outboundSchema),
+      z.lazy(() => PluginFileParser$outboundSchema),
+      z.lazy(() => PluginResponseHealing$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),
