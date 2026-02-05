@@ -24,6 +24,8 @@ List all API keys for the authenticated user. [Provisioning key](/docs/guides/ov
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -47,6 +49,8 @@ import { apiKeysList } from "@openrouter/sdk/funcs/apiKeysList.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -96,12 +100,16 @@ Create a new API key for the authenticated user. [Provisioning key](/docs/guides
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.apiKeys.create({
-    name: "My New API Key",
+    requestBody: {
+      name: "My New API Key",
+    },
   });
 
   console.log(result);
@@ -121,12 +129,16 @@ import { apiKeysCreate } from "@openrouter/sdk/funcs/apiKeysCreate.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await apiKeysCreate(openRouter, {
-    name: "My New API Key",
+    requestBody: {
+      name: "My New API Key",
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -173,6 +185,8 @@ Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provis
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -199,6 +213,8 @@ import { apiKeysUpdate } from "@openrouter/sdk/funcs/apiKeysUpdate.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -253,6 +269,8 @@ Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provis
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -278,6 +296,8 @@ import { apiKeysDelete } from "@openrouter/sdk/funcs/apiKeysDelete.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -330,6 +350,8 @@ Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/prov
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -355,6 +377,8 @@ import { apiKeysGet } from "@openrouter/sdk/funcs/apiKeysGet.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -407,6 +431,8 @@ Get information on the API key associated with the current authentication sessio
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -430,6 +456,8 @@ import { apiKeysGetCurrentKeyMetadata } from "@openrouter/sdk/funcs/apiKeysGetCu
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -450,6 +478,7 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetCurrentKeyRequest](../../models/operations/getcurrentkeyrequest.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |

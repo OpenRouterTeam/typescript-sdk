@@ -9,6 +9,38 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type ListProvidersGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type ListProvidersRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type ListProvidersData = {
   /**
    * Display name of the provider
@@ -38,6 +70,34 @@ export type ListProvidersData = {
 export type ListProvidersResponse = {
   data: Array<ListProvidersData>;
 };
+
+/** @internal */
+export type ListProvidersRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const ListProvidersRequest$outboundSchema: z.ZodType<
+  ListProvidersRequest$Outbound,
+  ListProvidersRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function listProvidersRequestToJSON(
+  listProvidersRequest: ListProvidersRequest,
+): string {
+  return JSON.stringify(
+    ListProvidersRequest$outboundSchema.parse(listProvidersRequest),
+  );
+}
 
 /** @internal */
 export const ListProvidersData$inboundSchema: z.ZodType<

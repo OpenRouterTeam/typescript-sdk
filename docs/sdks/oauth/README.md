@@ -20,12 +20,16 @@ Exchange an authorization code from the PKCE flow for a user-controlled API key
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.oAuth.exchangeAuthCodeForAPIKey({
-    code: "auth_code_abc123def456",
+    requestBody: {
+      code: "auth_code_abc123def456",
+    },
   });
 
   console.log(result);
@@ -45,12 +49,16 @@ import { oAuthExchangeAuthCodeForAPIKey } from "@openrouter/sdk/funcs/oAuthExcha
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await oAuthExchangeAuthCodeForAPIKey(openRouter, {
-    code: "auth_code_abc123def456",
+    requestBody: {
+      code: "auth_code_abc123def456",
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -96,12 +104,16 @@ Create an authorization code for the PKCE flow to generate a user-controlled API
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const result = await openRouter.oAuth.createAuthCode({
-    callbackUrl: "https://myapp.com/auth/callback",
+    requestBody: {
+      callbackUrl: "https://myapp.com/auth/callback",
+    },
   });
 
   console.log(result);
@@ -121,12 +133,16 @@ import { oAuthCreateAuthCode } from "@openrouter/sdk/funcs/oAuthCreateAuthCode.j
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
   const res = await oAuthCreateAuthCode(openRouter, {
-    callbackUrl: "https://myapp.com/auth/callback",
+    requestBody: {
+      callbackUrl: "https://myapp.com/auth/callback",
+    },
   });
   if (res.ok) {
     const { value: result } = res;

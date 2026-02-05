@@ -4,9 +4,42 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../../lib/primitives.js";
+
+export type ListModelsUserGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
 
 export type ListModelsUserSecurity = {
   bearer: string;
+};
+
+export type ListModelsUserRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
 };
 
 /** @internal */
@@ -27,5 +60,33 @@ export function listModelsUserSecurityToJSON(
 ): string {
   return JSON.stringify(
     ListModelsUserSecurity$outboundSchema.parse(listModelsUserSecurity),
+  );
+}
+
+/** @internal */
+export type ListModelsUserRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const ListModelsUserRequest$outboundSchema: z.ZodType<
+  ListModelsUserRequest$Outbound,
+  ListModelsUserRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function listModelsUserRequestToJSON(
+  listModelsUserRequest: ListModelsUserRequest,
+): string {
+  return JSON.stringify(
+    ListModelsUserRequest$outboundSchema.parse(listModelsUserRequest),
   );
 }

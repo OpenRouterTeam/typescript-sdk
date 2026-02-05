@@ -4435,6 +4435,9 @@ components:
               required:
                 - ephemeral_5m_input_tokens
                 - ephemeral_1h_input_tokens
+            inference_geo:
+              type: string
+              nullable: true
             server_tool_use:
               type: object
               nullable: true
@@ -4457,6 +4460,7 @@ components:
             - cache_creation_input_tokens
             - cache_read_input_tokens
             - cache_creation
+            - inference_geo
             - server_tool_use
             - service_tier
       required:
@@ -4491,6 +4495,7 @@ components:
           cache_creation_input_tokens: null
           cache_read_input_tokens: null
           cache_creation: null
+          inference_geo: null
           server_tool_use: null
           service_tier: standard
     AnthropicMessagesStreamEvent:
@@ -4811,6 +4816,9 @@ components:
                       required:
                         - ephemeral_5m_input_tokens
                         - ephemeral_1h_input_tokens
+                    inference_geo:
+                      type: string
+                      nullable: true
                     server_tool_use:
                       type: object
                       nullable: true
@@ -4833,6 +4841,7 @@ components:
                     - cache_creation_input_tokens
                     - cache_read_input_tokens
                     - cache_creation
+                    - inference_geo
                     - server_tool_use
                     - service_tier
               required:
@@ -6560,8 +6569,9 @@ components:
             - low
             - medium
             - high
+            - max
           description: >-
-            How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer. Valid values are `low`, `medium`, or `high`.
+            How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer. Valid values are `low`, `medium`, `high`, or `max`.
           example: medium
           x-speakeasy-unknown-values: allow
       description: Configuration for controlling output behavior. Currently supports the effort parameter for Claude Opus 4.5.
@@ -6981,6 +6991,14 @@ components:
                   type: string
                   enum:
                     - disabled
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - adaptive
               required:
                 - type
         service_tier:
@@ -9592,6 +9610,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createResponses
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /messages:
     post:
       x-speakeasy-ignore: true
@@ -9820,6 +9841,9 @@ paths:
                   - type
                   - error
       operationId: createMessages
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /activity:
     get:
       tags:
@@ -9889,6 +9913,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /credits:
     get:
       x-speakeasy-name-override: getCredits
@@ -9948,6 +9975,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /credits/coinbase:
     post:
       security:
@@ -10070,6 +10100,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /embeddings:
     post:
       x-speakeasy-name-override: generate
@@ -10274,6 +10307,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createEmbeddings
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /embeddings/models:
     get:
       tags:
@@ -10301,6 +10337,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEmbeddingsModels
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /generation:
     get:
       tags:
@@ -10699,6 +10738,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: getGeneration
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/count:
     get:
       tags:
@@ -10719,6 +10761,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsCount
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models:
     get:
       tags:
@@ -10773,6 +10818,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: getModels
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/user:
     get:
       tags:
@@ -10809,6 +10857,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsUser
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/{author}/{slug}/endpoints:
     get:
       tags:
@@ -10851,6 +10902,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /endpoints/zdr:
     get:
       tags:
@@ -10878,6 +10932,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEndpointsZdr
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /providers:
     get:
       tags:
@@ -10939,6 +10996,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /keys:
     get:
       operationId: list
@@ -11382,6 +11442,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: createKeys
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /keys/{hash}:
     patch:
       x-speakeasy-name-override: update
@@ -11879,6 +11942,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails:
     get:
       operationId: listGuardrails
@@ -12251,6 +12317,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}:
     get:
       operationId: getGuardrail
@@ -12668,6 +12737,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/assignments/keys:
     get:
       operationId: listKeyAssignments
@@ -12766,6 +12838,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/assignments/members:
     get:
       operationId: listMemberAssignments
@@ -12859,6 +12934,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/keys:
     get:
       operationId: listGuardrailKeyAssignments
@@ -13046,6 +13124,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/members:
     get:
       operationId: listGuardrailMemberAssignments
@@ -13229,6 +13310,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/keys/remove:
     post:
       operationId: bulkUnassignKeysFromGuardrail
@@ -13304,6 +13388,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/members/remove:
     post:
       operationId: bulkUnassignMembersFromGuardrail
@@ -13380,6 +13467,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /key:
     get:
       operationId: getCurrentKey
@@ -13568,6 +13658,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /auth/keys:
     post:
       operationId: exchangeAuthCodeForAPIKey
@@ -13646,6 +13739,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /auth/keys/code:
     post:
       x-speakeasy-name-override: createAuthCode
@@ -13747,6 +13843,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: createAuthKeysCode
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /chat/completions:
     post:
       summary: Create a chat completion
@@ -13801,6 +13900,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatError'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server

@@ -11,6 +11,22 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type CreateGuardrailGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * Interval at which the limit resets (daily, weekly, monthly)
  */
@@ -26,7 +42,7 @@ export type CreateGuardrailResetIntervalRequest = OpenEnum<
   typeof CreateGuardrailResetIntervalRequest
 >;
 
-export type CreateGuardrailRequest = {
+export type CreateGuardrailRequestBody = {
   /**
    * Name for the new guardrail
    */
@@ -55,6 +71,23 @@ export type CreateGuardrailRequest = {
    * Whether to enforce zero data retention
    */
   enforceZdr?: boolean | null | undefined;
+};
+
+export type CreateGuardrailRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  requestBody: CreateGuardrailRequestBody;
 };
 
 /**
@@ -135,7 +168,7 @@ export const CreateGuardrailResetIntervalRequest$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(CreateGuardrailResetIntervalRequest);
 
 /** @internal */
-export type CreateGuardrailRequest$Outbound = {
+export type CreateGuardrailRequestBody$Outbound = {
   name: string;
   description?: string | null | undefined;
   limit_usd?: number | null | undefined;
@@ -146,9 +179,9 @@ export type CreateGuardrailRequest$Outbound = {
 };
 
 /** @internal */
-export const CreateGuardrailRequest$outboundSchema: z.ZodType<
-  CreateGuardrailRequest$Outbound,
-  CreateGuardrailRequest
+export const CreateGuardrailRequestBody$outboundSchema: z.ZodType<
+  CreateGuardrailRequestBody$Outbound,
+  CreateGuardrailRequestBody
 > = z.object({
   name: z.string(),
   description: z.nullable(z.string()).optional(),
@@ -165,6 +198,37 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
     allowedProviders: "allowed_providers",
     allowedModels: "allowed_models",
     enforceZdr: "enforce_zdr",
+  });
+});
+
+export function createGuardrailRequestBodyToJSON(
+  createGuardrailRequestBody: CreateGuardrailRequestBody,
+): string {
+  return JSON.stringify(
+    CreateGuardrailRequestBody$outboundSchema.parse(createGuardrailRequestBody),
+  );
+}
+
+/** @internal */
+export type CreateGuardrailRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  RequestBody: CreateGuardrailRequestBody$Outbound;
+};
+
+/** @internal */
+export const CreateGuardrailRequest$outboundSchema: z.ZodType<
+  CreateGuardrailRequest$Outbound,
+  CreateGuardrailRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  requestBody: z.lazy(() => CreateGuardrailRequestBody$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    requestBody: "RequestBody",
   });
 });
 

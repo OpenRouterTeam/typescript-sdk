@@ -13,10 +13,12 @@ export class Providers extends ClientSDK {
    * List all providers
    */
   async list(
+    request?: operations.ListProvidersRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.ListProvidersResponse> {
     return unwrapAsync(providersList(
       this,
+      request,
       options,
     ));
   }

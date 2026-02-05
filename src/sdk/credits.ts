@@ -6,7 +6,6 @@
 import { creditsCreateCoinbaseCharge } from "../funcs/creditsCreateCoinbaseCharge.js";
 import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -18,10 +17,12 @@ export class Credits extends ClientSDK {
    * Get total credits purchased and used for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
    */
   async getCredits(
+    request?: operations.GetCreditsRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.GetCreditsResponse> {
     return unwrapAsync(creditsGetCredits(
       this,
+      request,
       options,
     ));
   }
@@ -34,7 +35,7 @@ export class Credits extends ClientSDK {
    */
   async createCoinbaseCharge(
     security: operations.CreateCoinbaseChargeSecurity,
-    request: models.CreateChargeRequest,
+    request: operations.CreateCoinbaseChargeRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateCoinbaseChargeResponse> {
     return unwrapAsync(creditsCreateCoinbaseCharge(
