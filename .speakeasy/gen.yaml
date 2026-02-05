@@ -16,6 +16,7 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
+    sharedNestedComponentsJan2026: false
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
@@ -32,8 +33,9 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
+  versioningStrategy: automatic
 typescript:
-  version: 0.7.0
+  version: 0.8.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -76,6 +78,7 @@ typescript:
   enumFormat: union
   envVarPrefix: OPENROUTER
   exportZodModelNamespace: false
+  flatAdditionalProperties: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
   formStringArrayEncodeMode: encoded-string
@@ -95,6 +98,7 @@ typescript:
   inputModelSuffix: input
   jsonpath: rfc9535
   laxMode: strict
+  legacyFileNaming: true
   maxMethodParams: 0
   methodArguments: infer-optional-args
   modelPropertyCasing: camel
@@ -103,6 +107,7 @@ typescript:
   outputModelSuffix: output
   packageName: '@openrouter/sdk'
   preApplyUnionDiscriminators: true
+  preserveModelFieldNames: false
   responseFormat: flat
   sseFlatResponse: true
   templateVersion: v2

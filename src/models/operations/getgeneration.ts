@@ -11,7 +11,36 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type GetGenerationGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type GetGenerationRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   id: string;
 };
 
@@ -295,6 +324,8 @@ export type GetGenerationResponse = {
 
 /** @internal */
 export type GetGenerationRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   id: string;
 };
 
@@ -303,7 +334,14 @@ export const GetGenerationRequest$outboundSchema: z.ZodType<
   GetGenerationRequest$Outbound,
   GetGenerationRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   id: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
 });
 
 export function getGenerationRequestToJSON(

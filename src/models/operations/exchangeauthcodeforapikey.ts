@@ -11,6 +11,22 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type ExchangeAuthCodeForAPIKeyGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * The method used to generate the code challenge
  */
@@ -25,7 +41,7 @@ export type ExchangeAuthCodeForAPIKeyCodeChallengeMethod = OpenEnum<
   typeof ExchangeAuthCodeForAPIKeyCodeChallengeMethod
 >;
 
-export type ExchangeAuthCodeForAPIKeyRequest = {
+export type ExchangeAuthCodeForAPIKeyRequestBody = {
   /**
    * The authorization code received from the OAuth redirect
    */
@@ -41,6 +57,23 @@ export type ExchangeAuthCodeForAPIKeyRequest = {
     | ExchangeAuthCodeForAPIKeyCodeChallengeMethod
     | null
     | undefined;
+};
+
+export type ExchangeAuthCodeForAPIKeyRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  requestBody: ExchangeAuthCodeForAPIKeyRequestBody;
 };
 
 /**
@@ -63,16 +96,16 @@ export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema:
     .outboundSchema(ExchangeAuthCodeForAPIKeyCodeChallengeMethod);
 
 /** @internal */
-export type ExchangeAuthCodeForAPIKeyRequest$Outbound = {
+export type ExchangeAuthCodeForAPIKeyRequestBody$Outbound = {
   code: string;
   code_verifier?: string | undefined;
   code_challenge_method?: string | null | undefined;
 };
 
 /** @internal */
-export const ExchangeAuthCodeForAPIKeyRequest$outboundSchema: z.ZodType<
-  ExchangeAuthCodeForAPIKeyRequest$Outbound,
-  ExchangeAuthCodeForAPIKeyRequest
+export const ExchangeAuthCodeForAPIKeyRequestBody$outboundSchema: z.ZodType<
+  ExchangeAuthCodeForAPIKeyRequestBody$Outbound,
+  ExchangeAuthCodeForAPIKeyRequestBody
 > = z.object({
   code: z.string(),
   codeVerifier: z.string().optional(),
@@ -83,6 +116,41 @@ export const ExchangeAuthCodeForAPIKeyRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     codeVerifier: "code_verifier",
     codeChallengeMethod: "code_challenge_method",
+  });
+});
+
+export function exchangeAuthCodeForAPIKeyRequestBodyToJSON(
+  exchangeAuthCodeForAPIKeyRequestBody: ExchangeAuthCodeForAPIKeyRequestBody,
+): string {
+  return JSON.stringify(
+    ExchangeAuthCodeForAPIKeyRequestBody$outboundSchema.parse(
+      exchangeAuthCodeForAPIKeyRequestBody,
+    ),
+  );
+}
+
+/** @internal */
+export type ExchangeAuthCodeForAPIKeyRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  RequestBody: ExchangeAuthCodeForAPIKeyRequestBody$Outbound;
+};
+
+/** @internal */
+export const ExchangeAuthCodeForAPIKeyRequest$outboundSchema: z.ZodType<
+  ExchangeAuthCodeForAPIKeyRequest$Outbound,
+  ExchangeAuthCodeForAPIKeyRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  requestBody: z.lazy(() =>
+    ExchangeAuthCodeForAPIKeyRequestBody$outboundSchema
+  ),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    requestBody: "RequestBody",
   });
 });
 

@@ -11,6 +11,22 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type CreateAuthKeysCodeGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * The method used to generate the code challenge
  */
@@ -25,7 +41,7 @@ export type CreateAuthKeysCodeCodeChallengeMethod = OpenEnum<
   typeof CreateAuthKeysCodeCodeChallengeMethod
 >;
 
-export type CreateAuthKeysCodeRequest = {
+export type CreateAuthKeysCodeRequestBody = {
   /**
    * The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
    */
@@ -46,6 +62,23 @@ export type CreateAuthKeysCodeRequest = {
    * Optional expiration time for the API key to be created
    */
   expiresAt?: Date | null | undefined;
+};
+
+export type CreateAuthKeysCodeRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  requestBody: CreateAuthKeysCodeRequestBody;
 };
 
 /**
@@ -83,7 +116,7 @@ export const CreateAuthKeysCodeCodeChallengeMethod$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(CreateAuthKeysCodeCodeChallengeMethod);
 
 /** @internal */
-export type CreateAuthKeysCodeRequest$Outbound = {
+export type CreateAuthKeysCodeRequestBody$Outbound = {
   callback_url: string;
   code_challenge?: string | undefined;
   code_challenge_method?: string | undefined;
@@ -92,9 +125,9 @@ export type CreateAuthKeysCodeRequest$Outbound = {
 };
 
 /** @internal */
-export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
-  CreateAuthKeysCodeRequest$Outbound,
-  CreateAuthKeysCodeRequest
+export const CreateAuthKeysCodeRequestBody$outboundSchema: z.ZodType<
+  CreateAuthKeysCodeRequestBody$Outbound,
+  CreateAuthKeysCodeRequestBody
 > = z.object({
   callbackUrl: z.string(),
   codeChallenge: z.string().optional(),
@@ -108,6 +141,39 @@ export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
     codeChallenge: "code_challenge",
     codeChallengeMethod: "code_challenge_method",
     expiresAt: "expires_at",
+  });
+});
+
+export function createAuthKeysCodeRequestBodyToJSON(
+  createAuthKeysCodeRequestBody: CreateAuthKeysCodeRequestBody,
+): string {
+  return JSON.stringify(
+    CreateAuthKeysCodeRequestBody$outboundSchema.parse(
+      createAuthKeysCodeRequestBody,
+    ),
+  );
+}
+
+/** @internal */
+export type CreateAuthKeysCodeRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  RequestBody: CreateAuthKeysCodeRequestBody$Outbound;
+};
+
+/** @internal */
+export const CreateAuthKeysCodeRequest$outboundSchema: z.ZodType<
+  CreateAuthKeysCodeRequest$Outbound,
+  CreateAuthKeysCodeRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  requestBody: z.lazy(() => CreateAuthKeysCodeRequestBody$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    requestBody: "RequestBody",
   });
 });
 

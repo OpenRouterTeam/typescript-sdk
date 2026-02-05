@@ -11,6 +11,22 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type CreateKeysGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
@@ -24,7 +40,7 @@ export const CreateKeysLimitReset = {
  */
 export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
-export type CreateKeysRequest = {
+export type CreateKeysRequestBody = {
   /**
    * Name for the new API key
    */
@@ -45,6 +61,23 @@ export type CreateKeysRequest = {
    * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
    */
   expiresAt?: Date | null | undefined;
+};
+
+export type CreateKeysRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  requestBody: CreateKeysRequestBody;
 };
 
 /**
@@ -150,7 +183,7 @@ export const CreateKeysLimitReset$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(CreateKeysLimitReset);
 
 /** @internal */
-export type CreateKeysRequest$Outbound = {
+export type CreateKeysRequestBody$Outbound = {
   name: string;
   limit?: number | null | undefined;
   limit_reset?: string | null | undefined;
@@ -159,9 +192,9 @@ export type CreateKeysRequest$Outbound = {
 };
 
 /** @internal */
-export const CreateKeysRequest$outboundSchema: z.ZodType<
-  CreateKeysRequest$Outbound,
-  CreateKeysRequest
+export const CreateKeysRequestBody$outboundSchema: z.ZodType<
+  CreateKeysRequestBody$Outbound,
+  CreateKeysRequestBody
 > = z.object({
   name: z.string(),
   limit: z.nullable(z.number()).optional(),
@@ -173,6 +206,37 @@ export const CreateKeysRequest$outboundSchema: z.ZodType<
     limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
     expiresAt: "expires_at",
+  });
+});
+
+export function createKeysRequestBodyToJSON(
+  createKeysRequestBody: CreateKeysRequestBody,
+): string {
+  return JSON.stringify(
+    CreateKeysRequestBody$outboundSchema.parse(createKeysRequestBody),
+  );
+}
+
+/** @internal */
+export type CreateKeysRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  RequestBody: CreateKeysRequestBody$Outbound;
+};
+
+/** @internal */
+export const CreateKeysRequest$outboundSchema: z.ZodType<
+  CreateKeysRequest$Outbound,
+  CreateKeysRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  requestBody: z.lazy(() => CreateKeysRequestBody$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    requestBody: "RequestBody",
   });
 });
 

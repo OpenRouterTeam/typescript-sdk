@@ -11,7 +11,7 @@ Credit management endpoints
 
 ## getCredits
 
-Get total credits purchased and used for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -20,6 +20,8 @@ Get total credits purchased and used for the authenticated user. [Provisioning k
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -43,6 +45,8 @@ import { creditsGetCredits } from "@openrouter/sdk/funcs/creditsGetCredits.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -63,6 +67,7 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.GetCreditsRequest](../../models/operations/getcreditsrequest.md)                                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -90,15 +95,20 @@ Create a Coinbase charge for crypto payment
 ```typescript
 import { OpenRouter } from "@openrouter/sdk";
 
-const openRouter = new OpenRouter();
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  xTitle: "<value>",
+});
 
 async function run() {
   const result = await openRouter.credits.createCoinbaseCharge({
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   }, {
-    amount: 100,
-    sender: "0x1234567890123456789012345678901234567890",
-    chainId: 1,
+    createChargeRequest: {
+      amount: 100,
+      sender: "0x1234567890123456789012345678901234567890",
+      chainId: 1,
+    },
   });
 
   console.log(result);
@@ -117,15 +127,20 @@ import { creditsCreateCoinbaseCharge } from "@openrouter/sdk/funcs/creditsCreate
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
-const openRouter = new OpenRouterCore();
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
+});
 
 async function run() {
   const res = await creditsCreateCoinbaseCharge(openRouter, {
     bearer: process.env["OPENROUTER_BEARER"] ?? "",
   }, {
-    amount: 100,
-    sender: "0x1234567890123456789012345678901234567890",
-    chainId: 1,
+    createChargeRequest: {
+      amount: 100,
+      sender: "0x1234567890123456789012345678901234567890",
+      chainId: 1,
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -142,7 +157,7 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [models.CreateChargeRequest](../../models/createchargerequest.md)                                                                                                              | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.CreateCoinbaseChargeRequest](../../models/operations/createcoinbasechargerequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `security`                                                                                                                                                                     | [operations.CreateCoinbaseChargeSecurity](../../models/operations/createcoinbasechargesecurity.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |

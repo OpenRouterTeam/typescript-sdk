@@ -9,7 +9,36 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type ListKeyAssignmentsGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type ListKeyAssignmentsRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   /**
    * Number of records to skip for pagination
    */
@@ -67,6 +96,8 @@ export type ListKeyAssignmentsResponse = {
 
 /** @internal */
 export type ListKeyAssignmentsRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   offset?: string | undefined;
   limit?: string | undefined;
 };
@@ -76,8 +107,15 @@ export const ListKeyAssignmentsRequest$outboundSchema: z.ZodType<
   ListKeyAssignmentsRequest$Outbound,
   ListKeyAssignmentsRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
 });
 
 export function listKeyAssignmentsRequestToJSON(

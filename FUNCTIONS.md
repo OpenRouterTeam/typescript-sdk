@@ -25,11 +25,15 @@ import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  xTitle: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
 async function run() {
-  const res = await betaResponsesSend(openRouter, {});
+  const res = await betaResponsesSend(openRouter, {
+    openResponsesRequest: {},
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
