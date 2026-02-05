@@ -9,7 +9,36 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type ListGuardrailMemberAssignmentsGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type ListGuardrailMemberAssignmentsRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   /**
    * The unique identifier of the guardrail
    */
@@ -67,6 +96,8 @@ export type ListGuardrailMemberAssignmentsResponse = {
 
 /** @internal */
 export type ListGuardrailMemberAssignmentsRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   id: string;
   offset?: string | undefined;
   limit?: string | undefined;
@@ -77,9 +108,16 @@ export const ListGuardrailMemberAssignmentsRequest$outboundSchema: z.ZodType<
   ListGuardrailMemberAssignmentsRequest$Outbound,
   ListGuardrailMemberAssignmentsRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   id: z.string(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
 });
 
 export function listGuardrailMemberAssignmentsRequestToJSON(

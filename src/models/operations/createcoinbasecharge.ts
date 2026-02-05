@@ -8,9 +8,43 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
+
+export type CreateCoinbaseChargeGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
 
 export type CreateCoinbaseChargeSecurity = {
   bearer: string;
+};
+
+export type CreateCoinbaseChargeRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  createChargeRequest: models.CreateChargeRequest;
 };
 
 export type CallData = {
@@ -74,6 +108,39 @@ export function createCoinbaseChargeSecurityToJSON(
   return JSON.stringify(
     CreateCoinbaseChargeSecurity$outboundSchema.parse(
       createCoinbaseChargeSecurity,
+    ),
+  );
+}
+
+/** @internal */
+export type CreateCoinbaseChargeRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  CreateChargeRequest: models.CreateChargeRequest$Outbound;
+};
+
+/** @internal */
+export const CreateCoinbaseChargeRequest$outboundSchema: z.ZodType<
+  CreateCoinbaseChargeRequest$Outbound,
+  CreateCoinbaseChargeRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  createChargeRequest: models.CreateChargeRequest$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    createChargeRequest: "CreateChargeRequest",
+  });
+});
+
+export function createCoinbaseChargeRequestToJSON(
+  createCoinbaseChargeRequest: CreateCoinbaseChargeRequest,
+): string {
+  return JSON.stringify(
+    CreateCoinbaseChargeRequest$outboundSchema.parse(
+      createCoinbaseChargeRequest,
     ),
   );
 }

@@ -9,6 +9,22 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type BulkUnassignMembersFromGuardrailGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type BulkUnassignMembersFromGuardrailRequestBody = {
   /**
    * Array of member user IDs to unassign from the guardrail
@@ -17,6 +33,19 @@ export type BulkUnassignMembersFromGuardrailRequestBody = {
 };
 
 export type BulkUnassignMembersFromGuardrailRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   /**
    * The unique identifier of the guardrail
    */
@@ -65,6 +94,8 @@ export function bulkUnassignMembersFromGuardrailRequestBodyToJSON(
 
 /** @internal */
 export type BulkUnassignMembersFromGuardrailRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   id: string;
   RequestBody: BulkUnassignMembersFromGuardrailRequestBody$Outbound;
 };
@@ -74,12 +105,16 @@ export const BulkUnassignMembersFromGuardrailRequest$outboundSchema: z.ZodType<
   BulkUnassignMembersFromGuardrailRequest$Outbound,
   BulkUnassignMembersFromGuardrailRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   id: z.string(),
   requestBody: z.lazy(() =>
     BulkUnassignMembersFromGuardrailRequestBody$outboundSchema
   ),
 }).transform((v) => {
   return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

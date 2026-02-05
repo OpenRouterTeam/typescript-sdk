@@ -5,14 +5,84 @@
 
 import * as z from "zod/v4";
 import { EventStream } from "../../lib/event-streams.js";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
+export type SendChatCompletionRequestGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type SendChatCompletionRequestRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  /**
+   * Chat completion request parameters
+   */
+  chatGenerationParams: models.ChatGenerationParams;
+};
+
 export type SendChatCompletionRequestResponse =
   | models.ChatResponse
   | EventStream<models.ChatStreamingResponseChunkData>;
+
+/** @internal */
+export type SendChatCompletionRequestRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  ChatGenerationParams: models.ChatGenerationParams$Outbound;
+};
+
+/** @internal */
+export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
+  SendChatCompletionRequestRequest$Outbound,
+  SendChatCompletionRequestRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  chatGenerationParams: models.ChatGenerationParams$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    chatGenerationParams: "ChatGenerationParams",
+  });
+});
+
+export function sendChatCompletionRequestRequestToJSON(
+  sendChatCompletionRequestRequest: SendChatCompletionRequestRequest,
+): string {
+  return JSON.stringify(
+    SendChatCompletionRequestRequest$outboundSchema.parse(
+      sendChatCompletionRequestRequest,
+    ),
+  );
+}
 
 /** @internal */
 export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<

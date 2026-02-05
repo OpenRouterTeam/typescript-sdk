@@ -9,6 +9,38 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type GetCurrentKeyGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type GetCurrentKeyRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * Legacy rate limit information about a key. Will always return -1.
  *
@@ -78,7 +110,7 @@ export type GetCurrentKeyData = {
    */
   isFreeTier: boolean;
   /**
-   * Whether this is a provisioning key
+   * Whether this is a management key
    */
   isProvisioningKey: boolean;
   /**
@@ -114,6 +146,34 @@ export type GetCurrentKeyResponse = {
    */
   data: GetCurrentKeyData;
 };
+
+/** @internal */
+export type GetCurrentKeyRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const GetCurrentKeyRequest$outboundSchema: z.ZodType<
+  GetCurrentKeyRequest$Outbound,
+  GetCurrentKeyRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function getCurrentKeyRequestToJSON(
+  getCurrentKeyRequest: GetCurrentKeyRequest,
+): string {
+  return JSON.stringify(
+    GetCurrentKeyRequest$outboundSchema.parse(getCurrentKeyRequest),
+  );
+}
 
 /** @internal */
 export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({

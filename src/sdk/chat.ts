@@ -18,19 +18,23 @@ export class Chat extends ClientSDK {
    * Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming modes.
    */
   async send(
-    request: models.ChatGenerationParams & { stream?: false | undefined },
+    request: operations.SendChatCompletionRequestRequest & {
+      chatGenerationParams: { stream?: false | undefined };
+    },
     options?: RequestOptions,
   ): Promise<models.ChatResponse>;
   async send(
-    request: models.ChatGenerationParams & { stream: true },
+    request: operations.SendChatCompletionRequestRequest & {
+      chatGenerationParams: { stream: true };
+    },
     options?: RequestOptions,
   ): Promise<EventStream<models.ChatStreamingResponseChunkData>>;
   async send(
-    request: models.ChatGenerationParams,
+    request: operations.SendChatCompletionRequestRequest,
     options?: RequestOptions,
   ): Promise<operations.SendChatCompletionRequestResponse>;
   async send(
-    request: models.ChatGenerationParams,
+    request: operations.SendChatCompletionRequestRequest,
     options?: RequestOptions,
   ): Promise<operations.SendChatCompletionRequestResponse> {
     return unwrapAsync(chatSend(

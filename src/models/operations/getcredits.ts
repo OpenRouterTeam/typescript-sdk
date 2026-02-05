@@ -9,6 +9,38 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type GetCreditsGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type GetCreditsRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type GetCreditsData = {
   /**
    * Total credits purchased
@@ -26,6 +58,34 @@ export type GetCreditsData = {
 export type GetCreditsResponse = {
   data: GetCreditsData;
 };
+
+/** @internal */
+export type GetCreditsRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const GetCreditsRequest$outboundSchema: z.ZodType<
+  GetCreditsRequest$Outbound,
+  GetCreditsRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function getCreditsRequestToJSON(
+  getCreditsRequest: GetCreditsRequest,
+): string {
+  return JSON.stringify(
+    GetCreditsRequest$outboundSchema.parse(getCreditsRequest),
+  );
+}
 
 /** @internal */
 export const GetCreditsData$inboundSchema: z.ZodType<GetCreditsData, unknown> =

@@ -33,3 +33,11 @@ actions:
             type: string
           description: |
             The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+
+  # Add header parameters to all paths so Speakeasy matches them with globals
+  - target: $.paths[*]
+    description: Reference app identification headers on all paths so Speakeasy injects them via globals
+    update:
+      parameters:
+        - $ref: "#/components/parameters/AppIdentifier"
+        - $ref: "#/components/parameters/AppDisplayName"

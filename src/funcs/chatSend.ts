@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -36,7 +36,9 @@ import { Result } from "../types/fp.js";
  */
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams & { stream?: false },
+  request: operations.SendChatCompletionRequestRequest & {
+    chatGenerationParams: { stream?: false };
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -54,7 +56,9 @@ export function chatSend(
 >;
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams & { stream: true },
+  request: operations.SendChatCompletionRequestRequest & {
+    chatGenerationParams: { stream: true };
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -72,7 +76,7 @@ export function chatSend(
 >;
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams,
+  request: operations.SendChatCompletionRequestRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -90,7 +94,7 @@ export function chatSend(
 >;
 export function chatSend(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams,
+  request: operations.SendChatCompletionRequestRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -115,7 +119,7 @@ export function chatSend(
 
 async function $do(
   client: OpenRouterCore,
-  request: models.ChatGenerationParams,
+  request: operations.SendChatCompletionRequestRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -136,20 +140,35 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => models.ChatGenerationParams$outboundSchema.parse(value),
+    (value) =>
+      operations.SendChatCompletionRequestRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload.ChatGenerationParams, {
+    explode: true,
+  });
 
   const path = pathToFunc("/chat/completions")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: request?.stream ? "text/event-stream" : "application/json",
+    Accept: request?.chatGenerationParams?.stream
+      ? "text/event-stream"
+      : "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
