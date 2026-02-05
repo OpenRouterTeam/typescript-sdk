@@ -4,8 +4,10 @@
  */
 
 import { OpenRouterCore } from "../core.js";
+import { encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -32,6 +34,7 @@ import { Result } from "../types/fp.js";
  */
 export function apiKeysGetCurrentKeyMetadata(
   client: OpenRouterCore,
+  request?: operations.GetCurrentKeyRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -50,12 +53,14 @@ export function apiKeysGetCurrentKeyMetadata(
 > {
   return new APIPromise($do(
     client,
+    request,
     options,
   ));
 }
 
 async function $do(
   client: OpenRouterCore,
+  request?: operations.GetCurrentKeyRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
@@ -75,10 +80,32 @@ async function $do(
     APICall,
   ]
 > {
+  const parsed = safeParse(
+    request,
+    (value) =>
+      operations.GetCurrentKeyRequest$outboundSchema.optional().parse(value),
+    "Input validation failed",
+  );
+  if (!parsed.ok) {
+    return [parsed, { status: "invalid" }];
+  }
+  const payload = parsed.value;
+  const body = null;
+
   const path = pathToFunc("/key")();
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload?.["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload?.["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);
@@ -106,6 +133,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);

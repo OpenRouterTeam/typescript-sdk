@@ -9,6 +9,22 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type BulkUnassignKeysFromGuardrailGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type BulkUnassignKeysFromGuardrailRequestBody = {
   /**
    * Array of API key hashes to unassign from the guardrail
@@ -17,6 +33,19 @@ export type BulkUnassignKeysFromGuardrailRequestBody = {
 };
 
 export type BulkUnassignKeysFromGuardrailRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   /**
    * The unique identifier of the guardrail
    */
@@ -64,6 +93,8 @@ export function bulkUnassignKeysFromGuardrailRequestBodyToJSON(
 
 /** @internal */
 export type BulkUnassignKeysFromGuardrailRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   id: string;
   RequestBody: BulkUnassignKeysFromGuardrailRequestBody$Outbound;
 };
@@ -73,12 +104,16 @@ export const BulkUnassignKeysFromGuardrailRequest$outboundSchema: z.ZodType<
   BulkUnassignKeysFromGuardrailRequest$Outbound,
   BulkUnassignKeysFromGuardrailRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   id: z.string(),
   requestBody: z.lazy(() =>
     BulkUnassignKeysFromGuardrailRequestBody$outboundSchema
   ),
 }).transform((v) => {
   return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

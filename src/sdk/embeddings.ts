@@ -35,10 +35,12 @@ export class Embeddings extends ClientSDK {
    * Returns a list of all available embeddings models and their properties
    */
   async listModels(
+    request?: operations.ListEmbeddingsModelsRequest | undefined,
     options?: RequestOptions,
   ): Promise<models.ModelsListResponse> {
     return unwrapAsync(embeddingsListModels(
       this,
+      request,
       options,
     ));
   }

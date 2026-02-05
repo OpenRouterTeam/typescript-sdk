@@ -12,6 +12,22 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
+export type CreateEmbeddingsGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 export type ImageUrl = {
   url: string;
 };
@@ -45,7 +61,7 @@ export const EncodingFormat = {
 } as const;
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
-export type CreateEmbeddingsRequest = {
+export type CreateEmbeddingsRequestBody = {
   input:
     | string
     | Array<string>
@@ -61,6 +77,23 @@ export type CreateEmbeddingsRequest = {
    */
   provider?: models.ProviderPreferences | undefined;
   inputType?: string | undefined;
+};
+
+export type CreateEmbeddingsRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  requestBody: CreateEmbeddingsRequestBody;
 };
 
 export const ObjectT = {
@@ -221,7 +254,7 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
-export type CreateEmbeddingsRequest$Outbound = {
+export type CreateEmbeddingsRequestBody$Outbound = {
   input:
     | string
     | Array<string>
@@ -237,9 +270,9 @@ export type CreateEmbeddingsRequest$Outbound = {
 };
 
 /** @internal */
-export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
-  CreateEmbeddingsRequest$Outbound,
-  CreateEmbeddingsRequest
+export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
+  CreateEmbeddingsRequestBody$Outbound,
+  CreateEmbeddingsRequestBody
 > = z.object({
   input: z.union([
     z.string(),
@@ -258,6 +291,39 @@ export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     encodingFormat: "encoding_format",
     inputType: "input_type",
+  });
+});
+
+export function createEmbeddingsRequestBodyToJSON(
+  createEmbeddingsRequestBody: CreateEmbeddingsRequestBody,
+): string {
+  return JSON.stringify(
+    CreateEmbeddingsRequestBody$outboundSchema.parse(
+      createEmbeddingsRequestBody,
+    ),
+  );
+}
+
+/** @internal */
+export type CreateEmbeddingsRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  RequestBody: CreateEmbeddingsRequestBody$Outbound;
+};
+
+/** @internal */
+export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
+  CreateEmbeddingsRequest$Outbound,
+  CreateEmbeddingsRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  requestBody: z.lazy(() => CreateEmbeddingsRequestBody$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    requestBody: "RequestBody",
   });
 });
 

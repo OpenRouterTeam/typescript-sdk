@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -22,7 +22,6 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -36,7 +35,7 @@ import { Result } from "../types/fp.js";
 export function creditsCreateCoinbaseCharge(
   client: OpenRouterCore,
   security: operations.CreateCoinbaseChargeSecurity,
-  request: models.CreateChargeRequest,
+  request: operations.CreateCoinbaseChargeRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -66,7 +65,7 @@ export function creditsCreateCoinbaseCharge(
 async function $do(
   client: OpenRouterCore,
   security: operations.CreateCoinbaseChargeSecurity,
-  request: models.CreateChargeRequest,
+  request: operations.CreateCoinbaseChargeRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -90,20 +89,33 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => models.CreateChargeRequest$outboundSchema.parse(value),
+    (value) =>
+      operations.CreateCoinbaseChargeRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload.CreateChargeRequest, {
+    explode: true,
+  });
 
   const path = pathToFunc("/credits/coinbase")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const requestSecurity = resolveSecurity(

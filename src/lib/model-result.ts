@@ -703,7 +703,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
 
     const newResult = await betaResponsesSend(
       this.options.client,
-      newRequest,
+      { openResponsesRequest: newRequest },
       this.options.options,
     );
 
@@ -879,7 +879,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
       // Make the API request
       const apiResult = await betaResponsesSend(
         this.options.client,
-        request,
+        { openResponsesRequest: request },
         this.options.options,
       );
 
@@ -1024,7 +1024,7 @@ export class ModelResult<TTools extends readonly Tool[]> {
     // Make the API request
     const apiResult = await betaResponsesSend(
       this.options.client,
-      request,
+      { openResponsesRequest: request },
       this.options.options,
     );
 

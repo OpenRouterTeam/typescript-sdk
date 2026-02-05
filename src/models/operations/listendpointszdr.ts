@@ -4,10 +4,43 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
+
+export type ListEndpointsZdrGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type ListEndpointsZdrRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
 
 /**
  * Returns a list of endpoints
@@ -15,6 +48,34 @@ import * as models from "../index.js";
 export type ListEndpointsZdrResponse = {
   data: Array<models.PublicEndpoint>;
 };
+
+/** @internal */
+export type ListEndpointsZdrRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const ListEndpointsZdrRequest$outboundSchema: z.ZodType<
+  ListEndpointsZdrRequest$Outbound,
+  ListEndpointsZdrRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function listEndpointsZdrRequestToJSON(
+  listEndpointsZdrRequest: ListEndpointsZdrRequest,
+): string {
+  return JSON.stringify(
+    ListEndpointsZdrRequest$outboundSchema.parse(listEndpointsZdrRequest),
+  );
+}
 
 /** @internal */
 export const ListEndpointsZdrResponse$inboundSchema: z.ZodType<

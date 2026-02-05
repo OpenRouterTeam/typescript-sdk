@@ -106,10 +106,12 @@ export class APIKeys extends ClientSDK {
    * Get information on the API key associated with the current authentication session
    */
   async getCurrentKeyMetadata(
+    request?: operations.GetCurrentKeyRequest | undefined,
     options?: RequestOptions,
   ): Promise<operations.GetCurrentKeyResponse> {
     return unwrapAsync(apiKeysGetCurrentKeyMetadata(
       this,
+      request,
       options,
     ));
   }

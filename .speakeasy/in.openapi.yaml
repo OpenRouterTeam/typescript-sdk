@@ -4430,6 +4430,9 @@ components:
               required:
                 - ephemeral_5m_input_tokens
                 - ephemeral_1h_input_tokens
+            inference_geo:
+              type: string
+              nullable: true
             server_tool_use:
               type: object
               nullable: true
@@ -4451,6 +4454,7 @@ components:
             - cache_creation_input_tokens
             - cache_read_input_tokens
             - cache_creation
+            - inference_geo
             - server_tool_use
             - service_tier
       required:
@@ -4485,6 +4489,7 @@ components:
           cache_creation_input_tokens: null
           cache_read_input_tokens: null
           cache_creation: null
+          inference_geo: null
           server_tool_use: null
           service_tier: standard
     AnthropicMessagesStreamEvent:
@@ -4804,6 +4809,9 @@ components:
                       required:
                         - ephemeral_5m_input_tokens
                         - ephemeral_1h_input_tokens
+                    inference_geo:
+                      type: string
+                      nullable: true
                     server_tool_use:
                       type: object
                       nullable: true
@@ -4825,6 +4833,7 @@ components:
                     - cache_creation_input_tokens
                     - cache_read_input_tokens
                     - cache_creation
+                    - inference_geo
                     - server_tool_use
                     - service_tier
               required:
@@ -6532,9 +6541,10 @@ components:
             - low
             - medium
             - high
+            - max
           description: >-
             How much effort the model should put into its response. Higher effort levels may result in more thorough
-            analysis but take longer. Valid values are `low`, `medium`, or `high`.
+            analysis but take longer. Valid values are `low`, `medium`, `high`, or `max`.
           example: medium
       description: Configuration for controlling output behavior. Currently supports the effort parameter for Claude Opus 4.5.
     AnthropicMessagesRequest:
@@ -6948,6 +6958,14 @@ components:
                   type: string
                   enum:
                     - disabled
+              required:
+                - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - adaptive
               required:
                 - type
         service_tier:
