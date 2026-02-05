@@ -85,24 +85,12 @@ export type ProviderPreferencesSortUnion =
  */
 export type ProviderPreferencesMaxPrice = {
   /**
-   * A value in string format that is a large number
+   * Price per million prompt tokens
    */
   prompt?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   completion?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   image?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   audio?: string | undefined;
-  /**
-   * A value in string format that is a large number
-   */
   request?: string | undefined;
 };
 

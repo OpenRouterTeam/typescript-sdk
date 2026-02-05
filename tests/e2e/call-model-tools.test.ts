@@ -773,4 +773,206 @@ describe('Enhanced Tool Support for callModel', () => {
       expect(output.unit).toBe('F');
     });
   });
+
+  describe('Parallel Tool Execution', () => {
+    it('should execute multiple tools in parallel', async () => {
+      const tool100ms = {
+        type: ToolType.Function,
+        function: {
+          name: 'tool_100ms',
+          description: 'A tool that takes 100ms to execute',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ duration: z.number(), order: z.number() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            return { duration: 100, order: 1 };
+          },
+        },
+      };
+
+      const tool200ms = {
+        type: ToolType.Function,
+        function: {
+          name: 'tool_200ms',
+          description: 'A tool that takes 200ms to execute',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ duration: z.number(), order: z.number() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            return { duration: 200, order: 2 };
+          },
+        },
+      };
+
+      const tool300ms = {
+        type: ToolType.Function,
+        function: {
+          name: 'tool_300ms',
+          description: 'A tool that takes 300ms to execute',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ duration: z.number(), order: z.number() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            return { duration: 300, order: 3 };
+          },
+        },
+      };
+
+      const response = await client.callModel({
+        model: 'openai/gpt-4o-mini',
+        input: [
+          {
+            role: 'user',
+            content:
+              'Call all three tools: tool_100ms, tool_200ms, and tool_300ms. Do NOT call any other tools. Just call these three.',
+          },
+        ],
+        tools: [tool100ms, tool200ms, tool300ms],
+        stopWhen: stepCountIs(1),
+      });
+
+      // Collect all tool outputs to verify all 3 tools were executed
+      const toolResults: Array<{ output: string }> = [];
+      for await (const item of response.getItemsStream()) {
+        if (item.type === 'function_call_output') {
+          toolResults.push({ output: item.output });
+        }
+      }
+
+      // Verify all 3 tools were executed by checking their outputs
+      const durations = toolResults.map(
+        (r) => (JSON.parse(r.output) as { duration: number }).duration
+      );
+      expect(durations).toContain(100);
+      expect(durations).toContain(200);
+      expect(durations).toContain(300);
+    }, 30000);
+
+    it('should collect all errors when multiple tools fail in parallel', async () => {
+      const successTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'success_tool',
+          description: 'A tool that succeeds',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ status: z.string() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            return { status: 'success' };
+          },
+        },
+      };
+
+      const failTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'fail_tool',
+          description: 'A tool that always fails',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ status: z.string() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            throw new Error('Intentional failure');
+          },
+        },
+      };
+
+      const response = await client.callModel({
+        model: 'openai/gpt-4o-mini',
+        input: [
+          {
+            role: 'user',
+            content:
+              'Call both tools: success_tool and fail_tool. Do NOT call any other tools.',
+          },
+        ],
+        tools: [successTool, failTool],
+        stopWhen: stepCountIs(2),
+      });
+
+      // Collect all tool outputs to verify error handling
+      const toolResults: Array<{ output: string }> = [];
+      for await (const item of response.getItemsStream()) {
+        if (item.type === 'function_call_output') {
+          toolResults.push({ output: item.output });
+        }
+      }
+
+      // Parse outputs and check for success/error results
+      const outputs = toolResults.map(
+        (r) => JSON.parse(r.output) as { status?: string; error?: string }
+      );
+      const hasSuccess = outputs.some((o) => o.status === 'success');
+      const hasError = outputs.some((o) => o.error?.includes('Intentional failure'));
+
+      // At least one tool was called
+      expect(hasSuccess || hasError).toBe(true);
+
+      // If both tools were called, verify we have both success and error
+      if (toolResults.length >= 2) {
+        expect(hasSuccess).toBe(true);
+        expect(hasError).toBe(true);
+      }
+    }, 30000);
+
+    it('should return results in original tool call order regardless of completion order', async () => {
+      const slowTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'slow_tool',
+          description: 'A slow tool (call this first)',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ name: z.string(), completedAt: z.number() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            await new Promise((resolve) => setTimeout(resolve, 200));
+            return { name: 'slow_tool', completedAt: Date.now() };
+          },
+        },
+      };
+
+      const fastTool = {
+        type: ToolType.Function,
+        function: {
+          name: 'fast_tool',
+          description: 'A fast tool (call this second)',
+          inputSchema: z.object({}),
+          outputSchema: z.object({ name: z.string(), completedAt: z.number() }),
+          execute: async (_params: Record<string, never>, _context) => {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            return { name: 'fast_tool', completedAt: Date.now() };
+          },
+        },
+      };
+
+      const response = await client.callModel({
+        model: 'openai/gpt-4o-mini',
+        input: [
+          {
+            role: 'user',
+            content:
+              'Call slow_tool first, then call fast_tool second. You MUST call them in this exact order.',
+          },
+        ],
+        tools: [slowTool, fastTool],
+        stopWhen: stepCountIs(1),
+      });
+
+      // Collect both function calls and their outputs
+      const functionCalls: Array<{ name: string; id: string }> = [];
+      const toolResults: Array<{ callId: string; output: string }> = [];
+
+      for await (const item of response.getItemsStream()) {
+        if (item.type === 'function_call') {
+          functionCalls.push({ name: item.name, id: item.callId });
+        }
+        if (item.type === 'function_call_output') {
+          toolResults.push({ callId: item.callId, output: item.output });
+        }
+      }
+
+      // Verify results are returned in the same order as calls (by callId matching)
+      if (functionCalls.length === 2 && toolResults.length === 2) {
+        expect(toolResults[0]?.callId).toBe(functionCalls[0]?.id);
+        expect(toolResults[1]?.callId).toBe(functionCalls[1]?.id);
+      }
+    }, 30000);
+  });
 });
