@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { EventStream } from "../lib/event-streams.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -36,7 +36,9 @@ import { Result } from "../types/fp.js";
  */
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest & { stream?: false },
+  request: operations.CreateResponsesRequest & {
+    openResponsesRequest: { stream?: false };
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -66,7 +68,9 @@ export function betaResponsesSend(
 >;
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest & { stream: true },
+  request: operations.CreateResponsesRequest & {
+    openResponsesRequest: { stream: true };
+  },
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -96,7 +100,7 @@ export function betaResponsesSend(
 >;
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest,
+  request: operations.CreateResponsesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -126,7 +130,7 @@ export function betaResponsesSend(
 >;
 export function betaResponsesSend(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest,
+  request: operations.CreateResponsesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -163,7 +167,7 @@ export function betaResponsesSend(
 
 async function $do(
   client: OpenRouterCore,
-  request: models.OpenResponsesRequest,
+  request: operations.CreateResponsesRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -196,20 +200,34 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => models.OpenResponsesRequest$outboundSchema.parse(value),
+    (value) => operations.CreateResponsesRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload.OpenResponsesRequest, {
+    explode: true,
+  });
 
   const path = pathToFunc("/responses")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: request?.stream ? "text/event-stream" : "application/json",
+    Accept: request?.openResponsesRequest?.stream
+      ? "text/event-stream"
+      : "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

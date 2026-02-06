@@ -8,6 +8,22 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
 
+export type GetModelsGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * Filter models by use case category
  */
@@ -32,6 +48,19 @@ export type Category = OpenEnum<typeof Category>;
 
 export type GetModelsRequest = {
   /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  /**
    * Filter models by use case category
    */
   category?: Category | undefined;
@@ -44,6 +73,8 @@ export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
 
 /** @internal */
 export type GetModelsRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   category?: string | undefined;
   supported_parameters?: string | undefined;
 };
@@ -53,10 +84,14 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   GetModelsRequest$Outbound,
   GetModelsRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
     supportedParameters: "supported_parameters",
   });
 });

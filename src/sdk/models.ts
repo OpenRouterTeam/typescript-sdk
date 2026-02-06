@@ -16,10 +16,12 @@ export class Models extends ClientSDK {
    * Get total count of available models
    */
   async count(
+    request?: operations.ListModelsCountRequest | undefined,
     options?: RequestOptions,
   ): Promise<models.ModelsCountResponse> {
     return unwrapAsync(modelsCount(
       this,
+      request,
       options,
     ));
   }
@@ -46,11 +48,13 @@ export class Models extends ClientSDK {
    */
   async listForUser(
     security: operations.ListModelsUserSecurity,
+    request?: operations.ListModelsUserRequest | undefined,
     options?: RequestOptions,
   ): Promise<models.ModelsListResponse> {
     return unwrapAsync(modelsListForUser(
       this,
       security,
+      request,
       options,
     ));
   }

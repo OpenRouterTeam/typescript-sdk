@@ -4435,6 +4435,9 @@ components:
               required:
                 - ephemeral_5m_input_tokens
                 - ephemeral_1h_input_tokens
+            inference_geo:
+              type: string
+              nullable: true
             server_tool_use:
               type: object
               nullable: true
@@ -4457,6 +4460,7 @@ components:
             - cache_creation_input_tokens
             - cache_read_input_tokens
             - cache_creation
+            - inference_geo
             - server_tool_use
             - service_tier
       required:
@@ -4491,6 +4495,7 @@ components:
           cache_creation_input_tokens: null
           cache_read_input_tokens: null
           cache_creation: null
+          inference_geo: null
           server_tool_use: null
           service_tier: standard
     AnthropicMessagesStreamEvent:
@@ -4811,6 +4816,9 @@ components:
                       required:
                         - ephemeral_5m_input_tokens
                         - ephemeral_1h_input_tokens
+                    inference_geo:
+                      type: string
+                      nullable: true
                     server_tool_use:
                       type: object
                       nullable: true
@@ -4833,6 +4841,7 @@ components:
                     - cache_creation_input_tokens
                     - cache_read_input_tokens
                     - cache_creation
+                    - inference_geo
                     - server_tool_use
                     - service_tier
               required:
@@ -6560,8 +6569,9 @@ components:
             - low
             - medium
             - high
+            - max
           description: >-
-            How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer. Valid values are `low`, `medium`, or `high`.
+            How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer. Valid values are `low`, `medium`, `high`, or `max`.
           example: medium
           x-speakeasy-unknown-values: allow
       description: Configuration for controlling output behavior. Currently supports the effort parameter for Claude Opus 4.5.
@@ -6983,6 +6993,14 @@ components:
                     - disabled
               required:
                 - type
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - adaptive
+              required:
+                - type
         service_tier:
           type: string
           enum:
@@ -7298,7 +7316,7 @@ components:
       description: Error data for ForbiddenResponse
       example:
         code: 403
-        message: Only provisioning keys can perform this operation
+        message: Only management keys can perform this operation
     ForbiddenResponse:
       type: object
       properties:
@@ -7313,7 +7331,7 @@ components:
       example:
         error:
           code: 403
-          message: Only provisioning keys can perform this operation
+          message: Only management keys can perform this operation
     CreateChargeRequest:
       type: object
       properties:
@@ -9592,6 +9610,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createResponses
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /messages:
     post:
       x-speakeasy-ignore: true
@@ -9820,6 +9841,9 @@ paths:
                   - type
                   - error
       operationId: createMessages
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /activity:
     get:
       tags:
@@ -9827,7 +9851,7 @@ paths:
       operationId: getUserActivity
       summary: Get user activity grouped by endpoint
       description: >-
-        Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -9878,7 +9902,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '403':
-          description: Forbidden - Only provisioning keys can fetch activity
+          description: Forbidden - Only management keys can fetch activity
           content:
             application/json:
               schema:
@@ -9889,6 +9913,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /credits:
     get:
       x-speakeasy-name-override: getCredits
@@ -9897,7 +9924,7 @@ paths:
       summary: Get remaining credits
       operationId: getCredits
       description: >-
-        Get total credits purchased and used for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Get total credits purchased and used for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       responses:
         '200':
           description: Returns the total credits purchased and used
@@ -9937,7 +9964,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '403':
-          description: Forbidden - Only provisioning keys can fetch credits
+          description: Forbidden - Only management keys can fetch credits
           content:
             application/json:
               schema:
@@ -9948,6 +9975,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /credits/coinbase:
     post:
       security:
@@ -10070,6 +10100,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /embeddings:
     post:
       x-speakeasy-name-override: generate
@@ -10274,6 +10307,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: createEmbeddings
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /embeddings/models:
     get:
       tags:
@@ -10301,6 +10337,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEmbeddingsModels
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /generation:
     get:
       tags:
@@ -10699,6 +10738,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProviderOverloadedResponse'
       operationId: getGeneration
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/count:
     get:
       tags:
@@ -10719,6 +10761,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsCount
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models:
     get:
       tags:
@@ -10773,6 +10818,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: getModels
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/user:
     get:
       tags:
@@ -10809,6 +10857,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listModelsUser
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /models/{author}/{slug}/endpoints:
     get:
       tags:
@@ -10851,6 +10902,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /endpoints/zdr:
     get:
       tags:
@@ -10878,6 +10932,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: listEndpointsZdr
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /providers:
     get:
       tags:
@@ -10939,6 +10996,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /keys:
     get:
       operationId: list
@@ -10947,7 +11007,7 @@ paths:
         - API Keys
       summary: List API keys
       description: >-
-        List all API keys for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -11147,7 +11207,7 @@ paths:
         - API Keys
       summary: Create a new API key
       description: >-
-        Create a new API key for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       requestBody:
         content:
           application/json:
@@ -11382,13 +11442,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: createKeys
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /keys/{hash}:
     patch:
       x-speakeasy-name-override: update
       tags:
         - API Keys
       summary: Update an API key
-      description: Update an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -11631,7 +11694,7 @@ paths:
       tags:
         - API Keys
       summary: Delete an API key
-      description: Delete an existing API key. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -11689,7 +11752,7 @@ paths:
       tags:
         - API Keys
       summary: Get a single API key
-      description: Get a single API key by hash. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Get a single API key by hash. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -11879,6 +11942,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails:
     get:
       operationId: listGuardrails
@@ -11887,7 +11953,7 @@ paths:
         - Guardrails
       summary: List guardrails
       description: >-
-        List all guardrails for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12044,7 +12110,7 @@ paths:
         - Guardrails
       summary: Create a guardrail
       description: >-
-        Create a new guardrail for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       requestBody:
         content:
           application/json:
@@ -12251,6 +12317,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}:
     get:
       operationId: getGuardrail
@@ -12258,7 +12327,7 @@ paths:
       tags:
         - Guardrails
       summary: Get a guardrail
-      description: Get a single guardrail by ID. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12405,7 +12474,7 @@ paths:
       tags:
         - Guardrails
       summary: Update a guardrail
-      description: Update an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12622,7 +12691,7 @@ paths:
       tags:
         - Guardrails
       summary: Delete a guardrail
-      description: Delete an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+      description: Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12668,6 +12737,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/assignments/keys:
     get:
       operationId: listKeyAssignments
@@ -12676,7 +12748,7 @@ paths:
         - Guardrails
       summary: List all key assignments
       description: >-
-        List all API key guardrail assignments for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12766,6 +12838,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/assignments/members:
     get:
       operationId: listMemberAssignments
@@ -12774,7 +12849,7 @@ paths:
         - Guardrails
       summary: List all member assignments
       description: >-
-        List all organization member guardrail assignments for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12859,6 +12934,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/keys:
     get:
       operationId: listGuardrailKeyAssignments
@@ -12867,7 +12945,7 @@ paths:
         - Guardrails
       summary: List key assignments for a guardrail
       description: >-
-        List all API key assignments for a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -12979,7 +13057,7 @@ paths:
         - Guardrails
       summary: Bulk assign keys to a guardrail
       description: >-
-        Assign multiple API keys to a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -13046,6 +13124,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/members:
     get:
       operationId: listGuardrailMemberAssignments
@@ -13054,7 +13135,7 @@ paths:
         - Guardrails
       summary: List member assignments for a guardrail
       description: >-
-        List all organization member assignments for a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -13161,7 +13242,7 @@ paths:
         - Guardrails
       summary: Bulk assign members to a guardrail
       description: >-
-        Assign multiple organization members to a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -13229,6 +13310,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/keys/remove:
     post:
       operationId: bulkUnassignKeysFromGuardrail
@@ -13237,7 +13321,7 @@ paths:
         - Guardrails
       summary: Bulk unassign keys from a guardrail
       description: >-
-        Unassign multiple API keys from a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -13304,6 +13388,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /guardrails/{id}/assignments/members/remove:
     post:
       operationId: bulkUnassignMembersFromGuardrail
@@ -13312,7 +13399,7 @@ paths:
         - Guardrails
       summary: Bulk unassign members from a guardrail
       description: >-
-        Unassign multiple organization members from a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+        Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
       parameters:
         - schema:
             type: string
@@ -13380,6 +13467,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /key:
     get:
       operationId: getCurrentKey
@@ -13444,9 +13534,14 @@ paths:
                         type: boolean
                         description: Whether this is a free tier API key
                         example: false
+                      is_management_key:
+                        type: boolean
+                        description: Whether this is a management key
+                        example: false
                       is_provisioning_key:
                         type: boolean
-                        description: Whether this is a provisioning key
+                        description: Whether this is a management key
+                        deprecated: true
                         example: false
                       limit_remaining:
                         type: number
@@ -13505,6 +13600,7 @@ paths:
                       - byok_usage_weekly
                       - byok_usage_monthly
                       - is_free_tier
+                      - is_management_key
                       - is_provisioning_key
                       - limit_remaining
                       - limit_reset
@@ -13523,6 +13619,7 @@ paths:
                       byok_usage_weekly: 17.38
                       byok_usage_monthly: 17.38
                       is_free_tier: false
+                      is_management_key: false
                       is_provisioning_key: false
                       limit_remaining: 74.5
                       limit_reset: monthly
@@ -13547,6 +13644,7 @@ paths:
                     byok_usage_weekly: 17.38
                     byok_usage_monthly: 17.38
                     is_free_tier: false
+                    is_management_key: false
                     is_provisioning_key: false
                     limit_remaining: 74.5
                     limit_reset: monthly
@@ -13568,6 +13666,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /auth/keys:
     post:
       operationId: exchangeAuthCodeForAPIKey
@@ -13646,6 +13747,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /auth/keys/code:
     post:
       x-speakeasy-name-override: createAuthCode
@@ -13747,6 +13851,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: createAuthKeysCode
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
   /chat/completions:
     post:
       summary: Create a chat completion
@@ -13801,6 +13908,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatError'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
 servers:
   - url: https://openrouter.ai/api/v1
     description: Production server

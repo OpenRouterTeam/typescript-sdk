@@ -9,6 +9,38 @@ import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type GetCurrentKeyGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type GetCurrentKeyRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * Legacy rate limit information about a key. Will always return -1.
  *
@@ -78,7 +110,13 @@ export type GetCurrentKeyData = {
    */
   isFreeTier: boolean;
   /**
-   * Whether this is a provisioning key
+   * Whether this is a management key
+   */
+  isManagementKey: boolean;
+  /**
+   * Whether this is a management key
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   isProvisioningKey: boolean;
   /**
@@ -116,6 +154,34 @@ export type GetCurrentKeyResponse = {
 };
 
 /** @internal */
+export type GetCurrentKeyRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+};
+
+/** @internal */
+export const GetCurrentKeyRequest$outboundSchema: z.ZodType<
+  GetCurrentKeyRequest$Outbound,
+  GetCurrentKeyRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+  });
+});
+
+export function getCurrentKeyRequestToJSON(
+  getCurrentKeyRequest: GetCurrentKeyRequest,
+): string {
+  return JSON.stringify(
+    GetCurrentKeyRequest$outboundSchema.parse(getCurrentKeyRequest),
+  );
+}
+
+/** @internal */
 export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
   requests: z.number(),
   interval: z.string(),
@@ -148,6 +214,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   byok_usage_weekly: z.number(),
   byok_usage_monthly: z.number(),
   is_free_tier: z.boolean(),
+  is_management_key: z.boolean(),
   is_provisioning_key: z.boolean(),
   limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
@@ -166,6 +233,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "byok_usage_weekly": "byokUsageWeekly",
     "byok_usage_monthly": "byokUsageMonthly",
     "is_free_tier": "isFreeTier",
+    "is_management_key": "isManagementKey",
     "is_provisioning_key": "isProvisioningKey",
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",

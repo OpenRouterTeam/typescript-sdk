@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Create a guardrail
  *
  * @remarks
- * Create a new guardrail for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+ * Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsCreate(
   client: OpenRouterCore,
@@ -91,13 +91,23 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload.RequestBody, { explode: true });
 
   const path = pathToFunc("/guardrails")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

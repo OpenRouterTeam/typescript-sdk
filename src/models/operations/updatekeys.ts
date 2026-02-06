@@ -11,6 +11,22 @@ import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
+export type UpdateKeysGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
 /**
  * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
  */
@@ -48,6 +64,19 @@ export type UpdateKeysRequestBody = {
 };
 
 export type UpdateKeysRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
   /**
    * The hash identifier of the API key to update
    */
@@ -189,6 +218,8 @@ export function updateKeysRequestBodyToJSON(
 
 /** @internal */
 export type UpdateKeysRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
   hash: string;
   RequestBody: UpdateKeysRequestBody$Outbound;
 };
@@ -198,10 +229,14 @@ export const UpdateKeysRequest$outboundSchema: z.ZodType<
   UpdateKeysRequest$Outbound,
   UpdateKeysRequest
 > = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
   hash: z.string(),
   requestBody: z.lazy(() => UpdateKeysRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

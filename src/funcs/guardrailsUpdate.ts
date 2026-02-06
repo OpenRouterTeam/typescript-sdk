@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Update a guardrail
  *
  * @remarks
- * Update an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+ * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsUpdate(
   client: OpenRouterCore,
@@ -107,6 +107,16 @@ async function $do(
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: "application/json",
+    "HTTP-Referer": encodeSimple(
+      "HTTP-Referer",
+      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-Title": encodeSimple(
+      "X-Title",
+      payload["X-Title"] ?? client._options.xTitle,
+      { explode: false, charEncoding: "none" },
+    ),
   }));
 
   const secConfig = await extractSecurity(client._options.apiKey);

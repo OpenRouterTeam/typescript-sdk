@@ -5,10 +5,44 @@
 
 import * as z from "zod/v4";
 import { EventStream } from "../../lib/event-streams.js";
+import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
+
+export type CreateResponsesGlobals = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+};
+
+export type CreateResponsesRequest = {
+  /**
+   * The app identifier should be your app's URL and is used as the primary identifier for rankings.
+   *
+   * @remarks
+   * This is used to track API usage per application.
+   */
+  httpReferer?: string | undefined;
+  /**
+   * The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+   *
+   * @remarks
+   */
+  xTitle?: string | undefined;
+  openResponsesRequest: models.OpenResponsesRequest;
+};
 
 /**
  * Successful response
@@ -23,6 +57,37 @@ export type CreateResponsesResponseBody = {
 export type CreateResponsesResponse =
   | models.OpenResponsesNonStreamingResponse
   | EventStream<models.OpenResponsesStreamEvent>;
+
+/** @internal */
+export type CreateResponsesRequest$Outbound = {
+  "HTTP-Referer"?: string | undefined;
+  "X-Title"?: string | undefined;
+  OpenResponsesRequest: models.OpenResponsesRequest$Outbound;
+};
+
+/** @internal */
+export const CreateResponsesRequest$outboundSchema: z.ZodType<
+  CreateResponsesRequest$Outbound,
+  CreateResponsesRequest
+> = z.object({
+  httpReferer: z.string().optional(),
+  xTitle: z.string().optional(),
+  openResponsesRequest: models.OpenResponsesRequest$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    httpReferer: "HTTP-Referer",
+    xTitle: "X-Title",
+    openResponsesRequest: "OpenResponsesRequest",
+  });
+});
+
+export function createResponsesRequestToJSON(
+  createResponsesRequest: CreateResponsesRequest,
+): string {
+  return JSON.stringify(
+    CreateResponsesRequest$outboundSchema.parse(createResponsesRequest),
+  );
+}
 
 /** @internal */
 export const CreateResponsesResponseBody$inboundSchema: z.ZodType<

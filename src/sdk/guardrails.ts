@@ -25,7 +25,7 @@ export class Guardrails extends ClientSDK {
    * List guardrails
    *
    * @remarks
-   * List all guardrails for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async list(
     request?: operations.ListGuardrailsRequest | undefined,
@@ -42,7 +42,7 @@ export class Guardrails extends ClientSDK {
    * Create a guardrail
    *
    * @remarks
-   * Create a new guardrail for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
     request: operations.CreateGuardrailRequest,
@@ -59,7 +59,7 @@ export class Guardrails extends ClientSDK {
    * Get a guardrail
    *
    * @remarks
-   * Get a single guardrail by ID. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async get(
     request: operations.GetGuardrailRequest,
@@ -76,7 +76,7 @@ export class Guardrails extends ClientSDK {
    * Update a guardrail
    *
    * @remarks
-   * Update an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
     request: operations.UpdateGuardrailRequest,
@@ -93,7 +93,7 @@ export class Guardrails extends ClientSDK {
    * Delete a guardrail
    *
    * @remarks
-   * Delete an existing guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async delete(
     request: operations.DeleteGuardrailRequest,
@@ -110,7 +110,7 @@ export class Guardrails extends ClientSDK {
    * List all key assignments
    *
    * @remarks
-   * List all API key guardrail assignments for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listKeyAssignments(
     request?: operations.ListKeyAssignmentsRequest | undefined,
@@ -127,7 +127,7 @@ export class Guardrails extends ClientSDK {
    * List all member assignments
    *
    * @remarks
-   * List all organization member guardrail assignments for the authenticated user. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listMemberAssignments(
     request?: operations.ListMemberAssignmentsRequest | undefined,
@@ -144,7 +144,7 @@ export class Guardrails extends ClientSDK {
    * List key assignments for a guardrail
    *
    * @remarks
-   * List all API key assignments for a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listGuardrailKeyAssignments(
     request: operations.ListGuardrailKeyAssignmentsRequest,
@@ -161,7 +161,7 @@ export class Guardrails extends ClientSDK {
    * Bulk assign keys to a guardrail
    *
    * @remarks
-   * Assign multiple API keys to a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAssignKeys(
     request: operations.BulkAssignKeysToGuardrailRequest,
@@ -178,7 +178,7 @@ export class Guardrails extends ClientSDK {
    * List member assignments for a guardrail
    *
    * @remarks
-   * List all organization member assignments for a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listGuardrailMemberAssignments(
     request: operations.ListGuardrailMemberAssignmentsRequest,
@@ -195,7 +195,7 @@ export class Guardrails extends ClientSDK {
    * Bulk assign members to a guardrail
    *
    * @remarks
-   * Assign multiple organization members to a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAssignMembers(
     request: operations.BulkAssignMembersToGuardrailRequest,
@@ -212,7 +212,7 @@ export class Guardrails extends ClientSDK {
    * Bulk unassign keys from a guardrail
    *
    * @remarks
-   * Unassign multiple API keys from a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkUnassignKeys(
     request: operations.BulkUnassignKeysFromGuardrailRequest,
@@ -229,7 +229,7 @@ export class Guardrails extends ClientSDK {
    * Bulk unassign members from a guardrail
    *
    * @remarks
-   * Unassign multiple organization members from a specific guardrail. [Provisioning key](/docs/guides/overview/auth/provisioning-api-keys) required.
+   * Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkUnassignMembers(
     request: operations.BulkUnassignMembersFromGuardrailRequest,

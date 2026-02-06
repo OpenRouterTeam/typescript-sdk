@@ -18,19 +18,23 @@ export class Responses extends ClientSDK {
    * Creates a streaming or non-streaming response using OpenResponses API format
    */
   async send(
-    request: models.OpenResponsesRequest & { stream?: false | undefined },
+    request: operations.CreateResponsesRequest & {
+      openResponsesRequest: { stream?: false | undefined };
+    },
     options?: RequestOptions,
   ): Promise<models.OpenResponsesNonStreamingResponse>;
   async send(
-    request: models.OpenResponsesRequest & { stream: true },
+    request: operations.CreateResponsesRequest & {
+      openResponsesRequest: { stream: true };
+    },
     options?: RequestOptions,
   ): Promise<EventStream<models.OpenResponsesStreamEvent>>;
   async send(
-    request: models.OpenResponsesRequest,
+    request: operations.CreateResponsesRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse>;
   async send(
-    request: models.OpenResponsesRequest,
+    request: operations.CreateResponsesRequest,
     options?: RequestOptions,
   ): Promise<operations.CreateResponsesResponse> {
     return unwrapAsync(betaResponsesSend(
