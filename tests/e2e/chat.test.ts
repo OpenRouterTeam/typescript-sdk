@@ -1,4 +1,5 @@
 import type { ChatStreamingResponseChunkData } from '../../src/models/chatstreamingresponsechunk.js';
+import type { ChatMessageContentItemFile } from '../../src/models/chatmessagecontentitemfile.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
@@ -183,5 +184,42 @@ describe('Chat E2E Tests', () => {
 
       expect(foundFinishReason).toBe(true);
     }, 10000);
+  });
+
+  describe('chat.send() - File Content Type', () => {
+    it('should successfully send a request with file content (PDF via URL)', async () => {
+      const fileContent: ChatMessageContentItemFile = {
+        type: 'file',
+        file: {
+          filename: 'bitcoin.pdf',
+          fileData: 'https://bitcoin.org/bitcoin.pdf',
+        },
+      };
+
+      const response = await client.chat.send({
+        model: 'anthropic/claude-sonnet-4',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: 'What is the title of this document? Reply in 10 words or less.' },
+              fileContent,
+            ],
+          },
+        ],
+        maxTokens: 50,
+        stream: false,
+      });
+
+      expect(response).toBeDefined();
+      expect(Array.isArray(response.choices)).toBe(true);
+      expect(response.choices.length).toBeGreaterThan(0);
+
+      const content = response.choices[0]?.message?.content;
+      expect(content).toBeDefined();
+      expect(typeof content).toBe('string');
+      // The response should mention Bitcoin or the paper title
+      expect((content as string).toLowerCase()).toMatch(/bitcoin|peer|electronic|cash/);
+    }, 30000);
   });
 });
