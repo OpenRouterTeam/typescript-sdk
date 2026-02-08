@@ -145,6 +145,7 @@ export * from "./schema10.js";
 export * from "./schema14.js";
 export * from "./schema17.js";
 export * from "./schema19.js";
+export * from "./schema20.js";
 export * from "./schema5.js";
 export * from "./security.js";
 export * from "./serviceunavailableresponseerrordata.js";

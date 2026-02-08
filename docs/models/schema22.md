@@ -1,11 +1,11 @@
-# Schema21
+# Schema22
 
 ## Example Usage
 
 ```typescript
-import { Schema21 } from "@openrouter/sdk/models";
+import { Schema22 } from "@openrouter/sdk/models";
 
-let value: Schema21 = "openai-responses-v1";
+let value: Schema22 = "unknown";
 ```
 
 ## Values

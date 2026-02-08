@@ -4097,6 +4097,23 @@ components:
           maxLength: 128
           description: >-
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+        trace:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            trace_name:
+              type: string
+            span_name:
+              type: string
+            generation_name:
+              type: string
+            parent_span_id:
+              type: string
+          additionalProperties:
+            nullable: true
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
       description: Request schema for Responses endpoint
       example:
         model: anthropic/claude-4.5-sonnet-20250929
@@ -7209,6 +7226,23 @@ components:
           maxLength: 128
           description: >-
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+        trace:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            trace_name:
+              type: string
+            span_name:
+              type: string
+            generation_name:
+              type: string
+            parent_span_id:
+              type: string
+          additionalProperties:
+            nullable: true
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
         models:
           type: array
           items:
@@ -8536,6 +8570,20 @@ components:
       type: string
       maxLength: 128
     __schema19:
+      type: object
+      properties:
+        trace_id:
+          type: string
+        trace_name:
+          type: string
+        span_name:
+          type: string
+        generation_name:
+          type: string
+        parent_span_id:
+          type: string
+      additionalProperties: {}
+    __schema20:
       oneOf:
         - type: object
           properties:
@@ -8545,9 +8593,9 @@ components:
             summary:
               type: string
             id:
-              $ref: '#/components/schemas/__schema20'
-            format:
               $ref: '#/components/schemas/__schema21'
+            format:
+              $ref: '#/components/schemas/__schema22'
             index:
               $ref: '#/components/schemas/__schema11'
           required:
@@ -8561,9 +8609,9 @@ components:
             data:
               type: string
             id:
-              $ref: '#/components/schemas/__schema20'
-            format:
               $ref: '#/components/schemas/__schema21'
+            format:
+              $ref: '#/components/schemas/__schema22'
             index:
               $ref: '#/components/schemas/__schema11'
           required:
@@ -8583,19 +8631,19 @@ components:
                 - type: string
                 - type: 'null'
             id:
-              $ref: '#/components/schemas/__schema20'
-            format:
               $ref: '#/components/schemas/__schema21'
+            format:
+              $ref: '#/components/schemas/__schema22'
             index:
               $ref: '#/components/schemas/__schema11'
           required:
             - type
       type: object
-    __schema20:
+    __schema21:
       anyOf:
         - type: string
         - type: 'null'
-    __schema21:
+    __schema22:
       anyOf:
         - type: string
           enum:
@@ -8607,7 +8655,7 @@ components:
             - google-gemini-v1
           x-speakeasy-unknown-values: allow
         - type: 'null'
-    __schema25:
+    __schema26:
       anyOf:
         - $ref: '#/components/schemas/ChatCompletionFinishReason'
         - type: 'null'
@@ -8986,7 +9034,7 @@ components:
         reasoning_details:
           type: array
           items:
-            $ref: '#/components/schemas/__schema19'
+            $ref: '#/components/schemas/__schema20'
         images:
           type: array
           items:
@@ -9118,6 +9166,10 @@ components:
           description: >-
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
           $ref: '#/components/schemas/__schema18'
+        trace:
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+          $ref: '#/components/schemas/__schema19'
         messages:
           minItems: 1
           type: array
@@ -9295,7 +9347,7 @@ components:
       type: object
       properties:
         finish_reason:
-          $ref: '#/components/schemas/__schema25'
+          $ref: '#/components/schemas/__schema26'
         index:
           type: number
         message:
@@ -9353,14 +9405,14 @@ components:
         reasoning_details:
           type: array
           items:
-            $ref: '#/components/schemas/__schema19'
+            $ref: '#/components/schemas/__schema20'
     ChatStreamingChoice:
       type: object
       properties:
         delta:
           $ref: '#/components/schemas/ChatStreamingMessageChunk'
         finish_reason:
-          $ref: '#/components/schemas/__schema25'
+          $ref: '#/components/schemas/__schema26'
         index:
           type: number
         logprobs:
