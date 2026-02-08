@@ -1,11 +1,13 @@
-# Schema19
+# Trace
+
+Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
 
 ## Example Usage
 
 ```typescript
-import { Schema19 } from "@openrouter/sdk/models";
+import { Trace } from "@openrouter/sdk/models";
 
-let value: Schema19 = {};
+let value: Trace = {};
 ```
 
 ## Fields

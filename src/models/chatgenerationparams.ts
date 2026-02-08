@@ -47,6 +47,11 @@ import {
   Schema17$outboundSchema,
 } from "./schema17.js";
 import {
+  Schema19,
+  Schema19$Outbound,
+  Schema19$outboundSchema,
+} from "./schema19.js";
+import {
   Schema5,
   Schema5$Outbound,
   Schema5$outboundSchema,
@@ -161,6 +166,7 @@ export type ChatGenerationParams = {
   route?: Route | null | undefined;
   user?: string | undefined;
   sessionId?: string | undefined;
+  trace?: Schema19 | undefined;
   messages: Array<Message>;
   model?: string | undefined;
   models?: Array<string> | undefined;
@@ -466,6 +472,7 @@ export type ChatGenerationParams$Outbound = {
   route?: string | null | undefined;
   user?: string | undefined;
   session_id?: string | undefined;
+  trace?: Schema19$Outbound | undefined;
   messages: Array<Message$Outbound>;
   model?: string | undefined;
   models?: Array<string> | undefined;
@@ -508,6 +515,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
   route: z.nullable(Route$outboundSchema).optional(),
   user: z.string().optional(),
   sessionId: z.string().optional(),
+  trace: Schema19$outboundSchema.optional(),
   messages: z.array(Message$outboundSchema),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
