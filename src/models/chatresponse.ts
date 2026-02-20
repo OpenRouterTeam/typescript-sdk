@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatGenerationTokenUsage,
@@ -17,15 +18,46 @@ import {
 } from "./chatresponsechoice.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ChatResponseObject = {
+  ChatCompletion: "chat.completion",
+} as const;
+export type ChatResponseObject = ClosedEnum<typeof ChatResponseObject>;
+
+/**
+ * Chat completion response
+ */
 export type ChatResponse = {
+  /**
+   * Unique completion identifier
+   */
   id: string;
+  /**
+   * List of completion choices
+   */
   choices: Array<ChatResponseChoice>;
+  /**
+   * Unix timestamp of creation
+   */
   created: number;
+  /**
+   * Model used for completion
+   */
   model: string;
-  object: "chat.completion";
+  object: ChatResponseObject;
+  /**
+   * System fingerprint
+   */
   systemFingerprint?: string | null | undefined;
+  /**
+   * Token usage statistics
+   */
   usage?: ChatGenerationTokenUsage | undefined;
 };
+
+/** @internal */
+export const ChatResponseObject$inboundSchema: z.ZodEnum<
+  typeof ChatResponseObject
+> = z.enum(ChatResponseObject);
 
 /** @internal */
 export const ChatResponse$inboundSchema: z.ZodType<ChatResponse, unknown> = z
@@ -34,7 +66,7 @@ export const ChatResponse$inboundSchema: z.ZodType<ChatResponse, unknown> = z
     choices: z.array(ChatResponseChoice$inboundSchema),
     created: z.number(),
     model: z.string(),
-    object: z.literal("chat.completion"),
+    object: ChatResponseObject$inboundSchema,
     system_fingerprint: z.nullable(z.string()).optional(),
     usage: ChatGenerationTokenUsage$inboundSchema.optional(),
   }).transform((v) => {

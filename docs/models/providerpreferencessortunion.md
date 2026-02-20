@@ -8,18 +8,18 @@ The sorting strategy to use for this request, if "order" is not specified. When 
 ### `models.ProviderPreferencesProviderSort`
 
 ```typescript
-const value: models.ProviderPreferencesProviderSort = "throughput";
+const value: models.ProviderPreferencesProviderSort = "price";
 ```
 
-### `models.ProviderSortConfigUnion`
+### `models.ProviderPreferencesProviderSortConfigUnion`
 
 ```typescript
-const value: models.ProviderSortConfigUnion = "latency";
+const value: models.ProviderPreferencesProviderSortConfigUnion = "throughput";
 ```
 
-### `models.SortEnum`
+### `models.ProviderPreferencesSortEnum`
 
 ```typescript
-const value: models.SortEnum = "throughput";
+const value: models.ProviderPreferencesSortEnum = "price";
 ```
 
