@@ -13,10 +13,10 @@ const value: models.ResponsesFormatText = {
 };
 ```
 
-### `models.ResponsesFormatJSONObject`
+### `models.ResponseFormatJSONObject`
 
 ```typescript
-const value: models.ResponsesFormatJSONObject = {
+const value: models.ResponseFormatJSONObject = {
   type: "json_object",
 };
 ```

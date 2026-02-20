@@ -16,6 +16,7 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
+    nameOverrideFeb2026: false
     sharedNestedComponentsJan2026: false
   auth:
     oAuth2ClientCredentialsEnabled: true
@@ -35,7 +36,7 @@ generation:
   preApplyUnionDiscriminators: true
   versioningStrategy: automatic
 typescript:
-  version: 0.8.0
+  version: 0.9.8
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:

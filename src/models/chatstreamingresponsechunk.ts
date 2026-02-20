@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatGenerationTokenUsage,
@@ -17,71 +18,80 @@ import {
 } from "./chatstreamingchoice.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type ChatStreamingResponseChunkError = {
+export const ChatStreamingResponseChunkObject = {
+  ChatCompletionChunk: "chat.completion.chunk",
+} as const;
+export type ChatStreamingResponseChunkObject = ClosedEnum<
+  typeof ChatStreamingResponseChunkObject
+>;
+
+/**
+ * Error information
+ */
+export type ErrorT = {
+  /**
+   * Error message
+   */
   message: string;
+  /**
+   * Error code
+   */
   code: number;
 };
 
-export type ChatStreamingResponseChunkData = {
+/**
+ * Streaming chat completion chunk
+ */
+export type ChatStreamingResponseChunk = {
+  /**
+   * Unique chunk identifier
+   */
   id: string;
+  /**
+   * List of streaming chunk choices
+   */
   choices: Array<ChatStreamingChoice>;
+  /**
+   * Unix timestamp of creation
+   */
   created: number;
+  /**
+   * Model used for completion
+   */
   model: string;
-  object: "chat.completion.chunk";
+  object: ChatStreamingResponseChunkObject;
+  /**
+   * System fingerprint
+   */
   systemFingerprint?: string | null | undefined;
-  error?: ChatStreamingResponseChunkError | undefined;
+  /**
+   * Error information
+   */
+  error?: ErrorT | undefined;
+  /**
+   * Token usage statistics
+   */
   usage?: ChatGenerationTokenUsage | undefined;
 };
 
-export type ChatStreamingResponseChunk = {
-  data: ChatStreamingResponseChunkData;
-};
+/** @internal */
+export const ChatStreamingResponseChunkObject$inboundSchema: z.ZodEnum<
+  typeof ChatStreamingResponseChunkObject
+> = z.enum(ChatStreamingResponseChunkObject);
 
 /** @internal */
-export const ChatStreamingResponseChunkError$inboundSchema: z.ZodType<
-  ChatStreamingResponseChunkError,
-  unknown
-> = z.object({
+export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
   message: z.string(),
   code: z.number(),
 });
 
-export function chatStreamingResponseChunkErrorFromJSON(
+export function errorFromJSON(
   jsonString: string,
-): SafeParseResult<ChatStreamingResponseChunkError, SDKValidationError> {
+): SafeParseResult<ErrorT, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatStreamingResponseChunkError$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatStreamingResponseChunkError' from JSON`,
-  );
-}
-
-/** @internal */
-export const ChatStreamingResponseChunkData$inboundSchema: z.ZodType<
-  ChatStreamingResponseChunkData,
-  unknown
-> = z.object({
-  id: z.string(),
-  choices: z.array(ChatStreamingChoice$inboundSchema),
-  created: z.number(),
-  model: z.string(),
-  object: z.literal("chat.completion.chunk"),
-  system_fingerprint: z.nullable(z.string()).optional(),
-  error: z.lazy(() => ChatStreamingResponseChunkError$inboundSchema).optional(),
-  usage: ChatGenerationTokenUsage$inboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "system_fingerprint": "systemFingerprint",
-  });
-});
-
-export function chatStreamingResponseChunkDataFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatStreamingResponseChunkData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatStreamingResponseChunkData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatStreamingResponseChunkData' from JSON`,
+    (x) => ErrorT$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ErrorT' from JSON`,
   );
 }
 
@@ -90,18 +100,18 @@ export const ChatStreamingResponseChunk$inboundSchema: z.ZodType<
   ChatStreamingResponseChunk,
   unknown
 > = z.object({
-  data: z.string().transform((v, ctx) => {
-    try {
-      return JSON.parse(v);
-    } catch (err) {
-      ctx.addIssue({
-        input: v,
-        code: "custom",
-        message: `malformed json: ${err}`,
-      });
-      return z.NEVER;
-    }
-  }).pipe(z.lazy(() => ChatStreamingResponseChunkData$inboundSchema)),
+  id: z.string(),
+  choices: z.array(ChatStreamingChoice$inboundSchema),
+  created: z.number(),
+  model: z.string(),
+  object: ChatStreamingResponseChunkObject$inboundSchema,
+  system_fingerprint: z.nullable(z.string()).optional(),
+  error: z.lazy(() => ErrorT$inboundSchema).optional(),
+  usage: ChatGenerationTokenUsage$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "system_fingerprint": "systemFingerprint",
+  });
 });
 
 export function chatStreamingResponseChunkFromJSON(

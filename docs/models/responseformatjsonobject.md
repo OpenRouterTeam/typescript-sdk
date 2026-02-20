@@ -1,5 +1,7 @@
 # ResponseFormatJSONObject
 
+JSON object response format
+
 ## Example Usage
 
 ```typescript

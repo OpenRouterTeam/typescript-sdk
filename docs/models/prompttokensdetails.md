@@ -1,5 +1,7 @@
 # PromptTokensDetails
 
+Detailed prompt token usage
+
 ## Example Usage
 
 ```typescript
@@ -10,9 +12,9 @@ let value: PromptTokensDetails = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `cachedTokens`     | *number*           | :heavy_minus_sign: | N/A                |
-| `cacheWriteTokens` | *number*           | :heavy_minus_sign: | N/A                |
-| `audioTokens`      | *number*           | :heavy_minus_sign: | N/A                |
-| `videoTokens`      | *number*           | :heavy_minus_sign: | N/A                |
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `cachedTokens`                                                                                   | *number*                                                                                         | :heavy_minus_sign:                                                                               | Cached prompt tokens                                                                             |
+| `cacheWriteTokens`                                                                               | *number*                                                                                         | :heavy_minus_sign:                                                                               | Tokens written to cache. Only returned for models with explicit caching and cache write pricing. |
+| `audioTokens`                                                                                    | *number*                                                                                         | :heavy_minus_sign:                                                                               | Audio input tokens                                                                               |
+| `videoTokens`                                                                                    | *number*                                                                                         | :heavy_minus_sign:                                                                               | Video input tokens                                                                               |

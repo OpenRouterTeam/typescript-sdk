@@ -69,7 +69,7 @@ export type OpenResponsesReasoningFormat = OpenEnum<
 export type OpenResponsesReasoning = {
   type: OpenResponsesReasoningType;
   id: string;
-  content?: Array<ReasoningTextContent> | undefined;
+  content?: Array<ReasoningTextContent> | null | undefined;
   summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
   status?:
@@ -137,7 +137,7 @@ export const OpenResponsesReasoningFormat$outboundSchema: z.ZodType<
 export type OpenResponsesReasoning$Outbound = {
   type: string;
   id: string;
-  content?: Array<ReasoningTextContent$Outbound> | undefined;
+  content?: Array<ReasoningTextContent$Outbound> | null | undefined;
   summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
   status?: string | string | string | undefined;
@@ -152,7 +152,7 @@ export const OpenResponsesReasoning$outboundSchema: z.ZodType<
 > = z.object({
   type: OpenResponsesReasoningType$outboundSchema,
   id: z.string(),
-  content: z.array(ReasoningTextContent$outboundSchema).optional(),
+  content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
   summary: z.array(ReasoningSummaryText$outboundSchema),
   encryptedContent: z.nullable(z.string()).optional(),
   status: z.union([

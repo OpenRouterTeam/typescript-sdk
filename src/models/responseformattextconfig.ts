@@ -8,11 +8,11 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ResponsesFormatJSONObject,
-  ResponsesFormatJSONObject$inboundSchema,
-  ResponsesFormatJSONObject$Outbound,
-  ResponsesFormatJSONObject$outboundSchema,
-} from "./responsesformatjsonobject.js";
+  ResponseFormatJSONObject,
+  ResponseFormatJSONObject$inboundSchema,
+  ResponseFormatJSONObject$Outbound,
+  ResponseFormatJSONObject$outboundSchema,
+} from "./responseformatjsonobject.js";
 import {
   ResponsesFormatText,
   ResponsesFormatText$inboundSchema,
@@ -31,7 +31,7 @@ import {
  */
 export type ResponseFormatTextConfig =
   | ResponsesFormatText
-  | ResponsesFormatJSONObject
+  | ResponseFormatJSONObject
   | ResponsesFormatTextJSONSchemaConfig;
 
 /** @internal */
@@ -40,13 +40,13 @@ export const ResponseFormatTextConfig$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   ResponsesFormatText$inboundSchema,
-  ResponsesFormatJSONObject$inboundSchema,
+  ResponseFormatJSONObject$inboundSchema,
   ResponsesFormatTextJSONSchemaConfig$inboundSchema,
 ]);
 /** @internal */
 export type ResponseFormatTextConfig$Outbound =
   | ResponsesFormatText$Outbound
-  | ResponsesFormatJSONObject$Outbound
+  | ResponseFormatJSONObject$Outbound
   | ResponsesFormatTextJSONSchemaConfig$Outbound;
 
 /** @internal */
@@ -55,7 +55,7 @@ export const ResponseFormatTextConfig$outboundSchema: z.ZodType<
   ResponseFormatTextConfig
 > = z.union([
   ResponsesFormatText$outboundSchema,
-  ResponsesFormatJSONObject$outboundSchema,
+  ResponseFormatJSONObject$outboundSchema,
   ResponsesFormatTextJSONSchemaConfig$outboundSchema,
 ]);
 

@@ -1,5 +1,7 @@
 # AssistantMessageContent
 
+Assistant message content
+
 
 ## Supported Types
 
@@ -14,11 +16,15 @@ const value: string = "<value>";
 ```typescript
 const value: models.ChatMessageContentItem[] = [
   {
-    type: "image_url",
-    imageUrl: {
-      url: "https://pretty-reservation.org",
-    },
+    type: "text",
+    text: "Hello, world!",
   },
 ];
+```
+
+### `any`
+
+```typescript
+const value: any = "<value>";
 ```
 

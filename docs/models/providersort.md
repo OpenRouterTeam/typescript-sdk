@@ -1,5 +1,7 @@
 # ProviderSort
 
+The provider sorting strategy (price, throughput, latency)
+
 ## Example Usage
 
 ```typescript

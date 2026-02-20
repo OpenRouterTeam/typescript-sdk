@@ -4,15 +4,32 @@
  */
 
 import * as z from "zod/v4";
+import { ClosedEnum } from "../types/enums.js";
+
+export const NamedToolChoiceType = {
+  Function: "function",
+} as const;
+export type NamedToolChoiceType = ClosedEnum<typeof NamedToolChoiceType>;
 
 export type NamedToolChoiceFunction = {
+  /**
+   * Function name to call
+   */
   name: string;
 };
 
+/**
+ * Named tool choice for specific function
+ */
 export type NamedToolChoice = {
-  type: "function";
+  type: NamedToolChoiceType;
   function: NamedToolChoiceFunction;
 };
+
+/** @internal */
+export const NamedToolChoiceType$outboundSchema: z.ZodEnum<
+  typeof NamedToolChoiceType
+> = z.enum(NamedToolChoiceType);
 
 /** @internal */
 export type NamedToolChoiceFunction$Outbound = {
@@ -37,7 +54,7 @@ export function namedToolChoiceFunctionToJSON(
 
 /** @internal */
 export type NamedToolChoice$Outbound = {
-  type: "function";
+  type: string;
   function: NamedToolChoiceFunction$Outbound;
 };
 
@@ -46,7 +63,7 @@ export const NamedToolChoice$outboundSchema: z.ZodType<
   NamedToolChoice$Outbound,
   NamedToolChoice
 > = z.object({
-  type: z.literal("function"),
+  type: NamedToolChoiceType$outboundSchema,
   function: z.lazy(() => NamedToolChoiceFunction$outboundSchema),
 });
 

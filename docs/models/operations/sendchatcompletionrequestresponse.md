@@ -7,13 +7,21 @@
 
 ```typescript
 const value: models.ChatResponse = {
-  id: "<id>",
-  choices: [],
-  created: 9184.01,
-  model: "Focus",
+  id: "chatcmpl-123",
+  choices: [
+    {
+      finishReason: "stop",
+      index: 0,
+      message: {
+        role: "assistant",
+      },
+    },
+  ],
+  created: 1677652288,
+  model: "openai/gpt-4",
   object: "chat.completion",
 };
 ```
 
-### `EventStream<models.ChatStreamingResponseChunk>`
+### `EventStream<operations.SendChatCompletionRequestResponseBody>`
 

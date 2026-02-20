@@ -74,10 +74,12 @@ import {
   ResponseTextConfig$inboundSchema,
 } from "./responsetextconfig.js";
 
-export const ObjectT = {
+export const OpenResponsesNonStreamingResponseObject = {
   Response: "response",
 } as const;
-export type ObjectT = ClosedEnum<typeof ObjectT>;
+export type OpenResponsesNonStreamingResponseObject = ClosedEnum<
+  typeof OpenResponsesNonStreamingResponseObject
+>;
 
 /**
  * Function tool definition
@@ -102,7 +104,7 @@ export type OpenResponsesNonStreamingResponseToolUnion =
  */
 export type OpenResponsesNonStreamingResponse = {
   id: string;
-  object: ObjectT;
+  object: OpenResponsesNonStreamingResponseObject;
   createdAt: number;
   model: string;
   status: OpenAIResponsesResponseStatus;
@@ -156,7 +158,9 @@ export type OpenResponsesNonStreamingResponse = {
 };
 
 /** @internal */
-export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
+export const OpenResponsesNonStreamingResponseObject$inboundSchema: z.ZodEnum<
+  typeof OpenResponsesNonStreamingResponseObject
+> = z.enum(OpenResponsesNonStreamingResponseObject);
 
 /** @internal */
 export const OpenResponsesNonStreamingResponseToolFunction$inboundSchema:
@@ -216,7 +220,7 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  object: ObjectT$inboundSchema,
+  object: OpenResponsesNonStreamingResponseObject$inboundSchema,
   created_at: z.number(),
   model: z.string(),
   status: OpenAIResponsesResponseStatus$inboundSchema,

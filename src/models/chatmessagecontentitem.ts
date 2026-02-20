@@ -30,14 +30,66 @@ import {
   ChatMessageContentItemVideo$Outbound,
   ChatMessageContentItemVideo$outboundSchema,
 } from "./chatmessagecontentitemvideo.js";
+import {
+  ChatMessageContentItemVideoLegacy,
+  ChatMessageContentItemVideoLegacy$inboundSchema,
+  ChatMessageContentItemVideoLegacy$Outbound,
+  ChatMessageContentItemVideoLegacy$outboundSchema,
+} from "./chatmessagecontentitemvideolegacy.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export type ChatMessageContentItem1 =
+  | ChatMessageContentItemVideoLegacy
+  | ChatMessageContentItemVideo;
+
+/**
+ * Content part for chat completion messages
+ */
 export type ChatMessageContentItem =
   | ChatMessageContentItemText
   | ChatMessageContentItemImage
   | ChatMessageContentItemAudio
-  | (ChatMessageContentItemVideo & { type: "input_video" })
-  | (ChatMessageContentItemVideo & { type: "video_url" });
+  | ChatMessageContentItemVideoLegacy
+  | ChatMessageContentItemVideo;
+
+/** @internal */
+export const ChatMessageContentItem1$inboundSchema: z.ZodType<
+  ChatMessageContentItem1,
+  unknown
+> = z.union([
+  ChatMessageContentItemVideoLegacy$inboundSchema,
+  ChatMessageContentItemVideo$inboundSchema,
+]);
+/** @internal */
+export type ChatMessageContentItem1$Outbound =
+  | ChatMessageContentItemVideoLegacy$Outbound
+  | ChatMessageContentItemVideo$Outbound;
+
+/** @internal */
+export const ChatMessageContentItem1$outboundSchema: z.ZodType<
+  ChatMessageContentItem1$Outbound,
+  ChatMessageContentItem1
+> = z.union([
+  ChatMessageContentItemVideoLegacy$outboundSchema,
+  ChatMessageContentItemVideo$outboundSchema,
+]);
+
+export function chatMessageContentItem1ToJSON(
+  chatMessageContentItem1: ChatMessageContentItem1,
+): string {
+  return JSON.stringify(
+    ChatMessageContentItem1$outboundSchema.parse(chatMessageContentItem1),
+  );
+}
+export function chatMessageContentItem1FromJSON(
+  jsonString: string,
+): SafeParseResult<ChatMessageContentItem1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatMessageContentItem1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatMessageContentItem1' from JSON`,
+  );
+}
 
 /** @internal */
 export const ChatMessageContentItem$inboundSchema: z.ZodType<
@@ -47,20 +99,18 @@ export const ChatMessageContentItem$inboundSchema: z.ZodType<
   ChatMessageContentItemText$inboundSchema,
   ChatMessageContentItemImage$inboundSchema,
   ChatMessageContentItemAudio$inboundSchema,
-  ChatMessageContentItemVideo$inboundSchema.and(
-    z.object({ type: z.literal("input_video") }),
-  ),
-  z.lazy(() => ChatMessageContentItemVideo$inboundSchema).and(
-    z.object({ type: z.literal("video_url") }),
-  ),
+  z.union([
+    ChatMessageContentItemVideoLegacy$inboundSchema,
+    ChatMessageContentItemVideo$inboundSchema,
+  ]),
 ]);
 /** @internal */
 export type ChatMessageContentItem$Outbound =
   | ChatMessageContentItemText$Outbound
   | ChatMessageContentItemImage$Outbound
   | ChatMessageContentItemAudio$Outbound
-  | (ChatMessageContentItemVideo$Outbound & { type: "input_video" })
-  | (ChatMessageContentItemVideo$Outbound & { type: "video_url" });
+  | ChatMessageContentItemVideoLegacy$Outbound
+  | ChatMessageContentItemVideo$Outbound;
 
 /** @internal */
 export const ChatMessageContentItem$outboundSchema: z.ZodType<
@@ -70,12 +120,10 @@ export const ChatMessageContentItem$outboundSchema: z.ZodType<
   ChatMessageContentItemText$outboundSchema,
   ChatMessageContentItemImage$outboundSchema,
   ChatMessageContentItemAudio$outboundSchema,
-  ChatMessageContentItemVideo$outboundSchema.and(
-    z.object({ type: z.literal("input_video") }),
-  ),
-  z.lazy(() => ChatMessageContentItemVideo$outboundSchema).and(
-    z.object({ type: z.literal("video_url") }),
-  ),
+  z.union([
+    ChatMessageContentItemVideoLegacy$outboundSchema,
+    ChatMessageContentItemVideo$outboundSchema,
+  ]),
 ]);
 
 export function chatMessageContentItemToJSON(

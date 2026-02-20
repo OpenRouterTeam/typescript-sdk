@@ -5,19 +5,48 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ChatMessageToolCallType = {
+  Function: "function",
+} as const;
+export type ChatMessageToolCallType = ClosedEnum<
+  typeof ChatMessageToolCallType
+>;
+
 export type ChatMessageToolCallFunction = {
+  /**
+   * Function name to call
+   */
   name: string;
+  /**
+   * Function arguments as JSON string
+   */
   arguments: string;
 };
 
+/**
+ * Tool call made by the assistant
+ */
 export type ChatMessageToolCall = {
+  /**
+   * Tool call identifier
+   */
   id: string;
-  type: "function";
+  type: ChatMessageToolCallType;
   function: ChatMessageToolCallFunction;
 };
+
+/** @internal */
+export const ChatMessageToolCallType$inboundSchema: z.ZodEnum<
+  typeof ChatMessageToolCallType
+> = z.enum(ChatMessageToolCallType);
+/** @internal */
+export const ChatMessageToolCallType$outboundSchema: z.ZodEnum<
+  typeof ChatMessageToolCallType
+> = ChatMessageToolCallType$inboundSchema;
 
 /** @internal */
 export const ChatMessageToolCallFunction$inboundSchema: z.ZodType<
@@ -67,13 +96,13 @@ export const ChatMessageToolCall$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  type: z.literal("function"),
+  type: ChatMessageToolCallType$inboundSchema,
   function: z.lazy(() => ChatMessageToolCallFunction$inboundSchema),
 });
 /** @internal */
 export type ChatMessageToolCall$Outbound = {
   id: string;
-  type: "function";
+  type: string;
   function: ChatMessageToolCallFunction$Outbound;
 };
 
@@ -83,7 +112,7 @@ export const ChatMessageToolCall$outboundSchema: z.ZodType<
   ChatMessageToolCall
 > = z.object({
   id: z.string(),
-  type: z.literal("function"),
+  type: ChatMessageToolCallType$outboundSchema,
   function: z.lazy(() => ChatMessageToolCallFunction$outboundSchema),
 });
 
