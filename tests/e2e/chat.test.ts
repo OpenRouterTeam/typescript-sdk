@@ -1,4 +1,4 @@
-import type { ChatStreamingResponseChunkData } from '../../src/models/chatstreamingresponsechunk.js';
+import type { ChatStreamingResponseChunk } from '../../src/models/chatstreamingresponsechunk.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
@@ -20,14 +20,16 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Non-streaming', () => {
     it('should successfully send a chat request and get a response', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: "Say 'Hello, World!' and nothing else.",
-          },
-        ],
-        stream: false,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: "Say 'Hello, World!' and nothing else.",
+            },
+          ],
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -48,22 +50,24 @@ describe('Chat E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: 'My name is Alice.',
-          },
-          {
-            role: 'assistant',
-            content: 'Hello Alice! How can I help you today?',
-          },
-          {
-            role: 'user',
-            content: 'What is my name?',
-          },
-        ],
-        stream: false,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: 'My name is Alice.',
+            },
+            {
+              role: 'assistant',
+              content: 'Hello Alice! How can I help you today?',
+            },
+            {
+              role: 'user',
+              content: 'What is my name?',
+            },
+          ],
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -81,15 +85,17 @@ describe('Chat E2E Tests', () => {
 
     it('should respect max_tokens parameter', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: 'Write a long story about a cat.',
-          },
-        ],
-        maxTokens: 10,
-        stream: false,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: 'Write a long story about a cat.',
+            },
+          ],
+          maxTokens: 10,
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -101,19 +107,21 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Streaming', () => {
     it('should successfully stream chat responses', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: 'Count from 1 to 5.',
-          },
-        ],
-        stream: true,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: 'Count from 1 to 5.',
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();
 
-      const chunks: ChatStreamingResponseChunkData[] = [];
+      const chunks: ChatStreamingResponseChunk[] = [];
 
       for await (const chunk of response) {
         expect(chunk).toBeDefined();
@@ -130,14 +138,16 @@ describe('Chat E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: "Say 'test'.",
-          },
-        ],
-        stream: true,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: "Say 'test'.",
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();
@@ -159,14 +169,16 @@ describe('Chat E2E Tests', () => {
 
     it('should include finish_reason in final chunk', async () => {
       const response = await client.chat.send({
-        model: 'anthropic/claude-haiku-4.5',
-        messages: [
-          {
-            role: 'user',
-            content: "Say 'done'.",
-          },
-        ],
-        stream: true,
+        chatGenerationParams: {
+          model: 'anthropic/claude-haiku-4.5',
+          messages: [
+            {
+              role: 'user',
+              content: "Say 'done'.",
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();

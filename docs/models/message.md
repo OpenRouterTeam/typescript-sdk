@@ -1,5 +1,7 @@
 # Message
 
+Chat completion message with role-based discrimination
+
 
 ## Supported Types
 
@@ -8,7 +10,7 @@
 ```typescript
 const value: models.SystemMessage = {
   role: "system",
-  content: [],
+  content: "What is the capital of France?",
 };
 ```
 
@@ -17,7 +19,7 @@ const value: models.SystemMessage = {
 ```typescript
 const value: models.UserMessage = {
   role: "user",
-  content: "<value>",
+  content: "What is the capital of France?",
 };
 ```
 
@@ -26,7 +28,7 @@ const value: models.UserMessage = {
 ```typescript
 const value: models.DeveloperMessage = {
   role: "developer",
-  content: [],
+  content: "What is the capital of France?",
 };
 ```
 
@@ -43,8 +45,8 @@ const value: models.AssistantMessage = {
 ```typescript
 const value: models.ToolResponseMessage = {
   role: "tool",
-  content: [],
-  toolCallId: "<id>",
+  content: "What is the capital of France?",
+  toolCallId: "call_abc123",
 };
 ```
 

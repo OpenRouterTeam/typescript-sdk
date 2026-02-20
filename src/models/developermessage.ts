@@ -10,13 +10,25 @@ import {
   ChatMessageContentItemText$outboundSchema,
 } from "./chatmessagecontentitemtext.js";
 
+/**
+ * Developer message content
+ */
 export type DeveloperMessageContent =
   | string
   | Array<ChatMessageContentItemText>;
 
+/**
+ * Developer message
+ */
 export type DeveloperMessage = {
   role: "developer";
+  /**
+   * Developer message content
+   */
   content: string | Array<ChatMessageContentItemText>;
+  /**
+   * Optional name for the developer message
+   */
   name?: string | undefined;
 };
 

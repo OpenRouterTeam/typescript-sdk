@@ -13,7 +13,7 @@ let value: ChatMessageToolCallFunction = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `name`             | *string*           | :heavy_check_mark: | N/A                |
-| `arguments`        | *string*           | :heavy_check_mark: | N/A                |
+| Field                             | Type                              | Required                          | Description                       |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `name`                            | *string*                          | :heavy_check_mark:                | Function name to call             |
+| `arguments`                       | *string*                          | :heavy_check_mark:                | Function arguments as JSON string |

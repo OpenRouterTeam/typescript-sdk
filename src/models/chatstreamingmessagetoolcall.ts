@@ -5,20 +5,63 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Tool call type
+ */
+export const ChatStreamingMessageToolCallType = {
+  Function: "function",
+} as const;
+/**
+ * Tool call type
+ */
+export type ChatStreamingMessageToolCallType = ClosedEnum<
+  typeof ChatStreamingMessageToolCallType
+>;
+
+/**
+ * Function call details
+ */
 export type ChatStreamingMessageToolCallFunction = {
+  /**
+   * Function name
+   */
   name?: string | undefined;
+  /**
+   * Function arguments as JSON string
+   */
   arguments?: string | undefined;
 };
 
+/**
+ * Tool call delta for streaming responses
+ */
 export type ChatStreamingMessageToolCall = {
+  /**
+   * Tool call index in the array
+   */
   index: number;
+  /**
+   * Tool call identifier
+   */
   id?: string | undefined;
-  type?: "function" | undefined;
+  /**
+   * Tool call type
+   */
+  type?: ChatStreamingMessageToolCallType | undefined;
+  /**
+   * Function call details
+   */
   function?: ChatStreamingMessageToolCallFunction | undefined;
 };
+
+/** @internal */
+export const ChatStreamingMessageToolCallType$inboundSchema: z.ZodEnum<
+  typeof ChatStreamingMessageToolCallType
+> = z.enum(ChatStreamingMessageToolCallType);
 
 /** @internal */
 export const ChatStreamingMessageToolCallFunction$inboundSchema: z.ZodType<
@@ -47,7 +90,7 @@ export const ChatStreamingMessageToolCall$inboundSchema: z.ZodType<
 > = z.object({
   index: z.number(),
   id: z.string().optional(),
-  type: z.literal("function").optional(),
+  type: ChatStreamingMessageToolCallType$inboundSchema.optional(),
   function: z.lazy(() => ChatStreamingMessageToolCallFunction$inboundSchema)
     .optional(),
 });

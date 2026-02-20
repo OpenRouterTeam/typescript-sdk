@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatMessageContentItemCacheControl,
@@ -15,18 +16,40 @@ import {
 } from "./chatmessagecontentitemcachecontrol.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ChatMessageContentItemTextType = {
+  Text: "text",
+} as const;
+export type ChatMessageContentItemTextType = ClosedEnum<
+  typeof ChatMessageContentItemTextType
+>;
+
+/**
+ * Text content part
+ */
 export type ChatMessageContentItemText = {
-  type: "text";
+  type: ChatMessageContentItemTextType;
   text: string;
+  /**
+   * Cache control for the content part
+   */
   cacheControl?: ChatMessageContentItemCacheControl | undefined;
 };
+
+/** @internal */
+export const ChatMessageContentItemTextType$inboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemTextType
+> = z.enum(ChatMessageContentItemTextType);
+/** @internal */
+export const ChatMessageContentItemTextType$outboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemTextType
+> = ChatMessageContentItemTextType$inboundSchema;
 
 /** @internal */
 export const ChatMessageContentItemText$inboundSchema: z.ZodType<
   ChatMessageContentItemText,
   unknown
 > = z.object({
-  type: z.literal("text"),
+  type: ChatMessageContentItemTextType$inboundSchema,
   text: z.string(),
   cache_control: ChatMessageContentItemCacheControl$inboundSchema.optional(),
 }).transform((v) => {
@@ -36,7 +59,7 @@ export const ChatMessageContentItemText$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatMessageContentItemText$Outbound = {
-  type: "text";
+  type: string;
   text: string;
   cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
 };
@@ -46,7 +69,7 @@ export const ChatMessageContentItemText$outboundSchema: z.ZodType<
   ChatMessageContentItemText$Outbound,
   ChatMessageContentItemText
 > = z.object({
-  type: z.literal("text"),
+  type: ChatMessageContentItemTextType$outboundSchema,
   text: z.string(),
   cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
 }).transform((v) => {

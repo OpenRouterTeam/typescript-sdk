@@ -10,11 +10,23 @@ import {
   ChatMessageContentItem$outboundSchema,
 } from "./chatmessagecontentitem.js";
 
+/**
+ * User message content
+ */
 export type UserMessageContent = string | Array<ChatMessageContentItem>;
 
+/**
+ * User message
+ */
 export type UserMessage = {
   role: "user";
+  /**
+   * User message content
+   */
   content: string | Array<ChatMessageContentItem>;
+  /**
+   * Optional name for the user
+   */
   name?: string | undefined;
 };
 

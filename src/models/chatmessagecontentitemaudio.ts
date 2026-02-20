@@ -6,18 +6,44 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export const ChatMessageContentItemAudioType = {
+  InputAudio: "input_audio",
+} as const;
+export type ChatMessageContentItemAudioType = ClosedEnum<
+  typeof ChatMessageContentItemAudioType
+>;
+
 export type ChatMessageContentItemAudioInputAudio = {
+  /**
+   * Base64 encoded audio data
+   */
   data: string;
+  /**
+   * Audio format (e.g., wav, mp3, flac, m4a, ogg, aiff, aac, pcm16, pcm24). Supported formats vary by provider.
+   */
   format: string;
 };
 
+/**
+ * Audio input content part. Supported audio formats vary by provider.
+ */
 export type ChatMessageContentItemAudio = {
-  type: "input_audio";
+  type: ChatMessageContentItemAudioType;
   inputAudio: ChatMessageContentItemAudioInputAudio;
 };
+
+/** @internal */
+export const ChatMessageContentItemAudioType$inboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemAudioType
+> = z.enum(ChatMessageContentItemAudioType);
+/** @internal */
+export const ChatMessageContentItemAudioType$outboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemAudioType
+> = ChatMessageContentItemAudioType$inboundSchema;
 
 /** @internal */
 export const ChatMessageContentItemAudioInputAudio$inboundSchema: z.ZodType<
@@ -67,7 +93,7 @@ export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
   ChatMessageContentItemAudio,
   unknown
 > = z.object({
-  type: z.literal("input_audio"),
+  type: ChatMessageContentItemAudioType$inboundSchema,
   input_audio: z.lazy(() =>
     ChatMessageContentItemAudioInputAudio$inboundSchema
   ),
@@ -78,7 +104,7 @@ export const ChatMessageContentItemAudio$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatMessageContentItemAudio$Outbound = {
-  type: "input_audio";
+  type: string;
   input_audio: ChatMessageContentItemAudioInputAudio$Outbound;
 };
 
@@ -87,7 +113,7 @@ export const ChatMessageContentItemAudio$outboundSchema: z.ZodType<
   ChatMessageContentItemAudio$Outbound,
   ChatMessageContentItemAudio
 > = z.object({
-  type: z.literal("input_audio"),
+  type: ChatMessageContentItemAudioType$outboundSchema,
   inputAudio: z.lazy(() =>
     ChatMessageContentItemAudioInputAudio$outboundSchema
   ),

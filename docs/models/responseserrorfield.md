@@ -15,7 +15,7 @@ let value: ResponsesErrorField = {
 
 ## Fields
 
-| Field                                    | Type                                     | Required                                 | Description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `code`                                   | [models.CodeEnum](../models/codeenum.md) | :heavy_check_mark:                       | N/A                                      |
-| `message`                                | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `code`                           | [models.Code](../models/code.md) | :heavy_check_mark:               | N/A                              |
+| `message`                        | *string*                         | :heavy_check_mark:               | N/A                              |
