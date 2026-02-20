@@ -1,16 +1,18 @@
 # ChatMessageToolCall
 
+Tool call made by the assistant
+
 ## Example Usage
 
 ```typescript
 import { ChatMessageToolCall } from "@openrouter/sdk/models";
 
 let value: ChatMessageToolCall = {
-  id: "<id>",
+  id: "call_abc123",
   type: "function",
   function: {
-    name: "<value>",
-    arguments: "<value>",
+    name: "get_current_weather",
+    arguments: "{\"location\": \"Boston, MA\"}",
   },
 };
 ```
@@ -19,6 +21,6 @@ let value: ChatMessageToolCall = {
 
 | Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `id`                                                                           | *string*                                                                       | :heavy_check_mark:                                                             | N/A                                                                            |
-| `type`                                                                         | *"function"*                                                                   | :heavy_check_mark:                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | :heavy_check_mark:                                                             | Tool call identifier                                                           |
+| `type`                                                                         | [models.ChatMessageToolCallType](../models/chatmessagetoolcalltype.md)         | :heavy_check_mark:                                                             | N/A                                                                            |
 | `function`                                                                     | [models.ChatMessageToolCallFunction](../models/chatmessagetoolcallfunction.md) | :heavy_check_mark:                                                             | N/A                                                                            |

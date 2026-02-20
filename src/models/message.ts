@@ -30,11 +30,14 @@ import {
   UserMessage$outboundSchema,
 } from "./usermessage.js";
 
+/**
+ * Chat completion message with role-based discrimination
+ */
 export type Message =
   | SystemMessage
   | UserMessage
   | DeveloperMessage
-  | AssistantMessage
+  | (AssistantMessage & { role: "assistant" })
   | ToolResponseMessage;
 
 /** @internal */
@@ -42,7 +45,7 @@ export type Message$Outbound =
   | SystemMessage$Outbound
   | UserMessage$Outbound
   | DeveloperMessage$Outbound
-  | AssistantMessage$Outbound
+  | (AssistantMessage$Outbound & { role: "assistant" })
   | ToolResponseMessage$Outbound;
 
 /** @internal */
@@ -51,7 +54,9 @@ export const Message$outboundSchema: z.ZodType<Message$Outbound, Message> = z
     SystemMessage$outboundSchema,
     UserMessage$outboundSchema,
     DeveloperMessage$outboundSchema,
-    AssistantMessage$outboundSchema,
+    AssistantMessage$outboundSchema.and(
+      z.object({ role: z.literal("assistant") }),
+    ),
     ToolResponseMessage$outboundSchema,
   ]);
 

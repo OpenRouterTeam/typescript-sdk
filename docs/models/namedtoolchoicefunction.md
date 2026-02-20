@@ -6,12 +6,12 @@
 import { NamedToolChoiceFunction } from "@openrouter/sdk/models";
 
 let value: NamedToolChoiceFunction = {
-  name: "<value>",
+  name: "get_weather",
 };
 ```
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `name`             | *string*           | :heavy_check_mark: | N/A                |
+| Field                 | Type                  | Required              | Description           | Example               |
+| --------------------- | --------------------- | --------------------- | --------------------- | --------------------- |
+| `name`                | *string*              | :heavy_check_mark:    | Function name to call | get_weather           |

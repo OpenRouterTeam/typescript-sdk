@@ -1,5 +1,7 @@
 # ResponseFormatText
 
+Default text response format
+
 ## Example Usage
 
 ```typescript

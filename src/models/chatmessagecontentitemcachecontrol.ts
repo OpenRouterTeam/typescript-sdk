@@ -6,9 +6,16 @@
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+
+export const ChatMessageContentItemCacheControlType = {
+  Ephemeral: "ephemeral",
+} as const;
+export type ChatMessageContentItemCacheControlType = ClosedEnum<
+  typeof ChatMessageContentItemCacheControlType
+>;
 
 export const Ttl = {
   Fivem: "5m",
@@ -16,10 +23,22 @@ export const Ttl = {
 } as const;
 export type Ttl = OpenEnum<typeof Ttl>;
 
+/**
+ * Cache control for the content part
+ */
 export type ChatMessageContentItemCacheControl = {
-  type: "ephemeral";
+  type: ChatMessageContentItemCacheControlType;
   ttl?: Ttl | undefined;
 };
+
+/** @internal */
+export const ChatMessageContentItemCacheControlType$inboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemCacheControlType
+> = z.enum(ChatMessageContentItemCacheControlType);
+/** @internal */
+export const ChatMessageContentItemCacheControlType$outboundSchema: z.ZodEnum<
+  typeof ChatMessageContentItemCacheControlType
+> = ChatMessageContentItemCacheControlType$inboundSchema;
 
 /** @internal */
 export const Ttl$inboundSchema: z.ZodType<Ttl, unknown> = openEnums
@@ -33,12 +52,12 @@ export const ChatMessageContentItemCacheControl$inboundSchema: z.ZodType<
   ChatMessageContentItemCacheControl,
   unknown
 > = z.object({
-  type: z.literal("ephemeral"),
+  type: ChatMessageContentItemCacheControlType$inboundSchema,
   ttl: Ttl$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatMessageContentItemCacheControl$Outbound = {
-  type: "ephemeral";
+  type: string;
   ttl?: string | undefined;
 };
 
@@ -47,7 +66,7 @@ export const ChatMessageContentItemCacheControl$outboundSchema: z.ZodType<
   ChatMessageContentItemCacheControl$Outbound,
   ChatMessageContentItemCacheControl
 > = z.object({
-  type: z.literal("ephemeral"),
+  type: ChatMessageContentItemCacheControlType$outboundSchema,
   ttl: Ttl$outboundSchema.optional(),
 });
 

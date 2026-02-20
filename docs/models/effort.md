@@ -1,11 +1,13 @@
 # Effort
 
+Constrains effort on reasoning for reasoning models
+
 ## Example Usage
 
 ```typescript
 import { Effort } from "@openrouter/sdk/models";
 
-let value: Effort = "high";
+let value: Effort = "medium";
 ```
 
 ## Values

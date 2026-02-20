@@ -1,5 +1,7 @@
 # ChatStreamingMessageToolCallFunction
 
+Function call details
+
 ## Example Usage
 
 ```typescript
@@ -10,7 +12,7 @@ let value: ChatStreamingMessageToolCallFunction = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `name`             | *string*           | :heavy_minus_sign: | N/A                |
-| `arguments`        | *string*           | :heavy_minus_sign: | N/A                |
+| Field                             | Type                              | Required                          | Description                       | Example                           |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `name`                            | *string*                          | :heavy_minus_sign:                | Function name                     | get_weather                       |
+| `arguments`                       | *string*                          | :heavy_minus_sign:                | Function arguments as JSON string | {"location":                      |

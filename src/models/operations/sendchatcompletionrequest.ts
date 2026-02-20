@@ -41,15 +41,22 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   xTitle?: string | undefined;
-  /**
-   * Chat completion request parameters
-   */
   chatGenerationParams: models.ChatGenerationParams;
+};
+
+/**
+ * Successful chat completion response
+ */
+export type SendChatCompletionRequestResponseBody = {
+  /**
+   * Streaming chat completion chunk
+   */
+  data: models.ChatStreamingResponseChunk;
 };
 
 export type SendChatCompletionRequestResponse =
   | models.ChatResponse
-  | EventStream<models.ChatStreamingResponseChunkData>;
+  | EventStream<models.ChatStreamingResponseChunk>;
 
 /** @internal */
 export type SendChatCompletionRequestRequest$Outbound = {
@@ -85,6 +92,36 @@ export function sendChatCompletionRequestRequestToJSON(
 }
 
 /** @internal */
+export const SendChatCompletionRequestResponseBody$inboundSchema: z.ZodType<
+  SendChatCompletionRequestResponseBody,
+  unknown
+> = z.object({
+  data: z.string().transform((v, ctx) => {
+    try {
+      return JSON.parse(v);
+    } catch (err) {
+      ctx.addIssue({
+        input: v,
+        code: "custom",
+        message: `malformed json: ${err}`,
+      });
+      return z.NEVER;
+    }
+  }).pipe(models.ChatStreamingResponseChunk$inboundSchema),
+});
+
+export function sendChatCompletionRequestResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<SendChatCompletionRequestResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      SendChatCompletionRequestResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SendChatCompletionRequestResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   SendChatCompletionRequestResponse,
   unknown
@@ -95,8 +132,9 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
       return new EventStream(stream, rawEvent => {
         if (rawEvent.data === "[DONE]") return { done: true };
         return {
-          value: models.ChatStreamingResponseChunk$inboundSchema.parse(rawEvent)
-            ?.data,
+          value: z.lazy(() =>
+            SendChatCompletionRequestResponseBody$inboundSchema
+          ).parse(rawEvent)?.data,
         };
       });
     }),

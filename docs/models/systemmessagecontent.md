@@ -1,12 +1,14 @@
 # SystemMessageContent
 
+System message content
+
 
 ## Supported Types
 
 ### `string`
 
 ```typescript
-const value: string = "<value>";
+const value: string = "You are a helpful assistant.";
 ```
 
 ### `models.ChatMessageContentItemText[]`
