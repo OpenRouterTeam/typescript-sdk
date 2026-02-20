@@ -120,6 +120,7 @@ export const ProviderName = {
   Inceptron: "Inceptron",
   InferenceNet: "InferenceNet",
   Infermatic: "Infermatic",
+  IoNet: "Io Net",
   Inflection: "Inflection",
   Liquid: "Liquid",
   Mara: "Mara",

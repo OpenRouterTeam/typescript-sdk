@@ -273,6 +273,18 @@ export type Plugin =
   | PluginResponseHealing;
 
 /**
+ * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+ */
+export type Trace = {
+  traceId?: string | undefined;
+  traceName?: string | undefined;
+  spanName?: string | undefined;
+  generationName?: string | undefined;
+  parentSpanId?: string | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
+
+/**
  * Request schema for Responses endpoint
  */
 export type OpenResponsesRequest = {
@@ -356,6 +368,10 @@ export type OpenResponsesRequest = {
    * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
    */
   sessionId?: string | undefined;
+  /**
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   */
+  trace?: Trace | undefined;
 };
 
 /** @internal */
@@ -768,6 +784,42 @@ export function pluginToJSON(plugin: Plugin): string {
 }
 
 /** @internal */
+export type Trace$Outbound = {
+  trace_id?: string | undefined;
+  trace_name?: string | undefined;
+  span_name?: string | undefined;
+  generation_name?: string | undefined;
+  parent_span_id?: string | undefined;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const Trace$outboundSchema: z.ZodType<Trace$Outbound, Trace> = z.object({
+  traceId: z.string().optional(),
+  traceName: z.string().optional(),
+  spanName: z.string().optional(),
+  generationName: z.string().optional(),
+  parentSpanId: z.string().optional(),
+  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      traceId: "trace_id",
+      traceName: "trace_name",
+      spanName: "span_name",
+      generationName: "generation_name",
+      parentSpanId: "parent_span_id",
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function traceToJSON(trace: Trace): string {
+  return JSON.stringify(Trace$outboundSchema.parse(trace));
+}
+
+/** @internal */
 export type OpenResponsesRequest$Outbound = {
   input?: OpenResponsesInput$Outbound | undefined;
   instructions?: string | null | undefined;
@@ -819,6 +871,7 @@ export type OpenResponsesRequest$Outbound = {
     | undefined;
   user?: string | undefined;
   session_id?: string | undefined;
+  trace?: Trace$Outbound | undefined;
 };
 
 /** @internal */
@@ -878,6 +931,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   ).optional(),
   user: z.string().optional(),
   sessionId: z.string().optional(),
+  trace: z.lazy(() => Trace$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     toolChoice: "tool_choice",

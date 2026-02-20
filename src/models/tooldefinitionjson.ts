@@ -4,6 +4,12 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
+import {
+  ChatMessageContentItemCacheControl,
+  ChatMessageContentItemCacheControl$Outbound,
+  ChatMessageContentItemCacheControl$outboundSchema,
+} from "./chatmessagecontentitemcachecontrol.js";
 
 export type ToolDefinitionJsonFunction = {
   name: string;
@@ -15,6 +21,7 @@ export type ToolDefinitionJsonFunction = {
 export type ToolDefinitionJson = {
   type: "function";
   function: ToolDefinitionJsonFunction;
+  cacheControl?: ChatMessageContentItemCacheControl | undefined;
 };
 
 /** @internal */
@@ -48,6 +55,7 @@ export function toolDefinitionJsonFunctionToJSON(
 export type ToolDefinitionJson$Outbound = {
   type: "function";
   function: ToolDefinitionJsonFunction$Outbound;
+  cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
 };
 
 /** @internal */
@@ -57,6 +65,11 @@ export const ToolDefinitionJson$outboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("function"),
   function: z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
+  cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    cacheControl: "cache_control",
+  });
 });
 
 export function toolDefinitionJsonToJSON(
