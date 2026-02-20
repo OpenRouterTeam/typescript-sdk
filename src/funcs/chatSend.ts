@@ -43,7 +43,19 @@ export function chatSend(
 ): APIPromise<
   Result<
     models.ChatResponse,
-    | errors.ChatError
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -62,8 +74,20 @@ export function chatSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    EventStream<models.ChatStreamingResponseChunkData>,
-    | errors.ChatError
+    EventStream<models.ChatStreamingResponseChunk>,
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -81,7 +105,19 @@ export function chatSend(
 ): APIPromise<
   Result<
     operations.SendChatCompletionRequestResponse,
-    | errors.ChatError
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -99,7 +135,19 @@ export function chatSend(
 ): APIPromise<
   Result<
     operations.SendChatCompletionRequestResponse,
-    | errors.ChatError
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -125,7 +173,19 @@ async function $do(
   [
     Result<
       operations.SendChatCompletionRequestResponse,
-      | errors.ChatError
+      | errors.BadRequestResponseError
+      | errors.UnauthorizedResponseError
+      | errors.PaymentRequiredResponseError
+      | errors.NotFoundResponseError
+      | errors.RequestTimeoutResponseError
+      | errors.PayloadTooLargeResponseError
+      | errors.UnprocessableEntityResponseError
+      | errors.TooManyRequestsResponseError
+      | errors.InternalServerResponseError
+      | errors.BadGatewayResponseError
+      | errors.ServiceUnavailableResponseError
+      | errors.EdgeNetworkTimeoutResponseError
+      | errors.ProviderOverloadedResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -207,7 +267,23 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "429", "4XX", "500", "5XX"],
+    errorCodes: [
+      "400",
+      "401",
+      "402",
+      "404",
+      "408",
+      "413",
+      "422",
+      "429",
+      "4XX",
+      "500",
+      "502",
+      "503",
+      "524",
+      "529",
+      "5XX",
+    ],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -222,7 +298,19 @@ async function $do(
 
   const [result] = await M.match<
     operations.SendChatCompletionRequestResponse,
-    | errors.ChatError
+    | errors.BadRequestResponseError
+    | errors.UnauthorizedResponseError
+    | errors.PaymentRequiredResponseError
+    | errors.NotFoundResponseError
+    | errors.RequestTimeoutResponseError
+    | errors.PayloadTooLargeResponseError
+    | errors.UnprocessableEntityResponseError
+    | errors.TooManyRequestsResponseError
+    | errors.InternalServerResponseError
+    | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
+    | errors.EdgeNetworkTimeoutResponseError
+    | errors.ProviderOverloadedResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -234,8 +322,19 @@ async function $do(
   >(
     M.json(200, operations.SendChatCompletionRequestResponse$inboundSchema),
     M.sse(200, operations.SendChatCompletionRequestResponse$inboundSchema),
-    M.jsonErr([400, 401, 429], errors.ChatError$inboundSchema),
-    M.jsonErr(500, errors.ChatError$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
+    M.jsonErr(408, errors.RequestTimeoutResponseError$inboundSchema),
+    M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
+    M.jsonErr(422, errors.UnprocessableEntityResponseError$inboundSchema),
+    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
+    M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
+    M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

@@ -1,5 +1,7 @@
 # ChatMessageContentItem
 
+Content part for chat completion messages
+
 
 ## Supported Types
 
@@ -8,7 +10,7 @@
 ```typescript
 const value: models.ChatMessageContentItemText = {
   type: "text",
-  text: "<value>",
+  text: "Hello, world!",
 };
 ```
 
@@ -18,7 +20,7 @@ const value: models.ChatMessageContentItemText = {
 const value: models.ChatMessageContentItemImage = {
   type: "image_url",
   imageUrl: {
-    url: "https://pretty-reservation.org",
+    url: "https://better-nephew.com/",
   },
 };
 ```
@@ -35,24 +37,13 @@ const value: models.ChatMessageContentItemAudio = {
 };
 ```
 
-### `models.ChatMessageContentItemVideo`
+### `models.ChatMessageContentItem1`
 
 ```typescript
-const value: models.ChatMessageContentItemVideo = {
+const value: models.ChatMessageContentItem1 = {
   type: "video_url",
   videoUrl: {
-    url: "https://palatable-subexpression.com/",
-  },
-};
-```
-
-### `models.ChatMessageContentItemVideo`
-
-```typescript
-const value: models.ChatMessageContentItemVideo = {
-  type: "video_url",
-  videoUrl: {
-    url: "https://palatable-subexpression.com/",
+    url: "https://standard-step.net/",
   },
 };
 ```

@@ -11,7 +11,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Model count data
  */
-export type ModelsCountResponseData = {
+export type Data = {
   /**
    * Total number of available models
    */
@@ -25,24 +25,21 @@ export type ModelsCountResponse = {
   /**
    * Model count data
    */
-  data: ModelsCountResponseData;
+  data: Data;
 };
 
 /** @internal */
-export const ModelsCountResponseData$inboundSchema: z.ZodType<
-  ModelsCountResponseData,
-  unknown
-> = z.object({
+export const Data$inboundSchema: z.ZodType<Data, unknown> = z.object({
   count: z.number(),
 });
 
-export function modelsCountResponseDataFromJSON(
+export function dataFromJSON(
   jsonString: string,
-): SafeParseResult<ModelsCountResponseData, SDKValidationError> {
+): SafeParseResult<Data, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ModelsCountResponseData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ModelsCountResponseData' from JSON`,
+    (x) => Data$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Data' from JSON`,
   );
 }
 
@@ -51,7 +48,7 @@ export const ModelsCountResponse$inboundSchema: z.ZodType<
   ModelsCountResponse,
   unknown
 > = z.object({
-  data: z.lazy(() => ModelsCountResponseData$inboundSchema),
+  data: z.lazy(() => Data$inboundSchema),
 });
 
 export function modelsCountResponseFromJSON(

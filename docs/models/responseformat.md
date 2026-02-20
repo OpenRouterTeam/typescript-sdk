@@ -1,5 +1,7 @@
 # ResponseFormat
 
+Response format configuration
+
 
 ## Supported Types
 
@@ -25,7 +27,7 @@ const value: models.ResponseFormatJSONObject = {
 const value: models.ResponseFormatJSONSchema = {
   type: "json_schema",
   jsonSchema: {
-    name: "<value>",
+    name: "math_response",
   },
 };
 ```
@@ -35,14 +37,14 @@ const value: models.ResponseFormatJSONSchema = {
 ```typescript
 const value: models.ResponseFormatTextGrammar = {
   type: "grammar",
-  grammar: "<value>",
+  grammar: "root ::= \"yes\" | \"no\"",
 };
 ```
 
-### `models.ResponseFormatPython`
+### `models.ResponseFormatTextPython`
 
 ```typescript
-const value: models.ResponseFormatPython = {
+const value: models.ResponseFormatTextPython = {
   type: "python",
 };
 ```

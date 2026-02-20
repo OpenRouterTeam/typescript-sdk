@@ -8,10 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
-  ChatCompletionFinishReason,
-  ChatCompletionFinishReason$inboundSchema,
-} from "./chatcompletionfinishreason.js";
-import {
   ChatMessageTokenLogprobs,
   ChatMessageTokenLogprobs$inboundSchema,
 } from "./chatmessagetokenlogprobs.js";
@@ -21,10 +17,22 @@ import {
 } from "./chatstreamingmessagechunk.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Streaming completion choice chunk
+ */
 export type ChatStreamingChoice = {
+  /**
+   * Delta changes in streaming response
+   */
   delta: ChatStreamingMessageChunk;
-  finishReason: ChatCompletionFinishReason | null;
+  finishReason?: any | null | undefined;
+  /**
+   * Choice index
+   */
   index: number;
+  /**
+   * Log probabilities for the completion
+   */
   logprobs?: ChatMessageTokenLogprobs | null | undefined;
 };
 
@@ -34,7 +42,7 @@ export const ChatStreamingChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: ChatStreamingMessageChunk$inboundSchema,
-  finish_reason: z.nullable(ChatCompletionFinishReason$inboundSchema),
+  finish_reason: z.nullable(z.any()).optional(),
   index: z.number(),
   logprobs: z.nullable(ChatMessageTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {

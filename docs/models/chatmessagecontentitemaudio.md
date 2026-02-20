@@ -1,5 +1,7 @@
 # ChatMessageContentItemAudio
 
+Audio input content part. Supported audio formats vary by provider.
+
 ## Example Usage
 
 ```typescript
@@ -18,5 +20,5 @@ let value: ChatMessageContentItemAudio = {
 
 | Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
 | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `type`                                                                                             | *"input_audio"*                                                                                    | :heavy_check_mark:                                                                                 | N/A                                                                                                |
+| `type`                                                                                             | [models.ChatMessageContentItemAudioType](../models/chatmessagecontentitemaudiotype.md)             | :heavy_check_mark:                                                                                 | N/A                                                                                                |
 | `inputAudio`                                                                                       | [models.ChatMessageContentItemAudioInputAudio](../models/chatmessagecontentitemaudioinputaudio.md) | :heavy_check_mark:                                                                                 | N/A                                                                                                |
