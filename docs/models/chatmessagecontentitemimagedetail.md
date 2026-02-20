@@ -1,5 +1,7 @@
 # ChatMessageContentItemImageDetail
 
+Image detail level for vision models
+
 ## Example Usage
 
 ```typescript

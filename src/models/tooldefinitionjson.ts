@@ -4,24 +4,66 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ChatMessageContentItemCacheControl,
+  ChatMessageContentItemCacheControl$Outbound,
+  ChatMessageContentItemCacheControl$outboundSchema,
+} from "./chatmessagecontentitemcachecontrol.js";
 
+export const ToolDefinitionJsonType = {
+  Function: "function",
+} as const;
+export type ToolDefinitionJsonType = ClosedEnum<typeof ToolDefinitionJsonType>;
+
+/**
+ * Function definition for tool calling
+ */
 export type ToolDefinitionJsonFunction = {
+  /**
+   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+   */
   name: string;
+  /**
+   * Function description for the model
+   */
   description?: string | undefined;
-  parameters?: { [k: string]: any } | undefined;
+  /**
+   * Function parameters as JSON Schema object
+   */
+  parameters?: { [k: string]: any | null } | undefined;
+  /**
+   * Enable strict schema adherence
+   */
   strict?: boolean | null | undefined;
 };
 
+/**
+ * Tool definition for function calling
+ */
 export type ToolDefinitionJson = {
-  type: "function";
+  type: ToolDefinitionJsonType;
+  /**
+   * Function definition for tool calling
+   */
   function: ToolDefinitionJsonFunction;
+  /**
+   * Cache control for the content part
+   */
+  cacheControl?: ChatMessageContentItemCacheControl | undefined;
 };
+
+/** @internal */
+export const ToolDefinitionJsonType$outboundSchema: z.ZodEnum<
+  typeof ToolDefinitionJsonType
+> = z.enum(ToolDefinitionJsonType);
 
 /** @internal */
 export type ToolDefinitionJsonFunction$Outbound = {
   name: string;
   description?: string | undefined;
-  parameters?: { [k: string]: any } | undefined;
+  parameters?: { [k: string]: any | null } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -32,7 +74,7 @@ export const ToolDefinitionJsonFunction$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  parameters: z.record(z.string(), z.any()).optional(),
+  parameters: z.record(z.string(), z.nullable(z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
@@ -46,8 +88,9 @@ export function toolDefinitionJsonFunctionToJSON(
 
 /** @internal */
 export type ToolDefinitionJson$Outbound = {
-  type: "function";
+  type: string;
   function: ToolDefinitionJsonFunction$Outbound;
+  cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
 };
 
 /** @internal */
@@ -55,8 +98,13 @@ export const ToolDefinitionJson$outboundSchema: z.ZodType<
   ToolDefinitionJson$Outbound,
   ToolDefinitionJson
 > = z.object({
-  type: z.literal("function"),
+  type: ToolDefinitionJsonType$outboundSchema,
   function: z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
+  cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    cacheControl: "cache_control",
+  });
 });
 
 export function toolDefinitionJsonToJSON(

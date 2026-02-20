@@ -1,20 +1,22 @@
 # ToolDefinitionJsonFunction
 
+Function definition for tool calling
+
 ## Example Usage
 
 ```typescript
 import { ToolDefinitionJsonFunction } from "@openrouter/sdk/models";
 
 let value: ToolDefinitionJsonFunction = {
-  name: "<value>",
+  name: "get_weather",
 };
 ```
 
 ## Fields
 
-| Field                 | Type                  | Required              | Description           |
-| --------------------- | --------------------- | --------------------- | --------------------- |
-| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
-| `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
-| `parameters`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| Field                                                                                                                            | Type                                                                                                                             | Required                                                                                                                         | Description                                                                                                                      | Example                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                                                                                                                           | *string*                                                                                                                         | :heavy_check_mark:                                                                                                               | Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)                                                                 | get_weather                                                                                                                      |
+| `description`                                                                                                                    | *string*                                                                                                                         | :heavy_minus_sign:                                                                                                               | Function description for the model                                                                                               | Get the current weather for a location                                                                                           |
+| `parameters`                                                                                                                     | Record<string, *any*>                                                                                                            | :heavy_minus_sign:                                                                                                               | Function parameters as JSON Schema object                                                                                        | {<br/>"type": "object",<br/>"properties": {<br/>"location": {<br/>"type": "string",<br/>"description": "City name"<br/>}<br/>},<br/>"required": [<br/>"location"<br/>]<br/>} |
+| `strict`                                                                                                                         | *boolean*                                                                                                                        | :heavy_minus_sign:                                                                                                               | Enable strict schema adherence                                                                                                   | false                                                                                                                            |

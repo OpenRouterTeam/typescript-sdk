@@ -28,7 +28,7 @@ export class Chat extends ClientSDK {
       chatGenerationParams: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<EventStream<models.ChatStreamingResponseChunkData>>;
+  ): Promise<EventStream<models.ChatStreamingResponseChunk>>;
   async send(
     request: operations.SendChatCompletionRequestRequest,
     options?: RequestOptions,

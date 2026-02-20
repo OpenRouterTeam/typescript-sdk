@@ -25,7 +25,17 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.chat.send({
     chatGenerationParams: {
-      messages: [],
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful assistant.",
+        },
+        {
+          role: "user",
+          content: "What is the capital of France?",
+        },
+      ],
+      temperature: 0.7,
     },
   });
 
@@ -54,7 +64,17 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await chatSend(openRouter, {
     chatGenerationParams: {
-      messages: [],
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful assistant.",
+        },
+        {
+          role: "user",
+          content: "What is the capital of France?",
+        },
+      ],
+      temperature: 0.7,
     },
   });
   if (res.ok) {
@@ -83,8 +103,19 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.ChatError              | 400, 401, 429                 | application/json              |
-| errors.ChatError              | 500                           | application/json              |
-| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
+| Error Type                              | Status Code                             | Content Type                            |
+| --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| errors.BadRequestResponseError          | 400                                     | application/json                        |
+| errors.UnauthorizedResponseError        | 401                                     | application/json                        |
+| errors.PaymentRequiredResponseError     | 402                                     | application/json                        |
+| errors.NotFoundResponseError            | 404                                     | application/json                        |
+| errors.RequestTimeoutResponseError      | 408                                     | application/json                        |
+| errors.PayloadTooLargeResponseError     | 413                                     | application/json                        |
+| errors.UnprocessableEntityResponseError | 422                                     | application/json                        |
+| errors.TooManyRequestsResponseError     | 429                                     | application/json                        |
+| errors.InternalServerResponseError      | 500                                     | application/json                        |
+| errors.BadGatewayResponseError          | 502                                     | application/json                        |
+| errors.ServiceUnavailableResponseError  | 503                                     | application/json                        |
+| errors.EdgeNetworkTimeoutResponseError  | 524                                     | application/json                        |
+| errors.ProviderOverloadedResponseError  | 529                                     | application/json                        |
+| errors.OpenRouterDefaultError           | 4XX, 5XX                                | \*/\*                                   |

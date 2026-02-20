@@ -1,20 +1,29 @@
 # Stop
 
+Stop sequences (up to 4)
+
 
 ## Supported Types
 
 ### `string`
 
 ```typescript
-const value: string = "<value>";
+const value: string = "[\"\"]";
 ```
 
 ### `string[]`
 
 ```typescript
 const value: string[] = [
-  "<value 1>",
-  "<value 2>",
+  "",
+];
+```
+
+### `any`
+
+```typescript
+const value: any = [
+  "",
 ];
 ```
 

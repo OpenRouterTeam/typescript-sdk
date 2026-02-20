@@ -15,10 +15,25 @@ export type ChatMessageTokenLogprobTopLogprob = {
   bytes: Array<number> | null;
 };
 
+/**
+ * Token log probability information
+ */
 export type ChatMessageTokenLogprob = {
+  /**
+   * The token
+   */
   token: string;
+  /**
+   * Log probability of the token
+   */
   logprob: number;
+  /**
+   * UTF-8 bytes of the token
+   */
   bytes: Array<number> | null;
+  /**
+   * Top alternative tokens with probabilities
+   */
   topLogprobs: Array<ChatMessageTokenLogprobTopLogprob>;
 };
 

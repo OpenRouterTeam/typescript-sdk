@@ -5,10 +5,25 @@
 
 import * as z from "zod/v4";
 
+/**
+ * JSON Schema configuration object
+ */
 export type JSONSchemaConfig = {
+  /**
+   * Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+   */
   name: string;
+  /**
+   * Schema description for the model
+   */
   description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
+  /**
+   * JSON Schema object
+   */
+  schema?: { [k: string]: any | null } | undefined;
+  /**
+   * Enable strict schema adherence
+   */
   strict?: boolean | null | undefined;
 };
 
@@ -16,7 +31,7 @@ export type JSONSchemaConfig = {
 export type JSONSchemaConfig$Outbound = {
   name: string;
   description?: string | undefined;
-  schema?: { [k: string]: any } | undefined;
+  schema?: { [k: string]: any | null } | undefined;
   strict?: boolean | null | undefined;
 };
 
@@ -27,7 +42,7 @@ export const JSONSchemaConfig$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
-  schema: z.record(z.string(), z.any()).optional(),
+  schema: z.record(z.string(), z.nullable(z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
 
