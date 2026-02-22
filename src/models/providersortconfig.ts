@@ -6,18 +6,49 @@
 import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
-import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 
+/**
+ * The provider sorting strategy (price, throughput, latency)
+ */
+export const By = {
+  Price: "price",
+  Throughput: "throughput",
+  Latency: "latency",
+} as const;
+/**
+ * The provider sorting strategy (price, throughput, latency)
+ */
+export type By = OpenEnum<typeof By>;
+
+/**
+ * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
+ */
 export const Partition = {
   Model: "model",
   None: "none",
 } as const;
+/**
+ * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
+ */
 export type Partition = OpenEnum<typeof Partition>;
 
+/**
+ * The provider sorting strategy (price, throughput, latency)
+ */
 export type ProviderSortConfig = {
-  by?: ProviderSort | null | undefined;
+  /**
+   * The provider sorting strategy (price, throughput, latency)
+   */
+  by?: By | null | undefined;
+  /**
+   * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
+   */
   partition?: Partition | null | undefined;
 };
+
+/** @internal */
+export const By$outboundSchema: z.ZodType<string, By> = openEnums
+  .outboundSchema(By);
 
 /** @internal */
 export const Partition$outboundSchema: z.ZodType<string, Partition> = openEnums
@@ -34,7 +65,7 @@ export const ProviderSortConfig$outboundSchema: z.ZodType<
   ProviderSortConfig$Outbound,
   ProviderSortConfig
 > = z.object({
-  by: z.nullable(ProviderSort$outboundSchema).optional(),
+  by: z.nullable(By$outboundSchema).optional(),
   partition: z.nullable(Partition$outboundSchema).optional(),
 });
 

@@ -21,15 +21,17 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Non-streaming', () => {
     it('should successfully send a responses request and get a response', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: "Say 'Hello, World!' and nothing else.",
-          },
-        ],
-        stream: false,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: "Say 'Hello, World!' and nothing else.",
+            },
+          ],
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -58,25 +60,27 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'My name is Alice.',
-          },
-          {
-            type: 'message',
-            role: 'assistant',
-            content: 'Hello Alice! How can I help you today?',
-          },
-          {
-            type: 'message',
-            role: 'user',
-            content: 'What is my name?',
-          },
-        ],
-        stream: false,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'My name is Alice.',
+            },
+            {
+              type: 'message',
+              role: 'assistant',
+              content: 'Hello Alice! How can I help you today?',
+            },
+            {
+              type: 'message',
+              role: 'user',
+              content: 'What is my name?',
+            },
+          ],
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -100,16 +104,18 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should respect maxOutputTokens parameter', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'Write a long story about a cat.',
-          },
-        ],
-        maxOutputTokens: 10,
-        stream: false,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'Write a long story about a cat.',
+            },
+          ],
+          maxOutputTokens: 10,
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -118,19 +124,21 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle metadata in request', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'Say hello.',
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'Say hello.',
+            },
+          ],
+          metadata: {
+            user_id: 'test-user-123',
+            session_id: 'test-session-456',
           },
-        ],
-        metadata: {
-          user_id: 'test-user-123',
-          session_id: 'test-session-456',
+          stream: false,
         },
-        stream: false,
       });
 
       expect(response).toBeDefined();
@@ -141,16 +149,18 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle instructions parameter', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'What should I do?',
-          },
-        ],
-        instructions: 'Always respond in a friendly and helpful manner.',
-        stream: false,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'What should I do?',
+            },
+          ],
+          instructions: 'Always respond in a friendly and helpful manner.',
+          stream: false,
+        },
       });
 
       expect(response).toBeDefined();
@@ -162,15 +172,17 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Streaming', () => {
     it('should successfully stream responses', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'Count from 1 to 5.',
-          },
-        ],
-        stream: true,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'Count from 1 to 5.',
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();
@@ -197,15 +209,17 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: "Say 'test'.",
-          },
-        ],
-        stream: true,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: "Say 'test'.",
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();
@@ -231,15 +245,17 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should include response.completed event in stream', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: "Say 'done'.",
-          },
-        ],
-        stream: true,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: "Say 'done'.",
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();
@@ -259,18 +275,20 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle streaming with metadata', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: 'Hello',
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: 'Hello',
+            },
+          ],
+          metadata: {
+            test_key: 'test_value',
           },
-        ],
-        metadata: {
-          test_key: 'test_value',
+          stream: true,
         },
-        stream: true,
       });
 
       expect(response).toBeDefined();
@@ -287,15 +305,17 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should concatenate streaming chunks into complete sentence', async () => {
       const response = await client.beta.responses.send({
-        model: 'anthropic/claude-haiku-4.5',
-        input: [
-          {
-            type: 'message',
-            role: 'user',
-            content: "Say exactly 'The quick brown fox jumps over the lazy dog' and nothing else.",
-          },
-        ],
-        stream: true,
+        openResponsesRequest: {
+          model: 'anthropic/claude-haiku-4.5',
+          input: [
+            {
+              type: 'message',
+              role: 'user',
+              content: "Say exactly 'The quick brown fox jumps over the lazy dog' and nothing else.",
+            },
+          ],
+          stream: true,
+        },
       });
 
       expect(response).toBeDefined();

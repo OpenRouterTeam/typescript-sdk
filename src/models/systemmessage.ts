@@ -10,11 +10,23 @@ import {
   ChatMessageContentItemText$outboundSchema,
 } from "./chatmessagecontentitemtext.js";
 
+/**
+ * System message content
+ */
 export type SystemMessageContent = string | Array<ChatMessageContentItemText>;
 
+/**
+ * System message for setting behavior
+ */
 export type SystemMessage = {
   role: "system";
+  /**
+   * System message content
+   */
   content: string | Array<ChatMessageContentItemText>;
+  /**
+   * Optional name for the system message
+   */
   name?: string | undefined;
 };
 

@@ -247,7 +247,7 @@ export function resolveGlobalSecurity(
     [
       {
         fieldName: "Authorization",
-        type: "http:bearer",
+        type: "apiKey:header",
         value: security?.apiKey ?? env().OPENROUTER_API_KEY,
       },
     ],

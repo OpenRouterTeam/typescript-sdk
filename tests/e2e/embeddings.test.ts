@@ -18,8 +18,10 @@ describe('Embeddings E2E Tests', () => {
   describe('embeddings.generate()', () => {
     it('should successfully generate embeddings for a single text input', async () => {
       const response = await client.embeddings.generate({
-        input: 'The quick brown fox jumps over the lazy dog',
-        model: 'openai/text-embedding-3-small',
+        requestBody: {
+          input: 'The quick brown fox jumps over the lazy dog',
+          model: 'openai/text-embedding-3-small',
+        },
       });
 
       expect(response).toBeDefined();
@@ -58,8 +60,10 @@ describe('Embeddings E2E Tests', () => {
       ];
 
       const response = await client.embeddings.generate({
-        input: inputs,
-        model: 'openai/text-embedding-3-small',
+        requestBody: {
+          input: inputs,
+          model: 'openai/text-embedding-3-small',
+        },
       });
 
       expect(response).toBeDefined();
@@ -86,11 +90,13 @@ describe('Embeddings E2E Tests', () => {
 
     it('should generate consistent embedding dimensions', async () => {
       const response = await client.embeddings.generate({
-        input: [
-          'First text',
-          'Second text',
-        ],
-        model: 'openai/text-embedding-3-small',
+        requestBody: {
+          input: [
+            'First text',
+            'Second text',
+          ],
+          model: 'openai/text-embedding-3-small',
+        },
       });
 
       expect(response).toBeDefined();
@@ -112,8 +118,10 @@ describe('Embeddings E2E Tests', () => {
 
     it('should handle empty string input gracefully', async () => {
       const response = await client.embeddings.generate({
-        input: '',
-        model: 'openai/text-embedding-3-small',
+        requestBody: {
+          input: '',
+          model: 'openai/text-embedding-3-small',
+        },
       });
 
       expect(response).toBeDefined();
@@ -130,8 +138,10 @@ describe('Embeddings E2E Tests', () => {
     it('should include model information in response', async () => {
       const modelName = 'openai/text-embedding-3-small';
       const response = await client.embeddings.generate({
-        input: 'Test input for model verification',
-        model: modelName,
+        requestBody: {
+          input: 'Test input for model verification',
+          model: modelName,
+        },
       });
 
       expect(response).toBeDefined();

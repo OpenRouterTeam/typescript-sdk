@@ -9,25 +9,73 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Detailed completion token usage
+ */
 export type CompletionTokensDetails = {
+  /**
+   * Tokens used for reasoning
+   */
   reasoningTokens?: number | null | undefined;
+  /**
+   * Tokens used for audio output
+   */
   audioTokens?: number | null | undefined;
+  /**
+   * Accepted prediction tokens
+   */
   acceptedPredictionTokens?: number | null | undefined;
+  /**
+   * Rejected prediction tokens
+   */
   rejectedPredictionTokens?: number | null | undefined;
 };
 
+/**
+ * Detailed prompt token usage
+ */
 export type PromptTokensDetails = {
+  /**
+   * Cached prompt tokens
+   */
   cachedTokens?: number | undefined;
+  /**
+   * Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
+   */
   cacheWriteTokens?: number | undefined;
+  /**
+   * Audio input tokens
+   */
   audioTokens?: number | undefined;
+  /**
+   * Video input tokens
+   */
   videoTokens?: number | undefined;
 };
 
+/**
+ * Token usage statistics
+ */
 export type ChatGenerationTokenUsage = {
+  /**
+   * Number of tokens in the completion
+   */
   completionTokens: number;
+  /**
+   * Number of tokens in the prompt
+   */
   promptTokens: number;
+  /**
+   * Total number of tokens
+   */
   totalTokens: number;
+  /**
+   * Detailed completion token usage
+   */
   completionTokensDetails?: CompletionTokensDetails | null | undefined;
+  /**
+   * Detailed prompt token usage
+   */
   promptTokensDetails?: PromptTokensDetails | null | undefined;
 };
 

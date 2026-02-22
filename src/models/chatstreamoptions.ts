@@ -6,7 +6,15 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
+/**
+ * Streaming configuration options
+ */
 export type ChatStreamOptions = {
+  /**
+   * Deprecated: This field has no effect. Full usage details are always included.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+   */
   includeUsage?: boolean | undefined;
 };
 

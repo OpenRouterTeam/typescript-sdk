@@ -5,7 +5,7 @@
 ```typescript
 import { ReasoningSummaryVerbosity } from "@openrouter/sdk/models";
 
-let value: ReasoningSummaryVerbosity = "detailed";
+let value: ReasoningSummaryVerbosity = "auto";
 ```
 
 ## Values

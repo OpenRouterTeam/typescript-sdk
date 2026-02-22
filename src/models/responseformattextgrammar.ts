@@ -5,8 +5,14 @@
 
 import * as z from "zod/v4";
 
+/**
+ * Custom grammar response format
+ */
 export type ResponseFormatTextGrammar = {
   type: "grammar";
+  /**
+   * Custom grammar for text generation
+   */
   grammar: string;
 };
 
