@@ -41,6 +41,19 @@ export type CreateAuthKeysCodeCodeChallengeMethod = OpenEnum<
   typeof CreateAuthKeysCodeCodeChallengeMethod
 >;
 
+/**
+ * Optional credit limit reset interval. When set, the credit limit resets on this interval.
+ */
+export const UsageLimitType = {
+  Daily: "daily",
+  Weekly: "weekly",
+  Monthly: "monthly",
+} as const;
+/**
+ * Optional credit limit reset interval. When set, the credit limit resets on this interval.
+ */
+export type UsageLimitType = OpenEnum<typeof UsageLimitType>;
+
 export type CreateAuthKeysCodeRequestBody = {
   /**
    * The callback URL to redirect to after authorization. Note, only https URLs on ports 443 and 3000 are allowed.
@@ -62,6 +75,14 @@ export type CreateAuthKeysCodeRequestBody = {
    * Optional expiration time for the API key to be created
    */
   expiresAt?: Date | null | undefined;
+  /**
+   * Optional custom label for the API key. Defaults to the app name if not provided.
+   */
+  keyLabel?: string | undefined;
+  /**
+   * Optional credit limit reset interval. When set, the credit limit resets on this interval.
+   */
+  usageLimitType?: UsageLimitType | undefined;
 };
 
 export type CreateAuthKeysCodeRequest = {
@@ -116,12 +137,18 @@ export const CreateAuthKeysCodeCodeChallengeMethod$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(CreateAuthKeysCodeCodeChallengeMethod);
 
 /** @internal */
+export const UsageLimitType$outboundSchema: z.ZodType<string, UsageLimitType> =
+  openEnums.outboundSchema(UsageLimitType);
+
+/** @internal */
 export type CreateAuthKeysCodeRequestBody$Outbound = {
   callback_url: string;
   code_challenge?: string | undefined;
   code_challenge_method?: string | undefined;
   limit?: number | undefined;
   expires_at?: string | null | undefined;
+  key_label?: string | undefined;
+  usage_limit_type?: string | undefined;
 };
 
 /** @internal */
@@ -135,12 +162,16 @@ export const CreateAuthKeysCodeRequestBody$outboundSchema: z.ZodType<
     .optional(),
   limit: z.number().optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  keyLabel: z.string().optional(),
+  usageLimitType: UsageLimitType$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callbackUrl: "callback_url",
     codeChallenge: "code_challenge",
     codeChallengeMethod: "code_challenge_method",
     expiresAt: "expires_at",
+    keyLabel: "key_label",
+    usageLimitType: "usage_limit_type",
   });
 });
 

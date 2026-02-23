@@ -18,7 +18,7 @@ import {
 
 export type OpenAIResponsesReasoningConfig = {
   effort?: OpenAIResponsesReasoningEffort | null | undefined;
-  summary?: ReasoningSummaryVerbosity | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
 };
 
 /** @internal */
@@ -27,7 +27,7 @@ export const OpenAIResponsesReasoningConfig$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   effort: z.nullable(OpenAIResponsesReasoningEffort$inboundSchema).optional(),
-  summary: ReasoningSummaryVerbosity$inboundSchema.optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
 });
 
 export function openAIResponsesReasoningConfigFromJSON(

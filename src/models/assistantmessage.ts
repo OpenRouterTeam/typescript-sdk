@@ -6,7 +6,14 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  AssistantMessageImages,
+  AssistantMessageImages$inboundSchema,
+  AssistantMessageImages$Outbound,
+  AssistantMessageImages$outboundSchema,
+} from "./assistantmessageimages.js";
 import {
   ChatMessageContentItem,
   ChatMessageContentItem$inboundSchema,
@@ -21,48 +28,93 @@ import {
 } from "./chatmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  Schema19,
-  Schema19$inboundSchema,
-  Schema19$Outbound,
-  Schema19$outboundSchema,
-} from "./schema19.js";
+  ReasoningDetailUnion,
+  ReasoningDetailUnion$inboundSchema,
+  ReasoningDetailUnion$Outbound,
+  ReasoningDetailUnion$outboundSchema,
+} from "./reasoningdetailunion.js";
 
-export type AssistantMessageContent = string | Array<ChatMessageContentItem>;
+export const AssistantMessageRole = {
+  Assistant: "assistant",
+} as const;
+export type AssistantMessageRole = ClosedEnum<typeof AssistantMessageRole>;
 
-export type AssistantMessageImageUrl = {
-  url: string;
-};
+/**
+ * Assistant message content
+ */
+export type AssistantMessageContent =
+  | string
+  | Array<ChatMessageContentItem>
+  | any;
 
-export type Image = {
-  imageUrl: AssistantMessageImageUrl;
-};
-
+/**
+ * Assistant message for requests and responses
+ */
 export type AssistantMessage = {
-  role: "assistant";
-  content?: string | Array<ChatMessageContentItem> | null | undefined;
+  role: AssistantMessageRole;
+  /**
+   * Assistant message content
+   */
+  content?: string | Array<ChatMessageContentItem> | any | null | undefined;
+  /**
+   * Optional name for the assistant
+   */
   name?: string | undefined;
+  /**
+   * Tool calls made by the assistant
+   */
   toolCalls?: Array<ChatMessageToolCall> | undefined;
+  /**
+   * Refusal message if content was refused
+   */
   refusal?: string | null | undefined;
+  /**
+   * Reasoning output
+   */
   reasoning?: string | null | undefined;
-  reasoningDetails?: Array<Schema19> | undefined;
-  images?: Array<Image> | undefined;
+  /**
+   * Reasoning details for extended thinking models
+   */
+  reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
+  /**
+   * Generated images from image generation models
+   */
+  images?: Array<AssistantMessageImages> | undefined;
 };
+
+/** @internal */
+export const AssistantMessageRole$inboundSchema: z.ZodEnum<
+  typeof AssistantMessageRole
+> = z.enum(AssistantMessageRole);
+/** @internal */
+export const AssistantMessageRole$outboundSchema: z.ZodEnum<
+  typeof AssistantMessageRole
+> = AssistantMessageRole$inboundSchema;
 
 /** @internal */
 export const AssistantMessageContent$inboundSchema: z.ZodType<
   AssistantMessageContent,
   unknown
-> = z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItem$inboundSchema),
+  z.any(),
+]);
 /** @internal */
 export type AssistantMessageContent$Outbound =
   | string
-  | Array<ChatMessageContentItem$Outbound>;
+  | Array<ChatMessageContentItem$Outbound>
+  | any;
 
 /** @internal */
 export const AssistantMessageContent$outboundSchema: z.ZodType<
   AssistantMessageContent$Outbound,
   AssistantMessageContent
-> = z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]);
+> = z.union([
+  z.string(),
+  z.array(ChatMessageContentItem$outboundSchema),
+  z.any(),
+]);
 
 export function assistantMessageContentToJSON(
   assistantMessageContent: AssistantMessageContent,
@@ -82,92 +134,24 @@ export function assistantMessageContentFromJSON(
 }
 
 /** @internal */
-export const AssistantMessageImageUrl$inboundSchema: z.ZodType<
-  AssistantMessageImageUrl,
-  unknown
-> = z.object({
-  url: z.string(),
-});
-/** @internal */
-export type AssistantMessageImageUrl$Outbound = {
-  url: string;
-};
-
-/** @internal */
-export const AssistantMessageImageUrl$outboundSchema: z.ZodType<
-  AssistantMessageImageUrl$Outbound,
-  AssistantMessageImageUrl
-> = z.object({
-  url: z.string(),
-});
-
-export function assistantMessageImageUrlToJSON(
-  assistantMessageImageUrl: AssistantMessageImageUrl,
-): string {
-  return JSON.stringify(
-    AssistantMessageImageUrl$outboundSchema.parse(assistantMessageImageUrl),
-  );
-}
-export function assistantMessageImageUrlFromJSON(
-  jsonString: string,
-): SafeParseResult<AssistantMessageImageUrl, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AssistantMessageImageUrl$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AssistantMessageImageUrl' from JSON`,
-  );
-}
-
-/** @internal */
-export const Image$inboundSchema: z.ZodType<Image, unknown> = z.object({
-  image_url: z.lazy(() => AssistantMessageImageUrl$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "image_url": "imageUrl",
-  });
-});
-/** @internal */
-export type Image$Outbound = {
-  image_url: AssistantMessageImageUrl$Outbound;
-};
-
-/** @internal */
-export const Image$outboundSchema: z.ZodType<Image$Outbound, Image> = z.object({
-  imageUrl: z.lazy(() => AssistantMessageImageUrl$outboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    imageUrl: "image_url",
-  });
-});
-
-export function imageToJSON(image: Image): string {
-  return JSON.stringify(Image$outboundSchema.parse(image));
-}
-export function imageFromJSON(
-  jsonString: string,
-): SafeParseResult<Image, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Image$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Image' from JSON`,
-  );
-}
-
-/** @internal */
 export const AssistantMessage$inboundSchema: z.ZodType<
   AssistantMessage,
   unknown
 > = z.object({
-  role: z.literal("assistant"),
+  role: AssistantMessageRole$inboundSchema,
   content: z.nullable(
-    z.union([z.string(), z.array(ChatMessageContentItem$inboundSchema)]),
+    z.union([
+      z.string(),
+      z.array(ChatMessageContentItem$inboundSchema),
+      z.any(),
+    ]),
   ).optional(),
   name: z.string().optional(),
   tool_calls: z.array(ChatMessageToolCall$inboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
-  reasoning_details: z.array(Schema19$inboundSchema).optional(),
-  images: z.array(z.lazy(() => Image$inboundSchema)).optional(),
+  reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
+  images: z.array(AssistantMessageImages$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
@@ -176,14 +160,19 @@ export const AssistantMessage$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type AssistantMessage$Outbound = {
-  role: "assistant";
-  content?: string | Array<ChatMessageContentItem$Outbound> | null | undefined;
+  role: string;
+  content?:
+    | string
+    | Array<ChatMessageContentItem$Outbound>
+    | any
+    | null
+    | undefined;
   name?: string | undefined;
   tool_calls?: Array<ChatMessageToolCall$Outbound> | undefined;
   refusal?: string | null | undefined;
   reasoning?: string | null | undefined;
-  reasoning_details?: Array<Schema19$Outbound> | undefined;
-  images?: Array<Image$Outbound> | undefined;
+  reasoning_details?: Array<ReasoningDetailUnion$Outbound> | undefined;
+  images?: Array<AssistantMessageImages$Outbound> | undefined;
 };
 
 /** @internal */
@@ -191,16 +180,20 @@ export const AssistantMessage$outboundSchema: z.ZodType<
   AssistantMessage$Outbound,
   AssistantMessage
 > = z.object({
-  role: z.literal("assistant"),
+  role: AssistantMessageRole$outboundSchema,
   content: z.nullable(
-    z.union([z.string(), z.array(ChatMessageContentItem$outboundSchema)]),
+    z.union([
+      z.string(),
+      z.array(ChatMessageContentItem$outboundSchema),
+      z.any(),
+    ]),
   ).optional(),
   name: z.string().optional(),
   toolCalls: z.array(ChatMessageToolCall$outboundSchema).optional(),
   refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
-  reasoningDetails: z.array(Schema19$outboundSchema).optional(),
-  images: z.array(z.lazy(() => Image$outboundSchema)).optional(),
+  reasoningDetails: z.array(ReasoningDetailUnion$outboundSchema).optional(),
+  images: z.array(AssistantMessageImages$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     toolCalls: "tool_calls",

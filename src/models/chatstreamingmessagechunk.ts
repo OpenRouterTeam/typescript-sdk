@@ -13,22 +13,52 @@ import {
   ChatStreamingMessageToolCall$inboundSchema,
 } from "./chatstreamingmessagetoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-import { Schema19, Schema19$inboundSchema } from "./schema19.js";
+import {
+  ReasoningDetailUnion,
+  ReasoningDetailUnion$inboundSchema,
+} from "./reasoningdetailunion.js";
 
+/**
+ * The role of the message author
+ */
 export const ChatStreamingMessageChunkRole = {
   Assistant: "assistant",
 } as const;
+/**
+ * The role of the message author
+ */
 export type ChatStreamingMessageChunkRole = ClosedEnum<
   typeof ChatStreamingMessageChunkRole
 >;
 
+/**
+ * Delta changes in streaming response
+ */
 export type ChatStreamingMessageChunk = {
+  /**
+   * The role of the message author
+   */
   role?: ChatStreamingMessageChunkRole | undefined;
+  /**
+   * Message content delta
+   */
   content?: string | null | undefined;
+  /**
+   * Reasoning content delta
+   */
   reasoning?: string | null | undefined;
+  /**
+   * Refusal message delta
+   */
   refusal?: string | null | undefined;
+  /**
+   * Tool calls delta
+   */
   toolCalls?: Array<ChatStreamingMessageToolCall> | undefined;
-  reasoningDetails?: Array<Schema19> | undefined;
+  /**
+   * Reasoning details for extended thinking models
+   */
+  reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
 };
 
 /** @internal */
@@ -46,7 +76,7 @@ export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   reasoning: z.nullable(z.string()).optional(),
   refusal: z.nullable(z.string()).optional(),
   tool_calls: z.array(ChatStreamingMessageToolCall$inboundSchema).optional(),
-  reasoning_details: z.array(Schema19$inboundSchema).optional(),
+  reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",

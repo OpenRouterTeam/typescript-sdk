@@ -1,5 +1,7 @@
 # ChatMessageTokenLogprobs
 
+Log probabilities for the completion
+
 ## Example Usage
 
 ```typescript
@@ -8,31 +10,13 @@ import { ChatMessageTokenLogprobs } from "@openrouter/sdk/models";
 let value: ChatMessageTokenLogprobs = {
   content: [
     {
-      token: "<value>",
-      logprob: 2764.68,
-      bytes: [
-        1199.17,
-        6426.57,
-      ],
-      topLogprobs: [
-        {
-          token: "<value>",
-          logprob: 9715.54,
-          bytes: [
-            7041.35,
-          ],
-        },
-      ],
-    },
-  ],
-  refusal: [
-    {
-      token: "<value>",
-      logprob: 9280.35,
-      bytes: [],
+      token: " Hello",
+      logprob: -0.612345,
+      bytes: null,
       topLogprobs: [],
     },
   ],
+  refusal: null,
 };
 ```
 
@@ -40,5 +24,5 @@ let value: ChatMessageTokenLogprobs = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `content`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | N/A                                                                      |
-| `refusal`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | N/A                                                                      |
+| `content`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | Log probabilities for content tokens                                     |
+| `refusal`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | Log probabilities for refusal tokens                                     |

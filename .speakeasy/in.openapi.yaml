@@ -10,6 +10,15 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://openrouter.ai/api/v1
+    description: Production server
+    x-speakeasy-server-id: production
+security:
+  - apiKey: []
+externalDocs:
+  description: OpenRouter Documentation
+  url: https://openrouter.ai/docs
 components:
   schemas:
     OpenAIResponsesResponseStatus:
@@ -304,6 +313,11 @@ components:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
           properties:
+            content:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/ReasoningTextContent'
             signature:
               type: string
               nullable: true
@@ -1117,10 +1131,12 @@ components:
         - none
     ReasoningSummaryVerbosity:
       type: string
+      nullable: true
       enum:
         - auto
         - concise
         - detailed
+      example: auto
     OpenAIResponsesReasoningConfig:
       type: object
       nullable: true
@@ -1156,18 +1172,6 @@ components:
       description: Plain text response format
       example:
         type: text
-    ResponsesFormatJSONObject:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - json_object
-      required:
-        - type
-      description: JSON object response format
-      example:
-        type: json_object
     ResponsesFormatTextJSONSchemaConfig:
       type: object
       properties:
@@ -1207,7 +1211,7 @@ components:
     ResponseFormatTextConfig:
       anyOf:
         - $ref: '#/components/schemas/ResponsesFormatText'
-        - $ref: '#/components/schemas/ResponsesFormatJSONObject'
+        - $ref: '#/components/schemas/ResponseFormatJSONObject'
         - $ref: '#/components/schemas/ResponsesFormatTextJSONSchemaConfig'
       description: Text response format configuration
       example:
@@ -3283,6 +3287,11 @@ components:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
           properties:
+            content:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/ReasoningTextContent'
             signature:
               type: string
               nullable: true
@@ -3573,7 +3582,9 @@ components:
         - Inception
         - Inceptron
         - InferenceNet
+        - Ionstream
         - Infermatic
+        - Io Net
         - Inflection
         - Liquid
         - Mara
@@ -3631,20 +3642,34 @@ components:
         - price
         - throughput
         - latency
+      description: The provider sorting strategy (price, throughput, latency)
+      example: price
     ProviderSortConfig:
       type: object
       properties:
         by:
-          anyOf:
-            - $ref: '#/components/schemas/ProviderSort'
-            - type: 'null'
+          type: string
+          nullable: true
+          enum:
+            - price
+            - throughput
+            - latency
+          description: The provider sorting strategy (price, throughput, latency)
+          example: price
         partition:
-          anyOf:
-            - type: string
-              enum:
-                - model
-                - none
-            - type: 'null'
+          type: string
+          nullable: true
+          enum:
+            - model
+            - none
+          description: >-
+            Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback
+            models remain fallbacks), "none" sorts all endpoints together regardless of model.
+          example: model
+      description: The provider sorting strategy (price, throughput, latency)
+      example:
+        by: price
+        partition: model
     BigNumberUnion:
       type: string
       description: Price per million prompt tokens
@@ -4094,6 +4119,25 @@ components:
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for
             observability. If provided in both the request body and the x-session-id header, the body value takes
             precedence. Maximum of 128 characters.
+        trace:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            trace_name:
+              type: string
+            span_name:
+              type: string
+            generation_name:
+              type: string
+            parent_span_id:
+              type: string
+          additionalProperties:
+            nullable: true
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name,
+            parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured
+            broadcast destinations.
       description: Request schema for Responses endpoint
       example:
         model: anthropic/claude-4.5-sonnet-20250929
@@ -7191,6 +7235,25 @@ components:
             A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for
             observability. If provided in both the request body and the x-session-id header, the body value takes
             precedence. Maximum of 128 characters.
+        trace:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            trace_name:
+              type: string
+            span_name:
+              type: string
+            generation_name:
+              type: string
+            parent_span_id:
+              type: string
+          additionalProperties:
+            nullable: true
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name,
+            parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured
+            broadcast destinations.
         models:
           type: array
           items:
@@ -7314,6 +7377,1599 @@ components:
         error:
           code: 403
           message: Only management keys can perform this operation
+    ChatCompletionFinishReason:
+      type: string
+      enum:
+        - tool_calls
+        - stop
+        - length
+        - content_filter
+        - error
+      example: stop
+    ChatMessageContentItemCacheControl:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ephemeral
+        ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
+      required:
+        - type
+      description: Cache control for the content part
+      example:
+        type: ephemeral
+        ttl: 5m
+    ChatMessageContentItemText:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+        text:
+          type: string
+        cache_control:
+          $ref: '#/components/schemas/ChatMessageContentItemCacheControl'
+      required:
+        - type
+        - text
+      description: Text content part
+      example:
+        type: text
+        text: Hello, world!
+    ChatMessageContentItemImage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - image_url
+        image_url:
+          type: object
+          properties:
+            url:
+              type: string
+              description: 'URL of the image (data: URLs supported)'
+            detail:
+              type: string
+              enum:
+                - auto
+                - low
+                - high
+              description: Image detail level for vision models
+          required:
+            - url
+      required:
+        - type
+        - image_url
+      description: Image content part for vision models
+      example:
+        type: image_url
+        image_url:
+          url: https://example.com/image.jpg
+          detail: auto
+    ChatMessageContentItemAudio:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_audio
+        input_audio:
+          type: object
+          properties:
+            data:
+              type: string
+              description: Base64 encoded audio data
+            format:
+              type: string
+              description: >-
+                Audio format (e.g., wav, mp3, flac, m4a, ogg, aiff, aac, pcm16, pcm24). Supported formats vary by
+                provider.
+          required:
+            - data
+            - format
+      required:
+        - type
+        - input_audio
+      description: Audio input content part. Supported audio formats vary by provider.
+      example:
+        type: input_audio
+        input_audio:
+          data: SGVsbG8gV29ybGQ=
+          format: wav
+    VideoInput:
+      type: object
+      properties:
+        url:
+          type: string
+          description: 'URL of the video (data: URLs supported)'
+      required:
+        - url
+      description: Video input object
+    ChatMessageContentItemVideoLegacy:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - input_video
+        video_url:
+          $ref: '#/components/schemas/VideoInput'
+      required:
+        - type
+        - video_url
+      description: Video input content part (legacy format - deprecated)
+      deprecated: true
+      example:
+        type: input_video
+        video_url:
+          url: https://example.com/video.mp4
+    ChatMessageContentItemVideo:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - video_url
+        video_url:
+          $ref: '#/components/schemas/VideoInput'
+      required:
+        - type
+        - video_url
+      description: Video input content part
+      example:
+        type: video_url
+        video_url:
+          url: https://example.com/video.mp4
+    ChatMessageContentItem:
+      oneOf:
+        - $ref: '#/components/schemas/ChatMessageContentItemText'
+        - $ref: '#/components/schemas/ChatMessageContentItemImage'
+        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+        - oneOf:
+            - $ref: '#/components/schemas/ChatMessageContentItemVideoLegacy'
+            - $ref: '#/components/schemas/ChatMessageContentItemVideo'
+          discriminator:
+            propertyName: type
+            mapping:
+              input_video: '#/components/schemas/ChatMessageContentItemVideoLegacy'
+              video_url: '#/components/schemas/ChatMessageContentItemVideo'
+      discriminator:
+        propertyName: type
+      description: Content part for chat completion messages
+      example:
+        type: text
+        text: Hello, world!
+    ChatMessageToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tool call identifier
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name to call
+            arguments:
+              type: string
+              description: Function arguments as JSON string
+          required:
+            - name
+            - arguments
+      required:
+        - id
+        - type
+        - function
+      description: Tool call made by the assistant
+      example:
+        id: call_abc123
+        type: function
+        function:
+          name: get_current_weather
+          arguments: '{"location": "Boston, MA"}'
+    ReasoningDetailSummary:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.summary
+        summary:
+          type: string
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - azure-openai-responses-v1
+            - xai-responses-v1
+            - anthropic-claude-v1
+            - google-gemini-v1
+        index:
+          type: number
+      required:
+        - type
+        - summary
+      description: Reasoning detail summary schema
+      example:
+        type: reasoning.summary
+        summary: The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...
+    ReasoningDetailEncrypted:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.encrypted
+        data:
+          type: string
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - azure-openai-responses-v1
+            - xai-responses-v1
+            - anthropic-claude-v1
+            - google-gemini-v1
+        index:
+          type: number
+      required:
+        - type
+        - data
+      description: Reasoning detail encrypted schema
+      example:
+        type: reasoning.encrypted
+        data: encrypted data
+    ReasoningDetailText:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - reasoning.text
+        text:
+          type: string
+          nullable: true
+        signature:
+          type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+          enum:
+            - unknown
+            - openai-responses-v1
+            - azure-openai-responses-v1
+            - xai-responses-v1
+            - anthropic-claude-v1
+            - google-gemini-v1
+        index:
+          type: number
+      required:
+        - type
+      description: Reasoning detail text schema
+      example:
+        type: reasoning.text
+        text: The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...
+        signature: signature
+    ReasoningDetailUnion:
+      oneOf:
+        - $ref: '#/components/schemas/ReasoningDetailSummary'
+        - $ref: '#/components/schemas/ReasoningDetailEncrypted'
+        - $ref: '#/components/schemas/ReasoningDetailText'
+      discriminator:
+        propertyName: type
+        mapping:
+          reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
+          reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.text: '#/components/schemas/ReasoningDetailText'
+      description: Reasoning detail union schema
+      example:
+        type: reasoning.summary
+        summary: The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...
+    AssistantMessageReasoningDetails:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReasoningDetailUnion'
+      description: Reasoning details for extended thinking models
+    AssistantMessageImages:
+      type: array
+      items:
+        type: object
+        properties:
+          image_url:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL or base64-encoded data of the generated image
+            required:
+              - url
+        required:
+          - image_url
+      description: Generated images from image generation models
+      example:
+        - image_url:
+            url: data:image/png;base64,iVBORw0KGgo...
+    AssistantMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItem'
+            - nullable: true
+          description: Assistant message content
+        name:
+          type: string
+          description: Optional name for the assistant
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessageToolCall'
+          description: Tool calls made by the assistant
+        refusal:
+          type: string
+          nullable: true
+          description: Refusal message if content was refused
+        reasoning:
+          type: string
+          nullable: true
+          description: Reasoning output
+        reasoning_details:
+          $ref: '#/components/schemas/AssistantMessageReasoningDetails'
+        images:
+          $ref: '#/components/schemas/AssistantMessageImages'
+      required:
+        - role
+      description: Assistant message for requests and responses
+      example:
+        role: assistant
+        content: The capital of France is Paris.
+    ChatMessageTokenLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token
+        logprob:
+          type: number
+          description: Log probability of the token
+        bytes:
+          type: array
+          nullable: true
+          items:
+            type: number
+          description: UTF-8 bytes of the token
+        top_logprobs:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+              logprob:
+                type: number
+              bytes:
+                type: array
+                nullable: true
+                items:
+                  type: number
+            required:
+              - token
+              - logprob
+              - bytes
+          description: Top alternative tokens with probabilities
+      required:
+        - token
+        - logprob
+        - bytes
+        - top_logprobs
+      description: Token log probability information
+      example:
+        token: ' Hello'
+        logprob: -0.612345
+        bytes: null
+        top_logprobs:
+          - token: ' Hello'
+            logprob: -0.612345
+            bytes: null
+    ChatMessageTokenLogprobs:
+      type: object
+      nullable: true
+      properties:
+        content:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+          description: Log probabilities for content tokens
+        refusal:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+          description: Log probabilities for refusal tokens
+      required:
+        - content
+        - refusal
+      description: Log probabilities for the completion
+      example:
+        content:
+          - token: ' Hello'
+            logprob: -0.612345
+            bytes: null
+            top_logprobs: []
+        refusal: null
+    ChatResponseChoice:
+      type: object
+      properties:
+        finish_reason:
+          anyOf:
+            - $ref: '#/components/schemas/ChatCompletionFinishReason'
+            - nullable: true
+            - nullable: true
+        index:
+          type: number
+          description: Choice index
+          example: 0
+        message:
+          $ref: '#/components/schemas/AssistantMessage'
+        logprobs:
+          $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+      required:
+        - finish_reason
+        - index
+        - message
+      description: Chat completion choice
+      example:
+        finish_reason: stop
+        index: 0
+        message:
+          role: assistant
+          content: The capital of France is Paris.
+        logprobs: null
+    ChatGenerationTokenUsage:
+      type: object
+      properties:
+        completion_tokens:
+          type: number
+          description: Number of tokens in the completion
+        prompt_tokens:
+          type: number
+          description: Number of tokens in the prompt
+        total_tokens:
+          type: number
+          description: Total number of tokens
+        completion_tokens_details:
+          type: object
+          nullable: true
+          properties:
+            reasoning_tokens:
+              type: number
+              nullable: true
+              description: Tokens used for reasoning
+            audio_tokens:
+              type: number
+              nullable: true
+              description: Tokens used for audio output
+            accepted_prediction_tokens:
+              type: number
+              nullable: true
+              description: Accepted prediction tokens
+            rejected_prediction_tokens:
+              type: number
+              nullable: true
+              description: Rejected prediction tokens
+          description: Detailed completion token usage
+        prompt_tokens_details:
+          type: object
+          nullable: true
+          properties:
+            cached_tokens:
+              type: number
+              description: Cached prompt tokens
+            cache_write_tokens:
+              type: number
+              description: Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
+            audio_tokens:
+              type: number
+              description: Audio input tokens
+            video_tokens:
+              type: number
+              description: Video input tokens
+          description: Detailed prompt token usage
+      required:
+        - completion_tokens
+        - prompt_tokens
+        - total_tokens
+      description: Token usage statistics
+      example:
+        completion_tokens: 15
+        prompt_tokens: 10
+        total_tokens: 25
+        completion_tokens_details:
+          reasoning_tokens: 5
+        prompt_tokens_details:
+          cached_tokens: 2
+    ChatResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique completion identifier
+          example: chatcmpl-123
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatResponseChoice'
+          description: List of completion choices
+        created:
+          type: number
+          description: Unix timestamp of creation
+          example: 1677652288
+        model:
+          type: string
+          description: Model used for completion
+          example: openai/gpt-4
+        object:
+          type: string
+          enum:
+            - chat.completion
+        system_fingerprint:
+          type: string
+          nullable: true
+          description: System fingerprint
+          example: fp_44709d6fcb
+        usage:
+          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+      required:
+        - id
+        - choices
+        - created
+        - model
+        - object
+      description: Chat completion response
+      example:
+        id: chatcmpl-123
+        object: chat.completion
+        created: 1677652288
+        model: openai/gpt-4
+        choices:
+          - index: 0
+            message:
+              role: assistant
+              content: The capital of France is Paris.
+            finish_reason: stop
+        usage:
+          prompt_tokens: 10
+          completion_tokens: 15
+          total_tokens: 25
+    ChatStreamingMessageToolCall:
+      type: object
+      properties:
+        index:
+          type: number
+          description: Tool call index in the array
+          example: 0
+        id:
+          type: string
+          description: Tool call identifier
+          example: call_abc123
+        type:
+          type: string
+          enum:
+            - function
+          description: Tool call type
+          example: function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name
+              example: get_weather
+            arguments:
+              type: string
+              description: Function arguments as JSON string
+              example: '{"location":'
+          description: Function call details
+      required:
+        - index
+      description: Tool call delta for streaming responses
+      example:
+        index: 0
+        id: call_abc123
+        type: function
+        function:
+          name: get_weather
+          arguments: '{"location":'
+    ChatStreamingMessageChunk:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+          description: The role of the message author
+          example: assistant
+        content:
+          type: string
+          nullable: true
+          description: Message content delta
+          example: Hello
+        reasoning:
+          type: string
+          nullable: true
+          description: Reasoning content delta
+          example: I need to
+        refusal:
+          type: string
+          nullable: true
+          description: Refusal message delta
+          example: null
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+          description: Tool calls delta
+        reasoning_details:
+          $ref: '#/components/schemas/AssistantMessageReasoningDetails'
+      description: Delta changes in streaming response
+      example:
+        role: assistant
+        content: Hello
+    ChatStreamingChoice:
+      type: object
+      properties:
+        delta:
+          $ref: '#/components/schemas/ChatStreamingMessageChunk'
+        finish_reason:
+          anyOf:
+            - $ref: '#/components/schemas/ChatCompletionFinishReason'
+            - nullable: true
+            - nullable: true
+        index:
+          type: number
+          description: Choice index
+          example: 0
+        logprobs:
+          $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+      required:
+        - delta
+        - finish_reason
+        - index
+      description: Streaming completion choice chunk
+      example:
+        index: 0
+        delta:
+          role: assistant
+          content: Hello
+        finish_reason: null
+    ChatStreamingResponseChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique chunk identifier
+          example: chatcmpl-123
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatStreamingChoice'
+          description: List of streaming chunk choices
+        created:
+          type: number
+          description: Unix timestamp of creation
+          example: 1677652288
+        model:
+          type: string
+          description: Model used for completion
+          example: openai/gpt-4
+        object:
+          type: string
+          enum:
+            - chat.completion.chunk
+        system_fingerprint:
+          type: string
+          nullable: true
+          description: System fingerprint
+          example: fp_44709d6fcb
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Error message
+              example: Rate limit exceeded
+            code:
+              type: number
+              description: Error code
+              example: 429
+          required:
+            - message
+            - code
+          description: Error information
+          example:
+            message: Rate limit exceeded
+            code: 429
+        usage:
+          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+      required:
+        - id
+        - choices
+        - created
+        - model
+        - object
+      description: Streaming chat completion chunk
+      x-speakeasy-entity: ChatStreamChunk
+      example:
+        id: chatcmpl-123
+        object: chat.completion.chunk
+        created: 1677652288
+        model: openai/gpt-4
+        choices:
+          - index: 0
+            delta:
+              role: assistant
+              content: Hello
+            finish_reason: null
+    SystemMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItemText'
+          description: System message content
+          example: You are a helpful assistant.
+        name:
+          type: string
+          description: Optional name for the system message
+          example: Assistant Config
+      required:
+        - role
+        - content
+      description: System message for setting behavior
+      example:
+        role: system
+        content: You are a helpful assistant.
+        name: Assistant Config
+    UserMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItem'
+          description: User message content
+          example: What is the capital of France?
+        name:
+          type: string
+          description: Optional name for the user
+          example: User
+      required:
+        - role
+        - content
+      description: User message
+      example:
+        role: user
+        content: What is the capital of France?
+    DeveloperMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - developer
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItemText'
+          description: Developer message content
+          example: This is a message from the developer.
+        name:
+          type: string
+          description: Optional name for the developer message
+          example: Developer
+      required:
+        - role
+        - content
+      description: Developer message
+      example:
+        role: developer
+        content: This is a message from the developer.
+    ToolResponseMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - tool
+        content:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContentItem'
+          description: Tool response content
+          example: The weather in San Francisco is 72°F and sunny.
+        tool_call_id:
+          type: string
+          description: ID of the assistant message tool call this message responds to
+          example: call_abc123
+      required:
+        - role
+        - content
+        - tool_call_id
+      description: Tool response message
+      example:
+        role: tool
+        content: The weather in San Francisco is 72°F and sunny.
+        tool_call_id: call_abc123
+    Message:
+      oneOf:
+        - $ref: '#/components/schemas/SystemMessage'
+        - $ref: '#/components/schemas/UserMessage'
+        - $ref: '#/components/schemas/DeveloperMessage'
+        - $ref: '#/components/schemas/AssistantMessage'
+        - $ref: '#/components/schemas/ToolResponseMessage'
+      discriminator:
+        propertyName: role
+      description: Chat completion message with role-based discrimination
+      example:
+        role: user
+        content: What is the capital of France?
+    ModelName:
+      type: string
+      description: Model to use for completion
+      example: openai/gpt-4
+    ModelNames:
+      type: array
+      items:
+        allOf:
+          - $ref: '#/components/schemas/ModelName'
+          - description: Available OpenRouter chat completion models
+      description: Models to use for completion
+      example:
+        - openai/gpt-4
+        - openai/gpt-4o
+    ResponseFormatText:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - text
+      required:
+        - type
+      description: Default text response format
+      example:
+        type: text
+    ResponseFormatJSONObject:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - json_object
+      required:
+        - type
+      description: JSON object response format
+      example:
+        type: json_object
+    JSONSchemaConfig:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          description: Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+          example: math_response
+        description:
+          type: string
+          description: Schema description for the model
+          example: A mathematical response
+        schema:
+          type: object
+          additionalProperties:
+            nullable: true
+          description: JSON Schema object
+          example:
+            type: object
+            properties:
+              answer:
+                type: number
+            required:
+              - answer
+        strict:
+          type: boolean
+          nullable: true
+          description: Enable strict schema adherence
+          example: false
+      required:
+        - name
+      description: JSON Schema configuration object
+      example:
+        name: math_response
+        description: A mathematical response
+        schema:
+          type: object
+          properties:
+            answer:
+              type: number
+          required:
+            - answer
+        strict: true
+    ResponseFormatJSONSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - json_schema
+        json_schema:
+          $ref: '#/components/schemas/JSONSchemaConfig'
+      required:
+        - type
+        - json_schema
+      description: JSON Schema response format for structured outputs
+      example:
+        type: json_schema
+        json_schema:
+          name: math_response
+          schema:
+            type: object
+            properties:
+              answer:
+                type: number
+            required:
+              - answer
+    ResponseFormatTextGrammar:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - grammar
+        grammar:
+          type: string
+          description: Custom grammar for text generation
+          example: root ::= "yes" | "no"
+      required:
+        - type
+        - grammar
+      description: Custom grammar response format
+      example:
+        type: grammar
+        grammar: root ::= "yes" | "no"
+    ResponseFormatTextPython:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - python
+      required:
+        - type
+      description: Python code response format
+      example:
+        type: python
+    ChatStreamOptions:
+      type: object
+      nullable: true
+      properties:
+        include_usage:
+          type: boolean
+          description: 'Deprecated: This field has no effect. Full usage details are always included.'
+          example: true
+          deprecated: true
+      description: Streaming configuration options
+      example:
+        include_usage: true
+    NamedToolChoice:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Function name to call
+              example: get_weather
+          required:
+            - name
+      required:
+        - type
+        - function
+      description: Named tool choice for specific function
+      example:
+        type: function
+        function:
+          name: get_weather
+    ToolChoiceOption:
+      anyOf:
+        - type: string
+          enum:
+            - none
+        - type: string
+          enum:
+            - auto
+        - type: string
+          enum:
+            - required
+        - $ref: '#/components/schemas/NamedToolChoice'
+      description: Tool choice configuration
+      example: auto
+    ToolDefinitionJson:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 64
+              description: Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+              example: get_weather
+            description:
+              type: string
+              description: Function description for the model
+              example: Get the current weather for a location
+            parameters:
+              type: object
+              additionalProperties:
+                nullable: true
+              description: Function parameters as JSON Schema object
+              example:
+                type: object
+                properties:
+                  location:
+                    type: string
+                    description: City name
+                required:
+                  - location
+            strict:
+              type: boolean
+              nullable: true
+              description: Enable strict schema adherence
+              example: false
+          required:
+            - name
+          description: Function definition for tool calling
+          example:
+            name: get_weather
+            description: Get the current weather for a location
+            parameters:
+              type: object
+              properties:
+                location:
+                  type: string
+                  description: City name
+              required:
+                - location
+        cache_control:
+          $ref: '#/components/schemas/ChatMessageContentItemCacheControl'
+      required:
+        - type
+        - function
+      description: Tool definition for function calling
+      example:
+        type: function
+        function:
+          name: get_weather
+          description: Get the current weather for a location
+          parameters:
+            type: object
+            properties:
+              location:
+                type: string
+                description: City name
+              unit:
+                type: string
+                enum:
+                  - celsius
+                  - fahrenheit
+            required:
+              - location
+    DebugOptions:
+      type: object
+      properties:
+        echo_upstream_body:
+          type: boolean
+          description: >-
+            If true, includes the transformed upstream request body in a debug chunk at the start of the stream. Only
+            works with streaming mode.
+          example: true
+      description: Debug options for inspecting request transformations (streaming only)
+      example:
+        echo_upstream_body: true
+    ChatGenerationParams:
+      type: object
+      properties:
+        provider:
+          type: object
+          nullable: true
+          properties:
+            allow_fallbacks:
+              type: boolean
+              nullable: true
+              description: >
+                Whether to allow backup providers to serve requests
+
+                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use
+                the next best provider.
+
+                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+            require_parameters:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to filter providers to only those that support the parameters you've provided. If this setting
+                is omitted or set to false, then providers will receive only the parameters they support, and ignore the
+                rest.
+            data_collection:
+              $ref: '#/components/schemas/DataCollection'
+            zdr:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that
+                do not retain prompts will be used.
+              example: true
+            enforce_distillable_text:
+              type: boolean
+              nullable: true
+              description: >-
+                Whether to restrict routing to only models that allow text distillation. When true, only models where
+                the author has allowed distillation will be used.
+              example: true
+            order:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of
+                this list that supports your requested model, and fall back to the next if it is unavailable. If no
+                providers are available, the request will fail with an error message.
+            only:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
+                provider settings for this request.
+            ignore:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/ProviderName'
+                  - type: string
+              description: >-
+                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
+                provider settings for this request.
+            quantizations:
+              type: array
+              nullable: true
+              items:
+                $ref: '#/components/schemas/Quantization'
+              description: A list of quantization levels to filter the provider by.
+            sort:
+              allOf:
+                - $ref: '#/components/schemas/ProviderSort'
+                - anyOf:
+                    - $ref: '#/components/schemas/ProviderSort'
+                    - $ref: '#/components/schemas/ProviderSortConfig'
+                    - nullable: true
+                  description: >-
+                    The sorting strategy to use for this request, if "order" is not specified. When set, no load
+                    balancing is performed.
+            max_price:
+              type: object
+              properties:
+                prompt:
+                  $ref: '#/components/schemas/BigNumberUnion'
+                completion:
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per million completion tokens
+                image:
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per image
+                audio:
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per audio unit
+                request:
+                  allOf:
+                    - $ref: '#/components/schemas/BigNumberUnion'
+                    - description: Price per request
+              description: >-
+                The object specifying the maximum price you want to pay for this request. USD price per million tokens,
+                for prompt and completion.
+            preferred_min_throughput:
+              $ref: '#/components/schemas/PreferredMinThroughput'
+            preferred_max_latency:
+              $ref: '#/components/schemas/PreferredMaxLatency'
+          additionalProperties: false
+          description: When multiple model providers are available, optionally indicate your routing preference.
+        plugins:
+          type: array
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - auto-router
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the auto-router plugin for this request. Defaults to true.
+                  allowed_models:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      List of model patterns to filter which models the auto-router can route between. Supports
+                      wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default
+                      supported models list.
+                    example:
+                      - anthropic/*
+                      - openai/gpt-4o
+                      - google/*
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - moderation
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - web
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the web-search plugin for this request. Defaults to true.
+                  max_results:
+                    type: number
+                  search_prompt:
+                    type: string
+                  engine:
+                    $ref: '#/components/schemas/WebSearchEngine'
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - file-parser
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the file-parser plugin for this request. Defaults to true.
+                  pdf:
+                    $ref: '#/components/schemas/PDFParserOptions'
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - response-healing
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the response-healing plugin for this request. Defaults to true.
+                required:
+                  - id
+          description: Plugins you want to enable for this request, including their settings.
+        route:
+          type: string
+          nullable: true
+          enum:
+            - fallback
+            - sort
+          deprecated: true
+          description: >-
+            **DEPRECATED** Use providers.sort.partition instead. Backwards-compatible alias for
+            providers.sort.partition. Accepts legacy values: "fallback" (maps to "model"), "sort" (maps to "none").
+          x-speakeasy-deprecation-message: Use providers.sort.partition instead.
+          x-speakeasy-ignore: true
+          x-fern-ignore: true
+        user:
+          type: string
+          description: Unique user identifier
+          example: user-123
+        session_id:
+          type: string
+          maxLength: 128
+          description: >-
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for
+            observability. If provided in both the request body and the x-session-id header, the body value takes
+            precedence. Maximum of 128 characters.
+        trace:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            trace_name:
+              type: string
+            span_name:
+              type: string
+            generation_name:
+              type: string
+            parent_span_id:
+              type: string
+          additionalProperties:
+            nullable: true
+          description: >-
+            Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name,
+            parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured
+            broadcast destinations.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          minItems: 1
+          description: List of messages for the conversation
+          example:
+            - role: user
+              content: Hello!
+        model:
+          $ref: '#/components/schemas/ModelName'
+        models:
+          $ref: '#/components/schemas/ModelNames'
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          description: Frequency penalty (-2.0 to 2.0)
+          example: 0
+        logit_bias:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: number
+          description: Token logit bias adjustments
+          example:
+            '50256': -100
+        logprobs:
+          type: boolean
+          nullable: true
+          description: Return log probabilities
+          example: false
+        top_logprobs:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 20
+          description: Number of top log probabilities to return (0-20)
+          example: 5
+        max_completion_tokens:
+          type: number
+          nullable: true
+          minimum: 1
+          description: Maximum tokens in completion
+          example: 100
+        max_tokens:
+          type: number
+          nullable: true
+          minimum: 1
+          description: Maximum tokens (deprecated, use max_completion_tokens)
+          example: 100
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
+          example:
+            user_id: user-123
+            session_id: session-456
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          description: Presence penalty (-2.0 to 2.0)
+          example: 0
+        reasoning:
+          type: object
+          properties:
+            effort:
+              type: string
+              nullable: true
+              enum:
+                - xhigh
+                - high
+                - medium
+                - low
+                - minimal
+                - none
+              description: Constrains effort on reasoning for reasoning models
+              example: medium
+            summary:
+              anyOf:
+                - $ref: '#/components/schemas/ReasoningSummaryVerbosity'
+                - nullable: true
+                - nullable: true
+          description: Configuration options for reasoning models
+          example:
+            effort: medium
+            summary: concise
+        response_format:
+          oneOf:
+            - $ref: '#/components/schemas/ResponseFormatText'
+            - $ref: '#/components/schemas/ResponseFormatJSONObject'
+            - $ref: '#/components/schemas/ResponseFormatJSONSchema'
+            - $ref: '#/components/schemas/ResponseFormatTextGrammar'
+            - $ref: '#/components/schemas/ResponseFormatTextPython'
+          discriminator:
+            propertyName: type
+          description: Response format configuration
+          example:
+            type: json_object
+        seed:
+          type: integer
+          nullable: true
+          description: Random seed for deterministic outputs
+          example: 42
+        stop:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+              maxItems: 4
+            - nullable: true
+          description: Stop sequences (up to 4)
+          example:
+            - |+
+
+        stream:
+          type: boolean
+          default: false
+          description: Enable streaming response
+          example: false
+        stream_options:
+          $ref: '#/components/schemas/ChatStreamOptions'
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+          default: 1
+          description: Sampling temperature (0-2)
+          example: 0.7
+        parallel_tool_calls:
+          type: boolean
+          nullable: true
+        tool_choice:
+          $ref: '#/components/schemas/ToolChoiceOption'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDefinitionJson'
+          description: Available tools for function calling
+          example:
+            - type: function
+              function:
+                name: get_weather
+                description: Get weather
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+          default: 1
+          description: Nucleus sampling parameter (0-1)
+          example: 1
+        debug:
+          $ref: '#/components/schemas/DebugOptions'
+        image_config:
+          type: object
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+              - type: array
+                items:
+                  nullable: true
+          description: >-
+            Provider-specific image configuration options. Keys and values vary by model/provider. See
+            https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
+          example:
+            aspect_ratio: '16:9'
+        modalities:
+          type: array
+          items:
+            type: string
+            enum:
+              - text
+              - image
+          description: Output modalities for the response. Supported values are "text" and "image".
+          example:
+            - text
+            - image
+      required:
+        - messages
+      description: Chat completion request parameters
+      example:
+        messages:
+          - role: system
+            content: You are a helpful assistant.
+          - role: user
+            content: What is the capital of France?
+        model: openai/gpt-4
+        temperature: 0.7
+        max_tokens: 150
     CreateChargeRequest:
       type: object
       properties:
@@ -7507,7 +9163,6 @@ components:
       required:
         - prompt
         - completion
-      additionalProperties: false
       description: Pricing information for the model
       example:
         prompt: '0.00003'
@@ -8015,7 +9670,6 @@ components:
           required:
             - prompt
             - completion
-          additionalProperties: false
         provider_name:
           $ref: '#/components/schemas/ProviderName'
         tag:
@@ -8212,1260 +9866,6 @@ components:
               p75: 38.5
               p90: 28.3
               p99: 15.1
-    __schema0:
-      anyOf:
-        - type: object
-          properties:
-            allow_fallbacks:
-              description: >
-                Whether to allow backup providers to serve requests
-
-                - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use
-                the next best provider.
-
-                - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-              $ref: '#/components/schemas/__schema1'
-            require_parameters:
-              description: >-
-                Whether to filter providers to only those that support the parameters you've provided. If this setting
-                is omitted or set to false, then providers will receive only the parameters they support, and ignore the
-                rest.
-              $ref: '#/components/schemas/__schema1'
-            data_collection:
-              description: >-
-                Data collection setting. If no available model provider meets the requirement, your request will return
-                an error.
-
-                - allow: (default) allow providers which store user data non-transiently and may train on it
-
-
-                - deny: use only providers which do not collect user data.
-              $ref: '#/components/schemas/__schema3'
-            zdr:
-              anyOf:
-                - type: boolean
-                - type: 'null'
-            enforce_distillable_text:
-              anyOf:
-                - type: boolean
-                - type: 'null'
-            order:
-              description: >-
-                An ordered list of provider slugs. The router will attempt to use the first provider in the subset of
-                this list that supports your requested model, and fall back to the next if it is unavailable. If no
-                providers are available, the request will fail with an error message.
-              $ref: '#/components/schemas/__schema4'
-            only:
-              description: >-
-                List of provider slugs to allow. If provided, this list is merged with your account-wide allowed
-                provider settings for this request.
-              $ref: '#/components/schemas/__schema4'
-            ignore:
-              description: >-
-                List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored
-                provider settings for this request.
-              $ref: '#/components/schemas/__schema4'
-            quantizations:
-              description: A list of quantization levels to filter the provider by.
-              $ref: '#/components/schemas/__schema8'
-            sort:
-              description: >-
-                The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing
-                is performed.
-              $ref: '#/components/schemas/__schema9'
-            max_price:
-              description: >-
-                The object specifying the maximum price you want to pay for this request. USD price per million tokens,
-                for prompt and completion.
-              $ref: '#/components/schemas/__schema10'
-            preferred_min_throughput:
-              description: >-
-                Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with
-                percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized
-                in routing. When using fallback models, this may cause a fallback model to be used instead of the
-                primary model if it meets the threshold.
-              $ref: '#/components/schemas/__schema15'
-            preferred_max_latency:
-              description: >-
-                Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with
-                percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized
-                in routing. When using fallback models, this may cause a fallback model to be used instead of the
-                primary model if it meets the threshold.
-              $ref: '#/components/schemas/__schema15'
-          additionalProperties: false
-        - type: 'null'
-    __schema1:
-      anyOf:
-        - type: boolean
-        - type: 'null'
-    __schema3:
-      anyOf:
-        - type: string
-          enum:
-            - deny
-            - allow
-        - type: 'null'
-    __schema4:
-      anyOf:
-        - $ref: '#/components/schemas/__schema5'
-        - type: 'null'
-    __schema5:
-      type: array
-      items:
-        anyOf:
-          - type: string
-            enum:
-              - AI21
-              - AionLabs
-              - Alibaba
-              - Ambient
-              - Amazon Bedrock
-              - Amazon Nova
-              - Anthropic
-              - Arcee AI
-              - AtlasCloud
-              - Avian
-              - Azure
-              - BaseTen
-              - BytePlus
-              - Black Forest Labs
-              - Cerebras
-              - Chutes
-              - Cirrascale
-              - Clarifai
-              - Cloudflare
-              - Cohere
-              - Crusoe
-              - DeepInfra
-              - DeepSeek
-              - Featherless
-              - Fireworks
-              - Friendli
-              - GMICloud
-              - Google
-              - Google AI Studio
-              - Groq
-              - Hyperbolic
-              - Inception
-              - Inceptron
-              - InferenceNet
-              - Infermatic
-              - Inflection
-              - Liquid
-              - Mara
-              - Mancer 2
-              - Minimax
-              - ModelRun
-              - Mistral
-              - Modular
-              - Moonshot AI
-              - Morph
-              - NCompass
-              - Nebius
-              - NextBit
-              - Novita
-              - Nvidia
-              - OpenAI
-              - OpenInference
-              - Parasail
-              - Perplexity
-              - Phala
-              - Relace
-              - SambaNova
-              - Seed
-              - SiliconFlow
-              - Sourceful
-              - StepFun
-              - Stealth
-              - StreamLake
-              - Switchpoint
-              - Together
-              - Upstage
-              - Venice
-              - WandB
-              - Xiaomi
-              - xAI
-              - Z.AI
-              - FakeProvider
-          - type: string
-    __schema8:
-      anyOf:
-        - type: array
-          items:
-            type: string
-            enum:
-              - int4
-              - int8
-              - fp4
-              - fp6
-              - fp8
-              - fp16
-              - bf16
-              - fp32
-              - unknown
-        - type: 'null'
-    __schema9:
-      anyOf:
-        - $ref: '#/components/schemas/ProviderSortUnion'
-        - type: 'null'
-    __schema10:
-      type: object
-      properties:
-        prompt:
-          anyOf:
-            - $ref: '#/components/schemas/__schema11'
-            - $ref: '#/components/schemas/ModelName'
-            - $ref: '#/components/schemas/__schema13'
-        completion:
-          anyOf:
-            - $ref: '#/components/schemas/__schema11'
-            - $ref: '#/components/schemas/ModelName'
-            - $ref: '#/components/schemas/__schema13'
-        image:
-          $ref: '#/components/schemas/__schema14'
-        audio:
-          $ref: '#/components/schemas/__schema14'
-        request:
-          $ref: '#/components/schemas/__schema14'
-    __schema11:
-      type: number
-    __schema13: {}
-    __schema14:
-      anyOf:
-        - $ref: '#/components/schemas/__schema11'
-        - $ref: '#/components/schemas/ModelName'
-        - $ref: '#/components/schemas/__schema13'
-    __schema15:
-      anyOf:
-        - anyOf:
-            - type: number
-            - type: object
-              properties:
-                p50:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                p75:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                p90:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                p99:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-        - type: 'null'
-    __schema17:
-      type: array
-      items:
-        oneOf:
-          - type: object
-            properties:
-              id:
-                type: string
-                const: auto-router
-              enabled:
-                type: boolean
-              allowed_models:
-                type: array
-                items:
-                  type: string
-            required:
-              - id
-          - type: object
-            properties:
-              id:
-                type: string
-                const: moderation
-            required:
-              - id
-          - type: object
-            properties:
-              id:
-                type: string
-                const: web
-              enabled:
-                type: boolean
-              max_results:
-                type: number
-              search_prompt:
-                type: string
-              engine:
-                type: string
-                enum:
-                  - native
-                  - exa
-            required:
-              - id
-          - type: object
-            properties:
-              id:
-                type: string
-                const: file-parser
-              enabled:
-                type: boolean
-              pdf:
-                type: object
-                properties:
-                  engine:
-                    type: string
-                    enum:
-                      - mistral-ocr
-                      - pdf-text
-                      - native
-            required:
-              - id
-          - type: object
-            properties:
-              id:
-                type: string
-                const: response-healing
-              enabled:
-                type: boolean
-            required:
-              - id
-        type: object
-    __schema18:
-      type: string
-      maxLength: 128
-    __schema19:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              const: reasoning.summary
-            summary:
-              type: string
-            id:
-              $ref: '#/components/schemas/__schema20'
-            format:
-              $ref: '#/components/schemas/__schema21'
-            index:
-              $ref: '#/components/schemas/__schema11'
-          required:
-            - type
-            - summary
-        - type: object
-          properties:
-            type:
-              type: string
-              const: reasoning.encrypted
-            data:
-              type: string
-            id:
-              $ref: '#/components/schemas/__schema20'
-            format:
-              $ref: '#/components/schemas/__schema21'
-            index:
-              $ref: '#/components/schemas/__schema11'
-          required:
-            - type
-            - data
-        - type: object
-          properties:
-            type:
-              type: string
-              const: reasoning.text
-            text:
-              anyOf:
-                - type: string
-                - type: 'null'
-            signature:
-              anyOf:
-                - type: string
-                - type: 'null'
-            id:
-              $ref: '#/components/schemas/__schema20'
-            format:
-              $ref: '#/components/schemas/__schema21'
-            index:
-              $ref: '#/components/schemas/__schema11'
-          required:
-            - type
-      type: object
-    __schema20:
-      anyOf:
-        - type: string
-        - type: 'null'
-    __schema21:
-      anyOf:
-        - type: string
-          enum:
-            - unknown
-            - openai-responses-v1
-            - azure-openai-responses-v1
-            - xai-responses-v1
-            - anthropic-claude-v1
-            - google-gemini-v1
-        - type: 'null'
-    __schema25:
-      anyOf:
-        - $ref: '#/components/schemas/ChatCompletionFinishReason'
-        - type: 'null'
-    ModelName:
-      type: string
-    ChatMessageContentItemText:
-      type: object
-      properties:
-        type:
-          type: string
-          const: text
-        text:
-          type: string
-        cache_control:
-          $ref: '#/components/schemas/ChatMessageContentItemCacheControl'
-      required:
-        - type
-        - text
-    ChatMessageContentItemImage:
-      type: object
-      properties:
-        type:
-          type: string
-          const: image_url
-        image_url:
-          type: object
-          properties:
-            url:
-              type: string
-            detail:
-              type: string
-              enum:
-                - auto
-                - low
-                - high
-          required:
-            - url
-      required:
-        - type
-        - image_url
-    ChatMessageContentItemAudio:
-      type: object
-      properties:
-        type:
-          type: string
-          const: input_audio
-        input_audio:
-          type: object
-          properties:
-            data:
-              type: string
-            format:
-              type: string
-          required:
-            - data
-            - format
-      required:
-        - type
-        - input_audio
-    ChatMessageContentItemVideo:
-      oneOf:
-        - type: object
-          properties:
-            type:
-              type: string
-              const: input_video
-            video_url:
-              type: object
-              properties:
-                url:
-                  type: string
-              required:
-                - url
-          required:
-            - type
-            - video_url
-        - type: object
-          properties:
-            type:
-              type: string
-              const: video_url
-            video_url:
-              type: object
-              properties:
-                url:
-                  type: string
-              required:
-                - url
-          required:
-            - type
-            - video_url
-      type: object
-    ChatMessageContentItem:
-      oneOf:
-        - $ref: '#/components/schemas/ChatMessageContentItemText'
-        - $ref: '#/components/schemas/ChatMessageContentItemImage'
-        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
-        - $ref: '#/components/schemas/ChatMessageContentItemVideo'
-      type: object
-      discriminator:
-        propertyName: type
-        mapping:
-          text: '#/components/schemas/ChatMessageContentItemText'
-          image_url: '#/components/schemas/ChatMessageContentItemImage'
-          input_audio: '#/components/schemas/ChatMessageContentItemAudio'
-          input_video: '#/components/schemas/ChatMessageContentItemVideo'
-          video_url: '#/components/schemas/ChatMessageContentItemVideo'
-    ChatMessageToolCall:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          const: function
-        function:
-          type: object
-          properties:
-            name:
-              type: string
-            arguments:
-              type: string
-          required:
-            - name
-            - arguments
-      required:
-        - id
-        - type
-        - function
-    ChatMessageTokenLogprob:
-      type: object
-      properties:
-        token:
-          type: string
-        logprob:
-          type: number
-        bytes:
-          anyOf:
-            - type: array
-              items:
-                type: number
-            - type: 'null'
-        top_logprobs:
-          type: array
-          items:
-            type: object
-            properties:
-              token:
-                type: string
-              logprob:
-                type: number
-              bytes:
-                anyOf:
-                  - type: array
-                    items:
-                      type: number
-                  - type: 'null'
-            required:
-              - token
-              - logprob
-              - bytes
-      required:
-        - token
-        - logprob
-        - bytes
-        - top_logprobs
-    ChatMessageTokenLogprobs:
-      type: object
-      properties:
-        content:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageTokenLogprob'
-            - type: 'null'
-        refusal:
-          anyOf:
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageTokenLogprob'
-            - type: 'null'
-      required:
-        - content
-        - refusal
-    ChatGenerationTokenUsage:
-      type: object
-      properties:
-        completion_tokens:
-          type: number
-        prompt_tokens:
-          type: number
-        total_tokens:
-          type: number
-        completion_tokens_details:
-          anyOf:
-            - type: object
-              properties:
-                reasoning_tokens:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                audio_tokens:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                accepted_prediction_tokens:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-                rejected_prediction_tokens:
-                  anyOf:
-                    - type: number
-                    - type: 'null'
-            - type: 'null'
-        prompt_tokens_details:
-          anyOf:
-            - type: object
-              properties:
-                cached_tokens:
-                  type: number
-                cache_write_tokens:
-                  type: number
-                audio_tokens:
-                  type: number
-                video_tokens:
-                  type: number
-            - type: 'null'
-      required:
-        - completion_tokens
-        - prompt_tokens
-        - total_tokens
-    ChatCompletionFinishReason:
-      type: string
-      enum:
-        - tool_calls
-        - stop
-        - length
-        - content_filter
-        - error
-    JSONSchemaConfig:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 64
-        description:
-          type: string
-        schema:
-          type: object
-          propertyNames:
-            type: string
-          additionalProperties: {}
-        strict:
-          anyOf:
-            - type: boolean
-            - type: 'null'
-      required:
-        - name
-    ResponseFormatJSONSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          const: json_schema
-        json_schema:
-          $ref: '#/components/schemas/JSONSchemaConfig'
-      required:
-        - type
-        - json_schema
-    ResponseFormatTextGrammar:
-      type: object
-      properties:
-        type:
-          type: string
-          const: grammar
-        grammar:
-          type: string
-      required:
-        - type
-        - grammar
-    ChatMessageContentItemCacheControl:
-      type: object
-      properties:
-        type:
-          type: string
-          const: ephemeral
-        ttl:
-          type: string
-          enum:
-            - 5m
-            - 1h
-      required:
-        - type
-    SystemMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: system
-        content:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItemText'
-        name:
-          type: string
-      required:
-        - role
-        - content
-    UserMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: user
-        content:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
-        name:
-          type: string
-      required:
-        - role
-        - content
-    DeveloperMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: developer
-        content:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItemText'
-        name:
-          type: string
-      required:
-        - role
-        - content
-    AssistantMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: assistant
-        content:
-          anyOf:
-            - anyOf:
-                - type: string
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/ChatMessageContentItem'
-            - type: 'null'
-        name:
-          type: string
-        tool_calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessageToolCall'
-        refusal:
-          anyOf:
-            - type: string
-            - type: 'null'
-        reasoning:
-          anyOf:
-            - type: string
-            - type: 'null'
-        reasoning_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/__schema19'
-        images:
-          type: array
-          items:
-            type: object
-            properties:
-              image_url:
-                type: object
-                properties:
-                  url:
-                    type: string
-                required:
-                  - url
-            required:
-              - image_url
-      required:
-        - role
-    ToolResponseMessage:
-      type: object
-      properties:
-        role:
-          type: string
-          const: tool
-        content:
-          anyOf:
-            - type: string
-            - type: array
-              items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
-        tool_call_id:
-          type: string
-      required:
-        - role
-        - content
-        - tool_call_id
-    Message:
-      oneOf:
-        - $ref: '#/components/schemas/SystemMessage'
-        - $ref: '#/components/schemas/UserMessage'
-        - $ref: '#/components/schemas/DeveloperMessage'
-        - $ref: '#/components/schemas/AssistantMessage'
-        - $ref: '#/components/schemas/ToolResponseMessage'
-      type: object
-      discriminator:
-        propertyName: role
-        mapping:
-          system: '#/components/schemas/SystemMessage'
-          user: '#/components/schemas/UserMessage'
-          developer: '#/components/schemas/DeveloperMessage'
-          assistant: '#/components/schemas/AssistantMessage'
-          tool: '#/components/schemas/ToolResponseMessage'
-    ToolDefinitionJson:
-      type: object
-      properties:
-        type:
-          type: string
-          const: function
-        function:
-          type: object
-          properties:
-            name:
-              type: string
-              maxLength: 64
-            description:
-              type: string
-            parameters:
-              type: object
-              propertyNames:
-                type: string
-              additionalProperties: {}
-            strict:
-              anyOf:
-                - type: boolean
-                - type: 'null'
-          required:
-            - name
-      required:
-        - type
-        - function
-    NamedToolChoice:
-      type: object
-      properties:
-        type:
-          type: string
-          const: function
-        function:
-          type: object
-          properties:
-            name:
-              type: string
-          required:
-            - name
-      required:
-        - type
-        - function
-    ToolChoiceOption:
-      anyOf:
-        - type: string
-          const: none
-        - type: string
-          const: auto
-        - type: string
-          const: required
-        - $ref: '#/components/schemas/NamedToolChoice'
-    ChatStreamOptions:
-      type: object
-      properties:
-        include_usage:
-          type: boolean
-    ChatGenerationParams:
-      type: object
-      properties:
-        provider:
-          description: When multiple model providers are available, optionally indicate your routing preference.
-          $ref: '#/components/schemas/__schema0'
-        plugins:
-          description: Plugins you want to enable for this request, including their settings.
-          $ref: '#/components/schemas/__schema17'
-        route:
-          anyOf:
-            - type: string
-              enum:
-                - fallback
-                - sort
-            - type: 'null'
-        user:
-          type: string
-        session_id:
-          description: >-
-            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for
-            observability. If provided in both the request body and the x-session-id header, the body value takes
-            precedence. Maximum of 128 characters.
-          $ref: '#/components/schemas/__schema18'
-        messages:
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-        model:
-          $ref: '#/components/schemas/ModelName'
-        models:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelName'
-        frequency_penalty:
-          anyOf:
-            - type: number
-              minimum: -2
-              maximum: 2
-            - type: 'null'
-        logit_bias:
-          anyOf:
-            - type: object
-              propertyNames:
-                type: string
-              additionalProperties:
-                type: number
-            - type: 'null'
-        logprobs:
-          anyOf:
-            - type: boolean
-            - type: 'null'
-        top_logprobs:
-          anyOf:
-            - type: number
-              minimum: 0
-              maximum: 20
-            - type: 'null'
-        max_completion_tokens:
-          anyOf:
-            - type: number
-              minimum: 1
-            - type: 'null'
-        max_tokens:
-          anyOf:
-            - type: number
-              minimum: 1
-            - type: 'null'
-        metadata:
-          type: object
-          propertyNames:
-            type: string
-          additionalProperties:
-            type: string
-        presence_penalty:
-          anyOf:
-            - type: number
-              minimum: -2
-              maximum: 2
-            - type: 'null'
-        reasoning:
-          type: object
-          properties:
-            effort:
-              anyOf:
-                - type: string
-                  enum:
-                    - xhigh
-                    - high
-                    - medium
-                    - low
-                    - minimal
-                    - none
-                - type: 'null'
-            summary:
-              anyOf:
-                - $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-                - type: 'null'
-        response_format:
-          oneOf:
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: text
-              required:
-                - type
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: json_object
-              required:
-                - type
-            - $ref: '#/components/schemas/ResponseFormatJSONSchema'
-            - $ref: '#/components/schemas/ResponseFormatTextGrammar'
-            - type: object
-              properties:
-                type:
-                  type: string
-                  const: python
-              required:
-                - type
-          type: object
-        seed:
-          anyOf:
-            - type: integer
-              minimum: -9007199254740991
-              maximum: 9007199254740991
-            - type: 'null'
-        stop:
-          anyOf:
-            - anyOf:
-                - type: string
-                - maxItems: 4
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/ModelName'
-            - type: 'null'
-        stream:
-          default: false
-          type: boolean
-        stream_options:
-          anyOf:
-            - $ref: '#/components/schemas/ChatStreamOptions'
-            - type: 'null'
-        temperature:
-          default: 1
-          anyOf:
-            - type: number
-              minimum: 0
-              maximum: 2
-            - type: 'null'
-        tool_choice:
-          $ref: '#/components/schemas/ToolChoiceOption'
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/ToolDefinitionJson'
-        top_p:
-          default: 1
-          anyOf:
-            - type: number
-              minimum: 0
-              maximum: 1
-            - type: 'null'
-        debug:
-          type: object
-          properties:
-            echo_upstream_body:
-              type: boolean
-        image_config:
-          type: object
-          propertyNames:
-            type: string
-          additionalProperties:
-            anyOf:
-              - type: string
-              - type: number
-              - type: array
-                items: {}
-        modalities:
-          type: array
-          items:
-            type: string
-            enum:
-              - text
-              - image
-      required:
-        - messages
-    ProviderSortUnion:
-      anyOf:
-        - $ref: '#/components/schemas/ProviderSort'
-        - $ref: '#/components/schemas/ProviderSortConfig'
-    ChatResponseChoice:
-      type: object
-      properties:
-        finish_reason:
-          $ref: '#/components/schemas/__schema25'
-        index:
-          type: number
-        message:
-          $ref: '#/components/schemas/AssistantMessage'
-        logprobs:
-          anyOf:
-            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
-            - type: 'null'
-      required:
-        - finish_reason
-        - index
-        - message
-    ChatStreamingMessageToolCall:
-      type: object
-      properties:
-        index:
-          type: number
-        id:
-          type: string
-        type:
-          type: string
-          const: function
-        function:
-          type: object
-          properties:
-            name:
-              type: string
-            arguments:
-              type: string
-      required:
-        - index
-    ChatStreamingMessageChunk:
-      type: object
-      properties:
-        role:
-          type: string
-          enum:
-            - assistant
-        content:
-          anyOf:
-            - type: string
-            - type: 'null'
-        reasoning:
-          anyOf:
-            - type: string
-            - type: 'null'
-        refusal:
-          anyOf:
-            - type: string
-            - type: 'null'
-        tool_calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
-        reasoning_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/__schema19'
-    ChatStreamingChoice:
-      type: object
-      properties:
-        delta:
-          $ref: '#/components/schemas/ChatStreamingMessageChunk'
-        finish_reason:
-          $ref: '#/components/schemas/__schema25'
-        index:
-          type: number
-        logprobs:
-          anyOf:
-            - $ref: '#/components/schemas/ChatMessageTokenLogprobs'
-            - type: 'null'
-      required:
-        - delta
-        - finish_reason
-        - index
-    ChatError:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              anyOf:
-                - anyOf:
-                    - type: string
-                    - type: number
-                - type: 'null'
-            message:
-              type: string
-            param:
-              anyOf:
-                - type: string
-                - type: 'null'
-            type:
-              anyOf:
-                - type: string
-                - type: 'null'
-          required:
-            - code
-            - message
-          additionalProperties: false
-      required:
-        - error
-      additionalProperties: false
-    ChatResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatResponseChoice'
-        created:
-          type: number
-        model:
-          type: string
-        object:
-          type: string
-          const: chat.completion
-        system_fingerprint:
-          anyOf:
-            - type: string
-            - type: 'null'
-        usage:
-          $ref: '#/components/schemas/ChatGenerationTokenUsage'
-      required:
-        - id
-        - choices
-        - created
-        - model
-        - object
-      additionalProperties: false
-    ChatStreamingResponseChunk:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            choices:
-              type: array
-              items:
-                $ref: '#/components/schemas/ChatStreamingChoice'
-            created:
-              type: number
-            model:
-              type: string
-            object:
-              type: string
-              const: chat.completion.chunk
-            system_fingerprint:
-              anyOf:
-                - type: string
-                - type: 'null'
-            error:
-              type: object
-              properties:
-                message:
-                  type: string
-                code:
-                  type: number
-              required:
-                - message
-                - code
-              additionalProperties: false
-            usage:
-              $ref: '#/components/schemas/ChatGenerationTokenUsage'
-          required:
-            - id
-            - choices
-            - created
-            - model
-            - object
-          additionalProperties: false
-      required:
-        - data
-      additionalProperties: false
   parameters: {}
   securitySchemes:
     apiKey:
@@ -9885,6 +10285,118 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
+  /chat/completions:
+    post:
+      x-speakeasy-group: chat
+      x-speakeasy-name-override: send
+      x-speakeasy-stream-request-field: stream
+      tags:
+        - Chat
+      summary: Create a chat completion
+      operationId: sendChatCompletionRequest
+      description: >-
+        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
+        modes.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatGenerationParams'
+        required: true
+      responses:
+        '200':
+          description: Successful chat completion response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+            text/event-stream:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ChatStreamingResponseChunk'
+                required:
+                  - data
+              x-speakeasy-sse-sentinel: '[DONE]'
+        '400':
+          description: Bad Request - Invalid request parameters or malformed input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unauthorized - Authentication required or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '402':
+          description: Payment Required - Insufficient credits or quota to complete request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+        '404':
+          description: Not Found - Resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+        '408':
+          description: Request Timeout - Operation exceeded time limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestTimeoutResponse'
+        '413':
+          description: Payload Too Large - Request payload exceeds size limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayloadTooLargeResponse'
+        '422':
+          description: Unprocessable Entity - Semantic validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+        '500':
+          description: Internal Server Error - Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+        '502':
+          description: Bad Gateway - Provider/upstream API failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+        '503':
+          description: Service Unavailable - Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+        '524':
+          description: Infrastructure Timeout - Request timed out at our edge network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeNetworkTimeoutResponse'
+        '529':
+          description: Provider Overloaded - Provider is temporarily overloaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderOverloadedResponse'
   /credits:
     get:
       x-speakeasy-name-override: getCredits
@@ -10557,7 +11069,9 @@ paths:
                                 - Inception
                                 - Inceptron
                                 - InferenceNet
+                                - Ionstream
                                 - Infermatic
+                                - Io Net
                                 - Inflection
                                 - Liquid
                                 - Mara
@@ -13710,6 +14224,29 @@ paths:
                   nullable: true
                   format: date-time
                   description: Optional expiration time for the API key to be created
+                key_label:
+                  type: string
+                  maxLength: 100
+                  description: Optional custom label for the API key. Defaults to the app name if not provided.
+                  example: My Custom Key
+                usage_limit_type:
+                  type: string
+                  enum:
+                    - daily
+                    - weekly
+                    - monthly
+                  description: Optional credit limit reset interval. When set, the credit limit resets on this interval.
+                  example: monthly
+                spawn_agent:
+                  type: string
+                  description: Agent identifier for spawn telemetry
+                  x-speakeasy-ignore: true
+                  x-fern-ignore: true
+                spawn_cloud:
+                  type: string
+                  description: Cloud identifier for spawn telemetry
+                  x-speakeasy-ignore: true
+                  x-fern-ignore: true
               required:
                 - callback_url
               example:
@@ -13771,70 +14308,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
       operationId: createAuthKeysCode
-  /chat/completions:
-    post:
-      summary: Create a chat completion
-      operationId: sendChatCompletionRequest
-      x-speakeasy-group: chat
-      x-speakeasy-name-override: send
-      x-speakeasy-stream-request-field: stream
-      description: >-
-        Sends a request for a model response for the given chat conversation. Supports both streaming and non-streaming
-        modes.
-      tags:
-        - Chat
-      requestBody:
-        required: true
-        description: Chat completion request parameters
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChatGenerationParams'
-      responses:
-        '200':
-          description: Successful chat completion response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatResponse'
-                description: Chat completion response
-            text/event-stream:
-              x-speakeasy-sse-sentinel: '[DONE]'
-              schema:
-                $ref: '#/components/schemas/ChatStreamingResponseChunk'
-        '400':
-          description: Bad request - invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '401':
-          description: Unauthorized - invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '429':
-          description: Too many requests - rate limit exceeded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatError'
-servers:
-  - url: https://openrouter.ai/api/v1
-    description: Production server
-    x-speakeasy-server-id: production
-security:
-  - apiKey: []
-externalDocs:
-  description: OpenRouter Documentation
-  url: https://openrouter.ai/docs
 tags:
   - name: API Keys
     description: API key management endpoints

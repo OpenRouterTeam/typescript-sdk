@@ -19,7 +19,7 @@ import {
  */
 export type OpenResponsesReasoningConfig = {
   effort?: OpenAIResponsesReasoningEffort | null | undefined;
-  summary?: ReasoningSummaryVerbosity | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
   maxTokens?: number | null | undefined;
   enabled?: boolean | null | undefined;
 };
@@ -27,7 +27,7 @@ export type OpenResponsesReasoningConfig = {
 /** @internal */
 export type OpenResponsesReasoningConfig$Outbound = {
   effort?: string | null | undefined;
-  summary?: string | undefined;
+  summary?: string | null | undefined;
   max_tokens?: number | null | undefined;
   enabled?: boolean | null | undefined;
 };
@@ -38,7 +38,7 @@ export const OpenResponsesReasoningConfig$outboundSchema: z.ZodType<
   OpenResponsesReasoningConfig
 > = z.object({
   effort: z.nullable(OpenAIResponsesReasoningEffort$outboundSchema).optional(),
-  summary: ReasoningSummaryVerbosity$outboundSchema.optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
   maxTokens: z.nullable(z.number()).optional(),
   enabled: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
