@@ -36,7 +36,7 @@ export default function Page() {
         "Hello! I'm your AI assistant powered by OpenRouter. I can help you with a wide variety of tasks. What would you like to know or discuss today?",
     },
   ]);
-  const [selectedModel, setSelectedModel] = useState('gpt-4');
+  const [selectedModel, setSelectedModel] = useState('openai/gpt-4o');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -101,10 +101,12 @@ export default function Page() {
     }
 
     const result = await openRouter.chat.send({
-      model: 'openai/gpt-4o',
-      maxTokens: 1000,
-      messages: updatedMessages,
-      stream: true,
+      chatGenerationParams: {
+        model: selectedModel,
+        maxTokens: 1000,
+        messages: updatedMessages,
+        stream: true,
+      },
     });
 
     // Stream chunks into the latest message
@@ -158,10 +160,10 @@ export default function Page() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='gpt-4'>GPT-4</SelectItem>
-                  <SelectItem value='gpt-3.5-turbo'>GPT-3.5 Turbo</SelectItem>
-                  <SelectItem value='claude-3'>Claude 3</SelectItem>
-                  <SelectItem value='gemini-pro'>Gemini Pro</SelectItem>
+                  <SelectItem value='openai/gpt-4o'>GPT-4o</SelectItem>
+                  <SelectItem value='openai/gpt-4o-mini'>GPT-4o Mini</SelectItem>
+                  <SelectItem value='anthropic/claude-sonnet-4'>Claude Sonnet 4</SelectItem>
+                  <SelectItem value='google/gemini-2.5-pro-preview'>Gemini 2.5 Pro</SelectItem>
                 </SelectContent>
               </Select>
               <Button

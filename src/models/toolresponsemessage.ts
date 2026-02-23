@@ -11,11 +11,23 @@ import {
   ChatMessageContentItem$outboundSchema,
 } from "./chatmessagecontentitem.js";
 
+/**
+ * Tool response content
+ */
 export type ToolResponseMessageContent = string | Array<ChatMessageContentItem>;
 
+/**
+ * Tool response message
+ */
 export type ToolResponseMessage = {
   role: "tool";
+  /**
+   * Tool response content
+   */
   content: string | Array<ChatMessageContentItem>;
+  /**
+   * ID of the assistant message tool call this message responds to
+   */
   toolCallId: string;
 };
 

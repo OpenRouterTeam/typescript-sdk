@@ -1,12 +1,14 @@
 # ToolResponseMessageContent
 
+Tool response content
+
 
 ## Supported Types
 
 ### `string`
 
 ```typescript
-const value: string = "<value>";
+const value: string = "The weather in San Francisco is 72°F and sunny.";
 ```
 
 ### `models.ChatMessageContentItem[]`
@@ -14,9 +16,10 @@ const value: string = "<value>";
 ```typescript
 const value: models.ChatMessageContentItem[] = [
   {
-    type: "image_url",
-    imageUrl: {
-      url: "https://pretty-reservation.org",
+    type: "input_audio",
+    inputAudio: {
+      data: "<value>",
+      format: "<value>",
     },
   },
 ];

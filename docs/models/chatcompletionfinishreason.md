@@ -5,7 +5,7 @@
 ```typescript
 import { ChatCompletionFinishReason } from "@openrouter/sdk/models";
 
-let value: ChatCompletionFinishReason = "error";
+let value: ChatCompletionFinishReason = "stop";
 ```
 
 ## Values

@@ -11,8 +11,14 @@ import {
   JSONSchemaConfig$outboundSchema,
 } from "./jsonschemaconfig.js";
 
+/**
+ * JSON Schema response format for structured outputs
+ */
 export type ResponseFormatJSONSchema = {
   type: "json_schema";
+  /**
+   * JSON Schema configuration object
+   */
   jsonSchema: JSONSchemaConfig;
 };
 

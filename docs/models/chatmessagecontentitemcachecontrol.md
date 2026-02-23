@@ -1,5 +1,7 @@
 # ChatMessageContentItemCacheControl
 
+Cache control for the content part
+
 ## Example Usage
 
 ```typescript
@@ -12,7 +14,7 @@ let value: ChatMessageContentItemCacheControl = {
 
 ## Fields
 
-| Field                          | Type                           | Required                       | Description                    |
-| ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
-| `type`                         | *"ephemeral"*                  | :heavy_check_mark:             | N/A                            |
-| `ttl`                          | [models.Ttl](../models/ttl.md) | :heavy_minus_sign:             | N/A                            |
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `type`                                                                                               | [models.ChatMessageContentItemCacheControlType](../models/chatmessagecontentitemcachecontroltype.md) | :heavy_check_mark:                                                                                   | N/A                                                                                                  |
+| `ttl`                                                                                                | [models.Ttl](../models/ttl.md)                                                                       | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |

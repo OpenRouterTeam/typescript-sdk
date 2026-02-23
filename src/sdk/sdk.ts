@@ -39,6 +39,11 @@ export class OpenRouter extends ClientSDK {
     return (this._analytics ??= new Analytics(this._options));
   }
 
+  private _chat?: Chat;
+  get chat(): Chat {
+    return (this._chat ??= new Chat(this._options));
+  }
+
   private _credits?: Credits;
   get credits(): Credits {
     return (this._credits ??= new Credits(this._options));
@@ -82,11 +87,6 @@ export class OpenRouter extends ClientSDK {
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
-  }
-
-  private _chat?: Chat;
-  get chat(): Chat {
-    return (this._chat ??= new Chat(this._options));
   }
 
   // #region sdk-class-body

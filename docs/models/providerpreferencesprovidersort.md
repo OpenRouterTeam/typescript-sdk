@@ -1,11 +1,13 @@
 # ProviderPreferencesProviderSort
 
+The provider sorting strategy (price, throughput, latency)
+
 ## Example Usage
 
 ```typescript
 import { ProviderPreferencesProviderSort } from "@openrouter/sdk/models";
 
-let value: ProviderPreferencesProviderSort = "latency";
+let value: ProviderPreferencesProviderSort = "price";
 ```
 
 ## Values
