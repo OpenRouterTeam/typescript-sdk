@@ -54,6 +54,24 @@ export type PromptTokensDetails = {
 };
 
 /**
+ * Detailed cost breakdown
+ */
+export type ChatGenerationCostDetails = {
+  /**
+   * Total cost charged by the upstream provider
+   */
+  upstreamInferenceCost?: number | null | undefined;
+  /**
+   * Upstream prompt (input) token cost
+   */
+  upstreamInferencePromptCost?: number | null | undefined;
+  /**
+   * Upstream completions (output) token cost
+   */
+  upstreamInferenceCompletionsCost?: number | null | undefined;
+};
+
+/**
  * Token usage statistics
  */
 export type ChatGenerationTokenUsage = {
@@ -77,6 +95,18 @@ export type ChatGenerationTokenUsage = {
    * Detailed prompt token usage
    */
   promptTokensDetails?: PromptTokensDetails | null | undefined;
+  /**
+   * Cost of the completion in USD
+   */
+  cost?: number | null | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
+  /**
+   * Detailed cost breakdown
+   */
+  costDetails?: ChatGenerationCostDetails | null | undefined;
 };
 
 /** @internal */
@@ -136,6 +166,22 @@ export function promptTokensDetailsFromJSON(
 }
 
 /** @internal */
+export const ChatGenerationCostDetails$inboundSchema: z.ZodType<
+  ChatGenerationCostDetails,
+  unknown
+> = z.object({
+  upstream_inference_cost: z.nullable(z.number()).optional(),
+  upstream_inference_prompt_cost: z.nullable(z.number()).optional(),
+  upstream_inference_completions_cost: z.nullable(z.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "upstream_inference_cost": "upstreamInferenceCost",
+    "upstream_inference_prompt_cost": "upstreamInferencePromptCost",
+    "upstream_inference_completions_cost": "upstreamInferenceCompletionsCost",
+  });
+});
+
+/** @internal */
 export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
   ChatGenerationTokenUsage,
   unknown
@@ -149,6 +195,11 @@ export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
+  cost: z.nullable(z.number()).optional(),
+  is_byok: z.boolean().optional(),
+  cost_details: z.nullable(
+    z.lazy(() => ChatGenerationCostDetails$inboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "completion_tokens": "completionTokens",
@@ -156,6 +207,8 @@ export const ChatGenerationTokenUsage$inboundSchema: z.ZodType<
     "total_tokens": "totalTokens",
     "completion_tokens_details": "completionTokensDetails",
     "prompt_tokens_details": "promptTokensDetails",
+    "is_byok": "isByok",
+    "cost_details": "costDetails",
   });
 });
 
