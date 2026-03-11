@@ -13,5 +13,5 @@ let value: OutputModality = "text";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"text" | "image" | "embeddings" | "audio" | Unrecognized<string>
+"text" | "image" | "embeddings" | "audio" | "video" | Unrecognized<string>
 ```

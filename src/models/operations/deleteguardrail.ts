@@ -22,7 +22,13 @@ export type DeleteGuardrailGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type DeleteGuardrailRequest = {
@@ -38,7 +44,13 @@ export type DeleteGuardrailRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The unique identifier of the guardrail to delete
    */
@@ -58,7 +70,8 @@ export type DeleteGuardrailResponse = {
 /** @internal */
 export type DeleteGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   id: string;
 };
 
@@ -68,12 +81,12 @@ export const DeleteGuardrailRequest$outboundSchema: z.ZodType<
   DeleteGuardrailRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

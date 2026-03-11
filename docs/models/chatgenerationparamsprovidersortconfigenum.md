@@ -11,5 +11,5 @@ let value: ChatGenerationParamsProviderSortConfigEnum = "latency";
 ## Values
 
 ```typescript
-"price" | "throughput" | "latency"
+"price" | "throughput" | "latency" | "exacto"
 ```

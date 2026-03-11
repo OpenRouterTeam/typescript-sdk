@@ -5,7 +5,7 @@
 ```typescript
 import { Modality } from "@openrouter/sdk/models";
 
-let value: Modality = "image";
+let value: Modality = "audio";
 ```
 
 ## Values
@@ -13,5 +13,5 @@ let value: Modality = "image";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"text" | "image" | Unrecognized<string>
+"text" | "image" | "audio" | Unrecognized<string>
 ```

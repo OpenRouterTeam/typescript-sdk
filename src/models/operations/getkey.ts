@@ -22,7 +22,13 @@ export type GetKeyGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type GetKeyRequest = {
@@ -38,7 +44,13 @@ export type GetKeyRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The hash identifier of the API key to retrieve
    */
@@ -140,7 +152,8 @@ export type GetKeyResponse = {
 /** @internal */
 export type GetKeyRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   hash: string;
 };
 
@@ -150,12 +163,12 @@ export const GetKeyRequest$outboundSchema: z.ZodType<
   GetKeyRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   hash: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

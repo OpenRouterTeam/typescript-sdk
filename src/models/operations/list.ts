@@ -22,7 +22,13 @@ export type ListGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type ListRequest = {
@@ -38,7 +44,13 @@ export type ListRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * Whether to include disabled API keys in the response
    */
@@ -141,7 +153,8 @@ export type ListResponse = {
 /** @internal */
 export type ListRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   include_disabled?: string | undefined;
   offset?: string | undefined;
 };
@@ -152,13 +165,13 @@ export const ListRequest$outboundSchema: z.ZodType<
   ListRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   includeDisabled: z.string().optional(),
   offset: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     includeDisabled: "include_disabled",
   });
 });

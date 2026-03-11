@@ -13,22 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
-  ReasoningSummaryText$Outbound,
-  ReasoningSummaryText$outboundSchema,
 } from "./reasoningsummarytext.js";
 import {
   ReasoningTextContent,
   ReasoningTextContent$inboundSchema,
-  ReasoningTextContent$Outbound,
-  ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
-
-export const ResponsesOutputItemReasoningType = {
-  Reasoning: "reasoning",
-} as const;
-export type ResponsesOutputItemReasoningType = ClosedEnum<
-  typeof ResponsesOutputItemReasoningType
->;
 
 export const ResponsesOutputItemReasoningStatusInProgress = {
   InProgress: "in_progress",
@@ -78,7 +67,7 @@ export type ResponsesOutputItemReasoningFormat = OpenEnum<
  * An output item containing reasoning
  */
 export type ResponsesOutputItemReasoning = {
-  type: ResponsesOutputItemReasoningType;
+  type: "reasoning";
   id: string;
   content?: Array<ReasoningTextContent> | null | undefined;
   summary: Array<ReasoningSummaryText>;
@@ -99,43 +88,22 @@ export type ResponsesOutputItemReasoning = {
 };
 
 /** @internal */
-export const ResponsesOutputItemReasoningType$inboundSchema: z.ZodEnum<
-  typeof ResponsesOutputItemReasoningType
-> = z.enum(ResponsesOutputItemReasoningType);
-/** @internal */
-export const ResponsesOutputItemReasoningType$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputItemReasoningType
-> = ResponsesOutputItemReasoningType$inboundSchema;
-
-/** @internal */
 export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> = z.enum(
     ResponsesOutputItemReasoningStatusInProgress,
   );
-/** @internal */
-export const ResponsesOutputItemReasoningStatusInProgress$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusInProgress> =
-    ResponsesOutputItemReasoningStatusInProgress$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusIncomplete$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> = z.enum(
     ResponsesOutputItemReasoningStatusIncomplete,
   );
-/** @internal */
-export const ResponsesOutputItemReasoningStatusIncomplete$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusIncomplete> =
-    ResponsesOutputItemReasoningStatusIncomplete$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusCompleted$inboundSchema:
   z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> = z.enum(
     ResponsesOutputItemReasoningStatusCompleted,
   );
-/** @internal */
-export const ResponsesOutputItemReasoningStatusCompleted$outboundSchema:
-  z.ZodEnum<typeof ResponsesOutputItemReasoningStatusCompleted> =
-    ResponsesOutputItemReasoningStatusCompleted$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
@@ -146,32 +114,7 @@ export const ResponsesOutputItemReasoningStatusUnion$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoningStatusIncomplete$inboundSchema,
   ResponsesOutputItemReasoningStatusInProgress$inboundSchema,
 ]);
-/** @internal */
-export type ResponsesOutputItemReasoningStatusUnion$Outbound =
-  | string
-  | string
-  | string;
 
-/** @internal */
-export const ResponsesOutputItemReasoningStatusUnion$outboundSchema: z.ZodType<
-  ResponsesOutputItemReasoningStatusUnion$Outbound,
-  ResponsesOutputItemReasoningStatusUnion
-> = z.union([
-  ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
-  ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
-  ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
-]);
-
-export function responsesOutputItemReasoningStatusUnionToJSON(
-  responsesOutputItemReasoningStatusUnion:
-    ResponsesOutputItemReasoningStatusUnion,
-): string {
-  return JSON.stringify(
-    ResponsesOutputItemReasoningStatusUnion$outboundSchema.parse(
-      responsesOutputItemReasoningStatusUnion,
-    ),
-  );
-}
 export function responsesOutputItemReasoningStatusUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<
@@ -193,18 +136,13 @@ export const ResponsesOutputItemReasoningFormat$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoningFormat,
   unknown
 > = openEnums.inboundSchema(ResponsesOutputItemReasoningFormat);
-/** @internal */
-export const ResponsesOutputItemReasoningFormat$outboundSchema: z.ZodType<
-  string,
-  ResponsesOutputItemReasoningFormat
-> = openEnums.outboundSchema(ResponsesOutputItemReasoningFormat);
 
 /** @internal */
 export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoning,
   unknown
 > = z.object({
-  type: ResponsesOutputItemReasoningType$inboundSchema,
+  type: z.literal("reasoning"),
   id: z.string(),
   content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
   summary: z.array(ReasoningSummaryText$inboundSchema),
@@ -222,51 +160,7 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
     "encrypted_content": "encryptedContent",
   });
 });
-/** @internal */
-export type ResponsesOutputItemReasoning$Outbound = {
-  type: string;
-  id: string;
-  content?: Array<ReasoningTextContent$Outbound> | null | undefined;
-  summary: Array<ReasoningSummaryText$Outbound>;
-  encrypted_content?: string | null | undefined;
-  status?: string | string | string | undefined;
-  signature?: string | null | undefined;
-  format?: string | null | undefined;
-};
 
-/** @internal */
-export const ResponsesOutputItemReasoning$outboundSchema: z.ZodType<
-  ResponsesOutputItemReasoning$Outbound,
-  ResponsesOutputItemReasoning
-> = z.object({
-  type: ResponsesOutputItemReasoningType$outboundSchema,
-  id: z.string(),
-  content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
-  summary: z.array(ReasoningSummaryText$outboundSchema),
-  encryptedContent: z.nullable(z.string()).optional(),
-  status: z.union([
-    ResponsesOutputItemReasoningStatusCompleted$outboundSchema,
-    ResponsesOutputItemReasoningStatusIncomplete$outboundSchema,
-    ResponsesOutputItemReasoningStatusInProgress$outboundSchema,
-  ]).optional(),
-  signature: z.nullable(z.string()).optional(),
-  format: z.nullable(ResponsesOutputItemReasoningFormat$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    encryptedContent: "encrypted_content",
-  });
-});
-
-export function responsesOutputItemReasoningToJSON(
-  responsesOutputItemReasoning: ResponsesOutputItemReasoning,
-): string {
-  return JSON.stringify(
-    ResponsesOutputItemReasoning$outboundSchema.parse(
-      responsesOutputItemReasoning,
-    ),
-  );
-}
 export function responsesOutputItemReasoningFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputItemReasoning, SDKValidationError> {

@@ -9,6 +9,10 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  ChatCompletionAudioOutput,
+  ChatCompletionAudioOutput$inboundSchema,
+} from "./chatcompletionaudiooutput.js";
+import {
   ChatStreamingMessageToolCall,
   ChatStreamingMessageToolCall$inboundSchema,
 } from "./chatstreamingmessagetoolcall.js";
@@ -59,6 +63,7 @@ export type ChatStreamingMessageChunk = {
    * Reasoning details for extended thinking models
    */
   reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
+  audio?: ChatCompletionAudioOutput | undefined;
 };
 
 /** @internal */
@@ -77,6 +82,7 @@ export const ChatStreamingMessageChunk$inboundSchema: z.ZodType<
   refusal: z.nullable(z.string()).optional(),
   tool_calls: z.array(ChatStreamingMessageToolCall$inboundSchema).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
+  audio: ChatCompletionAudioOutput$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",

@@ -21,7 +21,7 @@ export type ResponseOutputTextTopLogprob = {
   logprob: number;
 };
 
-export type Logprob = {
+export type ResponseOutputTextLogprob = {
   token: string;
   bytes: Array<number>;
   logprob: number;
@@ -32,7 +32,7 @@ export type ResponseOutputText = {
   type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation> | undefined;
-  logprobs?: Array<Logprob> | undefined;
+  logprobs?: Array<ResponseOutputTextLogprob> | undefined;
 };
 
 /** @internal */
@@ -81,7 +81,10 @@ export function responseOutputTextTopLogprobFromJSON(
 }
 
 /** @internal */
-export const Logprob$inboundSchema: z.ZodType<Logprob, unknown> = z.object({
+export const ResponseOutputTextLogprob$inboundSchema: z.ZodType<
+  ResponseOutputTextLogprob,
+  unknown
+> = z.object({
   token: z.string(),
   bytes: z.array(z.number()),
   logprob: z.number(),
@@ -94,7 +97,7 @@ export const Logprob$inboundSchema: z.ZodType<Logprob, unknown> = z.object({
   });
 });
 /** @internal */
-export type Logprob$Outbound = {
+export type ResponseOutputTextLogprob$Outbound = {
   token: string;
   bytes: Array<number>;
   logprob: number;
@@ -102,30 +105,36 @@ export type Logprob$Outbound = {
 };
 
 /** @internal */
-export const Logprob$outboundSchema: z.ZodType<Logprob$Outbound, Logprob> = z
-  .object({
-    token: z.string(),
-    bytes: z.array(z.number()),
-    logprob: z.number(),
-    topLogprobs: z.array(
-      z.lazy(() => ResponseOutputTextTopLogprob$outboundSchema),
-    ),
-  }).transform((v) => {
-    return remap$(v, {
-      topLogprobs: "top_logprobs",
-    });
+export const ResponseOutputTextLogprob$outboundSchema: z.ZodType<
+  ResponseOutputTextLogprob$Outbound,
+  ResponseOutputTextLogprob
+> = z.object({
+  token: z.string(),
+  bytes: z.array(z.number()),
+  logprob: z.number(),
+  topLogprobs: z.array(
+    z.lazy(() => ResponseOutputTextTopLogprob$outboundSchema),
+  ),
+}).transform((v) => {
+  return remap$(v, {
+    topLogprobs: "top_logprobs",
   });
+});
 
-export function logprobToJSON(logprob: Logprob): string {
-  return JSON.stringify(Logprob$outboundSchema.parse(logprob));
+export function responseOutputTextLogprobToJSON(
+  responseOutputTextLogprob: ResponseOutputTextLogprob,
+): string {
+  return JSON.stringify(
+    ResponseOutputTextLogprob$outboundSchema.parse(responseOutputTextLogprob),
+  );
 }
-export function logprobFromJSON(
+export function responseOutputTextLogprobFromJSON(
   jsonString: string,
-): SafeParseResult<Logprob, SDKValidationError> {
+): SafeParseResult<ResponseOutputTextLogprob, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Logprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Logprob' from JSON`,
+    (x) => ResponseOutputTextLogprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponseOutputTextLogprob' from JSON`,
   );
 }
 
@@ -137,14 +146,15 @@ export const ResponseOutputText$inboundSchema: z.ZodType<
   type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
-  logprobs: z.array(z.lazy(() => Logprob$inboundSchema)).optional(),
+  logprobs: z.array(z.lazy(() => ResponseOutputTextLogprob$inboundSchema))
+    .optional(),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
   type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
-  logprobs?: Array<Logprob$Outbound> | undefined;
+  logprobs?: Array<ResponseOutputTextLogprob$Outbound> | undefined;
 };
 
 /** @internal */
@@ -155,7 +165,8 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
-  logprobs: z.array(z.lazy(() => Logprob$outboundSchema)).optional(),
+  logprobs: z.array(z.lazy(() => ResponseOutputTextLogprob$outboundSchema))
+    .optional(),
 });
 
 export function responseOutputTextToJSON(

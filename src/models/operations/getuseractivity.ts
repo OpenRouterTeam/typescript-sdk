@@ -23,7 +23,13 @@ export type GetUserActivityGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type GetUserActivityRequest = {
@@ -39,7 +45,13 @@ export type GetUserActivityRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
    */
@@ -59,7 +71,8 @@ export type GetUserActivityResponse = {
 /** @internal */
 export type GetUserActivityRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   date?: string | undefined;
 };
 
@@ -69,12 +82,12 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
   GetUserActivityRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   date: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

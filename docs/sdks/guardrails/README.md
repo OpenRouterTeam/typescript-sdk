@@ -32,7 +32,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -57,7 +58,8 @@ import { guardrailsList } from "@openrouter/sdk/funcs/guardrailsList.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -107,7 +109,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -136,7 +139,8 @@ import { guardrailsCreate } from "@openrouter/sdk/funcs/guardrailsCreate.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -191,7 +195,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -218,7 +223,8 @@ import { guardrailsGet } from "@openrouter/sdk/funcs/guardrailsGet.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -271,7 +277,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -299,7 +306,8 @@ import { guardrailsUpdate } from "@openrouter/sdk/funcs/guardrailsUpdate.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -354,7 +362,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -381,7 +390,8 @@ import { guardrailsDelete } from "@openrouter/sdk/funcs/guardrailsDelete.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -434,7 +444,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -459,7 +470,8 @@ import { guardrailsListKeyAssignments } from "@openrouter/sdk/funcs/guardrailsLi
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -509,7 +521,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -534,7 +547,8 @@ import { guardrailsListMemberAssignments } from "@openrouter/sdk/funcs/guardrail
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -584,7 +598,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -611,7 +626,8 @@ import { guardrailsListGuardrailKeyAssignments } from "@openrouter/sdk/funcs/gua
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -664,7 +680,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -696,7 +713,8 @@ import { guardrailsBulkAssignKeys } from "@openrouter/sdk/funcs/guardrailsBulkAs
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -755,7 +773,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -782,7 +801,8 @@ import { guardrailsListGuardrailMemberAssignments } from "@openrouter/sdk/funcs/
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -835,7 +855,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -868,7 +889,8 @@ import { guardrailsBulkAssignMembers } from "@openrouter/sdk/funcs/guardrailsBul
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -928,7 +950,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -960,7 +983,8 @@ import { guardrailsBulkUnassignKeys } from "@openrouter/sdk/funcs/guardrailsBulk
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -1019,7 +1043,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -1052,7 +1077,8 @@ import { guardrailsBulkUnassignMembers } from "@openrouter/sdk/funcs/guardrailsB
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 

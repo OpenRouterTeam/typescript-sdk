@@ -46,6 +46,8 @@ let value: GetGenerationData = {
       status: 9669.26,
     },
   ],
+  userAgent: "<value>",
+  httpReferer: "<value>",
 };
 ```
 
@@ -87,3 +89,5 @@ let value: GetGenerationData = {
 | `apiType`                                                                    | [operations.ApiType](../../models/operations/apitype.md)                     | :heavy_check_mark:                                                           | Type of API used for the generation                                          |                                                                              |
 | `router`                                                                     | *string*                                                                     | :heavy_check_mark:                                                           | Router used for the request (e.g., openrouter/auto)                          | openrouter/auto                                                              |
 | `providerResponses`                                                          | [operations.ProviderResponse](../../models/operations/providerresponse.md)[] | :heavy_check_mark:                                                           | List of provider responses for this generation, including fallback attempts  |                                                                              |
+| `userAgent`                                                                  | *string*                                                                     | :heavy_check_mark:                                                           | User-Agent header from the request                                           |                                                                              |
+| `httpReferer`                                                                | *string*                                                                     | :heavy_check_mark:                                                           | Referer header from the request                                              |                                                                              |

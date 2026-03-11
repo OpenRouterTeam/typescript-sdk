@@ -12,7 +12,7 @@ import {
 } from '../../src/index.js';
 import type { ModelResult } from '../../src/lib/model-result.js';
 import type { Tool } from '../../src/lib/tool-types.js';
-import type { OpenResponsesInput, OpenResponsesInput1 } from '../../src/models/openresponsesinput.js';
+import type { OpenResponsesInputUnion, OpenResponsesInputUnion1 } from '../../src/models/openresponsesinputunion.js';
 
 dotenv.config();
 
@@ -666,7 +666,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       const allItemsMap = new Map<string, StreamableOutputItem>();
 
       // Build input function that dynamically constructs messages per turn
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         turnHistory.push(ctx.numberOfTurns);
 
         if (ctx.numberOfTurns === 0) {
@@ -679,7 +679,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
 
         // Subsequent turns: get previous input and rebuild with fresh system prompt
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );
@@ -742,7 +742,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       const systemPrompt = 'You are a helpful assistant for task management.';
 
       // Build input function
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         if (ctx.numberOfTurns === 0) {
           return [
             { role: 'system' as const, content: systemPrompt },
@@ -751,7 +751,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
         }
 
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );
@@ -785,7 +785,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       const allItemsMap = new Map<string, StreamableOutputItem>();
       const systemPrompt = 'You are a helpful task assistant.';
 
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         if (ctx.numberOfTurns === 0) {
           return [
             { role: 'system' as const, content: systemPrompt },
@@ -794,7 +794,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
         }
 
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );
@@ -839,7 +839,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       const sizeHistory: number[] = [];
       const systemPrompt = 'You are a task tracking assistant.';
 
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         if (ctx.numberOfTurns === 0) {
           return [
             { role: 'system' as const, content: systemPrompt },
@@ -852,7 +852,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
         }
 
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );
@@ -896,7 +896,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       taskStore.set('task_1', { id: 'task_1', name: 'Alpha Task', createdAt: new Date().toISOString() });
       taskStore.set('task_2', { id: 'task_2', name: 'Beta Task', createdAt: new Date().toISOString() });
 
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         if (ctx.numberOfTurns === 0) {
           return [
             { role: 'system' as const, content: systemPrompt },
@@ -909,7 +909,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
         }
 
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );
@@ -965,7 +965,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
       const tools = [createCreateTaskTool(), createListTasksTool()];
       const systemPrompt = 'You are a precise task executor. Execute each step in order.';
 
-      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInput> => {
+      const inputFn = async (ctx: TurnContext): Promise<OpenResponsesInputUnion> => {
         if (ctx.numberOfTurns === 0) {
           return [
             { role: 'system' as const, content: systemPrompt },
@@ -978,7 +978,7 @@ describe('Multi-Turn Tool State E2E Tests', () => {
         }
 
         const prevInput = ctx.turnRequest?.input;
-        const prevMessages: OpenResponsesInput1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
+        const prevMessages: OpenResponsesInputUnion1[] = typeof prevInput === 'string' ? [] : (prevInput ?? []);
         const messagesWithoutSystem = prevMessages.filter(
           (m) => !('role' in m && m.role === 'system'),
         );

@@ -1,4 +1,4 @@
-import type * as models from "../models/index.js";
+import type { ClaudeMessageParam } from "../models/claude-message.js";
 import {
   ClaudeContentBlockType,
   NonClaudeMessageRole,
@@ -57,7 +57,7 @@ function hasClaudeSpecificBlocks(content: unknown[]): boolean {
  */
 export function isClaudeStyleMessages(
   input: unknown
-): input is models.ClaudeMessageParam[] {
+): input is ClaudeMessageParam[] {
   if (!Array.isArray(input) || input.length === 0) {
     return false;
   }
