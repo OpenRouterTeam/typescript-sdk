@@ -22,7 +22,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -47,7 +48,8 @@ import { modelsCount } from "@openrouter/sdk/funcs/modelsCount.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -81,6 +83,7 @@ run();
 
 | Error Type                         | Status Code                        | Content Type                       |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
@@ -96,7 +99,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -121,7 +125,8 @@ import { modelsList } from "@openrouter/sdk/funcs/modelsList.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -171,7 +176,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
 });
 
 async function run() {
@@ -197,7 +203,8 @@ import { modelsListForUser } from "@openrouter/sdk/funcs/modelsListForUser.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
 });
 
 async function run() {

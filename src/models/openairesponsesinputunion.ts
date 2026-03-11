@@ -58,11 +58,30 @@ export type OpenAIResponsesInputTypeFunctionCallOutput = ClosedEnum<
   typeof OpenAIResponsesInputTypeFunctionCallOutput
 >;
 
+export type OpenAIResponsesInputOutput1 =
+  | ResponseInputText
+  | (ResponseInputImage & { type: "input_image" })
+  | ResponseInputFile;
+
+export type OpenAIResponsesInputOutput2 =
+  | string
+  | Array<
+    | ResponseInputText
+    | (ResponseInputImage & { type: "input_image" })
+    | ResponseInputFile
+  >;
+
 export type OpenAIResponsesInputFunctionCallOutput = {
   type: OpenAIResponsesInputTypeFunctionCallOutput;
   id?: string | null | undefined;
   callId: string;
-  output: string;
+  output:
+    | string
+    | Array<
+      | ResponseInputText
+      | (ResponseInputImage & { type: "input_image" })
+      | ResponseInputFile
+    >;
   status?: ToolCallStatus | null | undefined;
 };
 
@@ -176,6 +195,25 @@ export type OpenAIResponsesInputContent2 =
   >
   | string;
 
+export const OpenAIResponsesInputPhaseFinalAnswer = {
+  FinalAnswer: "final_answer",
+} as const;
+export type OpenAIResponsesInputPhaseFinalAnswer = ClosedEnum<
+  typeof OpenAIResponsesInputPhaseFinalAnswer
+>;
+
+export const OpenAIResponsesInputPhaseCommentary = {
+  Commentary: "commentary",
+} as const;
+export type OpenAIResponsesInputPhaseCommentary = ClosedEnum<
+  typeof OpenAIResponsesInputPhaseCommentary
+>;
+
+export type OpenAIResponsesInputPhaseUnion =
+  | OpenAIResponsesInputPhaseCommentary
+  | OpenAIResponsesInputPhaseFinalAnswer
+  | any;
+
 export type OpenAIResponsesInputMessage1 = {
   type?: OpenAIResponsesInputTypeMessage1 | undefined;
   role:
@@ -191,6 +229,12 @@ export type OpenAIResponsesInputMessage1 = {
       | ResponseInputAudio
     >
     | string;
+  phase?:
+    | OpenAIResponsesInputPhaseCommentary
+    | OpenAIResponsesInputPhaseFinalAnswer
+    | any
+    | null
+    | undefined;
 };
 
 export type OpenAIResponsesInputUnion1 =
@@ -252,6 +296,55 @@ export const OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema:
   );
 
 /** @internal */
+export const OpenAIResponsesInputOutput1$inboundSchema: z.ZodType<
+  OpenAIResponsesInputOutput1,
+  unknown
+> = z.union([
+  ResponseInputText$inboundSchema,
+  ResponseInputImage$inboundSchema.and(
+    z.object({ type: z.literal("input_image") }),
+  ),
+  ResponseInputFile$inboundSchema,
+]);
+
+export function openAIResponsesInputOutput1FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenAIResponsesInputOutput1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenAIResponsesInputOutput1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesInputOutput1' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenAIResponsesInputOutput2$inboundSchema: z.ZodType<
+  OpenAIResponsesInputOutput2,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(
+    z.union([
+      ResponseInputText$inboundSchema,
+      ResponseInputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
+      ResponseInputFile$inboundSchema,
+    ]),
+  ),
+]);
+
+export function openAIResponsesInputOutput2FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenAIResponsesInputOutput2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenAIResponsesInputOutput2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesInputOutput2' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   OpenAIResponsesInputFunctionCallOutput,
   unknown
@@ -259,7 +352,18 @@ export const OpenAIResponsesInputFunctionCallOutput$inboundSchema: z.ZodType<
   type: OpenAIResponsesInputTypeFunctionCallOutput$inboundSchema,
   id: z.nullable(z.string()).optional(),
   call_id: z.string(),
-  output: z.string(),
+  output: z.union([
+    z.string(),
+    z.array(
+      z.union([
+        ResponseInputText$inboundSchema,
+        ResponseInputImage$inboundSchema.and(
+          z.object({ type: z.literal("input_image") }),
+        ),
+        ResponseInputFile$inboundSchema,
+      ]),
+    ),
+  ]),
   status: z.nullable(ToolCallStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -473,6 +577,36 @@ export function openAIResponsesInputContent2FromJSON(
 }
 
 /** @internal */
+export const OpenAIResponsesInputPhaseFinalAnswer$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputPhaseFinalAnswer
+> = z.enum(OpenAIResponsesInputPhaseFinalAnswer);
+
+/** @internal */
+export const OpenAIResponsesInputPhaseCommentary$inboundSchema: z.ZodEnum<
+  typeof OpenAIResponsesInputPhaseCommentary
+> = z.enum(OpenAIResponsesInputPhaseCommentary);
+
+/** @internal */
+export const OpenAIResponsesInputPhaseUnion$inboundSchema: z.ZodType<
+  OpenAIResponsesInputPhaseUnion,
+  unknown
+> = z.union([
+  OpenAIResponsesInputPhaseCommentary$inboundSchema,
+  OpenAIResponsesInputPhaseFinalAnswer$inboundSchema,
+  z.any(),
+]);
+
+export function openAIResponsesInputPhaseUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenAIResponsesInputPhaseUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenAIResponsesInputPhaseUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenAIResponsesInputPhaseUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
   OpenAIResponsesInputMessage1,
   unknown
@@ -497,6 +631,13 @@ export const OpenAIResponsesInputMessage1$inboundSchema: z.ZodType<
     ),
     z.string(),
   ]),
+  phase: z.nullable(
+    z.union([
+      OpenAIResponsesInputPhaseCommentary$inboundSchema,
+      OpenAIResponsesInputPhaseFinalAnswer$inboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
 });
 
 export function openAIResponsesInputMessage1FromJSON(

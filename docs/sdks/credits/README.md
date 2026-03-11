@@ -21,7 +21,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -46,7 +47,8 @@ import { creditsGetCredits } from "@openrouter/sdk/funcs/creditsGetCredits.js";
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -97,7 +99,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
 });
 
 async function run() {
@@ -129,7 +132,8 @@ import { creditsCreateCoinbaseCharge } from "@openrouter/sdk/funcs/creditsCreate
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
 });
 
 async function run() {

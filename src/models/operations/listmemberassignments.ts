@@ -22,7 +22,13 @@ export type ListMemberAssignmentsGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type ListMemberAssignmentsRequest = {
@@ -38,7 +44,13 @@ export type ListMemberAssignmentsRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * Number of records to skip for pagination
    */
@@ -93,7 +105,8 @@ export type ListMemberAssignmentsResponse = {
 /** @internal */
 export type ListMemberAssignmentsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   offset?: string | undefined;
   limit?: string | undefined;
 };
@@ -104,13 +117,13 @@ export const ListMemberAssignmentsRequest$outboundSchema: z.ZodType<
   ListMemberAssignmentsRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

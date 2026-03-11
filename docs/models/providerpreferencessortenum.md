@@ -13,5 +13,5 @@ let value: ProviderPreferencesSortEnum = "price";
 This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
-"price" | "throughput" | "latency" | Unrecognized<string>
+"price" | "throughput" | "latency" | "exacto" | Unrecognized<string>
 ```

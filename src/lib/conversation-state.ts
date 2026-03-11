@@ -86,9 +86,9 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  * Append new items to the message history
  */
 export function appendToMessages(
-  current: models.OpenResponsesInput,
-  newItems: models.OpenResponsesInput1[]
-): models.OpenResponsesInput {
+  current: models.OpenResponsesInputUnion,
+  newItems: models.OpenResponsesInputUnion1[]
+): models.OpenResponsesInputUnion {
   const currentArray = normalizeInputToArray(current);
   return [...currentArray, ...newItems];
 }

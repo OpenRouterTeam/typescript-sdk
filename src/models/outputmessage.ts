@@ -57,6 +57,28 @@ export type OutputMessageContent =
   | ResponseOutputText
   | OpenAIResponsesRefusalContent;
 
+export const OutputMessagePhaseFinalAnswer = {
+  FinalAnswer: "final_answer",
+} as const;
+export type OutputMessagePhaseFinalAnswer = ClosedEnum<
+  typeof OutputMessagePhaseFinalAnswer
+>;
+
+export const OutputMessagePhaseCommentary = {
+  Commentary: "commentary",
+} as const;
+export type OutputMessagePhaseCommentary = ClosedEnum<
+  typeof OutputMessagePhaseCommentary
+>;
+
+/**
+ * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+ */
+export type OutputMessagePhaseUnion =
+  | OutputMessagePhaseCommentary
+  | OutputMessagePhaseFinalAnswer
+  | any;
+
 export type OutputMessage = {
   id: string;
   role: OutputMessageRole;
@@ -67,6 +89,15 @@ export type OutputMessage = {
     | OutputMessageStatusInProgress
     | undefined;
   content: Array<ResponseOutputText | OpenAIResponsesRefusalContent>;
+  /**
+   * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+   */
+  phase?:
+    | OutputMessagePhaseCommentary
+    | OutputMessagePhaseFinalAnswer
+    | any
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -134,6 +165,36 @@ export function outputMessageContentFromJSON(
 }
 
 /** @internal */
+export const OutputMessagePhaseFinalAnswer$inboundSchema: z.ZodEnum<
+  typeof OutputMessagePhaseFinalAnswer
+> = z.enum(OutputMessagePhaseFinalAnswer);
+
+/** @internal */
+export const OutputMessagePhaseCommentary$inboundSchema: z.ZodEnum<
+  typeof OutputMessagePhaseCommentary
+> = z.enum(OutputMessagePhaseCommentary);
+
+/** @internal */
+export const OutputMessagePhaseUnion$inboundSchema: z.ZodType<
+  OutputMessagePhaseUnion,
+  unknown
+> = z.union([
+  OutputMessagePhaseCommentary$inboundSchema,
+  OutputMessagePhaseFinalAnswer$inboundSchema,
+  z.any(),
+]);
+
+export function outputMessagePhaseUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputMessagePhaseUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputMessagePhaseUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputMessagePhaseUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
   .object({
     id: z.string(),
@@ -150,6 +211,13 @@ export const OutputMessage$inboundSchema: z.ZodType<OutputMessage, unknown> = z
         OpenAIResponsesRefusalContent$inboundSchema,
       ]),
     ),
+    phase: z.nullable(
+      z.union([
+        OutputMessagePhaseCommentary$inboundSchema,
+        OutputMessagePhaseFinalAnswer$inboundSchema,
+        z.any(),
+      ]),
+    ).optional(),
   });
 
 export function outputMessageFromJSON(

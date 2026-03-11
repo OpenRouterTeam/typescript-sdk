@@ -1,4 +1,11 @@
 import type * as models from '../models/index.js';
+import type {
+  ClaudeContentBlock,
+  ClaudeMessage,
+  ClaudeStopReason,
+  ClaudeTextCitation,
+  UnsupportedContent,
+} from '../models/claude-message.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall, Tool } from './tool-types.js';
 import {
@@ -671,7 +678,9 @@ export async function* buildToolCallStream(
     switch (event.type) {
       case 'response.output_item.added': {
         if (isOutputItemAddedEvent(event) && event.item && isFunctionCallItem(event.item)) {
-          toolCallsInProgress.set(event.item.callId, {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
+          toolCallsInProgress.set(itemKey, {
             id: event.item.callId,
             name: event.item.name,
             argumentsAccumulated: '',
@@ -726,8 +735,10 @@ export async function* buildToolCallStream(
 
       case 'response.output_item.done': {
         if (isOutputItemDoneEvent(event) && event.item && isFunctionCallItem(event.item)) {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
           // Yield final tool call if we haven't already
-          if (toolCallsInProgress.has(event.item.callId)) {
+          if (toolCallsInProgress.has(itemKey)) {
             try {
               const parsedArguments = JSON.parse(event.item.arguments);
               yield {
@@ -743,7 +754,7 @@ export async function* buildToolCallStream(
               } as ParsedToolCall<Tool>;
             }
 
-            toolCallsInProgress.delete(event.item.callId);
+            toolCallsInProgress.delete(itemKey);
           }
         }
         break;
@@ -764,12 +775,12 @@ export function responseHasToolCalls(response: models.OpenResponsesNonStreamingR
  */
 function mapAnnotationsToCitations(
   annotations?: Array<models.OpenAIResponsesAnnotation>,
-): models.ClaudeTextCitation[] | undefined {
+): ClaudeTextCitation[] | undefined {
   if (!annotations || annotations.length === 0) {
     return undefined;
   }
 
-  const citations: models.ClaudeTextCitation[] = [];
+  const citations: ClaudeTextCitation[] = [];
 
   for (const annotation of annotations) {
     if (!('type' in annotation)) {
@@ -841,7 +852,7 @@ function mapAnnotationsToCitations(
  */
 function mapStopReason(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeStopReason | null {
+): ClaudeStopReason | null {
   // Check if any tool calls exist in the response
   const hasToolCalls = response.output.some(
     (item) => 'type' in item && item.type === 'function_call',
@@ -874,9 +885,9 @@ function mapStopReason(
  */
 export function convertToClaudeMessage(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeMessage {
-  const content: models.ClaudeContentBlock[] = [];
-  const unsupportedContent: models.UnsupportedContent[] = [];
+): ClaudeMessage {
+  const content: ClaudeContentBlock[] = [];
+  const unsupportedContent: UnsupportedContent[] = [];
 
   for (const item of response.output) {
     if (!('type' in item)) {
@@ -1079,9 +1090,9 @@ export function convertToClaudeMessage(
  * Extract unsupported content by original type
  */
 export function extractUnsupportedContent(
-  message: models.ClaudeMessage,
+  message: ClaudeMessage,
   originalType: string,
-): models.UnsupportedContent[] {
+): UnsupportedContent[] {
   if (!message.unsupported_content) {
     return [];
   }
@@ -1092,7 +1103,7 @@ export function extractUnsupportedContent(
 /**
  * Check if message has any unsupported content
  */
-export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
+export function hasUnsupportedContent(message: ClaudeMessage): boolean {
   return !!(message.unsupported_content && message.unsupported_content.length > 0);
 }
 
@@ -1100,7 +1111,7 @@ export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
  * Get summary of unsupported content types
  */
 export function getUnsupportedContentSummary(
-  message: models.ClaudeMessage,
+  message: ClaudeMessage,
 ): Record<string, number> {
   if (!message.unsupported_content) {
     return {};

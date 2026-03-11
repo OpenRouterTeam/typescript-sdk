@@ -4,13 +4,15 @@ import type { TurnContext } from './tool-types.js';
 /**
  * Options for building a turn context
  */
-export interface BuildTurnContextOptions {
+export interface BuildTurnContextOptions<TExternal extends Record<string, unknown> = Record<string, unknown>> {
   /** Number of turns so far (1-indexed for tool execution, 0 for initial request) */
   numberOfTurns: number;
   /** The specific tool call being executed (optional for initial/async resolution contexts) */
   toolCall?: models.OpenResponsesFunctionToolCall;
   /** The full request being sent to the API (optional for initial/async resolution contexts) */
   turnRequest?: models.OpenResponsesRequest;
+  /** External data passed through from callModel */
+  external?: TExternal;
 }
 
 /**
@@ -34,8 +36,10 @@ export interface BuildTurnContextOptions {
  * });
  * ```
  */
-export function buildTurnContext(options: BuildTurnContextOptions): TurnContext {
-  const context: TurnContext = {
+export function buildTurnContext<TExternal extends Record<string, unknown> = Record<string, unknown>>(
+  options: BuildTurnContextOptions<TExternal>
+): TurnContext<TExternal> {
+  const context: TurnContext<TExternal> = {
     numberOfTurns: options.numberOfTurns,
   };
 
@@ -45,6 +49,10 @@ export function buildTurnContext(options: BuildTurnContextOptions): TurnContext 
 
   if (options.turnRequest !== undefined) {
     context.turnRequest = options.turnRequest;
+  }
+
+  if (options.external !== undefined) {
+    context.external = options.external;
   }
 
   return context;
@@ -64,8 +72,8 @@ export function buildTurnContext(options: BuildTurnContextOptions): TurnContext 
  * ```
  */
 export function normalizeInputToArray(
-  input: models.OpenResponsesInput
-): Array<models.OpenResponsesInput1> {
+  input: models.OpenResponsesInputUnion
+): Array<models.OpenResponsesInputUnion1> {
   if (typeof input === 'string') {
     // Construct object with all required fields - type is optional
     const message: models.OpenResponsesEasyInputMessage = {

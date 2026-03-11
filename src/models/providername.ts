@@ -8,6 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const ProviderName = {
+  Akash: "Akash",
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",

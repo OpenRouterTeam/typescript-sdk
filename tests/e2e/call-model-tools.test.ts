@@ -606,12 +606,13 @@ describe('Enhanced Tool Support for callModel', () => {
         tools: [
           weatherTool,
         ],
+        stopWhen: stepCountIs(3),
       });
 
       const fullResponse = await response.getResponse();
       const message = toChatMessage(fullResponse);
       expect(message).toBeDefined();
-    }, 30000);
+    }, 60000);
 
     it('should handle multi-turn conversation with tool execution', async () => {
       // This will test the full loop: request -> tool call -> execute -> send result -> final response
@@ -662,7 +663,7 @@ describe('Enhanced Tool Support for callModel', () => {
       const finalMessage = toChatMessage(fullResponse);
       expect(finalMessage).toBeDefined();
       expect(finalMessage.content).toBeTruthy();
-    }, 30000);
+    }, 60000);
   });
 
   describe('Error Handling', () => {

@@ -11,14 +11,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   OpenAIResponsesRefusalContent,
   OpenAIResponsesRefusalContent$inboundSchema,
-  OpenAIResponsesRefusalContent$Outbound,
-  OpenAIResponsesRefusalContent$outboundSchema,
 } from "./openairesponsesrefusalcontent.js";
 import {
   ResponseOutputText,
   ResponseOutputText$inboundSchema,
-  ResponseOutputText$Outbound,
-  ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
 
 export const ResponsesOutputMessageRole = {
@@ -26,13 +22,6 @@ export const ResponsesOutputMessageRole = {
 } as const;
 export type ResponsesOutputMessageRole = ClosedEnum<
   typeof ResponsesOutputMessageRole
->;
-
-export const ResponsesOutputMessageType = {
-  Message: "message",
-} as const;
-export type ResponsesOutputMessageType = ClosedEnum<
-  typeof ResponsesOutputMessageType
 >;
 
 export const ResponsesOutputMessageStatusInProgress = {
@@ -65,65 +54,71 @@ export type ResponsesOutputMessageContent =
   | ResponseOutputText
   | OpenAIResponsesRefusalContent;
 
+export const ResponsesOutputMessagePhaseFinalAnswer = {
+  FinalAnswer: "final_answer",
+} as const;
+export type ResponsesOutputMessagePhaseFinalAnswer = ClosedEnum<
+  typeof ResponsesOutputMessagePhaseFinalAnswer
+>;
+
+export const ResponsesOutputMessagePhaseCommentary = {
+  Commentary: "commentary",
+} as const;
+export type ResponsesOutputMessagePhaseCommentary = ClosedEnum<
+  typeof ResponsesOutputMessagePhaseCommentary
+>;
+
+/**
+ * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+ */
+export type ResponsesOutputMessagePhaseUnion =
+  | ResponsesOutputMessagePhaseCommentary
+  | ResponsesOutputMessagePhaseFinalAnswer
+  | any;
+
 /**
  * An output message item
  */
 export type ResponsesOutputMessage = {
   id: string;
   role: ResponsesOutputMessageRole;
-  type: ResponsesOutputMessageType;
+  type: "message";
   status?:
     | ResponsesOutputMessageStatusCompleted
     | ResponsesOutputMessageStatusIncomplete
     | ResponsesOutputMessageStatusInProgress
     | undefined;
   content: Array<ResponseOutputText | OpenAIResponsesRefusalContent>;
+  /**
+   * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+   */
+  phase?:
+    | ResponsesOutputMessagePhaseCommentary
+    | ResponsesOutputMessagePhaseFinalAnswer
+    | any
+    | null
+    | undefined;
 };
 
 /** @internal */
 export const ResponsesOutputMessageRole$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputMessageRole
 > = z.enum(ResponsesOutputMessageRole);
-/** @internal */
-export const ResponsesOutputMessageRole$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageRole
-> = ResponsesOutputMessageRole$inboundSchema;
-
-/** @internal */
-export const ResponsesOutputMessageType$inboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageType
-> = z.enum(ResponsesOutputMessageType);
-/** @internal */
-export const ResponsesOutputMessageType$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageType
-> = ResponsesOutputMessageType$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputMessageStatusInProgress$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputMessageStatusInProgress
 > = z.enum(ResponsesOutputMessageStatusInProgress);
-/** @internal */
-export const ResponsesOutputMessageStatusInProgress$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageStatusInProgress
-> = ResponsesOutputMessageStatusInProgress$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputMessageStatusIncomplete$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputMessageStatusIncomplete
 > = z.enum(ResponsesOutputMessageStatusIncomplete);
-/** @internal */
-export const ResponsesOutputMessageStatusIncomplete$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageStatusIncomplete
-> = ResponsesOutputMessageStatusIncomplete$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputMessageStatusCompleted$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputMessageStatusCompleted
 > = z.enum(ResponsesOutputMessageStatusCompleted);
-/** @internal */
-export const ResponsesOutputMessageStatusCompleted$outboundSchema: z.ZodEnum<
-  typeof ResponsesOutputMessageStatusCompleted
-> = ResponsesOutputMessageStatusCompleted$inboundSchema;
 
 /** @internal */
 export const ResponsesOutputMessageStatusUnion$inboundSchema: z.ZodType<
@@ -134,31 +129,7 @@ export const ResponsesOutputMessageStatusUnion$inboundSchema: z.ZodType<
   ResponsesOutputMessageStatusIncomplete$inboundSchema,
   ResponsesOutputMessageStatusInProgress$inboundSchema,
 ]);
-/** @internal */
-export type ResponsesOutputMessageStatusUnion$Outbound =
-  | string
-  | string
-  | string;
 
-/** @internal */
-export const ResponsesOutputMessageStatusUnion$outboundSchema: z.ZodType<
-  ResponsesOutputMessageStatusUnion$Outbound,
-  ResponsesOutputMessageStatusUnion
-> = z.union([
-  ResponsesOutputMessageStatusCompleted$outboundSchema,
-  ResponsesOutputMessageStatusIncomplete$outboundSchema,
-  ResponsesOutputMessageStatusInProgress$outboundSchema,
-]);
-
-export function responsesOutputMessageStatusUnionToJSON(
-  responsesOutputMessageStatusUnion: ResponsesOutputMessageStatusUnion,
-): string {
-  return JSON.stringify(
-    ResponsesOutputMessageStatusUnion$outboundSchema.parse(
-      responsesOutputMessageStatusUnion,
-    ),
-  );
-}
 export function responsesOutputMessageStatusUnionFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputMessageStatusUnion, SDKValidationError> {
@@ -177,29 +148,7 @@ export const ResponsesOutputMessageContent$inboundSchema: z.ZodType<
   ResponseOutputText$inboundSchema,
   OpenAIResponsesRefusalContent$inboundSchema,
 ]);
-/** @internal */
-export type ResponsesOutputMessageContent$Outbound =
-  | ResponseOutputText$Outbound
-  | OpenAIResponsesRefusalContent$Outbound;
 
-/** @internal */
-export const ResponsesOutputMessageContent$outboundSchema: z.ZodType<
-  ResponsesOutputMessageContent$Outbound,
-  ResponsesOutputMessageContent
-> = z.union([
-  ResponseOutputText$outboundSchema,
-  OpenAIResponsesRefusalContent$outboundSchema,
-]);
-
-export function responsesOutputMessageContentToJSON(
-  responsesOutputMessageContent: ResponsesOutputMessageContent,
-): string {
-  return JSON.stringify(
-    ResponsesOutputMessageContent$outboundSchema.parse(
-      responsesOutputMessageContent,
-    ),
-  );
-}
 export function responsesOutputMessageContentFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputMessageContent, SDKValidationError> {
@@ -211,13 +160,43 @@ export function responsesOutputMessageContentFromJSON(
 }
 
 /** @internal */
+export const ResponsesOutputMessagePhaseFinalAnswer$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputMessagePhaseFinalAnswer
+> = z.enum(ResponsesOutputMessagePhaseFinalAnswer);
+
+/** @internal */
+export const ResponsesOutputMessagePhaseCommentary$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputMessagePhaseCommentary
+> = z.enum(ResponsesOutputMessagePhaseCommentary);
+
+/** @internal */
+export const ResponsesOutputMessagePhaseUnion$inboundSchema: z.ZodType<
+  ResponsesOutputMessagePhaseUnion,
+  unknown
+> = z.union([
+  ResponsesOutputMessagePhaseCommentary$inboundSchema,
+  ResponsesOutputMessagePhaseFinalAnswer$inboundSchema,
+  z.any(),
+]);
+
+export function responsesOutputMessagePhaseUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<ResponsesOutputMessagePhaseUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ResponsesOutputMessagePhaseUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ResponsesOutputMessagePhaseUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const ResponsesOutputMessage$inboundSchema: z.ZodType<
   ResponsesOutputMessage,
   unknown
 > = z.object({
   id: z.string(),
   role: ResponsesOutputMessageRole$inboundSchema,
-  type: ResponsesOutputMessageType$inboundSchema,
+  type: z.literal("message"),
   status: z.union([
     ResponsesOutputMessageStatusCompleted$inboundSchema,
     ResponsesOutputMessageStatusIncomplete$inboundSchema,
@@ -229,46 +208,15 @@ export const ResponsesOutputMessage$inboundSchema: z.ZodType<
       OpenAIResponsesRefusalContent$inboundSchema,
     ]),
   ),
-});
-/** @internal */
-export type ResponsesOutputMessage$Outbound = {
-  id: string;
-  role: string;
-  type: string;
-  status?: string | string | string | undefined;
-  content: Array<
-    ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
-  >;
-};
-
-/** @internal */
-export const ResponsesOutputMessage$outboundSchema: z.ZodType<
-  ResponsesOutputMessage$Outbound,
-  ResponsesOutputMessage
-> = z.object({
-  id: z.string(),
-  role: ResponsesOutputMessageRole$outboundSchema,
-  type: ResponsesOutputMessageType$outboundSchema,
-  status: z.union([
-    ResponsesOutputMessageStatusCompleted$outboundSchema,
-    ResponsesOutputMessageStatusIncomplete$outboundSchema,
-    ResponsesOutputMessageStatusInProgress$outboundSchema,
-  ]).optional(),
-  content: z.array(
+  phase: z.nullable(
     z.union([
-      ResponseOutputText$outboundSchema,
-      OpenAIResponsesRefusalContent$outboundSchema,
+      ResponsesOutputMessagePhaseCommentary$inboundSchema,
+      ResponsesOutputMessagePhaseFinalAnswer$inboundSchema,
+      z.any(),
     ]),
-  ),
+  ).optional(),
 });
 
-export function responsesOutputMessageToJSON(
-  responsesOutputMessage: ResponsesOutputMessage,
-): string {
-  return JSON.stringify(
-    ResponsesOutputMessage$outboundSchema.parse(responsesOutputMessage),
-  );
-}
 export function responsesOutputMessageFromJSON(
   jsonString: string,
 ): SafeParseResult<ResponsesOutputMessage, SDKValidationError> {
