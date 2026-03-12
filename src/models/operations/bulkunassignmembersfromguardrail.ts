@@ -22,7 +22,13 @@ export type BulkUnassignMembersFromGuardrailGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type BulkUnassignMembersFromGuardrailRequestBody = {
@@ -45,7 +51,13 @@ export type BulkUnassignMembersFromGuardrailRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The unique identifier of the guardrail
    */
@@ -95,7 +107,8 @@ export function bulkUnassignMembersFromGuardrailRequestBodyToJSON(
 /** @internal */
 export type BulkUnassignMembersFromGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   id: string;
   RequestBody: BulkUnassignMembersFromGuardrailRequestBody$Outbound;
 };
@@ -106,7 +119,8 @@ export const BulkUnassignMembersFromGuardrailRequest$outboundSchema: z.ZodType<
   BulkUnassignMembersFromGuardrailRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   id: z.string(),
   requestBody: z.lazy(() =>
     BulkUnassignMembersFromGuardrailRequestBody$outboundSchema
@@ -114,7 +128,6 @@ export const BulkUnassignMembersFromGuardrailRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

@@ -24,7 +24,13 @@ export type CreateGuardrailGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 /**
@@ -64,6 +70,10 @@ export type CreateGuardrailRequestBody = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
+   * List of provider IDs to exclude from routing
+   */
+  ignoredProviders?: Array<string> | null | undefined;
+  /**
    * Array of model identifiers (slug or canonical_slug accepted)
    */
   allowedModels?: Array<string> | null | undefined;
@@ -86,7 +96,13 @@ export type CreateGuardrailRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   requestBody: CreateGuardrailRequestBody;
 };
 
@@ -134,6 +150,10 @@ export type CreateGuardrailData = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
+   * List of provider IDs to exclude from routing
+   */
+  ignoredProviders?: Array<string> | null | undefined;
+  /**
    * Array of model canonical_slugs (immutable identifiers)
    */
   allowedModels?: Array<string> | null | undefined;
@@ -174,6 +194,7 @@ export type CreateGuardrailRequestBody$Outbound = {
   limit_usd?: number | null | undefined;
   reset_interval?: string | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
+  ignored_providers?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   enforce_zdr?: boolean | null | undefined;
 };
@@ -189,6 +210,7 @@ export const CreateGuardrailRequestBody$outboundSchema: z.ZodType<
   resetInterval: z.nullable(CreateGuardrailResetIntervalRequest$outboundSchema)
     .optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
+  ignoredProviders: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
@@ -196,6 +218,7 @@ export const CreateGuardrailRequestBody$outboundSchema: z.ZodType<
     limitUsd: "limit_usd",
     resetInterval: "reset_interval",
     allowedProviders: "allowed_providers",
+    ignoredProviders: "ignored_providers",
     allowedModels: "allowed_models",
     enforceZdr: "enforce_zdr",
   });
@@ -212,7 +235,8 @@ export function createGuardrailRequestBodyToJSON(
 /** @internal */
 export type CreateGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   RequestBody: CreateGuardrailRequestBody$Outbound;
 };
 
@@ -222,12 +246,12 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   CreateGuardrailRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   requestBody: z.lazy(() => CreateGuardrailRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });
@@ -258,6 +282,7 @@ export const CreateGuardrailData$inboundSchema: z.ZodType<
   reset_interval: z.nullable(CreateGuardrailResetIntervalResponse$inboundSchema)
     .optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
+  ignored_providers: z.nullable(z.array(z.string())).optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   created_at: z.string(),
@@ -267,6 +292,7 @@ export const CreateGuardrailData$inboundSchema: z.ZodType<
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "allowed_providers": "allowedProviders",
+    "ignored_providers": "ignoredProviders",
     "allowed_models": "allowedModels",
     "enforce_zdr": "enforceZdr",
     "created_at": "createdAt",

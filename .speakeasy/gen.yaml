@@ -36,7 +36,7 @@ generation:
   preApplyUnionDiscriminators: true
   versioningStrategy: automatic
 typescript:
-  version: 0.9.11
+  version: 0.10.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:

@@ -42,6 +42,42 @@ import {
   OpenAIResponsesTruncation$inboundSchema,
 } from "./openairesponsestruncation.js";
 import {
+  OpenResponsesApplyPatchTool,
+  OpenResponsesApplyPatchTool$inboundSchema,
+} from "./openresponsesapplypatchtool.js";
+import {
+  OpenResponsesCodeInterpreterTool,
+  OpenResponsesCodeInterpreterTool$inboundSchema,
+} from "./openresponsescodeinterpretertool.js";
+import {
+  OpenResponsesComputerTool,
+  OpenResponsesComputerTool$inboundSchema,
+} from "./openresponsescomputertool.js";
+import {
+  OpenResponsesCustomTool,
+  OpenResponsesCustomTool$inboundSchema,
+} from "./openresponsescustomtool.js";
+import {
+  OpenResponsesFileSearchTool,
+  OpenResponsesFileSearchTool$inboundSchema,
+} from "./openresponsesfilesearchtool.js";
+import {
+  OpenResponsesFunctionShellTool,
+  OpenResponsesFunctionShellTool$inboundSchema,
+} from "./openresponsesfunctionshelltool.js";
+import {
+  OpenResponsesImageGenerationTool,
+  OpenResponsesImageGenerationTool$inboundSchema,
+} from "./openresponsesimagegenerationtool.js";
+import {
+  OpenResponsesLocalShellTool,
+  OpenResponsesLocalShellTool$inboundSchema,
+} from "./openresponseslocalshelltool.js";
+import {
+  OpenResponsesMcpTool,
+  OpenResponsesMcpTool$inboundSchema,
+} from "./openresponsesmcptool.js";
+import {
   OpenResponsesUsage,
   OpenResponsesUsage$inboundSchema,
 } from "./openresponsesusage.js";
@@ -97,7 +133,16 @@ export type OpenResponsesNonStreamingResponseToolUnion =
   | OpenResponsesWebSearchPreviewTool
   | OpenResponsesWebSearchPreview20250311Tool
   | OpenResponsesWebSearchTool
-  | OpenResponsesWebSearch20250826Tool;
+  | OpenResponsesWebSearch20250826Tool
+  | OpenResponsesFileSearchTool
+  | OpenResponsesComputerTool
+  | OpenResponsesCodeInterpreterTool
+  | OpenResponsesMcpTool
+  | OpenResponsesImageGenerationTool
+  | OpenResponsesLocalShellTool
+  | OpenResponsesFunctionShellTool
+  | OpenResponsesApplyPatchTool
+  | OpenResponsesCustomTool;
 
 /**
  * Complete non-streaming response from the Responses API
@@ -141,6 +186,15 @@ export type OpenResponsesNonStreamingResponse = {
     | OpenResponsesWebSearchPreview20250311Tool
     | OpenResponsesWebSearchTool
     | OpenResponsesWebSearch20250826Tool
+    | OpenResponsesFileSearchTool
+    | OpenResponsesComputerTool
+    | OpenResponsesCodeInterpreterTool
+    | OpenResponsesMcpTool
+    | OpenResponsesImageGenerationTool
+    | OpenResponsesLocalShellTool
+    | OpenResponsesFunctionShellTool
+    | OpenResponsesApplyPatchTool
+    | OpenResponsesCustomTool
   >;
   toolChoice: OpenAIResponsesToolChoiceUnion;
   parallelToolCalls: boolean;
@@ -196,6 +250,15 @@ export const OpenResponsesNonStreamingResponseToolUnion$inboundSchema:
     OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
     OpenResponsesWebSearchTool$inboundSchema,
     OpenResponsesWebSearch20250826Tool$inboundSchema,
+    OpenResponsesFileSearchTool$inboundSchema,
+    OpenResponsesComputerTool$inboundSchema,
+    OpenResponsesCodeInterpreterTool$inboundSchema,
+    OpenResponsesMcpTool$inboundSchema,
+    OpenResponsesImageGenerationTool$inboundSchema,
+    OpenResponsesLocalShellTool$inboundSchema,
+    OpenResponsesFunctionShellTool$inboundSchema,
+    OpenResponsesApplyPatchTool$inboundSchema,
+    OpenResponsesCustomTool$inboundSchema,
   ]);
 
 export function openResponsesNonStreamingResponseToolUnionFromJSON(
@@ -251,6 +314,15 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
       OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
       OpenResponsesWebSearchTool$inboundSchema,
       OpenResponsesWebSearch20250826Tool$inboundSchema,
+      OpenResponsesFileSearchTool$inboundSchema,
+      OpenResponsesComputerTool$inboundSchema,
+      OpenResponsesCodeInterpreterTool$inboundSchema,
+      OpenResponsesMcpTool$inboundSchema,
+      OpenResponsesImageGenerationTool$inboundSchema,
+      OpenResponsesLocalShellTool$inboundSchema,
+      OpenResponsesFunctionShellTool$inboundSchema,
+      OpenResponsesApplyPatchTool$inboundSchema,
+      OpenResponsesCustomTool$inboundSchema,
     ]),
   ),
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,

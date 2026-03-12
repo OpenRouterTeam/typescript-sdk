@@ -36,8 +36,8 @@ import {
  * An output item from the response
  */
 export type ResponsesOutputItem =
-  | (ResponsesOutputMessage & { type: "message" })
-  | (ResponsesOutputItemReasoning & { type: "reasoning" })
+  | ResponsesOutputMessage
+  | ResponsesOutputItemReasoning
   | (ResponsesOutputItemFunctionCall & { type: "function_call" })
   | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
   | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
@@ -48,12 +48,8 @@ export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesOutputItem,
   unknown
 > = z.union([
-  ResponsesOutputMessage$inboundSchema.and(
-    z.object({ type: z.literal("message") }),
-  ),
-  ResponsesOutputItemReasoning$inboundSchema.and(
-    z.object({ type: z.literal("reasoning") }),
-  ),
+  ResponsesOutputMessage$inboundSchema,
+  ResponsesOutputItemReasoning$inboundSchema,
   ResponsesOutputItemFunctionCall$inboundSchema.and(
     z.object({ type: z.literal("function_call") }),
   ),

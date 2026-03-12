@@ -43,6 +43,8 @@ let value: GetGenerationResponse = {
     apiType: null,
     router: "openrouter/auto",
     providerResponses: null,
+    userAgent: "<value>",
+    httpReferer: "<value>",
   },
 };
 ```

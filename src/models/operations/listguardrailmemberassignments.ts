@@ -22,7 +22,13 @@ export type ListGuardrailMemberAssignmentsGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type ListGuardrailMemberAssignmentsRequest = {
@@ -38,7 +44,13 @@ export type ListGuardrailMemberAssignmentsRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The unique identifier of the guardrail
    */
@@ -97,7 +109,8 @@ export type ListGuardrailMemberAssignmentsResponse = {
 /** @internal */
 export type ListGuardrailMemberAssignmentsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   id: string;
   offset?: string | undefined;
   limit?: string | undefined;
@@ -109,14 +122,14 @@ export const ListGuardrailMemberAssignmentsRequest$outboundSchema: z.ZodType<
   ListGuardrailMemberAssignmentsRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   id: z.string(),
   offset: z.string().optional(),
   limit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

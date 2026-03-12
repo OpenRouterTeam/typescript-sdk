@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { fromClaudeMessages, toClaudeMessage } from "./anthropic-compat.js";
 import type * as models from "../models/index.js";
+import type { ClaudeMessageParam } from "../models/claude-message.js";
 
 /**
  * Creates a properly typed mock OpenResponsesNonStreamingResponse for testing.
@@ -35,7 +36,7 @@ function createMockResponse(
 describe("fromClaudeMessages", () => {
   describe("basic message conversion", () => {
     it("converts user message with string content", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         { role: "user", content: "Hello, how are you?" },
       ];
 
@@ -47,7 +48,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("converts assistant message with string content", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         { role: "assistant", content: "I am doing well, thank you!" },
       ];
 
@@ -59,7 +60,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("converts multiple messages in conversation", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         { role: "user", content: "Hi" },
         { role: "assistant", content: "Hello!" },
         { role: "user", content: "How are you?" },
@@ -77,7 +78,7 @@ describe("fromClaudeMessages", () => {
 
   describe("text block content conversion", () => {
     it("converts user message with text block array", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [{ type: "text", text: "Hello from text block" }],
@@ -92,7 +93,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("combines multiple text blocks into single content string", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [
@@ -112,7 +113,7 @@ describe("fromClaudeMessages", () => {
 
   describe("tool_result block conversion", () => {
     it("converts tool_result with string content to function_call_output", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [
@@ -137,7 +138,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("converts tool_result with text block array to function_call_output", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [
@@ -165,7 +166,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("handles mixed text and tool_result blocks", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [
@@ -196,7 +197,7 @@ describe("fromClaudeMessages", () => {
 
   describe("tool_use blocks (should be skipped)", () => {
     it("skips tool_use blocks as they are output from assistant", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "assistant",
           content: [
@@ -222,7 +223,7 @@ describe("fromClaudeMessages", () => {
 
   describe("image blocks (should be skipped)", () => {
     it("skips image blocks", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         {
           role: "user",
           content: [
@@ -255,7 +256,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("handles message with empty string content", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         { role: "user", content: "" },
       ];
 
@@ -265,7 +266,7 @@ describe("fromClaudeMessages", () => {
     });
 
     it("handles message with empty content array", () => {
-      const claudeMessages: models.ClaudeMessageParam[] = [
+      const claudeMessages: ClaudeMessageParam[] = [
         { role: "user", content: [] },
       ];
 
