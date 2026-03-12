@@ -11,5 +11,5 @@ let value: ProviderPreferencesProviderSortConfigEnum = "price";
 ## Values
 
 ```typescript
-"price" | "throughput" | "latency"
+"price" | "throughput" | "latency" | "exacto"
 ```

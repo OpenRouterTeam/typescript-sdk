@@ -3,7 +3,6 @@
  * @generated-id: 320761608fb3
  */
 
-import type { Hook } from "../hooks/types.js";
 import { HTTPClient } from "./http.js";
 import { Logger } from "./logger.js";
 import { RetryConfig } from "./retries.js";
@@ -29,9 +28,14 @@ export type SDKOptions = {
   httpReferer?: string | undefined;
 
   /**
-   * Allows setting the xTitle parameter for all supported operations
+   * Allows setting the appTitle parameter for all supported operations
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+
+  /**
+   * Allows setting the appCategories parameter for all supported operations
+   */
+  appCategories?: string | undefined;
 
   httpClient?: HTTPClient;
   /**
@@ -52,11 +56,6 @@ export type SDKOptions = {
   retryConfig?: RetryConfig;
   timeoutMs?: number;
   debugLogger?: Logger;
-  /**
-   * Hooks for request/response lifecycle events.
-   * Can be a single hook object or an array of hooks.
-   */
-  hooks?: Hook | Hook[];
 };
 
 export function serverURLFromOptions(options: SDKOptions): URL | null {
@@ -76,7 +75,7 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 export const SDK_METADATA = {
   language: "typescript",
   openapiDocVersion: "1.0.0",
-  sdkVersion: "0.9.11",
+  sdkVersion: "0.10.0",
   genVersion: "2.788.4",
-  userAgent: "speakeasy-sdk/typescript 0.9.11 2.788.4 1.0.0 @openrouter/sdk",
+  userAgent: "speakeasy-sdk/typescript 0.10.0 2.788.4 1.0.0 @openrouter/sdk",
 } as const;

@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -37,6 +37,7 @@ export function modelsCount(
 ): APIPromise<
   Result<
     models.ModelsCountResponse,
+    | errors.BadRequestResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -63,6 +64,7 @@ async function $do(
   [
     Result<
       models.ModelsCountResponse,
+      | errors.BadRequestResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -90,6 +92,10 @@ async function $do(
 
   const path = pathToFunc("/models/count")();
 
+  const query = encodeFormQuery({
+    "output_modality": payload?.output_modality,
+  });
+
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
@@ -97,9 +103,14 @@ async function $do(
       payload?.["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
-    "X-Title": encodeSimple(
-      "X-Title",
-      payload?.["X-Title"] ?? client._options.xTitle,
+    "X-OpenRouter-Categories": encodeSimple(
+      "X-OpenRouter-Categories",
+      payload?.appCategories ?? client._options.appCategories,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-OpenRouter-Title": encodeSimple(
+      "X-OpenRouter-Title",
+      payload?.appTitle ?? client._options.appTitle,
       { explode: false, charEncoding: "none" },
     ),
   }));
@@ -129,6 +140,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
@@ -140,7 +152,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "500", "5XX"],
+    errorCodes: ["400", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -155,6 +167,7 @@ async function $do(
 
   const [result] = await M.match<
     models.ModelsCountResponse,
+    | errors.BadRequestResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -166,6 +179,7 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, models.ModelsCountResponse$inboundSchema),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

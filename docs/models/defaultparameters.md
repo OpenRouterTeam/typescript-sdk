@@ -12,8 +12,11 @@ let value: DefaultParameters = {};
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `temperature`      | *number*           | :heavy_minus_sign: | N/A                |
-| `topP`             | *number*           | :heavy_minus_sign: | N/A                |
-| `frequencyPenalty` | *number*           | :heavy_minus_sign: | N/A                |
+| Field               | Type                | Required            | Description         |
+| ------------------- | ------------------- | ------------------- | ------------------- |
+| `temperature`       | *number*            | :heavy_minus_sign:  | N/A                 |
+| `topP`              | *number*            | :heavy_minus_sign:  | N/A                 |
+| `topK`              | *number*            | :heavy_minus_sign:  | N/A                 |
+| `frequencyPenalty`  | *number*            | :heavy_minus_sign:  | N/A                 |
+| `presencePenalty`   | *number*            | :heavy_minus_sign:  | N/A                 |
+| `repetitionPenalty` | *number*            | :heavy_minus_sign:  | N/A                 |

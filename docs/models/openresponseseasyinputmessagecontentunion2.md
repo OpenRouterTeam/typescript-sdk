@@ -15,3 +15,9 @@ const value: models.OpenResponsesEasyInputMessageContentUnion1[] = [];
 const value: string = "<value>";
 ```
 
+### `any`
+
+```typescript
+const value: any = "<value>";
+```
+

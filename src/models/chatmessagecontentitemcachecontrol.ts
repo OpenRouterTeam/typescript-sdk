@@ -17,18 +17,20 @@ export type ChatMessageContentItemCacheControlType = ClosedEnum<
   typeof ChatMessageContentItemCacheControlType
 >;
 
-export const Ttl = {
+export const ChatMessageContentItemCacheControlTtl = {
   Fivem: "5m",
   Oneh: "1h",
 } as const;
-export type Ttl = OpenEnum<typeof Ttl>;
+export type ChatMessageContentItemCacheControlTtl = OpenEnum<
+  typeof ChatMessageContentItemCacheControlTtl
+>;
 
 /**
  * Cache control for the content part
  */
 export type ChatMessageContentItemCacheControl = {
   type: ChatMessageContentItemCacheControlType;
-  ttl?: Ttl | undefined;
+  ttl?: ChatMessageContentItemCacheControlTtl | undefined;
 };
 
 /** @internal */
@@ -41,11 +43,15 @@ export const ChatMessageContentItemCacheControlType$outboundSchema: z.ZodEnum<
 > = ChatMessageContentItemCacheControlType$inboundSchema;
 
 /** @internal */
-export const Ttl$inboundSchema: z.ZodType<Ttl, unknown> = openEnums
-  .inboundSchema(Ttl);
+export const ChatMessageContentItemCacheControlTtl$inboundSchema: z.ZodType<
+  ChatMessageContentItemCacheControlTtl,
+  unknown
+> = openEnums.inboundSchema(ChatMessageContentItemCacheControlTtl);
 /** @internal */
-export const Ttl$outboundSchema: z.ZodType<string, Ttl> = openEnums
-  .outboundSchema(Ttl);
+export const ChatMessageContentItemCacheControlTtl$outboundSchema: z.ZodType<
+  string,
+  ChatMessageContentItemCacheControlTtl
+> = openEnums.outboundSchema(ChatMessageContentItemCacheControlTtl);
 
 /** @internal */
 export const ChatMessageContentItemCacheControl$inboundSchema: z.ZodType<
@@ -53,7 +59,7 @@ export const ChatMessageContentItemCacheControl$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: ChatMessageContentItemCacheControlType$inboundSchema,
-  ttl: Ttl$inboundSchema.optional(),
+  ttl: ChatMessageContentItemCacheControlTtl$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatMessageContentItemCacheControl$Outbound = {
@@ -67,7 +73,7 @@ export const ChatMessageContentItemCacheControl$outboundSchema: z.ZodType<
   ChatMessageContentItemCacheControl
 > = z.object({
   type: ChatMessageContentItemCacheControlType$outboundSchema,
-  ttl: Ttl$outboundSchema.optional(),
+  ttl: ChatMessageContentItemCacheControlTtl$outboundSchema.optional(),
 });
 
 export function chatMessageContentItemCacheControlToJSON(

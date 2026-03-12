@@ -14,6 +14,7 @@ export const ProviderSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 /**
  * The provider sorting strategy (price, throughput, latency)

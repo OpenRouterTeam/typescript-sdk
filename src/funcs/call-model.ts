@@ -119,11 +119,14 @@ export type { CallModelInput } from '../lib/async-params.js';
  *
  * Default: `stepCountIs(5)` if not specified
  */
-export function callModel<TTools extends readonly Tool[]>(
+export function callModel<
+  TTools extends readonly Tool[],
+  TExternal extends Record<string, unknown> = Record<string, unknown>,
+>(
   client: OpenRouterCore,
-  request: CallModelInput<TTools>,
+  request: CallModelInput<TTools, TExternal>,
   options?: RequestOptions,
-): ModelResult<TTools> {
+): ModelResult<TTools, TExternal> {
   // Destructure state management options along with tools and stopWhen
   const {
     tools,
@@ -132,6 +135,9 @@ export function callModel<TTools extends readonly Tool[]>(
     requireApproval,
     approveToolCalls,
     rejectToolCalls,
+    external,
+    onTurnStart,
+    onTurnEnd,
     ...apiRequest
   } = request;
 
@@ -149,7 +155,7 @@ export function callModel<TTools extends readonly Tool[]>(
     finalRequest['tools'] = apiTools;
   }
 
-  return new ModelResult<TTools>({
+  return new ModelResult<TTools, TExternal>({
     client,
     request: finalRequest,
     options: options ?? {},
@@ -160,5 +166,8 @@ export function callModel<TTools extends readonly Tool[]>(
     ...(requireApproval !== undefined && { requireApproval }),
     ...(approveToolCalls !== undefined && { approveToolCalls }),
     ...(rejectToolCalls !== undefined && { rejectToolCalls }),
-  } as GetResponseOptions<TTools>);
+    ...(external !== undefined && { external }),
+    ...(onTurnStart !== undefined && { onTurnStart }),
+    ...(onTurnEnd !== undefined && { onTurnEnd }),
+  } as GetResponseOptions<TTools, TExternal>);
 }

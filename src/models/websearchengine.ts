@@ -13,6 +13,8 @@ import { OpenEnum } from "../types/enums.js";
 export const WebSearchEngine = {
   Native: "native",
   Exa: "exa",
+  Firecrawl: "firecrawl",
+  Parallel: "parallel",
 } as const;
 /**
  * The search engine to use for web search.

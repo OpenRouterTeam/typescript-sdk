@@ -20,6 +20,7 @@ const value: models.ChatResponse = {
   created: 1677652288,
   model: "openai/gpt-4",
   object: "chat.completion",
+  systemFingerprint: "fp_44709d6fcb",
 };
 ```
 
