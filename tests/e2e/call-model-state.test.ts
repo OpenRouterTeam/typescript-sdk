@@ -53,7 +53,7 @@ describe('State Management Integration', () => {
       // State should be saved
       expect(storedState).not.toBeNull();
       expect(storedState?.id).toMatch(/^conv_/);
-    }, 30000);
+    }, 60000);
 
     it('should track conversation status', async () => {
       let storedState: ConversationState | null = null;
@@ -88,7 +88,7 @@ describe('State Management Integration', () => {
       expect(stateHistory.length).toBeGreaterThan(0);
       // Final state should be complete or in_progress
       expect(['complete', 'in_progress']).toContain(storedState?.status);
-    }, 30000);
+    }, 60000);
   });
 
   describe('Approval Workflow', () => {
@@ -216,6 +216,6 @@ describe('State Management Integration', () => {
           : [storedState.messages];
         expect(messages.length).toBeGreaterThan(0);
       }
-    }, 30000);
+    }, 60000);
   });
 });

@@ -28,6 +28,10 @@ import {
   ResponsesOutputMessage$inboundSchema,
 } from "./responsesoutputmessage.js";
 import {
+  ResponsesServerToolOutput,
+  ResponsesServerToolOutput$inboundSchema,
+} from "./responsesservertooloutput.js";
+import {
   ResponsesWebSearchCallOutput,
   ResponsesWebSearchCallOutput$inboundSchema,
 } from "./responseswebsearchcalloutput.js";
@@ -36,36 +40,26 @@ import {
  * An output item from the response
  */
 export type ResponsesOutputItem =
-  | (ResponsesOutputMessage & { type: "message" })
-  | (ResponsesOutputItemReasoning & { type: "reasoning" })
-  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
-  | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
-  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
-  | (ResponsesImageGenerationCall & { type: "image_generation_call" });
+  | ResponsesOutputMessage
+  | ResponsesOutputItemFunctionCall
+  | ResponsesWebSearchCallOutput
+  | ResponsesOutputItemFileSearchCall
+  | ResponsesOutputItemReasoning
+  | ResponsesImageGenerationCall
+  | ResponsesServerToolOutput;
 
 /** @internal */
 export const ResponsesOutputItem$inboundSchema: z.ZodType<
   ResponsesOutputItem,
   unknown
 > = z.union([
-  ResponsesOutputMessage$inboundSchema.and(
-    z.object({ type: z.literal("message") }),
-  ),
-  ResponsesOutputItemReasoning$inboundSchema.and(
-    z.object({ type: z.literal("reasoning") }),
-  ),
-  ResponsesOutputItemFunctionCall$inboundSchema.and(
-    z.object({ type: z.literal("function_call") }),
-  ),
-  ResponsesWebSearchCallOutput$inboundSchema.and(
-    z.object({ type: z.literal("web_search_call") }),
-  ),
-  ResponsesOutputItemFileSearchCall$inboundSchema.and(
-    z.object({ type: z.literal("file_search_call") }),
-  ),
-  ResponsesImageGenerationCall$inboundSchema.and(
-    z.object({ type: z.literal("image_generation_call") }),
-  ),
+  ResponsesOutputMessage$inboundSchema,
+  ResponsesOutputItemFunctionCall$inboundSchema,
+  ResponsesWebSearchCallOutput$inboundSchema,
+  ResponsesOutputItemFileSearchCall$inboundSchema,
+  ResponsesOutputItemReasoning$inboundSchema,
+  ResponsesImageGenerationCall$inboundSchema,
+  ResponsesServerToolOutput$inboundSchema,
 ]);
 
 export function responsesOutputItemFromJSON(

@@ -21,7 +21,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -50,7 +51,8 @@ import { oAuthExchangeAuthCodeForAPIKey } from "@openrouter/sdk/funcs/oAuthExcha
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -105,7 +107,8 @@ import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -134,7 +137,8 @@ import { oAuthCreateAuthCode } from "@openrouter/sdk/funcs/oAuthCreateAuthCode.j
 // You can create one instance of it to use across an application.
 const openRouter = new OpenRouterCore({
   httpReferer: "<value>",
-  xTitle: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
   apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
 });
 
@@ -174,5 +178,6 @@ run();
 | ---------------------------------- | ---------------------------------- | ---------------------------------- |
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
+| errors.ConflictResponseError       | 409                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

@@ -24,7 +24,13 @@ export type CreateResponsesGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type CreateResponsesRequest = {
@@ -40,7 +46,13 @@ export type CreateResponsesRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   openResponsesRequest: models.OpenResponsesRequest;
 };
 
@@ -61,7 +73,8 @@ export type CreateResponsesResponse =
 /** @internal */
 export type CreateResponsesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   OpenResponsesRequest: models.OpenResponsesRequest$Outbound;
 };
 
@@ -71,12 +84,12 @@ export const CreateResponsesRequest$outboundSchema: z.ZodType<
   CreateResponsesRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   openResponsesRequest: models.OpenResponsesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     openResponsesRequest: "OpenResponsesRequest",
   });
 });

@@ -37,10 +37,6 @@ import {
   OpenResponsesImageGenCallPartialImage$inboundSchema,
 } from "./openresponsesimagegencallpartialimage.js";
 import {
-  OpenResponsesLogProbs,
-  OpenResponsesLogProbs$inboundSchema,
-} from "./openresponseslogprobs.js";
-import {
   OpenResponsesNonStreamingResponse,
   OpenResponsesNonStreamingResponse$inboundSchema,
 } from "./openresponsesnonstreamingresponse.js";
@@ -64,6 +60,18 @@ import {
   OpenResponsesReasoningSummaryTextDoneEvent,
   OpenResponsesReasoningSummaryTextDoneEvent$inboundSchema,
 } from "./openresponsesreasoningsummarytextdoneevent.js";
+import {
+  OpenResponsesWebSearchCallCompleted,
+  OpenResponsesWebSearchCallCompleted$inboundSchema,
+} from "./openresponseswebsearchcallcompleted.js";
+import {
+  OpenResponsesWebSearchCallInProgress,
+  OpenResponsesWebSearchCallInProgress$inboundSchema,
+} from "./openresponseswebsearchcallinprogress.js";
+import {
+  OpenResponsesWebSearchCallSearching,
+  OpenResponsesWebSearchCallSearching$inboundSchema,
+} from "./openresponseswebsearchcallsearching.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
@@ -154,6 +162,25 @@ export type OpenResponsesStreamEventResponseRefusalDelta = {
 };
 
 /**
+ * Alternative token with its log probability
+ */
+export type OpenResponsesStreamEventTopLogprob2 = {
+  token?: string | undefined;
+  logprob?: number | undefined;
+  bytes?: Array<number> | undefined;
+};
+
+/**
+ * Log probability information for a token
+ */
+export type OpenResponsesStreamEventLogprob2 = {
+  logprob: number;
+  token: string;
+  topLogprobs?: Array<OpenResponsesStreamEventTopLogprob2> | undefined;
+  bytes?: Array<number> | undefined;
+};
+
+/**
  * Event emitted when text streaming is complete
  */
 export type OpenResponsesStreamEventResponseOutputTextDone = {
@@ -163,7 +190,26 @@ export type OpenResponsesStreamEventResponseOutputTextDone = {
   contentIndex: number;
   text: string;
   sequenceNumber: number;
-  logprobs: Array<OpenResponsesLogProbs>;
+  logprobs: Array<OpenResponsesStreamEventLogprob2>;
+};
+
+/**
+ * Alternative token with its log probability
+ */
+export type OpenResponsesStreamEventTopLogprob1 = {
+  token?: string | undefined;
+  logprob?: number | undefined;
+  bytes?: Array<number> | undefined;
+};
+
+/**
+ * Log probability information for a token
+ */
+export type OpenResponsesStreamEventLogprob1 = {
+  logprob: number;
+  token: string;
+  topLogprobs?: Array<OpenResponsesStreamEventTopLogprob1> | undefined;
+  bytes?: Array<number> | undefined;
 };
 
 /**
@@ -171,7 +217,7 @@ export type OpenResponsesStreamEventResponseOutputTextDone = {
  */
 export type OpenResponsesStreamEventResponseOutputTextDelta = {
   type: "response.output_text.delta";
-  logprobs: Array<OpenResponsesLogProbs>;
+  logprobs: Array<OpenResponsesStreamEventLogprob1>;
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -335,7 +381,10 @@ export type OpenResponsesStreamEvent =
   | OpenResponsesImageGenCallInProgress
   | OpenResponsesImageGenCallGenerating
   | OpenResponsesImageGenCallPartialImage
-  | OpenResponsesImageGenCallCompleted;
+  | OpenResponsesImageGenCallCompleted
+  | OpenResponsesWebSearchCallInProgress
+  | OpenResponsesWebSearchCallSearching
+  | OpenResponsesWebSearchCallCompleted;
 
 /** @internal */
 export const OpenResponsesStreamEventResponseReasoningSummaryPartDone$inboundSchema:
@@ -547,6 +596,54 @@ export function openResponsesStreamEventResponseRefusalDeltaFromJSON(
 }
 
 /** @internal */
+export const OpenResponsesStreamEventTopLogprob2$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventTopLogprob2,
+  unknown
+> = z.object({
+  token: z.string().optional(),
+  logprob: z.number().optional(),
+  bytes: z.array(z.number()).optional(),
+});
+
+export function openResponsesStreamEventTopLogprob2FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesStreamEventTopLogprob2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenResponsesStreamEventTopLogprob2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesStreamEventTopLogprob2' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenResponsesStreamEventLogprob2$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventLogprob2,
+  unknown
+> = z.object({
+  logprob: z.number(),
+  token: z.string(),
+  top_logprobs: z.array(
+    z.lazy(() => OpenResponsesStreamEventTopLogprob2$inboundSchema),
+  ).optional(),
+  bytes: z.array(z.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "top_logprobs": "topLogprobs",
+  });
+});
+
+export function openResponsesStreamEventLogprob2FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesStreamEventLogprob2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesStreamEventLogprob2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesStreamEventLogprob2' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDone, unknown> = z.object(
     {
@@ -556,7 +653,9 @@ export const OpenResponsesStreamEventResponseOutputTextDone$inboundSchema:
       content_index: z.number(),
       text: z.string(),
       sequence_number: z.number(),
-      logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
+      logprobs: z.array(z.lazy(() =>
+        OpenResponsesStreamEventLogprob2$inboundSchema
+      )),
     },
   ).transform((v) => {
     return remap$(v, {
@@ -584,11 +683,61 @@ export function openResponsesStreamEventResponseOutputTextDoneFromJSON(
 }
 
 /** @internal */
+export const OpenResponsesStreamEventTopLogprob1$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventTopLogprob1,
+  unknown
+> = z.object({
+  token: z.string().optional(),
+  logprob: z.number().optional(),
+  bytes: z.array(z.number()).optional(),
+});
+
+export function openResponsesStreamEventTopLogprob1FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesStreamEventTopLogprob1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenResponsesStreamEventTopLogprob1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesStreamEventTopLogprob1' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenResponsesStreamEventLogprob1$inboundSchema: z.ZodType<
+  OpenResponsesStreamEventLogprob1,
+  unknown
+> = z.object({
+  logprob: z.number(),
+  token: z.string(),
+  top_logprobs: z.array(
+    z.lazy(() => OpenResponsesStreamEventTopLogprob1$inboundSchema),
+  ).optional(),
+  bytes: z.array(z.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "top_logprobs": "topLogprobs",
+  });
+});
+
+export function openResponsesStreamEventLogprob1FromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesStreamEventLogprob1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesStreamEventLogprob1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesStreamEventLogprob1' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenResponsesStreamEventResponseOutputTextDelta$inboundSchema:
   z.ZodType<OpenResponsesStreamEventResponseOutputTextDelta, unknown> = z
     .object({
       type: z.literal("response.output_text.delta"),
-      logprobs: z.array(OpenResponsesLogProbs$inboundSchema),
+      logprobs: z.array(
+        z.lazy(() => OpenResponsesStreamEventLogprob1$inboundSchema),
+      ),
       output_index: z.number(),
       item_id: z.string(),
       content_index: z.number(),
@@ -983,6 +1132,9 @@ export const OpenResponsesStreamEvent$inboundSchema: z.ZodType<
   OpenResponsesImageGenCallGenerating$inboundSchema,
   OpenResponsesImageGenCallPartialImage$inboundSchema,
   OpenResponsesImageGenCallCompleted$inboundSchema,
+  OpenResponsesWebSearchCallInProgress$inboundSchema,
+  OpenResponsesWebSearchCallSearching$inboundSchema,
+  OpenResponsesWebSearchCallCompleted$inboundSchema,
 ]);
 
 export function openResponsesStreamEventFromJSON(

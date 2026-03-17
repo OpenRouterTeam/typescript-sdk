@@ -16,15 +16,8 @@ let value: OpenResponsesNonStreamingResponse = {
   completedAt: null,
   output: [
     {
-      id: "msg-abc123",
-      role: "assistant",
       type: "message",
-      content: [
-        {
-          type: "output_text",
-          text: "Hello! How can I help you today?",
-        },
-      ],
+      status: "completed",
     },
   ],
   error: null,

@@ -16,10 +16,9 @@ const value: string = "The weather in San Francisco is 72°F and sunny.";
 ```typescript
 const value: models.ChatMessageContentItem[] = [
   {
-    type: "input_audio",
-    inputAudio: {
-      data: "<value>",
-      format: "<value>",
+    type: "input_video",
+    videoUrl: {
+      url: "https://standard-step.net/",
     },
   },
 ];

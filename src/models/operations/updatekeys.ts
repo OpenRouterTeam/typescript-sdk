@@ -24,7 +24,13 @@ export type UpdateKeysGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 /**
@@ -76,7 +82,13 @@ export type UpdateKeysRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The hash identifier of the API key to update
    */
@@ -219,7 +231,8 @@ export function updateKeysRequestBodyToJSON(
 /** @internal */
 export type UpdateKeysRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   hash: string;
   RequestBody: UpdateKeysRequestBody$Outbound;
 };
@@ -230,13 +243,13 @@ export const UpdateKeysRequest$outboundSchema: z.ZodType<
   UpdateKeysRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   hash: z.string(),
   requestBody: z.lazy(() => UpdateKeysRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

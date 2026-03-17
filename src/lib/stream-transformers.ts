@@ -1,27 +1,36 @@
+import type {
+  ClaudeContentBlock,
+  ClaudeMessage,
+  ClaudeStopReason,
+  ClaudeTextCitation,
+  UnsupportedContent,
+} from '../models/claude-message.js';
 import type * as models from '../models/index.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall, Tool } from './tool-types.js';
+
 import {
-  isOutputTextDeltaEvent,
-  isReasoningDeltaEvent,
+  isFileCitationAnnotation,
+  isFilePathAnnotation,
+  isFileSearchCallOutputItem,
   isFunctionCallArgumentsDeltaEvent,
+  isFunctionCallArgumentsDoneEvent,
+  isFunctionCallItem,
+  isImageGenerationCallOutputItem,
+  isServerToolOutput,
   isOutputItemAddedEvent,
   isOutputItemDoneEvent,
+  isOutputMessage,
+  isOutputTextDeltaEvent,
+  isOutputTextPart,
+  isReasoningDeltaEvent,
+  isReasoningOutputItem,
+  isRefusalPart,
   isResponseCompletedEvent,
   isResponseFailedEvent,
   isResponseIncompleteEvent,
-  isFunctionCallArgumentsDoneEvent,
-  isOutputMessage,
-  isFunctionCallItem,
-  isReasoningOutputItem,
-  isWebSearchCallOutputItem,
-  isFileSearchCallOutputItem,
-  isImageGenerationCallOutputItem,
-  isOutputTextPart,
-  isRefusalPart,
-  isFileCitationAnnotation,
   isURLCitationAnnotation,
-  isFilePathAnnotation,
+  isWebSearchCallOutputItem,
 } from './stream-type-guards.js';
 
 /**
@@ -202,9 +211,23 @@ export type StreamableOutputItem =
  * Each variant has only the fields relevant to that item type.
  */
 type ItemInProgress =
-  | { type: 'message'; id: string; textContent: string }
-  | { type: 'function_call'; id: string; name: string; callId: string; argumentsAccumulated: string }
-  | { type: 'reasoning'; id: string; reasoningContent: string };
+  | {
+      type: 'message';
+      id: string;
+      textContent: string;
+    }
+  | {
+      type: 'function_call';
+      id: string;
+      name: string;
+      callId: string;
+      argumentsAccumulated: string;
+    }
+  | {
+      type: 'reasoning';
+      id: string;
+      reasoningContent: string;
+    };
 
 /**
  * Handle output_item.added event - Initialize tracking for new items
@@ -618,7 +641,8 @@ export function extractToolCallsFromResponse(
   for (const item of response.output) {
     if (isFunctionCallItem(item)) {
       try {
-        const parsedArguments = JSON.parse(item.arguments);
+        const trimmedArgs = item.arguments.trim();
+        const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
 
         toolCalls.push({
           id: item.callId,
@@ -629,7 +653,7 @@ export function extractToolCallsFromResponse(
         console.warn(
           `Failed to parse tool call arguments for ${item.name}:`,
           error instanceof Error ? error.message : String(error),
-          `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
+          `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`,
         );
         // Include the tool call with unparsed arguments
         toolCalls.push({
@@ -671,7 +695,9 @@ export async function* buildToolCallStream(
     switch (event.type) {
       case 'response.output_item.added': {
         if (isOutputItemAddedEvent(event) && event.item && isFunctionCallItem(event.item)) {
-          toolCallsInProgress.set(event.item.callId, {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
+          toolCallsInProgress.set(itemKey, {
             id: event.item.callId,
             name: event.item.name,
             argumentsAccumulated: '',
@@ -695,9 +721,10 @@ export async function* buildToolCallStream(
           const toolCall = toolCallsInProgress.get(event.itemId);
 
           if (toolCall) {
-            // Parse complete arguments
+            // Parse complete arguments (empty string → empty object for no-param tools)
             try {
-              const parsedArguments = JSON.parse(event.arguments);
+              const trimmedArgs = event.arguments.trim();
+              const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
               yield {
                 id: toolCall.id,
                 name: event.name,
@@ -707,7 +734,7 @@ export async function* buildToolCallStream(
               console.warn(
                 `Failed to parse tool call arguments for ${event.name}:`,
                 error instanceof Error ? error.message : String(error),
-                `\nArguments: ${event.arguments.substring(0, 100)}${event.arguments.length > 100 ? '...' : ''}`
+                `\nArguments: ${event.arguments.substring(0, 100)}${event.arguments.length > 100 ? '...' : ''}`,
               );
               // Yield with unparsed arguments if parsing fails
               yield {
@@ -726,10 +753,13 @@ export async function* buildToolCallStream(
 
       case 'response.output_item.done': {
         if (isOutputItemDoneEvent(event) && event.item && isFunctionCallItem(event.item)) {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
           // Yield final tool call if we haven't already
-          if (toolCallsInProgress.has(event.item.callId)) {
+          if (toolCallsInProgress.has(itemKey)) {
             try {
-              const parsedArguments = JSON.parse(event.item.arguments);
+              const trimmedArgs = event.item.arguments.trim();
+              const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
               yield {
                 id: event.item.callId,
                 name: event.item.name,
@@ -743,7 +773,7 @@ export async function* buildToolCallStream(
               } as ParsedToolCall<Tool>;
             }
 
-            toolCallsInProgress.delete(event.item.callId);
+            toolCallsInProgress.delete(itemKey);
           }
         }
         break;
@@ -764,12 +794,12 @@ export function responseHasToolCalls(response: models.OpenResponsesNonStreamingR
  */
 function mapAnnotationsToCitations(
   annotations?: Array<models.OpenAIResponsesAnnotation>,
-): models.ClaudeTextCitation[] | undefined {
+): ClaudeTextCitation[] | undefined {
   if (!annotations || annotations.length === 0) {
     return undefined;
   }
 
-  const citations: models.ClaudeTextCitation[] = [];
+  const citations: ClaudeTextCitation[] = [];
 
   for (const annotation of annotations) {
     if (!('type' in annotation)) {
@@ -826,8 +856,8 @@ function mapAnnotationsToCitations(
         // Cast to unknown for runtime debugging if type system bypassed
         // This should never execute - throw with JSON of the unhandled value
         throw new Error(
-          `Unhandled annotation type. This indicates a new annotation type was added. ` +
-          `Annotation: ${JSON.stringify(exhaustiveCheck as unknown)}`
+          'Unhandled annotation type. This indicates a new annotation type was added. ' +
+            `Annotation: ${JSON.stringify(exhaustiveCheck as unknown)}`,
         );
       }
     }
@@ -841,7 +871,7 @@ function mapAnnotationsToCitations(
  */
 function mapStopReason(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeStopReason | null {
+): ClaudeStopReason | null {
   // Check if any tool calls exist in the response
   const hasToolCalls = response.output.some(
     (item) => 'type' in item && item.type === 'function_call',
@@ -874,21 +904,36 @@ function mapStopReason(
  */
 export function convertToClaudeMessage(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeMessage {
-  const content: models.ClaudeContentBlock[] = [];
-  const unsupportedContent: models.UnsupportedContent[] = [];
+): ClaudeMessage {
+  const content: ClaudeContentBlock[] = [];
+  const unsupportedContent: UnsupportedContent[] = [];
 
   for (const item of response.output) {
     if (!('type' in item)) {
       // Handle items without type field
       // Convert unknown item to a record format for storage
-      const itemData = typeof item === 'object' && item !== null
-        ? item
-        : { value: item };
+      const itemData =
+        typeof item === 'object' && item !== null
+          ? item
+          : {
+              value: item,
+            };
       unsupportedContent.push({
         original_type: 'unknown',
         data: itemData,
         reason: 'Output item missing type field',
+      });
+      continue;
+    }
+
+    // Server tool outputs use `openrouter:*` prefixed types (e.g. openrouter:web_search,
+    // openrouter:datetime). Filter them before the switch so the remaining union
+    // members can be discriminated by their literal `type` fields.
+    if (isServerToolOutput(item)) {
+      unsupportedContent.push({
+        original_type: item.type,
+        data: item,
+        reason: 'Output type not directly mappable to Claude format',
       });
       continue;
     }
@@ -899,9 +944,12 @@ export function convertToClaudeMessage(
           for (const part of item.content) {
             if (!('type' in part)) {
               // Convert unknown part to a record format for storage
-              const partData = typeof part === 'object' && part !== null
-                ? part
-                : { value: part };
+              const partData =
+                typeof part === 'object' && part !== null
+                  ? part
+                  : {
+                      value: part,
+                    };
               unsupportedContent.push({
                 original_type: 'unknown_message_part',
                 data: partData,
@@ -933,8 +981,8 @@ export function convertToClaudeMessage(
               const exhaustiveCheck: never = part;
               // This should never execute - new content type was added
               throw new Error(
-                `Unhandled message content type. This indicates a new content type was added. ` +
-                `Part: ${JSON.stringify(exhaustiveCheck)}`
+                'Unhandled message content type. This indicates a new content type was added. ' +
+                  `Part: ${JSON.stringify(exhaustiveCheck)}`,
               );
             }
           }
@@ -947,12 +995,13 @@ export function convertToClaudeMessage(
           let parsedInput: Record<string, unknown>;
 
           try {
-            parsedInput = JSON.parse(item.arguments);
+            const trimmedArgs = item.arguments.trim();
+            parsedInput = trimmedArgs ? JSON.parse(trimmedArgs) : {};
           } catch (error) {
             console.warn(
               `Failed to parse tool call arguments for ${item.name}:`,
               error instanceof Error ? error.message : String(error),
-              `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`
+              `\nArguments: ${item.arguments.substring(0, 100)}${item.arguments.length > 100 ? '...' : ''}`,
             );
             // Preserve raw arguments if JSON parsing fails
             parsedInput = {
@@ -1042,16 +1091,12 @@ export function convertToClaudeMessage(
         break;
       }
 
-      default: {
-        // Exhaustiveness check - if a new output type is added, TypeScript will error here
-        const exhaustiveCheck: never = item;
-        // This line should never execute - it means a new type was added to the union
-        // Throw an error instead of silently continuing to ensure we catch new types
-        throw new Error(
-          `Unhandled output item type. This indicates a new output type was added to the API. ` +
-          `Item: ${JSON.stringify(exhaustiveCheck)}`
-        );
-      }
+      default:
+        // Exhaustiveness check — TypeScript will error here when a new
+        // literal-typed member is added to ResponsesOutputItem but not
+        // handled in a case above.
+        item satisfies never;
+        break;
     }
   }
 
@@ -1079,9 +1124,9 @@ export function convertToClaudeMessage(
  * Extract unsupported content by original type
  */
 export function extractUnsupportedContent(
-  message: models.ClaudeMessage,
+  message: ClaudeMessage,
   originalType: string,
-): models.UnsupportedContent[] {
+): UnsupportedContent[] {
   if (!message.unsupported_content) {
     return [];
   }
@@ -1092,16 +1137,14 @@ export function extractUnsupportedContent(
 /**
  * Check if message has any unsupported content
  */
-export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
+export function hasUnsupportedContent(message: ClaudeMessage): boolean {
   return !!(message.unsupported_content && message.unsupported_content.length > 0);
 }
 
 /**
  * Get summary of unsupported content types
  */
-export function getUnsupportedContentSummary(
-  message: models.ClaudeMessage,
-): Record<string, number> {
+export function getUnsupportedContentSummary(message: ClaudeMessage): Record<string, number> {
   if (!message.unsupported_content) {
     return {};
   }

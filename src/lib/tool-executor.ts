@@ -1,8 +1,8 @@
 import type { $ZodType } from 'zod/v4/core';
 import type {
   APITool,
-  Tool,
   ParsedToolCall,
+  Tool,
   ToolExecutionResult,
   TurnContext,
 } from './tool-types.js';
@@ -129,14 +129,21 @@ function tryValidate(schema: $ZodType, value: unknown): boolean {
 }
 
 /**
- * Parse tool call arguments from JSON string
+ * Parse tool call arguments from JSON string.
+ * Treats empty/whitespace-only strings as an empty object — some providers
+ * return `arguments: ""` for tools that take no parameters.
  */
 export function parseToolCallArguments(argumentsString: string): unknown {
+  const trimmed = argumentsString.trim();
+  if (!trimmed) {
+    return {};
+  }
   try {
-    return JSON.parse(argumentsString);
+    return JSON.parse(trimmed);
   } catch (error) {
     throw new Error(
-      `Failed to parse tool call arguments: ${error instanceof Error ? error.message : String(error)
+      `Failed to parse tool call arguments: ${
+        error instanceof Error ? error.message : String(error)
       }`,
     );
   }
@@ -160,10 +167,7 @@ export async function executeRegularTool(
     // Validate input - the schema validation ensures type safety at runtime
     // validateToolInput returns z.infer<typeof tool.function.inputSchema>
     // which is exactly the type expected by execute
-    const validatedInput = validateToolInput(
-      tool.function.inputSchema,
-      toolCall.arguments,
-    );
+    const validatedInput = validateToolInput(tool.function.inputSchema, toolCall.arguments);
 
     // Execute tool with context
     const result = await Promise.resolve(tool.function.execute(validatedInput, context));
@@ -213,15 +217,12 @@ export async function executeGeneratorTool(
   try {
     // Validate input - the schema validation ensures type safety at runtime
     // The inputSchema's inferred type matches the execute function's parameter type by construction
-    const validatedInput = validateToolInput(
-      tool.function.inputSchema,
-      toolCall.arguments,
-    );
+    const validatedInput = validateToolInput(tool.function.inputSchema, toolCall.arguments);
 
     const preliminaryResults: unknown[] = [];
-    let finalResult: unknown = undefined;
+    let finalResult: unknown;
     let hasFinalResult = false;
-    let lastEmittedValue: unknown = undefined;
+    let lastEmittedValue: unknown;
     let hasEmittedValue = false;
 
     const iterator = tool.function.execute(validatedInput, context);
@@ -256,7 +257,9 @@ export async function executeGeneratorTool(
 
     if (!hasFinalResult) {
       if (!hasEmittedValue) {
-        throw new Error(`Generator tool "${toolCall.name}" completed without emitting any values or returning a result`);
+        throw new Error(
+          `Generator tool "${toolCall.name}" completed without emitting any values or returning a result`,
+        );
       }
       finalResult = validateToolOutput(tool.function.outputSchema, lastEmittedValue);
     }

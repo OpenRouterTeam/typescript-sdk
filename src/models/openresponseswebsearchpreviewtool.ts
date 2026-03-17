@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -21,6 +23,26 @@ import {
 } from "./websearchpreviewtooluserlocation.js";
 
 /**
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search (parameters like max_results, search_context_size, and domain filters are not forwarded to the provider). "exa" forces the Exa search API.
+ */
+export const OpenResponsesWebSearchPreviewToolEngine = {
+  Auto: "auto",
+  Native: "native",
+  Exa: "exa",
+} as const;
+/**
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search (parameters like max_results, search_context_size, and domain filters are not forwarded to the provider). "exa" forces the Exa search API.
+ */
+export type OpenResponsesWebSearchPreviewToolEngine = OpenEnum<
+  typeof OpenResponsesWebSearchPreviewToolEngine
+>;
+
+export type OpenResponsesWebSearchPreviewToolFilters = {
+  allowedDomains?: Array<string> | null | undefined;
+  excludedDomains?: Array<string> | null | undefined;
+};
+
+/**
  * Web search preview tool configuration
  */
 export type OpenResponsesWebSearchPreviewTool = {
@@ -30,7 +52,86 @@ export type OpenResponsesWebSearchPreviewTool = {
    */
   searchContextSize?: ResponsesSearchContextSize | undefined;
   userLocation?: WebSearchPreviewToolUserLocation | null | undefined;
+  /**
+   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search (parameters like max_results, search_context_size, and domain filters are not forwarded to the provider). "exa" forces the Exa search API.
+   */
+  engine?: OpenResponsesWebSearchPreviewToolEngine | undefined;
+  /**
+   * Maximum number of search results to return per search call. Defaults to 5. Only applies when using the Exa engine; ignored with native provider search.
+   */
+  maxResults?: number | undefined;
+  filters?: OpenResponsesWebSearchPreviewToolFilters | null | undefined;
 };
+
+/** @internal */
+export const OpenResponsesWebSearchPreviewToolEngine$inboundSchema: z.ZodType<
+  OpenResponsesWebSearchPreviewToolEngine,
+  unknown
+> = openEnums.inboundSchema(OpenResponsesWebSearchPreviewToolEngine);
+/** @internal */
+export const OpenResponsesWebSearchPreviewToolEngine$outboundSchema: z.ZodType<
+  string,
+  OpenResponsesWebSearchPreviewToolEngine
+> = openEnums.outboundSchema(OpenResponsesWebSearchPreviewToolEngine);
+
+/** @internal */
+export const OpenResponsesWebSearchPreviewToolFilters$inboundSchema: z.ZodType<
+  OpenResponsesWebSearchPreviewToolFilters,
+  unknown
+> = z.object({
+  allowed_domains: z.nullable(z.array(z.string())).optional(),
+  excluded_domains: z.nullable(z.array(z.string())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "allowed_domains": "allowedDomains",
+    "excluded_domains": "excludedDomains",
+  });
+});
+/** @internal */
+export type OpenResponsesWebSearchPreviewToolFilters$Outbound = {
+  allowed_domains?: Array<string> | null | undefined;
+  excluded_domains?: Array<string> | null | undefined;
+};
+
+/** @internal */
+export const OpenResponsesWebSearchPreviewToolFilters$outboundSchema: z.ZodType<
+  OpenResponsesWebSearchPreviewToolFilters$Outbound,
+  OpenResponsesWebSearchPreviewToolFilters
+> = z.object({
+  allowedDomains: z.nullable(z.array(z.string())).optional(),
+  excludedDomains: z.nullable(z.array(z.string())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowedDomains: "allowed_domains",
+    excludedDomains: "excluded_domains",
+  });
+});
+
+export function openResponsesWebSearchPreviewToolFiltersToJSON(
+  openResponsesWebSearchPreviewToolFilters:
+    OpenResponsesWebSearchPreviewToolFilters,
+): string {
+  return JSON.stringify(
+    OpenResponsesWebSearchPreviewToolFilters$outboundSchema.parse(
+      openResponsesWebSearchPreviewToolFilters,
+    ),
+  );
+}
+export function openResponsesWebSearchPreviewToolFiltersFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  OpenResponsesWebSearchPreviewToolFilters,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenResponsesWebSearchPreviewToolFilters$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OpenResponsesWebSearchPreviewToolFilters' from JSON`,
+  );
+}
 
 /** @internal */
 export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
@@ -41,10 +142,16 @@ export const OpenResponsesWebSearchPreviewTool$inboundSchema: z.ZodType<
   search_context_size: ResponsesSearchContextSize$inboundSchema.optional(),
   user_location: z.nullable(WebSearchPreviewToolUserLocation$inboundSchema)
     .optional(),
+  engine: OpenResponsesWebSearchPreviewToolEngine$inboundSchema.optional(),
+  max_results: z.number().optional(),
+  filters: z.nullable(
+    z.lazy(() => OpenResponsesWebSearchPreviewToolFilters$inboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
+    "max_results": "maxResults",
   });
 });
 /** @internal */
@@ -52,6 +159,12 @@ export type OpenResponsesWebSearchPreviewTool$Outbound = {
   type: "web_search_preview";
   search_context_size?: string | undefined;
   user_location?: WebSearchPreviewToolUserLocation$Outbound | null | undefined;
+  engine?: string | undefined;
+  max_results?: number | undefined;
+  filters?:
+    | OpenResponsesWebSearchPreviewToolFilters$Outbound
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -63,10 +176,16 @@ export const OpenResponsesWebSearchPreviewTool$outboundSchema: z.ZodType<
   searchContextSize: ResponsesSearchContextSize$outboundSchema.optional(),
   userLocation: z.nullable(WebSearchPreviewToolUserLocation$outboundSchema)
     .optional(),
+  engine: OpenResponsesWebSearchPreviewToolEngine$outboundSchema.optional(),
+  maxResults: z.number().optional(),
+  filters: z.nullable(
+    z.lazy(() => OpenResponsesWebSearchPreviewToolFilters$outboundSchema),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     searchContextSize: "search_context_size",
     userLocation: "user_location",
+    maxResults: "max_results",
   });
 });
 

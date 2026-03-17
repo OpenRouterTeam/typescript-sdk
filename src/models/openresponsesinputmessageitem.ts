@@ -93,13 +93,16 @@ export type OpenResponsesInputMessageItem = {
     | OpenResponsesInputMessageItemRoleUser
     | OpenResponsesInputMessageItemRoleSystem
     | OpenResponsesInputMessageItemRoleDeveloper;
-  content: Array<
-    | ResponseInputText
-    | OpenResponsesInputMessageItemContentInputImage
-    | ResponseInputFile
-    | ResponseInputAudio
-    | ResponseInputVideo
-  >;
+  content?:
+    | Array<
+      | ResponseInputText
+      | OpenResponsesInputMessageItemContentInputImage
+      | ResponseInputFile
+      | ResponseInputAudio
+      | ResponseInputVideo
+    >
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -226,13 +229,16 @@ export type OpenResponsesInputMessageItem$Outbound = {
   id?: string | undefined;
   type?: string | undefined;
   role: string | string | string;
-  content: Array<
-    | ResponseInputText$Outbound
-    | OpenResponsesInputMessageItemContentInputImage$Outbound
-    | ResponseInputFile$Outbound
-    | ResponseInputAudio$Outbound
-    | ResponseInputVideo$Outbound
-  >;
+  content?:
+    | Array<
+      | ResponseInputText$Outbound
+      | OpenResponsesInputMessageItemContentInputImage$Outbound
+      | ResponseInputFile$Outbound
+      | ResponseInputAudio$Outbound
+      | ResponseInputVideo$Outbound
+    >
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -247,8 +253,8 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
     OpenResponsesInputMessageItemRoleSystem$outboundSchema,
     OpenResponsesInputMessageItemRoleDeveloper$outboundSchema,
   ]),
-  content: z.array(
-    z.union([
+  content: z.nullable(
+    z.array(z.union([
       ResponseInputText$outboundSchema,
       z.lazy(() =>
         OpenResponsesInputMessageItemContentInputImage$outboundSchema
@@ -256,8 +262,8 @@ export const OpenResponsesInputMessageItem$outboundSchema: z.ZodType<
       ResponseInputFile$outboundSchema,
       ResponseInputAudio$outboundSchema,
       ResponseInputVideo$outboundSchema,
-    ]),
-  ),
+    ])),
+  ).optional(),
 });
 
 export function openResponsesInputMessageItemToJSON(

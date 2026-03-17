@@ -21,7 +21,13 @@ export type GetModelsGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 /**
@@ -59,12 +65,22 @@ export type GetModelsRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * Filter models by use case category
    */
   category?: Category | undefined;
   supportedParameters?: string | undefined;
+  /**
+   * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, audio, embeddings) or "all" to include all models. Defaults to "text".
+   */
+  outputModalities?: string | undefined;
 };
 
 /** @internal */
@@ -74,9 +90,11 @@ export const Category$outboundSchema: z.ZodType<string, Category> = openEnums
 /** @internal */
 export type GetModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   category?: string | undefined;
   supported_parameters?: string | undefined;
+  output_modalities?: string | undefined;
 };
 
 /** @internal */
@@ -85,14 +103,16 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   GetModelsRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
+  outputModalities: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     supportedParameters: "supported_parameters",
+    outputModalities: "output_modalities",
   });
 });
 

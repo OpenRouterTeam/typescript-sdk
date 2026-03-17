@@ -34,6 +34,7 @@ export const ProviderPreferencesSortEnum = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 export type ProviderPreferencesSortEnum = OpenEnum<
   typeof ProviderPreferencesSortEnum
@@ -43,6 +44,7 @@ export const ProviderPreferencesProviderSortConfigEnum = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 export type ProviderPreferencesProviderSortConfigEnum = ClosedEnum<
   typeof ProviderPreferencesProviderSortConfigEnum
@@ -55,6 +57,7 @@ export const ProviderPreferencesBy = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 /**
  * The provider sorting strategy (price, throughput, latency)
@@ -97,6 +100,7 @@ export const ProviderPreferencesProviderSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 /**
  * The provider sorting strategy (price, throughput, latency)

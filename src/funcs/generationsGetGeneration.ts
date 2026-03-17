@@ -113,9 +113,14 @@ async function $do(
       payload["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
-    "X-Title": encodeSimple(
-      "X-Title",
-      payload["X-Title"] ?? client._options.xTitle,
+    "X-OpenRouter-Categories": encodeSimple(
+      "X-OpenRouter-Categories",
+      payload.appCategories ?? client._options.appCategories,
+      { explode: false, charEncoding: "none" },
+    ),
+    "X-OpenRouter-Title": encodeSimple(
+      "X-OpenRouter-Title",
+      payload.appTitle ?? client._options.appTitle,
       { explode: false, charEncoding: "none" },
     ),
   }));

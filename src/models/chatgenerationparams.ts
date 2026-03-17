@@ -13,6 +13,10 @@ import {
   ChatStreamOptions$outboundSchema,
 } from "./chatstreamoptions.js";
 import {
+  ContextCompressionEngine,
+  ContextCompressionEngine$outboundSchema,
+} from "./contextcompressionengine.js";
+import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
@@ -93,6 +97,7 @@ export const ChatGenerationParamsSortEnum = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 export type ChatGenerationParamsSortEnum = OpenEnum<
   typeof ChatGenerationParamsSortEnum
@@ -102,6 +107,7 @@ export const ChatGenerationParamsProviderSortConfigEnum = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 export type ChatGenerationParamsProviderSortConfigEnum = ClosedEnum<
   typeof ChatGenerationParamsProviderSortConfigEnum
@@ -114,6 +120,7 @@ export const ChatGenerationParamsBy = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 /**
  * The provider sorting strategy (price, throughput, latency)
@@ -156,6 +163,7 @@ export const ChatGenerationParamsProviderSort = {
   Price: "price",
   Throughput: "throughput",
   Latency: "latency",
+  Exacto: "exacto",
 } as const;
 /**
  * The provider sorting strategy (price, throughput, latency)
@@ -257,6 +265,18 @@ export type ChatGenerationParamsProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
+export type ChatGenerationParamsPluginContextCompression = {
+  id: "context-compression";
+  /**
+   * Set to false to disable the context-compression plugin for this request. Defaults to true.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * The compression engine to use. Defaults to "middle-out".
+   */
+  engine?: ContextCompressionEngine | undefined;
+};
+
 export type ChatGenerationParamsPluginResponseHealing = {
   id: "response-healing";
   /**
@@ -289,6 +309,14 @@ export type ChatGenerationParamsPluginWeb = {
    * The search engine to use for web search.
    */
   engine?: WebSearchEngine | undefined;
+  /**
+   * A list of domains to restrict web search results to. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
+   */
+  includeDomains?: Array<string> | undefined;
+  /**
+   * A list of domains to exclude from web search results. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
+   */
+  excludeDomains?: Array<string> | undefined;
 };
 
 export type ChatGenerationParamsPluginModeration = {
@@ -312,7 +340,8 @@ export type ChatGenerationParamsPluginUnion =
   | ChatGenerationParamsPluginModeration
   | ChatGenerationParamsPluginWeb
   | ChatGenerationParamsPluginFileParser
-  | ChatGenerationParamsPluginResponseHealing;
+  | ChatGenerationParamsPluginResponseHealing
+  | ChatGenerationParamsPluginContextCompression;
 
 /**
  * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
@@ -376,8 +405,30 @@ export type ChatGenerationParamsImageConfig =
 export const Modality = {
   Text: "text",
   Image: "image",
+  Audio: "audio",
 } as const;
 export type Modality = OpenEnum<typeof Modality>;
+
+export const ChatGenerationParamsType = {
+  Ephemeral: "ephemeral",
+} as const;
+export type ChatGenerationParamsType = ClosedEnum<
+  typeof ChatGenerationParamsType
+>;
+
+export const ChatGenerationParamsTtl = {
+  Fivem: "5m",
+  Oneh: "1h",
+} as const;
+export type ChatGenerationParamsTtl = OpenEnum<typeof ChatGenerationParamsTtl>;
+
+/**
+ * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+ */
+export type CacheControl = {
+  type: ChatGenerationParamsType;
+  ttl?: ChatGenerationParamsTtl | undefined;
+};
 
 /**
  * Chat completion request parameters
@@ -397,6 +448,7 @@ export type ChatGenerationParams = {
       | ChatGenerationParamsPluginWeb
       | ChatGenerationParamsPluginFileParser
       | ChatGenerationParamsPluginResponseHealing
+      | ChatGenerationParamsPluginContextCompression
     >
     | undefined;
   /**
@@ -444,7 +496,7 @@ export type ChatGenerationParams = {
    */
   maxCompletionTokens?: number | null | undefined;
   /**
-   * Maximum tokens (deprecated, use max_completion_tokens)
+   * Maximum tokens (deprecated, use max_completion_tokens). Note: some providers enforce a minimum of 16.
    */
   maxTokens?: number | null | undefined;
   /**
@@ -513,9 +565,13 @@ export type ChatGenerationParams = {
     | { [k: string]: string | number | Array<any | null> }
     | undefined;
   /**
-   * Output modalities for the response. Supported values are "text" and "image".
+   * Output modalities for the response. Supported values are "text", "image", and "audio".
    */
   modalities?: Array<Modality> | undefined;
+  /**
+   * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+   */
+  cacheControl?: CacheControl | undefined;
 };
 
 /** @internal */
@@ -793,6 +849,35 @@ export function chatGenerationParamsProviderToJSON(
 }
 
 /** @internal */
+export type ChatGenerationParamsPluginContextCompression$Outbound = {
+  id: "context-compression";
+  enabled?: boolean | undefined;
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const ChatGenerationParamsPluginContextCompression$outboundSchema:
+  z.ZodType<
+    ChatGenerationParamsPluginContextCompression$Outbound,
+    ChatGenerationParamsPluginContextCompression
+  > = z.object({
+    id: z.literal("context-compression"),
+    enabled: z.boolean().optional(),
+    engine: ContextCompressionEngine$outboundSchema.optional(),
+  });
+
+export function chatGenerationParamsPluginContextCompressionToJSON(
+  chatGenerationParamsPluginContextCompression:
+    ChatGenerationParamsPluginContextCompression,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsPluginContextCompression$outboundSchema.parse(
+      chatGenerationParamsPluginContextCompression,
+    ),
+  );
+}
+
+/** @internal */
 export type ChatGenerationParamsPluginResponseHealing$Outbound = {
   id: "response-healing";
   enabled?: boolean | undefined;
@@ -853,6 +938,8 @@ export type ChatGenerationParamsPluginWeb$Outbound = {
   max_results?: number | undefined;
   search_prompt?: string | undefined;
   engine?: string | undefined;
+  include_domains?: Array<string> | undefined;
+  exclude_domains?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -865,10 +952,14 @@ export const ChatGenerationParamsPluginWeb$outboundSchema: z.ZodType<
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
   engine: WebSearchEngine$outboundSchema.optional(),
+  includeDomains: z.array(z.string()).optional(),
+  excludeDomains: z.array(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
     searchPrompt: "search_prompt",
+    includeDomains: "include_domains",
+    excludeDomains: "exclude_domains",
   });
 });
 
@@ -942,7 +1033,8 @@ export type ChatGenerationParamsPluginUnion$Outbound =
   | ChatGenerationParamsPluginModeration$Outbound
   | ChatGenerationParamsPluginWeb$Outbound
   | ChatGenerationParamsPluginFileParser$Outbound
-  | ChatGenerationParamsPluginResponseHealing$Outbound;
+  | ChatGenerationParamsPluginResponseHealing$Outbound
+  | ChatGenerationParamsPluginContextCompression$Outbound;
 
 /** @internal */
 export const ChatGenerationParamsPluginUnion$outboundSchema: z.ZodType<
@@ -954,6 +1046,7 @@ export const ChatGenerationParamsPluginUnion$outboundSchema: z.ZodType<
   z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
+  z.lazy(() => ChatGenerationParamsPluginContextCompression$outboundSchema),
 ]);
 
 export function chatGenerationParamsPluginUnionToJSON(
@@ -1097,6 +1190,36 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
   .outboundSchema(Modality);
 
 /** @internal */
+export const ChatGenerationParamsType$outboundSchema: z.ZodEnum<
+  typeof ChatGenerationParamsType
+> = z.enum(ChatGenerationParamsType);
+
+/** @internal */
+export const ChatGenerationParamsTtl$outboundSchema: z.ZodType<
+  string,
+  ChatGenerationParamsTtl
+> = openEnums.outboundSchema(ChatGenerationParamsTtl);
+
+/** @internal */
+export type CacheControl$Outbound = {
+  type: string;
+  ttl?: string | undefined;
+};
+
+/** @internal */
+export const CacheControl$outboundSchema: z.ZodType<
+  CacheControl$Outbound,
+  CacheControl
+> = z.object({
+  type: ChatGenerationParamsType$outboundSchema,
+  ttl: ChatGenerationParamsTtl$outboundSchema.optional(),
+});
+
+export function cacheControlToJSON(cacheControl: CacheControl): string {
+  return JSON.stringify(CacheControl$outboundSchema.parse(cacheControl));
+}
+
+/** @internal */
 export type ChatGenerationParams$Outbound = {
   provider?: ChatGenerationParamsProvider$Outbound | null | undefined;
   plugins?:
@@ -1106,6 +1229,7 @@ export type ChatGenerationParams$Outbound = {
       | ChatGenerationParamsPluginWeb$Outbound
       | ChatGenerationParamsPluginFileParser$Outbound
       | ChatGenerationParamsPluginResponseHealing$Outbound
+      | ChatGenerationParamsPluginContextCompression$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -1144,6 +1268,7 @@ export type ChatGenerationParams$Outbound = {
     | { [k: string]: string | number | Array<any | null> }
     | undefined;
   modalities?: Array<string> | undefined;
+  cache_control?: CacheControl$Outbound | undefined;
 };
 
 /** @internal */
@@ -1161,6 +1286,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
       z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
+      z.lazy(() => ChatGenerationParamsPluginContextCompression$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),
@@ -1201,6 +1327,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]),
   ).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
+  cacheControl: z.lazy(() => CacheControl$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     sessionId: "session_id",
@@ -1216,6 +1343,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
     toolChoice: "tool_choice",
     topP: "top_p",
     imageConfig: "image_config",
+    cacheControl: "cache_control",
   });
 });
 

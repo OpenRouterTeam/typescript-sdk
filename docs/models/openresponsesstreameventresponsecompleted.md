@@ -18,15 +18,8 @@ let value: OpenResponsesStreamEventResponseCompleted = {
     completedAt: 6756.82,
     output: [
       {
-        id: "item-1",
-        role: "assistant",
         type: "message",
-        content: [
-          {
-            type: "output_text",
-            text: "Hello! How can I help you?",
-          },
-        ],
+        status: "completed",
       },
     ],
     error: null,

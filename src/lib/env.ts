@@ -16,9 +16,14 @@ export interface Env {
   OPENROUTER_HTTP_REFERER?: string | undefined;
 
   /**
-   * Sets the xTitle parameter for all supported operations
+   * Sets the appTitle parameter for all supported operations
    */
-  OPENROUTER_X_TITLE?: string | undefined;
+  OPENROUTER_APP_TITLE?: string | undefined;
+
+  /**
+   * Sets the appCategories parameter for all supported operations
+   */
+  OPENROUTER_APP_CATEGORIES?: string | undefined;
 
   OPENROUTER_DEBUG?: boolean | undefined;
 }
@@ -27,7 +32,8 @@ export const envSchema: z.ZodType<Env, unknown> = z.object({
   OPENROUTER_API_KEY: z.string().optional(),
 
   OPENROUTER_HTTP_REFERER: z.string().optional(),
-  OPENROUTER_X_TITLE: z.string().optional(),
+  OPENROUTER_APP_TITLE: z.string().optional(),
+  OPENROUTER_APP_CATEGORIES: z.string().optional(),
 
   OPENROUTER_DEBUG: z.coerce.boolean().optional(),
 });
@@ -82,8 +88,11 @@ export function fillGlobals(options: SDKOptions): SDKOptions {
   if (typeof envVars.OPENROUTER_HTTP_REFERER !== "undefined") {
     clone.httpReferer ??= envVars.OPENROUTER_HTTP_REFERER;
   }
-  if (typeof envVars.OPENROUTER_X_TITLE !== "undefined") {
-    clone.xTitle ??= envVars.OPENROUTER_X_TITLE;
+  if (typeof envVars.OPENROUTER_APP_TITLE !== "undefined") {
+    clone.appTitle ??= envVars.OPENROUTER_APP_TITLE;
+  }
+  if (typeof envVars.OPENROUTER_APP_CATEGORIES !== "undefined") {
+    clone.appCategories ??= envVars.OPENROUTER_APP_CATEGORIES;
   }
 
   return clone;

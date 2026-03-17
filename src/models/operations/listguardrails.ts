@@ -24,7 +24,13 @@ export type ListGuardrailsGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type ListGuardrailsRequest = {
@@ -40,7 +46,13 @@ export type ListGuardrailsRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * Number of records to skip for pagination
    */
@@ -92,6 +104,10 @@ export type ListGuardrailsData = {
    */
   allowedProviders?: Array<string> | null | undefined;
   /**
+   * List of provider IDs to exclude from routing
+   */
+  ignoredProviders?: Array<string> | null | undefined;
+  /**
    * Array of model canonical_slugs (immutable identifiers)
    */
   allowedModels?: Array<string> | null | undefined;
@@ -126,7 +142,8 @@ export type ListGuardrailsResponse = {
 /** @internal */
 export type ListGuardrailsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   offset?: string | undefined;
   limit?: string | undefined;
 };
@@ -137,13 +154,13 @@ export const ListGuardrailsRequest$outboundSchema: z.ZodType<
   ListGuardrailsRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 
@@ -173,6 +190,7 @@ export const ListGuardrailsData$inboundSchema: z.ZodType<
   reset_interval: z.nullable(ListGuardrailsResetInterval$inboundSchema)
     .optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
+  ignored_providers: z.nullable(z.array(z.string())).optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   created_at: z.string(),
@@ -182,6 +200,7 @@ export const ListGuardrailsData$inboundSchema: z.ZodType<
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
     "allowed_providers": "allowedProviders",
+    "ignored_providers": "ignoredProviders",
     "allowed_models": "allowedModels",
     "enforce_zdr": "enforceZdr",
     "created_at": "createdAt",

@@ -14,13 +14,15 @@ export enum ToolType {
  * Turn context passed to tool execute functions and async parameter resolution
  * Contains information about the current conversation state
  */
-export interface TurnContext {
+export interface TurnContext<TExternal extends Record<string, unknown> = Record<string, unknown>> {
   /** The specific tool call being executed (only available during tool execution) */
   toolCall?: models.OpenResponsesFunctionToolCall;
   /** Number of tool execution turns so far (1-indexed: first turn = 1, 0 = initial request) */
   numberOfTurns: number;
   /** The full request being sent to the API (only available during tool execution) */
   turnRequest?: models.OpenResponsesRequest;
+  /** External data passed through from callModel for use in tool execute and async param functions */
+  external?: TExternal;
 }
 
 /**
@@ -30,7 +32,7 @@ export interface TurnContext {
  */
 export type NextTurnParamsContext = {
   /** Current input (messages) */
-  input: models.OpenResponsesInput;
+  input: models.OpenResponsesInputUnion;
   /** Current model selection */
   model: string;
   /** Current models array */
@@ -404,15 +406,37 @@ export type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = 
 };
 
 /**
+ * Turn start event emitted at the beginning of each API turn
+ * Turn 0 is the initial request, subsequent turns follow tool execution
+ */
+export type TurnStartEvent = {
+  type: 'turn.start';
+  turnNumber: number;
+  timestamp: number;
+};
+
+/**
+ * Turn end event emitted at the end of each API turn
+ */
+export type TurnEndEvent = {
+  type: 'turn.end';
+  turnNumber: number;
+  timestamp: number;
+};
+
+/**
  * Enhanced stream event types for getFullResponsesStream
- * Extends OpenResponsesStreamEvent with tool preliminary results and tool results
+ * Extends OpenResponsesStreamEvent with tool preliminary results, tool results,
+ * and turn delimiter events for multi-turn streaming
  * @template TEvent - The event type from generator tools
  * @template TResult - The result type from tool execution
  */
 export type ResponseStreamEvent<TEvent = unknown, TResult = unknown> =
   | OpenResponsesStreamEvent
   | ToolPreliminaryResultEvent<TEvent>
-  | ToolResultEvent<TResult, TEvent>;
+  | ToolResultEvent<TResult, TEvent>
+  | TurnStartEvent
+  | TurnEndEvent;
 
 /**
  * Type guard to check if an event is a tool preliminary result event
@@ -430,6 +454,24 @@ export function isToolResultEvent<TResult = unknown, TPreliminaryResults = unkno
   event: ResponseStreamEvent<TPreliminaryResults, TResult>,
 ): event is ToolResultEvent<TResult, TPreliminaryResults> {
   return event.type === 'tool.result';
+}
+
+/**
+ * Type guard to check if an event is a turn start event
+ */
+export function isTurnStartEvent(
+  event: ResponseStreamEvent,
+): event is TurnStartEvent {
+  return event.type === 'turn.start';
+}
+
+/**
+ * Type guard to check if an event is a turn end event
+ */
+export function isTurnEndEvent(
+  event: ResponseStreamEvent,
+): event is TurnEndEvent {
+  return event.type === 'turn.end';
 }
 
 /**
@@ -515,7 +557,7 @@ export interface ConversationState<TTools extends readonly Tool[] = readonly Too
   /** Unique identifier for this conversation */
   id: string;
   /** Full message history */
-  messages: models.OpenResponsesInput;
+  messages: models.OpenResponsesInputUnion;
   /** Previous response ID for chaining (OpenRouter server-side optimization) */
   previousResponseId?: string;
   /** Tool calls awaiting human approval */

@@ -102,7 +102,30 @@ export type OpenResponsesEasyInputMessageContentUnion2 =
     | ResponseInputAudio
     | ResponseInputVideo
   >
-  | string;
+  | string
+  | any;
+
+export const OpenResponsesEasyInputMessagePhaseFinalAnswer = {
+  FinalAnswer: "final_answer",
+} as const;
+export type OpenResponsesEasyInputMessagePhaseFinalAnswer = ClosedEnum<
+  typeof OpenResponsesEasyInputMessagePhaseFinalAnswer
+>;
+
+export const OpenResponsesEasyInputMessagePhaseCommentary = {
+  Commentary: "commentary",
+} as const;
+export type OpenResponsesEasyInputMessagePhaseCommentary = ClosedEnum<
+  typeof OpenResponsesEasyInputMessagePhaseCommentary
+>;
+
+/**
+ * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+ */
+export type OpenResponsesEasyInputMessagePhaseUnion =
+  | OpenResponsesEasyInputMessagePhaseCommentary
+  | OpenResponsesEasyInputMessagePhaseFinalAnswer
+  | any;
 
 export type OpenResponsesEasyInputMessage = {
   type?: OpenResponsesEasyInputMessageTypeMessage | undefined;
@@ -111,7 +134,7 @@ export type OpenResponsesEasyInputMessage = {
     | OpenResponsesEasyInputMessageRoleSystem
     | OpenResponsesEasyInputMessageRoleAssistant
     | OpenResponsesEasyInputMessageRoleDeveloper;
-  content:
+  content?:
     | Array<
       | ResponseInputText
       | OpenResponsesEasyInputMessageContentInputImage
@@ -119,7 +142,19 @@ export type OpenResponsesEasyInputMessage = {
       | ResponseInputAudio
       | ResponseInputVideo
     >
-    | string;
+    | string
+    | any
+    | null
+    | undefined;
+  /**
+   * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
+   */
+  phase?:
+    | OpenResponsesEasyInputMessagePhaseCommentary
+    | OpenResponsesEasyInputMessagePhaseFinalAnswer
+    | any
+    | null
+    | undefined;
 };
 
 /** @internal */
@@ -258,7 +293,8 @@ export type OpenResponsesEasyInputMessageContentUnion2$Outbound =
     | ResponseInputAudio$Outbound
     | ResponseInputVideo$Outbound
   >
-  | string;
+  | string
+  | any;
 
 /** @internal */
 export const OpenResponsesEasyInputMessageContentUnion2$outboundSchema:
@@ -276,6 +312,7 @@ export const OpenResponsesEasyInputMessageContentUnion2$outboundSchema:
       ResponseInputVideo$outboundSchema,
     ])),
     z.string(),
+    z.any(),
   ]);
 
 export function openResponsesEasyInputMessageContentUnion2ToJSON(
@@ -290,10 +327,49 @@ export function openResponsesEasyInputMessageContentUnion2ToJSON(
 }
 
 /** @internal */
+export const OpenResponsesEasyInputMessagePhaseFinalAnswer$outboundSchema:
+  z.ZodEnum<typeof OpenResponsesEasyInputMessagePhaseFinalAnswer> = z.enum(
+    OpenResponsesEasyInputMessagePhaseFinalAnswer,
+  );
+
+/** @internal */
+export const OpenResponsesEasyInputMessagePhaseCommentary$outboundSchema:
+  z.ZodEnum<typeof OpenResponsesEasyInputMessagePhaseCommentary> = z.enum(
+    OpenResponsesEasyInputMessagePhaseCommentary,
+  );
+
+/** @internal */
+export type OpenResponsesEasyInputMessagePhaseUnion$Outbound =
+  | string
+  | string
+  | any;
+
+/** @internal */
+export const OpenResponsesEasyInputMessagePhaseUnion$outboundSchema: z.ZodType<
+  OpenResponsesEasyInputMessagePhaseUnion$Outbound,
+  OpenResponsesEasyInputMessagePhaseUnion
+> = z.union([
+  OpenResponsesEasyInputMessagePhaseCommentary$outboundSchema,
+  OpenResponsesEasyInputMessagePhaseFinalAnswer$outboundSchema,
+  z.any(),
+]);
+
+export function openResponsesEasyInputMessagePhaseUnionToJSON(
+  openResponsesEasyInputMessagePhaseUnion:
+    OpenResponsesEasyInputMessagePhaseUnion,
+): string {
+  return JSON.stringify(
+    OpenResponsesEasyInputMessagePhaseUnion$outboundSchema.parse(
+      openResponsesEasyInputMessagePhaseUnion,
+    ),
+  );
+}
+
+/** @internal */
 export type OpenResponsesEasyInputMessage$Outbound = {
   type?: string | undefined;
   role: string | string | string | string;
-  content:
+  content?:
     | Array<
       | ResponseInputText$Outbound
       | OpenResponsesEasyInputMessageContentInputImage$Outbound
@@ -301,7 +377,11 @@ export type OpenResponsesEasyInputMessage$Outbound = {
       | ResponseInputAudio$Outbound
       | ResponseInputVideo$Outbound
     >
-    | string;
+    | string
+    | any
+    | null
+    | undefined;
+  phase?: string | string | any | null | undefined;
 };
 
 /** @internal */
@@ -316,18 +396,28 @@ export const OpenResponsesEasyInputMessage$outboundSchema: z.ZodType<
     OpenResponsesEasyInputMessageRoleAssistant$outboundSchema,
     OpenResponsesEasyInputMessageRoleDeveloper$outboundSchema,
   ]),
-  content: z.union([
-    z.array(z.union([
-      ResponseInputText$outboundSchema,
-      z.lazy(() =>
-        OpenResponsesEasyInputMessageContentInputImage$outboundSchema
-      ),
-      ResponseInputFile$outboundSchema,
-      ResponseInputAudio$outboundSchema,
-      ResponseInputVideo$outboundSchema,
-    ])),
-    z.string(),
-  ]),
+  content: z.nullable(
+    z.union([
+      z.array(z.union([
+        ResponseInputText$outboundSchema,
+        z.lazy(() =>
+          OpenResponsesEasyInputMessageContentInputImage$outboundSchema
+        ),
+        ResponseInputFile$outboundSchema,
+        ResponseInputAudio$outboundSchema,
+        ResponseInputVideo$outboundSchema,
+      ])),
+      z.string(),
+      z.any(),
+    ]),
+  ).optional(),
+  phase: z.nullable(
+    z.union([
+      OpenResponsesEasyInputMessagePhaseCommentary$outboundSchema,
+      OpenResponsesEasyInputMessagePhaseFinalAnswer$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
 });
 
 export function openResponsesEasyInputMessageToJSON(

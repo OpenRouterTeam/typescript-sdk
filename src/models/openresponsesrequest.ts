@@ -8,9 +8,18 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  ContextCompressionEngine,
+  ContextCompressionEngine$outboundSchema,
+} from "./contextcompressionengine.js";
+import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
+import {
+  DatetimeServerTool,
+  DatetimeServerTool$Outbound,
+  DatetimeServerTool$outboundSchema,
+} from "./datetimeservertool.js";
 import {
   OpenAIResponsesIncludable,
   OpenAIResponsesIncludable$outboundSchema,
@@ -26,10 +35,55 @@ import {
   OpenAIResponsesToolChoiceUnion$outboundSchema,
 } from "./openairesponsestoolchoiceunion.js";
 import {
-  OpenResponsesInput,
-  OpenResponsesInput$Outbound,
-  OpenResponsesInput$outboundSchema,
-} from "./openresponsesinput.js";
+  OpenResponsesApplyPatchTool,
+  OpenResponsesApplyPatchTool$Outbound,
+  OpenResponsesApplyPatchTool$outboundSchema,
+} from "./openresponsesapplypatchtool.js";
+import {
+  OpenResponsesCodeInterpreterTool,
+  OpenResponsesCodeInterpreterTool$Outbound,
+  OpenResponsesCodeInterpreterTool$outboundSchema,
+} from "./openresponsescodeinterpretertool.js";
+import {
+  OpenResponsesComputerTool,
+  OpenResponsesComputerTool$Outbound,
+  OpenResponsesComputerTool$outboundSchema,
+} from "./openresponsescomputertool.js";
+import {
+  OpenResponsesCustomTool,
+  OpenResponsesCustomTool$Outbound,
+  OpenResponsesCustomTool$outboundSchema,
+} from "./openresponsescustomtool.js";
+import {
+  OpenResponsesFileSearchTool,
+  OpenResponsesFileSearchTool$Outbound,
+  OpenResponsesFileSearchTool$outboundSchema,
+} from "./openresponsesfilesearchtool.js";
+import {
+  OpenResponsesFunctionShellTool,
+  OpenResponsesFunctionShellTool$Outbound,
+  OpenResponsesFunctionShellTool$outboundSchema,
+} from "./openresponsesfunctionshelltool.js";
+import {
+  OpenResponsesImageGenerationTool,
+  OpenResponsesImageGenerationTool$Outbound,
+  OpenResponsesImageGenerationTool$outboundSchema,
+} from "./openresponsesimagegenerationtool.js";
+import {
+  OpenResponsesInputUnion,
+  OpenResponsesInputUnion$Outbound,
+  OpenResponsesInputUnion$outboundSchema,
+} from "./openresponsesinputunion.js";
+import {
+  OpenResponsesLocalShellTool,
+  OpenResponsesLocalShellTool$Outbound,
+  OpenResponsesLocalShellTool$outboundSchema,
+} from "./openresponseslocalshelltool.js";
+import {
+  OpenResponsesMcpTool,
+  OpenResponsesMcpTool$Outbound,
+  OpenResponsesMcpTool$outboundSchema,
+} from "./openresponsesmcptool.js";
 import {
   OpenResponsesReasoningConfig,
   OpenResponsesReasoningConfig$Outbound,
@@ -88,6 +142,11 @@ import {
   ResponsesOutputModality$outboundSchema,
 } from "./responsesoutputmodality.js";
 import {
+  ResponsesWebSearchServerTool,
+  ResponsesWebSearchServerTool$Outbound,
+  ResponsesWebSearchServerTool$outboundSchema,
+} from "./responseswebsearchservertool.js";
+import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
@@ -108,7 +167,18 @@ export type OpenResponsesRequestToolUnion =
   | OpenResponsesWebSearchPreviewTool
   | OpenResponsesWebSearchPreview20250311Tool
   | OpenResponsesWebSearchTool
-  | OpenResponsesWebSearch20250826Tool;
+  | OpenResponsesWebSearch20250826Tool
+  | OpenResponsesFileSearchTool
+  | OpenResponsesComputerTool
+  | OpenResponsesCodeInterpreterTool
+  | OpenResponsesMcpTool
+  | OpenResponsesImageGenerationTool
+  | OpenResponsesLocalShellTool
+  | OpenResponsesFunctionShellTool
+  | OpenResponsesApplyPatchTool
+  | OpenResponsesCustomTool
+  | DatetimeServerTool
+  | ResponsesWebSearchServerTool;
 
 export type OpenResponsesRequestImageConfig = string | number;
 
@@ -215,6 +285,18 @@ export type OpenResponsesRequestProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
+export type OpenResponsesRequestPluginContextCompression = {
+  id: "context-compression";
+  /**
+   * Set to false to disable the context-compression plugin for this request. Defaults to true.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * The compression engine to use. Defaults to "middle-out".
+   */
+  engine?: ContextCompressionEngine | undefined;
+};
+
 export type OpenResponsesRequestPluginResponseHealing = {
   id: "response-healing";
   /**
@@ -247,6 +329,14 @@ export type OpenResponsesRequestPluginWeb = {
    * The search engine to use for web search.
    */
   engine?: WebSearchEngine | undefined;
+  /**
+   * A list of domains to restrict web search results to. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
+   */
+  includeDomains?: Array<string> | undefined;
+  /**
+   * A list of domains to exclude from web search results. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
+   */
+  excludeDomains?: Array<string> | undefined;
 };
 
 export type OpenResponsesRequestPluginModeration = {
@@ -270,7 +360,8 @@ export type OpenResponsesRequestPluginUnion =
   | OpenResponsesRequestPluginModeration
   | OpenResponsesRequestPluginWeb
   | OpenResponsesRequestPluginFileParser
-  | OpenResponsesRequestPluginResponseHealing;
+  | OpenResponsesRequestPluginResponseHealing
+  | OpenResponsesRequestPluginContextCompression;
 
 /**
  * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
@@ -291,7 +382,7 @@ export type OpenResponsesRequest = {
   /**
    * Input for a response request - can be a string or array of items
    */
-  input?: OpenResponsesInput | undefined;
+  input?: OpenResponsesInputUnion | undefined;
   instructions?: string | null | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
@@ -304,6 +395,17 @@ export type OpenResponsesRequest = {
       | OpenResponsesWebSearchPreview20250311Tool
       | OpenResponsesWebSearchTool
       | OpenResponsesWebSearch20250826Tool
+      | OpenResponsesFileSearchTool
+      | OpenResponsesComputerTool
+      | OpenResponsesCodeInterpreterTool
+      | OpenResponsesMcpTool
+      | OpenResponsesImageGenerationTool
+      | OpenResponsesLocalShellTool
+      | OpenResponsesFunctionShellTool
+      | OpenResponsesApplyPatchTool
+      | OpenResponsesCustomTool
+      | DatetimeServerTool
+      | ResponsesWebSearchServerTool
     >
     | undefined;
   toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
@@ -358,6 +460,7 @@ export type OpenResponsesRequest = {
       | OpenResponsesRequestPluginWeb
       | OpenResponsesRequestPluginFileParser
       | OpenResponsesRequestPluginResponseHealing
+      | OpenResponsesRequestPluginContextCompression
     >
     | undefined;
   /**
@@ -411,7 +514,18 @@ export type OpenResponsesRequestToolUnion$Outbound =
   | OpenResponsesWebSearchPreviewTool$Outbound
   | OpenResponsesWebSearchPreview20250311Tool$Outbound
   | OpenResponsesWebSearchTool$Outbound
-  | OpenResponsesWebSearch20250826Tool$Outbound;
+  | OpenResponsesWebSearch20250826Tool$Outbound
+  | OpenResponsesFileSearchTool$Outbound
+  | OpenResponsesComputerTool$Outbound
+  | OpenResponsesCodeInterpreterTool$Outbound
+  | OpenResponsesMcpTool$Outbound
+  | OpenResponsesImageGenerationTool$Outbound
+  | OpenResponsesLocalShellTool$Outbound
+  | OpenResponsesFunctionShellTool$Outbound
+  | OpenResponsesApplyPatchTool$Outbound
+  | OpenResponsesCustomTool$Outbound
+  | DatetimeServerTool$Outbound
+  | ResponsesWebSearchServerTool$Outbound;
 
 /** @internal */
 export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -423,6 +537,17 @@ export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
   OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
   OpenResponsesWebSearchTool$outboundSchema,
   OpenResponsesWebSearch20250826Tool$outboundSchema,
+  OpenResponsesFileSearchTool$outboundSchema,
+  OpenResponsesComputerTool$outboundSchema,
+  OpenResponsesCodeInterpreterTool$outboundSchema,
+  OpenResponsesMcpTool$outboundSchema,
+  OpenResponsesImageGenerationTool$outboundSchema,
+  OpenResponsesLocalShellTool$outboundSchema,
+  OpenResponsesFunctionShellTool$outboundSchema,
+  OpenResponsesApplyPatchTool$outboundSchema,
+  OpenResponsesCustomTool$outboundSchema,
+  DatetimeServerTool$outboundSchema,
+  ResponsesWebSearchServerTool$outboundSchema,
 ]);
 
 export function openResponsesRequestToolUnionToJSON(
@@ -640,6 +765,35 @@ export function openResponsesRequestProviderToJSON(
 }
 
 /** @internal */
+export type OpenResponsesRequestPluginContextCompression$Outbound = {
+  id: "context-compression";
+  enabled?: boolean | undefined;
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const OpenResponsesRequestPluginContextCompression$outboundSchema:
+  z.ZodType<
+    OpenResponsesRequestPluginContextCompression$Outbound,
+    OpenResponsesRequestPluginContextCompression
+  > = z.object({
+    id: z.literal("context-compression"),
+    enabled: z.boolean().optional(),
+    engine: ContextCompressionEngine$outboundSchema.optional(),
+  });
+
+export function openResponsesRequestPluginContextCompressionToJSON(
+  openResponsesRequestPluginContextCompression:
+    OpenResponsesRequestPluginContextCompression,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestPluginContextCompression$outboundSchema.parse(
+      openResponsesRequestPluginContextCompression,
+    ),
+  );
+}
+
+/** @internal */
 export type OpenResponsesRequestPluginResponseHealing$Outbound = {
   id: "response-healing";
   enabled?: boolean | undefined;
@@ -700,6 +854,8 @@ export type OpenResponsesRequestPluginWeb$Outbound = {
   max_results?: number | undefined;
   search_prompt?: string | undefined;
   engine?: string | undefined;
+  include_domains?: Array<string> | undefined;
+  exclude_domains?: Array<string> | undefined;
 };
 
 /** @internal */
@@ -712,10 +868,14 @@ export const OpenResponsesRequestPluginWeb$outboundSchema: z.ZodType<
   maxResults: z.number().optional(),
   searchPrompt: z.string().optional(),
   engine: WebSearchEngine$outboundSchema.optional(),
+  includeDomains: z.array(z.string()).optional(),
+  excludeDomains: z.array(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
     searchPrompt: "search_prompt",
+    includeDomains: "include_domains",
+    excludeDomains: "exclude_domains",
   });
 });
 
@@ -789,7 +949,8 @@ export type OpenResponsesRequestPluginUnion$Outbound =
   | OpenResponsesRequestPluginModeration$Outbound
   | OpenResponsesRequestPluginWeb$Outbound
   | OpenResponsesRequestPluginFileParser$Outbound
-  | OpenResponsesRequestPluginResponseHealing$Outbound;
+  | OpenResponsesRequestPluginResponseHealing$Outbound
+  | OpenResponsesRequestPluginContextCompression$Outbound;
 
 /** @internal */
 export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
@@ -801,6 +962,7 @@ export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
   z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+  z.lazy(() => OpenResponsesRequestPluginContextCompression$outboundSchema),
 ]);
 
 export function openResponsesRequestPluginUnionToJSON(
@@ -858,7 +1020,7 @@ export function openResponsesRequestTraceToJSON(
 
 /** @internal */
 export type OpenResponsesRequest$Outbound = {
-  input?: OpenResponsesInput$Outbound | undefined;
+  input?: OpenResponsesInputUnion$Outbound | undefined;
   instructions?: string | null | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   tools?:
@@ -868,6 +1030,17 @@ export type OpenResponsesRequest$Outbound = {
       | OpenResponsesWebSearchPreview20250311Tool$Outbound
       | OpenResponsesWebSearchTool$Outbound
       | OpenResponsesWebSearch20250826Tool$Outbound
+      | OpenResponsesFileSearchTool$Outbound
+      | OpenResponsesComputerTool$Outbound
+      | OpenResponsesCodeInterpreterTool$Outbound
+      | OpenResponsesMcpTool$Outbound
+      | OpenResponsesImageGenerationTool$Outbound
+      | OpenResponsesLocalShellTool$Outbound
+      | OpenResponsesFunctionShellTool$Outbound
+      | OpenResponsesApplyPatchTool$Outbound
+      | OpenResponsesCustomTool$Outbound
+      | DatetimeServerTool$Outbound
+      | ResponsesWebSearchServerTool$Outbound
     >
     | undefined;
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
@@ -904,6 +1077,7 @@ export type OpenResponsesRequest$Outbound = {
       | OpenResponsesRequestPluginWeb$Outbound
       | OpenResponsesRequestPluginFileParser$Outbound
       | OpenResponsesRequestPluginResponseHealing$Outbound
+      | OpenResponsesRequestPluginContextCompression$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -916,7 +1090,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
   OpenResponsesRequest$Outbound,
   OpenResponsesRequest
 > = z.object({
-  input: OpenResponsesInput$outboundSchema.optional(),
+  input: OpenResponsesInputUnion$outboundSchema.optional(),
   instructions: z.nullable(z.string()).optional(),
   metadata: z.nullable(z.record(z.string(), z.string())).optional(),
   tools: z.array(
@@ -926,6 +1100,17 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
       OpenResponsesWebSearchPreview20250311Tool$outboundSchema,
       OpenResponsesWebSearchTool$outboundSchema,
       OpenResponsesWebSearch20250826Tool$outboundSchema,
+      OpenResponsesFileSearchTool$outboundSchema,
+      OpenResponsesComputerTool$outboundSchema,
+      OpenResponsesCodeInterpreterTool$outboundSchema,
+      OpenResponsesMcpTool$outboundSchema,
+      OpenResponsesImageGenerationTool$outboundSchema,
+      OpenResponsesLocalShellTool$outboundSchema,
+      OpenResponsesFunctionShellTool$outboundSchema,
+      OpenResponsesApplyPatchTool$outboundSchema,
+      OpenResponsesCustomTool$outboundSchema,
+      DatetimeServerTool$outboundSchema,
+      ResponsesWebSearchServerTool$outboundSchema,
     ]),
   ).optional(),
   toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
@@ -966,6 +1151,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
       z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+      z.lazy(() => OpenResponsesRequestPluginContextCompression$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),

@@ -1,5 +1,6 @@
 import type * as models from '../models/index.js';
 import type { ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
+import type { OpenResponsesNonStreamingResponse } from '../models/index.js';
 
 // Re-export Tool type for convenience
 export type { Tool } from './tool-types.js';
@@ -29,18 +30,21 @@ function buildResolvedRequest(
 /**
  * A field can be either a value of type T or a function that computes T
  */
-export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise<T>);
+export type FieldOrAsyncFunction<T, TExternal extends Record<string, unknown> = Record<string, unknown>> = T | ((context: TurnContext<TExternal>) => T | Promise<T>);
 
 /**
  * Base input type for callModel without approval-related fields
  */
-type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
+type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[], TExternal extends Record<string, unknown> = Record<string, unknown>> = {
   [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
-    models.OpenResponsesRequest[K]
+    models.OpenResponsesRequest[K],
+    TExternal
   >;
 } & {
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  /** External data passed through to TurnContext for use in tool execute and async param functions */
+  external?: TExternal;
   /**
    * Call-level approval check - overrides tool-level requireApproval setting
    * Receives the tool call and turn context, can be sync or async
@@ -49,6 +53,16 @@ type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
     toolCall: ParsedToolCall<TTools[number]>,
     context: TurnContext
   ) => boolean | Promise<boolean>;
+  /**
+   * Callback invoked at the start of each tool execution turn
+   * Receives the turn context with the current turn number
+   */
+  onTurnStart?: (context: TurnContext) => void | Promise<void>;
+  /**
+   * Callback invoked at the end of each tool execution turn
+   * Receives the turn context and the completed response for that turn
+   */
+  onTurnEnd?: (context: TurnContext, response: OpenResponsesNonStreamingResponse) => void | Promise<void>;
 };
 
 /**
@@ -84,14 +98,14 @@ type ApprovalParamsWithoutState = {
  * - `approveToolCalls` and `rejectToolCalls` are only valid when `state` is provided
  * - Using these without `state` will cause a TypeScript error
  */
-export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> =
-  BaseCallModelInput<TTools> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
+export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[], TExternal extends Record<string, unknown> = Record<string, unknown>> =
+  BaseCallModelInput<TTools, TExternal> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
 
 /**
  * CallModelInput variant that requires state - use when approval workflows are needed
  */
-export type CallModelInputWithState<TTools extends readonly Tool[] = readonly Tool[]> =
-  BaseCallModelInput<TTools> & ApprovalParamsWithState<TTools>;
+export type CallModelInputWithState<TTools extends readonly Tool[] = readonly Tool[], TExternal extends Record<string, unknown> = Record<string, unknown>> =
+  BaseCallModelInput<TTools, TExternal> & ApprovalParamsWithState<TTools>;
 
 /**
  * Resolved CallModelInput (all functions evaluated to values)
@@ -121,9 +135,9 @@ export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' 
  * // resolved.temperature === 0.2
  * ```
  */
-export async function resolveAsyncFunctions<TTools extends readonly Tool[] = readonly Tool[]>(
-  input: CallModelInput<TTools>,
-  context: TurnContext,
+export async function resolveAsyncFunctions<TTools extends readonly Tool[] = readonly Tool[], TExternal extends Record<string, unknown> = Record<string, unknown>>(
+  input: CallModelInput<TTools, TExternal>,
+  context: TurnContext<TExternal>,
 ): Promise<ResolvedCallModelInput> {
   // Build array of resolved entries
   const resolvedEntries: Array<readonly [string, unknown]> = [];
@@ -135,6 +149,9 @@ export async function resolveAsyncFunctions<TTools extends readonly Tool[] = rea
     'requireApproval',    // Client-side approval check function
     'approveToolCalls',   // Client-side approval decisions
     'rejectToolCalls',    // Client-side rejection decisions
+    'external',           // Passed through via GetResponseOptions, not sent to API
+    'onTurnStart',        // Client-side turn start callback
+    'onTurnEnd',          // Client-side turn end callback
   ]);
 
   // Iterate over all keys in the input
