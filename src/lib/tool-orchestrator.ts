@@ -22,7 +22,7 @@ export interface ToolOrchestrationResult {
   finalResponse: models.OpenResponsesNonStreamingResponse;
   allResponses: models.OpenResponsesNonStreamingResponse[];
   toolExecutionResults: ToolExecutionResult<Tool>[];
-  conversationInput: models.OpenResponsesInput;
+  conversationInput: models.OpenResponsesInputUnion;
 }
 
 /**
@@ -39,10 +39,10 @@ export interface ToolOrchestrationResult {
  */
 export async function executeToolLoop(
   sendRequest: (
-    input: models.OpenResponsesInput,
+    input: models.OpenResponsesInputUnion,
     tools: APITool[],
   ) => Promise<models.OpenResponsesNonStreamingResponse>,
-  initialInput: models.OpenResponsesInput,
+  initialInput: models.OpenResponsesInputUnion,
   initialRequest: models.OpenResponsesRequest,
   tools: Tool[],
   apiTools: APITool[],
@@ -52,7 +52,7 @@ export async function executeToolLoop(
 
   const allResponses: models.OpenResponsesNonStreamingResponse[] = [];
   const toolExecutionResults: ToolExecutionResult<Tool>[] = [];
-  let conversationInput: models.OpenResponsesInput = initialInput;
+  let conversationInput: models.OpenResponsesInputUnion = initialInput;
   let currentRequest: models.OpenResponsesRequest = { ...initialRequest };
 
   let currentRound = 0;

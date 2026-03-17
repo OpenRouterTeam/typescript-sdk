@@ -15,7 +15,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type DefaultParameters = {
   temperature?: number | null | undefined;
   topP?: number | null | undefined;
+  topK?: number | null | undefined;
   frequencyPenalty?: number | null | undefined;
+  presencePenalty?: number | null | undefined;
+  repetitionPenalty?: number | null | undefined;
 };
 
 /** @internal */
@@ -25,11 +28,17 @@ export const DefaultParameters$inboundSchema: z.ZodType<
 > = z.object({
   temperature: z.nullable(z.number()).optional(),
   top_p: z.nullable(z.number()).optional(),
+  top_k: z.nullable(z.int()).optional(),
   frequency_penalty: z.nullable(z.number()).optional(),
+  presence_penalty: z.nullable(z.number()).optional(),
+  repetition_penalty: z.nullable(z.number()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "top_p": "topP",
+    "top_k": "topK",
     "frequency_penalty": "frequencyPenalty",
+    "presence_penalty": "presencePenalty",
+    "repetition_penalty": "repetitionPenalty",
   });
 });
 

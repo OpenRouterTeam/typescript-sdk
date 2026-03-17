@@ -53,6 +53,10 @@ const value: models.ResponsesOutputItemFunctionCall = {
 const value: models.ResponsesWebSearchCallOutput = {
   type: "web_search_call",
   id: "search-abc123",
+  action: {
+    type: "search",
+    query: "OpenAI API",
+  },
   status: "completed",
 };
 ```
@@ -79,6 +83,15 @@ const value: models.ResponsesImageGenerationCall = {
   id: "imagegen-abc123",
   result:
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  status: "completed",
+};
+```
+
+### `models.ResponsesServerToolOutput`
+
+```typescript
+const value: models.ResponsesServerToolOutput = {
+  type: "openrouter:web_search",
   status: "completed",
 };
 ```

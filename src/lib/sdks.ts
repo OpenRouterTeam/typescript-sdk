@@ -4,7 +4,7 @@
  */
 
 import { SDKHooks } from "../hooks/hooks.js";
-import type { Hook, HookContext } from "../hooks/types.js";
+import { HookContext } from "../hooks/types.js";
 import {
   ConnectionError,
   InvalidRequestError,
@@ -87,19 +87,17 @@ export class ClientSDK {
   public readonly _options: SDKOptions & { hooks?: SDKHooks };
 
   constructor(options: SDKOptions = {}) {
-    // Reuse existing SDKHooks if passed (for sub-SDKs)
-    if (options.hooks instanceof SDKHooks) {
-      this.#hooks = options.hooks;
+    const opt = options as unknown;
+    if (
+      typeof opt === "object"
+      && opt != null
+      && "hooks" in opt
+      && opt.hooks instanceof SDKHooks
+    ) {
+      this.#hooks = opt.hooks;
     } else {
       this.#hooks = new SDKHooks();
-      if (options.hooks) {
-        const hooksArray = Array.isArray(options.hooks) ? options.hooks : [options.hooks];
-        for (const hook of hooksArray) {
-          this.#registerHook(hook);
-        }
-      }
     }
-
     const defaultHttpClient = new HTTPClient();
     options.httpClient = options.httpClient || defaultHttpClient;
     options = this.#hooks.sdkInit(options);
@@ -116,24 +114,6 @@ export class ClientSDK {
     this.#logger = this._options.debugLogger;
     if (!this.#logger && env().OPENROUTER_DEBUG) {
       this.#logger = console;
-    }
-  }
-
-  #registerHook(hook: Hook): void {
-    if ("sdkInit" in hook) {
-      this.#hooks.registerSDKInitHook(hook);
-    }
-    if ("beforeCreateRequest" in hook) {
-      this.#hooks.registerBeforeCreateRequestHook(hook);
-    }
-    if ("beforeRequest" in hook) {
-      this.#hooks.registerBeforeRequestHook(hook);
-    }
-    if ("afterSuccess" in hook) {
-      this.#hooks.registerAfterSuccessHook(hook);
-    }
-    if ("afterError" in hook) {
-      this.#hooks.registerAfterErrorHook(hook);
     }
   }
 

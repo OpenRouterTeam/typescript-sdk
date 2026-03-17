@@ -16,7 +16,6 @@ let value: ChatMessageTokenLogprobs = {
       topLogprobs: [],
     },
   ],
-  refusal: null,
 };
 ```
 
@@ -25,4 +24,4 @@ let value: ChatMessageTokenLogprobs = {
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | `content`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | Log probabilities for content tokens                                     |
-| `refusal`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_check_mark:                                                       | Log probabilities for refusal tokens                                     |
+| `refusal`                                                                | [models.ChatMessageTokenLogprob](../models/chatmessagetokenlogprob.md)[] | :heavy_minus_sign:                                                       | Log probabilities for refusal tokens                                     |

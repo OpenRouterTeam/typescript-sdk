@@ -24,7 +24,13 @@ export type GetGenerationGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type GetGenerationRequest = {
@@ -40,7 +46,13 @@ export type GetGenerationRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   id: string;
 };
 
@@ -85,6 +97,7 @@ export const ProviderName = {
   Together2: "Together 2",
   Ubicloud: "Ubicloud",
   OneDotAI: "01.AI",
+  AkashML: "AkashML",
   Ai21: "AI21",
   AionLabs: "AionLabs",
   Alibaba: "Alibaba",
@@ -312,6 +325,14 @@ export type GetGenerationData = {
    * List of provider responses for this generation, including fallback attempts
    */
   providerResponses: Array<ProviderResponse> | null;
+  /**
+   * User-Agent header from the request
+   */
+  userAgent: string | null;
+  /**
+   * Referer header from the request
+   */
+  httpReferer: string | null;
 };
 
 /**
@@ -327,7 +348,8 @@ export type GetGenerationResponse = {
 /** @internal */
 export type GetGenerationRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   id: string;
 };
 
@@ -337,12 +359,12 @@ export const GetGenerationRequest$outboundSchema: z.ZodType<
   GetGenerationRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 
@@ -434,6 +456,8 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   provider_responses: z.nullable(
     z.array(z.lazy(() => ProviderResponse$inboundSchema)),
   ),
+  user_agent: z.nullable(z.string()),
+  http_referer: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "upstream_id": "upstreamId",
@@ -462,6 +486,8 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "external_user": "externalUser",
     "api_type": "apiType",
     "provider_responses": "providerResponses",
+    "user_agent": "userAgent",
+    "http_referer": "httpReferer",
   });
 });
 

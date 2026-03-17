@@ -6,20 +6,23 @@ import type {
   TurnContext,
   UnsentToolResult,
 } from './tool-types.js';
+
+import { isFunctionCallItem, isOutputMessage } from './stream-type-guards.js';
 import { normalizeInputToArray } from './turn-context.js';
 
 /**
  * Type guard to verify an object is a valid UnsentToolResult
  */
 function isValidUnsentToolResult<TTools extends readonly Tool[]>(
-  obj: unknown
+  obj: unknown,
 ): obj is UnsentToolResult<TTools> {
   if (typeof obj !== 'object' || obj === null) return false;
-  const candidate = obj as Record<string, unknown>;
   return (
-    typeof candidate['callId'] === 'string' &&
-    typeof candidate['name'] === 'string' &&
-    'output' in candidate
+    'callId' in obj &&
+    typeof obj.callId === 'string' &&
+    'name' in obj &&
+    typeof obj.name === 'string' &&
+    'output' in obj
   );
 }
 
@@ -27,14 +30,15 @@ function isValidUnsentToolResult<TTools extends readonly Tool[]>(
  * Type guard to verify an object is a valid ParsedToolCall
  */
 function isValidParsedToolCall<TTools extends readonly Tool[]>(
-  obj: unknown
+  obj: unknown,
 ): obj is ParsedToolCall<TTools[number]> {
   if (typeof obj !== 'object' || obj === null) return false;
-  const candidate = obj as Record<string, unknown>;
   return (
-    typeof candidate['id'] === 'string' &&
-    typeof candidate['name'] === 'string' &&
-    'arguments' in candidate
+    'id' in obj &&
+    typeof obj.id === 'string' &&
+    'name' in obj &&
+    typeof obj.name === 'string' &&
+    'arguments' in obj
   );
 }
 
@@ -55,7 +59,7 @@ export function generateConversationId(): string {
  * @param id - Optional custom ID, generates one if not provided
  */
 export function createInitialState<TTools extends readonly Tool[] = readonly Tool[]>(
-  id?: string
+  id?: string,
 ): ConversationState<TTools> {
   const now = Date.now();
   return {
@@ -73,7 +77,7 @@ export function createInitialState<TTools extends readonly Tool[] = readonly Too
  */
 export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
   state: ConversationState<TTools>,
-  updates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>>
+  updates: Partial<Omit<ConversationState<TTools>, 'id' | 'createdAt' | 'updatedAt'>>,
 ): ConversationState<TTools> {
   return {
     ...state,
@@ -86,11 +90,14 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  * Append new items to the message history
  */
 export function appendToMessages(
-  current: models.OpenResponsesInput,
-  newItems: models.OpenResponsesInput1[]
-): models.OpenResponsesInput {
+  current: models.OpenResponsesInputUnion,
+  newItems: models.OpenResponsesInputUnion1[],
+): models.OpenResponsesInputUnion {
   const currentArray = normalizeInputToArray(current);
-  return [...currentArray, ...newItems];
+  return [
+    ...currentArray,
+    ...newItems,
+  ];
 }
 
 /**
@@ -104,7 +111,10 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   toolCall: ParsedToolCall<TTools[number]>,
   tools: TTools,
   context: TurnContext,
-  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
+  callLevelCheck?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext,
+  ) => boolean | Promise<boolean>,
 ): Promise<boolean> {
   // Call-level check takes precedence
   if (callLevelCheck) {
@@ -112,7 +122,7 @@ export async function toolRequiresApproval<TTools extends readonly Tool[]>(
   }
 
   // Fall back to tool-level setting
-  const tool = tools.find(t => t.function.name === toolCall.name);
+  const tool = tools.find((t) => t.function.name === toolCall.name);
   if (!tool) return false;
 
   const requireApproval = tool.function.requireApproval;
@@ -137,7 +147,10 @@ export async function partitionToolCalls<TTools extends readonly Tool[]>(
   toolCalls: ParsedToolCall<TTools[number]>[],
   tools: TTools,
   context: TurnContext,
-  callLevelCheck?: (toolCall: ParsedToolCall<TTools[number]>, context: TurnContext) => boolean | Promise<boolean>
+  callLevelCheck?: (
+    toolCall: ParsedToolCall<TTools[number]>,
+    context: TurnContext,
+  ) => boolean | Promise<boolean>,
 ): Promise<{
   requiresApproval: ParsedToolCall<TTools[number]>[];
   autoExecute: ParsedToolCall<TTools[number]>[];
@@ -153,7 +166,10 @@ export async function partitionToolCalls<TTools extends readonly Tool[]>(
     }
   }
 
-  return { requiresApproval, autoExecute };
+  return {
+    requiresApproval,
+    autoExecute,
+  };
 }
 
 /**
@@ -162,9 +178,13 @@ export async function partitionToolCalls<TTools extends readonly Tool[]>(
 export function createUnsentResult<TTools extends readonly Tool[] = readonly Tool[]>(
   callId: string,
   name: string,
-  output: unknown
+  output: unknown,
 ): UnsentToolResult<TTools> {
-  const result = { callId, name, output };
+  const result = {
+    callId,
+    name,
+    output,
+  };
   if (!isValidUnsentToolResult<TTools>(result)) {
     throw new Error('Invalid UnsentToolResult structure');
   }
@@ -177,7 +197,7 @@ export function createUnsentResult<TTools extends readonly Tool[] = readonly Too
 export function createRejectedResult<TTools extends readonly Tool[] = readonly Tool[]>(
   callId: string,
   name: string,
-  reason?: string
+  reason?: string,
 ): UnsentToolResult<TTools> {
   const result = {
     callId,
@@ -195,14 +215,16 @@ export function createRejectedResult<TTools extends readonly Tool[] = readonly T
  * Convert unsent tool results to API format for sending to the model
  */
 export function unsentResultsToAPIFormat(
-  results: UnsentToolResult[]
+  results: UnsentToolResult[],
 ): models.OpenResponsesFunctionCallOutput[] {
-  return results.map(r => ({
+  return results.map((r) => ({
     type: 'function_call_output' as const,
     id: `output_${r.callId}`,
     callId: r.callId,
     output: r.error
-      ? JSON.stringify({ error: r.error })
+      ? JSON.stringify({
+          error: r.error,
+        })
       : JSON.stringify(r.output),
   }));
 }
@@ -211,17 +233,21 @@ export function unsentResultsToAPIFormat(
  * Extract text content from a response
  */
 export function extractTextFromResponse(
-  response: models.OpenResponsesNonStreamingResponse
+  response: models.OpenResponsesNonStreamingResponse,
 ): string {
   if (!response.output) {
     return '';
   }
 
-  const outputs = Array.isArray(response.output) ? response.output : [response.output];
+  const outputs = Array.isArray(response.output)
+    ? response.output
+    : [
+        response.output,
+      ];
   const textParts: string[] = [];
 
   for (const item of outputs) {
-    if (item.type === 'message' && item.content) {
+    if (isOutputMessage(item)) {
       for (const content of item.content) {
         if (content.type === 'output_text' && content.text) {
           textParts.push(content.text);
@@ -237,42 +263,48 @@ export function extractTextFromResponse(
  * Extract tool calls from a response
  */
 export function extractToolCallsFromResponse<TTools extends readonly Tool[]>(
-  response: models.OpenResponsesNonStreamingResponse
+  response: models.OpenResponsesNonStreamingResponse,
 ): ParsedToolCall<TTools[number]>[] {
   if (!response.output) {
     return [];
   }
 
-  const outputs = Array.isArray(response.output) ? response.output : [response.output];
+  const outputs = Array.isArray(response.output)
+    ? response.output
+    : [
+        response.output,
+      ];
   const toolCalls: ParsedToolCall<TTools[number]>[] = [];
 
   for (const item of outputs) {
-    if (item.type === 'function_call') {
-      let parsedArguments: unknown;
-      if (typeof item.arguments === 'string') {
-        try {
-          parsedArguments = JSON.parse(item.arguments);
-        } catch (error) {
-          // Log warning and skip malformed tool call, similar to stream-transformers.ts
-          console.warn(
-            `Failed to parse arguments for tool call "${item.name}": ${error instanceof Error ? error.message : String(error)}`
-          );
-          continue;
-        }
-      } else {
-        parsedArguments = item.arguments;
-      }
-
-      const toolCall = {
-        id: item.callId ?? item.id ?? '',
-        name: item.name ?? '',
-        arguments: parsedArguments,
-      };
-      if (!isValidParsedToolCall<TTools>(toolCall)) {
-        throw new Error(`Invalid tool call structure for tool: ${item.name}`);
-      }
-      toolCalls.push(toolCall);
+    if (!isFunctionCallItem(item)) {
+      continue;
     }
+
+    let parsedArguments: unknown;
+    if (typeof item.arguments === 'string') {
+      try {
+        parsedArguments = JSON.parse(item.arguments);
+      } catch (error) {
+        // Log warning and skip malformed tool call, similar to stream-transformers.ts
+        console.warn(
+          `Failed to parse arguments for tool call "${item.name}": ${error instanceof Error ? error.message : String(error)}`,
+        );
+        continue;
+      }
+    } else {
+      parsedArguments = item.arguments;
+    }
+
+    const toolCall = {
+      id: item.callId ?? item.id ?? '',
+      name: item.name ?? '',
+      arguments: parsedArguments,
+    };
+    if (!isValidParsedToolCall<TTools>(toolCall)) {
+      throw new Error(`Invalid tool call structure for tool: ${item.name}`);
+    }
+    toolCalls.push(toolCall);
   }
 
   return toolCalls;

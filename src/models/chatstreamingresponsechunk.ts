@@ -63,7 +63,7 @@ export type ChatStreamingResponseChunk = {
   /**
    * System fingerprint
    */
-  systemFingerprint?: string | null | undefined;
+  systemFingerprint?: string | undefined;
   /**
    * Error information
    */
@@ -105,7 +105,7 @@ export const ChatStreamingResponseChunk$inboundSchema: z.ZodType<
   created: z.number(),
   model: z.string(),
   object: ChatStreamingResponseChunkObject$inboundSchema,
-  system_fingerprint: z.nullable(z.string()).optional(),
+  system_fingerprint: z.string().optional(),
   error: z.lazy(() => ErrorT$inboundSchema).optional(),
   usage: ChatGenerationTokenUsage$inboundSchema.optional(),
 }).transform((v) => {

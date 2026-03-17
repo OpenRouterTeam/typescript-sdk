@@ -48,3 +48,12 @@ const value: models.ChatMessageContentItem1 = {
 };
 ```
 
+### `models.ChatMessageContentItemFile`
+
+```typescript
+const value: models.ChatMessageContentItemFile = {
+  type: "file",
+  file: {},
+};
+```
+

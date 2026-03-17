@@ -23,7 +23,7 @@ export type ChatMessageTokenLogprobs = {
   /**
    * Log probabilities for refusal tokens
    */
-  refusal: Array<ChatMessageTokenLogprob> | null;
+  refusal?: Array<ChatMessageTokenLogprob> | null | undefined;
 };
 
 /** @internal */
@@ -32,7 +32,8 @@ export const ChatMessageTokenLogprobs$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   content: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
-  refusal: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema)),
+  refusal: z.nullable(z.array(ChatMessageTokenLogprob$inboundSchema))
+    .optional(),
 });
 
 export function chatMessageTokenLogprobsFromJSON(

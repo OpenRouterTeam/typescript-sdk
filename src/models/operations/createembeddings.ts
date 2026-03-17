@@ -25,7 +25,13 @@ export type CreateEmbeddingsGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type ImageUrl = {
@@ -92,7 +98,13 @@ export type CreateEmbeddingsRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   requestBody: CreateEmbeddingsRequestBody;
 };
 
@@ -307,7 +319,8 @@ export function createEmbeddingsRequestBodyToJSON(
 /** @internal */
 export type CreateEmbeddingsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   RequestBody: CreateEmbeddingsRequestBody$Outbound;
 };
 
@@ -317,12 +330,12 @@ export const CreateEmbeddingsRequest$outboundSchema: z.ZodType<
   CreateEmbeddingsRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   requestBody: z.lazy(() => CreateEmbeddingsRequestBody$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     requestBody: "RequestBody",
   });
 });

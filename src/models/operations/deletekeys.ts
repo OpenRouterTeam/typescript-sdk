@@ -22,7 +22,13 @@ export type DeleteKeysGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type DeleteKeysRequest = {
@@ -38,7 +44,13 @@ export type DeleteKeysRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   /**
    * The hash identifier of the API key to delete
    */
@@ -58,7 +70,8 @@ export type DeleteKeysResponse = {
 /** @internal */
 export type DeleteKeysRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   hash: string;
 };
 
@@ -68,12 +81,12 @@ export const DeleteKeysRequest$outboundSchema: z.ZodType<
   DeleteKeysRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   hash: z.string(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
   });
 });
 

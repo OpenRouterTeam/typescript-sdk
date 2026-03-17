@@ -43,3 +43,11 @@ const value: models.ChatGenerationParamsPluginResponseHealing = {
 };
 ```
 
+### `models.ChatGenerationParamsPluginContextCompression`
+
+```typescript
+const value: models.ChatGenerationParamsPluginContextCompression = {
+  id: "context-compression",
+};
+```
+

@@ -12,6 +12,6 @@ const value: models.ProviderPreferencesProviderSortConfig = {};
 ### `models.ProviderPreferencesProviderSortConfigEnum`
 
 ```typescript
-const value: models.ProviderPreferencesProviderSortConfigEnum = "latency";
+const value: models.ProviderPreferencesProviderSortConfigEnum = "exacto";
 ```
 

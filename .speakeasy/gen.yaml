@@ -36,7 +36,7 @@ generation:
   preApplyUnionDiscriminators: true
   versioningStrategy: automatic
 typescript:
-  version: 0.9.11
+  version: 0.11.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -115,4 +115,6 @@ typescript:
   unionStrategy: left-to-right
   usageSDKInitImports: []
   useIndexModules: true
+  useOxlint: false
+  useTsgo: false
   zodVersion: v4

@@ -5,7 +5,6 @@ import {
   OpenResponsesEasyInputMessageRoleAssistant,
   OpenResponsesEasyInputMessageRoleDeveloper,
 } from "../models/openresponseseasyinputmessage.js";
-import { OpenResponsesFunctionCallOutputType } from "../models/openresponsesfunctioncalloutput.js";
 import { extractMessageFromResponse } from "./stream-transformers.js";
 
 /**
@@ -85,7 +84,7 @@ function contentToString(content: unknown): string {
  */
 export function fromChatMessages(
   messages: models.Message[]
-): models.OpenResponsesInput {
+): models.OpenResponsesInputUnion {
   return messages.map(
     (
       msg
@@ -94,7 +93,7 @@ export function fromChatMessages(
       | models.OpenResponsesFunctionCallOutput => {
       if (isToolResponseMessage(msg)) {
         return {
-          type: OpenResponsesFunctionCallOutputType.FunctionCallOutput,
+          type: "function_call_output" as const,
           callId: msg.toolCallId,
           output: contentToString(msg.content),
         };

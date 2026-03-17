@@ -47,7 +47,7 @@ export type ChatResponse = {
   /**
    * System fingerprint
    */
-  systemFingerprint?: string | null | undefined;
+  systemFingerprint: string | null;
   /**
    * Token usage statistics
    */
@@ -67,7 +67,7 @@ export const ChatResponse$inboundSchema: z.ZodType<ChatResponse, unknown> = z
     created: z.number(),
     model: z.string(),
     object: ChatResponseObject$inboundSchema,
-    system_fingerprint: z.nullable(z.string()).optional(),
+    system_fingerprint: z.nullable(z.string()),
     usage: ChatGenerationTokenUsage$inboundSchema.optional(),
   }).transform((v) => {
     return remap$(v, {
