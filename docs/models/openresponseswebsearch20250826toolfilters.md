@@ -13,3 +13,4 @@ let value: OpenResponsesWebSearch20250826ToolFilters = {};
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `allowedDomains`   | *string*[]         | :heavy_minus_sign: | N/A                |
+| `excludedDomains`  | *string*[]         | :heavy_minus_sign: | N/A                |

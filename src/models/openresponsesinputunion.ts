@@ -53,11 +53,6 @@ import {
   ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
 import {
-  ResponsesDatetimeOutput,
-  ResponsesDatetimeOutput$Outbound,
-  ResponsesDatetimeOutput$outboundSchema,
-} from "./responsesdatetimeoutput.js";
-import {
   ResponsesImageGenerationCall,
   ResponsesImageGenerationCall$Outbound,
   ResponsesImageGenerationCall$outboundSchema,
@@ -72,6 +67,11 @@ import {
   ResponsesOutputItemFunctionCall$Outbound,
   ResponsesOutputItemFunctionCall$outboundSchema,
 } from "./responsesoutputitemfunctioncall.js";
+import {
+  ResponsesServerToolOutput,
+  ResponsesServerToolOutput$Outbound,
+  ResponsesServerToolOutput$outboundSchema,
+} from "./responsesservertooloutput.js";
 import {
   ResponsesWebSearchCallOutput,
   ResponsesWebSearchCallOutput$Outbound,
@@ -257,11 +257,11 @@ export type OpenResponsesInputUnion1 =
   | ResponsesOutputItemFunctionCall
   | ResponsesWebSearchCallOutput
   | ResponsesOutputItemFileSearchCall
-  | ResponsesDatetimeOutput
   | OpenResponsesReasoning
   | OpenResponsesFunctionCallOutput
   | OpenResponsesInputReasoning
   | ResponsesImageGenerationCall
+  | ResponsesServerToolOutput
   | OpenResponsesEasyInputMessage
   | OpenResponsesInputMessageItem;
 
@@ -276,11 +276,11 @@ export type OpenResponsesInputUnion =
     | ResponsesOutputItemFunctionCall
     | ResponsesWebSearchCallOutput
     | ResponsesOutputItemFileSearchCall
-    | ResponsesDatetimeOutput
     | OpenResponsesReasoning
     | OpenResponsesFunctionCallOutput
     | OpenResponsesInputReasoning
     | ResponsesImageGenerationCall
+    | ResponsesServerToolOutput
     | OpenResponsesEasyInputMessage
     | OpenResponsesInputMessageItem
   >;
@@ -577,11 +577,11 @@ export type OpenResponsesInputUnion1$Outbound =
   | ResponsesOutputItemFunctionCall$Outbound
   | ResponsesWebSearchCallOutput$Outbound
   | ResponsesOutputItemFileSearchCall$Outbound
-  | ResponsesDatetimeOutput$Outbound
   | OpenResponsesReasoning$Outbound
   | OpenResponsesFunctionCallOutput$Outbound
   | OpenResponsesInputReasoning$Outbound
   | ResponsesImageGenerationCall$Outbound
+  | ResponsesServerToolOutput$Outbound
   | OpenResponsesEasyInputMessage$Outbound
   | OpenResponsesInputMessageItem$Outbound;
 
@@ -595,11 +595,11 @@ export const OpenResponsesInputUnion1$outboundSchema: z.ZodType<
   ResponsesOutputItemFunctionCall$outboundSchema,
   ResponsesWebSearchCallOutput$outboundSchema,
   ResponsesOutputItemFileSearchCall$outboundSchema,
-  ResponsesDatetimeOutput$outboundSchema,
   OpenResponsesReasoning$outboundSchema,
   OpenResponsesFunctionCallOutput$outboundSchema,
   z.lazy(() => OpenResponsesInputReasoning$outboundSchema),
   ResponsesImageGenerationCall$outboundSchema,
+  ResponsesServerToolOutput$outboundSchema,
   OpenResponsesEasyInputMessage$outboundSchema,
   OpenResponsesInputMessageItem$outboundSchema,
 ]);
@@ -621,11 +621,11 @@ export type OpenResponsesInputUnion$Outbound =
     | ResponsesOutputItemFunctionCall$Outbound
     | ResponsesWebSearchCallOutput$Outbound
     | ResponsesOutputItemFileSearchCall$Outbound
-    | ResponsesDatetimeOutput$Outbound
     | OpenResponsesReasoning$Outbound
     | OpenResponsesFunctionCallOutput$Outbound
     | OpenResponsesInputReasoning$Outbound
     | ResponsesImageGenerationCall$Outbound
+    | ResponsesServerToolOutput$Outbound
     | OpenResponsesEasyInputMessage$Outbound
     | OpenResponsesInputMessageItem$Outbound
   >;
@@ -642,11 +642,11 @@ export const OpenResponsesInputUnion$outboundSchema: z.ZodType<
     ResponsesOutputItemFunctionCall$outboundSchema,
     ResponsesWebSearchCallOutput$outboundSchema,
     ResponsesOutputItemFileSearchCall$outboundSchema,
-    ResponsesDatetimeOutput$outboundSchema,
     OpenResponsesReasoning$outboundSchema,
     OpenResponsesFunctionCallOutput$outboundSchema,
     z.lazy(() => OpenResponsesInputReasoning$outboundSchema),
     ResponsesImageGenerationCall$outboundSchema,
+    ResponsesServerToolOutput$outboundSchema,
     OpenResponsesEasyInputMessage$outboundSchema,
     OpenResponsesInputMessageItem$outboundSchema,
   ])),

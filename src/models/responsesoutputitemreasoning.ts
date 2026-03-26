@@ -19,6 +19,13 @@ import {
   ReasoningTextContent$inboundSchema,
 } from "./reasoningtextcontent.js";
 
+export const ResponsesOutputItemReasoningType = {
+  Reasoning: "reasoning",
+} as const;
+export type ResponsesOutputItemReasoningType = ClosedEnum<
+  typeof ResponsesOutputItemReasoningType
+>;
+
 export const ResponsesOutputItemReasoningStatusInProgress = {
   InProgress: "in_progress",
 } as const;
@@ -67,7 +74,7 @@ export type ResponsesOutputItemReasoningFormat = OpenEnum<
  * An output item containing reasoning
  */
 export type ResponsesOutputItemReasoning = {
-  type: "reasoning";
+  type: ResponsesOutputItemReasoningType;
   id: string;
   content?: Array<ReasoningTextContent> | null | undefined;
   summary: Array<ReasoningSummaryText>;
@@ -86,6 +93,11 @@ export type ResponsesOutputItemReasoning = {
    */
   format?: ResponsesOutputItemReasoningFormat | null | undefined;
 };
+
+/** @internal */
+export const ResponsesOutputItemReasoningType$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputItemReasoningType
+> = z.enum(ResponsesOutputItemReasoningType);
 
 /** @internal */
 export const ResponsesOutputItemReasoningStatusInProgress$inboundSchema:
@@ -142,7 +154,7 @@ export const ResponsesOutputItemReasoning$inboundSchema: z.ZodType<
   ResponsesOutputItemReasoning,
   unknown
 > = z.object({
-  type: z.literal("reasoning"),
+  type: ResponsesOutputItemReasoningType$inboundSchema,
   id: z.string(),
   content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
   summary: z.array(ReasoningSummaryText$inboundSchema),

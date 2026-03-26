@@ -20,6 +20,11 @@ import {
   WebSearchServerTool$Outbound,
   WebSearchServerTool$outboundSchema,
 } from "./websearchservertool.js";
+import {
+  WebSearchShorthand,
+  WebSearchShorthand$Outbound,
+  WebSearchShorthand$outboundSchema,
+} from "./websearchshorthand.js";
 
 /**
  * Function definition for tool calling
@@ -61,7 +66,11 @@ export type ToolDefinitionJsonFunction = {
 export type ToolDefinitionJson =
   | ToolDefinitionJsonFunction
   | DatetimeServerTool
-  | WebSearchServerTool;
+  | WebSearchServerTool
+  | (WebSearchShorthand & { type: "web_search" })
+  | (WebSearchShorthand & { type: "web_search_preview" })
+  | (WebSearchShorthand & { type: "web_search_preview_2025_03_11" })
+  | (WebSearchShorthand & { type: "web_search_2025_08_26" });
 
 /** @internal */
 export type ToolDefinitionJsonFunctionFunction$Outbound = {
@@ -125,7 +134,11 @@ export function toolDefinitionJsonFunctionToJSON(
 export type ToolDefinitionJson$Outbound =
   | ToolDefinitionJsonFunction$Outbound
   | DatetimeServerTool$Outbound
-  | WebSearchServerTool$Outbound;
+  | WebSearchServerTool$Outbound
+  | (WebSearchShorthand$Outbound & { type: "web_search" })
+  | (WebSearchShorthand$Outbound & { type: "web_search_preview" })
+  | (WebSearchShorthand$Outbound & { type: "web_search_preview_2025_03_11" })
+  | (WebSearchShorthand$Outbound & { type: "web_search_2025_08_26" });
 
 /** @internal */
 export const ToolDefinitionJson$outboundSchema: z.ZodType<
@@ -135,6 +148,18 @@ export const ToolDefinitionJson$outboundSchema: z.ZodType<
   z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
   WebSearchServerTool$outboundSchema,
+  WebSearchShorthand$outboundSchema.and(
+    z.object({ type: z.literal("web_search") }),
+  ),
+  WebSearchShorthand$outboundSchema.and(
+    z.object({ type: z.literal("web_search_preview") }),
+  ),
+  WebSearchShorthand$outboundSchema.and(
+    z.object({ type: z.literal("web_search_preview_2025_03_11") }),
+  ),
+  WebSearchShorthand$outboundSchema.and(
+    z.object({ type: z.literal("web_search_2025_08_26") }),
+  ),
 ]);
 
 export function toolDefinitionJsonToJSON(

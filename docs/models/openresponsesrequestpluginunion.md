@@ -43,3 +43,11 @@ const value: models.OpenResponsesRequestPluginResponseHealing = {
 };
 ```
 
+### `models.OpenResponsesRequestPluginContextCompression`
+
+```typescript
+const value: models.OpenResponsesRequestPluginContextCompression = {
+  id: "context-compression",
+};
+```
+

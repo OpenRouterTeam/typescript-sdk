@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  ContextCompressionEngine,
+  ContextCompressionEngine$outboundSchema,
+} from "./contextcompressionengine.js";
+import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
@@ -138,14 +142,14 @@ import {
   ResponsesOutputModality$outboundSchema,
 } from "./responsesoutputmodality.js";
 import {
+  ResponsesWebSearchServerTool,
+  ResponsesWebSearchServerTool$Outbound,
+  ResponsesWebSearchServerTool$outboundSchema,
+} from "./responseswebsearchservertool.js";
+import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
-import {
-  WebSearchServerTool,
-  WebSearchServerTool$Outbound,
-  WebSearchServerTool$outboundSchema,
-} from "./websearchservertool.js";
 
 /**
  * Function tool definition
@@ -174,7 +178,7 @@ export type OpenResponsesRequestToolUnion =
   | OpenResponsesApplyPatchTool
   | OpenResponsesCustomTool
   | DatetimeServerTool
-  | WebSearchServerTool;
+  | ResponsesWebSearchServerTool;
 
 export type OpenResponsesRequestImageConfig = string | number;
 
@@ -281,6 +285,18 @@ export type OpenResponsesRequestProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
+export type OpenResponsesRequestPluginContextCompression = {
+  id: "context-compression";
+  /**
+   * Set to false to disable the context-compression plugin for this request. Defaults to true.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * The compression engine to use. Defaults to "middle-out".
+   */
+  engine?: ContextCompressionEngine | undefined;
+};
+
 export type OpenResponsesRequestPluginResponseHealing = {
   id: "response-healing";
   /**
@@ -344,7 +360,8 @@ export type OpenResponsesRequestPluginUnion =
   | OpenResponsesRequestPluginModeration
   | OpenResponsesRequestPluginWeb
   | OpenResponsesRequestPluginFileParser
-  | OpenResponsesRequestPluginResponseHealing;
+  | OpenResponsesRequestPluginResponseHealing
+  | OpenResponsesRequestPluginContextCompression;
 
 /**
  * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
@@ -388,7 +405,7 @@ export type OpenResponsesRequest = {
       | OpenResponsesApplyPatchTool
       | OpenResponsesCustomTool
       | DatetimeServerTool
-      | WebSearchServerTool
+      | ResponsesWebSearchServerTool
     >
     | undefined;
   toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
@@ -443,6 +460,7 @@ export type OpenResponsesRequest = {
       | OpenResponsesRequestPluginWeb
       | OpenResponsesRequestPluginFileParser
       | OpenResponsesRequestPluginResponseHealing
+      | OpenResponsesRequestPluginContextCompression
     >
     | undefined;
   /**
@@ -507,7 +525,7 @@ export type OpenResponsesRequestToolUnion$Outbound =
   | OpenResponsesApplyPatchTool$Outbound
   | OpenResponsesCustomTool$Outbound
   | DatetimeServerTool$Outbound
-  | WebSearchServerTool$Outbound;
+  | ResponsesWebSearchServerTool$Outbound;
 
 /** @internal */
 export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -529,7 +547,7 @@ export const OpenResponsesRequestToolUnion$outboundSchema: z.ZodType<
   OpenResponsesApplyPatchTool$outboundSchema,
   OpenResponsesCustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema,
-  WebSearchServerTool$outboundSchema,
+  ResponsesWebSearchServerTool$outboundSchema,
 ]);
 
 export function openResponsesRequestToolUnionToJSON(
@@ -747,6 +765,35 @@ export function openResponsesRequestProviderToJSON(
 }
 
 /** @internal */
+export type OpenResponsesRequestPluginContextCompression$Outbound = {
+  id: "context-compression";
+  enabled?: boolean | undefined;
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const OpenResponsesRequestPluginContextCompression$outboundSchema:
+  z.ZodType<
+    OpenResponsesRequestPluginContextCompression$Outbound,
+    OpenResponsesRequestPluginContextCompression
+  > = z.object({
+    id: z.literal("context-compression"),
+    enabled: z.boolean().optional(),
+    engine: ContextCompressionEngine$outboundSchema.optional(),
+  });
+
+export function openResponsesRequestPluginContextCompressionToJSON(
+  openResponsesRequestPluginContextCompression:
+    OpenResponsesRequestPluginContextCompression,
+): string {
+  return JSON.stringify(
+    OpenResponsesRequestPluginContextCompression$outboundSchema.parse(
+      openResponsesRequestPluginContextCompression,
+    ),
+  );
+}
+
+/** @internal */
 export type OpenResponsesRequestPluginResponseHealing$Outbound = {
   id: "response-healing";
   enabled?: boolean | undefined;
@@ -902,7 +949,8 @@ export type OpenResponsesRequestPluginUnion$Outbound =
   | OpenResponsesRequestPluginModeration$Outbound
   | OpenResponsesRequestPluginWeb$Outbound
   | OpenResponsesRequestPluginFileParser$Outbound
-  | OpenResponsesRequestPluginResponseHealing$Outbound;
+  | OpenResponsesRequestPluginResponseHealing$Outbound
+  | OpenResponsesRequestPluginContextCompression$Outbound;
 
 /** @internal */
 export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
@@ -914,6 +962,7 @@ export const OpenResponsesRequestPluginUnion$outboundSchema: z.ZodType<
   z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
   z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+  z.lazy(() => OpenResponsesRequestPluginContextCompression$outboundSchema),
 ]);
 
 export function openResponsesRequestPluginUnionToJSON(
@@ -991,7 +1040,7 @@ export type OpenResponsesRequest$Outbound = {
       | OpenResponsesApplyPatchTool$Outbound
       | OpenResponsesCustomTool$Outbound
       | DatetimeServerTool$Outbound
-      | WebSearchServerTool$Outbound
+      | ResponsesWebSearchServerTool$Outbound
     >
     | undefined;
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
@@ -1028,6 +1077,7 @@ export type OpenResponsesRequest$Outbound = {
       | OpenResponsesRequestPluginWeb$Outbound
       | OpenResponsesRequestPluginFileParser$Outbound
       | OpenResponsesRequestPluginResponseHealing$Outbound
+      | OpenResponsesRequestPluginContextCompression$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -1060,7 +1110,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
       OpenResponsesApplyPatchTool$outboundSchema,
       OpenResponsesCustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema,
-      WebSearchServerTool$outboundSchema,
+      ResponsesWebSearchServerTool$outboundSchema,
     ]),
   ).optional(),
   toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
@@ -1101,6 +1151,7 @@ export const OpenResponsesRequest$outboundSchema: z.ZodType<
       z.lazy(() => OpenResponsesRequestPluginWeb$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginFileParser$outboundSchema),
       z.lazy(() => OpenResponsesRequestPluginResponseHealing$outboundSchema),
+      z.lazy(() => OpenResponsesRequestPluginContextCompression$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),

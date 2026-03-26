@@ -98,37 +98,13 @@ import {
   OpenResponsesWebSearchTool$inboundSchema,
 } from "./openresponseswebsearchtool.js";
 import {
-  ResponsesDatetimeOutput,
-  ResponsesDatetimeOutput$inboundSchema,
-} from "./responsesdatetimeoutput.js";
-import {
   ResponsesErrorField,
   ResponsesErrorField$inboundSchema,
 } from "./responseserrorfield.js";
 import {
-  ResponsesImageGenerationCall,
-  ResponsesImageGenerationCall$inboundSchema,
-} from "./responsesimagegenerationcall.js";
-import {
-  ResponsesOutputItemFileSearchCall,
-  ResponsesOutputItemFileSearchCall$inboundSchema,
-} from "./responsesoutputitemfilesearchcall.js";
-import {
-  ResponsesOutputItemFunctionCall,
-  ResponsesOutputItemFunctionCall$inboundSchema,
-} from "./responsesoutputitemfunctioncall.js";
-import {
-  ResponsesOutputItemReasoning,
-  ResponsesOutputItemReasoning$inboundSchema,
-} from "./responsesoutputitemreasoning.js";
-import {
-  ResponsesOutputMessage,
-  ResponsesOutputMessage$inboundSchema,
-} from "./responsesoutputmessage.js";
-import {
-  ResponsesWebSearchCallOutput,
-  ResponsesWebSearchCallOutput$inboundSchema,
-} from "./responseswebsearchcalloutput.js";
+  ResponsesOutputItem,
+  ResponsesOutputItem$inboundSchema,
+} from "./responsesoutputitem.js";
 import {
   ResponseTextConfig,
   ResponseTextConfig$inboundSchema,
@@ -140,15 +116,6 @@ export const OpenResponsesNonStreamingResponseObject = {
 export type OpenResponsesNonStreamingResponseObject = ClosedEnum<
   typeof OpenResponsesNonStreamingResponseObject
 >;
-
-export type OpenResponsesNonStreamingResponseOutput =
-  | ResponsesOutputMessage
-  | ResponsesOutputItemReasoning
-  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
-  | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
-  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
-  | (ResponsesImageGenerationCall & { type: "image_generation_call" })
-  | (ResponsesDatetimeOutput & { type: "openrouter:datetime" });
 
 /**
  * Function tool definition
@@ -187,15 +154,7 @@ export type OpenResponsesNonStreamingResponse = {
   model: string;
   status: OpenAIResponsesResponseStatus;
   completedAt: number | null;
-  output: Array<
-    | ResponsesOutputMessage
-    | ResponsesOutputItemReasoning
-    | (ResponsesOutputItemFunctionCall & { type: "function_call" })
-    | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
-    | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
-    | (ResponsesImageGenerationCall & { type: "image_generation_call" })
-    | (ResponsesDatetimeOutput & { type: "openrouter:datetime" })
-  >;
+  output: Array<ResponsesOutputItem>;
   user?: string | null | undefined;
   outputText?: string | undefined;
   promptCacheKey?: string | null | undefined;
@@ -256,46 +215,6 @@ export type OpenResponsesNonStreamingResponse = {
 export const OpenResponsesNonStreamingResponseObject$inboundSchema: z.ZodEnum<
   typeof OpenResponsesNonStreamingResponseObject
 > = z.enum(OpenResponsesNonStreamingResponseObject);
-
-/** @internal */
-export const OpenResponsesNonStreamingResponseOutput$inboundSchema: z.ZodType<
-  OpenResponsesNonStreamingResponseOutput,
-  unknown
-> = z.union([
-  ResponsesOutputMessage$inboundSchema,
-  ResponsesOutputItemReasoning$inboundSchema,
-  ResponsesOutputItemFunctionCall$inboundSchema.and(
-    z.object({ type: z.literal("function_call") }),
-  ),
-  ResponsesWebSearchCallOutput$inboundSchema.and(
-    z.object({ type: z.literal("web_search_call") }),
-  ),
-  ResponsesOutputItemFileSearchCall$inboundSchema.and(
-    z.object({ type: z.literal("file_search_call") }),
-  ),
-  ResponsesImageGenerationCall$inboundSchema.and(
-    z.object({ type: z.literal("image_generation_call") }),
-  ),
-  ResponsesDatetimeOutput$inboundSchema.and(
-    z.object({ type: z.literal("openrouter:datetime") }),
-  ),
-]);
-
-export function openResponsesNonStreamingResponseOutputFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  OpenResponsesNonStreamingResponseOutput,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      OpenResponsesNonStreamingResponseOutput$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'OpenResponsesNonStreamingResponseOutput' from JSON`,
-  );
-}
 
 /** @internal */
 export const OpenResponsesNonStreamingResponseToolFunction$inboundSchema:
@@ -369,27 +288,7 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   model: z.string(),
   status: OpenAIResponsesResponseStatus$inboundSchema,
   completed_at: z.nullable(z.number()),
-  output: z.array(
-    z.union([
-      ResponsesOutputMessage$inboundSchema,
-      ResponsesOutputItemReasoning$inboundSchema,
-      ResponsesOutputItemFunctionCall$inboundSchema.and(
-        z.object({ type: z.literal("function_call") }),
-      ),
-      ResponsesWebSearchCallOutput$inboundSchema.and(
-        z.object({ type: z.literal("web_search_call") }),
-      ),
-      ResponsesOutputItemFileSearchCall$inboundSchema.and(
-        z.object({ type: z.literal("file_search_call") }),
-      ),
-      ResponsesImageGenerationCall$inboundSchema.and(
-        z.object({ type: z.literal("image_generation_call") }),
-      ),
-      ResponsesDatetimeOutput$inboundSchema.and(
-        z.object({ type: z.literal("openrouter:datetime") }),
-      ),
-    ]),
-  ),
+  output: z.array(ResponsesOutputItem$inboundSchema),
   user: z.nullable(z.string()).optional(),
   output_text: z.string().optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),

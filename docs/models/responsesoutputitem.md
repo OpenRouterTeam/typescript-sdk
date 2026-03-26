@@ -87,3 +87,12 @@ const value: models.ResponsesImageGenerationCall = {
 };
 ```
 
+### `models.ResponsesServerToolOutput`
+
+```typescript
+const value: models.ResponsesServerToolOutput = {
+  type: "openrouter:web_search",
+  status: "completed",
+};
+```
+

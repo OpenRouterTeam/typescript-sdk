@@ -32,3 +32,35 @@ const value: models.WebSearchServerTool = {
 };
 ```
 
+### `models.WebSearchShorthand`
+
+```typescript
+const value: models.WebSearchShorthand = {
+  type: "web_search_preview_2025_03_11",
+};
+```
+
+### `models.WebSearchShorthand`
+
+```typescript
+const value: models.WebSearchShorthand = {
+  type: "web_search_preview_2025_03_11",
+};
+```
+
+### `models.WebSearchShorthand`
+
+```typescript
+const value: models.WebSearchShorthand = {
+  type: "web_search_preview_2025_03_11",
+};
+```
+
+### `models.WebSearchShorthand`
+
+```typescript
+const value: models.WebSearchShorthand = {
+  type: "web_search_preview_2025_03_11",
+};
+```
+

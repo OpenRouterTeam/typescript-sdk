@@ -24,6 +24,13 @@ export type ResponsesOutputMessageRole = ClosedEnum<
   typeof ResponsesOutputMessageRole
 >;
 
+export const ResponsesOutputMessageType = {
+  Message: "message",
+} as const;
+export type ResponsesOutputMessageType = ClosedEnum<
+  typeof ResponsesOutputMessageType
+>;
+
 export const ResponsesOutputMessageStatusInProgress = {
   InProgress: "in_progress",
 } as const;
@@ -82,7 +89,7 @@ export type ResponsesOutputMessagePhaseUnion =
 export type ResponsesOutputMessage = {
   id: string;
   role: ResponsesOutputMessageRole;
-  type: "message";
+  type: ResponsesOutputMessageType;
   status?:
     | ResponsesOutputMessageStatusCompleted
     | ResponsesOutputMessageStatusIncomplete
@@ -104,6 +111,11 @@ export type ResponsesOutputMessage = {
 export const ResponsesOutputMessageRole$inboundSchema: z.ZodEnum<
   typeof ResponsesOutputMessageRole
 > = z.enum(ResponsesOutputMessageRole);
+
+/** @internal */
+export const ResponsesOutputMessageType$inboundSchema: z.ZodEnum<
+  typeof ResponsesOutputMessageType
+> = z.enum(ResponsesOutputMessageType);
 
 /** @internal */
 export const ResponsesOutputMessageStatusInProgress$inboundSchema: z.ZodEnum<
@@ -196,7 +208,7 @@ export const ResponsesOutputMessage$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   role: ResponsesOutputMessageRole$inboundSchema,
-  type: z.literal("message"),
+  type: ResponsesOutputMessageType$inboundSchema,
   status: z.union([
     ResponsesOutputMessageStatusCompleted$inboundSchema,
     ResponsesOutputMessageStatusIncomplete$inboundSchema,

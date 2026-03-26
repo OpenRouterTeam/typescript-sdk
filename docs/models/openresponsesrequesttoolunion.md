@@ -153,10 +153,10 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.WebSearchServerTool`
+### `models.ResponsesWebSearchServerTool`
 
 ```typescript
-const value: models.WebSearchServerTool = {
+const value: models.ResponsesWebSearchServerTool = {
   type: "openrouter:web_search",
 };
 ```

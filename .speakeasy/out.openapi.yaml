@@ -591,13 +591,13 @@ components:
         id: imagegen-abc123
         result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
         status: completed
-    ResponsesDatetimeOutput:
+    ResponsesServerToolOutput:
       type: object
       properties:
         type:
           type: string
-          enum:
-            - openrouter:datetime
+          pattern: '^openrouter:'
+          description: Server tool type (e.g. openrouter:datetime, openrouter:web_search)
         id:
           type: string
         status:
@@ -607,24 +607,34 @@ components:
             - in_progress
             - incomplete
           x-speakeasy-unknown-values: allow
-        datetime:
-          type: string
-          description: ISO 8601 datetime string
-        timezone:
-          type: string
-          description: IANA timezone name
       required:
         - type
         - status
-        - datetime
-        - timezone
-      description: An openrouter:datetime server tool output item
+      additionalProperties:
+        nullable: true
+      description: A generic OpenRouter server tool output item
       example:
-        type: openrouter:datetime
-        id: dt_tmp_abc123
+        type: openrouter:web_search
+        id: ws_tmp_abc123
         status: completed
-        datetime: '2026-03-12T14:30:00.000Z'
-        timezone: UTC
+    ResponsesOutputItem:
+      anyOf:
+        - $ref: '#/components/schemas/ResponsesOutputMessage'
+        - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
+        - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
+        - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
+        - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
+        - $ref: '#/components/schemas/ResponsesImageGenerationCall'
+        - $ref: '#/components/schemas/ResponsesServerToolOutput'
+      description: An output item from the response
+      example:
+        id: msg-abc123
+        role: assistant
+        type: message
+        status: completed
+        content:
+          - type: output_text
+            text: Hello! How can I help you today?
     ResponsesErrorField:
       type: object
       nullable: true
@@ -1087,6 +1097,36 @@ components:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
           $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
+        engine:
+          type: string
+          enum:
+            - auto
+            - native
+            - exa
+          description: >-
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+          example: auto
+          x-speakeasy-unknown-values: allow
+        max_results:
+          type: number
+          minimum: 1
+          maximum: 25
+          description: Maximum number of search results to return per search call. Defaults to 5.
+          example: 5
+        filters:
+          type: object
+          nullable: true
+          properties:
+            allowed_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
+            excluded_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
       required:
         - type
       description: Web search preview tool configuration
@@ -1103,6 +1143,36 @@ components:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
           $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
+        engine:
+          type: string
+          enum:
+            - auto
+            - native
+            - exa
+          description: >-
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+          example: auto
+          x-speakeasy-unknown-values: allow
+        max_results:
+          type: number
+          minimum: 1
+          maximum: 25
+          description: Maximum number of search results to return per search call. Defaults to 5.
+          example: 5
+        filters:
+          type: object
+          nullable: true
+          properties:
+            allowed_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
+            excluded_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
       required:
         - type
       description: Web search preview tool configuration (2025-03-11 version)
@@ -1151,15 +1221,37 @@ components:
               nullable: true
               items:
                 type: string
+            excluded_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
         search_context_size:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
           $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
+        engine:
+          type: string
+          enum:
+            - auto
+            - native
+            - exa
+          description: >-
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+          example: auto
+          x-speakeasy-unknown-values: allow
+        max_results:
+          type: number
+          minimum: 1
+          maximum: 25
+          description: Maximum number of search results to return per search call. Defaults to 5.
+          example: 5
       required:
         - type
       description: Web search tool configuration
       example:
         type: web_search
+        engine: auto
         filters:
           allowed_domains:
             - example.com
@@ -1179,15 +1271,37 @@ components:
               nullable: true
               items:
                 type: string
+            excluded_domains:
+              type: array
+              nullable: true
+              items:
+                type: string
         search_context_size:
           $ref: '#/components/schemas/ResponsesSearchContextSize'
         user_location:
           $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
+        engine:
+          type: string
+          enum:
+            - auto
+            - native
+            - exa
+          description: >-
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+          example: auto
+          x-speakeasy-unknown-values: allow
+        max_results:
+          type: number
+          minimum: 1
+          maximum: 25
+          description: Maximum number of search results to return per search call. Defaults to 5.
+          example: 5
       required:
         - type
       description: Web search tool configuration (2025-08-26 version)
       example:
         type: web_search_2025_08_26
+        engine: auto
         filters:
           allowed_domains:
             - example.com
@@ -1918,14 +2032,7 @@ components:
             output:
               type: array
               items:
-                anyOf:
-                  - $ref: '#/components/schemas/ResponsesOutputMessage'
-                  - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
-                  - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
-                  - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
-                  - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
-                  - $ref: '#/components/schemas/ResponsesImageGenerationCall'
-                  - $ref: '#/components/schemas/ResponsesDatetimeOutput'
+                $ref: '#/components/schemas/ResponsesOutputItem'
             usage:
               $ref: '#/components/schemas/OpenResponsesUsage'
       description: Complete non-streaming response from the Responses API
@@ -2192,23 +2299,6 @@ components:
         message: Rate limit exceeded. Please try again later.
         param: null
         sequence_number: 2
-    ResponsesOutputItem:
-      anyOf:
-        - $ref: '#/components/schemas/ResponsesOutputMessage'
-        - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
-        - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
-        - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
-        - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
-        - $ref: '#/components/schemas/ResponsesImageGenerationCall'
-      description: An output item from the response
-      example:
-        id: msg-abc123
-        role: assistant
-        type: message
-        status: completed
-        content:
-          - type: output_text
-            text: Hello! How can I help you today?
     OpenResponsesOutputItemAddedEvent:
       type: object
       properties:
@@ -4258,11 +4348,40 @@ components:
               - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
               - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
               - $ref: '#/components/schemas/ResponsesImageGenerationCall'
-              - $ref: '#/components/schemas/ResponsesDatetimeOutput'
+              - $ref: '#/components/schemas/ResponsesServerToolOutput'
       description: Input for a response request - can be a string or array of items
       example:
         - role: user
           content: What is the weather today?
+    ResponsesWebSearchServerTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - openrouter:web_search
+        parameters:
+          type: object
+          properties:
+            max_results:
+              type: number
+              minimum: 1
+              maximum: 25
+              description: Maximum number of search results to return per search call. Defaults to 5.
+              example: 5
+            max_total_results:
+              type: number
+              minimum: 1
+              description: >-
+                Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results.
+              example: 20
+      required:
+        - type
+      description: 'OpenRouter built-in server tool: searches the web for current information'
+      example:
+        type: openrouter:web_search
+        parameters:
+          max_results: 5
     OpenResponsesResponseText:
       allOf:
         - $ref: '#/components/schemas/ResponseTextConfig'
@@ -4540,6 +4659,11 @@ components:
         engine:
           $ref: '#/components/schemas/PDFParserEngine'
       description: Options for PDF parsing.
+    ContextCompressionEngine:
+      type: string
+      enum:
+        - middle-out
+      description: The compression engine to use. Defaults to "middle-out".
     OpenResponsesRequest:
       type: object
       properties:
@@ -4591,7 +4715,7 @@ components:
               - $ref: '#/components/schemas/OpenResponsesApplyPatchTool'
               - $ref: '#/components/schemas/OpenResponsesCustomTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
-              - $ref: '#/components/schemas/WebSearchServerTool'
+              - $ref: '#/components/schemas/ResponsesWebSearchServerTool'
         tool_choice:
           $ref: '#/components/schemas/OpenAIResponsesToolChoice'
         parallel_tool_calls:
@@ -4887,6 +5011,19 @@ components:
                   enabled:
                     type: boolean
                     description: Set to false to disable the response-healing plugin for this request. Defaults to true.
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - context-compression
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the context-compression plugin for this request. Defaults to true.
+                  engine:
+                    $ref: '#/components/schemas/ContextCompressionEngine'
                 required:
                   - id
           description: Plugins you want to enable for this request, including their settings.
@@ -9918,6 +10055,79 @@ components:
         - role
         - content
       description: Anthropic message with OpenRouter extensions
+    AnthropicWebSearchServerTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - openrouter:web_search
+        parameters:
+          type: object
+          properties:
+            engine:
+              type: string
+              enum:
+                - auto
+                - native
+                - exa
+              description: >-
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+              example: auto
+              x-speakeasy-unknown-values: allow
+            max_results:
+              type: number
+              minimum: 1
+              maximum: 25
+              description: Maximum number of search results to return per search call. Defaults to 5.
+              example: 5
+            max_total_results:
+              type: number
+              minimum: 1
+              description: >-
+                Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
+              example: 20
+            search_context_size:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              x-speakeasy-unknown-values: allow
+            user_location:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - approximate
+                city:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                timezone:
+                  type: string
+              description: Approximate user location for location-biased results.
+            allowed_domains:
+              type: array
+              items:
+                type: string
+              description: Limit search results to these domains.
+            excluded_domains:
+              type: array
+              items:
+                type: string
+              description: Exclude search results from these domains.
+      required:
+        - type
+      description: 'OpenRouter built-in server tool: searches the web for current information'
+      example:
+        type: openrouter:web_search
+        parameters:
+          max_results: 5
     AnthropicOutputConfig:
       type: object
       properties:
@@ -10301,8 +10511,80 @@ components:
                 required:
                   - type
                   - name
+              - type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - web_search_20260209
+                  name:
+                    type: string
+                    enum:
+                      - web_search
+                  allowed_callers:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - direct
+                        - code_execution_20250825
+                        - code_execution_20260120
+                      x-speakeasy-unknown-values: allow
+                  allowed_domains:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  blocked_domains:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  max_uses:
+                    type: number
+                    nullable: true
+                  user_location:
+                    type: object
+                    nullable: true
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - approximate
+                      city:
+                        type: string
+                        nullable: true
+                      country:
+                        type: string
+                        nullable: true
+                      region:
+                        type: string
+                        nullable: true
+                      timezone:
+                        type: string
+                        nullable: true
+                    required:
+                      - type
+                  cache_control:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ephemeral
+                      ttl:
+                        type: string
+                        enum:
+                          - 5m
+                          - 1h
+                        x-speakeasy-unknown-values: allow
+                    required:
+                      - type
+                required:
+                  - type
+                  - name
               - $ref: '#/components/schemas/DatetimeServerTool'
-              - $ref: '#/components/schemas/WebSearchServerTool'
+              - $ref: '#/components/schemas/AnthropicWebSearchServerTool'
         tool_choice:
           oneOf:
             - type: object
@@ -10731,6 +11013,19 @@ components:
                   enabled:
                     type: boolean
                     description: Set to false to disable the response-healing plugin for this request. Defaults to true.
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - context-compression
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the context-compression plugin for this request. Defaults to true.
+                  engine:
+                    $ref: '#/components/schemas/ContextCompressionEngine'
                 required:
                   - id
           description: Plugins you want to enable for this request, including their settings.
@@ -12057,19 +12352,199 @@ components:
         parameters:
           type: object
           properties:
+            engine:
+              type: string
+              enum:
+                - auto
+                - native
+                - exa
+              description: >-
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+              example: auto
+              x-speakeasy-unknown-values: allow
             max_results:
               type: number
               minimum: 1
               maximum: 25
-              description: Maximum number of search results to return. Defaults to 5.
+              description: Maximum number of search results to return per search call. Defaults to 5.
               example: 5
+            max_total_results:
+              type: number
+              minimum: 1
+              description: >-
+                Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
+              example: 20
+            search_context_size:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              x-speakeasy-unknown-values: allow
+            user_location:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - approximate
+                city:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                timezone:
+                  type: string
+              description: Approximate user location for location-biased results.
+            allowed_domains:
+              type: array
+              items:
+                type: string
+              description: Limit search results to these domains.
+            excluded_domains:
+              type: array
+              items:
+                type: string
+              description: Exclude search results from these domains.
       required:
         - type
       description: 'OpenRouter built-in server tool: searches the web for current information'
       example:
         type: openrouter:web_search
         parameters:
+          engine: auto
           max_results: 5
+    WebSearchShorthand:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - web_search
+            - web_search_preview
+            - web_search_preview_2025_03_11
+            - web_search_2025_08_26
+          x-speakeasy-unknown-values: allow
+        engine:
+          type: string
+          enum:
+            - auto
+            - native
+            - exa
+          description: >-
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+          example: auto
+          x-speakeasy-unknown-values: allow
+        max_results:
+          type: number
+          minimum: 1
+          maximum: 25
+          description: Maximum number of search results to return per search call. Defaults to 5.
+          example: 5
+        max_total_results:
+          type: number
+          minimum: 1
+          description: >-
+            Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
+          example: 20
+        search_context_size:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+          description: How much context to retrieve per result. Defaults to medium (15000 chars).
+          x-speakeasy-unknown-values: allow
+        user_location:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - approximate
+            city:
+              type: string
+            region:
+              type: string
+            country:
+              type: string
+            timezone:
+              type: string
+          description: Approximate user location for location-biased results.
+        allowed_domains:
+          type: array
+          items:
+            type: string
+          description: Limit search results to these domains.
+        excluded_domains:
+          type: array
+          items:
+            type: string
+          description: Exclude search results from these domains.
+        parameters:
+          type: object
+          properties:
+            engine:
+              type: string
+              enum:
+                - auto
+                - native
+                - exa
+              description: >-
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+              example: auto
+              x-speakeasy-unknown-values: allow
+            max_results:
+              type: number
+              minimum: 1
+              maximum: 25
+              description: Maximum number of search results to return per search call. Defaults to 5.
+              example: 5
+            max_total_results:
+              type: number
+              minimum: 1
+              description: >-
+                Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
+              example: 20
+            search_context_size:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              x-speakeasy-unknown-values: allow
+            user_location:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - approximate
+                city:
+                  type: string
+                region:
+                  type: string
+                country:
+                  type: string
+                timezone:
+                  type: string
+              description: Approximate user location for location-biased results.
+            allowed_domains:
+              type: array
+              items:
+                type: string
+              description: Limit search results to these domains.
+            excluded_domains:
+              type: array
+              items:
+                type: string
+              description: Exclude search results from these domains.
+      required:
+        - type
+      description: Web search tool using OpenAI Responses API syntax. Automatically converted to openrouter:web_search.
     ToolDefinitionJson:
       anyOf:
         - type: object
@@ -12129,6 +12604,7 @@ components:
             - function
         - $ref: '#/components/schemas/DatetimeServerTool'
         - $ref: '#/components/schemas/WebSearchServerTool'
+        - $ref: '#/components/schemas/WebSearchShorthand'
       description: Tool definition for function calling (regular function or OpenRouter built-in server tool)
       example:
         type: function
@@ -12359,6 +12835,19 @@ components:
                   enabled:
                     type: boolean
                     description: Set to false to disable the response-healing plugin for this request. Defaults to true.
+                required:
+                  - id
+              - type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - context-compression
+                  enabled:
+                    type: boolean
+                    description: Set to false to disable the context-compression plugin for this request. Defaults to true.
+                  engine:
+                    $ref: '#/components/schemas/ContextCompressionEngine'
                 required:
                   - id
           description: Plugins you want to enable for this request, including their settings.
@@ -13526,6 +14015,40 @@ components:
               p75: 38.5
               p90: 28.3
               p99: 15.1
+    ConflictResponseErrorData:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - code
+        - message
+      description: Error data for ConflictResponse
+      example:
+        code: 409
+        message: Resource conflict. Please try again later.
+    ConflictResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Conflict - Resource conflict or concurrent modification
+      example:
+        error:
+          code: 409
+          message: Resource conflict. Please try again later.
   parameters:
     AppIdentifier:
       name: HTTP-Referer
@@ -18168,6 +18691,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
+        '409':
+          description: Conflict - App upsert conflict during auth code creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
         '500':
           description: Internal Server Error - Unexpected server error
           content:

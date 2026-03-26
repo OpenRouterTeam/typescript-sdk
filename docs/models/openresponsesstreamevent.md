@@ -77,15 +77,8 @@ const value: models.OpenResponsesStreamEventResponseCompleted = {
     completedAt: 3370.61,
     output: [
       {
-        id: "item-1",
-        role: "assistant",
         type: "message",
-        content: [
-          {
-            type: "output_text",
-            text: "Hello! How can I help you?",
-          },
-        ],
+        status: "completed",
       },
     ],
     error: null,
@@ -181,10 +174,8 @@ const value: models.OpenResponsesStreamEventResponseOutputItemAdded = {
   type: "response.output_item.added",
   outputIndex: 0,
   item: {
-    id: "item-1",
-    role: "assistant",
     type: "message",
-    content: [],
+    status: "in_progress",
   },
   sequenceNumber: 2,
 };
@@ -197,15 +188,8 @@ const value: models.OpenResponsesStreamEventResponseOutputItemDone = {
   type: "response.output_item.done",
   outputIndex: 0,
   item: {
-    id: "item-1",
-    role: "assistant",
     type: "message",
-    content: [
-      {
-        type: "output_text",
-        text: "Hello! How can I help you?",
-      },
-    ],
+    status: "completed",
   },
   sequenceNumber: 8,
 };

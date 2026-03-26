@@ -13,6 +13,10 @@ import {
   ChatStreamOptions$outboundSchema,
 } from "./chatstreamoptions.js";
 import {
+  ContextCompressionEngine,
+  ContextCompressionEngine$outboundSchema,
+} from "./contextcompressionengine.js";
+import {
   DataCollection,
   DataCollection$outboundSchema,
 } from "./datacollection.js";
@@ -261,6 +265,18 @@ export type ChatGenerationParamsProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
+export type ChatGenerationParamsPluginContextCompression = {
+  id: "context-compression";
+  /**
+   * Set to false to disable the context-compression plugin for this request. Defaults to true.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * The compression engine to use. Defaults to "middle-out".
+   */
+  engine?: ContextCompressionEngine | undefined;
+};
+
 export type ChatGenerationParamsPluginResponseHealing = {
   id: "response-healing";
   /**
@@ -324,7 +340,8 @@ export type ChatGenerationParamsPluginUnion =
   | ChatGenerationParamsPluginModeration
   | ChatGenerationParamsPluginWeb
   | ChatGenerationParamsPluginFileParser
-  | ChatGenerationParamsPluginResponseHealing;
+  | ChatGenerationParamsPluginResponseHealing
+  | ChatGenerationParamsPluginContextCompression;
 
 /**
  * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
@@ -431,6 +448,7 @@ export type ChatGenerationParams = {
       | ChatGenerationParamsPluginWeb
       | ChatGenerationParamsPluginFileParser
       | ChatGenerationParamsPluginResponseHealing
+      | ChatGenerationParamsPluginContextCompression
     >
     | undefined;
   /**
@@ -831,6 +849,35 @@ export function chatGenerationParamsProviderToJSON(
 }
 
 /** @internal */
+export type ChatGenerationParamsPluginContextCompression$Outbound = {
+  id: "context-compression";
+  enabled?: boolean | undefined;
+  engine?: string | undefined;
+};
+
+/** @internal */
+export const ChatGenerationParamsPluginContextCompression$outboundSchema:
+  z.ZodType<
+    ChatGenerationParamsPluginContextCompression$Outbound,
+    ChatGenerationParamsPluginContextCompression
+  > = z.object({
+    id: z.literal("context-compression"),
+    enabled: z.boolean().optional(),
+    engine: ContextCompressionEngine$outboundSchema.optional(),
+  });
+
+export function chatGenerationParamsPluginContextCompressionToJSON(
+  chatGenerationParamsPluginContextCompression:
+    ChatGenerationParamsPluginContextCompression,
+): string {
+  return JSON.stringify(
+    ChatGenerationParamsPluginContextCompression$outboundSchema.parse(
+      chatGenerationParamsPluginContextCompression,
+    ),
+  );
+}
+
+/** @internal */
 export type ChatGenerationParamsPluginResponseHealing$Outbound = {
   id: "response-healing";
   enabled?: boolean | undefined;
@@ -986,7 +1033,8 @@ export type ChatGenerationParamsPluginUnion$Outbound =
   | ChatGenerationParamsPluginModeration$Outbound
   | ChatGenerationParamsPluginWeb$Outbound
   | ChatGenerationParamsPluginFileParser$Outbound
-  | ChatGenerationParamsPluginResponseHealing$Outbound;
+  | ChatGenerationParamsPluginResponseHealing$Outbound
+  | ChatGenerationParamsPluginContextCompression$Outbound;
 
 /** @internal */
 export const ChatGenerationParamsPluginUnion$outboundSchema: z.ZodType<
@@ -998,6 +1046,7 @@ export const ChatGenerationParamsPluginUnion$outboundSchema: z.ZodType<
   z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
   z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
+  z.lazy(() => ChatGenerationParamsPluginContextCompression$outboundSchema),
 ]);
 
 export function chatGenerationParamsPluginUnionToJSON(
@@ -1180,6 +1229,7 @@ export type ChatGenerationParams$Outbound = {
       | ChatGenerationParamsPluginWeb$Outbound
       | ChatGenerationParamsPluginFileParser$Outbound
       | ChatGenerationParamsPluginResponseHealing$Outbound
+      | ChatGenerationParamsPluginContextCompression$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -1236,6 +1286,7 @@ export const ChatGenerationParams$outboundSchema: z.ZodType<
       z.lazy(() => ChatGenerationParamsPluginWeb$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginFileParser$outboundSchema),
       z.lazy(() => ChatGenerationParamsPluginResponseHealing$outboundSchema),
+      z.lazy(() => ChatGenerationParamsPluginContextCompression$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),
