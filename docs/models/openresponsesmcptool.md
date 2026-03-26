@@ -1,0 +1,28 @@
+# OpenResponsesMcpTool
+
+MCP (Model Context Protocol) tool configuration
+
+## Example Usage
+
+```typescript
+import { OpenResponsesMcpTool } from "@openrouter/sdk/models";
+
+let value: OpenResponsesMcpTool = {
+  type: "mcp",
+  serverLabel: "my-server",
+};
+```
+
+## Fields
+
+| Field                                          | Type                                           | Required                                       | Description                                    |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `type`                                         | *"mcp"*                                        | :heavy_check_mark:                             | N/A                                            |
+| `serverLabel`                                  | *string*                                       | :heavy_check_mark:                             | N/A                                            |
+| `allowedTools`                                 | *any*                                          | :heavy_minus_sign:                             | N/A                                            |
+| `authorization`                                | *string*                                       | :heavy_minus_sign:                             | N/A                                            |
+| `connectorId`                                  | [models.ConnectorId](../models/connectorid.md) | :heavy_minus_sign:                             | N/A                                            |
+| `headers`                                      | Record<string, *string*>                       | :heavy_minus_sign:                             | N/A                                            |
+| `requireApproval`                              | *any*                                          | :heavy_minus_sign:                             | N/A                                            |
+| `serverDescription`                            | *string*                                       | :heavy_minus_sign:                             | N/A                                            |
+| `serverUrl`                                    | *string*                                       | :heavy_minus_sign:                             | N/A                                            |
