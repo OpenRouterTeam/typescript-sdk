@@ -34,7 +34,9 @@ export interface BuildTurnContextOptions {
  * });
  * ```
  */
-export function buildTurnContext(options: BuildTurnContextOptions): TurnContext {
+export function buildTurnContext(
+  options: BuildTurnContextOptions
+): TurnContext {
   const context: TurnContext = {
     numberOfTurns: options.numberOfTurns,
   };
@@ -64,8 +66,8 @@ export function buildTurnContext(options: BuildTurnContextOptions): TurnContext 
  * ```
  */
 export function normalizeInputToArray(
-  input: models.OpenResponsesInput
-): Array<models.OpenResponsesInput1> {
+  input: models.OpenResponsesInputUnion
+): Array<models.OpenResponsesInputUnion1> {
   if (typeof input === 'string') {
     // Construct object with all required fields - type is optional
     const message: models.OpenResponsesEasyInputMessage = {

@@ -476,3 +476,36 @@ const value: models.OpenResponsesImageGenCallCompleted = {
 };
 ```
 
+### `models.OpenResponsesWebSearchCallInProgress`
+
+```typescript
+const value: models.OpenResponsesWebSearchCallInProgress = {
+  type: "response.web_search_call.in_progress",
+  itemId: "<id>",
+  outputIndex: 2400.75,
+  sequenceNumber: 0,
+};
+```
+
+### `models.OpenResponsesWebSearchCallSearching`
+
+```typescript
+const value: models.OpenResponsesWebSearchCallSearching = {
+  type: "response.web_search_call.searching",
+  itemId: "<id>",
+  outputIndex: 1886.45,
+  sequenceNumber: 0,
+};
+```
+
+### `models.OpenResponsesWebSearchCallCompleted`
+
+```typescript
+const value: models.OpenResponsesWebSearchCallCompleted = {
+  type: "response.web_search_call.completed",
+  itemId: "<id>",
+  outputIndex: 5081.49,
+  sequenceNumber: 0,
+};
+```
+

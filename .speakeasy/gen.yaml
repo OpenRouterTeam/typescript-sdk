@@ -36,7 +36,7 @@ generation:
   preApplyUnionDiscriminators: true
   versioningStrategy: automatic
 typescript:
-  version: 0.9.11
+  version: 0.10.1
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -63,7 +63,16 @@ typescript:
       - models
       - llm
     license: Apache-2.0
-  additionalScripts: {}
+    packageManager: pnpm@10.22.0
+  additionalScripts:
+    compile: tsc
+    postinstall: node scripts/check-types.js || true
+    test: vitest --run --project unit
+    test:e2e: vitest --run --project e2e
+    test:transit: exit 0
+    test:watch: vitest --watch --project unit
+    typecheck: tsc --noEmit
+    typecheck:transit: exit 0
   alwaysIncludeInboundAndOutbound: false
   author: OpenRouter
   baseErrorName: OpenRouterError

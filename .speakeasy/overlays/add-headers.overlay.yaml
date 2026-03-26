@@ -1,17 +1,18 @@
 overlay: 1.0.0
 x-speakeasy-jsonpath: rfc9535
 info:
-  title: Add HTTP-Referer and X-Title as global parameters
+  title: Add HTTP-Referer and X-OpenRouter-Title as global parameters
   version: 0.0.0
 actions:
   # Add global parameters for app identification
   - target: $
-    description: Add x-speakeasy-globals for HTTP-Referer and X-Title headers
+    description: Add x-speakeasy-globals for HTTP-Referer, X-OpenRouter-Title, and X-OpenRouter-Categories headers
     update:
       x-speakeasy-globals:
         parameters:
           - $ref: "#/components/parameters/AppIdentifier"
           - $ref: "#/components/parameters/AppDisplayName"
+          - $ref: "#/components/parameters/AppCategories"
 
   # Add component parameters
   - target: $.components
@@ -27,12 +28,21 @@ actions:
             The app identifier should be your app's URL and is used as the primary identifier for rankings.
             This is used to track API usage per application.
         AppDisplayName:
-          name: X-Title
+          name: X-OpenRouter-Title
           in: header
+          x-speakeasy-name-override: appTitle
           schema:
             type: string
           description: |
             The app display name allows you to customize how your app appears in OpenRouter's dashboard.
+        AppCategories:
+          name: X-OpenRouter-Categories
+          in: header
+          x-speakeasy-name-override: appCategories
+          schema:
+            type: string
+          description: |
+            Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
 
   # Add header parameters to all paths so Speakeasy matches them with globals
   - target: $.paths[*]
@@ -41,3 +51,4 @@ actions:
       parameters:
         - $ref: "#/components/parameters/AppIdentifier"
         - $ref: "#/components/parameters/AppDisplayName"
+        - $ref: "#/components/parameters/AppCategories"

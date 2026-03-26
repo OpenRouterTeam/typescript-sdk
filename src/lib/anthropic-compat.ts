@@ -1,10 +1,16 @@
 import type * as models from '../models/index.js';
+import type {
+  ClaudeImageBlockParam,
+  ClaudeMessageParam,
+  ClaudeTextBlockParam,
+  ClaudeToolResultBlockParam,
+  ClaudeToolUseBlockParam,
+} from '../models/claude-message.js';
 
 import {
   OpenResponsesEasyInputMessageRoleAssistant,
   OpenResponsesEasyInputMessageRoleUser,
 } from '../models/openresponseseasyinputmessage.js';
-import { OpenResponsesFunctionCallOutputType } from '../models/openresponsesfunctioncalloutput.js';
 import { OpenResponsesInputMessageItemRoleUser, OpenResponsesInputMessageItemRoleDeveloper } from '../models/openresponsesinputmessageitem.js';
 import { convertToClaudeMessage } from './stream-transformers.js';
 
@@ -39,7 +45,7 @@ function createFunctionCallOutput(
   output: string,
 ): models.OpenResponsesFunctionCallOutput {
   return {
-    type: OpenResponsesFunctionCallOutputType.FunctionCallOutput,
+    type: "function_call_output" as const,
     callId,
     output,
   };
@@ -71,8 +77,8 @@ function createFunctionCallOutput(
  * ```
  */
 export function fromClaudeMessages(
-  messages: models.ClaudeMessageParam[],
-): models.OpenResponsesInput {
+  messages: ClaudeMessageParam[],
+): models.OpenResponsesInputUnion {
   const result: (
     | models.OpenResponsesEasyInputMessage
     | models.OpenResponsesInputMessageItem
@@ -90,10 +96,10 @@ export function fromClaudeMessages(
     }
 
     // Separate content blocks into categories for clearer processing
-    const textBlocks: models.ClaudeTextBlockParam[] = [];
-    const imageBlocks: models.ClaudeImageBlockParam[] = [];
-    const toolUseBlocks: models.ClaudeToolUseBlockParam[] = [];
-    const toolResultBlocks: models.ClaudeToolResultBlockParam[] = [];
+    const textBlocks: ClaudeTextBlockParam[] = [];
+    const imageBlocks: ClaudeImageBlockParam[] = [];
+    const toolUseBlocks: ClaudeToolUseBlockParam[] = [];
+    const toolResultBlocks: ClaudeToolResultBlockParam[] = [];
 
     for (const block of content) {
       switch (block.type) {
@@ -138,7 +144,7 @@ export function fromClaudeMessages(
       } else {
         // Extract text and handle images separately
         const textParts: string[] = [];
-        const imageParts: models.ClaudeImageBlockParam[] = [];
+        const imageParts: ClaudeImageBlockParam[] = [];
 
         for (const part of toolResultBlock.content) {
           if (part.type === 'text') {

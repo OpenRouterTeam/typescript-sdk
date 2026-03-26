@@ -5,22 +5,26 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
 import {
   ChatMessageContentItemCacheControl,
   ChatMessageContentItemCacheControl$Outbound,
   ChatMessageContentItemCacheControl$outboundSchema,
 } from "./chatmessagecontentitemcachecontrol.js";
-
-export const ToolDefinitionJsonType = {
-  Function: "function",
-} as const;
-export type ToolDefinitionJsonType = ClosedEnum<typeof ToolDefinitionJsonType>;
+import {
+  DatetimeServerTool,
+  DatetimeServerTool$Outbound,
+  DatetimeServerTool$outboundSchema,
+} from "./datetimeservertool.js";
+import {
+  WebSearchServerTool,
+  WebSearchServerTool$Outbound,
+  WebSearchServerTool$outboundSchema,
+} from "./websearchservertool.js";
 
 /**
  * Function definition for tool calling
  */
-export type ToolDefinitionJsonFunction = {
+export type ToolDefinitionJsonFunctionFunction = {
   /**
    * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
    */
@@ -39,28 +43,28 @@ export type ToolDefinitionJsonFunction = {
   strict?: boolean | null | undefined;
 };
 
-/**
- * Tool definition for function calling
- */
-export type ToolDefinitionJson = {
-  type: ToolDefinitionJsonType;
+export type ToolDefinitionJsonFunction = {
+  type: "function";
   /**
    * Function definition for tool calling
    */
-  function: ToolDefinitionJsonFunction;
+  function: ToolDefinitionJsonFunctionFunction;
   /**
    * Cache control for the content part
    */
   cacheControl?: ChatMessageContentItemCacheControl | undefined;
 };
 
-/** @internal */
-export const ToolDefinitionJsonType$outboundSchema: z.ZodEnum<
-  typeof ToolDefinitionJsonType
-> = z.enum(ToolDefinitionJsonType);
+/**
+ * Tool definition for function calling (regular function or OpenRouter built-in server tool)
+ */
+export type ToolDefinitionJson =
+  | ToolDefinitionJsonFunction
+  | DatetimeServerTool
+  | WebSearchServerTool;
 
 /** @internal */
-export type ToolDefinitionJsonFunction$Outbound = {
+export type ToolDefinitionJsonFunctionFunction$Outbound = {
   name: string;
   description?: string | undefined;
   parameters?: { [k: string]: any | null } | undefined;
@@ -68,14 +72,45 @@ export type ToolDefinitionJsonFunction$Outbound = {
 };
 
 /** @internal */
-export const ToolDefinitionJsonFunction$outboundSchema: z.ZodType<
-  ToolDefinitionJsonFunction$Outbound,
-  ToolDefinitionJsonFunction
+export const ToolDefinitionJsonFunctionFunction$outboundSchema: z.ZodType<
+  ToolDefinitionJsonFunctionFunction$Outbound,
+  ToolDefinitionJsonFunctionFunction
 > = z.object({
   name: z.string(),
   description: z.string().optional(),
   parameters: z.record(z.string(), z.nullable(z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
+});
+
+export function toolDefinitionJsonFunctionFunctionToJSON(
+  toolDefinitionJsonFunctionFunction: ToolDefinitionJsonFunctionFunction,
+): string {
+  return JSON.stringify(
+    ToolDefinitionJsonFunctionFunction$outboundSchema.parse(
+      toolDefinitionJsonFunctionFunction,
+    ),
+  );
+}
+
+/** @internal */
+export type ToolDefinitionJsonFunction$Outbound = {
+  type: "function";
+  function: ToolDefinitionJsonFunctionFunction$Outbound;
+  cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
+};
+
+/** @internal */
+export const ToolDefinitionJsonFunction$outboundSchema: z.ZodType<
+  ToolDefinitionJsonFunction$Outbound,
+  ToolDefinitionJsonFunction
+> = z.object({
+  type: z.literal("function"),
+  function: z.lazy(() => ToolDefinitionJsonFunctionFunction$outboundSchema),
+  cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    cacheControl: "cache_control",
+  });
 });
 
 export function toolDefinitionJsonFunctionToJSON(
@@ -87,25 +122,20 @@ export function toolDefinitionJsonFunctionToJSON(
 }
 
 /** @internal */
-export type ToolDefinitionJson$Outbound = {
-  type: string;
-  function: ToolDefinitionJsonFunction$Outbound;
-  cache_control?: ChatMessageContentItemCacheControl$Outbound | undefined;
-};
+export type ToolDefinitionJson$Outbound =
+  | ToolDefinitionJsonFunction$Outbound
+  | DatetimeServerTool$Outbound
+  | WebSearchServerTool$Outbound;
 
 /** @internal */
 export const ToolDefinitionJson$outboundSchema: z.ZodType<
   ToolDefinitionJson$Outbound,
   ToolDefinitionJson
-> = z.object({
-  type: ToolDefinitionJsonType$outboundSchema,
-  function: z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
-  cacheControl: ChatMessageContentItemCacheControl$outboundSchema.optional(),
-}).transform((v) => {
-  return remap$(v, {
-    cacheControl: "cache_control",
-  });
-});
+> = z.union([
+  z.lazy(() => ToolDefinitionJsonFunction$outboundSchema),
+  DatetimeServerTool$outboundSchema,
+  WebSearchServerTool$outboundSchema,
+]);
 
 export function toolDefinitionJsonToJSON(
   toolDefinitionJson: ToolDefinitionJson,

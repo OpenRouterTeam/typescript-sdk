@@ -15,6 +15,12 @@ import {
   AssistantMessageImages$outboundSchema,
 } from "./assistantmessageimages.js";
 import {
+  ChatCompletionAudioOutput,
+  ChatCompletionAudioOutput$inboundSchema,
+  ChatCompletionAudioOutput$Outbound,
+  ChatCompletionAudioOutput$outboundSchema,
+} from "./chatcompletionaudiooutput.js";
+import {
   ChatMessageContentItem,
   ChatMessageContentItem$inboundSchema,
   ChatMessageContentItem$Outbound,
@@ -80,6 +86,10 @@ export type AssistantMessage = {
    * Generated images from image generation models
    */
   images?: Array<AssistantMessageImages> | undefined;
+  /**
+   * Audio output data or reference
+   */
+  audio?: ChatCompletionAudioOutput | undefined;
 };
 
 /** @internal */
@@ -152,6 +162,7 @@ export const AssistantMessage$inboundSchema: z.ZodType<
   reasoning: z.nullable(z.string()).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
   images: z.array(AssistantMessageImages$inboundSchema).optional(),
+  audio: ChatCompletionAudioOutput$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     "tool_calls": "toolCalls",
@@ -173,6 +184,7 @@ export type AssistantMessage$Outbound = {
   reasoning?: string | null | undefined;
   reasoning_details?: Array<ReasoningDetailUnion$Outbound> | undefined;
   images?: Array<AssistantMessageImages$Outbound> | undefined;
+  audio?: ChatCompletionAudioOutput$Outbound | undefined;
 };
 
 /** @internal */
@@ -194,6 +206,7 @@ export const AssistantMessage$outboundSchema: z.ZodType<
   reasoning: z.nullable(z.string()).optional(),
   reasoningDetails: z.array(ReasoningDetailUnion$outboundSchema).optional(),
   images: z.array(AssistantMessageImages$outboundSchema).optional(),
+  audio: ChatCompletionAudioOutput$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     toolCalls: "tool_calls",

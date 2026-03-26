@@ -23,6 +23,72 @@ export interface TurnContext {
   turnRequest?: models.OpenResponsesRequest;
 }
 
+//#region Context Types
+
+/**
+ * Extract context schema type from a tool definition
+ * Returns the inferred type of the tool's contextSchema, or empty object if none
+ */
+export type InferToolContext<T> = T extends { function: { contextSchema: infer S } }
+  ? S extends $ZodType ? zodInfer<S> : Record<string, never>
+  : Record<string, never>;
+
+/**
+ * Extract tool name from a tool definition
+ */
+type InferToolName<T> = T extends { function: { name: infer N extends string } } ? N : string;
+
+/**
+ * Flat execute context passed as the second argument to tool execute functions.
+ * Merges TurnContext fields with a `local` getter (own tool context) and `setContext()`.
+ *
+ * @template TName - The tool's literal name string
+ * @template TContext - The shape of the tool's contextSchema
+ * @template TShared - The shape of the sharedContextSchema
+ */
+export type ToolExecuteContext<
+  TName extends string = string,
+  TContext extends Record<string, unknown> = Record<string, unknown>,
+  TShared extends Record<string, unknown> = Record<string, unknown>,
+> = TurnContext & {
+  /** The tool's name (type-level only, for generic inference) */
+  readonly _toolName?: TName;
+  /** This tool's own context (reads from the store, frozen snapshot) */
+  local: Readonly<TContext>;
+  /** Mutate this tool's context in the shared store (persists across turns) */
+  setContext(partial: Partial<TContext>): void;
+  /** Shared context visible to all tools */
+  shared: Readonly<TShared>;
+  /** Mutate the shared context in the store (persists across turns) */
+  setSharedContext(partial: Partial<TShared>): void;
+};
+
+/**
+ * Context map keyed by tool name for callModel's `context` option.
+ * Each key is a tool's name, each value is that tool's inferred context type.
+ */
+export type ToolContextMap<T extends readonly Tool[]> = {
+  [K in T[number] as InferToolName<K>]: InferToolContext<K>;
+};
+
+/**
+ * Context map with an optional `shared` key for shared context.
+ * When TShared is provided (non-empty), a `shared` key is added to the map.
+ */
+export type ToolContextMapWithShared<
+  T extends readonly Tool[],
+  TShared extends Record<string, unknown> = Record<string, never>,
+> = ToolContextMap<T> &
+  (TShared extends Record<string, never> ? {} : { shared: TShared });
+
+/**
+ * Reserved key in the context store for shared context data.
+ * The tool name 'shared' is forbidden — it's reserved for this purpose.
+ */
+export const SHARED_CONTEXT_KEY = 'shared' as const;
+
+//#endregion
+
 /**
  * Context passed to nextTurnParams functions
  * Contains current request state for parameter computation
@@ -30,7 +96,7 @@ export interface TurnContext {
  */
 export type NextTurnParamsContext = {
   /** Current input (messages) */
-  input: models.OpenResponsesInput;
+  input: models.OpenResponsesInputUnion;
   /** Current model selection */
   model: string;
   /** Current models array */
@@ -76,6 +142,8 @@ export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
   name: string;
   description?: string;
   inputSchema: TInput;
+  /** Zod schema declaring the context data this tool needs */
+  contextSchema?: $ZodObject<$ZodShape>;
   nextTurnParams?: NextTurnParamsFunctions<zodInfer<TInput>>;
   /**
    * Whether this tool requires human approval before execution
@@ -86,15 +154,19 @@ export interface BaseToolFunction<TInput extends $ZodObject<$ZodShape>> {
 
 /**
  * Regular tool with synchronous or asynchronous execute function and optional outputSchema
+ * @template TContext - Shape of the tool's context (inferred from contextSchema)
+ * @template TName - The tool's literal name string
  */
 export interface ToolFunctionWithExecute<
   TInput extends $ZodObject<$ZodShape>,
   TOutput extends $ZodType = $ZodType<unknown>,
+  TContext extends Record<string, unknown> = Record<string, unknown>,
+  TName extends string = string,
 > extends BaseToolFunction<TInput> {
   outputSchema?: TOutput;
   execute: (
     params: zodInfer<TInput>,
-    context?: TurnContext,
+    context?: ToolExecuteContext<TName, TContext>,
   ) => Promise<zodInfer<TOutput>> | zodInfer<TOutput>;
 }
 
@@ -124,12 +196,14 @@ export interface ToolFunctionWithGenerator<
   TInput extends $ZodObject<$ZodShape>,
   TEvent extends $ZodType = $ZodType<unknown>,
   TOutput extends $ZodType = $ZodType<unknown>,
+  TContext extends Record<string, unknown> = Record<string, unknown>,
+  TName extends string = string,
 > extends BaseToolFunction<TInput> {
   eventSchema: TEvent;
   outputSchema: TOutput;
   execute: (
     params: zodInfer<TInput>,
-    context?: TurnContext,
+    context?: ToolExecuteContext<TName, TContext>,
   ) => AsyncGenerator<zodInfer<TEvent> | zodInfer<TOutput>, zodInfer<TOutput> | void>;
 }
 
@@ -149,9 +223,10 @@ export interface ManualToolFunction<
 export type ToolWithExecute<
   TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
   TOutput extends $ZodType = $ZodType<unknown>,
+  TContext extends Record<string, unknown> = Record<string, unknown>,
 > = {
   type: ToolType.Function;
-  function: ToolFunctionWithExecute<TInput, TOutput>;
+  function: ToolFunctionWithExecute<TInput, TOutput, TContext>;
 };
 
 /**
@@ -161,9 +236,10 @@ export type ToolWithGenerator<
   TInput extends $ZodObject<$ZodShape> = $ZodObject<$ZodShape>,
   TEvent extends $ZodType = $ZodType<unknown>,
   TOutput extends $ZodType = $ZodType<unknown>,
+  TContext extends Record<string, unknown> = Record<string, unknown>,
 > = {
   type: ToolType.Function;
-  function: ToolFunctionWithGenerator<TInput, TEvent, TOutput>;
+  function: ToolFunctionWithGenerator<TInput, TEvent, TOutput, TContext>;
 };
 
 /**
@@ -299,10 +375,10 @@ export interface ParsedToolCall<T extends Tool> {
 export interface ToolExecutionResult<T extends Tool> {
   toolCallId: string;
   toolName: string;
-  result: T extends ToolWithExecute<any, infer O> | ToolWithGenerator<any, any, infer O>
+  result: T extends ToolWithExecute<$ZodObject<$ZodShape>, infer O> | ToolWithGenerator<$ZodObject<$ZodShape>, $ZodType<unknown>, infer O>
   ? zodInfer<O>
   : unknown; // Final result (sent to model)
-  preliminaryResults?: T extends ToolWithGenerator<any, infer E, any>
+  preliminaryResults?: T extends ToolWithGenerator<$ZodObject<$ZodShape>, infer E>
   ? zodInfer<E>[]
   : undefined; // All yielded values from generator
   error?: Error;
@@ -404,15 +480,37 @@ export type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = 
 };
 
 /**
+ * Turn start event emitted at the beginning of each API turn
+ * Turn 0 is the initial request, subsequent turns follow tool execution
+ */
+export type TurnStartEvent = {
+  type: 'turn.start';
+  turnNumber: number;
+  timestamp: number;
+};
+
+/**
+ * Turn end event emitted at the end of each API turn
+ */
+export type TurnEndEvent = {
+  type: 'turn.end';
+  turnNumber: number;
+  timestamp: number;
+};
+
+/**
  * Enhanced stream event types for getFullResponsesStream
- * Extends OpenResponsesStreamEvent with tool preliminary results and tool results
+ * Extends OpenResponsesStreamEvent with tool preliminary results, tool results,
+ * and turn delimiter events for multi-turn streaming
  * @template TEvent - The event type from generator tools
  * @template TResult - The result type from tool execution
  */
 export type ResponseStreamEvent<TEvent = unknown, TResult = unknown> =
   | OpenResponsesStreamEvent
   | ToolPreliminaryResultEvent<TEvent>
-  | ToolResultEvent<TResult, TEvent>;
+  | ToolResultEvent<TResult, TEvent>
+  | TurnStartEvent
+  | TurnEndEvent;
 
 /**
  * Type guard to check if an event is a tool preliminary result event
@@ -430,6 +528,24 @@ export function isToolResultEvent<TResult = unknown, TPreliminaryResults = unkno
   event: ResponseStreamEvent<TPreliminaryResults, TResult>,
 ): event is ToolResultEvent<TResult, TPreliminaryResults> {
   return event.type === 'tool.result';
+}
+
+/**
+ * Type guard to check if an event is a turn start event
+ */
+export function isTurnStartEvent(
+  event: ResponseStreamEvent,
+): event is TurnStartEvent {
+  return event.type === 'turn.start';
+}
+
+/**
+ * Type guard to check if an event is a turn end event
+ */
+export function isTurnEndEvent(
+  event: ResponseStreamEvent,
+): event is TurnEndEvent {
+  return event.type === 'turn.end';
 }
 
 /**
@@ -515,7 +631,7 @@ export interface ConversationState<TTools extends readonly Tool[] = readonly Too
   /** Unique identifier for this conversation */
   id: string;
   /** Full message history */
-  messages: models.OpenResponsesInput;
+  messages: models.OpenResponsesInputUnion;
   /** Previous response ID for chaining (OpenRouter server-side optimization) */
   previousResponseId?: string;
   /** Tool calls awaiting human approval */

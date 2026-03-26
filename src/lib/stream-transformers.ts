@@ -1,4 +1,11 @@
 import type * as models from '../models/index.js';
+import type {
+  ClaudeContentBlock,
+  ClaudeMessage,
+  ClaudeStopReason,
+  ClaudeTextCitation,
+  UnsupportedContent,
+} from '../models/claude-message.js';
 import type { ReusableReadableStream } from './reusable-stream.js';
 import type { ParsedToolCall, Tool } from './tool-types.js';
 import {
@@ -618,7 +625,8 @@ export function extractToolCallsFromResponse(
   for (const item of response.output) {
     if (isFunctionCallItem(item)) {
       try {
-        const parsedArguments = JSON.parse(item.arguments);
+        const trimmedArgs = item.arguments.trim();
+        const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
 
         toolCalls.push({
           id: item.callId,
@@ -671,7 +679,9 @@ export async function* buildToolCallStream(
     switch (event.type) {
       case 'response.output_item.added': {
         if (isOutputItemAddedEvent(event) && event.item && isFunctionCallItem(event.item)) {
-          toolCallsInProgress.set(event.item.callId, {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
+          toolCallsInProgress.set(itemKey, {
             id: event.item.callId,
             name: event.item.name,
             argumentsAccumulated: '',
@@ -695,9 +705,10 @@ export async function* buildToolCallStream(
           const toolCall = toolCallsInProgress.get(event.itemId);
 
           if (toolCall) {
-            // Parse complete arguments
+            // Parse complete arguments (empty string → empty object for no-param tools)
             try {
-              const parsedArguments = JSON.parse(event.arguments);
+              const trimmedArgs = event.arguments.trim();
+              const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
               yield {
                 id: toolCall.id,
                 name: event.name,
@@ -726,10 +737,13 @@ export async function* buildToolCallStream(
 
       case 'response.output_item.done': {
         if (isOutputItemDoneEvent(event) && event.item && isFunctionCallItem(event.item)) {
+          // Use item.id if available (matches itemId in delta events), fall back to callId
+          const itemKey = event.item.id ?? event.item.callId;
           // Yield final tool call if we haven't already
-          if (toolCallsInProgress.has(event.item.callId)) {
+          if (toolCallsInProgress.has(itemKey)) {
             try {
-              const parsedArguments = JSON.parse(event.item.arguments);
+              const trimmedArgs = event.item.arguments.trim();
+              const parsedArguments = trimmedArgs ? JSON.parse(trimmedArgs) : {};
               yield {
                 id: event.item.callId,
                 name: event.item.name,
@@ -743,7 +757,7 @@ export async function* buildToolCallStream(
               } as ParsedToolCall<Tool>;
             }
 
-            toolCallsInProgress.delete(event.item.callId);
+            toolCallsInProgress.delete(itemKey);
           }
         }
         break;
@@ -764,12 +778,12 @@ export function responseHasToolCalls(response: models.OpenResponsesNonStreamingR
  */
 function mapAnnotationsToCitations(
   annotations?: Array<models.OpenAIResponsesAnnotation>,
-): models.ClaudeTextCitation[] | undefined {
+): ClaudeTextCitation[] | undefined {
   if (!annotations || annotations.length === 0) {
     return undefined;
   }
 
-  const citations: models.ClaudeTextCitation[] = [];
+  const citations: ClaudeTextCitation[] = [];
 
   for (const annotation of annotations) {
     if (!('type' in annotation)) {
@@ -820,16 +834,9 @@ function mapAnnotationsToCitations(
         break;
       }
 
-      default: {
-        // Exhaustiveness check - TypeScript will error if we don't handle all annotation types
-        const exhaustiveCheck: never = annotation;
-        // Cast to unknown for runtime debugging if type system bypassed
-        // This should never execute - throw with JSON of the unhandled value
-        throw new Error(
-          `Unhandled annotation type. This indicates a new annotation type was added. ` +
-          `Annotation: ${JSON.stringify(exhaustiveCheck as unknown)}`
-        );
-      }
+      default:
+        // Unknown annotation types are skipped for forward compatibility.
+        break;
     }
   }
 
@@ -841,7 +848,7 @@ function mapAnnotationsToCitations(
  */
 function mapStopReason(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeStopReason | null {
+): ClaudeStopReason | null {
   // Check if any tool calls exist in the response
   const hasToolCalls = response.output.some(
     (item) => 'type' in item && item.type === 'function_call',
@@ -874,9 +881,9 @@ function mapStopReason(
  */
 export function convertToClaudeMessage(
   response: models.OpenResponsesNonStreamingResponse,
-): models.ClaudeMessage {
-  const content: models.ClaudeContentBlock[] = [];
-  const unsupportedContent: models.UnsupportedContent[] = [];
+): ClaudeMessage {
+  const content: ClaudeContentBlock[] = [];
+  const unsupportedContent: UnsupportedContent[] = [];
 
   for (const item of response.output) {
     if (!('type' in item)) {
@@ -929,13 +936,7 @@ export function convertToClaudeMessage(
                 reason: 'Claude does not have a native refusal content type',
               });
             } else {
-              // Exhaustiveness check - TypeScript will error if we don't handle all part types
-              const exhaustiveCheck: never = part;
-              // This should never execute - new content type was added
-              throw new Error(
-                `Unhandled message content type. This indicates a new content type was added. ` +
-                `Part: ${JSON.stringify(exhaustiveCheck)}`
-              );
+              // Unknown content types are skipped for forward compatibility.
             }
           }
         }
@@ -947,7 +948,8 @@ export function convertToClaudeMessage(
           let parsedInput: Record<string, unknown>;
 
           try {
-            parsedInput = JSON.parse(item.arguments);
+            const trimmedArgs = item.arguments.trim();
+            parsedInput = trimmedArgs ? JSON.parse(trimmedArgs) : {};
           } catch (error) {
             console.warn(
               `Failed to parse tool call arguments for ${item.name}:`,
@@ -1042,16 +1044,10 @@ export function convertToClaudeMessage(
         break;
       }
 
-      default: {
-        // Exhaustiveness check - if a new output type is added, TypeScript will error here
-        const exhaustiveCheck: never = item;
-        // This line should never execute - it means a new type was added to the union
-        // Throw an error instead of silently continuing to ensure we catch new types
-        throw new Error(
-          `Unhandled output item type. This indicates a new output type was added to the API. ` +
-          `Item: ${JSON.stringify(exhaustiveCheck)}`
-        );
-      }
+      default:
+        // Unknown output types (e.g. new server tools) are skipped during Claude format
+        // conversion — they round-trip natively via the Responses API input union.
+        break;
     }
   }
 
@@ -1079,9 +1075,9 @@ export function convertToClaudeMessage(
  * Extract unsupported content by original type
  */
 export function extractUnsupportedContent(
-  message: models.ClaudeMessage,
+  message: ClaudeMessage,
   originalType: string,
-): models.UnsupportedContent[] {
+): UnsupportedContent[] {
   if (!message.unsupported_content) {
     return [];
   }
@@ -1092,7 +1088,7 @@ export function extractUnsupportedContent(
 /**
  * Check if message has any unsupported content
  */
-export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
+export function hasUnsupportedContent(message: ClaudeMessage): boolean {
   return !!(message.unsupported_content && message.unsupported_content.length > 0);
 }
 
@@ -1100,7 +1096,7 @@ export function hasUnsupportedContent(message: models.ClaudeMessage): boolean {
  * Get summary of unsupported content types
  */
 export function getUnsupportedContentSummary(
-  message: models.ClaudeMessage,
+  message: ClaudeMessage,
 ): Record<string, number> {
   if (!message.unsupported_content) {
     return {};

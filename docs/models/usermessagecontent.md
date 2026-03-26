@@ -16,10 +16,9 @@ const value: string = "What is the capital of France?";
 ```typescript
 const value: models.ChatMessageContentItem[] = [
   {
-    type: "input_audio",
-    inputAudio: {
-      data: "<value>",
-      format: "<value>",
+    type: "input_video",
+    videoUrl: {
+      url: "https://standard-step.net/",
     },
   },
 ];

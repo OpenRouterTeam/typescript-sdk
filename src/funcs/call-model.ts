@@ -1,3 +1,4 @@
+import type { $ZodObject, $ZodShape, infer as zodInfer } from 'zod/v4/core';
 import type { OpenRouterCore } from '../core.js';
 import type { CallModelInput } from '../lib/async-params.js';
 import type { RequestOptions } from '../lib/sdks.js';
@@ -28,61 +29,30 @@ export type { CallModelInput } from '../lib/async-params.js';
  *
  * All consumption patterns can be used concurrently on the same response.
  *
- * For message format conversion, use the helper functions:
- * - `fromChatMessages()` / `toChatMessage()` for OpenAI chat format
- * - `fromClaudeMessages()` / `toClaudeMessage()` for Anthropic Claude format
+ * **Context:**
  *
- * **Async Function Support:**
- *
- * Any field in CallModelInput can be a function that computes the value dynamically
- * based on the conversation context. You can mix static values and functions in the
- * same request. Functions are resolved before EVERY turn, allowing parameters to
- * adapt as the conversation progresses.
+ * Tools can declare a `contextSchema` to receive typed context data.
+ * The `context` parameter on callModel is typed as the intersection of all tool schemas:
  *
  * @example
  * ```typescript
- * // Mix static and dynamic values
- * const result = callModel(client, {
- *   model: 'gpt-4',  // static
- *   temperature: (ctx) => Math.min(ctx.numberOfTurns * 0.2, 1.0),  // dynamic
- *   input: [{ type: 'text', text: 'Hello' }],  // static
- * });
- * ```
- *
- * @example
- * ```typescript
- * // Switch models based on conversation length
- * const result = callModel(client, {
- *   model: (ctx) => ctx.numberOfTurns > 3 ? 'gpt-4' : 'gpt-3.5-turbo',
- *   input: [{ type: 'text', text: 'Complex question' }],
- * });
- * ```
- *
- * @example
- * ```typescript
- * // Use async functions to fetch dynamic values
  * const result = callModel(client, {
  *   model: 'gpt-4',
- *   instructions: async (ctx) => {
- *     const userPrefs = await fetchUserPreferences();
- *     return `You are a helpful assistant. User preferences: ${userPrefs}`;
+ *   input: 'Hello',
+ *   tools: [weatherTool, dbTool] as const,
+ *   context: {
+ *     get_weather: { apiKey: 'sk-...' },
+ *     db_query: { dbUrl: 'postgres://...' },
  *   },
- *   input: [{ type: 'text', text: 'Help me' }],
  * });
  * ```
  *
- * Async functions receive `TurnContext` with:
- * - `numberOfTurns`: Current turn number (0-indexed, 0 = initial request)
- * - `messageHistory`: Current conversation messages
- * - `model`: Current model selection (if set)
- * - `models`: Current models array (if set)
- *
- * **Execution Order:**
- * Functions are resolved at the START of each turn in this order:
- * 1. Async functions (parallel resolution)
- * 2. Tool execution (if tools called by model)
- * 3. nextTurnParams functions (if defined on tools)
- * 4. API request with resolved values
+ * Context can also be a function or async function:
+ * ```typescript
+ * context: (turn) => ({
+ *   get_weather: { apiKey: turn.numberOfTurns > 1 ? refreshedKey : initialKey },
+ * })
+ * ```
  *
  * **Stop Conditions:**
  *
@@ -90,40 +60,21 @@ export type { CallModelInput } from '../lib/async-params.js';
  *
  * @example
  * ```typescript
- * // Stop after 3 steps
  * stopWhen: stepCountIs(3)
- *
- * // Stop when a specific tool is called
- * stopWhen: hasToolCall('finalizeResults')
- *
- * // Multiple conditions (OR logic - stops if ANY is true)
- * stopWhen: [
- *   stepCountIs(10),        // Safety: max 10 steps
- *   maxCost(0.50),          // Budget: max $0.50
- *   hasToolCall('finalize') // Logic: stop when finalize called
- * ]
- *
- * // Custom condition with full step history
- * stopWhen: ({ steps }) => {
- *   const totalCalls = steps.reduce((sum, s) => sum + s.toolCalls.length, 0);
- *   return totalCalls >= 20; // Stop after 20 total tool calls
- * }
+ * stopWhen: [stepCountIs(10), maxCost(0.50), hasToolCall('finalize')]
  * ```
- *
- * Available helper functions:
- * - `stepCountIs(n)` - Stop after n steps
- * - `hasToolCall(name)` - Stop when tool is called
- * - `maxTokensUsed(n)` - Stop when token usage exceeds n
- * - `maxCost(n)` - Stop when cost exceeds n dollars
- * - `finishReasonIs(reason)` - Stop on specific finish reason
  *
  * Default: `stepCountIs(5)` if not specified
  */
-export function callModel<TTools extends readonly Tool[]>(
+export function callModel<
+  TTools extends readonly Tool[],
+  TSharedSchema extends $ZodObject<$ZodShape> | undefined = undefined,
+  TShared extends Record<string, unknown> = TSharedSchema extends $ZodObject<$ZodShape> ? zodInfer<TSharedSchema> : Record<string, never>,
+>(
   client: OpenRouterCore,
-  request: CallModelInput<TTools>,
+  request: CallModelInput<TTools, TShared> & { sharedContextSchema?: TSharedSchema },
   options?: RequestOptions,
-): ModelResult<TTools> {
+): ModelResult<TTools, TShared> {
   // Destructure state management options along with tools and stopWhen
   const {
     tools,
@@ -132,6 +83,10 @@ export function callModel<TTools extends readonly Tool[]>(
     requireApproval,
     approveToolCalls,
     rejectToolCalls,
+    context,
+    sharedContextSchema,
+    onTurnStart,
+    onTurnEnd,
     ...apiRequest
   } = request;
 
@@ -149,10 +104,19 @@ export function callModel<TTools extends readonly Tool[]>(
     finalRequest['tools'] = apiTools;
   }
 
-  return new ModelResult<TTools>({
+  // Inject x-openrouter-callmodel header into every callModel request
+  const callModelOptions: RequestOptions = {
+    ...options,
+    headers: {
+      ...Object.fromEntries(new Headers(options?.headers ?? options?.fetchOptions?.headers ?? undefined)),
+      'x-openrouter-callmodel': 'true',
+    },
+  };
+
+  return new ModelResult<TTools, TShared>({
     client,
     request: finalRequest,
-    options: options ?? {},
+    options: callModelOptions,
     tools,
     ...(stopWhen !== undefined && { stopWhen }),
     // Pass state management options
@@ -160,5 +124,9 @@ export function callModel<TTools extends readonly Tool[]>(
     ...(requireApproval !== undefined && { requireApproval }),
     ...(approveToolCalls !== undefined && { approveToolCalls }),
     ...(rejectToolCalls !== undefined && { rejectToolCalls }),
-  } as GetResponseOptions<TTools>);
+    ...(context !== undefined && { context }),
+    ...(sharedContextSchema !== undefined && { sharedContextSchema }),
+    ...(onTurnStart !== undefined && { onTurnStart }),
+    ...(onTurnEnd !== undefined && { onTurnEnd }),
+  } as GetResponseOptions<TTools, TShared>);
 }

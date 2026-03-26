@@ -53,6 +53,10 @@ const value: models.ResponsesOutputItemFunctionCall = {
 const value: models.ResponsesWebSearchCallOutput = {
   type: "web_search_call",
   id: "search-abc123",
+  action: {
+    type: "search",
+    query: "OpenAI API",
+  },
   status: "completed",
 };
 ```

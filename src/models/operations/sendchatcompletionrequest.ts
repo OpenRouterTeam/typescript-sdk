@@ -24,7 +24,13 @@ export type SendChatCompletionRequestGlobals = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
 };
 
 export type SendChatCompletionRequestRequest = {
@@ -40,7 +46,13 @@ export type SendChatCompletionRequestRequest = {
    *
    * @remarks
    */
-  xTitle?: string | undefined;
+  appTitle?: string | undefined;
+  /**
+   * Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
+   *
+   * @remarks
+   */
+  appCategories?: string | undefined;
   chatGenerationParams: models.ChatGenerationParams;
 };
 
@@ -61,7 +73,8 @@ export type SendChatCompletionRequestResponse =
 /** @internal */
 export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
-  "X-Title"?: string | undefined;
+  appTitle?: string | undefined;
+  appCategories?: string | undefined;
   ChatGenerationParams: models.ChatGenerationParams$Outbound;
 };
 
@@ -71,12 +84,12 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   SendChatCompletionRequestRequest
 > = z.object({
   httpReferer: z.string().optional(),
-  xTitle: z.string().optional(),
+  appTitle: z.string().optional(),
+  appCategories: z.string().optional(),
   chatGenerationParams: models.ChatGenerationParams$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    xTitle: "X-Title",
     chatGenerationParams: "ChatGenerationParams",
   });
 });

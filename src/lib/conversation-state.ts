@@ -15,11 +15,12 @@ function isValidUnsentToolResult<TTools extends readonly Tool[]>(
   obj: unknown
 ): obj is UnsentToolResult<TTools> {
   if (typeof obj !== 'object' || obj === null) return false;
-  const candidate = obj as Record<string, unknown>;
   return (
-    typeof candidate['callId'] === 'string' &&
-    typeof candidate['name'] === 'string' &&
-    'output' in candidate
+    'callId' in obj &&
+    typeof obj.callId === 'string' &&
+    'name' in obj &&
+    typeof obj.name === 'string' &&
+    'output' in obj
   );
 }
 
@@ -30,11 +31,12 @@ function isValidParsedToolCall<TTools extends readonly Tool[]>(
   obj: unknown
 ): obj is ParsedToolCall<TTools[number]> {
   if (typeof obj !== 'object' || obj === null) return false;
-  const candidate = obj as Record<string, unknown>;
   return (
-    typeof candidate['id'] === 'string' &&
-    typeof candidate['name'] === 'string' &&
-    'arguments' in candidate
+    'id' in obj &&
+    typeof obj.id === 'string' &&
+    'name' in obj &&
+    typeof obj.name === 'string' &&
+    'arguments' in obj
   );
 }
 
@@ -86,9 +88,9 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  * Append new items to the message history
  */
 export function appendToMessages(
-  current: models.OpenResponsesInput,
-  newItems: models.OpenResponsesInput1[]
-): models.OpenResponsesInput {
+  current: models.OpenResponsesInputUnion,
+  newItems: models.OpenResponsesInputUnion1[]
+): models.OpenResponsesInputUnion {
   const currentArray = normalizeInputToArray(current);
   return [...currentArray, ...newItems];
 }
@@ -221,9 +223,9 @@ export function extractTextFromResponse(
   const textParts: string[] = [];
 
   for (const item of outputs) {
-    if (item.type === 'message' && item.content) {
+    if (item.type === 'message' && 'content' in item && item.content) {
       for (const content of item.content) {
-        if (content.type === 'output_text' && content.text) {
+        if (content.type === 'output_text' && 'text' in content && content.text) {
           textParts.push(content.text);
         }
       }
@@ -247,32 +249,34 @@ export function extractToolCallsFromResponse<TTools extends readonly Tool[]>(
   const toolCalls: ParsedToolCall<TTools[number]>[] = [];
 
   for (const item of outputs) {
-    if (item.type === 'function_call') {
-      let parsedArguments: unknown;
-      if (typeof item.arguments === 'string') {
-        try {
-          parsedArguments = JSON.parse(item.arguments);
-        } catch (error) {
-          // Log warning and skip malformed tool call, similar to stream-transformers.ts
-          console.warn(
-            `Failed to parse arguments for tool call "${item.name}": ${error instanceof Error ? error.message : String(error)}`
-          );
-          continue;
-        }
-      } else {
-        parsedArguments = item.arguments;
-      }
-
-      const toolCall = {
-        id: item.callId ?? item.id ?? '',
-        name: item.name ?? '',
-        arguments: parsedArguments,
-      };
-      if (!isValidParsedToolCall<TTools>(toolCall)) {
-        throw new Error(`Invalid tool call structure for tool: ${item.name}`);
-      }
-      toolCalls.push(toolCall);
+    if (item.type !== 'function_call' || !('arguments' in item)) {
+      continue;
     }
+
+    let parsedArguments: unknown;
+    if (typeof item.arguments === 'string') {
+      try {
+        parsedArguments = JSON.parse(item.arguments);
+      } catch (error) {
+        // Log warning and skip malformed tool call, similar to stream-transformers.ts
+        console.warn(
+          `Failed to parse arguments for tool call "${'name' in item ? item.name : 'unknown'}": ${error instanceof Error ? error.message : String(error)}`
+        );
+        continue;
+      }
+    } else {
+      parsedArguments = item.arguments;
+    }
+
+    const toolCall = {
+      id: ('callId' in item ? item.callId : undefined) ?? item.id ?? '',
+      name: ('name' in item ? item.name : undefined) ?? '',
+      arguments: parsedArguments,
+    };
+    if (!isValidParsedToolCall<TTools>(toolCall)) {
+      throw new Error(`Invalid tool call structure for tool: ${toolCall.name}`);
+    }
+    toolCalls.push(toolCall);
   }
 
   return toolCalls;

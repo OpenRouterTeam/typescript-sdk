@@ -42,6 +42,42 @@ import {
   OpenAIResponsesTruncation$inboundSchema,
 } from "./openairesponsestruncation.js";
 import {
+  OpenResponsesApplyPatchTool,
+  OpenResponsesApplyPatchTool$inboundSchema,
+} from "./openresponsesapplypatchtool.js";
+import {
+  OpenResponsesCodeInterpreterTool,
+  OpenResponsesCodeInterpreterTool$inboundSchema,
+} from "./openresponsescodeinterpretertool.js";
+import {
+  OpenResponsesComputerTool,
+  OpenResponsesComputerTool$inboundSchema,
+} from "./openresponsescomputertool.js";
+import {
+  OpenResponsesCustomTool,
+  OpenResponsesCustomTool$inboundSchema,
+} from "./openresponsescustomtool.js";
+import {
+  OpenResponsesFileSearchTool,
+  OpenResponsesFileSearchTool$inboundSchema,
+} from "./openresponsesfilesearchtool.js";
+import {
+  OpenResponsesFunctionShellTool,
+  OpenResponsesFunctionShellTool$inboundSchema,
+} from "./openresponsesfunctionshelltool.js";
+import {
+  OpenResponsesImageGenerationTool,
+  OpenResponsesImageGenerationTool$inboundSchema,
+} from "./openresponsesimagegenerationtool.js";
+import {
+  OpenResponsesLocalShellTool,
+  OpenResponsesLocalShellTool$inboundSchema,
+} from "./openresponseslocalshelltool.js";
+import {
+  OpenResponsesMcpTool,
+  OpenResponsesMcpTool$inboundSchema,
+} from "./openresponsesmcptool.js";
+import {
   OpenResponsesUsage,
   OpenResponsesUsage$inboundSchema,
 } from "./openresponsesusage.js";
@@ -62,13 +98,37 @@ import {
   OpenResponsesWebSearchTool$inboundSchema,
 } from "./openresponseswebsearchtool.js";
 import {
+  ResponsesDatetimeOutput,
+  ResponsesDatetimeOutput$inboundSchema,
+} from "./responsesdatetimeoutput.js";
+import {
   ResponsesErrorField,
   ResponsesErrorField$inboundSchema,
 } from "./responseserrorfield.js";
 import {
-  ResponsesOutputItem,
-  ResponsesOutputItem$inboundSchema,
-} from "./responsesoutputitem.js";
+  ResponsesImageGenerationCall,
+  ResponsesImageGenerationCall$inboundSchema,
+} from "./responsesimagegenerationcall.js";
+import {
+  ResponsesOutputItemFileSearchCall,
+  ResponsesOutputItemFileSearchCall$inboundSchema,
+} from "./responsesoutputitemfilesearchcall.js";
+import {
+  ResponsesOutputItemFunctionCall,
+  ResponsesOutputItemFunctionCall$inboundSchema,
+} from "./responsesoutputitemfunctioncall.js";
+import {
+  ResponsesOutputItemReasoning,
+  ResponsesOutputItemReasoning$inboundSchema,
+} from "./responsesoutputitemreasoning.js";
+import {
+  ResponsesOutputMessage,
+  ResponsesOutputMessage$inboundSchema,
+} from "./responsesoutputmessage.js";
+import {
+  ResponsesWebSearchCallOutput,
+  ResponsesWebSearchCallOutput$inboundSchema,
+} from "./responseswebsearchcalloutput.js";
 import {
   ResponseTextConfig,
   ResponseTextConfig$inboundSchema,
@@ -80,6 +140,15 @@ export const OpenResponsesNonStreamingResponseObject = {
 export type OpenResponsesNonStreamingResponseObject = ClosedEnum<
   typeof OpenResponsesNonStreamingResponseObject
 >;
+
+export type OpenResponsesNonStreamingResponseOutput =
+  | ResponsesOutputMessage
+  | ResponsesOutputItemReasoning
+  | (ResponsesOutputItemFunctionCall & { type: "function_call" })
+  | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
+  | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
+  | (ResponsesImageGenerationCall & { type: "image_generation_call" })
+  | (ResponsesDatetimeOutput & { type: "openrouter:datetime" });
 
 /**
  * Function tool definition
@@ -97,7 +166,16 @@ export type OpenResponsesNonStreamingResponseToolUnion =
   | OpenResponsesWebSearchPreviewTool
   | OpenResponsesWebSearchPreview20250311Tool
   | OpenResponsesWebSearchTool
-  | OpenResponsesWebSearch20250826Tool;
+  | OpenResponsesWebSearch20250826Tool
+  | OpenResponsesFileSearchTool
+  | OpenResponsesComputerTool
+  | OpenResponsesCodeInterpreterTool
+  | OpenResponsesMcpTool
+  | OpenResponsesImageGenerationTool
+  | OpenResponsesLocalShellTool
+  | OpenResponsesFunctionShellTool
+  | OpenResponsesApplyPatchTool
+  | OpenResponsesCustomTool;
 
 /**
  * Complete non-streaming response from the Responses API
@@ -109,7 +187,15 @@ export type OpenResponsesNonStreamingResponse = {
   model: string;
   status: OpenAIResponsesResponseStatus;
   completedAt: number | null;
-  output: Array<ResponsesOutputItem>;
+  output: Array<
+    | ResponsesOutputMessage
+    | ResponsesOutputItemReasoning
+    | (ResponsesOutputItemFunctionCall & { type: "function_call" })
+    | (ResponsesWebSearchCallOutput & { type: "web_search_call" })
+    | (ResponsesOutputItemFileSearchCall & { type: "file_search_call" })
+    | (ResponsesImageGenerationCall & { type: "image_generation_call" })
+    | (ResponsesDatetimeOutput & { type: "openrouter:datetime" })
+  >;
   user?: string | null | undefined;
   outputText?: string | undefined;
   promptCacheKey?: string | null | undefined;
@@ -141,6 +227,15 @@ export type OpenResponsesNonStreamingResponse = {
     | OpenResponsesWebSearchPreview20250311Tool
     | OpenResponsesWebSearchTool
     | OpenResponsesWebSearch20250826Tool
+    | OpenResponsesFileSearchTool
+    | OpenResponsesComputerTool
+    | OpenResponsesCodeInterpreterTool
+    | OpenResponsesMcpTool
+    | OpenResponsesImageGenerationTool
+    | OpenResponsesLocalShellTool
+    | OpenResponsesFunctionShellTool
+    | OpenResponsesApplyPatchTool
+    | OpenResponsesCustomTool
   >;
   toolChoice: OpenAIResponsesToolChoiceUnion;
   parallelToolCalls: boolean;
@@ -161,6 +256,46 @@ export type OpenResponsesNonStreamingResponse = {
 export const OpenResponsesNonStreamingResponseObject$inboundSchema: z.ZodEnum<
   typeof OpenResponsesNonStreamingResponseObject
 > = z.enum(OpenResponsesNonStreamingResponseObject);
+
+/** @internal */
+export const OpenResponsesNonStreamingResponseOutput$inboundSchema: z.ZodType<
+  OpenResponsesNonStreamingResponseOutput,
+  unknown
+> = z.union([
+  ResponsesOutputMessage$inboundSchema,
+  ResponsesOutputItemReasoning$inboundSchema,
+  ResponsesOutputItemFunctionCall$inboundSchema.and(
+    z.object({ type: z.literal("function_call") }),
+  ),
+  ResponsesWebSearchCallOutput$inboundSchema.and(
+    z.object({ type: z.literal("web_search_call") }),
+  ),
+  ResponsesOutputItemFileSearchCall$inboundSchema.and(
+    z.object({ type: z.literal("file_search_call") }),
+  ),
+  ResponsesImageGenerationCall$inboundSchema.and(
+    z.object({ type: z.literal("image_generation_call") }),
+  ),
+  ResponsesDatetimeOutput$inboundSchema.and(
+    z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+]);
+
+export function openResponsesNonStreamingResponseOutputFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  OpenResponsesNonStreamingResponseOutput,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      OpenResponsesNonStreamingResponseOutput$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'OpenResponsesNonStreamingResponseOutput' from JSON`,
+  );
+}
 
 /** @internal */
 export const OpenResponsesNonStreamingResponseToolFunction$inboundSchema:
@@ -196,6 +331,15 @@ export const OpenResponsesNonStreamingResponseToolUnion$inboundSchema:
     OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
     OpenResponsesWebSearchTool$inboundSchema,
     OpenResponsesWebSearch20250826Tool$inboundSchema,
+    OpenResponsesFileSearchTool$inboundSchema,
+    OpenResponsesComputerTool$inboundSchema,
+    OpenResponsesCodeInterpreterTool$inboundSchema,
+    OpenResponsesMcpTool$inboundSchema,
+    OpenResponsesImageGenerationTool$inboundSchema,
+    OpenResponsesLocalShellTool$inboundSchema,
+    OpenResponsesFunctionShellTool$inboundSchema,
+    OpenResponsesApplyPatchTool$inboundSchema,
+    OpenResponsesCustomTool$inboundSchema,
   ]);
 
 export function openResponsesNonStreamingResponseToolUnionFromJSON(
@@ -225,7 +369,27 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
   model: z.string(),
   status: OpenAIResponsesResponseStatus$inboundSchema,
   completed_at: z.nullable(z.number()),
-  output: z.array(ResponsesOutputItem$inboundSchema),
+  output: z.array(
+    z.union([
+      ResponsesOutputMessage$inboundSchema,
+      ResponsesOutputItemReasoning$inboundSchema,
+      ResponsesOutputItemFunctionCall$inboundSchema.and(
+        z.object({ type: z.literal("function_call") }),
+      ),
+      ResponsesWebSearchCallOutput$inboundSchema.and(
+        z.object({ type: z.literal("web_search_call") }),
+      ),
+      ResponsesOutputItemFileSearchCall$inboundSchema.and(
+        z.object({ type: z.literal("file_search_call") }),
+      ),
+      ResponsesImageGenerationCall$inboundSchema.and(
+        z.object({ type: z.literal("image_generation_call") }),
+      ),
+      ResponsesDatetimeOutput$inboundSchema.and(
+        z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+    ]),
+  ),
   user: z.nullable(z.string()).optional(),
   output_text: z.string().optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
@@ -251,6 +415,15 @@ export const OpenResponsesNonStreamingResponse$inboundSchema: z.ZodType<
       OpenResponsesWebSearchPreview20250311Tool$inboundSchema,
       OpenResponsesWebSearchTool$inboundSchema,
       OpenResponsesWebSearch20250826Tool$inboundSchema,
+      OpenResponsesFileSearchTool$inboundSchema,
+      OpenResponsesComputerTool$inboundSchema,
+      OpenResponsesCodeInterpreterTool$inboundSchema,
+      OpenResponsesMcpTool$inboundSchema,
+      OpenResponsesImageGenerationTool$inboundSchema,
+      OpenResponsesLocalShellTool$inboundSchema,
+      OpenResponsesFunctionShellTool$inboundSchema,
+      OpenResponsesApplyPatchTool$inboundSchema,
+      OpenResponsesCustomTool$inboundSchema,
     ]),
   ),
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,

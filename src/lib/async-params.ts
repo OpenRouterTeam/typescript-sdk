@@ -1,5 +1,7 @@
 import type * as models from '../models/index.js';
-import type { ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
+import type { ToolContextMapWithShared, ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
+import type { OpenResponsesNonStreamingResponse } from '../models/index.js';
+import type { ContextInput } from './tool-context.js';
 
 // Re-export Tool type for convenience
 export type { Tool } from './tool-types.js';
@@ -34,13 +36,18 @@ export type FieldOrAsyncFunction<T> = T | ((context: TurnContext) => T | Promise
 /**
  * Base input type for callModel without approval-related fields
  */
-type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
+type BaseCallModelInput<
+  TTools extends readonly Tool[] = readonly Tool[],
+  TShared extends Record<string, unknown> = Record<string, never>,
+> = {
   [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
     models.OpenResponsesRequest[K]
   >;
 } & {
   tools?: TTools;
   stopWhen?: StopWhen<TTools>;
+  /** Typed context data passed to tools via contextSchema. Includes optional `shared` key. */
+  context?: ContextInput<ToolContextMapWithShared<TTools, TShared>>;
   /**
    * Call-level approval check - overrides tool-level requireApproval setting
    * Receives the tool call and turn context, can be sync or async
@@ -49,6 +56,16 @@ type BaseCallModelInput<TTools extends readonly Tool[] = readonly Tool[]> = {
     toolCall: ParsedToolCall<TTools[number]>,
     context: TurnContext
   ) => boolean | Promise<boolean>;
+  /**
+   * Callback invoked at the start of each tool execution turn
+   * Receives the turn context with the current turn number
+   */
+  onTurnStart?: (context: TurnContext) => void | Promise<void>;
+  /**
+   * Callback invoked at the end of each tool execution turn
+   * Receives the turn context and the completed response for that turn
+   */
+  onTurnEnd?: (context: TurnContext, response: OpenResponsesNonStreamingResponse) => void | Promise<void>;
 };
 
 /**
@@ -84,14 +101,20 @@ type ApprovalParamsWithoutState = {
  * - `approveToolCalls` and `rejectToolCalls` are only valid when `state` is provided
  * - Using these without `state` will cause a TypeScript error
  */
-export type CallModelInput<TTools extends readonly Tool[] = readonly Tool[]> =
-  BaseCallModelInput<TTools> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
+export type CallModelInput<
+  TTools extends readonly Tool[] = readonly Tool[],
+  TShared extends Record<string, unknown> = Record<string, never>,
+> =
+  BaseCallModelInput<TTools, TShared> & (ApprovalParamsWithState<TTools> | ApprovalParamsWithoutState);
 
 /**
  * CallModelInput variant that requires state - use when approval workflows are needed
  */
-export type CallModelInputWithState<TTools extends readonly Tool[] = readonly Tool[]> =
-  BaseCallModelInput<TTools> & ApprovalParamsWithState<TTools>;
+export type CallModelInputWithState<
+  TTools extends readonly Tool[] = readonly Tool[],
+  TShared extends Record<string, unknown> = Record<string, never>,
+> =
+  BaseCallModelInput<TTools, TShared> & ApprovalParamsWithState<TTools>;
 
 /**
  * Resolved CallModelInput (all functions evaluated to values)
@@ -116,7 +139,7 @@ export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' 
  *     temperature: (ctx) => ctx.numberOfTurns * 0.1,
  *     input: 'Hello',
  *   },
- *   { numberOfTurns: 2, messageHistory: [] }
+ *   { numberOfTurns: 2 }
  * );
  * // resolved.temperature === 0.2
  * ```
@@ -130,11 +153,15 @@ export async function resolveAsyncFunctions<TTools extends readonly Tool[] = rea
 
   // Fields that should not be sent to the API (client-side only)
   const clientOnlyFields = new Set([
-    'stopWhen',           // Handled separately in ModelResult
-    'state',              // Client-side state management
-    'requireApproval',    // Client-side approval check function
-    'approveToolCalls',   // Client-side approval decisions
-    'rejectToolCalls',    // Client-side rejection decisions
+    'stopWhen',              // Handled separately in ModelResult
+    'state',                 // Client-side state management
+    'requireApproval',       // Client-side approval check function
+    'approveToolCalls',      // Client-side approval decisions
+    'rejectToolCalls',       // Client-side rejection decisions
+    'context',               // Passed through via GetResponseOptions, not sent to API
+    'sharedContextSchema',   // Client-side schema for shared context validation
+    'onTurnStart',           // Client-side turn start callback
+    'onTurnEnd',             // Client-side turn end callback
   ]);
 
   // Iterate over all keys in the input

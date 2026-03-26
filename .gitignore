@@ -25,6 +25,9 @@
 **/.speakeasy/logs/
 .DS_Store
 /.speakeasy/reports
+/.speakeasy/*.lock
+/.speakeasy/*.openapi.yaml
+/docs
 .env
 .env.local
 .env.*.local

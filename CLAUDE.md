@@ -67,21 +67,49 @@ The SDK is generated from `.speakeasy/in.openapi.yaml` using [Speakeasy](https:/
 - `src/index.ts` - Main exports
 - `src/hooks/hooks.ts` and `src/hooks/types.ts` - Custom hooks
 
-### Regenerating the SDK
+### Speakeasy CLI Version Requirement
 
-To regenerate after updating the OpenAPI spec:
+**CRITICAL**: The SDK pins a specific Speakeasy CLI version in `.speakeasy/workflow.yaml` (the `speakeasyVersion` field). You **must** use the exact pinned version when generating — not whatever version is installed locally. A mismatched version produces different generated output, fails CI, and may introduce breaking changes.
+
 ```bash
-speakeasy run
+# Check the required version
+grep speakeasyVersion .speakeasy/workflow.yaml
+
+# Check your local version
+speakeasy --version
+
+# Install the correct version if needed
+speakeasy update --version <REQUIRED_VERSION>
 ```
 
-This reads configuration from `.speakeasy/gen.yaml` and workflow from `.speakeasy/workflow.yaml`.
+Do **not** bump the `speakeasyVersion` as a side-effect of running generation. Version upgrades are intentional changes.
+
+### SDK Generation Workflow
+
+SDK generation does **not** happen in the monorepo. Instead:
+
+1. **Edit code** in `sdks/typescript/` in the monorepo (any file, including generated ones with custom regions)
+2. **PR check** automatically validates your changes can generate cleanly by dry-running against the OSS repo
+3. **Release workflow** (`workflow_dispatch` on `sdk-auto-generate.yaml`) clones the OSS repo, copies your changes, runs `speakeasy run` there (where persistent edits work), pushes to the OSS repo, and copies generated `src/` back
+
+To generate the OpenAPI spec locally (for linting, not SDK generation):
+```bash
+pnpm generate:openapi
+```
+
+To bootstrap generated types after a fresh clone (if they're stale):
+```bash
+pnpm sdk:bootstrap
+```
 
 ### Making Changes to Generated Code
 
-1. **For type/schema changes**: Update `.speakeasy/in.openapi.yaml` and regenerate
-2. **For overlays**: Edit files in `.speakeasy/overlays/` to apply transformations
+Speakeasy's [persistent edits](https://www.speakeasy.com/docs/sdks/customize/code/custom-code/custom-code) preserves custom changes across regeneration via 3-way merge. You can edit any file — the boundary between "generated" and "hand-written" is tracked by git, not by file location.
+
+1. **For type/schema changes**: Update the Hono/Zod routes in the monorepo (the OpenAPI spec is generated from them)
+2. **For overlays**: Edit files in `.speakeasy/overlays/`
 3. **For generation config**: Edit `.speakeasy/gen.yaml`
-4. **Always commit both** the OpenAPI spec changes AND the regenerated code
+4. Changes are synced to the OSS repo during the release workflow
 
 ## Architecture
 
