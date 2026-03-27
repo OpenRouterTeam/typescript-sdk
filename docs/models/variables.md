@@ -9,28 +9,28 @@
 const value: string = "<value>";
 ```
 
-### `models.ResponseInputText`
+### `models.InputText`
 
 ```typescript
-const value: models.ResponseInputText = {
+const value: models.InputText = {
   type: "input_text",
   text: "Hello, how can I help you?",
 };
 ```
 
-### `models.ResponseInputImage`
+### `models.InputImage`
 
 ```typescript
-const value: models.ResponseInputImage = {
+const value: models.InputImage = {
   type: "input_image",
   detail: "auto",
 };
 ```
 
-### `models.ResponseInputFile`
+### `models.InputFile`
 
 ```typescript
-const value: models.ResponseInputFile = {
+const value: models.InputFile = {
   type: "input_file",
 };
 ```

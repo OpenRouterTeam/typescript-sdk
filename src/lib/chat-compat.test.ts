@@ -3,14 +3,14 @@ import { fromChatMessages, toChatMessage } from "./chat-compat.js";
 import type * as models from "../models/index.js";
 
 /**
- * Creates a properly typed mock OpenResponsesNonStreamingResponse for testing.
+ * Creates a properly typed mock OpenResponsesResult for testing.
  * This factory provides all required fields with sensible defaults.
  */
 function createMockResponse(
-  overrides: Partial<models.OpenResponsesNonStreamingResponse> & {
-    output: models.OpenResponsesNonStreamingResponse["output"];
+  overrides: Partial<models.OpenResponsesResult> & {
+    output: models.OpenResponsesResult["output"];
   }
-): models.OpenResponsesNonStreamingResponse {
+): models.OpenResponsesResult {
   return {
     id: "resp_test",
     object: "response",
@@ -35,7 +35,7 @@ function createMockResponse(
 describe("fromChatMessages", () => {
   describe("basic message conversion", () => {
     it("converts user message with string content", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "user", content: "Hello, how are you?" },
       ];
 
@@ -47,7 +47,7 @@ describe("fromChatMessages", () => {
     });
 
     it("converts assistant message with string content", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "assistant", content: "I am doing well, thank you!" },
       ];
 
@@ -59,7 +59,7 @@ describe("fromChatMessages", () => {
     });
 
     it("converts system message with string content", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "system", content: "You are a helpful assistant." },
       ];
 
@@ -71,7 +71,7 @@ describe("fromChatMessages", () => {
     });
 
     it("converts developer message with string content", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "developer", content: "Developer instructions here." },
       ];
 
@@ -83,7 +83,7 @@ describe("fromChatMessages", () => {
     });
 
     it("converts multiple messages in conversation", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "system", content: "You are helpful." },
         { role: "user", content: "Hi" },
         { role: "assistant", content: "Hello!" },
@@ -103,7 +103,7 @@ describe("fromChatMessages", () => {
 
   describe("tool response message conversion", () => {
     it("converts tool message to function_call_output", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         {
           role: "tool",
           content: "The weather is sunny and 72F",
@@ -123,7 +123,7 @@ describe("fromChatMessages", () => {
     });
 
     it("converts tool message with object content by stringifying", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         {
           role: "tool",
           content: [{ type: "text", text: "Structured response" }],
@@ -145,7 +145,7 @@ describe("fromChatMessages", () => {
 
   describe("content array handling", () => {
     it("stringifies array content for user messages", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         {
           role: "user",
           content: [{ type: "text", text: "Hello from array" }],
@@ -163,7 +163,7 @@ describe("fromChatMessages", () => {
     });
 
     it("stringifies array content for assistant messages", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         {
           role: "assistant",
           content: [{ type: "text", text: "Response in array" }],
@@ -183,7 +183,7 @@ describe("fromChatMessages", () => {
 
   describe("null and empty content handling", () => {
     it("handles null content in assistant message", () => {
-      const messages: models.Message[] = [
+      const messages: models.ChatMessages[] = [
         { role: "assistant", content: null },
       ];
 
@@ -193,7 +193,7 @@ describe("fromChatMessages", () => {
     });
 
     it("handles empty string content", () => {
-      const messages: models.Message[] = [{ role: "user", content: "" }];
+      const messages: models.ChatMessages[] = [{ role: "user", content: "" }];
 
       const result = fromChatMessages(messages);
 
@@ -210,7 +210,7 @@ describe("fromChatMessages", () => {
 
 describe("toChatMessage", () => {
   describe("basic message conversion", () => {
-    it("converts response with text output to AssistantMessage", () => {
+    it("converts response with text output to ChatAssistantMessage", () => {
       const response = createMockResponse({
         id: "resp_123",
         output: [

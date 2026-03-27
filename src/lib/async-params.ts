@@ -1,6 +1,6 @@
 import type * as models from '../models/index.js';
 import type { ToolContextMapWithShared, ParsedToolCall, StateAccessor, StopWhen, Tool, TurnContext } from './tool-types.js';
-import type { OpenResponsesNonStreamingResponse } from '../models/index.js';
+import type { OpenResponsesResult } from '../models/index.js';
 import type { ContextInput } from './tool-context.js';
 
 // Re-export Tool type for convenience
@@ -40,8 +40,8 @@ type BaseCallModelInput<
   TTools extends readonly Tool[] = readonly Tool[],
   TShared extends Record<string, unknown> = Record<string, never>,
 > = {
-  [K in keyof Omit<models.OpenResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
-    models.OpenResponsesRequest[K]
+  [K in keyof Omit<models.ResponsesRequest, 'stream' | 'tools'>]?: FieldOrAsyncFunction<
+    models.ResponsesRequest[K]
   >;
 } & {
   tools?: TTools;
@@ -65,7 +65,7 @@ type BaseCallModelInput<
    * Callback invoked at the end of each tool execution turn
    * Receives the turn context and the completed response for that turn
    */
-  onTurnEnd?: (context: TurnContext, response: OpenResponsesNonStreamingResponse) => void | Promise<void>;
+  onTurnEnd?: (context: TurnContext, response: OpenResponsesResult) => void | Promise<void>;
 };
 
 /**
@@ -120,7 +120,7 @@ export type CallModelInputWithState<
  * Resolved CallModelInput (all functions evaluated to values)
  * This is the type after all async functions have been resolved to their values
  */
-export type ResolvedCallModelInput = Omit<models.OpenResponsesRequest, 'stream' | 'tools'> & {
+export type ResolvedCallModelInput = Omit<models.ResponsesRequest, 'stream' | 'tools'> & {
   tools?: never;
 };
 

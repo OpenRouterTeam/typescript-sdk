@@ -8,78 +8,78 @@ import type * as models from '../models/index.js';
 // Stream event type guards
 
 export function isOutputTextDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputTextDelta {
+  event: models.StreamEvents,
+): event is models.TextDeltaEvent {
   return 'type' in event && event.type === 'response.output_text.delta';
 }
 
 export function isReasoningDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesReasoningDeltaEvent {
+  event: models.StreamEvents,
+): event is models.ReasoningDeltaEvent {
   return 'type' in event && event.type === 'response.reasoning_text.delta';
 }
 
 export function isFunctionCallArgumentsDeltaEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseFunctionCallArgumentsDelta {
+  event: models.StreamEvents,
+): event is models.FunctionCallArgsDeltaEvent {
   return 'type' in event && event.type === 'response.function_call_arguments.delta';
 }
 
 export function isOutputItemAddedEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputItemAdded {
+  event: models.StreamEvents,
+): event is models.StreamEventsResponseOutputItemAdded {
   return 'type' in event && event.type === 'response.output_item.added';
 }
 
 export function isOutputItemDoneEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseOutputItemDone {
+  event: models.StreamEvents,
+): event is models.StreamEventsResponseOutputItemDone {
   return 'type' in event && event.type === 'response.output_item.done';
 }
 
 export function isResponseCompletedEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseCompleted {
+  event: models.StreamEvents,
+): event is models.StreamEventsResponseCompleted {
   return 'type' in event && event.type === 'response.completed';
 }
 
 export function isResponseFailedEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseFailed {
+  event: models.StreamEvents,
+): event is models.StreamEventsResponseFailed {
   return 'type' in event && event.type === 'response.failed';
 }
 
 export function isResponseIncompleteEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseIncomplete {
+  event: models.StreamEvents,
+): event is models.StreamEventsResponseIncomplete {
   return 'type' in event && event.type === 'response.incomplete';
 }
 
 export function isFunctionCallArgumentsDoneEvent(
-  event: models.OpenResponsesStreamEvent,
-): event is models.OpenResponsesStreamEventResponseFunctionCallArgumentsDone {
+  event: models.StreamEvents,
+): event is models.FunctionCallArgsDoneEvent {
   return 'type' in event && event.type === 'response.function_call_arguments.done';
 }
 
 // Output item type guards
 
-export function isOutputMessage(item: unknown): item is models.ResponsesOutputMessage {
+export function isOutputMessage(item: unknown): item is models.OutputMessage {
   return typeof item === 'object' && item !== null && 'type' in item && item.type === 'message';
 }
 
-export function isFunctionCallItem(item: unknown): item is models.ResponsesOutputItemFunctionCall {
+export function isFunctionCallItem(item: unknown): item is models.OutputFunctionCallItem {
   return (
     typeof item === 'object' && item !== null && 'type' in item && item.type === 'function_call'
   );
 }
 
-export function isReasoningOutputItem(item: unknown): item is models.ResponsesOutputItemReasoning {
+export function isReasoningOutputItem(item: unknown): item is models.OutputReasoningItem {
   return typeof item === 'object' && item !== null && 'type' in item && item.type === 'reasoning';
 }
 
 export function isWebSearchCallOutputItem(
   item: unknown,
-): item is models.ResponsesWebSearchCallOutput {
+): item is models.OutputWebSearchCallItem {
   return (
     typeof item === 'object' && item !== null && 'type' in item && item.type === 'web_search_call'
   );
@@ -87,7 +87,7 @@ export function isWebSearchCallOutputItem(
 
 export function isFileSearchCallOutputItem(
   item: unknown,
-): item is models.ResponsesOutputItemFileSearchCall {
+): item is models.OutputFileSearchCallItem {
   return (
     typeof item === 'object' && item !== null && 'type' in item && item.type === 'file_search_call'
   );
@@ -95,7 +95,7 @@ export function isFileSearchCallOutputItem(
 
 export function isImageGenerationCallOutputItem(
   item: unknown,
-): item is models.ResponsesImageGenerationCall {
+): item is models.OutputImageGenerationCallItem {
   return (
     typeof item === 'object' &&
     item !== null &&

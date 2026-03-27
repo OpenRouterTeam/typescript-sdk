@@ -84,6 +84,10 @@ export type Model = {
    */
   defaultParameters: DefaultParameters | null;
   /**
+   * The date up to which the model was trained on data. ISO 8601 date string (YYYY-MM-DD) or null if unknown.
+   */
+  knowledgeCutoff?: string | null | undefined;
+  /**
    * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
    */
   expirationDate?: string | null | undefined;
@@ -104,6 +108,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
   supported_parameters: z.array(Parameter$inboundSchema),
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
+  knowledge_cutoff: z.nullable(z.string()).optional(),
   expiration_date: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -114,6 +119,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
     "per_request_limits": "perRequestLimits",
     "supported_parameters": "supportedParameters",
     "default_parameters": "defaultParameters",
+    "knowledge_cutoff": "knowledgeCutoff",
     "expiration_date": "expirationDate",
   });
 });

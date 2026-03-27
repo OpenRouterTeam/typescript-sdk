@@ -234,7 +234,7 @@ components:
         content:
           - type: output_text
             text: Hello! How can I help you today?
-    ResponsesOutputMessage:
+    OutputMessageItem:
       allOf:
         - $ref: '#/components/schemas/OutputMessage'
         - type: object
@@ -320,7 +320,7 @@ components:
         summary:
           - type: summary_text
             text: Analyzed the problem using first principles
-    ResponsesOutputItemReasoning:
+    OutputReasoningItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
@@ -398,7 +398,7 @@ components:
         name: get_weather
         arguments: '{"location":"San Francisco","unit":"celsius"}'
         call_id: call-abc123
-    ResponsesOutputItemFunctionCall:
+    OutputFunctionCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemFunctionCall'
         - type: object
@@ -497,7 +497,7 @@ components:
           type: search
           query: OpenAI API
         status: completed
-    ResponsesWebSearchCallOutput:
+    OutputWebSearchCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemWebSearchCall'
         - type: object
@@ -536,7 +536,7 @@ components:
           - machine learning algorithms
           - neural networks
         status: completed
-    ResponsesOutputItemFileSearchCall:
+    OutputFileSearchCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemFileSearchCall'
         - type: object
@@ -581,7 +581,7 @@ components:
         id: imagegen-abc123
         result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
         status: completed
-    ResponsesImageGenerationCall:
+    OutputImageGenerationCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemImageGenerationCall'
         - type: object
@@ -591,7 +591,7 @@ components:
         id: imagegen-abc123
         result: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
         status: completed
-    ResponsesServerToolOutput:
+    OutputServerToolItem:
       type: object
       properties:
         type:
@@ -617,15 +617,15 @@ components:
         type: openrouter:web_search
         id: ws_tmp_abc123
         status: completed
-    ResponsesOutputItem:
+    OutputItems:
       anyOf:
-        - $ref: '#/components/schemas/ResponsesOutputMessage'
-        - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
-        - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
-        - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
-        - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
-        - $ref: '#/components/schemas/ResponsesImageGenerationCall'
-        - $ref: '#/components/schemas/ResponsesServerToolOutput'
+        - $ref: '#/components/schemas/OutputMessageItem'
+        - $ref: '#/components/schemas/OutputReasoningItem'
+        - $ref: '#/components/schemas/OutputFunctionCallItem'
+        - $ref: '#/components/schemas/OutputWebSearchCallItem'
+        - $ref: '#/components/schemas/OutputFileSearchCallItem'
+        - $ref: '#/components/schemas/OutputImageGenerationCallItem'
+        - $ref: '#/components/schemas/OutputServerToolItem'
       description: An output item from the response
       example:
         id: msg-abc123
@@ -670,7 +670,7 @@ components:
       example:
         code: rate_limit_exceeded
         message: Rate limit exceeded. Please try again later.
-    OpenAIResponsesIncompleteDetails:
+    IncompleteDetails:
       type: object
       nullable: true
       properties:
@@ -709,7 +709,7 @@ components:
         - output_tokens
         - output_tokens_details
         - total_tokens
-    OpenResponsesUsage:
+    Usage:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesUsage'
         - type: object
@@ -749,7 +749,7 @@ components:
           upstream_inference_cost: null
           upstream_inference_input_cost: 0.0008
           upstream_inference_output_cost: 0.0004
-    ResponseInputText:
+    InputText:
       type: object
       properties:
         type:
@@ -765,7 +765,7 @@ components:
       example:
         type: input_text
         text: Hello, how can I help you?
-    ResponseInputImage:
+    InputImage:
       type: object
       properties:
         type:
@@ -790,7 +790,7 @@ components:
         type: input_image
         detail: auto
         image_url: https://example.com/image.jpg
-    ResponseInputFile:
+    InputFile:
       type: object
       properties:
         type:
@@ -813,7 +813,7 @@ components:
         type: input_file
         file_id: file-abc123
         filename: document.pdf
-    ResponseInputAudio:
+    InputAudio:
       type: object
       properties:
         type:
@@ -843,7 +843,7 @@ components:
         input_audio:
           data: SGVsbG8gV29ybGQ=
           format: mp3
-    ToolCallStatus:
+    ToolCallStatusEnum:
       type: string
       nullable: true
       enum:
@@ -852,7 +852,7 @@ components:
         - incomplete
       example: completed
       x-speakeasy-unknown-values: allow
-    OpenAIResponsesInput:
+    BaseInputs:
       anyOf:
         - type: string
         - type: array
@@ -883,17 +883,17 @@ components:
                       - type: array
                         items:
                           oneOf:
-                            - $ref: '#/components/schemas/ResponseInputText'
-                            - $ref: '#/components/schemas/ResponseInputImage'
-                            - $ref: '#/components/schemas/ResponseInputFile'
-                            - $ref: '#/components/schemas/ResponseInputAudio'
+                            - $ref: '#/components/schemas/InputText'
+                            - $ref: '#/components/schemas/InputImage'
+                            - $ref: '#/components/schemas/InputFile'
+                            - $ref: '#/components/schemas/InputAudio'
                           discriminator:
                             propertyName: type
                             mapping:
-                              input_text: '#/components/schemas/ResponseInputText'
-                              input_image: '#/components/schemas/ResponseInputImage'
-                              input_file: '#/components/schemas/ResponseInputFile'
-                              input_audio: '#/components/schemas/ResponseInputAudio'
+                              input_text: '#/components/schemas/InputText'
+                              input_image: '#/components/schemas/InputImage'
+                              input_file: '#/components/schemas/InputFile'
+                              input_audio: '#/components/schemas/InputAudio'
                       - type: string
                   phase:
                     anyOf:
@@ -930,17 +930,17 @@ components:
                     type: array
                     items:
                       oneOf:
-                        - $ref: '#/components/schemas/ResponseInputText'
-                        - $ref: '#/components/schemas/ResponseInputImage'
-                        - $ref: '#/components/schemas/ResponseInputFile'
-                        - $ref: '#/components/schemas/ResponseInputAudio'
+                        - $ref: '#/components/schemas/InputText'
+                        - $ref: '#/components/schemas/InputImage'
+                        - $ref: '#/components/schemas/InputFile'
+                        - $ref: '#/components/schemas/InputAudio'
                       discriminator:
                         propertyName: type
                         mapping:
-                          input_text: '#/components/schemas/ResponseInputText'
-                          input_image: '#/components/schemas/ResponseInputImage'
-                          input_file: '#/components/schemas/ResponseInputFile'
-                          input_audio: '#/components/schemas/ResponseInputAudio'
+                          input_text: '#/components/schemas/InputText'
+                          input_image: '#/components/schemas/InputImage'
+                          input_file: '#/components/schemas/InputFile'
+                          input_audio: '#/components/schemas/InputAudio'
                 required:
                   - id
                   - role
@@ -962,17 +962,17 @@ components:
                       - type: array
                         items:
                           oneOf:
-                            - $ref: '#/components/schemas/ResponseInputText'
-                            - $ref: '#/components/schemas/ResponseInputImage'
-                            - $ref: '#/components/schemas/ResponseInputFile'
+                            - $ref: '#/components/schemas/InputText'
+                            - $ref: '#/components/schemas/InputImage'
+                            - $ref: '#/components/schemas/InputFile'
                           discriminator:
                             propertyName: type
                             mapping:
-                              input_text: '#/components/schemas/ResponseInputText'
-                              input_image: '#/components/schemas/ResponseInputImage'
-                              input_file: '#/components/schemas/ResponseInputFile'
+                              input_text: '#/components/schemas/InputText'
+                              input_image: '#/components/schemas/InputImage'
+                              input_file: '#/components/schemas/InputFile'
                   status:
-                    $ref: '#/components/schemas/ToolCallStatus'
+                    $ref: '#/components/schemas/ToolCallStatusEnum'
                 required:
                   - type
                   - call_id
@@ -992,7 +992,7 @@ components:
                   id:
                     type: string
                   status:
-                    $ref: '#/components/schemas/ToolCallStatus'
+                    $ref: '#/components/schemas/ToolCallStatusEnum'
                 required:
                   - type
                   - call_id
@@ -1001,7 +1001,7 @@ components:
               - $ref: '#/components/schemas/OutputItemImageGenerationCall'
               - $ref: '#/components/schemas/OutputMessage'
         - nullable: true
-    OpenResponsesRequestMetadata:
+    RequestMetadata:
       type: object
       nullable: true
       additionalProperties:
@@ -1012,7 +1012,7 @@ components:
       example:
         user_id: '123'
         session_id: abc-def-ghi
-    OpenResponsesFunctionTool:
+    FunctionTool:
       type: object
       properties:
         type:
@@ -1055,7 +1055,7 @@ components:
               x-speakeasy-unknown-values: allow
           required:
             - location
-    ResponsesSearchContextSize:
+    SearchContextSizeEnum:
       type: string
       enum:
         - low
@@ -1064,7 +1064,7 @@ components:
       description: Size of the search context for web search tools
       example: medium
       x-speakeasy-unknown-values: allow
-    WebSearchPreviewToolUserLocation:
+    Preview_WebSearchUserLocation:
       type: object
       nullable: true
       properties:
@@ -1086,7 +1086,7 @@ components:
           nullable: true
       required:
         - type
-    OpenResponsesWebSearchPreviewTool:
+    Preview_WebSearchServerTool:
       type: object
       properties:
         type:
@@ -1094,24 +1094,27 @@ components:
           enum:
             - web_search_preview
         search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
+          $ref: '#/components/schemas/SearchContextSizeEnum'
         user_location:
-          $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
+          $ref: '#/components/schemas/Preview_WebSearchUserLocation'
         engine:
           type: string
           enum:
             - auto
             - native
             - exa
+            - firecrawl
+            - parallel
           description: >-
-            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
           example: auto
           x-speakeasy-unknown-values: allow
         max_results:
           type: number
           minimum: 1
           maximum: 25
-          description: Maximum number of search results to return per search call. Defaults to 5.
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
           example: 5
         filters:
           type: object
@@ -1132,7 +1135,7 @@ components:
       description: Web search preview tool configuration
       example:
         type: web_search_preview
-    OpenResponsesWebSearchPreview20250311Tool:
+    Preview_20250311_WebSearchServerTool:
       type: object
       properties:
         type:
@@ -1140,24 +1143,27 @@ components:
           enum:
             - web_search_preview_2025_03_11
         search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
+          $ref: '#/components/schemas/SearchContextSizeEnum'
         user_location:
-          $ref: '#/components/schemas/WebSearchPreviewToolUserLocation'
+          $ref: '#/components/schemas/Preview_WebSearchUserLocation'
         engine:
           type: string
           enum:
             - auto
             - native
             - exa
+            - firecrawl
+            - parallel
           description: >-
-            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
           example: auto
           x-speakeasy-unknown-values: allow
         max_results:
           type: number
           minimum: 1
           maximum: 25
-          description: Maximum number of search results to return per search call. Defaults to 5.
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
           example: 5
         filters:
           type: object
@@ -1178,7 +1184,7 @@ components:
       description: Web search preview tool configuration (2025-03-11 version)
       example:
         type: web_search_preview_2025_03_11
-    ResponsesWebSearchUserLocation:
+    WebSearchUserLocation:
       type: object
       nullable: true
       properties:
@@ -1205,7 +1211,7 @@ components:
         country: USA
         region: California
         timezone: America/Los_Angeles
-    OpenResponsesWebSearchTool:
+    Legacy_WebSearchServerTool:
       type: object
       properties:
         type:
@@ -1227,24 +1233,27 @@ components:
               items:
                 type: string
         search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
+          $ref: '#/components/schemas/SearchContextSizeEnum'
         user_location:
-          $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
+          $ref: '#/components/schemas/WebSearchUserLocation'
         engine:
           type: string
           enum:
             - auto
             - native
             - exa
+            - firecrawl
+            - parallel
           description: >-
-            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
           example: auto
           x-speakeasy-unknown-values: allow
         max_results:
           type: number
           minimum: 1
           maximum: 25
-          description: Maximum number of search results to return per search call. Defaults to 5.
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
           example: 5
       required:
         - type
@@ -1255,7 +1264,7 @@ components:
         filters:
           allowed_domains:
             - example.com
-    OpenResponsesWebSearch20250826Tool:
+    WebSearchServerTool:
       type: object
       properties:
         type:
@@ -1277,24 +1286,27 @@ components:
               items:
                 type: string
         search_context_size:
-          $ref: '#/components/schemas/ResponsesSearchContextSize'
+          $ref: '#/components/schemas/SearchContextSizeEnum'
         user_location:
-          $ref: '#/components/schemas/ResponsesWebSearchUserLocation'
+          $ref: '#/components/schemas/WebSearchUserLocation'
         engine:
           type: string
           enum:
             - auto
             - native
             - exa
+            - firecrawl
+            - parallel
           description: >-
-            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
           example: auto
           x-speakeasy-unknown-values: allow
         max_results:
           type: number
           minimum: 1
           maximum: 25
-          description: Maximum number of search results to return per search call. Defaults to 5.
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
           example: 5
       required:
         - type
@@ -1324,7 +1336,7 @@ components:
         - type
         - filters
       description: A compound filter that combines multiple comparison or compound filters
-    OpenResponsesFileSearchTool:
+    FileSearchServerTool:
       type: object
       properties:
         type:
@@ -1390,7 +1402,7 @@ components:
         type: file_search
         vector_store_ids:
           - vs_abc123
-    OpenResponsesComputerTool:
+    ComputerUseServerTool:
       type: object
       properties:
         type:
@@ -1421,7 +1433,7 @@ components:
         display_height: 768
         display_width: 1024
         environment: linux
-    OpenResponsesCodeInterpreterTool:
+    CodeInterpreterServerTool:
       type: object
       properties:
         type:
@@ -1459,7 +1471,7 @@ components:
       example:
         type: code_interpreter
         container: auto
-    OpenResponsesMcpTool:
+    McpServerTool:
       type: object
       properties:
         type:
@@ -1540,7 +1552,7 @@ components:
         type: mcp
         server_label: my-server
         server_url: https://example.com/mcp
-    OpenResponsesImageGenerationTool:
+    ImageGenerationServerTool:
       type: object
       properties:
         type:
@@ -1613,7 +1625,7 @@ components:
       example:
         type: image_generation
         quality: high
-    OpenResponsesLocalShellTool:
+    CodexLocalShellTool:
       type: object
       properties:
         type:
@@ -1625,7 +1637,7 @@ components:
       description: Local shell tool configuration
       example:
         type: local_shell
-    OpenResponsesFunctionShellTool:
+    ShellServerTool:
       type: object
       properties:
         type:
@@ -1637,7 +1649,7 @@ components:
       description: Shell tool configuration
       example:
         type: shell
-    OpenResponsesApplyPatchTool:
+    ApplyPatchServerTool:
       type: object
       properties:
         type:
@@ -1649,7 +1661,7 @@ components:
       description: Apply patch tool configuration
       example:
         type: apply_patch
-    OpenResponsesCustomTool:
+    CustomTool:
       type: object
       properties:
         type:
@@ -1729,7 +1741,7 @@ components:
                     - web_search_preview
           required:
             - type
-    OpenAIResponsesPrompt:
+    StoredPromptTemplate:
       type: object
       nullable: true
       properties:
@@ -1741,12 +1753,12 @@ components:
           additionalProperties:
             anyOf:
               - type: string
-              - $ref: '#/components/schemas/ResponseInputText'
-              - $ref: '#/components/schemas/ResponseInputImage'
-              - $ref: '#/components/schemas/ResponseInputFile'
+              - $ref: '#/components/schemas/InputText'
+              - $ref: '#/components/schemas/InputImage'
+              - $ref: '#/components/schemas/InputFile'
       required:
         - id
-    OpenAIResponsesReasoningEffort:
+    ReasoningEffortEnum:
       type: string
       nullable: true
       enum:
@@ -1757,7 +1769,7 @@ components:
         - minimal
         - none
       x-speakeasy-unknown-values: allow
-    ReasoningSummaryVerbosity:
+    ReasoningSummaryVerbosityEnum:
       type: string
       nullable: true
       enum:
@@ -1766,32 +1778,22 @@ components:
         - detailed
       example: auto
       x-speakeasy-unknown-values: allow
-    OpenAIResponsesReasoningConfig:
+    BaseReasoningConfig:
       type: object
       nullable: true
       properties:
         effort:
-          $ref: '#/components/schemas/OpenAIResponsesReasoningEffort'
+          $ref: '#/components/schemas/ReasoningEffortEnum'
         summary:
-          $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-    OpenAIResponsesServiceTier:
-      type: string
-      nullable: true
-      enum:
-        - auto
-        - default
-        - flex
-        - priority
-        - scale
-      x-speakeasy-unknown-values: allow
-    OpenAIResponsesTruncation:
+          $ref: '#/components/schemas/ReasoningSummaryVerbosityEnum'
+    TruncationEnum:
       type: string
       nullable: true
       enum:
         - auto
         - disabled
       x-speakeasy-unknown-values: allow
-    ResponsesFormatText:
+    FormatTextConfig:
       type: object
       properties:
         type:
@@ -1803,7 +1805,19 @@ components:
       description: Plain text response format
       example:
         type: text
-    ResponsesFormatTextJSONSchemaConfig:
+    FormatJsonObjectConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - json_object
+      required:
+        - type
+      description: JSON object response format
+      example:
+        type: json_object
+    FormatJsonSchemaConfig:
       type: object
       properties:
         type:
@@ -1839,19 +1853,19 @@ components:
               type: number
           required:
             - name
-    ResponseFormatTextConfig:
+    Formats:
       anyOf:
-        - $ref: '#/components/schemas/ResponsesFormatText'
-        - $ref: '#/components/schemas/ResponseFormatJSONObject'
-        - $ref: '#/components/schemas/ResponsesFormatTextJSONSchemaConfig'
+        - $ref: '#/components/schemas/FormatTextConfig'
+        - $ref: '#/components/schemas/FormatJsonObjectConfig'
+        - $ref: '#/components/schemas/FormatJsonSchemaConfig'
       description: Text response format configuration
       example:
         type: text
-    ResponseTextConfig:
+    TextConfig:
       type: object
       properties:
         format:
-          $ref: '#/components/schemas/ResponseFormatTextConfig'
+          $ref: '#/components/schemas/Formats'
         verbosity:
           type: string
           nullable: true
@@ -1865,7 +1879,17 @@ components:
         format:
           type: text
         verbosity: medium
-    OpenAIResponsesNonStreamingResponse:
+    ServiceTierEnum:
+      type: string
+      nullable: true
+      enum:
+        - auto
+        - default
+        - flex
+        - priority
+        - scale
+      x-speakeasy-unknown-values: allow
+    BaseResponsesResult:
       type: object
       properties:
         id:
@@ -1916,7 +1940,7 @@ components:
         error:
           $ref: '#/components/schemas/ResponsesErrorField'
         incomplete_details:
-          $ref: '#/components/schemas/OpenAIResponsesIncompleteDetails'
+          $ref: '#/components/schemas/IncompleteDetails'
         usage:
           $ref: '#/components/schemas/OpenAIResponsesUsage'
         max_tool_calls:
@@ -1940,15 +1964,15 @@ components:
           type: number
           nullable: true
         instructions:
-          $ref: '#/components/schemas/OpenAIResponsesInput'
+          $ref: '#/components/schemas/BaseInputs'
         metadata:
-          $ref: '#/components/schemas/OpenResponsesRequestMetadata'
+          $ref: '#/components/schemas/RequestMetadata'
         tools:
           type: array
           items:
             oneOf:
               - allOf:
-                  - $ref: '#/components/schemas/OpenResponsesFunctionTool'
+                  - $ref: '#/components/schemas/FunctionTool'
                   - type: object
                     properties: {}
                 description: Function tool definition
@@ -1970,25 +1994,25 @@ components:
                         x-speakeasy-unknown-values: allow
                     required:
                       - location
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-              - $ref: '#/components/schemas/OpenResponsesFileSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesComputerTool'
-              - $ref: '#/components/schemas/OpenResponsesCodeInterpreterTool'
-              - $ref: '#/components/schemas/OpenResponsesMcpTool'
-              - $ref: '#/components/schemas/OpenResponsesImageGenerationTool'
-              - $ref: '#/components/schemas/OpenResponsesLocalShellTool'
-              - $ref: '#/components/schemas/OpenResponsesFunctionShellTool'
-              - $ref: '#/components/schemas/OpenResponsesApplyPatchTool'
-              - $ref: '#/components/schemas/OpenResponsesCustomTool'
+              - $ref: '#/components/schemas/Preview_WebSearchServerTool'
+              - $ref: '#/components/schemas/Preview_20250311_WebSearchServerTool'
+              - $ref: '#/components/schemas/Legacy_WebSearchServerTool'
+              - $ref: '#/components/schemas/WebSearchServerTool'
+              - $ref: '#/components/schemas/FileSearchServerTool'
+              - $ref: '#/components/schemas/ComputerUseServerTool'
+              - $ref: '#/components/schemas/CodeInterpreterServerTool'
+              - $ref: '#/components/schemas/McpServerTool'
+              - $ref: '#/components/schemas/ImageGenerationServerTool'
+              - $ref: '#/components/schemas/CodexLocalShellTool'
+              - $ref: '#/components/schemas/ShellServerTool'
+              - $ref: '#/components/schemas/ApplyPatchServerTool'
+              - $ref: '#/components/schemas/CustomTool'
         tool_choice:
           $ref: '#/components/schemas/OpenAIResponsesToolChoice'
         parallel_tool_calls:
           type: boolean
         prompt:
-          $ref: '#/components/schemas/OpenAIResponsesPrompt'
+          $ref: '#/components/schemas/StoredPromptTemplate'
         background:
           type: boolean
           nullable: true
@@ -1996,15 +2020,15 @@ components:
           type: string
           nullable: true
         reasoning:
-          $ref: '#/components/schemas/OpenAIResponsesReasoningConfig'
+          $ref: '#/components/schemas/BaseReasoningConfig'
         service_tier:
-          $ref: '#/components/schemas/OpenAIResponsesServiceTier'
+          $ref: '#/components/schemas/ServiceTierEnum'
         store:
           type: boolean
         truncation:
-          $ref: '#/components/schemas/OpenAIResponsesTruncation'
+          $ref: '#/components/schemas/TruncationEnum'
         text:
-          $ref: '#/components/schemas/ResponseTextConfig'
+          $ref: '#/components/schemas/TextConfig'
       required:
         - id
         - object
@@ -2024,17 +2048,20 @@ components:
         - tools
         - tool_choice
         - parallel_tool_calls
-    OpenResponsesNonStreamingResponse:
+    OpenResponsesResult:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+        - $ref: '#/components/schemas/BaseResponsesResult'
         - type: object
           properties:
             output:
               type: array
               items:
-                $ref: '#/components/schemas/ResponsesOutputItem'
+                $ref: '#/components/schemas/OutputItems'
             usage:
-              $ref: '#/components/schemas/OpenResponsesUsage'
+              $ref: '#/components/schemas/Usage'
+            service_tier:
+              type: string
+              nullable: true
       description: Complete non-streaming response from the Responses API
       example:
         id: resp-abc123
@@ -2069,7 +2096,7 @@ components:
         max_output_tokens: null
         metadata: null
         instructions: null
-    OpenResponsesCreatedEvent:
+    CreatedEvent:
       type: object
       properties:
         type:
@@ -2077,7 +2104,7 @@ components:
           enum:
             - response.created
         response:
-          $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+          $ref: '#/components/schemas/BaseResponsesResult'
         sequence_number:
           type: number
       required:
@@ -2105,7 +2132,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 0
-    OpenResponsesInProgressEvent:
+    InProgressEvent:
       type: object
       properties:
         type:
@@ -2113,7 +2140,7 @@ components:
           enum:
             - response.in_progress
         response:
-          $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+          $ref: '#/components/schemas/BaseResponsesResult'
         sequence_number:
           type: number
       required:
@@ -2141,7 +2168,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 1
-    OpenResponsesCompletedEvent:
+    CompletedEvent:
       type: object
       properties:
         type:
@@ -2149,7 +2176,7 @@ components:
           enum:
             - response.completed
         response:
-          $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+          $ref: '#/components/schemas/BaseResponsesResult'
         sequence_number:
           type: number
       required:
@@ -2185,7 +2212,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 10
-    OpenResponsesIncompleteEvent:
+    IncompleteEvent:
       type: object
       properties:
         type:
@@ -2193,7 +2220,7 @@ components:
           enum:
             - response.incomplete
         response:
-          $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+          $ref: '#/components/schemas/BaseResponsesResult'
         sequence_number:
           type: number
       required:
@@ -2221,7 +2248,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 5
-    OpenResponsesFailedEvent:
+    FailedEvent:
       type: object
       properties:
         type:
@@ -2229,7 +2256,7 @@ components:
           enum:
             - response.failed
         response:
-          $ref: '#/components/schemas/OpenAIResponsesNonStreamingResponse'
+          $ref: '#/components/schemas/BaseResponsesResult'
         sequence_number:
           type: number
       required:
@@ -2257,7 +2284,7 @@ components:
           top_p: null
           max_output_tokens: null
         sequence_number: 3
-    OpenAIResponsesErrorEvent:
+    BaseErrorEvent:
       type: object
       properties:
         type:
@@ -2287,9 +2314,9 @@ components:
         message: Rate limit exceeded. Please try again later.
         param: null
         sequence_number: 2
-    OpenResponsesErrorEvent:
+    ErrorEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesErrorEvent'
+        - $ref: '#/components/schemas/BaseErrorEvent'
         - type: object
           properties: {}
       description: Event emitted when an error occurs during streaming
@@ -2299,7 +2326,7 @@ components:
         message: Rate limit exceeded. Please try again later.
         param: null
         sequence_number: 2
-    OpenResponsesOutputItemAddedEvent:
+    OutputItemAddedEvent:
       type: object
       properties:
         type:
@@ -2343,7 +2370,7 @@ components:
           role: assistant
           content: []
         sequence_number: 2
-    OpenResponsesOutputItemDoneEvent:
+    OutputItemDoneEvent:
       type: object
       properties:
         type:
@@ -2390,7 +2417,7 @@ components:
               text: Hello! How can I help you?
               annotations: []
         sequence_number: 8
-    OpenResponsesContentPartAddedEvent:
+    BaseContentPartAddedEvent:
       type: object
       properties:
         type:
@@ -2427,7 +2454,28 @@ components:
           text: ''
           annotations: []
         sequence_number: 3
-    OpenResponsesContentPartDoneEvent:
+    ContentPartAddedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseContentPartAddedEvent'
+        - type: object
+          properties:
+            part:
+              anyOf:
+                - $ref: '#/components/schemas/ResponseOutputText'
+                - $ref: '#/components/schemas/ReasoningTextContent'
+                - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
+      description: Event emitted when a new content part is added to an output item
+      example:
+        type: response.content_part.added
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        part:
+          type: output_text
+          text: ''
+          annotations: []
+        sequence_number: 3
+    BaseContentPartDoneEvent:
       type: object
       properties:
         type:
@@ -2453,6 +2501,27 @@ components:
         - content_index
         - part
         - sequence_number
+      description: Event emitted when a content part is complete
+      example:
+        type: response.content_part.done
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        part:
+          type: output_text
+          text: Hello! How can I help you?
+          annotations: []
+        sequence_number: 7
+    ContentPartDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseContentPartDoneEvent'
+        - type: object
+          properties:
+            part:
+              anyOf:
+                - $ref: '#/components/schemas/ResponseOutputText'
+                - $ref: '#/components/schemas/ReasoningTextContent'
+                - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
       description: Event emitted when a content part is complete
       example:
         type: response.content_part.done
@@ -2504,7 +2573,7 @@ components:
         top_logprobs:
           - token: hello
             logprob: -0.5
-    OpenResponsesTextDeltaEvent:
+    BaseTextDeltaEvent:
       type: object
       properties:
         type:
@@ -2542,7 +2611,46 @@ components:
         content_index: 0
         delta: Hello
         sequence_number: 4
-    OpenResponsesTextDoneEvent:
+    TextDeltaEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseTextDeltaEvent'
+        - type: object
+          properties:
+            logprobs:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/OpenResponsesLogProbs'
+                  - type: object
+                    properties:
+                      top_logprobs:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/OpenResponsesTopLogprobs'
+                            - type: object
+                              properties: {}
+                          description: Alternative token with its log probability
+                          example:
+                            token: hello
+                            logprob: -0.5
+                description: Log probability information for a token
+                example:
+                  logprob: -0.1
+                  token: world
+                  top_logprobs:
+                    - token: hello
+                      logprob: -0.5
+      description: Event emitted when a text delta is streamed
+      example:
+        type: response.output_text.delta
+        logprobs: []
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        delta: Hello
+        sequence_number: 4
+    BaseTextDoneEvent:
       type: object
       properties:
         type:
@@ -2580,7 +2688,46 @@ components:
         text: Hello! How can I help you?
         sequence_number: 6
         logprobs: []
-    OpenResponsesRefusalDeltaEvent:
+    TextDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseTextDoneEvent'
+        - type: object
+          properties:
+            logprobs:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/OpenResponsesLogProbs'
+                  - type: object
+                    properties:
+                      top_logprobs:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: '#/components/schemas/OpenResponsesTopLogprobs'
+                            - type: object
+                              properties: {}
+                          description: Alternative token with its log probability
+                          example:
+                            token: hello
+                            logprob: -0.5
+                description: Log probability information for a token
+                example:
+                  logprob: -0.1
+                  token: world
+                  top_logprobs:
+                    - token: hello
+                      logprob: -0.5
+      description: Event emitted when text streaming is complete
+      example:
+        type: response.output_text.done
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        text: Hello! How can I help you?
+        sequence_number: 6
+        logprobs: []
+    BaseRefusalDeltaEvent:
       type: object
       properties:
         type:
@@ -2612,7 +2759,20 @@ components:
         content_index: 0
         delta: I'm sorry
         sequence_number: 4
-    OpenResponsesRefusalDoneEvent:
+    RefusalDeltaEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseRefusalDeltaEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when a refusal delta is streamed
+      example:
+        type: response.refusal.delta
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        delta: I'm sorry
+        sequence_number: 4
+    BaseRefusalDoneEvent:
       type: object
       properties:
         type:
@@ -2644,7 +2804,20 @@ components:
         content_index: 0
         refusal: I'm sorry, but I can't assist with that request.
         sequence_number: 6
-    OpenResponsesOutputTextAnnotationAddedEvent:
+    RefusalDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseRefusalDoneEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when refusal streaming is complete
+      example:
+        type: response.refusal.done
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        refusal: I'm sorry, but I can't assist with that request.
+        sequence_number: 6
+    BaseAnnotationAddedEvent:
       type: object
       properties:
         type:
@@ -2685,7 +2858,26 @@ components:
           title: Example
           start_index: 0
           end_index: 7
-    OpenResponsesFunctionCallArgumentsDeltaEvent:
+    AnnotationAddedEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnnotationAddedEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when a text annotation is added to output
+      example:
+        type: response.output_text.annotation.added
+        output_index: 0
+        item_id: item-1
+        content_index: 0
+        sequence_number: 5
+        annotation_index: 0
+        annotation:
+          type: url_citation
+          url: https://example.com
+          title: Example
+          start_index: 0
+          end_index: 7
+    BaseFunctionCallArgsDeltaEvent:
       type: object
       properties:
         type:
@@ -2713,7 +2905,19 @@ components:
         output_index: 0
         delta: '{"city": "San'
         sequence_number: 4
-    OpenResponsesFunctionCallArgumentsDoneEvent:
+    FunctionCallArgsDeltaEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseFunctionCallArgsDeltaEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when function call arguments are being streamed
+      example:
+        type: response.function_call_arguments.delta
+        item_id: item-1
+        output_index: 0
+        delta: '{"city": "San'
+        sequence_number: 4
+    BaseFunctionCallArgsDoneEvent:
       type: object
       properties:
         type:
@@ -2745,7 +2949,20 @@ components:
         name: get_weather
         arguments: '{"city": "San Francisco", "units": "celsius"}'
         sequence_number: 6
-    OpenAIResponsesReasoningDeltaEvent:
+    FunctionCallArgsDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseFunctionCallArgsDoneEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when function call arguments streaming is complete
+      example:
+        type: response.function_call_arguments.done
+        item_id: item-1
+        output_index: 0
+        name: get_weather
+        arguments: '{"city": "San Francisco", "units": "celsius"}'
+        sequence_number: 6
+    BaseReasoningDeltaEvent:
       type: object
       properties:
         type:
@@ -2777,9 +2994,9 @@ components:
         content_index: 0
         delta: First, we need
         sequence_number: 4
-    OpenResponsesReasoningDeltaEvent:
+    ReasoningDeltaEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningDeltaEvent'
+        - $ref: '#/components/schemas/BaseReasoningDeltaEvent'
         - type: object
           properties: {}
       description: Event emitted when reasoning text delta is streamed
@@ -2790,7 +3007,7 @@ components:
         content_index: 0
         delta: First, we need
         sequence_number: 4
-    OpenAIResponsesReasoningDoneEvent:
+    BaseReasoningDoneEvent:
       type: object
       properties:
         type:
@@ -2822,9 +3039,9 @@ components:
         content_index: 0
         text: First, we need to identify the key components and then combine them logically.
         sequence_number: 6
-    OpenResponsesReasoningDoneEvent:
+    ReasoningDoneEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningDoneEvent'
+        - $ref: '#/components/schemas/BaseReasoningDoneEvent'
         - type: object
           properties: {}
       description: Event emitted when reasoning text streaming is complete
@@ -2835,7 +3052,7 @@ components:
         content_index: 0
         text: First, we need to identify the key components and then combine them logically.
         sequence_number: 6
-    OpenAIResponsesReasoningSummaryPartAddedEvent:
+    BaseReasoningSummaryPartAddedEvent:
       type: object
       properties:
         type:
@@ -2869,9 +3086,9 @@ components:
           type: summary_text
           text: ''
         sequence_number: 3
-    OpenResponsesReasoningSummaryPartAddedEvent:
+    ReasoningSummaryPartAddedEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryPartAddedEvent'
+        - $ref: '#/components/schemas/BaseReasoningSummaryPartAddedEvent'
         - type: object
           properties: {}
       description: Event emitted when a reasoning summary part is added
@@ -2884,7 +3101,7 @@ components:
           type: summary_text
           text: ''
         sequence_number: 3
-    OpenResponsesReasoningSummaryPartDoneEvent:
+    BaseReasoningSummaryPartDoneEvent:
       type: object
       properties:
         type:
@@ -2918,7 +3135,22 @@ components:
           type: summary_text
           text: Analyzing the problem step by step to find the optimal solution.
         sequence_number: 7
-    OpenAIResponsesReasoningSummaryTextDeltaEvent:
+    ReasoningSummaryPartDoneEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseReasoningSummaryPartDoneEvent'
+        - type: object
+          properties: {}
+      description: Event emitted when a reasoning summary part is complete
+      example:
+        type: response.reasoning_summary_part.done
+        output_index: 0
+        item_id: item-1
+        summary_index: 0
+        part:
+          type: summary_text
+          text: Analyzing the problem step by step to find the optimal solution.
+        sequence_number: 7
+    BaseReasoningSummaryTextDeltaEvent:
       type: object
       properties:
         type:
@@ -2950,9 +3182,9 @@ components:
         summary_index: 0
         delta: Analyzing
         sequence_number: 4
-    OpenResponsesReasoningSummaryTextDeltaEvent:
+    ReasoningSummaryTextDeltaEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryTextDeltaEvent'
+        - $ref: '#/components/schemas/BaseReasoningSummaryTextDeltaEvent'
         - type: object
           properties: {}
       description: Event emitted when reasoning summary text delta is streamed
@@ -2963,7 +3195,7 @@ components:
         summary_index: 0
         delta: Analyzing
         sequence_number: 4
-    OpenAIResponsesReasoningSummaryTextDoneEvent:
+    BaseReasoningSummaryTextDoneEvent:
       type: object
       properties:
         type:
@@ -2995,9 +3227,9 @@ components:
         summary_index: 0
         text: Analyzing the problem step by step to find the optimal solution.
         sequence_number: 6
-    OpenResponsesReasoningSummaryTextDoneEvent:
+    ReasoningSummaryTextDoneEvent:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningSummaryTextDoneEvent'
+        - $ref: '#/components/schemas/BaseReasoningSummaryTextDoneEvent'
         - type: object
           properties: {}
       description: Event emitted when reasoning summary text streaming is complete
@@ -3026,7 +3258,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallInProgress:
+    ImageGenCallInProgressEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallInProgress'
         - type: object
@@ -3055,7 +3287,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallGenerating:
+    ImageGenCallGeneratingEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallGenerating'
         - type: object
@@ -3090,7 +3322,7 @@ components:
         - sequence_number
         - partial_image_b64
         - partial_image_index
-    OpenResponsesImageGenCallPartialImage:
+    ImageGenCallPartialImageEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallPartialImage'
         - type: object
@@ -3121,7 +3353,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesImageGenCallCompleted:
+    ImageGenCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallCompleted'
         - type: object
@@ -3150,7 +3382,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesWebSearchCallInProgress:
+    WebSearchCallInProgressEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesWebSearchCallInProgress'
         - type: object
@@ -3179,7 +3411,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesWebSearchCallSearching:
+    WebSearchCallSearchingEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesWebSearchCallSearching'
         - type: object
@@ -3208,7 +3440,7 @@ components:
         - item_id
         - output_index
         - sequence_number
-    OpenResponsesWebSearchCallCompleted:
+    WebSearchCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesSearchCompleted'
         - type: object
@@ -3219,14 +3451,14 @@ components:
         output_index: 0
         sequence_number: 3
         item_id: ws-123
-    OpenResponsesStreamEvent:
+    StreamEvents:
       oneOf:
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesCreatedEvent'
+            - $ref: '#/components/schemas/CreatedEvent'
             - type: object
               properties:
                 response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                  $ref: '#/components/schemas/OpenResponsesResult'
           description: Event emitted when a response is created
           example:
             type: response.created
@@ -3249,11 +3481,11 @@ components:
               max_output_tokens: null
             sequence_number: 0
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesInProgressEvent'
+            - $ref: '#/components/schemas/InProgressEvent'
             - type: object
               properties:
                 response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                  $ref: '#/components/schemas/OpenResponsesResult'
           description: Event emitted when a response is in progress
           example:
             type: response.in_progress
@@ -3276,11 +3508,11 @@ components:
               max_output_tokens: null
             sequence_number: 1
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesCompletedEvent'
+            - $ref: '#/components/schemas/CompletedEvent'
             - type: object
               properties:
                 response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                  $ref: '#/components/schemas/OpenResponsesResult'
           description: Event emitted when a response has completed successfully
           example:
             type: response.completed
@@ -3311,11 +3543,11 @@ components:
               max_output_tokens: null
             sequence_number: 10
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesIncompleteEvent'
+            - $ref: '#/components/schemas/IncompleteEvent'
             - type: object
               properties:
                 response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                  $ref: '#/components/schemas/OpenResponsesResult'
           description: Event emitted when a response is incomplete
           example:
             type: response.incomplete
@@ -3338,11 +3570,11 @@ components:
               max_output_tokens: null
             sequence_number: 5
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesFailedEvent'
+            - $ref: '#/components/schemas/FailedEvent'
             - type: object
               properties:
                 response:
-                  $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                  $ref: '#/components/schemas/OpenResponsesResult'
           description: Event emitted when a response has failed
           example:
             type: response.failed
@@ -3364,13 +3596,13 @@ components:
               top_p: null
               max_output_tokens: null
             sequence_number: 3
-        - $ref: '#/components/schemas/OpenResponsesErrorEvent'
+        - $ref: '#/components/schemas/ErrorEvent'
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesOutputItemAddedEvent'
+            - $ref: '#/components/schemas/OutputItemAddedEvent'
             - type: object
               properties:
                 item:
-                  $ref: '#/components/schemas/ResponsesOutputItem'
+                  $ref: '#/components/schemas/OutputItems'
           description: Event emitted when a new output item is added to the response
           example:
             type: response.output_item.added
@@ -3383,11 +3615,11 @@ components:
               content: []
             sequence_number: 2
         - allOf:
-            - $ref: '#/components/schemas/OpenResponsesOutputItemDoneEvent'
+            - $ref: '#/components/schemas/OutputItemDoneEvent'
             - type: object
               properties:
                 item:
-                  $ref: '#/components/schemas/ResponsesOutputItem'
+                  $ref: '#/components/schemas/OutputItems'
           description: Event emitted when an output item is complete
           example:
             type: response.output_item.done
@@ -3402,213 +3634,28 @@ components:
                   text: Hello! How can I help you?
                   annotations: []
             sequence_number: 8
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesContentPartAddedEvent'
-            - type: object
-              properties:
-                part:
-                  anyOf:
-                    - $ref: '#/components/schemas/ResponseOutputText'
-                    - $ref: '#/components/schemas/ReasoningTextContent'
-                    - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
-          description: Event emitted when a new content part is added to an output item
-          example:
-            type: response.content_part.added
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            part:
-              type: output_text
-              text: ''
-              annotations: []
-            sequence_number: 3
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesContentPartDoneEvent'
-            - type: object
-              properties:
-                part:
-                  anyOf:
-                    - $ref: '#/components/schemas/ResponseOutputText'
-                    - $ref: '#/components/schemas/ReasoningTextContent'
-                    - $ref: '#/components/schemas/OpenAIResponsesRefusalContent'
-          description: Event emitted when a content part is complete
-          example:
-            type: response.content_part.done
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            part:
-              type: output_text
-              text: Hello! How can I help you?
-              annotations: []
-            sequence_number: 7
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesTextDeltaEvent'
-            - type: object
-              properties:
-                logprobs:
-                  type: array
-                  items:
-                    allOf:
-                      - $ref: '#/components/schemas/OpenResponsesLogProbs'
-                      - type: object
-                        properties:
-                          top_logprobs:
-                            type: array
-                            items:
-                              allOf:
-                                - $ref: '#/components/schemas/OpenResponsesTopLogprobs'
-                                - type: object
-                                  properties: {}
-                              description: Alternative token with its log probability
-                              example:
-                                token: hello
-                                logprob: -0.5
-                    description: Log probability information for a token
-                    example:
-                      logprob: -0.1
-                      token: world
-                      top_logprobs:
-                        - token: hello
-                          logprob: -0.5
-          description: Event emitted when a text delta is streamed
-          example:
-            type: response.output_text.delta
-            logprobs: []
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            delta: Hello
-            sequence_number: 4
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesTextDoneEvent'
-            - type: object
-              properties:
-                logprobs:
-                  type: array
-                  items:
-                    allOf:
-                      - $ref: '#/components/schemas/OpenResponsesLogProbs'
-                      - type: object
-                        properties:
-                          top_logprobs:
-                            type: array
-                            items:
-                              allOf:
-                                - $ref: '#/components/schemas/OpenResponsesTopLogprobs'
-                                - type: object
-                                  properties: {}
-                              description: Alternative token with its log probability
-                              example:
-                                token: hello
-                                logprob: -0.5
-                    description: Log probability information for a token
-                    example:
-                      logprob: -0.1
-                      token: world
-                      top_logprobs:
-                        - token: hello
-                          logprob: -0.5
-          description: Event emitted when text streaming is complete
-          example:
-            type: response.output_text.done
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            text: Hello! How can I help you?
-            sequence_number: 6
-            logprobs: []
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesRefusalDeltaEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when a refusal delta is streamed
-          example:
-            type: response.refusal.delta
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            delta: I'm sorry
-            sequence_number: 4
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesRefusalDoneEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when refusal streaming is complete
-          example:
-            type: response.refusal.done
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            refusal: I'm sorry, but I can't assist with that request.
-            sequence_number: 6
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesOutputTextAnnotationAddedEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when a text annotation is added to output
-          example:
-            type: response.output_text.annotation.added
-            output_index: 0
-            item_id: item-1
-            content_index: 0
-            sequence_number: 5
-            annotation_index: 0
-            annotation:
-              type: url_citation
-              url: https://example.com
-              title: Example
-              start_index: 0
-              end_index: 7
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesFunctionCallArgumentsDeltaEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when function call arguments are being streamed
-          example:
-            type: response.function_call_arguments.delta
-            item_id: item-1
-            output_index: 0
-            delta: '{"city": "San'
-            sequence_number: 4
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesFunctionCallArgumentsDoneEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when function call arguments streaming is complete
-          example:
-            type: response.function_call_arguments.done
-            item_id: item-1
-            output_index: 0
-            name: get_weather
-            arguments: '{"city": "San Francisco", "units": "celsius"}'
-            sequence_number: 6
-        - $ref: '#/components/schemas/OpenResponsesReasoningDeltaEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningDoneEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryPartAddedEvent'
-        - allOf:
-            - $ref: '#/components/schemas/OpenResponsesReasoningSummaryPartDoneEvent'
-            - type: object
-              properties: {}
-          description: Event emitted when a reasoning summary part is complete
-          example:
-            type: response.reasoning_summary_part.done
-            output_index: 0
-            item_id: item-1
-            summary_index: 0
-            part:
-              type: summary_text
-              text: Analyzing the problem step by step to find the optimal solution.
-            sequence_number: 7
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDeltaEvent'
-        - $ref: '#/components/schemas/OpenResponsesReasoningSummaryTextDoneEvent'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallInProgress'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallGenerating'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallPartialImage'
-        - $ref: '#/components/schemas/OpenResponsesImageGenCallCompleted'
-        - $ref: '#/components/schemas/OpenResponsesWebSearchCallInProgress'
-        - $ref: '#/components/schemas/OpenResponsesWebSearchCallSearching'
-        - $ref: '#/components/schemas/OpenResponsesWebSearchCallCompleted'
+        - $ref: '#/components/schemas/ContentPartAddedEvent'
+        - $ref: '#/components/schemas/ContentPartDoneEvent'
+        - $ref: '#/components/schemas/TextDeltaEvent'
+        - $ref: '#/components/schemas/TextDoneEvent'
+        - $ref: '#/components/schemas/RefusalDeltaEvent'
+        - $ref: '#/components/schemas/RefusalDoneEvent'
+        - $ref: '#/components/schemas/AnnotationAddedEvent'
+        - $ref: '#/components/schemas/FunctionCallArgsDeltaEvent'
+        - $ref: '#/components/schemas/FunctionCallArgsDoneEvent'
+        - $ref: '#/components/schemas/ReasoningDeltaEvent'
+        - $ref: '#/components/schemas/ReasoningDoneEvent'
+        - $ref: '#/components/schemas/ReasoningSummaryPartAddedEvent'
+        - $ref: '#/components/schemas/ReasoningSummaryPartDoneEvent'
+        - $ref: '#/components/schemas/ReasoningSummaryTextDeltaEvent'
+        - $ref: '#/components/schemas/ReasoningSummaryTextDoneEvent'
+        - $ref: '#/components/schemas/ImageGenCallInProgressEvent'
+        - $ref: '#/components/schemas/ImageGenCallGeneratingEvent'
+        - $ref: '#/components/schemas/ImageGenCallPartialImageEvent'
+        - $ref: '#/components/schemas/ImageGenCallCompletedEvent'
+        - $ref: '#/components/schemas/WebSearchCallInProgressEvent'
+        - $ref: '#/components/schemas/WebSearchCallSearchingEvent'
+        - $ref: '#/components/schemas/WebSearchCallCompletedEvent'
       description: Union of all possible event types emitted during response streaming
       example:
         type: response.created
@@ -4072,7 +4119,7 @@ components:
         error:
           code: 529
           message: Provider returned error
-    OpenResponsesReasoning:
+    ReasoningItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
         - type: object
@@ -4103,7 +4150,7 @@ components:
           - type: summary_text
             text: Step by step analysis
       description: Reasoning output item with signature and format extensions
-    ResponseInputVideo:
+    InputVideo:
       type: object
       properties:
         type:
@@ -4120,7 +4167,7 @@ components:
       example:
         type: input_video
         video_url: https://example.com/video.mp4
-    OpenResponsesEasyInputMessage:
+    EasyInputMessage:
       type: object
       properties:
         type:
@@ -4146,9 +4193,9 @@ components:
             - type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/ResponseInputText'
+                  - $ref: '#/components/schemas/InputText'
                   - allOf:
-                      - $ref: '#/components/schemas/ResponseInputImage'
+                      - $ref: '#/components/schemas/InputImage'
                       - type: object
                         properties: {}
                     description: Image input content item
@@ -4156,9 +4203,9 @@ components:
                       type: input_image
                       detail: auto
                       image_url: https://example.com/image.jpg
-                  - $ref: '#/components/schemas/ResponseInputFile'
-                  - $ref: '#/components/schemas/ResponseInputAudio'
-                  - $ref: '#/components/schemas/ResponseInputVideo'
+                  - $ref: '#/components/schemas/InputFile'
+                  - $ref: '#/components/schemas/InputAudio'
+                  - $ref: '#/components/schemas/InputVideo'
             - type: string
             - nullable: true
         phase:
@@ -4175,7 +4222,7 @@ components:
           example: final_answer
       required:
         - role
-    OpenResponsesInputMessageItem:
+    InputMessageItem:
       type: object
       properties:
         id:
@@ -4200,9 +4247,9 @@ components:
           nullable: true
           items:
             oneOf:
-              - $ref: '#/components/schemas/ResponseInputText'
+              - $ref: '#/components/schemas/InputText'
               - allOf:
-                  - $ref: '#/components/schemas/ResponseInputImage'
+                  - $ref: '#/components/schemas/InputImage'
                   - type: object
                     properties: {}
                 description: Image input content item
@@ -4210,12 +4257,12 @@ components:
                   type: input_image
                   detail: auto
                   image_url: https://example.com/image.jpg
-              - $ref: '#/components/schemas/ResponseInputFile'
-              - $ref: '#/components/schemas/ResponseInputAudio'
-              - $ref: '#/components/schemas/ResponseInputVideo'
+              - $ref: '#/components/schemas/InputFile'
+              - $ref: '#/components/schemas/InputAudio'
+              - $ref: '#/components/schemas/InputVideo'
       required:
         - role
-    OpenResponsesFunctionToolCall:
+    FunctionCallItem:
       type: object
       properties:
         type:
@@ -4231,7 +4278,7 @@ components:
         id:
           type: string
         status:
-          $ref: '#/components/schemas/ToolCallStatus'
+          $ref: '#/components/schemas/ToolCallStatusEnum'
       required:
         - type
         - call_id
@@ -4246,7 +4293,7 @@ components:
         name: get_weather
         arguments: '{"location":"San Francisco"}'
         status: completed
-    OpenResponsesFunctionCallOutput:
+    FunctionCallOutputItem:
       type: object
       properties:
         type:
@@ -4264,9 +4311,9 @@ components:
             - type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/ResponseInputText'
+                  - $ref: '#/components/schemas/InputText'
                   - allOf:
-                      - $ref: '#/components/schemas/ResponseInputImage'
+                      - $ref: '#/components/schemas/InputImage'
                       - type: object
                         properties: {}
                     description: Image input content item
@@ -4274,9 +4321,9 @@ components:
                       type: input_image
                       detail: auto
                       image_url: https://example.com/image.jpg
-                  - $ref: '#/components/schemas/ResponseInputFile'
+                  - $ref: '#/components/schemas/InputFile'
         status:
-          $ref: '#/components/schemas/ToolCallStatus'
+          $ref: '#/components/schemas/ToolCallStatusEnum'
       required:
         - type
         - call_id
@@ -4288,19 +4335,53 @@ components:
         call_id: call-abc123
         output: '{"temperature":72,"conditions":"sunny"}'
         status: completed
-    OpenResponsesInput:
+    OutputDatetimeItem:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - openrouter:datetime
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - completed
+            - in_progress
+            - incomplete
+          x-speakeasy-unknown-values: allow
+        datetime:
+          type: string
+          description: ISO 8601 datetime string
+        timezone:
+          type: string
+          description: IANA timezone name
+      required:
+        - type
+        - status
+        - datetime
+        - timezone
+      description: An openrouter:datetime server tool output item
+      example:
+        type: openrouter:datetime
+        id: dt_tmp_abc123
+        status: completed
+        datetime: '2026-03-12T14:30:00.000Z'
+        timezone: UTC
+    Inputs:
       anyOf:
         - type: string
         - type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/OpenResponsesReasoning'
-              - $ref: '#/components/schemas/OpenResponsesEasyInputMessage'
-              - $ref: '#/components/schemas/OpenResponsesInputMessageItem'
-              - $ref: '#/components/schemas/OpenResponsesFunctionToolCall'
-              - $ref: '#/components/schemas/OpenResponsesFunctionCallOutput'
+              - $ref: '#/components/schemas/ReasoningItem'
+              - $ref: '#/components/schemas/EasyInputMessage'
+              - $ref: '#/components/schemas/InputMessageItem'
+              - $ref: '#/components/schemas/FunctionCallItem'
+              - $ref: '#/components/schemas/FunctionCallOutputItem'
               - allOf:
-                  - $ref: '#/components/schemas/ResponsesOutputMessage'
+                  - $ref: '#/components/schemas/OutputMessageItem'
                   - type: object
                     properties:
                       content:
@@ -4323,7 +4404,7 @@ components:
                       annotations: []
                 description: An output message item
               - allOf:
-                  - $ref: '#/components/schemas/ResponsesOutputItemReasoning'
+                  - $ref: '#/components/schemas/OutputReasoningItem'
                   - type: object
                     properties:
                       summary:
@@ -4344,16 +4425,38 @@ components:
                   signature: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
                   format: anthropic-claude-v1
                 description: An output item containing reasoning
-              - $ref: '#/components/schemas/ResponsesOutputItemFunctionCall'
-              - $ref: '#/components/schemas/ResponsesWebSearchCallOutput'
-              - $ref: '#/components/schemas/ResponsesOutputItemFileSearchCall'
-              - $ref: '#/components/schemas/ResponsesImageGenerationCall'
-              - $ref: '#/components/schemas/ResponsesServerToolOutput'
+              - $ref: '#/components/schemas/OutputFunctionCallItem'
+              - $ref: '#/components/schemas/OutputWebSearchCallItem'
+              - $ref: '#/components/schemas/OutputFileSearchCallItem'
+              - $ref: '#/components/schemas/OutputImageGenerationCallItem'
+              - $ref: '#/components/schemas/OutputDatetimeItem'
+              - $ref: '#/components/schemas/OutputServerToolItem'
       description: Input for a response request - can be a string or array of items
       example:
         - role: user
           content: What is the weather today?
-    ResponsesWebSearchServerTool:
+    DatetimeServerTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - openrouter:datetime
+        parameters:
+          type: object
+          properties:
+            timezone:
+              type: string
+              description: IANA timezone name (e.g. "America/New_York"). Defaults to UTC.
+              example: America/New_York
+      required:
+        - type
+      description: 'OpenRouter built-in server tool: returns the current date and time'
+      example:
+        type: openrouter:datetime
+        parameters:
+          timezone: America/New_York
+    WebSearchServerTool_OpenRouter:
       type: object
       properties:
         type:
@@ -4382,9 +4485,9 @@ components:
         type: openrouter:web_search
         parameters:
           max_results: 5
-    OpenResponsesResponseText:
+    TextExtendedConfig:
       allOf:
-        - $ref: '#/components/schemas/ResponseTextConfig'
+        - $ref: '#/components/schemas/TextConfig'
         - type: object
           properties: {}
       description: Text output configuration including format and verbosity
@@ -4392,9 +4495,9 @@ components:
         format:
           type: text
         verbosity: medium
-    OpenResponsesReasoningConfig:
+    ReasoningConfig:
       allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesReasoningConfig'
+        - $ref: '#/components/schemas/BaseReasoningConfig'
         - type: object
           nullable: true
           properties:
@@ -4408,13 +4511,13 @@ components:
       example:
         summary: auto
         enabled: true
-    ResponsesOutputModality:
+    OutputModalityEnum:
       type: string
       enum:
         - text
         - image
       x-speakeasy-unknown-values: allow
-    OpenAIResponsesIncludable:
+    ResponseIncludesEnum:
       type: string
       enum:
         - file_search_call.results
@@ -4422,6 +4525,14 @@ components:
         - computer_call_output.output.image_url
         - reasoning.encrypted_content
         - code_interpreter_call.outputs
+      x-speakeasy-unknown-values: allow
+    OpenAIResponsesTruncation:
+      type: string
+      nullable: true
+      enum:
+        - auto
+        - disabled
+      example: auto
       x-speakeasy-unknown-values: allow
     DataCollection:
       type: string
@@ -4499,6 +4610,7 @@ components:
         - Parasail
         - Perplexity
         - Phala
+        - Reka
         - Relace
         - SambaNova
         - Seed
@@ -4646,13 +4758,18 @@ components:
       description: The search engine to use for web search.
       x-speakeasy-unknown-values: allow
     PDFParserEngine:
-      type: string
-      enum:
-        - mistral-ocr
-        - pdf-text
-        - native
-      description: The engine to use for parsing PDF files.
-      x-speakeasy-unknown-values: allow
+      anyOf:
+        - type: string
+          enum:
+            - mistral-ocr
+            - native
+            - cloudflare-ai
+          x-speakeasy-unknown-values: allow
+        - type: string
+          enum:
+            - pdf-text
+      description: >-
+        The engine to use for parsing PDF files. "pdf-text" is deprecated and automatically redirected to "cloudflare-ai".
     PDFParserOptions:
       type: object
       properties:
@@ -4664,22 +4781,22 @@ components:
       enum:
         - middle-out
       description: The compression engine to use. Defaults to "middle-out".
-    OpenResponsesRequest:
+    ResponsesRequest:
       type: object
       properties:
         input:
-          $ref: '#/components/schemas/OpenResponsesInput'
+          $ref: '#/components/schemas/Inputs'
         instructions:
           type: string
           nullable: true
         metadata:
-          $ref: '#/components/schemas/OpenResponsesRequestMetadata'
+          $ref: '#/components/schemas/RequestMetadata'
         tools:
           type: array
           items:
             anyOf:
               - allOf:
-                  - $ref: '#/components/schemas/OpenResponsesFunctionTool'
+                  - $ref: '#/components/schemas/FunctionTool'
                   - type: object
                     properties: {}
                 description: Function tool definition
@@ -4701,21 +4818,21 @@ components:
                         x-speakeasy-unknown-values: allow
                     required:
                       - location
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreviewTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchPreview20250311Tool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesWebSearch20250826Tool'
-              - $ref: '#/components/schemas/OpenResponsesFileSearchTool'
-              - $ref: '#/components/schemas/OpenResponsesComputerTool'
-              - $ref: '#/components/schemas/OpenResponsesCodeInterpreterTool'
-              - $ref: '#/components/schemas/OpenResponsesMcpTool'
-              - $ref: '#/components/schemas/OpenResponsesImageGenerationTool'
-              - $ref: '#/components/schemas/OpenResponsesLocalShellTool'
-              - $ref: '#/components/schemas/OpenResponsesFunctionShellTool'
-              - $ref: '#/components/schemas/OpenResponsesApplyPatchTool'
-              - $ref: '#/components/schemas/OpenResponsesCustomTool'
+              - $ref: '#/components/schemas/Preview_WebSearchServerTool'
+              - $ref: '#/components/schemas/Preview_20250311_WebSearchServerTool'
+              - $ref: '#/components/schemas/Legacy_WebSearchServerTool'
+              - $ref: '#/components/schemas/WebSearchServerTool'
+              - $ref: '#/components/schemas/FileSearchServerTool'
+              - $ref: '#/components/schemas/ComputerUseServerTool'
+              - $ref: '#/components/schemas/CodeInterpreterServerTool'
+              - $ref: '#/components/schemas/McpServerTool'
+              - $ref: '#/components/schemas/ImageGenerationServerTool'
+              - $ref: '#/components/schemas/CodexLocalShellTool'
+              - $ref: '#/components/schemas/ShellServerTool'
+              - $ref: '#/components/schemas/ApplyPatchServerTool'
+              - $ref: '#/components/schemas/CustomTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
-              - $ref: '#/components/schemas/ResponsesWebSearchServerTool'
+              - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
         tool_choice:
           $ref: '#/components/schemas/OpenAIResponsesToolChoice'
         parallel_tool_calls:
@@ -4728,9 +4845,9 @@ components:
           items:
             type: string
         text:
-          $ref: '#/components/schemas/OpenResponsesResponseText'
+          $ref: '#/components/schemas/TextExtendedConfig'
         reasoning:
-          $ref: '#/components/schemas/OpenResponsesReasoningConfig'
+          $ref: '#/components/schemas/ReasoningConfig'
         max_output_tokens:
           type: number
           nullable: true
@@ -4776,7 +4893,7 @@ components:
         modalities:
           type: array
           items:
-            $ref: '#/components/schemas/ResponsesOutputModality'
+            $ref: '#/components/schemas/OutputModalityEnum'
           description: Output modalities for the response. Supported values are "text" and "image".
           example:
             - text
@@ -4788,12 +4905,12 @@ components:
           type: string
           nullable: true
         prompt:
-          $ref: '#/components/schemas/OpenAIResponsesPrompt'
+          $ref: '#/components/schemas/StoredPromptTemplate'
         include:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/OpenAIResponsesIncludable'
+            $ref: '#/components/schemas/ResponseIncludesEnum'
         background:
           type: boolean
           nullable: true
@@ -4806,13 +4923,17 @@ components:
           default: false
         service_tier:
           type: string
+          nullable: true
           enum:
             - auto
+            - default
+            - flex
+            - priority
+            - scale
           default: auto
+          x-speakeasy-unknown-values: allow
         truncation:
-          allOf:
-            - $ref: '#/components/schemas/OpenAIResponsesTruncation'
-            - example: auto
+          $ref: '#/components/schemas/OpenAIResponsesTruncation'
         stream:
           type: boolean
           default: false
@@ -5042,14 +5163,14 @@ components:
           x-speakeasy-unknown-values: allow
         user:
           type: string
-          maxLength: 128
+          maxLength: 256
           description: >-
-            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
+            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
         session_id:
           type: string
-          maxLength: 128
+          maxLength: 256
           description: >-
-            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
         trace:
           type: object
           properties:
@@ -5085,7 +5206,7 @@ components:
               properties:
                 location:
                   type: string
-    BaseAnthropicMessagesResponse:
+    BaseMessagesResult:
       type: object
       properties:
         id:
@@ -6022,6 +6143,13 @@ components:
                 - priority
                 - batch
               x-speakeasy-unknown-values: allow
+            speed:
+              type: string
+              nullable: true
+              enum:
+                - fast
+                - standard
+              x-speakeasy-unknown-values: allow
           required:
             - input_tokens
             - output_tokens
@@ -6041,11 +6169,87 @@ components:
         - stop_reason
         - stop_sequence
         - usage
-    AnthropicMessagesResponse:
+    MessagesResult:
       allOf:
-        - $ref: '#/components/schemas/BaseAnthropicMessagesResponse'
+        - $ref: '#/components/schemas/BaseMessagesResult'
         - type: object
           properties:
+            usage:
+              type: object
+              properties:
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+                cache_creation_input_tokens:
+                  type: number
+                  nullable: true
+                cache_read_input_tokens:
+                  type: number
+                  nullable: true
+                cache_creation:
+                  type: object
+                  nullable: true
+                  properties:
+                    ephemeral_5m_input_tokens:
+                      type: number
+                    ephemeral_1h_input_tokens:
+                      type: number
+                  required:
+                    - ephemeral_5m_input_tokens
+                    - ephemeral_1h_input_tokens
+                inference_geo:
+                  type: string
+                  nullable: true
+                server_tool_use:
+                  type: object
+                  nullable: true
+                  properties:
+                    web_search_requests:
+                      type: number
+                    web_fetch_requests:
+                      type: number
+                  required:
+                    - web_search_requests
+                    - web_fetch_requests
+                service_tier:
+                  type: string
+                  nullable: true
+                speed:
+                  type: string
+                  nullable: true
+                  enum:
+                    - fast
+                    - standard
+                  x-speakeasy-unknown-values: allow
+                cost:
+                  type: number
+                  nullable: true
+                is_byok:
+                  type: boolean
+                cost_details:
+                  type: object
+                  nullable: true
+                  properties:
+                    upstream_inference_cost:
+                      type: number
+                      nullable: true
+                    upstream_inference_prompt_cost:
+                      type: number
+                    upstream_inference_completions_cost:
+                      type: number
+                  required:
+                    - upstream_inference_prompt_cost
+                    - upstream_inference_completions_cost
+              required:
+                - input_tokens
+                - output_tokens
+                - cache_creation_input_tokens
+                - cache_read_input_tokens
+                - cache_creation
+                - inference_geo
+                - server_tool_use
+                - service_tier
             provider:
               type: string
               enum:
@@ -6135,6 +6339,7 @@ components:
                 - Parasail
                 - Perplexity
                 - Phala
+                - Reka
                 - Relace
                 - SambaNova
                 - Seed
@@ -6175,7 +6380,7 @@ components:
           inference_geo: null
           server_tool_use: null
           service_tier: standard
-    AnthropicMessagesMessageStartEvent:
+    MessagesStartEvent:
       type: object
       properties:
         type:
@@ -7109,6 +7314,13 @@ components:
                     - priority
                     - batch
                   x-speakeasy-unknown-values: allow
+                speed:
+                  type: string
+                  nullable: true
+                  enum:
+                    - fast
+                    - standard
+                  x-speakeasy-unknown-values: allow
               required:
                 - input_tokens
                 - output_tokens
@@ -7207,6 +7419,7 @@ components:
                 - Parasail
                 - Perplexity
                 - Phala
+                - Reka
                 - Relace
                 - SambaNova
                 - Seed
@@ -7239,9 +7452,9 @@ components:
         - type
         - message
       description: Event sent at the start of a streaming message
-    AnthropicMessagesStreamEvent:
+    MessagesStreamEvents:
       oneOf:
-        - $ref: '#/components/schemas/AnthropicMessagesMessageStartEvent'
+        - $ref: '#/components/schemas/MessagesStartEvent'
         - type: object
           properties:
             type:
@@ -8424,7 +8637,7 @@ components:
             - type
             - error
       description: Union of all possible streaming events
-    OpenRouterAnthropicMessageParam:
+    MessagesMessageParam:
       type: object
       properties:
         role:
@@ -10055,7 +10268,7 @@ components:
         - role
         - content
       description: Anthropic message with OpenRouter extensions
-    AnthropicWebSearchServerTool:
+    MessagesWebSearchServerTool:
       type: object
       properties:
         type:
@@ -10071,15 +10284,18 @@ components:
                 - auto
                 - native
                 - exa
+                - firecrawl
+                - parallel
               description: >-
-                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
               example: auto
               x-speakeasy-unknown-values: allow
             max_results:
               type: number
               minimum: 1
               maximum: 25
-              description: Maximum number of search results to return per search call. Defaults to 5.
+              description: >-
+                Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
               example: 5
             max_total_results:
               type: number
@@ -10093,7 +10309,8 @@ components:
                 - low
                 - medium
                 - high
-              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              description: >-
+                How much context to retrieve per result. Defaults to medium (15000 chars). Only applies when using the Exa engine; ignored with native provider search.
               x-speakeasy-unknown-values: allow
             user_location:
               type: object
@@ -10115,12 +10332,14 @@ components:
               type: array
               items:
                 type: string
-              description: Limit search results to these domains.
+              description: >-
+                Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
             excluded_domains:
               type: array
               items:
                 type: string
-              description: Exclude search results from these domains.
+              description: >-
+                Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
       required:
         - type
       description: 'OpenRouter built-in server tool: searches the web for current information'
@@ -10128,7 +10347,7 @@ components:
         type: openrouter:web_search
         parameters:
           max_results: 5
-    AnthropicOutputConfig:
+    MessagesOutputConfig:
       type: object
       properties:
         effort:
@@ -10161,7 +10380,7 @@ components:
           description: >-
             A schema to specify Claude's output format in responses. See [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs).
       description: Configuration for controlling output behavior. Supports the effort parameter and structured output format.
-    AnthropicMessagesRequest:
+    MessagesRequest:
       type: object
       properties:
         model:
@@ -10172,7 +10391,7 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/OpenRouterAnthropicMessageParam'
+            $ref: '#/components/schemas/MessagesMessageParam'
         system:
           anyOf:
             - type: string
@@ -10584,7 +10803,7 @@ components:
                   - type
                   - name
               - $ref: '#/components/schemas/DatetimeServerTool'
-              - $ref: '#/components/schemas/AnthropicWebSearchServerTool'
+              - $ref: '#/components/schemas/MessagesWebSearchServerTool'
         tool_choice:
           oneOf:
             - type: object
@@ -10664,7 +10883,7 @@ components:
             - standard_only
           x-speakeasy-unknown-values: allow
         output_config:
-          $ref: '#/components/schemas/AnthropicOutputConfig'
+          $ref: '#/components/schemas/MessagesOutputConfig'
         cache_control:
           type: object
           properties:
@@ -11044,14 +11263,14 @@ components:
           x-speakeasy-unknown-values: allow
         user:
           type: string
-          maxLength: 128
+          maxLength: 256
           description: >-
-            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 128 characters.
+            A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
         session_id:
           type: string
-          maxLength: 128
+          maxLength: 256
           description: >-
-            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
         trace:
           type: object
           properties:
@@ -11073,6 +11292,15 @@ components:
           type: array
           items:
             type: string
+        speed:
+          type: string
+          enum:
+            - fast
+            - standard
+          description: >-
+            Controls output generation speed. When set to `fast`, uses a higher-speed inference configuration at premium pricing. Defaults to `standard` when omitted.
+          example: fast
+          x-speakeasy-unknown-values: allow
       required:
         - model
         - messages
@@ -11189,7 +11417,7 @@ components:
         error:
           code: 403
           message: Only management keys can perform this operation
-    ChatCompletionFinishReason:
+    ChatFinishReasonEnum:
       type: string
       enum:
         - tool_calls
@@ -11199,7 +11427,7 @@ components:
         - error
       example: stop
       x-speakeasy-unknown-values: allow
-    ChatMessageContentItemCacheControl:
+    ChatContentCacheControl:
       type: object
       properties:
         type:
@@ -11218,7 +11446,7 @@ components:
       example:
         type: ephemeral
         ttl: 5m
-    ChatMessageContentItemText:
+    ChatContentText:
       type: object
       properties:
         type:
@@ -11228,7 +11456,7 @@ components:
         text:
           type: string
         cache_control:
-          $ref: '#/components/schemas/ChatMessageContentItemCacheControl'
+          $ref: '#/components/schemas/ChatContentCacheControl'
       required:
         - type
         - text
@@ -11236,7 +11464,7 @@ components:
       example:
         type: text
         text: Hello, world!
-    ChatMessageContentItemImage:
+    ChatContentImage:
       type: object
       properties:
         type:
@@ -11268,7 +11496,7 @@ components:
         image_url:
           url: https://example.com/image.jpg
           detail: auto
-    ChatMessageContentItemAudio:
+    ChatContentAudio:
       type: object
       properties:
         type:
@@ -11297,16 +11525,7 @@ components:
         input_audio:
           data: SGVsbG8gV29ybGQ=
           format: wav
-    VideoInput:
-      type: object
-      properties:
-        url:
-          type: string
-          description: 'URL of the video (data: URLs supported)'
-      required:
-        - url
-      description: Video input object
-    ChatMessageContentItemVideoLegacy:
+    Legacy_ChatContentVideo:
       type: object
       properties:
         type:
@@ -11314,7 +11533,7 @@ components:
           enum:
             - input_video
         video_url:
-          $ref: '#/components/schemas/VideoInput'
+          $ref: '#/components/schemas/ChatContentVideoInput'
       required:
         - type
         - video_url
@@ -11324,7 +11543,16 @@ components:
         type: input_video
         video_url:
           url: https://example.com/video.mp4
-    ChatMessageContentItemVideo:
+    ChatContentVideoInput:
+      type: object
+      properties:
+        url:
+          type: string
+          description: 'URL of the video (data: URLs supported)'
+      required:
+        - url
+      description: Video input object
+    ChatContentVideo:
       type: object
       properties:
         type:
@@ -11332,7 +11560,7 @@ components:
           enum:
             - video_url
         video_url:
-          $ref: '#/components/schemas/VideoInput'
+          $ref: '#/components/schemas/ChatContentVideoInput'
       required:
         - type
         - video_url
@@ -11341,7 +11569,7 @@ components:
         type: video_url
         video_url:
           url: https://example.com/video.mp4
-    ChatMessageContentItemFile:
+    ChatContentFile:
       type: object
       properties:
         type:
@@ -11369,27 +11597,27 @@ components:
         file:
           file_data: https://example.com/document.pdf
           filename: document.pdf
-    ChatMessageContentItem:
+    ChatContentItems:
       oneOf:
-        - $ref: '#/components/schemas/ChatMessageContentItemText'
-        - $ref: '#/components/schemas/ChatMessageContentItemImage'
-        - $ref: '#/components/schemas/ChatMessageContentItemAudio'
+        - $ref: '#/components/schemas/ChatContentText'
+        - $ref: '#/components/schemas/ChatContentImage'
+        - $ref: '#/components/schemas/ChatContentAudio'
         - oneOf:
-            - $ref: '#/components/schemas/ChatMessageContentItemVideoLegacy'
-            - $ref: '#/components/schemas/ChatMessageContentItemVideo'
+            - $ref: '#/components/schemas/Legacy_ChatContentVideo'
+            - $ref: '#/components/schemas/ChatContentVideo'
           discriminator:
             propertyName: type
             mapping:
-              input_video: '#/components/schemas/ChatMessageContentItemVideoLegacy'
-              video_url: '#/components/schemas/ChatMessageContentItemVideo'
-        - $ref: '#/components/schemas/ChatMessageContentItemFile'
+              input_video: '#/components/schemas/Legacy_ChatContentVideo'
+              video_url: '#/components/schemas/ChatContentVideo'
+        - $ref: '#/components/schemas/ChatContentFile'
       discriminator:
         propertyName: type
       description: Content part for chat completion messages
       example:
         type: text
         text: Hello, world!
-    ChatMessageToolCall:
+    ChatToolCall:
       type: object
       properties:
         id:
@@ -11537,12 +11765,12 @@ components:
       example:
         type: reasoning.summary
         summary: The model analyzed the problem by first identifying key constraints, then evaluating possible solutions...
-    AssistantMessageReasoningDetails:
+    ChatReasoningDetails:
       type: array
       items:
         $ref: '#/components/schemas/ReasoningDetailUnion'
       description: Reasoning details for extended thinking models
-    AssistantMessageImages:
+    ChatAssistantImages:
       type: array
       items:
         type: object
@@ -11561,7 +11789,7 @@ components:
       example:
         - image_url:
             url: data:image/png;base64,iVBORw0KGgo...
-    ChatCompletionAudioOutput:
+    ChatAudioOutput:
       type: object
       properties:
         id:
@@ -11582,7 +11810,7 @@ components:
         expires_at: 1677652400
         data: UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1f
         transcript: Hello! How can I help you today?
-    AssistantMessage:
+    ChatAssistantMessage:
       type: object
       properties:
         role:
@@ -11594,7 +11822,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+                $ref: '#/components/schemas/ChatContentItems'
             - nullable: true
           description: Assistant message content
         name:
@@ -11603,7 +11831,7 @@ components:
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatMessageToolCall'
+            $ref: '#/components/schemas/ChatToolCall'
           description: Tool calls made by the assistant
         refusal:
           type: string
@@ -11614,18 +11842,18 @@ components:
           nullable: true
           description: Reasoning output
         reasoning_details:
-          $ref: '#/components/schemas/AssistantMessageReasoningDetails'
+          $ref: '#/components/schemas/ChatReasoningDetails'
         images:
-          $ref: '#/components/schemas/AssistantMessageImages'
+          $ref: '#/components/schemas/ChatAssistantImages'
         audio:
-          $ref: '#/components/schemas/ChatCompletionAudioOutput'
+          $ref: '#/components/schemas/ChatAudioOutput'
       required:
         - role
       description: Assistant message for requests and responses
       example:
         role: assistant
         content: The capital of France is Paris.
-    ChatMessageTokenLogprob:
+    ChatTokenLogprob:
       type: object
       properties:
         token:
@@ -11673,7 +11901,7 @@ components:
           - token: ' Hello'
             logprob: -0.612345
             bytes: null
-    ChatMessageTokenLogprobs:
+    ChatTokenLogprobs:
       type: object
       nullable: true
       properties:
@@ -11681,13 +11909,13 @@ components:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            $ref: '#/components/schemas/ChatTokenLogprob'
           description: Log probabilities for content tokens
         refusal:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/ChatMessageTokenLogprob'
+            $ref: '#/components/schemas/ChatTokenLogprob'
           description: Log probabilities for refusal tokens
       required:
         - content
@@ -11699,12 +11927,12 @@ components:
             bytes: null
             top_logprobs: []
         refusal: null
-    ChatResponseChoice:
+    ChatChoice:
       type: object
       properties:
         finish_reason:
           anyOf:
-            - $ref: '#/components/schemas/ChatCompletionFinishReason'
+            - $ref: '#/components/schemas/ChatFinishReasonEnum'
             - nullable: true
             - nullable: true
         index:
@@ -11712,9 +11940,9 @@ components:
           description: Choice index
           example: 0
         message:
-          $ref: '#/components/schemas/AssistantMessage'
+          $ref: '#/components/schemas/ChatAssistantMessage'
         logprobs:
-          $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+          $ref: '#/components/schemas/ChatTokenLogprobs'
       required:
         - finish_reason
         - index
@@ -11727,7 +11955,7 @@ components:
           role: assistant
           content: The capital of France is Paris.
         logprobs: null
-    ChatGenerationTokenUsage:
+    ChatUsage:
       type: object
       properties:
         completion_tokens:
@@ -11790,7 +12018,7 @@ components:
           reasoning_tokens: 5
         prompt_tokens_details:
           cached_tokens: 2
-    ChatResponse:
+    ChatResult:
       type: object
       properties:
         id:
@@ -11800,7 +12028,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatResponseChoice'
+            $ref: '#/components/schemas/ChatChoice'
           description: List of completion choices
         created:
           type: number
@@ -11819,8 +12047,13 @@ components:
           nullable: true
           description: System fingerprint
           example: fp_44709d6fcb
+        service_tier:
+          type: string
+          nullable: true
+          description: The service tier used by the upstream provider for this request
+          example: default
         usage:
-          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+          $ref: '#/components/schemas/ChatUsage'
       required:
         - id
         - choices
@@ -11844,7 +12077,7 @@ components:
           prompt_tokens: 10
           completion_tokens: 15
           total_tokens: 25
-    ChatStreamingMessageToolCall:
+    ChatStreamToolCall:
       type: object
       properties:
         index:
@@ -11883,7 +12116,7 @@ components:
         function:
           name: get_weather
           arguments: '{"location":'
-    ChatStreamingMessageChunk:
+    ChatStreamDelta:
       type: object
       properties:
         role:
@@ -11910,26 +12143,26 @@ components:
         tool_calls:
           type: array
           items:
-            $ref: '#/components/schemas/ChatStreamingMessageToolCall'
+            $ref: '#/components/schemas/ChatStreamToolCall'
           description: Tool calls delta
         reasoning_details:
-          $ref: '#/components/schemas/AssistantMessageReasoningDetails'
+          $ref: '#/components/schemas/ChatReasoningDetails'
         audio:
           allOf:
-            - $ref: '#/components/schemas/ChatCompletionAudioOutput'
+            - $ref: '#/components/schemas/ChatAudioOutput'
             - description: Audio output data
       description: Delta changes in streaming response
       example:
         role: assistant
         content: Hello
-    ChatStreamingChoice:
+    ChatStreamChoice:
       type: object
       properties:
         delta:
-          $ref: '#/components/schemas/ChatStreamingMessageChunk'
+          $ref: '#/components/schemas/ChatStreamDelta'
         finish_reason:
           anyOf:
-            - $ref: '#/components/schemas/ChatCompletionFinishReason'
+            - $ref: '#/components/schemas/ChatFinishReasonEnum'
             - nullable: true
             - nullable: true
         index:
@@ -11937,7 +12170,7 @@ components:
           description: Choice index
           example: 0
         logprobs:
-          $ref: '#/components/schemas/ChatMessageTokenLogprobs'
+          $ref: '#/components/schemas/ChatTokenLogprobs'
       required:
         - delta
         - finish_reason
@@ -11949,7 +12182,7 @@ components:
           role: assistant
           content: Hello
         finish_reason: null
-    ChatStreamingResponseChunk:
+    ChatStreamChunk:
       type: object
       properties:
         id:
@@ -11959,7 +12192,7 @@ components:
         choices:
           type: array
           items:
-            $ref: '#/components/schemas/ChatStreamingChoice'
+            $ref: '#/components/schemas/ChatStreamChoice'
           description: List of streaming chunk choices
         created:
           type: number
@@ -11977,6 +12210,11 @@ components:
           type: string
           description: System fingerprint
           example: fp_44709d6fcb
+        service_tier:
+          type: string
+          nullable: true
+          description: The service tier used by the upstream provider for this request
+          example: default
         error:
           type: object
           properties:
@@ -11996,7 +12234,7 @@ components:
             message: Rate limit exceeded
             code: 429
         usage:
-          $ref: '#/components/schemas/ChatGenerationTokenUsage'
+          $ref: '#/components/schemas/ChatUsage'
       required:
         - id
         - choices
@@ -12016,7 +12254,7 @@ components:
               role: assistant
               content: Hello
             finish_reason: null
-    SystemMessage:
+    ChatSystemMessage:
       type: object
       properties:
         role:
@@ -12028,7 +12266,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItemText'
+                $ref: '#/components/schemas/ChatContentText'
           description: System message content
           example: You are a helpful assistant.
         name:
@@ -12043,7 +12281,7 @@ components:
         role: system
         content: You are a helpful assistant.
         name: Assistant Config
-    UserMessage:
+    ChatUserMessage:
       type: object
       properties:
         role:
@@ -12055,7 +12293,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+                $ref: '#/components/schemas/ChatContentItems'
           description: User message content
           example: What is the capital of France?
         name:
@@ -12069,7 +12307,7 @@ components:
       example:
         role: user
         content: What is the capital of France?
-    DeveloperMessage:
+    ChatDeveloperMessage:
       type: object
       properties:
         role:
@@ -12081,7 +12319,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItemText'
+                $ref: '#/components/schemas/ChatContentText'
           description: Developer message content
           example: This is a message from the developer.
         name:
@@ -12095,7 +12333,7 @@ components:
       example:
         role: developer
         content: This is a message from the developer.
-    ToolResponseMessage:
+    ChatToolMessage:
       type: object
       properties:
         role:
@@ -12107,7 +12345,7 @@ components:
             - type: string
             - type: array
               items:
-                $ref: '#/components/schemas/ChatMessageContentItem'
+                $ref: '#/components/schemas/ChatContentItems'
           description: Tool response content
           example: The weather in San Francisco is 72°F and sunny.
         tool_call_id:
@@ -12123,13 +12361,13 @@ components:
         role: tool
         content: The weather in San Francisco is 72°F and sunny.
         tool_call_id: call_abc123
-    Message:
+    ChatMessages:
       oneOf:
-        - $ref: '#/components/schemas/SystemMessage'
-        - $ref: '#/components/schemas/UserMessage'
-        - $ref: '#/components/schemas/DeveloperMessage'
-        - $ref: '#/components/schemas/AssistantMessage'
-        - $ref: '#/components/schemas/ToolResponseMessage'
+        - $ref: '#/components/schemas/ChatSystemMessage'
+        - $ref: '#/components/schemas/ChatUserMessage'
+        - $ref: '#/components/schemas/ChatDeveloperMessage'
+        - $ref: '#/components/schemas/ChatAssistantMessage'
+        - $ref: '#/components/schemas/ChatToolMessage'
       discriminator:
         propertyName: role
       description: Chat completion message with role-based discrimination
@@ -12140,7 +12378,7 @@ components:
       type: string
       description: Model to use for completion
       example: openai/gpt-4
-    ModelNames:
+    ChatModelNames:
       type: array
       items:
         allOf:
@@ -12150,7 +12388,14 @@ components:
       example:
         - openai/gpt-4
         - openai/gpt-4o
-    ResponseFormatText:
+    ChatReasoningSummaryVerbosityEnum:
+      type: string
+      enum:
+        - auto
+        - concise
+        - detailed
+      x-speakeasy-unknown-values: allow
+    ChatFormatTextConfig:
       type: object
       properties:
         type:
@@ -12162,19 +12407,7 @@ components:
       description: Default text response format
       example:
         type: text
-    ResponseFormatJSONObject:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - json_object
-      required:
-        - type
-      description: JSON object response format
-      example:
-        type: json_object
-    JSONSchemaConfig:
+    ChatJsonSchemaConfig:
       type: object
       properties:
         name:
@@ -12217,7 +12450,7 @@ components:
           required:
             - answer
         strict: true
-    ResponseFormatJSONSchema:
+    ChatFormatJsonSchemaConfig:
       type: object
       properties:
         type:
@@ -12225,7 +12458,7 @@ components:
           enum:
             - json_schema
         json_schema:
-          $ref: '#/components/schemas/JSONSchemaConfig'
+          $ref: '#/components/schemas/ChatJsonSchemaConfig'
       required:
         - type
         - json_schema
@@ -12241,7 +12474,7 @@ components:
                 type: number
             required:
               - answer
-    ResponseFormatTextGrammar:
+    ChatFormatGrammarConfig:
       type: object
       properties:
         type:
@@ -12259,7 +12492,7 @@ components:
       example:
         type: grammar
         grammar: root ::= "yes" | "no"
-    ResponseFormatTextPython:
+    ChatFormatPythonConfig:
       type: object
       properties:
         type:
@@ -12283,7 +12516,7 @@ components:
       description: Streaming configuration options
       example:
         include_usage: true
-    NamedToolChoice:
+    ChatNamedToolChoice:
       type: object
       properties:
         type:
@@ -12307,7 +12540,7 @@ components:
         type: function
         function:
           name: get_weather
-    ToolChoiceOption:
+    ChatToolChoice:
       anyOf:
         - type: string
           enum:
@@ -12318,31 +12551,10 @@ components:
         - type: string
           enum:
             - required
-        - $ref: '#/components/schemas/NamedToolChoice'
+        - $ref: '#/components/schemas/ChatNamedToolChoice'
       description: Tool choice configuration
       example: auto
-    DatetimeServerTool:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - openrouter:datetime
-        parameters:
-          type: object
-          properties:
-            timezone:
-              type: string
-              description: IANA timezone name (e.g. "America/New_York"). Defaults to UTC.
-              example: America/New_York
-      required:
-        - type
-      description: 'OpenRouter built-in server tool: returns the current date and time'
-      example:
-        type: openrouter:datetime
-        parameters:
-          timezone: America/New_York
-    WebSearchServerTool:
+    ChatWebSearchServerTool:
       type: object
       properties:
         type:
@@ -12358,15 +12570,18 @@ components:
                 - auto
                 - native
                 - exa
+                - firecrawl
+                - parallel
               description: >-
-                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
               example: auto
               x-speakeasy-unknown-values: allow
             max_results:
               type: number
               minimum: 1
               maximum: 25
-              description: Maximum number of search results to return per search call. Defaults to 5.
+              description: >-
+                Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
               example: 5
             max_total_results:
               type: number
@@ -12380,7 +12595,8 @@ components:
                 - low
                 - medium
                 - high
-              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              description: >-
+                How much context to retrieve per result. Defaults to medium (15000 chars). Only applies when using the Exa engine; ignored with native provider search.
               x-speakeasy-unknown-values: allow
             user_location:
               type: object
@@ -12402,12 +12618,14 @@ components:
               type: array
               items:
                 type: string
-              description: Limit search results to these domains.
+              description: >-
+                Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
             excluded_domains:
               type: array
               items:
                 type: string
-              description: Exclude search results from these domains.
+              description: >-
+                Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
       required:
         - type
       description: 'OpenRouter built-in server tool: searches the web for current information'
@@ -12416,7 +12634,7 @@ components:
         parameters:
           engine: auto
           max_results: 5
-    WebSearchShorthand:
+    ChatWebSearchShorthand:
       type: object
       properties:
         type:
@@ -12433,15 +12651,18 @@ components:
             - auto
             - native
             - exa
+            - firecrawl
+            - parallel
           description: >-
-            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+            Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
           example: auto
           x-speakeasy-unknown-values: allow
         max_results:
           type: number
           minimum: 1
           maximum: 25
-          description: Maximum number of search results to return per search call. Defaults to 5.
+          description: >-
+            Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
           example: 5
         max_total_results:
           type: number
@@ -12455,7 +12676,8 @@ components:
             - low
             - medium
             - high
-          description: How much context to retrieve per result. Defaults to medium (15000 chars).
+          description: >-
+            How much context to retrieve per result. Defaults to medium (15000 chars). Only applies when using the Exa engine; ignored with native provider search.
           x-speakeasy-unknown-values: allow
         user_location:
           type: object
@@ -12477,12 +12699,14 @@ components:
           type: array
           items:
             type: string
-          description: Limit search results to these domains.
+          description: >-
+            Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
         excluded_domains:
           type: array
           items:
             type: string
-          description: Exclude search results from these domains.
+          description: >-
+            Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
         parameters:
           type: object
           properties:
@@ -12492,15 +12716,18 @@ components:
                 - auto
                 - native
                 - exa
+                - firecrawl
+                - parallel
               description: >-
-                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+                Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
               example: auto
               x-speakeasy-unknown-values: allow
             max_results:
               type: number
               minimum: 1
               maximum: 25
-              description: Maximum number of search results to return per search call. Defaults to 5.
+              description: >-
+                Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
               example: 5
             max_total_results:
               type: number
@@ -12514,7 +12741,8 @@ components:
                 - low
                 - medium
                 - high
-              description: How much context to retrieve per result. Defaults to medium (15000 chars).
+              description: >-
+                How much context to retrieve per result. Defaults to medium (15000 chars). Only applies when using the Exa engine; ignored with native provider search.
               x-speakeasy-unknown-values: allow
             user_location:
               type: object
@@ -12536,16 +12764,18 @@ components:
               type: array
               items:
                 type: string
-              description: Limit search results to these domains.
+              description: >-
+                Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
             excluded_domains:
               type: array
               items:
                 type: string
-              description: Exclude search results from these domains.
+              description: >-
+                Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
       required:
         - type
       description: Web search tool using OpenAI Responses API syntax. Automatically converted to openrouter:web_search.
-    ToolDefinitionJson:
+    ChatFunctionTool:
       anyOf:
         - type: object
           properties:
@@ -12598,13 +12828,13 @@ components:
                   required:
                     - location
             cache_control:
-              $ref: '#/components/schemas/ChatMessageContentItemCacheControl'
+              $ref: '#/components/schemas/ChatContentCacheControl'
           required:
             - type
             - function
         - $ref: '#/components/schemas/DatetimeServerTool'
-        - $ref: '#/components/schemas/WebSearchServerTool'
-        - $ref: '#/components/schemas/WebSearchShorthand'
+        - $ref: '#/components/schemas/ChatWebSearchServerTool'
+        - $ref: '#/components/schemas/ChatWebSearchShorthand'
       description: Tool definition for function calling (regular function or OpenRouter built-in server tool)
       example:
         type: function
@@ -12625,7 +12855,7 @@ components:
                 x-speakeasy-unknown-values: allow
             required:
               - location
-    DebugOptions:
+    ChatDebugOptions:
       type: object
       properties:
         echo_upstream_body:
@@ -12636,7 +12866,7 @@ components:
       description: Debug options for inspecting request transformations (streaming only)
       example:
         echo_upstream_body: true
-    ChatGenerationParams:
+    ChatRequest:
       type: object
       properties:
         provider:
@@ -12870,9 +13100,9 @@ components:
           example: user-123
         session_id:
           type: string
-          maxLength: 128
+          maxLength: 256
           description: >-
-            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 128 characters.
+            A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
         trace:
           type: object
           properties:
@@ -12893,7 +13123,7 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/Message'
+            $ref: '#/components/schemas/ChatMessages'
           minItems: 1
           description: List of messages for the conversation
           example:
@@ -12902,7 +13132,7 @@ components:
         model:
           $ref: '#/components/schemas/ModelName'
         models:
-          $ref: '#/components/schemas/ModelNames'
+          $ref: '#/components/schemas/ChatModelNames'
         frequency_penalty:
           type: number
           nullable: true
@@ -12975,7 +13205,7 @@ components:
               x-speakeasy-unknown-values: allow
             summary:
               anyOf:
-                - $ref: '#/components/schemas/ReasoningSummaryVerbosity'
+                - $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
                 - nullable: true
                 - nullable: true
           description: Configuration options for reasoning models
@@ -12984,11 +13214,11 @@ components:
             summary: concise
         response_format:
           oneOf:
-            - $ref: '#/components/schemas/ResponseFormatText'
-            - $ref: '#/components/schemas/ResponseFormatJSONObject'
-            - $ref: '#/components/schemas/ResponseFormatJSONSchema'
-            - $ref: '#/components/schemas/ResponseFormatTextGrammar'
-            - $ref: '#/components/schemas/ResponseFormatTextPython'
+            - $ref: '#/components/schemas/ChatFormatTextConfig'
+            - $ref: '#/components/schemas/FormatJsonObjectConfig'
+            - $ref: '#/components/schemas/ChatFormatJsonSchemaConfig'
+            - $ref: '#/components/schemas/ChatFormatGrammarConfig'
+            - $ref: '#/components/schemas/ChatFormatPythonConfig'
           discriminator:
             propertyName: type
           description: Response format configuration
@@ -13029,11 +13259,11 @@ components:
           type: boolean
           nullable: true
         tool_choice:
-          $ref: '#/components/schemas/ToolChoiceOption'
+          $ref: '#/components/schemas/ChatToolChoice'
         tools:
           type: array
           items:
-            $ref: '#/components/schemas/ToolDefinitionJson'
+            $ref: '#/components/schemas/ChatFunctionTool'
           description: Available tools for function calling
           example:
             - type: function
@@ -13049,7 +13279,7 @@ components:
           description: Nucleus sampling parameter (0-1)
           example: 1
         debug:
-          $ref: '#/components/schemas/DebugOptions'
+          $ref: '#/components/schemas/ChatDebugOptions'
         image_config:
           type: object
           additionalProperties:
@@ -13093,6 +13323,18 @@ components:
             - type
           description: >-
             Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
+        service_tier:
+          type: string
+          nullable: true
+          enum:
+            - auto
+            - default
+            - flex
+            - priority
+            - scale
+          description: The service tier to use for processing this request.
+          example: auto
+          x-speakeasy-unknown-values: allow
       required:
         - messages
       description: Chat completion request parameters
@@ -13565,6 +13807,11 @@ components:
           description: List of supported parameters for this model
         default_parameters:
           $ref: '#/components/schemas/DefaultParameters'
+        knowledge_cutoff:
+          type: string
+          nullable: true
+          description: The date up to which the model was trained on data. ISO 8601 date string (YYYY-MM-DD) or null if unknown.
+          example: '2024-10-01'
         expiration_date:
           type: string
           nullable: true
@@ -13613,6 +13860,7 @@ components:
           - top_p
           - max_tokens
         default_parameters: null
+        knowledge_cutoff: null
         expiration_date: null
     ModelsListResponseData:
       type: array
@@ -13660,6 +13908,7 @@ components:
               - frequency_penalty
               - presence_penalty
             default_parameters: null
+            knowledge_cutoff: null
             expiration_date: null
     ModelsCountResponse:
       type: object
@@ -14096,7 +14345,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OpenResponsesRequest'
+              $ref: '#/components/schemas/ResponsesRequest'
         required: true
       responses:
         '200':
@@ -14104,13 +14353,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OpenResponsesNonStreamingResponse'
+                $ref: '#/components/schemas/OpenResponsesResult'
             text/event-stream:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/OpenResponsesStreamEvent'
+                    $ref: '#/components/schemas/StreamEvents'
                 required:
                   - data
               x-speakeasy-sse-sentinel: '[DONE]'
@@ -14211,7 +14460,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AnthropicMessagesRequest'
+              $ref: '#/components/schemas/MessagesRequest'
         required: true
       responses:
         '200':
@@ -14219,7 +14468,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnthropicMessagesResponse'
+                $ref: '#/components/schemas/MessagesResult'
             text/event-stream:
               schema:
                 type: object
@@ -14227,7 +14476,7 @@ paths:
                   event:
                     type: string
                   data:
-                    $ref: '#/components/schemas/AnthropicMessagesStreamEvent'
+                    $ref: '#/components/schemas/MessagesStreamEvents'
                 required:
                   - event
                   - data
@@ -14517,7 +14766,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChatGenerationParams'
+              $ref: '#/components/schemas/ChatRequest'
         required: true
       responses:
         '200':
@@ -14525,13 +14774,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChatResponse'
+                $ref: '#/components/schemas/ChatResult'
             text/event-stream:
               schema:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ChatStreamingResponseChunk'
+                    $ref: '#/components/schemas/ChatStreamChunk'
                 required:
                   - data
               x-speakeasy-sse-sentinel: '[DONE]'
@@ -15222,6 +15471,7 @@ paths:
                         enum:
                           - completions
                           - embeddings
+                          - video
                         description: Type of API used for the generation
                         x-speakeasy-unknown-values: allow
                       router:
@@ -15330,6 +15580,7 @@ paths:
                                 - Parasail
                                 - Perplexity
                                 - Phala
+                                - Reka
                                 - Relace
                                 - SambaNova
                                 - Seed
@@ -15729,6 +15980,522 @@ paths:
                           nullable: true
                           description: URL to the provider's status page
                           example: https://status.openai.com
+                        headquarters:
+                          type: string
+                          nullable: true
+                          enum:
+                            - AD
+                            - AE
+                            - AF
+                            - AG
+                            - AI
+                            - AL
+                            - AM
+                            - AO
+                            - AQ
+                            - AR
+                            - AS
+                            - AT
+                            - AU
+                            - AW
+                            - AX
+                            - AZ
+                            - BA
+                            - BB
+                            - BD
+                            - BE
+                            - BF
+                            - BG
+                            - BH
+                            - BI
+                            - BJ
+                            - BL
+                            - BM
+                            - BN
+                            - BO
+                            - BQ
+                            - BR
+                            - BS
+                            - BT
+                            - BV
+                            - BW
+                            - BY
+                            - BZ
+                            - CA
+                            - CC
+                            - CD
+                            - CF
+                            - CG
+                            - CH
+                            - CI
+                            - CK
+                            - CL
+                            - CM
+                            - CN
+                            - CO
+                            - CR
+                            - CU
+                            - CV
+                            - CW
+                            - CX
+                            - CY
+                            - CZ
+                            - DE
+                            - DJ
+                            - DK
+                            - DM
+                            - DO
+                            - DZ
+                            - EC
+                            - EE
+                            - EG
+                            - EH
+                            - ER
+                            - ES
+                            - ET
+                            - FI
+                            - FJ
+                            - FK
+                            - FM
+                            - FO
+                            - FR
+                            - GA
+                            - GB
+                            - GD
+                            - GE
+                            - GF
+                            - GG
+                            - GH
+                            - GI
+                            - GL
+                            - GM
+                            - GN
+                            - GP
+                            - GQ
+                            - GR
+                            - GS
+                            - GT
+                            - GU
+                            - GW
+                            - GY
+                            - HK
+                            - HM
+                            - HN
+                            - HR
+                            - HT
+                            - HU
+                            - ID
+                            - IE
+                            - IL
+                            - IM
+                            - IN
+                            - IO
+                            - IQ
+                            - IR
+                            - IS
+                            - IT
+                            - JE
+                            - JM
+                            - JO
+                            - JP
+                            - KE
+                            - KG
+                            - KH
+                            - KI
+                            - KM
+                            - KN
+                            - KP
+                            - KR
+                            - KW
+                            - KY
+                            - KZ
+                            - LA
+                            - LB
+                            - LC
+                            - LI
+                            - LK
+                            - LR
+                            - LS
+                            - LT
+                            - LU
+                            - LV
+                            - LY
+                            - MA
+                            - MC
+                            - MD
+                            - ME
+                            - MF
+                            - MG
+                            - MH
+                            - MK
+                            - ML
+                            - MM
+                            - MN
+                            - MO
+                            - MP
+                            - MQ
+                            - MR
+                            - MS
+                            - MT
+                            - MU
+                            - MV
+                            - MW
+                            - MX
+                            - MY
+                            - MZ
+                            - NA
+                            - NC
+                            - NE
+                            - NF
+                            - NG
+                            - NI
+                            - NL
+                            - 'NO'
+                            - NP
+                            - NR
+                            - NU
+                            - NZ
+                            - OM
+                            - PA
+                            - PE
+                            - PF
+                            - PG
+                            - PH
+                            - PK
+                            - PL
+                            - PM
+                            - PN
+                            - PR
+                            - PS
+                            - PT
+                            - PW
+                            - PY
+                            - QA
+                            - RE
+                            - RO
+                            - RS
+                            - RU
+                            - RW
+                            - SA
+                            - SB
+                            - SC
+                            - SD
+                            - SE
+                            - SG
+                            - SH
+                            - SI
+                            - SJ
+                            - SK
+                            - SL
+                            - SM
+                            - SN
+                            - SO
+                            - SR
+                            - SS
+                            - ST
+                            - SV
+                            - SX
+                            - SY
+                            - SZ
+                            - TC
+                            - TD
+                            - TF
+                            - TG
+                            - TH
+                            - TJ
+                            - TK
+                            - TL
+                            - TM
+                            - TN
+                            - TO
+                            - TR
+                            - TT
+                            - TV
+                            - TW
+                            - TZ
+                            - UA
+                            - UG
+                            - UM
+                            - US
+                            - UY
+                            - UZ
+                            - VA
+                            - VC
+                            - VE
+                            - VG
+                            - VI
+                            - VN
+                            - VU
+                            - WF
+                            - WS
+                            - YE
+                            - YT
+                            - ZA
+                            - ZM
+                            - ZW
+                          description: ISO 3166-1 Alpha-2 country code of the provider headquarters
+                          example: US
+                          x-speakeasy-unknown-values: allow
+                        datacenters:
+                          type: array
+                          nullable: true
+                          items:
+                            type: string
+                            enum:
+                              - AD
+                              - AE
+                              - AF
+                              - AG
+                              - AI
+                              - AL
+                              - AM
+                              - AO
+                              - AQ
+                              - AR
+                              - AS
+                              - AT
+                              - AU
+                              - AW
+                              - AX
+                              - AZ
+                              - BA
+                              - BB
+                              - BD
+                              - BE
+                              - BF
+                              - BG
+                              - BH
+                              - BI
+                              - BJ
+                              - BL
+                              - BM
+                              - BN
+                              - BO
+                              - BQ
+                              - BR
+                              - BS
+                              - BT
+                              - BV
+                              - BW
+                              - BY
+                              - BZ
+                              - CA
+                              - CC
+                              - CD
+                              - CF
+                              - CG
+                              - CH
+                              - CI
+                              - CK
+                              - CL
+                              - CM
+                              - CN
+                              - CO
+                              - CR
+                              - CU
+                              - CV
+                              - CW
+                              - CX
+                              - CY
+                              - CZ
+                              - DE
+                              - DJ
+                              - DK
+                              - DM
+                              - DO
+                              - DZ
+                              - EC
+                              - EE
+                              - EG
+                              - EH
+                              - ER
+                              - ES
+                              - ET
+                              - FI
+                              - FJ
+                              - FK
+                              - FM
+                              - FO
+                              - FR
+                              - GA
+                              - GB
+                              - GD
+                              - GE
+                              - GF
+                              - GG
+                              - GH
+                              - GI
+                              - GL
+                              - GM
+                              - GN
+                              - GP
+                              - GQ
+                              - GR
+                              - GS
+                              - GT
+                              - GU
+                              - GW
+                              - GY
+                              - HK
+                              - HM
+                              - HN
+                              - HR
+                              - HT
+                              - HU
+                              - ID
+                              - IE
+                              - IL
+                              - IM
+                              - IN
+                              - IO
+                              - IQ
+                              - IR
+                              - IS
+                              - IT
+                              - JE
+                              - JM
+                              - JO
+                              - JP
+                              - KE
+                              - KG
+                              - KH
+                              - KI
+                              - KM
+                              - KN
+                              - KP
+                              - KR
+                              - KW
+                              - KY
+                              - KZ
+                              - LA
+                              - LB
+                              - LC
+                              - LI
+                              - LK
+                              - LR
+                              - LS
+                              - LT
+                              - LU
+                              - LV
+                              - LY
+                              - MA
+                              - MC
+                              - MD
+                              - ME
+                              - MF
+                              - MG
+                              - MH
+                              - MK
+                              - ML
+                              - MM
+                              - MN
+                              - MO
+                              - MP
+                              - MQ
+                              - MR
+                              - MS
+                              - MT
+                              - MU
+                              - MV
+                              - MW
+                              - MX
+                              - MY
+                              - MZ
+                              - NA
+                              - NC
+                              - NE
+                              - NF
+                              - NG
+                              - NI
+                              - NL
+                              - 'NO'
+                              - NP
+                              - NR
+                              - NU
+                              - NZ
+                              - OM
+                              - PA
+                              - PE
+                              - PF
+                              - PG
+                              - PH
+                              - PK
+                              - PL
+                              - PM
+                              - PN
+                              - PR
+                              - PS
+                              - PT
+                              - PW
+                              - PY
+                              - QA
+                              - RE
+                              - RO
+                              - RS
+                              - RU
+                              - RW
+                              - SA
+                              - SB
+                              - SC
+                              - SD
+                              - SE
+                              - SG
+                              - SH
+                              - SI
+                              - SJ
+                              - SK
+                              - SL
+                              - SM
+                              - SN
+                              - SO
+                              - SR
+                              - SS
+                              - ST
+                              - SV
+                              - SX
+                              - SY
+                              - SZ
+                              - TC
+                              - TD
+                              - TF
+                              - TG
+                              - TH
+                              - TJ
+                              - TK
+                              - TL
+                              - TM
+                              - TN
+                              - TO
+                              - TR
+                              - TT
+                              - TV
+                              - TW
+                              - TZ
+                              - UA
+                              - UG
+                              - UM
+                              - US
+                              - UY
+                              - UZ
+                              - VA
+                              - VC
+                              - VE
+                              - VG
+                              - VI
+                              - VN
+                              - VU
+                              - WF
+                              - WS
+                              - YE
+                              - YT
+                              - ZA
+                              - ZM
+                              - ZW
+                            x-speakeasy-unknown-values: allow
+                          description: ISO 3166-1 Alpha-2 country codes of the provider datacenter locations
+                          example:
+                            - US
+                            - IE
                       required:
                         - name
                         - slug
@@ -15739,6 +16506,10 @@ paths:
                         privacy_policy_url: https://openai.com/privacy
                         terms_of_service_url: https://openai.com/terms
                         status_page_url: https://status.openai.com
+                        headquarters: US
+                        datacenters:
+                          - US
+                          - IE
                 required:
                   - data
         '500':
@@ -15872,6 +16643,12 @@ paths:
                           format: date-time
                           description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
                           example: '2027-12-31T23:59:59Z'
+                        creator_user_id:
+                          type: string
+                          nullable: true
+                          description: >-
+                            The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+                          example: user_2dHFtVWx2n56w6HkM0000000000
                       required:
                         - hash
                         - name
@@ -15891,6 +16668,7 @@ paths:
                         - byok_usage_monthly
                         - created_at
                         - updated_at
+                        - creator_user_id
                       example:
                         hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                         name: My Production Key
@@ -15911,6 +16689,7 @@ paths:
                         created_at: '2025-08-24T10:30:00Z'
                         updated_at: '2025-08-24T15:45:00Z'
                         expires_at: '2027-12-31T23:59:59Z'
+                        creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                     description: List of API keys
                 required:
                   - data
@@ -15935,6 +16714,7 @@ paths:
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
                       expires_at: '2027-12-31T23:59:59Z'
+                      creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
         '401':
           description: Unauthorized - Missing or invalid authentication
           content:
@@ -16100,6 +16880,12 @@ paths:
                         format: date-time
                         description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
                         example: '2027-12-31T23:59:59Z'
+                      creator_user_id:
+                        type: string
+                        nullable: true
+                        description: >-
+                          The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+                        example: user_2dHFtVWx2n56w6HkM0000000000
                     required:
                       - hash
                       - name
@@ -16119,6 +16905,7 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
+                      - creator_user_id
                     example:
                       hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
@@ -16139,6 +16926,7 @@ paths:
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
                       expires_at: '2027-12-31T23:59:59Z'
+                      creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                     description: The created API key information
                   key:
                     type: string
@@ -16168,6 +16956,7 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: null
                     expires_at: '2027-12-31T23:59:59Z'
+                    creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                   key: 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
         '400':
           description: Bad Request - Invalid request parameters
@@ -16348,6 +17137,12 @@ paths:
                         format: date-time
                         description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
                         example: '2027-12-31T23:59:59Z'
+                      creator_user_id:
+                        type: string
+                        nullable: true
+                        description: >-
+                          The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+                        example: user_2dHFtVWx2n56w6HkM0000000000
                     required:
                       - hash
                       - name
@@ -16367,6 +17162,7 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
+                      - creator_user_id
                     example:
                       hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
@@ -16387,6 +17183,7 @@ paths:
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
                       expires_at: '2027-12-31T23:59:59Z'
+                      creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                     description: The updated API key information
                 required:
                   - data
@@ -16411,6 +17208,7 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T16:00:00Z'
                     expires_at: null
+                    creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
         '400':
           description: Bad Request - Invalid request parameters
           content:
@@ -16608,6 +17406,12 @@ paths:
                         format: date-time
                         description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
                         example: '2027-12-31T23:59:59Z'
+                      creator_user_id:
+                        type: string
+                        nullable: true
+                        description: >-
+                          The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+                        example: user_2dHFtVWx2n56w6HkM0000000000
                     required:
                       - hash
                       - name
@@ -16627,6 +17431,7 @@ paths:
                       - byok_usage_monthly
                       - created_at
                       - updated_at
+                      - creator_user_id
                     example:
                       hash: f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943
                       name: My Production Key
@@ -16647,6 +17452,7 @@ paths:
                       created_at: '2025-08-24T10:30:00Z'
                       updated_at: '2025-08-24T15:45:00Z'
                       expires_at: '2027-12-31T23:59:59Z'
+                      creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                     description: The API key information
                 required:
                   - data
@@ -16671,6 +17477,7 @@ paths:
                     created_at: '2025-08-24T10:30:00Z'
                     updated_at: '2025-08-24T15:45:00Z'
                     expires_at: '2027-12-31T23:59:59Z'
+                    creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
         '401':
           description: Unauthorized - Missing or invalid authentication
           content:
@@ -18384,6 +19191,12 @@ paths:
                         format: date-time
                         description: ISO 8601 UTC timestamp when the API key expires, or null if no expiration
                         example: '2027-12-31T23:59:59Z'
+                      creator_user_id:
+                        type: string
+                        nullable: true
+                        description: >-
+                          The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+                        example: user_2dHFtVWx2n56w6HkM0000000000
                       rate_limit:
                         type: object
                         properties:
@@ -18426,6 +19239,7 @@ paths:
                       - limit_remaining
                       - limit_reset
                       - include_byok_in_limit
+                      - creator_user_id
                       - rate_limit
                     description: Current API key information
                     example:
@@ -18446,6 +19260,7 @@ paths:
                       limit_reset: monthly
                       include_byok_in_limit: false
                       expires_at: '2027-12-31T23:59:59Z'
+                      creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                       rate_limit:
                         requests: 1000
                         interval: 1h
@@ -18471,6 +19286,7 @@ paths:
                     limit_reset: monthly
                     include_byok_in_limit: false
                     expires_at: '2027-12-31T23:59:59Z'
+                    creator_user_id: user_2dHFtVWx2n56w6HkM0000000000
                     rate_limit:
                       requests: 1000
                       interval: 1h

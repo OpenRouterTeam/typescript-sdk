@@ -4,14 +4,14 @@ import type * as models from "../models/index.js";
 import type { ClaudeMessageParam } from "../models/claude-message.js";
 
 /**
- * Creates a properly typed mock OpenResponsesNonStreamingResponse for testing.
+ * Creates a properly typed mock OpenResponsesResult for testing.
  * This factory provides all required fields with sensible defaults.
  */
 function createMockResponse(
-  overrides: Partial<models.OpenResponsesNonStreamingResponse> & {
-    output: models.OpenResponsesNonStreamingResponse["output"];
+  overrides: Partial<models.OpenResponsesResult> & {
+    output: models.OpenResponsesResult["output"];
   }
-): models.OpenResponsesNonStreamingResponse {
+): models.OpenResponsesResult {
   return {
     id: "resp_test",
     object: "response",

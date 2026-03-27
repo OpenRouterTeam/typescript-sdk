@@ -3,16 +3,16 @@
 
 ## Supported Types
 
-### `models.OpenResponsesNonStreamingResponse`
+### `models.OpenResponsesResult`
 
 ```typescript
-const value: models.OpenResponsesNonStreamingResponse = {
+const value: models.OpenResponsesResult = {
   id: "resp-abc123",
   object: "response",
   createdAt: 1704067200,
   model: "gpt-4",
   status: "completed",
-  completedAt: 288.81,
+  completedAt: 7286.67,
   output: [
     {
       type: "message",
@@ -23,8 +23,8 @@ const value: models.OpenResponsesNonStreamingResponse = {
   incompleteDetails: null,
   temperature: null,
   topP: null,
-  presencePenalty: 1980.95,
-  frequencyPenalty: 5982.72,
+  presencePenalty: 9990.37,
+  frequencyPenalty: null,
   instructions: null,
   metadata: null,
   tools: [],

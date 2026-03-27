@@ -1,27 +1,27 @@
 import type * as models from "../models/index.js";
 import {
-  OpenResponsesEasyInputMessageRoleUser,
-  OpenResponsesEasyInputMessageRoleSystem,
-  OpenResponsesEasyInputMessageRoleAssistant,
-  OpenResponsesEasyInputMessageRoleDeveloper,
-} from "../models/openresponseseasyinputmessage.js";
+  EasyInputMessageRoleUser,
+  EasyInputMessageRoleSystem,
+  EasyInputMessageRoleAssistant,
+  EasyInputMessageRoleDeveloper,
+} from "../models/easyinputmessage.js";
 import { extractMessageFromResponse } from "./stream-transformers.js";
 
 /**
- * Type guard for ToolResponseMessage
+ * Type guard for ChatToolMessage
  */
 function isToolResponseMessage(
-  msg: models.Message
-): msg is models.ToolResponseMessage {
+  msg: models.ChatMessages
+): msg is models.ChatToolMessage {
   return msg.role === "tool";
 }
 
 /**
- * Type guard for AssistantMessage
+ * Type guard for ChatAssistantMessage
  */
 function isAssistantMessage(
-  msg: models.Message
-): msg is models.AssistantMessage {
+  msg: models.ChatMessages
+): msg is models.ChatAssistantMessage {
   return msg.role === "assistant";
 }
 
@@ -30,16 +30,16 @@ function isAssistantMessage(
  */
 function mapChatRole(
   role: "user" | "system" | "assistant" | "developer"
-): models.OpenResponsesEasyInputMessageRoleUnion {
+): models.EasyInputMessageRoleUnion {
   switch (role) {
     case "user":
-      return OpenResponsesEasyInputMessageRoleUser.User;
+      return EasyInputMessageRoleUser.User;
     case "system":
-      return OpenResponsesEasyInputMessageRoleSystem.System;
+      return EasyInputMessageRoleSystem.System;
     case "assistant":
-      return OpenResponsesEasyInputMessageRoleAssistant.Assistant;
+      return EasyInputMessageRoleAssistant.Assistant;
     case "developer":
-      return OpenResponsesEasyInputMessageRoleDeveloper.Developer;
+      return EasyInputMessageRoleDeveloper.Developer;
     default: {
       const exhaustiveCheck: never = role;
       throw new Error(`Unhandled role type: ${exhaustiveCheck}`);
@@ -83,14 +83,14 @@ function contentToString(content: unknown): string {
  * ```
  */
 export function fromChatMessages(
-  messages: models.Message[]
-): models.OpenResponsesInputUnion {
+  messages: models.ChatMessages[]
+): models.InputsUnion {
   return messages.map(
     (
       msg
     ):
-      | models.OpenResponsesEasyInputMessage
-      | models.OpenResponsesFunctionCallOutput => {
+      | models.EasyInputMessage
+      | models.FunctionCallOutputItem => {
       if (isToolResponseMessage(msg)) {
         return {
           type: "function_call_output" as const,
@@ -118,7 +118,7 @@ export function fromChatMessages(
 /**
  * Convert an OpenResponses response to OpenAI chat message format.
  *
- * This function transforms OpenResponsesNonStreamingResponse to AssistantMessage
+ * This function transforms OpenResponsesResult to ChatAssistantMessage
  * (OpenAI chat format) for compatibility with code expecting chat responses.
  *
  * @example

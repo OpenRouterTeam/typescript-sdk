@@ -16,7 +16,7 @@ export type OpenAIResponsesTruncation = OpenEnum<
 >;
 
 /** @internal */
-export const OpenAIResponsesTruncation$inboundSchema: z.ZodType<
-  OpenAIResponsesTruncation,
-  unknown
-> = openEnums.inboundSchema(OpenAIResponsesTruncation);
+export const OpenAIResponsesTruncation$outboundSchema: z.ZodType<
+  string,
+  OpenAIResponsesTruncation
+> = openEnums.outboundSchema(OpenAIResponsesTruncation);

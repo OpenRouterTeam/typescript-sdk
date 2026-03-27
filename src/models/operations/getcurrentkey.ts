@@ -148,6 +148,10 @@ export type GetCurrentKeyData = {
    */
   expiresAt?: Date | null | undefined;
   /**
+   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+   */
+  creatorUserId: string | null;
+  /**
    * Legacy rate limit information about a key. Will always return -1.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -235,6 +239,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   expires_at: z.nullable(
     z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
+  creator_user_id: z.nullable(z.string()),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -252,6 +257,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
     "limit_reset": "limitReset",
     "include_byok_in_limit": "includeByokInLimit",
     "expires_at": "expiresAt",
+    "creator_user_id": "creatorUserId",
     "rate_limit": "rateLimit",
   });
 });

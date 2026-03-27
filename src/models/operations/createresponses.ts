@@ -53,7 +53,7 @@ export type CreateResponsesRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  openResponsesRequest: models.OpenResponsesRequest;
+  responsesRequest: models.ResponsesRequest;
 };
 
 /**
@@ -63,19 +63,19 @@ export type CreateResponsesResponseBody = {
   /**
    * Union of all possible event types emitted during response streaming
    */
-  data: models.OpenResponsesStreamEvent;
+  data: models.StreamEvents;
 };
 
 export type CreateResponsesResponse =
-  | models.OpenResponsesNonStreamingResponse
-  | EventStream<models.OpenResponsesStreamEvent>;
+  | models.OpenResponsesResult
+  | EventStream<models.StreamEvents>;
 
 /** @internal */
 export type CreateResponsesRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  OpenResponsesRequest: models.OpenResponsesRequest$Outbound;
+  ResponsesRequest: models.ResponsesRequest$Outbound;
 };
 
 /** @internal */
@@ -86,11 +86,11 @@ export const CreateResponsesRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  openResponsesRequest: models.OpenResponsesRequest$outboundSchema,
+  responsesRequest: models.ResponsesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    openResponsesRequest: "OpenResponsesRequest",
+    responsesRequest: "ResponsesRequest",
   });
 });
 
@@ -118,7 +118,7 @@ export const CreateResponsesResponseBody$inboundSchema: z.ZodType<
       });
       return z.NEVER;
     }
-  }).pipe(models.OpenResponsesStreamEvent$inboundSchema),
+  }).pipe(models.StreamEvents$inboundSchema),
 });
 
 export function createResponsesResponseBodyFromJSON(
@@ -136,7 +136,7 @@ export const CreateResponsesResponse$inboundSchema: z.ZodType<
   CreateResponsesResponse,
   unknown
 > = z.union([
-  models.OpenResponsesNonStreamingResponse$inboundSchema,
+  models.OpenResponsesResult$inboundSchema,
   z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {

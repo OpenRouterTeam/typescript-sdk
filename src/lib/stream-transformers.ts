@@ -35,7 +35,7 @@ import {
  * Extract text deltas from responses stream events
  */
 export async function* extractTextDeltas(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -52,7 +52,7 @@ export async function* extractTextDeltas(
  * Extract reasoning deltas from responses stream events
  */
 export async function* extractReasoningDeltas(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -69,7 +69,7 @@ export async function* extractReasoningDeltas(
  * Extract tool call argument deltas from responses stream events
  */
 export async function* extractToolDeltas(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<string> {
   const consumer = stream.createConsumer();
 
@@ -87,12 +87,12 @@ export async function* extractToolDeltas(
  * Accumulates text deltas and yields updates
  */
 async function* buildMessageStreamCore(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<{
   type: 'delta' | 'complete';
   text?: string;
   messageId?: string;
-  completeMessage?: models.ResponsesOutputMessage;
+  completeMessage?: models.OutputMessage;
 }> {
   const consumer = stream.createConsumer();
 
@@ -160,14 +160,14 @@ async function* buildMessageStreamCore(
 
 /**
  * Build incremental message updates from responses stream events
- * Returns ResponsesOutputMessage (assistant/responses format)
+ * Returns OutputMessage (assistant/responses format)
  */
 export async function* buildResponsesMessageStream(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<models.ResponsesOutputMessage> {
+  stream: ReusableReadableStream<models.StreamEvents>,
+): AsyncIterableIterator<models.OutputMessage> {
   for await (const update of buildMessageStreamCore(stream)) {
     if (update.type === 'delta' && update.text !== undefined && update.messageId !== undefined) {
-      // Yield incremental update in ResponsesOutputMessage format
+      // Yield incremental update in OutputMessage format
       yield {
         id: update.messageId,
         type: 'message' as const,
@@ -194,13 +194,13 @@ export async function* buildResponsesMessageStream(
  * plus function_call_output for tool results.
  */
 export type StreamableOutputItem =
-  | models.ResponsesOutputMessage // type: "message"
-  | models.ResponsesOutputItemFunctionCall // type: "function_call"
-  | models.ResponsesOutputItemReasoning // type: "reasoning"
-  | models.ResponsesWebSearchCallOutput // type: "web_search_call"
-  | models.ResponsesOutputItemFileSearchCall // type: "file_search_call"
-  | models.ResponsesImageGenerationCall // type: "image_generation_call"
-  | models.OpenResponsesFunctionCallOutput; // type: "function_call_output" (tool results)
+  | models.OutputMessage // type: "message"
+  | models.OutputFunctionCallItem // type: "function_call"
+  | models.OutputReasoningItem // type: "reasoning"
+  | models.OutputWebSearchCallItem // type: "web_search_call"
+  | models.OutputFileSearchCallItem // type: "file_search_call"
+  | models.OutputImageGenerationCallItem // type: "image_generation_call"
+  | models.FunctionCallOutputItem; // type: "function_call_output" (tool results)
 
 //#region ItemsStream Types and Handlers
 
@@ -208,7 +208,7 @@ export type StreamableOutputItem =
  * Discriminated union for tracking items in progress.
  * Each variant has only the fields relevant to that item type.
  */
-type ItemInProgress =
+export type ItemInProgress =
   | { type: 'message'; id: string; textContent: string }
   | { type: 'function_call'; id: string; name: string; callId: string; argumentsAccumulated: string }
   | { type: 'reasoning'; id: string; reasoningContent: string };
@@ -217,7 +217,7 @@ type ItemInProgress =
  * Handle output_item.added event - Initialize tracking for new items
  */
 function handleOutputItemAdded(
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputItemAddedEvent(event) || !event.item) {
@@ -294,7 +294,7 @@ function handleOutputItemAdded(
  * Handle text delta event for messages
  */
 function handleTextDelta(
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputTextDeltaEvent(event) || !event.delta) {
@@ -326,7 +326,7 @@ function handleTextDelta(
  * Handle function call argument delta event
  */
 function handleFunctionCallDelta(
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isFunctionCallArgumentsDeltaEvent(event) || !event.delta) {
@@ -354,7 +354,7 @@ function handleFunctionCallDelta(
  * Handle reasoning text delta event
  */
 function handleReasoningDelta(
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isReasoningDeltaEvent(event) || !event.delta) {
@@ -384,7 +384,7 @@ function handleReasoningDelta(
  * Handle output_item.done event - Yield final complete item
  */
 function handleOutputItemDone(
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ): StreamableOutputItem | undefined {
   if (!isOutputItemDoneEvent(event) || !event.item) {
@@ -425,11 +425,11 @@ function handleOutputItemDone(
 }
 
 type ItemsStreamHandler = (
-  event: models.OpenResponsesStreamEvent,
+  event: models.StreamEvents,
   itemsInProgress: Map<string, ItemInProgress>,
 ) => StreamableOutputItem | undefined;
 
-const itemsStreamHandlers: Record<string, ItemsStreamHandler> = {
+export const itemsStreamHandlers: Record<string, ItemsStreamHandler> = {
   'response.output_item.added': handleOutputItemAdded,
   'response.output_text.delta': handleTextDelta,
   'response.function_call_arguments.delta': handleFunctionCallDelta,
@@ -437,7 +437,7 @@ const itemsStreamHandlers: Record<string, ItemsStreamHandler> = {
   'response.output_item.done': handleOutputItemDone,
 };
 
-const streamTerminationEvents = new Set([
+export const streamTerminationEvents = new Set([
   'response.completed',
   'response.failed',
   'response.incomplete',
@@ -451,7 +451,7 @@ const streamTerminationEvents = new Set([
  * with the same ID but progressively updated content as streaming progresses.
  */
 export async function* buildItemsStream(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<StreamableOutputItem> {
   const consumer = stream.createConsumer();
   const itemsInProgress = new Map<string, ItemInProgress>();
@@ -477,11 +477,11 @@ export async function* buildItemsStream(
 
 /**
  * Build incremental message updates from responses stream events
- * Returns AssistantMessage (chat format) instead of ResponsesOutputMessage
+ * Returns ChatAssistantMessage (chat format) instead of OutputMessage
  */
 export async function* buildMessageStream(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): AsyncIterableIterator<models.AssistantMessage> {
+  stream: ReusableReadableStream<models.StreamEvents>,
+): AsyncIterableIterator<models.ChatAssistantMessage> {
   for await (const update of buildMessageStreamCore(stream)) {
     if (update.type === 'delta' && update.text !== undefined) {
       // Yield incremental update in chat format
@@ -500,8 +500,8 @@ export async function* buildMessageStream(
  * Consume stream until completion and return the complete response
  */
 export async function consumeStreamForCompletion(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
-): Promise<models.OpenResponsesNonStreamingResponse> {
+  stream: ReusableReadableStream<models.StreamEvents>,
+): Promise<models.OpenResponsesResult> {
   const consumer = stream.createConsumer();
 
   for await (const event of consumer) {
@@ -528,11 +528,11 @@ export async function consumeStreamForCompletion(
 }
 
 /**
- * Convert ResponsesOutputMessage to AssistantMessage (chat format)
+ * Convert OutputMessage to ChatAssistantMessage (chat format)
  */
 function convertToAssistantMessage(
-  outputMessage: models.ResponsesOutputMessage,
-): models.AssistantMessage {
+  outputMessage: models.OutputMessage,
+): models.ChatAssistantMessage {
   // Extract text content
   const textContent = outputMessage.content
     .filter(
@@ -551,10 +551,10 @@ function convertToAssistantMessage(
  * Extract the first message from a completed response (chat format)
  */
 export function extractMessageFromResponse(
-  response: models.OpenResponsesNonStreamingResponse,
-): models.AssistantMessage {
+  response: models.OpenResponsesResult,
+): models.ChatAssistantMessage {
   const messageItem = response.output.find(
-    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!messageItem) {
@@ -568,10 +568,10 @@ export function extractMessageFromResponse(
  * Extract the first message from a completed response (responses format)
  */
 export function extractResponsesMessageFromResponse(
-  response: models.OpenResponsesNonStreamingResponse,
-): models.ResponsesOutputMessage {
+  response: models.OpenResponsesResult,
+): models.OutputMessage {
   const messageItem = response.output.find(
-    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!messageItem) {
@@ -585,7 +585,7 @@ export function extractResponsesMessageFromResponse(
  * Extract text from a response, either from outputText or by concatenating message content
  */
 export function extractTextFromResponse(
-  response: models.OpenResponsesNonStreamingResponse,
+  response: models.OpenResponsesResult,
 ): string {
   // Use pre-concatenated outputText if available
   if (response.outputText) {
@@ -594,7 +594,7 @@ export function extractTextFromResponse(
 
   // Check if there's a message in the output
   const hasMessage = response.output.some(
-    (item): item is models.ResponsesOutputMessage => 'type' in item && item.type === 'message',
+    (item): item is models.OutputMessage => 'type' in item && item.type === 'message',
   );
 
   if (!hasMessage) {
@@ -602,10 +602,10 @@ export function extractTextFromResponse(
     return '';
   }
 
-  // Otherwise, extract from the first message (convert to AssistantMessage which has string content)
+  // Otherwise, extract from the first message (convert to ChatAssistantMessage which has string content)
   const message = extractMessageFromResponse(response);
 
-  // AssistantMessage.content is string | Array | null | undefined
+  // ChatAssistantMessage.content is string | Array | null | undefined
   if (typeof message.content === 'string') {
     return message.content;
   }
@@ -618,7 +618,7 @@ export function extractTextFromResponse(
  * Returns parsed tool calls with arguments as objects (not JSON strings)
  */
 export function extractToolCallsFromResponse(
-  response: models.OpenResponsesNonStreamingResponse,
+  response: models.OpenResponsesResult,
 ): ParsedToolCall<Tool>[] {
   const toolCalls: ParsedToolCall<Tool>[] = [];
 
@@ -657,7 +657,7 @@ export function extractToolCallsFromResponse(
  * Yields structured tool call objects as they're built from deltas
  */
 export async function* buildToolCallStream(
-  stream: ReusableReadableStream<models.OpenResponsesStreamEvent>,
+  stream: ReusableReadableStream<models.StreamEvents>,
 ): AsyncIterableIterator<ParsedToolCall<Tool>> {
   const consumer = stream.createConsumer();
 
@@ -769,7 +769,7 @@ export async function* buildToolCallStream(
 /**
  * Check if a response contains any tool calls
  */
-export function responseHasToolCalls(response: models.OpenResponsesNonStreamingResponse): boolean {
+export function responseHasToolCalls(response: models.OpenResponsesResult): boolean {
   return response.output.some((item) => 'type' in item && item.type === 'function_call');
 }
 
@@ -847,7 +847,7 @@ function mapAnnotationsToCitations(
  * Map OpenResponses status to Claude stop reason
  */
 function mapStopReason(
-  response: models.OpenResponsesNonStreamingResponse,
+  response: models.OpenResponsesResult,
 ): ClaudeStopReason | null {
   // Check if any tool calls exist in the response
   const hasToolCalls = response.output.some(
@@ -876,11 +876,11 @@ function mapStopReason(
 }
 
 /**
- * Convert OpenResponsesNonStreamingResponse to ClaudeMessage format
+ * Convert OpenResponsesResult to ClaudeMessage format
  * Compatible with the Anthropic SDK BetaMessage type
  */
 export function convertToClaudeMessage(
-  response: models.OpenResponsesNonStreamingResponse,
+  response: models.OpenResponsesResult,
 ): ClaudeMessage {
   const content: ClaudeContentBlock[] = [];
   const unsupportedContent: UnsupportedContent[] = [];

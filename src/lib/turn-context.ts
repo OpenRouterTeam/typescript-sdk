@@ -8,9 +8,9 @@ export interface BuildTurnContextOptions {
   /** Number of turns so far (1-indexed for tool execution, 0 for initial request) */
   numberOfTurns: number;
   /** The specific tool call being executed (optional for initial/async resolution contexts) */
-  toolCall?: models.OpenResponsesFunctionToolCall;
+  toolCall?: models.FunctionCallItem;
   /** The full request being sent to the API (optional for initial/async resolution contexts) */
-  turnRequest?: models.OpenResponsesRequest;
+  turnRequest?: models.ResponsesRequest;
 }
 
 /**
@@ -66,12 +66,12 @@ export function buildTurnContext(
  * ```
  */
 export function normalizeInputToArray(
-  input: models.OpenResponsesInputUnion
-): Array<models.OpenResponsesInputUnion1> {
+  input: models.InputsUnion
+): Array<models.BaseInputsUnion> {
   if (typeof input === 'string') {
     // Construct object with all required fields - type is optional
-    const message: models.OpenResponsesEasyInputMessage = {
-      role: models.OpenResponsesEasyInputMessageRoleUser.User,
+    const message: models.EasyInputMessage = {
+      role: models.EasyInputMessageRoleUser.User,
       content: input,
     };
     return [message];

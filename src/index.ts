@@ -20,6 +20,7 @@ export { applyNextTurnParamsToRequest, buildNextTurnParamsContext, executeNextTu
 // Stop condition helpers
 export { finishReasonIs, hasToolCall, isStopConditionMet, maxCost, maxTokensUsed, stepCountIs } from "./lib/stop-conditions.js";
 export { extractUnsupportedContent, getUnsupportedContentSummary, hasUnsupportedContent } from "./lib/stream-transformers.js";
+export type { StreamableOutputItem } from "./lib/stream-transformers.js";
 // Tool creation helpers
 export { tool } from "./lib/tool.js";
 export {
@@ -27,6 +28,7 @@ export {
   hasExecuteFunction,
   isGeneratorTool,
   isRegularExecuteTool,
+  isToolCallOutputEvent,
   isToolPreliminaryResultEvent,
   isToolResultEvent,
   isTurnEndEvent,
@@ -57,6 +59,7 @@ export type {
   StopWhen,
   Tool,
   ToolApprovalCheck,
+  ToolCallOutputEvent,
   ToolExecutionResult,
   ToolExecutionResultUnion,
   ToolHasApproval,

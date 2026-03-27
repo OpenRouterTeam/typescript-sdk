@@ -19,16 +19,16 @@ export class Chat extends ClientSDK {
    */
   async send(
     request: operations.SendChatCompletionRequestRequest & {
-      chatGenerationParams: { stream?: false | undefined };
+      chatRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<models.ChatResponse>;
+  ): Promise<models.ChatResult>;
   async send(
     request: operations.SendChatCompletionRequestRequest & {
-      chatGenerationParams: { stream: true };
+      chatRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<EventStream<models.ChatStreamingResponseChunk>>;
+  ): Promise<EventStream<models.ChatStreamChunk>>;
   async send(
     request: operations.SendChatCompletionRequestRequest,
     options?: RequestOptions,

@@ -6,6 +6,7 @@
 import * as z from "zod/v4";
 import {
   PDFParserEngine,
+  PDFParserEngine$Outbound,
   PDFParserEngine$outboundSchema,
 } from "./pdfparserengine.js";
 
@@ -14,14 +15,14 @@ import {
  */
 export type PDFParserOptions = {
   /**
-   * The engine to use for parsing PDF files.
+   * The engine to use for parsing PDF files. "pdf-text" is deprecated and automatically redirected to "cloudflare-ai".
    */
   engine?: PDFParserEngine | undefined;
 };
 
 /** @internal */
 export type PDFParserOptions$Outbound = {
-  engine?: string | undefined;
+  engine?: PDFParserEngine$Outbound | undefined;
 };
 
 /** @internal */

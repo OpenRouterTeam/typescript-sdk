@@ -25,7 +25,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.chat.send({
-    chatGenerationParams: {
+    chatRequest: {
       messages: [
         {
           role: "system",
@@ -65,7 +65,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await chatSend(openRouter, {
-    chatGenerationParams: {
+    chatRequest: {
       messages: [
         {
           role: "system",

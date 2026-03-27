@@ -12,11 +12,11 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  * Build a NextTurnParamsContext from the current request
  * Extracts relevant fields that can be modified by nextTurnParams functions
  *
- * @param request - The current OpenResponsesRequest
+ * @param request - The current ResponsesRequest
  * @returns Context object with current parameter values
  */
 export function buildNextTurnParamsContext(
-  request: models.OpenResponsesRequest
+  request: models.ResponsesRequest
 ): NextTurnParamsContext {
   return {
     input: request.input ?? [],
@@ -42,7 +42,7 @@ export function buildNextTurnParamsContext(
 export async function executeNextTurnParamsFunctions(
   toolCalls: ParsedToolCall<Tool>[],
   tools: readonly Tool[],
-  currentRequest: models.OpenResponsesRequest
+  currentRequest: models.ResponsesRequest
 ): Promise<Partial<NextTurnParamsContext>> {
   // Build initial context from current request
   const context = buildNextTurnParamsContext(currentRequest);
@@ -161,9 +161,9 @@ function setNextTurnParam<K extends keyof NextTurnParamsContext>(
  * @returns New request with updated parameters
  */
 export function applyNextTurnParamsToRequest(
-  request: models.OpenResponsesRequest,
+  request: models.ResponsesRequest,
   computedParams: Partial<NextTurnParamsContext>
-): models.OpenResponsesRequest {
+): models.ResponsesRequest {
   return {
     ...request,
     ...computedParams,

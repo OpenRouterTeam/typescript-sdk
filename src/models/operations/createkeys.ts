@@ -172,6 +172,10 @@ export type CreateKeysData = {
    * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
    */
   expiresAt?: Date | null | undefined;
+  /**
+   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+   */
+  creatorUserId: string | null;
 };
 
 /**
@@ -285,6 +289,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
     expires_at: z.nullable(
       z.iso.datetime({ offset: true }).transform(v => new Date(v)),
     ).optional(),
+    creator_user_id: z.nullable(z.string()),
   }).transform((v) => {
     return remap$(v, {
       "limit_remaining": "limitRemaining",
@@ -300,6 +305,7 @@ export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
       "created_at": "createdAt",
       "updated_at": "updatedAt",
       "expires_at": "expiresAt",
+      "creator_user_id": "creatorUserId",
     });
   });
 

@@ -3,10 +3,10 @@
 
 ## Supported Types
 
-### `models.ChatResponse`
+### `models.ChatResult`
 
 ```typescript
-const value: models.ChatResponse = {
+const value: models.ChatResult = {
   id: "chatcmpl-123",
   choices: [
     {

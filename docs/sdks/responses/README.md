@@ -27,7 +27,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    openResponsesRequest: {},
+    responsesRequest: {},
   });
 
   console.log(result);
@@ -55,7 +55,7 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await betaResponsesSend(openRouter, {
-    openResponsesRequest: {},
+    responsesRequest: {},
   });
   if (res.ok) {
     const { value: result } = res;

@@ -5,96 +5,124 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  SearchContextSizeEnum,
+  SearchContextSizeEnum$inboundSchema,
+  SearchContextSizeEnum$outboundSchema,
+} from "./searchcontextsizeenum.js";
+import {
+  WebSearchUserLocation,
+  WebSearchUserLocation$inboundSchema,
+  WebSearchUserLocation$Outbound,
+  WebSearchUserLocation$outboundSchema,
+} from "./websearchuserlocation.js";
+
+export type WebSearchServerToolFilters = {
+  allowedDomains?: Array<string> | null | undefined;
+  excludedDomains?: Array<string> | null | undefined;
+};
 
 /**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
  */
 export const WebSearchServerToolEngine = {
   Auto: "auto",
   Native: "native",
   Exa: "exa",
+  Firecrawl: "firecrawl",
+  Parallel: "parallel",
 } as const;
 /**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+ * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
  */
 export type WebSearchServerToolEngine = OpenEnum<
   typeof WebSearchServerToolEngine
 >;
 
 /**
- * How much context to retrieve per result. Defaults to medium (15000 chars).
+ * Web search tool configuration (2025-08-26 version)
  */
-export const WebSearchServerToolSearchContextSize = {
-  Low: "low",
-  Medium: "medium",
-  High: "high",
-} as const;
-/**
- * How much context to retrieve per result. Defaults to medium (15000 chars).
- */
-export type WebSearchServerToolSearchContextSize = OpenEnum<
-  typeof WebSearchServerToolSearchContextSize
->;
-
-export const WebSearchServerToolParametersType = {
-  Approximate: "approximate",
-} as const;
-export type WebSearchServerToolParametersType = ClosedEnum<
-  typeof WebSearchServerToolParametersType
->;
-
-/**
- * Approximate user location for location-biased results.
- */
-export type WebSearchServerToolUserLocation = {
-  type?: WebSearchServerToolParametersType | undefined;
-  city?: string | undefined;
-  region?: string | undefined;
-  country?: string | undefined;
-  timezone?: string | undefined;
-};
-
-export type WebSearchServerToolParameters = {
+export type WebSearchServerTool = {
+  type: "web_search_2025_08_26";
+  filters?: WebSearchServerToolFilters | null | undefined;
   /**
-   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API.
+   * Size of the search context for web search tools
+   */
+  searchContextSize?: SearchContextSizeEnum | undefined;
+  /**
+   * User location information for web search
+   */
+  userLocation?: WebSearchUserLocation | null | undefined;
+  /**
+   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
   engine?: WebSearchServerToolEngine | undefined;
   /**
-   * Maximum number of search results to return per search call. Defaults to 5.
+   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
-  /**
-   * Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. Useful for controlling cost and context size in agentic loops.
-   */
-  maxTotalResults?: number | undefined;
-  /**
-   * How much context to retrieve per result. Defaults to medium (15000 chars).
-   */
-  searchContextSize?: WebSearchServerToolSearchContextSize | undefined;
-  /**
-   * Approximate user location for location-biased results.
-   */
-  userLocation?: WebSearchServerToolUserLocation | undefined;
-  /**
-   * Limit search results to these domains.
-   */
-  allowedDomains?: Array<string> | undefined;
-  /**
-   * Exclude search results from these domains.
-   */
-  excludedDomains?: Array<string> | undefined;
 };
 
-/**
- * OpenRouter built-in server tool: searches the web for current information
- */
-export type WebSearchServerTool = {
-  type: "openrouter:web_search";
-  parameters?: WebSearchServerToolParameters | undefined;
+/** @internal */
+export const WebSearchServerToolFilters$inboundSchema: z.ZodType<
+  WebSearchServerToolFilters,
+  unknown
+> = z.object({
+  allowed_domains: z.nullable(z.array(z.string())).optional(),
+  excluded_domains: z.nullable(z.array(z.string())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "allowed_domains": "allowedDomains",
+    "excluded_domains": "excludedDomains",
+  });
+});
+/** @internal */
+export type WebSearchServerToolFilters$Outbound = {
+  allowed_domains?: Array<string> | null | undefined;
+  excluded_domains?: Array<string> | null | undefined;
 };
 
+/** @internal */
+export const WebSearchServerToolFilters$outboundSchema: z.ZodType<
+  WebSearchServerToolFilters$Outbound,
+  WebSearchServerToolFilters
+> = z.object({
+  allowedDomains: z.nullable(z.array(z.string())).optional(),
+  excludedDomains: z.nullable(z.array(z.string())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    allowedDomains: "allowed_domains",
+    excludedDomains: "excluded_domains",
+  });
+});
+
+export function webSearchServerToolFiltersToJSON(
+  webSearchServerToolFilters: WebSearchServerToolFilters,
+): string {
+  return JSON.stringify(
+    WebSearchServerToolFilters$outboundSchema.parse(webSearchServerToolFilters),
+  );
+}
+export function webSearchServerToolFiltersFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchServerToolFilters, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchServerToolFilters$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchServerToolFilters' from JSON`,
+  );
+}
+
+/** @internal */
+export const WebSearchServerToolEngine$inboundSchema: z.ZodType<
+  WebSearchServerToolEngine,
+  unknown
+> = openEnums.inboundSchema(WebSearchServerToolEngine);
 /** @internal */
 export const WebSearchServerToolEngine$outboundSchema: z.ZodType<
   string,
@@ -102,97 +130,32 @@ export const WebSearchServerToolEngine$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(WebSearchServerToolEngine);
 
 /** @internal */
-export const WebSearchServerToolSearchContextSize$outboundSchema: z.ZodType<
-  string,
-  WebSearchServerToolSearchContextSize
-> = openEnums.outboundSchema(WebSearchServerToolSearchContextSize);
-
-/** @internal */
-export const WebSearchServerToolParametersType$outboundSchema: z.ZodEnum<
-  typeof WebSearchServerToolParametersType
-> = z.enum(WebSearchServerToolParametersType);
-
-/** @internal */
-export type WebSearchServerToolUserLocation$Outbound = {
-  type?: string | undefined;
-  city?: string | undefined;
-  region?: string | undefined;
-  country?: string | undefined;
-  timezone?: string | undefined;
-};
-
-/** @internal */
-export const WebSearchServerToolUserLocation$outboundSchema: z.ZodType<
-  WebSearchServerToolUserLocation$Outbound,
-  WebSearchServerToolUserLocation
+export const WebSearchServerTool$inboundSchema: z.ZodType<
+  WebSearchServerTool,
+  unknown
 > = z.object({
-  type: WebSearchServerToolParametersType$outboundSchema.optional(),
-  city: z.string().optional(),
-  region: z.string().optional(),
-  country: z.string().optional(),
-  timezone: z.string().optional(),
-});
-
-export function webSearchServerToolUserLocationToJSON(
-  webSearchServerToolUserLocation: WebSearchServerToolUserLocation,
-): string {
-  return JSON.stringify(
-    WebSearchServerToolUserLocation$outboundSchema.parse(
-      webSearchServerToolUserLocation,
-    ),
-  );
-}
-
-/** @internal */
-export type WebSearchServerToolParameters$Outbound = {
-  engine?: string | undefined;
-  max_results?: number | undefined;
-  max_total_results?: number | undefined;
-  search_context_size?: string | undefined;
-  user_location?: WebSearchServerToolUserLocation$Outbound | undefined;
-  allowed_domains?: Array<string> | undefined;
-  excluded_domains?: Array<string> | undefined;
-};
-
-/** @internal */
-export const WebSearchServerToolParameters$outboundSchema: z.ZodType<
-  WebSearchServerToolParameters$Outbound,
-  WebSearchServerToolParameters
-> = z.object({
-  engine: WebSearchServerToolEngine$outboundSchema.optional(),
-  maxResults: z.number().optional(),
-  maxTotalResults: z.number().optional(),
-  searchContextSize: WebSearchServerToolSearchContextSize$outboundSchema
+  type: z.literal("web_search_2025_08_26"),
+  filters: z.nullable(z.lazy(() => WebSearchServerToolFilters$inboundSchema))
     .optional(),
-  userLocation: z.lazy(() => WebSearchServerToolUserLocation$outboundSchema)
-    .optional(),
-  allowedDomains: z.array(z.string()).optional(),
-  excludedDomains: z.array(z.string()).optional(),
+  search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
+  user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
+  engine: WebSearchServerToolEngine$inboundSchema.optional(),
+  max_results: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
-    maxResults: "max_results",
-    maxTotalResults: "max_total_results",
-    searchContextSize: "search_context_size",
-    userLocation: "user_location",
-    allowedDomains: "allowed_domains",
-    excludedDomains: "excluded_domains",
+    "search_context_size": "searchContextSize",
+    "user_location": "userLocation",
+    "max_results": "maxResults",
   });
 });
-
-export function webSearchServerToolParametersToJSON(
-  webSearchServerToolParameters: WebSearchServerToolParameters,
-): string {
-  return JSON.stringify(
-    WebSearchServerToolParameters$outboundSchema.parse(
-      webSearchServerToolParameters,
-    ),
-  );
-}
-
 /** @internal */
 export type WebSearchServerTool$Outbound = {
-  type: "openrouter:web_search";
-  parameters?: WebSearchServerToolParameters$Outbound | undefined;
+  type: "web_search_2025_08_26";
+  filters?: WebSearchServerToolFilters$Outbound | null | undefined;
+  search_context_size?: string | undefined;
+  user_location?: WebSearchUserLocation$Outbound | null | undefined;
+  engine?: string | undefined;
+  max_results?: number | undefined;
 };
 
 /** @internal */
@@ -200,9 +163,19 @@ export const WebSearchServerTool$outboundSchema: z.ZodType<
   WebSearchServerTool$Outbound,
   WebSearchServerTool
 > = z.object({
-  type: z.literal("openrouter:web_search"),
-  parameters: z.lazy(() => WebSearchServerToolParameters$outboundSchema)
+  type: z.literal("web_search_2025_08_26"),
+  filters: z.nullable(z.lazy(() => WebSearchServerToolFilters$outboundSchema))
     .optional(),
+  searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
+  userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
+  engine: WebSearchServerToolEngine$outboundSchema.optional(),
+  maxResults: z.number().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    searchContextSize: "search_context_size",
+    userLocation: "user_location",
+    maxResults: "max_results",
+  });
 });
 
 export function webSearchServerToolToJSON(
@@ -210,5 +183,14 @@ export function webSearchServerToolToJSON(
 ): string {
   return JSON.stringify(
     WebSearchServerTool$outboundSchema.parse(webSearchServerTool),
+  );
+}
+export function webSearchServerToolFromJSON(
+  jsonString: string,
+): SafeParseResult<WebSearchServerTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => WebSearchServerTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'WebSearchServerTool' from JSON`,
   );
 }

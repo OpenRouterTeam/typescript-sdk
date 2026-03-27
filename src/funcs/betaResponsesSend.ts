@@ -37,12 +37,12 @@ import { Result } from "../types/fp.js";
 export function betaResponsesSend(
   client: OpenRouterCore,
   request: operations.CreateResponsesRequest & {
-    openResponsesRequest: { stream?: false };
+    responsesRequest: { stream?: false };
   },
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.OpenResponsesNonStreamingResponse,
+    models.OpenResponsesResult,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -69,12 +69,12 @@ export function betaResponsesSend(
 export function betaResponsesSend(
   client: OpenRouterCore,
   request: operations.CreateResponsesRequest & {
-    openResponsesRequest: { stream: true };
+    responsesRequest: { stream: true };
   },
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    EventStream<models.OpenResponsesStreamEvent>,
+    EventStream<models.StreamEvents>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -207,15 +207,13 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload.OpenResponsesRequest, {
-    explode: true,
-  });
+  const body = encodeJSON("body", payload.ResponsesRequest, { explode: true });
 
   const path = pathToFunc("/responses")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: request?.openResponsesRequest?.stream
+    Accept: request?.responsesRequest?.stream
       ? "text/event-stream"
       : "application/json",
     "HTTP-Referer": encodeSimple(

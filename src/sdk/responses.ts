@@ -19,16 +19,16 @@ export class Responses extends ClientSDK {
    */
   async send(
     request: operations.CreateResponsesRequest & {
-      openResponsesRequest: { stream?: false | undefined };
+      responsesRequest: { stream?: false | undefined };
     },
     options?: RequestOptions,
-  ): Promise<models.OpenResponsesNonStreamingResponse>;
+  ): Promise<models.OpenResponsesResult>;
   async send(
     request: operations.CreateResponsesRequest & {
-      openResponsesRequest: { stream: true };
+      responsesRequest: { stream: true };
     },
     options?: RequestOptions,
-  ): Promise<EventStream<models.OpenResponsesStreamEvent>>;
+  ): Promise<EventStream<models.StreamEvents>>;
   async send(
     request: operations.CreateResponsesRequest,
     options?: RequestOptions,

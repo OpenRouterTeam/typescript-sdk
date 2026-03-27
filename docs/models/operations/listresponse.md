@@ -28,6 +28,7 @@ let value: ListResponse = {
       byokUsageMonthly: 17.38,
       createdAt: "2025-08-24T10:30:00Z",
       updatedAt: "2025-08-24T15:45:00Z",
+      creatorUserId: "user_2dHFtVWx2n56w6HkM0000000000",
     },
   ],
 };

@@ -62,6 +62,7 @@ export type GetGenerationRequest = {
 export const ApiType = {
   Completions: "completions",
   Embeddings: "embeddings",
+  Video: "video",
 } as const;
 /**
  * Type of API used for the generation
@@ -155,6 +156,7 @@ export const ProviderName = {
   Parasail: "Parasail",
   Perplexity: "Perplexity",
   Phala: "Phala",
+  Reka: "Reka",
   Relace: "Relace",
   SambaNova: "SambaNova",
   Seed: "Seed",

@@ -66,6 +66,7 @@ export const ProviderName = {
   Parasail: "Parasail",
   Perplexity: "Perplexity",
   Phala: "Phala",
+  Reka: "Reka",
   Relace: "Relace",
   SambaNova: "SambaNova",
   Seed: "Seed",

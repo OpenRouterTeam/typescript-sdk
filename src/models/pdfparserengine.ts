@@ -5,23 +5,50 @@
 
 import * as z from "zod/v4";
 import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
+
+export const PDFParserEnginePDFText = {
+  PdfText: "pdf-text",
+} as const;
+export type PDFParserEnginePDFText = ClosedEnum<typeof PDFParserEnginePDFText>;
+
+export const PDFParserEngineEnum = {
+  MistralOcr: "mistral-ocr",
+  Native: "native",
+  CloudflareAi: "cloudflare-ai",
+} as const;
+export type PDFParserEngineEnum = OpenEnum<typeof PDFParserEngineEnum>;
 
 /**
- * The engine to use for parsing PDF files.
+ * The engine to use for parsing PDF files. "pdf-text" is deprecated and automatically redirected to "cloudflare-ai".
  */
-export const PDFParserEngine = {
-  MistralOcr: "mistral-ocr",
-  PdfText: "pdf-text",
-  Native: "native",
-} as const;
-/**
- * The engine to use for parsing PDF files.
- */
-export type PDFParserEngine = OpenEnum<typeof PDFParserEngine>;
+export type PDFParserEngine = PDFParserEngineEnum | PDFParserEnginePDFText;
+
+/** @internal */
+export const PDFParserEnginePDFText$outboundSchema: z.ZodEnum<
+  typeof PDFParserEnginePDFText
+> = z.enum(PDFParserEnginePDFText);
+
+/** @internal */
+export const PDFParserEngineEnum$outboundSchema: z.ZodType<
+  string,
+  PDFParserEngineEnum
+> = openEnums.outboundSchema(PDFParserEngineEnum);
+
+/** @internal */
+export type PDFParserEngine$Outbound = string | string;
 
 /** @internal */
 export const PDFParserEngine$outboundSchema: z.ZodType<
-  string,
+  PDFParserEngine$Outbound,
   PDFParserEngine
-> = openEnums.outboundSchema(PDFParserEngine);
+> = z.union([
+  PDFParserEngineEnum$outboundSchema,
+  PDFParserEnginePDFText$outboundSchema,
+]);
+
+export function pdfParserEngineToJSON(
+  pdfParserEngine: PDFParserEngine,
+): string {
+  return JSON.stringify(PDFParserEngine$outboundSchema.parse(pdfParserEngine));
+}

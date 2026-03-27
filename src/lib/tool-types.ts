@@ -1,6 +1,6 @@
 import type { $ZodObject, $ZodShape, $ZodType, infer as zodInfer } from 'zod/v4/core';
 import type * as models from '../models/index.js';
-import type { OpenResponsesStreamEvent } from '../models/index.js';
+import type { StreamEvents } from '../models/index.js';
 import type { ModelResult } from './model-result.js';
 
 /**
@@ -16,11 +16,11 @@ export enum ToolType {
  */
 export interface TurnContext {
   /** The specific tool call being executed (only available during tool execution) */
-  toolCall?: models.OpenResponsesFunctionToolCall;
+  toolCall?: models.FunctionCallItem;
   /** Number of tool execution turns so far (1-indexed: first turn = 1, 0 = initial request) */
   numberOfTurns: number;
   /** The full request being sent to the API (only available during tool execution) */
-  turnRequest?: models.OpenResponsesRequest;
+  turnRequest?: models.ResponsesRequest;
 }
 
 //#region Context Types
@@ -96,7 +96,7 @@ export const SHARED_CONTEXT_KEY = 'shared' as const;
  */
 export type NextTurnParamsContext = {
   /** Current input (messages) */
-  input: models.OpenResponsesInputUnion;
+  input: models.InputsUnion;
   /** Current model selection */
   model: string;
   /** Current models array */
@@ -401,8 +401,8 @@ export interface StepResult<TTools extends readonly Tool[] = readonly Tool[]> {
   readonly text: string;
   readonly toolCalls: TypedToolCallUnion<TTools>[];
   readonly toolResults: ToolExecutionResultUnion<TTools>[];
-  readonly response: models.OpenResponsesNonStreamingResponse;
-  readonly usage?: models.OpenResponsesUsage | null | undefined;
+  readonly response: models.OpenResponsesResult;
+  readonly usage?: models.Usage | null | undefined;
   readonly finishReason?: string | undefined;
   readonly warnings?: Warning[] | undefined;
   readonly experimental_providerMetadata?: Record<string, unknown> | undefined;
@@ -442,7 +442,7 @@ export interface ExecuteToolsResult<TTools extends readonly Tool[]> {
 
 /**
  * Standard tool format for OpenRouter API (JSON Schema based)
- * Matches OpenResponsesRequestToolFunction structure
+ * Matches ResponsesRequestToolFunction structure
  */
 export interface APITool {
   type: 'function';
@@ -480,6 +480,17 @@ export type ToolResultEvent<TResult = unknown, TPreliminaryResults = unknown> = 
 };
 
 /**
+ * Tool call output event carrying the fully-formed FunctionCallOutputItem.
+ * Broadcast by executeToolRound so passive consumers (getItemsStream) can yield
+ * tool results in real-time without owning tool execution.
+ */
+export type ToolCallOutputEvent = {
+  type: 'tool.call_output';
+  output: models.FunctionCallOutputItem;
+  timestamp: number;
+};
+
+/**
  * Turn start event emitted at the beginning of each API turn
  * Turn 0 is the initial request, subsequent turns follow tool execution
  */
@@ -500,15 +511,16 @@ export type TurnEndEvent = {
 
 /**
  * Enhanced stream event types for getFullResponsesStream
- * Extends OpenResponsesStreamEvent with tool preliminary results, tool results,
+ * Extends StreamEvents with tool preliminary results, tool results,
  * and turn delimiter events for multi-turn streaming
  * @template TEvent - The event type from generator tools
  * @template TResult - The result type from tool execution
  */
 export type ResponseStreamEvent<TEvent = unknown, TResult = unknown> =
-  | OpenResponsesStreamEvent
+  | StreamEvents
   | ToolPreliminaryResultEvent<TEvent>
   | ToolResultEvent<TResult, TEvent>
+  | ToolCallOutputEvent
   | TurnStartEvent
   | TurnEndEvent;
 
@@ -528,6 +540,15 @@ export function isToolResultEvent<TResult = unknown, TPreliminaryResults = unkno
   event: ResponseStreamEvent<TPreliminaryResults, TResult>,
 ): event is ToolResultEvent<TResult, TPreliminaryResults> {
   return event.type === 'tool.result';
+}
+
+/**
+ * Type guard to check if an event is a tool call output event
+ */
+export function isToolCallOutputEvent(
+  event: ResponseStreamEvent,
+): event is ToolCallOutputEvent {
+  return event.type === 'tool.call_output';
 }
 
 /**
@@ -576,7 +597,7 @@ export type ChatStreamEvent<TEvent = unknown> =
   }
   | {
     type: 'message.complete';
-    response: models.OpenResponsesNonStreamingResponse;
+    response: models.OpenResponsesResult;
   }
   | {
     type: 'tool.preliminary_result';
@@ -585,7 +606,7 @@ export type ChatStreamEvent<TEvent = unknown> =
   }
   | {
     type: string;
-    event: OpenResponsesStreamEvent;
+    event: StreamEvents;
   }; // Pass-through for other events
 /**
  * Result of a tool execution that hasn't been sent to the model yet
@@ -631,7 +652,7 @@ export interface ConversationState<TTools extends readonly Tool[] = readonly Too
   /** Unique identifier for this conversation */
   id: string;
   /** Full message history */
-  messages: models.OpenResponsesInputUnion;
+  messages: models.InputsUnion;
   /** Previous response ID for chaining (OpenRouter server-side optimization) */
   previousResponseId?: string;
   /** Tool calls awaiting human approval */

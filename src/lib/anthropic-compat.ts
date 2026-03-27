@@ -8,29 +8,29 @@ import type {
 } from '../models/claude-message.js';
 
 import {
-  OpenResponsesEasyInputMessageRoleAssistant,
-  OpenResponsesEasyInputMessageRoleUser,
-} from '../models/openresponseseasyinputmessage.js';
-import { OpenResponsesInputMessageItemRoleUser, OpenResponsesInputMessageItemRoleDeveloper } from '../models/openresponsesinputmessageitem.js';
+  EasyInputMessageRoleAssistant,
+  EasyInputMessageRoleUser,
+} from '../models/easyinputmessage.js';
+import { InputMessageItemRoleUser, InputMessageItemRoleDeveloper } from '../models/inputmessageitem.js';
 import { convertToClaudeMessage } from './stream-transformers.js';
 
 /**
  * Maps Claude role strings to OpenResponses role types
  */
-function mapClaudeRole(role: 'user' | 'assistant'): models.OpenResponsesEasyInputMessageRoleUnion {
+function mapClaudeRole(role: 'user' | 'assistant'): models.EasyInputMessageRoleUnion {
   if (role === 'user') {
-    return OpenResponsesEasyInputMessageRoleUser.User;
+    return EasyInputMessageRoleUser.User;
   }
-  return OpenResponsesEasyInputMessageRoleAssistant.Assistant;
+  return EasyInputMessageRoleAssistant.Assistant;
 }
 
 /**
- * Creates a properly typed OpenResponsesEasyInputMessage
+ * Creates a properly typed EasyInputMessage
  */
 function createEasyInputMessage(
   role: 'user' | 'assistant',
   content: string,
-): models.OpenResponsesEasyInputMessage {
+): models.EasyInputMessage {
   return {
     role: mapClaudeRole(role),
     content,
@@ -38,12 +38,12 @@ function createEasyInputMessage(
 }
 
 /**
- * Creates a properly typed OpenResponsesFunctionCallOutput
+ * Creates a properly typed FunctionCallOutputItem
  */
 function createFunctionCallOutput(
   callId: string,
   output: string,
-): models.OpenResponsesFunctionCallOutput {
+): models.FunctionCallOutputItem {
   return {
     type: "function_call_output" as const,
     callId,
@@ -78,13 +78,13 @@ function createFunctionCallOutput(
  */
 export function fromClaudeMessages(
   messages: ClaudeMessageParam[],
-): models.OpenResponsesInputUnion {
+): models.InputsUnion {
   const result: (
-    | models.OpenResponsesEasyInputMessage
-    | models.OpenResponsesInputMessageItem
-    | models.OpenResponsesFunctionCallOutput
-    | models.OpenResponsesFunctionToolCall
-    | models.ResponsesImageGenerationCall
+    | models.EasyInputMessage
+    | models.InputMessageItem
+    | models.FunctionCallOutputItem
+    | models.FunctionCallItem
+    | models.OutputImageGenerationCallItem
   )[] = [];
 
   for (const msg of messages) {
@@ -186,7 +186,7 @@ export function fromClaudeMessages(
 
     // Process text and image blocks (these become message content)
     if (textBlocks.length > 0 || imageBlocks.length > 0) {
-      const contentItems: (models.ResponseInputText | models.ResponseInputImage)[] = [];
+      const contentItems: (models.InputText | models.InputImage)[] = [];
 
       // Add text blocks
       for (const textBlock of textBlocks) {
@@ -223,14 +223,14 @@ export function fromClaudeMessages(
           type: 'message',
           role:
             role === 'user'
-              ? OpenResponsesInputMessageItemRoleUser.User
-              : OpenResponsesInputMessageItemRoleDeveloper.Developer,
+              ? InputMessageItemRoleUser.User
+              : InputMessageItemRoleDeveloper.Developer,
           content: contentItems,
         });
       } else {
         // Use simple string format for text-only messages
         const textContent = contentItems
-          .filter((item): item is models.ResponseInputText => item.type === 'input_text')
+          .filter((item): item is models.InputText => item.type === 'input_text')
           .map((item) => item.text)
           .join('');
 
@@ -247,7 +247,7 @@ export function fromClaudeMessages(
 /**
  * Convert an OpenResponses response to Anthropic Claude message format.
  *
- * This function transforms OpenResponsesNonStreamingResponse to ClaudeMessage
+ * This function transforms OpenResponsesResult to ClaudeMessage
  * (Anthropic SDK format) for compatibility with code expecting Claude responses.
  *
  * @example

@@ -24,7 +24,7 @@ export type { CallModelInput } from '../lib/async-params.js';
  * - `for await (const event of response.getToolStream())` - Stream tool events (incl. preliminary results)
  * - `for await (const toolCall of response.getToolCallsStream())` - Stream structured tool calls
  * - `await response.getToolCalls()` - Get all tool calls from completed response
- * - `for await (const msg of response.getNewMessagesStream())` - Stream incremental message updates
+ * - `for await (const msg of response.getNewMessagesStream())` - Stream cumulative message snapshots
  * - `for await (const event of response.getFullResponsesStream())` - Stream all events (incl. tool preliminary)
  *
  * All consumption patterns can be used concurrently on the same response.

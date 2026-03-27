@@ -1,19 +1,19 @@
 # PDFParserEngine
 
-The engine to use for parsing PDF files.
+The engine to use for parsing PDF files. "pdf-text" is deprecated and automatically redirected to "cloudflare-ai".
 
-## Example Usage
 
-```typescript
-import { PDFParserEngine } from "@openrouter/sdk/models";
+## Supported Types
 
-let value: PDFParserEngine = "native";
-```
-
-## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
+### `models.PDFParserEngineEnum`
 
 ```typescript
-"mistral-ocr" | "pdf-text" | "native" | Unrecognized<string>
+const value: models.PDFParserEngineEnum = "native";
 ```
+
+### `models.PDFParserEnginePDFText`
+
+```typescript
+const value: models.PDFParserEnginePDFText = "pdf-text";
+```
+

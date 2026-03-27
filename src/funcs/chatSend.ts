@@ -37,12 +37,12 @@ import { Result } from "../types/fp.js";
 export function chatSend(
   client: OpenRouterCore,
   request: operations.SendChatCompletionRequestRequest & {
-    chatGenerationParams: { stream?: false };
+    chatRequest: { stream?: false };
   },
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.ChatResponse,
+    models.ChatResult,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -69,12 +69,12 @@ export function chatSend(
 export function chatSend(
   client: OpenRouterCore,
   request: operations.SendChatCompletionRequestRequest & {
-    chatGenerationParams: { stream: true };
+    chatRequest: { stream: true };
   },
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    EventStream<models.ChatStreamingResponseChunk>,
+    EventStream<models.ChatStreamChunk>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -208,15 +208,13 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload.ChatGenerationParams, {
-    explode: true,
-  });
+  const body = encodeJSON("body", payload.ChatRequest, { explode: true });
 
   const path = pathToFunc("/chat/completions")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: request?.chatGenerationParams?.stream
+    Accept: request?.chatRequest?.stream
       ? "text/event-stream"
       : "application/json",
     "HTTP-Referer": encodeSimple(

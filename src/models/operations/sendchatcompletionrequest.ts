@@ -53,7 +53,7 @@ export type SendChatCompletionRequestRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
-  chatGenerationParams: models.ChatGenerationParams;
+  chatRequest: models.ChatRequest;
 };
 
 /**
@@ -63,19 +63,19 @@ export type SendChatCompletionRequestResponseBody = {
   /**
    * Streaming chat completion chunk
    */
-  data: models.ChatStreamingResponseChunk;
+  data: models.ChatStreamChunk;
 };
 
 export type SendChatCompletionRequestResponse =
-  | models.ChatResponse
-  | EventStream<models.ChatStreamingResponseChunk>;
+  | models.ChatResult
+  | EventStream<models.ChatStreamChunk>;
 
 /** @internal */
 export type SendChatCompletionRequestRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  ChatGenerationParams: models.ChatGenerationParams$Outbound;
+  ChatRequest: models.ChatRequest$Outbound;
 };
 
 /** @internal */
@@ -86,11 +86,11 @@ export const SendChatCompletionRequestRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  chatGenerationParams: models.ChatGenerationParams$outboundSchema,
+  chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    chatGenerationParams: "ChatGenerationParams",
+    chatRequest: "ChatRequest",
   });
 });
 
@@ -120,7 +120,7 @@ export const SendChatCompletionRequestResponseBody$inboundSchema: z.ZodType<
       });
       return z.NEVER;
     }
-  }).pipe(models.ChatStreamingResponseChunk$inboundSchema),
+  }).pipe(models.ChatStreamChunk$inboundSchema),
 });
 
 export function sendChatCompletionRequestResponseBodyFromJSON(
@@ -139,7 +139,7 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   SendChatCompletionRequestResponse,
   unknown
 > = z.union([
-  models.ChatResponse$inboundSchema,
+  models.ChatResult$inboundSchema,
   z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {

@@ -11,7 +11,7 @@ const openRouter = new OpenRouter({
 
 async function run() {
   const result = await openRouter.beta.responses.send({
-    openResponsesRequest: {},
+    responsesRequest: {},
   });
 
   console.log(result);

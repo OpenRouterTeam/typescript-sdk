@@ -88,9 +88,9 @@ export function updateState<TTools extends readonly Tool[] = readonly Tool[]>(
  * Append new items to the message history
  */
 export function appendToMessages(
-  current: models.OpenResponsesInputUnion,
-  newItems: models.OpenResponsesInputUnion1[]
-): models.OpenResponsesInputUnion {
+  current: models.InputsUnion,
+  newItems: models.BaseInputsUnion[]
+): models.InputsUnion {
   const currentArray = normalizeInputToArray(current);
   return [...currentArray, ...newItems];
 }
@@ -198,7 +198,7 @@ export function createRejectedResult<TTools extends readonly Tool[] = readonly T
  */
 export function unsentResultsToAPIFormat(
   results: UnsentToolResult[]
-): models.OpenResponsesFunctionCallOutput[] {
+): models.FunctionCallOutputItem[] {
   return results.map(r => ({
     type: 'function_call_output' as const,
     id: `output_${r.callId}`,
@@ -213,7 +213,7 @@ export function unsentResultsToAPIFormat(
  * Extract text content from a response
  */
 export function extractTextFromResponse(
-  response: models.OpenResponsesNonStreamingResponse
+  response: models.OpenResponsesResult
 ): string {
   if (!response.output) {
     return '';
@@ -239,7 +239,7 @@ export function extractTextFromResponse(
  * Extract tool calls from a response
  */
 export function extractToolCallsFromResponse<TTools extends readonly Tool[]>(
-  response: models.OpenResponsesNonStreamingResponse
+  response: models.OpenResponsesResult
 ): ParsedToolCall<TTools[number]>[] {
   if (!response.output) {
     return [];
