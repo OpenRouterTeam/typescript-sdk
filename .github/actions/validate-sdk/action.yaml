@@ -31,11 +31,10 @@ runs:
       working-directory: examples
       run: pnpm install
 
-    # TODO: Re-enable when Speakeasy fixes generated code type errors
     - name: Typecheck examples root
       shell: bash
       working-directory: examples
-      run: pnpm exec tsc
+      run: pnpm exec tsc --noEmit --rootDir ..
 
     - name: Install nextjs-example dependencies
       shell: bash
