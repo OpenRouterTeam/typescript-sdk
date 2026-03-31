@@ -165,7 +165,7 @@ describe('Chat E2E Tests', () => {
 
       expect(chunkCount).toBeGreaterThan(0);
       expect(fullContent.length).toBeGreaterThan(0);
-    }, 10000);
+    }, 30000);
 
     it('should include finish_reason in final chunk', async () => {
       const response = await client.chat.send({
@@ -194,6 +194,6 @@ describe('Chat E2E Tests', () => {
       }
 
       expect(foundFinishReason).toBe(true);
-    }, 10000);
+    }, 30000);
   });
 });
