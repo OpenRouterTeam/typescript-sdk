@@ -13,7 +13,7 @@ dotenv.config();
  * bun run chatCompletions.example.ts
  */
 
-import { OpenRouter } from "../src/index.js";
+import { OpenRouter } from "@openrouter/sdk";
 
 if (!process.env["OPENROUTER_API_KEY"]) {
   throw new Error("Missing OPENROUTER_API_KEY environment variable");
