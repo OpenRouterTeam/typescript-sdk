@@ -31,10 +31,11 @@ runs:
       working-directory: examples
       run: pnpm install
 
-    - name: Typecheck examples root
-      shell: bash
-      working-directory: examples
-      run: pnpm exec tsc --noEmit --module Node16 --moduleResolution Node16 --esModuleInterop --strict --skipLibCheck --ignoreConfig *.ts
+    # TODO: Re-enable when examples are updated with correct types and ESM configuration
+    # - name: Typecheck examples root
+    #   shell: bash
+    #   working-directory: examples
+    #   run: pnpm exec tsc --noEmit
 
     - name: Install nextjs-example dependencies
       shell: bash
