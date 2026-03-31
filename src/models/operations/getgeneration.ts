@@ -335,6 +335,10 @@ export type GetGenerationData = {
    * Referer header from the request
    */
   httpReferer: string | null;
+  /**
+   * Unique identifier grouping all generations from a single API request
+   */
+  requestId?: string | null | undefined;
 };
 
 /**
@@ -460,6 +464,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   ),
   user_agent: z.nullable(z.string()),
   http_referer: z.nullable(z.string()),
+  request_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "upstream_id": "upstreamId",
@@ -490,6 +495,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "provider_responses": "providerResponses",
     "user_agent": "userAgent",
     "http_referer": "httpReferer",
+    "request_id": "requestId",
   });
 });
 
