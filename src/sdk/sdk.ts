@@ -17,16 +17,6 @@ import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Providers } from "./providers.js";
 // #region imports
-import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
-import {
-  callModel as callModelFunc,
-  type CallModelInput,
-} from "../funcs/call-model.js";
-import type { ModelResult } from "../lib/model-result.js";
-import type { RequestOptions } from "../lib/sdks.js";
-import { type Tool, ToolType } from "../lib/tool-types.js";
-
-export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
@@ -91,18 +81,5 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel<
-    TTools extends readonly Tool[],
-    TSharedSchema extends $ZodObject<$ZodShape> | undefined = undefined,
-    TShared extends Record<string, unknown> = TSharedSchema extends
-      $ZodObject<$ZodShape> ? zodInfer<TSharedSchema> : Record<string, never>,
-  >(
-    request: CallModelInput<TTools, TShared> & {
-      sharedContextSchema?: TSharedSchema;
-    },
-    options?: RequestOptions,
-  ): ModelResult<TTools, TShared> {
-    return callModelFunc(this, request, options);
-  }
   // #endregion sdk-class-body
 }

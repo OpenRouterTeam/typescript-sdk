@@ -67,6 +67,10 @@ export type CreateKeysRequestBody = {
    * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
    */
   expiresAt?: Date | null | undefined;
+  /**
+   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
+   */
+  creatorUserId?: string | null | undefined;
 };
 
 export type CreateKeysRequest = {
@@ -205,6 +209,7 @@ export type CreateKeysRequestBody$Outbound = {
   limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
   expires_at?: string | null | undefined;
+  creator_user_id?: string | null | undefined;
 };
 
 /** @internal */
@@ -217,11 +222,13 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  creatorUserId: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     limitReset: "limit_reset",
     includeByokInLimit: "include_byok_in_limit",
     expiresAt: "expires_at",
+    creatorUserId: "creator_user_id",
   });
 });
 

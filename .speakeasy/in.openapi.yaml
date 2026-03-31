@@ -13332,28 +13332,44 @@ components:
         model: openai/gpt-4
         temperature: 0.7
         max_tokens: 150
-    CreateChargeRequest:
+    GoneResponseErrorData:
       type: object
       properties:
-        amount:
-          type: number
-        sender:
-          type: string
-        chain_id:
+        code:
           type: integer
-          enum:
-            - 1
-            - 137
-            - 8453
+        message:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
       required:
-        - amount
-        - sender
-        - chain_id
-      description: Create a Coinbase charge for crypto payment
+        - code
+        - message
+      description: Error data for GoneResponse
       example:
-        amount: 100
-        sender: '0x1234567890123456789012345678901234567890'
-        chain_id: 1
+        code: 410
+        message: >-
+          The Coinbase APIs used by this endpoint have been deprecated, so the Coinbase Commerce credits API has been
+          removed. Use the web credits purchase flow instead.
+    GoneResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/GoneResponseErrorData'
+        user_id:
+          type: string
+          nullable: true
+      required:
+        - error
+      description: Gone - Endpoint has been permanently removed or deprecated
+      example:
+        error:
+          code: 410
+          message: >-
+            The Coinbase APIs used by this endpoint have been deprecated, so the Coinbase Commerce credits API has been
+            removed. Use the web credits purchase flow instead.
     ProviderPreferences:
       type: object
       properties:
@@ -14880,126 +14896,23 @@ paths:
                 $ref: '#/components/schemas/InternalServerResponse'
   /credits/coinbase:
     post:
-      security:
-        - bearer: []
+      security: []
       x-speakeasy-name-override: createCoinbaseCharge
+      deprecated: true
       tags:
         - Credits
-      summary: Create a Coinbase charge for crypto payment
+      summary: Deprecated Coinbase Commerce charge endpoint
       operationId: createCoinbaseCharge
-      description: Create a Coinbase charge for crypto payment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateChargeRequest'
-        required: true
+      description: >-
+        Deprecated. The Coinbase APIs used by this endpoint have been deprecated, so Coinbase Commerce charges have been
+        removed. Use the web credits purchase flow instead.
       responses:
-        '200':
-          description: Returns the calldata to fulfill the transaction
+        '410':
+          description: Gone - Coinbase Commerce charge creation has been removed
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      created_at:
-                        type: string
-                      expires_at:
-                        type: string
-                      web3_data:
-                        type: object
-                        properties:
-                          transfer_intent:
-                            type: object
-                            properties:
-                              call_data:
-                                type: object
-                                properties:
-                                  deadline:
-                                    type: string
-                                  fee_amount:
-                                    type: string
-                                  id:
-                                    type: string
-                                  operator:
-                                    type: string
-                                  prefix:
-                                    type: string
-                                  recipient:
-                                    type: string
-                                  recipient_amount:
-                                    type: string
-                                  recipient_currency:
-                                    type: string
-                                  refund_destination:
-                                    type: string
-                                  signature:
-                                    type: string
-                                required:
-                                  - deadline
-                                  - fee_amount
-                                  - id
-                                  - operator
-                                  - prefix
-                                  - recipient
-                                  - recipient_amount
-                                  - recipient_currency
-                                  - refund_destination
-                                  - signature
-                              metadata:
-                                type: object
-                                properties:
-                                  chain_id:
-                                    type: number
-                                  contract_address:
-                                    type: string
-                                  sender:
-                                    type: string
-                                required:
-                                  - chain_id
-                                  - contract_address
-                                  - sender
-                            required:
-                              - call_data
-                              - metadata
-                        required:
-                          - transfer_intent
-                    required:
-                      - id
-                      - created_at
-                      - expires_at
-                      - web3_data
-                required:
-                  - data
-        '400':
-          description: Bad Request - Invalid credit amount or request body
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-        '401':
-          description: Unauthorized - Authentication required or invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedResponse'
-        '429':
-          description: Too Many Requests - Rate limit exceeded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TooManyRequestsResponse'
-        '500':
-          description: Internal Server Error - Unexpected server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerResponse'
+                $ref: '#/components/schemas/GoneResponse'
   /embeddings:
     post:
       x-speakeasy-name-override: generate
@@ -15551,6 +15464,11 @@ paths:
                         type: string
                         nullable: true
                         description: Referer header from the request
+                      request_id:
+                        type: string
+                        nullable: true
+                        description: Unique identifier grouping all generations from a single API request
+                        example: req-1727282430-aBcDeFgHiJkLmNoPqRsT
                     required:
                       - id
                       - upstream_id
@@ -16706,6 +16624,14 @@ paths:
                     Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be
                     rejected
                   example: '2027-12-31T23:59:59Z'
+                creator_user_id:
+                  type: string
+                  nullable: true
+                  minLength: 1
+                  description: >-
+                    Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific
+                    member is creating the key.
+                  example: user_2dHFtVWx2n56w6HkM0000000000
               required:
                 - name
               example:
