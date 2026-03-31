@@ -28,7 +28,7 @@ generation:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
   persistentEdits:
-    enabled: "true"
+    enabled: "false"
   tests:
     generateTests: false
     generateNewTests: true
@@ -36,7 +36,7 @@ generation:
   preApplyUnionDiscriminators: true
   versioningStrategy: automatic
 typescript:
-  version: 0.10.1
+  version: 0.10.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
