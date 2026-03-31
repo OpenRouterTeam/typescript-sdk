@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
-  AssistantMessage$inboundSchema,
-  AssistantMessage$outboundSchema,
-} from '../../src/models/assistantmessage.js';
+  ChatAssistantMessage$inboundSchema as AssistantMessage$inboundSchema,
+  ChatAssistantMessage$outboundSchema as AssistantMessage$outboundSchema,
+} from '../../src/models/chatassistantmessage.js';
 
 describe('AssistantMessage images field', () => {
   it('should preserve images field when parsing inbound response', () => {
