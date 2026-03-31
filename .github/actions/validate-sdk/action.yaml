@@ -34,7 +34,7 @@ runs:
     - name: Typecheck examples root
       shell: bash
       working-directory: examples
-      run: pnpm exec tsc --noEmit --module Node16 --moduleResolution Node16 --esModuleInterop --strict --skipLibCheck *.ts
+      run: pnpm exec tsc --noEmit --module Node16 --moduleResolution Node16 --esModuleInterop --strict --skipLibCheck --ignoreConfig *.ts
 
     - name: Install nextjs-example dependencies
       shell: bash
