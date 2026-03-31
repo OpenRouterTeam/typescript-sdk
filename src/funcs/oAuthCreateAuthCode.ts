@@ -41,6 +41,7 @@ export function oAuthCreateAuthCode(
     operations.CreateAuthKeysCodeResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -69,6 +70,7 @@ async function $do(
       operations.CreateAuthKeysCodeResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ConflictResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -151,7 +153,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "4XX", "500", "5XX"],
+    errorCodes: ["400", "401", "409", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -168,6 +170,7 @@ async function $do(
     operations.CreateAuthKeysCodeResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ConflictResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -181,6 +184,7 @@ async function $do(
     M.json(200, operations.CreateAuthKeysCodeResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(409, errors.ConflictResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
