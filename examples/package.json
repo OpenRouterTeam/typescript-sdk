@@ -2,6 +2,7 @@
   "name": "@openrouter/sdk-examples",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build:parent": "cd .. && npm i && npm run build && cd -",
     "build:examples": "npm i",

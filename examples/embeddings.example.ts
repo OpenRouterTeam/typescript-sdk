@@ -26,8 +26,10 @@ async function singleTextEmbedding() {
   console.log("=== Single Text Embedding ===\n");
 
   const response = await openRouter.embeddings.generate({
-    input: "The quick brown fox jumps over the lazy dog",
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: "The quick brown fox jumps over the lazy dog",
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -63,8 +65,10 @@ async function batchEmbeddings() {
   ];
 
   const response = await openRouter.embeddings.generate({
-    input: texts,
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: texts,
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -72,7 +76,7 @@ async function batchEmbeddings() {
       `Generated ${response.data.length} embeddings for ${texts.length} texts`
     );
 
-    response.data.forEach((item, index) => {
+    response.data.forEach((item: { embedding?: number[] }, index: number) => {
       if (item && Array.isArray(item.embedding)) {
         console.log(`  Text ${index + 1}: ${item.embedding.length} dimensions`);
       }
@@ -93,9 +97,11 @@ async function customDimensionsEmbedding() {
   console.log("=== Custom Dimensions Embedding ===\n");
 
   const response = await openRouter.embeddings.generate({
-    input: "This text will be embedded with reduced dimensions.",
-    model: "openai/text-embedding-3-small",
-    dimensions: 256, // Request smaller embedding size
+    requestBody: {
+      input: "This text will be embedded with reduced dimensions.",
+      model: "openai/text-embedding-3-small",
+      dimensions: 256, // Request smaller embedding size
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -121,7 +127,7 @@ async function listEmbeddingModels() {
     console.log(`Found ${response.data.length} embedding models:\n`);
 
     // Show first 5 models
-    response.data.slice(0, 5).forEach((model) => {
+    response.data.slice(0, 5).forEach((model: { id?: string; pricing?: { prompt?: string } }) => {
       console.log(`  - ${model.id}`);
       if (model.pricing) {
         console.log(`    Pricing: $${model.pricing.prompt}/1M prompt tokens`);
@@ -168,14 +174,16 @@ async function semanticSimilarity() {
   ];
 
   const response = await openRouter.embeddings.generate({
-    input: texts,
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: texts,
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
     const embeddings = response.data
-      .map((item) => (Array.isArray(item?.embedding) ? item.embedding : null))
-      .filter((e): e is number[] => e !== null);
+      .map((item: { embedding?: number[] }) => (Array.isArray(item?.embedding) ? item.embedding : null))
+      .filter((e: number[] | null): e is number[] => e !== null);
 
     if (embeddings.length === 3) {
       const sim01 = cosineSimilarity(embeddings[0], embeddings[1]);
