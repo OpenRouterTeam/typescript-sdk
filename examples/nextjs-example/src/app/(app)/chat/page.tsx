@@ -1,6 +1,6 @@
 'use client';
 
-import type { Message as OpenRouterMessageRequest } from '@openrouter/sdk/models';
+import type { ChatMessages as OpenRouterMessageRequest } from '@openrouter/sdk/models';
 import type React from 'react';
 
 import { Bot, MessageSquare, Send, Settings, User } from 'lucide-react';
@@ -101,7 +101,7 @@ export default function Page() {
     }
 
     const result = await openRouter.chat.send({
-      chatGenerationParams: {
+      chatRequest: {
         model: selectedModel,
         maxTokens: 1000,
         messages: updatedMessages,
