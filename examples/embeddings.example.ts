@@ -76,7 +76,7 @@ async function batchEmbeddings() {
       `Generated ${response.data.length} embeddings for ${texts.length} texts`
     );
 
-    response.data.forEach((item: { embedding?: number[] }, index: number) => {
+    response.data.forEach((item, index) => {
       if (item && Array.isArray(item.embedding)) {
         console.log(`  Text ${index + 1}: ${item.embedding.length} dimensions`);
       }
@@ -127,7 +127,7 @@ async function listEmbeddingModels() {
     console.log(`Found ${response.data.length} embedding models:\n`);
 
     // Show first 5 models
-    response.data.slice(0, 5).forEach((model: { id?: string; pricing?: { prompt?: string } }) => {
+    response.data.slice(0, 5).forEach((model) => {
       console.log(`  - ${model.id}`);
       if (model.pricing) {
         console.log(`    Pricing: $${model.pricing.prompt}/1M prompt tokens`);
@@ -182,8 +182,8 @@ async function semanticSimilarity() {
 
   if (typeof response === "object" && "data" in response) {
     const embeddings = response.data
-      .map((item: { embedding?: number[] }) => (Array.isArray(item?.embedding) ? item.embedding : null))
-      .filter((e: number[] | null): e is number[] => e !== null);
+      .map((item) => (Array.isArray(item?.embedding) ? item.embedding : null))
+      .filter((e): e is number[] => e !== null);
 
     if (embeddings.length === 3) {
       const sim01 = cosineSimilarity(embeddings[0], embeddings[1]);
