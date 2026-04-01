@@ -9,12 +9,17 @@ import { TextDoneEvent } from "@openrouter/sdk/models";
 
 let value: TextDoneEvent = {
   type: "response.output_text.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  text: "Hello! How can I help you?",
-  sequenceNumber: 6,
-  logprobs: [],
+  outputIndex: 5414.85,
+  itemId: "<id>",
+  contentIndex: 4977.34,
+  text: "<value>",
+  sequenceNumber: 0,
+  logprobs: [
+    {
+      logprob: -0.1,
+      token: "world",
+    },
+  ],
 };
 ```
 

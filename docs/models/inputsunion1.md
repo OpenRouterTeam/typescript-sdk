@@ -12,7 +12,7 @@ const value: models.ReasoningItem = {
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem using first principles",
+      text: "Step by step analysis",
     },
   ],
 };
@@ -60,13 +60,13 @@ const value: models.FunctionCallOutputItem = {
 
 ```typescript
 const value: models.InputsMessage = {
-  id: "msg-abc123",
+  id: "msg-123",
   role: "assistant",
   type: "message",
   content: [
     {
       type: "output_text",
-      text: "Hello! How can I help you today?",
+      text: "Hello! How can I help you?",
     },
   ],
 };
@@ -77,11 +77,11 @@ const value: models.InputsMessage = {
 ```typescript
 const value: models.InputsReasoning = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "reasoning-123",
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem using first principles",
+      text: "Analyzed the problem and found the optimal solution.",
     },
   ],
 };

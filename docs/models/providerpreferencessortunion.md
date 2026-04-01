@@ -14,7 +14,7 @@ const value: models.ProviderPreferencesProviderSort = "price";
 ### `models.ProviderPreferencesProviderSortConfigUnion`
 
 ```typescript
-const value: models.ProviderPreferencesProviderSortConfigUnion = "latency";
+const value: models.ProviderPreferencesProviderSortConfigUnion = "price";
 ```
 
 ### `models.ProviderPreferencesSortEnum`

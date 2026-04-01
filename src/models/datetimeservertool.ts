@@ -4,6 +4,12 @@
  */
 
 import * as z from "zod/v4";
+import { ClosedEnum } from "../types/enums.js";
+
+export const DatetimeServerToolType = {
+  OpenrouterDatetime: "openrouter:datetime",
+} as const;
+export type DatetimeServerToolType = ClosedEnum<typeof DatetimeServerToolType>;
 
 export type DatetimeServerToolParameters = {
   /**
@@ -16,9 +22,14 @@ export type DatetimeServerToolParameters = {
  * OpenRouter built-in server tool: returns the current date and time
  */
 export type DatetimeServerTool = {
-  type: "openrouter:datetime";
+  type: DatetimeServerToolType;
   parameters?: DatetimeServerToolParameters | undefined;
 };
+
+/** @internal */
+export const DatetimeServerToolType$outboundSchema: z.ZodEnum<
+  typeof DatetimeServerToolType
+> = z.enum(DatetimeServerToolType);
 
 /** @internal */
 export type DatetimeServerToolParameters$Outbound = {
@@ -45,7 +56,7 @@ export function datetimeServerToolParametersToJSON(
 
 /** @internal */
 export type DatetimeServerTool$Outbound = {
-  type: "openrouter:datetime";
+  type: string;
   parameters?: DatetimeServerToolParameters$Outbound | undefined;
 };
 
@@ -54,7 +65,7 @@ export const DatetimeServerTool$outboundSchema: z.ZodType<
   DatetimeServerTool$Outbound,
   DatetimeServerTool
 > = z.object({
-  type: z.literal("openrouter:datetime"),
+  type: DatetimeServerToolType$outboundSchema,
   parameters: z.lazy(() => DatetimeServerToolParameters$outboundSchema)
     .optional(),
 });

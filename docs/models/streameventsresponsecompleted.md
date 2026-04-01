@@ -14,14 +14,9 @@ let value: StreamEventsResponseCompleted = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "completed",
+    status: "in_progress",
     completedAt: null,
-    output: [
-      {
-        type: "message",
-        status: "completed",
-      },
-    ],
+    output: [],
     error: null,
     incompleteDetails: null,
     temperature: null,
@@ -34,7 +29,7 @@ let value: StreamEventsResponseCompleted = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 10,
+  sequenceNumber: 0,
 };
 ```
 

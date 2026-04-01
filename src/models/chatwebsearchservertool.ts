@@ -8,6 +8,13 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
+export const ChatWebSearchServerToolTypeOpenrouterWebSearch = {
+  OpenrouterWebSearch: "openrouter:web_search",
+} as const;
+export type ChatWebSearchServerToolTypeOpenrouterWebSearch = ClosedEnum<
+  typeof ChatWebSearchServerToolTypeOpenrouterWebSearch
+>;
+
 /**
  * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
  */
@@ -93,9 +100,15 @@ export type ChatWebSearchServerToolParameters = {
  * OpenRouter built-in server tool: searches the web for current information
  */
 export type ChatWebSearchServerTool = {
-  type: "openrouter:web_search";
+  type: ChatWebSearchServerToolTypeOpenrouterWebSearch;
   parameters?: ChatWebSearchServerToolParameters | undefined;
 };
+
+/** @internal */
+export const ChatWebSearchServerToolTypeOpenrouterWebSearch$outboundSchema:
+  z.ZodEnum<typeof ChatWebSearchServerToolTypeOpenrouterWebSearch> = z.enum(
+    ChatWebSearchServerToolTypeOpenrouterWebSearch,
+  );
 
 /** @internal */
 export const ChatWebSearchServerToolEngine$outboundSchema: z.ZodType<
@@ -193,7 +206,7 @@ export function chatWebSearchServerToolParametersToJSON(
 
 /** @internal */
 export type ChatWebSearchServerTool$Outbound = {
-  type: "openrouter:web_search";
+  type: string;
   parameters?: ChatWebSearchServerToolParameters$Outbound | undefined;
 };
 
@@ -202,7 +215,7 @@ export const ChatWebSearchServerTool$outboundSchema: z.ZodType<
   ChatWebSearchServerTool$Outbound,
   ChatWebSearchServerTool
 > = z.object({
-  type: z.literal("openrouter:web_search"),
+  type: ChatWebSearchServerToolTypeOpenrouterWebSearch$outboundSchema,
   parameters: z.lazy(() => ChatWebSearchServerToolParameters$outboundSchema)
     .optional(),
 });

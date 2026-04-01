@@ -9,11 +9,11 @@ import { InputsReasoning } from "@openrouter/sdk/models";
 
 let value: InputsReasoning = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "reasoning-123",
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem using first principles",
+      text: "Analyzed the problem and found the optimal solution.",
     },
   ],
 };

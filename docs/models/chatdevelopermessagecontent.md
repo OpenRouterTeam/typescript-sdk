@@ -17,7 +17,7 @@ const value: string = "This is a message from the developer.";
 const value: models.ChatContentText[] = [
   {
     type: "text",
-    text: "<value>",
+    text: "Hello, world!",
   },
 ];
 ```

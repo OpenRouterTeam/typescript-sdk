@@ -102,7 +102,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/guardrails/{id}/assignments/members")(pathParams);
 
   const query = encodeFormQuery({

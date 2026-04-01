@@ -14,7 +14,7 @@ let value: StreamEventsResponseFailed = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "failed",
+    status: "in_progress",
     completedAt: 6716.54,
     output: [],
     error: null,
@@ -29,7 +29,7 @@ let value: StreamEventsResponseFailed = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 3,
+  sequenceNumber: 0,
 };
 ```
 

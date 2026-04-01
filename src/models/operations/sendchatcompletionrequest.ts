@@ -143,8 +143,9 @@ export const SendChatCompletionRequestResponse$inboundSchema: z.ZodType<
   z.custom<ReadableStream<Uint8Array>>(x => x instanceof ReadableStream)
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
-        if (rawEvent.data === "[DONE]") return { done: true };
+        if (rawEvent.data === "[DONE]") return { done: true, value: undefined };
         return {
+          done: false,
           value: z.lazy(() =>
             SendChatCompletionRequestResponseBody$inboundSchema
           ).parse(rawEvent)?.data,

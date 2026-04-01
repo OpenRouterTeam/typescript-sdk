@@ -26,7 +26,7 @@ const value: models.OutputMessageItem = {
 ```typescript
 const value: models.OutputReasoningItem = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "msg-abc123",
   summary: [
     {
       type: "summary_text",

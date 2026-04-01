@@ -9,12 +9,12 @@ import { StreamEventsResponseOutputItemAdded } from "@openrouter/sdk/models";
 
 let value: StreamEventsResponseOutputItemAdded = {
   type: "response.output_item.added",
-  outputIndex: 0,
+  outputIndex: 2532.12,
   item: {
     type: "message",
-    status: "in_progress",
+    status: "completed",
   },
-  sequenceNumber: 2,
+  sequenceNumber: 0,
 };
 ```
 

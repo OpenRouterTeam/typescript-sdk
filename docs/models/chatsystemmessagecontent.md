@@ -17,7 +17,7 @@ const value: string = "You are a helpful assistant.";
 const value: models.ChatContentText[] = [
   {
     type: "text",
-    text: "<value>",
+    text: "Hello, world!",
   },
 ];
 ```

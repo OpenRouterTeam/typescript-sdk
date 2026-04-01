@@ -29,7 +29,7 @@ let value: StreamEventsResponseInProgress = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 1,
+  sequenceNumber: 0,
 };
 ```
 

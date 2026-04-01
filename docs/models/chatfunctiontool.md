@@ -40,27 +40,3 @@ const value: models.ChatWebSearchShorthand = {
 };
 ```
 
-### `models.ChatWebSearchShorthand`
-
-```typescript
-const value: models.ChatWebSearchShorthand = {
-  type: "web_search",
-};
-```
-
-### `models.ChatWebSearchShorthand`
-
-```typescript
-const value: models.ChatWebSearchShorthand = {
-  type: "web_search",
-};
-```
-
-### `models.ChatWebSearchShorthand`
-
-```typescript
-const value: models.ChatWebSearchShorthand = {
-  type: "web_search",
-};
-```
-

@@ -9,7 +9,7 @@ import { OutputReasoningItem } from "@openrouter/sdk/models";
 
 let value: OutputReasoningItem = {
   type: "reasoning",
-  id: "reasoning-abc123",
+  id: "msg-abc123",
   summary: [
     {
       type: "summary_text",

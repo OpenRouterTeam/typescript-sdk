@@ -9,11 +9,11 @@ import { FunctionCallArgsDoneEvent } from "@openrouter/sdk/models";
 
 let value: FunctionCallArgsDoneEvent = {
   type: "response.function_call_arguments.done",
-  itemId: "item-1",
-  outputIndex: 0,
-  name: "get_weather",
-  arguments: "{\"city\": \"San Francisco\", \"units\": \"celsius\"}",
-  sequenceNumber: 6,
+  itemId: "<id>",
+  outputIndex: 513.28,
+  name: "<value>",
+  arguments: "<value>",
+  sequenceNumber: 0,
 };
 ```
 

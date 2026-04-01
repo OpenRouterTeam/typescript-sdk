@@ -148,6 +148,9 @@ export type ChatRequestProviderSortConfig = {
   partition?: ChatRequestPartition | null | undefined;
 };
 
+/**
+ * The provider sorting strategy (price, throughput, latency)
+ */
 export type ChatRequestProviderSortConfigUnion =
   | ChatRequestProviderSortConfig
   | ChatRequestProviderSortConfigEnum;

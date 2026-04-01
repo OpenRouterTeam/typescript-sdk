@@ -16,11 +16,8 @@ const value: string = "What is the capital of France?";
 ```typescript
 const value: models.ChatContentItems[] = [
   {
-    type: "input_audio",
-    inputAudio: {
-      data: "<value>",
-      format: "<value>",
-    },
+    type: "text",
+    text: "Hello, world!",
   },
 ];
 ```

@@ -14,7 +14,7 @@ const value: models.ChatRequestProviderSort = "price";
 ### `models.ChatRequestProviderSortConfigUnion`
 
 ```typescript
-const value: models.ChatRequestProviderSortConfigUnion = "latency";
+const value: models.ChatRequestProviderSortConfigUnion = "price";
 ```
 
 ### `models.ChatRequestSortEnum`

@@ -1,5 +1,7 @@
 # ChatRequestProviderSortConfigUnion
 
+The provider sorting strategy (price, throughput, latency)
+
 
 ## Supported Types
 

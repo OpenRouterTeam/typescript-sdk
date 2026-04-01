@@ -8,13 +8,13 @@ An output message item
 import { InputsMessage } from "@openrouter/sdk/models";
 
 let value: InputsMessage = {
-  id: "msg-abc123",
+  id: "msg-123",
   role: "assistant",
   type: "message",
   content: [
     {
       type: "output_text",
-      text: "Hello! How can I help you today?",
+      text: "Hello! How can I help you?",
     },
   ],
 };

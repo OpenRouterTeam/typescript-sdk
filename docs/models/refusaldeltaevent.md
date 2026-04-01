@@ -9,11 +9,11 @@ import { RefusalDeltaEvent } from "@openrouter/sdk/models";
 
 let value: RefusalDeltaEvent = {
   type: "response.refusal.delta",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  delta: "I'm sorry",
-  sequenceNumber: 4,
+  outputIndex: 2173.19,
+  itemId: "<id>",
+  contentIndex: 6047.49,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 

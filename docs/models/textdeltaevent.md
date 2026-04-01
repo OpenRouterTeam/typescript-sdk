@@ -9,12 +9,17 @@ import { TextDeltaEvent } from "@openrouter/sdk/models";
 
 let value: TextDeltaEvent = {
   type: "response.output_text.delta",
-  logprobs: [],
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  delta: "Hello",
-  sequenceNumber: 4,
+  logprobs: [
+    {
+      logprob: -0.1,
+      token: "world",
+    },
+  ],
+  outputIndex: 3910.56,
+  itemId: "<id>",
+  contentIndex: 7768.94,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 

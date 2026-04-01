@@ -9,17 +9,16 @@ import { AnnotationAddedEvent } from "@openrouter/sdk/models";
 
 let value: AnnotationAddedEvent = {
   type: "response.output_text.annotation.added",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  sequenceNumber: 5,
-  annotationIndex: 0,
+  outputIndex: 6018.49,
+  itemId: "<id>",
+  contentIndex: 7353.83,
+  sequenceNumber: 0,
+  annotationIndex: 1249.13,
   annotation: {
-    type: "url_citation",
-    url: "https://example.com",
-    title: "Example",
-    startIndex: 0,
-    endIndex: 7,
+    type: "file_citation",
+    fileId: "file-abc123",
+    filename: "research_paper.pdf",
+    index: 0,
   },
 };
 ```

@@ -9,14 +9,14 @@ import { ContentPartDoneEvent } from "@openrouter/sdk/models";
 
 let value: ContentPartDoneEvent = {
   type: "response.content_part.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
+  outputIndex: 9280.75,
+  itemId: "<id>",
+  contentIndex: 2894.72,
   part: {
     type: "output_text",
-    text: "Hello! How can I help you?",
+    text: "The capital of France is Paris.",
   },
-  sequenceNumber: 7,
+  sequenceNumber: 0,
 };
 ```
 

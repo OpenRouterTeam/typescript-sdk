@@ -14,7 +14,7 @@ let value: StreamEventsResponseIncomplete = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "incomplete",
+    status: "in_progress",
     completedAt: 8548.64,
     output: [],
     error: null,
@@ -29,7 +29,7 @@ let value: StreamEventsResponseIncomplete = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 5,
+  sequenceNumber: 0,
 };
 ```
 

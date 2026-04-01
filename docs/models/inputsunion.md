@@ -8,8 +8,7 @@ Input for a response request - can be a string or array of items
 ### `string`
 
 ```typescript
-const value: string =
-  "[{\"role\":\"user\",\"content\":\"What is the weather today?\"}]";
+const value: string = "<value>";
 ```
 
 ### `models.InputsUnion1[]`

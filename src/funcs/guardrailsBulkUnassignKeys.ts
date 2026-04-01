@@ -104,7 +104,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/guardrails/{id}/assignments/keys/remove")(
     pathParams,
   );

@@ -8,11 +8,11 @@ Which search engine to use. "auto" (default) uses native if the provider support
 import { ChatWebSearchServerToolEngine } from "@openrouter/sdk/models";
 
 let value: ChatWebSearchServerToolEngine = "auto";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
 "auto" | "native" | "exa" | "firecrawl" | "parallel" | Unrecognized<string>

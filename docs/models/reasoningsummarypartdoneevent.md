@@ -9,14 +9,14 @@ import { ReasoningSummaryPartDoneEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryPartDoneEvent = {
   type: "response.reasoning_summary_part.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  summaryIndex: 0,
+  outputIndex: 6867.18,
+  itemId: "<id>",
+  summaryIndex: 4773.32,
   part: {
     type: "summary_text",
-    text: "Analyzing the problem step by step to find the optimal solution.",
+    text: "Analyzed the problem using first principles",
   },
-  sequenceNumber: 7,
+  sequenceNumber: 0,
 };
 ```
 

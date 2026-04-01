@@ -10,7 +10,7 @@ import { Architecture } from "@openrouter/sdk/models";
 let value: Architecture = {
   tokenizer: "GPT",
   instructType: "chatml",
-  modality: "text->text",
+  modality: "text",
   inputModalities: [
     "text",
   ],

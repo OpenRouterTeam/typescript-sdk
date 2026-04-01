@@ -156,7 +156,7 @@ export type OpenResponsesResult = {
   topP: number | null;
   presencePenalty: number | null;
   frequencyPenalty: number | null;
-  instructions?: BaseInputsUnion | null | undefined;
+  instructions: BaseInputsUnion | null;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
@@ -276,7 +276,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   top_p: z.nullable(z.number()),
   presence_penalty: z.nullable(z.number()),
   frequency_penalty: z.nullable(z.number()),
-  instructions: z.nullable(BaseInputsUnion$inboundSchema).optional(),
+  instructions: z.nullable(BaseInputsUnion$inboundSchema),
   metadata: z.nullable(z.record(z.string(), z.string())),
   tools: z.array(
     z.union([

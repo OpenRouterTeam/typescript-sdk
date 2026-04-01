@@ -89,6 +89,9 @@ export type ProviderPreferencesProviderSortConfig = {
   partition?: ProviderPreferencesPartition | null | undefined;
 };
 
+/**
+ * The provider sorting strategy (price, throughput, latency)
+ */
 export type ProviderPreferencesProviderSortConfigUnion =
   | ProviderPreferencesProviderSortConfig
   | ProviderPreferencesProviderSortConfigEnum;

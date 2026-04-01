@@ -9,11 +9,11 @@ import { RefusalDoneEvent } from "@openrouter/sdk/models";
 
 let value: RefusalDoneEvent = {
   type: "response.refusal.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  refusal: "I'm sorry, but I can't assist with that request.",
-  sequenceNumber: 6,
+  outputIndex: 8826.16,
+  itemId: "<id>",
+  contentIndex: 6410.81,
+  refusal: "<value>",
+  sequenceNumber: 0,
 };
 ```
 

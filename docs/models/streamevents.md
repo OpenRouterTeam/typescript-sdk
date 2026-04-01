@@ -59,7 +59,7 @@ const value: models.StreamEventsResponseInProgress = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 1,
+  sequenceNumber: 0,
 };
 ```
 
@@ -73,14 +73,9 @@ const value: models.StreamEventsResponseCompleted = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "completed",
+    status: "in_progress",
     completedAt: 7739.3,
-    output: [
-      {
-        type: "message",
-        status: "completed",
-      },
-    ],
+    output: [],
     error: null,
     incompleteDetails: null,
     temperature: null,
@@ -93,7 +88,7 @@ const value: models.StreamEventsResponseCompleted = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 10,
+  sequenceNumber: 0,
 };
 ```
 
@@ -107,7 +102,7 @@ const value: models.StreamEventsResponseIncomplete = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "incomplete",
+    status: "in_progress",
     completedAt: 7972,
     output: [],
     error: null,
@@ -122,7 +117,7 @@ const value: models.StreamEventsResponseIncomplete = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 5,
+  sequenceNumber: 0,
 };
 ```
 
@@ -136,7 +131,7 @@ const value: models.StreamEventsResponseFailed = {
     object: "response",
     createdAt: 1704067200,
     model: "gpt-4",
-    status: "failed",
+    status: "in_progress",
     completedAt: 8451.03,
     output: [],
     error: null,
@@ -151,7 +146,7 @@ const value: models.StreamEventsResponseFailed = {
     toolChoice: "auto",
     parallelToolCalls: true,
   },
-  sequenceNumber: 3,
+  sequenceNumber: 0,
 };
 ```
 
@@ -160,10 +155,10 @@ const value: models.StreamEventsResponseFailed = {
 ```typescript
 const value: models.ErrorEvent = {
   type: "error",
-  code: "rate_limit_exceeded",
-  message: "Rate limit exceeded. Please try again later.",
+  code: null,
+  message: "<value>",
   param: null,
-  sequenceNumber: 2,
+  sequenceNumber: 0,
 };
 ```
 
@@ -172,12 +167,12 @@ const value: models.ErrorEvent = {
 ```typescript
 const value: models.StreamEventsResponseOutputItemAdded = {
   type: "response.output_item.added",
-  outputIndex: 0,
+  outputIndex: 4150.42,
   item: {
     type: "message",
-    status: "in_progress",
+    status: "completed",
   },
-  sequenceNumber: 2,
+  sequenceNumber: 0,
 };
 ```
 
@@ -186,12 +181,12 @@ const value: models.StreamEventsResponseOutputItemAdded = {
 ```typescript
 const value: models.StreamEventsResponseOutputItemDone = {
   type: "response.output_item.done",
-  outputIndex: 0,
+  outputIndex: 2098.31,
   item: {
     type: "message",
     status: "completed",
   },
-  sequenceNumber: 8,
+  sequenceNumber: 0,
 };
 ```
 
@@ -200,14 +195,14 @@ const value: models.StreamEventsResponseOutputItemDone = {
 ```typescript
 const value: models.ContentPartAddedEvent = {
   type: "response.content_part.added",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
+  outputIndex: 8999.05,
+  itemId: "<id>",
+  contentIndex: 346.01,
   part: {
     type: "output_text",
-    text: "",
+    text: "The capital of France is Paris.",
   },
-  sequenceNumber: 3,
+  sequenceNumber: 0,
 };
 ```
 
@@ -216,14 +211,14 @@ const value: models.ContentPartAddedEvent = {
 ```typescript
 const value: models.ContentPartDoneEvent = {
   type: "response.content_part.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
+  outputIndex: 1120.41,
+  itemId: "<id>",
+  contentIndex: 5462.68,
   part: {
     type: "output_text",
-    text: "Hello! How can I help you?",
+    text: "The capital of France is Paris.",
   },
-  sequenceNumber: 7,
+  sequenceNumber: 0,
 };
 ```
 
@@ -232,12 +227,17 @@ const value: models.ContentPartDoneEvent = {
 ```typescript
 const value: models.TextDeltaEvent = {
   type: "response.output_text.delta",
-  logprobs: [],
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  delta: "Hello",
-  sequenceNumber: 4,
+  logprobs: [
+    {
+      logprob: -0.1,
+      token: "world",
+    },
+  ],
+  outputIndex: 6998.25,
+  itemId: "<id>",
+  contentIndex: 8104.86,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -246,12 +246,17 @@ const value: models.TextDeltaEvent = {
 ```typescript
 const value: models.TextDoneEvent = {
   type: "response.output_text.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  text: "Hello! How can I help you?",
-  sequenceNumber: 6,
-  logprobs: [],
+  outputIndex: 4820.41,
+  itemId: "<id>",
+  contentIndex: 6340.62,
+  text: "<value>",
+  sequenceNumber: 0,
+  logprobs: [
+    {
+      logprob: -0.1,
+      token: "world",
+    },
+  ],
 };
 ```
 
@@ -260,11 +265,11 @@ const value: models.TextDoneEvent = {
 ```typescript
 const value: models.RefusalDeltaEvent = {
   type: "response.refusal.delta",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  delta: "I'm sorry",
-  sequenceNumber: 4,
+  outputIndex: 1859.54,
+  itemId: "<id>",
+  contentIndex: 7250.96,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -273,11 +278,11 @@ const value: models.RefusalDeltaEvent = {
 ```typescript
 const value: models.RefusalDoneEvent = {
   type: "response.refusal.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  refusal: "I'm sorry, but I can't assist with that request.",
-  sequenceNumber: 6,
+  outputIndex: 6729.21,
+  itemId: "<id>",
+  contentIndex: 1938.29,
+  refusal: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -286,17 +291,16 @@ const value: models.RefusalDoneEvent = {
 ```typescript
 const value: models.AnnotationAddedEvent = {
   type: "response.output_text.annotation.added",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  sequenceNumber: 5,
-  annotationIndex: 0,
+  outputIndex: 1043.54,
+  itemId: "<id>",
+  contentIndex: 2529.14,
+  sequenceNumber: 0,
+  annotationIndex: 2142.33,
   annotation: {
-    type: "url_citation",
-    url: "https://example.com",
-    title: "Example",
-    startIndex: 0,
-    endIndex: 7,
+    type: "file_citation",
+    fileId: "file-abc123",
+    filename: "research_paper.pdf",
+    index: 0,
   },
 };
 ```
@@ -306,10 +310,10 @@ const value: models.AnnotationAddedEvent = {
 ```typescript
 const value: models.FunctionCallArgsDeltaEvent = {
   type: "response.function_call_arguments.delta",
-  itemId: "item-1",
-  outputIndex: 0,
-  delta: "{\"city\": \"San",
-  sequenceNumber: 4,
+  itemId: "<id>",
+  outputIndex: 2348.69,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -318,11 +322,11 @@ const value: models.FunctionCallArgsDeltaEvent = {
 ```typescript
 const value: models.FunctionCallArgsDoneEvent = {
   type: "response.function_call_arguments.done",
-  itemId: "item-1",
-  outputIndex: 0,
-  name: "get_weather",
-  arguments: "{\"city\": \"San Francisco\", \"units\": \"celsius\"}",
-  sequenceNumber: 6,
+  itemId: "<id>",
+  outputIndex: 6033.59,
+  name: "<value>",
+  arguments: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -331,11 +335,11 @@ const value: models.FunctionCallArgsDoneEvent = {
 ```typescript
 const value: models.ReasoningDeltaEvent = {
   type: "response.reasoning_text.delta",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  delta: "First, we need",
-  sequenceNumber: 4,
+  outputIndex: 557.21,
+  itemId: "<id>",
+  contentIndex: 1436.19,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -344,12 +348,11 @@ const value: models.ReasoningDeltaEvent = {
 ```typescript
 const value: models.ReasoningDoneEvent = {
   type: "response.reasoning_text.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  contentIndex: 0,
-  text:
-    "First, we need to identify the key components and then combine them logically.",
-  sequenceNumber: 6,
+  outputIndex: 4694.95,
+  itemId: "<id>",
+  contentIndex: 4084.41,
+  text: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -358,14 +361,14 @@ const value: models.ReasoningDoneEvent = {
 ```typescript
 const value: models.ReasoningSummaryPartAddedEvent = {
   type: "response.reasoning_summary_part.added",
-  outputIndex: 0,
-  itemId: "item-1",
-  summaryIndex: 0,
+  outputIndex: 5439.57,
+  itemId: "<id>",
+  summaryIndex: 2797.69,
   part: {
     type: "summary_text",
-    text: "",
+    text: "Analyzed the problem using first principles",
   },
-  sequenceNumber: 3,
+  sequenceNumber: 0,
 };
 ```
 
@@ -374,14 +377,14 @@ const value: models.ReasoningSummaryPartAddedEvent = {
 ```typescript
 const value: models.ReasoningSummaryPartDoneEvent = {
   type: "response.reasoning_summary_part.done",
-  outputIndex: 0,
-  itemId: "item-1",
-  summaryIndex: 0,
+  outputIndex: 8310.78,
+  itemId: "<id>",
+  summaryIndex: 8178.5,
   part: {
     type: "summary_text",
-    text: "Analyzing the problem step by step to find the optimal solution.",
+    text: "Analyzed the problem using first principles",
   },
-  sequenceNumber: 7,
+  sequenceNumber: 0,
 };
 ```
 
@@ -390,11 +393,11 @@ const value: models.ReasoningSummaryPartDoneEvent = {
 ```typescript
 const value: models.ReasoningSummaryTextDeltaEvent = {
   type: "response.reasoning_summary_text.delta",
-  itemId: "item-1",
-  outputIndex: 0,
-  summaryIndex: 0,
-  delta: "Analyzing",
-  sequenceNumber: 4,
+  itemId: "<id>",
+  outputIndex: 4663.59,
+  summaryIndex: 5207.09,
+  delta: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
@@ -403,11 +406,11 @@ const value: models.ReasoningSummaryTextDeltaEvent = {
 ```typescript
 const value: models.ReasoningSummaryTextDoneEvent = {
   type: "response.reasoning_summary_text.done",
-  itemId: "item-1",
-  outputIndex: 0,
-  summaryIndex: 0,
-  text: "Analyzing the problem step by step to find the optimal solution.",
-  sequenceNumber: 6,
+  itemId: "<id>",
+  outputIndex: 6870.12,
+  summaryIndex: 8979.7,
+  text: "<value>",
+  sequenceNumber: 0,
 };
 ```
 

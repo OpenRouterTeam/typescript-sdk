@@ -25,7 +25,7 @@ export type ChatStreamChoice = {
    * Delta changes in streaming response
    */
   delta: ChatStreamDelta;
-  finishReason?: any | null | undefined;
+  finishReason: any | null;
   /**
    * Choice index
    */
@@ -42,7 +42,7 @@ export const ChatStreamChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: ChatStreamDelta$inboundSchema,
-  finish_reason: z.nullable(z.any()).optional(),
+  finish_reason: z.nullable(z.any()),
   index: z.number(),
   logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {

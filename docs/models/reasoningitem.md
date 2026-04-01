@@ -13,7 +13,7 @@ let value: ReasoningItem = {
   summary: [
     {
       type: "summary_text",
-      text: "Analyzed the problem using first principles",
+      text: "Step by step analysis",
     },
   ],
 };

@@ -8,11 +8,11 @@ Interval at which the limit resets (daily, weekly, monthly)
 import { CreateGuardrailResetIntervalRequest } from "@openrouter/sdk/models/operations";
 
 let value: CreateGuardrailResetIntervalRequest = "monthly";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
 "daily" | "weekly" | "monthly" | Unrecognized<string>

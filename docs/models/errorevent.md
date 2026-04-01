@@ -9,10 +9,10 @@ import { ErrorEvent } from "@openrouter/sdk/models";
 
 let value: ErrorEvent = {
   type: "error",
-  code: "rate_limit_exceeded",
-  message: "Rate limit exceeded. Please try again later.",
-  param: null,
-  sequenceNumber: 2,
+  code: "<value>",
+  message: "<value>",
+  param: "<value>",
+  sequenceNumber: 0,
 };
 ```
 
