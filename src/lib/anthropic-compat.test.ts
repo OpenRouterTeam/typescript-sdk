@@ -28,6 +28,7 @@ function createMockResponse(
     metadata: null,
     tools: [],
     toolChoice: "auto",
+    instructions: null,
     parallelToolCalls: false,
     ...overrides,
   };
