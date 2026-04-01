@@ -101,7 +101,7 @@ export default function Page() {
     }
 
     const result = await openRouter.chat.send({
-      chatGenerationParams: {
+      chatRequest: {
         model: selectedModel,
         maxTokens: 1000,
         messages: updatedMessages,
