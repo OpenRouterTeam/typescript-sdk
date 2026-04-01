@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
-  AssistantMessage$inboundSchema,
-  AssistantMessage$outboundSchema,
-} from '../../src/models/assistantmessage.js';
+  ChatAssistantMessage$inboundSchema,
+  ChatAssistantMessage$outboundSchema,
+} from '../../src/models/chatassistantmessage.js';
 
 describe('AssistantMessage images field', () => {
   it('should preserve images field when parsing inbound response', () => {
@@ -12,7 +12,7 @@ describe('AssistantMessage images field', () => {
       images: [{ image_url: { url: 'https://example.com/generated-image.png' } }],
     };
 
-    const parsed = AssistantMessage$inboundSchema.parse(response);
+    const parsed = ChatAssistantMessage$inboundSchema.parse(response);
 
     expect(parsed.images).toBeDefined();
     expect(parsed.images).toHaveLength(1);
@@ -29,7 +29,7 @@ describe('AssistantMessage images field', () => {
       ],
     };
 
-    const parsed = AssistantMessage$inboundSchema.parse(response);
+    const parsed = ChatAssistantMessage$inboundSchema.parse(response);
 
     expect(parsed.images).toHaveLength(2);
     expect(parsed.images?.[0].imageUrl.url).toBe('https://example.com/image1.png');
@@ -42,7 +42,7 @@ describe('AssistantMessage images field', () => {
       content: 'Just a text response',
     };
 
-    const parsed = AssistantMessage$inboundSchema.parse(response);
+    const parsed = ChatAssistantMessage$inboundSchema.parse(response);
 
     expect(parsed.images).toBeUndefined();
   });
@@ -54,7 +54,7 @@ describe('AssistantMessage images field', () => {
       images: [{ image_url: { url: 'https://example.com/test.png' } }],
     };
 
-    const parsed = AssistantMessage$inboundSchema.parse(response);
+    const parsed = ChatAssistantMessage$inboundSchema.parse(response);
 
     // Verify snake_case is transformed to camelCase
     expect(parsed.images?.[0]).toHaveProperty('imageUrl');
@@ -68,7 +68,7 @@ describe('AssistantMessage images field', () => {
       images: [{ imageUrl: { url: 'https://example.com/test.png' } }],
     };
 
-    const outbound = AssistantMessage$outboundSchema.parse(message);
+    const outbound = ChatAssistantMessage$outboundSchema.parse(message);
 
     // Verify camelCase is transformed back to snake_case for API
     expect(outbound.images?.[0]).toHaveProperty('image_url');

@@ -1,10 +1,10 @@
 import type {
-  OpenResponsesStreamEvent,
-  OpenResponsesStreamEventResponseCompleted,
-  OpenResponsesStreamEventResponseFunctionCallArgumentsDelta,
-  OpenResponsesStreamEventResponseFunctionCallArgumentsDone,
-  OpenResponsesStreamEventResponseOutputItemAdded,
-} from '../../src/models/openresponsesstreamevent.js';
+  StreamEvents,
+  StreamEventsResponseCompleted,
+  StreamEventsResponseOutputItemAdded,
+} from '../../src/models/streamevents.js';
+import type { FunctionCallArgsDeltaEvent } from '../../src/models/functioncallargsdeltaevent.js';
+import type { FunctionCallArgsDoneEvent } from '../../src/models/functioncallargsdoneevent.js';
 
 import { describe, expect, it } from 'vitest';
 import { ReusableReadableStream } from '../../src/lib/reusable-stream.js';
@@ -15,9 +15,9 @@ import { buildToolCallStream } from '../../src/lib/stream-transformers.js';
 // ============================================================================
 
 function createImmediateStream(
-  events: OpenResponsesStreamEvent[],
-): ReusableReadableStream<OpenResponsesStreamEvent> {
-  const readable = new ReadableStream<OpenResponsesStreamEvent>({
+  events: StreamEvents[],
+): ReusableReadableStream<StreamEvents> {
+  const readable = new ReadableStream<StreamEvents>({
     start(controller) {
       for (const event of events) {
         controller.enqueue(event);
@@ -32,7 +32,7 @@ function outputItemAddedFunctionCallEvent(
   callId: string,
   name: string,
   itemId?: string,
-): OpenResponsesStreamEventResponseOutputItemAdded {
+): StreamEventsResponseOutputItemAdded {
   return {
     type: 'response.output_item.added',
     outputIndex: 0,
@@ -57,7 +57,7 @@ function outputItemAddedFunctionCallEvent(
 function outputItemAddedFunctionCallEventNoId(
   callId: string,
   name: string,
-): OpenResponsesStreamEventResponseOutputItemAdded {
+): StreamEventsResponseOutputItemAdded {
   return {
     type: 'response.output_item.added',
     outputIndex: 0,
@@ -75,7 +75,7 @@ function outputItemAddedFunctionCallEventNoId(
 function functionCallArgsDeltaEvent(
   delta: string,
   itemId: string,
-): OpenResponsesStreamEventResponseFunctionCallArgumentsDelta {
+): FunctionCallArgsDeltaEvent {
   return {
     type: 'response.function_call_arguments.delta',
     itemId,
@@ -89,7 +89,7 @@ function functionCallArgsDoneEvent(
   args: string,
   name: string,
   itemId: string,
-): OpenResponsesStreamEventResponseFunctionCallArgumentsDone {
+): FunctionCallArgsDoneEvent {
   return {
     type: 'response.function_call_arguments.done',
     itemId,
@@ -100,7 +100,7 @@ function functionCallArgsDoneEvent(
   };
 }
 
-function responseCompletedEvent(): OpenResponsesStreamEventResponseCompleted {
+function responseCompletedEvent(): StreamEventsResponseCompleted {
   return {
     type: 'response.completed',
     response: {

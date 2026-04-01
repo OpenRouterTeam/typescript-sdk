@@ -76,11 +76,10 @@
     "test": "vitest --run --project unit",
     "test:e2e": "vitest --run --project e2e",
     "test:transit": "exit 0",
-    "test:watch": "vitest --watch --project unit"
+    "test:watch": "vitest --watch --project unit",
+    "prepare": "npm run build"
   },
-  "peerDependencies": {
-    
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.12",
