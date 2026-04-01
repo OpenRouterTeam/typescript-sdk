@@ -1,4 +1,4 @@
-import type { ChatStreamingResponseChunk } from '../../src/models/chatstreamingresponsechunk.js';
+import type { ChatStreamChunk } from '../../src/models/chatstreamchunk.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
@@ -20,7 +20,7 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Non-streaming', () => {
     it('should successfully send a chat request and get a response', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {
@@ -50,7 +50,7 @@ describe('Chat E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {
@@ -85,7 +85,7 @@ describe('Chat E2E Tests', () => {
 
     it('should respect max_tokens parameter', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {
@@ -107,7 +107,7 @@ describe('Chat E2E Tests', () => {
   describe('chat.send() - Streaming', () => {
     it('should successfully stream chat responses', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {
@@ -121,7 +121,7 @@ describe('Chat E2E Tests', () => {
 
       expect(response).toBeDefined();
 
-      const chunks: ChatStreamingResponseChunk[] = [];
+      const chunks: ChatStreamChunk[] = [];
 
       for await (const chunk of response) {
         expect(chunk).toBeDefined();
@@ -138,7 +138,7 @@ describe('Chat E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {
@@ -169,7 +169,7 @@ describe('Chat E2E Tests', () => {
 
     it('should include finish_reason in final chunk', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'anthropic/claude-haiku-4.5',
           messages: [
             {

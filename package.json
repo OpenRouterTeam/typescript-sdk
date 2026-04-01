@@ -72,11 +72,10 @@
     "test:watch": "vitest --watch --project unit",
     "typecheck": "tsc --noEmit",
     "typecheck:transit": "exit 0",
-    "compile": "tsc"
+    "compile": "tsc",
+    "prepare": "npm run build"
   },
-  "peerDependencies": {
-    
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@types/node": "^22.13.12",
