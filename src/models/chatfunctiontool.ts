@@ -5,6 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { ClosedEnum } from "../types/enums.js";
 import {
   ChatContentCacheControl,
   ChatContentCacheControl$Outbound,
@@ -25,6 +26,11 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+
+export const ChatFunctionToolType = {
+  Function: "function",
+} as const;
+export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
 
 /**
  * Function definition for tool calling
@@ -49,7 +55,7 @@ export type ChatFunctionToolFunctionFunction = {
 };
 
 export type ChatFunctionToolFunction = {
-  type: "function";
+  type: ChatFunctionToolType;
   /**
    * Function definition for tool calling
    */
@@ -67,10 +73,12 @@ export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
   | ChatWebSearchServerTool
-  | (ChatWebSearchShorthand & { type: "web_search" })
-  | (ChatWebSearchShorthand & { type: "web_search_preview" })
-  | (ChatWebSearchShorthand & { type: "web_search_preview_2025_03_11" })
-  | (ChatWebSearchShorthand & { type: "web_search_2025_08_26" });
+  | ChatWebSearchShorthand;
+
+/** @internal */
+export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
+  typeof ChatFunctionToolType
+> = z.enum(ChatFunctionToolType);
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
@@ -103,7 +111,7 @@ export function chatFunctionToolFunctionFunctionToJSON(
 
 /** @internal */
 export type ChatFunctionToolFunction$Outbound = {
-  type: "function";
+  type: string;
   function: ChatFunctionToolFunctionFunction$Outbound;
   cache_control?: ChatContentCacheControl$Outbound | undefined;
 };
@@ -113,7 +121,7 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction$Outbound,
   ChatFunctionToolFunction
 > = z.object({
-  type: z.literal("function"),
+  type: ChatFunctionToolType$outboundSchema,
   function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
 }).transform((v) => {
@@ -135,12 +143,7 @@ export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
   | ChatWebSearchServerTool$Outbound
-  | (ChatWebSearchShorthand$Outbound & { type: "web_search" })
-  | (ChatWebSearchShorthand$Outbound & { type: "web_search_preview" })
-  | (ChatWebSearchShorthand$Outbound & {
-    type: "web_search_preview_2025_03_11";
-  })
-  | (ChatWebSearchShorthand$Outbound & { type: "web_search_2025_08_26" });
+  | ChatWebSearchShorthand$Outbound;
 
 /** @internal */
 export const ChatFunctionTool$outboundSchema: z.ZodType<
@@ -150,18 +153,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
   ChatWebSearchServerTool$outboundSchema,
-  ChatWebSearchShorthand$outboundSchema.and(
-    z.object({ type: z.literal("web_search") }),
-  ),
-  ChatWebSearchShorthand$outboundSchema.and(
-    z.object({ type: z.literal("web_search_preview") }),
-  ),
-  ChatWebSearchShorthand$outboundSchema.and(
-    z.object({ type: z.literal("web_search_preview_2025_03_11") }),
-  ),
-  ChatWebSearchShorthand$outboundSchema.and(
-    z.object({ type: z.literal("web_search_2025_08_26") }),
-  ),
+  ChatWebSearchShorthand$outboundSchema,
 ]);
 
 export function chatFunctionToolToJSON(

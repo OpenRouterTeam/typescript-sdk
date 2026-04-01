@@ -8,11 +8,11 @@ The search engine to use for web search.
 import { WebSearchEngine } from "@openrouter/sdk/models";
 
 let value: WebSearchEngine = "native";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
 "native" | "exa" | "firecrawl" | "parallel" | Unrecognized<string>

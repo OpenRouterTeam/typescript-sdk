@@ -102,7 +102,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/guardrails/{id}/assignments/keys")(pathParams);
 
   const headers = new Headers(compactMap({

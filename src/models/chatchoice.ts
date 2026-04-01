@@ -21,7 +21,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Chat completion choice
  */
 export type ChatChoice = {
-  finishReason?: any | null | undefined;
+  finishReason: any | null;
   /**
    * Choice index
    */
@@ -39,7 +39,7 @@ export type ChatChoice = {
 /** @internal */
 export const ChatChoice$inboundSchema: z.ZodType<ChatChoice, unknown> = z
   .object({
-    finish_reason: z.nullable(z.any()).optional(),
+    finish_reason: z.nullable(z.any()),
     index: z.number(),
     message: ChatAssistantMessage$inboundSchema,
     logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),

@@ -8,11 +8,11 @@ Partitioning strategy for sorting: "model" (default) groups endpoints by model b
 import { ProviderPreferencesPartition } from "@openrouter/sdk/models";
 
 let value: ProviderPreferencesPartition = "model";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
 "model" | "none" | Unrecognized<string>

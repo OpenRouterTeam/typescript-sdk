@@ -223,12 +223,11 @@ export type InputsMessage = {
     | InputsStatusIncomplete1
     | InputsStatusInProgress1
     | undefined;
-  content?:
+  content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
     | any
-    | null
-    | undefined;
+    | null;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -488,14 +487,13 @@ export type InputsMessage$Outbound = {
   role: string;
   type: string;
   status?: string | string | string | undefined;
-  content?:
+  content:
     | Array<
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
     >
     | string
     | any
-    | null
-    | undefined;
+    | null;
   phase?: string | string | any | null | undefined;
 };
 
@@ -523,7 +521,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
       z.string(),
       z.any(),
     ]),
-  ).optional(),
+  ),
   phase: z.nullable(
     z.union([
       InputsPhaseCommentary$outboundSchema,

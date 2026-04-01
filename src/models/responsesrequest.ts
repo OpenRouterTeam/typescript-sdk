@@ -181,7 +181,7 @@ export type ResponsesRequestToolUnion =
   | ShellServerTool
   | ApplyPatchServerTool
   | CustomTool
-  | DatetimeServerTool
+  | (DatetimeServerTool & { type: "openrouter:datetime" })
   | WebSearchServerToolOpenRouter;
 
 export type ResponsesRequestImageConfig = string | number;
@@ -408,7 +408,7 @@ export type ResponsesRequest = {
       | ShellServerTool
       | ApplyPatchServerTool
       | CustomTool
-      | DatetimeServerTool
+      | (DatetimeServerTool & { type: "openrouter:datetime" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -528,7 +528,7 @@ export type ResponsesRequestToolUnion$Outbound =
   | ShellServerTool$Outbound
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
-  | DatetimeServerTool$Outbound
+  | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -550,7 +550,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   ShellServerTool$outboundSchema,
   ApplyPatchServerTool$outboundSchema,
   CustomTool$outboundSchema,
-  DatetimeServerTool$outboundSchema,
+  DatetimeServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:datetime") }),
+  ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
 
@@ -1028,7 +1030,7 @@ export type ResponsesRequest$Outbound = {
       | ShellServerTool$Outbound
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
-      | DatetimeServerTool$Outbound
+      | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -1098,7 +1100,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       ShellServerTool$outboundSchema,
       ApplyPatchServerTool$outboundSchema,
       CustomTool$outboundSchema,
-      DatetimeServerTool$outboundSchema,
+      DatetimeServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:datetime") }),
+      ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),

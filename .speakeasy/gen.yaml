@@ -16,8 +16,8 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
-    nameOverrideFeb2026: false
     sharedNestedComponentsJan2026: false
+    nameOverrideFeb2026: false
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
@@ -27,6 +27,7 @@ generation:
   schemas:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
+  versioningStrategy: automatic
   persistentEdits:
     enabled: "true"
   tests:
@@ -34,9 +35,8 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
-  versioningStrategy: automatic
 typescript:
-  version: 0.10.1
+  version: 0.11.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -88,6 +88,7 @@ typescript:
   enumFormat: union
   envVarPrefix: OPENROUTER
   exportZodModelNamespace: false
+  fixEnumNameSanitization: false
   flatAdditionalProperties: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
@@ -124,4 +125,6 @@ typescript:
   unionStrategy: left-to-right
   usageSDKInitImports: []
   useIndexModules: true
+  useOxlint: false
+  useTsgo: false
   zodVersion: v4

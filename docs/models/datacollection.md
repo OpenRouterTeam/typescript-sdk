@@ -11,11 +11,11 @@ Data collection setting. If no available model provider meets the requirement, y
 import { DataCollection } from "@openrouter/sdk/models";
 
 let value: DataCollection = "allow";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
 ```
 
 ## Values
-
-This is an open enum. Unrecognized values will be captured as the `Unrecognized<string>` branded type.
 
 ```typescript
 "deny" | "allow" | Unrecognized<string>

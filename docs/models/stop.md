@@ -8,7 +8,7 @@ Stop sequences (up to 4)
 ### `string`
 
 ```typescript
-const value: string = "[\"\"]";
+const value: string = "<value>";
 ```
 
 ### `string[]`
