@@ -18,7 +18,7 @@ describe('Image Generation E2E Tests', () => {
   describe('chat.send() - Image Generation', () => {
     it('should return images field in response from image generation model', async () => {
       const response = await client.chat.send({
-        chatGenerationParams: {
+        chatRequest: {
           model: 'openai/gpt-5-image-mini',
           messages: [
             {

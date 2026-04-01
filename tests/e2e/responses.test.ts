@@ -1,8 +1,8 @@
-import type { OpenResponsesStreamEvent } from '../../src/models/openresponsesstreamevent.js';
+import type { StreamEvents } from '../../src/models/streamevents.js';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 import { OpenRouter } from '../../src/sdk/sdk.js';
-import { ResponsesOutputMessage } from '../../src/models/responsesoutputmessage.js';
+import { OutputMessage } from '../../src/models/outputmessage.js';
 
 describe('Beta Responses E2E Tests', () => {
   let client: OpenRouter;
@@ -21,7 +21,7 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Non-streaming', () => {
     it('should successfully send a responses request and get a response', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -49,7 +49,7 @@ describe('Beta Responses E2E Tests', () => {
       expect(firstOutput).toBeDefined();
       expect(firstOutput?.type).toBe('message');
       // TODO improve typing here
-      expect((firstOutput as unknown as ResponsesOutputMessage).role).toBe('assistant');
+      expect((firstOutput as unknown as OutputMessage).role).toBe('assistant');
 
       // Verify usage information
       expect(response.usage).toBeDefined();
@@ -60,7 +60,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle multi-turn conversations', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -104,7 +104,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should respect maxOutputTokens parameter', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -124,7 +124,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle metadata in request', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -149,7 +149,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle instructions parameter', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -172,7 +172,7 @@ describe('Beta Responses E2E Tests', () => {
   describe('beta.responses.send() - Streaming', () => {
     it('should successfully stream responses', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -187,7 +187,7 @@ describe('Beta Responses E2E Tests', () => {
 
       expect(response).toBeDefined();
 
-      const events: OpenResponsesStreamEvent[] = [];
+      const events: StreamEvents[] = [];
 
       for await (const event of response) {
         expect(event).toBeDefined();
@@ -209,7 +209,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should stream complete content progressively', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -245,7 +245,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should include response.completed event in stream', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -275,7 +275,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should handle streaming with metadata', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
@@ -305,7 +305,7 @@ describe('Beta Responses E2E Tests', () => {
 
     it('should concatenate streaming chunks into complete sentence', async () => {
       const response = await client.beta.responses.send({
-        openResponsesRequest: {
+        responsesRequest: {
           model: 'anthropic/claude-haiku-4.5',
           input: [
             {
