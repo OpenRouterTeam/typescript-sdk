@@ -164,8 +164,14 @@ export function applyNextTurnParamsToRequest(
   request: models.ResponsesRequest,
   computedParams: Partial<NextTurnParamsContext>
 ): models.ResponsesRequest {
+  // Strip null values to undefined so they're compatible with ResponsesRequest
+  // fields that may be typed as `number | undefined` (without null)
+  const sanitized: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(computedParams)) {
+    sanitized[key] = value === null ? undefined : value;
+  }
   return {
     ...request,
-    ...computedParams,
+    ...sanitized,
   };
 }
