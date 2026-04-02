@@ -50,11 +50,6 @@ export class OpenRouter extends ClientSDK {
     return (this._credits ??= new Credits(this._options));
   }
 
-  private _embeddings?: Embeddings;
-  get embeddings(): Embeddings {
-    return (this._embeddings ??= new Embeddings(this._options));
-  }
-
   private _generations?: Generations;
   get generations(): Generations {
     return (this._generations ??= new Generations(this._options));
@@ -88,6 +83,11 @@ export class OpenRouter extends ClientSDK {
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
+  }
+
+  private _embeddings?: Embeddings;
+  get embeddings(): Embeddings {
+    return (this._embeddings ??= new Embeddings(this._options));
   }
 
   // #region sdk-class-body

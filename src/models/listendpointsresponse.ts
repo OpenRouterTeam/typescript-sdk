@@ -137,7 +137,7 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   name: z.string(),
-  created: z.number(),
+  created: z.int(),
   description: z.string(),
   architecture: z.lazy(() => Architecture$inboundSchema),
   endpoints: z.array(PublicEndpoint$inboundSchema),
