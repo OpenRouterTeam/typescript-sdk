@@ -44,6 +44,17 @@ yarn add @openrouter/sdk
 > CommonJS, use `await import("@openrouter/sdk")` to import and use this package.
 <!-- End SDK Installation [installation] -->
 
+## Migrating `callModel` to `@openrouter/agent`
+
+> [!IMPORTANT]
+> `callModel` and its associated types have moved to the [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) package. If you are using `callModel`, tool definitions, or related types from `@openrouter/sdk`, you should migrate to `@openrouter/agent`.
+>
+> To assist with the migration, run:
+>
+> ```bash
+> npx skills add OpenRouterTeam/skills --skill openrouter-agent-migration
+> ```
+
 <!-- Start Requirements [requirements] -->
 ## Requirements
 
