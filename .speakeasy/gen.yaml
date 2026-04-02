@@ -36,7 +36,7 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.11.0
+  version: 0.11.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -67,6 +67,7 @@ typescript:
   additionalScripts:
     compile: tsc
     postinstall: node scripts/check-types.js || true
+    prepare: npm run build
     test: vitest --run --project unit
     test:e2e: vitest --run --project e2e
     test:transit: exit 0

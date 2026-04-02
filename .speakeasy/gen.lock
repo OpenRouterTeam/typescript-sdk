@@ -5,13 +5,13 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.11.0
-  configChecksum: 97b0b3bbac60f54b60808808253b7ffc
+  releaseVersion: 0.11.2
+  configChecksum: cb6df38c79eadf6eb9d3ee86f03356f9
   published: true
 persistentEdits:
-  generation_id: a636997c-69ac-4b7d-a8e1-7b3e65f57af6
-  pristine_commit_hash: d09496ad10d4cdde8b601c6b135681552f1fc571
-  pristine_tree_hash: 450229fb478cd00dbbd800b8032d307bc38062f5
+  generation_id: 8139616c-a235-4a61-8d59-af8e498676d5
+  pristine_commit_hash: 21d00ec860fd35e2e7499eeedc5a5c82c17b493e
+  pristine_tree_hash: 7b816c6b21456f9ec642272b908f0c3ce0ff9f5b
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3007,12 +3007,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:4e4b3bb975be1bda63212fcb72d3f2ea4d792510
-    pristine_git_object: 4d688aa6a11085c41737ab6b359e4cd622e64380
+    last_write_checksum: sha1:13daedf71942f557fb3f3357bd8c7e6deaf9995a
+    pristine_git_object: 701d990fa847f0f1cb240abd13ea48a5c6a753ca
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7075b30e7b14970f5847b9d6b5bec10763150956
-    pristine_git_object: 7053139df5c2ad35ee607b4aae0843f7fc5e382b
+    last_write_checksum: sha1:614fe676b19f3399c8d3bd9c52bfdc878721ffb4
+    pristine_git_object: 84d652e14d239cd467926d8bce5f136ca76c7f6d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -3179,8 +3179,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:4dbb35e66ec7b73fb561440af2b41a296206b690
-    pristine_git_object: bab69dc07236df8f5044335623e079355793c7d5
+    last_write_checksum: sha1:92de57c6b1cb948c5f50f4f0ddb51255e771527a
+    pristine_git_object: ad74991a5320acfd2758f7c29b44e312020a2744
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
