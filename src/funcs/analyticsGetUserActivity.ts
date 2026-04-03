@@ -99,7 +99,9 @@ async function $do(
   const path = pathToFunc("/activity")();
 
   const query = encodeFormQuery({
+    "api_key_hash": payload?.api_key_hash,
     "date": payload?.date,
+    "member_user_id": payload?.member_user_id,
   });
 
   const headers = new Headers(compactMap({
