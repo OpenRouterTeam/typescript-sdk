@@ -6,10 +6,9 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListGuardrailsGlobals = {
   /**
@@ -63,21 +62,6 @@ export type ListGuardrailsRequest = {
   limit?: string | undefined;
 };
 
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export const ListGuardrailsResetInterval = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export type ListGuardrailsResetInterval = OpenEnum<
-  typeof ListGuardrailsResetInterval
->;
-
 export type ListGuardrailsData = {
   /**
    * Unique identifier for the guardrail
@@ -94,11 +78,11 @@ export type ListGuardrailsData = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
-  resetInterval?: ListGuardrailsResetInterval | null | undefined;
+  resetInterval?: models.GuardrailInterval | null | undefined;
   /**
    * List of allowed provider IDs
    */
@@ -173,12 +157,6 @@ export function listGuardrailsRequestToJSON(
 }
 
 /** @internal */
-export const ListGuardrailsResetInterval$inboundSchema: z.ZodType<
-  ListGuardrailsResetInterval,
-  unknown
-> = openEnums.inboundSchema(ListGuardrailsResetInterval);
-
-/** @internal */
 export const ListGuardrailsData$inboundSchema: z.ZodType<
   ListGuardrailsData,
   unknown
@@ -186,9 +164,8 @@ export const ListGuardrailsData$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
-  reset_interval: z.nullable(ListGuardrailsResetInterval$inboundSchema)
-    .optional(),
+  limit_usd: z.number().optional(),
+  reset_interval: z.nullable(models.GuardrailInterval$inboundSchema).optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
@@ -224,7 +201,7 @@ export const ListGuardrailsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(z.lazy(() => ListGuardrailsData$inboundSchema)),
-  total_count: z.number(),
+  total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "total_count": "totalCount",

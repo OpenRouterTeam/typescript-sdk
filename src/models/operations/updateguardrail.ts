@@ -6,10 +6,9 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type UpdateGuardrailGlobals = {
   /**
@@ -33,21 +32,6 @@ export type UpdateGuardrailGlobals = {
   appCategories?: string | undefined;
 };
 
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export const UpdateGuardrailResetIntervalRequest = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export type UpdateGuardrailResetIntervalRequest = OpenEnum<
-  typeof UpdateGuardrailResetIntervalRequest
->;
-
 export type UpdateGuardrailRequestBody = {
   /**
    * New name for the guardrail
@@ -60,11 +44,11 @@ export type UpdateGuardrailRequestBody = {
   /**
    * New spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
-  resetInterval?: UpdateGuardrailResetIntervalRequest | null | undefined;
+  resetInterval?: models.GuardrailInterval | null | undefined;
   /**
    * New list of allowed provider IDs
    */
@@ -111,21 +95,6 @@ export type UpdateGuardrailRequest = {
 };
 
 /**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export const UpdateGuardrailResetIntervalResponse = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export type UpdateGuardrailResetIntervalResponse = OpenEnum<
-  typeof UpdateGuardrailResetIntervalResponse
->;
-
-/**
  * The updated guardrail
  */
 export type UpdateGuardrailData = {
@@ -144,11 +113,11 @@ export type UpdateGuardrailData = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
-  resetInterval?: UpdateGuardrailResetIntervalResponse | null | undefined;
+  resetInterval?: models.GuardrailInterval | null | undefined;
   /**
    * List of allowed provider IDs
    */
@@ -186,16 +155,10 @@ export type UpdateGuardrailResponse = {
 };
 
 /** @internal */
-export const UpdateGuardrailResetIntervalRequest$outboundSchema: z.ZodType<
-  string,
-  UpdateGuardrailResetIntervalRequest
-> = openEnums.outboundSchema(UpdateGuardrailResetIntervalRequest);
-
-/** @internal */
 export type UpdateGuardrailRequestBody$Outbound = {
   name?: string | undefined;
   description?: string | null | undefined;
-  limit_usd?: number | null | undefined;
+  limit_usd?: number | undefined;
   reset_interval?: string | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
@@ -210,9 +173,8 @@ export const UpdateGuardrailRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string().optional(),
   description: z.nullable(z.string()).optional(),
-  limitUsd: z.nullable(z.number()).optional(),
-  resetInterval: z.nullable(UpdateGuardrailResetIntervalRequest$outboundSchema)
-    .optional(),
+  limitUsd: z.number().optional(),
+  resetInterval: z.nullable(models.GuardrailInterval$outboundSchema).optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
@@ -271,12 +233,6 @@ export function updateGuardrailRequestToJSON(
 }
 
 /** @internal */
-export const UpdateGuardrailResetIntervalResponse$inboundSchema: z.ZodType<
-  UpdateGuardrailResetIntervalResponse,
-  unknown
-> = openEnums.inboundSchema(UpdateGuardrailResetIntervalResponse);
-
-/** @internal */
 export const UpdateGuardrailData$inboundSchema: z.ZodType<
   UpdateGuardrailData,
   unknown
@@ -284,9 +240,8 @@ export const UpdateGuardrailData$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
-  reset_interval: z.nullable(UpdateGuardrailResetIntervalResponse$inboundSchema)
-    .optional(),
+  limit_usd: z.number().optional(),
+  reset_interval: z.nullable(models.GuardrailInterval$inboundSchema).optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
