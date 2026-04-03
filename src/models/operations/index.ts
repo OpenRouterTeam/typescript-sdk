@@ -34,6 +34,7 @@ export * from "./listkeyassignments.js";
 export * from "./listmemberassignments.js";
 export * from "./listmodelscount.js";
 export * from "./listmodelsuser.js";
+export * from "./listorganizationmembers.js";
 export * from "./listproviders.js";
 export * from "./sendchatcompletionrequest.js";
 export * from "./updateguardrail.js";
