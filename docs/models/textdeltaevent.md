@@ -15,9 +15,9 @@ let value: TextDeltaEvent = {
       token: "world",
     },
   ],
-  outputIndex: 3910.56,
+  outputIndex: 391056,
   itemId: "<id>",
-  contentIndex: 7768.94,
+  contentIndex: 776894,
   delta: "<value>",
   sequenceNumber: 0,
 };
