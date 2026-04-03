@@ -1,0 +1,11 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Simplify redundant allOf inline schemas
+  version: 0.0.0
+actions:
+  - target: "$..allOf[?@.enum && !@['$ref']]"
+    description: >
+      Remove inline enum definitions that duplicate a $ref enum in the same
+      allOf. These are artifacts from zod-openapi .extend() serialization.
+    remove: true
