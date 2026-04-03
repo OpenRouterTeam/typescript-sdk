@@ -227,9 +227,9 @@ export const StreamEventsResponseOutputItemDone$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("response.output_item.done"),
-  output_index: z.number(),
+  output_index: z.int(),
   item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "output_index": "outputIndex",
@@ -254,9 +254,9 @@ export const StreamEventsResponseOutputItemAdded$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("response.output_item.added"),
-  output_index: z.number(),
+  output_index: z.int(),
   item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "output_index": "outputIndex",
@@ -282,7 +282,7 @@ export const StreamEventsResponseFailed$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.failed"),
   response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -306,7 +306,7 @@ export const StreamEventsResponseIncomplete$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.incomplete"),
   response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -330,7 +330,7 @@ export const StreamEventsResponseCompleted$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.completed"),
   response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -354,7 +354,7 @@ export const StreamEventsResponseInProgress$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.in_progress"),
   response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -378,7 +378,7 @@ export const StreamEventsResponseCreated$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.created"),
   response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
