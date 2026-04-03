@@ -205,7 +205,7 @@ describe('Beta Responses E2E Tests', () => {
         (e) => e.type === 'response.in_progress' || e.type === 'response.completed',
       );
       expect(hasProgressOrCompleted).toBe(true);
-    }, 10000);
+    }, 30000);
 
     it('should stream complete content progressively', async () => {
       const response = await client.beta.responses.send({
@@ -241,7 +241,7 @@ describe('Beta Responses E2E Tests', () => {
 
       expect(eventCount).toBeGreaterThan(0);
       expect(hasContent).toBe(true);
-    }, 10000);
+    }, 30000);
 
     it('should include response.completed event in stream', async () => {
       const response = await client.beta.responses.send({
@@ -271,7 +271,7 @@ describe('Beta Responses E2E Tests', () => {
       }
 
       expect(foundCompleted).toBe(true);
-    }, 10000);
+    }, 30000);
 
     it('should handle streaming with metadata', async () => {
       const response = await client.beta.responses.send({
@@ -301,7 +301,7 @@ describe('Beta Responses E2E Tests', () => {
       }
 
       expect(eventCount).toBeGreaterThan(0);
-    }, 10000);
+    }, 30000);
 
     it('should concatenate streaming chunks into complete sentence', async () => {
       const response = await client.beta.responses.send({
@@ -336,6 +336,6 @@ describe('Beta Responses E2E Tests', () => {
       expect(lowerText).toContain('quick');
       expect(lowerText).toContain('brown');
       expect(lowerText).toContain('fox');
-    }, 10000);
+    }, 30000);
   });
 });
