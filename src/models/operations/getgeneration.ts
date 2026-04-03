@@ -206,11 +206,11 @@ export type GetGenerationData = {
   /**
    * Discount applied due to caching
    */
-  cacheDiscount: number | null;
+  cacheDiscount: number;
   /**
    * Cost charged by the upstream provider
    */
-  upstreamInferenceCost: number | null;
+  upstreamInferenceCost: number;
   /**
    * ISO 8601 timestamp of when the generation was created
    */
@@ -222,7 +222,7 @@ export type GetGenerationData = {
   /**
    * ID of the app that made the request
    */
-  appId: number | null;
+  appId: number;
   /**
    * Whether the response was streamed
    */
@@ -238,15 +238,15 @@ export type GetGenerationData = {
   /**
    * Total latency in milliseconds
    */
-  latency: number | null;
+  latency: number;
   /**
    * Moderation latency in milliseconds
    */
-  moderationLatency: number | null;
+  moderationLatency: number;
   /**
    * Time taken for generation in milliseconds
    */
-  generationTime: number | null;
+  generationTime: number;
   /**
    * Reason the generation finished
    */
@@ -254,47 +254,47 @@ export type GetGenerationData = {
   /**
    * Number of tokens in the prompt
    */
-  tokensPrompt: number | null;
+  tokensPrompt: number;
   /**
    * Number of tokens in the completion
    */
-  tokensCompletion: number | null;
+  tokensCompletion: number;
   /**
    * Native prompt tokens as reported by provider
    */
-  nativeTokensPrompt: number | null;
+  nativeTokensPrompt: number;
   /**
    * Native completion tokens as reported by provider
    */
-  nativeTokensCompletion: number | null;
+  nativeTokensCompletion: number;
   /**
    * Native completion image tokens as reported by provider
    */
-  nativeTokensCompletionImages: number | null;
+  nativeTokensCompletionImages: number;
   /**
    * Native reasoning tokens as reported by provider
    */
-  nativeTokensReasoning: number | null;
+  nativeTokensReasoning: number;
   /**
    * Native cached tokens as reported by provider
    */
-  nativeTokensCached: number | null;
+  nativeTokensCached: number;
   /**
    * Number of media items in the prompt
    */
-  numMediaPrompt: number | null;
+  numMediaPrompt: number;
   /**
    * Number of audio inputs in the prompt
    */
-  numInputAudioPrompt: number | null;
+  numInputAudioPrompt: number;
   /**
    * Number of media items in the completion
    */
-  numMediaCompletion: number | null;
+  numMediaCompletion: number;
   /**
    * Number of search results included
    */
-  numSearchResults: number | null;
+  numSearchResults: number;
   /**
    * Origin URL of the request
    */
@@ -335,6 +335,10 @@ export type GetGenerationData = {
    * Referer header from the request
    */
   httpReferer: string | null;
+  /**
+   * Unique identifier grouping all generations from a single API request
+   */
+  requestId?: string | null | undefined;
 };
 
 /**
@@ -425,29 +429,29 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   id: z.string(),
   upstream_id: z.nullable(z.string()),
   total_cost: z.number(),
-  cache_discount: z.nullable(z.number()),
-  upstream_inference_cost: z.nullable(z.number()),
+  cache_discount: z.number(),
+  upstream_inference_cost: z.number(),
   created_at: z.string(),
   model: z.string(),
-  app_id: z.nullable(z.number()),
+  app_id: z.int(),
   streamed: z.nullable(z.boolean()),
   cancelled: z.nullable(z.boolean()),
   provider_name: z.nullable(z.string()),
-  latency: z.nullable(z.number()),
-  moderation_latency: z.nullable(z.number()),
-  generation_time: z.nullable(z.number()),
+  latency: z.number(),
+  moderation_latency: z.number(),
+  generation_time: z.number(),
   finish_reason: z.nullable(z.string()),
-  tokens_prompt: z.nullable(z.number()),
-  tokens_completion: z.nullable(z.number()),
-  native_tokens_prompt: z.nullable(z.number()),
-  native_tokens_completion: z.nullable(z.number()),
-  native_tokens_completion_images: z.nullable(z.number()),
-  native_tokens_reasoning: z.nullable(z.number()),
-  native_tokens_cached: z.nullable(z.number()),
-  num_media_prompt: z.nullable(z.number()),
-  num_input_audio_prompt: z.nullable(z.number()),
-  num_media_completion: z.nullable(z.number()),
-  num_search_results: z.nullable(z.number()),
+  tokens_prompt: z.int(),
+  tokens_completion: z.int(),
+  native_tokens_prompt: z.int(),
+  native_tokens_completion: z.int(),
+  native_tokens_completion_images: z.int(),
+  native_tokens_reasoning: z.int(),
+  native_tokens_cached: z.int(),
+  num_media_prompt: z.int(),
+  num_input_audio_prompt: z.int(),
+  num_media_completion: z.int(),
+  num_search_results: z.int(),
   origin: z.string(),
   usage: z.number(),
   is_byok: z.boolean(),
@@ -460,6 +464,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   ),
   user_agent: z.nullable(z.string()),
   http_referer: z.nullable(z.string()),
+  request_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "upstream_id": "upstreamId",
@@ -490,6 +495,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "provider_responses": "providerResponses",
     "user_agent": "userAgent",
     "http_referer": "httpReferer",
+    "request_id": "requestId",
   });
 });
 
