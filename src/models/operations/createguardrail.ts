@@ -60,7 +60,7 @@ export type CreateGuardrailRequestBody = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
@@ -140,7 +140,7 @@ export type CreateGuardrailData = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
@@ -191,7 +191,7 @@ export const CreateGuardrailResetIntervalRequest$outboundSchema: z.ZodType<
 export type CreateGuardrailRequestBody$Outbound = {
   name: string;
   description?: string | null | undefined;
-  limit_usd?: number | null | undefined;
+  limit_usd?: number | undefined;
   reset_interval?: string | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
@@ -206,7 +206,7 @@ export const CreateGuardrailRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limitUsd: z.nullable(z.number()).optional(),
+  limitUsd: z.number().optional(),
   resetInterval: z.nullable(CreateGuardrailResetIntervalRequest$outboundSchema)
     .optional(),
   allowedProviders: z.nullable(z.array(z.string())).optional(),
@@ -278,7 +278,7 @@ export const CreateGuardrailData$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
+  limit_usd: z.number().optional(),
   reset_interval: z.nullable(CreateGuardrailResetIntervalResponse$inboundSchema)
     .optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
