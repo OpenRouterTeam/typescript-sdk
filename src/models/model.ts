@@ -62,7 +62,7 @@ export type Model = {
   /**
    * Maximum context length in tokens
    */
-  contextLength: number | null;
+  contextLength: number;
   /**
    * Model architecture information
    */
@@ -99,10 +99,10 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   canonical_slug: z.string(),
   hugging_face_id: z.nullable(z.string()).optional(),
   name: z.string(),
-  created: z.number(),
+  created: z.int(),
   description: z.string().optional(),
   pricing: PublicPricing$inboundSchema,
-  context_length: z.nullable(z.number()),
+  context_length: z.int(),
   architecture: ModelArchitecture$inboundSchema,
   top_provider: TopProviderInfo$inboundSchema,
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
