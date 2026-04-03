@@ -10,7 +10,7 @@ import { FunctionCallArgsDoneEvent } from "@openrouter/sdk/models";
 let value: FunctionCallArgsDoneEvent = {
   type: "response.function_call_arguments.done",
   itemId: "<id>",
-  outputIndex: 513.28,
+  outputIndex: 51328,
   name: "<value>",
   arguments: "<value>",
   sequenceNumber: 0,
