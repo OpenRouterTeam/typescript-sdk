@@ -28,19 +28,19 @@ export class Credits extends ClientSDK {
   }
 
   /**
-   * Create a Coinbase charge for crypto payment
+   * Deprecated Coinbase Commerce charge endpoint
    *
    * @remarks
-   * Create a Coinbase charge for crypto payment
+   * Deprecated. The Coinbase APIs used by this endpoint have been deprecated, so Coinbase Commerce charges have been removed. Use the web credits purchase flow instead.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async createCoinbaseCharge(
-    security: operations.CreateCoinbaseChargeSecurity,
-    request: operations.CreateCoinbaseChargeRequest,
+    request?: operations.CreateCoinbaseChargeRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.CreateCoinbaseChargeResponse> {
+  ): Promise<void> {
     return unwrapAsync(creditsCreateCoinbaseCharge(
       this,
-      security,
       request,
       options,
     ));
