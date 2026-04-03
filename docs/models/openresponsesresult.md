@@ -13,7 +13,7 @@ let value: OpenResponsesResult = {
   createdAt: 1704067200,
   model: "gpt-4",
   status: "completed",
-  completedAt: 8316.25,
+  completedAt: 988146,
   output: [
     {
       type: "message",
@@ -22,10 +22,10 @@ let value: OpenResponsesResult = {
   ],
   error: null,
   incompleteDetails: null,
-  temperature: null,
-  topP: null,
+  temperature: 8316.25,
+  topP: 4579.82,
   presencePenalty: 9553.57,
-  frequencyPenalty: 9626.13,
+  frequencyPenalty: 8128.71,
   instructions: null,
   metadata: null,
   tools: [],
