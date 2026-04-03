@@ -235,7 +235,7 @@ export const CreateAuthKeysCodeData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string(),
-  app_id: z.number(),
+  app_id: z.int(),
   created_at: z.string(),
 }).transform((v) => {
   return remap$(v, {

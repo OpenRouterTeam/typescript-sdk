@@ -6,7 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { InputAudio, InputAudio$inboundSchema } from "./inputaudio.js";
@@ -30,13 +31,20 @@ export type BaseInputsTypeFunctionCall = ClosedEnum<
   typeof BaseInputsTypeFunctionCall
 >;
 
+export const BaseInputsStatus = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+} as const;
+export type BaseInputsStatus = OpenEnum<typeof BaseInputsStatus>;
+
 export type BaseInputsFunctionCall = {
   type: BaseInputsTypeFunctionCall;
   callId: string;
   name: string;
   arguments: string;
   id?: string | undefined;
-  status?: ToolCallStatusEnum | null | undefined;
+  status?: BaseInputsStatus | null | undefined;
 };
 
 export const BaseInputsTypeFunctionCallOutput = {
@@ -222,6 +230,12 @@ export const BaseInputsTypeFunctionCall$inboundSchema: z.ZodEnum<
 > = z.enum(BaseInputsTypeFunctionCall);
 
 /** @internal */
+export const BaseInputsStatus$inboundSchema: z.ZodType<
+  BaseInputsStatus,
+  unknown
+> = openEnums.inboundSchema(BaseInputsStatus);
+
+/** @internal */
 export const BaseInputsFunctionCall$inboundSchema: z.ZodType<
   BaseInputsFunctionCall,
   unknown
@@ -231,7 +245,7 @@ export const BaseInputsFunctionCall$inboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   id: z.string().optional(),
-  status: z.nullable(ToolCallStatusEnum$inboundSchema).optional(),
+  status: z.nullable(BaseInputsStatus$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
