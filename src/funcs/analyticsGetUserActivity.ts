@@ -22,6 +22,7 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -38,10 +39,11 @@ export function analyticsGetUserActivity(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.GetUserActivityResponse,
+    models.ActivityResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -67,10 +69,11 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.GetUserActivityResponse,
+      models.ActivityResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
+      | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -99,7 +102,9 @@ async function $do(
   const path = pathToFunc("/activity")();
 
   const query = encodeFormQuery({
+    "api_key_hash": payload?.api_key_hash,
     "date": payload?.date,
+    "user_id": payload?.user_id,
   });
 
   const headers = new Headers(compactMap({
@@ -158,7 +163,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "403", "4XX", "500", "5XX"],
+    errorCodes: ["400", "401", "403", "404", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -172,10 +177,11 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.GetUserActivityResponse,
+    models.ActivityResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -186,10 +192,11 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.GetUserActivityResponse$inboundSchema),
+    M.json(200, models.ActivityResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
