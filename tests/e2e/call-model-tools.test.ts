@@ -1,7 +1,10 @@
 import * as dotenv from 'dotenv';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { toJSONSchema, z } from 'zod/v4';
-import { OpenRouter, ToolType, toChatMessage, stepCountIs } from '../../src/index.js';
+import { OpenRouter } from '../../src/index.js';
+import { ToolType } from '../../src/lib/tool-types.js';
+import { toChatMessage } from '../../src/lib/chat-compat.js';
+import { stepCountIs } from '../../src/lib/stop-conditions.js';
 import { convertZodToJsonSchema } from '../../src/lib/tool-executor.js';
 import { assertNoTildeKeys } from '../utils/schema-test-helpers.js';
 

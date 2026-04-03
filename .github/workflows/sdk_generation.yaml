@@ -28,6 +28,7 @@ jobs:
     with:
       force: ${{ github.event.inputs.force }}
       mode: pr
+      pnpm_version: "10.22.0"
       set_version: ${{ github.event.inputs.set_version }}
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
