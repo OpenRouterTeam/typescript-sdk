@@ -174,7 +174,7 @@ export const ListMemberAssignmentsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(z.lazy(() => ListMemberAssignmentsData$inboundSchema)),
-  total_count: z.number(),
+  total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "total_count": "totalCount",
