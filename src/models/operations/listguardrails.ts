@@ -94,7 +94,7 @@ export type ListGuardrailsData = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
@@ -186,7 +186,7 @@ export const ListGuardrailsData$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
+  limit_usd: z.number().optional(),
   reset_interval: z.nullable(ListGuardrailsResetInterval$inboundSchema)
     .optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),
@@ -224,7 +224,7 @@ export const ListGuardrailsResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.array(z.lazy(() => ListGuardrailsData$inboundSchema)),
-  total_count: z.number(),
+  total_count: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "total_count": "totalCount",
