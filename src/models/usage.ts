@@ -18,7 +18,7 @@ export type OutputTokensDetails = {
 };
 
 export type CostDetails = {
-  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceCost?: number | undefined;
   upstreamInferenceInputCost: number;
   upstreamInferenceOutputCost: number;
 };
@@ -90,7 +90,7 @@ export function outputTokensDetailsFromJSON(
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
-    upstream_inference_cost: z.nullable(z.number()).optional(),
+    upstream_inference_cost: z.number().optional(),
     upstream_inference_input_cost: z.number(),
     upstream_inference_output_cost: z.number(),
   }).transform((v) => {

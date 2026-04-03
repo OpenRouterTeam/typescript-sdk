@@ -30,7 +30,7 @@ export type ModelsCountResponse = {
 
 /** @internal */
 export const Data$inboundSchema: z.ZodType<Data, unknown> = z.object({
-  count: z.number(),
+  count: z.int(),
 });
 
 export function dataFromJSON(
