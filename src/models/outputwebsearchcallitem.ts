@@ -9,6 +9,12 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  WebSearchSource,
+  WebSearchSource$inboundSchema,
+  WebSearchSource$Outbound,
+  WebSearchSource$outboundSchema,
+} from "./websearchsource.js";
+import {
   WebSearchStatus,
   WebSearchStatus$inboundSchema,
   WebSearchStatus$outboundSchema,
@@ -30,21 +36,11 @@ export type ActionOpenPage = {
   url?: string | null | undefined;
 };
 
-export const TypeURL = {
-  Url: "url",
-} as const;
-export type TypeURL = ClosedEnum<typeof TypeURL>;
-
-export type Source = {
-  type: TypeURL;
-  url: string;
-};
-
 export type ActionSearch = {
   type: "search";
   query: string;
   queries?: Array<string> | undefined;
-  sources?: Array<Source> | undefined;
+  sources?: Array<WebSearchSource> | undefined;
 };
 
 export type Action = ActionSearch | ActionOpenPage | ActionFindInPage;
@@ -143,56 +139,19 @@ export function actionOpenPageFromJSON(
 }
 
 /** @internal */
-export const TypeURL$inboundSchema: z.ZodEnum<typeof TypeURL> = z.enum(TypeURL);
-/** @internal */
-export const TypeURL$outboundSchema: z.ZodEnum<typeof TypeURL> =
-  TypeURL$inboundSchema;
-
-/** @internal */
-export const Source$inboundSchema: z.ZodType<Source, unknown> = z.object({
-  type: TypeURL$inboundSchema,
-  url: z.string(),
-});
-/** @internal */
-export type Source$Outbound = {
-  type: string;
-  url: string;
-};
-
-/** @internal */
-export const Source$outboundSchema: z.ZodType<Source$Outbound, Source> = z
-  .object({
-    type: TypeURL$outboundSchema,
-    url: z.string(),
-  });
-
-export function sourceToJSON(source: Source): string {
-  return JSON.stringify(Source$outboundSchema.parse(source));
-}
-export function sourceFromJSON(
-  jsonString: string,
-): SafeParseResult<Source, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Source$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Source' from JSON`,
-  );
-}
-
-/** @internal */
 export const ActionSearch$inboundSchema: z.ZodType<ActionSearch, unknown> = z
   .object({
     type: z.literal("search"),
     query: z.string(),
     queries: z.array(z.string()).optional(),
-    sources: z.array(z.lazy(() => Source$inboundSchema)).optional(),
+    sources: z.array(WebSearchSource$inboundSchema).optional(),
   });
 /** @internal */
 export type ActionSearch$Outbound = {
   type: "search";
   query: string;
   queries?: Array<string> | undefined;
-  sources?: Array<Source$Outbound> | undefined;
+  sources?: Array<WebSearchSource$Outbound> | undefined;
 };
 
 /** @internal */
@@ -203,7 +162,7 @@ export const ActionSearch$outboundSchema: z.ZodType<
   type: z.literal("search"),
   query: z.string(),
   queries: z.array(z.string()).optional(),
-  sources: z.array(z.lazy(() => Source$outboundSchema)).optional(),
+  sources: z.array(WebSearchSource$outboundSchema).optional(),
 });
 
 export function actionSearchToJSON(actionSearch: ActionSearch): string {
