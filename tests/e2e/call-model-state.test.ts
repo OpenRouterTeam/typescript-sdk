@@ -1,14 +1,11 @@
 import * as dotenv from 'dotenv';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import {
-  OpenRouter,
-  tool,
-  createInitialState,
-  stepCountIs,
-  type ConversationState,
-  type StateAccessor,
-} from '../../src/index.js';
+import { OpenRouter } from '../../src/index.js';
+import { tool } from '../../src/lib/tool.js';
+import { createInitialState } from '../../src/lib/conversation-state.js';
+import { stepCountIs } from '../../src/lib/stop-conditions.js';
+import type { ConversationState, StateAccessor } from '../../src/lib/tool-types.js';
 
 dotenv.config();
 
