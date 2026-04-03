@@ -7,29 +7,16 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import {
+  WebSearchEngineEnum,
+  WebSearchEngineEnum$outboundSchema,
+} from "./websearchengineenum.js";
 
 export const ChatWebSearchServerToolTypeOpenrouterWebSearch = {
   OpenrouterWebSearch: "openrouter:web_search",
 } as const;
 export type ChatWebSearchServerToolTypeOpenrouterWebSearch = ClosedEnum<
   typeof ChatWebSearchServerToolTypeOpenrouterWebSearch
->;
-
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export const ChatWebSearchServerToolEngine = {
-  Auto: "auto",
-  Native: "native",
-  Exa: "exa",
-  Firecrawl: "firecrawl",
-  Parallel: "parallel",
-} as const;
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export type ChatWebSearchServerToolEngine = OpenEnum<
-  typeof ChatWebSearchServerToolEngine
 >;
 
 /**
@@ -69,7 +56,7 @@ export type ChatWebSearchServerToolParameters = {
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
-  engine?: ChatWebSearchServerToolEngine | undefined;
+  engine?: WebSearchEngineEnum | undefined;
   /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
@@ -87,11 +74,11 @@ export type ChatWebSearchServerToolParameters = {
    */
   userLocation?: ChatWebSearchServerToolUserLocation | undefined;
   /**
-   * Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Firecrawl or Perplexity.
    */
   allowedDomains?: Array<string> | undefined;
   /**
-   * Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported with Firecrawl, OpenAI (silently ignored), or Perplexity.
    */
   excludedDomains?: Array<string> | undefined;
 };
@@ -109,12 +96,6 @@ export const ChatWebSearchServerToolTypeOpenrouterWebSearch$outboundSchema:
   z.ZodEnum<typeof ChatWebSearchServerToolTypeOpenrouterWebSearch> = z.enum(
     ChatWebSearchServerToolTypeOpenrouterWebSearch,
   );
-
-/** @internal */
-export const ChatWebSearchServerToolEngine$outboundSchema: z.ZodType<
-  string,
-  ChatWebSearchServerToolEngine
-> = openEnums.outboundSchema(ChatWebSearchServerToolEngine);
 
 /** @internal */
 export const ChatWebSearchServerToolSearchContextSize$outboundSchema: z.ZodType<
@@ -174,7 +155,7 @@ export const ChatWebSearchServerToolParameters$outboundSchema: z.ZodType<
   ChatWebSearchServerToolParameters$Outbound,
   ChatWebSearchServerToolParameters
 > = z.object({
-  engine: ChatWebSearchServerToolEngine$outboundSchema.optional(),
+  engine: WebSearchEngineEnum$outboundSchema.optional(),
   maxResults: z.number().optional(),
   maxTotalResults: z.number().optional(),
   searchContextSize: ChatWebSearchServerToolSearchContextSize$outboundSchema
