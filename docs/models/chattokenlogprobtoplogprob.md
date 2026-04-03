@@ -9,8 +9,8 @@ let value: ChatTokenLogprobTopLogprob = {
   token: "<value>",
   logprob: 7808.74,
   bytes: [
-    7405.57,
-    1354.72,
+    740557,
+    135472,
   ],
 };
 ```
