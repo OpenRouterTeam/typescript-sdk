@@ -43,7 +43,7 @@ export const ChatStreamChoice$inboundSchema: z.ZodType<
 > = z.object({
   delta: ChatStreamDelta$inboundSchema,
   finish_reason: z.nullable(z.any()),
-  index: z.number(),
+  index: z.int(),
   logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
