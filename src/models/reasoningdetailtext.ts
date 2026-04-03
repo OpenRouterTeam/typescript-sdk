@@ -5,22 +5,13 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ReasoningDetailTextFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-export type ReasoningDetailTextFormat = OpenEnum<
-  typeof ReasoningDetailTextFormat
->;
+import {
+  ResponsesSkinType,
+  ResponsesSkinType$inboundSchema,
+  ResponsesSkinType$outboundSchema,
+} from "./responsesskintype.js";
 
 /**
  * Reasoning detail text schema
@@ -30,20 +21,9 @@ export type ReasoningDetailText = {
   text?: string | null | undefined;
   signature?: string | null | undefined;
   id?: string | null | undefined;
-  format?: ReasoningDetailTextFormat | null | undefined;
+  format?: ResponsesSkinType | null | undefined;
   index?: number | undefined;
 };
-
-/** @internal */
-export const ReasoningDetailTextFormat$inboundSchema: z.ZodType<
-  ReasoningDetailTextFormat,
-  unknown
-> = openEnums.inboundSchema(ReasoningDetailTextFormat);
-/** @internal */
-export const ReasoningDetailTextFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningDetailTextFormat
-> = openEnums.outboundSchema(ReasoningDetailTextFormat);
 
 /** @internal */
 export const ReasoningDetailText$inboundSchema: z.ZodType<
@@ -54,7 +34,7 @@ export const ReasoningDetailText$inboundSchema: z.ZodType<
   text: z.nullable(z.string()).optional(),
   signature: z.nullable(z.string()).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailTextFormat$inboundSchema).optional(),
+  format: z.nullable(ResponsesSkinType$inboundSchema).optional(),
   index: z.number().optional(),
 });
 /** @internal */
@@ -76,7 +56,7 @@ export const ReasoningDetailText$outboundSchema: z.ZodType<
   text: z.nullable(z.string()).optional(),
   signature: z.nullable(z.string()).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailTextFormat$outboundSchema).optional(),
+  format: z.nullable(ResponsesSkinType$outboundSchema).optional(),
   index: z.number().optional(),
 });
 

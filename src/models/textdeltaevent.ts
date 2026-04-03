@@ -8,32 +8,17 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-/**
- * Alternative token with its log probability
- */
-export type TextDeltaEventTopLogprob = {
-  token?: string | undefined;
-  logprob?: number | undefined;
-  bytes?: Array<number> | undefined;
-};
-
-/**
- * Log probability information for a token
- */
-export type TextDeltaEventLogprob = {
-  logprob: number;
-  token: string;
-  topLogprobs?: Array<TextDeltaEventTopLogprob> | undefined;
-  bytes?: Array<number> | undefined;
-};
+import {
+  OpenResponsesStreamLogprob,
+  OpenResponsesStreamLogprob$inboundSchema,
+} from "./openresponsesstreamlogprob.js";
 
 /**
  * Event emitted when a text delta is streamed
  */
 export type TextDeltaEvent = {
   type: "response.output_text.delta";
-  logprobs: Array<TextDeltaEventLogprob>;
+  logprobs: Array<OpenResponsesStreamLogprob>;
   outputIndex: number;
   itemId: string;
   contentIndex: number;
@@ -42,61 +27,15 @@ export type TextDeltaEvent = {
 };
 
 /** @internal */
-export const TextDeltaEventTopLogprob$inboundSchema: z.ZodType<
-  TextDeltaEventTopLogprob,
-  unknown
-> = z.object({
-  token: z.string().optional(),
-  logprob: z.number().optional(),
-  bytes: z.array(z.number()).optional(),
-});
-
-export function textDeltaEventTopLogprobFromJSON(
-  jsonString: string,
-): SafeParseResult<TextDeltaEventTopLogprob, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => TextDeltaEventTopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TextDeltaEventTopLogprob' from JSON`,
-  );
-}
-
-/** @internal */
-export const TextDeltaEventLogprob$inboundSchema: z.ZodType<
-  TextDeltaEventLogprob,
-  unknown
-> = z.object({
-  logprob: z.number(),
-  token: z.string(),
-  top_logprobs: z.array(z.lazy(() => TextDeltaEventTopLogprob$inboundSchema))
-    .optional(),
-  bytes: z.array(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "top_logprobs": "topLogprobs",
-  });
-});
-
-export function textDeltaEventLogprobFromJSON(
-  jsonString: string,
-): SafeParseResult<TextDeltaEventLogprob, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => TextDeltaEventLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TextDeltaEventLogprob' from JSON`,
-  );
-}
-
-/** @internal */
 export const TextDeltaEvent$inboundSchema: z.ZodType<TextDeltaEvent, unknown> =
   z.object({
     type: z.literal("response.output_text.delta"),
-    logprobs: z.array(z.lazy(() => TextDeltaEventLogprob$inboundSchema)),
-    output_index: z.number(),
+    logprobs: z.array(OpenResponsesStreamLogprob$inboundSchema),
+    output_index: z.int(),
     item_id: z.string(),
-    content_index: z.number(),
+    content_index: z.int(),
     delta: z.string(),
-    sequence_number: z.number(),
+    sequence_number: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "output_index": "outputIndex",

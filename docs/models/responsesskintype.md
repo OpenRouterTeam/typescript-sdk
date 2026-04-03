@@ -1,11 +1,11 @@
-# ReasoningDetailSummaryFormat
+# ResponsesSkinType
 
 ## Example Usage
 
 ```typescript
-import { ReasoningDetailSummaryFormat } from "@openrouter/sdk/models";
+import { ResponsesSkinType } from "@openrouter/sdk/models";
 
-let value: ReasoningDetailSummaryFormat = "unknown";
+let value: ResponsesSkinType = "anthropic-claude-v1";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

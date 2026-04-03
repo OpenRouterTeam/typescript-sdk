@@ -93,7 +93,7 @@ export type GetGuardrailData = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | null | undefined;
+  limitUsd?: number | undefined;
   /**
    * Interval at which the limit resets (daily, weekly, monthly)
    */
@@ -179,7 +179,7 @@ export const GetGuardrailData$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
+  limit_usd: z.number().optional(),
   reset_interval: z.nullable(GetGuardrailResetInterval$inboundSchema)
     .optional(),
   allowed_providers: z.nullable(z.array(z.string())).optional(),

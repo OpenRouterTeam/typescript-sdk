@@ -15,126 +15,105 @@ import {
   OpenAIResponsesAnnotation$outboundSchema,
 } from "./openairesponsesannotation.js";
 
-export type ResponseOutputTextTopLogprob = {
+export type TopLogprob = {
   token: string;
   bytes: Array<number>;
   logprob: number;
 };
 
-export type ResponseOutputTextLogprob = {
+export type Logprob = {
   token: string;
   bytes: Array<number>;
   logprob: number;
-  topLogprobs: Array<ResponseOutputTextTopLogprob>;
+  topLogprobs: Array<TopLogprob>;
 };
 
 export type ResponseOutputText = {
   type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation> | undefined;
-  logprobs?: Array<ResponseOutputTextLogprob> | undefined;
+  logprobs?: Array<Logprob> | undefined;
 };
 
 /** @internal */
-export const ResponseOutputTextTopLogprob$inboundSchema: z.ZodType<
-  ResponseOutputTextTopLogprob,
-  unknown
-> = z.object({
-  token: z.string(),
-  bytes: z.array(z.number()),
-  logprob: z.number(),
-});
+export const TopLogprob$inboundSchema: z.ZodType<TopLogprob, unknown> = z
+  .object({
+    token: z.string(),
+    bytes: z.array(z.number()),
+    logprob: z.number(),
+  });
 /** @internal */
-export type ResponseOutputTextTopLogprob$Outbound = {
+export type TopLogprob$Outbound = {
   token: string;
   bytes: Array<number>;
   logprob: number;
 };
 
 /** @internal */
-export const ResponseOutputTextTopLogprob$outboundSchema: z.ZodType<
-  ResponseOutputTextTopLogprob$Outbound,
-  ResponseOutputTextTopLogprob
+export const TopLogprob$outboundSchema: z.ZodType<
+  TopLogprob$Outbound,
+  TopLogprob
 > = z.object({
   token: z.string(),
   bytes: z.array(z.number()),
   logprob: z.number(),
 });
 
-export function responseOutputTextTopLogprobToJSON(
-  responseOutputTextTopLogprob: ResponseOutputTextTopLogprob,
-): string {
-  return JSON.stringify(
-    ResponseOutputTextTopLogprob$outboundSchema.parse(
-      responseOutputTextTopLogprob,
-    ),
-  );
+export function topLogprobToJSON(topLogprob: TopLogprob): string {
+  return JSON.stringify(TopLogprob$outboundSchema.parse(topLogprob));
 }
-export function responseOutputTextTopLogprobFromJSON(
+export function topLogprobFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseOutputTextTopLogprob, SDKValidationError> {
+): SafeParseResult<TopLogprob, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ResponseOutputTextTopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseOutputTextTopLogprob' from JSON`,
+    (x) => TopLogprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'TopLogprob' from JSON`,
   );
 }
 
 /** @internal */
-export const ResponseOutputTextLogprob$inboundSchema: z.ZodType<
-  ResponseOutputTextLogprob,
-  unknown
-> = z.object({
+export const Logprob$inboundSchema: z.ZodType<Logprob, unknown> = z.object({
   token: z.string(),
   bytes: z.array(z.number()),
   logprob: z.number(),
-  top_logprobs: z.array(
-    z.lazy(() => ResponseOutputTextTopLogprob$inboundSchema),
-  ),
+  top_logprobs: z.array(z.lazy(() => TopLogprob$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
   });
 });
 /** @internal */
-export type ResponseOutputTextLogprob$Outbound = {
+export type Logprob$Outbound = {
   token: string;
   bytes: Array<number>;
   logprob: number;
-  top_logprobs: Array<ResponseOutputTextTopLogprob$Outbound>;
+  top_logprobs: Array<TopLogprob$Outbound>;
 };
 
 /** @internal */
-export const ResponseOutputTextLogprob$outboundSchema: z.ZodType<
-  ResponseOutputTextLogprob$Outbound,
-  ResponseOutputTextLogprob
-> = z.object({
-  token: z.string(),
-  bytes: z.array(z.number()),
-  logprob: z.number(),
-  topLogprobs: z.array(
-    z.lazy(() => ResponseOutputTextTopLogprob$outboundSchema),
-  ),
-}).transform((v) => {
-  return remap$(v, {
-    topLogprobs: "top_logprobs",
+export const Logprob$outboundSchema: z.ZodType<Logprob$Outbound, Logprob> = z
+  .object({
+    token: z.string(),
+    bytes: z.array(z.number()),
+    logprob: z.number(),
+    topLogprobs: z.array(z.lazy(() => TopLogprob$outboundSchema)),
+  }).transform((v) => {
+    return remap$(v, {
+      topLogprobs: "top_logprobs",
+    });
   });
-});
 
-export function responseOutputTextLogprobToJSON(
-  responseOutputTextLogprob: ResponseOutputTextLogprob,
-): string {
-  return JSON.stringify(
-    ResponseOutputTextLogprob$outboundSchema.parse(responseOutputTextLogprob),
-  );
+export function logprobToJSON(logprob: Logprob): string {
+  return JSON.stringify(Logprob$outboundSchema.parse(logprob));
 }
-export function responseOutputTextLogprobFromJSON(
+export function logprobFromJSON(
   jsonString: string,
-): SafeParseResult<ResponseOutputTextLogprob, SDKValidationError> {
+): SafeParseResult<Logprob, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ResponseOutputTextLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ResponseOutputTextLogprob' from JSON`,
+    (x) => Logprob$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Logprob' from JSON`,
   );
 }
 
@@ -146,15 +125,14 @@ export const ResponseOutputText$inboundSchema: z.ZodType<
   type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$inboundSchema).optional(),
-  logprobs: z.array(z.lazy(() => ResponseOutputTextLogprob$inboundSchema))
-    .optional(),
+  logprobs: z.array(z.lazy(() => Logprob$inboundSchema)).optional(),
 });
 /** @internal */
 export type ResponseOutputText$Outbound = {
   type: "output_text";
   text: string;
   annotations?: Array<OpenAIResponsesAnnotation$Outbound> | undefined;
-  logprobs?: Array<ResponseOutputTextLogprob$Outbound> | undefined;
+  logprobs?: Array<Logprob$Outbound> | undefined;
 };
 
 /** @internal */
@@ -165,8 +143,7 @@ export const ResponseOutputText$outboundSchema: z.ZodType<
   type: z.literal("output_text"),
   text: z.string(),
   annotations: z.array(OpenAIResponsesAnnotation$outboundSchema).optional(),
-  logprobs: z.array(z.lazy(() => ResponseOutputTextLogprob$outboundSchema))
-    .optional(),
+  logprobs: z.array(z.lazy(() => Logprob$outboundSchema)).optional(),
 });
 
 export function responseOutputTextToJSON(

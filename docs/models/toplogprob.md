@@ -1,17 +1,14 @@
-# ResponseOutputTextTopLogprob
+# TopLogprob
 
 ## Example Usage
 
 ```typescript
-import { ResponseOutputTextTopLogprob } from "@openrouter/sdk/models";
+import { TopLogprob } from "@openrouter/sdk/models";
 
-let value: ResponseOutputTextTopLogprob = {
+let value: TopLogprob = {
   token: "<value>",
-  bytes: [
-    3036.17,
-    344.14,
-  ],
-  logprob: 1976.4,
+  bytes: [],
+  logprob: 6125,
 };
 ```
 

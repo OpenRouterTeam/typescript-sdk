@@ -8,12 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export type ChatTokenLogprobTopLogprob = {
-  token: string;
-  logprob: number;
-  bytes: Array<number> | null;
-};
+import { LogprobToken, LogprobToken$inboundSchema } from "./logprobtoken.js";
 
 /**
  * Token log probability information
@@ -34,28 +29,8 @@ export type ChatTokenLogprob = {
   /**
    * Top alternative tokens with probabilities
    */
-  topLogprobs: Array<ChatTokenLogprobTopLogprob>;
+  topLogprobs: Array<LogprobToken>;
 };
-
-/** @internal */
-export const ChatTokenLogprobTopLogprob$inboundSchema: z.ZodType<
-  ChatTokenLogprobTopLogprob,
-  unknown
-> = z.object({
-  token: z.string(),
-  logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
-});
-
-export function chatTokenLogprobTopLogprobFromJSON(
-  jsonString: string,
-): SafeParseResult<ChatTokenLogprobTopLogprob, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatTokenLogprobTopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatTokenLogprobTopLogprob' from JSON`,
-  );
-}
 
 /** @internal */
 export const ChatTokenLogprob$inboundSchema: z.ZodType<
@@ -64,8 +39,8 @@ export const ChatTokenLogprob$inboundSchema: z.ZodType<
 > = z.object({
   token: z.string(),
   logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
-  top_logprobs: z.array(z.lazy(() => ChatTokenLogprobTopLogprob$inboundSchema)),
+  bytes: z.nullable(z.array(z.int())),
+  top_logprobs: z.array(LogprobToken$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",

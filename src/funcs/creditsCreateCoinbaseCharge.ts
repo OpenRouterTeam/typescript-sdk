@@ -3,13 +3,13 @@
  * @generated-id: e07ee6831da3
  */
 
+import * as z from "zod/v4";
 import { OpenRouterCore } from "../core.js";
-import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
-import { resolveSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -27,23 +27,21 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Coinbase charge for crypto payment
+ * Deprecated Coinbase Commerce charge endpoint
  *
  * @remarks
- * Create a Coinbase charge for crypto payment
+ * Deprecated. The Coinbase APIs used by this endpoint have been deprecated, so Coinbase Commerce charges have been removed. Use the web credits purchase flow instead.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function creditsCreateCoinbaseCharge(
   client: OpenRouterCore,
-  security: operations.CreateCoinbaseChargeSecurity,
-  request: operations.CreateCoinbaseChargeRequest,
+  request?: operations.CreateCoinbaseChargeRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.CreateCoinbaseChargeResponse,
-    | errors.BadRequestResponseError
-    | errors.UnauthorizedResponseError
-    | errors.TooManyRequestsResponseError
-    | errors.InternalServerResponseError
+    void,
+    | errors.GoneResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -56,7 +54,6 @@ export function creditsCreateCoinbaseCharge(
 > {
   return new APIPromise($do(
     client,
-    security,
     request,
     options,
   ));
@@ -64,17 +61,13 @@ export function creditsCreateCoinbaseCharge(
 
 async function $do(
   client: OpenRouterCore,
-  security: operations.CreateCoinbaseChargeSecurity,
-  request: operations.CreateCoinbaseChargeRequest,
+  request?: operations.CreateCoinbaseChargeRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      operations.CreateCoinbaseChargeResponse,
-      | errors.BadRequestResponseError
-      | errors.UnauthorizedResponseError
-      | errors.TooManyRequestsResponseError
-      | errors.InternalServerResponseError
+      void,
+      | errors.GoneResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -90,48 +83,37 @@ async function $do(
   const parsed = safeParse(
     request,
     (value) =>
-      operations.CreateCoinbaseChargeRequest$outboundSchema.parse(value),
+      operations.CreateCoinbaseChargeRequest$outboundSchema.optional().parse(
+        value,
+      ),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload.CreateChargeRequest, {
-    explode: true,
-  });
+  const body = null;
 
   const path = pathToFunc("/credits/coinbase")();
 
   const headers = new Headers(compactMap({
-    "Content-Type": "application/json",
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
-      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      payload?.["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Categories": encodeSimple(
       "X-OpenRouter-Categories",
-      payload.appCategories ?? client._options.appCategories,
+      payload?.appCategories ?? client._options.appCategories,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Title": encodeSimple(
       "X-OpenRouter-Title",
-      payload.appTitle ?? client._options.appTitle,
+      payload?.appTitle ?? client._options.appTitle,
       { explode: false, charEncoding: "none" },
     ),
   }));
-
-  const requestSecurity = resolveSecurity(
-    [
-      {
-        fieldName: "Authorization",
-        type: "http:bearer",
-        value: security?.bearer,
-      },
-    ],
-  );
 
   const context = {
     options: client._options,
@@ -139,9 +121,9 @@ async function $do(
     operationID: "createCoinbaseCharge",
     oAuth2Scopes: null,
 
-    resolvedSecurity: requestSecurity,
+    resolvedSecurity: null,
 
-    securitySource: security,
+    securitySource: null,
     retryConfig: options?.retries
       || client._options.retryConfig
       || { strategy: "none" },
@@ -149,7 +131,6 @@ async function $do(
   };
 
   const requestRes = client._createRequest(context, {
-    security: requestSecurity,
     method: "POST",
     baseURL: options?.serverURL,
     path: path,
@@ -165,7 +146,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "429", "4XX", "500", "5XX"],
+    errorCodes: ["410", "4XX", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -179,11 +160,8 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.CreateCoinbaseChargeResponse,
-    | errors.BadRequestResponseError
-    | errors.UnauthorizedResponseError
-    | errors.TooManyRequestsResponseError
-    | errors.InternalServerResponseError
+    void,
+    | errors.GoneResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -193,11 +171,8 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.CreateCoinbaseChargeResponse$inboundSchema),
-    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
-    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
-    M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
-    M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(410, errors.GoneResponseError$inboundSchema),
+    M.nil("2XX", z.void()),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
