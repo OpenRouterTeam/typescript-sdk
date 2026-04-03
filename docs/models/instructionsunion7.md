@@ -1,0 +1,78 @@
+# InstructionsUnion7
+
+
+## Supported Types
+
+### `models.InstructionsMessage13`
+
+```typescript
+const value: models.InstructionsMessage13 = {
+  role: "developer",
+  content: "<value>",
+};
+```
+
+### `models.InstructionsMessage14`
+
+```typescript
+const value: models.InstructionsMessage14 = {
+  id: "<id>",
+  role: "system",
+  content: [
+    {
+      type: "input_text",
+      text: "Hello, how can I help you?",
+    },
+  ],
+};
+```
+
+### `models.InstructionsFunctionCallOutput7`
+
+```typescript
+const value: models.InstructionsFunctionCallOutput7 = {
+  type: "function_call_output",
+  callId: "<id>",
+  output: "<value>",
+};
+```
+
+### `models.InstructionsFunctionCall7`
+
+```typescript
+const value: models.InstructionsFunctionCall7 = {
+  type: "function_call",
+  callId: "<id>",
+  name: "<value>",
+  arguments: "<value>",
+};
+```
+
+### `models.OutputItemImageGenerationCall`
+
+```typescript
+const value: models.OutputItemImageGenerationCall = {
+  type: "image_generation_call",
+  id: "imagegen-abc123",
+  result:
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  status: "completed",
+};
+```
+
+### `models.OutputMessage`
+
+```typescript
+const value: models.OutputMessage = {
+  id: "msg-abc123",
+  role: "assistant",
+  type: "message",
+  content: [
+    {
+      type: "output_text",
+      text: "Hello! How can I help you today?",
+    },
+  ],
+};
+```
+

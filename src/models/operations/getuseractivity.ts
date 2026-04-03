@@ -56,6 +56,14 @@ export type GetUserActivityRequest = {
    * Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
    */
   date?: string | undefined;
+  /**
+   * Filter by API key hash (SHA-256 hex string, as returned by the keys API).
+   */
+  apiKeyHash?: string | undefined;
+  /**
+   * Filter by org member user ID. Only applicable for organization accounts.
+   */
+  userId?: string | undefined;
 };
 
 /**
@@ -74,6 +82,8 @@ export type GetUserActivityRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   date?: string | undefined;
+  api_key_hash?: string | undefined;
+  user_id?: string | undefined;
 };
 
 /** @internal */
@@ -85,9 +95,13 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   date: z.string().optional(),
+  apiKeyHash: z.string().optional(),
+  userId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    apiKeyHash: "api_key_hash",
+    userId: "user_id",
   });
 });
 
