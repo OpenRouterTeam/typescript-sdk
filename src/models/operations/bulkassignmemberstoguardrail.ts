@@ -146,7 +146,7 @@ export const BulkAssignMembersToGuardrailResponse$inboundSchema: z.ZodType<
   BulkAssignMembersToGuardrailResponse,
   unknown
 > = z.object({
-  assigned_count: z.number(),
+  assigned_count: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "assigned_count": "assignedCount",
