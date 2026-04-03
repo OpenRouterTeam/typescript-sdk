@@ -37,11 +37,22 @@ const value: models.ChatContentAudio = {
 };
 ```
 
-### `models.ChatContentItems1`
+### `models.LegacyChatContentVideo`
 
 ```typescript
-const value: models.ChatContentItems1 = {
+const value: models.LegacyChatContentVideo = {
   type: "input_video",
+  videoUrl: {
+    url: "https://other-spirit.org/",
+  },
+};
+```
+
+### `models.ChatContentVideo`
+
+```typescript
+const value: models.ChatContentVideo = {
+  type: "video_url",
   videoUrl: {
     url: "https://other-spirit.org/",
   },

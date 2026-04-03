@@ -5,8 +5,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ReasoningFormatEnum,
+  ReasoningFormatEnum$outboundSchema,
+} from "./reasoningformatenum.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$Outbound,
@@ -49,16 +52,6 @@ export type ReasoningItemStatusUnion =
   | ReasoningItemStatusIncomplete
   | ReasoningItemStatusInProgress;
 
-export const ReasoningItemFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-export type ReasoningItemFormat = OpenEnum<typeof ReasoningItemFormat>;
-
 /**
  * Reasoning output item with signature and format extensions
  */
@@ -74,7 +67,7 @@ export type ReasoningItem = {
     | ReasoningItemStatusInProgress
     | undefined;
   signature?: string | null | undefined;
-  format?: ReasoningItemFormat | null | undefined;
+  format?: ReasoningFormatEnum | null | undefined;
 };
 
 /** @internal */
@@ -119,12 +112,6 @@ export function reasoningItemStatusUnionToJSON(
 }
 
 /** @internal */
-export const ReasoningItemFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningItemFormat
-> = openEnums.outboundSchema(ReasoningItemFormat);
-
-/** @internal */
 export type ReasoningItem$Outbound = {
   type: string;
   id: string;
@@ -152,7 +139,7 @@ export const ReasoningItem$outboundSchema: z.ZodType<
     ReasoningItemStatusInProgress$outboundSchema,
   ]).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningItemFormat$outboundSchema).optional(),
+  format: z.nullable(ReasoningFormatEnum$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",

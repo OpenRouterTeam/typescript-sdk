@@ -9,9 +9,9 @@ import { ReasoningSummaryPartAddedEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryPartAddedEvent = {
   type: "response.reasoning_summary_part.added",
-  outputIndex: 6482.71,
+  outputIndex: 648271,
   itemId: "<id>",
-  summaryIndex: 7738.96,
+  summaryIndex: 773896,
   part: {
     type: "summary_text",
     text: "Analyzed the problem using first principles",
