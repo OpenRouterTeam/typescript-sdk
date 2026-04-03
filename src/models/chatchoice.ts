@@ -40,7 +40,7 @@ export type ChatChoice = {
 export const ChatChoice$inboundSchema: z.ZodType<ChatChoice, unknown> = z
   .object({
     finish_reason: z.nullable(z.any()),
-    index: z.number(),
+    index: z.int(),
     message: ChatAssistantMessage$inboundSchema,
     logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
   }).transform((v) => {
