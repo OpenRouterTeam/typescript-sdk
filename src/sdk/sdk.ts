@@ -15,6 +15,7 @@ import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
+import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
 // #region imports
 import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
@@ -50,11 +51,6 @@ export class OpenRouter extends ClientSDK {
     return (this._credits ??= new Credits(this._options));
   }
 
-  private _embeddings?: Embeddings;
-  get embeddings(): Embeddings {
-    return (this._embeddings ??= new Embeddings(this._options));
-  }
-
   private _generations?: Generations;
   get generations(): Generations {
     return (this._generations ??= new Generations(this._options));
@@ -80,6 +76,11 @@ export class OpenRouter extends ClientSDK {
     return (this._apiKeys ??= new APIKeys(this._options));
   }
 
+  private _organization?: Organization;
+  get organization(): Organization {
+    return (this._organization ??= new Organization(this._options));
+  }
+
   private _guardrails?: Guardrails;
   get guardrails(): Guardrails {
     return (this._guardrails ??= new Guardrails(this._options));
@@ -88,6 +89,11 @@ export class OpenRouter extends ClientSDK {
   private _oAuth?: OAuth;
   get oAuth(): OAuth {
     return (this._oAuth ??= new OAuth(this._options));
+  }
+
+  private _embeddings?: Embeddings;
+  get embeddings(): Embeddings {
+    return (this._embeddings ??= new Embeddings(this._options));
   }
 
   // #region sdk-class-body
