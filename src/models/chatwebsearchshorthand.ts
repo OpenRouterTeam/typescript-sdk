@@ -142,11 +142,11 @@ export type ChatWebSearchShorthandParameters = {
    */
   userLocation?: ChatWebSearchShorthandParametersUserLocation | undefined;
   /**
-   * Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Firecrawl or Perplexity.
    */
   allowedDomains?: Array<string> | undefined;
   /**
-   * Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported with Firecrawl, OpenAI (silently ignored), or Perplexity.
    */
   excludedDomains?: Array<string> | undefined;
 };
@@ -177,11 +177,11 @@ export type ChatWebSearchShorthand = {
    */
   userLocation?: ChatWebSearchShorthandUserLocation | undefined;
   /**
-   * Limit search results to these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Limit search results to these domains. Supported by Exa, Parallel, and most native providers (Anthropic, OpenAI, xAI). Not supported with Firecrawl or Perplexity.
    */
   allowedDomains?: Array<string> | undefined;
   /**
-   * Exclude search results from these domains. Applies to Exa and Parallel engines. Not supported with Firecrawl or native provider search.
+   * Exclude search results from these domains. Supported by Exa, Parallel, Anthropic, and xAI. Not supported with Firecrawl, OpenAI (silently ignored), or Perplexity.
    */
   excludedDomains?: Array<string> | undefined;
   parameters?: ChatWebSearchShorthandParameters | undefined;

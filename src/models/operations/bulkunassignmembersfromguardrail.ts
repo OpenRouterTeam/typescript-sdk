@@ -148,7 +148,7 @@ export const BulkUnassignMembersFromGuardrailResponse$inboundSchema: z.ZodType<
   BulkUnassignMembersFromGuardrailResponse,
   unknown
 > = z.object({
-  unassigned_count: z.number(),
+  unassigned_count: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "unassigned_count": "unassignedCount",
