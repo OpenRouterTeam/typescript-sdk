@@ -5,10 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
-import * as models from "../index.js";
 
 export type GetUserActivityGlobals = {
   /**
@@ -56,16 +52,14 @@ export type GetUserActivityRequest = {
    * Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).
    */
   date?: string | undefined;
-};
-
-/**
- * Returns user activity data grouped by endpoint
- */
-export type GetUserActivityResponse = {
   /**
-   * List of activity items
+   * Filter by API key hash (SHA-256 hex string, as returned by the keys API).
    */
-  data: Array<models.ActivityItem>;
+  apiKeyHash?: string | undefined;
+  /**
+   * Filter by org member user ID. Only applicable for organization accounts.
+   */
+  userId?: string | undefined;
 };
 
 /** @internal */
@@ -74,6 +68,8 @@ export type GetUserActivityRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   date?: string | undefined;
+  api_key_hash?: string | undefined;
+  user_id?: string | undefined;
 };
 
 /** @internal */
@@ -85,9 +81,13 @@ export const GetUserActivityRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   date: z.string().optional(),
+  apiKeyHash: z.string().optional(),
+  userId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    apiKeyHash: "api_key_hash",
+    userId: "user_id",
   });
 });
 
@@ -96,23 +96,5 @@ export function getUserActivityRequestToJSON(
 ): string {
   return JSON.stringify(
     GetUserActivityRequest$outboundSchema.parse(getUserActivityRequest),
-  );
-}
-
-/** @internal */
-export const GetUserActivityResponse$inboundSchema: z.ZodType<
-  GetUserActivityResponse,
-  unknown
-> = z.object({
-  data: z.array(models.ActivityItem$inboundSchema),
-});
-
-export function getUserActivityResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<GetUserActivityResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetUserActivityResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetUserActivityResponse' from JSON`,
   );
 }
