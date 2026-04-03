@@ -1,11 +1,13 @@
-# ProviderName
+# ProviderResponseProviderName
+
+Name of the provider
 
 ## Example Usage
 
 ```typescript
-import { ProviderName } from "@openrouter/sdk/models/operations";
+import { ProviderResponseProviderName } from "@openrouter/sdk/models";
 
-let value: ProviderName = "Lambda";
+let value: ProviderResponseProviderName = "OpenAI";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

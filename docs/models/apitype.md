@@ -5,9 +5,9 @@ Type of API used for the generation
 ## Example Usage
 
 ```typescript
-import { ApiType } from "@openrouter/sdk/models/operations";
+import { ApiType } from "@openrouter/sdk/models";
 
-let value: ApiType = "embeddings";
+let value: ApiType = "completions";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
