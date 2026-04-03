@@ -17,7 +17,6 @@ let value: SendChatCompletionRequestRequest = {
         content: "What is the capital of France?",
       },
     ],
-    temperature: 0.7,
   },
 };
 ```
