@@ -81,7 +81,7 @@ export const ChatStreamChunkObject$inboundSchema: z.ZodEnum<
 /** @internal */
 export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
   message: z.string(),
-  code: z.number(),
+  code: z.int(),
 });
 
 export function errorFromJSON(
@@ -101,7 +101,7 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   choices: z.array(ChatStreamChoice$inboundSchema),
-  created: z.number(),
+  created: z.int(),
   model: z.string(),
   object: ChatStreamChunkObject$inboundSchema,
   system_fingerprint: z.string().optional(),
