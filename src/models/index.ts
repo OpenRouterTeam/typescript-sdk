@@ -4,6 +4,7 @@
  */
 
 export * from "./activityitem.js";
+export * from "./activityresponse.js";
 export * from "./annotationaddedevent.js";
 export * from "./applypatchservertool.js";
 export * from "./badgatewayresponseerrordata.js";
@@ -59,7 +60,6 @@ export * from "./conflictresponseerrordata.js";
 export * from "./contentpartaddedevent.js";
 export * from "./contentpartdoneevent.js";
 export * from "./contextcompressionengine.js";
-export * from "./createchargerequest.js";
 export * from "./customtool.js";
 export * from "./datacollection.js";
 export * from "./datetimeservertool.js";
@@ -80,6 +80,7 @@ export * from "./functioncallargsdeltaevent.js";
 export * from "./functioncallargsdoneevent.js";
 export * from "./functioncallitem.js";
 export * from "./functioncalloutputitem.js";
+export * from "./goneresponseerrordata.js";
 export * from "./imagegencallcompletedevent.js";
 export * from "./imagegencallgeneratingevent.js";
 export * from "./imagegencallinprogressevent.js";
@@ -182,6 +183,7 @@ export * from "./textdeltaevent.js";
 export * from "./textdoneevent.js";
 export * from "./textextendedconfig.js";
 export * from "./toolcallstatusenum.js";
+export * from "./toolchoiceallowed.js";
 export * from "./toomanyrequestsresponseerrordata.js";
 export * from "./topproviderinfo.js";
 export * from "./truncationenum.js";
