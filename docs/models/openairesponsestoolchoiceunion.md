@@ -38,3 +38,18 @@ const value: models.OpenAIResponsesToolChoice = {
 };
 ```
 
+### `models.ToolChoiceAllowed`
+
+```typescript
+const value: models.ToolChoiceAllowed = {
+  type: "allowed_tools",
+  mode: "auto",
+  tools: [
+    {
+      "type": "function",
+      "name": "get_weather",
+    },
+  ],
+};
+```
+
