@@ -48,7 +48,7 @@ export const TextDoneEventTopLogprob$inboundSchema: z.ZodType<
 > = z.object({
   token: z.string().optional(),
   logprob: z.number().optional(),
-  bytes: z.array(z.number()).optional(),
+  bytes: z.array(z.int()).optional(),
 });
 
 export function textDoneEventTopLogprobFromJSON(
@@ -70,7 +70,7 @@ export const TextDoneEventLogprob$inboundSchema: z.ZodType<
   token: z.string(),
   top_logprobs: z.array(z.lazy(() => TextDoneEventTopLogprob$inboundSchema))
     .optional(),
-  bytes: z.array(z.number()).optional(),
+  bytes: z.array(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
@@ -91,11 +91,11 @@ export function textDoneEventLogprobFromJSON(
 export const TextDoneEvent$inboundSchema: z.ZodType<TextDoneEvent, unknown> = z
   .object({
     type: z.literal("response.output_text.done"),
-    output_index: z.number(),
+    output_index: z.int(),
     item_id: z.string(),
-    content_index: z.number(),
+    content_index: z.int(),
     text: z.string(),
-    sequence_number: z.number(),
+    sequence_number: z.int(),
     logprobs: z.array(z.lazy(() => TextDoneEventLogprob$inboundSchema)),
   }).transform((v) => {
     return remap$(v, {
