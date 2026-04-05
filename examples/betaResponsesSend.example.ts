@@ -23,7 +23,10 @@ const openRouter = new OpenRouter({
 
 async function main() {
   const result = await openRouter.beta.responses.send({
-    responsesRequest: {},
+    responsesRequest: {
+      input: "Tell me a joke",
+      model: "openai/gpt-4o",
+    },
   });
 
   console.log(result);
