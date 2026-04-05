@@ -6,10 +6,9 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListGuardrailsGlobals = {
   /**
@@ -56,87 +55,15 @@ export type ListGuardrailsRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: string | undefined;
+  offset?: number | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
-  limit?: string | undefined;
+  limit?: number | undefined;
 };
 
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export const ListGuardrailsResetInterval = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export type ListGuardrailsResetInterval = OpenEnum<
-  typeof ListGuardrailsResetInterval
->;
-
-export type ListGuardrailsData = {
-  /**
-   * Unique identifier for the guardrail
-   */
-  id: string;
-  /**
-   * Name of the guardrail
-   */
-  name: string;
-  /**
-   * Description of the guardrail
-   */
-  description?: string | null | undefined;
-  /**
-   * Spending limit in USD
-   */
-  limitUsd?: number | null | undefined;
-  /**
-   * Interval at which the limit resets (daily, weekly, monthly)
-   */
-  resetInterval?: ListGuardrailsResetInterval | null | undefined;
-  /**
-   * List of allowed provider IDs
-   */
-  allowedProviders?: Array<string> | null | undefined;
-  /**
-   * List of provider IDs to exclude from routing
-   */
-  ignoredProviders?: Array<string> | null | undefined;
-  /**
-   * Array of model canonical_slugs (immutable identifiers)
-   */
-  allowedModels?: Array<string> | null | undefined;
-  /**
-   * Whether to enforce zero data retention
-   */
-  enforceZdr?: boolean | null | undefined;
-  /**
-   * ISO 8601 timestamp of when the guardrail was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the guardrail was last updated
-   */
-  updatedAt?: string | null | undefined;
-};
-
-/**
- * List of guardrails
- */
 export type ListGuardrailsResponse = {
-  /**
-   * List of guardrails
-   */
-  data: Array<ListGuardrailsData>;
-  /**
-   * Total number of guardrails
-   */
-  totalCount: number;
+  result: models.ListGuardrailsResponse;
 };
 
 /** @internal */
@@ -144,8 +71,8 @@ export type ListGuardrailsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset?: string | undefined;
-  limit?: string | undefined;
+  offset?: number | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -156,8 +83,8 @@ export const ListGuardrailsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
+  offset: z.int().optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -173,61 +100,14 @@ export function listGuardrailsRequestToJSON(
 }
 
 /** @internal */
-export const ListGuardrailsResetInterval$inboundSchema: z.ZodType<
-  ListGuardrailsResetInterval,
-  unknown
-> = openEnums.inboundSchema(ListGuardrailsResetInterval);
-
-/** @internal */
-export const ListGuardrailsData$inboundSchema: z.ZodType<
-  ListGuardrailsData,
-  unknown
-> = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
-  reset_interval: z.nullable(ListGuardrailsResetInterval$inboundSchema)
-    .optional(),
-  allowed_providers: z.nullable(z.array(z.string())).optional(),
-  ignored_providers: z.nullable(z.array(z.string())).optional(),
-  allowed_models: z.nullable(z.array(z.string())).optional(),
-  enforce_zdr: z.nullable(z.boolean()).optional(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "limit_usd": "limitUsd",
-    "reset_interval": "resetInterval",
-    "allowed_providers": "allowedProviders",
-    "ignored_providers": "ignoredProviders",
-    "allowed_models": "allowedModels",
-    "enforce_zdr": "enforceZdr",
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-export function listGuardrailsDataFromJSON(
-  jsonString: string,
-): SafeParseResult<ListGuardrailsData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListGuardrailsData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListGuardrailsData' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListGuardrailsResponse$inboundSchema: z.ZodType<
   ListGuardrailsResponse,
   unknown
 > = z.object({
-  data: z.array(z.lazy(() => ListGuardrailsData$inboundSchema)),
-  total_count: z.number(),
+  Result: models.ListGuardrailsResponse$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
-    "total_count": "totalCount",
+    "Result": "result",
   });
 });
 
