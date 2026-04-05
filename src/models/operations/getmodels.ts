@@ -73,6 +73,14 @@ export type GetModelsRequest = {
    */
   appCategories?: string | undefined;
   /**
+   * Number of records to skip for pagination
+   */
+  offset?: string | undefined;
+  /**
+   * Maximum number of records to return (default 500, max 1000)
+   */
+  limit?: string | undefined;
+  /**
    * Filter models by use case category
    */
   category?: Category | undefined;
@@ -92,6 +100,8 @@ export type GetModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  offset?: string | undefined;
+  limit?: string | undefined;
   category?: string | undefined;
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
@@ -105,6 +115,8 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),

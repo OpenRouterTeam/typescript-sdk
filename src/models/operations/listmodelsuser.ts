@@ -52,6 +52,14 @@ export type ListModelsUserRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * Number of records to skip for pagination
+   */
+  offset?: string | undefined;
+  /**
+   * Maximum number of records to return (default 500, max 1000)
+   */
+  limit?: string | undefined;
 };
 
 /** @internal */
@@ -80,6 +88,8 @@ export type ListModelsUserRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  offset?: string | undefined;
+  limit?: string | undefined;
 };
 
 /** @internal */
@@ -90,6 +100,8 @@ export const ListModelsUserRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  offset: z.string().optional(),
+  limit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
