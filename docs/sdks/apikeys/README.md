@@ -112,6 +112,10 @@ async function run() {
   const result = await openRouter.apiKeys.create({
     requestBody: {
       name: "My New API Key",
+      limit: 50,
+      limitReset: "monthly",
+      includeByokInLimit: true,
+      expiresAt: new Date("2027-12-31T23:59:59Z"),
     },
   });
 
@@ -142,6 +146,10 @@ async function run() {
   const res = await apiKeysCreate(openRouter, {
     requestBody: {
       name: "My New API Key",
+      limit: 50,
+      limitReset: "monthly",
+      includeByokInLimit: true,
+      expiresAt: new Date("2027-12-31T23:59:59Z"),
     },
   });
   if (res.ok) {
@@ -198,7 +206,13 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.apiKeys.update({
     hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
-    requestBody: {},
+    requestBody: {
+      name: "Updated API Key Name",
+      disabled: false,
+      limit: 75,
+      limitReset: "daily",
+      includeByokInLimit: true,
+    },
   });
 
   console.log(result);
@@ -227,7 +241,13 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await apiKeysUpdate(openRouter, {
     hash: "f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943",
-    requestBody: {},
+    requestBody: {
+      name: "Updated API Key Name",
+      disabled: false,
+      limit: 75,
+      limitReset: "daily",
+      includeByokInLimit: true,
+    },
   });
   if (res.ok) {
     const { value: result } = res;
