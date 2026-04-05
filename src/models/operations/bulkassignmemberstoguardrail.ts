@@ -5,9 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type BulkAssignMembersToGuardrailGlobals = {
   /**
@@ -29,13 +27,6 @@ export type BulkAssignMembersToGuardrailGlobals = {
    * @remarks
    */
   appCategories?: string | undefined;
-};
-
-export type BulkAssignMembersToGuardrailRequestBody = {
-  /**
-   * Array of member user IDs to assign to the guardrail
-   */
-  memberUserIds: Array<string>;
 };
 
 export type BulkAssignMembersToGuardrailRequest = {
@@ -62,46 +53,8 @@ export type BulkAssignMembersToGuardrailRequest = {
    * The unique identifier of the guardrail
    */
   id: string;
-  requestBody: BulkAssignMembersToGuardrailRequestBody;
+  bulkAssignMembersRequest: models.BulkAssignMembersRequest;
 };
-
-/**
- * Assignment result
- */
-export type BulkAssignMembersToGuardrailResponse = {
-  /**
-   * Number of members successfully assigned
-   */
-  assignedCount: number;
-};
-
-/** @internal */
-export type BulkAssignMembersToGuardrailRequestBody$Outbound = {
-  member_user_ids: Array<string>;
-};
-
-/** @internal */
-export const BulkAssignMembersToGuardrailRequestBody$outboundSchema: z.ZodType<
-  BulkAssignMembersToGuardrailRequestBody$Outbound,
-  BulkAssignMembersToGuardrailRequestBody
-> = z.object({
-  memberUserIds: z.array(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    memberUserIds: "member_user_ids",
-  });
-});
-
-export function bulkAssignMembersToGuardrailRequestBodyToJSON(
-  bulkAssignMembersToGuardrailRequestBody:
-    BulkAssignMembersToGuardrailRequestBody,
-): string {
-  return JSON.stringify(
-    BulkAssignMembersToGuardrailRequestBody$outboundSchema.parse(
-      bulkAssignMembersToGuardrailRequestBody,
-    ),
-  );
-}
 
 /** @internal */
 export type BulkAssignMembersToGuardrailRequest$Outbound = {
@@ -109,7 +62,7 @@ export type BulkAssignMembersToGuardrailRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
-  RequestBody: BulkAssignMembersToGuardrailRequestBody$Outbound;
+  BulkAssignMembersRequest: models.BulkAssignMembersRequest$Outbound;
 };
 
 /** @internal */
@@ -121,13 +74,11 @@ export const BulkAssignMembersToGuardrailRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
-  requestBody: z.lazy(() =>
-    BulkAssignMembersToGuardrailRequestBody$outboundSchema
-  ),
+  bulkAssignMembersRequest: models.BulkAssignMembersRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    requestBody: "RequestBody",
+    bulkAssignMembersRequest: "BulkAssignMembersRequest",
   });
 });
 
@@ -138,28 +89,5 @@ export function bulkAssignMembersToGuardrailRequestToJSON(
     BulkAssignMembersToGuardrailRequest$outboundSchema.parse(
       bulkAssignMembersToGuardrailRequest,
     ),
-  );
-}
-
-/** @internal */
-export const BulkAssignMembersToGuardrailResponse$inboundSchema: z.ZodType<
-  BulkAssignMembersToGuardrailResponse,
-  unknown
-> = z.object({
-  assigned_count: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "assigned_count": "assignedCount",
-  });
-});
-
-export function bulkAssignMembersToGuardrailResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<BulkAssignMembersToGuardrailResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      BulkAssignMembersToGuardrailResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BulkAssignMembersToGuardrailResponse' from JSON`,
   );
 }
