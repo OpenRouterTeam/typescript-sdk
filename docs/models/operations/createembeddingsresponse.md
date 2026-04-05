@@ -8,8 +8,17 @@
 ```typescript
 const value: operations.CreateEmbeddingsResponseBody = {
   object: "list",
-  data: [],
-  model: "Focus",
+  data: [
+    {
+      object: "embedding",
+      embedding: [
+        0.0023064255,
+        -0.009327292,
+        0.015797347,
+      ],
+    },
+  ],
+  model: "openai/text-embedding-3-small",
 };
 ```
 
