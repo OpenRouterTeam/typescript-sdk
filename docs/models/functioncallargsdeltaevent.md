@@ -10,7 +10,7 @@ import { FunctionCallArgsDeltaEvent } from "@openrouter/sdk/models";
 let value: FunctionCallArgsDeltaEvent = {
   type: "response.function_call_arguments.delta",
   itemId: "<id>",
-  outputIndex: 9861.15,
+  outputIndex: 986115,
   delta: "<value>",
   sequenceNumber: 0,
 };
