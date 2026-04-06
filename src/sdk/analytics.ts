@@ -5,6 +5,7 @@
 
 import { analyticsGetUserActivity } from "../funcs/analyticsGetUserActivity.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -18,7 +19,7 @@ export class Analytics extends ClientSDK {
   async getUserActivity(
     request?: operations.GetUserActivityRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.GetUserActivityResponse> {
+  ): Promise<models.ActivityResponse> {
     return unwrapAsync(analyticsGetUserActivity(
       this,
       request,
