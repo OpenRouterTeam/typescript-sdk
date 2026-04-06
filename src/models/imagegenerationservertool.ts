@@ -185,9 +185,9 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   input_image_mask: z.lazy(() => InputImageMask$inboundSchema).optional(),
   model: ModelEnum$inboundSchema.optional(),
   moderation: Moderation$inboundSchema.optional(),
-  output_compression: z.number().optional(),
+  output_compression: z.int().optional(),
   output_format: OutputFormat$inboundSchema.optional(),
-  partial_images: z.number().optional(),
+  partial_images: z.int().optional(),
   quality: Quality$inboundSchema.optional(),
   size: Size$inboundSchema.optional(),
 }).transform((v) => {
@@ -225,9 +225,9 @@ export const ImageGenerationServerTool$outboundSchema: z.ZodType<
   inputImageMask: z.lazy(() => InputImageMask$outboundSchema).optional(),
   model: ModelEnum$outboundSchema.optional(),
   moderation: Moderation$outboundSchema.optional(),
-  outputCompression: z.number().optional(),
+  outputCompression: z.int().optional(),
   outputFormat: OutputFormat$outboundSchema.optional(),
-  partialImages: z.number().optional(),
+  partialImages: z.int().optional(),
   quality: Quality$outboundSchema.optional(),
   size: Size$outboundSchema.optional(),
 }).transform((v) => {
