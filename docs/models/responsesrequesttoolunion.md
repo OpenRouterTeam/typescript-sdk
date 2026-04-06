@@ -161,3 +161,11 @@ const value: models.WebSearchServerToolOpenRouter = {
 };
 ```
 
+### `models.FusionServerTool`
+
+```typescript
+const value: models.FusionServerTool = {
+  type: "openrouter:fusion",
+};
+```
+

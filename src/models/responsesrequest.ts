@@ -51,6 +51,11 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  FusionServerTool,
+  FusionServerTool$Outbound,
+  FusionServerTool$outboundSchema,
+} from "./fusionservertool.js";
+import {
   ImageGenerationServerTool,
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool$outboundSchema,
@@ -182,7 +187,8 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
-  | WebSearchServerToolOpenRouter;
+  | WebSearchServerToolOpenRouter
+  | FusionServerTool;
 
 export type ResponsesRequestImageConfig = string | number;
 
@@ -410,6 +416,7 @@ export type ResponsesRequest = {
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
       | WebSearchServerToolOpenRouter
+      | FusionServerTool
     >
     | undefined;
   toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
@@ -424,13 +431,13 @@ export type ResponsesRequest = {
    * Configuration for reasoning mode in the response
    */
   reasoning?: ReasoningConfig | null | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  topP?: number | null | undefined;
-  topLogprobs?: number | null | undefined;
-  maxToolCalls?: number | null | undefined;
-  presencePenalty?: number | null | undefined;
-  frequencyPenalty?: number | null | undefined;
+  maxOutputTokens?: number | undefined;
+  temperature?: number | undefined;
+  topP?: number | undefined;
+  topLogprobs?: number | undefined;
+  maxToolCalls?: number | undefined;
+  presencePenalty?: number | undefined;
+  frequencyPenalty?: number | undefined;
   topK?: number | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
@@ -529,7 +536,8 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-  | WebSearchServerToolOpenRouter$Outbound;
+  | WebSearchServerToolOpenRouter$Outbound
+  | FusionServerTool$Outbound;
 
 /** @internal */
 export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
@@ -554,6 +562,7 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
+  FusionServerTool$outboundSchema,
 ]);
 
 export function responsesRequestToolUnionToJSON(
@@ -1032,6 +1041,7 @@ export type ResponsesRequest$Outbound = {
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
       | WebSearchServerToolOpenRouter$Outbound
+      | FusionServerTool$Outbound
     >
     | undefined;
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
@@ -1040,13 +1050,13 @@ export type ResponsesRequest$Outbound = {
   models?: Array<string> | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
-  max_output_tokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  top_p?: number | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_tool_calls?: number | null | undefined;
-  presence_penalty?: number | null | undefined;
-  frequency_penalty?: number | null | undefined;
+  max_output_tokens?: number | undefined;
+  temperature?: number | undefined;
+  top_p?: number | undefined;
+  top_logprobs?: number | undefined;
+  max_tool_calls?: number | undefined;
+  presence_penalty?: number | undefined;
+  frequency_penalty?: number | undefined;
   top_k?: number | undefined;
   image_config?: { [k: string]: string | number } | undefined;
   modalities?: Array<string> | undefined;
@@ -1104,6 +1114,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
+      FusionServerTool$outboundSchema,
     ]),
   ).optional(),
   toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
@@ -1112,14 +1123,14 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   models: z.array(z.string()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
-  maxOutputTokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  maxToolCalls: z.nullable(z.int()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  topK: z.number().optional(),
+  maxOutputTokens: z.int().optional(),
+  temperature: z.number().optional(),
+  topP: z.number().optional(),
+  topLogprobs: z.int().optional(),
+  maxToolCalls: z.int().optional(),
+  presencePenalty: z.number().optional(),
+  frequencyPenalty: z.number().optional(),
+  topK: z.int().optional(),
   imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
     .optional(),
   modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
