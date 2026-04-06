@@ -27,7 +27,7 @@ export const ErrorEvent$inboundSchema: z.ZodType<ErrorEvent, unknown> = z
     code: z.nullable(z.string()),
     message: z.string(),
     param: z.nullable(z.string()),
-    sequence_number: z.number(),
+    sequence_number: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "sequence_number": "sequenceNumber",

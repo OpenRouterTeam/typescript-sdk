@@ -17,8 +17,10 @@ import { guardrailsListKeyAssignments } from "../funcs/guardrailsListKeyAssignme
 import { guardrailsListMemberAssignments } from "../funcs/guardrailsListMemberAssignments.js";
 import { guardrailsUpdate } from "../funcs/guardrailsUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Guardrails extends ClientSDK {
   /**
@@ -30,8 +32,10 @@ export class Guardrails extends ClientSDK {
   async list(
     request?: operations.ListGuardrailsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListGuardrailsResponse> {
-    return unwrapAsync(guardrailsList(
+  ): Promise<
+    PageIterator<operations.ListGuardrailsResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(guardrailsList(
       this,
       request,
       options,
@@ -47,7 +51,7 @@ export class Guardrails extends ClientSDK {
   async create(
     request: operations.CreateGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.CreateGuardrailResponse> {
+  ): Promise<models.CreateGuardrailResponse> {
     return unwrapAsync(guardrailsCreate(
       this,
       request,
@@ -64,7 +68,7 @@ export class Guardrails extends ClientSDK {
   async get(
     request: operations.GetGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.GetGuardrailResponse> {
+  ): Promise<models.GetGuardrailResponse> {
     return unwrapAsync(guardrailsGet(
       this,
       request,
@@ -81,7 +85,7 @@ export class Guardrails extends ClientSDK {
   async update(
     request: operations.UpdateGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.UpdateGuardrailResponse> {
+  ): Promise<models.UpdateGuardrailResponse> {
     return unwrapAsync(guardrailsUpdate(
       this,
       request,
@@ -98,7 +102,7 @@ export class Guardrails extends ClientSDK {
   async delete(
     request: operations.DeleteGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.DeleteGuardrailResponse> {
+  ): Promise<models.DeleteGuardrailResponse> {
     return unwrapAsync(guardrailsDelete(
       this,
       request,
@@ -115,8 +119,10 @@ export class Guardrails extends ClientSDK {
   async listKeyAssignments(
     request?: operations.ListKeyAssignmentsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListKeyAssignmentsResponse> {
-    return unwrapAsync(guardrailsListKeyAssignments(
+  ): Promise<
+    PageIterator<operations.ListKeyAssignmentsResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(guardrailsListKeyAssignments(
       this,
       request,
       options,
@@ -132,8 +138,10 @@ export class Guardrails extends ClientSDK {
   async listMemberAssignments(
     request?: operations.ListMemberAssignmentsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.ListMemberAssignmentsResponse> {
-    return unwrapAsync(guardrailsListMemberAssignments(
+  ): Promise<
+    PageIterator<operations.ListMemberAssignmentsResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(guardrailsListMemberAssignments(
       this,
       request,
       options,
@@ -149,8 +157,13 @@ export class Guardrails extends ClientSDK {
   async listGuardrailKeyAssignments(
     request: operations.ListGuardrailKeyAssignmentsRequest,
     options?: RequestOptions,
-  ): Promise<operations.ListGuardrailKeyAssignmentsResponse> {
-    return unwrapAsync(guardrailsListGuardrailKeyAssignments(
+  ): Promise<
+    PageIterator<
+      operations.ListGuardrailKeyAssignmentsResponse,
+      { offset: number }
+    >
+  > {
+    return unwrapResultIterator(guardrailsListGuardrailKeyAssignments(
       this,
       request,
       options,
@@ -166,7 +179,7 @@ export class Guardrails extends ClientSDK {
   async bulkAssignKeys(
     request: operations.BulkAssignKeysToGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.BulkAssignKeysToGuardrailResponse> {
+  ): Promise<models.BulkAssignKeysResponse> {
     return unwrapAsync(guardrailsBulkAssignKeys(
       this,
       request,
@@ -183,8 +196,13 @@ export class Guardrails extends ClientSDK {
   async listGuardrailMemberAssignments(
     request: operations.ListGuardrailMemberAssignmentsRequest,
     options?: RequestOptions,
-  ): Promise<operations.ListGuardrailMemberAssignmentsResponse> {
-    return unwrapAsync(guardrailsListGuardrailMemberAssignments(
+  ): Promise<
+    PageIterator<
+      operations.ListGuardrailMemberAssignmentsResponse,
+      { offset: number }
+    >
+  > {
+    return unwrapResultIterator(guardrailsListGuardrailMemberAssignments(
       this,
       request,
       options,
@@ -200,7 +218,7 @@ export class Guardrails extends ClientSDK {
   async bulkAssignMembers(
     request: operations.BulkAssignMembersToGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.BulkAssignMembersToGuardrailResponse> {
+  ): Promise<models.BulkAssignMembersResponse> {
     return unwrapAsync(guardrailsBulkAssignMembers(
       this,
       request,
@@ -217,7 +235,7 @@ export class Guardrails extends ClientSDK {
   async bulkUnassignKeys(
     request: operations.BulkUnassignKeysFromGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.BulkUnassignKeysFromGuardrailResponse> {
+  ): Promise<models.BulkUnassignKeysResponse> {
     return unwrapAsync(guardrailsBulkUnassignKeys(
       this,
       request,
@@ -234,7 +252,7 @@ export class Guardrails extends ClientSDK {
   async bulkUnassignMembers(
     request: operations.BulkUnassignMembersFromGuardrailRequest,
     options?: RequestOptions,
-  ): Promise<operations.BulkUnassignMembersFromGuardrailResponse> {
+  ): Promise<models.BulkUnassignMembersResponse> {
     return unwrapAsync(guardrailsBulkUnassignMembers(
       this,
       request,
