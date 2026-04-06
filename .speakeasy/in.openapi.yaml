@@ -12186,7 +12186,9 @@ components:
             message: Rate limit exceeded
             code: 429
         usage:
-          $ref: '#/components/schemas/ChatUsage'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ChatUsage'
       required:
         - id
         - choices

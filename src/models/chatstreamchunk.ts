@@ -70,7 +70,7 @@ export type ChatStreamChunk = {
   /**
    * Token usage statistics
    */
-  usage?: ChatUsage | undefined;
+  usage?: ChatUsage | null | undefined;
 };
 
 /** @internal */
@@ -107,7 +107,7 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
   system_fingerprint: z.string().optional(),
   service_tier: z.nullable(z.string()).optional(),
   error: z.lazy(() => ErrorT$inboundSchema).optional(),
-  usage: ChatUsage$inboundSchema.optional(),
+  usage: z.nullable(ChatUsage$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "system_fingerprint": "systemFingerprint",
