@@ -9,9 +9,9 @@ import { TextDoneEvent } from "@openrouter/sdk/models";
 
 let value: TextDoneEvent = {
   type: "response.output_text.done",
-  outputIndex: 5414.85,
+  outputIndex: 541485,
   itemId: "<id>",
-  contentIndex: 4977.34,
+  contentIndex: 497734,
   text: "<value>",
   sequenceNumber: 0,
   logprobs: [

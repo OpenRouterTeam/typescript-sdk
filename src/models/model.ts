@@ -28,6 +28,16 @@ import {
 } from "./topproviderinfo.js";
 
 /**
+ * Related API endpoints and resources for this model.
+ */
+export type Links = {
+  /**
+   * URL for the model details/endpoints API
+   */
+  details: string;
+};
+
+/**
  * Information about an AI model available on OpenRouter
  */
 export type Model = {
@@ -62,7 +72,7 @@ export type Model = {
   /**
    * Maximum context length in tokens
    */
-  contextLength: number | null;
+  contextLength: number;
   /**
    * Model architecture information
    */
@@ -91,7 +101,26 @@ export type Model = {
    * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
    */
   expirationDate?: string | null | undefined;
+  /**
+   * Related API endpoints and resources for this model.
+   */
+  links: Links;
 };
+
+/** @internal */
+export const Links$inboundSchema: z.ZodType<Links, unknown> = z.object({
+  details: z.string(),
+});
+
+export function linksFromJSON(
+  jsonString: string,
+): SafeParseResult<Links, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Links$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Links' from JSON`,
+  );
+}
 
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
@@ -99,10 +128,10 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   canonical_slug: z.string(),
   hugging_face_id: z.nullable(z.string()).optional(),
   name: z.string(),
-  created: z.number(),
+  created: z.int(),
   description: z.string().optional(),
   pricing: PublicPricing$inboundSchema,
-  context_length: z.nullable(z.number()),
+  context_length: z.int(),
   architecture: ModelArchitecture$inboundSchema,
   top_provider: TopProviderInfo$inboundSchema,
   per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
@@ -110,6 +139,7 @@ export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
   knowledge_cutoff: z.nullable(z.string()).optional(),
   expiration_date: z.nullable(z.string()).optional(),
+  links: z.lazy(() => Links$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
     "canonical_slug": "canonicalSlug",
