@@ -7,7 +7,7 @@ Credit management endpoints
 ### Available Operations
 
 * [getCredits](#getcredits) - Get remaining credits
-* [createCoinbaseCharge](#createcoinbasecharge) - Create a Coinbase charge for crypto payment
+* [~~createCoinbaseCharge~~](#createcoinbasecharge) - Deprecated Coinbase Commerce charge endpoint :warning: **Deprecated**
 
 ## getCredits
 
@@ -87,9 +87,11 @@ run();
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |
 
-## createCoinbaseCharge
+## ~~createCoinbaseCharge~~
 
-Create a Coinbase charge for crypto payment
+Deprecated. The Coinbase APIs used by this endpoint have been deprecated, so Coinbase Commerce charges have been removed. Use the web credits purchase flow instead.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -104,17 +106,9 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.credits.createCoinbaseCharge({
-    bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {
-    createChargeRequest: {
-      amount: 100,
-      sender: "0x1234567890123456789012345678901234567890",
-      chainId: 1,
-    },
-  });
+  await openRouter.credits.createCoinbaseCharge();
 
-  console.log(result);
+
 }
 
 run();
@@ -137,18 +131,10 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await creditsCreateCoinbaseCharge(openRouter, {
-    bearer: process.env["OPENROUTER_BEARER"] ?? "",
-  }, {
-    createChargeRequest: {
-      amount: 100,
-      sender: "0x1234567890123456789012345678901234567890",
-      chainId: 1,
-    },
-  });
+  const res = await creditsCreateCoinbaseCharge(openRouter);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    
   } else {
     console.log("creditsCreateCoinbaseCharge failed:", res.error);
   }
@@ -162,21 +148,17 @@ run();
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `request`                                                                                                                                                                      | [operations.CreateCoinbaseChargeRequest](../../models/operations/createcoinbasechargerequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `security`                                                                                                                                                                     | [operations.CreateCoinbaseChargeSecurity](../../models/operations/createcoinbasechargesecurity.md)                                                                             | :heavy_check_mark:                                                                                                                                                             | The security requirements to use for the request.                                                                                                                              |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.CreateCoinbaseChargeResponse](../../models/operations/createcoinbasechargeresponse.md)\>**
+**Promise\<void\>**
 
 ### Errors
 
-| Error Type                          | Status Code                         | Content Type                        |
-| ----------------------------------- | ----------------------------------- | ----------------------------------- |
-| errors.BadRequestResponseError      | 400                                 | application/json                    |
-| errors.UnauthorizedResponseError    | 401                                 | application/json                    |
-| errors.TooManyRequestsResponseError | 429                                 | application/json                    |
-| errors.InternalServerResponseError  | 500                                 | application/json                    |
-| errors.OpenRouterDefaultError       | 4XX, 5XX                            | \*/\*                               |
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.GoneResponseError      | 410                           | application/json              |
+| errors.OpenRouterDefaultError | 4XX, 5XX                      | \*/\*                         |
