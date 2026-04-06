@@ -5,9 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type DeleteGuardrailGlobals = {
   /**
@@ -57,16 +54,6 @@ export type DeleteGuardrailRequest = {
   id: string;
 };
 
-/**
- * Guardrail deleted successfully
- */
-export type DeleteGuardrailResponse = {
-  /**
-   * Confirmation that the guardrail was deleted
-   */
-  deleted: true;
-};
-
 /** @internal */
 export type DeleteGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -95,23 +82,5 @@ export function deleteGuardrailRequestToJSON(
 ): string {
   return JSON.stringify(
     DeleteGuardrailRequest$outboundSchema.parse(deleteGuardrailRequest),
-  );
-}
-
-/** @internal */
-export const DeleteGuardrailResponse$inboundSchema: z.ZodType<
-  DeleteGuardrailResponse,
-  unknown
-> = z.object({
-  deleted: z.literal(true),
-});
-
-export function deleteGuardrailResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<DeleteGuardrailResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => DeleteGuardrailResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'DeleteGuardrailResponse' from JSON`,
   );
 }
