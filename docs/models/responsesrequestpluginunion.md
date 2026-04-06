@@ -51,3 +51,11 @@ const value: models.ResponsesRequestPluginContextCompression = {
 };
 ```
 
+### `models.ResponsesRequestPluginFusion`
+
+```typescript
+const value: models.ResponsesRequestPluginFusion = {
+  id: "fusion",
+};
+```
+

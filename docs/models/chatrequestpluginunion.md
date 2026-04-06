@@ -51,3 +51,11 @@ const value: models.ChatRequestPluginContextCompression = {
 };
 ```
 
+### `models.ChatRequestPluginFusion`
+
+```typescript
+const value: models.ChatRequestPluginFusion = {
+  id: "fusion",
+};
+```
+

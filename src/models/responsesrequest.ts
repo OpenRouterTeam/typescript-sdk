@@ -289,6 +289,18 @@ export type ResponsesRequestProvider = {
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
 
+export type ResponsesRequestPluginFusion = {
+  id: "fusion";
+  /**
+   * Set to false to disable the fusion plugin for this request. Defaults to true.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * List of model slugs to query in parallel for source responses. At least 2 required, max 20. Defaults to a curated set of quality models if omitted.
+   */
+  analysisModels?: Array<string> | undefined;
+};
+
 export type ResponsesRequestPluginContextCompression = {
   id: "context-compression";
   /**
@@ -365,7 +377,8 @@ export type ResponsesRequestPluginUnion =
   | ResponsesRequestPluginWeb
   | ResponsesRequestPluginFileParser
   | ResponsesRequestPluginResponseHealing
-  | ResponsesRequestPluginContextCompression;
+  | ResponsesRequestPluginContextCompression
+  | ResponsesRequestPluginFusion;
 
 /**
  * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
@@ -424,13 +437,13 @@ export type ResponsesRequest = {
    * Configuration for reasoning mode in the response
    */
   reasoning?: ReasoningConfig | null | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  topP?: number | null | undefined;
-  topLogprobs?: number | null | undefined;
-  maxToolCalls?: number | null | undefined;
-  presencePenalty?: number | null | undefined;
-  frequencyPenalty?: number | null | undefined;
+  maxOutputTokens?: number | undefined;
+  temperature?: number | undefined;
+  topP?: number | undefined;
+  topLogprobs?: number | undefined;
+  maxToolCalls?: number | undefined;
+  presencePenalty?: number | undefined;
+  frequencyPenalty?: number | undefined;
   topK?: number | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
@@ -465,6 +478,7 @@ export type ResponsesRequest = {
       | ResponsesRequestPluginFileParser
       | ResponsesRequestPluginResponseHealing
       | ResponsesRequestPluginContextCompression
+      | ResponsesRequestPluginFusion
     >
     | undefined;
   /**
@@ -761,6 +775,37 @@ export function responsesRequestProviderToJSON(
 }
 
 /** @internal */
+export type ResponsesRequestPluginFusion$Outbound = {
+  id: "fusion";
+  enabled?: boolean | undefined;
+  analysis_models?: Array<string> | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestPluginFusion$outboundSchema: z.ZodType<
+  ResponsesRequestPluginFusion$Outbound,
+  ResponsesRequestPluginFusion
+> = z.object({
+  id: z.literal("fusion"),
+  enabled: z.boolean().optional(),
+  analysisModels: z.array(z.string()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    analysisModels: "analysis_models",
+  });
+});
+
+export function responsesRequestPluginFusionToJSON(
+  responsesRequestPluginFusion: ResponsesRequestPluginFusion,
+): string {
+  return JSON.stringify(
+    ResponsesRequestPluginFusion$outboundSchema.parse(
+      responsesRequestPluginFusion,
+    ),
+  );
+}
+
+/** @internal */
 export type ResponsesRequestPluginContextCompression$Outbound = {
   id: "context-compression";
   enabled?: boolean | undefined;
@@ -941,7 +986,8 @@ export type ResponsesRequestPluginUnion$Outbound =
   | ResponsesRequestPluginWeb$Outbound
   | ResponsesRequestPluginFileParser$Outbound
   | ResponsesRequestPluginResponseHealing$Outbound
-  | ResponsesRequestPluginContextCompression$Outbound;
+  | ResponsesRequestPluginContextCompression$Outbound
+  | ResponsesRequestPluginFusion$Outbound;
 
 /** @internal */
 export const ResponsesRequestPluginUnion$outboundSchema: z.ZodType<
@@ -954,6 +1000,7 @@ export const ResponsesRequestPluginUnion$outboundSchema: z.ZodType<
   z.lazy(() => ResponsesRequestPluginFileParser$outboundSchema),
   z.lazy(() => ResponsesRequestPluginResponseHealing$outboundSchema),
   z.lazy(() => ResponsesRequestPluginContextCompression$outboundSchema),
+  z.lazy(() => ResponsesRequestPluginFusion$outboundSchema),
 ]);
 
 export function responsesRequestPluginUnionToJSON(
@@ -1040,13 +1087,13 @@ export type ResponsesRequest$Outbound = {
   models?: Array<string> | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
-  max_output_tokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  top_p?: number | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_tool_calls?: number | null | undefined;
-  presence_penalty?: number | null | undefined;
-  frequency_penalty?: number | null | undefined;
+  max_output_tokens?: number | undefined;
+  temperature?: number | undefined;
+  top_p?: number | undefined;
+  top_logprobs?: number | undefined;
+  max_tool_calls?: number | undefined;
+  presence_penalty?: number | undefined;
+  frequency_penalty?: number | undefined;
   top_k?: number | undefined;
   image_config?: { [k: string]: string | number } | undefined;
   modalities?: Array<string> | undefined;
@@ -1069,6 +1116,7 @@ export type ResponsesRequest$Outbound = {
       | ResponsesRequestPluginFileParser$Outbound
       | ResponsesRequestPluginResponseHealing$Outbound
       | ResponsesRequestPluginContextCompression$Outbound
+      | ResponsesRequestPluginFusion$Outbound
     >
     | undefined;
   user?: string | undefined;
@@ -1112,14 +1160,14 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   models: z.array(z.string()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
-  maxOutputTokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  maxToolCalls: z.nullable(z.int()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  topK: z.number().optional(),
+  maxOutputTokens: z.int().optional(),
+  temperature: z.number().optional(),
+  topP: z.number().optional(),
+  topLogprobs: z.int().optional(),
+  maxToolCalls: z.int().optional(),
+  presencePenalty: z.number().optional(),
+  frequencyPenalty: z.number().optional(),
+  topK: z.int().optional(),
   imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
     .optional(),
   modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
@@ -1145,6 +1193,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       z.lazy(() => ResponsesRequestPluginFileParser$outboundSchema),
       z.lazy(() => ResponsesRequestPluginResponseHealing$outboundSchema),
       z.lazy(() => ResponsesRequestPluginContextCompression$outboundSchema),
+      z.lazy(() => ResponsesRequestPluginFusion$outboundSchema),
     ]),
   ).optional(),
   user: z.string().optional(),
