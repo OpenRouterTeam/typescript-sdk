@@ -24,6 +24,14 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.ChatFusionServerTool`
+
+```typescript
+const value: models.ChatFusionServerTool = {
+  type: "openrouter:fusion",
+};
+```
+
 ### `models.ChatWebSearchServerTool`
 
 ```typescript
