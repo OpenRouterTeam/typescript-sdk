@@ -12,7 +12,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 /**
  * Detailed completion token usage
  */
-export type CompletionTokensDetails = {
+export type ChatUsageCompletionTokensDetails = {
   /**
    * Tokens used for reasoning
    */
@@ -34,7 +34,7 @@ export type CompletionTokensDetails = {
 /**
  * Detailed prompt token usage
  */
-export type PromptTokensDetails = {
+export type ChatUsagePromptTokensDetails = {
   /**
    * Cached prompt tokens
    */
@@ -72,16 +72,16 @@ export type ChatUsage = {
   /**
    * Detailed completion token usage
    */
-  completionTokensDetails?: CompletionTokensDetails | null | undefined;
+  completionTokensDetails?: ChatUsageCompletionTokensDetails | null | undefined;
   /**
    * Detailed prompt token usage
    */
-  promptTokensDetails?: PromptTokensDetails | null | undefined;
+  promptTokensDetails?: ChatUsagePromptTokensDetails | null | undefined;
 };
 
 /** @internal */
-export const CompletionTokensDetails$inboundSchema: z.ZodType<
-  CompletionTokensDetails,
+export const ChatUsageCompletionTokensDetails$inboundSchema: z.ZodType<
+  ChatUsageCompletionTokensDetails,
   unknown
 > = z.object({
   reasoning_tokens: z.nullable(z.number()).optional(),
@@ -97,19 +97,19 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function completionTokensDetailsFromJSON(
+export function chatUsageCompletionTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<CompletionTokensDetails, SDKValidationError> {
+): SafeParseResult<ChatUsageCompletionTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => CompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'CompletionTokensDetails' from JSON`,
+    (x) => ChatUsageCompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatUsageCompletionTokensDetails' from JSON`,
   );
 }
 
 /** @internal */
-export const PromptTokensDetails$inboundSchema: z.ZodType<
-  PromptTokensDetails,
+export const ChatUsagePromptTokensDetails$inboundSchema: z.ZodType<
+  ChatUsagePromptTokensDetails,
   unknown
 > = z.object({
   cached_tokens: z.number().optional(),
@@ -125,13 +125,13 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   });
 });
 
-export function promptTokensDetailsFromJSON(
+export function chatUsagePromptTokensDetailsFromJSON(
   jsonString: string,
-): SafeParseResult<PromptTokensDetails, SDKValidationError> {
+): SafeParseResult<ChatUsagePromptTokensDetails, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => PromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'PromptTokensDetails' from JSON`,
+    (x) => ChatUsagePromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatUsagePromptTokensDetails' from JSON`,
   );
 }
 
@@ -141,10 +141,10 @@ export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
   prompt_tokens: z.number(),
   total_tokens: z.number(),
   completion_tokens_details: z.nullable(
-    z.lazy(() => CompletionTokensDetails$inboundSchema),
+    z.lazy(() => ChatUsageCompletionTokensDetails$inboundSchema),
   ).optional(),
   prompt_tokens_details: z.nullable(
-    z.lazy(() => PromptTokensDetails$inboundSchema),
+    z.lazy(() => ChatUsagePromptTokensDetails$inboundSchema),
   ).optional(),
 }).transform((v) => {
   return remap$(v, {

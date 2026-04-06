@@ -1,13 +1,13 @@
-# PromptTokensDetails
+# ChatUsagePromptTokensDetails
 
 Detailed prompt token usage
 
 ## Example Usage
 
 ```typescript
-import { PromptTokensDetails } from "@openrouter/sdk/models";
+import { ChatUsagePromptTokensDetails } from "@openrouter/sdk/models";
 
-let value: PromptTokensDetails = {};
+let value: ChatUsagePromptTokensDetails = {};
 ```
 
 ## Fields

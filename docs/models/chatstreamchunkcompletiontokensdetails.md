@@ -1,13 +1,13 @@
-# CompletionTokensDetails
+# ChatStreamChunkCompletionTokensDetails
 
 Detailed completion token usage
 
 ## Example Usage
 
 ```typescript
-import { CompletionTokensDetails } from "@openrouter/sdk/models";
+import { ChatStreamChunkCompletionTokensDetails } from "@openrouter/sdk/models";
 
-let value: CompletionTokensDetails = {};
+let value: ChatStreamChunkCompletionTokensDetails = {};
 ```
 
 ## Fields

@@ -12,7 +12,6 @@ import {
   ChatStreamChoice,
   ChatStreamChoice$inboundSchema,
 } from "./chatstreamchoice.js";
-import { ChatUsage, ChatUsage$inboundSchema } from "./chatusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const ChatStreamChunkObject = {
@@ -32,6 +31,79 @@ export type ErrorT = {
    * Error code
    */
   code: number;
+};
+
+/**
+ * Detailed completion token usage
+ */
+export type ChatStreamChunkCompletionTokensDetails = {
+  /**
+   * Tokens used for reasoning
+   */
+  reasoningTokens?: number | null | undefined;
+  /**
+   * Tokens used for audio output
+   */
+  audioTokens?: number | null | undefined;
+  /**
+   * Accepted prediction tokens
+   */
+  acceptedPredictionTokens?: number | null | undefined;
+  /**
+   * Rejected prediction tokens
+   */
+  rejectedPredictionTokens?: number | null | undefined;
+};
+
+/**
+ * Detailed prompt token usage
+ */
+export type ChatStreamChunkPromptTokensDetails = {
+  /**
+   * Cached prompt tokens
+   */
+  cachedTokens?: number | undefined;
+  /**
+   * Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
+   */
+  cacheWriteTokens?: number | undefined;
+  /**
+   * Audio input tokens
+   */
+  audioTokens?: number | undefined;
+  /**
+   * Video input tokens
+   */
+  videoTokens?: number | undefined;
+};
+
+/**
+ * Token usage statistics
+ */
+export type ChatStreamChunkUsage = {
+  /**
+   * Number of tokens in the completion
+   */
+  completionTokens: number;
+  /**
+   * Number of tokens in the prompt
+   */
+  promptTokens: number;
+  /**
+   * Total number of tokens
+   */
+  totalTokens: number;
+  /**
+   * Detailed completion token usage
+   */
+  completionTokensDetails?:
+    | ChatStreamChunkCompletionTokensDetails
+    | null
+    | undefined;
+  /**
+   * Detailed prompt token usage
+   */
+  promptTokensDetails?: ChatStreamChunkPromptTokensDetails | null | undefined;
 };
 
 /**
@@ -67,10 +139,7 @@ export type ChatStreamChunk = {
    * Error information
    */
   error?: ErrorT | undefined;
-  /**
-   * Token usage statistics
-   */
-  usage?: ChatUsage | undefined;
+  usage?: ChatStreamChunkUsage | null | undefined;
 };
 
 /** @internal */
@@ -95,6 +164,98 @@ export function errorFromJSON(
 }
 
 /** @internal */
+export const ChatStreamChunkCompletionTokensDetails$inboundSchema: z.ZodType<
+  ChatStreamChunkCompletionTokensDetails,
+  unknown
+> = z.object({
+  reasoning_tokens: z.nullable(z.number()).optional(),
+  audio_tokens: z.nullable(z.number()).optional(),
+  accepted_prediction_tokens: z.nullable(z.number()).optional(),
+  rejected_prediction_tokens: z.nullable(z.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "reasoning_tokens": "reasoningTokens",
+    "audio_tokens": "audioTokens",
+    "accepted_prediction_tokens": "acceptedPredictionTokens",
+    "rejected_prediction_tokens": "rejectedPredictionTokens",
+  });
+});
+
+export function chatStreamChunkCompletionTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatStreamChunkCompletionTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ChatStreamChunkCompletionTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamChunkCompletionTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const ChatStreamChunkPromptTokensDetails$inboundSchema: z.ZodType<
+  ChatStreamChunkPromptTokensDetails,
+  unknown
+> = z.object({
+  cached_tokens: z.number().optional(),
+  cache_write_tokens: z.number().optional(),
+  audio_tokens: z.number().optional(),
+  video_tokens: z.number().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "cached_tokens": "cachedTokens",
+    "cache_write_tokens": "cacheWriteTokens",
+    "audio_tokens": "audioTokens",
+    "video_tokens": "videoTokens",
+  });
+});
+
+export function chatStreamChunkPromptTokensDetailsFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatStreamChunkPromptTokensDetails, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ChatStreamChunkPromptTokensDetails$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamChunkPromptTokensDetails' from JSON`,
+  );
+}
+
+/** @internal */
+export const ChatStreamChunkUsage$inboundSchema: z.ZodType<
+  ChatStreamChunkUsage,
+  unknown
+> = z.object({
+  completion_tokens: z.number(),
+  prompt_tokens: z.number(),
+  total_tokens: z.number(),
+  completion_tokens_details: z.nullable(
+    z.lazy(() => ChatStreamChunkCompletionTokensDetails$inboundSchema),
+  ).optional(),
+  prompt_tokens_details: z.nullable(
+    z.lazy(() => ChatStreamChunkPromptTokensDetails$inboundSchema),
+  ).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "completion_tokens": "completionTokens",
+    "prompt_tokens": "promptTokens",
+    "total_tokens": "totalTokens",
+    "completion_tokens_details": "completionTokensDetails",
+    "prompt_tokens_details": "promptTokensDetails",
+  });
+});
+
+export function chatStreamChunkUsageFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatStreamChunkUsage, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatStreamChunkUsage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatStreamChunkUsage' from JSON`,
+  );
+}
+
+/** @internal */
 export const ChatStreamChunk$inboundSchema: z.ZodType<
   ChatStreamChunk,
   unknown
@@ -107,7 +268,8 @@ export const ChatStreamChunk$inboundSchema: z.ZodType<
   system_fingerprint: z.string().optional(),
   service_tier: z.nullable(z.string()).optional(),
   error: z.lazy(() => ErrorT$inboundSchema).optional(),
-  usage: ChatUsage$inboundSchema.optional(),
+  usage: z.nullable(z.lazy(() => ChatStreamChunkUsage$inboundSchema))
+    .optional(),
 }).transform((v) => {
   return remap$(v, {
     "system_fingerprint": "systemFingerprint",
