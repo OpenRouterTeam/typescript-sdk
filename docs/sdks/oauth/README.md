@@ -115,7 +115,7 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.oAuth.createAuthCode({
     requestBody: {
-      callbackUrl: "https://myapp.com/auth/callback",
+      callbackUrl: "https://localhost:3000/auth/callback",
     },
   });
 
@@ -145,7 +145,7 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await oAuthCreateAuthCode(openRouter, {
     requestBody: {
-      callbackUrl: "https://myapp.com/auth/callback",
+      callbackUrl: "https://localhost:3000/auth/callback",
     },
   });
   if (res.ok) {
