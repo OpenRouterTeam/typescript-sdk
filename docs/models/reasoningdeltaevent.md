@@ -9,9 +9,9 @@ import { ReasoningDeltaEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningDeltaEvent = {
   type: "response.reasoning_text.delta",
-  outputIndex: 7444.55,
+  outputIndex: 744455,
   itemId: "<id>",
-  contentIndex: 9044.46,
+  contentIndex: 904446,
   delta: "<value>",
   sequenceNumber: 0,
 };
