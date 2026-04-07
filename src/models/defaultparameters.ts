@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Default parameters for this model
  */
 export type DefaultParameters = {
-  temperature?: number | null | undefined;
-  topP?: number | null | undefined;
+  temperature?: number | undefined;
+  topP?: number | undefined;
   topK?: number | null | undefined;
-  frequencyPenalty?: number | null | undefined;
-  presencePenalty?: number | null | undefined;
-  repetitionPenalty?: number | null | undefined;
+  frequencyPenalty?: number | undefined;
+  presencePenalty?: number | undefined;
+  repetitionPenalty?: number | undefined;
 };
 
 /** @internal */
@@ -26,12 +26,12 @@ export const DefaultParameters$inboundSchema: z.ZodType<
   DefaultParameters,
   unknown
 > = z.object({
-  temperature: z.nullable(z.number()).optional(),
-  top_p: z.nullable(z.number()).optional(),
+  temperature: z.number().optional(),
+  top_p: z.number().optional(),
   top_k: z.nullable(z.int()).optional(),
-  frequency_penalty: z.nullable(z.number()).optional(),
-  presence_penalty: z.nullable(z.number()).optional(),
-  repetition_penalty: z.nullable(z.number()).optional(),
+  frequency_penalty: z.number().optional(),
+  presence_penalty: z.number().optional(),
+  repetition_penalty: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
     "top_p": "topP",

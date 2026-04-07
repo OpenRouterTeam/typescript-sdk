@@ -27,9 +27,9 @@ export const FunctionCallArgsDeltaEvent$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.function_call_arguments.delta"),
   item_id: z.string(),
-  output_index: z.number(),
+  output_index: z.int(),
   delta: z.string(),
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
