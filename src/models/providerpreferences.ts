@@ -8,10 +8,6 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
-import {
   PreferredMaxLatency,
   PreferredMaxLatency$Outbound,
   PreferredMaxLatency$outboundSchema,
@@ -23,6 +19,30 @@ import {
 } from "./preferredminthroughput.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const ProviderPreferencesDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type ProviderPreferencesDataCollection = OpenEnum<
+  typeof ProviderPreferencesDataCollection
+>;
 
 export type ProviderPreferencesOrder = ProviderName | string;
 
@@ -151,15 +171,7 @@ export type ProviderPreferences = {
    * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
    */
   requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   *
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: ProviderPreferencesDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -204,6 +216,12 @@ export type ProviderPreferences = {
    */
   preferredMaxLatency?: PreferredMaxLatency | null | undefined;
 };
+
+/** @internal */
+export const ProviderPreferencesDataCollection$outboundSchema: z.ZodType<
+  string,
+  ProviderPreferencesDataCollection
+> = openEnums.outboundSchema(ProviderPreferencesDataCollection);
 
 /** @internal */
 export type ProviderPreferencesOrder$Outbound = string | string;
@@ -428,7 +446,8 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(ProviderPreferencesDataCollection$outboundSchema)
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
