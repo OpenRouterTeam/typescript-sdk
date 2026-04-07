@@ -347,6 +347,60 @@ export type ResponsesRequestPluginModeration = {
   id: "moderation";
 };
 
+/**
+ * The routing intent specifying task and optimization constraint
+ */
+export type ResponsesRequestIntent = {
+  /**
+   * The primary use-case category (chat, reasoning, code, creative, image)
+   */
+  task: string;
+  /**
+   * The optimization axis for routing (fast, smart, latest, high, precise, cheap)
+   */
+  constraint: string;
+  /**
+   * Optional quality/cost tier (free, standard, premium)
+   */
+  tier?: string | null | undefined;
+};
+
+/**
+ * Filters to narrow the candidate model set
+ */
+export type ResponsesRequestFilters = {
+  /**
+   * Provider restrictions (e.g. ["anthropic", "openai"])
+   */
+  provider?: Array<string> | undefined;
+  /**
+   * Model family restrictions (e.g. ["opus", "sonnet"])
+   */
+  family?: Array<string> | undefined;
+  /**
+   * Required capabilities (e.g. ["vision", "tool_use"])
+   */
+  capabilities?: Array<string> | undefined;
+};
+
+/**
+ * Composable routing intent configuration. Alternative to using composable slug syntax (e.g. auto/chat.fast[anthropic]). When provided, this takes precedence over the model slug.
+ */
+export type ResponsesRequestRouting = {
+  /**
+   * The routing intent specifying task and optimization constraint
+   */
+  intent: ResponsesRequestIntent;
+  /**
+   * Filters to narrow the candidate model set
+   */
+  filters?: ResponsesRequestFilters | undefined;
+  /**
+   * The selection strategy to apply among filtered candidates (latency-first, quality-first, cost-first, balanced)
+   */
+  strategy?: string | null | undefined;
+};
+
 export type ResponsesRequestPluginAutoRouter = {
   id: "auto-router";
   /**
@@ -357,6 +411,10 @@ export type ResponsesRequestPluginAutoRouter = {
    * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
    */
   allowedModels?: Array<string> | undefined;
+  /**
+   * Composable routing intent configuration. Alternative to using composable slug syntax (e.g. auto/chat.fast[anthropic]). When provided, this takes precedence over the model slug.
+   */
+  routing?: ResponsesRequestRouting | undefined;
 };
 
 export type ResponsesRequestPluginUnion =
@@ -424,13 +482,13 @@ export type ResponsesRequest = {
    * Configuration for reasoning mode in the response
    */
   reasoning?: ReasoningConfig | null | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  topP?: number | null | undefined;
-  topLogprobs?: number | null | undefined;
-  maxToolCalls?: number | null | undefined;
-  presencePenalty?: number | null | undefined;
-  frequencyPenalty?: number | null | undefined;
+  maxOutputTokens?: number | undefined;
+  temperature?: number | undefined;
+  topP?: number | undefined;
+  topLogprobs?: number | undefined;
+  maxToolCalls?: number | undefined;
+  presencePenalty?: number | undefined;
+  frequencyPenalty?: number | undefined;
   topK?: number | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
@@ -904,10 +962,86 @@ export function responsesRequestPluginModerationToJSON(
 }
 
 /** @internal */
+export type ResponsesRequestIntent$Outbound = {
+  task: string;
+  constraint: string;
+  tier?: string | null | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestIntent$outboundSchema: z.ZodType<
+  ResponsesRequestIntent$Outbound,
+  ResponsesRequestIntent
+> = z.object({
+  task: z.string(),
+  constraint: z.string(),
+  tier: z.nullable(z.string()).optional(),
+});
+
+export function responsesRequestIntentToJSON(
+  responsesRequestIntent: ResponsesRequestIntent,
+): string {
+  return JSON.stringify(
+    ResponsesRequestIntent$outboundSchema.parse(responsesRequestIntent),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestFilters$Outbound = {
+  provider?: Array<string> | undefined;
+  family?: Array<string> | undefined;
+  capabilities?: Array<string> | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestFilters$outboundSchema: z.ZodType<
+  ResponsesRequestFilters$Outbound,
+  ResponsesRequestFilters
+> = z.object({
+  provider: z.array(z.string()).optional(),
+  family: z.array(z.string()).optional(),
+  capabilities: z.array(z.string()).optional(),
+});
+
+export function responsesRequestFiltersToJSON(
+  responsesRequestFilters: ResponsesRequestFilters,
+): string {
+  return JSON.stringify(
+    ResponsesRequestFilters$outboundSchema.parse(responsesRequestFilters),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestRouting$Outbound = {
+  intent: ResponsesRequestIntent$Outbound;
+  filters?: ResponsesRequestFilters$Outbound | undefined;
+  strategy?: string | null | undefined;
+};
+
+/** @internal */
+export const ResponsesRequestRouting$outboundSchema: z.ZodType<
+  ResponsesRequestRouting$Outbound,
+  ResponsesRequestRouting
+> = z.object({
+  intent: z.lazy(() => ResponsesRequestIntent$outboundSchema),
+  filters: z.lazy(() => ResponsesRequestFilters$outboundSchema).optional(),
+  strategy: z.nullable(z.string()).optional(),
+});
+
+export function responsesRequestRoutingToJSON(
+  responsesRequestRouting: ResponsesRequestRouting,
+): string {
+  return JSON.stringify(
+    ResponsesRequestRouting$outboundSchema.parse(responsesRequestRouting),
+  );
+}
+
+/** @internal */
 export type ResponsesRequestPluginAutoRouter$Outbound = {
   id: "auto-router";
   enabled?: boolean | undefined;
   allowed_models?: Array<string> | undefined;
+  routing?: ResponsesRequestRouting$Outbound | undefined;
 };
 
 /** @internal */
@@ -918,6 +1052,7 @@ export const ResponsesRequestPluginAutoRouter$outboundSchema: z.ZodType<
   id: z.literal("auto-router"),
   enabled: z.boolean().optional(),
   allowedModels: z.array(z.string()).optional(),
+  routing: z.lazy(() => ResponsesRequestRouting$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowedModels: "allowed_models",
@@ -1040,13 +1175,13 @@ export type ResponsesRequest$Outbound = {
   models?: Array<string> | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
   reasoning?: ReasoningConfig$Outbound | null | undefined;
-  max_output_tokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  top_p?: number | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_tool_calls?: number | null | undefined;
-  presence_penalty?: number | null | undefined;
-  frequency_penalty?: number | null | undefined;
+  max_output_tokens?: number | undefined;
+  temperature?: number | undefined;
+  top_p?: number | undefined;
+  top_logprobs?: number | undefined;
+  max_tool_calls?: number | undefined;
+  presence_penalty?: number | undefined;
+  frequency_penalty?: number | undefined;
   top_k?: number | undefined;
   image_config?: { [k: string]: string | number } | undefined;
   modalities?: Array<string> | undefined;
@@ -1112,14 +1247,14 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   models: z.array(z.string()).optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
   reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
-  maxOutputTokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()).optional(),
-  topP: z.nullable(z.number()).optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  maxToolCalls: z.nullable(z.int()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  topK: z.number().optional(),
+  maxOutputTokens: z.int().optional(),
+  temperature: z.number().optional(),
+  topP: z.number().optional(),
+  topLogprobs: z.int().optional(),
+  maxToolCalls: z.int().optional(),
+  presencePenalty: z.number().optional(),
+  frequencyPenalty: z.number().optional(),
+  topK: z.int().optional(),
   imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
     .optional(),
   modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
