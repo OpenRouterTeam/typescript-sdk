@@ -10,7 +10,7 @@ import { ImageGenCallInProgressEvent } from "@openrouter/sdk/models";
 let value: ImageGenCallInProgressEvent = {
   type: "response.image_generation_call.in_progress",
   itemId: "<id>",
-  outputIndex: 6543.13,
+  outputIndex: 654313,
   sequenceNumber: 0,
 };
 ```

@@ -7,10 +7,10 @@ import { URLCitation } from "@openrouter/sdk/models";
 
 let value: URLCitation = {
   type: "url_citation",
-  url: "https://openrouter.ai/docs",
-  title: "OpenRouter Documentation",
-  startIndex: 0,
-  endIndex: 42,
+  url: "https://self-reliant-other.net",
+  title: "<value>",
+  startIndex: 222525,
+  endIndex: 287418,
 };
 ```
 
