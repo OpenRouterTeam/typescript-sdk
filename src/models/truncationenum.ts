@@ -16,3 +16,6 @@ export type TruncationEnum = OpenEnum<typeof TruncationEnum>;
 /** @internal */
 export const TruncationEnum$inboundSchema: z.ZodType<TruncationEnum, unknown> =
   openEnums.inboundSchema(TruncationEnum);
+/** @internal */
+export const TruncationEnum$outboundSchema: z.ZodType<string, TruncationEnum> =
+  openEnums.outboundSchema(TruncationEnum);
