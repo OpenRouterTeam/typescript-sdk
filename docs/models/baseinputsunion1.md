@@ -3,44 +3,39 @@
 
 ## Supported Types
 
-### `models.BaseInputsMessage1`
+### `models.BaseInputsMessage`
 
 ```typescript
-const value: models.BaseInputsMessage1 = {
-  role: "user",
-  content: "<value>",
+const value: models.BaseInputsMessage = {
+  role: "assistant",
+  content: [],
 };
 ```
 
-### `models.BaseInputsMessage2`
+### `models.BaseResponseInputMessageItem`
 
 ```typescript
-const value: models.BaseInputsMessage2 = {
+const value: models.BaseResponseInputMessageItem = {
   id: "<id>",
   role: "system",
-  content: [
-    {
-      type: "input_text",
-      text: "Hello, how can I help you?",
-    },
-  ],
+  content: [],
 };
 ```
 
-### `models.BaseInputsFunctionCallOutput`
+### `models.BaseResponseFunctionToolCallOutput`
 
 ```typescript
-const value: models.BaseInputsFunctionCallOutput = {
+const value: models.BaseResponseFunctionToolCallOutput = {
   type: "function_call_output",
   callId: "<id>",
-  output: "<value>",
+  output: [],
 };
 ```
 
-### `models.BaseInputsFunctionCall`
+### `models.BaseResponseFunctionToolCall`
 
 ```typescript
-const value: models.BaseInputsFunctionCall = {
+const value: models.BaseResponseFunctionToolCall = {
   type: "function_call",
   callId: "<id>",
   name: "<value>",

@@ -47,6 +47,8 @@ let value: ListEndpointsResponse = {
         "presence_penalty",
       ],
       uptimeLast30m: 99.5,
+      uptimeLast5m: 100,
+      uptimeLast1d: 99.8,
       supportsImplicitCaching: true,
       latencyLast30m: {
         p50: 0.25,
