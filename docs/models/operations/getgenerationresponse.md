@@ -45,6 +45,7 @@ let value: GetGenerationResponse = {
     providerResponses: null,
     userAgent: "<value>",
     httpReferer: "<value>",
+    sessionId: "<id>",
   },
 };
 ```
