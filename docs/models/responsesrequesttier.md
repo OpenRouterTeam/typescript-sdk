@@ -1,0 +1,19 @@
+# ResponsesRequestTier
+
+Optional quality/cost tier (free, standard, premium)
+
+## Example Usage
+
+```typescript
+import { ResponsesRequestTier } from "@openrouter/sdk/models";
+
+let value: ResponsesRequestTier = "standard";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"free" | "standard" | "premium" | Unrecognized<string>
+```
