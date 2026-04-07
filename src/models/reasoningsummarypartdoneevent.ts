@@ -31,11 +31,11 @@ export const ReasoningSummaryPartDoneEvent$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("response.reasoning_summary_part.done"),
-  output_index: z.number(),
+  output_index: z.int(),
   item_id: z.string(),
-  summary_index: z.number(),
+  summary_index: z.int(),
   part: ReasoningSummaryText$inboundSchema,
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "output_index": "outputIndex",
