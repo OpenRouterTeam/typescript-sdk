@@ -134,7 +134,7 @@ export type OpenResponsesResult = {
   createdAt: number;
   model: string;
   status: OpenAIResponsesResponseStatus;
-  completedAt: number | null;
+  completedAt: number;
   output: Array<OutputItems>;
   user?: string | null | undefined;
   outputText?: string | undefined;
@@ -149,13 +149,13 @@ export type OpenResponsesResult = {
    * Token usage information for the response
    */
   usage?: Usage | null | undefined;
-  maxToolCalls?: number | null | undefined;
+  maxToolCalls?: number | undefined;
   topLogprobs?: number | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature: number | null;
-  topP: number | null;
-  presencePenalty: number | null;
-  frequencyPenalty: number | null;
+  maxOutputTokens?: number | undefined;
+  temperature: number;
+  topP: number;
+  presencePenalty: number;
+  frequencyPenalty: number;
   instructions: BaseInputsUnion | null;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
@@ -257,10 +257,10 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   object: OpenResponsesResultObject$inboundSchema,
-  created_at: z.number(),
+  created_at: z.int(),
   model: z.string(),
   status: OpenAIResponsesResponseStatus$inboundSchema,
-  completed_at: z.nullable(z.number()),
+  completed_at: z.int(),
   output: z.array(OutputItems$inboundSchema),
   user: z.nullable(z.string()).optional(),
   output_text: z.string().optional(),
@@ -269,13 +269,13 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   error: z.nullable(ResponsesErrorField$inboundSchema),
   incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
   usage: z.nullable(Usage$inboundSchema).optional(),
-  max_tool_calls: z.nullable(z.number()).optional(),
-  top_logprobs: z.number().optional(),
-  max_output_tokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()),
-  top_p: z.nullable(z.number()),
-  presence_penalty: z.nullable(z.number()),
-  frequency_penalty: z.nullable(z.number()),
+  max_tool_calls: z.int().optional(),
+  top_logprobs: z.int().optional(),
+  max_output_tokens: z.int().optional(),
+  temperature: z.number(),
+  top_p: z.number(),
+  presence_penalty: z.number(),
+  frequency_penalty: z.number(),
   instructions: z.nullable(BaseInputsUnion$inboundSchema),
   metadata: z.nullable(z.record(z.string(), z.string())),
   tools: z.array(
