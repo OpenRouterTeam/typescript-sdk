@@ -51,3 +51,11 @@ const value: models.ChatRequestPluginContextCompression = {
 };
 ```
 
+### `models.ChatRequestPluginPromptInjection`
+
+```typescript
+const value: models.ChatRequestPluginPromptInjection = {
+  id: "prompt-injection",
+};
+```
+
