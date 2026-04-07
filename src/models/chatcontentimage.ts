@@ -7,14 +7,9 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ChatContentImageType = {
-  ImageUrl: "image_url",
-} as const;
-export type ChatContentImageType = ClosedEnum<typeof ChatContentImageType>;
 
 /**
  * Image detail level for vision models
@@ -44,18 +39,9 @@ export type ChatContentImageImageUrl = {
  * Image content part for vision models
  */
 export type ChatContentImage = {
-  type: ChatContentImageType;
+  type: "image_url";
   imageUrl: ChatContentImageImageUrl;
 };
-
-/** @internal */
-export const ChatContentImageType$inboundSchema: z.ZodEnum<
-  typeof ChatContentImageType
-> = z.enum(ChatContentImageType);
-/** @internal */
-export const ChatContentImageType$outboundSchema: z.ZodEnum<
-  typeof ChatContentImageType
-> = ChatContentImageType$inboundSchema;
 
 /** @internal */
 export const ChatContentImageDetail$inboundSchema: z.ZodType<
@@ -113,7 +99,7 @@ export const ChatContentImage$inboundSchema: z.ZodType<
   ChatContentImage,
   unknown
 > = z.object({
-  type: ChatContentImageType$inboundSchema,
+  type: z.literal("image_url"),
   image_url: z.lazy(() => ChatContentImageImageUrl$inboundSchema),
 }).transform((v) => {
   return remap$(v, {
@@ -122,7 +108,7 @@ export const ChatContentImage$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentImage$Outbound = {
-  type: string;
+  type: "image_url";
   image_url: ChatContentImageImageUrl$Outbound;
 };
 
@@ -131,7 +117,7 @@ export const ChatContentImage$outboundSchema: z.ZodType<
   ChatContentImage$Outbound,
   ChatContentImage
 > = z.object({
-  type: ChatContentImageType$outboundSchema,
+  type: z.literal("image_url"),
   imageUrl: z.lazy(() => ChatContentImageImageUrl$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
