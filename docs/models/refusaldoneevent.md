@@ -9,9 +9,9 @@ import { RefusalDoneEvent } from "@openrouter/sdk/models";
 
 let value: RefusalDoneEvent = {
   type: "response.refusal.done",
-  outputIndex: 8826.16,
+  outputIndex: 882616,
   itemId: "<id>",
-  contentIndex: 6410.81,
+  contentIndex: 641081,
   refusal: "<value>",
   sequenceNumber: 0,
 };
