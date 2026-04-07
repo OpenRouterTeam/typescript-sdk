@@ -48,7 +48,7 @@ export const TextDeltaEventTopLogprob$inboundSchema: z.ZodType<
 > = z.object({
   token: z.string().optional(),
   logprob: z.number().optional(),
-  bytes: z.array(z.number()).optional(),
+  bytes: z.array(z.int()).optional(),
 });
 
 export function textDeltaEventTopLogprobFromJSON(
@@ -70,7 +70,7 @@ export const TextDeltaEventLogprob$inboundSchema: z.ZodType<
   token: z.string(),
   top_logprobs: z.array(z.lazy(() => TextDeltaEventTopLogprob$inboundSchema))
     .optional(),
-  bytes: z.array(z.number()).optional(),
+  bytes: z.array(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "top_logprobs": "topLogprobs",
@@ -92,11 +92,11 @@ export const TextDeltaEvent$inboundSchema: z.ZodType<TextDeltaEvent, unknown> =
   z.object({
     type: z.literal("response.output_text.delta"),
     logprobs: z.array(z.lazy(() => TextDeltaEventLogprob$inboundSchema)),
-    output_index: z.number(),
+    output_index: z.int(),
     item_id: z.string(),
-    content_index: z.number(),
+    content_index: z.int(),
     delta: z.string(),
-    sequence_number: z.number(),
+    sequence_number: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "output_index": "outputIndex",
