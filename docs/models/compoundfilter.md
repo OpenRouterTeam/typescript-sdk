@@ -8,17 +8,8 @@ A compound filter that combines multiple comparison or compound filters
 import { CompoundFilter } from "@openrouter/sdk/models";
 
 let value: CompoundFilter = {
-  type: "or",
-  filters: [
-    {},
-    {
-      "key": "<value>",
-    },
-    {
-      "key": "<value>",
-      "key1": "<value>",
-    },
-  ],
+  type: "and",
+  filters: [],
 };
 ```
 
