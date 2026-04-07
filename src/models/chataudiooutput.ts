@@ -37,7 +37,7 @@ export const ChatAudioOutput$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   id: z.string().optional(),
-  expires_at: z.number().optional(),
+  expires_at: z.int().optional(),
   data: z.string().optional(),
   transcript: z.string().optional(),
 }).transform((v) => {
@@ -59,7 +59,7 @@ export const ChatAudioOutput$outboundSchema: z.ZodType<
   ChatAudioOutput
 > = z.object({
   id: z.string().optional(),
-  expiresAt: z.number().optional(),
+  expiresAt: z.int().optional(),
   data: z.string().optional(),
   transcript: z.string().optional(),
 }).transform((v) => {
