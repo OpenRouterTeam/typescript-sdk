@@ -68,11 +68,19 @@ export type PublicEndpoint = {
   providerName: ProviderName;
   tag: string;
   quantization: PublicEndpointQuantization | null;
-  maxCompletionTokens: number | null;
-  maxPromptTokens: number | null;
+  maxCompletionTokens: number;
+  maxPromptTokens: number;
   supportedParameters: Array<Parameter>;
   status?: EndpointStatus | undefined;
-  uptimeLast30m: number | null;
+  uptimeLast30m: number;
+  /**
+   * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   */
+  uptimeLast5m: number;
+  /**
+   * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   */
+  uptimeLast1d: number;
   supportsImplicitCaching: boolean;
   /**
    * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
@@ -132,16 +140,18 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     name: z.string(),
     model_id: z.string(),
     model_name: z.string(),
-    context_length: z.number(),
+    context_length: z.int(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
     tag: z.string(),
     quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
-    max_completion_tokens: z.nullable(z.number()),
-    max_prompt_tokens: z.nullable(z.number()),
+    max_completion_tokens: z.int(),
+    max_prompt_tokens: z.int(),
     supported_parameters: z.array(Parameter$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
-    uptime_last_30m: z.nullable(z.number()),
+    uptime_last_30m: z.number(),
+    uptime_last_5m: z.number(),
+    uptime_last_1d: z.number(),
     supports_implicit_caching: z.boolean(),
     latency_last_30m: z.nullable(PercentileStats$inboundSchema),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
@@ -155,6 +165,8 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
       "max_prompt_tokens": "maxPromptTokens",
       "supported_parameters": "supportedParameters",
       "uptime_last_30m": "uptimeLast30m",
+      "uptime_last_5m": "uptimeLast5m",
+      "uptime_last_1d": "uptimeLast1d",
       "supports_implicit_caching": "supportsImplicitCaching",
       "latency_last_30m": "latencyLast30m",
       "throughput_last_30m": "throughputLast30m",
