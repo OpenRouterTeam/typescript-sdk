@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
   ChatDebugOptions,
   ChatDebugOptions$Outbound,
   ChatDebugOptions$outboundSchema,
@@ -43,6 +48,10 @@ import {
   ChatMessages$outboundSchema,
 } from "./chatmessages.js";
 import {
+  ChatReasoningSummaryVerbosityEnum,
+  ChatReasoningSummaryVerbosityEnum$outboundSchema,
+} from "./chatreasoningsummaryverbosityenum.js";
+import {
   ChatStreamOptions,
   ChatStreamOptions$Outbound,
   ChatStreamOptions$outboundSchema,
@@ -56,10 +65,6 @@ import {
   ContextCompressionEngine,
   ContextCompressionEngine$outboundSchema,
 } from "./contextcompressionengine.js";
-import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
 import {
   FormatJsonObjectConfig,
   FormatJsonObjectConfig$Outbound,
@@ -86,6 +91,30 @@ import {
   WebSearchEngine,
   WebSearchEngine$outboundSchema,
 } from "./websearchengine.js";
+
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export const ChatRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
+ */
+export type ChatRequestDataCollection = OpenEnum<
+  typeof ChatRequestDataCollection
+>;
 
 export type ChatRequestOrder = ProviderName | string;
 
@@ -208,15 +237,7 @@ export type ChatRequestProvider = {
    * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
    */
   requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   *
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: DataCollection | null | undefined;
+  dataCollection?: ChatRequestDataCollection | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -355,7 +376,7 @@ export type ChatRequestTrace = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export const Effort = {
+export const ChatRequestEffort = {
   Xhigh: "xhigh",
   High: "high",
   Medium: "medium",
@@ -366,17 +387,17 @@ export const Effort = {
 /**
  * Constrains effort on reasoning for reasoning models
  */
-export type Effort = OpenEnum<typeof Effort>;
+export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
 
 /**
  * Configuration options for reasoning models
  */
-export type Reasoning = {
+export type ChatRequestReasoning = {
   /**
    * Constrains effort on reasoning for reasoning models
    */
-  effort?: Effort | null | undefined;
-  summary?: any | null | undefined;
+  effort?: ChatRequestEffort | null | undefined;
+  summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
 /**
@@ -402,25 +423,6 @@ export const Modality = {
   Audio: "audio",
 } as const;
 export type Modality = OpenEnum<typeof Modality>;
-
-export const ChatRequestType = {
-  Ephemeral: "ephemeral",
-} as const;
-export type ChatRequestType = ClosedEnum<typeof ChatRequestType>;
-
-export const ChatRequestTtl = {
-  Fivem: "5m",
-  Oneh: "1h",
-} as const;
-export type ChatRequestTtl = OpenEnum<typeof ChatRequestTtl>;
-
-/**
- * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
- */
-export type CacheControl = {
-  type: ChatRequestType;
-  ttl?: ChatRequestTtl | undefined;
-};
 
 /**
  * The service tier to use for processing this request.
@@ -485,7 +487,7 @@ export type ChatRequest = {
   /**
    * Frequency penalty (-2.0 to 2.0)
    */
-  frequencyPenalty?: number | null | undefined;
+  frequencyPenalty?: number | undefined;
   /**
    * Token logit bias adjustments
    */
@@ -497,15 +499,15 @@ export type ChatRequest = {
   /**
    * Number of top log probabilities to return (0-20)
    */
-  topLogprobs?: number | null | undefined;
+  topLogprobs?: number | undefined;
   /**
    * Maximum tokens in completion
    */
-  maxCompletionTokens?: number | null | undefined;
+  maxCompletionTokens?: number | undefined;
   /**
    * Maximum tokens (deprecated, use max_completion_tokens). Note: some providers enforce a minimum of 16.
    */
-  maxTokens?: number | null | undefined;
+  maxTokens?: number | undefined;
   /**
    * Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
    */
@@ -513,11 +515,11 @@ export type ChatRequest = {
   /**
    * Presence penalty (-2.0 to 2.0)
    */
-  presencePenalty?: number | null | undefined;
+  presencePenalty?: number | undefined;
   /**
    * Configuration options for reasoning models
    */
-  reasoning?: Reasoning | undefined;
+  reasoning?: ChatRequestReasoning | undefined;
   /**
    * Response format configuration
    */
@@ -531,7 +533,7 @@ export type ChatRequest = {
   /**
    * Random seed for deterministic outputs
    */
-  seed?: number | null | undefined;
+  seed?: number | undefined;
   /**
    * Stop sequences (up to 4)
    */
@@ -547,7 +549,10 @@ export type ChatRequest = {
   /**
    * Sampling temperature (0-2)
    */
-  temperature?: number | null | undefined;
+  temperature?: number | undefined;
+  /**
+   * Whether to enable parallel function calling during tool use. When true, the model may generate multiple tool calls in a single response.
+   */
   parallelToolCalls?: boolean | null | undefined;
   /**
    * Tool choice configuration
@@ -560,7 +565,7 @@ export type ChatRequest = {
   /**
    * Nucleus sampling parameter (0-1)
    */
-  topP?: number | null | undefined;
+  topP?: number | undefined;
   /**
    * Debug options for inspecting request transformations (streaming only)
    */
@@ -575,15 +580,18 @@ export type ChatRequest = {
    * Output modalities for the response. Supported values are "text", "image", and "audio".
    */
   modalities?: Array<Modality> | undefined;
-  /**
-   * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
-  cacheControl?: CacheControl | undefined;
+  cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
    * The service tier to use for processing this request.
    */
   serviceTier?: ChatRequestServiceTier | null | undefined;
 };
+
+/** @internal */
+export const ChatRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  ChatRequestDataCollection
+> = openEnums.outboundSchema(ChatRequestDataCollection);
 
 /** @internal */
 export type ChatRequestOrder$Outbound = string | string;
@@ -797,7 +805,8 @@ export const ChatRequestProvider$outboundSchema: z.ZodType<
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
   requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
+  dataCollection: z.nullable(ChatRequestDataCollection$outboundSchema)
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
@@ -940,7 +949,7 @@ export const ChatRequestPluginWeb$outboundSchema: z.ZodType<
 > = z.object({
   id: z.literal("web"),
   enabled: z.boolean().optional(),
-  maxResults: z.number().optional(),
+  maxResults: z.int().optional(),
   searchPrompt: z.string().optional(),
   engine: WebSearchEngine$outboundSchema.optional(),
   includeDomains: z.array(z.string()).optional(),
@@ -1090,26 +1099,33 @@ export function chatRequestTraceToJSON(
 }
 
 /** @internal */
-export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
-  .outboundSchema(Effort);
+export const ChatRequestEffort$outboundSchema: z.ZodType<
+  string,
+  ChatRequestEffort
+> = openEnums.outboundSchema(ChatRequestEffort);
 
 /** @internal */
-export type Reasoning$Outbound = {
+export type ChatRequestReasoning$Outbound = {
   effort?: string | null | undefined;
-  summary?: any | null | undefined;
+  summary?: string | null | undefined;
 };
 
 /** @internal */
-export const Reasoning$outboundSchema: z.ZodType<
-  Reasoning$Outbound,
-  Reasoning
+export const ChatRequestReasoning$outboundSchema: z.ZodType<
+  ChatRequestReasoning$Outbound,
+  ChatRequestReasoning
 > = z.object({
-  effort: z.nullable(Effort$outboundSchema).optional(),
-  summary: z.nullable(z.any()).optional(),
+  effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
+    .optional(),
 });
 
-export function reasoningToJSON(reasoning: Reasoning): string {
-  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
+export function chatRequestReasoningToJSON(
+  chatRequestReasoning: ChatRequestReasoning,
+): string {
+  return JSON.stringify(
+    ChatRequestReasoning$outboundSchema.parse(chatRequestReasoning),
+  );
 }
 
 /** @internal */
@@ -1175,33 +1191,6 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
   .outboundSchema(Modality);
 
 /** @internal */
-export const ChatRequestType$outboundSchema: z.ZodEnum<typeof ChatRequestType> =
-  z.enum(ChatRequestType);
-
-/** @internal */
-export const ChatRequestTtl$outboundSchema: z.ZodType<string, ChatRequestTtl> =
-  openEnums.outboundSchema(ChatRequestTtl);
-
-/** @internal */
-export type CacheControl$Outbound = {
-  type: string;
-  ttl?: string | undefined;
-};
-
-/** @internal */
-export const CacheControl$outboundSchema: z.ZodType<
-  CacheControl$Outbound,
-  CacheControl
-> = z.object({
-  type: ChatRequestType$outboundSchema,
-  ttl: ChatRequestTtl$outboundSchema.optional(),
-});
-
-export function cacheControlToJSON(cacheControl: CacheControl): string {
-  return JSON.stringify(CacheControl$outboundSchema.parse(cacheControl));
-}
-
-/** @internal */
 export const ChatRequestServiceTier$outboundSchema: z.ZodType<
   string,
   ChatRequestServiceTier
@@ -1226,15 +1215,15 @@ export type ChatRequest$Outbound = {
   messages: Array<ChatMessages$Outbound>;
   model?: string | undefined;
   models?: Array<string> | undefined;
-  frequency_penalty?: number | null | undefined;
+  frequency_penalty?: number | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_completion_tokens?: number | null | undefined;
-  max_tokens?: number | null | undefined;
+  top_logprobs?: number | undefined;
+  max_completion_tokens?: number | undefined;
+  max_tokens?: number | undefined;
   metadata?: { [k: string]: string } | undefined;
-  presence_penalty?: number | null | undefined;
-  reasoning?: Reasoning$Outbound | undefined;
+  presence_penalty?: number | undefined;
+  reasoning?: ChatRequestReasoning$Outbound | undefined;
   response_format?:
     | ChatFormatTextConfig$Outbound
     | FormatJsonObjectConfig$Outbound
@@ -1242,21 +1231,21 @@ export type ChatRequest$Outbound = {
     | ChatFormatGrammarConfig$Outbound
     | ChatFormatPythonConfig$Outbound
     | undefined;
-  seed?: number | null | undefined;
+  seed?: number | undefined;
   stop?: string | Array<string> | any | null | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
-  temperature: number | null;
+  temperature?: number | undefined;
   parallel_tool_calls?: boolean | null | undefined;
   tool_choice?: ChatToolChoice$Outbound | undefined;
   tools?: Array<ChatFunctionTool$Outbound> | undefined;
-  top_p: number | null;
+  top_p?: number | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
   image_config?:
     | { [k: string]: string | number | Array<any | null> }
     | undefined;
   modalities?: Array<string> | undefined;
-  cache_control?: CacheControl$Outbound | undefined;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   service_tier?: string | null | undefined;
 };
 
@@ -1283,15 +1272,15 @@ export const ChatRequest$outboundSchema: z.ZodType<
   messages: z.array(ChatMessages$outboundSchema),
   model: z.string().optional(),
   models: z.array(z.string()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
+  frequencyPenalty: z.number().optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
-  topLogprobs: z.nullable(z.number()).optional(),
-  maxCompletionTokens: z.nullable(z.number()).optional(),
-  maxTokens: z.nullable(z.number()).optional(),
+  topLogprobs: z.int().optional(),
+  maxCompletionTokens: z.int().optional(),
+  maxTokens: z.int().optional(),
   metadata: z.record(z.string(), z.string()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
+  presencePenalty: z.number().optional(),
+  reasoning: z.lazy(() => ChatRequestReasoning$outboundSchema).optional(),
   responseFormat: z.union([
     ChatFormatTextConfig$outboundSchema,
     FormatJsonObjectConfig$outboundSchema,
@@ -1299,23 +1288,23 @@ export const ChatRequest$outboundSchema: z.ZodType<
     ChatFormatGrammarConfig$outboundSchema,
     ChatFormatPythonConfig$outboundSchema,
   ]).optional(),
-  seed: z.nullable(z.int()).optional(),
+  seed: z.int().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
-  temperature: z.nullable(z.number().default(1)),
+  temperature: z.number().optional(),
   parallelToolCalls: z.nullable(z.boolean()).optional(),
   toolChoice: ChatToolChoice$outboundSchema.optional(),
   tools: z.array(ChatFunctionTool$outboundSchema).optional(),
-  topP: z.nullable(z.number().default(1)),
+  topP: z.number().optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
   imageConfig: z.record(
     z.string(),
     z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]),
   ).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
-  cacheControl: z.lazy(() => CacheControl$outboundSchema).optional(),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
