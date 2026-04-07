@@ -19,8 +19,3 @@ export const ToolCallStatusEnum$inboundSchema: z.ZodType<
   ToolCallStatusEnum,
   unknown
 > = openEnums.inboundSchema(ToolCallStatusEnum);
-/** @internal */
-export const ToolCallStatusEnum$outboundSchema: z.ZodType<
-  string,
-  ToolCallStatusEnum
-> = openEnums.outboundSchema(ToolCallStatusEnum);
