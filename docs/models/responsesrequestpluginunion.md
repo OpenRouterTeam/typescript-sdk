@@ -51,3 +51,11 @@ const value: models.ResponsesRequestPluginContextCompression = {
 };
 ```
 
+### `models.ResponsesRequestPluginPromptInjection`
+
+```typescript
+const value: models.ResponsesRequestPluginPromptInjection = {
+  id: "prompt-injection",
+};
+```
+
