@@ -43,8 +43,8 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("computer_use_preview"),
-  display_height: z.number(),
-  display_width: z.number(),
+  display_height: z.int(),
+  display_width: z.int(),
   environment: Environment$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -66,8 +66,8 @@ export const ComputerUseServerTool$outboundSchema: z.ZodType<
   ComputerUseServerTool
 > = z.object({
   type: z.literal("computer_use_preview"),
-  displayHeight: z.number(),
-  displayWidth: z.number(),
+  displayHeight: z.int(),
+  displayWidth: z.int(),
   environment: Environment$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
