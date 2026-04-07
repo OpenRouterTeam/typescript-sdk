@@ -6,11 +6,41 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   AnnotationAddedEvent,
   AnnotationAddedEvent$inboundSchema,
 } from "./annotationaddedevent.js";
+import {
+  ApplyPatchServerTool,
+  ApplyPatchServerTool$inboundSchema,
+} from "./applypatchservertool.js";
+import {
+  BaseResponseFunctionToolCall,
+  BaseResponseFunctionToolCall$inboundSchema,
+} from "./baseresponsefunctiontoolcall.js";
+import {
+  BaseResponseFunctionToolCallOutput,
+  BaseResponseFunctionToolCallOutput$inboundSchema,
+} from "./baseresponsefunctiontoolcalloutput.js";
+import {
+  BaseResponseInputMessageItem,
+  BaseResponseInputMessageItem$inboundSchema,
+} from "./baseresponseinputmessageitem.js";
+import {
+  CodeInterpreterServerTool,
+  CodeInterpreterServerTool$inboundSchema,
+} from "./codeinterpreterservertool.js";
+import {
+  CodexLocalShellTool,
+  CodexLocalShellTool$inboundSchema,
+} from "./codexlocalshelltool.js";
+import {
+  ComputerUseServerTool,
+  ComputerUseServerTool$inboundSchema,
+} from "./computeruseservertool.js";
 import {
   ContentPartAddedEvent,
   ContentPartAddedEvent$inboundSchema,
@@ -19,8 +49,13 @@ import {
   ContentPartDoneEvent,
   ContentPartDoneEvent$inboundSchema,
 } from "./contentpartdoneevent.js";
+import { CustomTool, CustomTool$inboundSchema } from "./customtool.js";
 import { ErrorEvent, ErrorEvent$inboundSchema } from "./errorevent.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  FileSearchServerTool,
+  FileSearchServerTool$inboundSchema,
+} from "./filesearchservertool.js";
 import {
   FunctionCallArgsDeltaEvent,
   FunctionCallArgsDeltaEvent$inboundSchema,
@@ -46,10 +81,44 @@ import {
   ImageGenCallPartialImageEvent$inboundSchema,
 } from "./imagegencallpartialimageevent.js";
 import {
-  OpenResponsesResult,
-  OpenResponsesResult$inboundSchema,
-} from "./openresponsesresult.js";
+  ImageGenerationServerTool,
+  ImageGenerationServerTool$inboundSchema,
+} from "./imagegenerationservertool.js";
+import {
+  IncompleteDetails,
+  IncompleteDetails$inboundSchema,
+} from "./incompletedetails.js";
+import { InputAudio, InputAudio$inboundSchema } from "./inputaudio.js";
+import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
+import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
+import { InputText, InputText$inboundSchema } from "./inputtext.js";
+import {
+  LegacyWebSearchServerTool,
+  LegacyWebSearchServerTool$inboundSchema,
+} from "./legacywebsearchservertool.js";
+import { McpServerTool, McpServerTool$inboundSchema } from "./mcpservertool.js";
+import {
+  OpenAIResponsesResponseStatus,
+  OpenAIResponsesResponseStatus$inboundSchema,
+} from "./openairesponsesresponsestatus.js";
+import {
+  OpenAIResponsesToolChoiceUnion,
+  OpenAIResponsesToolChoiceUnion$inboundSchema,
+} from "./openairesponsestoolchoiceunion.js";
+import {
+  OutputItemImageGenerationCall,
+  OutputItemImageGenerationCall$inboundSchema,
+} from "./outputitemimagegenerationcall.js";
 import { OutputItems, OutputItems$inboundSchema } from "./outputitems.js";
+import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
+import {
+  Preview20250311WebSearchServerTool,
+  Preview20250311WebSearchServerTool$inboundSchema,
+} from "./preview20250311websearchservertool.js";
+import {
+  PreviewWebSearchServerTool,
+  PreviewWebSearchServerTool$inboundSchema,
+} from "./previewwebsearchservertool.js";
 import {
   ReasoningDeltaEvent,
   ReasoningDeltaEvent$inboundSchema,
@@ -83,10 +152,46 @@ import {
   RefusalDoneEvent$inboundSchema,
 } from "./refusaldoneevent.js";
 import {
+  ResponsesErrorField,
+  ResponsesErrorField$inboundSchema,
+} from "./responseserrorfield.js";
+import {
+  ShellServerTool,
+  ShellServerTool$inboundSchema,
+} from "./shellservertool.js";
+import {
+  StoredPromptTemplate,
+  StoredPromptTemplate$inboundSchema,
+} from "./storedprompttemplate.js";
+import {
+  InstructionsTypeMessage3,
+  InstructionsTypeMessage3$inboundSchema,
+  StreamEventsContent6,
+  StreamEventsContent6$inboundSchema,
+  StreamEventsObject2,
+  StreamEventsObject2$inboundSchema,
+  StreamEventsPhaseFinalAnswer3,
+  StreamEventsPhaseFinalAnswer3$inboundSchema,
+  StreamEventsResponseCompleted,
+  StreamEventsResponseCompleted$inboundSchema,
+  StreamEventsResponseFailed,
+  StreamEventsResponseFailed$inboundSchema,
+  StreamEventsResponseIncomplete,
+  StreamEventsResponseIncomplete$inboundSchema,
+  StreamEventsResponseOutputItemAdded,
+  StreamEventsResponseOutputItemAdded$inboundSchema,
+  StreamEventsResponseOutputItemDone,
+  StreamEventsResponseOutputItemDone$inboundSchema,
+  StreamEventsRoleUnion3,
+  StreamEventsRoleUnion3$inboundSchema,
+} from "./streameventsphasefinalanswer3.js";
+import { TextConfig, TextConfig$inboundSchema } from "./textconfig.js";
+import {
   TextDeltaEvent,
   TextDeltaEvent$inboundSchema,
 } from "./textdeltaevent.js";
 import { TextDoneEvent, TextDoneEvent$inboundSchema } from "./textdoneevent.js";
+import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
   WebSearchCallCompletedEvent,
   WebSearchCallCompletedEvent$inboundSchema,
@@ -99,67 +204,163 @@ import {
   WebSearchCallSearchingEvent,
   WebSearchCallSearchingEvent$inboundSchema,
 } from "./websearchcallsearchingevent.js";
+import {
+  WebSearchServerTool,
+  WebSearchServerTool$inboundSchema,
+} from "./websearchservertool.js";
 
-/**
- * Event emitted when an output item is complete
- */
-export type StreamEventsResponseOutputItemDone = {
-  type: "response.output_item.done";
-  outputIndex: number;
-  /**
-   * An output item from the response
-   */
-  item: OutputItems;
-  sequenceNumber: number;
+export const StreamEventsPhaseCommentary3 = {
+  Commentary: "commentary",
+} as const;
+export type StreamEventsPhaseCommentary3 = ClosedEnum<
+  typeof StreamEventsPhaseCommentary3
+>;
+
+export type StreamEventsPhaseUnion3 =
+  | StreamEventsPhaseCommentary3
+  | StreamEventsPhaseFinalAnswer3
+  | any;
+
+export type InstructionsMessage3 = {
+  type?: InstructionsTypeMessage3 | undefined;
+  role: StreamEventsRoleUnion3;
+  content: StreamEventsContent6;
+  phase?:
+    | StreamEventsPhaseCommentary3
+    | StreamEventsPhaseFinalAnswer3
+    | any
+    | null
+    | undefined;
 };
 
-/**
- * Event emitted when a new output item is added to the response
- */
-export type StreamEventsResponseOutputItemAdded = {
-  type: "response.output_item.added";
-  outputIndex: number;
-  /**
-   * An output item from the response
-   */
-  item: OutputItems;
-  sequenceNumber: number;
-};
+export type InstructionsUnion3 =
+  | BaseResponseFunctionToolCall
+  | OutputMessage
+  | BaseResponseInputMessageItem
+  | BaseResponseFunctionToolCallOutput
+  | OutputItemImageGenerationCall
+  | InstructionsMessage3;
 
 /**
- * Event emitted when a response has failed
+ * Function tool definition
  */
-export type StreamEventsResponseFailed = {
-  type: "response.failed";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
+export type StreamEventsToolFunction2 = {
+  type: "function";
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
 };
 
-/**
- * Event emitted when a response is incomplete
- */
-export type StreamEventsResponseIncomplete = {
-  type: "response.incomplete";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
+export type StreamEventsToolUnion2 =
+  | StreamEventsToolFunction2
+  | PreviewWebSearchServerTool
+  | Preview20250311WebSearchServerTool
+  | LegacyWebSearchServerTool
+  | WebSearchServerTool
+  | FileSearchServerTool
+  | ComputerUseServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | ImageGenerationServerTool
+  | CodexLocalShellTool
+  | ShellServerTool
+  | ApplyPatchServerTool
+  | CustomTool;
+
+export const StreamEventsEffort2 = {
+  Xhigh: "xhigh",
+  High: "high",
+  Medium: "medium",
+  Low: "low",
+  Minimal: "minimal",
+  None: "none",
+} as const;
+export type StreamEventsEffort2 = OpenEnum<typeof StreamEventsEffort2>;
+
+export const Summary2 = {
+  Auto: "auto",
+  Concise: "concise",
+  Detailed: "detailed",
+} as const;
+export type Summary2 = OpenEnum<typeof Summary2>;
+
+export type StreamEventsReasoning2 = {
+  effort?: StreamEventsEffort2 | null | undefined;
+  summary?: Summary2 | null | undefined;
 };
 
+export const Truncation2 = {
+  Auto: "auto",
+  Disabled: "disabled",
+} as const;
+export type Truncation2 = OpenEnum<typeof Truncation2>;
+
 /**
- * Event emitted when a response has completed successfully
+ * Complete non-streaming response from the Responses API
  */
-export type StreamEventsResponseCompleted = {
-  type: "response.completed";
+export type Response2 = {
+  id: string;
+  object: StreamEventsObject2;
+  createdAt: number;
+  model: string;
+  status: OpenAIResponsesResponseStatus;
+  completedAt: number;
+  output: Array<OutputItems>;
+  user?: string | null | undefined;
+  outputText?: string | undefined;
+  promptCacheKey?: string | null | undefined;
+  safetyIdentifier?: string | null | undefined;
   /**
-   * Complete non-streaming response from the Responses API
+   * Error information returned from the API
    */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
+  error: ResponsesErrorField | null;
+  incompleteDetails: IncompleteDetails | null;
+  /**
+   * Token usage information for the response
+   */
+  usage?: Usage | null | undefined;
+  maxToolCalls?: number | undefined;
+  topLogprobs?: number | undefined;
+  maxOutputTokens?: number | undefined;
+  temperature: number;
+  topP: number;
+  presencePenalty: number;
+  frequencyPenalty: number;
+  instructions: any | null;
+  /**
+   * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
+   */
+  metadata: { [k: string]: string } | null;
+  tools: Array<
+    | StreamEventsToolFunction2
+    | PreviewWebSearchServerTool
+    | Preview20250311WebSearchServerTool
+    | LegacyWebSearchServerTool
+    | WebSearchServerTool
+    | FileSearchServerTool
+    | ComputerUseServerTool
+    | CodeInterpreterServerTool
+    | McpServerTool
+    | ImageGenerationServerTool
+    | CodexLocalShellTool
+    | ShellServerTool
+    | ApplyPatchServerTool
+    | CustomTool
+  >;
+  toolChoice: OpenAIResponsesToolChoiceUnion;
+  parallelToolCalls: boolean;
+  prompt?: StoredPromptTemplate | null | undefined;
+  background?: boolean | null | undefined;
+  previousResponseId?: string | null | undefined;
+  reasoning?: StreamEventsReasoning2 | null | undefined;
+  serviceTier?: string | null | undefined;
+  store?: boolean | undefined;
+  truncation?: Truncation2 | null | undefined;
+  /**
+   * Text output configuration including format and verbosity
+   */
+  text?: TextConfig | undefined;
 };
 
 /**
@@ -167,11 +368,370 @@ export type StreamEventsResponseCompleted = {
  */
 export type StreamEventsResponseInProgress = {
   type: "response.in_progress";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
+  response: Response2;
   sequenceNumber: number;
+};
+
+export const StreamEventsObject1 = {
+  Response: "response",
+} as const;
+export type StreamEventsObject1 = ClosedEnum<typeof StreamEventsObject1>;
+
+export const InstructionsTypeFunctionCallOutput1 = {
+  FunctionCallOutput: "function_call_output",
+} as const;
+export type InstructionsTypeFunctionCallOutput1 = ClosedEnum<
+  typeof InstructionsTypeFunctionCallOutput1
+>;
+
+export type StreamEventsOutput1 =
+  | InputText
+  | (InputImage & { type: "input_image" })
+  | InputFile;
+
+export type StreamEventsOutput2 =
+  | string
+  | Array<InputText | (InputImage & { type: "input_image" }) | InputFile>;
+
+export const StreamEventsStatus1 = {
+  InProgress: "in_progress",
+  Completed: "completed",
+  Incomplete: "incomplete",
+} as const;
+export type StreamEventsStatus1 = OpenEnum<typeof StreamEventsStatus1>;
+
+export type InstructionsFunctionCallOutput1 = {
+  type: InstructionsTypeFunctionCallOutput1;
+  id?: string | null | undefined;
+  callId: string;
+  output:
+    | string
+    | Array<InputText | (InputImage & { type: "input_image" }) | InputFile>;
+  status?: StreamEventsStatus1 | null | undefined;
+};
+
+export const InstructionsTypeMessage2 = {
+  Message: "message",
+} as const;
+export type InstructionsTypeMessage2 = ClosedEnum<
+  typeof InstructionsTypeMessage2
+>;
+
+export const StreamEventsRoleDeveloper2 = {
+  Developer: "developer",
+} as const;
+export type StreamEventsRoleDeveloper2 = ClosedEnum<
+  typeof StreamEventsRoleDeveloper2
+>;
+
+export const StreamEventsRoleAssistant2 = {
+  Assistant: "assistant",
+} as const;
+export type StreamEventsRoleAssistant2 = ClosedEnum<
+  typeof StreamEventsRoleAssistant2
+>;
+
+export const StreamEventsRoleSystem2 = {
+  System: "system",
+} as const;
+export type StreamEventsRoleSystem2 = ClosedEnum<
+  typeof StreamEventsRoleSystem2
+>;
+
+export const StreamEventsRoleUser2 = {
+  User: "user",
+} as const;
+export type StreamEventsRoleUser2 = ClosedEnum<typeof StreamEventsRoleUser2>;
+
+export type StreamEventsRoleUnion2 =
+  | StreamEventsRoleUser2
+  | StreamEventsRoleSystem2
+  | StreamEventsRoleAssistant2
+  | StreamEventsRoleDeveloper2;
+
+export type StreamEventsContent3 =
+  | InputText
+  | (InputImage & { type: "input_image" })
+  | InputFile
+  | InputAudio;
+
+export type StreamEventsContent4 =
+  | Array<
+    InputText | (InputImage & { type: "input_image" }) | InputFile | InputAudio
+  >
+  | string;
+
+export const StreamEventsPhaseFinalAnswer2 = {
+  FinalAnswer: "final_answer",
+} as const;
+export type StreamEventsPhaseFinalAnswer2 = ClosedEnum<
+  typeof StreamEventsPhaseFinalAnswer2
+>;
+
+export const StreamEventsPhaseCommentary2 = {
+  Commentary: "commentary",
+} as const;
+export type StreamEventsPhaseCommentary2 = ClosedEnum<
+  typeof StreamEventsPhaseCommentary2
+>;
+
+export type StreamEventsPhaseUnion2 =
+  | StreamEventsPhaseCommentary2
+  | StreamEventsPhaseFinalAnswer2
+  | any;
+
+export type InstructionsMessage2 = {
+  type?: InstructionsTypeMessage2 | undefined;
+  role:
+    | StreamEventsRoleUser2
+    | StreamEventsRoleSystem2
+    | StreamEventsRoleAssistant2
+    | StreamEventsRoleDeveloper2;
+  content:
+    | Array<
+      | InputText
+      | (InputImage & { type: "input_image" })
+      | InputFile
+      | InputAudio
+    >
+    | string;
+  phase?:
+    | StreamEventsPhaseCommentary2
+    | StreamEventsPhaseFinalAnswer2
+    | any
+    | null
+    | undefined;
+};
+
+export type InstructionsUnion2 =
+  | BaseResponseFunctionToolCall
+  | OutputMessage
+  | BaseResponseInputMessageItem
+  | InstructionsFunctionCallOutput1
+  | OutputItemImageGenerationCall
+  | InstructionsMessage2;
+
+export const InstructionsTypeMessage1 = {
+  Message: "message",
+} as const;
+export type InstructionsTypeMessage1 = ClosedEnum<
+  typeof InstructionsTypeMessage1
+>;
+
+export const StreamEventsRoleDeveloper1 = {
+  Developer: "developer",
+} as const;
+export type StreamEventsRoleDeveloper1 = ClosedEnum<
+  typeof StreamEventsRoleDeveloper1
+>;
+
+export const StreamEventsRoleAssistant1 = {
+  Assistant: "assistant",
+} as const;
+export type StreamEventsRoleAssistant1 = ClosedEnum<
+  typeof StreamEventsRoleAssistant1
+>;
+
+export const StreamEventsRoleSystem1 = {
+  System: "system",
+} as const;
+export type StreamEventsRoleSystem1 = ClosedEnum<
+  typeof StreamEventsRoleSystem1
+>;
+
+export const StreamEventsRoleUser1 = {
+  User: "user",
+} as const;
+export type StreamEventsRoleUser1 = ClosedEnum<typeof StreamEventsRoleUser1>;
+
+export type StreamEventsRoleUnion1 =
+  | StreamEventsRoleUser1
+  | StreamEventsRoleSystem1
+  | StreamEventsRoleAssistant1
+  | StreamEventsRoleDeveloper1;
+
+export type StreamEventsContent1 =
+  | InputText
+  | (InputImage & { type: "input_image" })
+  | InputFile
+  | InputAudio;
+
+export type StreamEventsContent2 =
+  | Array<
+    InputText | (InputImage & { type: "input_image" }) | InputFile | InputAudio
+  >
+  | string;
+
+export const StreamEventsPhaseFinalAnswer1 = {
+  FinalAnswer: "final_answer",
+} as const;
+export type StreamEventsPhaseFinalAnswer1 = ClosedEnum<
+  typeof StreamEventsPhaseFinalAnswer1
+>;
+
+export const StreamEventsPhaseCommentary1 = {
+  Commentary: "commentary",
+} as const;
+export type StreamEventsPhaseCommentary1 = ClosedEnum<
+  typeof StreamEventsPhaseCommentary1
+>;
+
+export type StreamEventsPhaseUnion1 =
+  | StreamEventsPhaseCommentary1
+  | StreamEventsPhaseFinalAnswer1
+  | any;
+
+export type InstructionsMessage1 = {
+  type?: InstructionsTypeMessage1 | undefined;
+  role:
+    | StreamEventsRoleUser1
+    | StreamEventsRoleSystem1
+    | StreamEventsRoleAssistant1
+    | StreamEventsRoleDeveloper1;
+  content:
+    | Array<
+      | InputText
+      | (InputImage & { type: "input_image" })
+      | InputFile
+      | InputAudio
+    >
+    | string;
+  phase?:
+    | StreamEventsPhaseCommentary1
+    | StreamEventsPhaseFinalAnswer1
+    | any
+    | null
+    | undefined;
+};
+
+export type InstructionsUnion1 =
+  | BaseResponseFunctionToolCall
+  | OutputMessage
+  | BaseResponseInputMessageItem
+  | BaseResponseFunctionToolCallOutput
+  | OutputItemImageGenerationCall
+  | InstructionsMessage1;
+
+/**
+ * Function tool definition
+ */
+export type StreamEventsToolFunction1 = {
+  type: "function";
+  name: string;
+  description?: string | null | undefined;
+  strict?: boolean | null | undefined;
+  parameters: { [k: string]: any | null } | null;
+};
+
+export type StreamEventsToolUnion1 =
+  | StreamEventsToolFunction1
+  | PreviewWebSearchServerTool
+  | Preview20250311WebSearchServerTool
+  | LegacyWebSearchServerTool
+  | WebSearchServerTool
+  | FileSearchServerTool
+  | ComputerUseServerTool
+  | CodeInterpreterServerTool
+  | McpServerTool
+  | ImageGenerationServerTool
+  | CodexLocalShellTool
+  | ShellServerTool
+  | ApplyPatchServerTool
+  | CustomTool;
+
+export const StreamEventsEffort1 = {
+  Xhigh: "xhigh",
+  High: "high",
+  Medium: "medium",
+  Low: "low",
+  Minimal: "minimal",
+  None: "none",
+} as const;
+export type StreamEventsEffort1 = OpenEnum<typeof StreamEventsEffort1>;
+
+export const Summary1 = {
+  Auto: "auto",
+  Concise: "concise",
+  Detailed: "detailed",
+} as const;
+export type Summary1 = OpenEnum<typeof Summary1>;
+
+export type StreamEventsReasoning1 = {
+  effort?: StreamEventsEffort1 | null | undefined;
+  summary?: Summary1 | null | undefined;
+};
+
+export const Truncation1 = {
+  Auto: "auto",
+  Disabled: "disabled",
+} as const;
+export type Truncation1 = OpenEnum<typeof Truncation1>;
+
+/**
+ * Complete non-streaming response from the Responses API
+ */
+export type Response1 = {
+  id: string;
+  object: StreamEventsObject1;
+  createdAt: number;
+  model: string;
+  status: OpenAIResponsesResponseStatus;
+  completedAt: number;
+  output: Array<OutputItems>;
+  user?: string | null | undefined;
+  outputText?: string | undefined;
+  promptCacheKey?: string | null | undefined;
+  safetyIdentifier?: string | null | undefined;
+  /**
+   * Error information returned from the API
+   */
+  error: ResponsesErrorField | null;
+  incompleteDetails: IncompleteDetails | null;
+  /**
+   * Token usage information for the response
+   */
+  usage?: Usage | null | undefined;
+  maxToolCalls?: number | undefined;
+  topLogprobs?: number | undefined;
+  maxOutputTokens?: number | undefined;
+  temperature: number;
+  topP: number;
+  presencePenalty: number;
+  frequencyPenalty: number;
+  instructions: any | null;
+  /**
+   * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
+   */
+  metadata: { [k: string]: string } | null;
+  tools: Array<
+    | StreamEventsToolFunction1
+    | PreviewWebSearchServerTool
+    | Preview20250311WebSearchServerTool
+    | LegacyWebSearchServerTool
+    | WebSearchServerTool
+    | FileSearchServerTool
+    | ComputerUseServerTool
+    | CodeInterpreterServerTool
+    | McpServerTool
+    | ImageGenerationServerTool
+    | CodexLocalShellTool
+    | ShellServerTool
+    | ApplyPatchServerTool
+    | CustomTool
+  >;
+  toolChoice: OpenAIResponsesToolChoiceUnion;
+  parallelToolCalls: boolean;
+  prompt?: StoredPromptTemplate | null | undefined;
+  background?: boolean | null | undefined;
+  previousResponseId?: string | null | undefined;
+  reasoning?: StreamEventsReasoning1 | null | undefined;
+  serviceTier?: string | null | undefined;
+  store?: boolean | undefined;
+  truncation?: Truncation1 | null | undefined;
+  /**
+   * Text output configuration including format and verbosity
+   */
+  text?: TextConfig | undefined;
 };
 
 /**
@@ -179,10 +739,7 @@ export type StreamEventsResponseInProgress = {
  */
 export type StreamEventsResponseCreated = {
   type: "response.created";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
+  response: Response1;
   sequenceNumber: number;
 };
 
@@ -222,128 +779,248 @@ export type StreamEvents =
   | WebSearchCallCompletedEvent;
 
 /** @internal */
-export const StreamEventsResponseOutputItemDone$inboundSchema: z.ZodType<
-  StreamEventsResponseOutputItemDone,
-  unknown
-> = z.object({
-  type: z.literal("response.output_item.done"),
-  output_index: z.number(),
-  item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
-  });
-});
+export const StreamEventsPhaseCommentary3$inboundSchema: z.ZodEnum<
+  typeof StreamEventsPhaseCommentary3
+> = z.enum(StreamEventsPhaseCommentary3);
 
-export function streamEventsResponseOutputItemDoneFromJSON(
+/** @internal */
+export const StreamEventsPhaseUnion3$inboundSchema: z.ZodType<
+  StreamEventsPhaseUnion3,
+  unknown
+> = z.union([
+  StreamEventsPhaseCommentary3$inboundSchema,
+  StreamEventsPhaseFinalAnswer3$inboundSchema,
+  z.any(),
+]);
+
+export function streamEventsPhaseUnion3FromJSON(
   jsonString: string,
-): SafeParseResult<StreamEventsResponseOutputItemDone, SDKValidationError> {
+): SafeParseResult<StreamEventsPhaseUnion3, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      StreamEventsResponseOutputItemDone$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseOutputItemDone' from JSON`,
+    (x) => StreamEventsPhaseUnion3$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsPhaseUnion3' from JSON`,
   );
 }
 
 /** @internal */
-export const StreamEventsResponseOutputItemAdded$inboundSchema: z.ZodType<
-  StreamEventsResponseOutputItemAdded,
+export const InstructionsMessage3$inboundSchema: z.ZodType<
+  InstructionsMessage3,
   unknown
 > = z.object({
-  type: z.literal("response.output_item.added"),
-  output_index: z.number(),
-  item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
-  });
+  type: InstructionsTypeMessage3$inboundSchema.optional(),
+  role: StreamEventsRoleUnion3$inboundSchema,
+  content: StreamEventsContent6$inboundSchema,
+  phase: z.nullable(
+    z.union([
+      StreamEventsPhaseCommentary3$inboundSchema,
+      StreamEventsPhaseFinalAnswer3$inboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
 });
 
-export function streamEventsResponseOutputItemAddedFromJSON(
+export function instructionsMessage3FromJSON(
   jsonString: string,
-): SafeParseResult<StreamEventsResponseOutputItemAdded, SDKValidationError> {
+): SafeParseResult<InstructionsMessage3, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      StreamEventsResponseOutputItemAdded$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseOutputItemAdded' from JSON`,
+    (x) => InstructionsMessage3$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsMessage3' from JSON`,
   );
 }
 
 /** @internal */
-export const StreamEventsResponseFailed$inboundSchema: z.ZodType<
-  StreamEventsResponseFailed,
+export const InstructionsUnion3$inboundSchema: z.ZodType<
+  InstructionsUnion3,
   unknown
-> = z.object({
-  type: z.literal("response.failed"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
+> = z.union([
+  BaseResponseFunctionToolCall$inboundSchema,
+  OutputMessage$inboundSchema,
+  BaseResponseInputMessageItem$inboundSchema,
+  BaseResponseFunctionToolCallOutput$inboundSchema,
+  OutputItemImageGenerationCall$inboundSchema,
+  z.lazy(() => InstructionsMessage3$inboundSchema),
+]);
 
-export function streamEventsResponseFailedFromJSON(
+export function instructionsUnion3FromJSON(
   jsonString: string,
-): SafeParseResult<StreamEventsResponseFailed, SDKValidationError> {
+): SafeParseResult<InstructionsUnion3, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => StreamEventsResponseFailed$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseFailed' from JSON`,
+    (x) => InstructionsUnion3$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsUnion3' from JSON`,
   );
 }
 
 /** @internal */
-export const StreamEventsResponseIncomplete$inboundSchema: z.ZodType<
-  StreamEventsResponseIncomplete,
+export const StreamEventsToolFunction2$inboundSchema: z.ZodType<
+  StreamEventsToolFunction2,
   unknown
 > = z.object({
-  type: z.literal("response.incomplete"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
+  type: z.literal("function"),
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
+  strict: z.nullable(z.boolean()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
 });
 
-export function streamEventsResponseIncompleteFromJSON(
+export function streamEventsToolFunction2FromJSON(
   jsonString: string,
-): SafeParseResult<StreamEventsResponseIncomplete, SDKValidationError> {
+): SafeParseResult<StreamEventsToolFunction2, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => StreamEventsResponseIncomplete$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseIncomplete' from JSON`,
+    (x) => StreamEventsToolFunction2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsToolFunction2' from JSON`,
   );
 }
 
 /** @internal */
-export const StreamEventsResponseCompleted$inboundSchema: z.ZodType<
-  StreamEventsResponseCompleted,
+export const StreamEventsToolUnion2$inboundSchema: z.ZodType<
+  StreamEventsToolUnion2,
+  unknown
+> = z.union([
+  z.lazy(() => StreamEventsToolFunction2$inboundSchema),
+  PreviewWebSearchServerTool$inboundSchema,
+  Preview20250311WebSearchServerTool$inboundSchema,
+  LegacyWebSearchServerTool$inboundSchema,
+  WebSearchServerTool$inboundSchema,
+  FileSearchServerTool$inboundSchema,
+  ComputerUseServerTool$inboundSchema,
+  CodeInterpreterServerTool$inboundSchema,
+  McpServerTool$inboundSchema,
+  ImageGenerationServerTool$inboundSchema,
+  CodexLocalShellTool$inboundSchema,
+  ShellServerTool$inboundSchema,
+  ApplyPatchServerTool$inboundSchema,
+  CustomTool$inboundSchema,
+]);
+
+export function streamEventsToolUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsToolUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsToolUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsToolUnion2' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsEffort2$inboundSchema: z.ZodType<
+  StreamEventsEffort2,
+  unknown
+> = openEnums.inboundSchema(StreamEventsEffort2);
+
+/** @internal */
+export const Summary2$inboundSchema: z.ZodType<Summary2, unknown> = openEnums
+  .inboundSchema(Summary2);
+
+/** @internal */
+export const StreamEventsReasoning2$inboundSchema: z.ZodType<
+  StreamEventsReasoning2,
   unknown
 > = z.object({
-  type: z.literal("response.completed"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  effort: z.nullable(StreamEventsEffort2$inboundSchema).optional(),
+  summary: z.nullable(Summary2$inboundSchema).optional(),
+});
+
+export function streamEventsReasoning2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsReasoning2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsReasoning2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsReasoning2' from JSON`,
+  );
+}
+
+/** @internal */
+export const Truncation2$inboundSchema: z.ZodType<Truncation2, unknown> =
+  openEnums.inboundSchema(Truncation2);
+
+/** @internal */
+export const Response2$inboundSchema: z.ZodType<Response2, unknown> = z.object({
+  id: z.string(),
+  object: StreamEventsObject2$inboundSchema,
+  created_at: z.int(),
+  model: z.string(),
+  status: OpenAIResponsesResponseStatus$inboundSchema,
+  completed_at: z.int(),
+  output: z.array(OutputItems$inboundSchema),
+  user: z.nullable(z.string()).optional(),
+  output_text: z.string().optional(),
+  prompt_cache_key: z.nullable(z.string()).optional(),
+  safety_identifier: z.nullable(z.string()).optional(),
+  error: z.nullable(ResponsesErrorField$inboundSchema),
+  incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
+  usage: z.nullable(Usage$inboundSchema).optional(),
+  max_tool_calls: z.int().optional(),
+  top_logprobs: z.int().optional(),
+  max_output_tokens: z.int().optional(),
+  temperature: z.number(),
+  top_p: z.number(),
+  presence_penalty: z.number(),
+  frequency_penalty: z.number(),
+  instructions: z.nullable(z.any()),
+  metadata: z.nullable(z.record(z.string(), z.string())),
+  tools: z.array(
+    z.union([
+      z.lazy(() => StreamEventsToolFunction2$inboundSchema),
+      PreviewWebSearchServerTool$inboundSchema,
+      Preview20250311WebSearchServerTool$inboundSchema,
+      LegacyWebSearchServerTool$inboundSchema,
+      WebSearchServerTool$inboundSchema,
+      FileSearchServerTool$inboundSchema,
+      ComputerUseServerTool$inboundSchema,
+      CodeInterpreterServerTool$inboundSchema,
+      McpServerTool$inboundSchema,
+      ImageGenerationServerTool$inboundSchema,
+      CodexLocalShellTool$inboundSchema,
+      ShellServerTool$inboundSchema,
+      ApplyPatchServerTool$inboundSchema,
+      CustomTool$inboundSchema,
+    ]),
+  ),
+  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
+  parallel_tool_calls: z.boolean(),
+  prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
+  background: z.nullable(z.boolean()).optional(),
+  previous_response_id: z.nullable(z.string()).optional(),
+  reasoning: z.nullable(z.lazy(() => StreamEventsReasoning2$inboundSchema))
+    .optional(),
+  service_tier: z.nullable(z.string()).optional(),
+  store: z.boolean().optional(),
+  truncation: z.nullable(Truncation2$inboundSchema).optional(),
+  text: TextConfig$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
-    "sequence_number": "sequenceNumber",
+    "created_at": "createdAt",
+    "completed_at": "completedAt",
+    "output_text": "outputText",
+    "prompt_cache_key": "promptCacheKey",
+    "safety_identifier": "safetyIdentifier",
+    "incomplete_details": "incompleteDetails",
+    "max_tool_calls": "maxToolCalls",
+    "top_logprobs": "topLogprobs",
+    "max_output_tokens": "maxOutputTokens",
+    "top_p": "topP",
+    "presence_penalty": "presencePenalty",
+    "frequency_penalty": "frequencyPenalty",
+    "tool_choice": "toolChoice",
+    "parallel_tool_calls": "parallelToolCalls",
+    "previous_response_id": "previousResponseId",
+    "service_tier": "serviceTier",
   });
 });
 
-export function streamEventsResponseCompletedFromJSON(
+export function response2FromJSON(
   jsonString: string,
-): SafeParseResult<StreamEventsResponseCompleted, SDKValidationError> {
+): SafeParseResult<Response2, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => StreamEventsResponseCompleted$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseCompleted' from JSON`,
+    (x) => Response2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Response2' from JSON`,
   );
 }
 
@@ -353,8 +1030,8 @@ export const StreamEventsResponseInProgress$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("response.in_progress"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  response: z.lazy(() => Response2$inboundSchema),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -372,13 +1049,668 @@ export function streamEventsResponseInProgressFromJSON(
 }
 
 /** @internal */
+export const StreamEventsObject1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsObject1
+> = z.enum(StreamEventsObject1);
+
+/** @internal */
+export const InstructionsTypeFunctionCallOutput1$inboundSchema: z.ZodEnum<
+  typeof InstructionsTypeFunctionCallOutput1
+> = z.enum(InstructionsTypeFunctionCallOutput1);
+
+/** @internal */
+export const StreamEventsOutput1$inboundSchema: z.ZodType<
+  StreamEventsOutput1,
+  unknown
+> = z.union([
+  InputText$inboundSchema,
+  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
+  InputFile$inboundSchema,
+]);
+
+export function streamEventsOutput1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsOutput1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsOutput1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsOutput1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsOutput2$inboundSchema: z.ZodType<
+  StreamEventsOutput2,
+  unknown
+> = z.union([
+  z.string(),
+  z.array(
+    z.union([
+      InputText$inboundSchema,
+      InputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
+      InputFile$inboundSchema,
+    ]),
+  ),
+]);
+
+export function streamEventsOutput2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsOutput2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsOutput2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsOutput2' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsStatus1$inboundSchema: z.ZodType<
+  StreamEventsStatus1,
+  unknown
+> = openEnums.inboundSchema(StreamEventsStatus1);
+
+/** @internal */
+export const InstructionsFunctionCallOutput1$inboundSchema: z.ZodType<
+  InstructionsFunctionCallOutput1,
+  unknown
+> = z.object({
+  type: InstructionsTypeFunctionCallOutput1$inboundSchema,
+  id: z.nullable(z.string()).optional(),
+  call_id: z.string(),
+  output: z.union([
+    z.string(),
+    z.array(
+      z.union([
+        InputText$inboundSchema,
+        InputImage$inboundSchema.and(
+          z.object({ type: z.literal("input_image") }),
+        ),
+        InputFile$inboundSchema,
+      ]),
+    ),
+  ]),
+  status: z.nullable(StreamEventsStatus1$inboundSchema).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+  });
+});
+
+export function instructionsFunctionCallOutput1FromJSON(
+  jsonString: string,
+): SafeParseResult<InstructionsFunctionCallOutput1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InstructionsFunctionCallOutput1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsFunctionCallOutput1' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsTypeMessage2$inboundSchema: z.ZodEnum<
+  typeof InstructionsTypeMessage2
+> = z.enum(InstructionsTypeMessage2);
+
+/** @internal */
+export const StreamEventsRoleDeveloper2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleDeveloper2
+> = z.enum(StreamEventsRoleDeveloper2);
+
+/** @internal */
+export const StreamEventsRoleAssistant2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleAssistant2
+> = z.enum(StreamEventsRoleAssistant2);
+
+/** @internal */
+export const StreamEventsRoleSystem2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleSystem2
+> = z.enum(StreamEventsRoleSystem2);
+
+/** @internal */
+export const StreamEventsRoleUser2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleUser2
+> = z.enum(StreamEventsRoleUser2);
+
+/** @internal */
+export const StreamEventsRoleUnion2$inboundSchema: z.ZodType<
+  StreamEventsRoleUnion2,
+  unknown
+> = z.union([
+  StreamEventsRoleUser2$inboundSchema,
+  StreamEventsRoleSystem2$inboundSchema,
+  StreamEventsRoleAssistant2$inboundSchema,
+  StreamEventsRoleDeveloper2$inboundSchema,
+]);
+
+export function streamEventsRoleUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsRoleUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsRoleUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsRoleUnion2' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsContent3$inboundSchema: z.ZodType<
+  StreamEventsContent3,
+  unknown
+> = z.union([
+  InputText$inboundSchema,
+  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
+  InputFile$inboundSchema,
+  InputAudio$inboundSchema,
+]);
+
+export function streamEventsContent3FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsContent3, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsContent3$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsContent3' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsContent4$inboundSchema: z.ZodType<
+  StreamEventsContent4,
+  unknown
+> = z.union([
+  z.array(
+    z.union([
+      InputText$inboundSchema,
+      InputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
+      InputFile$inboundSchema,
+      InputAudio$inboundSchema,
+    ]),
+  ),
+  z.string(),
+]);
+
+export function streamEventsContent4FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsContent4, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsContent4$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsContent4' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsPhaseFinalAnswer2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsPhaseFinalAnswer2
+> = z.enum(StreamEventsPhaseFinalAnswer2);
+
+/** @internal */
+export const StreamEventsPhaseCommentary2$inboundSchema: z.ZodEnum<
+  typeof StreamEventsPhaseCommentary2
+> = z.enum(StreamEventsPhaseCommentary2);
+
+/** @internal */
+export const StreamEventsPhaseUnion2$inboundSchema: z.ZodType<
+  StreamEventsPhaseUnion2,
+  unknown
+> = z.union([
+  StreamEventsPhaseCommentary2$inboundSchema,
+  StreamEventsPhaseFinalAnswer2$inboundSchema,
+  z.any(),
+]);
+
+export function streamEventsPhaseUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsPhaseUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsPhaseUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsPhaseUnion2' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsMessage2$inboundSchema: z.ZodType<
+  InstructionsMessage2,
+  unknown
+> = z.object({
+  type: InstructionsTypeMessage2$inboundSchema.optional(),
+  role: z.union([
+    StreamEventsRoleUser2$inboundSchema,
+    StreamEventsRoleSystem2$inboundSchema,
+    StreamEventsRoleAssistant2$inboundSchema,
+    StreamEventsRoleDeveloper2$inboundSchema,
+  ]),
+  content: z.union([
+    z.array(
+      z.union([
+        InputText$inboundSchema,
+        InputImage$inboundSchema.and(
+          z.object({ type: z.literal("input_image") }),
+        ),
+        InputFile$inboundSchema,
+        InputAudio$inboundSchema,
+      ]),
+    ),
+    z.string(),
+  ]),
+  phase: z.nullable(
+    z.union([
+      StreamEventsPhaseCommentary2$inboundSchema,
+      StreamEventsPhaseFinalAnswer2$inboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
+});
+
+export function instructionsMessage2FromJSON(
+  jsonString: string,
+): SafeParseResult<InstructionsMessage2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InstructionsMessage2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsMessage2' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsUnion2$inboundSchema: z.ZodType<
+  InstructionsUnion2,
+  unknown
+> = z.union([
+  BaseResponseFunctionToolCall$inboundSchema,
+  OutputMessage$inboundSchema,
+  BaseResponseInputMessageItem$inboundSchema,
+  z.lazy(() => InstructionsFunctionCallOutput1$inboundSchema),
+  OutputItemImageGenerationCall$inboundSchema,
+  z.lazy(() => InstructionsMessage2$inboundSchema),
+]);
+
+export function instructionsUnion2FromJSON(
+  jsonString: string,
+): SafeParseResult<InstructionsUnion2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InstructionsUnion2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsUnion2' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsTypeMessage1$inboundSchema: z.ZodEnum<
+  typeof InstructionsTypeMessage1
+> = z.enum(InstructionsTypeMessage1);
+
+/** @internal */
+export const StreamEventsRoleDeveloper1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleDeveloper1
+> = z.enum(StreamEventsRoleDeveloper1);
+
+/** @internal */
+export const StreamEventsRoleAssistant1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleAssistant1
+> = z.enum(StreamEventsRoleAssistant1);
+
+/** @internal */
+export const StreamEventsRoleSystem1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleSystem1
+> = z.enum(StreamEventsRoleSystem1);
+
+/** @internal */
+export const StreamEventsRoleUser1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsRoleUser1
+> = z.enum(StreamEventsRoleUser1);
+
+/** @internal */
+export const StreamEventsRoleUnion1$inboundSchema: z.ZodType<
+  StreamEventsRoleUnion1,
+  unknown
+> = z.union([
+  StreamEventsRoleUser1$inboundSchema,
+  StreamEventsRoleSystem1$inboundSchema,
+  StreamEventsRoleAssistant1$inboundSchema,
+  StreamEventsRoleDeveloper1$inboundSchema,
+]);
+
+export function streamEventsRoleUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsRoleUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsRoleUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsRoleUnion1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsContent1$inboundSchema: z.ZodType<
+  StreamEventsContent1,
+  unknown
+> = z.union([
+  InputText$inboundSchema,
+  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
+  InputFile$inboundSchema,
+  InputAudio$inboundSchema,
+]);
+
+export function streamEventsContent1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsContent1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsContent1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsContent1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsContent2$inboundSchema: z.ZodType<
+  StreamEventsContent2,
+  unknown
+> = z.union([
+  z.array(
+    z.union([
+      InputText$inboundSchema,
+      InputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
+      InputFile$inboundSchema,
+      InputAudio$inboundSchema,
+    ]),
+  ),
+  z.string(),
+]);
+
+export function streamEventsContent2FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsContent2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsContent2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsContent2' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsPhaseFinalAnswer1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsPhaseFinalAnswer1
+> = z.enum(StreamEventsPhaseFinalAnswer1);
+
+/** @internal */
+export const StreamEventsPhaseCommentary1$inboundSchema: z.ZodEnum<
+  typeof StreamEventsPhaseCommentary1
+> = z.enum(StreamEventsPhaseCommentary1);
+
+/** @internal */
+export const StreamEventsPhaseUnion1$inboundSchema: z.ZodType<
+  StreamEventsPhaseUnion1,
+  unknown
+> = z.union([
+  StreamEventsPhaseCommentary1$inboundSchema,
+  StreamEventsPhaseFinalAnswer1$inboundSchema,
+  z.any(),
+]);
+
+export function streamEventsPhaseUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsPhaseUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsPhaseUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsPhaseUnion1' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsMessage1$inboundSchema: z.ZodType<
+  InstructionsMessage1,
+  unknown
+> = z.object({
+  type: InstructionsTypeMessage1$inboundSchema.optional(),
+  role: z.union([
+    StreamEventsRoleUser1$inboundSchema,
+    StreamEventsRoleSystem1$inboundSchema,
+    StreamEventsRoleAssistant1$inboundSchema,
+    StreamEventsRoleDeveloper1$inboundSchema,
+  ]),
+  content: z.union([
+    z.array(
+      z.union([
+        InputText$inboundSchema,
+        InputImage$inboundSchema.and(
+          z.object({ type: z.literal("input_image") }),
+        ),
+        InputFile$inboundSchema,
+        InputAudio$inboundSchema,
+      ]),
+    ),
+    z.string(),
+  ]),
+  phase: z.nullable(
+    z.union([
+      StreamEventsPhaseCommentary1$inboundSchema,
+      StreamEventsPhaseFinalAnswer1$inboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
+});
+
+export function instructionsMessage1FromJSON(
+  jsonString: string,
+): SafeParseResult<InstructionsMessage1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InstructionsMessage1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsMessage1' from JSON`,
+  );
+}
+
+/** @internal */
+export const InstructionsUnion1$inboundSchema: z.ZodType<
+  InstructionsUnion1,
+  unknown
+> = z.union([
+  BaseResponseFunctionToolCall$inboundSchema,
+  OutputMessage$inboundSchema,
+  BaseResponseInputMessageItem$inboundSchema,
+  BaseResponseFunctionToolCallOutput$inboundSchema,
+  OutputItemImageGenerationCall$inboundSchema,
+  z.lazy(() => InstructionsMessage1$inboundSchema),
+]);
+
+export function instructionsUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<InstructionsUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => InstructionsUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'InstructionsUnion1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsToolFunction1$inboundSchema: z.ZodType<
+  StreamEventsToolFunction1,
+  unknown
+> = z.object({
+  type: z.literal("function"),
+  name: z.string(),
+  description: z.nullable(z.string()).optional(),
+  strict: z.nullable(z.boolean()).optional(),
+  parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+});
+
+export function streamEventsToolFunction1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsToolFunction1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsToolFunction1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsToolFunction1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsToolUnion1$inboundSchema: z.ZodType<
+  StreamEventsToolUnion1,
+  unknown
+> = z.union([
+  z.lazy(() => StreamEventsToolFunction1$inboundSchema),
+  PreviewWebSearchServerTool$inboundSchema,
+  Preview20250311WebSearchServerTool$inboundSchema,
+  LegacyWebSearchServerTool$inboundSchema,
+  WebSearchServerTool$inboundSchema,
+  FileSearchServerTool$inboundSchema,
+  ComputerUseServerTool$inboundSchema,
+  CodeInterpreterServerTool$inboundSchema,
+  McpServerTool$inboundSchema,
+  ImageGenerationServerTool$inboundSchema,
+  CodexLocalShellTool$inboundSchema,
+  ShellServerTool$inboundSchema,
+  ApplyPatchServerTool$inboundSchema,
+  CustomTool$inboundSchema,
+]);
+
+export function streamEventsToolUnion1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsToolUnion1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsToolUnion1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsToolUnion1' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamEventsEffort1$inboundSchema: z.ZodType<
+  StreamEventsEffort1,
+  unknown
+> = openEnums.inboundSchema(StreamEventsEffort1);
+
+/** @internal */
+export const Summary1$inboundSchema: z.ZodType<Summary1, unknown> = openEnums
+  .inboundSchema(Summary1);
+
+/** @internal */
+export const StreamEventsReasoning1$inboundSchema: z.ZodType<
+  StreamEventsReasoning1,
+  unknown
+> = z.object({
+  effort: z.nullable(StreamEventsEffort1$inboundSchema).optional(),
+  summary: z.nullable(Summary1$inboundSchema).optional(),
+});
+
+export function streamEventsReasoning1FromJSON(
+  jsonString: string,
+): SafeParseResult<StreamEventsReasoning1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => StreamEventsReasoning1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamEventsReasoning1' from JSON`,
+  );
+}
+
+/** @internal */
+export const Truncation1$inboundSchema: z.ZodType<Truncation1, unknown> =
+  openEnums.inboundSchema(Truncation1);
+
+/** @internal */
+export const Response1$inboundSchema: z.ZodType<Response1, unknown> = z.object({
+  id: z.string(),
+  object: StreamEventsObject1$inboundSchema,
+  created_at: z.int(),
+  model: z.string(),
+  status: OpenAIResponsesResponseStatus$inboundSchema,
+  completed_at: z.int(),
+  output: z.array(OutputItems$inboundSchema),
+  user: z.nullable(z.string()).optional(),
+  output_text: z.string().optional(),
+  prompt_cache_key: z.nullable(z.string()).optional(),
+  safety_identifier: z.nullable(z.string()).optional(),
+  error: z.nullable(ResponsesErrorField$inboundSchema),
+  incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
+  usage: z.nullable(Usage$inboundSchema).optional(),
+  max_tool_calls: z.int().optional(),
+  top_logprobs: z.int().optional(),
+  max_output_tokens: z.int().optional(),
+  temperature: z.number(),
+  top_p: z.number(),
+  presence_penalty: z.number(),
+  frequency_penalty: z.number(),
+  instructions: z.nullable(z.any()),
+  metadata: z.nullable(z.record(z.string(), z.string())),
+  tools: z.array(
+    z.union([
+      z.lazy(() => StreamEventsToolFunction1$inboundSchema),
+      PreviewWebSearchServerTool$inboundSchema,
+      Preview20250311WebSearchServerTool$inboundSchema,
+      LegacyWebSearchServerTool$inboundSchema,
+      WebSearchServerTool$inboundSchema,
+      FileSearchServerTool$inboundSchema,
+      ComputerUseServerTool$inboundSchema,
+      CodeInterpreterServerTool$inboundSchema,
+      McpServerTool$inboundSchema,
+      ImageGenerationServerTool$inboundSchema,
+      CodexLocalShellTool$inboundSchema,
+      ShellServerTool$inboundSchema,
+      ApplyPatchServerTool$inboundSchema,
+      CustomTool$inboundSchema,
+    ]),
+  ),
+  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
+  parallel_tool_calls: z.boolean(),
+  prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
+  background: z.nullable(z.boolean()).optional(),
+  previous_response_id: z.nullable(z.string()).optional(),
+  reasoning: z.nullable(z.lazy(() => StreamEventsReasoning1$inboundSchema))
+    .optional(),
+  service_tier: z.nullable(z.string()).optional(),
+  store: z.boolean().optional(),
+  truncation: z.nullable(Truncation1$inboundSchema).optional(),
+  text: TextConfig$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "created_at": "createdAt",
+    "completed_at": "completedAt",
+    "output_text": "outputText",
+    "prompt_cache_key": "promptCacheKey",
+    "safety_identifier": "safetyIdentifier",
+    "incomplete_details": "incompleteDetails",
+    "max_tool_calls": "maxToolCalls",
+    "top_logprobs": "topLogprobs",
+    "max_output_tokens": "maxOutputTokens",
+    "top_p": "topP",
+    "presence_penalty": "presencePenalty",
+    "frequency_penalty": "frequencyPenalty",
+    "tool_choice": "toolChoice",
+    "parallel_tool_calls": "parallelToolCalls",
+    "previous_response_id": "previousResponseId",
+    "service_tier": "serviceTier",
+  });
+});
+
+export function response1FromJSON(
+  jsonString: string,
+): SafeParseResult<Response1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Response1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Response1' from JSON`,
+  );
+}
+
+/** @internal */
 export const StreamEventsResponseCreated$inboundSchema: z.ZodType<
   StreamEventsResponseCreated,
   unknown
 > = z.object({
   type: z.literal("response.created"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
+  response: z.lazy(() => Response1$inboundSchema),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "sequence_number": "sequenceNumber",
@@ -400,12 +1732,12 @@ export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> = z
   .union([
     z.lazy(() => StreamEventsResponseCreated$inboundSchema),
     z.lazy(() => StreamEventsResponseInProgress$inboundSchema),
-    z.lazy(() => StreamEventsResponseCompleted$inboundSchema),
-    z.lazy(() => StreamEventsResponseIncomplete$inboundSchema),
-    z.lazy(() => StreamEventsResponseFailed$inboundSchema),
+    StreamEventsResponseCompleted$inboundSchema,
+    StreamEventsResponseIncomplete$inboundSchema,
+    StreamEventsResponseFailed$inboundSchema,
     ErrorEvent$inboundSchema,
-    z.lazy(() => StreamEventsResponseOutputItemAdded$inboundSchema),
-    z.lazy(() => StreamEventsResponseOutputItemDone$inboundSchema),
+    StreamEventsResponseOutputItemAdded$inboundSchema,
+    StreamEventsResponseOutputItemDone$inboundSchema,
     ContentPartAddedEvent$inboundSchema,
     ContentPartDoneEvent$inboundSchema,
     TextDeltaEvent$inboundSchema,
