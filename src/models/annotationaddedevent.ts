@@ -32,11 +32,11 @@ export const AnnotationAddedEvent$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   type: z.literal("response.output_text.annotation.added"),
-  output_index: z.number(),
+  output_index: z.int(),
   item_id: z.string(),
-  content_index: z.number(),
-  sequence_number: z.number(),
-  annotation_index: z.number(),
+  content_index: z.int(),
+  sequence_number: z.int(),
+  annotation_index: z.int(),
   annotation: OpenAIResponsesAnnotation$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
