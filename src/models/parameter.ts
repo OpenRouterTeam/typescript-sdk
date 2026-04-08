@@ -17,6 +17,7 @@ export const Parameter = {
   PresencePenalty: "presence_penalty",
   RepetitionPenalty: "repetition_penalty",
   MaxTokens: "max_tokens",
+  MaxCompletionTokens: "max_completion_tokens",
   LogitBias: "logit_bias",
   Logprobs: "logprobs",
   TopLogprobs: "top_logprobs",
