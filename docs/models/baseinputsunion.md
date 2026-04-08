@@ -14,11 +14,8 @@ const value: string = "<value>";
 ```typescript
 const value: models.BaseInputsUnion1[] = [
   {
-    type: "image_generation_call",
-    id: "imagegen-abc123",
-    result:
-      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
-    status: "completed",
+    role: "user",
+    content: "What is the weather today?",
   },
 ];
 ```
@@ -26,6 +23,11 @@ const value: models.BaseInputsUnion1[] = [
 ### `any`
 
 ```typescript
-const value: any = "<value>";
+const value: any = [
+  {
+    "role": "user",
+    "content": "What is the weather today?",
+  },
+];
 ```
 
