@@ -10,8 +10,8 @@ import { ReasoningSummaryTextDoneEvent } from "@openrouter/sdk/models";
 let value: ReasoningSummaryTextDoneEvent = {
   type: "response.reasoning_summary_text.done",
   itemId: "<id>",
-  outputIndex: 2399.44,
-  summaryIndex: 5431.97,
+  outputIndex: 239944,
+  summaryIndex: 543197,
   text: "<value>",
   sequenceNumber: 0,
 };
