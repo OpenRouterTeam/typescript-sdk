@@ -10,10 +10,10 @@ import { ImageGenCallPartialImageEvent } from "@openrouter/sdk/models";
 let value: ImageGenCallPartialImageEvent = {
   type: "response.image_generation_call.partial_image",
   itemId: "<id>",
-  outputIndex: 4744.97,
+  outputIndex: 474497,
   sequenceNumber: 0,
   partialImageB64: "<value>",
-  partialImageIndex: 1246.36,
+  partialImageIndex: 124636,
 };
 ```
 
