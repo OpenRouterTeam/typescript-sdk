@@ -23,8 +23,8 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
     type: z.literal("url_citation"),
     url: z.string(),
     title: z.string(),
-    start_index: z.number(),
-    end_index: z.number(),
+    start_index: z.int(),
+    end_index: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "start_index": "startIndex",
@@ -48,8 +48,8 @@ export const URLCitation$outboundSchema: z.ZodType<
   type: z.literal("url_citation"),
   url: z.string(),
   title: z.string(),
-  startIndex: z.number(),
-  endIndex: z.number(),
+  startIndex: z.int(),
+  endIndex: z.int(),
 }).transform((v) => {
   return remap$(v, {
     startIndex: "start_index",
