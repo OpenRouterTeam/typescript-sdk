@@ -6,7 +6,7 @@
 import { StoredPromptTemplate } from "@openrouter/sdk/models";
 
 let value: StoredPromptTemplate = {
-  id: "<id>",
+  id: "prompt-abc123",
 };
 ```
 
