@@ -7,10 +7,9 @@ import { OutputFileSearchCallItem } from "@openrouter/sdk/models";
 
 let value: OutputFileSearchCallItem = {
   type: "file_search_call",
-  id: "filesearch-abc123",
+  id: "fs-abc123",
   queries: [
-    "machine learning algorithms",
-    "neural networks",
+    "search term",
   ],
   status: "completed",
 };
