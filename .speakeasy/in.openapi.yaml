@@ -609,36 +609,75 @@ components:
         - completed
         - incomplete
       example: completed
-    OutputServerToolItem:
+    OutputDatetimeItem:
       type: object
       properties:
-        type:
-          type: string
-          pattern: '^openrouter:'
-          description: Server tool type (e.g. openrouter:datetime, openrouter:web_search)
         id:
           type: string
         status:
           $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          type: string
+          enum:
+            - openrouter:datetime
+        datetime:
+          type: string
+          description: ISO 8601 datetime string
+        timezone:
+          type: string
+          description: IANA timezone name
       required:
-        - type
         - status
-      additionalProperties:
-        nullable: true
-      description: A generic OpenRouter server tool output item
+        - type
+        - datetime
+        - timezone
+      description: An openrouter:datetime server tool output item
+      example:
+        type: openrouter:datetime
+        id: dt_tmp_abc123
+        status: completed
+        datetime: '2026-03-12T14:30:00.000Z'
+        timezone: UTC
+    OutputWebSearchServerToolItem:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          type: string
+          enum:
+            - openrouter:web_search
+      required:
+        - status
+        - type
+      description: An openrouter:web_search server tool output item
       example:
         type: openrouter:web_search
         id: ws_tmp_abc123
         status: completed
     OutputItems:
-      anyOf:
+      oneOf:
         - $ref: '#/components/schemas/OutputMessageItem'
         - $ref: '#/components/schemas/OutputReasoningItem'
         - $ref: '#/components/schemas/OutputFunctionCallItem'
         - $ref: '#/components/schemas/OutputWebSearchCallItem'
         - $ref: '#/components/schemas/OutputFileSearchCallItem'
         - $ref: '#/components/schemas/OutputImageGenerationCallItem'
-        - $ref: '#/components/schemas/OutputServerToolItem'
+        - $ref: '#/components/schemas/OutputDatetimeItem'
+        - $ref: '#/components/schemas/OutputWebSearchServerToolItem'
+      discriminator:
+        propertyName: type
+        mapping:
+          message: '#/components/schemas/OutputMessageItem'
+          reasoning: '#/components/schemas/OutputReasoningItem'
+          function_call: '#/components/schemas/OutputFunctionCallItem'
+          web_search_call: '#/components/schemas/OutputWebSearchCallItem'
+          file_search_call: '#/components/schemas/OutputFileSearchCallItem'
+          image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
+          openrouter:web_search: '#/components/schemas/OutputWebSearchServerToolItem'
       description: An output item from the response
       example:
         id: msg-abc123
@@ -4417,35 +4456,6 @@ components:
         output: '{"temperature":72,"conditions":"sunny"}'
         status: completed
       description: The output from a function call execution
-    OutputDatetimeItem:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - openrouter:datetime
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/ToolCallStatus'
-        datetime:
-          type: string
-          description: ISO 8601 datetime string
-        timezone:
-          type: string
-          description: IANA timezone name
-      required:
-        - type
-        - status
-        - datetime
-        - timezone
-      description: An openrouter:datetime server tool output item
-      example:
-        type: openrouter:datetime
-        id: dt_tmp_abc123
-        status: completed
-        datetime: '2026-03-12T14:30:00.000Z'
-        timezone: UTC
     Inputs:
       anyOf:
         - type: string
@@ -4507,7 +4517,7 @@ components:
               - $ref: '#/components/schemas/OutputFileSearchCallItem'
               - $ref: '#/components/schemas/OutputImageGenerationCallItem'
               - $ref: '#/components/schemas/OutputDatetimeItem'
-              - $ref: '#/components/schemas/OutputServerToolItem'
+              - $ref: '#/components/schemas/OutputWebSearchServerToolItem'
       description: Input for a response request - can be a string or array of items
       example:
         - role: user
