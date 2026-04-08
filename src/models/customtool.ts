@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
@@ -26,7 +28,10 @@ export type FormatText = {
   type: "text";
 };
 
-export type Format = FormatText | FormatGrammar;
+export type Format =
+  | FormatText
+  | FormatGrammar
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /**
  * Custom tool configuration
@@ -35,7 +40,11 @@ export type CustomTool = {
   type: "custom";
   name: string;
   description?: string | undefined;
-  format?: FormatText | FormatGrammar | undefined;
+  format?:
+    | FormatText
+    | FormatGrammar
+    | discriminatedUnionTypes.Unknown<"type">
+    | undefined;
 };
 
 /** @internal */
@@ -114,10 +123,11 @@ export function formatTextFromJSON(
 }
 
 /** @internal */
-export const Format$inboundSchema: z.ZodType<Format, unknown> = z.union([
-  z.lazy(() => FormatText$inboundSchema),
-  z.lazy(() => FormatGrammar$inboundSchema),
-]);
+export const Format$inboundSchema: z.ZodType<Format, unknown> =
+  discriminatedUnion("type", {
+    text: z.lazy(() => FormatText$inboundSchema),
+    grammar: z.lazy(() => FormatGrammar$inboundSchema),
+  });
 /** @internal */
 export type Format$Outbound = FormatText$Outbound | FormatGrammar$Outbound;
 
@@ -147,10 +157,10 @@ export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
     type: z.literal("custom"),
     name: z.string(),
     description: z.string().optional(),
-    format: z.union([
-      z.lazy(() => FormatText$inboundSchema),
-      z.lazy(() => FormatGrammar$inboundSchema),
-    ]).optional(),
+    format: discriminatedUnion("type", {
+      text: z.lazy(() => FormatText$inboundSchema),
+      grammar: z.lazy(() => FormatGrammar$inboundSchema),
+    }).optional(),
   });
 /** @internal */
 export type CustomTool$Outbound = {

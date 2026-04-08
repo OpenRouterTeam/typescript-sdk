@@ -5,22 +5,13 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ReasoningDetailSummaryFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-export type ReasoningDetailSummaryFormat = OpenEnum<
-  typeof ReasoningDetailSummaryFormat
->;
+import {
+  ReasoningFormat,
+  ReasoningFormat$inboundSchema,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
 
 /**
  * Reasoning detail summary schema
@@ -29,20 +20,9 @@ export type ReasoningDetailSummary = {
   type: "reasoning.summary";
   summary: string;
   id?: string | null | undefined;
-  format?: ReasoningDetailSummaryFormat | null | undefined;
+  format?: ReasoningFormat | null | undefined;
   index?: number | undefined;
 };
-
-/** @internal */
-export const ReasoningDetailSummaryFormat$inboundSchema: z.ZodType<
-  ReasoningDetailSummaryFormat,
-  unknown
-> = openEnums.inboundSchema(ReasoningDetailSummaryFormat);
-/** @internal */
-export const ReasoningDetailSummaryFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningDetailSummaryFormat
-> = openEnums.outboundSchema(ReasoningDetailSummaryFormat);
 
 /** @internal */
 export const ReasoningDetailSummary$inboundSchema: z.ZodType<
@@ -52,8 +32,8 @@ export const ReasoningDetailSummary$inboundSchema: z.ZodType<
   type: z.literal("reasoning.summary"),
   summary: z.string(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailSummaryFormat$inboundSchema).optional(),
-  index: z.number().optional(),
+  format: z.nullable(ReasoningFormat$inboundSchema).optional(),
+  index: z.int().optional(),
 });
 /** @internal */
 export type ReasoningDetailSummary$Outbound = {
@@ -72,8 +52,8 @@ export const ReasoningDetailSummary$outboundSchema: z.ZodType<
   type: z.literal("reasoning.summary"),
   summary: z.string(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailSummaryFormat$outboundSchema).optional(),
-  index: z.number().optional(),
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
+  index: z.int().optional(),
 });
 
 export function reasoningDetailSummaryToJSON(
