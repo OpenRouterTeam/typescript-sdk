@@ -28,10 +28,10 @@ export const ReasoningSummaryTextDoneEvent$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.reasoning_summary_text.done"),
   item_id: z.string(),
-  output_index: z.number(),
-  summary_index: z.number(),
+  output_index: z.int(),
+  summary_index: z.int(),
   text: z.string(),
-  sequence_number: z.number(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
