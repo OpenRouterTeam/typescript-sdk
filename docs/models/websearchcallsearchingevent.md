@@ -10,7 +10,7 @@ import { WebSearchCallSearchingEvent } from "@openrouter/sdk/models";
 let value: WebSearchCallSearchingEvent = {
   type: "response.web_search_call.searching",
   itemId: "<id>",
-  outputIndex: 1125.21,
+  outputIndex: 112521,
   sequenceNumber: 0,
 };
 ```
