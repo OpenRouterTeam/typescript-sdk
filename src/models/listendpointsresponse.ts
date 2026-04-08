@@ -31,6 +31,7 @@ export const Tokenizer = {
   Gpt: "GPT",
   Claude: "Claude",
   Gemini: "Gemini",
+  Gemma: "Gemma",
   Grok: "Grok",
   Cohere: "Cohere",
   Nova: "Nova",
@@ -137,7 +138,7 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   name: z.string(),
-  created: z.number(),
+  created: z.int(),
   description: z.string(),
   architecture: z.lazy(() => Architecture$inboundSchema),
   endpoints: z.array(PublicEndpoint$inboundSchema),
