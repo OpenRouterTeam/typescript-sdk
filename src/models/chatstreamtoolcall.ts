@@ -85,7 +85,7 @@ export const ChatStreamToolCall$inboundSchema: z.ZodType<
   ChatStreamToolCall,
   unknown
 > = z.object({
-  index: z.number(),
+  index: z.int(),
   id: z.string().optional(),
   type: ChatStreamToolCallType$inboundSchema.optional(),
   function: z.lazy(() => ChatStreamToolCallFunction$inboundSchema).optional(),
