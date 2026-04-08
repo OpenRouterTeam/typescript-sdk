@@ -1,0 +1,10 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Convert boolean query params from string to boolean
+  version: 0.0.0
+actions:
+  - target: $..parameters[?@.schema["x-openrouter-type"] == "boolean"].schema
+    description: Convert x-openrouter-type boolean params from string to boolean
+    update:
+      type: boolean
