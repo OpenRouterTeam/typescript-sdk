@@ -25,9 +25,9 @@ const value: models.FormatJsonObjectConfig = {
 
 ```typescript
 const value: models.FormatJsonSchemaConfig = {
-  type: "json_schema",
   name: "<value>",
   schema: {},
+  type: "json_schema",
 };
 ```
 
