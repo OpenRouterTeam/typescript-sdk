@@ -8,8 +8,8 @@ Error information
 import { ErrorT } from "@openrouter/sdk/models";
 
 let value: ErrorT = {
-  message: "Rate limit exceeded",
   code: 429,
+  message: "Rate limit exceeded",
 };
 ```
 
@@ -17,5 +17,5 @@ let value: ErrorT = {
 
 | Field               | Type                | Required            | Description         | Example             |
 | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `message`           | *string*            | :heavy_check_mark:  | Error message       | Rate limit exceeded |
 | `code`              | *number*            | :heavy_check_mark:  | Error code          | 429                 |
+| `message`           | *string*            | :heavy_check_mark:  | Error message       | Rate limit exceeded |
