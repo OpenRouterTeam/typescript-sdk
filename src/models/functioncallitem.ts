@@ -7,9 +7,9 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  ToolCallStatusEnum,
-  ToolCallStatusEnum$outboundSchema,
-} from "./toolcallstatusenum.js";
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const FunctionCallItemType = {
   FunctionCall: "function_call",
@@ -25,7 +25,7 @@ export type FunctionCallItem = {
   name: string;
   arguments: string;
   id: string;
-  status?: ToolCallStatusEnum | null | undefined;
+  status?: ToolCallStatus | undefined;
 };
 
 /** @internal */
@@ -40,7 +40,7 @@ export type FunctionCallItem$Outbound = {
   name: string;
   arguments: string;
   id: string;
-  status?: string | null | undefined;
+  status?: string | undefined;
 };
 
 /** @internal */
@@ -53,7 +53,7 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   name: z.string(),
   arguments: z.string(),
   id: z.string(),
-  status: z.nullable(ToolCallStatusEnum$outboundSchema).optional(),
+  status: ToolCallStatus$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
