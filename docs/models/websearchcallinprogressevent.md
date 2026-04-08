@@ -10,7 +10,7 @@ import { WebSearchCallInProgressEvent } from "@openrouter/sdk/models";
 let value: WebSearchCallInProgressEvent = {
   type: "response.web_search_call.in_progress",
   itemId: "<id>",
-  outputIndex: 5491.58,
+  outputIndex: 549158,
   sequenceNumber: 0,
 };
 ```
