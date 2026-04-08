@@ -9,43 +9,26 @@ import {
   collectExtraKeys as collectExtraKeys$,
   safeParse,
 } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const OutputServerToolItemStatus = {
-  Completed: "completed",
-  InProgress: "in_progress",
-  Incomplete: "incomplete",
-} as const;
-export type OutputServerToolItemStatus = OpenEnum<
-  typeof OutputServerToolItemStatus
->;
+import {
+  ToolCallStatus,
+  ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 /**
  * A generic OpenRouter server tool output item
  */
 export type OutputServerToolItem = {
   /**
-   * Server tool type (e.g. openrouter:datetime, openrouter:web_search)
+   * Server tool type (e.g. openrouter:datetime, experimental__search_models)
    */
   type: string;
   id?: string | undefined;
-  status: OutputServerToolItemStatus;
+  status: ToolCallStatus;
   additionalProperties?: { [k: string]: any | null } | undefined;
 };
-
-/** @internal */
-export const OutputServerToolItemStatus$inboundSchema: z.ZodType<
-  OutputServerToolItemStatus,
-  unknown
-> = openEnums.inboundSchema(OutputServerToolItemStatus);
-/** @internal */
-export const OutputServerToolItemStatus$outboundSchema: z.ZodType<
-  string,
-  OutputServerToolItemStatus
-> = openEnums.outboundSchema(OutputServerToolItemStatus);
 
 /** @internal */
 export const OutputServerToolItem$inboundSchema: z.ZodType<
@@ -55,7 +38,7 @@ export const OutputServerToolItem$inboundSchema: z.ZodType<
   z.object({
     type: z.string(),
     id: z.string().optional(),
-    status: OutputServerToolItemStatus$inboundSchema,
+    status: ToolCallStatus$inboundSchema,
   }).catchall(z.any()),
   "additionalProperties",
   true,
@@ -75,7 +58,7 @@ export const OutputServerToolItem$outboundSchema: z.ZodType<
 > = z.object({
   type: z.string(),
   id: z.string().optional(),
-  status: OutputServerToolItemStatus$outboundSchema,
+  status: ToolCallStatus$outboundSchema,
   additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
 }).transform((v) => {
   return {
