@@ -22,7 +22,7 @@ export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
     type: z.literal("file_citation"),
     file_id: z.string(),
     filename: z.string(),
-    index: z.number(),
+    index: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "file_id": "fileId",
@@ -44,7 +44,7 @@ export const FileCitation$outboundSchema: z.ZodType<
   type: z.literal("file_citation"),
   fileId: z.string(),
   filename: z.string(),
-  index: z.number(),
+  index: z.int(),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",

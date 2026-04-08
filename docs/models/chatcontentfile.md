@@ -15,7 +15,7 @@ let value: ChatContentFile = {
 
 ## Fields
 
-| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
-| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
-| `type`                                                         | [models.ChatContentFileType](../models/chatcontentfiletype.md) | :heavy_check_mark:                                             | N/A                                                            |
-| `file`                                                         | [models.FileT](../models/filet.md)                             | :heavy_check_mark:                                             | N/A                                                            |
+| Field                              | Type                               | Required                           | Description                        |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `type`                             | *"file"*                           | :heavy_check_mark:                 | N/A                                |
+| `file`                             | [models.FileT](../models/filet.md) | :heavy_check_mark:                 | N/A                                |
