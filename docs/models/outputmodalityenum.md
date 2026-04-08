@@ -5,7 +5,7 @@
 ```typescript
 import { OutputModalityEnum } from "@openrouter/sdk/models";
 
-let value: OutputModalityEnum = "image";
+let value: OutputModalityEnum = "text";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
