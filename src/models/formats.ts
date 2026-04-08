@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -32,14 +34,16 @@ import {
 export type Formats =
   | FormatTextConfig
   | FormatJsonObjectConfig
-  | FormatJsonSchemaConfig;
+  | FormatJsonSchemaConfig
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
-export const Formats$inboundSchema: z.ZodType<Formats, unknown> = z.union([
-  FormatTextConfig$inboundSchema,
-  FormatJsonObjectConfig$inboundSchema,
-  FormatJsonSchemaConfig$inboundSchema,
-]);
+export const Formats$inboundSchema: z.ZodType<Formats, unknown> =
+  discriminatedUnion("type", {
+    text: FormatTextConfig$inboundSchema,
+    json_object: FormatJsonObjectConfig$inboundSchema,
+    json_schema: FormatJsonSchemaConfig$inboundSchema,
+  });
 /** @internal */
 export type Formats$Outbound =
   | FormatTextConfig$Outbound
