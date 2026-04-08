@@ -66,10 +66,10 @@ export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
     provider_name: z.string(),
     usage: z.number(),
     byok_usage_inference: z.number(),
-    requests: z.number(),
-    prompt_tokens: z.number(),
-    completion_tokens: z.number(),
-    reasoning_tokens: z.number(),
+    requests: z.int(),
+    prompt_tokens: z.int(),
+    completion_tokens: z.int(),
+    reasoning_tokens: z.int(),
   }).transform((v) => {
     return remap$(v, {
       "model_permaslug": "modelPermaslug",

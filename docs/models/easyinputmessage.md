@@ -6,7 +6,7 @@
 import { EasyInputMessage } from "@openrouter/sdk/models";
 
 let value: EasyInputMessage = {
-  role: "system",
+  role: "user",
 };
 ```
 
