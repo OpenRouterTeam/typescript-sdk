@@ -17,15 +17,12 @@ const value: models.FileSearchServerToolFilters = {
 
 ```typescript
 const value: models.CompoundFilter = {
-  type: "or",
+  type: "and",
   filters: [
-    {},
     {
-      "key": "<value>",
-    },
-    {
-      "key": "<value>",
-      "key1": "<value>",
+      "key": "author",
+      "type": "eq",
+      "value": "Alice",
     },
   ],
 };
