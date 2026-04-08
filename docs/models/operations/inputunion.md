@@ -1,12 +1,14 @@
 # InputUnion
 
+Text, token, or multimodal input(s) to embed
+
 
 ## Supported Types
 
 ### `string`
 
 ```typescript
-const value: string = "<value>";
+const value: string = "The quick brown fox jumps over the lazy dog";
 ```
 
 ### `string[]`
