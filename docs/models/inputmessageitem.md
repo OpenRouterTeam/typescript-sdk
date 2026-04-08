@@ -6,7 +6,7 @@
 import { InputMessageItem } from "@openrouter/sdk/models";
 
 let value: InputMessageItem = {
-  role: "system",
+  role: "user",
 };
 ```
 
