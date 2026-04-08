@@ -24,10 +24,10 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.ChatWebSearchServerTool`
+### `models.ChatFunctionToolOpenrouterWebSearch`
 
 ```typescript
-const value: models.ChatWebSearchServerTool = {
+const value: models.ChatFunctionToolOpenrouterWebSearch = {
   type: "openrouter:web_search",
 };
 ```

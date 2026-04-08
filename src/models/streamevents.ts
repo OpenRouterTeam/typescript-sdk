@@ -4,7 +4,6 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
@@ -46,10 +45,13 @@ import {
   ImageGenCallPartialImageEvent$inboundSchema,
 } from "./imagegencallpartialimageevent.js";
 import {
-  OpenResponsesResult,
-  OpenResponsesResult$inboundSchema,
-} from "./openresponsesresult.js";
-import { OutputItems, OutputItems$inboundSchema } from "./outputitems.js";
+  OpenResponsesCreatedEvent,
+  OpenResponsesCreatedEvent$inboundSchema,
+} from "./openresponsescreatedevent.js";
+import {
+  OpenResponsesInProgressEvent,
+  OpenResponsesInProgressEvent$inboundSchema,
+} from "./openresponsesinprogressevent.js";
 import {
   ReasoningDeltaEvent,
   ReasoningDeltaEvent$inboundSchema,
@@ -83,6 +85,26 @@ import {
   RefusalDoneEvent$inboundSchema,
 } from "./refusaldoneevent.js";
 import {
+  StreamEventsResponseCompleted,
+  StreamEventsResponseCompleted$inboundSchema,
+} from "./streameventsresponsecompleted.js";
+import {
+  StreamEventsResponseFailed,
+  StreamEventsResponseFailed$inboundSchema,
+} from "./streameventsresponsefailed.js";
+import {
+  StreamEventsResponseIncomplete,
+  StreamEventsResponseIncomplete$inboundSchema,
+} from "./streameventsresponseincomplete.js";
+import {
+  StreamEventsResponseOutputItemAdded,
+  StreamEventsResponseOutputItemAdded$inboundSchema,
+} from "./streameventsresponseoutputitemadded.js";
+import {
+  StreamEventsResponseOutputItemDone,
+  StreamEventsResponseOutputItemDone$inboundSchema,
+} from "./streameventsresponseoutputitemdone.js";
+import {
   TextDeltaEvent,
   TextDeltaEvent$inboundSchema,
 } from "./textdeltaevent.js";
@@ -101,97 +123,11 @@ import {
 } from "./websearchcallsearchingevent.js";
 
 /**
- * Event emitted when an output item is complete
- */
-export type StreamEventsResponseOutputItemDone = {
-  type: "response.output_item.done";
-  outputIndex: number;
-  /**
-   * An output item from the response
-   */
-  item: OutputItems;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a new output item is added to the response
- */
-export type StreamEventsResponseOutputItemAdded = {
-  type: "response.output_item.added";
-  outputIndex: number;
-  /**
-   * An output item from the response
-   */
-  item: OutputItems;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a response has failed
- */
-export type StreamEventsResponseFailed = {
-  type: "response.failed";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a response is incomplete
- */
-export type StreamEventsResponseIncomplete = {
-  type: "response.incomplete";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a response has completed successfully
- */
-export type StreamEventsResponseCompleted = {
-  type: "response.completed";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a response is in progress
- */
-export type StreamEventsResponseInProgress = {
-  type: "response.in_progress";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
-};
-
-/**
- * Event emitted when a response is created
- */
-export type StreamEventsResponseCreated = {
-  type: "response.created";
-  /**
-   * Complete non-streaming response from the Responses API
-   */
-  response: OpenResponsesResult;
-  sequenceNumber: number;
-};
-
-/**
  * Union of all possible event types emitted during response streaming
  */
 export type StreamEvents =
-  | StreamEventsResponseCreated
-  | StreamEventsResponseInProgress
+  | OpenResponsesCreatedEvent
+  | OpenResponsesInProgressEvent
   | StreamEventsResponseCompleted
   | StreamEventsResponseIncomplete
   | StreamEventsResponseFailed
@@ -222,190 +158,16 @@ export type StreamEvents =
   | WebSearchCallCompletedEvent;
 
 /** @internal */
-export const StreamEventsResponseOutputItemDone$inboundSchema: z.ZodType<
-  StreamEventsResponseOutputItemDone,
-  unknown
-> = z.object({
-  type: z.literal("response.output_item.done"),
-  output_index: z.number(),
-  item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseOutputItemDoneFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseOutputItemDone, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      StreamEventsResponseOutputItemDone$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseOutputItemDone' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseOutputItemAdded$inboundSchema: z.ZodType<
-  StreamEventsResponseOutputItemAdded,
-  unknown
-> = z.object({
-  type: z.literal("response.output_item.added"),
-  output_index: z.number(),
-  item: OutputItems$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseOutputItemAddedFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseOutputItemAdded, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      StreamEventsResponseOutputItemAdded$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseOutputItemAdded' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseFailed$inboundSchema: z.ZodType<
-  StreamEventsResponseFailed,
-  unknown
-> = z.object({
-  type: z.literal("response.failed"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseFailedFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseFailed, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamEventsResponseFailed$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseFailed' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseIncomplete$inboundSchema: z.ZodType<
-  StreamEventsResponseIncomplete,
-  unknown
-> = z.object({
-  type: z.literal("response.incomplete"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseIncompleteFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseIncomplete, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamEventsResponseIncomplete$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseIncomplete' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseCompleted$inboundSchema: z.ZodType<
-  StreamEventsResponseCompleted,
-  unknown
-> = z.object({
-  type: z.literal("response.completed"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseCompletedFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseCompleted, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamEventsResponseCompleted$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseCompleted' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseInProgress$inboundSchema: z.ZodType<
-  StreamEventsResponseInProgress,
-  unknown
-> = z.object({
-  type: z.literal("response.in_progress"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseInProgressFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseInProgress, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamEventsResponseInProgress$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseInProgress' from JSON`,
-  );
-}
-
-/** @internal */
-export const StreamEventsResponseCreated$inboundSchema: z.ZodType<
-  StreamEventsResponseCreated,
-  unknown
-> = z.object({
-  type: z.literal("response.created"),
-  response: OpenResponsesResult$inboundSchema,
-  sequence_number: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "sequence_number": "sequenceNumber",
-  });
-});
-
-export function streamEventsResponseCreatedFromJSON(
-  jsonString: string,
-): SafeParseResult<StreamEventsResponseCreated, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => StreamEventsResponseCreated$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'StreamEventsResponseCreated' from JSON`,
-  );
-}
-
-/** @internal */
 export const StreamEvents$inboundSchema: z.ZodType<StreamEvents, unknown> = z
   .union([
-    z.lazy(() => StreamEventsResponseCreated$inboundSchema),
-    z.lazy(() => StreamEventsResponseInProgress$inboundSchema),
-    z.lazy(() => StreamEventsResponseCompleted$inboundSchema),
-    z.lazy(() => StreamEventsResponseIncomplete$inboundSchema),
-    z.lazy(() => StreamEventsResponseFailed$inboundSchema),
+    OpenResponsesCreatedEvent$inboundSchema,
+    OpenResponsesInProgressEvent$inboundSchema,
+    StreamEventsResponseCompleted$inboundSchema,
+    StreamEventsResponseIncomplete$inboundSchema,
+    StreamEventsResponseFailed$inboundSchema,
     ErrorEvent$inboundSchema,
-    z.lazy(() => StreamEventsResponseOutputItemAdded$inboundSchema),
-    z.lazy(() => StreamEventsResponseOutputItemDone$inboundSchema),
+    StreamEventsResponseOutputItemAdded$inboundSchema,
+    StreamEventsResponseOutputItemDone$inboundSchema,
     ContentPartAddedEvent$inboundSchema,
     ContentPartDoneEvent$inboundSchema,
     TextDeltaEvent$inboundSchema,

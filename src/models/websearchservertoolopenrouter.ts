@@ -36,8 +36,8 @@ export const WebSearchServerToolOpenRouterParameters$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouterParameters$Outbound,
   WebSearchServerToolOpenRouterParameters
 > = z.object({
-  maxResults: z.number().optional(),
-  maxTotalResults: z.number().optional(),
+  maxResults: z.int().optional(),
+  maxTotalResults: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
