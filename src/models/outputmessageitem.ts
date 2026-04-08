@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -21,11 +23,6 @@ export const OutputMessageItemRole = {
   Assistant: "assistant",
 } as const;
 export type OutputMessageItemRole = ClosedEnum<typeof OutputMessageItemRole>;
-
-export const OutputMessageItemType = {
-  Message: "message",
-} as const;
-export type OutputMessageItemType = ClosedEnum<typeof OutputMessageItemType>;
 
 export const OutputMessageItemStatusInProgress = {
   InProgress: "in_progress",
@@ -55,7 +52,8 @@ export type OutputMessageItemStatusUnion =
 
 export type OutputMessageItemContent =
   | ResponseOutputText
-  | OpenAIResponsesRefusalContent;
+  | OpenAIResponsesRefusalContent
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export const OutputMessageItemPhaseFinalAnswer = {
   FinalAnswer: "final_answer",
@@ -85,13 +83,17 @@ export type OutputMessageItemPhaseUnion =
 export type OutputMessageItem = {
   id: string;
   role: OutputMessageItemRole;
-  type: OutputMessageItemType;
+  type: "message";
   status?:
     | OutputMessageItemStatusCompleted
     | OutputMessageItemStatusIncomplete
     | OutputMessageItemStatusInProgress
     | undefined;
-  content: Array<ResponseOutputText | OpenAIResponsesRefusalContent>;
+  content: Array<
+    | ResponseOutputText
+    | OpenAIResponsesRefusalContent
+    | discriminatedUnionTypes.Unknown<"type">
+  >;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -107,11 +109,6 @@ export type OutputMessageItem = {
 export const OutputMessageItemRole$inboundSchema: z.ZodEnum<
   typeof OutputMessageItemRole
 > = z.enum(OutputMessageItemRole);
-
-/** @internal */
-export const OutputMessageItemType$inboundSchema: z.ZodEnum<
-  typeof OutputMessageItemType
-> = z.enum(OutputMessageItemType);
 
 /** @internal */
 export const OutputMessageItemStatusInProgress$inboundSchema: z.ZodEnum<
@@ -152,10 +149,10 @@ export function outputMessageItemStatusUnionFromJSON(
 export const OutputMessageItemContent$inboundSchema: z.ZodType<
   OutputMessageItemContent,
   unknown
-> = z.union([
-  ResponseOutputText$inboundSchema,
-  OpenAIResponsesRefusalContent$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  output_text: ResponseOutputText$inboundSchema,
+  refusal: OpenAIResponsesRefusalContent$inboundSchema,
+});
 
 export function outputMessageItemContentFromJSON(
   jsonString: string,
@@ -204,17 +201,17 @@ export const OutputMessageItem$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   role: OutputMessageItemRole$inboundSchema,
-  type: OutputMessageItemType$inboundSchema,
+  type: z.literal("message"),
   status: z.union([
     OutputMessageItemStatusCompleted$inboundSchema,
     OutputMessageItemStatusIncomplete$inboundSchema,
     OutputMessageItemStatusInProgress$inboundSchema,
   ]).optional(),
   content: z.array(
-    z.union([
-      ResponseOutputText$inboundSchema,
-      OpenAIResponsesRefusalContent$inboundSchema,
-    ]),
+    discriminatedUnion("type", {
+      output_text: ResponseOutputText$inboundSchema,
+      refusal: OpenAIResponsesRefusalContent$inboundSchema,
+    }),
   ),
   phase: z.nullable(
     z.union([
