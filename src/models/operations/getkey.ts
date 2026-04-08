@@ -80,11 +80,11 @@ export type GetKeyData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
@@ -187,8 +187,8 @@ export const GetKeyData$inboundSchema: z.ZodType<GetKeyData, unknown> = z
     name: z.string(),
     label: z.string(),
     disabled: z.boolean(),
-    limit: z.nullable(z.number()),
-    limit_remaining: z.nullable(z.number()),
+    limit: z.number(),
+    limit_remaining: z.number(),
     limit_reset: z.nullable(z.string()),
     include_byok_in_limit: z.boolean(),
     usage: z.number(),

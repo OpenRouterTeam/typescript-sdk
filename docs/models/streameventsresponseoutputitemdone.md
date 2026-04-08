@@ -9,10 +9,17 @@ import { StreamEventsResponseOutputItemDone } from "@openrouter/sdk/models";
 
 let value: StreamEventsResponseOutputItemDone = {
   type: "response.output_item.done",
-  outputIndex: 3075.95,
+  outputIndex: 307595,
   item: {
+    id: "msg-abc123",
+    role: "assistant",
     type: "message",
-    status: "completed",
+    content: [
+      {
+        type: "output_text",
+        text: "Hello! How can I help you today?",
+      },
+    ],
   },
   sequenceNumber: 0,
 };
