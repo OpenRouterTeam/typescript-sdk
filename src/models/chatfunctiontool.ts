@@ -12,11 +12,6 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import {
-  ChatWebSearchServerTool,
-  ChatWebSearchServerTool$Outbound,
-  ChatWebSearchServerTool$outboundSchema,
-} from "./chatwebsearchservertool.js";
-import {
   ChatWebSearchShorthand,
   ChatWebSearchShorthand$Outbound,
   ChatWebSearchShorthand$outboundSchema,
@@ -26,11 +21,68 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import {
+  SearchContextSizeEnum,
+  SearchContextSizeEnum$outboundSchema,
+} from "./searchcontextsizeenum.js";
+import {
+  WebSearchConfig,
+  WebSearchConfig$Outbound,
+  WebSearchConfig$outboundSchema,
+} from "./websearchconfig.js";
+import {
+  WebSearchDomainFilter,
+  WebSearchDomainFilter$Outbound,
+  WebSearchDomainFilter$outboundSchema,
+} from "./websearchdomainfilter.js";
+import {
+  WebSearchEngineEnum,
+  WebSearchEngineEnum$outboundSchema,
+} from "./websearchengineenum.js";
+import {
+  WebSearchUserLocation,
+  WebSearchUserLocation$Outbound,
+  WebSearchUserLocation$outboundSchema,
+} from "./websearchuserlocation.js";
 
-export const ChatFunctionToolType = {
+export const ChatFunctionToolTypeOpenrouterWebSearch = {
+  OpenrouterWebSearch: "openrouter:web_search",
+} as const;
+export type ChatFunctionToolTypeOpenrouterWebSearch = ClosedEnum<
+  typeof ChatFunctionToolTypeOpenrouterWebSearch
+>;
+
+/**
+ * OpenRouter built-in server tool: searches the web for current information
+ */
+export type ChatFunctionToolOpenrouterWebSearch = {
+  type: ChatFunctionToolTypeOpenrouterWebSearch;
+  filters?: WebSearchDomainFilter | null | undefined;
+  /**
+   * Size of the search context for web search tools
+   */
+  searchContextSize?: SearchContextSizeEnum | undefined;
+  /**
+   * User location information for web search
+   */
+  userLocation?: WebSearchUserLocation | null | undefined;
+  /**
+   * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
+   */
+  engine?: WebSearchEngineEnum | undefined;
+  /**
+   * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
+   */
+  maxResults?: number | undefined;
+  parameters?: WebSearchConfig | undefined;
+};
+
+export const ChatFunctionToolTypeFunction = {
   Function: "function",
 } as const;
-export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
+export type ChatFunctionToolTypeFunction = ClosedEnum<
+  typeof ChatFunctionToolTypeFunction
+>;
 
 /**
  * Function definition for tool calling
@@ -55,7 +107,7 @@ export type ChatFunctionToolFunctionFunction = {
 };
 
 export type ChatFunctionToolFunction = {
-  type: ChatFunctionToolType;
+  type: ChatFunctionToolTypeFunction;
   /**
    * Function definition for tool calling
    */
@@ -72,13 +124,59 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
-  | ChatWebSearchServerTool
+  | ChatFunctionToolOpenrouterWebSearch
   | ChatWebSearchShorthand;
 
 /** @internal */
-export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
-  typeof ChatFunctionToolType
-> = z.enum(ChatFunctionToolType);
+export const ChatFunctionToolTypeOpenrouterWebSearch$outboundSchema: z.ZodEnum<
+  typeof ChatFunctionToolTypeOpenrouterWebSearch
+> = z.enum(ChatFunctionToolTypeOpenrouterWebSearch);
+
+/** @internal */
+export type ChatFunctionToolOpenrouterWebSearch$Outbound = {
+  type: string;
+  filters?: WebSearchDomainFilter$Outbound | null | undefined;
+  search_context_size?: string | undefined;
+  user_location?: WebSearchUserLocation$Outbound | null | undefined;
+  engine?: string | undefined;
+  max_results?: number | undefined;
+  parameters?: WebSearchConfig$Outbound | undefined;
+};
+
+/** @internal */
+export const ChatFunctionToolOpenrouterWebSearch$outboundSchema: z.ZodType<
+  ChatFunctionToolOpenrouterWebSearch$Outbound,
+  ChatFunctionToolOpenrouterWebSearch
+> = z.object({
+  type: ChatFunctionToolTypeOpenrouterWebSearch$outboundSchema,
+  filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
+  searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
+  userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
+  engine: WebSearchEngineEnum$outboundSchema.optional(),
+  maxResults: z.int().optional(),
+  parameters: WebSearchConfig$outboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    searchContextSize: "search_context_size",
+    userLocation: "user_location",
+    maxResults: "max_results",
+  });
+});
+
+export function chatFunctionToolOpenrouterWebSearchToJSON(
+  chatFunctionToolOpenrouterWebSearch: ChatFunctionToolOpenrouterWebSearch,
+): string {
+  return JSON.stringify(
+    ChatFunctionToolOpenrouterWebSearch$outboundSchema.parse(
+      chatFunctionToolOpenrouterWebSearch,
+    ),
+  );
+}
+
+/** @internal */
+export const ChatFunctionToolTypeFunction$outboundSchema: z.ZodEnum<
+  typeof ChatFunctionToolTypeFunction
+> = z.enum(ChatFunctionToolTypeFunction);
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
@@ -121,7 +219,7 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction$Outbound,
   ChatFunctionToolFunction
 > = z.object({
-  type: ChatFunctionToolType$outboundSchema,
+  type: ChatFunctionToolTypeFunction$outboundSchema,
   function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
 }).transform((v) => {
@@ -142,7 +240,7 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
-  | ChatWebSearchServerTool$Outbound
+  | ChatFunctionToolOpenrouterWebSearch$Outbound
   | ChatWebSearchShorthand$Outbound;
 
 /** @internal */
@@ -152,7 +250,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
-  ChatWebSearchServerTool$outboundSchema,
+  z.lazy(() => ChatFunctionToolOpenrouterWebSearch$outboundSchema),
   ChatWebSearchShorthand$outboundSchema,
 ]);
 
