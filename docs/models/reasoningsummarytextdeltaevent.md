@@ -10,8 +10,8 @@ import { ReasoningSummaryTextDeltaEvent } from "@openrouter/sdk/models";
 let value: ReasoningSummaryTextDeltaEvent = {
   type: "response.reasoning_summary_text.delta",
   itemId: "<id>",
-  outputIndex: 3263.73,
-  summaryIndex: 2149.54,
+  outputIndex: 326373,
+  summaryIndex: 214954,
   delta: "<value>",
   sequenceNumber: 0,
 };
