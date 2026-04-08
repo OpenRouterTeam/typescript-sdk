@@ -8,11 +8,11 @@ A function call initiated by the model
 import { FunctionCallItem } from "@openrouter/sdk/models";
 
 let value: FunctionCallItem = {
-  type: "function_call",
-  callId: "call-abc123",
-  name: "get_weather",
   arguments: "{\"location\":\"San Francisco\"}",
+  callId: "call-abc123",
   id: "call-abc123",
+  name: "get_weather",
+  type: "function_call",
 };
 ```
 
@@ -20,9 +20,9 @@ let value: FunctionCallItem = {
 
 | Field                                                            | Type                                                             | Required                                                         | Description                                                      | Example                                                          |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `type`                                                           | [models.FunctionCallItemType](../models/functioncallitemtype.md) | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
-| `callId`                                                         | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
-| `name`                                                           | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
 | `arguments`                                                      | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
+| `callId`                                                         | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
 | `id`                                                             | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
-| `status`                                                         | [models.ToolCallStatusEnum](../models/toolcallstatusenum.md)     | :heavy_minus_sign:                                               | N/A                                                              | completed                                                        |
+| `name`                                                           | *string*                                                         | :heavy_check_mark:                                               | N/A                                                              |                                                                  |
+| `status`                                                         | [models.ToolCallStatus](../models/toolcallstatus.md)             | :heavy_minus_sign:                                               | N/A                                                              | completed                                                        |
+| `type`                                                           | [models.FunctionCallItemType](../models/functioncallitemtype.md) | :heavy_check_mark:                                               | N/A                                                              |                                                                  |

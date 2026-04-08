@@ -15,7 +15,9 @@ import { Generations } from "./generations.js";
 import { Guardrails } from "./guardrails.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
+import { Organization } from "./organization.js";
 import { Providers } from "./providers.js";
+import { Rerank } from "./rerank.js";
 // #region imports
 import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
 import {
@@ -30,14 +32,14 @@ export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
-  private _beta?: Beta;
-  get beta(): Beta {
-    return (this._beta ??= new Beta(this._options));
-  }
-
   private _analytics?: Analytics;
   get analytics(): Analytics {
     return (this._analytics ??= new Analytics(this._options));
+  }
+
+  private _oAuth?: OAuth;
+  get oAuth(): OAuth {
+    return (this._oAuth ??= new OAuth(this._options));
   }
 
   private _chat?: Chat;
@@ -55,29 +57,14 @@ export class OpenRouter extends ClientSDK {
     return (this._embeddings ??= new Embeddings(this._options));
   }
 
-  private _generations?: Generations;
-  get generations(): Generations {
-    return (this._generations ??= new Generations(this._options));
-  }
-
-  private _models?: Models;
-  get models(): Models {
-    return (this._models ??= new Models(this._options));
-  }
-
   private _endpoints?: Endpoints;
   get endpoints(): Endpoints {
     return (this._endpoints ??= new Endpoints(this._options));
   }
 
-  private _providers?: Providers;
-  get providers(): Providers {
-    return (this._providers ??= new Providers(this._options));
-  }
-
-  private _apiKeys?: APIKeys;
-  get apiKeys(): APIKeys {
-    return (this._apiKeys ??= new APIKeys(this._options));
+  private _generations?: Generations;
+  get generations(): Generations {
+    return (this._generations ??= new Generations(this._options));
   }
 
   private _guardrails?: Guardrails;
@@ -85,9 +72,34 @@ export class OpenRouter extends ClientSDK {
     return (this._guardrails ??= new Guardrails(this._options));
   }
 
-  private _oAuth?: OAuth;
-  get oAuth(): OAuth {
-    return (this._oAuth ??= new OAuth(this._options));
+  private _apiKeys?: APIKeys;
+  get apiKeys(): APIKeys {
+    return (this._apiKeys ??= new APIKeys(this._options));
+  }
+
+  private _models?: Models;
+  get models(): Models {
+    return (this._models ??= new Models(this._options));
+  }
+
+  private _organization?: Organization;
+  get organization(): Organization {
+    return (this._organization ??= new Organization(this._options));
+  }
+
+  private _providers?: Providers;
+  get providers(): Providers {
+    return (this._providers ??= new Providers(this._options));
+  }
+
+  private _rerank?: Rerank;
+  get rerank(): Rerank {
+    return (this._rerank ??= new Rerank(this._options));
+  }
+
+  private _beta?: Beta;
+  get beta(): Beta {
+    return (this._beta ??= new Beta(this._options));
   }
 
   // #region sdk-class-body
