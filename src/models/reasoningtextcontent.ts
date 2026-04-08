@@ -17,8 +17,8 @@ export type ReasoningTextContentType = ClosedEnum<
 >;
 
 export type ReasoningTextContent = {
-  type: ReasoningTextContentType;
   text: string;
+  type: ReasoningTextContentType;
 };
 
 /** @internal */
@@ -35,13 +35,13 @@ export const ReasoningTextContent$inboundSchema: z.ZodType<
   ReasoningTextContent,
   unknown
 > = z.object({
-  type: ReasoningTextContentType$inboundSchema,
   text: z.string(),
+  type: ReasoningTextContentType$inboundSchema,
 });
 /** @internal */
 export type ReasoningTextContent$Outbound = {
-  type: string;
   text: string;
+  type: string;
 };
 
 /** @internal */
@@ -49,8 +49,8 @@ export const ReasoningTextContent$outboundSchema: z.ZodType<
   ReasoningTextContent$Outbound,
   ReasoningTextContent
 > = z.object({
-  type: ReasoningTextContentType$outboundSchema,
   text: z.string(),
+  type: ReasoningTextContentType$outboundSchema,
 });
 
 export function reasoningTextContentToJSON(

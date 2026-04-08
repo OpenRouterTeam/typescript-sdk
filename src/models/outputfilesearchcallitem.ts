@@ -22,10 +22,10 @@ export type OutputFileSearchCallItemType = ClosedEnum<
 >;
 
 export type OutputFileSearchCallItem = {
-  type: OutputFileSearchCallItemType;
   id: string;
   queries: Array<string>;
   status: WebSearchStatus;
+  type: OutputFileSearchCallItemType;
 };
 
 /** @internal */
@@ -42,17 +42,17 @@ export const OutputFileSearchCallItem$inboundSchema: z.ZodType<
   OutputFileSearchCallItem,
   unknown
 > = z.object({
-  type: OutputFileSearchCallItemType$inboundSchema,
   id: z.string(),
   queries: z.array(z.string()),
   status: WebSearchStatus$inboundSchema,
+  type: OutputFileSearchCallItemType$inboundSchema,
 });
 /** @internal */
 export type OutputFileSearchCallItem$Outbound = {
-  type: string;
   id: string;
   queries: Array<string>;
   status: string;
+  type: string;
 };
 
 /** @internal */
@@ -60,10 +60,10 @@ export const OutputFileSearchCallItem$outboundSchema: z.ZodType<
   OutputFileSearchCallItem$Outbound,
   OutputFileSearchCallItem
 > = z.object({
-  type: OutputFileSearchCallItemType$outboundSchema,
   id: z.string(),
   queries: z.array(z.string()),
   status: WebSearchStatus$outboundSchema,
+  type: OutputFileSearchCallItemType$outboundSchema,
 });
 
 export function outputFileSearchCallItemToJSON(
