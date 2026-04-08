@@ -5,9 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type BulkAssignKeysToGuardrailGlobals = {
   /**
@@ -29,13 +27,6 @@ export type BulkAssignKeysToGuardrailGlobals = {
    * @remarks
    */
   appCategories?: string | undefined;
-};
-
-export type BulkAssignKeysToGuardrailRequestBody = {
-  /**
-   * Array of API key hashes to assign to the guardrail
-   */
-  keyHashes: Array<string>;
 };
 
 export type BulkAssignKeysToGuardrailRequest = {
@@ -62,45 +53,8 @@ export type BulkAssignKeysToGuardrailRequest = {
    * The unique identifier of the guardrail
    */
   id: string;
-  requestBody: BulkAssignKeysToGuardrailRequestBody;
+  bulkAssignKeysRequest: models.BulkAssignKeysRequest;
 };
-
-/**
- * Assignment result
- */
-export type BulkAssignKeysToGuardrailResponse = {
-  /**
-   * Number of keys successfully assigned
-   */
-  assignedCount: number;
-};
-
-/** @internal */
-export type BulkAssignKeysToGuardrailRequestBody$Outbound = {
-  key_hashes: Array<string>;
-};
-
-/** @internal */
-export const BulkAssignKeysToGuardrailRequestBody$outboundSchema: z.ZodType<
-  BulkAssignKeysToGuardrailRequestBody$Outbound,
-  BulkAssignKeysToGuardrailRequestBody
-> = z.object({
-  keyHashes: z.array(z.string()),
-}).transform((v) => {
-  return remap$(v, {
-    keyHashes: "key_hashes",
-  });
-});
-
-export function bulkAssignKeysToGuardrailRequestBodyToJSON(
-  bulkAssignKeysToGuardrailRequestBody: BulkAssignKeysToGuardrailRequestBody,
-): string {
-  return JSON.stringify(
-    BulkAssignKeysToGuardrailRequestBody$outboundSchema.parse(
-      bulkAssignKeysToGuardrailRequestBody,
-    ),
-  );
-}
 
 /** @internal */
 export type BulkAssignKeysToGuardrailRequest$Outbound = {
@@ -108,7 +62,7 @@ export type BulkAssignKeysToGuardrailRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
-  RequestBody: BulkAssignKeysToGuardrailRequestBody$Outbound;
+  BulkAssignKeysRequest: models.BulkAssignKeysRequest$Outbound;
 };
 
 /** @internal */
@@ -120,13 +74,11 @@ export const BulkAssignKeysToGuardrailRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
-  requestBody: z.lazy(() =>
-    BulkAssignKeysToGuardrailRequestBody$outboundSchema
-  ),
+  bulkAssignKeysRequest: models.BulkAssignKeysRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
-    requestBody: "RequestBody",
+    bulkAssignKeysRequest: "BulkAssignKeysRequest",
   });
 });
 
@@ -137,27 +89,5 @@ export function bulkAssignKeysToGuardrailRequestToJSON(
     BulkAssignKeysToGuardrailRequest$outboundSchema.parse(
       bulkAssignKeysToGuardrailRequest,
     ),
-  );
-}
-
-/** @internal */
-export const BulkAssignKeysToGuardrailResponse$inboundSchema: z.ZodType<
-  BulkAssignKeysToGuardrailResponse,
-  unknown
-> = z.object({
-  assigned_count: z.number(),
-}).transform((v) => {
-  return remap$(v, {
-    "assigned_count": "assignedCount",
-  });
-});
-
-export function bulkAssignKeysToGuardrailResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<BulkAssignKeysToGuardrailResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BulkAssignKeysToGuardrailResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BulkAssignKeysToGuardrailResponse' from JSON`,
   );
 }

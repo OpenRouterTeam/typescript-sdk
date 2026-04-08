@@ -44,7 +44,7 @@ export const ChatTokenLogprobTopLogprob$inboundSchema: z.ZodType<
 > = z.object({
   token: z.string(),
   logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
+  bytes: z.nullable(z.array(z.int())),
 });
 
 export function chatTokenLogprobTopLogprobFromJSON(
@@ -64,7 +64,7 @@ export const ChatTokenLogprob$inboundSchema: z.ZodType<
 > = z.object({
   token: z.string(),
   logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
+  bytes: z.nullable(z.array(z.int())),
   top_logprobs: z.array(z.lazy(() => ChatTokenLogprobTopLogprob$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {
