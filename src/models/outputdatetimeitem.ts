@@ -4,30 +4,28 @@
  */
 
 import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { safeParse } from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$inboundSchema,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const OutputDatetimeItemType = {
   OpenrouterDatetime: "openrouter:datetime",
 } as const;
 export type OutputDatetimeItemType = ClosedEnum<typeof OutputDatetimeItemType>;
 
-export const OutputDatetimeItemStatus = {
-  Completed: "completed",
-  InProgress: "in_progress",
-  Incomplete: "incomplete",
-} as const;
-export type OutputDatetimeItemStatus = OpenEnum<
-  typeof OutputDatetimeItemStatus
->;
-
 /**
  * An openrouter:datetime server tool output item
  */
 export type OutputDatetimeItem = {
-  type: OutputDatetimeItemType;
   id?: string | undefined;
-  status: OutputDatetimeItemStatus;
+  status: ToolCallStatus;
+  type: OutputDatetimeItemType;
   /**
    * ISO 8601 datetime string
    */
@@ -39,21 +37,30 @@ export type OutputDatetimeItem = {
 };
 
 /** @internal */
-export const OutputDatetimeItemType$outboundSchema: z.ZodEnum<
+export const OutputDatetimeItemType$inboundSchema: z.ZodEnum<
   typeof OutputDatetimeItemType
 > = z.enum(OutputDatetimeItemType);
+/** @internal */
+export const OutputDatetimeItemType$outboundSchema: z.ZodEnum<
+  typeof OutputDatetimeItemType
+> = OutputDatetimeItemType$inboundSchema;
 
 /** @internal */
-export const OutputDatetimeItemStatus$outboundSchema: z.ZodType<
-  string,
-  OutputDatetimeItemStatus
-> = openEnums.outboundSchema(OutputDatetimeItemStatus);
-
+export const OutputDatetimeItem$inboundSchema: z.ZodType<
+  OutputDatetimeItem,
+  unknown
+> = z.object({
+  id: z.string().optional(),
+  status: ToolCallStatus$inboundSchema,
+  type: OutputDatetimeItemType$inboundSchema,
+  datetime: z.string(),
+  timezone: z.string(),
+});
 /** @internal */
 export type OutputDatetimeItem$Outbound = {
-  type: string;
   id?: string | undefined;
   status: string;
+  type: string;
   datetime: string;
   timezone: string;
 };
@@ -63,9 +70,9 @@ export const OutputDatetimeItem$outboundSchema: z.ZodType<
   OutputDatetimeItem$Outbound,
   OutputDatetimeItem
 > = z.object({
-  type: OutputDatetimeItemType$outboundSchema,
   id: z.string().optional(),
-  status: OutputDatetimeItemStatus$outboundSchema,
+  status: ToolCallStatus$outboundSchema,
+  type: OutputDatetimeItemType$outboundSchema,
   datetime: z.string(),
   timezone: z.string(),
 });
@@ -75,5 +82,14 @@ export function outputDatetimeItemToJSON(
 ): string {
   return JSON.stringify(
     OutputDatetimeItem$outboundSchema.parse(outputDatetimeItem),
+  );
+}
+export function outputDatetimeItemFromJSON(
+  jsonString: string,
+): SafeParseResult<OutputDatetimeItem, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OutputDatetimeItem$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OutputDatetimeItem' from JSON`,
   );
 }

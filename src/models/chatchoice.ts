@@ -12,6 +12,10 @@ import {
   ChatAssistantMessage$inboundSchema,
 } from "./chatassistantmessage.js";
 import {
+  ChatFinishReasonEnum,
+  ChatFinishReasonEnum$inboundSchema,
+} from "./chatfinishreasonenum.js";
+import {
   ChatTokenLogprobs,
   ChatTokenLogprobs$inboundSchema,
 } from "./chattokenlogprobs.js";
@@ -21,7 +25,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Chat completion choice
  */
 export type ChatChoice = {
-  finishReason: any | null;
+  finishReason: ChatFinishReasonEnum | null;
   /**
    * Choice index
    */
@@ -39,8 +43,8 @@ export type ChatChoice = {
 /** @internal */
 export const ChatChoice$inboundSchema: z.ZodType<ChatChoice, unknown> = z
   .object({
-    finish_reason: z.nullable(z.any()),
-    index: z.number(),
+    finish_reason: z.nullable(ChatFinishReasonEnum$inboundSchema),
+    index: z.int(),
     message: ChatAssistantMessage$inboundSchema,
     logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
   }).transform((v) => {
