@@ -1,0 +1,36 @@
+# FiltersUnion
+
+
+## Supported Types
+
+### `models.Filters`
+
+```typescript
+const value: models.Filters = {
+  key: "<key>",
+  type: "eq",
+  value: [],
+};
+```
+
+### `models.CompoundFilter`
+
+```typescript
+const value: models.CompoundFilter = {
+  type: "and",
+  filters: [
+    {
+      "key": "author",
+      "type": "eq",
+      "value": "Alice",
+    },
+  ],
+};
+```
+
+### `any`
+
+```typescript
+const value: any = "<value>";
+```
+

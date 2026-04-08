@@ -26,8 +26,8 @@ export const ImageGenCallCompletedEvent$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.image_generation_call.completed"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
