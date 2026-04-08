@@ -6,14 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ChatContentFileType = {
-  File: "file",
-} as const;
-export type ChatContentFileType = ClosedEnum<typeof ChatContentFileType>;
 
 export type FileT = {
   /**
@@ -34,18 +28,9 @@ export type FileT = {
  * File content part for document processing
  */
 export type ChatContentFile = {
-  type: ChatContentFileType;
+  type: "file";
   file: FileT;
 };
-
-/** @internal */
-export const ChatContentFileType$inboundSchema: z.ZodEnum<
-  typeof ChatContentFileType
-> = z.enum(ChatContentFileType);
-/** @internal */
-export const ChatContentFileType$outboundSchema: z.ZodEnum<
-  typeof ChatContentFileType
-> = ChatContentFileType$inboundSchema;
 
 /** @internal */
 export const FileT$inboundSchema: z.ZodType<FileT, unknown> = z.object({
@@ -95,12 +80,12 @@ export const ChatContentFile$inboundSchema: z.ZodType<
   ChatContentFile,
   unknown
 > = z.object({
-  type: ChatContentFileType$inboundSchema,
+  type: z.literal("file"),
   file: z.lazy(() => FileT$inboundSchema),
 });
 /** @internal */
 export type ChatContentFile$Outbound = {
-  type: string;
+  type: "file";
   file: FileT$Outbound;
 };
 
@@ -109,7 +94,7 @@ export const ChatContentFile$outboundSchema: z.ZodType<
   ChatContentFile$Outbound,
   ChatContentFile
 > = z.object({
-  type: ChatContentFileType$outboundSchema,
+  type: z.literal("file"),
   file: z.lazy(() => FileT$outboundSchema),
 });
 

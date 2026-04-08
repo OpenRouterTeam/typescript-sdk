@@ -58,7 +58,7 @@ export type UpdateKeysRequestBody = {
   /**
    * New spending limit for the API key in USD
    */
-  limit?: number | null | undefined;
+  limit?: number | undefined;
   /**
    * New limit reset type for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
    */
@@ -119,11 +119,11 @@ export type UpdateKeysData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
@@ -202,7 +202,7 @@ export const UpdateKeysLimitReset$outboundSchema: z.ZodType<
 export type UpdateKeysRequestBody$Outbound = {
   name?: string | undefined;
   disabled?: boolean | undefined;
-  limit?: number | null | undefined;
+  limit?: number | undefined;
   limit_reset?: string | null | undefined;
   include_byok_in_limit?: boolean | undefined;
 };
@@ -214,7 +214,7 @@ export const UpdateKeysRequestBody$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string().optional(),
   disabled: z.boolean().optional(),
-  limit: z.nullable(z.number()).optional(),
+  limit: z.number().optional(),
   limitReset: z.nullable(UpdateKeysLimitReset$outboundSchema).optional(),
   includeByokInLimit: z.boolean().optional(),
 }).transform((v) => {
@@ -273,8 +273,8 @@ export const UpdateKeysData$inboundSchema: z.ZodType<UpdateKeysData, unknown> =
     name: z.string(),
     label: z.string(),
     disabled: z.boolean(),
-    limit: z.nullable(z.number()),
-    limit_remaining: z.nullable(z.number()),
+    limit: z.number(),
+    limit_remaining: z.number(),
     limit_reset: z.nullable(z.string()),
     include_byok_in_limit: z.boolean(),
     usage: z.number(),
