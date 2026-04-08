@@ -56,9 +56,9 @@ export type ModelArchitectureInstructType = OpenEnum<
  */
 export type ModelArchitecture = {
   /**
-   * Tokenizer type used by the model
+   * Supported input modalities
    */
-  tokenizer?: ModelGroup | undefined;
+  inputModalities: Array<InputModality>;
   /**
    * Instruction format type
    */
@@ -68,13 +68,13 @@ export type ModelArchitecture = {
    */
   modality: string | null;
   /**
-   * Supported input modalities
-   */
-  inputModalities: Array<InputModality>;
-  /**
    * Supported output modalities
    */
   outputModalities: Array<OutputModality>;
+  /**
+   * Tokenizer type used by the model
+   */
+  tokenizer?: ModelGroup | undefined;
 };
 
 /** @internal */
@@ -88,16 +88,16 @@ export const ModelArchitecture$inboundSchema: z.ZodType<
   ModelArchitecture,
   unknown
 > = z.object({
-  tokenizer: ModelGroup$inboundSchema.optional(),
+  input_modalities: z.array(InputModality$inboundSchema),
   instruct_type: z.nullable(ModelArchitectureInstructType$inboundSchema)
     .optional(),
   modality: z.nullable(z.string()),
-  input_modalities: z.array(InputModality$inboundSchema),
   output_modalities: z.array(OutputModality$inboundSchema),
+  tokenizer: ModelGroup$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
-    "instruct_type": "instructType",
     "input_modalities": "inputModalities",
+    "instruct_type": "instructType",
     "output_modalities": "outputModalities",
   });
 });
