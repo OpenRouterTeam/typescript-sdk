@@ -16,19 +16,19 @@ export type CompletionTokensDetails = {
   /**
    * Tokens used for reasoning
    */
-  reasoningTokens?: number | null | undefined;
+  reasoningTokens?: number | undefined;
   /**
    * Tokens used for audio output
    */
-  audioTokens?: number | null | undefined;
+  audioTokens?: number | undefined;
   /**
    * Accepted prediction tokens
    */
-  acceptedPredictionTokens?: number | null | undefined;
+  acceptedPredictionTokens?: number | undefined;
   /**
    * Rejected prediction tokens
    */
-  rejectedPredictionTokens?: number | null | undefined;
+  rejectedPredictionTokens?: number | undefined;
 };
 
 /**
@@ -84,10 +84,10 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   CompletionTokensDetails,
   unknown
 > = z.object({
-  reasoning_tokens: z.nullable(z.number()).optional(),
-  audio_tokens: z.nullable(z.number()).optional(),
-  accepted_prediction_tokens: z.nullable(z.number()).optional(),
-  rejected_prediction_tokens: z.nullable(z.number()).optional(),
+  reasoning_tokens: z.int().optional(),
+  audio_tokens: z.int().optional(),
+  accepted_prediction_tokens: z.int().optional(),
+  rejected_prediction_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     "reasoning_tokens": "reasoningTokens",
@@ -112,10 +112,10 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   PromptTokensDetails,
   unknown
 > = z.object({
-  cached_tokens: z.number().optional(),
-  cache_write_tokens: z.number().optional(),
-  audio_tokens: z.number().optional(),
-  video_tokens: z.number().optional(),
+  cached_tokens: z.int().optional(),
+  cache_write_tokens: z.int().optional(),
+  audio_tokens: z.int().optional(),
+  video_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     "cached_tokens": "cachedTokens",
@@ -137,9 +137,9 @@ export function promptTokensDetailsFromJSON(
 
 /** @internal */
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
-  completion_tokens: z.number(),
-  prompt_tokens: z.number(),
-  total_tokens: z.number(),
+  completion_tokens: z.int(),
+  prompt_tokens: z.int(),
+  total_tokens: z.int(),
   completion_tokens_details: z.nullable(
     z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
