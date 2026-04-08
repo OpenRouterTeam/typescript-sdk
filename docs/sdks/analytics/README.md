@@ -75,7 +75,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GetUserActivityResponse](../../models/operations/getuseractivityresponse.md)\>**
+**Promise\<[models.ActivityResponse](../../models/activityresponse.md)\>**
 
 ### Errors
 
@@ -84,5 +84,6 @@ run();
 | errors.BadRequestResponseError     | 400                                | application/json                   |
 | errors.UnauthorizedResponseError   | 401                                | application/json                   |
 | errors.ForbiddenResponseError      | 403                                | application/json                   |
+| errors.NotFoundResponseError       | 404                                | application/json                   |
 | errors.InternalServerResponseError | 500                                | application/json                   |
 | errors.OpenRouterDefaultError      | 4XX, 5XX                           | \*/\*                              |

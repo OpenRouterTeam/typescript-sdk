@@ -7,7 +7,7 @@ import { FilePath } from "@openrouter/sdk/models";
 
 let value: FilePath = {
   type: "file_path",
-  fileId: "file-xyz789",
+  fileId: "file-abc123",
   index: 0,
 };
 ```
