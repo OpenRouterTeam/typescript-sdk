@@ -9,9 +9,9 @@ import { ReasoningDoneEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningDoneEvent = {
   type: "response.reasoning_text.done",
-  outputIndex: 7893.97,
+  outputIndex: 789397,
   itemId: "<id>",
-  contentIndex: 6028.02,
+  contentIndex: 602802,
   text: "<value>",
   sequenceNumber: 0,
 };

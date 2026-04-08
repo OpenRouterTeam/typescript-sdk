@@ -16,6 +16,8 @@ export type AllowedTools = {
   readOnly?: boolean | undefined;
 };
 
+export type AllowedToolsUnion = Array<string> | AllowedTools | any;
+
 export const ConnectorId = {
   ConnectorDropbox: "connector_dropbox",
   ConnectorGmail: "connector_gmail",
@@ -51,17 +53,29 @@ export type RequireApproval = {
   always?: Always | undefined;
 };
 
+export type RequireApprovalUnion =
+  | RequireApproval
+  | RequireApprovalAlways
+  | RequireApprovalNever
+  | any;
+
 /**
  * MCP (Model Context Protocol) tool configuration
  */
 export type McpServerTool = {
   type: "mcp";
   serverLabel: string;
-  allowedTools?: any | null | undefined;
+  allowedTools?: Array<string> | AllowedTools | any | null | undefined;
   authorization?: string | undefined;
   connectorId?: ConnectorId | undefined;
   headers?: { [k: string]: string } | null | undefined;
-  requireApproval?: any | null | undefined;
+  requireApproval?:
+    | RequireApproval
+    | RequireApprovalAlways
+    | RequireApprovalNever
+    | any
+    | null
+    | undefined;
   serverDescription?: string | undefined;
   serverUrl?: string | undefined;
 };
@@ -107,6 +121,48 @@ export function allowedToolsFromJSON(
     jsonString,
     (x) => AllowedTools$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'AllowedTools' from JSON`,
+  );
+}
+
+/** @internal */
+export const AllowedToolsUnion$inboundSchema: z.ZodType<
+  AllowedToolsUnion,
+  unknown
+> = z.union([
+  z.array(z.string()),
+  z.lazy(() => AllowedTools$inboundSchema),
+  z.any(),
+]);
+/** @internal */
+export type AllowedToolsUnion$Outbound =
+  | Array<string>
+  | AllowedTools$Outbound
+  | any;
+
+/** @internal */
+export const AllowedToolsUnion$outboundSchema: z.ZodType<
+  AllowedToolsUnion$Outbound,
+  AllowedToolsUnion
+> = z.union([
+  z.array(z.string()),
+  z.lazy(() => AllowedTools$outboundSchema),
+  z.any(),
+]);
+
+export function allowedToolsUnionToJSON(
+  allowedToolsUnion: AllowedToolsUnion,
+): string {
+  return JSON.stringify(
+    AllowedToolsUnion$outboundSchema.parse(allowedToolsUnion),
+  );
+}
+export function allowedToolsUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<AllowedToolsUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AllowedToolsUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AllowedToolsUnion' from JSON`,
   );
 }
 
@@ -245,15 +301,73 @@ export function requireApprovalFromJSON(
 }
 
 /** @internal */
+export const RequireApprovalUnion$inboundSchema: z.ZodType<
+  RequireApprovalUnion,
+  unknown
+> = z.union([
+  z.lazy(() => RequireApproval$inboundSchema),
+  RequireApprovalAlways$inboundSchema,
+  RequireApprovalNever$inboundSchema,
+  z.any(),
+]);
+/** @internal */
+export type RequireApprovalUnion$Outbound =
+  | RequireApproval$Outbound
+  | string
+  | string
+  | any;
+
+/** @internal */
+export const RequireApprovalUnion$outboundSchema: z.ZodType<
+  RequireApprovalUnion$Outbound,
+  RequireApprovalUnion
+> = z.union([
+  z.lazy(() => RequireApproval$outboundSchema),
+  RequireApprovalAlways$outboundSchema,
+  RequireApprovalNever$outboundSchema,
+  z.any(),
+]);
+
+export function requireApprovalUnionToJSON(
+  requireApprovalUnion: RequireApprovalUnion,
+): string {
+  return JSON.stringify(
+    RequireApprovalUnion$outboundSchema.parse(requireApprovalUnion),
+  );
+}
+export function requireApprovalUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<RequireApprovalUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => RequireApprovalUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RequireApprovalUnion' from JSON`,
+  );
+}
+
+/** @internal */
 export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   .object({
     type: z.literal("mcp"),
     server_label: z.string(),
-    allowed_tools: z.nullable(z.any()).optional(),
+    allowed_tools: z.nullable(
+      z.union([
+        z.array(z.string()),
+        z.lazy(() => AllowedTools$inboundSchema),
+        z.any(),
+      ]),
+    ).optional(),
     authorization: z.string().optional(),
     connector_id: ConnectorId$inboundSchema.optional(),
     headers: z.nullable(z.record(z.string(), z.string())).optional(),
-    require_approval: z.nullable(z.any()).optional(),
+    require_approval: z.nullable(
+      z.union([
+        z.lazy(() => RequireApproval$inboundSchema),
+        RequireApprovalAlways$inboundSchema,
+        RequireApprovalNever$inboundSchema,
+        z.any(),
+      ]),
+    ).optional(),
     server_description: z.string().optional(),
     server_url: z.string().optional(),
   }).transform((v) => {
@@ -270,11 +384,22 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
 export type McpServerTool$Outbound = {
   type: "mcp";
   server_label: string;
-  allowed_tools?: any | null | undefined;
+  allowed_tools?:
+    | Array<string>
+    | AllowedTools$Outbound
+    | any
+    | null
+    | undefined;
   authorization?: string | undefined;
   connector_id?: string | undefined;
   headers?: { [k: string]: string } | null | undefined;
-  require_approval?: any | null | undefined;
+  require_approval?:
+    | RequireApproval$Outbound
+    | string
+    | string
+    | any
+    | null
+    | undefined;
   server_description?: string | undefined;
   server_url?: string | undefined;
 };
@@ -286,11 +411,24 @@ export const McpServerTool$outboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("mcp"),
   serverLabel: z.string(),
-  allowedTools: z.nullable(z.any()).optional(),
+  allowedTools: z.nullable(
+    z.union([
+      z.array(z.string()),
+      z.lazy(() => AllowedTools$outboundSchema),
+      z.any(),
+    ]),
+  ).optional(),
   authorization: z.string().optional(),
   connectorId: ConnectorId$outboundSchema.optional(),
   headers: z.nullable(z.record(z.string(), z.string())).optional(),
-  requireApproval: z.nullable(z.any()).optional(),
+  requireApproval: z.nullable(
+    z.union([
+      z.lazy(() => RequireApproval$outboundSchema),
+      RequireApprovalAlways$outboundSchema,
+      RequireApprovalNever$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
   serverDescription: z.string().optional(),
   serverUrl: z.string().optional(),
 }).transform((v) => {
