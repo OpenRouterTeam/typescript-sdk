@@ -8,6 +8,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OutputDatetimeItem,
+  OutputDatetimeItem$inboundSchema,
+} from "./outputdatetimeitem.js";
+import {
   OutputFileSearchCallItem,
   OutputFileSearchCallItem$inboundSchema,
 } from "./outputfilesearchcallitem.js";
@@ -28,36 +32,50 @@ import {
   OutputReasoningItem$inboundSchema,
 } from "./outputreasoningitem.js";
 import {
-  OutputServerToolItem,
-  OutputServerToolItem$inboundSchema,
-} from "./outputservertoolitem.js";
-import {
   OutputWebSearchCallItem,
   OutputWebSearchCallItem$inboundSchema,
 } from "./outputwebsearchcallitem.js";
+import {
+  OutputWebSearchServerToolItem,
+  OutputWebSearchServerToolItem$inboundSchema,
+} from "./outputwebsearchservertoolitem.js";
 
 /**
  * An output item from the response
  */
 export type OutputItems =
   | OutputMessageItem
-  | OutputFunctionCallItem
-  | OutputWebSearchCallItem
-  | OutputFileSearchCallItem
   | OutputReasoningItem
-  | OutputImageGenerationCallItem
-  | OutputServerToolItem;
+  | (OutputFunctionCallItem & { type: "function_call" })
+  | (OutputWebSearchCallItem & { type: "web_search_call" })
+  | (OutputFileSearchCallItem & { type: "file_search_call" })
+  | (OutputImageGenerationCallItem & { type: "image_generation_call" })
+  | (OutputDatetimeItem & { type: "openrouter:datetime" })
+  | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" });
 
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> = z
   .union([
     OutputMessageItem$inboundSchema,
-    OutputFunctionCallItem$inboundSchema,
-    OutputWebSearchCallItem$inboundSchema,
-    OutputFileSearchCallItem$inboundSchema,
     OutputReasoningItem$inboundSchema,
-    OutputImageGenerationCallItem$inboundSchema,
-    OutputServerToolItem$inboundSchema,
+    OutputFunctionCallItem$inboundSchema.and(
+      z.object({ type: z.literal("function_call") }),
+    ),
+    OutputWebSearchCallItem$inboundSchema.and(
+      z.object({ type: z.literal("web_search_call") }),
+    ),
+    OutputFileSearchCallItem$inboundSchema.and(
+      z.object({ type: z.literal("file_search_call") }),
+    ),
+    OutputImageGenerationCallItem$inboundSchema.and(
+      z.object({ type: z.literal("image_generation_call") }),
+    ),
+    OutputDatetimeItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:datetime") }),
+    ),
+    OutputWebSearchServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:web_search") }),
+    ),
   ]);
 
 export function outputItemsFromJSON(

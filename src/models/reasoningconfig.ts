@@ -6,21 +6,21 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
-  ReasoningEffortEnum,
-  ReasoningEffortEnum$outboundSchema,
-} from "./reasoningeffortenum.js";
+  ReasoningEffort,
+  ReasoningEffort$outboundSchema,
+} from "./reasoningeffort.js";
 import {
-  ReasoningSummaryVerbosityEnum,
-  ReasoningSummaryVerbosityEnum$outboundSchema,
-} from "./reasoningsummaryverbosityenum.js";
+  ReasoningSummaryVerbosity,
+  ReasoningSummaryVerbosity$outboundSchema,
+} from "./reasoningsummaryverbosity.js";
 
 /**
  * Configuration for reasoning mode in the response
  */
 export type ReasoningConfig = {
-  effort?: ReasoningEffortEnum | null | undefined;
-  summary?: ReasoningSummaryVerbosityEnum | null | undefined;
-  maxTokens?: number | null | undefined;
+  effort?: ReasoningEffort | null | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
+  maxTokens?: number | undefined;
   enabled?: boolean | null | undefined;
 };
 
@@ -28,7 +28,7 @@ export type ReasoningConfig = {
 export type ReasoningConfig$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
-  max_tokens?: number | null | undefined;
+  max_tokens?: number | undefined;
   enabled?: boolean | null | undefined;
 };
 
@@ -37,9 +37,9 @@ export const ReasoningConfig$outboundSchema: z.ZodType<
   ReasoningConfig$Outbound,
   ReasoningConfig
 > = z.object({
-  effort: z.nullable(ReasoningEffortEnum$outboundSchema).optional(),
-  summary: z.nullable(ReasoningSummaryVerbosityEnum$outboundSchema).optional(),
-  maxTokens: z.nullable(z.number()).optional(),
+  effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
+  maxTokens: z.int().optional(),
   enabled: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {

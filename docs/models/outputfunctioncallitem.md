@@ -8,7 +8,7 @@ import { OutputFunctionCallItem } from "@openrouter/sdk/models";
 let value: OutputFunctionCallItem = {
   type: "function_call",
   name: "get_weather",
-  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  arguments: "{\"location\":\"San Francisco\"}",
   callId: "call-abc123",
 };
 ```
