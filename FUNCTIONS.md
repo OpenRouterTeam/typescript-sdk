@@ -33,7 +33,10 @@ const openRouter = new OpenRouterCore({
 
 async function run() {
   const res = await betaResponsesSend(openRouter, {
-    responsesRequest: {},
+    responsesRequest: {
+      input: "Tell me a joke",
+      model: "openai/gpt-4o",
+    },
   });
   if (res.ok) {
     const { value: result } = res;

@@ -8,25 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-/**
- * Alternative token with its log probability
- */
-export type TextDoneEventTopLogprob = {
-  token?: string | undefined;
-  logprob?: number | undefined;
-  bytes?: Array<number> | undefined;
-};
-
-/**
- * Log probability information for a token
- */
-export type TextDoneEventLogprob = {
-  logprob: number;
-  token: string;
-  topLogprobs?: Array<TextDoneEventTopLogprob> | undefined;
-  bytes?: Array<number> | undefined;
-};
+import { StreamLogprob, StreamLogprob$inboundSchema } from "./streamlogprob.js";
 
 /**
  * Event emitted when text streaming is complete
@@ -38,65 +20,19 @@ export type TextDoneEvent = {
   contentIndex: number;
   text: string;
   sequenceNumber: number;
-  logprobs: Array<TextDoneEventLogprob>;
+  logprobs: Array<StreamLogprob>;
 };
-
-/** @internal */
-export const TextDoneEventTopLogprob$inboundSchema: z.ZodType<
-  TextDoneEventTopLogprob,
-  unknown
-> = z.object({
-  token: z.string().optional(),
-  logprob: z.number().optional(),
-  bytes: z.array(z.number()).optional(),
-});
-
-export function textDoneEventTopLogprobFromJSON(
-  jsonString: string,
-): SafeParseResult<TextDoneEventTopLogprob, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => TextDoneEventTopLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TextDoneEventTopLogprob' from JSON`,
-  );
-}
-
-/** @internal */
-export const TextDoneEventLogprob$inboundSchema: z.ZodType<
-  TextDoneEventLogprob,
-  unknown
-> = z.object({
-  logprob: z.number(),
-  token: z.string(),
-  top_logprobs: z.array(z.lazy(() => TextDoneEventTopLogprob$inboundSchema))
-    .optional(),
-  bytes: z.array(z.number()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "top_logprobs": "topLogprobs",
-  });
-});
-
-export function textDoneEventLogprobFromJSON(
-  jsonString: string,
-): SafeParseResult<TextDoneEventLogprob, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => TextDoneEventLogprob$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TextDoneEventLogprob' from JSON`,
-  );
-}
 
 /** @internal */
 export const TextDoneEvent$inboundSchema: z.ZodType<TextDoneEvent, unknown> = z
   .object({
     type: z.literal("response.output_text.done"),
-    output_index: z.number(),
+    output_index: z.int(),
     item_id: z.string(),
-    content_index: z.number(),
+    content_index: z.int(),
     text: z.string(),
-    sequence_number: z.number(),
-    logprobs: z.array(z.lazy(() => TextDoneEventLogprob$inboundSchema)),
+    sequence_number: z.int(),
+    logprobs: z.array(StreamLogprob$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
       "output_index": "outputIndex",
