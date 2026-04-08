@@ -3,48 +3,48 @@
 
 ## Supported Types
 
-### `models.BaseInputsMessage1`
+### `models.BaseInputsMessage`
 
 ```typescript
-const value: models.BaseInputsMessage1 = {
-  role: "user",
-  content: "<value>",
+const value: models.BaseInputsMessage = {
+  role: "assistant",
+  content: [],
 };
 ```
 
-### `models.BaseInputsMessage2`
+### `models.OpenAIResponseInputMessageItem`
 
 ```typescript
-const value: models.BaseInputsMessage2 = {
-  id: "<id>",
-  role: "system",
+const value: models.OpenAIResponseInputMessageItem = {
+  id: "msg-abc123",
+  role: "user",
   content: [
     {
       type: "input_text",
-      text: "Hello, how can I help you?",
+      text: "Hello, how are you?",
     },
   ],
 };
 ```
 
-### `models.BaseInputsFunctionCallOutput`
+### `models.OpenAIResponseFunctionToolCallOutput`
 
 ```typescript
-const value: models.BaseInputsFunctionCallOutput = {
+const value: models.OpenAIResponseFunctionToolCallOutput = {
   type: "function_call_output",
-  callId: "<id>",
-  output: "<value>",
+  callId: "call-abc123",
+  output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
 };
 ```
 
-### `models.BaseInputsFunctionCall`
+### `models.OpenAIResponseFunctionToolCall`
 
 ```typescript
-const value: models.BaseInputsFunctionCall = {
+const value: models.OpenAIResponseFunctionToolCall = {
   type: "function_call",
-  callId: "<id>",
-  name: "<value>",
-  arguments: "<value>",
+  callId: "call-abc123",
+  name: "get_weather",
+  arguments: "{\"location\":\"San Francisco\"}",
 };
 ```
 

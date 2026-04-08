@@ -8,8 +8,8 @@ import { ResponseOutputTextTopLogprob } from "@openrouter/sdk/models";
 let value: ResponseOutputTextTopLogprob = {
   token: "<value>",
   bytes: [
-    3036.17,
-    344.14,
+    303617,
+    34414,
   ],
   logprob: 1976.4,
 };
