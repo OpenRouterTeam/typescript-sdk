@@ -95,7 +95,7 @@ typescript:
   flatteningOrder: parameters-first
   formStringArrayEncodeMode: encoded-string
   forwardCompatibleEnumsByDefault: false
-  forwardCompatibleUnionsByDefault: "false"
+  forwardCompatibleUnionsByDefault: "tagged-only"
   generateExamples: true
   imports:
     option: openapi
