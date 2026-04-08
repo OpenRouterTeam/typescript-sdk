@@ -62,7 +62,7 @@ export const ChatResult$inboundSchema: z.ZodType<ChatResult, unknown> = z
   .object({
     id: z.string(),
     choices: z.array(ChatChoice$inboundSchema),
-    created: z.number(),
+    created: z.int(),
     model: z.string(),
     object: ChatResultObject$inboundSchema,
     system_fingerprint: z.nullable(z.string()),
