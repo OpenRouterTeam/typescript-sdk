@@ -17,6 +17,7 @@ export const ModelGroup = {
   Gpt: "GPT",
   Claude: "Claude",
   Gemini: "Gemini",
+  Gemma: "Gemma",
   Grok: "Grok",
   Cohere: "Cohere",
   Nova: "Nova",
