@@ -8,10 +8,10 @@ Image generation call is generating
 import { ImageGenCallGeneratingEvent } from "@openrouter/sdk/models";
 
 let value: ImageGenCallGeneratingEvent = {
-  type: "response.image_generation_call.generating",
   itemId: "<id>",
-  outputIndex: 6728,
+  outputIndex: 672800,
   sequenceNumber: 0,
+  type: "response.image_generation_call.generating",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: ImageGenCallGeneratingEvent = {
 
 | Field                                         | Type                                          | Required                                      | Description                                   |
 | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
-| `type`                                        | *"response.image_generation_call.generating"* | :heavy_check_mark:                            | N/A                                           |
 | `itemId`                                      | *string*                                      | :heavy_check_mark:                            | N/A                                           |
 | `outputIndex`                                 | *number*                                      | :heavy_check_mark:                            | N/A                                           |
 | `sequenceNumber`                              | *number*                                      | :heavy_check_mark:                            | N/A                                           |
+| `type`                                        | *"response.image_generation_call.generating"* | :heavy_check_mark:                            | N/A                                           |
