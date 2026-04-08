@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -32,17 +34,18 @@ import {
 export type ReasoningDetailUnion =
   | ReasoningDetailSummary
   | ReasoningDetailEncrypted
-  | ReasoningDetailText;
+  | ReasoningDetailText
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
 export const ReasoningDetailUnion$inboundSchema: z.ZodType<
   ReasoningDetailUnion,
   unknown
-> = z.union([
-  ReasoningDetailSummary$inboundSchema,
-  ReasoningDetailEncrypted$inboundSchema,
-  ReasoningDetailText$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  ["reasoning.summary"]: ReasoningDetailSummary$inboundSchema,
+  ["reasoning.encrypted"]: ReasoningDetailEncrypted$inboundSchema,
+  ["reasoning.text"]: ReasoningDetailText$inboundSchema,
+});
 /** @internal */
 export type ReasoningDetailUnion$Outbound =
   | ReasoningDetailSummary$Outbound
