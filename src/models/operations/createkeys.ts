@@ -48,25 +48,29 @@ export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
 export type CreateKeysRequestBody = {
   /**
-   * Name for the new API key
+   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
    */
-  name: string;
+  creatorUserId?: string | null | undefined;
   /**
-   * Optional spending limit for the API key in USD
+   * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
    */
-  limit?: number | null | undefined;
-  /**
-   * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
-   */
-  limitReset?: CreateKeysLimitReset | null | undefined;
+  expiresAt?: Date | null | undefined;
   /**
    * Whether to include BYOK usage in the limit
    */
   includeByokInLimit?: boolean | undefined;
   /**
-   * Optional ISO 8601 UTC timestamp when the API key should expire. Must be UTC, other timezones will be rejected
+   * Optional spending limit for the API key in USD
    */
-  expiresAt?: Date | null | undefined;
+  limit?: number | undefined;
+  /**
+   * Type of limit reset for the API key (daily, weekly, monthly, or null for no reset). Resets happen automatically at midnight UTC, and weeks are Monday through Sunday.
+   */
+  limitReset?: CreateKeysLimitReset | null | undefined;
+  /**
+   * Name for the new API key
+   */
+  name: string;
 };
 
 export type CreateKeysRequest = {
@@ -97,37 +101,69 @@ export type CreateKeysRequest = {
  */
 export type CreateKeysData = {
   /**
-   * Unique hash identifier for the API key
+   * Total external BYOK usage (in USD) for the API key
    */
-  hash: string;
+  byokUsage: number;
   /**
-   * Name of the API key
+   * External BYOK usage (in USD) for the current UTC day
    */
-  name: string;
+  byokUsageDaily: number;
   /**
-   * Human-readable label for the API key
+   * External BYOK usage (in USD) for current UTC month
    */
-  label: string;
+  byokUsageMonthly: number;
+  /**
+   * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  byokUsageWeekly: number;
+  /**
+   * ISO 8601 timestamp of when the API key was created
+   */
+  createdAt: string;
+  /**
+   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
+   */
+  creatorUserId: string | null;
   /**
    * Whether the API key is disabled
    */
   disabled: boolean;
   /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
+  /**
+   * Unique hash identifier for the API key
+   */
+  hash: string;
+  /**
+   * Whether to include external BYOK usage in the credit limit
+   */
+  includeByokInLimit: boolean;
+  /**
+   * Human-readable label for the API key
+   */
+  label: string;
+  /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
   limitReset: string | null;
   /**
-   * Whether to include external BYOK usage in the credit limit
+   * Name of the API key
    */
-  includeByokInLimit: boolean;
+  name: string;
+  /**
+   * ISO 8601 timestamp of when the API key was last updated
+   */
+  updatedAt: string | null;
   /**
    * Total OpenRouter credit usage (in USD) for the API key
    */
@@ -137,45 +173,13 @@ export type CreateKeysData = {
    */
   usageDaily: number;
   /**
-   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
-   */
-  usageWeekly: number;
-  /**
    * OpenRouter credit usage (in USD) for the current UTC month
    */
   usageMonthly: number;
   /**
-   * Total external BYOK usage (in USD) for the API key
+   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
    */
-  byokUsage: number;
-  /**
-   * External BYOK usage (in USD) for the current UTC day
-   */
-  byokUsageDaily: number;
-  /**
-   * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
-   */
-  byokUsageWeekly: number;
-  /**
-   * External BYOK usage (in USD) for current UTC month
-   */
-  byokUsageMonthly: number;
-  /**
-   * ISO 8601 timestamp of when the API key was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the API key was last updated
-   */
-  updatedAt: string | null;
-  /**
-   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
-   */
-  expiresAt?: Date | null | undefined;
-  /**
-   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
-   */
-  creatorUserId: string | null;
+  usageWeekly: number;
 };
 
 /**
@@ -200,11 +204,12 @@ export const CreateKeysLimitReset$outboundSchema: z.ZodType<
 
 /** @internal */
 export type CreateKeysRequestBody$Outbound = {
-  name: string;
-  limit?: number | null | undefined;
-  limit_reset?: string | null | undefined;
-  include_byok_in_limit?: boolean | undefined;
+  creator_user_id?: string | null | undefined;
   expires_at?: string | null | undefined;
+  include_byok_in_limit?: boolean | undefined;
+  limit?: number | undefined;
+  limit_reset?: string | null | undefined;
+  name: string;
 };
 
 /** @internal */
@@ -212,16 +217,18 @@ export const CreateKeysRequestBody$outboundSchema: z.ZodType<
   CreateKeysRequestBody$Outbound,
   CreateKeysRequestBody
 > = z.object({
-  name: z.string(),
-  limit: z.nullable(z.number()).optional(),
-  limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
-  includeByokInLimit: z.boolean().optional(),
+  creatorUserId: z.nullable(z.string()).optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
+  includeByokInLimit: z.boolean().optional(),
+  limit: z.number().optional(),
+  limitReset: z.nullable(CreateKeysLimitReset$outboundSchema).optional(),
+  name: z.string(),
 }).transform((v) => {
   return remap$(v, {
-    limitReset: "limit_reset",
-    includeByokInLimit: "include_byok_in_limit",
+    creatorUserId: "creator_user_id",
     expiresAt: "expires_at",
+    includeByokInLimit: "include_byok_in_limit",
+    limitReset: "limit_reset",
   });
 });
 
@@ -268,44 +275,44 @@ export function createKeysRequestToJSON(
 /** @internal */
 export const CreateKeysData$inboundSchema: z.ZodType<CreateKeysData, unknown> =
   z.object({
-    hash: z.string(),
-    name: z.string(),
-    label: z.string(),
-    disabled: z.boolean(),
-    limit: z.nullable(z.number()),
-    limit_remaining: z.nullable(z.number()),
-    limit_reset: z.nullable(z.string()),
-    include_byok_in_limit: z.boolean(),
-    usage: z.number(),
-    usage_daily: z.number(),
-    usage_weekly: z.number(),
-    usage_monthly: z.number(),
     byok_usage: z.number(),
     byok_usage_daily: z.number(),
-    byok_usage_weekly: z.number(),
     byok_usage_monthly: z.number(),
+    byok_usage_weekly: z.number(),
     created_at: z.string(),
-    updated_at: z.nullable(z.string()),
+    creator_user_id: z.nullable(z.string()),
+    disabled: z.boolean(),
     expires_at: z.nullable(
       z.iso.datetime({ offset: true }).transform(v => new Date(v)),
     ).optional(),
-    creator_user_id: z.nullable(z.string()),
+    hash: z.string(),
+    include_byok_in_limit: z.boolean(),
+    label: z.string(),
+    limit: z.number(),
+    limit_remaining: z.number(),
+    limit_reset: z.nullable(z.string()),
+    name: z.string(),
+    updated_at: z.nullable(z.string()),
+    usage: z.number(),
+    usage_daily: z.number(),
+    usage_monthly: z.number(),
+    usage_weekly: z.number(),
   }).transform((v) => {
     return remap$(v, {
-      "limit_remaining": "limitRemaining",
-      "limit_reset": "limitReset",
-      "include_byok_in_limit": "includeByokInLimit",
-      "usage_daily": "usageDaily",
-      "usage_weekly": "usageWeekly",
-      "usage_monthly": "usageMonthly",
       "byok_usage": "byokUsage",
       "byok_usage_daily": "byokUsageDaily",
-      "byok_usage_weekly": "byokUsageWeekly",
       "byok_usage_monthly": "byokUsageMonthly",
+      "byok_usage_weekly": "byokUsageWeekly",
       "created_at": "createdAt",
-      "updated_at": "updatedAt",
-      "expires_at": "expiresAt",
       "creator_user_id": "creatorUserId",
+      "expires_at": "expiresAt",
+      "include_byok_in_limit": "includeByokInLimit",
+      "limit_remaining": "limitRemaining",
+      "limit_reset": "limitReset",
+      "updated_at": "updatedAt",
+      "usage_daily": "usageDaily",
+      "usage_monthly": "usageMonthly",
+      "usage_weekly": "usageWeekly",
     });
   });
 

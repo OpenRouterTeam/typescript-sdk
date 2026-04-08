@@ -7,28 +7,28 @@
 
 ```typescript
 const value: models.ResponsesRequestToolFunction = {
-  type: "function",
   name: "get_weather",
   parameters: {
-    "type": "object",
     "properties": {
       "location": {
-        "type": "string",
         "description": "The city and state",
+        "type": "string",
       },
       "unit": {
-        "type": "string",
         "enum": [
           "celsius",
           "fahrenheit",
         ],
+        "type": "string",
         "x-speakeasy-unknown-values": "allow",
       },
     },
     "required": [
       "location",
     ],
+    "type": "object",
   },
+  type: "function",
 };
 ```
 
@@ -79,10 +79,10 @@ const value: models.FileSearchServerTool = {
 
 ```typescript
 const value: models.ComputerUseServerTool = {
-  type: "computer_use_preview",
   displayHeight: 768,
   displayWidth: 1024,
   environment: "linux",
+  type: "computer_use_preview",
 };
 ```
 
@@ -90,8 +90,8 @@ const value: models.ComputerUseServerTool = {
 
 ```typescript
 const value: models.CodeInterpreterServerTool = {
-  type: "code_interpreter",
   container: "auto",
+  type: "code_interpreter",
 };
 ```
 
@@ -99,8 +99,8 @@ const value: models.CodeInterpreterServerTool = {
 
 ```typescript
 const value: models.McpServerTool = {
-  type: "mcp",
   serverLabel: "my-server",
+  type: "mcp",
 };
 ```
 
@@ -140,8 +140,8 @@ const value: models.ApplyPatchServerTool = {
 
 ```typescript
 const value: models.CustomTool = {
-  type: "custom",
   name: "my_tool",
+  type: "custom",
 };
 ```
 
@@ -158,6 +158,14 @@ const value: models.DatetimeServerTool = {
 ```typescript
 const value: models.WebSearchServerToolOpenRouter = {
   type: "openrouter:web_search",
+};
+```
+
+### `models.FusionServerTool`
+
+```typescript
+const value: models.FusionServerTool = {
+  type: "openrouter:fusion",
 };
 ```
 
