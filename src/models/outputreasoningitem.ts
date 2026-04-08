@@ -6,10 +6,13 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ReasoningFormat,
+  ReasoningFormat$inboundSchema,
+} from "./reasoningformat.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
@@ -53,24 +56,6 @@ export type OutputReasoningItemStatusUnion =
   | OutputReasoningItemStatusInProgress;
 
 /**
- * The format of the reasoning content
- */
-export const OutputReasoningItemFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-/**
- * The format of the reasoning content
- */
-export type OutputReasoningItemFormat = OpenEnum<
-  typeof OutputReasoningItemFormat
->;
-
-/**
  * An output item containing reasoning
  */
 export type OutputReasoningItem = {
@@ -88,10 +73,7 @@ export type OutputReasoningItem = {
    * A signature for the reasoning content, used for verification
    */
   signature?: string | null | undefined;
-  /**
-   * The format of the reasoning content
-   */
-  format?: OutputReasoningItemFormat | null | undefined;
+  format?: ReasoningFormat | null | undefined;
 };
 
 /** @internal */
@@ -135,12 +117,6 @@ export function outputReasoningItemStatusUnionFromJSON(
 }
 
 /** @internal */
-export const OutputReasoningItemFormat$inboundSchema: z.ZodType<
-  OutputReasoningItemFormat,
-  unknown
-> = openEnums.inboundSchema(OutputReasoningItemFormat);
-
-/** @internal */
 export const OutputReasoningItem$inboundSchema: z.ZodType<
   OutputReasoningItem,
   unknown
@@ -156,7 +132,7 @@ export const OutputReasoningItem$inboundSchema: z.ZodType<
     OutputReasoningItemStatusInProgress$inboundSchema,
   ]).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(OutputReasoningItemFormat$inboundSchema).optional(),
+  format: z.nullable(ReasoningFormat$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",
