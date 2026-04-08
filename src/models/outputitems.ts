@@ -8,6 +8,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  OutputApplyPatchCallItem,
+  OutputApplyPatchCallItem$inboundSchema,
+} from "./outputapplypatchcallitem.js";
+import {
   OutputFileSearchCallItem,
   OutputFileSearchCallItem$inboundSchema,
 } from "./outputfilesearchcallitem.js";
@@ -40,6 +44,7 @@ import {
  * An output item from the response
  */
 export type OutputItems =
+  | OutputApplyPatchCallItem
   | OutputMessageItem
   | OutputFunctionCallItem
   | OutputWebSearchCallItem
@@ -51,6 +56,7 @@ export type OutputItems =
 /** @internal */
 export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> = z
   .union([
+    OutputApplyPatchCallItem$inboundSchema,
     OutputMessageItem$inboundSchema,
     OutputFunctionCallItem$inboundSchema,
     OutputWebSearchCallItem$inboundSchema,
