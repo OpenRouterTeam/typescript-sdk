@@ -8,8 +8,8 @@ Custom grammar response format
 import { ChatFormatGrammarConfig } from "@openrouter/sdk/models";
 
 let value: ChatFormatGrammarConfig = {
-  type: "grammar",
   grammar: "root ::= \"yes\" | \"no\"",
+  type: "grammar",
 };
 ```
 
@@ -17,5 +17,5 @@ let value: ChatFormatGrammarConfig = {
 
 | Field                              | Type                               | Required                           | Description                        | Example                            |
 | ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
-| `type`                             | *"grammar"*                        | :heavy_check_mark:                 | N/A                                |                                    |
 | `grammar`                          | *string*                           | :heavy_check_mark:                 | Custom grammar for text generation | root ::= "yes" \| "no"             |
+| `type`                             | *"grammar"*                        | :heavy_check_mark:                 | N/A                                |                                    |
