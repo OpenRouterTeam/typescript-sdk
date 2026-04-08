@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -55,7 +57,8 @@ export type OutputMessageItemStatusUnion =
 
 export type OutputMessageItemContent =
   | ResponseOutputText
-  | OpenAIResponsesRefusalContent;
+  | OpenAIResponsesRefusalContent
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export const OutputMessageItemPhaseFinalAnswer = {
   FinalAnswer: "final_answer",
@@ -91,7 +94,11 @@ export type OutputMessageItem = {
     | OutputMessageItemStatusIncomplete
     | OutputMessageItemStatusInProgress
     | undefined;
-  content: Array<ResponseOutputText | OpenAIResponsesRefusalContent>;
+  content: Array<
+    | ResponseOutputText
+    | OpenAIResponsesRefusalContent
+    | discriminatedUnionTypes.Unknown<"type">
+  >;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -152,10 +159,10 @@ export function outputMessageItemStatusUnionFromJSON(
 export const OutputMessageItemContent$inboundSchema: z.ZodType<
   OutputMessageItemContent,
   unknown
-> = z.union([
-  ResponseOutputText$inboundSchema,
-  OpenAIResponsesRefusalContent$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  output_text: ResponseOutputText$inboundSchema,
+  refusal: OpenAIResponsesRefusalContent$inboundSchema,
+});
 
 export function outputMessageItemContentFromJSON(
   jsonString: string,
@@ -211,10 +218,10 @@ export const OutputMessageItem$inboundSchema: z.ZodType<
     OutputMessageItemStatusInProgress$inboundSchema,
   ]).optional(),
   content: z.array(
-    z.union([
-      ResponseOutputText$inboundSchema,
-      OpenAIResponsesRefusalContent$inboundSchema,
-    ]),
+    discriminatedUnion("type", {
+      output_text: ResponseOutputText$inboundSchema,
+      refusal: OpenAIResponsesRefusalContent$inboundSchema,
+    }),
   ),
   phase: z.nullable(
     z.union([

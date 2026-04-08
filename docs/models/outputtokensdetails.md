@@ -6,7 +6,7 @@
 import { OutputTokensDetails } from "@openrouter/sdk/models";
 
 let value: OutputTokensDetails = {
-  reasoningTokens: 4785.27,
+  reasoningTokens: 478527,
 };
 ```
 
