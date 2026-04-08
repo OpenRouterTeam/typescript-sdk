@@ -4,22 +4,16 @@
  */
 
 import * as z from "zod/v4";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const OutputDatetimeItemType = {
   OpenrouterDatetime: "openrouter:datetime",
 } as const;
 export type OutputDatetimeItemType = ClosedEnum<typeof OutputDatetimeItemType>;
-
-export const OutputDatetimeItemStatus = {
-  Completed: "completed",
-  InProgress: "in_progress",
-  Incomplete: "incomplete",
-} as const;
-export type OutputDatetimeItemStatus = OpenEnum<
-  typeof OutputDatetimeItemStatus
->;
 
 /**
  * An openrouter:datetime server tool output item
@@ -27,7 +21,7 @@ export type OutputDatetimeItemStatus = OpenEnum<
 export type OutputDatetimeItem = {
   type: OutputDatetimeItemType;
   id?: string | undefined;
-  status: OutputDatetimeItemStatus;
+  status: ToolCallStatus;
   /**
    * ISO 8601 datetime string
    */
@@ -42,12 +36,6 @@ export type OutputDatetimeItem = {
 export const OutputDatetimeItemType$outboundSchema: z.ZodEnum<
   typeof OutputDatetimeItemType
 > = z.enum(OutputDatetimeItemType);
-
-/** @internal */
-export const OutputDatetimeItemStatus$outboundSchema: z.ZodType<
-  string,
-  OutputDatetimeItemStatus
-> = openEnums.outboundSchema(OutputDatetimeItemStatus);
 
 /** @internal */
 export type OutputDatetimeItem$Outbound = {
@@ -65,7 +53,7 @@ export const OutputDatetimeItem$outboundSchema: z.ZodType<
 > = z.object({
   type: OutputDatetimeItemType$outboundSchema,
   id: z.string().optional(),
-  status: OutputDatetimeItemStatus$outboundSchema,
+  status: ToolCallStatus$outboundSchema,
   datetime: z.string(),
   timezone: z.string(),
 });
