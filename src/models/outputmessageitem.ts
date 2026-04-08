@@ -22,11 +22,6 @@ export const OutputMessageItemRole = {
 } as const;
 export type OutputMessageItemRole = ClosedEnum<typeof OutputMessageItemRole>;
 
-export const OutputMessageItemType = {
-  Message: "message",
-} as const;
-export type OutputMessageItemType = ClosedEnum<typeof OutputMessageItemType>;
-
 export const OutputMessageItemStatusInProgress = {
   InProgress: "in_progress",
 } as const;
@@ -85,7 +80,7 @@ export type OutputMessageItemPhaseUnion =
 export type OutputMessageItem = {
   id: string;
   role: OutputMessageItemRole;
-  type: OutputMessageItemType;
+  type: "message";
   status?:
     | OutputMessageItemStatusCompleted
     | OutputMessageItemStatusIncomplete
@@ -107,11 +102,6 @@ export type OutputMessageItem = {
 export const OutputMessageItemRole$inboundSchema: z.ZodEnum<
   typeof OutputMessageItemRole
 > = z.enum(OutputMessageItemRole);
-
-/** @internal */
-export const OutputMessageItemType$inboundSchema: z.ZodEnum<
-  typeof OutputMessageItemType
-> = z.enum(OutputMessageItemType);
 
 /** @internal */
 export const OutputMessageItemStatusInProgress$inboundSchema: z.ZodEnum<
@@ -204,7 +194,7 @@ export const OutputMessageItem$inboundSchema: z.ZodType<
 > = z.object({
   id: z.string(),
   role: OutputMessageItemRole$inboundSchema,
-  type: OutputMessageItemType$inboundSchema,
+  type: z.literal("message"),
   status: z.union([
     OutputMessageItemStatusCompleted$inboundSchema,
     OutputMessageItemStatusIncomplete$inboundSchema,
