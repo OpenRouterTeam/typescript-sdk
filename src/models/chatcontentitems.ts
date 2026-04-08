@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ChatContentAudio,
@@ -44,94 +46,52 @@ import {
   LegacyChatContentVideo$outboundSchema,
 } from "./legacychatcontentvideo.js";
 
-export type ChatContentItems1 = LegacyChatContentVideo | ChatContentVideo;
-
 /**
  * Content part for chat completion messages
  */
 export type ChatContentItems =
-  | ChatContentText
+  | (ChatContentText & { type: "text" })
   | ChatContentImage
   | ChatContentAudio
-  | ChatContentFile
   | LegacyChatContentVideo
-  | ChatContentVideo;
-
-/** @internal */
-export const ChatContentItems1$inboundSchema: z.ZodType<
-  ChatContentItems1,
-  unknown
-> = z.union([
-  LegacyChatContentVideo$inboundSchema,
-  ChatContentVideo$inboundSchema,
-]);
-/** @internal */
-export type ChatContentItems1$Outbound =
-  | LegacyChatContentVideo$Outbound
-  | ChatContentVideo$Outbound;
-
-/** @internal */
-export const ChatContentItems1$outboundSchema: z.ZodType<
-  ChatContentItems1$Outbound,
-  ChatContentItems1
-> = z.union([
-  LegacyChatContentVideo$outboundSchema,
-  ChatContentVideo$outboundSchema,
-]);
-
-export function chatContentItems1ToJSON(
-  chatContentItems1: ChatContentItems1,
-): string {
-  return JSON.stringify(
-    ChatContentItems1$outboundSchema.parse(chatContentItems1),
-  );
-}
-export function chatContentItems1FromJSON(
-  jsonString: string,
-): SafeParseResult<ChatContentItems1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ChatContentItems1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatContentItems1' from JSON`,
-  );
-}
+  | ChatContentVideo
+  | ChatContentFile
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
 export const ChatContentItems$inboundSchema: z.ZodType<
   ChatContentItems,
   unknown
-> = z.union([
-  ChatContentText$inboundSchema,
-  ChatContentImage$inboundSchema,
-  ChatContentAudio$inboundSchema,
-  ChatContentFile$inboundSchema,
-  z.union([
-    LegacyChatContentVideo$inboundSchema,
-    ChatContentVideo$inboundSchema,
-  ]),
-]);
+> = discriminatedUnion("type", {
+  text: ChatContentText$inboundSchema.and(
+    z.object({ type: z.literal("text") }),
+  ),
+  image_url: ChatContentImage$inboundSchema,
+  input_audio: ChatContentAudio$inboundSchema,
+  input_video: LegacyChatContentVideo$inboundSchema,
+  video_url: ChatContentVideo$inboundSchema,
+  file: ChatContentFile$inboundSchema,
+});
 /** @internal */
 export type ChatContentItems$Outbound =
-  | ChatContentText$Outbound
+  | (ChatContentText$Outbound & { type: "text" })
   | ChatContentImage$Outbound
   | ChatContentAudio$Outbound
-  | ChatContentFile$Outbound
   | LegacyChatContentVideo$Outbound
-  | ChatContentVideo$Outbound;
+  | ChatContentVideo$Outbound
+  | ChatContentFile$Outbound;
 
 /** @internal */
 export const ChatContentItems$outboundSchema: z.ZodType<
   ChatContentItems$Outbound,
   ChatContentItems
 > = z.union([
-  ChatContentText$outboundSchema,
+  ChatContentText$outboundSchema.and(z.object({ type: z.literal("text") })),
   ChatContentImage$outboundSchema,
   ChatContentAudio$outboundSchema,
+  LegacyChatContentVideo$outboundSchema,
+  ChatContentVideo$outboundSchema,
   ChatContentFile$outboundSchema,
-  z.union([
-    LegacyChatContentVideo$outboundSchema,
-    ChatContentVideo$outboundSchema,
-  ]),
 ]);
 
 export function chatContentItemsToJSON(
