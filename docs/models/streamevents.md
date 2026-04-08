@@ -5,10 +5,10 @@ Union of all possible event types emitted during response streaming
 
 ## Supported Types
 
-### `models.StreamEventsResponseCreated`
+### `models.OpenResponsesCreatedEvent`
 
 ```typescript
-const value: models.StreamEventsResponseCreated = {
+const value: models.OpenResponsesCreatedEvent = {
   type: "response.created",
   response: {
     id: "resp-abc123",
@@ -16,14 +16,14 @@ const value: models.StreamEventsResponseCreated = {
     createdAt: 1704067200,
     model: "gpt-4",
     status: "in_progress",
-    completedAt: 1040.87,
+    completedAt: 18438,
     output: [],
     error: null,
     incompleteDetails: null,
-    temperature: null,
-    topP: null,
-    presencePenalty: 8447.53,
-    frequencyPenalty: null,
+    temperature: 5459.7,
+    topP: 864.34,
+    presencePenalty: 5216.06,
+    frequencyPenalty: 9232.89,
     instructions: null,
     metadata: null,
     tools: [],
@@ -34,10 +34,10 @@ const value: models.StreamEventsResponseCreated = {
 };
 ```
 
-### `models.StreamEventsResponseInProgress`
+### `models.OpenResponsesInProgressEvent`
 
 ```typescript
-const value: models.StreamEventsResponseInProgress = {
+const value: models.OpenResponsesInProgressEvent = {
   type: "response.in_progress",
   response: {
     id: "resp-abc123",
@@ -45,14 +45,14 @@ const value: models.StreamEventsResponseInProgress = {
     createdAt: 1704067200,
     model: "gpt-4",
     status: "in_progress",
-    completedAt: 7739.44,
+    completedAt: 740024,
     output: [],
     error: null,
     incompleteDetails: null,
-    temperature: null,
-    topP: null,
-    presencePenalty: 2125.41,
-    frequencyPenalty: 2494.93,
+    temperature: 4344.12,
+    topP: 9532.06,
+    presencePenalty: 945.33,
+    frequencyPenalty: 5294.6,
     instructions: null,
     metadata: null,
     tools: [],
@@ -74,13 +74,13 @@ const value: models.StreamEventsResponseCompleted = {
     createdAt: 1704067200,
     model: "gpt-4",
     status: "in_progress",
-    completedAt: 7739.3,
+    completedAt: 720586,
     output: [],
     error: null,
     incompleteDetails: null,
-    temperature: null,
-    topP: null,
-    presencePenalty: null,
+    temperature: 7739.3,
+    topP: 374.5,
+    presencePenalty: 3994.36,
     frequencyPenalty: 4244.7,
     instructions: null,
     metadata: null,
@@ -103,14 +103,14 @@ const value: models.StreamEventsResponseIncomplete = {
     createdAt: 1704067200,
     model: "gpt-4",
     status: "in_progress",
-    completedAt: 7972,
+    completedAt: 881573,
     output: [],
     error: null,
     incompleteDetails: null,
-    temperature: null,
-    topP: null,
+    temperature: 7972,
+    topP: 3189.43,
     presencePenalty: 8861.33,
-    frequencyPenalty: 3923.12,
+    frequencyPenalty: 5108.49,
     instructions: null,
     metadata: null,
     tools: [],
@@ -132,14 +132,14 @@ const value: models.StreamEventsResponseFailed = {
     createdAt: 1704067200,
     model: "gpt-4",
     status: "in_progress",
-    completedAt: 8451.03,
+    completedAt: 658388,
     output: [],
     error: null,
     incompleteDetails: null,
-    temperature: null,
-    topP: null,
+    temperature: 8451.03,
+    topP: 6507.41,
     presencePenalty: 4081.29,
-    frequencyPenalty: null,
+    frequencyPenalty: 606.01,
     instructions: null,
     metadata: null,
     tools: [],
@@ -167,10 +167,17 @@ const value: models.ErrorEvent = {
 ```typescript
 const value: models.StreamEventsResponseOutputItemAdded = {
   type: "response.output_item.added",
-  outputIndex: 4150.42,
+  outputIndex: 415042,
   item: {
+    id: "msg-abc123",
+    role: "assistant",
     type: "message",
-    status: "completed",
+    content: [
+      {
+        type: "output_text",
+        text: "Hello! How can I help you today?",
+      },
+    ],
   },
   sequenceNumber: 0,
 };
@@ -181,10 +188,17 @@ const value: models.StreamEventsResponseOutputItemAdded = {
 ```typescript
 const value: models.StreamEventsResponseOutputItemDone = {
   type: "response.output_item.done",
-  outputIndex: 2098.31,
+  outputIndex: 209831,
   item: {
+    id: "msg-abc123",
+    role: "assistant",
     type: "message",
-    status: "completed",
+    content: [
+      {
+        type: "output_text",
+        text: "Hello! How can I help you today?",
+      },
+    ],
   },
   sequenceNumber: 0,
 };
@@ -195,9 +209,9 @@ const value: models.StreamEventsResponseOutputItemDone = {
 ```typescript
 const value: models.ContentPartAddedEvent = {
   type: "response.content_part.added",
-  outputIndex: 8999.05,
+  outputIndex: 899905,
   itemId: "<id>",
-  contentIndex: 346.01,
+  contentIndex: 34601,
   part: {
     type: "output_text",
     text: "The capital of France is Paris.",
@@ -211,9 +225,9 @@ const value: models.ContentPartAddedEvent = {
 ```typescript
 const value: models.ContentPartDoneEvent = {
   type: "response.content_part.done",
-  outputIndex: 1120.41,
+  outputIndex: 112041,
   itemId: "<id>",
-  contentIndex: 5462.68,
+  contentIndex: 546268,
   part: {
     type: "output_text",
     text: "The capital of France is Paris.",
@@ -229,13 +243,13 @@ const value: models.TextDeltaEvent = {
   type: "response.output_text.delta",
   logprobs: [
     {
-      logprob: -0.1,
-      token: "world",
+      logprob: -0.5,
+      token: "Hello",
     },
   ],
-  outputIndex: 6998.25,
+  outputIndex: 699825,
   itemId: "<id>",
-  contentIndex: 8104.86,
+  contentIndex: 810486,
   delta: "<value>",
   sequenceNumber: 0,
 };
@@ -246,15 +260,15 @@ const value: models.TextDeltaEvent = {
 ```typescript
 const value: models.TextDoneEvent = {
   type: "response.output_text.done",
-  outputIndex: 4820.41,
+  outputIndex: 482041,
   itemId: "<id>",
-  contentIndex: 6340.62,
+  contentIndex: 634062,
   text: "<value>",
   sequenceNumber: 0,
   logprobs: [
     {
-      logprob: -0.1,
-      token: "world",
+      logprob: -0.5,
+      token: "Hello",
     },
   ],
 };
@@ -265,9 +279,9 @@ const value: models.TextDoneEvent = {
 ```typescript
 const value: models.RefusalDeltaEvent = {
   type: "response.refusal.delta",
-  outputIndex: 1859.54,
+  outputIndex: 185954,
   itemId: "<id>",
-  contentIndex: 7250.96,
+  contentIndex: 725096,
   delta: "<value>",
   sequenceNumber: 0,
 };
@@ -278,9 +292,9 @@ const value: models.RefusalDeltaEvent = {
 ```typescript
 const value: models.RefusalDoneEvent = {
   type: "response.refusal.done",
-  outputIndex: 6729.21,
+  outputIndex: 672921,
   itemId: "<id>",
-  contentIndex: 1938.29,
+  contentIndex: 193829,
   refusal: "<value>",
   sequenceNumber: 0,
 };
@@ -291,11 +305,11 @@ const value: models.RefusalDoneEvent = {
 ```typescript
 const value: models.AnnotationAddedEvent = {
   type: "response.output_text.annotation.added",
-  outputIndex: 1043.54,
+  outputIndex: 104354,
   itemId: "<id>",
-  contentIndex: 2529.14,
+  contentIndex: 252914,
   sequenceNumber: 0,
-  annotationIndex: 2142.33,
+  annotationIndex: 214233,
   annotation: {
     type: "file_citation",
     fileId: "file-abc123",
@@ -311,7 +325,7 @@ const value: models.AnnotationAddedEvent = {
 const value: models.FunctionCallArgsDeltaEvent = {
   type: "response.function_call_arguments.delta",
   itemId: "<id>",
-  outputIndex: 2348.69,
+  outputIndex: 234869,
   delta: "<value>",
   sequenceNumber: 0,
 };
@@ -323,7 +337,7 @@ const value: models.FunctionCallArgsDeltaEvent = {
 const value: models.FunctionCallArgsDoneEvent = {
   type: "response.function_call_arguments.done",
   itemId: "<id>",
-  outputIndex: 6033.59,
+  outputIndex: 603359,
   name: "<value>",
   arguments: "<value>",
   sequenceNumber: 0,
@@ -335,9 +349,9 @@ const value: models.FunctionCallArgsDoneEvent = {
 ```typescript
 const value: models.ReasoningDeltaEvent = {
   type: "response.reasoning_text.delta",
-  outputIndex: 557.21,
+  outputIndex: 55721,
   itemId: "<id>",
-  contentIndex: 1436.19,
+  contentIndex: 143619,
   delta: "<value>",
   sequenceNumber: 0,
 };
@@ -348,9 +362,9 @@ const value: models.ReasoningDeltaEvent = {
 ```typescript
 const value: models.ReasoningDoneEvent = {
   type: "response.reasoning_text.done",
-  outputIndex: 4694.95,
+  outputIndex: 469495,
   itemId: "<id>",
-  contentIndex: 4084.41,
+  contentIndex: 408441,
   text: "<value>",
   sequenceNumber: 0,
 };
@@ -361,9 +375,9 @@ const value: models.ReasoningDoneEvent = {
 ```typescript
 const value: models.ReasoningSummaryPartAddedEvent = {
   type: "response.reasoning_summary_part.added",
-  outputIndex: 5439.57,
+  outputIndex: 543957,
   itemId: "<id>",
-  summaryIndex: 2797.69,
+  summaryIndex: 279769,
   part: {
     type: "summary_text",
     text: "Analyzed the problem using first principles",
@@ -377,9 +391,9 @@ const value: models.ReasoningSummaryPartAddedEvent = {
 ```typescript
 const value: models.ReasoningSummaryPartDoneEvent = {
   type: "response.reasoning_summary_part.done",
-  outputIndex: 8310.78,
+  outputIndex: 831078,
   itemId: "<id>",
-  summaryIndex: 8178.5,
+  summaryIndex: 817850,
   part: {
     type: "summary_text",
     text: "Analyzed the problem using first principles",
@@ -394,8 +408,8 @@ const value: models.ReasoningSummaryPartDoneEvent = {
 const value: models.ReasoningSummaryTextDeltaEvent = {
   type: "response.reasoning_summary_text.delta",
   itemId: "<id>",
-  outputIndex: 4663.59,
-  summaryIndex: 5207.09,
+  outputIndex: 466359,
+  summaryIndex: 520709,
   delta: "<value>",
   sequenceNumber: 0,
 };
@@ -407,8 +421,8 @@ const value: models.ReasoningSummaryTextDeltaEvent = {
 const value: models.ReasoningSummaryTextDoneEvent = {
   type: "response.reasoning_summary_text.done",
   itemId: "<id>",
-  outputIndex: 6870.12,
-  summaryIndex: 8979.7,
+  outputIndex: 687012,
+  summaryIndex: 897970,
   text: "<value>",
   sequenceNumber: 0,
 };
@@ -420,7 +434,7 @@ const value: models.ReasoningSummaryTextDoneEvent = {
 const value: models.ImageGenCallInProgressEvent = {
   type: "response.image_generation_call.in_progress",
   itemId: "<id>",
-  outputIndex: 7881.31,
+  outputIndex: 788131,
   sequenceNumber: 0,
 };
 ```
@@ -431,7 +445,7 @@ const value: models.ImageGenCallInProgressEvent = {
 const value: models.ImageGenCallGeneratingEvent = {
   type: "response.image_generation_call.generating",
   itemId: "<id>",
-  outputIndex: 7087.31,
+  outputIndex: 708731,
   sequenceNumber: 0,
 };
 ```
@@ -442,10 +456,10 @@ const value: models.ImageGenCallGeneratingEvent = {
 const value: models.ImageGenCallPartialImageEvent = {
   type: "response.image_generation_call.partial_image",
   itemId: "<id>",
-  outputIndex: 1736.14,
+  outputIndex: 173614,
   sequenceNumber: 0,
   partialImageB64: "<value>",
-  partialImageIndex: 1928.29,
+  partialImageIndex: 192829,
 };
 ```
 
@@ -455,7 +469,7 @@ const value: models.ImageGenCallPartialImageEvent = {
 const value: models.ImageGenCallCompletedEvent = {
   type: "response.image_generation_call.completed",
   itemId: "<id>",
-  outputIndex: 1658.5,
+  outputIndex: 165850,
   sequenceNumber: 0,
 };
 ```
@@ -466,7 +480,7 @@ const value: models.ImageGenCallCompletedEvent = {
 const value: models.WebSearchCallInProgressEvent = {
   type: "response.web_search_call.in_progress",
   itemId: "<id>",
-  outputIndex: 1535.27,
+  outputIndex: 153527,
   sequenceNumber: 0,
 };
 ```
@@ -477,7 +491,7 @@ const value: models.WebSearchCallInProgressEvent = {
 const value: models.WebSearchCallSearchingEvent = {
   type: "response.web_search_call.searching",
   itemId: "<id>",
-  outputIndex: 7024.52,
+  outputIndex: 702452,
   sequenceNumber: 0,
 };
 ```
@@ -488,7 +502,7 @@ const value: models.WebSearchCallSearchingEvent = {
 const value: models.WebSearchCallCompletedEvent = {
   type: "response.web_search_call.completed",
   itemId: "<id>",
-  outputIndex: 2260.42,
+  outputIndex: 226042,
   sequenceNumber: 0,
 };
 ```
