@@ -9,11 +9,11 @@ import { AnnotationAddedEvent } from "@openrouter/sdk/models";
 
 let value: AnnotationAddedEvent = {
   type: "response.output_text.annotation.added",
-  outputIndex: 6018.49,
+  outputIndex: 601849,
   itemId: "<id>",
-  contentIndex: 7353.83,
+  contentIndex: 735383,
   sequenceNumber: 0,
-  annotationIndex: 1249.13,
+  annotationIndex: 124913,
   annotation: {
     type: "file_citation",
     fileId: "file-abc123",
@@ -25,12 +25,12 @@ let value: AnnotationAddedEvent = {
 
 ## Fields
 
-| Field                                     | Type                                      | Required                                  | Description                               |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `type`                                    | *"response.output_text.annotation.added"* | :heavy_check_mark:                        | N/A                                       |
-| `outputIndex`                             | *number*                                  | :heavy_check_mark:                        | N/A                                       |
-| `itemId`                                  | *string*                                  | :heavy_check_mark:                        | N/A                                       |
-| `contentIndex`                            | *number*                                  | :heavy_check_mark:                        | N/A                                       |
-| `sequenceNumber`                          | *number*                                  | :heavy_check_mark:                        | N/A                                       |
-| `annotationIndex`                         | *number*                                  | :heavy_check_mark:                        | N/A                                       |
-| `annotation`                              | *models.OpenAIResponsesAnnotation*        | :heavy_check_mark:                        | N/A                                       |
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `type`                                                                                              | *"response.output_text.annotation.added"*                                                           | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `outputIndex`                                                                                       | *number*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `itemId`                                                                                            | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `contentIndex`                                                                                      | *number*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `sequenceNumber`                                                                                    | *number*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `annotationIndex`                                                                                   | *number*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `annotation`                                                                                        | *models.OpenAIResponsesAnnotation*                                                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 | {<br/>"type": "file_citation",<br/>"file_id": "file-abc123",<br/>"filename": "research_paper.pdf",<br/>"index": 0<br/>} |
