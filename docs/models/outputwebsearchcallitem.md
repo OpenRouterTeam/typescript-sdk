@@ -7,10 +7,11 @@ import { OutputWebSearchCallItem } from "@openrouter/sdk/models";
 
 let value: OutputWebSearchCallItem = {
   type: "web_search_call",
-  id: "search-abc123",
+  id: "ws-abc123",
   action: {
-    type: "search",
-    query: "OpenAI API",
+    type: "find_in_page",
+    pattern: "<value>",
+    url: "https://faraway-deduction.net",
   },
   status: "completed",
 };
