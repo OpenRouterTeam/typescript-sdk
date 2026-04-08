@@ -19,7 +19,7 @@ export type FilePath = {
 export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
   type: z.literal("file_path"),
   file_id: z.string(),
-  index: z.number(),
+  index: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "file_id": "fileId",
@@ -37,7 +37,7 @@ export const FilePath$outboundSchema: z.ZodType<FilePath$Outbound, FilePath> = z
   .object({
     type: z.literal("file_path"),
     fileId: z.string(),
-    index: z.number(),
+    index: z.int(),
   }).transform((v) => {
     return remap$(v, {
       fileId: "file_id",

@@ -84,7 +84,7 @@ export type GetCurrentKeyData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Total OpenRouter credit usage (in USD) for the API key
    */
@@ -134,7 +134,7 @@ export type GetCurrentKeyData = {
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
@@ -200,7 +200,7 @@ export function getCurrentKeyRequestToJSON(
 
 /** @internal */
 export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
-  requests: z.number(),
+  requests: z.int(),
   interval: z.string(),
   note: z.string(),
 });
@@ -221,7 +221,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   label: z.string(),
-  limit: z.nullable(z.number()),
+  limit: z.number(),
   usage: z.number(),
   usage_daily: z.number(),
   usage_weekly: z.number(),
@@ -233,7 +233,7 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   is_free_tier: z.boolean(),
   is_management_key: z.boolean(),
   is_provisioning_key: z.boolean(),
-  limit_remaining: z.nullable(z.number()),
+  limit_remaining: z.number(),
   limit_reset: z.nullable(z.string()),
   include_byok_in_limit: z.boolean(),
   expires_at: z.nullable(

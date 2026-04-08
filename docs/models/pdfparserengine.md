@@ -8,7 +8,7 @@ The engine to use for parsing PDF files. "pdf-text" is deprecated and automatica
 ### `models.PDFParserEngineEnum`
 
 ```typescript
-const value: models.PDFParserEngineEnum = "native";
+const value: models.PDFParserEngineEnum = "cloudflare-ai";
 ```
 
 ### `models.PDFParserEnginePDFText`

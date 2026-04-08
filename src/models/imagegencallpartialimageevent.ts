@@ -28,10 +28,10 @@ export const ImageGenCallPartialImageEvent$inboundSchema: z.ZodType<
 > = z.object({
   type: z.literal("response.image_generation_call.partial_image"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
   partial_image_b64: z.string(),
-  partial_image_index: z.number(),
+  partial_image_index: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
