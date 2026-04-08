@@ -3,7 +3,6 @@
  * @generated-id: c72074b5f165
  */
 
-import { creditsCreateCoinbaseCharge } from "../funcs/creditsCreateCoinbaseCharge.js";
 import { creditsGetCredits } from "../funcs/creditsGetCredits.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as operations from "../models/operations/index.js";
@@ -22,25 +21,6 @@ export class Credits extends ClientSDK {
   ): Promise<operations.GetCreditsResponse> {
     return unwrapAsync(creditsGetCredits(
       this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Create a Coinbase charge for crypto payment
-   *
-   * @remarks
-   * Create a Coinbase charge for crypto payment
-   */
-  async createCoinbaseCharge(
-    security: operations.CreateCoinbaseChargeSecurity,
-    request: operations.CreateCoinbaseChargeRequest,
-    options?: RequestOptions,
-  ): Promise<operations.CreateCoinbaseChargeResponse> {
-    return unwrapAsync(creditsCreateCoinbaseCharge(
-      this,
-      security,
       request,
       options,
     ));
