@@ -5,8 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
@@ -63,6 +62,10 @@ import {
   OutputWebSearchCallItem$outboundSchema,
 } from "./outputwebsearchcallitem.js";
 import {
+  ReasoningFormat,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
+import {
   ReasoningItem,
   ReasoningItem$Outbound,
   ReasoningItem$outboundSchema,
@@ -113,22 +116,6 @@ export type InputsStatusUnion2 =
   | InputsStatusInProgress2;
 
 /**
- * The format of the reasoning content
- */
-export const InputsFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-/**
- * The format of the reasoning content
- */
-export type InputsFormat = OpenEnum<typeof InputsFormat>;
-
-/**
  * An output item containing reasoning
  */
 export type InputsReasoning = {
@@ -146,10 +133,7 @@ export type InputsReasoning = {
    * A signature for the reasoning content, used for verification
    */
   signature?: string | null | undefined;
-  /**
-   * The format of the reasoning content
-   */
-  format?: InputsFormat | null | undefined;
+  format?: ReasoningFormat | null | undefined;
 };
 
 export const InputsRole = {
@@ -317,10 +301,6 @@ export function inputsStatusUnion2ToJSON(
 }
 
 /** @internal */
-export const InputsFormat$outboundSchema: z.ZodType<string, InputsFormat> =
-  openEnums.outboundSchema(InputsFormat);
-
-/** @internal */
 export type InputsReasoning$Outbound = {
   type: string;
   id: string;
@@ -348,7 +328,7 @@ export const InputsReasoning$outboundSchema: z.ZodType<
     InputsStatusInProgress2$outboundSchema,
   ]).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(InputsFormat$outboundSchema).optional(),
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",

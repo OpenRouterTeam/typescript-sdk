@@ -54,6 +54,9 @@ export type Input = {
   content: Array<ContentText | ContentImageURL>;
 };
 
+/**
+ * Text, token, or multimodal input(s) to embed
+ */
 export type InputUnion =
   | string
   | Array<string>
@@ -61,27 +64,51 @@ export type InputUnion =
   | Array<Array<number>>
   | Array<Input>;
 
+/**
+ * The format of the output embeddings
+ */
 export const EncodingFormat = {
   Float: "float",
   Base64: "base64",
 } as const;
+/**
+ * The format of the output embeddings
+ */
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
+/**
+ * Embeddings request input
+ */
 export type CreateEmbeddingsRequestBody = {
+  /**
+   * Text, token, or multimodal input(s) to embed
+   */
   input:
     | string
     | Array<string>
     | Array<number>
     | Array<Array<number>>
     | Array<Input>;
-  model: string;
-  encodingFormat?: EncodingFormat | undefined;
-  dimensions?: number | undefined;
-  user?: string | undefined;
   /**
-   * Provider routing preferences for the request.
+   * The model to use for embeddings
    */
-  provider?: models.ProviderPreferences | undefined;
+  model: string;
+  /**
+   * The format of the output embeddings
+   */
+  encodingFormat?: EncodingFormat | undefined;
+  /**
+   * The number of dimensions for the output embeddings
+   */
+  dimensions?: number | undefined;
+  /**
+   * A unique identifier for the end-user
+   */
+  user?: string | undefined;
+  provider?: models.ProviderPreferences | null | undefined;
+  /**
+   * The type of input (e.g. search_query, search_document)
+   */
   inputType?: string | undefined;
 };
 
@@ -118,29 +145,65 @@ export const ObjectEmbedding = {
 } as const;
 export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
 
+/**
+ * Embedding vector as an array of floats or a base64 string
+ */
 export type Embedding = Array<number> | string;
 
+/**
+ * A single embedding object
+ */
 export type CreateEmbeddingsData = {
   object: ObjectEmbedding;
+  /**
+   * Embedding vector as an array of floats or a base64 string
+   */
   embedding: Array<number> | string;
+  /**
+   * Index of the embedding in the input list
+   */
   index?: number | undefined;
 };
 
-export type Usage = {
+/**
+ * Token usage statistics
+ */
+export type CreateEmbeddingsUsage = {
+  /**
+   * Number of tokens in the input
+   */
   promptTokens: number;
+  /**
+   * Total number of tokens used
+   */
   totalTokens: number;
+  /**
+   * Cost of the request in credits
+   */
   cost?: number | undefined;
 };
 
 /**
- * Embedding response
+ * Embeddings response containing embedding vectors
  */
 export type CreateEmbeddingsResponseBody = {
+  /**
+   * Unique identifier for the embeddings response
+   */
   id?: string | undefined;
   object: ObjectT;
+  /**
+   * List of embedding objects
+   */
   data: Array<CreateEmbeddingsData>;
+  /**
+   * The model used for embeddings
+   */
   model: string;
-  usage?: Usage | undefined;
+  /**
+   * Token usage statistics
+   */
+  usage?: CreateEmbeddingsUsage | undefined;
 };
 
 export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
@@ -277,7 +340,7 @@ export type CreateEmbeddingsRequestBody$Outbound = {
   encoding_format?: string | undefined;
   dimensions?: number | undefined;
   user?: string | undefined;
-  provider?: models.ProviderPreferences$Outbound | undefined;
+  provider?: models.ProviderPreferences$Outbound | null | undefined;
   input_type?: string | undefined;
 };
 
@@ -297,7 +360,7 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   encodingFormat: EncodingFormat$outboundSchema.optional(),
   dimensions: z.int().optional(),
   user: z.string().optional(),
-  provider: models.ProviderPreferences$outboundSchema.optional(),
+  provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
   inputType: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -378,7 +441,7 @@ export const CreateEmbeddingsData$inboundSchema: z.ZodType<
 > = z.object({
   object: ObjectEmbedding$inboundSchema,
   embedding: z.union([z.array(z.number()), z.string()]),
-  index: z.number().optional(),
+  index: z.int().optional(),
 });
 
 export function createEmbeddingsDataFromJSON(
@@ -392,9 +455,12 @@ export function createEmbeddingsDataFromJSON(
 }
 
 /** @internal */
-export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
-  prompt_tokens: z.number(),
-  total_tokens: z.number(),
+export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
+  CreateEmbeddingsUsage,
+  unknown
+> = z.object({
+  prompt_tokens: z.int(),
+  total_tokens: z.int(),
   cost: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -403,13 +469,13 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   });
 });
 
-export function usageFromJSON(
+export function createEmbeddingsUsageFromJSON(
   jsonString: string,
-): SafeParseResult<Usage, SDKValidationError> {
+): SafeParseResult<CreateEmbeddingsUsage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Usage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Usage' from JSON`,
+    (x) => CreateEmbeddingsUsage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateEmbeddingsUsage' from JSON`,
   );
 }
 
@@ -422,7 +488,7 @@ export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
   object: ObjectT$inboundSchema,
   data: z.array(z.lazy(() => CreateEmbeddingsData$inboundSchema)),
   model: z.string(),
-  usage: z.lazy(() => Usage$inboundSchema).optional(),
+  usage: z.lazy(() => CreateEmbeddingsUsage$inboundSchema).optional(),
 });
 
 export function createEmbeddingsResponseBodyFromJSON(
