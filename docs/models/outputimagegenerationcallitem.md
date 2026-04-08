@@ -7,9 +7,7 @@ import { OutputImageGenerationCallItem } from "@openrouter/sdk/models";
 
 let value: OutputImageGenerationCallItem = {
   type: "image_generation_call",
-  id: "imagegen-abc123",
-  result:
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  id: "img-abc123",
   status: "completed",
 };
 ```
