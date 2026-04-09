@@ -13,10 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Web search call is searching
  */
 export type WebSearchCallSearchingEvent = {
-  type: "response.web_search_call.searching";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
+  type: "response.web_search_call.searching";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const WebSearchCallSearchingEvent$inboundSchema: z.ZodType<
   WebSearchCallSearchingEvent,
   unknown
 > = z.object({
-  type: z.literal("response.web_search_call.searching"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.web_search_call.searching"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
