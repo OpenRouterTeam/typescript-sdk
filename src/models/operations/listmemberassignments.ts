@@ -8,6 +8,7 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListMemberAssignmentsGlobals = {
   /**
@@ -54,52 +55,15 @@ export type ListMemberAssignmentsRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: string | undefined;
+  offset?: number | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
-  limit?: string | undefined;
+  limit?: number | undefined;
 };
 
-export type ListMemberAssignmentsData = {
-  /**
-   * Unique identifier for the assignment
-   */
-  id: string;
-  /**
-   * Clerk user ID of the assigned member
-   */
-  userId: string;
-  /**
-   * Organization ID
-   */
-  organizationId: string;
-  /**
-   * ID of the guardrail
-   */
-  guardrailId: string;
-  /**
-   * User ID of who made the assignment
-   */
-  assignedBy: string | null;
-  /**
-   * ISO 8601 timestamp of when the assignment was created
-   */
-  createdAt: string;
-};
-
-/**
- * List of member assignments
- */
 export type ListMemberAssignmentsResponse = {
-  /**
-   * List of member assignments
-   */
-  data: Array<ListMemberAssignmentsData>;
-  /**
-   * Total number of member assignments
-   */
-  totalCount: number;
+  result: models.ListMemberAssignmentsResponse;
 };
 
 /** @internal */
@@ -107,8 +71,8 @@ export type ListMemberAssignmentsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset?: string | undefined;
-  limit?: string | undefined;
+  offset?: number | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -119,8 +83,8 @@ export const ListMemberAssignmentsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
+  offset: z.int().optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -138,46 +102,14 @@ export function listMemberAssignmentsRequestToJSON(
 }
 
 /** @internal */
-export const ListMemberAssignmentsData$inboundSchema: z.ZodType<
-  ListMemberAssignmentsData,
-  unknown
-> = z.object({
-  id: z.string(),
-  user_id: z.string(),
-  organization_id: z.string(),
-  guardrail_id: z.string(),
-  assigned_by: z.nullable(z.string()),
-  created_at: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "user_id": "userId",
-    "organization_id": "organizationId",
-    "guardrail_id": "guardrailId",
-    "assigned_by": "assignedBy",
-    "created_at": "createdAt",
-  });
-});
-
-export function listMemberAssignmentsDataFromJSON(
-  jsonString: string,
-): SafeParseResult<ListMemberAssignmentsData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListMemberAssignmentsData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListMemberAssignmentsData' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListMemberAssignmentsResponse$inboundSchema: z.ZodType<
   ListMemberAssignmentsResponse,
   unknown
 > = z.object({
-  data: z.array(z.lazy(() => ListMemberAssignmentsData$inboundSchema)),
-  total_count: z.number(),
+  Result: models.ListMemberAssignmentsResponse$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
-    "total_count": "totalCount",
+    "Result": "result",
   });
 });
 

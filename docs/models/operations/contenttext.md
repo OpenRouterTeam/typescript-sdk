@@ -6,8 +6,8 @@
 import { ContentText } from "@openrouter/sdk/models/operations";
 
 let value: ContentText = {
-  type: "text",
   text: "<value>",
+  type: "text",
 };
 ```
 
@@ -15,5 +15,5 @@ let value: ContentText = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"text"*           | :heavy_check_mark: | N/A                |
 | `text`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"text"*           | :heavy_check_mark: | N/A                |
