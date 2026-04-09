@@ -10,6 +10,20 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
+ * Function call details
+ */
+export type ChatStreamToolCallFunction = {
+  /**
+   * Function arguments as JSON string
+   */
+  arguments?: string | undefined;
+  /**
+   * Function name
+   */
+  name?: string | undefined;
+};
+
+/**
  * Tool call type
  */
 export const ChatStreamToolCallType = {
@@ -21,53 +35,34 @@ export const ChatStreamToolCallType = {
 export type ChatStreamToolCallType = ClosedEnum<typeof ChatStreamToolCallType>;
 
 /**
- * Function call details
- */
-export type ChatStreamToolCallFunction = {
-  /**
-   * Function name
-   */
-  name?: string | undefined;
-  /**
-   * Function arguments as JSON string
-   */
-  arguments?: string | undefined;
-};
-
-/**
  * Tool call delta for streaming responses
  */
 export type ChatStreamToolCall = {
   /**
-   * Tool call index in the array
+   * Function call details
    */
-  index: number;
+  function?: ChatStreamToolCallFunction | undefined;
   /**
    * Tool call identifier
    */
   id?: string | undefined;
   /**
+   * Tool call index in the array
+   */
+  index: number;
+  /**
    * Tool call type
    */
   type?: ChatStreamToolCallType | undefined;
-  /**
-   * Function call details
-   */
-  function?: ChatStreamToolCallFunction | undefined;
 };
-
-/** @internal */
-export const ChatStreamToolCallType$inboundSchema: z.ZodEnum<
-  typeof ChatStreamToolCallType
-> = z.enum(ChatStreamToolCallType);
 
 /** @internal */
 export const ChatStreamToolCallFunction$inboundSchema: z.ZodType<
   ChatStreamToolCallFunction,
   unknown
 > = z.object({
-  name: z.string().optional(),
   arguments: z.string().optional(),
+  name: z.string().optional(),
 });
 
 export function chatStreamToolCallFunctionFromJSON(
@@ -81,14 +76,19 @@ export function chatStreamToolCallFunctionFromJSON(
 }
 
 /** @internal */
+export const ChatStreamToolCallType$inboundSchema: z.ZodEnum<
+  typeof ChatStreamToolCallType
+> = z.enum(ChatStreamToolCallType);
+
+/** @internal */
 export const ChatStreamToolCall$inboundSchema: z.ZodType<
   ChatStreamToolCall,
   unknown
 > = z.object({
-  index: z.number(),
-  id: z.string().optional(),
-  type: ChatStreamToolCallType$inboundSchema.optional(),
   function: z.lazy(() => ChatStreamToolCallFunction$inboundSchema).optional(),
+  id: z.string().optional(),
+  index: z.int(),
+  type: ChatStreamToolCallType$inboundSchema.optional(),
 });
 
 export function chatStreamToolCallFromJSON(

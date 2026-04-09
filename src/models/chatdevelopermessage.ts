@@ -19,7 +19,6 @@ export type ChatDeveloperMessageContent = string | Array<ChatContentText>;
  * Developer message
  */
 export type ChatDeveloperMessage = {
-  role: "developer";
   /**
    * Developer message content
    */
@@ -28,6 +27,7 @@ export type ChatDeveloperMessage = {
    * Optional name for the developer message
    */
   name?: string | undefined;
+  role: "developer";
 };
 
 /** @internal */
@@ -53,9 +53,9 @@ export function chatDeveloperMessageContentToJSON(
 
 /** @internal */
 export type ChatDeveloperMessage$Outbound = {
-  role: "developer";
   content: string | Array<ChatContentText$Outbound>;
   name?: string | undefined;
+  role: "developer";
 };
 
 /** @internal */
@@ -63,9 +63,9 @@ export const ChatDeveloperMessage$outboundSchema: z.ZodType<
   ChatDeveloperMessage$Outbound,
   ChatDeveloperMessage
 > = z.object({
-  role: z.literal("developer"),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
   name: z.string().optional(),
+  role: z.literal("developer"),
 });
 
 export function chatDeveloperMessageToJSON(

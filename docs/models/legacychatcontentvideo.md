@@ -12,14 +12,14 @@ import { LegacyChatContentVideo } from "@openrouter/sdk/models";
 let value: LegacyChatContentVideo = {
   type: "input_video",
   videoUrl: {
-    url: "https://other-spirit.org/",
+    url: "https://example.com/video.mp4",
   },
 };
 ```
 
 ## Fields
 
-| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `type`                                                             | *"input_video"*                                                    | :heavy_check_mark:                                                 | N/A                                                                |
-| `videoUrl`                                                         | [models.ChatContentVideoInput](../models/chatcontentvideoinput.md) | :heavy_check_mark:                                                 | Video input object                                                 |
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `type`                                                             | *"input_video"*                                                    | :heavy_check_mark:                                                 | N/A                                                                |                                                                    |
+| `videoUrl`                                                         | [models.ChatContentVideoInput](../models/chatcontentvideoinput.md) | :heavy_check_mark:                                                 | Video input object                                                 | {<br/>"url": "https://example.com/video.mp4"<br/>}                 |
