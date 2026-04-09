@@ -14,21 +14,21 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type CompletionTokensDetails = {
   /**
-   * Tokens used for reasoning
+   * Accepted prediction tokens
    */
-  reasoningTokens?: number | null | undefined;
+  acceptedPredictionTokens?: number | undefined;
   /**
    * Tokens used for audio output
    */
-  audioTokens?: number | null | undefined;
+  audioTokens?: number | undefined;
   /**
-   * Accepted prediction tokens
+   * Tokens used for reasoning
    */
-  acceptedPredictionTokens?: number | null | undefined;
+  reasoningTokens?: number | undefined;
   /**
    * Rejected prediction tokens
    */
-  rejectedPredictionTokens?: number | null | undefined;
+  rejectedPredictionTokens?: number | undefined;
 };
 
 /**
@@ -36,17 +36,17 @@ export type CompletionTokensDetails = {
  */
 export type PromptTokensDetails = {
   /**
-   * Cached prompt tokens
+   * Audio input tokens
    */
-  cachedTokens?: number | undefined;
+  audioTokens?: number | undefined;
   /**
    * Tokens written to cache. Only returned for models with explicit caching and cache write pricing.
    */
   cacheWriteTokens?: number | undefined;
   /**
-   * Audio input tokens
+   * Cached prompt tokens
    */
-  audioTokens?: number | undefined;
+  cachedTokens?: number | undefined;
   /**
    * Video input tokens
    */
@@ -62,21 +62,21 @@ export type ChatUsage = {
    */
   completionTokens: number;
   /**
-   * Number of tokens in the prompt
-   */
-  promptTokens: number;
-  /**
-   * Total number of tokens
-   */
-  totalTokens: number;
-  /**
    * Detailed completion token usage
    */
   completionTokensDetails?: CompletionTokensDetails | null | undefined;
   /**
+   * Number of tokens in the prompt
+   */
+  promptTokens: number;
+  /**
    * Detailed prompt token usage
    */
   promptTokensDetails?: PromptTokensDetails | null | undefined;
+  /**
+   * Total number of tokens
+   */
+  totalTokens: number;
 };
 
 /** @internal */
@@ -84,15 +84,15 @@ export const CompletionTokensDetails$inboundSchema: z.ZodType<
   CompletionTokensDetails,
   unknown
 > = z.object({
-  reasoning_tokens: z.nullable(z.number()).optional(),
-  audio_tokens: z.nullable(z.number()).optional(),
-  accepted_prediction_tokens: z.nullable(z.number()).optional(),
-  rejected_prediction_tokens: z.nullable(z.number()).optional(),
+  accepted_prediction_tokens: z.int().optional(),
+  audio_tokens: z.int().optional(),
+  reasoning_tokens: z.int().optional(),
+  rejected_prediction_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
-    "reasoning_tokens": "reasoningTokens",
-    "audio_tokens": "audioTokens",
     "accepted_prediction_tokens": "acceptedPredictionTokens",
+    "audio_tokens": "audioTokens",
+    "reasoning_tokens": "reasoningTokens",
     "rejected_prediction_tokens": "rejectedPredictionTokens",
   });
 });
@@ -112,15 +112,15 @@ export const PromptTokensDetails$inboundSchema: z.ZodType<
   PromptTokensDetails,
   unknown
 > = z.object({
-  cached_tokens: z.number().optional(),
-  cache_write_tokens: z.number().optional(),
-  audio_tokens: z.number().optional(),
-  video_tokens: z.number().optional(),
+  audio_tokens: z.int().optional(),
+  cache_write_tokens: z.int().optional(),
+  cached_tokens: z.int().optional(),
+  video_tokens: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
-    "cached_tokens": "cachedTokens",
-    "cache_write_tokens": "cacheWriteTokens",
     "audio_tokens": "audioTokens",
+    "cache_write_tokens": "cacheWriteTokens",
+    "cached_tokens": "cachedTokens",
     "video_tokens": "videoTokens",
   });
 });
@@ -137,22 +137,22 @@ export function promptTokensDetailsFromJSON(
 
 /** @internal */
 export const ChatUsage$inboundSchema: z.ZodType<ChatUsage, unknown> = z.object({
-  completion_tokens: z.number(),
-  prompt_tokens: z.number(),
-  total_tokens: z.number(),
+  completion_tokens: z.int(),
   completion_tokens_details: z.nullable(
     z.lazy(() => CompletionTokensDetails$inboundSchema),
   ).optional(),
+  prompt_tokens: z.int(),
   prompt_tokens_details: z.nullable(
     z.lazy(() => PromptTokensDetails$inboundSchema),
   ).optional(),
+  total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "completion_tokens": "completionTokens",
-    "prompt_tokens": "promptTokens",
-    "total_tokens": "totalTokens",
     "completion_tokens_details": "completionTokensDetails",
+    "prompt_tokens": "promptTokens",
     "prompt_tokens_details": "promptTokensDetails",
+    "total_tokens": "totalTokens",
   });
 });
 

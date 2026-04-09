@@ -5,66 +5,46 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ReasoningDetailTextFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-export type ReasoningDetailTextFormat = OpenEnum<
-  typeof ReasoningDetailTextFormat
->;
+import {
+  ReasoningFormat,
+  ReasoningFormat$inboundSchema,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
 
 /**
  * Reasoning detail text schema
  */
 export type ReasoningDetailText = {
-  type: "reasoning.text";
-  text?: string | null | undefined;
-  signature?: string | null | undefined;
+  format?: ReasoningFormat | null | undefined;
   id?: string | null | undefined;
-  format?: ReasoningDetailTextFormat | null | undefined;
   index?: number | undefined;
+  signature?: string | null | undefined;
+  text?: string | null | undefined;
+  type: "reasoning.text";
 };
-
-/** @internal */
-export const ReasoningDetailTextFormat$inboundSchema: z.ZodType<
-  ReasoningDetailTextFormat,
-  unknown
-> = openEnums.inboundSchema(ReasoningDetailTextFormat);
-/** @internal */
-export const ReasoningDetailTextFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningDetailTextFormat
-> = openEnums.outboundSchema(ReasoningDetailTextFormat);
 
 /** @internal */
 export const ReasoningDetailText$inboundSchema: z.ZodType<
   ReasoningDetailText,
   unknown
 > = z.object({
-  type: z.literal("reasoning.text"),
-  text: z.nullable(z.string()).optional(),
-  signature: z.nullable(z.string()).optional(),
+  format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailTextFormat$inboundSchema).optional(),
-  index: z.number().optional(),
+  index: z.int().optional(),
+  signature: z.nullable(z.string()).optional(),
+  text: z.nullable(z.string()).optional(),
+  type: z.literal("reasoning.text"),
 });
 /** @internal */
 export type ReasoningDetailText$Outbound = {
-  type: "reasoning.text";
-  text?: string | null | undefined;
-  signature?: string | null | undefined;
-  id?: string | null | undefined;
   format?: string | null | undefined;
+  id?: string | null | undefined;
   index?: number | undefined;
+  signature?: string | null | undefined;
+  text?: string | null | undefined;
+  type: "reasoning.text";
 };
 
 /** @internal */
@@ -72,12 +52,12 @@ export const ReasoningDetailText$outboundSchema: z.ZodType<
   ReasoningDetailText$Outbound,
   ReasoningDetailText
 > = z.object({
-  type: z.literal("reasoning.text"),
-  text: z.nullable(z.string()).optional(),
-  signature: z.nullable(z.string()).optional(),
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailTextFormat$outboundSchema).optional(),
-  index: z.number().optional(),
+  index: z.int().optional(),
+  signature: z.nullable(z.string()).optional(),
+  text: z.nullable(z.string()).optional(),
+  type: z.literal("reasoning.text"),
 });
 
 export function reasoningDetailTextToJSON(
