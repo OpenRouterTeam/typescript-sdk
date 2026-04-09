@@ -13,10 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Web search call in progress
  */
 export type WebSearchCallInProgressEvent = {
-  type: "response.web_search_call.in_progress";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
+  type: "response.web_search_call.in_progress";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const WebSearchCallInProgressEvent$inboundSchema: z.ZodType<
   WebSearchCallInProgressEvent,
   unknown
 > = z.object({
-  type: z.literal("response.web_search_call.in_progress"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.web_search_call.in_progress"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
