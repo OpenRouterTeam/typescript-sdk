@@ -8,28 +8,28 @@ Function tool definition
 import { OpenResponsesResultToolFunction } from "@openrouter/sdk/models";
 
 let value: OpenResponsesResultToolFunction = {
-  type: "function",
   name: "get_weather",
   parameters: {
-    "type": "object",
     "properties": {
       "location": {
-        "type": "string",
         "description": "The city and state",
+        "type": "string",
       },
       "unit": {
-        "type": "string",
         "enum": [
           "celsius",
           "fahrenheit",
         ],
+        "type": "string",
         "x-speakeasy-unknown-values": "allow",
       },
     },
     "required": [
       "location",
     ],
+    "type": "object",
   },
+  type: "function",
 };
 ```
 
@@ -37,8 +37,8 @@ let value: OpenResponsesResultToolFunction = {
 
 | Field                 | Type                  | Required              | Description           |
 | --------------------- | --------------------- | --------------------- | --------------------- |
-| `type`                | *"function"*          | :heavy_check_mark:    | N/A                   |
-| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
 | `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
-| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
 | `parameters`          | Record<string, *any*> | :heavy_check_mark:    | N/A                   |
+| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| `type`                | *"function"*          | :heavy_check_mark:    | N/A                   |

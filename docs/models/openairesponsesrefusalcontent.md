@@ -6,8 +6,8 @@
 import { OpenAIResponsesRefusalContent } from "@openrouter/sdk/models";
 
 let value: OpenAIResponsesRefusalContent = {
-  type: "refusal",
   refusal: "I'm sorry, I cannot assist with that request",
+  type: "refusal",
 };
 ```
 
@@ -15,5 +15,5 @@ let value: OpenAIResponsesRefusalContent = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"refusal"*        | :heavy_check_mark: | N/A                |
 | `refusal`          | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"refusal"*        | :heavy_check_mark: | N/A                |
