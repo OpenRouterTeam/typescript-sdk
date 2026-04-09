@@ -8,15 +8,15 @@ Event emitted when a reasoning summary part is complete
 import { ReasoningSummaryPartDoneEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningSummaryPartDoneEvent = {
-  type: "response.reasoning_summary_part.done",
-  outputIndex: 6867.18,
   itemId: "<id>",
-  summaryIndex: 4773.32,
+  outputIndex: 686718,
   part: {
-    type: "summary_text",
     text: "Analyzed the problem using first principles",
+    type: "summary_text",
   },
   sequenceNumber: 0,
+  summaryIndex: 477332,
+  type: "response.reasoning_summary_part.done",
 };
 ```
 
@@ -24,9 +24,9 @@ let value: ReasoningSummaryPartDoneEvent = {
 
 | Field                                                                             | Type                                                                              | Required                                                                          | Description                                                                       | Example                                                                           |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `type`                                                                            | *"response.reasoning_summary_part.done"*                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
-| `outputIndex`                                                                     | *number*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
 | `itemId`                                                                          | *string*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
-| `summaryIndex`                                                                    | *number*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
-| `part`                                                                            | [models.ReasoningSummaryText](../models/reasoningsummarytext.md)                  | :heavy_check_mark:                                                                | N/A                                                                               | {<br/>"type": "summary_text",<br/>"text": "Analyzed the problem using first principles"<br/>} |
+| `outputIndex`                                                                     | *number*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
+| `part`                                                                            | [models.ReasoningSummaryText](../models/reasoningsummarytext.md)                  | :heavy_check_mark:                                                                | N/A                                                                               | {<br/>"text": "Analyzed the problem using first principles",<br/>"type": "summary_text"<br/>} |
 | `sequenceNumber`                                                                  | *number*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
+| `summaryIndex`                                                                    | *number*                                                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
+| `type`                                                                            | *"response.reasoning_summary_part.done"*                                          | :heavy_check_mark:                                                                | N/A                                                                               |                                                                                   |
