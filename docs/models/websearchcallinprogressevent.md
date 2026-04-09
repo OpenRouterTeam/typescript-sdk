@@ -8,10 +8,10 @@ Web search call in progress
 import { WebSearchCallInProgressEvent } from "@openrouter/sdk/models";
 
 let value: WebSearchCallInProgressEvent = {
-  type: "response.web_search_call.in_progress",
   itemId: "<id>",
-  outputIndex: 5491.58,
+  outputIndex: 549158,
   sequenceNumber: 0,
+  type: "response.web_search_call.in_progress",
 };
 ```
 
@@ -19,7 +19,7 @@ let value: WebSearchCallInProgressEvent = {
 
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| `type`                                   | *"response.web_search_call.in_progress"* | :heavy_check_mark:                       | N/A                                      |
 | `itemId`                                 | *string*                                 | :heavy_check_mark:                       | N/A                                      |
 | `outputIndex`                            | *number*                                 | :heavy_check_mark:                       | N/A                                      |
 | `sequenceNumber`                         | *number*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"response.web_search_call.in_progress"* | :heavy_check_mark:                       | N/A                                      |
