@@ -31,13 +31,13 @@ export type Value1 = string | number;
 
 export type Value2 = string | number | boolean | Array<string | number>;
 
-export type FileSearchServerToolFilters = {
+export type Filters = {
   key: string;
   type: FiltersType;
   value: string | number | boolean | Array<string | number>;
 };
 
-export type Filters = FileSearchServerToolFilters | CompoundFilter | any;
+export type FiltersUnion = Filters | CompoundFilter | any;
 
 export const Ranker = {
   Auto: "auto",
@@ -54,16 +54,11 @@ export type RankingOptions = {
  * File search tool configuration
  */
 export type FileSearchServerTool = {
-  type: "file_search";
-  vectorStoreIds: Array<string>;
-  filters?:
-    | FileSearchServerToolFilters
-    | CompoundFilter
-    | any
-    | null
-    | undefined;
+  filters?: Filters | CompoundFilter | any | null | undefined;
   maxNumResults?: number | undefined;
   rankingOptions?: RankingOptions | undefined;
+  type: "file_search";
+  vectorStoreIds: Array<string>;
 };
 
 /** @internal */
@@ -135,10 +130,7 @@ export function value2FromJSON(
 }
 
 /** @internal */
-export const FileSearchServerToolFilters$inboundSchema: z.ZodType<
-  FileSearchServerToolFilters,
-  unknown
-> = z.object({
+export const Filters$inboundSchema: z.ZodType<Filters, unknown> = z.object({
   key: z.string(),
   type: FiltersType$inboundSchema,
   value: z.union([
@@ -149,65 +141,24 @@ export const FileSearchServerToolFilters$inboundSchema: z.ZodType<
   ]),
 });
 /** @internal */
-export type FileSearchServerToolFilters$Outbound = {
+export type Filters$Outbound = {
   key: string;
   type: string;
   value: string | number | boolean | Array<string | number>;
 };
 
 /** @internal */
-export const FileSearchServerToolFilters$outboundSchema: z.ZodType<
-  FileSearchServerToolFilters$Outbound,
-  FileSearchServerToolFilters
-> = z.object({
-  key: z.string(),
-  type: FiltersType$outboundSchema,
-  value: z.union([
-    z.string(),
-    z.number(),
-    z.boolean(),
-    z.array(z.union([z.string(), z.number()])),
-  ]),
-});
-
-export function fileSearchServerToolFiltersToJSON(
-  fileSearchServerToolFilters: FileSearchServerToolFilters,
-): string {
-  return JSON.stringify(
-    FileSearchServerToolFilters$outboundSchema.parse(
-      fileSearchServerToolFilters,
-    ),
-  );
-}
-export function fileSearchServerToolFiltersFromJSON(
-  jsonString: string,
-): SafeParseResult<FileSearchServerToolFilters, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => FileSearchServerToolFilters$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FileSearchServerToolFilters' from JSON`,
-  );
-}
-
-/** @internal */
-export const Filters$inboundSchema: z.ZodType<Filters, unknown> = z.union([
-  z.lazy(() => FileSearchServerToolFilters$inboundSchema),
-  CompoundFilter$inboundSchema,
-  z.any(),
-]);
-/** @internal */
-export type Filters$Outbound =
-  | FileSearchServerToolFilters$Outbound
-  | CompoundFilter$Outbound
-  | any;
-
-/** @internal */
 export const Filters$outboundSchema: z.ZodType<Filters$Outbound, Filters> = z
-  .union([
-    z.lazy(() => FileSearchServerToolFilters$outboundSchema),
-    CompoundFilter$outboundSchema,
-    z.any(),
-  ]);
+  .object({
+    key: z.string(),
+    type: FiltersType$outboundSchema,
+    value: z.union([
+      z.string(),
+      z.number(),
+      z.boolean(),
+      z.array(z.union([z.string(), z.number()])),
+    ]),
+  });
 
 export function filtersToJSON(filters: Filters): string {
   return JSON.stringify(Filters$outboundSchema.parse(filters));
@@ -219,6 +170,42 @@ export function filtersFromJSON(
     jsonString,
     (x) => Filters$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'Filters' from JSON`,
+  );
+}
+
+/** @internal */
+export const FiltersUnion$inboundSchema: z.ZodType<FiltersUnion, unknown> = z
+  .union([
+    z.lazy(() => Filters$inboundSchema),
+    CompoundFilter$inboundSchema,
+    z.any(),
+  ]);
+/** @internal */
+export type FiltersUnion$Outbound =
+  | Filters$Outbound
+  | CompoundFilter$Outbound
+  | any;
+
+/** @internal */
+export const FiltersUnion$outboundSchema: z.ZodType<
+  FiltersUnion$Outbound,
+  FiltersUnion
+> = z.union([
+  z.lazy(() => Filters$outboundSchema),
+  CompoundFilter$outboundSchema,
+  z.any(),
+]);
+
+export function filtersUnionToJSON(filtersUnion: FiltersUnion): string {
+  return JSON.stringify(FiltersUnion$outboundSchema.parse(filtersUnion));
+}
+export function filtersUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<FiltersUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => FiltersUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'FiltersUnion' from JSON`,
   );
 }
 
@@ -276,36 +263,31 @@ export const FileSearchServerTool$inboundSchema: z.ZodType<
   FileSearchServerTool,
   unknown
 > = z.object({
-  type: z.literal("file_search"),
-  vector_store_ids: z.array(z.string()),
   filters: z.nullable(
     z.union([
-      z.lazy(() => FileSearchServerToolFilters$inboundSchema),
+      z.lazy(() => Filters$inboundSchema),
       CompoundFilter$inboundSchema,
       z.any(),
     ]),
   ).optional(),
   max_num_results: z.int().optional(),
   ranking_options: z.lazy(() => RankingOptions$inboundSchema).optional(),
+  type: z.literal("file_search"),
+  vector_store_ids: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
-    "vector_store_ids": "vectorStoreIds",
     "max_num_results": "maxNumResults",
     "ranking_options": "rankingOptions",
+    "vector_store_ids": "vectorStoreIds",
   });
 });
 /** @internal */
 export type FileSearchServerTool$Outbound = {
-  type: "file_search";
-  vector_store_ids: Array<string>;
-  filters?:
-    | FileSearchServerToolFilters$Outbound
-    | CompoundFilter$Outbound
-    | any
-    | null
-    | undefined;
+  filters?: Filters$Outbound | CompoundFilter$Outbound | any | null | undefined;
   max_num_results?: number | undefined;
   ranking_options?: RankingOptions$Outbound | undefined;
+  type: "file_search";
+  vector_store_ids: Array<string>;
 };
 
 /** @internal */
@@ -313,22 +295,22 @@ export const FileSearchServerTool$outboundSchema: z.ZodType<
   FileSearchServerTool$Outbound,
   FileSearchServerTool
 > = z.object({
-  type: z.literal("file_search"),
-  vectorStoreIds: z.array(z.string()),
   filters: z.nullable(
     z.union([
-      z.lazy(() => FileSearchServerToolFilters$outboundSchema),
+      z.lazy(() => Filters$outboundSchema),
       CompoundFilter$outboundSchema,
       z.any(),
     ]),
   ).optional(),
   maxNumResults: z.int().optional(),
   rankingOptions: z.lazy(() => RankingOptions$outboundSchema).optional(),
+  type: z.literal("file_search"),
+  vectorStoreIds: z.array(z.string()),
 }).transform((v) => {
   return remap$(v, {
-    vectorStoreIds: "vector_store_ids",
     maxNumResults: "max_num_results",
     rankingOptions: "ranking_options",
+    vectorStoreIds: "vector_store_ids",
   });
 });
 
