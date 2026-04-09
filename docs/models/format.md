@@ -15,9 +15,9 @@ const value: models.FormatText = {
 
 ```typescript
 const value: models.FormatGrammar = {
-  type: "grammar",
   definition: "<value>",
   syntax: "lark",
+  type: "grammar",
 };
 ```
 
