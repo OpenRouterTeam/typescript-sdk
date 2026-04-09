@@ -4637,6 +4637,27 @@ components:
           type: output_text
         sequence_number: 7
         type: response.content_part.done
+    ContentPartImage:
+      example:
+        image_url:
+          url: https://example.com/image.png
+        type: image_url
+      properties:
+        image_url:
+          properties:
+            url:
+              type: string
+          required:
+            - url
+          type: object
+        type:
+          enum:
+            - image_url
+          type: string
+      required:
+        - type
+        - image_url
+      type: object
     ContextCompressionEngine:
       description: The compression engine to use. Defaults to "middle-out".
       enum:
@@ -11610,6 +11631,714 @@ components:
         output_tokens_details:
           reasoning_tokens: 0
         total_tokens: 35
+    VideoGenerationRequest:
+      example:
+        aspect_ratio: '16:9'
+        duration: 8
+        model: google/veo-3.1
+        prompt: A serene mountain landscape at sunset
+        resolution: 720p
+      properties:
+        aspect_ratio:
+          description: Aspect ratio of the generated video
+          enum:
+            - '16:9'
+            - '9:16'
+            - '1:1'
+            - '4:3'
+            - '3:4'
+            - '21:9'
+            - '9:21'
+          example: '16:9'
+          type: string
+        duration:
+          description: Duration of the generated video in seconds
+          example: 8
+          exclusiveMinimum: true
+          minimum: 0
+          type: integer
+        generate_audio:
+          description: >-
+            Whether to generate audio alongside the video. Defaults to true for models that support audio output, false
+            otherwise.
+          example: true
+          type: boolean
+        input_references:
+          description: Reference images to guide video generation
+          items:
+            $ref: '#/components/schemas/ContentPartImage'
+          type: array
+        model:
+          type: string
+        prompt:
+          type: string
+        provider:
+          description: Provider-specific passthrough configuration
+          properties:
+            options:
+              description: >-
+                Provider-specific options keyed by provider slug. The options for the matched provider are spread into
+                the upstream request body.
+              example:
+                google-vertex:
+                  output_config:
+                    effort: low
+              properties:
+                01ai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                ai21:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                aion-labs:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                akashml:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                alibaba:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                amazon-bedrock:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                amazon-nova:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                ambient:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                anthropic:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                anyscale:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                arcee-ai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                atlas-cloud:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                atoma:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                avian:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                azure:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                baseten:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                black-forest-labs:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                byteplus:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                centml:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                cerebras:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                chutes:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                cirrascale:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                clarifai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                cloudflare:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                cohere:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                crofai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                crusoe:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                deepinfra:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                deepseek:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                enfer:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                fake-provider:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                featherless:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                fireworks:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                friendli:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                gmicloud:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                google-ai-studio:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                google-vertex:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                gopomelo:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                groq:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                huggingface:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                hyperbolic:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                hyperbolic-quantized:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                inception:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                inceptron:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                inference-net:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                infermatic:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                inflection:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                inocloud:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                io-net:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                ionstream:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                klusterai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                lambda:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                lepton:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                liquid:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                lynn:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                lynn-private:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                mancer:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                mancer-old:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                mara:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                meta:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                minimax:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                mistral:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                modal:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                modelrun:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                modular:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                moonshotai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                morph:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                ncompass:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                nebius:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                nextbit:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                nineteen:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                novita:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                nvidia:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                octoai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                open-inference:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                openai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                parasail:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                perplexity:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                phala:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                recursal:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                reflection:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                reka:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                relace:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                replicate:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                sambanova:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                sambanova-cloaked:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                seed:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                sf-compute:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                siliconflow:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                sourceful:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                stealth:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                stepfun:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                streamlake:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                switchpoint:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                targon:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                together:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                together-lite:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                ubicloud:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                upstage:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                venice:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                wandb:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                xai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                xiaomi:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                z-ai:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+              type: object
+          type: object
+        resolution:
+          description: Resolution of the generated video
+          enum:
+            - 480p
+            - 720p
+            - 1080p
+            - 1K
+            - 2K
+            - 4K
+          example: 720p
+          type: string
+        seed:
+          description: >-
+            If specified, the generation will sample deterministically, such that repeated requests with the same seed
+            and parameters should return the same result. Determinism is not guaranteed for all providers.
+          type: integer
+        size:
+          description: >-
+            Exact pixel dimensions of the generated video in "WIDTHxHEIGHT" format (e.g. "1280x720"). Interchangeable
+            with resolution + aspect_ratio.
+          example: 1280x720
+          type: string
+      required:
+        - prompt
+        - model
+      type: object
+    VideoGenerationResponse:
+      example:
+        generation_id: gen-xyz789
+        id: job-abc123
+        polling_url: /api/v1/videos/job-abc123
+        status: pending
+      properties:
+        error:
+          type: string
+        generation_id:
+          description: The generation ID associated with this video generation job. Available once the job has been processed.
+          type: string
+        id:
+          type: string
+        polling_url:
+          type: string
+        status:
+          enum:
+            - pending
+            - in_progress
+            - completed
+            - failed
+            - cancelled
+            - expired
+          type: string
+        unsigned_urls:
+          items:
+            type: string
+          type: array
+        usage:
+          $ref: '#/components/schemas/VideoGenerationUsage'
+      required:
+        - id
+        - polling_url
+        - status
+      type: object
+    VideoGenerationUsage:
+      description: Usage and cost information for the video generation. Available once the job has completed.
+      example:
+        cost: 0.5
+        is_byok: false
+      properties:
+        cost:
+          description: The cost of the video generation in USD.
+          format: double
+          type: number
+        is_byok:
+          description: Whether the request was made using a Bring Your Own Key configuration.
+          type: boolean
+      type: object
+    VideoModel:
+      example:
+        allowed_passthrough_parameters: []
+        canonical_slug: google/veo-3.1
+        created: 1700000000
+        description: Google video generation model
+        id: google/veo-3.1
+        name: Veo 3.1
+        pricing_skus:
+          generate: '0.50'
+        supported_aspect_ratios:
+          - '16:9'
+        supported_durations:
+          - 5
+          - 8
+        supported_resolutions:
+          - 720p
+        supported_sizes: null
+      properties:
+        allowed_passthrough_parameters:
+          description: List of parameters that are allowed to be passed through to the provider
+          items:
+            type: string
+          type: array
+        canonical_slug:
+          description: Canonical slug for the model
+          example: openai/gpt-4
+          type: string
+        created:
+          description: Unix timestamp of when the model was created
+          example: 1692901234
+          type: integer
+        description:
+          description: Description of the model
+          example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
+          type: string
+        hugging_face_id:
+          description: Hugging Face model identifier, if applicable
+          example: microsoft/DialoGPT-medium
+          nullable: true
+          type: string
+        id:
+          description: Unique identifier for the model
+          example: openai/gpt-4
+          type: string
+        name:
+          description: Display name of the model
+          example: GPT-4
+          type: string
+        pricing_skus:
+          additionalProperties:
+            type: string
+          description: Pricing SKUs with provider prefix stripped, values as strings
+          nullable: true
+          type: object
+        supported_aspect_ratios:
+          description: Supported output aspect ratios
+          items:
+            enum:
+              - '16:9'
+              - '9:16'
+              - '1:1'
+              - '4:3'
+              - '3:4'
+              - '21:9'
+              - '9:21'
+            type: string
+          nullable: true
+          type: array
+        supported_durations:
+          description: Supported video durations in seconds
+          items:
+            type: integer
+          nullable: true
+          type: array
+        supported_resolutions:
+          description: Supported output resolutions
+          items:
+            enum:
+              - 480p
+              - 720p
+              - 1080p
+              - 1K
+              - 2K
+              - 4K
+            type: string
+          nullable: true
+          type: array
+        supported_sizes:
+          description: Supported output sizes (width x height)
+          items:
+            enum:
+              - 480x480
+              - 480x640
+              - 480x854
+              - 480x1120
+              - 640x480
+              - 720x720
+              - 720x960
+              - 720x1280
+              - 720x1680
+              - 854x480
+              - 960x720
+              - 1080x1080
+              - 1080x1440
+              - 1080x1920
+              - 1080x2520
+              - 1120x480
+              - 1280x720
+              - 1440x1080
+              - 1680x720
+              - 1920x1080
+              - 2160x2160
+              - 2160x2880
+              - 2160x3840
+              - 2160x5040
+              - 2520x1080
+              - 2880x2160
+              - 3840x2160
+              - 5040x2160
+            type: string
+          nullable: true
+          type: array
+      required:
+        - id
+        - canonical_slug
+        - name
+        - created
+        - supported_resolutions
+        - supported_aspect_ratios
+        - supported_sizes
+        - supported_durations
+        - allowed_passthrough_parameters
+      type: object
+    VideoModelsListResponse:
+      example:
+        data:
+          - allowed_passthrough_parameters: []
+            canonical_slug: google/veo-3.1
+            created: 1700000000
+            description: Google video generation model
+            id: google/veo-3.1
+            name: Veo 3.1
+            pricing_skus:
+              generate: '0.50'
+            supported_aspect_ratios:
+              - '16:9'
+            supported_durations:
+              - 5
+              - 8
+            supported_resolutions:
+              - 720p
+            supported_sizes: null
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VideoModel'
+          type: array
+      required:
+        - data
+      type: object
     WebSearchCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesSearchCompleted'
@@ -12601,9 +13330,6 @@ paths:
       requestBody:
         content:
           application/json:
-            example:
-              input: The quick brown fox jumps over the lazy dog
-              model: openai/text-embedding-3-small
             schema:
               description: Embeddings request input
               example:
@@ -12702,19 +13428,6 @@ paths:
         '200':
           content:
             application/json:
-              example:
-                data:
-                  - embedding:
-                      - 0.0023064255
-                      - -0.009327292
-                      - 0.015797347
-                    index: 0
-                    object: embedding
-                model: openai/text-embedding-3-small
-                object: list
-                usage:
-                  prompt_tokens: 8
-                  total_tokens: 8
               schema:
                 description: Embeddings response containing embedding vectors
                 example:
@@ -17237,13 +17950,6 @@ paths:
       requestBody:
         content:
           application/json:
-            example:
-              documents:
-                - Paris is the capital of France.
-                - Berlin is the capital of Germany.
-                - Madrid is the capital of Spain.
-              model: cohere/rerank-v3.5
-              query: What is the capital of France?
             schema:
               description: Rerank request input
               example:
@@ -17290,17 +17996,6 @@ paths:
         '200':
           content:
             application/json:
-              example:
-                id: gen-rerank-1234567890-abc
-                model: cohere/rerank-v3.5
-                results:
-                  - document:
-                      text: Paris is the capital of France.
-                    index: 0
-                    relevance_score: 0.98
-                usage:
-                  search_units: 1
-                  total_tokens: 150
               schema:
                 description: Rerank response containing ranked results
                 example:
@@ -17686,6 +18381,296 @@ paths:
         - beta.responses
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
+  /videos:
+    post:
+      description: Submits a video generation request and returns a polling URL to check status
+      operationId: createVideos
+      requestBody:
+        content:
+          application/json:
+            example:
+              aspect_ratio: '16:9'
+              duration: 8
+              model: google/veo-3.1
+              prompt: A serene mountain landscape at sunset
+              resolution: 720p
+            schema:
+              $ref: '#/components/schemas/VideoGenerationRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              example:
+                generation_id: gen-xyz789
+                id: job-abc123
+                polling_url: /api/v1/videos/job-abc123
+                status: pending
+              schema:
+                $ref: '#/components/schemas/VideoGenerationResponse'
+          description: Video generation request accepted
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '402':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 402
+                  message: Insufficient credits. Add more using https://openrouter.ai/credits
+              schema:
+                $ref: '#/components/schemas/PaymentRequiredResponse'
+          description: Payment Required - Insufficient credits or quota to complete request
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Submit a video generation request
+      tags:
+        - Video Generation
+      x-speakeasy-name-override: generate
+  /videos/{jobId}:
+    get:
+      description: Returns job status and content URLs when completed
+      operationId: getVideos
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            example: job-abc123
+            minLength: 1
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                generation_id: gen-xyz789
+                id: job-abc123
+                polling_url: /api/v1/videos/job-abc123
+                status: complete
+                unsigned_urls:
+                  - https://storage.example.com/video.mp4
+                usage:
+                  cost: 0.5
+              schema:
+                $ref: '#/components/schemas/VideoGenerationResponse'
+          description: Video generation status
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Poll video generation status
+      tags:
+        - Video Generation
+      x-speakeasy-name-override: getGeneration
+  /videos/{jobId}/content:
+    get:
+      description: Streams the generated video content from the upstream provider
+      operationId: listVideosContent
+      parameters:
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            example: job-abc123
+            minLength: 1
+            type: string
+        - in: query
+          name: index
+          required: false
+          schema:
+            default: 0
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              example: <binary video data>
+              schema:
+                format: binary
+                type: string
+          description: Video content stream
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+      summary: Download generated video content
+      tags:
+        - Video Generation
+      x-speakeasy-name-override: getVideoContent
+  /videos/models:
+    get:
+      description: Returns a list of all available video generation models and their properties
+      operationId: listVideosModels
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - allowed_passthrough_parameters: []
+                    canonical_slug: google/veo-3.1
+                    created: 1700000000
+                    description: Google video generation model
+                    id: google/veo-3.1
+                    name: Veo 3.1
+                    pricing_skus:
+                      generate: '0.50'
+                    supported_aspect_ratios:
+                      - '16:9'
+                    supported_durations:
+                      - 5
+                      - 8
+                    supported_resolutions:
+                      - 720p
+                    supported_sizes: null
+              schema:
+                $ref: '#/components/schemas/VideoModelsListResponse'
+          description: Returns a list of video generation models
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List all video generation models
+      tags:
+        - Video Generation
 security:
   - apiKey: []
 servers:
@@ -17719,8 +18704,10 @@ tags:
     name: Organization
   - description: Provider information endpoints
     name: Providers
-  - description: Reranking endpoints
+  - description: Rerank endpoints
     name: Rerank
+  - description: Video Generation endpoints
+    name: Video Generation
   - description: beta.responses endpoints
     name: beta.responses
 x-fern-base-path: /
