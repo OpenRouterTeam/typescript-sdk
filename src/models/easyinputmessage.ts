@@ -28,47 +28,6 @@ import {
   InputVideo$outboundSchema,
 } from "./inputvideo.js";
 
-export const EasyInputMessageTypeMessage = {
-  Message: "message",
-} as const;
-export type EasyInputMessageTypeMessage = ClosedEnum<
-  typeof EasyInputMessageTypeMessage
->;
-
-export const EasyInputMessageRoleDeveloper = {
-  Developer: "developer",
-} as const;
-export type EasyInputMessageRoleDeveloper = ClosedEnum<
-  typeof EasyInputMessageRoleDeveloper
->;
-
-export const EasyInputMessageRoleAssistant = {
-  Assistant: "assistant",
-} as const;
-export type EasyInputMessageRoleAssistant = ClosedEnum<
-  typeof EasyInputMessageRoleAssistant
->;
-
-export const EasyInputMessageRoleSystem = {
-  System: "system",
-} as const;
-export type EasyInputMessageRoleSystem = ClosedEnum<
-  typeof EasyInputMessageRoleSystem
->;
-
-export const EasyInputMessageRoleUser = {
-  User: "user",
-} as const;
-export type EasyInputMessageRoleUser = ClosedEnum<
-  typeof EasyInputMessageRoleUser
->;
-
-export type EasyInputMessageRoleUnion =
-  | EasyInputMessageRoleUser
-  | EasyInputMessageRoleSystem
-  | EasyInputMessageRoleAssistant
-  | EasyInputMessageRoleDeveloper;
-
 export const EasyInputMessageDetail = {
   Auto: "auto",
   High: "high",
@@ -80,9 +39,9 @@ export type EasyInputMessageDetail = OpenEnum<typeof EasyInputMessageDetail>;
  * Image input content item
  */
 export type EasyInputMessageContentInputImage = {
-  type: "input_image";
   detail: EasyInputMessageDetail;
   imageUrl?: string | null | undefined;
+  type: "input_image";
 };
 
 export type EasyInputMessageContentUnion1 =
@@ -125,13 +84,48 @@ export type EasyInputMessagePhaseUnion =
   | EasyInputMessagePhaseFinalAnswer
   | any;
 
+export const EasyInputMessageRoleDeveloper = {
+  Developer: "developer",
+} as const;
+export type EasyInputMessageRoleDeveloper = ClosedEnum<
+  typeof EasyInputMessageRoleDeveloper
+>;
+
+export const EasyInputMessageRoleAssistant = {
+  Assistant: "assistant",
+} as const;
+export type EasyInputMessageRoleAssistant = ClosedEnum<
+  typeof EasyInputMessageRoleAssistant
+>;
+
+export const EasyInputMessageRoleSystem = {
+  System: "system",
+} as const;
+export type EasyInputMessageRoleSystem = ClosedEnum<
+  typeof EasyInputMessageRoleSystem
+>;
+
+export const EasyInputMessageRoleUser = {
+  User: "user",
+} as const;
+export type EasyInputMessageRoleUser = ClosedEnum<
+  typeof EasyInputMessageRoleUser
+>;
+
+export type EasyInputMessageRoleUnion =
+  | EasyInputMessageRoleUser
+  | EasyInputMessageRoleSystem
+  | EasyInputMessageRoleAssistant
+  | EasyInputMessageRoleDeveloper;
+
+export const EasyInputMessageTypeMessage = {
+  Message: "message",
+} as const;
+export type EasyInputMessageTypeMessage = ClosedEnum<
+  typeof EasyInputMessageTypeMessage
+>;
+
 export type EasyInputMessage = {
-  type?: EasyInputMessageTypeMessage | undefined;
-  role:
-    | EasyInputMessageRoleUser
-    | EasyInputMessageRoleSystem
-    | EasyInputMessageRoleAssistant
-    | EasyInputMessageRoleDeveloper;
   content?:
     | Array<
       | InputText
@@ -153,58 +147,13 @@ export type EasyInputMessage = {
     | any
     | null
     | undefined;
+  role:
+    | EasyInputMessageRoleUser
+    | EasyInputMessageRoleSystem
+    | EasyInputMessageRoleAssistant
+    | EasyInputMessageRoleDeveloper;
+  type?: EasyInputMessageTypeMessage | undefined;
 };
-
-/** @internal */
-export const EasyInputMessageTypeMessage$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageTypeMessage
-> = z.enum(EasyInputMessageTypeMessage);
-
-/** @internal */
-export const EasyInputMessageRoleDeveloper$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageRoleDeveloper
-> = z.enum(EasyInputMessageRoleDeveloper);
-
-/** @internal */
-export const EasyInputMessageRoleAssistant$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageRoleAssistant
-> = z.enum(EasyInputMessageRoleAssistant);
-
-/** @internal */
-export const EasyInputMessageRoleSystem$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageRoleSystem
-> = z.enum(EasyInputMessageRoleSystem);
-
-/** @internal */
-export const EasyInputMessageRoleUser$outboundSchema: z.ZodEnum<
-  typeof EasyInputMessageRoleUser
-> = z.enum(EasyInputMessageRoleUser);
-
-/** @internal */
-export type EasyInputMessageRoleUnion$Outbound =
-  | string
-  | string
-  | string
-  | string;
-
-/** @internal */
-export const EasyInputMessageRoleUnion$outboundSchema: z.ZodType<
-  EasyInputMessageRoleUnion$Outbound,
-  EasyInputMessageRoleUnion
-> = z.union([
-  EasyInputMessageRoleUser$outboundSchema,
-  EasyInputMessageRoleSystem$outboundSchema,
-  EasyInputMessageRoleAssistant$outboundSchema,
-  EasyInputMessageRoleDeveloper$outboundSchema,
-]);
-
-export function easyInputMessageRoleUnionToJSON(
-  easyInputMessageRoleUnion: EasyInputMessageRoleUnion,
-): string {
-  return JSON.stringify(
-    EasyInputMessageRoleUnion$outboundSchema.parse(easyInputMessageRoleUnion),
-  );
-}
 
 /** @internal */
 export const EasyInputMessageDetail$outboundSchema: z.ZodType<
@@ -214,9 +163,9 @@ export const EasyInputMessageDetail$outboundSchema: z.ZodType<
 
 /** @internal */
 export type EasyInputMessageContentInputImage$Outbound = {
-  type: "input_image";
   detail: string;
   image_url?: string | null | undefined;
+  type: "input_image";
 };
 
 /** @internal */
@@ -224,9 +173,9 @@ export const EasyInputMessageContentInputImage$outboundSchema: z.ZodType<
   EasyInputMessageContentInputImage$Outbound,
   EasyInputMessageContentInputImage
 > = z.object({
-  type: z.literal("input_image"),
   detail: EasyInputMessageDetail$outboundSchema,
   imageUrl: z.nullable(z.string()).optional(),
+  type: z.literal("input_image"),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",
@@ -343,9 +292,58 @@ export function easyInputMessagePhaseUnionToJSON(
 }
 
 /** @internal */
+export const EasyInputMessageRoleDeveloper$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageRoleDeveloper
+> = z.enum(EasyInputMessageRoleDeveloper);
+
+/** @internal */
+export const EasyInputMessageRoleAssistant$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageRoleAssistant
+> = z.enum(EasyInputMessageRoleAssistant);
+
+/** @internal */
+export const EasyInputMessageRoleSystem$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageRoleSystem
+> = z.enum(EasyInputMessageRoleSystem);
+
+/** @internal */
+export const EasyInputMessageRoleUser$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageRoleUser
+> = z.enum(EasyInputMessageRoleUser);
+
+/** @internal */
+export type EasyInputMessageRoleUnion$Outbound =
+  | string
+  | string
+  | string
+  | string;
+
+/** @internal */
+export const EasyInputMessageRoleUnion$outboundSchema: z.ZodType<
+  EasyInputMessageRoleUnion$Outbound,
+  EasyInputMessageRoleUnion
+> = z.union([
+  EasyInputMessageRoleUser$outboundSchema,
+  EasyInputMessageRoleSystem$outboundSchema,
+  EasyInputMessageRoleAssistant$outboundSchema,
+  EasyInputMessageRoleDeveloper$outboundSchema,
+]);
+
+export function easyInputMessageRoleUnionToJSON(
+  easyInputMessageRoleUnion: EasyInputMessageRoleUnion,
+): string {
+  return JSON.stringify(
+    EasyInputMessageRoleUnion$outboundSchema.parse(easyInputMessageRoleUnion),
+  );
+}
+
+/** @internal */
+export const EasyInputMessageTypeMessage$outboundSchema: z.ZodEnum<
+  typeof EasyInputMessageTypeMessage
+> = z.enum(EasyInputMessageTypeMessage);
+
+/** @internal */
 export type EasyInputMessage$Outbound = {
-  type?: string | undefined;
-  role: string | string | string | string;
   content?:
     | Array<
       | InputText$Outbound
@@ -359,6 +357,8 @@ export type EasyInputMessage$Outbound = {
     | null
     | undefined;
   phase?: string | string | any | null | undefined;
+  role: string | string | string | string;
+  type?: string | undefined;
 };
 
 /** @internal */
@@ -366,13 +366,6 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
   EasyInputMessage$Outbound,
   EasyInputMessage
 > = z.object({
-  type: EasyInputMessageTypeMessage$outboundSchema.optional(),
-  role: z.union([
-    EasyInputMessageRoleUser$outboundSchema,
-    EasyInputMessageRoleSystem$outboundSchema,
-    EasyInputMessageRoleAssistant$outboundSchema,
-    EasyInputMessageRoleDeveloper$outboundSchema,
-  ]),
   content: z.nullable(
     z.union([
       z.array(z.union([
@@ -393,6 +386,13 @@ export const EasyInputMessage$outboundSchema: z.ZodType<
       z.any(),
     ]),
   ).optional(),
+  role: z.union([
+    EasyInputMessageRoleUser$outboundSchema,
+    EasyInputMessageRoleSystem$outboundSchema,
+    EasyInputMessageRoleAssistant$outboundSchema,
+    EasyInputMessageRoleDeveloper$outboundSchema,
+  ]),
+  type: EasyInputMessageTypeMessage$outboundSchema.optional(),
 });
 
 export function easyInputMessageToJSON(
