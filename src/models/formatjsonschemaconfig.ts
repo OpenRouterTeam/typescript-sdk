@@ -12,11 +12,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * JSON schema constrained response format
  */
 export type FormatJsonSchemaConfig = {
-  type: "json_schema";
-  name: string;
   description?: string | undefined;
-  strict?: boolean | null | undefined;
+  name: string;
   schema: { [k: string]: any | null };
+  strict?: boolean | null | undefined;
+  type: "json_schema";
 };
 
 /** @internal */
@@ -24,19 +24,19 @@ export const FormatJsonSchemaConfig$inboundSchema: z.ZodType<
   FormatJsonSchemaConfig,
   unknown
 > = z.object({
-  type: z.literal("json_schema"),
-  name: z.string(),
   description: z.string().optional(),
-  strict: z.nullable(z.boolean()).optional(),
+  name: z.string(),
   schema: z.record(z.string(), z.nullable(z.any())),
+  strict: z.nullable(z.boolean()).optional(),
+  type: z.literal("json_schema"),
 });
 /** @internal */
 export type FormatJsonSchemaConfig$Outbound = {
-  type: "json_schema";
-  name: string;
   description?: string | undefined;
-  strict?: boolean | null | undefined;
+  name: string;
   schema: { [k: string]: any | null };
+  strict?: boolean | null | undefined;
+  type: "json_schema";
 };
 
 /** @internal */
@@ -44,11 +44,11 @@ export const FormatJsonSchemaConfig$outboundSchema: z.ZodType<
   FormatJsonSchemaConfig$Outbound,
   FormatJsonSchemaConfig
 > = z.object({
-  type: z.literal("json_schema"),
-  name: z.string(),
   description: z.string().optional(),
-  strict: z.nullable(z.boolean()).optional(),
+  name: z.string(),
   schema: z.record(z.string(), z.nullable(z.any())),
+  strict: z.nullable(z.boolean()).optional(),
+  type: z.literal("json_schema"),
 });
 
 export function formatJsonSchemaConfigToJSON(
