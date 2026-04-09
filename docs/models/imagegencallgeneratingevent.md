@@ -10,7 +10,7 @@ import { ImageGenCallGeneratingEvent } from "@openrouter/sdk/models";
 let value: ImageGenCallGeneratingEvent = {
   type: "response.image_generation_call.generating",
   itemId: "<id>",
-  outputIndex: 6728,
+  outputIndex: 672800,
   sequenceNumber: 0,
 };
 ```
