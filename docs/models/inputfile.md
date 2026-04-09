@@ -16,8 +16,8 @@ let value: InputFile = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"input_file"*     | :heavy_check_mark: | N/A                |
-| `fileId`           | *string*           | :heavy_minus_sign: | N/A                |
 | `fileData`         | *string*           | :heavy_minus_sign: | N/A                |
-| `filename`         | *string*           | :heavy_minus_sign: | N/A                |
+| `fileId`           | *string*           | :heavy_minus_sign: | N/A                |
 | `fileUrl`          | *string*           | :heavy_minus_sign: | N/A                |
+| `filename`         | *string*           | :heavy_minus_sign: | N/A                |
+| `type`             | *"input_file"*     | :heavy_check_mark: | N/A                |

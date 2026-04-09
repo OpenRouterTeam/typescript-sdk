@@ -8,7 +8,7 @@ Video input object
 import { ChatContentVideoInput } from "@openrouter/sdk/models";
 
 let value: ChatContentVideoInput = {
-  url: "https://next-adrenalin.biz/",
+  url: "https://example.com/video.mp4",
 };
 ```
 
