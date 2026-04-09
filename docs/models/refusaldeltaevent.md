@@ -8,12 +8,12 @@ Event emitted when a refusal delta is streamed
 import { RefusalDeltaEvent } from "@openrouter/sdk/models";
 
 let value: RefusalDeltaEvent = {
-  type: "response.refusal.delta",
-  outputIndex: 2173.19,
-  itemId: "<id>",
-  contentIndex: 6047.49,
+  contentIndex: 217319,
   delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 604749,
   sequenceNumber: 0,
+  type: "response.refusal.delta",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: RefusalDeltaEvent = {
 
 | Field                      | Type                       | Required                   | Description                |
 | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
-| `type`                     | *"response.refusal.delta"* | :heavy_check_mark:         | N/A                        |
-| `outputIndex`              | *number*                   | :heavy_check_mark:         | N/A                        |
-| `itemId`                   | *string*                   | :heavy_check_mark:         | N/A                        |
 | `contentIndex`             | *number*                   | :heavy_check_mark:         | N/A                        |
 | `delta`                    | *string*                   | :heavy_check_mark:         | N/A                        |
+| `itemId`                   | *string*                   | :heavy_check_mark:         | N/A                        |
+| `outputIndex`              | *number*                   | :heavy_check_mark:         | N/A                        |
 | `sequenceNumber`           | *number*                   | :heavy_check_mark:         | N/A                        |
+| `type`                     | *"response.refusal.delta"* | :heavy_check_mark:         | N/A                        |
