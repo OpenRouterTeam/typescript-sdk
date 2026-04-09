@@ -6,13 +6,12 @@
 import { OutputFileSearchCallItem } from "@openrouter/sdk/models";
 
 let value: OutputFileSearchCallItem = {
-  type: "file_search_call",
-  id: "filesearch-abc123",
+  id: "fs-abc123",
   queries: [
-    "machine learning algorithms",
-    "neural networks",
+    "search term",
   ],
   status: "completed",
+  type: "file_search_call",
 };
 ```
 
@@ -20,7 +19,7 @@ let value: OutputFileSearchCallItem = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `type`                                                                           | [models.OutputFileSearchCallItemType](../models/outputfilesearchcallitemtype.md) | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
 | `id`                                                                             | *string*                                                                         | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
 | `queries`                                                                        | *string*[]                                                                       | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
 | `status`                                                                         | [models.WebSearchStatus](../models/websearchstatus.md)                           | :heavy_check_mark:                                                               | N/A                                                                              | completed                                                                        |
+| `type`                                                                           | [models.OutputFileSearchCallItemType](../models/outputfilesearchcallitemtype.md) | :heavy_check_mark:                                                               | N/A                                                                              |                                                                                  |
