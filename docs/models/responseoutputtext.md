@@ -6,16 +6,16 @@
 import { ResponseOutputText } from "@openrouter/sdk/models";
 
 let value: ResponseOutputText = {
-  type: "output_text",
   text: "The capital of France is Paris.",
+  type: "output_text",
 };
 ```
 
 ## Fields
 
-| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `type`                                                                       | *"output_text"*                                                              | :heavy_check_mark:                                                           | N/A                                                                          |
-| `text`                                                                       | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
-| `annotations`                                                                | *models.OpenAIResponsesAnnotation*[]                                         | :heavy_minus_sign:                                                           | N/A                                                                          |
-| `logprobs`                                                                   | [models.ResponseOutputTextLogprob](../models/responseoutputtextlogprob.md)[] | :heavy_minus_sign:                                                           | N/A                                                                          |
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `annotations`                            | *models.OpenAIResponsesAnnotation*[]     | :heavy_minus_sign:                       | N/A                                      |
+| `logprobs`                               | [models.Logprob](../models/logprob.md)[] | :heavy_minus_sign:                       | N/A                                      |
+| `text`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"output_text"*                          | :heavy_check_mark:                       | N/A                                      |

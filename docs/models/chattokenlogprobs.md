@@ -10,9 +10,9 @@ import { ChatTokenLogprobs } from "@openrouter/sdk/models";
 let value: ChatTokenLogprobs = {
   content: [
     {
-      token: " Hello",
-      logprob: -0.612345,
       bytes: null,
+      logprob: -0.612345,
+      token: " Hello",
       topLogprobs: [],
     },
   ],
