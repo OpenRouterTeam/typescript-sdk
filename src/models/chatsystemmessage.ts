@@ -19,7 +19,6 @@ export type ChatSystemMessageContent = string | Array<ChatContentText>;
  * System message for setting behavior
  */
 export type ChatSystemMessage = {
-  role: "system";
   /**
    * System message content
    */
@@ -28,6 +27,7 @@ export type ChatSystemMessage = {
    * Optional name for the system message
    */
   name?: string | undefined;
+  role: "system";
 };
 
 /** @internal */
@@ -51,9 +51,9 @@ export function chatSystemMessageContentToJSON(
 
 /** @internal */
 export type ChatSystemMessage$Outbound = {
-  role: "system";
   content: string | Array<ChatContentText$Outbound>;
   name?: string | undefined;
+  role: "system";
 };
 
 /** @internal */
@@ -61,9 +61,9 @@ export const ChatSystemMessage$outboundSchema: z.ZodType<
   ChatSystemMessage$Outbound,
   ChatSystemMessage
 > = z.object({
-  role: z.literal("system"),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
   name: z.string().optional(),
+  role: z.literal("system"),
 });
 
 export function chatSystemMessageToJSON(
