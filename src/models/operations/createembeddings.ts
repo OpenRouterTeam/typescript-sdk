@@ -34,18 +34,30 @@ export type CreateEmbeddingsGlobals = {
   appCategories?: string | undefined;
 };
 
+/**
+ * The format of the output embeddings
+ */
+export const EncodingFormat = {
+  Float: "float",
+  Base64: "base64",
+} as const;
+/**
+ * The format of the output embeddings
+ */
+export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
+
 export type ImageUrl = {
   url: string;
 };
 
 export type ContentImageURL = {
-  type: "image_url";
   imageUrl: ImageUrl;
+  type: "image_url";
 };
 
 export type ContentText = {
-  type: "text";
   text: string;
+  type: "text";
 };
 
 export type Content = ContentText | ContentImageURL;
@@ -54,6 +66,9 @@ export type Input = {
   content: Array<ContentText | ContentImageURL>;
 };
 
+/**
+ * Text, token, or multimodal input(s) to embed
+ */
 export type InputUnion =
   | string
   | Array<string>
@@ -61,28 +76,40 @@ export type InputUnion =
   | Array<Array<number>>
   | Array<Input>;
 
-export const EncodingFormat = {
-  Float: "float",
-  Base64: "base64",
-} as const;
-export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
-
+/**
+ * Embeddings request input
+ */
 export type CreateEmbeddingsRequestBody = {
+  /**
+   * The number of dimensions for the output embeddings
+   */
+  dimensions?: number | undefined;
+  /**
+   * The format of the output embeddings
+   */
+  encodingFormat?: EncodingFormat | undefined;
+  /**
+   * Text, token, or multimodal input(s) to embed
+   */
   input:
     | string
     | Array<string>
     | Array<number>
     | Array<Array<number>>
     | Array<Input>;
-  model: string;
-  encodingFormat?: EncodingFormat | undefined;
-  dimensions?: number | undefined;
-  user?: string | undefined;
   /**
-   * Provider routing preferences for the request.
+   * The type of input (e.g. search_query, search_document)
    */
-  provider?: models.ProviderPreferences | undefined;
   inputType?: string | undefined;
+  /**
+   * The model to use for embeddings
+   */
+  model: string;
+  provider?: models.ProviderPreferences | null | undefined;
+  /**
+   * A unique identifier for the end-user
+   */
+  user?: string | undefined;
 };
 
 export type CreateEmbeddingsRequest = {
@@ -108,42 +135,82 @@ export type CreateEmbeddingsRequest = {
   requestBody: CreateEmbeddingsRequestBody;
 };
 
-export const ObjectT = {
-  List: "list",
-} as const;
-export type ObjectT = ClosedEnum<typeof ObjectT>;
+/**
+ * Embedding vector as an array of floats or a base64 string
+ */
+export type Embedding = Array<number> | string;
 
 export const ObjectEmbedding = {
   Embedding: "embedding",
 } as const;
 export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
 
-export type Embedding = Array<number> | string;
-
+/**
+ * A single embedding object
+ */
 export type CreateEmbeddingsData = {
-  object: ObjectEmbedding;
+  /**
+   * Embedding vector as an array of floats or a base64 string
+   */
   embedding: Array<number> | string;
+  /**
+   * Index of the embedding in the input list
+   */
   index?: number | undefined;
+  object: ObjectEmbedding;
 };
 
-export type Usage = {
-  promptTokens: number;
-  totalTokens: number;
+export const ObjectT = {
+  List: "list",
+} as const;
+export type ObjectT = ClosedEnum<typeof ObjectT>;
+
+/**
+ * Token usage statistics
+ */
+export type CreateEmbeddingsUsage = {
+  /**
+   * Cost of the request in credits
+   */
   cost?: number | undefined;
+  /**
+   * Number of tokens in the input
+   */
+  promptTokens: number;
+  /**
+   * Total number of tokens used
+   */
+  totalTokens: number;
 };
 
 /**
- * Embedding response
+ * Embeddings response containing embedding vectors
  */
 export type CreateEmbeddingsResponseBody = {
-  id?: string | undefined;
-  object: ObjectT;
+  /**
+   * List of embedding objects
+   */
   data: Array<CreateEmbeddingsData>;
+  /**
+   * Unique identifier for the embeddings response
+   */
+  id?: string | undefined;
+  /**
+   * The model used for embeddings
+   */
   model: string;
-  usage?: Usage | undefined;
+  object: ObjectT;
+  /**
+   * Token usage statistics
+   */
+  usage?: CreateEmbeddingsUsage | undefined;
 };
 
 export type CreateEmbeddingsResponse = CreateEmbeddingsResponseBody | string;
+
+/** @internal */
+export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
+  openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
 export type ImageUrl$Outbound = {
@@ -162,8 +229,8 @@ export function imageUrlToJSON(imageUrl: ImageUrl): string {
 
 /** @internal */
 export type ContentImageURL$Outbound = {
-  type: "image_url";
   image_url: ImageUrl$Outbound;
+  type: "image_url";
 };
 
 /** @internal */
@@ -171,8 +238,8 @@ export const ContentImageURL$outboundSchema: z.ZodType<
   ContentImageURL$Outbound,
   ContentImageURL
 > = z.object({
-  type: z.literal("image_url"),
   imageUrl: z.lazy(() => ImageUrl$outboundSchema),
+  type: z.literal("image_url"),
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",
@@ -187,8 +254,8 @@ export function contentImageURLToJSON(
 
 /** @internal */
 export type ContentText$Outbound = {
-  type: "text";
   text: string;
+  type: "text";
 };
 
 /** @internal */
@@ -196,8 +263,8 @@ export const ContentText$outboundSchema: z.ZodType<
   ContentText$Outbound,
   ContentText
 > = z.object({
-  type: z.literal("text"),
   text: z.string(),
+  type: z.literal("text"),
 });
 
 export function contentTextToJSON(contentText: ContentText): string {
@@ -262,23 +329,19 @@ export function inputUnionToJSON(inputUnion: InputUnion): string {
 }
 
 /** @internal */
-export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
-  openEnums.outboundSchema(EncodingFormat);
-
-/** @internal */
 export type CreateEmbeddingsRequestBody$Outbound = {
+  dimensions?: number | undefined;
+  encoding_format?: string | undefined;
   input:
     | string
     | Array<string>
     | Array<number>
     | Array<Array<number>>
     | Array<Input$Outbound>;
-  model: string;
-  encoding_format?: string | undefined;
-  dimensions?: number | undefined;
-  user?: string | undefined;
-  provider?: models.ProviderPreferences$Outbound | undefined;
   input_type?: string | undefined;
+  model: string;
+  provider?: models.ProviderPreferences$Outbound | null | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -286,6 +349,8 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   CreateEmbeddingsRequestBody$Outbound,
   CreateEmbeddingsRequestBody
 > = z.object({
+  dimensions: z.int().optional(),
+  encodingFormat: EncodingFormat$outboundSchema.optional(),
   input: z.union([
     z.string(),
     z.array(z.string()),
@@ -293,12 +358,10 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
     z.array(z.array(z.number())),
     z.array(z.lazy(() => Input$outboundSchema)),
   ]),
-  model: z.string(),
-  encodingFormat: EncodingFormat$outboundSchema.optional(),
-  dimensions: z.int().optional(),
-  user: z.string().optional(),
-  provider: models.ProviderPreferences$outboundSchema.optional(),
   inputType: z.string().optional(),
+  model: z.string(),
+  provider: z.nullable(models.ProviderPreferences$outboundSchema).optional(),
+  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     encodingFormat: "encoding_format",
@@ -349,13 +412,6 @@ export function createEmbeddingsRequestToJSON(
 }
 
 /** @internal */
-export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
-
-/** @internal */
-export const ObjectEmbedding$inboundSchema: z.ZodEnum<typeof ObjectEmbedding> =
-  z.enum(ObjectEmbedding);
-
-/** @internal */
 export const Embedding$inboundSchema: z.ZodType<Embedding, unknown> = z.union([
   z.array(z.number()),
   z.string(),
@@ -372,13 +428,17 @@ export function embeddingFromJSON(
 }
 
 /** @internal */
+export const ObjectEmbedding$inboundSchema: z.ZodEnum<typeof ObjectEmbedding> =
+  z.enum(ObjectEmbedding);
+
+/** @internal */
 export const CreateEmbeddingsData$inboundSchema: z.ZodType<
   CreateEmbeddingsData,
   unknown
 > = z.object({
-  object: ObjectEmbedding$inboundSchema,
   embedding: z.union([z.array(z.number()), z.string()]),
-  index: z.number().optional(),
+  index: z.int().optional(),
+  object: ObjectEmbedding$inboundSchema,
 });
 
 export function createEmbeddingsDataFromJSON(
@@ -392,10 +452,16 @@ export function createEmbeddingsDataFromJSON(
 }
 
 /** @internal */
-export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
-  prompt_tokens: z.number(),
-  total_tokens: z.number(),
+export const ObjectT$inboundSchema: z.ZodEnum<typeof ObjectT> = z.enum(ObjectT);
+
+/** @internal */
+export const CreateEmbeddingsUsage$inboundSchema: z.ZodType<
+  CreateEmbeddingsUsage,
+  unknown
+> = z.object({
   cost: z.number().optional(),
+  prompt_tokens: z.int(),
+  total_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "prompt_tokens": "promptTokens",
@@ -403,13 +469,13 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   });
 });
 
-export function usageFromJSON(
+export function createEmbeddingsUsageFromJSON(
   jsonString: string,
-): SafeParseResult<Usage, SDKValidationError> {
+): SafeParseResult<CreateEmbeddingsUsage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Usage$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Usage' from JSON`,
+    (x) => CreateEmbeddingsUsage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CreateEmbeddingsUsage' from JSON`,
   );
 }
 
@@ -418,11 +484,11 @@ export const CreateEmbeddingsResponseBody$inboundSchema: z.ZodType<
   CreateEmbeddingsResponseBody,
   unknown
 > = z.object({
-  id: z.string().optional(),
-  object: ObjectT$inboundSchema,
   data: z.array(z.lazy(() => CreateEmbeddingsData$inboundSchema)),
+  id: z.string().optional(),
   model: z.string(),
-  usage: z.lazy(() => Usage$inboundSchema).optional(),
+  object: ObjectT$inboundSchema,
+  usage: z.lazy(() => CreateEmbeddingsUsage$inboundSchema).optional(),
 });
 
 export function createEmbeddingsResponseBodyFromJSON(
