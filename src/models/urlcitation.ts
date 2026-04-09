@@ -10,34 +10,34 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type URLCitation = {
+  endIndex: number;
+  startIndex: number;
+  title: string;
   type: "url_citation";
   url: string;
-  title: string;
-  startIndex: number;
-  endIndex: number;
 };
 
 /** @internal */
 export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
   .object({
+    end_index: z.int(),
+    start_index: z.int(),
+    title: z.string(),
     type: z.literal("url_citation"),
     url: z.string(),
-    title: z.string(),
-    start_index: z.number(),
-    end_index: z.number(),
   }).transform((v) => {
     return remap$(v, {
-      "start_index": "startIndex",
       "end_index": "endIndex",
+      "start_index": "startIndex",
     });
   });
 /** @internal */
 export type URLCitation$Outbound = {
+  end_index: number;
+  start_index: number;
+  title: string;
   type: "url_citation";
   url: string;
-  title: string;
-  start_index: number;
-  end_index: number;
 };
 
 /** @internal */
@@ -45,15 +45,15 @@ export const URLCitation$outboundSchema: z.ZodType<
   URLCitation$Outbound,
   URLCitation
 > = z.object({
+  endIndex: z.int(),
+  startIndex: z.int(),
+  title: z.string(),
   type: z.literal("url_citation"),
   url: z.string(),
-  title: z.string(),
-  startIndex: z.number(),
-  endIndex: z.number(),
 }).transform((v) => {
   return remap$(v, {
-    startIndex: "start_index",
     endIndex: "end_index",
+    startIndex: "start_index",
   });
 });
 
