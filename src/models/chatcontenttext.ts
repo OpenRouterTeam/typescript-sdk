@@ -25,12 +25,12 @@ export type ChatContentTextType = ClosedEnum<typeof ChatContentTextType>;
  * Text content part
  */
 export type ChatContentText = {
-  type: ChatContentTextType;
-  text: string;
   /**
    * Cache control for the content part
    */
   cacheControl?: ChatContentCacheControl | undefined;
+  text: string;
+  type: ChatContentTextType;
 };
 
 /** @internal */
@@ -47,9 +47,9 @@ export const ChatContentText$inboundSchema: z.ZodType<
   ChatContentText,
   unknown
 > = z.object({
-  type: ChatContentTextType$inboundSchema,
-  text: z.string(),
   cache_control: ChatContentCacheControl$inboundSchema.optional(),
+  text: z.string(),
+  type: ChatContentTextType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "cache_control": "cacheControl",
@@ -57,9 +57,9 @@ export const ChatContentText$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentText$Outbound = {
-  type: string;
-  text: string;
   cache_control?: ChatContentCacheControl$Outbound | undefined;
+  text: string;
+  type: string;
 };
 
 /** @internal */
@@ -67,9 +67,9 @@ export const ChatContentText$outboundSchema: z.ZodType<
   ChatContentText$Outbound,
   ChatContentText
 > = z.object({
-  type: ChatContentTextType$outboundSchema,
-  text: z.string(),
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
+  text: z.string(),
+  type: ChatContentTextType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",

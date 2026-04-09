@@ -8,11 +8,11 @@ JSON schema constrained response format
 import { FormatJsonSchemaConfig } from "@openrouter/sdk/models";
 
 let value: FormatJsonSchemaConfig = {
-  type: "json_schema",
   name: "<value>",
   schema: {
     "key": "<value>",
   },
+  type: "json_schema",
 };
 ```
 
@@ -20,8 +20,8 @@ let value: FormatJsonSchemaConfig = {
 
 | Field                 | Type                  | Required              | Description           |
 | --------------------- | --------------------- | --------------------- | --------------------- |
-| `type`                | *"json_schema"*       | :heavy_check_mark:    | N/A                   |
-| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
 | `description`         | *string*              | :heavy_minus_sign:    | N/A                   |
-| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| `name`                | *string*              | :heavy_check_mark:    | N/A                   |
 | `schema`              | Record<string, *any*> | :heavy_check_mark:    | N/A                   |
+| `strict`              | *boolean*             | :heavy_minus_sign:    | N/A                   |
+| `type`                | *"json_schema"*       | :heavy_check_mark:    | N/A                   |
