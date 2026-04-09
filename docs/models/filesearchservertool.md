@@ -19,8 +19,8 @@ let value: FileSearchServerTool = {
 
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | *"file_search"*                                      | :heavy_check_mark:                                   | N/A                                                  |
-| `vectorStoreIds`                                     | *string*[]                                           | :heavy_check_mark:                                   | N/A                                                  |
-| `filters`                                            | *models.Filters*                                     | :heavy_minus_sign:                                   | N/A                                                  |
+| `filters`                                            | *models.FiltersUnion*                                | :heavy_minus_sign:                                   | N/A                                                  |
 | `maxNumResults`                                      | *number*                                             | :heavy_minus_sign:                                   | N/A                                                  |
 | `rankingOptions`                                     | [models.RankingOptions](../models/rankingoptions.md) | :heavy_minus_sign:                                   | N/A                                                  |
+| `type`                                               | *"file_search"*                                      | :heavy_check_mark:                                   | N/A                                                  |
+| `vectorStoreIds`                                     | *string*[]                                           | :heavy_check_mark:                                   | N/A                                                  |
