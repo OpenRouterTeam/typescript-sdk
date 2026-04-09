@@ -76,6 +76,9 @@ export type GetModelsRequest = {
    * Filter models by use case category
    */
   category?: Category | undefined;
+  /**
+   * Filter models by supported parameter (comma-separated)
+   */
   supportedParameters?: string | undefined;
   /**
    * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, audio, embeddings) or "all" to include all models. Defaults to "text".

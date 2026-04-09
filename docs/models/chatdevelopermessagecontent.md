@@ -16,8 +16,8 @@ const value: string = "This is a message from the developer.";
 ```typescript
 const value: models.ChatContentText[] = [
   {
-    type: "text",
     text: "Hello, world!",
+    type: "text",
   },
 ];
 ```
