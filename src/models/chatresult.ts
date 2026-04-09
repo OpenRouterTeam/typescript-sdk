@@ -22,10 +22,6 @@ export type ChatResultObject = ClosedEnum<typeof ChatResultObject>;
  */
 export type ChatResult = {
   /**
-   * Unique completion identifier
-   */
-  id: string;
-  /**
    * List of completion choices
    */
   choices: Array<ChatChoice>;
@@ -34,18 +30,22 @@ export type ChatResult = {
    */
   created: number;
   /**
+   * Unique completion identifier
+   */
+  id: string;
+  /**
    * Model used for completion
    */
   model: string;
   object: ChatResultObject;
   /**
-   * System fingerprint
-   */
-  systemFingerprint: string | null;
-  /**
    * The service tier used by the upstream provider for this request
    */
   serviceTier?: string | null | undefined;
+  /**
+   * System fingerprint
+   */
+  systemFingerprint: string | null;
   /**
    * Token usage statistics
    */
@@ -60,18 +60,18 @@ export const ChatResultObject$inboundSchema: z.ZodEnum<
 /** @internal */
 export const ChatResult$inboundSchema: z.ZodType<ChatResult, unknown> = z
   .object({
-    id: z.string(),
     choices: z.array(ChatChoice$inboundSchema),
-    created: z.number(),
+    created: z.int(),
+    id: z.string(),
     model: z.string(),
     object: ChatResultObject$inboundSchema,
-    system_fingerprint: z.nullable(z.string()),
     service_tier: z.nullable(z.string()).optional(),
+    system_fingerprint: z.nullable(z.string()),
     usage: ChatUsage$inboundSchema.optional(),
   }).transform((v) => {
     return remap$(v, {
-      "system_fingerprint": "systemFingerprint",
       "service_tier": "serviceTier",
+      "system_fingerprint": "systemFingerprint",
     });
   });
 
