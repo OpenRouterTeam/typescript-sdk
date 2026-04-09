@@ -8,8 +8,8 @@ Image input content item
 import { OutputInputImage } from "@openrouter/sdk/models";
 
 let value: OutputInputImage = {
-  type: "input_image",
   detail: "auto",
+  type: "input_image",
 };
 ```
 
@@ -17,6 +17,6 @@ let value: OutputInputImage = {
 
 | Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `type`                                                                           | *"input_image"*                                                                  | :heavy_check_mark:                                                               | N/A                                                                              |
 | `detail`                                                                         | [models.FunctionCallOutputItemDetail](../models/functioncalloutputitemdetail.md) | :heavy_check_mark:                                                               | N/A                                                                              |
 | `imageUrl`                                                                       | *string*                                                                         | :heavy_minus_sign:                                                               | N/A                                                                              |
+| `type`                                                                           | *"input_image"*                                                                  | :heavy_check_mark:                                                               | N/A                                                                              |

@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
@@ -17,25 +19,32 @@ export const Syntax = {
 export type Syntax = OpenEnum<typeof Syntax>;
 
 export type FormatGrammar = {
-  type: "grammar";
   definition: string;
   syntax: Syntax;
+  type: "grammar";
 };
 
 export type FormatText = {
   type: "text";
 };
 
-export type Format = FormatText | FormatGrammar;
+export type Format =
+  | FormatText
+  | FormatGrammar
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /**
  * Custom tool configuration
  */
 export type CustomTool = {
-  type: "custom";
-  name: string;
   description?: string | undefined;
-  format?: FormatText | FormatGrammar | undefined;
+  format?:
+    | FormatText
+    | FormatGrammar
+    | discriminatedUnionTypes.Unknown<"type">
+    | undefined;
+  name: string;
+  type: "custom";
 };
 
 /** @internal */
@@ -48,15 +57,15 @@ export const Syntax$outboundSchema: z.ZodType<string, Syntax> = openEnums
 /** @internal */
 export const FormatGrammar$inboundSchema: z.ZodType<FormatGrammar, unknown> = z
   .object({
-    type: z.literal("grammar"),
     definition: z.string(),
     syntax: Syntax$inboundSchema,
+    type: z.literal("grammar"),
   });
 /** @internal */
 export type FormatGrammar$Outbound = {
-  type: "grammar";
   definition: string;
   syntax: string;
+  type: "grammar";
 };
 
 /** @internal */
@@ -64,9 +73,9 @@ export const FormatGrammar$outboundSchema: z.ZodType<
   FormatGrammar$Outbound,
   FormatGrammar
 > = z.object({
-  type: z.literal("grammar"),
   definition: z.string(),
   syntax: Syntax$outboundSchema,
+  type: z.literal("grammar"),
 });
 
 export function formatGrammarToJSON(formatGrammar: FormatGrammar): string {
@@ -114,10 +123,11 @@ export function formatTextFromJSON(
 }
 
 /** @internal */
-export const Format$inboundSchema: z.ZodType<Format, unknown> = z.union([
-  z.lazy(() => FormatText$inboundSchema),
-  z.lazy(() => FormatGrammar$inboundSchema),
-]);
+export const Format$inboundSchema: z.ZodType<Format, unknown> =
+  discriminatedUnion("type", {
+    text: z.lazy(() => FormatText$inboundSchema),
+    grammar: z.lazy(() => FormatGrammar$inboundSchema),
+  });
 /** @internal */
 export type Format$Outbound = FormatText$Outbound | FormatGrammar$Outbound;
 
@@ -144,20 +154,20 @@ export function formatFromJSON(
 /** @internal */
 export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   .object({
-    type: z.literal("custom"),
-    name: z.string(),
     description: z.string().optional(),
-    format: z.union([
-      z.lazy(() => FormatText$inboundSchema),
-      z.lazy(() => FormatGrammar$inboundSchema),
-    ]).optional(),
+    format: discriminatedUnion("type", {
+      text: z.lazy(() => FormatText$inboundSchema),
+      grammar: z.lazy(() => FormatGrammar$inboundSchema),
+    }).optional(),
+    name: z.string(),
+    type: z.literal("custom"),
   });
 /** @internal */
 export type CustomTool$Outbound = {
-  type: "custom";
-  name: string;
   description?: string | undefined;
   format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
+  name: string;
+  type: "custom";
 };
 
 /** @internal */
@@ -165,13 +175,13 @@ export const CustomTool$outboundSchema: z.ZodType<
   CustomTool$Outbound,
   CustomTool
 > = z.object({
-  type: z.literal("custom"),
-  name: z.string(),
   description: z.string().optional(),
   format: z.union([
     z.lazy(() => FormatText$outboundSchema),
     z.lazy(() => FormatGrammar$outboundSchema),
   ]).optional(),
+  name: z.string(),
+  type: z.literal("custom"),
 });
 
 export function customToolToJSON(customTool: CustomTool): string {
