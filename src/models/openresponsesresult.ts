@@ -6,6 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
@@ -81,10 +83,7 @@ import {
   StoredPromptTemplate$inboundSchema,
 } from "./storedprompttemplate.js";
 import { TextConfig, TextConfig$inboundSchema } from "./textconfig.js";
-import {
-  TruncationEnum,
-  TruncationEnum$inboundSchema,
-} from "./truncationenum.js";
+import { Truncation, Truncation$inboundSchema } from "./truncation.js";
 import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
   WebSearchServerTool,
@@ -102,11 +101,11 @@ export type OpenResponsesResultObject = ClosedEnum<
  * Function tool definition
  */
 export type OpenResponsesResultToolFunction = {
-  type: "function";
-  name: string;
   description?: string | null | undefined;
-  strict?: boolean | null | undefined;
+  name: string;
   parameters: { [k: string]: any | null } | null;
+  strict?: boolean | null | undefined;
+  type: "function";
 };
 
 export type OpenResponsesResultToolUnion =
@@ -123,44 +122,50 @@ export type OpenResponsesResultToolUnion =
   | CodexLocalShellTool
   | ShellServerTool
   | ApplyPatchServerTool
-  | CustomTool;
+  | CustomTool
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /**
  * Complete non-streaming response from the Responses API
  */
 export type OpenResponsesResult = {
-  id: string;
-  object: OpenResponsesResultObject;
+  background?: boolean | null | undefined;
+  completedAt: number;
   createdAt: number;
-  model: string;
-  status: OpenAIResponsesResponseStatus;
-  completedAt: number | null;
-  output: Array<OutputItems>;
-  user?: string | null | undefined;
-  outputText?: string | undefined;
-  promptCacheKey?: string | null | undefined;
-  safetyIdentifier?: string | null | undefined;
   /**
    * Error information returned from the API
    */
   error: ResponsesErrorField | null;
+  frequencyPenalty: number;
+  id: string;
   incompleteDetails: IncompleteDetails | null;
-  /**
-   * Token usage information for the response
-   */
-  usage?: Usage | null | undefined;
-  maxToolCalls?: number | null | undefined;
-  topLogprobs?: number | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature: number | null;
-  topP: number | null;
-  presencePenalty: number | null;
-  frequencyPenalty: number | null;
   instructions: BaseInputsUnion | null;
+  maxOutputTokens?: number | undefined;
+  maxToolCalls?: number | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
   metadata: { [k: string]: string } | null;
+  model: string;
+  object: OpenResponsesResultObject;
+  output: Array<OutputItems>;
+  outputText?: string | undefined;
+  parallelToolCalls: boolean;
+  presencePenalty: number;
+  previousResponseId?: string | null | undefined;
+  prompt?: StoredPromptTemplate | null | undefined;
+  promptCacheKey?: string | null | undefined;
+  reasoning?: BaseReasoningConfig | null | undefined;
+  safetyIdentifier?: string | null | undefined;
+  serviceTier?: string | null | undefined;
+  status: OpenAIResponsesResponseStatus;
+  store?: boolean | undefined;
+  temperature: number;
+  /**
+   * Text output configuration including format and verbosity
+   */
+  text?: TextConfig | undefined;
+  toolChoice: OpenAIResponsesToolChoiceUnion;
   tools: Array<
     | OpenResponsesResultToolFunction
     | PreviewWebSearchServerTool
@@ -176,20 +181,16 @@ export type OpenResponsesResult = {
     | ShellServerTool
     | ApplyPatchServerTool
     | CustomTool
+    | discriminatedUnionTypes.Unknown<"type">
   >;
-  toolChoice: OpenAIResponsesToolChoiceUnion;
-  parallelToolCalls: boolean;
-  prompt?: StoredPromptTemplate | null | undefined;
-  background?: boolean | null | undefined;
-  previousResponseId?: string | null | undefined;
-  reasoning?: BaseReasoningConfig | null | undefined;
-  serviceTier?: string | null | undefined;
-  store?: boolean | undefined;
-  truncation?: TruncationEnum | null | undefined;
+  topLogprobs?: number | undefined;
+  topP: number;
+  truncation?: Truncation | null | undefined;
   /**
-   * Text output configuration including format and verbosity
+   * Token usage information for the response
    */
-  text?: TextConfig | undefined;
+  usage?: Usage | null | undefined;
+  user?: string | null | undefined;
 };
 
 /** @internal */
@@ -202,11 +203,11 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   OpenResponsesResultToolFunction,
   unknown
 > = z.object({
-  type: z.literal("function"),
-  name: z.string(),
   description: z.nullable(z.string()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
+  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  strict: z.nullable(z.boolean()).optional(),
+  type: z.literal("function"),
 });
 
 export function openResponsesResultToolFunctionFromJSON(
@@ -223,22 +224,23 @@ export function openResponsesResultToolFunctionFromJSON(
 export const OpenResponsesResultToolUnion$inboundSchema: z.ZodType<
   OpenResponsesResultToolUnion,
   unknown
-> = z.union([
-  z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-  PreviewWebSearchServerTool$inboundSchema,
-  Preview20250311WebSearchServerTool$inboundSchema,
-  LegacyWebSearchServerTool$inboundSchema,
-  WebSearchServerTool$inboundSchema,
-  FileSearchServerTool$inboundSchema,
-  ComputerUseServerTool$inboundSchema,
-  CodeInterpreterServerTool$inboundSchema,
-  McpServerTool$inboundSchema,
-  ImageGenerationServerTool$inboundSchema,
-  CodexLocalShellTool$inboundSchema,
-  ShellServerTool$inboundSchema,
-  ApplyPatchServerTool$inboundSchema,
-  CustomTool$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
+  web_search_preview: PreviewWebSearchServerTool$inboundSchema,
+  web_search_preview_2025_03_11:
+    Preview20250311WebSearchServerTool$inboundSchema,
+  web_search: LegacyWebSearchServerTool$inboundSchema,
+  web_search_2025_08_26: WebSearchServerTool$inboundSchema,
+  file_search: FileSearchServerTool$inboundSchema,
+  computer_use_preview: ComputerUseServerTool$inboundSchema,
+  code_interpreter: CodeInterpreterServerTool$inboundSchema,
+  mcp: McpServerTool$inboundSchema,
+  image_generation: ImageGenerationServerTool$inboundSchema,
+  local_shell: CodexLocalShellTool$inboundSchema,
+  shell: ShellServerTool$inboundSchema,
+  apply_patch: ApplyPatchServerTool$inboundSchema,
+  custom: CustomTool$inboundSchema,
+});
 
 export function openResponsesResultToolUnionFromJSON(
   jsonString: string,
@@ -255,75 +257,74 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   OpenResponsesResult,
   unknown
 > = z.object({
-  id: z.string(),
-  object: OpenResponsesResultObject$inboundSchema,
-  created_at: z.number(),
-  model: z.string(),
-  status: OpenAIResponsesResponseStatus$inboundSchema,
-  completed_at: z.nullable(z.number()),
-  output: z.array(OutputItems$inboundSchema),
-  user: z.nullable(z.string()).optional(),
-  output_text: z.string().optional(),
-  prompt_cache_key: z.nullable(z.string()).optional(),
-  safety_identifier: z.nullable(z.string()).optional(),
-  error: z.nullable(ResponsesErrorField$inboundSchema),
-  incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
-  usage: z.nullable(Usage$inboundSchema).optional(),
-  max_tool_calls: z.nullable(z.number()).optional(),
-  top_logprobs: z.number().optional(),
-  max_output_tokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()),
-  top_p: z.nullable(z.number()),
-  presence_penalty: z.nullable(z.number()),
-  frequency_penalty: z.nullable(z.number()),
-  instructions: z.nullable(BaseInputsUnion$inboundSchema),
-  metadata: z.nullable(z.record(z.string(), z.string())),
-  tools: z.array(
-    z.union([
-      z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
-      PreviewWebSearchServerTool$inboundSchema,
-      Preview20250311WebSearchServerTool$inboundSchema,
-      LegacyWebSearchServerTool$inboundSchema,
-      WebSearchServerTool$inboundSchema,
-      FileSearchServerTool$inboundSchema,
-      ComputerUseServerTool$inboundSchema,
-      CodeInterpreterServerTool$inboundSchema,
-      McpServerTool$inboundSchema,
-      ImageGenerationServerTool$inboundSchema,
-      CodexLocalShellTool$inboundSchema,
-      ShellServerTool$inboundSchema,
-      ApplyPatchServerTool$inboundSchema,
-      CustomTool$inboundSchema,
-    ]),
-  ),
-  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
-  parallel_tool_calls: z.boolean(),
-  prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
   background: z.nullable(z.boolean()).optional(),
+  completed_at: z.int(),
+  created_at: z.int(),
+  error: z.nullable(ResponsesErrorField$inboundSchema),
+  frequency_penalty: z.number(),
+  id: z.string(),
+  incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
+  instructions: z.nullable(BaseInputsUnion$inboundSchema),
+  max_output_tokens: z.int().optional(),
+  max_tool_calls: z.int().optional(),
+  metadata: z.nullable(z.record(z.string(), z.string())),
+  model: z.string(),
+  object: OpenResponsesResultObject$inboundSchema,
+  output: z.array(OutputItems$inboundSchema),
+  output_text: z.string().optional(),
+  parallel_tool_calls: z.boolean(),
+  presence_penalty: z.number(),
   previous_response_id: z.nullable(z.string()).optional(),
+  prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
+  prompt_cache_key: z.nullable(z.string()).optional(),
   reasoning: z.nullable(BaseReasoningConfig$inboundSchema).optional(),
+  safety_identifier: z.nullable(z.string()).optional(),
   service_tier: z.nullable(z.string()).optional(),
+  status: OpenAIResponsesResponseStatus$inboundSchema,
   store: z.boolean().optional(),
-  truncation: z.nullable(TruncationEnum$inboundSchema).optional(),
+  temperature: z.number(),
   text: TextConfig$inboundSchema.optional(),
+  tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
+  tools: z.array(discriminatedUnion("type", {
+    function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),
+    web_search_preview: PreviewWebSearchServerTool$inboundSchema,
+    web_search_preview_2025_03_11:
+      Preview20250311WebSearchServerTool$inboundSchema,
+    web_search: LegacyWebSearchServerTool$inboundSchema,
+    web_search_2025_08_26: WebSearchServerTool$inboundSchema,
+    file_search: FileSearchServerTool$inboundSchema,
+    computer_use_preview: ComputerUseServerTool$inboundSchema,
+    code_interpreter: CodeInterpreterServerTool$inboundSchema,
+    mcp: McpServerTool$inboundSchema,
+    image_generation: ImageGenerationServerTool$inboundSchema,
+    local_shell: CodexLocalShellTool$inboundSchema,
+    shell: ShellServerTool$inboundSchema,
+    apply_patch: ApplyPatchServerTool$inboundSchema,
+    custom: CustomTool$inboundSchema,
+  })),
+  top_logprobs: z.int().optional(),
+  top_p: z.number(),
+  truncation: z.nullable(Truncation$inboundSchema).optional(),
+  usage: z.nullable(Usage$inboundSchema).optional(),
+  user: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
-    "created_at": "createdAt",
     "completed_at": "completedAt",
+    "created_at": "createdAt",
+    "frequency_penalty": "frequencyPenalty",
+    "incomplete_details": "incompleteDetails",
+    "max_output_tokens": "maxOutputTokens",
+    "max_tool_calls": "maxToolCalls",
     "output_text": "outputText",
+    "parallel_tool_calls": "parallelToolCalls",
+    "presence_penalty": "presencePenalty",
+    "previous_response_id": "previousResponseId",
     "prompt_cache_key": "promptCacheKey",
     "safety_identifier": "safetyIdentifier",
-    "incomplete_details": "incompleteDetails",
-    "max_tool_calls": "maxToolCalls",
-    "top_logprobs": "topLogprobs",
-    "max_output_tokens": "maxOutputTokens",
-    "top_p": "topP",
-    "presence_penalty": "presencePenalty",
-    "frequency_penalty": "frequencyPenalty",
-    "tool_choice": "toolChoice",
-    "parallel_tool_calls": "parallelToolCalls",
-    "previous_response_id": "previousResponseId",
     "service_tier": "serviceTier",
+    "tool_choice": "toolChoice",
+    "top_logprobs": "topLogprobs",
+    "top_p": "topP",
   });
 });
 

@@ -7,8 +7,8 @@
 
 ```typescript
 const value: models.ActionSearch = {
-  type: "search",
   query: "<value>",
+  type: "search",
 };
 ```
 
@@ -24,8 +24,8 @@ const value: models.ActionOpenPage = {
 
 ```typescript
 const value: models.ActionFindInPage = {
-  type: "find_in_page",
   pattern: "<value>",
+  type: "find_in_page",
   url: "https://qualified-king.org",
 };
 ```
