@@ -1,5 +1,7 @@
 # Embedding
 
+Embedding vector as an array of floats or a base64 string
+
 
 ## Supported Types
 
@@ -7,9 +9,9 @@
 
 ```typescript
 const value: number[] = [
-  3390.48,
-  1336.21,
-  9437.99,
+  0.0023064255,
+  -0.009327292,
+  0.015797347,
 ];
 ```
 
