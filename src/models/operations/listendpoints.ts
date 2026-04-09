@@ -52,7 +52,13 @@ export type ListEndpointsRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * The author/organization of the model
+   */
   author: string;
+  /**
+   * The model slug
+   */
   slug: string;
 };
 

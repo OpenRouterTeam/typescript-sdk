@@ -8,8 +8,8 @@ Code interpreter tool configuration
 import { CodeInterpreterServerTool } from "@openrouter/sdk/models";
 
 let value: CodeInterpreterServerTool = {
-  type: "code_interpreter",
   container: "auto",
+  type: "code_interpreter",
 };
 ```
 
@@ -17,5 +17,5 @@ let value: CodeInterpreterServerTool = {
 
 | Field                | Type                 | Required             | Description          |
 | -------------------- | -------------------- | -------------------- | -------------------- |
-| `type`               | *"code_interpreter"* | :heavy_check_mark:   | N/A                  |
 | `container`          | *models.Container*   | :heavy_check_mark:   | N/A                  |
+| `type`               | *"code_interpreter"* | :heavy_check_mark:   | N/A                  |

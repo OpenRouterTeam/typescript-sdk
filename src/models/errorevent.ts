@@ -13,21 +13,21 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when an error occurs during streaming
  */
 export type ErrorEvent = {
-  type: "error";
   code: string | null;
   message: string;
   param: string | null;
   sequenceNumber: number;
+  type: "error";
 };
 
 /** @internal */
 export const ErrorEvent$inboundSchema: z.ZodType<ErrorEvent, unknown> = z
   .object({
-    type: z.literal("error"),
     code: z.nullable(z.string()),
     message: z.string(),
     param: z.nullable(z.string()),
-    sequence_number: z.number(),
+    sequence_number: z.int(),
+    type: z.literal("error"),
   }).transform((v) => {
     return remap$(v, {
       "sequence_number": "sequenceNumber",
