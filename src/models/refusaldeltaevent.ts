@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when a refusal delta is streamed
  */
 export type RefusalDeltaEvent = {
-  type: "response.refusal.delta";
-  outputIndex: number;
-  itemId: string;
   contentIndex: number;
   delta: string;
+  itemId: string;
+  outputIndex: number;
   sequenceNumber: number;
+  type: "response.refusal.delta";
 };
 
 /** @internal */
@@ -26,17 +26,17 @@ export const RefusalDeltaEvent$inboundSchema: z.ZodType<
   RefusalDeltaEvent,
   unknown
 > = z.object({
-  type: z.literal("response.refusal.delta"),
-  output_index: z.number(),
-  item_id: z.string(),
-  content_index: z.number(),
+  content_index: z.int(),
   delta: z.string(),
-  sequence_number: z.number(),
+  item_id: z.string(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.refusal.delta"),
 }).transform((v) => {
   return remap$(v, {
-    "output_index": "outputIndex",
-    "item_id": "itemId",
     "content_index": "contentIndex",
+    "item_id": "itemId",
+    "output_index": "outputIndex",
     "sequence_number": "sequenceNumber",
   });
 });
