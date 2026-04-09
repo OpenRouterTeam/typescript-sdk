@@ -9,8 +9,8 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type OpenAIResponsesRefusalContent = {
-  type: "refusal";
   refusal: string;
+  type: "refusal";
 };
 
 /** @internal */
@@ -18,13 +18,13 @@ export const OpenAIResponsesRefusalContent$inboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent,
   unknown
 > = z.object({
-  type: z.literal("refusal"),
   refusal: z.string(),
+  type: z.literal("refusal"),
 });
 /** @internal */
 export type OpenAIResponsesRefusalContent$Outbound = {
-  type: "refusal";
   refusal: string;
+  type: "refusal";
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const OpenAIResponsesRefusalContent$outboundSchema: z.ZodType<
   OpenAIResponsesRefusalContent$Outbound,
   OpenAIResponsesRefusalContent
 > = z.object({
-  type: z.literal("refusal"),
   refusal: z.string(),
+  type: z.literal("refusal"),
 });
 
 export function openAIResponsesRefusalContentToJSON(

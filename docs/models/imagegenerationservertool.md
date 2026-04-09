@@ -16,7 +16,6 @@ let value: ImageGenerationServerTool = {
 
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `type`                                               | *"image_generation"*                                 | :heavy_check_mark:                                   | N/A                                                  |
 | `background`                                         | [models.Background](../models/background.md)         | :heavy_minus_sign:                                   | N/A                                                  |
 | `inputFidelity`                                      | [models.InputFidelity](../models/inputfidelity.md)   | :heavy_minus_sign:                                   | N/A                                                  |
 | `inputImageMask`                                     | [models.InputImageMask](../models/inputimagemask.md) | :heavy_minus_sign:                                   | N/A                                                  |
@@ -27,3 +26,4 @@ let value: ImageGenerationServerTool = {
 | `partialImages`                                      | *number*                                             | :heavy_minus_sign:                                   | N/A                                                  |
 | `quality`                                            | [models.Quality](../models/quality.md)               | :heavy_minus_sign:                                   | N/A                                                  |
 | `size`                                               | [models.Size](../models/size.md)                     | :heavy_minus_sign:                                   | N/A                                                  |
+| `type`                                               | *"image_generation"*                                 | :heavy_check_mark:                                   | N/A                                                  |
