@@ -6,8 +6,8 @@
 import { ReasoningTextContent } from "@openrouter/sdk/models";
 
 let value: ReasoningTextContent = {
-  type: "reasoning_text",
   text: "Let me think step by step about this problem...",
+  type: "reasoning_text",
 };
 ```
 
@@ -15,5 +15,5 @@ let value: ReasoningTextContent = {
 
 | Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| `type`                                                                   | [models.ReasoningTextContentType](../models/reasoningtextcontenttype.md) | :heavy_check_mark:                                                       | N/A                                                                      |
 | `text`                                                                   | *string*                                                                 | :heavy_check_mark:                                                       | N/A                                                                      |
+| `type`                                                                   | [models.ReasoningTextContentType](../models/reasoningtextcontenttype.md) | :heavy_check_mark:                                                       | N/A                                                                      |
