@@ -9,10 +9,10 @@ Tool definition for function calling (regular function or OpenRouter built-in se
 
 ```typescript
 const value: models.ChatFunctionToolFunction = {
-  type: "function",
   function: {
     name: "get_weather",
   },
+  type: "function",
 };
 ```
 
@@ -24,10 +24,18 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.ChatWebSearchServerTool`
+### `models.ChatSearchModelsServerTool`
 
 ```typescript
-const value: models.ChatWebSearchServerTool = {
+const value: models.ChatSearchModelsServerTool = {
+  type: "experimental__search_models",
+};
+```
+
+### `models.OpenRouterWebSearchServerTool`
+
+```typescript
+const value: models.OpenRouterWebSearchServerTool = {
   type: "openrouter:web_search",
 };
 ```
