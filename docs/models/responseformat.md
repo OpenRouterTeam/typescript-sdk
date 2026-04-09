@@ -5,11 +5,12 @@ Response format configuration
 
 ## Supported Types
 
-### `models.ChatFormatTextConfig`
+### `models.ChatFormatGrammarConfig`
 
 ```typescript
-const value: models.ChatFormatTextConfig = {
-  type: "text",
+const value: models.ChatFormatGrammarConfig = {
+  grammar: "root ::= \"yes\" | \"no\"",
+  type: "grammar",
 };
 ```
 
@@ -25,19 +26,10 @@ const value: models.FormatJsonObjectConfig = {
 
 ```typescript
 const value: models.ChatFormatJsonSchemaConfig = {
-  type: "json_schema",
   jsonSchema: {
     name: "math_response",
   },
-};
-```
-
-### `models.ChatFormatGrammarConfig`
-
-```typescript
-const value: models.ChatFormatGrammarConfig = {
-  type: "grammar",
-  grammar: "root ::= \"yes\" | \"no\"",
+  type: "json_schema",
 };
 ```
 
@@ -46,6 +38,14 @@ const value: models.ChatFormatGrammarConfig = {
 ```typescript
 const value: models.ChatFormatPythonConfig = {
   type: "python",
+};
+```
+
+### `models.ChatFormatTextConfig`
+
+```typescript
+const value: models.ChatFormatTextConfig = {
+  type: "text",
 };
 ```
 
