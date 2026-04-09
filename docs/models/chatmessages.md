@@ -5,33 +5,6 @@ Chat completion message with role-based discrimination
 
 ## Supported Types
 
-### `models.ChatSystemMessage`
-
-```typescript
-const value: models.ChatSystemMessage = {
-  role: "system",
-  content: "What is the capital of France?",
-};
-```
-
-### `models.ChatUserMessage`
-
-```typescript
-const value: models.ChatUserMessage = {
-  role: "user",
-  content: "What is the capital of France?",
-};
-```
-
-### `models.ChatDeveloperMessage`
-
-```typescript
-const value: models.ChatDeveloperMessage = {
-  role: "developer",
-  content: "What is the capital of France?",
-};
-```
-
 ### `models.ChatAssistantMessage`
 
 ```typescript
@@ -40,13 +13,40 @@ const value: models.ChatAssistantMessage = {
 };
 ```
 
+### `models.ChatDeveloperMessage`
+
+```typescript
+const value: models.ChatDeveloperMessage = {
+  content: "What is the capital of France?",
+  role: "developer",
+};
+```
+
+### `models.ChatSystemMessage`
+
+```typescript
+const value: models.ChatSystemMessage = {
+  content: "What is the capital of France?",
+  role: "system",
+};
+```
+
 ### `models.ChatToolMessage`
 
 ```typescript
 const value: models.ChatToolMessage = {
-  role: "tool",
   content: "What is the capital of France?",
+  role: "tool",
   toolCallId: "call_abc123",
+};
+```
+
+### `models.ChatUserMessage`
+
+```typescript
+const value: models.ChatUserMessage = {
+  content: "What is the capital of France?",
+  role: "user",
 };
 ```
 
