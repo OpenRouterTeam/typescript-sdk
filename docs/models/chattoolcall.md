@@ -8,12 +8,12 @@ Tool call made by the assistant
 import { ChatToolCall } from "@openrouter/sdk/models";
 
 let value: ChatToolCall = {
+  function: {
+    arguments: "{\"location\": \"Boston, MA\"}",
+    name: "get_current_weather",
+  },
   id: "call_abc123",
   type: "function",
-  function: {
-    name: "get_current_weather",
-    arguments: "{\"location\": \"Boston, MA\"}",
-  },
 };
 ```
 
@@ -21,6 +21,6 @@ let value: ChatToolCall = {
 
 | Field                                                            | Type                                                             | Required                                                         | Description                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `function`                                                       | [models.ChatToolCallFunction](../models/chattoolcallfunction.md) | :heavy_check_mark:                                               | N/A                                                              |
 | `id`                                                             | *string*                                                         | :heavy_check_mark:                                               | Tool call identifier                                             |
 | `type`                                                           | [models.ChatToolCallType](../models/chattoolcalltype.md)         | :heavy_check_mark:                                               | N/A                                                              |
-| `function`                                                       | [models.ChatToolCallFunction](../models/chattoolcallfunction.md) | :heavy_check_mark:                                               | N/A                                                              |

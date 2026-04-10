@@ -8,10 +8,10 @@ Named tool choice for specific function
 import { ChatNamedToolChoice } from "@openrouter/sdk/models";
 
 let value: ChatNamedToolChoice = {
-  type: "function",
   function: {
     name: "get_weather",
   },
+  type: "function",
 };
 ```
 
@@ -19,5 +19,5 @@ let value: ChatNamedToolChoice = {
 
 | Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `type`                                                                         | [models.ChatNamedToolChoiceType](../models/chatnamedtoolchoicetype.md)         | :heavy_check_mark:                                                             | N/A                                                                            |
 | `function`                                                                     | [models.ChatNamedToolChoiceFunction](../models/chatnamedtoolchoicefunction.md) | :heavy_check_mark:                                                             | N/A                                                                            |
+| `type`                                                                         | [models.ChatNamedToolChoiceType](../models/chatnamedtoolchoicetype.md)         | :heavy_check_mark:                                                             | N/A                                                                            |
