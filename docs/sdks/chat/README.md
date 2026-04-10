@@ -26,16 +26,18 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.chat.send({
     chatRequest: {
+      maxTokens: 150,
       messages: [
         {
-          role: "system",
           content: "You are a helpful assistant.",
+          role: "system",
         },
         {
-          role: "user",
           content: "What is the capital of France?",
+          role: "user",
         },
       ],
+      model: "openai/gpt-4",
       temperature: 0.7,
     },
   });
@@ -66,16 +68,18 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await chatSend(openRouter, {
     chatRequest: {
+      maxTokens: 150,
       messages: [
         {
-          role: "system",
           content: "You are a helpful assistant.",
+          role: "system",
         },
         {
-          role: "user",
           content: "What is the capital of France?",
+          role: "user",
         },
       ],
+      model: "openai/gpt-4",
       temperature: 0.7,
     },
   });
