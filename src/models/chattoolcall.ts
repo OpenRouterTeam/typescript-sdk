@@ -9,55 +9,46 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+export type ChatToolCallFunction = {
+  /**
+   * Function arguments as JSON string
+   */
+  arguments: string;
+  /**
+   * Function name to call
+   */
+  name: string;
+};
+
 export const ChatToolCallType = {
   Function: "function",
 } as const;
 export type ChatToolCallType = ClosedEnum<typeof ChatToolCallType>;
 
-export type ChatToolCallFunction = {
-  /**
-   * Function name to call
-   */
-  name: string;
-  /**
-   * Function arguments as JSON string
-   */
-  arguments: string;
-};
-
 /**
  * Tool call made by the assistant
  */
 export type ChatToolCall = {
+  function: ChatToolCallFunction;
   /**
    * Tool call identifier
    */
   id: string;
   type: ChatToolCallType;
-  function: ChatToolCallFunction;
 };
-
-/** @internal */
-export const ChatToolCallType$inboundSchema: z.ZodEnum<
-  typeof ChatToolCallType
-> = z.enum(ChatToolCallType);
-/** @internal */
-export const ChatToolCallType$outboundSchema: z.ZodEnum<
-  typeof ChatToolCallType
-> = ChatToolCallType$inboundSchema;
 
 /** @internal */
 export const ChatToolCallFunction$inboundSchema: z.ZodType<
   ChatToolCallFunction,
   unknown
 > = z.object({
-  name: z.string(),
   arguments: z.string(),
+  name: z.string(),
 });
 /** @internal */
 export type ChatToolCallFunction$Outbound = {
-  name: string;
   arguments: string;
+  name: string;
 };
 
 /** @internal */
@@ -65,8 +56,8 @@ export const ChatToolCallFunction$outboundSchema: z.ZodType<
   ChatToolCallFunction$Outbound,
   ChatToolCallFunction
 > = z.object({
-  name: z.string(),
   arguments: z.string(),
+  name: z.string(),
 });
 
 export function chatToolCallFunctionToJSON(
@@ -87,17 +78,26 @@ export function chatToolCallFunctionFromJSON(
 }
 
 /** @internal */
+export const ChatToolCallType$inboundSchema: z.ZodEnum<
+  typeof ChatToolCallType
+> = z.enum(ChatToolCallType);
+/** @internal */
+export const ChatToolCallType$outboundSchema: z.ZodEnum<
+  typeof ChatToolCallType
+> = ChatToolCallType$inboundSchema;
+
+/** @internal */
 export const ChatToolCall$inboundSchema: z.ZodType<ChatToolCall, unknown> = z
   .object({
+    function: z.lazy(() => ChatToolCallFunction$inboundSchema),
     id: z.string(),
     type: ChatToolCallType$inboundSchema,
-    function: z.lazy(() => ChatToolCallFunction$inboundSchema),
   });
 /** @internal */
 export type ChatToolCall$Outbound = {
+  function: ChatToolCallFunction$Outbound;
   id: string;
   type: string;
-  function: ChatToolCallFunction$Outbound;
 };
 
 /** @internal */
@@ -105,9 +105,9 @@ export const ChatToolCall$outboundSchema: z.ZodType<
   ChatToolCall$Outbound,
   ChatToolCall
 > = z.object({
+  function: z.lazy(() => ChatToolCallFunction$outboundSchema),
   id: z.string(),
   type: ChatToolCallType$outboundSchema,
-  function: z.lazy(() => ChatToolCallFunction$outboundSchema),
 });
 
 export function chatToolCallToJSON(chatToolCall: ChatToolCall): string {
