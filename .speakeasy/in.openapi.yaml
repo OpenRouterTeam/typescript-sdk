@@ -1057,6 +1057,33 @@ components:
         - type
         - data
       type: object
+    AnthropicRefusalStopDetails:
+      description: Structured information about a refusal
+      example:
+        category: cyber
+        explanation: The request was refused due to policy.
+        type: refusal
+      nullable: true
+      properties:
+        category:
+          enum:
+            - cyber
+            - bio
+            - null
+          nullable: true
+          type: string
+        explanation:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - refusal
+          type: string
+      required:
+        - type
+        - category
+        - explanation
+      type: object
     AnthropicSearchResultBlockParam:
       example:
         content:
@@ -2315,6 +2342,7 @@ components:
         id: msg_01XFDUDYJgAACzvnptvVoYEL
         model: claude-sonnet-4-5-20250929
         role: assistant
+        stop_details: null
         stop_reason: end_turn
         stop_sequence: null
         type: message
@@ -2338,6 +2366,8 @@ components:
           enum:
             - assistant
           type: string
+        stop_details:
+          $ref: '#/components/schemas/AnthropicRefusalStopDetails'
         stop_reason:
           $ref: '#/components/schemas/ORAnthropicStopReason'
         stop_sequence:
@@ -2375,6 +2405,7 @@ components:
         - content
         - model
         - stop_reason
+        - stop_details
         - stop_sequence
         - usage
       type: object
@@ -6737,6 +6768,7 @@ components:
       description: Event sent when the message metadata changes (e.g., stop_reason)
       example:
         delta:
+          stop_details: null
           stop_reason: end_turn
           stop_sequence: null
         type: message_delta
@@ -6747,6 +6779,8 @@ components:
           properties:
             container:
               $ref: '#/components/schemas/AnthropicContainer'
+            stop_details:
+              $ref: '#/components/schemas/AnthropicRefusalStopDetails'
             stop_reason:
               $ref: '#/components/schemas/ORAnthropicStopReason'
             stop_sequence:
@@ -6754,6 +6788,7 @@ components:
               type: string
           required:
             - container
+            - stop_details
             - stop_reason
             - stop_sequence
           type: object
@@ -7537,6 +7572,7 @@ components:
         id: msg_01XFDUDYJgAACzvnptvVoYEL
         model: claude-sonnet-4-5-20250929
         role: assistant
+        stop_details: null
         stop_reason: end_turn
         stop_sequence: null
         type: message
@@ -7557,6 +7593,7 @@ components:
           id: msg_01XFDUDYJgAACzvnptvVoYEL
           model: claude-sonnet-4-5-20250929
           role: assistant
+          stop_details: null
           stop_reason: null
           stop_sequence: null
           type: message
@@ -7688,6 +7725,8 @@ components:
               enum:
                 - assistant
               type: string
+            stop_details:
+              $ref: '#/components/schemas/AnthropicRefusalStopDetails'
             stop_reason:
               nullable: true
             stop_sequence:
@@ -7724,6 +7763,7 @@ components:
             - content
             - model
             - stop_reason
+            - stop_details
             - stop_sequence
             - usage
           type: object
