@@ -15,6 +15,23 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class APIKeys extends ClientSDK {
   /**
+   * Get current API key
+   *
+   * @remarks
+   * Get information on the API key associated with the current authentication session
+   */
+  async getCurrentKeyMetadata(
+    request?: operations.GetCurrentKeyRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<operations.GetCurrentKeyResponse> {
+    return unwrapAsync(apiKeysGetCurrentKeyMetadata(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
    * List API keys
    *
    * @remarks
@@ -42,23 +59,6 @@ export class APIKeys extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.CreateKeysResponse> {
     return unwrapAsync(apiKeysCreate(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Update an API key
-   *
-   * @remarks
-   * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async update(
-    request: operations.UpdateKeysRequest,
-    options?: RequestOptions,
-  ): Promise<operations.UpdateKeysResponse> {
-    return unwrapAsync(apiKeysUpdate(
       this,
       request,
       options,
@@ -100,16 +100,16 @@ export class APIKeys extends ClientSDK {
   }
 
   /**
-   * Get current API key
+   * Update an API key
    *
    * @remarks
-   * Get information on the API key associated with the current authentication session
+   * Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
-  async getCurrentKeyMetadata(
-    request?: operations.GetCurrentKeyRequest | undefined,
+  async update(
+    request: operations.UpdateKeysRequest,
     options?: RequestOptions,
-  ): Promise<operations.GetCurrentKeyResponse> {
-    return unwrapAsync(apiKeysGetCurrentKeyMetadata(
+  ): Promise<operations.UpdateKeysResponse> {
+    return unwrapAsync(apiKeysUpdate(
       this,
       request,
       options,

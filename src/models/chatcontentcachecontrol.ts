@@ -5,9 +5,13 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  AnthropicCacheControlTtl,
+  AnthropicCacheControlTtl$inboundSchema,
+  AnthropicCacheControlTtl$outboundSchema,
+} from "./anthropiccachecontrolttl.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export const ChatContentCacheControlType = {
@@ -17,20 +21,12 @@ export type ChatContentCacheControlType = ClosedEnum<
   typeof ChatContentCacheControlType
 >;
 
-export const ChatContentCacheControlTtl = {
-  Fivem: "5m",
-  Oneh: "1h",
-} as const;
-export type ChatContentCacheControlTtl = OpenEnum<
-  typeof ChatContentCacheControlTtl
->;
-
 /**
  * Cache control for the content part
  */
 export type ChatContentCacheControl = {
+  ttl?: AnthropicCacheControlTtl | undefined;
   type: ChatContentCacheControlType;
-  ttl?: ChatContentCacheControlTtl | undefined;
 };
 
 /** @internal */
@@ -43,28 +39,17 @@ export const ChatContentCacheControlType$outboundSchema: z.ZodEnum<
 > = ChatContentCacheControlType$inboundSchema;
 
 /** @internal */
-export const ChatContentCacheControlTtl$inboundSchema: z.ZodType<
-  ChatContentCacheControlTtl,
-  unknown
-> = openEnums.inboundSchema(ChatContentCacheControlTtl);
-/** @internal */
-export const ChatContentCacheControlTtl$outboundSchema: z.ZodType<
-  string,
-  ChatContentCacheControlTtl
-> = openEnums.outboundSchema(ChatContentCacheControlTtl);
-
-/** @internal */
 export const ChatContentCacheControl$inboundSchema: z.ZodType<
   ChatContentCacheControl,
   unknown
 > = z.object({
+  ttl: AnthropicCacheControlTtl$inboundSchema.optional(),
   type: ChatContentCacheControlType$inboundSchema,
-  ttl: ChatContentCacheControlTtl$inboundSchema.optional(),
 });
 /** @internal */
 export type ChatContentCacheControl$Outbound = {
-  type: string;
   ttl?: string | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -72,8 +57,8 @@ export const ChatContentCacheControl$outboundSchema: z.ZodType<
   ChatContentCacheControl$Outbound,
   ChatContentCacheControl
 > = z.object({
+  ttl: AnthropicCacheControlTtl$outboundSchema.optional(),
   type: ChatContentCacheControlType$outboundSchema,
-  ttl: ChatContentCacheControlTtl$outboundSchema.optional(),
 });
 
 export function chatContentCacheControlToJSON(

@@ -6,9 +6,9 @@
 import { FilePath } from "@openrouter/sdk/models";
 
 let value: FilePath = {
-  type: "file_path",
-  fileId: "file-xyz789",
+  fileId: "file-abc123",
   index: 0,
+  type: "file_path",
 };
 ```
 
@@ -16,6 +16,6 @@ let value: FilePath = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"file_path"*      | :heavy_check_mark: | N/A                |
 | `fileId`           | *string*           | :heavy_check_mark: | N/A                |
 | `index`            | *number*           | :heavy_check_mark: | N/A                |
+| `type`             | *"file_path"*      | :heavy_check_mark: | N/A                |
