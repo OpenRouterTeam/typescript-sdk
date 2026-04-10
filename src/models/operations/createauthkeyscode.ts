@@ -74,10 +74,6 @@ export type CreateAuthKeysCodeRequestBody = {
    */
   codeChallengeMethod?: CreateAuthKeysCodeCodeChallengeMethod | undefined;
   /**
-   * Credit limit for the API key to be created
-   */
-  limit?: number | undefined;
-  /**
    * Optional expiration time for the API key to be created
    */
   expiresAt?: Date | null | undefined;
@@ -85,6 +81,10 @@ export type CreateAuthKeysCodeRequestBody = {
    * Optional custom label for the API key. Defaults to the app name if not provided.
    */
   keyLabel?: string | undefined;
+  /**
+   * Credit limit for the API key to be created
+   */
+  limit?: number | undefined;
   /**
    * Optional credit limit reset interval. When set, the credit limit resets on this interval.
    */
@@ -119,10 +119,6 @@ export type CreateAuthKeysCodeRequest = {
  */
 export type CreateAuthKeysCodeData = {
   /**
-   * The authorization code ID to use in the exchange request
-   */
-  id: string;
-  /**
    * The application ID associated with this auth code
    */
   appId: number;
@@ -130,6 +126,10 @@ export type CreateAuthKeysCodeData = {
    * ISO 8601 timestamp of when the auth code was created
    */
   createdAt: string;
+  /**
+   * The authorization code ID to use in the exchange request
+   */
+  id: string;
 };
 
 /**
@@ -157,9 +157,9 @@ export type CreateAuthKeysCodeRequestBody$Outbound = {
   callback_url: string;
   code_challenge?: string | undefined;
   code_challenge_method?: string | undefined;
-  limit?: number | undefined;
   expires_at?: string | null | undefined;
   key_label?: string | undefined;
+  limit?: number | undefined;
   usage_limit_type?: string | undefined;
 };
 
@@ -172,9 +172,9 @@ export const CreateAuthKeysCodeRequestBody$outboundSchema: z.ZodType<
   codeChallenge: z.string().optional(),
   codeChallengeMethod: CreateAuthKeysCodeCodeChallengeMethod$outboundSchema
     .optional(),
-  limit: z.number().optional(),
   expiresAt: z.nullable(z.date().transform(v => v.toISOString())).optional(),
   keyLabel: z.string().optional(),
+  limit: z.number().optional(),
   usageLimitType: UsageLimitType$outboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -234,9 +234,9 @@ export const CreateAuthKeysCodeData$inboundSchema: z.ZodType<
   CreateAuthKeysCodeData,
   unknown
 > = z.object({
-  id: z.string(),
-  app_id: z.number(),
+  app_id: z.int(),
   created_at: z.string(),
+  id: z.string(),
 }).transform((v) => {
   return remap$(v, {
     "app_id": "appId",
