@@ -13,7 +13,7 @@ let value: InputAudioInputAudio = {
 
 ## Fields
 
-| Field                                                    | Type                                                     | Required                                                 | Description                                              |
-| -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| `data`                                                   | *string*                                                 | :heavy_check_mark:                                       | N/A                                                      |
-| `format`                                                 | [models.InputAudioFormat](../models/inputaudioformat.md) | :heavy_check_mark:                                       | N/A                                                      |
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `data`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `format`                                     | [models.FormatEnum](../models/formatenum.md) | :heavy_check_mark:                           | N/A                                          |

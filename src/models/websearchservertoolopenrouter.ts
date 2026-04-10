@@ -21,8 +21,8 @@ export type WebSearchServerToolOpenRouterParameters = {
  * OpenRouter built-in server tool: searches the web for current information
  */
 export type WebSearchServerToolOpenRouter = {
-  type: "openrouter:web_search";
   parameters?: WebSearchServerToolOpenRouterParameters | undefined;
+  type: "openrouter:web_search";
 };
 
 /** @internal */
@@ -36,8 +36,8 @@ export const WebSearchServerToolOpenRouterParameters$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouterParameters$Outbound,
   WebSearchServerToolOpenRouterParameters
 > = z.object({
-  maxResults: z.number().optional(),
-  maxTotalResults: z.number().optional(),
+  maxResults: z.int().optional(),
+  maxTotalResults: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
@@ -58,8 +58,8 @@ export function webSearchServerToolOpenRouterParametersToJSON(
 
 /** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
-  type: "openrouter:web_search";
   parameters?: WebSearchServerToolOpenRouterParameters$Outbound | undefined;
+  type: "openrouter:web_search";
 };
 
 /** @internal */
@@ -67,10 +67,10 @@ export const WebSearchServerToolOpenRouter$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouter$Outbound,
   WebSearchServerToolOpenRouter
 > = z.object({
-  type: z.literal("openrouter:web_search"),
   parameters: z.lazy(() =>
     WebSearchServerToolOpenRouterParameters$outboundSchema
   ).optional(),
+  type: z.literal("openrouter:web_search"),
 });
 
 export function webSearchServerToolOpenRouterToJSON(
