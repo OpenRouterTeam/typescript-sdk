@@ -12,11 +12,6 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import {
-  ChatWebSearchServerTool,
-  ChatWebSearchServerTool$Outbound,
-  ChatWebSearchServerTool$outboundSchema,
-} from "./chatwebsearchservertool.js";
-import {
   ChatWebSearchShorthand,
   ChatWebSearchShorthand$Outbound,
   ChatWebSearchShorthand$outboundSchema,
@@ -26,24 +21,29 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
-
-export const ChatFunctionToolType = {
-  Function: "function",
-} as const;
-export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
+import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
+  OpenRouterWebSearchServerTool,
+  OpenRouterWebSearchServerTool$Outbound,
+  OpenRouterWebSearchServerTool$outboundSchema,
+} from "./openrouterwebsearchservertool.js";
 
 /**
  * Function definition for tool calling
  */
 export type ChatFunctionToolFunctionFunction = {
   /**
-   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
-   */
-  name: string;
-  /**
    * Function description for the model
    */
   description?: string | undefined;
+  /**
+   * Function name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+   */
+  name: string;
   /**
    * Function parameters as JSON Schema object
    */
@@ -54,16 +54,21 @@ export type ChatFunctionToolFunctionFunction = {
   strict?: boolean | null | undefined;
 };
 
+export const ChatFunctionToolType = {
+  Function: "function",
+} as const;
+export type ChatFunctionToolType = ClosedEnum<typeof ChatFunctionToolType>;
+
 export type ChatFunctionToolFunction = {
-  type: ChatFunctionToolType;
-  /**
-   * Function definition for tool calling
-   */
-  function: ChatFunctionToolFunctionFunction;
   /**
    * Cache control for the content part
    */
   cacheControl?: ChatContentCacheControl | undefined;
+  /**
+   * Function definition for tool calling
+   */
+  function: ChatFunctionToolFunctionFunction;
+  type: ChatFunctionToolType;
 };
 
 /**
@@ -72,18 +77,14 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
-  | ChatWebSearchServerTool
+  | ImageGenerationServerToolOpenRouter
+  | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
 /** @internal */
-export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
-  typeof ChatFunctionToolType
-> = z.enum(ChatFunctionToolType);
-
-/** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
-  name: string;
   description?: string | undefined;
+  name: string;
   parameters?: { [k: string]: any | null } | undefined;
   strict?: boolean | null | undefined;
 };
@@ -93,8 +94,8 @@ export const ChatFunctionToolFunctionFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunctionFunction$Outbound,
   ChatFunctionToolFunctionFunction
 > = z.object({
-  name: z.string(),
   description: z.string().optional(),
+  name: z.string(),
   parameters: z.record(z.string(), z.nullable(z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
@@ -110,10 +111,15 @@ export function chatFunctionToolFunctionFunctionToJSON(
 }
 
 /** @internal */
+export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
+  typeof ChatFunctionToolType
+> = z.enum(ChatFunctionToolType);
+
+/** @internal */
 export type ChatFunctionToolFunction$Outbound = {
-  type: string;
-  function: ChatFunctionToolFunctionFunction$Outbound;
   cache_control?: ChatContentCacheControl$Outbound | undefined;
+  function: ChatFunctionToolFunctionFunction$Outbound;
+  type: string;
 };
 
 /** @internal */
@@ -121,9 +127,9 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction$Outbound,
   ChatFunctionToolFunction
 > = z.object({
-  type: ChatFunctionToolType$outboundSchema,
-  function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
+  function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
+  type: ChatFunctionToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
@@ -142,7 +148,8 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
-  | ChatWebSearchServerTool$Outbound
+  | ImageGenerationServerToolOpenRouter$Outbound
+  | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
 /** @internal */
@@ -152,7 +159,8 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
-  ChatWebSearchServerTool$outboundSchema,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+  OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
 
