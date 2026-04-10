@@ -14,9 +14,9 @@ let value: DefaultParameters = {};
 
 | Field               | Type                | Required            | Description         |
 | ------------------- | ------------------- | ------------------- | ------------------- |
-| `temperature`       | *number*            | :heavy_minus_sign:  | N/A                 |
-| `topP`              | *number*            | :heavy_minus_sign:  | N/A                 |
-| `topK`              | *number*            | :heavy_minus_sign:  | N/A                 |
 | `frequencyPenalty`  | *number*            | :heavy_minus_sign:  | N/A                 |
 | `presencePenalty`   | *number*            | :heavy_minus_sign:  | N/A                 |
 | `repetitionPenalty` | *number*            | :heavy_minus_sign:  | N/A                 |
+| `temperature`       | *number*            | :heavy_minus_sign:  | N/A                 |
+| `topK`              | *number*            | :heavy_minus_sign:  | N/A                 |
+| `topP`              | *number*            | :heavy_minus_sign:  | N/A                 |
