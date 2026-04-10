@@ -5,7 +5,7 @@
 ```typescript
 import { ResponseIncludesEnum } from "@openrouter/sdk/models";
 
-let value: ResponseIncludesEnum = "reasoning.encrypted_content";
+let value: ResponseIncludesEnum = "file_search_call.results";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

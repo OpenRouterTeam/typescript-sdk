@@ -16,8 +16,8 @@ const value: string = "The weather in San Francisco is 72°F and sunny.";
 ```typescript
 const value: models.ChatContentItems[] = [
   {
-    type: "text",
     text: "Hello, world!",
+    type: "text",
   },
 ];
 ```
