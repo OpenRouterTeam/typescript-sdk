@@ -15,33 +15,29 @@ import {
 import { ChatUsage, ChatUsage$inboundSchema } from "./chatusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Error information
+ */
+export type ErrorT = {
+  /**
+   * Error code
+   */
+  code: number;
+  /**
+   * Error message
+   */
+  message: string;
+};
+
 export const ChatStreamChunkObject = {
   ChatCompletionChunk: "chat.completion.chunk",
 } as const;
 export type ChatStreamChunkObject = ClosedEnum<typeof ChatStreamChunkObject>;
 
 /**
- * Error information
- */
-export type ErrorT = {
-  /**
-   * Error message
-   */
-  message: string;
-  /**
-   * Error code
-   */
-  code: number;
-};
-
-/**
  * Streaming chat completion chunk
  */
 export type ChatStreamChunk = {
-  /**
-   * Unique chunk identifier
-   */
-  id: string;
   /**
    * List of streaming chunk choices
    */
@@ -51,22 +47,26 @@ export type ChatStreamChunk = {
    */
   created: number;
   /**
+   * Error information
+   */
+  error?: ErrorT | undefined;
+  /**
+   * Unique chunk identifier
+   */
+  id: string;
+  /**
    * Model used for completion
    */
   model: string;
   object: ChatStreamChunkObject;
   /**
-   * System fingerprint
-   */
-  systemFingerprint?: string | undefined;
-  /**
    * The service tier used by the upstream provider for this request
    */
   serviceTier?: string | null | undefined;
   /**
-   * Error information
+   * System fingerprint
    */
-  error?: ErrorT | undefined;
+  systemFingerprint?: string | undefined;
   /**
    * Token usage statistics
    */
@@ -74,14 +74,9 @@ export type ChatStreamChunk = {
 };
 
 /** @internal */
-export const ChatStreamChunkObject$inboundSchema: z.ZodEnum<
-  typeof ChatStreamChunkObject
-> = z.enum(ChatStreamChunkObject);
-
-/** @internal */
 export const ErrorT$inboundSchema: z.ZodType<ErrorT, unknown> = z.object({
+  code: z.int(),
   message: z.string(),
-  code: z.number(),
 });
 
 export function errorFromJSON(
@@ -95,23 +90,28 @@ export function errorFromJSON(
 }
 
 /** @internal */
+export const ChatStreamChunkObject$inboundSchema: z.ZodEnum<
+  typeof ChatStreamChunkObject
+> = z.enum(ChatStreamChunkObject);
+
+/** @internal */
 export const ChatStreamChunk$inboundSchema: z.ZodType<
   ChatStreamChunk,
   unknown
 > = z.object({
-  id: z.string(),
   choices: z.array(ChatStreamChoice$inboundSchema),
-  created: z.number(),
+  created: z.int(),
+  error: z.lazy(() => ErrorT$inboundSchema).optional(),
+  id: z.string(),
   model: z.string(),
   object: ChatStreamChunkObject$inboundSchema,
-  system_fingerprint: z.string().optional(),
   service_tier: z.nullable(z.string()).optional(),
-  error: z.lazy(() => ErrorT$inboundSchema).optional(),
+  system_fingerprint: z.string().optional(),
   usage: ChatUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
-    "system_fingerprint": "systemFingerprint",
     "service_tier": "serviceTier",
+    "system_fingerprint": "systemFingerprint",
   });
 });
 
