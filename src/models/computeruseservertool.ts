@@ -24,10 +24,10 @@ export type Environment = OpenEnum<typeof Environment>;
  * Computer use preview tool configuration
  */
 export type ComputerUseServerTool = {
-  type: "computer_use_preview";
   displayHeight: number;
   displayWidth: number;
   environment: Environment;
+  type: "computer_use_preview";
 };
 
 /** @internal */
@@ -42,10 +42,10 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
   ComputerUseServerTool,
   unknown
 > = z.object({
-  type: z.literal("computer_use_preview"),
-  display_height: z.number(),
-  display_width: z.number(),
+  display_height: z.int(),
+  display_width: z.int(),
   environment: Environment$inboundSchema,
+  type: z.literal("computer_use_preview"),
 }).transform((v) => {
   return remap$(v, {
     "display_height": "displayHeight",
@@ -54,10 +54,10 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ComputerUseServerTool$Outbound = {
-  type: "computer_use_preview";
   display_height: number;
   display_width: number;
   environment: string;
+  type: "computer_use_preview";
 };
 
 /** @internal */
@@ -65,10 +65,10 @@ export const ComputerUseServerTool$outboundSchema: z.ZodType<
   ComputerUseServerTool$Outbound,
   ComputerUseServerTool
 > = z.object({
-  type: z.literal("computer_use_preview"),
-  displayHeight: z.number(),
-  displayWidth: z.number(),
+  displayHeight: z.int(),
+  displayWidth: z.int(),
   environment: Environment$outboundSchema,
+  type: z.literal("computer_use_preview"),
 }).transform((v) => {
   return remap$(v, {
     displayHeight: "display_height",
