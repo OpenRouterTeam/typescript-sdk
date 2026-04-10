@@ -10,8 +10,23 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Models extends ClientSDK {
+  /**
+   * List all models and their properties
+   */
+  async list(
+    request?: operations.GetModelsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<PageIterator<operations.GetModelsResponse, { offset: number }>> {
+    return unwrapResultIterator(modelsList(
+      this,
+      request,
+      options,
+    ));
+  }
+
   /**
    * Get total count of available models
    */
@@ -27,31 +42,19 @@ export class Models extends ClientSDK {
   }
 
   /**
-   * List all models and their properties
-   */
-  async list(
-    request?: operations.GetModelsRequest | undefined,
-    options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsList(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * List models filtered by user provider preferences, privacy settings, and guardrails
    *
    * @remarks
-   * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/logging#enterprise-eu-in-region-routing).
+   * List models filtered by user provider preferences, [privacy settings](https://openrouter.ai/docs/guides/privacy/provider-logging), and [guardrails](https://openrouter.ai/docs/guides/features/guardrails). If requesting through `eu.openrouter.ai/api/v1/...` the results will be filtered to models that satisfy [EU in-region routing](https://openrouter.ai/docs/guides/privacy/provider-logging#enterprise-eu-in-region-routing).
    */
   async listForUser(
     security: operations.ListModelsUserSecurity,
     request?: operations.ListModelsUserRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ModelsListResponse> {
-    return unwrapAsync(modelsListForUser(
+  ): Promise<
+    PageIterator<operations.ListModelsUserResponse, { offset: number }>
+  > {
+    return unwrapResultIterator(modelsListForUser(
       this,
       security,
       request,

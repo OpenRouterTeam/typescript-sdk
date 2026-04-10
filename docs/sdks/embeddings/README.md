@@ -29,8 +29,8 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.embeddings.generate({
     requestBody: {
-      input: "<value>",
-      model: "Taurus",
+      input: "The quick brown fox jumps over the lazy dog",
+      model: "openai/text-embedding-3-small",
     },
   });
 
@@ -60,8 +60,8 @@ const openRouter = new OpenRouterCore({
 async function run() {
   const res = await embeddingsGenerate(openRouter, {
     requestBody: {
-      input: "<value>",
-      model: "Taurus",
+      input: "The quick brown fox jumps over the lazy dog",
+      model: "openai/text-embedding-3-small",
     },
   });
   if (res.ok) {
@@ -124,7 +124,9 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.embeddings.listModels();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -151,7 +153,9 @@ async function run() {
   const res = await embeddingsListModels(openRouter);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("embeddingsListModels failed:", res.error);
   }
@@ -171,7 +175,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.md)\>**
+**Promise\<[operations.ListEmbeddingsModelsResponse](../../models/operations/listembeddingsmodelsresponse.md)\>**
 
 ### Errors
 

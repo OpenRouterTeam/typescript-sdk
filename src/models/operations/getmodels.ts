@@ -5,8 +5,12 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
 import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetModelsGlobals = {
   /**
@@ -73,14 +77,29 @@ export type GetModelsRequest = {
    */
   appCategories?: string | undefined;
   /**
+   * Number of records to skip for pagination
+   */
+  offset?: number | undefined;
+  /**
+   * Maximum number of records to return (max 1000)
+   */
+  limit?: number | undefined;
+  /**
    * Filter models by use case category
    */
   category?: Category | undefined;
+  /**
+   * Filter models by supported parameter (comma-separated)
+   */
   supportedParameters?: string | undefined;
   /**
    * Filter models by output modality. Accepts a comma-separated list of modalities (text, image, audio, embeddings) or "all" to include all models. Defaults to "text".
    */
   outputModalities?: string | undefined;
+};
+
+export type GetModelsResponse = {
+  result: models.ModelsListResponse;
 };
 
 /** @internal */
@@ -92,6 +111,8 @@ export type GetModelsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
+  offset?: number | undefined;
+  limit?: number | undefined;
   category?: string | undefined;
   supported_parameters?: string | undefined;
   output_modalities?: string | undefined;
@@ -105,6 +126,8 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
+  offset: z.int().optional(),
+  limit: z.int().optional(),
   category: Category$outboundSchema.optional(),
   supportedParameters: z.string().optional(),
   outputModalities: z.string().optional(),
@@ -121,5 +144,27 @@ export function getModelsRequestToJSON(
 ): string {
   return JSON.stringify(
     GetModelsRequest$outboundSchema.parse(getModelsRequest),
+  );
+}
+
+/** @internal */
+export const GetModelsResponse$inboundSchema: z.ZodType<
+  GetModelsResponse,
+  unknown
+> = z.object({
+  Result: models.ModelsListResponse$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "Result": "result",
+  });
+});
+
+export function getModelsResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<GetModelsResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => GetModelsResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'GetModelsResponse' from JSON`,
   );
 }
