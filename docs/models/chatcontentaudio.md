@@ -8,11 +8,11 @@ Audio input content part. Supported audio formats vary by provider.
 import { ChatContentAudio } from "@openrouter/sdk/models";
 
 let value: ChatContentAudio = {
-  type: "input_audio",
   inputAudio: {
     data: "<value>",
     format: "<value>",
   },
+  type: "input_audio",
 };
 ```
 
@@ -20,5 +20,5 @@ let value: ChatContentAudio = {
 
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `type`                                                                       | [models.ChatContentAudioType](../models/chatcontentaudiotype.md)             | :heavy_check_mark:                                                           | N/A                                                                          |
 | `inputAudio`                                                                 | [models.ChatContentAudioInputAudio](../models/chatcontentaudioinputaudio.md) | :heavy_check_mark:                                                           | N/A                                                                          |
+| `type`                                                                       | *"input_audio"*                                                              | :heavy_check_mark:                                                           | N/A                                                                          |
