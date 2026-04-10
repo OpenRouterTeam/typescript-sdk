@@ -10,19 +10,19 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type FileCitation = {
-  type: "file_citation";
   fileId: string;
   filename: string;
   index: number;
+  type: "file_citation";
 };
 
 /** @internal */
 export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
   .object({
-    type: z.literal("file_citation"),
     file_id: z.string(),
     filename: z.string(),
-    index: z.number(),
+    index: z.int(),
+    type: z.literal("file_citation"),
   }).transform((v) => {
     return remap$(v, {
       "file_id": "fileId",
@@ -30,10 +30,10 @@ export const FileCitation$inboundSchema: z.ZodType<FileCitation, unknown> = z
   });
 /** @internal */
 export type FileCitation$Outbound = {
-  type: "file_citation";
   file_id: string;
   filename: string;
   index: number;
+  type: "file_citation";
 };
 
 /** @internal */
@@ -41,10 +41,10 @@ export const FileCitation$outboundSchema: z.ZodType<
   FileCitation$Outbound,
   FileCitation
 > = z.object({
-  type: z.literal("file_citation"),
   fileId: z.string(),
   filename: z.string(),
-  index: z.number(),
+  index: z.int(),
+  type: z.literal("file_citation"),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",
