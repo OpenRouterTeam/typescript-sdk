@@ -1,0 +1,21 @@
+# MaxPrice
+
+The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
+
+## Example Usage
+
+```typescript
+import { MaxPrice } from "@openrouter/sdk/models";
+
+let value: MaxPrice = {};
+```
+
+## Fields
+
+| Field                           | Type                            | Required                        | Description                     | Example                         |
+| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `audio`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
+| `completion`                    | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
+| `image`                         | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
+| `prompt`                        | *string*                        | :heavy_minus_sign:              | Price per million prompt tokens | 1000                            |
+| `request`                       | *string*                        | :heavy_minus_sign:              | N/A                             | 1000                            |
