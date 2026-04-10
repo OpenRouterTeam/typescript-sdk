@@ -25,8 +25,8 @@ const value: models.OpenAIResponsesToolChoiceRequired = "required";
 
 ```typescript
 const value: models.OpenAIResponsesToolChoiceFunction = {
-  type: "function",
   name: "<value>",
+  type: "function",
 };
 ```
 
@@ -35,6 +35,21 @@ const value: models.OpenAIResponsesToolChoiceFunction = {
 ```typescript
 const value: models.OpenAIResponsesToolChoice = {
   type: "web_search_preview",
+};
+```
+
+### `models.ToolChoiceAllowed`
+
+```typescript
+const value: models.ToolChoiceAllowed = {
+  mode: "auto",
+  tools: [
+    {
+      "name": "get_weather",
+      "type": "function",
+    },
+  ],
+  type: "allowed_tools",
 };
 ```
 
