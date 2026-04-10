@@ -5,63 +5,43 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ReasoningDetailEncryptedFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-export type ReasoningDetailEncryptedFormat = OpenEnum<
-  typeof ReasoningDetailEncryptedFormat
->;
+import {
+  ReasoningFormat,
+  ReasoningFormat$inboundSchema,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
 
 /**
  * Reasoning detail encrypted schema
  */
 export type ReasoningDetailEncrypted = {
-  type: "reasoning.encrypted";
   data: string;
+  format?: ReasoningFormat | null | undefined;
   id?: string | null | undefined;
-  format?: ReasoningDetailEncryptedFormat | null | undefined;
   index?: number | undefined;
+  type: "reasoning.encrypted";
 };
-
-/** @internal */
-export const ReasoningDetailEncryptedFormat$inboundSchema: z.ZodType<
-  ReasoningDetailEncryptedFormat,
-  unknown
-> = openEnums.inboundSchema(ReasoningDetailEncryptedFormat);
-/** @internal */
-export const ReasoningDetailEncryptedFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningDetailEncryptedFormat
-> = openEnums.outboundSchema(ReasoningDetailEncryptedFormat);
 
 /** @internal */
 export const ReasoningDetailEncrypted$inboundSchema: z.ZodType<
   ReasoningDetailEncrypted,
   unknown
 > = z.object({
-  type: z.literal("reasoning.encrypted"),
   data: z.string(),
+  format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailEncryptedFormat$inboundSchema).optional(),
-  index: z.number().optional(),
+  index: z.int().optional(),
+  type: z.literal("reasoning.encrypted"),
 });
 /** @internal */
 export type ReasoningDetailEncrypted$Outbound = {
-  type: "reasoning.encrypted";
   data: string;
-  id?: string | null | undefined;
   format?: string | null | undefined;
+  id?: string | null | undefined;
   index?: number | undefined;
+  type: "reasoning.encrypted";
 };
 
 /** @internal */
@@ -69,11 +49,11 @@ export const ReasoningDetailEncrypted$outboundSchema: z.ZodType<
   ReasoningDetailEncrypted$Outbound,
   ReasoningDetailEncrypted
 > = z.object({
-  type: z.literal("reasoning.encrypted"),
   data: z.string(),
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   id: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningDetailEncryptedFormat$outboundSchema).optional(),
-  index: z.number().optional(),
+  index: z.int().optional(),
+  type: z.literal("reasoning.encrypted"),
 });
 
 export function reasoningDetailEncryptedToJSON(

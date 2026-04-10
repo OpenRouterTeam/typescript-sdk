@@ -7,8 +7,8 @@
 
 ```typescript
 const value: models.InputText = {
-  type: "input_text",
   text: "Hello, how can I help you?",
+  type: "input_text",
 };
 ```
 
@@ -16,8 +16,8 @@ const value: models.InputText = {
 
 ```typescript
 const value: models.InputMessageItemContentInputImage = {
-  type: "input_image",
   detail: "auto",
+  type: "input_image",
 };
 ```
 
@@ -33,11 +33,11 @@ const value: models.InputFile = {
 
 ```typescript
 const value: models.InputAudio = {
-  type: "input_audio",
   inputAudio: {
     data: "SGVsbG8gV29ybGQ=",
     format: "mp3",
   },
+  type: "input_audio",
 };
 ```
 
