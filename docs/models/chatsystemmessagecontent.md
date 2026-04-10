@@ -16,8 +16,8 @@ const value: string = "You are a helpful assistant.";
 ```typescript
 const value: models.ChatContentText[] = [
   {
-    type: "text",
     text: "Hello, world!",
+    type: "text",
   },
 ];
 ```
