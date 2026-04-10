@@ -20,11 +20,11 @@ export type ChatToolMessageContent = string | Array<ChatContentItems>;
  * Tool response message
  */
 export type ChatToolMessage = {
-  role: "tool";
   /**
    * Tool response content
    */
   content: string | Array<ChatContentItems>;
+  role: "tool";
   /**
    * ID of the assistant message tool call this message responds to
    */
@@ -52,8 +52,8 @@ export function chatToolMessageContentToJSON(
 
 /** @internal */
 export type ChatToolMessage$Outbound = {
-  role: "tool";
   content: string | Array<ChatContentItems$Outbound>;
+  role: "tool";
   tool_call_id: string;
 };
 
@@ -62,8 +62,8 @@ export const ChatToolMessage$outboundSchema: z.ZodType<
   ChatToolMessage$Outbound,
   ChatToolMessage
 > = z.object({
-  role: z.literal("tool"),
   content: z.union([z.string(), z.array(ChatContentItems$outboundSchema)]),
+  role: z.literal("tool"),
   toolCallId: z.string(),
 }).transform((v) => {
   return remap$(v, {

@@ -11,9 +11,21 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ActivityItem = {
   /**
+   * BYOK inference cost in USD (external credits spent)
+   */
+  byokUsageInference: number;
+  /**
+   * Total completion tokens generated
+   */
+  completionTokens: number;
+  /**
    * Date of the activity (YYYY-MM-DD format)
    */
   date: string;
+  /**
+   * Unique identifier for the endpoint
+   */
+  endpointId: string;
   /**
    * Model slug (e.g., "openai/gpt-4.1")
    */
@@ -23,61 +35,49 @@ export type ActivityItem = {
    */
   modelPermaslug: string;
   /**
-   * Unique identifier for the endpoint
+   * Total prompt tokens used
    */
-  endpointId: string;
+  promptTokens: number;
   /**
    * Name of the provider serving this endpoint
    */
   providerName: string;
   /**
-   * Total cost in USD (OpenRouter credits spent)
+   * Total reasoning tokens used
    */
-  usage: number;
-  /**
-   * BYOK inference cost in USD (external credits spent)
-   */
-  byokUsageInference: number;
+  reasoningTokens: number;
   /**
    * Number of requests made
    */
   requests: number;
   /**
-   * Total prompt tokens used
+   * Total cost in USD (OpenRouter credits spent)
    */
-  promptTokens: number;
-  /**
-   * Total completion tokens generated
-   */
-  completionTokens: number;
-  /**
-   * Total reasoning tokens used
-   */
-  reasoningTokens: number;
+  usage: number;
 };
 
 /** @internal */
 export const ActivityItem$inboundSchema: z.ZodType<ActivityItem, unknown> = z
   .object({
+    byok_usage_inference: z.number(),
+    completion_tokens: z.int(),
     date: z.string(),
+    endpoint_id: z.string(),
     model: z.string(),
     model_permaslug: z.string(),
-    endpoint_id: z.string(),
+    prompt_tokens: z.int(),
     provider_name: z.string(),
+    reasoning_tokens: z.int(),
+    requests: z.int(),
     usage: z.number(),
-    byok_usage_inference: z.number(),
-    requests: z.number(),
-    prompt_tokens: z.number(),
-    completion_tokens: z.number(),
-    reasoning_tokens: z.number(),
   }).transform((v) => {
     return remap$(v, {
-      "model_permaslug": "modelPermaslug",
-      "endpoint_id": "endpointId",
-      "provider_name": "providerName",
       "byok_usage_inference": "byokUsageInference",
-      "prompt_tokens": "promptTokens",
       "completion_tokens": "completionTokens",
+      "endpoint_id": "endpointId",
+      "model_permaslug": "modelPermaslug",
+      "prompt_tokens": "promptTokens",
+      "provider_name": "providerName",
       "reasoning_tokens": "reasoningTokens",
     });
   });

@@ -21,10 +21,10 @@ export type OutputItemImageGenerationCallType = ClosedEnum<
 >;
 
 export type OutputItemImageGenerationCall = {
-  type: OutputItemImageGenerationCallType;
   id: string;
   result: string | null;
   status: ImageGenerationStatus;
+  type: OutputItemImageGenerationCallType;
 };
 
 /** @internal */
@@ -37,10 +37,10 @@ export const OutputItemImageGenerationCall$inboundSchema: z.ZodType<
   OutputItemImageGenerationCall,
   unknown
 > = z.object({
-  type: OutputItemImageGenerationCallType$inboundSchema,
   id: z.string(),
   result: z.nullable(z.string()).default(null),
   status: ImageGenerationStatus$inboundSchema,
+  type: OutputItemImageGenerationCallType$inboundSchema,
 });
 
 export function outputItemImageGenerationCallFromJSON(
