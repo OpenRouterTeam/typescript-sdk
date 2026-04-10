@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when reasoning summary text streaming is complete
  */
 export type ReasoningSummaryTextDoneEvent = {
-  type: "response.reasoning_summary_text.done";
   itemId: string;
   outputIndex: number;
+  sequenceNumber: number;
   summaryIndex: number;
   text: string;
-  sequenceNumber: number;
+  type: "response.reasoning_summary_text.done";
 };
 
 /** @internal */
@@ -26,18 +26,18 @@ export const ReasoningSummaryTextDoneEvent$inboundSchema: z.ZodType<
   ReasoningSummaryTextDoneEvent,
   unknown
 > = z.object({
-  type: z.literal("response.reasoning_summary_text.done"),
   item_id: z.string(),
-  output_index: z.number(),
-  summary_index: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  summary_index: z.int(),
   text: z.string(),
-  sequence_number: z.number(),
+  type: z.literal("response.reasoning_summary_text.done"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
     "output_index": "outputIndex",
-    "summary_index": "summaryIndex",
     "sequence_number": "sequenceNumber",
+    "summary_index": "summaryIndex",
   });
 });
 

@@ -12,5 +12,5 @@ let value: RequireApproval = {};
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `never`                              | [models.Never](../models/never.md)   | :heavy_minus_sign:                   | N/A                                  |
 | `always`                             | [models.Always](../models/always.md) | :heavy_minus_sign:                   | N/A                                  |
+| `never`                              | [models.Never](../models/never.md)   | :heavy_minus_sign:                   | N/A                                  |
