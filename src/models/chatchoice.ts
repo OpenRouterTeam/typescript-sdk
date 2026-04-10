@@ -12,6 +12,10 @@ import {
   ChatAssistantMessage$inboundSchema,
 } from "./chatassistantmessage.js";
 import {
+  ChatFinishReasonEnum,
+  ChatFinishReasonEnum$inboundSchema,
+} from "./chatfinishreasonenum.js";
+import {
   ChatTokenLogprobs,
   ChatTokenLogprobs$inboundSchema,
 } from "./chattokenlogprobs.js";
@@ -21,28 +25,28 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Chat completion choice
  */
 export type ChatChoice = {
-  finishReason: any | null;
+  finishReason: ChatFinishReasonEnum | null;
   /**
    * Choice index
    */
   index: number;
   /**
-   * Assistant message for requests and responses
-   */
-  message: ChatAssistantMessage;
-  /**
    * Log probabilities for the completion
    */
   logprobs?: ChatTokenLogprobs | null | undefined;
+  /**
+   * Assistant message for requests and responses
+   */
+  message: ChatAssistantMessage;
 };
 
 /** @internal */
 export const ChatChoice$inboundSchema: z.ZodType<ChatChoice, unknown> = z
   .object({
-    finish_reason: z.nullable(z.any()),
-    index: z.number(),
-    message: ChatAssistantMessage$inboundSchema,
+    finish_reason: z.nullable(ChatFinishReasonEnum$inboundSchema),
+    index: z.int(),
     logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
+    message: ChatAssistantMessage$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "finish_reason": "finishReason",

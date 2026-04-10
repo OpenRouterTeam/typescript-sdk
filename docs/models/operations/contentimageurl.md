@@ -6,10 +6,10 @@
 import { ContentImageURL } from "@openrouter/sdk/models/operations";
 
 let value: ContentImageURL = {
-  type: "image_url",
   imageUrl: {
     url: "https://zealous-march.biz/",
   },
+  type: "image_url",
 };
 ```
 
@@ -17,5 +17,5 @@ let value: ContentImageURL = {
 
 | Field                                                      | Type                                                       | Required                                                   | Description                                                |
 | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `type`                                                     | *"image_url"*                                              | :heavy_check_mark:                                         | N/A                                                        |
 | `imageUrl`                                                 | [operations.ImageUrl](../../models/operations/imageurl.md) | :heavy_check_mark:                                         | N/A                                                        |
+| `type`                                                     | *"image_url"*                                              | :heavy_check_mark:                                         | N/A                                                        |
