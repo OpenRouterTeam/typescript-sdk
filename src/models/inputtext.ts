@@ -12,19 +12,19 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Text input content item
  */
 export type InputText = {
-  type: "input_text";
   text: string;
+  type: "input_text";
 };
 
 /** @internal */
 export const InputText$inboundSchema: z.ZodType<InputText, unknown> = z.object({
-  type: z.literal("input_text"),
   text: z.string(),
+  type: z.literal("input_text"),
 });
 /** @internal */
 export type InputText$Outbound = {
-  type: "input_text";
   text: string;
+  type: "input_text";
 };
 
 /** @internal */
@@ -32,8 +32,8 @@ export const InputText$outboundSchema: z.ZodType<
   InputText$Outbound,
   InputText
 > = z.object({
-  type: z.literal("input_text"),
   text: z.string(),
+  type: z.literal("input_text"),
 });
 
 export function inputTextToJSON(inputText: InputText): string {

@@ -8,17 +8,17 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ReasoningEffortEnum,
-  ReasoningEffortEnum$inboundSchema,
-} from "./reasoningeffortenum.js";
+  ReasoningEffort,
+  ReasoningEffort$inboundSchema,
+} from "./reasoningeffort.js";
 import {
-  ReasoningSummaryVerbosityEnum,
-  ReasoningSummaryVerbosityEnum$inboundSchema,
-} from "./reasoningsummaryverbosityenum.js";
+  ReasoningSummaryVerbosity,
+  ReasoningSummaryVerbosity$inboundSchema,
+} from "./reasoningsummaryverbosity.js";
 
 export type BaseReasoningConfig = {
-  effort?: ReasoningEffortEnum | null | undefined;
-  summary?: ReasoningSummaryVerbosityEnum | null | undefined;
+  effort?: ReasoningEffort | null | undefined;
+  summary?: ReasoningSummaryVerbosity | null | undefined;
 };
 
 /** @internal */
@@ -26,8 +26,8 @@ export const BaseReasoningConfig$inboundSchema: z.ZodType<
   BaseReasoningConfig,
   unknown
 > = z.object({
-  effort: z.nullable(ReasoningEffortEnum$inboundSchema).optional(),
-  summary: z.nullable(ReasoningSummaryVerbosityEnum$inboundSchema).optional(),
+  effort: z.nullable(ReasoningEffort$inboundSchema).optional(),
+  summary: z.nullable(ReasoningSummaryVerbosity$inboundSchema).optional(),
 });
 
 export function baseReasoningConfigFromJSON(

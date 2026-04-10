@@ -5,7 +5,7 @@
 ```typescript
 import { OpenAIResponsesResponseStatus } from "@openrouter/sdk/models";
 
-let value: OpenAIResponsesResponseStatus = "failed";
+let value: OpenAIResponsesResponseStatus = "completed";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

@@ -53,16 +53,16 @@ export type ExchangeAuthCodeForAPIKeyRequestBody = {
    */
   code: string;
   /**
-   * The code verifier if code_challenge was used in the authorization request
-   */
-  codeVerifier?: string | undefined;
-  /**
    * The method used to generate the code challenge
    */
   codeChallengeMethod?:
     | ExchangeAuthCodeForAPIKeyCodeChallengeMethod
     | null
     | undefined;
+  /**
+   * The code verifier if code_challenge was used in the authorization request
+   */
+  codeVerifier?: string | undefined;
 };
 
 export type ExchangeAuthCodeForAPIKeyRequest = {
@@ -110,8 +110,8 @@ export const ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema:
 /** @internal */
 export type ExchangeAuthCodeForAPIKeyRequestBody$Outbound = {
   code: string;
-  code_verifier?: string | undefined;
   code_challenge_method?: string | null | undefined;
+  code_verifier?: string | undefined;
 };
 
 /** @internal */
@@ -120,14 +120,14 @@ export const ExchangeAuthCodeForAPIKeyRequestBody$outboundSchema: z.ZodType<
   ExchangeAuthCodeForAPIKeyRequestBody
 > = z.object({
   code: z.string(),
-  codeVerifier: z.string().optional(),
   codeChallengeMethod: z.nullable(
     ExchangeAuthCodeForAPIKeyCodeChallengeMethod$outboundSchema,
   ).optional(),
+  codeVerifier: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    codeVerifier: "code_verifier",
     codeChallengeMethod: "code_challenge_method",
+    codeVerifier: "code_verifier",
   });
 });
 
