@@ -8,6 +8,7 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type ListGuardrailKeyAssignmentsGlobals = {
   /**
@@ -58,56 +59,15 @@ export type ListGuardrailKeyAssignmentsRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: string | undefined;
+  offset?: number | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
-  limit?: string | undefined;
+  limit?: number | undefined;
 };
 
-export type ListGuardrailKeyAssignmentsData = {
-  /**
-   * Unique identifier for the assignment
-   */
-  id: string;
-  /**
-   * Hash of the assigned API key
-   */
-  keyHash: string;
-  /**
-   * ID of the guardrail
-   */
-  guardrailId: string;
-  /**
-   * Name of the API key
-   */
-  keyName: string;
-  /**
-   * Label of the API key
-   */
-  keyLabel: string;
-  /**
-   * User ID of who made the assignment
-   */
-  assignedBy: string | null;
-  /**
-   * ISO 8601 timestamp of when the assignment was created
-   */
-  createdAt: string;
-};
-
-/**
- * List of key assignments
- */
 export type ListGuardrailKeyAssignmentsResponse = {
-  /**
-   * List of key assignments
-   */
-  data: Array<ListGuardrailKeyAssignmentsData>;
-  /**
-   * Total number of key assignments for this guardrail
-   */
-  totalCount: number;
+  result: models.ListKeyAssignmentsResponse;
 };
 
 /** @internal */
@@ -116,8 +76,8 @@ export type ListGuardrailKeyAssignmentsRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
-  offset?: string | undefined;
-  limit?: string | undefined;
+  offset?: number | undefined;
+  limit?: number | undefined;
 };
 
 /** @internal */
@@ -129,8 +89,8 @@ export const ListGuardrailKeyAssignmentsRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
-  offset: z.string().optional(),
-  limit: z.string().optional(),
+  offset: z.int().optional(),
+  limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -148,48 +108,14 @@ export function listGuardrailKeyAssignmentsRequestToJSON(
 }
 
 /** @internal */
-export const ListGuardrailKeyAssignmentsData$inboundSchema: z.ZodType<
-  ListGuardrailKeyAssignmentsData,
-  unknown
-> = z.object({
-  id: z.string(),
-  key_hash: z.string(),
-  guardrail_id: z.string(),
-  key_name: z.string(),
-  key_label: z.string(),
-  assigned_by: z.nullable(z.string()),
-  created_at: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "key_hash": "keyHash",
-    "guardrail_id": "guardrailId",
-    "key_name": "keyName",
-    "key_label": "keyLabel",
-    "assigned_by": "assignedBy",
-    "created_at": "createdAt",
-  });
-});
-
-export function listGuardrailKeyAssignmentsDataFromJSON(
-  jsonString: string,
-): SafeParseResult<ListGuardrailKeyAssignmentsData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ListGuardrailKeyAssignmentsData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ListGuardrailKeyAssignmentsData' from JSON`,
-  );
-}
-
-/** @internal */
 export const ListGuardrailKeyAssignmentsResponse$inboundSchema: z.ZodType<
   ListGuardrailKeyAssignmentsResponse,
   unknown
 > = z.object({
-  data: z.array(z.lazy(() => ListGuardrailKeyAssignmentsData$inboundSchema)),
-  total_count: z.number(),
+  Result: models.ListKeyAssignmentsResponse$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
-    "total_count": "totalCount",
+    "Result": "result",
   });
 });
 
