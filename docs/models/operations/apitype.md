@@ -7,7 +7,7 @@ Type of API used for the generation
 ```typescript
 import { ApiType } from "@openrouter/sdk/models/operations";
 
-let value: ApiType = "embeddings";
+let value: ApiType = "rerank";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -15,5 +15,5 @@ let value: ApiType = "embeddings";
 ## Values
 
 ```typescript
-"completions" | "embeddings" | "video" | Unrecognized<string>
+"completions" | "embeddings" | "rerank" | "video" | Unrecognized<string>
 ```
