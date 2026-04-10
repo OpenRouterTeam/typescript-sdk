@@ -6,8 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -16,149 +14,73 @@ import {
   SearchContextSizeEnum$outboundSchema,
 } from "./searchcontextsizeenum.js";
 import {
+  WebSearchDomainFilter,
+  WebSearchDomainFilter$inboundSchema,
+  WebSearchDomainFilter$Outbound,
+  WebSearchDomainFilter$outboundSchema,
+} from "./websearchdomainfilter.js";
+import {
+  WebSearchEngineEnum,
+  WebSearchEngineEnum$inboundSchema,
+  WebSearchEngineEnum$outboundSchema,
+} from "./websearchengineenum.js";
+import {
   WebSearchUserLocation,
   WebSearchUserLocation$inboundSchema,
   WebSearchUserLocation$Outbound,
   WebSearchUserLocation$outboundSchema,
 } from "./websearchuserlocation.js";
 
-export type LegacyWebSearchServerToolFilters = {
-  allowedDomains?: Array<string> | null | undefined;
-  excludedDomains?: Array<string> | null | undefined;
-};
-
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export const LegacyWebSearchServerToolEngine = {
-  Auto: "auto",
-  Native: "native",
-  Exa: "exa",
-  Firecrawl: "firecrawl",
-  Parallel: "parallel",
-} as const;
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export type LegacyWebSearchServerToolEngine = OpenEnum<
-  typeof LegacyWebSearchServerToolEngine
->;
-
 /**
  * Web search tool configuration
  */
 export type LegacyWebSearchServerTool = {
-  type: "web_search";
-  filters?: LegacyWebSearchServerToolFilters | null | undefined;
-  /**
-   * Size of the search context for web search tools
-   */
-  searchContextSize?: SearchContextSizeEnum | undefined;
-  /**
-   * User location information for web search
-   */
-  userLocation?: WebSearchUserLocation | null | undefined;
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
-  engine?: LegacyWebSearchServerToolEngine | undefined;
+  engine?: WebSearchEngineEnum | undefined;
+  filters?: WebSearchDomainFilter | null | undefined;
   /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
+  /**
+   * Size of the search context for web search tools
+   */
+  searchContextSize?: SearchContextSizeEnum | undefined;
+  type: "web_search";
+  /**
+   * User location information for web search
+   */
+  userLocation?: WebSearchUserLocation | null | undefined;
 };
-
-/** @internal */
-export const LegacyWebSearchServerToolFilters$inboundSchema: z.ZodType<
-  LegacyWebSearchServerToolFilters,
-  unknown
-> = z.object({
-  allowed_domains: z.nullable(z.array(z.string())).optional(),
-  excluded_domains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allowed_domains": "allowedDomains",
-    "excluded_domains": "excludedDomains",
-  });
-});
-/** @internal */
-export type LegacyWebSearchServerToolFilters$Outbound = {
-  allowed_domains?: Array<string> | null | undefined;
-  excluded_domains?: Array<string> | null | undefined;
-};
-
-/** @internal */
-export const LegacyWebSearchServerToolFilters$outboundSchema: z.ZodType<
-  LegacyWebSearchServerToolFilters$Outbound,
-  LegacyWebSearchServerToolFilters
-> = z.object({
-  allowedDomains: z.nullable(z.array(z.string())).optional(),
-  excludedDomains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedDomains: "allowed_domains",
-    excludedDomains: "excluded_domains",
-  });
-});
-
-export function legacyWebSearchServerToolFiltersToJSON(
-  legacyWebSearchServerToolFilters: LegacyWebSearchServerToolFilters,
-): string {
-  return JSON.stringify(
-    LegacyWebSearchServerToolFilters$outboundSchema.parse(
-      legacyWebSearchServerToolFilters,
-    ),
-  );
-}
-export function legacyWebSearchServerToolFiltersFromJSON(
-  jsonString: string,
-): SafeParseResult<LegacyWebSearchServerToolFilters, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => LegacyWebSearchServerToolFilters$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'LegacyWebSearchServerToolFilters' from JSON`,
-  );
-}
-
-/** @internal */
-export const LegacyWebSearchServerToolEngine$inboundSchema: z.ZodType<
-  LegacyWebSearchServerToolEngine,
-  unknown
-> = openEnums.inboundSchema(LegacyWebSearchServerToolEngine);
-/** @internal */
-export const LegacyWebSearchServerToolEngine$outboundSchema: z.ZodType<
-  string,
-  LegacyWebSearchServerToolEngine
-> = openEnums.outboundSchema(LegacyWebSearchServerToolEngine);
 
 /** @internal */
 export const LegacyWebSearchServerTool$inboundSchema: z.ZodType<
   LegacyWebSearchServerTool,
   unknown
 > = z.object({
-  type: z.literal("web_search"),
-  filters: z.nullable(
-    z.lazy(() => LegacyWebSearchServerToolFilters$inboundSchema),
-  ).optional(),
+  engine: WebSearchEngineEnum$inboundSchema.optional(),
+  filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
+  max_results: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
+  type: z.literal("web_search"),
   user_location: z.nullable(WebSearchUserLocation$inboundSchema).optional(),
-  engine: LegacyWebSearchServerToolEngine$inboundSchema.optional(),
-  max_results: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "max_results": "maxResults",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
-    "max_results": "maxResults",
   });
 });
 /** @internal */
 export type LegacyWebSearchServerTool$Outbound = {
-  type: "web_search";
-  filters?: LegacyWebSearchServerToolFilters$Outbound | null | undefined;
-  search_context_size?: string | undefined;
-  user_location?: WebSearchUserLocation$Outbound | null | undefined;
   engine?: string | undefined;
+  filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
+  search_context_size?: string | undefined;
+  type: "web_search";
+  user_location?: WebSearchUserLocation$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -166,19 +88,17 @@ export const LegacyWebSearchServerTool$outboundSchema: z.ZodType<
   LegacyWebSearchServerTool$Outbound,
   LegacyWebSearchServerTool
 > = z.object({
-  type: z.literal("web_search"),
-  filters: z.nullable(
-    z.lazy(() => LegacyWebSearchServerToolFilters$outboundSchema),
-  ).optional(),
+  engine: WebSearchEngineEnum$outboundSchema.optional(),
+  filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
+  maxResults: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
+  type: z.literal("web_search"),
   userLocation: z.nullable(WebSearchUserLocation$outboundSchema).optional(),
-  engine: LegacyWebSearchServerToolEngine$outboundSchema.optional(),
-  maxResults: z.number().optional(),
 }).transform((v) => {
   return remap$(v, {
+    maxResults: "max_results",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
-    maxResults: "max_results",
   });
 });
 
