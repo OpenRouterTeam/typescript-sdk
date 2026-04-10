@@ -6,10 +6,13 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ReasoningFormat,
+  ReasoningFormat$inboundSchema,
+} from "./reasoningformat.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$inboundSchema,
@@ -18,13 +21,6 @@ import {
   ReasoningTextContent,
   ReasoningTextContent$inboundSchema,
 } from "./reasoningtextcontent.js";
-
-export const OutputReasoningItemType = {
-  Reasoning: "reasoning",
-} as const;
-export type OutputReasoningItemType = ClosedEnum<
-  typeof OutputReasoningItemType
->;
 
 export const OutputReasoningItemStatusInProgress = {
   InProgress: "in_progress",
@@ -53,51 +49,25 @@ export type OutputReasoningItemStatusUnion =
   | OutputReasoningItemStatusInProgress;
 
 /**
- * The format of the reasoning content
- */
-export const OutputReasoningItemFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
-} as const;
-/**
- * The format of the reasoning content
- */
-export type OutputReasoningItemFormat = OpenEnum<
-  typeof OutputReasoningItemFormat
->;
-
-/**
  * An output item containing reasoning
  */
 export type OutputReasoningItem = {
-  type: OutputReasoningItemType;
-  id: string;
   content?: Array<ReasoningTextContent> | null | undefined;
-  summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
+  id: string;
   status?:
     | OutputReasoningItemStatusCompleted
     | OutputReasoningItemStatusIncomplete
     | OutputReasoningItemStatusInProgress
     | undefined;
+  summary: Array<ReasoningSummaryText>;
+  type: "reasoning";
+  format?: ReasoningFormat | null | undefined;
   /**
    * A signature for the reasoning content, used for verification
    */
   signature?: string | null | undefined;
-  /**
-   * The format of the reasoning content
-   */
-  format?: OutputReasoningItemFormat | null | undefined;
 };
-
-/** @internal */
-export const OutputReasoningItemType$inboundSchema: z.ZodEnum<
-  typeof OutputReasoningItemType
-> = z.enum(OutputReasoningItemType);
 
 /** @internal */
 export const OutputReasoningItemStatusInProgress$inboundSchema: z.ZodEnum<
@@ -135,28 +105,22 @@ export function outputReasoningItemStatusUnionFromJSON(
 }
 
 /** @internal */
-export const OutputReasoningItemFormat$inboundSchema: z.ZodType<
-  OutputReasoningItemFormat,
-  unknown
-> = openEnums.inboundSchema(OutputReasoningItemFormat);
-
-/** @internal */
 export const OutputReasoningItem$inboundSchema: z.ZodType<
   OutputReasoningItem,
   unknown
 > = z.object({
-  type: OutputReasoningItemType$inboundSchema,
-  id: z.string(),
   content: z.nullable(z.array(ReasoningTextContent$inboundSchema)).optional(),
-  summary: z.array(ReasoningSummaryText$inboundSchema),
   encrypted_content: z.nullable(z.string()).optional(),
+  id: z.string(),
   status: z.union([
     OutputReasoningItemStatusCompleted$inboundSchema,
     OutputReasoningItemStatusIncomplete$inboundSchema,
     OutputReasoningItemStatusInProgress$inboundSchema,
   ]).optional(),
+  summary: z.array(ReasoningSummaryText$inboundSchema),
+  type: z.literal("reasoning"),
+  format: z.nullable(ReasoningFormat$inboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(OutputReasoningItemFormat$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "encrypted_content": "encryptedContent",
