@@ -18,7 +18,7 @@ export type OutputTokensDetails = {
 };
 
 export type CostDetails = {
-  upstreamInferenceCost?: number | null | undefined;
+  upstreamInferenceCost?: number | undefined;
   upstreamInferenceInputCost: number;
   upstreamInferenceOutputCost: number;
 };
@@ -35,12 +35,12 @@ export type Usage = {
   /**
    * Cost of the completion
    */
-  cost?: number | null | undefined;
+  cost?: number | undefined;
+  costDetails?: CostDetails | undefined;
   /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
   isByok?: boolean | undefined;
-  costDetails?: CostDetails | undefined;
 };
 
 /** @internal */
@@ -48,7 +48,7 @@ export const InputTokensDetails$inboundSchema: z.ZodType<
   InputTokensDetails,
   unknown
 > = z.object({
-  cached_tokens: z.number(),
+  cached_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "cached_tokens": "cachedTokens",
@@ -70,7 +70,7 @@ export const OutputTokensDetails$inboundSchema: z.ZodType<
   OutputTokensDetails,
   unknown
 > = z.object({
-  reasoning_tokens: z.number(),
+  reasoning_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
     "reasoning_tokens": "reasoningTokens",
@@ -90,7 +90,7 @@ export function outputTokensDetailsFromJSON(
 /** @internal */
 export const CostDetails$inboundSchema: z.ZodType<CostDetails, unknown> = z
   .object({
-    upstream_inference_cost: z.nullable(z.number()).optional(),
+    upstream_inference_cost: z.number().optional(),
     upstream_inference_input_cost: z.number(),
     upstream_inference_output_cost: z.number(),
   }).transform((v) => {
@@ -113,14 +113,14 @@ export function costDetailsFromJSON(
 
 /** @internal */
 export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
-  input_tokens: z.number(),
+  input_tokens: z.int(),
   input_tokens_details: z.lazy(() => InputTokensDetails$inboundSchema),
-  output_tokens: z.number(),
+  output_tokens: z.int(),
   output_tokens_details: z.lazy(() => OutputTokensDetails$inboundSchema),
-  total_tokens: z.number(),
-  cost: z.nullable(z.number()).optional(),
-  is_byok: z.boolean().optional(),
+  total_tokens: z.int(),
+  cost: z.number().optional(),
   cost_details: z.lazy(() => CostDetails$inboundSchema).optional(),
+  is_byok: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
     "input_tokens": "inputTokens",
@@ -128,8 +128,8 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
     "output_tokens": "outputTokens",
     "output_tokens_details": "outputTokensDetails",
     "total_tokens": "totalTokens",
-    "is_byok": "isByok",
     "cost_details": "costDetails",
+    "is_byok": "isByok",
   });
 });
 
