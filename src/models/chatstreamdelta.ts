@@ -37,10 +37,7 @@ export type ChatStreamDeltaRole = ClosedEnum<typeof ChatStreamDeltaRole>;
  * Delta changes in streaming response
  */
 export type ChatStreamDelta = {
-  /**
-   * The role of the message author
-   */
-  role?: ChatStreamDeltaRole | undefined;
+  audio?: ChatAudioOutput | undefined;
   /**
    * Message content delta
    */
@@ -50,18 +47,21 @@ export type ChatStreamDelta = {
    */
   reasoning?: string | null | undefined;
   /**
+   * Reasoning details for extended thinking models
+   */
+  reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
+  /**
    * Refusal message delta
    */
   refusal?: string | null | undefined;
   /**
+   * The role of the message author
+   */
+  role?: ChatStreamDeltaRole | undefined;
+  /**
    * Tool calls delta
    */
   toolCalls?: Array<ChatStreamToolCall> | undefined;
-  /**
-   * Reasoning details for extended thinking models
-   */
-  reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
-  audio?: ChatAudioOutput | undefined;
 };
 
 /** @internal */
@@ -74,17 +74,17 @@ export const ChatStreamDelta$inboundSchema: z.ZodType<
   ChatStreamDelta,
   unknown
 > = z.object({
-  role: ChatStreamDeltaRole$inboundSchema.optional(),
+  audio: ChatAudioOutput$inboundSchema.optional(),
   content: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
-  refusal: z.nullable(z.string()).optional(),
-  tool_calls: z.array(ChatStreamToolCall$inboundSchema).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
-  audio: ChatAudioOutput$inboundSchema.optional(),
+  refusal: z.nullable(z.string()).optional(),
+  role: ChatStreamDeltaRole$inboundSchema.optional(),
+  tool_calls: z.array(ChatStreamToolCall$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    "tool_calls": "toolCalls",
     "reasoning_details": "reasoningDetails",
+    "tool_calls": "toolCalls",
   });
 });
 
