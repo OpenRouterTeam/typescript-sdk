@@ -5,8 +5,11 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
+import {
+  ReasoningFormat,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
 import {
   ReasoningSummaryText,
   ReasoningSummaryText$Outbound,
@@ -17,11 +20,6 @@ import {
   ReasoningTextContent$Outbound,
   ReasoningTextContent$outboundSchema,
 } from "./reasoningtextcontent.js";
-
-export const ReasoningItemType = {
-  Reasoning: "reasoning",
-} as const;
-export type ReasoningItemType = ClosedEnum<typeof ReasoningItemType>;
 
 export const ReasoningItemStatusInProgress = {
   InProgress: "in_progress",
@@ -49,38 +47,28 @@ export type ReasoningItemStatusUnion =
   | ReasoningItemStatusIncomplete
   | ReasoningItemStatusInProgress;
 
-export const ReasoningItemFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
+export const ReasoningItemType = {
+  Reasoning: "reasoning",
 } as const;
-export type ReasoningItemFormat = OpenEnum<typeof ReasoningItemFormat>;
+export type ReasoningItemType = ClosedEnum<typeof ReasoningItemType>;
 
 /**
  * Reasoning output item with signature and format extensions
  */
 export type ReasoningItem = {
-  type: ReasoningItemType;
-  id: string;
   content?: Array<ReasoningTextContent> | null | undefined;
-  summary: Array<ReasoningSummaryText>;
   encryptedContent?: string | null | undefined;
+  id: string;
   status?:
     | ReasoningItemStatusCompleted
     | ReasoningItemStatusIncomplete
     | ReasoningItemStatusInProgress
     | undefined;
+  summary: Array<ReasoningSummaryText>;
+  type: ReasoningItemType;
+  format?: ReasoningFormat | null | undefined;
   signature?: string | null | undefined;
-  format?: ReasoningItemFormat | null | undefined;
 };
-
-/** @internal */
-export const ReasoningItemType$outboundSchema: z.ZodEnum<
-  typeof ReasoningItemType
-> = z.enum(ReasoningItemType);
 
 /** @internal */
 export const ReasoningItemStatusInProgress$outboundSchema: z.ZodEnum<
@@ -119,21 +107,20 @@ export function reasoningItemStatusUnionToJSON(
 }
 
 /** @internal */
-export const ReasoningItemFormat$outboundSchema: z.ZodType<
-  string,
-  ReasoningItemFormat
-> = openEnums.outboundSchema(ReasoningItemFormat);
+export const ReasoningItemType$outboundSchema: z.ZodEnum<
+  typeof ReasoningItemType
+> = z.enum(ReasoningItemType);
 
 /** @internal */
 export type ReasoningItem$Outbound = {
-  type: string;
-  id: string;
   content?: Array<ReasoningTextContent$Outbound> | null | undefined;
-  summary: Array<ReasoningSummaryText$Outbound>;
   encrypted_content?: string | null | undefined;
+  id: string;
   status?: string | string | string | undefined;
-  signature?: string | null | undefined;
+  summary: Array<ReasoningSummaryText$Outbound>;
+  type: string;
   format?: string | null | undefined;
+  signature?: string | null | undefined;
 };
 
 /** @internal */
@@ -141,18 +128,18 @@ export const ReasoningItem$outboundSchema: z.ZodType<
   ReasoningItem$Outbound,
   ReasoningItem
 > = z.object({
-  type: ReasoningItemType$outboundSchema,
-  id: z.string(),
   content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
-  summary: z.array(ReasoningSummaryText$outboundSchema),
   encryptedContent: z.nullable(z.string()).optional(),
+  id: z.string(),
   status: z.union([
     ReasoningItemStatusCompleted$outboundSchema,
     ReasoningItemStatusIncomplete$outboundSchema,
     ReasoningItemStatusInProgress$outboundSchema,
   ]).optional(),
+  summary: z.array(ReasoningSummaryText$outboundSchema),
+  type: ReasoningItemType$outboundSchema,
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(ReasoningItemFormat$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",

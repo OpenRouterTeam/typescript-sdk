@@ -12,5 +12,5 @@ let value: AllowedTools = {};
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `toolNames`        | *string*[]         | :heavy_minus_sign: | N/A                |
 | `readOnly`         | *boolean*          | :heavy_minus_sign: | N/A                |
+| `toolNames`        | *string*[]         | :heavy_minus_sign: | N/A                |
