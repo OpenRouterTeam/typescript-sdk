@@ -13,12 +13,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Image generation call with partial image
  */
 export type ImageGenCallPartialImageEvent = {
-  type: "response.image_generation_call.partial_image";
   itemId: string;
   outputIndex: number;
-  sequenceNumber: number;
   partialImageB64: string;
   partialImageIndex: number;
+  sequenceNumber: number;
+  type: "response.image_generation_call.partial_image";
 };
 
 /** @internal */
@@ -26,19 +26,19 @@ export const ImageGenCallPartialImageEvent$inboundSchema: z.ZodType<
   ImageGenCallPartialImageEvent,
   unknown
 > = z.object({
-  type: z.literal("response.image_generation_call.partial_image"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
   partial_image_b64: z.string(),
-  partial_image_index: z.number(),
+  partial_image_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.image_generation_call.partial_image"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
     "output_index": "outputIndex",
-    "sequence_number": "sequenceNumber",
     "partial_image_b64": "partialImageB64",
     "partial_image_index": "partialImageIndex",
+    "sequence_number": "sequenceNumber",
   });
 });
 
