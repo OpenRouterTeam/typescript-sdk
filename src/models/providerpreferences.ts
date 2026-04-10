@@ -6,11 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
-import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
+import { OpenEnum } from "../types/enums.js";
 import {
   PreferredMaxLatency,
   PreferredMaxLatency$Outbound,
@@ -22,121 +18,63 @@ import {
   PreferredMinThroughput$outboundSchema,
 } from "./preferredminthroughput.js";
 import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
+import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
+import {
+  ProviderSortConfig,
+  ProviderSortConfig$Outbound,
+  ProviderSortConfig$outboundSchema,
+} from "./providersortconfig.js";
 import { Quantization, Quantization$outboundSchema } from "./quantization.js";
 
-export type ProviderPreferencesOrder = ProviderName | string;
-
-export type ProviderPreferencesOnly = ProviderName | string;
-
-export type ProviderPreferencesIgnore = ProviderName | string;
-
-export const ProviderPreferencesSortEnum = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-export type ProviderPreferencesSortEnum = OpenEnum<
-  typeof ProviderPreferencesSortEnum
->;
-
-export const ProviderPreferencesProviderSortConfigEnum = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-export type ProviderPreferencesProviderSortConfigEnum = ClosedEnum<
-  typeof ProviderPreferencesProviderSortConfigEnum
->;
-
 /**
- * The provider sorting strategy (price, throughput, latency)
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
  */
-export const ProviderPreferencesBy = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
+export const DataCollection = {
+  Deny: "deny",
+  Allow: "allow",
 } as const;
 /**
- * The provider sorting strategy (price, throughput, latency)
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers which store user data non-transiently and may train on it
+ *
+ * - deny: use only providers which do not collect user data.
  */
-export type ProviderPreferencesBy = OpenEnum<typeof ProviderPreferencesBy>;
+export type DataCollection = OpenEnum<typeof DataCollection>;
 
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export const ProviderPreferencesPartition = {
-  Model: "model",
-  None: "none",
-} as const;
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export type ProviderPreferencesPartition = OpenEnum<
-  typeof ProviderPreferencesPartition
->;
-
-export type ProviderPreferencesProviderSortConfig = {
-  /**
-   * The provider sorting strategy (price, throughput, latency)
-   */
-  by?: ProviderPreferencesBy | null | undefined;
-  /**
-   * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
-   */
-  partition?: ProviderPreferencesPartition | null | undefined;
-};
-
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type ProviderPreferencesProviderSortConfigUnion =
-  | ProviderPreferencesProviderSortConfig
-  | ProviderPreferencesProviderSortConfigEnum;
-
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export const ProviderPreferencesProviderSort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type ProviderPreferencesProviderSort = OpenEnum<
-  typeof ProviderPreferencesProviderSort
->;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type ProviderPreferencesSortUnion =
-  | ProviderPreferencesProviderSort
-  | ProviderPreferencesProviderSortConfig
-  | ProviderPreferencesProviderSortConfigEnum
-  | ProviderPreferencesSortEnum;
+export type Ignore = ProviderName | string;
 
 /**
  * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
  */
-export type ProviderPreferencesMaxPrice = {
+export type MaxPrice = {
+  audio?: string | undefined;
+  completion?: string | undefined;
+  image?: string | undefined;
   /**
    * Price per million prompt tokens
    */
   prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
   request?: string | undefined;
 };
 
+export type Only = ProviderName | string;
+
+export type Order = ProviderName | string;
+
 /**
- * Provider routing preferences for the request.
+ * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+ */
+export type Sort = ProviderSort | ProviderSortConfig | any;
+
+/**
+ * When multiple model providers are available, optionally indicate your routing preference.
  */
 export type ProviderPreferences = {
   /**
@@ -148,10 +86,6 @@ export type ProviderPreferences = {
    */
   allowFallbacks?: boolean | null | undefined;
   /**
-   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-   */
-  requireParameters?: boolean | null | undefined;
-  /**
    * Data collection setting. If no available model provider meets the requirement, your request will return an error.
    *
    * @remarks
@@ -161,264 +95,144 @@ export type ProviderPreferences = {
    */
   dataCollection?: DataCollection | null | undefined;
   /**
-   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-   */
-  zdr?: boolean | null | undefined;
-  /**
    * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
    */
   enforceDistillableText?: boolean | null | undefined;
-  /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-   */
-  order?: Array<ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-   */
-  only?: Array<ProviderName | string> | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
   ignore?: Array<ProviderName | string> | null | undefined;
   /**
-   * A list of quantization levels to filter the provider by.
-   */
-  quantizations?: Array<Quantization> | null | undefined;
-  sort?:
-    | ProviderPreferencesProviderSort
-    | ProviderPreferencesProviderSortConfig
-    | ProviderPreferencesProviderSortConfigEnum
-    | ProviderPreferencesSortEnum
-    | null
-    | undefined;
-  /**
    * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
    */
-  maxPrice?: ProviderPreferencesMaxPrice | undefined;
+  maxPrice?: MaxPrice | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   */
+  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
   /**
    * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
    */
   preferredMinThroughput?: PreferredMinThroughput | null | undefined;
   /**
-   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
+   * A list of quantization levels to filter the provider by.
    */
-  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
+  quantizations?: Array<Quantization> | null | undefined;
+  /**
+   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
+   */
+  requireParameters?: boolean | null | undefined;
+  /**
+   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
+   */
+  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
-export type ProviderPreferencesOrder$Outbound = string | string;
+export const DataCollection$outboundSchema: z.ZodType<string, DataCollection> =
+  openEnums.outboundSchema(DataCollection);
 
 /** @internal */
-export const ProviderPreferencesOrder$outboundSchema: z.ZodType<
-  ProviderPreferencesOrder$Outbound,
-  ProviderPreferencesOrder
-> = z.union([ProviderName$outboundSchema, z.string()]);
+export type Ignore$Outbound = string | string;
 
-export function providerPreferencesOrderToJSON(
-  providerPreferencesOrder: ProviderPreferencesOrder,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesOrder$outboundSchema.parse(providerPreferencesOrder),
-  );
+/** @internal */
+export const Ignore$outboundSchema: z.ZodType<Ignore$Outbound, Ignore> = z
+  .union([ProviderName$outboundSchema, z.string()]);
+
+export function ignoreToJSON(ignore: Ignore): string {
+  return JSON.stringify(Ignore$outboundSchema.parse(ignore));
 }
 
 /** @internal */
-export type ProviderPreferencesOnly$Outbound = string | string;
-
-/** @internal */
-export const ProviderPreferencesOnly$outboundSchema: z.ZodType<
-  ProviderPreferencesOnly$Outbound,
-  ProviderPreferencesOnly
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function providerPreferencesOnlyToJSON(
-  providerPreferencesOnly: ProviderPreferencesOnly,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesOnly$outboundSchema.parse(providerPreferencesOnly),
-  );
-}
-
-/** @internal */
-export type ProviderPreferencesIgnore$Outbound = string | string;
-
-/** @internal */
-export const ProviderPreferencesIgnore$outboundSchema: z.ZodType<
-  ProviderPreferencesIgnore$Outbound,
-  ProviderPreferencesIgnore
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function providerPreferencesIgnoreToJSON(
-  providerPreferencesIgnore: ProviderPreferencesIgnore,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesIgnore$outboundSchema.parse(providerPreferencesIgnore),
-  );
-}
-
-/** @internal */
-export const ProviderPreferencesSortEnum$outboundSchema: z.ZodType<
-  string,
-  ProviderPreferencesSortEnum
-> = openEnums.outboundSchema(ProviderPreferencesSortEnum);
-
-/** @internal */
-export const ProviderPreferencesProviderSortConfigEnum$outboundSchema:
-  z.ZodEnum<typeof ProviderPreferencesProviderSortConfigEnum> = z.enum(
-    ProviderPreferencesProviderSortConfigEnum,
-  );
-
-/** @internal */
-export const ProviderPreferencesBy$outboundSchema: z.ZodType<
-  string,
-  ProviderPreferencesBy
-> = openEnums.outboundSchema(ProviderPreferencesBy);
-
-/** @internal */
-export const ProviderPreferencesPartition$outboundSchema: z.ZodType<
-  string,
-  ProviderPreferencesPartition
-> = openEnums.outboundSchema(ProviderPreferencesPartition);
-
-/** @internal */
-export type ProviderPreferencesProviderSortConfig$Outbound = {
-  by?: string | null | undefined;
-  partition?: string | null | undefined;
-};
-
-/** @internal */
-export const ProviderPreferencesProviderSortConfig$outboundSchema: z.ZodType<
-  ProviderPreferencesProviderSortConfig$Outbound,
-  ProviderPreferencesProviderSortConfig
-> = z.object({
-  by: z.nullable(ProviderPreferencesBy$outboundSchema).optional(),
-  partition: z.nullable(ProviderPreferencesPartition$outboundSchema).optional(),
-});
-
-export function providerPreferencesProviderSortConfigToJSON(
-  providerPreferencesProviderSortConfig: ProviderPreferencesProviderSortConfig,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesProviderSortConfig$outboundSchema.parse(
-      providerPreferencesProviderSortConfig,
-    ),
-  );
-}
-
-/** @internal */
-export type ProviderPreferencesProviderSortConfigUnion$Outbound =
-  | ProviderPreferencesProviderSortConfig$Outbound
-  | string;
-
-/** @internal */
-export const ProviderPreferencesProviderSortConfigUnion$outboundSchema:
-  z.ZodType<
-    ProviderPreferencesProviderSortConfigUnion$Outbound,
-    ProviderPreferencesProviderSortConfigUnion
-  > = z.union([
-    z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
-    ProviderPreferencesProviderSortConfigEnum$outboundSchema,
-  ]);
-
-export function providerPreferencesProviderSortConfigUnionToJSON(
-  providerPreferencesProviderSortConfigUnion:
-    ProviderPreferencesProviderSortConfigUnion,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesProviderSortConfigUnion$outboundSchema.parse(
-      providerPreferencesProviderSortConfigUnion,
-    ),
-  );
-}
-
-/** @internal */
-export const ProviderPreferencesProviderSort$outboundSchema: z.ZodType<
-  string,
-  ProviderPreferencesProviderSort
-> = openEnums.outboundSchema(ProviderPreferencesProviderSort);
-
-/** @internal */
-export type ProviderPreferencesSortUnion$Outbound =
-  | string
-  | ProviderPreferencesProviderSortConfig$Outbound
-  | string
-  | string;
-
-/** @internal */
-export const ProviderPreferencesSortUnion$outboundSchema: z.ZodType<
-  ProviderPreferencesSortUnion$Outbound,
-  ProviderPreferencesSortUnion
-> = z.union([
-  ProviderPreferencesProviderSort$outboundSchema,
-  z.union([
-    z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
-    ProviderPreferencesProviderSortConfigEnum$outboundSchema,
-  ]),
-  ProviderPreferencesSortEnum$outboundSchema,
-]);
-
-export function providerPreferencesSortUnionToJSON(
-  providerPreferencesSortUnion: ProviderPreferencesSortUnion,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesSortUnion$outboundSchema.parse(
-      providerPreferencesSortUnion,
-    ),
-  );
-}
-
-/** @internal */
-export type ProviderPreferencesMaxPrice$Outbound = {
-  prompt?: string | undefined;
+export type MaxPrice$Outbound = {
+  audio?: string | undefined;
   completion?: string | undefined;
   image?: string | undefined;
-  audio?: string | undefined;
+  prompt?: string | undefined;
   request?: string | undefined;
 };
 
 /** @internal */
-export const ProviderPreferencesMaxPrice$outboundSchema: z.ZodType<
-  ProviderPreferencesMaxPrice$Outbound,
-  ProviderPreferencesMaxPrice
-> = z.object({
-  prompt: z.string().optional(),
-  completion: z.string().optional(),
-  image: z.string().optional(),
-  audio: z.string().optional(),
-  request: z.string().optional(),
-});
+export const MaxPrice$outboundSchema: z.ZodType<MaxPrice$Outbound, MaxPrice> = z
+  .object({
+    audio: z.string().optional(),
+    completion: z.string().optional(),
+    image: z.string().optional(),
+    prompt: z.string().optional(),
+    request: z.string().optional(),
+  });
 
-export function providerPreferencesMaxPriceToJSON(
-  providerPreferencesMaxPrice: ProviderPreferencesMaxPrice,
-): string {
-  return JSON.stringify(
-    ProviderPreferencesMaxPrice$outboundSchema.parse(
-      providerPreferencesMaxPrice,
-    ),
-  );
+export function maxPriceToJSON(maxPrice: MaxPrice): string {
+  return JSON.stringify(MaxPrice$outboundSchema.parse(maxPrice));
+}
+
+/** @internal */
+export type Only$Outbound = string | string;
+
+/** @internal */
+export const Only$outboundSchema: z.ZodType<Only$Outbound, Only> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
+
+export function onlyToJSON(only: Only): string {
+  return JSON.stringify(Only$outboundSchema.parse(only));
+}
+
+/** @internal */
+export type Order$Outbound = string | string;
+
+/** @internal */
+export const Order$outboundSchema: z.ZodType<Order$Outbound, Order> = z.union([
+  ProviderName$outboundSchema,
+  z.string(),
+]);
+
+export function orderToJSON(order: Order): string {
+  return JSON.stringify(Order$outboundSchema.parse(order));
+}
+
+/** @internal */
+export type Sort$Outbound = string | ProviderSortConfig$Outbound | any;
+
+/** @internal */
+export const Sort$outboundSchema: z.ZodType<Sort$Outbound, Sort> = z.union([
+  ProviderSort$outboundSchema,
+  ProviderSortConfig$outboundSchema,
+  z.any(),
+]);
+
+export function sortToJSON(sort: Sort): string {
+  return JSON.stringify(Sort$outboundSchema.parse(sort));
 }
 
 /** @internal */
 export type ProviderPreferences$Outbound = {
   allow_fallbacks?: boolean | null | undefined;
-  require_parameters?: boolean | null | undefined;
   data_collection?: string | null | undefined;
-  zdr?: boolean | null | undefined;
   enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
   ignore?: Array<string | string> | null | undefined;
-  quantizations?: Array<string> | null | undefined;
-  sort?:
-    | string
-    | ProviderPreferencesProviderSortConfig$Outbound
-    | string
-    | string
-    | null
-    | undefined;
-  max_price?: ProviderPreferencesMaxPrice$Outbound | undefined;
-  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  max_price?: MaxPrice$Outbound | undefined;
+  only?: Array<string | string> | null | undefined;
+  order?: Array<string | string> | null | undefined;
   preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
+  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
+  quantizations?: Array<string> | null | undefined;
+  require_parameters?: boolean | null | undefined;
+  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -427,42 +241,39 @@ export const ProviderPreferences$outboundSchema: z.ZodType<
   ProviderPreferences
 > = z.object({
   allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
   enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([
-      ProviderPreferencesProviderSort$outboundSchema,
-      z.union([
-        z.lazy(() => ProviderPreferencesProviderSortConfig$outboundSchema),
-        ProviderPreferencesProviderSortConfigEnum$outboundSchema,
-      ]),
-      ProviderPreferencesSortEnum$outboundSchema,
-    ]),
-  ).optional(),
-  maxPrice: z.lazy(() => ProviderPreferencesMaxPrice$outboundSchema).optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+  maxPrice: z.lazy(() => MaxPrice$outboundSchema).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
   preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
     .optional(),
+  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
+    .optional(),
+  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
+  requireParameters: z.nullable(z.boolean()).optional(),
+  sort: z.nullable(
+    z.union([
+      ProviderSort$outboundSchema,
+      ProviderSortConfig$outboundSchema,
+      z.any(),
+    ]),
+  ).optional(),
+  zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
     dataCollection: "data_collection",
     enforceDistillableText: "enforce_distillable_text",
     maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
     preferredMaxLatency: "preferred_max_latency",
+    preferredMinThroughput: "preferred_min_throughput",
+    requireParameters: "require_parameters",
   });
 });
 
