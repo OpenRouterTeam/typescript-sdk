@@ -11,20 +11,6 @@ import { unwrapAsync } from "../types/fp.js";
 
 export class Endpoints extends ClientSDK {
   /**
-   * List all endpoints for a model
-   */
-  async list(
-    request: operations.ListEndpointsRequest,
-    options?: RequestOptions,
-  ): Promise<operations.ListEndpointsResponse> {
-    return unwrapAsync(endpointsList(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
    * Preview the impact of ZDR on the available endpoints
    */
   async listZdrEndpoints(
@@ -32,6 +18,20 @@ export class Endpoints extends ClientSDK {
     options?: RequestOptions,
   ): Promise<operations.ListEndpointsZdrResponse> {
     return unwrapAsync(endpointsListZdrEndpoints(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List all endpoints for a model
+   */
+  async list(
+    request: operations.ListEndpointsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.ListEndpointsResponse> {
+    return unwrapAsync(endpointsList(
       this,
       request,
       options,

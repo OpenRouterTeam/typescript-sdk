@@ -5,34 +5,16 @@ An output item from the response
 
 ## Supported Types
 
-### `models.OutputMessageItem`
+### `models.OutputFileSearchCallItem`
 
 ```typescript
-const value: models.OutputMessageItem = {
-  id: "msg-abc123",
-  role: "assistant",
-  type: "message",
-  content: [
-    {
-      type: "output_text",
-      text: "Hello! How can I help you today?",
-    },
+const value: models.OutputFileSearchCallItem = {
+  id: "fs-abc123",
+  queries: [
+    "search term",
   ],
-};
-```
-
-### `models.OutputReasoningItem`
-
-```typescript
-const value: models.OutputReasoningItem = {
-  type: "reasoning",
-  id: "msg-abc123",
-  summary: [
-    {
-      type: "summary_text",
-      text: "Analyzed the problem using first principles",
-    },
-  ],
+  status: "completed",
+  type: "file_search_call",
 };
 ```
 
@@ -40,38 +22,10 @@ const value: models.OutputReasoningItem = {
 
 ```typescript
 const value: models.OutputFunctionCallItem = {
-  type: "function_call",
-  name: "get_weather",
-  arguments: "{\"location\":\"San Francisco\",\"unit\":\"celsius\"}",
+  arguments: "{\"location\":\"San Francisco\"}",
   callId: "call-abc123",
-};
-```
-
-### `models.OutputWebSearchCallItem`
-
-```typescript
-const value: models.OutputWebSearchCallItem = {
-  type: "web_search_call",
-  id: "search-abc123",
-  action: {
-    type: "search",
-    query: "OpenAI API",
-  },
-  status: "completed",
-};
-```
-
-### `models.OutputFileSearchCallItem`
-
-```typescript
-const value: models.OutputFileSearchCallItem = {
-  type: "file_search_call",
-  id: "filesearch-abc123",
-  queries: [
-    "machine learning algorithms",
-    "neural networks",
-  ],
-  status: "completed",
+  name: "get_weather",
+  type: "function_call",
 };
 ```
 
@@ -79,20 +33,75 @@ const value: models.OutputFileSearchCallItem = {
 
 ```typescript
 const value: models.OutputImageGenerationCallItem = {
-  type: "image_generation_call",
-  id: "imagegen-abc123",
-  result:
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  id: "img-abc123",
   status: "completed",
+  type: "image_generation_call",
 };
 ```
 
-### `models.OutputServerToolItem`
+### `models.OutputMessageItem`
 
 ```typescript
-const value: models.OutputServerToolItem = {
-  type: "openrouter:web_search",
+const value: models.OutputMessageItem = {
+  content: [
+    {
+      text: "Hello! How can I help you today?",
+      type: "output_text",
+    },
+  ],
+  id: "msg-abc123",
+  role: "assistant",
+  type: "message",
+};
+```
+
+### `models.OutputDatetimeItem`
+
+```typescript
+const value: models.OutputDatetimeItem = {
+  datetime: "2026-03-12T14:30:00.000Z",
   status: "completed",
+  timezone: "UTC",
+  type: "openrouter:datetime",
+};
+```
+
+### `models.OutputWebSearchServerToolItem`
+
+```typescript
+const value: models.OutputWebSearchServerToolItem = {
+  status: "completed",
+  type: "openrouter:web_search",
+};
+```
+
+### `models.OutputReasoningItem`
+
+```typescript
+const value: models.OutputReasoningItem = {
+  id: "msg-abc123",
+  summary: [
+    {
+      text: "Analyzed the problem using first principles",
+      type: "summary_text",
+    },
+  ],
+  type: "reasoning",
+};
+```
+
+### `models.OutputWebSearchCallItem`
+
+```typescript
+const value: models.OutputWebSearchCallItem = {
+  action: {
+    pattern: "<value>",
+    type: "find_in_page",
+    url: "https://tragic-requirement.com/",
+  },
+  id: "ws-abc123",
+  status: "completed",
+  type: "web_search_call",
 };
 ```
 
