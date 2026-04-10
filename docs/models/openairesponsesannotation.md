@@ -7,10 +7,10 @@
 
 ```typescript
 const value: models.FileCitation = {
-  type: "file_citation",
   fileId: "file-abc123",
   filename: "research_paper.pdf",
   index: 0,
+  type: "file_citation",
 };
 ```
 
@@ -18,11 +18,11 @@ const value: models.FileCitation = {
 
 ```typescript
 const value: models.URLCitation = {
+  endIndex: 582752,
+  startIndex: 114325,
+  title: "<value>",
   type: "url_citation",
-  url: "https://openrouter.ai/docs",
-  title: "OpenRouter Documentation",
-  startIndex: 0,
-  endIndex: 42,
+  url: "https://dim-jet.biz/",
 };
 ```
 
@@ -30,9 +30,9 @@ const value: models.URLCitation = {
 
 ```typescript
 const value: models.FilePath = {
-  type: "file_path",
-  fileId: "file-xyz789",
+  fileId: "file-abc123",
   index: 0,
+  type: "file_path",
 };
 ```
 
