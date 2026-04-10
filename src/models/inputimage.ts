@@ -11,11 +11,6 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const InputImageTypeEnum = {
-  InputImage: "input_image",
-} as const;
-export type InputImageTypeEnum = ClosedEnum<typeof InputImageTypeEnum>;
-
 export const InputImageDetail = {
   Auto: "auto",
   High: "high",
@@ -23,23 +18,19 @@ export const InputImageDetail = {
 } as const;
 export type InputImageDetail = OpenEnum<typeof InputImageDetail>;
 
+export const InputImageTypeEnum = {
+  InputImage: "input_image",
+} as const;
+export type InputImageTypeEnum = ClosedEnum<typeof InputImageTypeEnum>;
+
 /**
  * Image input content item
  */
 export type InputImage = {
-  type: InputImageTypeEnum;
   detail: InputImageDetail;
   imageUrl?: string | null | undefined;
+  type: InputImageTypeEnum;
 };
-
-/** @internal */
-export const InputImageTypeEnum$inboundSchema: z.ZodEnum<
-  typeof InputImageTypeEnum
-> = z.enum(InputImageTypeEnum);
-/** @internal */
-export const InputImageTypeEnum$outboundSchema: z.ZodEnum<
-  typeof InputImageTypeEnum
-> = InputImageTypeEnum$inboundSchema;
 
 /** @internal */
 export const InputImageDetail$inboundSchema: z.ZodType<
@@ -53,11 +44,20 @@ export const InputImageDetail$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(InputImageDetail);
 
 /** @internal */
+export const InputImageTypeEnum$inboundSchema: z.ZodEnum<
+  typeof InputImageTypeEnum
+> = z.enum(InputImageTypeEnum);
+/** @internal */
+export const InputImageTypeEnum$outboundSchema: z.ZodEnum<
+  typeof InputImageTypeEnum
+> = InputImageTypeEnum$inboundSchema;
+
+/** @internal */
 export const InputImage$inboundSchema: z.ZodType<InputImage, unknown> = z
   .object({
-    type: InputImageTypeEnum$inboundSchema,
     detail: InputImageDetail$inboundSchema,
     image_url: z.nullable(z.string()).optional(),
+    type: InputImageTypeEnum$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "image_url": "imageUrl",
@@ -65,9 +65,9 @@ export const InputImage$inboundSchema: z.ZodType<InputImage, unknown> = z
   });
 /** @internal */
 export type InputImage$Outbound = {
-  type: string;
   detail: string;
   image_url?: string | null | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -75,9 +75,9 @@ export const InputImage$outboundSchema: z.ZodType<
   InputImage$Outbound,
   InputImage
 > = z.object({
-  type: InputImageTypeEnum$outboundSchema,
   detail: InputImageDetail$outboundSchema,
   imageUrl: z.nullable(z.string()).optional(),
+  type: InputImageTypeEnum$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     imageUrl: "image_url",

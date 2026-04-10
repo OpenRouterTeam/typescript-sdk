@@ -3,48 +3,48 @@
 
 ## Supported Types
 
-### `models.BaseInputsMessage1`
+### `models.BaseInputsMessage`
 
 ```typescript
-const value: models.BaseInputsMessage1 = {
-  role: "user",
+const value: models.BaseInputsMessage = {
   content: "<value>",
+  role: "user",
 };
 ```
 
-### `models.BaseInputsMessage2`
+### `models.OpenAIResponseInputMessageItem`
 
 ```typescript
-const value: models.BaseInputsMessage2 = {
-  id: "<id>",
-  role: "system",
+const value: models.OpenAIResponseInputMessageItem = {
   content: [
     {
+      text: "Hello, how are you?",
       type: "input_text",
-      text: "Hello, how can I help you?",
     },
   ],
+  id: "msg-abc123",
+  role: "user",
 };
 ```
 
-### `models.BaseInputsFunctionCallOutput`
+### `models.OpenAIResponseFunctionToolCallOutput`
 
 ```typescript
-const value: models.BaseInputsFunctionCallOutput = {
+const value: models.OpenAIResponseFunctionToolCallOutput = {
+  callId: "call-abc123",
+  output: "{\"temperature\":72,\"conditions\":\"sunny\"}",
   type: "function_call_output",
-  callId: "<id>",
-  output: "<value>",
 };
 ```
 
-### `models.BaseInputsFunctionCall`
+### `models.OpenAIResponseFunctionToolCall`
 
 ```typescript
-const value: models.BaseInputsFunctionCall = {
+const value: models.OpenAIResponseFunctionToolCall = {
+  arguments: "{\"location\":\"San Francisco\"}",
+  callId: "call-abc123",
+  name: "get_weather",
   type: "function_call",
-  callId: "<id>",
-  name: "<value>",
-  arguments: "<value>",
 };
 ```
 
@@ -52,11 +52,11 @@ const value: models.BaseInputsFunctionCall = {
 
 ```typescript
 const value: models.OutputItemImageGenerationCall = {
-  type: "image_generation_call",
   id: "imagegen-abc123",
   result:
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
   status: "completed",
+  type: "image_generation_call",
 };
 ```
 
@@ -64,15 +64,15 @@ const value: models.OutputItemImageGenerationCall = {
 
 ```typescript
 const value: models.OutputMessage = {
+  content: [
+    {
+      text: "Hello! How can I help you today?",
+      type: "output_text",
+    },
+  ],
   id: "msg-abc123",
   role: "assistant",
   type: "message",
-  content: [
-    {
-      type: "output_text",
-      text: "Hello! How can I help you today?",
-    },
-  ],
 };
 ```
 

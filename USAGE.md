@@ -10,9 +10,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({
-    responsesRequest: {},
-  });
+  const result = await openRouter.analytics.getUserActivity();
 
   console.log(result);
 }
