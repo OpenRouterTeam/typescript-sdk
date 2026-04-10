@@ -4413,6 +4413,66 @@ components:
       required:
         - type
       type: object
+    CodeInterpreterCallItem:
+      description: A code interpreter execution call with outputs
+      example:
+        code: print("Hello, World!")
+        container_id: container-xyz789
+        id: code-abc123
+        outputs:
+          - logs: Hello, World!
+            type: logs
+        status: completed
+        type: code_interpreter_call
+      properties:
+        code:
+          nullable: true
+          type: string
+        container_id:
+          type: string
+        id:
+          type: string
+        outputs:
+          items:
+            anyOf:
+              - properties:
+                  type:
+                    enum:
+                      - image
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - type
+                  - url
+                type: object
+              - properties:
+                  logs:
+                    type: string
+                  type:
+                    enum:
+                      - logs
+                    type: string
+                required:
+                  - type
+                  - logs
+                type: object
+          nullable: true
+          type: array
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - code_interpreter_call
+          type: string
+      required:
+        - type
+        - id
+        - code
+        - outputs
+        - status
+        - container_id
+      type: object
     CodeInterpreterServerTool:
       description: Code interpreter tool configuration
       example:
@@ -4868,18 +4928,23 @@ components:
         type: openrouter:datetime
       properties:
         parameters:
-          properties:
-            timezone:
-              description: IANA timezone name (e.g. "America/New_York"). Defaults to UTC.
-              example: America/New_York
-              type: string
-          type: object
+          $ref: '#/components/schemas/DatetimeServerToolConfig'
         type:
           enum:
             - openrouter:datetime
           type: string
       required:
         - type
+      type: object
+    DatetimeServerToolConfig:
+      description: Configuration for the openrouter:datetime server tool
+      example:
+        timezone: America/New_York
+      properties:
+        timezone:
+          description: IANA timezone name (e.g. "America/New_York"). Defaults to UTC.
+          example: America/New_York
+          type: string
       type: object
     DefaultParameters:
       additionalProperties: false
@@ -8679,6 +8744,181 @@ components:
       example: end_turn
       nullable: true
       type: string
+    OutputApplyPatchServerToolItem:
+      description: An openrouter:apply_patch server tool output item
+      example:
+        filePath: /src/main.ts
+        id: ap_tmp_abc123
+        status: completed
+        type: openrouter:apply_patch
+      properties:
+        filePath:
+          type: string
+        id:
+          type: string
+        patch:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:apply_patch
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputBashServerToolItem:
+      description: An openrouter:bash server tool output item
+      example:
+        command: ls -la
+        exitCode: 0
+        id: bash_tmp_abc123
+        status: completed
+        stdout: |
+          total 0
+        type: openrouter:bash
+      properties:
+        command:
+          type: string
+        exitCode:
+          type: integer
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        stderr:
+          type: string
+        stdout:
+          type: string
+        type:
+          enum:
+            - openrouter:bash
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputBrowserUseServerToolItem:
+      description: An openrouter:browser_use server tool output item
+      example:
+        action: screenshot
+        id: bu_tmp_abc123
+        status: completed
+        type: openrouter:browser_use
+      properties:
+        action:
+          type: string
+        id:
+          type: string
+        screenshotB64:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:browser_use
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputCodeInterpreterCallItem:
+      allOf:
+        - $ref: '#/components/schemas/CodeInterpreterCallItem'
+        - properties: {}
+          type: object
+      description: A code interpreter execution call with outputs
+      example:
+        code: print("hello")
+        container_id: ctr-xyz789
+        id: ci-abc123
+        outputs:
+          - logs: |
+              hello
+            type: logs
+        status: completed
+        type: code_interpreter_call
+    OutputCodeInterpreterServerToolItem:
+      description: An openrouter:code_interpreter server tool output item
+      example:
+        code: print("hello")
+        id: ci_tmp_abc123
+        language: python
+        status: completed
+        stdout: |
+          hello
+        type: openrouter:code_interpreter
+      properties:
+        code:
+          type: string
+        exitCode:
+          type: integer
+        id:
+          type: string
+        language:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        stderr:
+          type: string
+        stdout:
+          type: string
+        type:
+          enum:
+            - openrouter:code_interpreter
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputComputerCallItem:
+      example:
+        action:
+          type: screenshot
+        call_id: call-abc123
+        id: cu-abc123
+        pending_safety_checks: []
+        status: completed
+        type: computer_call
+      properties:
+        action:
+          nullable: true
+        call_id:
+          type: string
+        id:
+          type: string
+        pending_safety_checks:
+          items:
+            properties:
+              code:
+                type: string
+              id:
+                type: string
+              message:
+                type: string
+            required:
+              - id
+              - code
+              - message
+            type: object
+          type: array
+        status:
+          enum:
+            - completed
+            - incomplete
+            - in_progress
+          type: string
+        type:
+          enum:
+            - computer_call
+          type: string
+      required:
+        - type
+        - call_id
+        - status
+        - pending_safety_checks
+      type: object
     OutputDatetimeItem:
       description: An openrouter:datetime server tool output item
       example:
@@ -8720,6 +8960,31 @@ components:
         results: []
         status: completed
         type: file_search_call
+    OutputFileSearchServerToolItem:
+      description: An openrouter:file_search server tool output item
+      example:
+        id: fs_tmp_abc123
+        queries:
+          - search term
+        status: completed
+        type: openrouter:file_search
+      properties:
+        id:
+          type: string
+        queries:
+          items:
+            type: string
+          type: array
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:file_search
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputFunctionCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemFunctionCall'
@@ -8742,6 +9007,32 @@ components:
         result: null
         status: completed
         type: image_generation_call
+    OutputImageGenerationServerToolItem:
+      description: An openrouter:image_generation server tool output item
+      example:
+        id: ig_tmp_abc123
+        imageUrl: https://example.com/image.png
+        status: completed
+        type: openrouter:image_generation
+      properties:
+        id:
+          type: string
+        imageB64:
+          type: string
+        imageUrl:
+          type: string
+        revisedPrompt:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:image_generation
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputItemAddedEvent:
       description: Event emitted when a new output item is added to the response
       example:
@@ -8966,11 +9257,24 @@ components:
       description: An output item from the response
       discriminator:
         mapping:
+          code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
+          computer_call: '#/components/schemas/OutputComputerCallItem'
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
           message: '#/components/schemas/OutputMessageItem'
+          openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
+          openrouter:bash: '#/components/schemas/OutputBashServerToolItem'
+          openrouter:browser_use: '#/components/schemas/OutputBrowserUseServerToolItem'
+          openrouter:code_interpreter: '#/components/schemas/OutputCodeInterpreterServerToolItem'
           openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
+          openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
+          openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
+          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
+          openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
+          openrouter:text_editor: '#/components/schemas/OutputTextEditorServerToolItem'
+          openrouter:tool_search: '#/components/schemas/OutputToolSearchServerToolItem'
+          openrouter:web_fetch: '#/components/schemas/OutputWebFetchServerToolItem'
           openrouter:web_search: '#/components/schemas/OutputWebSearchServerToolItem'
           reasoning: '#/components/schemas/OutputReasoningItem'
           web_search_call: '#/components/schemas/OutputWebSearchCallItem'
@@ -8990,8 +9294,21 @@ components:
         - $ref: '#/components/schemas/OutputWebSearchCallItem'
         - $ref: '#/components/schemas/OutputFileSearchCallItem'
         - $ref: '#/components/schemas/OutputImageGenerationCallItem'
+        - $ref: '#/components/schemas/OutputCodeInterpreterCallItem'
+        - $ref: '#/components/schemas/OutputComputerCallItem'
         - $ref: '#/components/schemas/OutputDatetimeItem'
         - $ref: '#/components/schemas/OutputWebSearchServerToolItem'
+        - $ref: '#/components/schemas/OutputCodeInterpreterServerToolItem'
+        - $ref: '#/components/schemas/OutputFileSearchServerToolItem'
+        - $ref: '#/components/schemas/OutputImageGenerationServerToolItem'
+        - $ref: '#/components/schemas/OutputBrowserUseServerToolItem'
+        - $ref: '#/components/schemas/OutputBashServerToolItem'
+        - $ref: '#/components/schemas/OutputTextEditorServerToolItem'
+        - $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
+        - $ref: '#/components/schemas/OutputWebFetchServerToolItem'
+        - $ref: '#/components/schemas/OutputToolSearchServerToolItem'
+        - $ref: '#/components/schemas/OutputMemoryServerToolItem'
+        - $ref: '#/components/schemas/OutputMcpServerToolItem'
     OutputItemWebSearchCall:
       example:
         action:
@@ -9060,6 +9377,62 @@ components:
         - id
         - action
         - status
+      type: object
+    OutputMcpServerToolItem:
+      description: An openrouter:mcp server tool output item
+      example:
+        id: mcp_tmp_abc123
+        serverLabel: my-server
+        status: completed
+        toolName: get_data
+        type: openrouter:mcp
+      properties:
+        id:
+          type: string
+        serverLabel:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        toolName:
+          type: string
+        type:
+          enum:
+            - openrouter:mcp
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputMemoryServerToolItem:
+      description: An openrouter:memory server tool output item
+      example:
+        action: read
+        id: mem_tmp_abc123
+        key: user_preference
+        status: completed
+        type: openrouter:memory
+      properties:
+        action:
+          enum:
+            - read
+            - write
+            - delete
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:memory
+          type: string
+        value:
+          nullable: true
+      required:
+        - status
+        - type
       type: object
     OutputMessage:
       example:
@@ -9178,6 +9551,85 @@ components:
           - text: Analyzed the problem and found the optimal solution.
             type: summary_text
         type: reasoning
+    OutputTextEditorServerToolItem:
+      description: An openrouter:text_editor server tool output item
+      example:
+        command: view
+        filePath: /src/main.ts
+        id: te_tmp_abc123
+        status: completed
+        type: openrouter:text_editor
+      properties:
+        command:
+          enum:
+            - view
+            - create
+            - str_replace
+            - insert
+          type: string
+        filePath:
+          type: string
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:text_editor
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputToolSearchServerToolItem:
+      description: An openrouter:tool_search server tool output item
+      example:
+        id: ts_tmp_abc123
+        query: weather tools
+        status: completed
+        type: openrouter:tool_search
+      properties:
+        id:
+          type: string
+        query:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        type:
+          enum:
+            - openrouter:tool_search
+          type: string
+      required:
+        - status
+        - type
+      type: object
+    OutputWebFetchServerToolItem:
+      description: An openrouter:web_fetch server tool output item
+      example:
+        id: wf_tmp_abc123
+        status: completed
+        title: Example Domain
+        type: openrouter:web_fetch
+        url: https://example.com
+      properties:
+        content:
+          type: string
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ToolCallStatus'
+        title:
+          type: string
+        type:
+          enum:
+            - openrouter:web_fetch
+          type: string
+        url:
+          type: string
+      required:
+        - status
+        - type
+      type: object
     OutputWebSearchCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemWebSearchCall'
