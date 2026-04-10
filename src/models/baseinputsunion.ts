@@ -4,8 +4,9 @@
  */
 
 import * as z from "zod/v4";
-import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -14,143 +15,37 @@ import { InputFile, InputFile$inboundSchema } from "./inputfile.js";
 import { InputImage, InputImage$inboundSchema } from "./inputimage.js";
 import { InputText, InputText$inboundSchema } from "./inputtext.js";
 import {
+  OpenAIResponseFunctionToolCall,
+  OpenAIResponseFunctionToolCall$inboundSchema,
+} from "./openairesponsefunctiontoolcall.js";
+import {
+  OpenAIResponseFunctionToolCallOutput,
+  OpenAIResponseFunctionToolCallOutput$inboundSchema,
+} from "./openairesponsefunctiontoolcalloutput.js";
+import {
+  OpenAIResponseInputMessageItem,
+  OpenAIResponseInputMessageItem$inboundSchema,
+} from "./openairesponseinputmessageitem.js";
+import {
   OutputItemImageGenerationCall,
   OutputItemImageGenerationCall$inboundSchema,
 } from "./outputitemimagegenerationcall.js";
 import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
-import {
-  ToolCallStatusEnum,
-  ToolCallStatusEnum$inboundSchema,
-} from "./toolcallstatusenum.js";
-
-export const BaseInputsTypeFunctionCall = {
-  FunctionCall: "function_call",
-} as const;
-export type BaseInputsTypeFunctionCall = ClosedEnum<
-  typeof BaseInputsTypeFunctionCall
->;
-
-export type BaseInputsFunctionCall = {
-  type: BaseInputsTypeFunctionCall;
-  callId: string;
-  name: string;
-  arguments: string;
-  id?: string | undefined;
-  status?: ToolCallStatusEnum | null | undefined;
-};
-
-export const BaseInputsTypeFunctionCallOutput = {
-  FunctionCallOutput: "function_call_output",
-} as const;
-export type BaseInputsTypeFunctionCallOutput = ClosedEnum<
-  typeof BaseInputsTypeFunctionCallOutput
->;
-
-export type BaseInputsOutput1 =
-  | InputText
-  | (InputImage & { type: "input_image" })
-  | InputFile;
-
-export type BaseInputsOutput2 =
-  | string
-  | Array<InputText | (InputImage & { type: "input_image" }) | InputFile>;
-
-export type BaseInputsFunctionCallOutput = {
-  type: BaseInputsTypeFunctionCallOutput;
-  id?: string | null | undefined;
-  callId: string;
-  output:
-    | string
-    | Array<InputText | (InputImage & { type: "input_image" }) | InputFile>;
-  status?: ToolCallStatusEnum | null | undefined;
-};
-
-export const BaseInputsTypeMessage2 = {
-  Message: "message",
-} as const;
-export type BaseInputsTypeMessage2 = ClosedEnum<typeof BaseInputsTypeMessage2>;
-
-export const BaseInputsRoleDeveloper2 = {
-  Developer: "developer",
-} as const;
-export type BaseInputsRoleDeveloper2 = ClosedEnum<
-  typeof BaseInputsRoleDeveloper2
->;
-
-export const BaseInputsRoleSystem2 = {
-  System: "system",
-} as const;
-export type BaseInputsRoleSystem2 = ClosedEnum<typeof BaseInputsRoleSystem2>;
-
-export const BaseInputsRoleUser2 = {
-  User: "user",
-} as const;
-export type BaseInputsRoleUser2 = ClosedEnum<typeof BaseInputsRoleUser2>;
-
-export type BaseInputsRoleUnion2 =
-  | BaseInputsRoleUser2
-  | BaseInputsRoleSystem2
-  | BaseInputsRoleDeveloper2;
-
-export type BaseInputsContent3 =
-  | InputText
-  | (InputImage & { type: "input_image" })
-  | InputFile
-  | InputAudio;
-
-export type BaseInputsMessage2 = {
-  id: string;
-  type?: BaseInputsTypeMessage2 | undefined;
-  role: BaseInputsRoleUser2 | BaseInputsRoleSystem2 | BaseInputsRoleDeveloper2;
-  content: Array<
-    InputText | (InputImage & { type: "input_image" }) | InputFile | InputAudio
-  >;
-};
-
-export const BaseInputsTypeMessage1 = {
-  Message: "message",
-} as const;
-export type BaseInputsTypeMessage1 = ClosedEnum<typeof BaseInputsTypeMessage1>;
-
-export const BaseInputsRoleDeveloper1 = {
-  Developer: "developer",
-} as const;
-export type BaseInputsRoleDeveloper1 = ClosedEnum<
-  typeof BaseInputsRoleDeveloper1
->;
-
-export const BaseInputsRoleAssistant = {
-  Assistant: "assistant",
-} as const;
-export type BaseInputsRoleAssistant = ClosedEnum<
-  typeof BaseInputsRoleAssistant
->;
-
-export const BaseInputsRoleSystem1 = {
-  System: "system",
-} as const;
-export type BaseInputsRoleSystem1 = ClosedEnum<typeof BaseInputsRoleSystem1>;
-
-export const BaseInputsRoleUser1 = {
-  User: "user",
-} as const;
-export type BaseInputsRoleUser1 = ClosedEnum<typeof BaseInputsRoleUser1>;
-
-export type BaseInputsRoleUnion1 =
-  | BaseInputsRoleUser1
-  | BaseInputsRoleSystem1
-  | BaseInputsRoleAssistant
-  | BaseInputsRoleDeveloper1;
 
 export type BaseInputsContent1 =
-  | InputText
-  | (InputImage & { type: "input_image" })
+  | InputAudio
   | InputFile
-  | InputAudio;
+  | (InputImage & { type: "input_image" })
+  | InputText
+  | discriminatedUnionTypes.Unknown<"type">;
 
 export type BaseInputsContent2 =
   | Array<
-    InputText | (InputImage & { type: "input_image" }) | InputFile | InputAudio
+    | InputAudio
+    | InputFile
+    | (InputImage & { type: "input_image" })
+    | InputText
+    | discriminatedUnionTypes.Unknown<"type">
   >
   | string;
 
@@ -173,19 +68,49 @@ export type BaseInputsPhaseUnion =
   | BaseInputsPhaseFinalAnswer
   | any;
 
-export type BaseInputsMessage1 = {
-  type?: BaseInputsTypeMessage1 | undefined;
-  role:
-    | BaseInputsRoleUser1
-    | BaseInputsRoleSystem1
-    | BaseInputsRoleAssistant
-    | BaseInputsRoleDeveloper1;
+export const BaseInputsRoleDeveloper = {
+  Developer: "developer",
+} as const;
+export type BaseInputsRoleDeveloper = ClosedEnum<
+  typeof BaseInputsRoleDeveloper
+>;
+
+export const BaseInputsRoleAssistant = {
+  Assistant: "assistant",
+} as const;
+export type BaseInputsRoleAssistant = ClosedEnum<
+  typeof BaseInputsRoleAssistant
+>;
+
+export const BaseInputsRoleSystem = {
+  System: "system",
+} as const;
+export type BaseInputsRoleSystem = ClosedEnum<typeof BaseInputsRoleSystem>;
+
+export const BaseInputsRoleUser = {
+  User: "user",
+} as const;
+export type BaseInputsRoleUser = ClosedEnum<typeof BaseInputsRoleUser>;
+
+export type BaseInputsRoleUnion =
+  | BaseInputsRoleUser
+  | BaseInputsRoleSystem
+  | BaseInputsRoleAssistant
+  | BaseInputsRoleDeveloper;
+
+export const BaseInputsType = {
+  Message: "message",
+} as const;
+export type BaseInputsType = ClosedEnum<typeof BaseInputsType>;
+
+export type BaseInputsMessage = {
   content:
     | Array<
-      | InputText
-      | (InputImage & { type: "input_image" })
-      | InputFile
       | InputAudio
+      | InputFile
+      | (InputImage & { type: "input_image" })
+      | InputText
+      | discriminatedUnionTypes.Unknown<"type">
     >
     | string;
   phase?:
@@ -194,300 +119,46 @@ export type BaseInputsMessage1 = {
     | any
     | null
     | undefined;
+  role:
+    | BaseInputsRoleUser
+    | BaseInputsRoleSystem
+    | BaseInputsRoleAssistant
+    | BaseInputsRoleDeveloper;
+  type?: BaseInputsType | undefined;
 };
 
 export type BaseInputsUnion1 =
-  | BaseInputsFunctionCall
+  | OpenAIResponseFunctionToolCall
   | OutputMessage
-  | BaseInputsMessage2
-  | BaseInputsFunctionCallOutput
+  | OpenAIResponseInputMessageItem
+  | OpenAIResponseFunctionToolCallOutput
   | OutputItemImageGenerationCall
-  | BaseInputsMessage1;
+  | BaseInputsMessage;
 
 export type BaseInputsUnion =
   | string
   | Array<
-    | BaseInputsFunctionCall
+    | OpenAIResponseFunctionToolCall
     | OutputMessage
-    | BaseInputsMessage2
-    | BaseInputsFunctionCallOutput
+    | OpenAIResponseInputMessageItem
+    | OpenAIResponseFunctionToolCallOutput
     | OutputItemImageGenerationCall
-    | BaseInputsMessage1
+    | BaseInputsMessage
   >
   | any;
-
-/** @internal */
-export const BaseInputsTypeFunctionCall$inboundSchema: z.ZodEnum<
-  typeof BaseInputsTypeFunctionCall
-> = z.enum(BaseInputsTypeFunctionCall);
-
-/** @internal */
-export const BaseInputsFunctionCall$inboundSchema: z.ZodType<
-  BaseInputsFunctionCall,
-  unknown
-> = z.object({
-  type: BaseInputsTypeFunctionCall$inboundSchema,
-  call_id: z.string(),
-  name: z.string(),
-  arguments: z.string(),
-  id: z.string().optional(),
-  status: z.nullable(ToolCallStatusEnum$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
-  });
-});
-
-export function baseInputsFunctionCallFromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsFunctionCall, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsFunctionCall$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsFunctionCall' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsTypeFunctionCallOutput$inboundSchema: z.ZodEnum<
-  typeof BaseInputsTypeFunctionCallOutput
-> = z.enum(BaseInputsTypeFunctionCallOutput);
-
-/** @internal */
-export const BaseInputsOutput1$inboundSchema: z.ZodType<
-  BaseInputsOutput1,
-  unknown
-> = z.union([
-  InputText$inboundSchema,
-  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
-  InputFile$inboundSchema,
-]);
-
-export function baseInputsOutput1FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsOutput1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsOutput1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsOutput1' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsOutput2$inboundSchema: z.ZodType<
-  BaseInputsOutput2,
-  unknown
-> = z.union([
-  z.string(),
-  z.array(
-    z.union([
-      InputText$inboundSchema,
-      InputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      InputFile$inboundSchema,
-    ]),
-  ),
-]);
-
-export function baseInputsOutput2FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsOutput2, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsOutput2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsOutput2' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsFunctionCallOutput$inboundSchema: z.ZodType<
-  BaseInputsFunctionCallOutput,
-  unknown
-> = z.object({
-  type: BaseInputsTypeFunctionCallOutput$inboundSchema,
-  id: z.nullable(z.string()).optional(),
-  call_id: z.string(),
-  output: z.union([
-    z.string(),
-    z.array(
-      z.union([
-        InputText$inboundSchema,
-        InputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        InputFile$inboundSchema,
-      ]),
-    ),
-  ]),
-  status: z.nullable(ToolCallStatusEnum$inboundSchema).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "call_id": "callId",
-  });
-});
-
-export function baseInputsFunctionCallOutputFromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsFunctionCallOutput, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsFunctionCallOutput$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsFunctionCallOutput' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsTypeMessage2$inboundSchema: z.ZodEnum<
-  typeof BaseInputsTypeMessage2
-> = z.enum(BaseInputsTypeMessage2);
-
-/** @internal */
-export const BaseInputsRoleDeveloper2$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleDeveloper2
-> = z.enum(BaseInputsRoleDeveloper2);
-
-/** @internal */
-export const BaseInputsRoleSystem2$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleSystem2
-> = z.enum(BaseInputsRoleSystem2);
-
-/** @internal */
-export const BaseInputsRoleUser2$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleUser2
-> = z.enum(BaseInputsRoleUser2);
-
-/** @internal */
-export const BaseInputsRoleUnion2$inboundSchema: z.ZodType<
-  BaseInputsRoleUnion2,
-  unknown
-> = z.union([
-  BaseInputsRoleUser2$inboundSchema,
-  BaseInputsRoleSystem2$inboundSchema,
-  BaseInputsRoleDeveloper2$inboundSchema,
-]);
-
-export function baseInputsRoleUnion2FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsRoleUnion2, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsRoleUnion2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsRoleUnion2' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsContent3$inboundSchema: z.ZodType<
-  BaseInputsContent3,
-  unknown
-> = z.union([
-  InputText$inboundSchema,
-  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
-  InputFile$inboundSchema,
-  InputAudio$inboundSchema,
-]);
-
-export function baseInputsContent3FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsContent3, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsContent3$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsContent3' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsMessage2$inboundSchema: z.ZodType<
-  BaseInputsMessage2,
-  unknown
-> = z.object({
-  id: z.string(),
-  type: BaseInputsTypeMessage2$inboundSchema.optional(),
-  role: z.union([
-    BaseInputsRoleUser2$inboundSchema,
-    BaseInputsRoleSystem2$inboundSchema,
-    BaseInputsRoleDeveloper2$inboundSchema,
-  ]),
-  content: z.array(
-    z.union([
-      InputText$inboundSchema,
-      InputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      InputFile$inboundSchema,
-      InputAudio$inboundSchema,
-    ]),
-  ),
-});
-
-export function baseInputsMessage2FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsMessage2, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsMessage2$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsMessage2' from JSON`,
-  );
-}
-
-/** @internal */
-export const BaseInputsTypeMessage1$inboundSchema: z.ZodEnum<
-  typeof BaseInputsTypeMessage1
-> = z.enum(BaseInputsTypeMessage1);
-
-/** @internal */
-export const BaseInputsRoleDeveloper1$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleDeveloper1
-> = z.enum(BaseInputsRoleDeveloper1);
-
-/** @internal */
-export const BaseInputsRoleAssistant$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleAssistant
-> = z.enum(BaseInputsRoleAssistant);
-
-/** @internal */
-export const BaseInputsRoleSystem1$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleSystem1
-> = z.enum(BaseInputsRoleSystem1);
-
-/** @internal */
-export const BaseInputsRoleUser1$inboundSchema: z.ZodEnum<
-  typeof BaseInputsRoleUser1
-> = z.enum(BaseInputsRoleUser1);
-
-/** @internal */
-export const BaseInputsRoleUnion1$inboundSchema: z.ZodType<
-  BaseInputsRoleUnion1,
-  unknown
-> = z.union([
-  BaseInputsRoleUser1$inboundSchema,
-  BaseInputsRoleSystem1$inboundSchema,
-  BaseInputsRoleAssistant$inboundSchema,
-  BaseInputsRoleDeveloper1$inboundSchema,
-]);
-
-export function baseInputsRoleUnion1FromJSON(
-  jsonString: string,
-): SafeParseResult<BaseInputsRoleUnion1, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BaseInputsRoleUnion1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsRoleUnion1' from JSON`,
-  );
-}
 
 /** @internal */
 export const BaseInputsContent1$inboundSchema: z.ZodType<
   BaseInputsContent1,
   unknown
-> = z.union([
-  InputText$inboundSchema,
-  InputImage$inboundSchema.and(z.object({ type: z.literal("input_image") })),
-  InputFile$inboundSchema,
-  InputAudio$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  input_audio: InputAudio$inboundSchema,
+  input_file: InputFile$inboundSchema,
+  input_image: InputImage$inboundSchema.and(
+    z.object({ type: z.literal("input_image") }),
+  ),
+  input_text: InputText$inboundSchema,
+});
 
 export function baseInputsContent1FromJSON(
   jsonString: string,
@@ -504,16 +175,14 @@ export const BaseInputsContent2$inboundSchema: z.ZodType<
   BaseInputsContent2,
   unknown
 > = z.union([
-  z.array(
-    z.union([
-      InputText$inboundSchema,
-      InputImage$inboundSchema.and(
-        z.object({ type: z.literal("input_image") }),
-      ),
-      InputFile$inboundSchema,
-      InputAudio$inboundSchema,
-    ]),
-  ),
+  z.array(discriminatedUnion("type", {
+    input_audio: InputAudio$inboundSchema,
+    input_file: InputFile$inboundSchema,
+    input_image: InputImage$inboundSchema.and(
+      z.object({ type: z.literal("input_image") }),
+    ),
+    input_text: InputText$inboundSchema,
+  })),
   z.string(),
 ]);
 
@@ -558,28 +227,64 @@ export function baseInputsPhaseUnionFromJSON(
 }
 
 /** @internal */
-export const BaseInputsMessage1$inboundSchema: z.ZodType<
-  BaseInputsMessage1,
+export const BaseInputsRoleDeveloper$inboundSchema: z.ZodEnum<
+  typeof BaseInputsRoleDeveloper
+> = z.enum(BaseInputsRoleDeveloper);
+
+/** @internal */
+export const BaseInputsRoleAssistant$inboundSchema: z.ZodEnum<
+  typeof BaseInputsRoleAssistant
+> = z.enum(BaseInputsRoleAssistant);
+
+/** @internal */
+export const BaseInputsRoleSystem$inboundSchema: z.ZodEnum<
+  typeof BaseInputsRoleSystem
+> = z.enum(BaseInputsRoleSystem);
+
+/** @internal */
+export const BaseInputsRoleUser$inboundSchema: z.ZodEnum<
+  typeof BaseInputsRoleUser
+> = z.enum(BaseInputsRoleUser);
+
+/** @internal */
+export const BaseInputsRoleUnion$inboundSchema: z.ZodType<
+  BaseInputsRoleUnion,
+  unknown
+> = z.union([
+  BaseInputsRoleUser$inboundSchema,
+  BaseInputsRoleSystem$inboundSchema,
+  BaseInputsRoleAssistant$inboundSchema,
+  BaseInputsRoleDeveloper$inboundSchema,
+]);
+
+export function baseInputsRoleUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<BaseInputsRoleUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BaseInputsRoleUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BaseInputsRoleUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const BaseInputsType$inboundSchema: z.ZodEnum<typeof BaseInputsType> = z
+  .enum(BaseInputsType);
+
+/** @internal */
+export const BaseInputsMessage$inboundSchema: z.ZodType<
+  BaseInputsMessage,
   unknown
 > = z.object({
-  type: BaseInputsTypeMessage1$inboundSchema.optional(),
-  role: z.union([
-    BaseInputsRoleUser1$inboundSchema,
-    BaseInputsRoleSystem1$inboundSchema,
-    BaseInputsRoleAssistant$inboundSchema,
-    BaseInputsRoleDeveloper1$inboundSchema,
-  ]),
   content: z.union([
-    z.array(
-      z.union([
-        InputText$inboundSchema,
-        InputImage$inboundSchema.and(
-          z.object({ type: z.literal("input_image") }),
-        ),
-        InputFile$inboundSchema,
-        InputAudio$inboundSchema,
-      ]),
-    ),
+    z.array(discriminatedUnion("type", {
+      input_audio: InputAudio$inboundSchema,
+      input_file: InputFile$inboundSchema,
+      input_image: InputImage$inboundSchema.and(
+        z.object({ type: z.literal("input_image") }),
+      ),
+      input_text: InputText$inboundSchema,
+    })),
     z.string(),
   ]),
   phase: z.nullable(
@@ -589,15 +294,22 @@ export const BaseInputsMessage1$inboundSchema: z.ZodType<
       z.any(),
     ]),
   ).optional(),
+  role: z.union([
+    BaseInputsRoleUser$inboundSchema,
+    BaseInputsRoleSystem$inboundSchema,
+    BaseInputsRoleAssistant$inboundSchema,
+    BaseInputsRoleDeveloper$inboundSchema,
+  ]),
+  type: BaseInputsType$inboundSchema.optional(),
 });
 
-export function baseInputsMessage1FromJSON(
+export function baseInputsMessageFromJSON(
   jsonString: string,
-): SafeParseResult<BaseInputsMessage1, SDKValidationError> {
+): SafeParseResult<BaseInputsMessage, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => BaseInputsMessage1$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BaseInputsMessage1' from JSON`,
+    (x) => BaseInputsMessage$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BaseInputsMessage' from JSON`,
   );
 }
 
@@ -606,12 +318,12 @@ export const BaseInputsUnion1$inboundSchema: z.ZodType<
   BaseInputsUnion1,
   unknown
 > = z.union([
-  z.lazy(() => BaseInputsFunctionCall$inboundSchema),
+  OpenAIResponseFunctionToolCall$inboundSchema,
   OutputMessage$inboundSchema,
-  z.lazy(() => BaseInputsMessage2$inboundSchema),
-  z.lazy(() => BaseInputsFunctionCallOutput$inboundSchema),
+  OpenAIResponseInputMessageItem$inboundSchema,
+  OpenAIResponseFunctionToolCallOutput$inboundSchema,
   OutputItemImageGenerationCall$inboundSchema,
-  z.lazy(() => BaseInputsMessage1$inboundSchema),
+  z.lazy(() => BaseInputsMessage$inboundSchema),
 ]);
 
 export function baseInputsUnion1FromJSON(
@@ -630,14 +342,16 @@ export const BaseInputsUnion$inboundSchema: z.ZodType<
   unknown
 > = z.union([
   z.string(),
-  z.array(z.union([
-    z.lazy(() => BaseInputsFunctionCall$inboundSchema),
-    OutputMessage$inboundSchema,
-    z.lazy(() => BaseInputsMessage2$inboundSchema),
-    z.lazy(() => BaseInputsFunctionCallOutput$inboundSchema),
-    OutputItemImageGenerationCall$inboundSchema,
-    z.lazy(() => BaseInputsMessage1$inboundSchema),
-  ])),
+  z.array(
+    z.union([
+      OpenAIResponseFunctionToolCall$inboundSchema,
+      OutputMessage$inboundSchema,
+      OpenAIResponseInputMessageItem$inboundSchema,
+      OpenAIResponseFunctionToolCallOutput$inboundSchema,
+      OutputItemImageGenerationCall$inboundSchema,
+      z.lazy(() => BaseInputsMessage$inboundSchema),
+    ]),
+  ),
   z.any(),
 ]);
 
