@@ -5,6 +5,8 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -26,17 +28,21 @@ import {
   URLCitation$outboundSchema,
 } from "./urlcitation.js";
 
-export type OpenAIResponsesAnnotation = FileCitation | URLCitation | FilePath;
+export type OpenAIResponsesAnnotation =
+  | FileCitation
+  | URLCitation
+  | FilePath
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
 export const OpenAIResponsesAnnotation$inboundSchema: z.ZodType<
   OpenAIResponsesAnnotation,
   unknown
-> = z.union([
-  FileCitation$inboundSchema,
-  URLCitation$inboundSchema,
-  FilePath$inboundSchema,
-]);
+> = discriminatedUnion("type", {
+  file_citation: FileCitation$inboundSchema,
+  url_citation: URLCitation$inboundSchema,
+  file_path: FilePath$inboundSchema,
+});
 /** @internal */
 export type OpenAIResponsesAnnotation$Outbound =
   | FileCitation$Outbound

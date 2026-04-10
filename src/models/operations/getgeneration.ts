@@ -10,6 +10,7 @@ import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type GetGenerationGlobals = {
   /**
@@ -53,6 +54,9 @@ export type GetGenerationRequest = {
    * @remarks
    */
   appCategories?: string | undefined;
+  /**
+   * The generation ID
+   */
   id: string;
 };
 
@@ -62,6 +66,7 @@ export type GetGenerationRequest = {
 export const ApiType = {
   Completions: "completions",
   Embeddings: "embeddings",
+  Rerank: "rerank",
   Video: "video",
 } as const;
 /**
@@ -69,272 +74,166 @@ export const ApiType = {
  */
 export type ApiType = OpenEnum<typeof ApiType>;
 
-export const ProviderName = {
-  AnyScale: "AnyScale",
-  Atoma: "Atoma",
-  CentML: "Cent-ML",
-  CrofAI: "CrofAI",
-  Enfer: "Enfer",
-  GoPomelo: "GoPomelo",
-  HuggingFace: "HuggingFace",
-  Hyperbolic2: "Hyperbolic 2",
-  InoCloud: "InoCloud",
-  Kluster: "Kluster",
-  Lambda: "Lambda",
-  Lepton: "Lepton",
-  Lynn2: "Lynn 2",
-  Lynn: "Lynn",
-  Mancer: "Mancer",
-  Meta: "Meta",
-  Modal: "Modal",
-  Nineteen: "Nineteen",
-  OctoAI: "OctoAI",
-  Recursal: "Recursal",
-  Reflection: "Reflection",
-  Replicate: "Replicate",
-  SambaNova2: "SambaNova 2",
-  SFCompute: "SF Compute",
-  Targon: "Targon",
-  Together2: "Together 2",
-  Ubicloud: "Ubicloud",
-  OneDotAI: "01.AI",
-  AkashML: "AkashML",
-  Ai21: "AI21",
-  AionLabs: "AionLabs",
-  Alibaba: "Alibaba",
-  Ambient: "Ambient",
-  AmazonBedrock: "Amazon Bedrock",
-  AmazonNova: "Amazon Nova",
-  Anthropic: "Anthropic",
-  ArceeAI: "Arcee AI",
-  AtlasCloud: "AtlasCloud",
-  Avian: "Avian",
-  Azure: "Azure",
-  BaseTen: "BaseTen",
-  BytePlus: "BytePlus",
-  BlackForestLabs: "Black Forest Labs",
-  Cerebras: "Cerebras",
-  Chutes: "Chutes",
-  Cirrascale: "Cirrascale",
-  Clarifai: "Clarifai",
-  Cloudflare: "Cloudflare",
-  Cohere: "Cohere",
-  Crusoe: "Crusoe",
-  DeepInfra: "DeepInfra",
-  DeepSeek: "DeepSeek",
-  Featherless: "Featherless",
-  Fireworks: "Fireworks",
-  Friendli: "Friendli",
-  GMICloud: "GMICloud",
-  Google: "Google",
-  GoogleAIStudio: "Google AI Studio",
-  Groq: "Groq",
-  Hyperbolic: "Hyperbolic",
-  Inception: "Inception",
-  Inceptron: "Inceptron",
-  InferenceNet: "InferenceNet",
-  Ionstream: "Ionstream",
-  Infermatic: "Infermatic",
-  IoNet: "Io Net",
-  Inflection: "Inflection",
-  Liquid: "Liquid",
-  Mara: "Mara",
-  Mancer2: "Mancer 2",
-  Minimax: "Minimax",
-  ModelRun: "ModelRun",
-  Mistral: "Mistral",
-  Modular: "Modular",
-  MoonshotAI: "Moonshot AI",
-  Morph: "Morph",
-  NCompass: "NCompass",
-  Nebius: "Nebius",
-  NextBit: "NextBit",
-  Novita: "Novita",
-  Nvidia: "Nvidia",
-  OpenAI: "OpenAI",
-  OpenInference: "OpenInference",
-  Parasail: "Parasail",
-  Perplexity: "Perplexity",
-  Phala: "Phala",
-  Reka: "Reka",
-  Relace: "Relace",
-  SambaNova: "SambaNova",
-  Seed: "Seed",
-  SiliconFlow: "SiliconFlow",
-  Sourceful: "Sourceful",
-  StepFun: "StepFun",
-  Stealth: "Stealth",
-  StreamLake: "StreamLake",
-  Switchpoint: "Switchpoint",
-  Together: "Together",
-  Upstage: "Upstage",
-  Venice: "Venice",
-  WandB: "WandB",
-  Xiaomi: "Xiaomi",
-  XAI: "xAI",
-  ZAi: "Z.AI",
-  FakeProvider: "FakeProvider",
-} as const;
-export type ProviderName = OpenEnum<typeof ProviderName>;
-
-export type ProviderResponse = {
-  id?: string | undefined;
-  endpointId?: string | undefined;
-  modelPermaslug?: string | undefined;
-  providerName?: ProviderName | undefined;
-  status: number | null;
-  latency?: number | undefined;
-  isByok?: boolean | undefined;
-};
-
 /**
  * Generation data
  */
 export type GetGenerationData = {
   /**
-   * Unique identifier for the generation
+   * Type of API used for the generation
    */
-  id: string;
-  /**
-   * Upstream provider's identifier for this generation
-   */
-  upstreamId: string | null;
-  /**
-   * Total cost of the generation in USD
-   */
-  totalCost: number;
-  /**
-   * Discount applied due to caching
-   */
-  cacheDiscount: number | null;
-  /**
-   * Cost charged by the upstream provider
-   */
-  upstreamInferenceCost: number | null;
-  /**
-   * ISO 8601 timestamp of when the generation was created
-   */
-  createdAt: string;
-  /**
-   * Model used for the generation
-   */
-  model: string;
+  apiType: ApiType | null;
   /**
    * ID of the app that made the request
    */
-  appId: number | null;
+  appId: number;
   /**
-   * Whether the response was streamed
+   * Discount applied due to caching
    */
-  streamed: boolean | null;
+  cacheDiscount: number;
   /**
    * Whether the generation was cancelled
    */
   cancelled: boolean | null;
   /**
-   * Name of the provider that served the request
+   * ISO 8601 timestamp of when the generation was created
    */
-  providerName: string | null;
-  /**
-   * Total latency in milliseconds
-   */
-  latency: number | null;
-  /**
-   * Moderation latency in milliseconds
-   */
-  moderationLatency: number | null;
-  /**
-   * Time taken for generation in milliseconds
-   */
-  generationTime: number | null;
-  /**
-   * Reason the generation finished
-   */
-  finishReason: string | null;
-  /**
-   * Number of tokens in the prompt
-   */
-  tokensPrompt: number | null;
-  /**
-   * Number of tokens in the completion
-   */
-  tokensCompletion: number | null;
-  /**
-   * Native prompt tokens as reported by provider
-   */
-  nativeTokensPrompt: number | null;
-  /**
-   * Native completion tokens as reported by provider
-   */
-  nativeTokensCompletion: number | null;
-  /**
-   * Native completion image tokens as reported by provider
-   */
-  nativeTokensCompletionImages: number | null;
-  /**
-   * Native reasoning tokens as reported by provider
-   */
-  nativeTokensReasoning: number | null;
-  /**
-   * Native cached tokens as reported by provider
-   */
-  nativeTokensCached: number | null;
-  /**
-   * Number of media items in the prompt
-   */
-  numMediaPrompt: number | null;
-  /**
-   * Number of audio inputs in the prompt
-   */
-  numInputAudioPrompt: number | null;
-  /**
-   * Number of media items in the completion
-   */
-  numMediaCompletion: number | null;
-  /**
-   * Number of search results included
-   */
-  numSearchResults: number | null;
-  /**
-   * Origin URL of the request
-   */
-  origin: string;
-  /**
-   * Usage amount in USD
-   */
-  usage: number;
-  /**
-   * Whether this used bring-your-own-key
-   */
-  isByok: boolean;
-  /**
-   * Native finish reason as reported by provider
-   */
-  nativeFinishReason: string | null;
+  createdAt: string;
   /**
    * External user identifier
    */
   externalUser: string | null;
   /**
-   * Type of API used for the generation
+   * Reason the generation finished
    */
-  apiType: ApiType | null;
+  finishReason: string | null;
+  /**
+   * Time taken for generation in milliseconds
+   */
+  generationTime: number;
+  /**
+   * Referer header from the request
+   */
+  httpReferer: string | null;
+  /**
+   * Unique identifier for the generation
+   */
+  id: string;
+  /**
+   * Whether this used bring-your-own-key
+   */
+  isByok: boolean;
+  /**
+   * Total latency in milliseconds
+   */
+  latency: number;
+  /**
+   * Model used for the generation
+   */
+  model: string;
+  /**
+   * Moderation latency in milliseconds
+   */
+  moderationLatency: number;
+  /**
+   * Native finish reason as reported by provider
+   */
+  nativeFinishReason: string | null;
+  /**
+   * Native cached tokens as reported by provider
+   */
+  nativeTokensCached: number;
+  /**
+   * Native completion tokens as reported by provider
+   */
+  nativeTokensCompletion: number;
+  /**
+   * Native completion image tokens as reported by provider
+   */
+  nativeTokensCompletionImages: number;
+  /**
+   * Native prompt tokens as reported by provider
+   */
+  nativeTokensPrompt: number;
+  /**
+   * Native reasoning tokens as reported by provider
+   */
+  nativeTokensReasoning: number;
+  /**
+   * Number of web fetches performed
+   */
+  numFetches: number;
+  /**
+   * Number of audio inputs in the prompt
+   */
+  numInputAudioPrompt: number;
+  /**
+   * Number of media items in the completion
+   */
+  numMediaCompletion: number;
+  /**
+   * Number of media items in the prompt
+   */
+  numMediaPrompt: number;
+  /**
+   * Number of search results included
+   */
+  numSearchResults: number;
+  /**
+   * Origin URL of the request
+   */
+  origin: string;
+  /**
+   * Name of the provider that served the request
+   */
+  providerName: string | null;
+  /**
+   * List of provider responses for this generation, including fallback attempts
+   */
+  providerResponses: Array<models.ProviderResponse> | null;
+  /**
+   * Unique identifier grouping all generations from a single API request
+   */
+  requestId?: string | null | undefined;
   /**
    * Router used for the request (e.g., openrouter/auto)
    */
   router: string | null;
   /**
-   * List of provider responses for this generation, including fallback attempts
+   * Session identifier grouping multiple generations in the same session
    */
-  providerResponses: Array<ProviderResponse> | null;
+  sessionId?: string | null | undefined;
+  /**
+   * Whether the response was streamed
+   */
+  streamed: boolean | null;
+  /**
+   * Number of tokens in the completion
+   */
+  tokensCompletion: number;
+  /**
+   * Number of tokens in the prompt
+   */
+  tokensPrompt: number;
+  /**
+   * Total cost of the generation in USD
+   */
+  totalCost: number;
+  /**
+   * Upstream provider's identifier for this generation
+   */
+  upstreamId: string | null;
+  /**
+   * Cost charged by the upstream provider
+   */
+  upstreamInferenceCost: number;
+  /**
+   * Usage amount in USD
+   */
+  usage: number;
   /**
    * User-Agent header from the request
    */
   userAgent: string | null;
-  /**
-   * Referer header from the request
-   */
-  httpReferer: string | null;
 };
 
 /**
@@ -383,113 +282,84 @@ export const ApiType$inboundSchema: z.ZodType<ApiType, unknown> = openEnums
   .inboundSchema(ApiType);
 
 /** @internal */
-export const ProviderName$inboundSchema: z.ZodType<ProviderName, unknown> =
-  openEnums.inboundSchema(ProviderName);
-
-/** @internal */
-export const ProviderResponse$inboundSchema: z.ZodType<
-  ProviderResponse,
-  unknown
-> = z.object({
-  id: z.string().optional(),
-  endpoint_id: z.string().optional(),
-  model_permaslug: z.string().optional(),
-  provider_name: ProviderName$inboundSchema.optional(),
-  status: z.nullable(z.number()),
-  latency: z.number().optional(),
-  is_byok: z.boolean().optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "endpoint_id": "endpointId",
-    "model_permaslug": "modelPermaslug",
-    "provider_name": "providerName",
-    "is_byok": "isByok",
-  });
-});
-
-export function providerResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<ProviderResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ProviderResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ProviderResponse' from JSON`,
-  );
-}
-
-/** @internal */
 export const GetGenerationData$inboundSchema: z.ZodType<
   GetGenerationData,
   unknown
 > = z.object({
-  id: z.string(),
-  upstream_id: z.nullable(z.string()),
-  total_cost: z.number(),
-  cache_discount: z.nullable(z.number()),
-  upstream_inference_cost: z.nullable(z.number()),
-  created_at: z.string(),
-  model: z.string(),
-  app_id: z.nullable(z.number()),
-  streamed: z.nullable(z.boolean()),
-  cancelled: z.nullable(z.boolean()),
-  provider_name: z.nullable(z.string()),
-  latency: z.nullable(z.number()),
-  moderation_latency: z.nullable(z.number()),
-  generation_time: z.nullable(z.number()),
-  finish_reason: z.nullable(z.string()),
-  tokens_prompt: z.nullable(z.number()),
-  tokens_completion: z.nullable(z.number()),
-  native_tokens_prompt: z.nullable(z.number()),
-  native_tokens_completion: z.nullable(z.number()),
-  native_tokens_completion_images: z.nullable(z.number()),
-  native_tokens_reasoning: z.nullable(z.number()),
-  native_tokens_cached: z.nullable(z.number()),
-  num_media_prompt: z.nullable(z.number()),
-  num_input_audio_prompt: z.nullable(z.number()),
-  num_media_completion: z.nullable(z.number()),
-  num_search_results: z.nullable(z.number()),
-  origin: z.string(),
-  usage: z.number(),
-  is_byok: z.boolean(),
-  native_finish_reason: z.nullable(z.string()),
-  external_user: z.nullable(z.string()),
   api_type: z.nullable(ApiType$inboundSchema),
-  router: z.nullable(z.string()),
-  provider_responses: z.nullable(
-    z.array(z.lazy(() => ProviderResponse$inboundSchema)),
-  ),
-  user_agent: z.nullable(z.string()),
+  app_id: z.int(),
+  cache_discount: z.number(),
+  cancelled: z.nullable(z.boolean()),
+  created_at: z.string(),
+  external_user: z.nullable(z.string()),
+  finish_reason: z.nullable(z.string()),
+  generation_time: z.number(),
   http_referer: z.nullable(z.string()),
+  id: z.string(),
+  is_byok: z.boolean(),
+  latency: z.number(),
+  model: z.string(),
+  moderation_latency: z.number(),
+  native_finish_reason: z.nullable(z.string()),
+  native_tokens_cached: z.int(),
+  native_tokens_completion: z.int(),
+  native_tokens_completion_images: z.int(),
+  native_tokens_prompt: z.int(),
+  native_tokens_reasoning: z.int(),
+  num_fetches: z.int(),
+  num_input_audio_prompt: z.int(),
+  num_media_completion: z.int(),
+  num_media_prompt: z.int(),
+  num_search_results: z.int(),
+  origin: z.string(),
+  provider_name: z.nullable(z.string()),
+  provider_responses: z.nullable(
+    z.array(models.ProviderResponse$inboundSchema),
+  ),
+  request_id: z.nullable(z.string()).optional(),
+  router: z.nullable(z.string()),
+  session_id: z.nullable(z.string()).optional(),
+  streamed: z.nullable(z.boolean()),
+  tokens_completion: z.int(),
+  tokens_prompt: z.int(),
+  total_cost: z.number(),
+  upstream_id: z.nullable(z.string()),
+  upstream_inference_cost: z.number(),
+  usage: z.number(),
+  user_agent: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
-    "upstream_id": "upstreamId",
-    "total_cost": "totalCost",
-    "cache_discount": "cacheDiscount",
-    "upstream_inference_cost": "upstreamInferenceCost",
-    "created_at": "createdAt",
+    "api_type": "apiType",
     "app_id": "appId",
-    "provider_name": "providerName",
-    "moderation_latency": "moderationLatency",
-    "generation_time": "generationTime",
+    "cache_discount": "cacheDiscount",
+    "created_at": "createdAt",
+    "external_user": "externalUser",
     "finish_reason": "finishReason",
-    "tokens_prompt": "tokensPrompt",
-    "tokens_completion": "tokensCompletion",
-    "native_tokens_prompt": "nativeTokensPrompt",
+    "generation_time": "generationTime",
+    "http_referer": "httpReferer",
+    "is_byok": "isByok",
+    "moderation_latency": "moderationLatency",
+    "native_finish_reason": "nativeFinishReason",
+    "native_tokens_cached": "nativeTokensCached",
     "native_tokens_completion": "nativeTokensCompletion",
     "native_tokens_completion_images": "nativeTokensCompletionImages",
+    "native_tokens_prompt": "nativeTokensPrompt",
     "native_tokens_reasoning": "nativeTokensReasoning",
-    "native_tokens_cached": "nativeTokensCached",
-    "num_media_prompt": "numMediaPrompt",
+    "num_fetches": "numFetches",
     "num_input_audio_prompt": "numInputAudioPrompt",
     "num_media_completion": "numMediaCompletion",
+    "num_media_prompt": "numMediaPrompt",
     "num_search_results": "numSearchResults",
-    "is_byok": "isByok",
-    "native_finish_reason": "nativeFinishReason",
-    "external_user": "externalUser",
-    "api_type": "apiType",
+    "provider_name": "providerName",
     "provider_responses": "providerResponses",
+    "request_id": "requestId",
+    "session_id": "sessionId",
+    "tokens_completion": "tokensCompletion",
+    "tokens_prompt": "tokensPrompt",
+    "total_cost": "totalCost",
+    "upstream_id": "upstreamId",
+    "upstream_inference_cost": "upstreamInferenceCost",
     "user_agent": "userAgent",
-    "http_referer": "httpReferer",
   });
 });
 

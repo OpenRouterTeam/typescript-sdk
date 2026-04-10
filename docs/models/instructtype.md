@@ -7,7 +7,7 @@ Instruction format type
 ```typescript
 import { InstructType } from "@openrouter/sdk/models";
 
-let value: InstructType = "claude";
+let value: InstructType = "chatml";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
