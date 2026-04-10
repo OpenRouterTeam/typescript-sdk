@@ -1,0 +1,22 @@
+# CreateEmbeddingsUsage
+
+Token usage statistics
+
+## Example Usage
+
+```typescript
+import { CreateEmbeddingsUsage } from "@openrouter/sdk/models/operations";
+
+let value: CreateEmbeddingsUsage = {
+  promptTokens: 8,
+  totalTokens: 8,
+};
+```
+
+## Fields
+
+| Field                          | Type                           | Required                       | Description                    | Example                        |
+| ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ | ------------------------------ |
+| `cost`                         | *number*                       | :heavy_minus_sign:             | Cost of the request in credits | 0.0001                         |
+| `promptTokens`                 | *number*                       | :heavy_check_mark:             | Number of tokens in the input  | 8                              |
+| `totalTokens`                  | *number*                       | :heavy_check_mark:             | Total number of tokens used    | 8                              |
