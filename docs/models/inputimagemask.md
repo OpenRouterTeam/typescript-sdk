@@ -12,5 +12,5 @@ let value: InputImageMask = {};
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `imageUrl`         | *string*           | :heavy_minus_sign: | N/A                |
 | `fileId`           | *string*           | :heavy_minus_sign: | N/A                |
+| `imageUrl`         | *string*           | :heavy_minus_sign: | N/A                |
