@@ -15,17 +15,17 @@ import {
  * JSON Schema response format for structured outputs
  */
 export type ChatFormatJsonSchemaConfig = {
-  type: "json_schema";
   /**
    * JSON Schema configuration object
    */
   jsonSchema: ChatJsonSchemaConfig;
+  type: "json_schema";
 };
 
 /** @internal */
 export type ChatFormatJsonSchemaConfig$Outbound = {
-  type: "json_schema";
   json_schema: ChatJsonSchemaConfig$Outbound;
+  type: "json_schema";
 };
 
 /** @internal */
@@ -33,8 +33,8 @@ export const ChatFormatJsonSchemaConfig$outboundSchema: z.ZodType<
   ChatFormatJsonSchemaConfig$Outbound,
   ChatFormatJsonSchemaConfig
 > = z.object({
-  type: z.literal("json_schema"),
   jsonSchema: ChatJsonSchemaConfig$outboundSchema,
+  type: z.literal("json_schema"),
 }).transform((v) => {
   return remap$(v, {
     jsonSchema: "json_schema",
