@@ -8,15 +8,15 @@ Event emitted when a content part is complete
 import { ContentPartDoneEvent } from "@openrouter/sdk/models";
 
 let value: ContentPartDoneEvent = {
-  type: "response.content_part.done",
-  outputIndex: 9280.75,
+  contentIndex: 928075,
   itemId: "<id>",
-  contentIndex: 2894.72,
+  outputIndex: 289472,
   part: {
-    type: "output_text",
     text: "The capital of France is Paris.",
+    type: "output_text",
   },
   sequenceNumber: 0,
+  type: "response.content_part.done",
 };
 ```
 
@@ -24,9 +24,9 @@ let value: ContentPartDoneEvent = {
 
 | Field                             | Type                              | Required                          | Description                       |
 | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
-| `type`                            | *"response.content_part.done"*    | :heavy_check_mark:                | N/A                               |
-| `outputIndex`                     | *number*                          | :heavy_check_mark:                | N/A                               |
-| `itemId`                          | *string*                          | :heavy_check_mark:                | N/A                               |
 | `contentIndex`                    | *number*                          | :heavy_check_mark:                | N/A                               |
+| `itemId`                          | *string*                          | :heavy_check_mark:                | N/A                               |
+| `outputIndex`                     | *number*                          | :heavy_check_mark:                | N/A                               |
 | `part`                            | *models.ContentPartDoneEventPart* | :heavy_check_mark:                | N/A                               |
 | `sequenceNumber`                  | *number*                          | :heavy_check_mark:                | N/A                               |
+| `type`                            | *"response.content_part.done"*    | :heavy_check_mark:                | N/A                               |
