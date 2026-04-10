@@ -10,9 +10,9 @@ Legacy rate limit information about a key. Will always return -1.
 import { RateLimit } from "@openrouter/sdk/models/operations";
 
 let value: RateLimit = {
-  requests: 1000,
   interval: "1h",
   note: "This field is deprecated and safe to ignore.",
+  requests: 1000,
 };
 ```
 
@@ -20,6 +20,6 @@ let value: RateLimit = {
 
 | Field                                        | Type                                         | Required                                     | Description                                  | Example                                      |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| `requests`                                   | *number*                                     | :heavy_check_mark:                           | Number of requests allowed per interval      | 1000                                         |
 | `interval`                                   | *string*                                     | :heavy_check_mark:                           | Rate limit interval                          | 1h                                           |
 | `note`                                       | *string*                                     | :heavy_check_mark:                           | Note about the rate limit                    | This field is deprecated and safe to ignore. |
+| `requests`                                   | *number*                                     | :heavy_check_mark:                           | Number of requests allowed per interval      | 1000                                         |
