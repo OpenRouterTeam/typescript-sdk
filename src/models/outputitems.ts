@@ -5,8 +5,14 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  OutputDatetimeItem,
+  OutputDatetimeItem$inboundSchema,
+} from "./outputdatetimeitem.js";
 import {
   OutputFileSearchCallItem,
   OutputFileSearchCallItem$inboundSchema,
@@ -28,37 +34,52 @@ import {
   OutputReasoningItem$inboundSchema,
 } from "./outputreasoningitem.js";
 import {
-  OutputServerToolItem,
-  OutputServerToolItem$inboundSchema,
-} from "./outputservertoolitem.js";
-import {
   OutputWebSearchCallItem,
   OutputWebSearchCallItem$inboundSchema,
 } from "./outputwebsearchcallitem.js";
+import {
+  OutputWebSearchServerToolItem,
+  OutputWebSearchServerToolItem$inboundSchema,
+} from "./outputwebsearchservertoolitem.js";
 
 /**
  * An output item from the response
  */
 export type OutputItems =
+  | (OutputFileSearchCallItem & { type: "file_search_call" })
+  | (OutputFunctionCallItem & { type: "function_call" })
+  | (OutputImageGenerationCallItem & { type: "image_generation_call" })
   | OutputMessageItem
-  | OutputFunctionCallItem
-  | OutputWebSearchCallItem
-  | OutputFileSearchCallItem
+  | (OutputDatetimeItem & { type: "openrouter:datetime" })
+  | (OutputWebSearchServerToolItem & { type: "openrouter:web_search" })
   | OutputReasoningItem
-  | OutputImageGenerationCallItem
-  | OutputServerToolItem;
+  | (OutputWebSearchCallItem & { type: "web_search_call" })
+  | discriminatedUnionTypes.Unknown<"type">;
 
 /** @internal */
-export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> = z
-  .union([
-    OutputMessageItem$inboundSchema,
-    OutputFunctionCallItem$inboundSchema,
-    OutputWebSearchCallItem$inboundSchema,
-    OutputFileSearchCallItem$inboundSchema,
-    OutputReasoningItem$inboundSchema,
-    OutputImageGenerationCallItem$inboundSchema,
-    OutputServerToolItem$inboundSchema,
-  ]);
+export const OutputItems$inboundSchema: z.ZodType<OutputItems, unknown> =
+  discriminatedUnion("type", {
+    file_search_call: OutputFileSearchCallItem$inboundSchema.and(
+      z.object({ type: z.literal("file_search_call") }),
+    ),
+    function_call: OutputFunctionCallItem$inboundSchema.and(
+      z.object({ type: z.literal("function_call") }),
+    ),
+    image_generation_call: OutputImageGenerationCallItem$inboundSchema.and(
+      z.object({ type: z.literal("image_generation_call") }),
+    ),
+    message: OutputMessageItem$inboundSchema,
+    ["openrouter:datetime"]: OutputDatetimeItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:datetime") }),
+    ),
+    ["openrouter:web_search"]: OutputWebSearchServerToolItem$inboundSchema.and(
+      z.object({ type: z.literal("openrouter:web_search") }),
+    ),
+    reasoning: OutputReasoningItem$inboundSchema,
+    web_search_call: OutputWebSearchCallItem$inboundSchema.and(
+      z.object({ type: z.literal("web_search_call") }),
+    ),
+  });
 
 export function outputItemsFromJSON(
   jsonString: string,
