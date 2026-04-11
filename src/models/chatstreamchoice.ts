@@ -8,6 +8,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  ChatFinishReasonEnum,
+  ChatFinishReasonEnum$inboundSchema,
+} from "./chatfinishreasonenum.js";
+import {
   ChatStreamDelta,
   ChatStreamDelta$inboundSchema,
 } from "./chatstreamdelta.js";
@@ -25,7 +29,7 @@ export type ChatStreamChoice = {
    * Delta changes in streaming response
    */
   delta: ChatStreamDelta;
-  finishReason: any | null;
+  finishReason: ChatFinishReasonEnum | null;
   /**
    * Choice index
    */
@@ -42,8 +46,8 @@ export const ChatStreamChoice$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   delta: ChatStreamDelta$inboundSchema,
-  finish_reason: z.nullable(z.any()),
-  index: z.number(),
+  finish_reason: z.nullable(ChatFinishReasonEnum$inboundSchema),
+  index: z.int(),
   logprobs: z.nullable(ChatTokenLogprobs$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {

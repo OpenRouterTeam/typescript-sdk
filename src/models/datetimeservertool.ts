@@ -5,25 +5,26 @@
 
 import * as z from "zod/v4";
 import { ClosedEnum } from "../types/enums.js";
+import {
+  DatetimeServerToolConfig,
+  DatetimeServerToolConfig$Outbound,
+  DatetimeServerToolConfig$outboundSchema,
+} from "./datetimeservertoolconfig.js";
 
 export const DatetimeServerToolType = {
   OpenrouterDatetime: "openrouter:datetime",
 } as const;
 export type DatetimeServerToolType = ClosedEnum<typeof DatetimeServerToolType>;
 
-export type DatetimeServerToolParameters = {
-  /**
-   * IANA timezone name (e.g. "America/New_York"). Defaults to UTC.
-   */
-  timezone?: string | undefined;
-};
-
 /**
  * OpenRouter built-in server tool: returns the current date and time
  */
 export type DatetimeServerTool = {
+  /**
+   * Configuration for the openrouter:datetime server tool
+   */
+  parameters?: DatetimeServerToolConfig | undefined;
   type: DatetimeServerToolType;
-  parameters?: DatetimeServerToolParameters | undefined;
 };
 
 /** @internal */
@@ -32,32 +33,9 @@ export const DatetimeServerToolType$outboundSchema: z.ZodEnum<
 > = z.enum(DatetimeServerToolType);
 
 /** @internal */
-export type DatetimeServerToolParameters$Outbound = {
-  timezone?: string | undefined;
-};
-
-/** @internal */
-export const DatetimeServerToolParameters$outboundSchema: z.ZodType<
-  DatetimeServerToolParameters$Outbound,
-  DatetimeServerToolParameters
-> = z.object({
-  timezone: z.string().optional(),
-});
-
-export function datetimeServerToolParametersToJSON(
-  datetimeServerToolParameters: DatetimeServerToolParameters,
-): string {
-  return JSON.stringify(
-    DatetimeServerToolParameters$outboundSchema.parse(
-      datetimeServerToolParameters,
-    ),
-  );
-}
-
-/** @internal */
 export type DatetimeServerTool$Outbound = {
+  parameters?: DatetimeServerToolConfig$Outbound | undefined;
   type: string;
-  parameters?: DatetimeServerToolParameters$Outbound | undefined;
 };
 
 /** @internal */
@@ -65,9 +43,8 @@ export const DatetimeServerTool$outboundSchema: z.ZodType<
   DatetimeServerTool$Outbound,
   DatetimeServerTool
 > = z.object({
+  parameters: DatetimeServerToolConfig$outboundSchema.optional(),
   type: DatetimeServerToolType$outboundSchema,
-  parameters: z.lazy(() => DatetimeServerToolParameters$outboundSchema)
-    .optional(),
 });
 
 export function datetimeServerToolToJSON(
