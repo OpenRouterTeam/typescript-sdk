@@ -40,13 +40,6 @@ import {
   ReasoningDetailUnion$outboundSchema,
 } from "./reasoningdetailunion.js";
 
-export const ChatAssistantMessageRole = {
-  Assistant: "assistant",
-} as const;
-export type ChatAssistantMessageRole = ClosedEnum<
-  typeof ChatAssistantMessageRole
->;
-
 /**
  * Assistant message content
  */
@@ -55,27 +48,33 @@ export type ChatAssistantMessageContent =
   | Array<ChatContentItems>
   | any;
 
+export const ChatAssistantMessageRole = {
+  Assistant: "assistant",
+} as const;
+export type ChatAssistantMessageRole = ClosedEnum<
+  typeof ChatAssistantMessageRole
+>;
+
 /**
  * Assistant message for requests and responses
  */
 export type ChatAssistantMessage = {
-  role: ChatAssistantMessageRole;
+  /**
+   * Audio output data or reference
+   */
+  audio?: ChatAudioOutput | undefined;
   /**
    * Assistant message content
    */
   content?: string | Array<ChatContentItems> | any | null | undefined;
   /**
+   * Generated images from image generation models
+   */
+  images?: Array<ChatAssistantImages> | undefined;
+  /**
    * Optional name for the assistant
    */
   name?: string | undefined;
-  /**
-   * Tool calls made by the assistant
-   */
-  toolCalls?: Array<ChatToolCall> | undefined;
-  /**
-   * Refusal message if content was refused
-   */
-  refusal?: string | null | undefined;
   /**
    * Reasoning output
    */
@@ -85,23 +84,15 @@ export type ChatAssistantMessage = {
    */
   reasoningDetails?: Array<ReasoningDetailUnion> | undefined;
   /**
-   * Generated images from image generation models
+   * Refusal message if content was refused
    */
-  images?: Array<ChatAssistantImages> | undefined;
+  refusal?: string | null | undefined;
+  role: ChatAssistantMessageRole;
   /**
-   * Audio output data or reference
+   * Tool calls made by the assistant
    */
-  audio?: ChatAudioOutput | undefined;
+  toolCalls?: Array<ChatToolCall> | undefined;
 };
-
-/** @internal */
-export const ChatAssistantMessageRole$inboundSchema: z.ZodEnum<
-  typeof ChatAssistantMessageRole
-> = z.enum(ChatAssistantMessageRole);
-/** @internal */
-export const ChatAssistantMessageRole$outboundSchema: z.ZodEnum<
-  typeof ChatAssistantMessageRole
-> = ChatAssistantMessageRole$inboundSchema;
 
 /** @internal */
 export const ChatAssistantMessageContent$inboundSchema: z.ZodType<
@@ -140,38 +131,47 @@ export function chatAssistantMessageContentFromJSON(
 }
 
 /** @internal */
+export const ChatAssistantMessageRole$inboundSchema: z.ZodEnum<
+  typeof ChatAssistantMessageRole
+> = z.enum(ChatAssistantMessageRole);
+/** @internal */
+export const ChatAssistantMessageRole$outboundSchema: z.ZodEnum<
+  typeof ChatAssistantMessageRole
+> = ChatAssistantMessageRole$inboundSchema;
+
+/** @internal */
 export const ChatAssistantMessage$inboundSchema: z.ZodType<
   ChatAssistantMessage,
   unknown
 > = z.object({
-  role: ChatAssistantMessageRole$inboundSchema,
+  audio: ChatAudioOutput$inboundSchema.optional(),
   content: z.nullable(
     z.union([z.string(), z.array(ChatContentItems$inboundSchema), z.any()]),
   ).optional(),
+  images: z.array(ChatAssistantImages$inboundSchema).optional(),
   name: z.string().optional(),
-  tool_calls: z.array(ChatToolCall$inboundSchema).optional(),
-  refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoning_details: z.array(ReasoningDetailUnion$inboundSchema).optional(),
-  images: z.array(ChatAssistantImages$inboundSchema).optional(),
-  audio: ChatAudioOutput$inboundSchema.optional(),
+  refusal: z.nullable(z.string()).optional(),
+  role: ChatAssistantMessageRole$inboundSchema,
+  tool_calls: z.array(ChatToolCall$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    "tool_calls": "toolCalls",
     "reasoning_details": "reasoningDetails",
+    "tool_calls": "toolCalls",
   });
 });
 /** @internal */
 export type ChatAssistantMessage$Outbound = {
-  role: string;
+  audio?: ChatAudioOutput$Outbound | undefined;
   content?: string | Array<ChatContentItems$Outbound> | any | null | undefined;
+  images?: Array<ChatAssistantImages$Outbound> | undefined;
   name?: string | undefined;
-  tool_calls?: Array<ChatToolCall$Outbound> | undefined;
-  refusal?: string | null | undefined;
   reasoning?: string | null | undefined;
   reasoning_details?: Array<ReasoningDetailUnion$Outbound> | undefined;
-  images?: Array<ChatAssistantImages$Outbound> | undefined;
-  audio?: ChatAudioOutput$Outbound | undefined;
+  refusal?: string | null | undefined;
+  role: string;
+  tool_calls?: Array<ChatToolCall$Outbound> | undefined;
 };
 
 /** @internal */
@@ -179,21 +179,21 @@ export const ChatAssistantMessage$outboundSchema: z.ZodType<
   ChatAssistantMessage$Outbound,
   ChatAssistantMessage
 > = z.object({
-  role: ChatAssistantMessageRole$outboundSchema,
+  audio: ChatAudioOutput$outboundSchema.optional(),
   content: z.nullable(
     z.union([z.string(), z.array(ChatContentItems$outboundSchema), z.any()]),
   ).optional(),
+  images: z.array(ChatAssistantImages$outboundSchema).optional(),
   name: z.string().optional(),
-  toolCalls: z.array(ChatToolCall$outboundSchema).optional(),
-  refusal: z.nullable(z.string()).optional(),
   reasoning: z.nullable(z.string()).optional(),
   reasoningDetails: z.array(ReasoningDetailUnion$outboundSchema).optional(),
-  images: z.array(ChatAssistantImages$outboundSchema).optional(),
-  audio: ChatAudioOutput$outboundSchema.optional(),
+  refusal: z.nullable(z.string()).optional(),
+  role: ChatAssistantMessageRole$outboundSchema,
+  toolCalls: z.array(ChatToolCall$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    toolCalls: "tool_calls",
     reasoningDetails: "reasoning_details",
+    toolCalls: "tool_calls",
   });
 });
 
