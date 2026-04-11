@@ -11,8 +11,8 @@ let value: ListProvidersResponse = {
   data: [
     {
       name: "OpenAI",
-      slug: "openai",
       privacyPolicyUrl: "https://openai.com/privacy",
+      slug: "openai",
     },
   ],
 };
