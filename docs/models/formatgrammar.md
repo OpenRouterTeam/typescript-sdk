@@ -6,9 +6,9 @@
 import { FormatGrammar } from "@openrouter/sdk/models";
 
 let value: FormatGrammar = {
-  type: "grammar",
   definition: "<value>",
   syntax: "lark",
+  type: "grammar",
 };
 ```
 
@@ -16,6 +16,6 @@ let value: FormatGrammar = {
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `type`                               | *"grammar"*                          | :heavy_check_mark:                   | N/A                                  |
 | `definition`                         | *string*                             | :heavy_check_mark:                   | N/A                                  |
 | `syntax`                             | [models.Syntax](../models/syntax.md) | :heavy_check_mark:                   | N/A                                  |
+| `type`                               | *"grammar"*                          | :heavy_check_mark:                   | N/A                                  |
