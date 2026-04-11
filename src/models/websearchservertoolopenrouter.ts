@@ -6,7 +6,7 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
-export type WebSearchServerToolOpenRouterParameters = {
+export type ParametersT = {
   /**
    * Maximum number of search results to return per search call. Defaults to 5.
    */
@@ -21,23 +21,23 @@ export type WebSearchServerToolOpenRouterParameters = {
  * OpenRouter built-in server tool: searches the web for current information
  */
 export type WebSearchServerToolOpenRouter = {
+  parameters?: ParametersT | undefined;
   type: "openrouter:web_search";
-  parameters?: WebSearchServerToolOpenRouterParameters | undefined;
 };
 
 /** @internal */
-export type WebSearchServerToolOpenRouterParameters$Outbound = {
+export type ParametersT$Outbound = {
   max_results?: number | undefined;
   max_total_results?: number | undefined;
 };
 
 /** @internal */
-export const WebSearchServerToolOpenRouterParameters$outboundSchema: z.ZodType<
-  WebSearchServerToolOpenRouterParameters$Outbound,
-  WebSearchServerToolOpenRouterParameters
+export const ParametersT$outboundSchema: z.ZodType<
+  ParametersT$Outbound,
+  ParametersT
 > = z.object({
-  maxResults: z.number().optional(),
-  maxTotalResults: z.number().optional(),
+  maxResults: z.int().optional(),
+  maxTotalResults: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
@@ -45,21 +45,14 @@ export const WebSearchServerToolOpenRouterParameters$outboundSchema: z.ZodType<
   });
 });
 
-export function webSearchServerToolOpenRouterParametersToJSON(
-  webSearchServerToolOpenRouterParameters:
-    WebSearchServerToolOpenRouterParameters,
-): string {
-  return JSON.stringify(
-    WebSearchServerToolOpenRouterParameters$outboundSchema.parse(
-      webSearchServerToolOpenRouterParameters,
-    ),
-  );
+export function parametersToJSON(parametersT: ParametersT): string {
+  return JSON.stringify(ParametersT$outboundSchema.parse(parametersT));
 }
 
 /** @internal */
 export type WebSearchServerToolOpenRouter$Outbound = {
+  parameters?: ParametersT$Outbound | undefined;
   type: "openrouter:web_search";
-  parameters?: WebSearchServerToolOpenRouterParameters$Outbound | undefined;
 };
 
 /** @internal */
@@ -67,10 +60,8 @@ export const WebSearchServerToolOpenRouter$outboundSchema: z.ZodType<
   WebSearchServerToolOpenRouter$Outbound,
   WebSearchServerToolOpenRouter
 > = z.object({
+  parameters: z.lazy(() => ParametersT$outboundSchema).optional(),
   type: z.literal("openrouter:web_search"),
-  parameters: z.lazy(() =>
-    WebSearchServerToolOpenRouterParameters$outboundSchema
-  ).optional(),
 });
 
 export function webSearchServerToolOpenRouterToJSON(
