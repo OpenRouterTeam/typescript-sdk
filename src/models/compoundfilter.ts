@@ -20,8 +20,8 @@ export type CompoundFilterType = OpenEnum<typeof CompoundFilterType>;
  * A compound filter that combines multiple comparison or compound filters
  */
 export type CompoundFilter = {
-  type: CompoundFilterType;
   filters: Array<{ [k: string]: any | null }>;
+  type: CompoundFilterType;
 };
 
 /** @internal */
@@ -38,13 +38,13 @@ export const CompoundFilterType$outboundSchema: z.ZodType<
 /** @internal */
 export const CompoundFilter$inboundSchema: z.ZodType<CompoundFilter, unknown> =
   z.object({
-    type: CompoundFilterType$inboundSchema,
     filters: z.array(z.record(z.string(), z.nullable(z.any()))),
+    type: CompoundFilterType$inboundSchema,
   });
 /** @internal */
 export type CompoundFilter$Outbound = {
-  type: string;
   filters: Array<{ [k: string]: any | null }>;
+  type: string;
 };
 
 /** @internal */
@@ -52,8 +52,8 @@ export const CompoundFilter$outboundSchema: z.ZodType<
   CompoundFilter$Outbound,
   CompoundFilter
 > = z.object({
-  type: CompoundFilterType$outboundSchema,
   filters: z.array(z.record(z.string(), z.nullable(z.any()))),
+  type: CompoundFilterType$outboundSchema,
 });
 
 export function compoundFilterToJSON(compoundFilter: CompoundFilter): string {
