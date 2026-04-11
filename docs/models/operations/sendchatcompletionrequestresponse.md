@@ -7,7 +7,6 @@
 
 ```typescript
 const value: models.ChatResult = {
-  id: "chatcmpl-123",
   choices: [
     {
       finishReason: "stop",
@@ -18,6 +17,7 @@ const value: models.ChatResult = {
     },
   ],
   created: 1677652288,
+  id: "chatcmpl-123",
   model: "openai/gpt-4",
   object: "chat.completion",
   systemFingerprint: "fp_44709d6fcb",

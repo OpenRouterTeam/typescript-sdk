@@ -17,13 +17,13 @@ import {
  * Event emitted when a text annotation is added to output
  */
 export type AnnotationAddedEvent = {
-  type: "response.output_text.annotation.added";
-  outputIndex: number;
-  itemId: string;
-  contentIndex: number;
-  sequenceNumber: number;
-  annotationIndex: number;
   annotation: OpenAIResponsesAnnotation;
+  annotationIndex: number;
+  contentIndex: number;
+  itemId: string;
+  outputIndex: number;
+  sequenceNumber: number;
+  type: "response.output_text.annotation.added";
 };
 
 /** @internal */
@@ -31,20 +31,20 @@ export const AnnotationAddedEvent$inboundSchema: z.ZodType<
   AnnotationAddedEvent,
   unknown
 > = z.object({
-  type: z.literal("response.output_text.annotation.added"),
-  output_index: z.number(),
-  item_id: z.string(),
-  content_index: z.number(),
-  sequence_number: z.number(),
-  annotation_index: z.number(),
   annotation: OpenAIResponsesAnnotation$inboundSchema,
+  annotation_index: z.int(),
+  content_index: z.int(),
+  item_id: z.string(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.output_text.annotation.added"),
 }).transform((v) => {
   return remap$(v, {
-    "output_index": "outputIndex",
-    "item_id": "itemId",
-    "content_index": "contentIndex",
-    "sequence_number": "sequenceNumber",
     "annotation_index": "annotationIndex",
+    "content_index": "contentIndex",
+    "item_id": "itemId",
+    "output_index": "outputIndex",
+    "sequence_number": "sequenceNumber",
   });
 });
 
