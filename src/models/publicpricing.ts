@@ -13,49 +13,49 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Pricing information for the model
  */
 export type PublicPricing = {
-  prompt: string;
-  completion: string;
-  request?: string | undefined;
-  image?: string | undefined;
-  imageToken?: string | undefined;
-  imageOutput?: string | undefined;
   audio?: string | undefined;
   audioOutput?: string | undefined;
+  completion: string;
+  discount?: number | undefined;
+  image?: string | undefined;
+  imageOutput?: string | undefined;
+  imageToken?: string | undefined;
   inputAudioCache?: string | undefined;
-  webSearch?: string | undefined;
-  internalReasoning?: string | undefined;
   inputCacheRead?: string | undefined;
   inputCacheWrite?: string | undefined;
-  discount?: number | undefined;
+  internalReasoning?: string | undefined;
+  prompt: string;
+  request?: string | undefined;
+  webSearch?: string | undefined;
 };
 
 /** @internal */
 export const PublicPricing$inboundSchema: z.ZodType<PublicPricing, unknown> = z
   .object({
-    prompt: z.string(),
-    completion: z.string(),
-    request: z.string().optional(),
-    image: z.string().optional(),
-    image_token: z.string().optional(),
-    image_output: z.string().optional(),
     audio: z.string().optional(),
     audio_output: z.string().optional(),
+    completion: z.string(),
+    discount: z.number().optional(),
+    image: z.string().optional(),
+    image_output: z.string().optional(),
+    image_token: z.string().optional(),
     input_audio_cache: z.string().optional(),
-    web_search: z.string().optional(),
-    internal_reasoning: z.string().optional(),
     input_cache_read: z.string().optional(),
     input_cache_write: z.string().optional(),
-    discount: z.number().optional(),
+    internal_reasoning: z.string().optional(),
+    prompt: z.string(),
+    request: z.string().optional(),
+    web_search: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
-      "image_token": "imageToken",
-      "image_output": "imageOutput",
       "audio_output": "audioOutput",
+      "image_output": "imageOutput",
+      "image_token": "imageToken",
       "input_audio_cache": "inputAudioCache",
-      "web_search": "webSearch",
-      "internal_reasoning": "internalReasoning",
       "input_cache_read": "inputCacheRead",
       "input_cache_write": "inputCacheWrite",
+      "internal_reasoning": "internalReasoning",
+      "web_search": "webSearch",
     });
   });
 
