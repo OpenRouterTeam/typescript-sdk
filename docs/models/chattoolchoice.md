@@ -27,10 +27,10 @@ const value: models.ChatToolChoiceRequired = "required";
 
 ```typescript
 const value: models.ChatNamedToolChoice = {
-  type: "function",
   function: {
     name: "get_weather",
   },
+  type: "function",
 };
 ```
 
