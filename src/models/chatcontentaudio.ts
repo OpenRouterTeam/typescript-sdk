@@ -6,14 +6,8 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
-
-export const ChatContentAudioType = {
-  InputAudio: "input_audio",
-} as const;
-export type ChatContentAudioType = ClosedEnum<typeof ChatContentAudioType>;
 
 export type ChatContentAudioInputAudio = {
   /**
@@ -30,18 +24,9 @@ export type ChatContentAudioInputAudio = {
  * Audio input content part. Supported audio formats vary by provider.
  */
 export type ChatContentAudio = {
-  type: ChatContentAudioType;
   inputAudio: ChatContentAudioInputAudio;
+  type: "input_audio";
 };
-
-/** @internal */
-export const ChatContentAudioType$inboundSchema: z.ZodEnum<
-  typeof ChatContentAudioType
-> = z.enum(ChatContentAudioType);
-/** @internal */
-export const ChatContentAudioType$outboundSchema: z.ZodEnum<
-  typeof ChatContentAudioType
-> = ChatContentAudioType$inboundSchema;
 
 /** @internal */
 export const ChatContentAudioInputAudio$inboundSchema: z.ZodType<
@@ -88,8 +73,8 @@ export const ChatContentAudio$inboundSchema: z.ZodType<
   ChatContentAudio,
   unknown
 > = z.object({
-  type: ChatContentAudioType$inboundSchema,
   input_audio: z.lazy(() => ChatContentAudioInputAudio$inboundSchema),
+  type: z.literal("input_audio"),
 }).transform((v) => {
   return remap$(v, {
     "input_audio": "inputAudio",
@@ -97,8 +82,8 @@ export const ChatContentAudio$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatContentAudio$Outbound = {
-  type: string;
   input_audio: ChatContentAudioInputAudio$Outbound;
+  type: "input_audio";
 };
 
 /** @internal */
@@ -106,8 +91,8 @@ export const ChatContentAudio$outboundSchema: z.ZodType<
   ChatContentAudio$Outbound,
   ChatContentAudio
 > = z.object({
-  type: ChatContentAudioType$outboundSchema,
   inputAudio: z.lazy(() => ChatContentAudioInputAudio$outboundSchema),
+  type: z.literal("input_audio"),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",
