@@ -8,14 +8,14 @@ Token log probability information
 import { ChatTokenLogprob } from "@openrouter/sdk/models";
 
 let value: ChatTokenLogprob = {
-  token: " Hello",
-  logprob: -0.612345,
   bytes: null,
+  logprob: -0.612345,
+  token: " Hello",
   topLogprobs: [
     {
-      token: " Hello",
-      logprob: -0.612345,
       bytes: null,
+      logprob: -0.612345,
+      token: " Hello",
     },
   ],
 };
@@ -25,7 +25,7 @@ let value: ChatTokenLogprob = {
 
 | Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `token`                                                                        | *string*                                                                       | :heavy_check_mark:                                                             | The token                                                                      |
-| `logprob`                                                                      | *number*                                                                       | :heavy_check_mark:                                                             | Log probability of the token                                                   |
 | `bytes`                                                                        | *number*[]                                                                     | :heavy_check_mark:                                                             | UTF-8 bytes of the token                                                       |
+| `logprob`                                                                      | *number*                                                                       | :heavy_check_mark:                                                             | Log probability of the token                                                   |
+| `token`                                                                        | *string*                                                                       | :heavy_check_mark:                                                             | The token                                                                      |
 | `topLogprobs`                                                                  | [models.ChatTokenLogprobTopLogprob](../models/chattokenlogprobtoplogprob.md)[] | :heavy_check_mark:                                                             | Top alternative tokens with probabilities                                      |
