@@ -14,6 +14,6 @@ let value: ContainerAuto = {
 
 | Field                                              | Type                                               | Required                                           | Description                                        |
 | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `type`                                             | [models.ContainerType](../models/containertype.md) | :heavy_check_mark:                                 | N/A                                                |
 | `fileIds`                                          | *string*[]                                         | :heavy_minus_sign:                                 | N/A                                                |
 | `memoryLimit`                                      | [models.MemoryLimit](../models/memorylimit.md)     | :heavy_minus_sign:                                 | N/A                                                |
+| `type`                                             | [models.ContainerType](../models/containertype.md) | :heavy_check_mark:                                 | N/A                                                |

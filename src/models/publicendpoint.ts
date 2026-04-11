@@ -22,20 +22,20 @@ import {
 import { ProviderName, ProviderName$inboundSchema } from "./providername.js";
 
 export type Pricing = {
-  prompt: string;
-  completion: string;
-  request?: string | undefined;
-  image?: string | undefined;
-  imageToken?: string | undefined;
-  imageOutput?: string | undefined;
   audio?: string | undefined;
   audioOutput?: string | undefined;
+  completion: string;
+  discount?: number | undefined;
+  image?: string | undefined;
+  imageOutput?: string | undefined;
+  imageToken?: string | undefined;
   inputAudioCache?: string | undefined;
-  webSearch?: string | undefined;
-  internalReasoning?: string | undefined;
   inputCacheRead?: string | undefined;
   inputCacheWrite?: string | undefined;
-  discount?: number | undefined;
+  internalReasoning?: string | undefined;
+  prompt: string;
+  request?: string | undefined;
+  webSearch?: string | undefined;
 };
 
 export const PublicEndpointQuantization = {
@@ -57,56 +57,64 @@ export type PublicEndpointQuantization = OpenEnum<
  * Information about a specific model endpoint
  */
 export type PublicEndpoint = {
-  name: string;
+  contextLength: number;
+  /**
+   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
+   */
+  latencyLast30m: PercentileStats | null;
+  maxCompletionTokens: number;
+  maxPromptTokens: number;
   /**
    * The unique identifier for the model (permaslug)
    */
   modelId: string;
   modelName: string;
-  contextLength: number;
+  name: string;
   pricing: Pricing;
   providerName: ProviderName;
-  tag: string;
   quantization: PublicEndpointQuantization | null;
-  maxCompletionTokens: number | null;
-  maxPromptTokens: number | null;
-  supportedParameters: Array<Parameter>;
   status?: EndpointStatus | undefined;
-  uptimeLast30m: number | null;
+  supportedParameters: Array<Parameter>;
   supportsImplicitCaching: boolean;
-  /**
-   * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
-   */
-  latencyLast30m: PercentileStats | null;
+  tag: string;
   throughputLast30m: PercentileStats | null;
+  /**
+   * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   */
+  uptimeLast1d: number;
+  uptimeLast30m: number;
+  /**
+   * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
+   */
+  uptimeLast5m: number;
 };
 
 /** @internal */
 export const Pricing$inboundSchema: z.ZodType<Pricing, unknown> = z.object({
-  prompt: z.string(),
-  completion: z.string(),
-  request: z.string().optional(),
-  image: z.string().optional(),
-  image_token: z.string().optional(),
-  image_output: z.string().optional(),
   audio: z.string().optional(),
   audio_output: z.string().optional(),
+  completion: z.string(),
+  discount: z.number().optional(),
+  image: z.string().optional(),
+  image_output: z.string().optional(),
+  image_token: z.string().optional(),
   input_audio_cache: z.string().optional(),
-  web_search: z.string().optional(),
-  internal_reasoning: z.string().optional(),
   input_cache_read: z.string().optional(),
   input_cache_write: z.string().optional(),
-  discount: z.number().optional(),
+  internal_reasoning: z.string().optional(),
+  prompt: z.string(),
+  request: z.string().optional(),
+  web_search: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    "image_token": "imageToken",
-    "image_output": "imageOutput",
     "audio_output": "audioOutput",
+    "image_output": "imageOutput",
+    "image_token": "imageToken",
     "input_audio_cache": "inputAudioCache",
-    "web_search": "webSearch",
-    "internal_reasoning": "internalReasoning",
     "input_cache_read": "inputCacheRead",
     "input_cache_write": "inputCacheWrite",
+    "internal_reasoning": "internalReasoning",
+    "web_search": "webSearch",
   });
 });
 
@@ -129,35 +137,39 @@ export const PublicEndpointQuantization$inboundSchema: z.ZodType<
 /** @internal */
 export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
-    name: z.string(),
+    context_length: z.int(),
+    latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+    max_completion_tokens: z.int(),
+    max_prompt_tokens: z.int(),
     model_id: z.string(),
     model_name: z.string(),
-    context_length: z.number(),
+    name: z.string(),
     pricing: z.lazy(() => Pricing$inboundSchema),
     provider_name: ProviderName$inboundSchema,
-    tag: z.string(),
     quantization: z.nullable(PublicEndpointQuantization$inboundSchema),
-    max_completion_tokens: z.nullable(z.number()),
-    max_prompt_tokens: z.nullable(z.number()),
-    supported_parameters: z.array(Parameter$inboundSchema),
     status: EndpointStatus$inboundSchema.optional(),
-    uptime_last_30m: z.nullable(z.number()),
+    supported_parameters: z.array(Parameter$inboundSchema),
     supports_implicit_caching: z.boolean(),
-    latency_last_30m: z.nullable(PercentileStats$inboundSchema),
+    tag: z.string(),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
+    uptime_last_1d: z.number(),
+    uptime_last_30m: z.number(),
+    uptime_last_5m: z.number(),
   }).transform((v) => {
     return remap$(v, {
-      "model_id": "modelId",
-      "model_name": "modelName",
       "context_length": "contextLength",
-      "provider_name": "providerName",
+      "latency_last_30m": "latencyLast30m",
       "max_completion_tokens": "maxCompletionTokens",
       "max_prompt_tokens": "maxPromptTokens",
+      "model_id": "modelId",
+      "model_name": "modelName",
+      "provider_name": "providerName",
       "supported_parameters": "supportedParameters",
-      "uptime_last_30m": "uptimeLast30m",
       "supports_implicit_caching": "supportsImplicitCaching",
-      "latency_last_30m": "latencyLast30m",
       "throughput_last_30m": "throughputLast30m",
+      "uptime_last_1d": "uptimeLast1d",
+      "uptime_last_30m": "uptimeLast30m",
+      "uptime_last_5m": "uptimeLast5m",
     });
   });
 
