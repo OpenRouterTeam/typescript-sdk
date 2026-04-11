@@ -34,32 +34,32 @@ import {
  * Chat completion message with role-based discrimination
  */
 export type ChatMessages =
-  | ChatSystemMessage
-  | ChatUserMessage
-  | ChatDeveloperMessage
   | (ChatAssistantMessage & { role: "assistant" })
-  | ChatToolMessage;
+  | ChatDeveloperMessage
+  | ChatSystemMessage
+  | ChatToolMessage
+  | ChatUserMessage;
 
 /** @internal */
 export type ChatMessages$Outbound =
-  | ChatSystemMessage$Outbound
-  | ChatUserMessage$Outbound
-  | ChatDeveloperMessage$Outbound
   | (ChatAssistantMessage$Outbound & { role: "assistant" })
-  | ChatToolMessage$Outbound;
+  | ChatDeveloperMessage$Outbound
+  | ChatSystemMessage$Outbound
+  | ChatToolMessage$Outbound
+  | ChatUserMessage$Outbound;
 
 /** @internal */
 export const ChatMessages$outboundSchema: z.ZodType<
   ChatMessages$Outbound,
   ChatMessages
 > = z.union([
-  ChatSystemMessage$outboundSchema,
-  ChatUserMessage$outboundSchema,
-  ChatDeveloperMessage$outboundSchema,
   ChatAssistantMessage$outboundSchema.and(
     z.object({ role: z.literal("assistant") }),
   ),
+  ChatDeveloperMessage$outboundSchema,
+  ChatSystemMessage$outboundSchema,
   ChatToolMessage$outboundSchema,
+  ChatUserMessage$outboundSchema,
 ]);
 
 export function chatMessagesToJSON(chatMessages: ChatMessages): string {

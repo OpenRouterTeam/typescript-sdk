@@ -6,8 +6,8 @@
 import { ActionFindInPage } from "@openrouter/sdk/models";
 
 let value: ActionFindInPage = {
-  type: "find_in_page",
   pattern: "<value>",
+  type: "find_in_page",
   url: "https://qualified-king.org",
 };
 ```
@@ -16,6 +16,6 @@ let value: ActionFindInPage = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"find_in_page"*   | :heavy_check_mark: | N/A                |
 | `pattern`          | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"find_in_page"*   | :heavy_check_mark: | N/A                |
 | `url`              | *string*           | :heavy_check_mark: | N/A                |

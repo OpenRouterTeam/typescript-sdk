@@ -11,35 +11,31 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const InputAudioFormat = {
+export const FormatEnum = {
   Mp3: "mp3",
   Wav: "wav",
 } as const;
-export type InputAudioFormat = OpenEnum<typeof InputAudioFormat>;
+export type FormatEnum = OpenEnum<typeof FormatEnum>;
 
 export type InputAudioInputAudio = {
   data: string;
-  format: InputAudioFormat;
+  format: FormatEnum;
 };
 
 /**
  * Audio input content item
  */
 export type InputAudio = {
-  type: "input_audio";
   inputAudio: InputAudioInputAudio;
+  type: "input_audio";
 };
 
 /** @internal */
-export const InputAudioFormat$inboundSchema: z.ZodType<
-  InputAudioFormat,
-  unknown
-> = openEnums.inboundSchema(InputAudioFormat);
+export const FormatEnum$inboundSchema: z.ZodType<FormatEnum, unknown> =
+  openEnums.inboundSchema(FormatEnum);
 /** @internal */
-export const InputAudioFormat$outboundSchema: z.ZodType<
-  string,
-  InputAudioFormat
-> = openEnums.outboundSchema(InputAudioFormat);
+export const FormatEnum$outboundSchema: z.ZodType<string, FormatEnum> =
+  openEnums.outboundSchema(FormatEnum);
 
 /** @internal */
 export const InputAudioInputAudio$inboundSchema: z.ZodType<
@@ -47,7 +43,7 @@ export const InputAudioInputAudio$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.string(),
-  format: InputAudioFormat$inboundSchema,
+  format: FormatEnum$inboundSchema,
 });
 /** @internal */
 export type InputAudioInputAudio$Outbound = {
@@ -61,7 +57,7 @@ export const InputAudioInputAudio$outboundSchema: z.ZodType<
   InputAudioInputAudio
 > = z.object({
   data: z.string(),
-  format: InputAudioFormat$outboundSchema,
+  format: FormatEnum$outboundSchema,
 });
 
 export function inputAudioInputAudioToJSON(
@@ -84,8 +80,8 @@ export function inputAudioInputAudioFromJSON(
 /** @internal */
 export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
   .object({
-    type: z.literal("input_audio"),
     input_audio: z.lazy(() => InputAudioInputAudio$inboundSchema),
+    type: z.literal("input_audio"),
   }).transform((v) => {
     return remap$(v, {
       "input_audio": "inputAudio",
@@ -93,8 +89,8 @@ export const InputAudio$inboundSchema: z.ZodType<InputAudio, unknown> = z
   });
 /** @internal */
 export type InputAudio$Outbound = {
-  type: "input_audio";
   input_audio: InputAudioInputAudio$Outbound;
+  type: "input_audio";
 };
 
 /** @internal */
@@ -102,8 +98,8 @@ export const InputAudio$outboundSchema: z.ZodType<
   InputAudio$Outbound,
   InputAudio
 > = z.object({
-  type: z.literal("input_audio"),
   inputAudio: z.lazy(() => InputAudioInputAudio$outboundSchema),
+  type: z.literal("input_audio"),
 }).transform((v) => {
   return remap$(v, {
     inputAudio: "input_audio",
