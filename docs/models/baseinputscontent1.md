@@ -3,21 +3,15 @@
 
 ## Supported Types
 
-### `models.InputText`
+### `models.InputAudio`
 
 ```typescript
-const value: models.InputText = {
-  type: "input_text",
-  text: "Hello, how can I help you?",
-};
-```
-
-### `models.InputImage`
-
-```typescript
-const value: models.InputImage = {
-  type: "input_image",
-  detail: "auto",
+const value: models.InputAudio = {
+  inputAudio: {
+    data: "SGVsbG8gV29ybGQ=",
+    format: "mp3",
+  },
+  type: "input_audio",
 };
 ```
 
@@ -29,15 +23,21 @@ const value: models.InputFile = {
 };
 ```
 
-### `models.InputAudio`
+### `models.InputImage`
 
 ```typescript
-const value: models.InputAudio = {
-  type: "input_audio",
-  inputAudio: {
-    data: "SGVsbG8gV29ybGQ=",
-    format: "mp3",
-  },
+const value: models.InputImage = {
+  detail: "auto",
+  type: "input_image",
+};
+```
+
+### `models.InputText`
+
+```typescript
+const value: models.InputText = {
+  text: "Hello, how can I help you?",
+  type: "input_text",
 };
 ```
 
