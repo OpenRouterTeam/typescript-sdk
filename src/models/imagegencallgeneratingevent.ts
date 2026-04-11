@@ -13,10 +13,10 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Image generation call is generating
  */
 export type ImageGenCallGeneratingEvent = {
-  type: "response.image_generation_call.generating";
   itemId: string;
   outputIndex: number;
   sequenceNumber: number;
+  type: "response.image_generation_call.generating";
 };
 
 /** @internal */
@@ -24,10 +24,10 @@ export const ImageGenCallGeneratingEvent$inboundSchema: z.ZodType<
   ImageGenCallGeneratingEvent,
   unknown
 > = z.object({
-  type: z.literal("response.image_generation_call.generating"),
   item_id: z.string(),
-  output_index: z.number(),
-  sequence_number: z.number(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.image_generation_call.generating"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
