@@ -7,8 +7,8 @@
 
 ```typescript
 const value: models.InputText = {
-  type: "input_text",
   text: "Hello, how can I help you?",
+  type: "input_text",
 };
 ```
 
@@ -16,8 +16,8 @@ const value: models.InputText = {
 
 ```typescript
 const value: models.OutputInputImage = {
-  type: "input_image",
   detail: "auto",
+  type: "input_image",
 };
 ```
 
