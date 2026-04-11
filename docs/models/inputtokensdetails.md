@@ -6,7 +6,7 @@
 import { InputTokensDetails } from "@openrouter/sdk/models";
 
 let value: InputTokensDetails = {
-  cachedTokens: 229.09,
+  cachedTokens: 22909,
 };
 ```
 
