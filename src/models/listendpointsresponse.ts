@@ -31,6 +31,7 @@ export const Tokenizer = {
   Gpt: "GPT",
   Claude: "Claude",
   Gemini: "Gemini",
+  Gemma: "Gemma",
   Grok: "Grok",
   Cohere: "Cohere",
   Nova: "Nova",
@@ -54,7 +55,10 @@ export type Tokenizer = OpenEnum<typeof Tokenizer>;
  * Model architecture information
  */
 export type Architecture = {
-  tokenizer: Tokenizer | null;
+  /**
+   * Supported input modalities
+   */
+  inputModalities: Array<InputModality>;
   /**
    * Instruction format type
    */
@@ -64,27 +68,17 @@ export type Architecture = {
    */
   modality: string | null;
   /**
-   * Supported input modalities
-   */
-  inputModalities: Array<InputModality>;
-  /**
    * Supported output modalities
    */
   outputModalities: Array<OutputModality>;
+  tokenizer: Tokenizer | null;
 };
 
 /**
  * List of available endpoints for a model
  */
 export type ListEndpointsResponse = {
-  /**
-   * Unique identifier for the model
-   */
-  id: string;
-  /**
-   * Display name of the model
-   */
-  name: string;
+  architecture: Architecture;
   /**
    * Unix timestamp of when the model was created
    */
@@ -93,11 +87,18 @@ export type ListEndpointsResponse = {
    * Description of the model
    */
   description: string;
-  architecture: Architecture;
   /**
    * List of available endpoints for this model
    */
   endpoints: Array<PublicEndpoint>;
+  /**
+   * Unique identifier for the model
+   */
+  id: string;
+  /**
+   * Display name of the model
+   */
+  name: string;
 };
 
 /** @internal */
@@ -107,15 +108,15 @@ export const Tokenizer$inboundSchema: z.ZodType<Tokenizer, unknown> = openEnums
 /** @internal */
 export const Architecture$inboundSchema: z.ZodType<Architecture, unknown> = z
   .object({
-    tokenizer: z.nullable(Tokenizer$inboundSchema),
+    input_modalities: z.array(InputModality$inboundSchema),
     instruct_type: z.nullable(InstructType$inboundSchema),
     modality: z.nullable(z.string()),
-    input_modalities: z.array(InputModality$inboundSchema),
     output_modalities: z.array(OutputModality$inboundSchema),
+    tokenizer: z.nullable(Tokenizer$inboundSchema),
   }).transform((v) => {
     return remap$(v, {
-      "instruct_type": "instructType",
       "input_modalities": "inputModalities",
+      "instruct_type": "instructType",
       "output_modalities": "outputModalities",
     });
   });
@@ -135,12 +136,12 @@ export const ListEndpointsResponse$inboundSchema: z.ZodType<
   ListEndpointsResponse,
   unknown
 > = z.object({
+  architecture: z.lazy(() => Architecture$inboundSchema),
+  created: z.int(),
+  description: z.string(),
+  endpoints: z.array(PublicEndpoint$inboundSchema),
   id: z.string(),
   name: z.string(),
-  created: z.number(),
-  description: z.string(),
-  architecture: z.lazy(() => Architecture$inboundSchema),
-  endpoints: z.array(PublicEndpoint$inboundSchema),
 });
 
 export function listEndpointsResponseFromJSON(
