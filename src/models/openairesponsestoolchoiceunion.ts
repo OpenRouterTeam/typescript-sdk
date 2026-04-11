@@ -8,6 +8,12 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ToolChoiceAllowed,
+  ToolChoiceAllowed$inboundSchema,
+  ToolChoiceAllowed$Outbound,
+  ToolChoiceAllowed$outboundSchema,
+} from "./toolchoiceallowed.js";
 
 export const OpenAIResponsesToolChoiceTypeWebSearchPreview = {
   WebSearchPreview: "web_search_preview",
@@ -41,8 +47,8 @@ export type OpenAIResponsesToolChoiceTypeFunction = ClosedEnum<
 >;
 
 export type OpenAIResponsesToolChoiceFunction = {
-  type: OpenAIResponsesToolChoiceTypeFunction;
   name: string;
+  type: OpenAIResponsesToolChoiceTypeFunction;
 };
 
 export const OpenAIResponsesToolChoiceRequired = {
@@ -67,6 +73,7 @@ export type OpenAIResponsesToolChoiceAuto = ClosedEnum<
 >;
 
 export type OpenAIResponsesToolChoiceUnion =
+  | ToolChoiceAllowed
   | OpenAIResponsesToolChoiceFunction
   | OpenAIResponsesToolChoice
   | OpenAIResponsesToolChoiceAuto
@@ -176,13 +183,13 @@ export const OpenAIResponsesToolChoiceFunction$inboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceFunction,
   unknown
 > = z.object({
-  type: OpenAIResponsesToolChoiceTypeFunction$inboundSchema,
   name: z.string(),
+  type: OpenAIResponsesToolChoiceTypeFunction$inboundSchema,
 });
 /** @internal */
 export type OpenAIResponsesToolChoiceFunction$Outbound = {
-  type: string;
   name: string;
+  type: string;
 };
 
 /** @internal */
@@ -190,8 +197,8 @@ export const OpenAIResponsesToolChoiceFunction$outboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceFunction$Outbound,
   OpenAIResponsesToolChoiceFunction
 > = z.object({
-  type: OpenAIResponsesToolChoiceTypeFunction$outboundSchema,
   name: z.string(),
+  type: OpenAIResponsesToolChoiceTypeFunction$outboundSchema,
 });
 
 export function openAIResponsesToolChoiceFunctionToJSON(
@@ -245,6 +252,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceUnion,
   unknown
 > = z.union([
+  ToolChoiceAllowed$inboundSchema,
   z.lazy(() => OpenAIResponsesToolChoiceFunction$inboundSchema),
   z.lazy(() => OpenAIResponsesToolChoice$inboundSchema),
   OpenAIResponsesToolChoiceAuto$inboundSchema,
@@ -253,6 +261,7 @@ export const OpenAIResponsesToolChoiceUnion$inboundSchema: z.ZodType<
 ]);
 /** @internal */
 export type OpenAIResponsesToolChoiceUnion$Outbound =
+  | ToolChoiceAllowed$Outbound
   | OpenAIResponsesToolChoiceFunction$Outbound
   | OpenAIResponsesToolChoice$Outbound
   | string
@@ -264,6 +273,7 @@ export const OpenAIResponsesToolChoiceUnion$outboundSchema: z.ZodType<
   OpenAIResponsesToolChoiceUnion$Outbound,
   OpenAIResponsesToolChoiceUnion
 > = z.union([
+  ToolChoiceAllowed$outboundSchema,
   z.lazy(() => OpenAIResponsesToolChoiceFunction$outboundSchema),
   z.lazy(() => OpenAIResponsesToolChoice$outboundSchema),
   OpenAIResponsesToolChoiceAuto$outboundSchema,
