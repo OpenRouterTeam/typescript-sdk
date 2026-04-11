@@ -20,11 +20,11 @@ export type WebSearchUserLocationType = ClosedEnum<
  * User location information for web search
  */
 export type WebSearchUserLocation = {
-  type?: WebSearchUserLocationType | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
+  type?: WebSearchUserLocationType | undefined;
 };
 
 /** @internal */
@@ -41,19 +41,19 @@ export const WebSearchUserLocation$inboundSchema: z.ZodType<
   WebSearchUserLocation,
   unknown
 > = z.object({
-  type: WebSearchUserLocationType$inboundSchema.optional(),
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
+  type: WebSearchUserLocationType$inboundSchema.optional(),
 });
 /** @internal */
 export type WebSearchUserLocation$Outbound = {
-  type?: string | undefined;
   city?: string | null | undefined;
   country?: string | null | undefined;
   region?: string | null | undefined;
   timezone?: string | null | undefined;
+  type?: string | undefined;
 };
 
 /** @internal */
@@ -61,11 +61,11 @@ export const WebSearchUserLocation$outboundSchema: z.ZodType<
   WebSearchUserLocation$Outbound,
   WebSearchUserLocation
 > = z.object({
-  type: WebSearchUserLocationType$outboundSchema.optional(),
   city: z.nullable(z.string()).optional(),
   country: z.nullable(z.string()).optional(),
   region: z.nullable(z.string()).optional(),
   timezone: z.nullable(z.string()).optional(),
+  type: WebSearchUserLocationType$outboundSchema.optional(),
 });
 
 export function webSearchUserLocationToJSON(

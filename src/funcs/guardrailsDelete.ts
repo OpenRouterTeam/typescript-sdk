@@ -22,6 +22,7 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -38,7 +39,7 @@ export function guardrailsDelete(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.DeleteGuardrailResponse,
+    models.DeleteGuardrailResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -66,7 +67,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      operations.DeleteGuardrailResponse,
+      models.DeleteGuardrailResponse,
       | errors.UnauthorizedResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
@@ -135,8 +136,18 @@ async function $do(
     securitySource: client._options.apiKey,
     retryConfig: options?.retries
       || client._options.retryConfig
+      || {
+        strategy: "backoff",
+        backoff: {
+          initialInterval: 500,
+          maxInterval: 60000,
+          exponent: 1.5,
+          maxElapsedTime: 3600000,
+        },
+        retryConnectionErrors: true,
+      }
       || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryCodes: options?.retryCodes || ["5XX"],
   };
 
   const requestRes = client._createRequest(context, {
@@ -170,7 +181,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    operations.DeleteGuardrailResponse,
+    models.DeleteGuardrailResponse,
     | errors.UnauthorizedResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
@@ -183,7 +194,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.DeleteGuardrailResponse$inboundSchema),
+    M.json(200, models.DeleteGuardrailResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),

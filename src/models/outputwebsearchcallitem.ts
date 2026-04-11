@@ -5,23 +5,26 @@
 
 import * as z from "zod/v4";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
+import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  WebSearchSource,
+  WebSearchSource$inboundSchema,
+  WebSearchSource$Outbound,
+  WebSearchSource$outboundSchema,
+} from "./websearchsource.js";
 import {
   WebSearchStatus,
   WebSearchStatus$inboundSchema,
   WebSearchStatus$outboundSchema,
 } from "./websearchstatus.js";
 
-export const TypeWebSearchCall = {
-  WebSearchCall: "web_search_call",
-} as const;
-export type TypeWebSearchCall = ClosedEnum<typeof TypeWebSearchCall>;
-
 export type ActionFindInPage = {
-  type: "find_in_page";
   pattern: string;
+  type: "find_in_page";
   url: string;
 };
 
@@ -30,54 +33,48 @@ export type ActionOpenPage = {
   url?: string | null | undefined;
 };
 
-export const TypeURL = {
-  Url: "url",
-} as const;
-export type TypeURL = ClosedEnum<typeof TypeURL>;
-
-export type Source = {
-  type: TypeURL;
-  url: string;
-};
-
 export type ActionSearch = {
-  type: "search";
-  query: string;
   queries?: Array<string> | undefined;
-  sources?: Array<Source> | undefined;
+  query: string;
+  sources?: Array<WebSearchSource> | undefined;
+  type: "search";
 };
 
-export type Action = ActionSearch | ActionOpenPage | ActionFindInPage;
+export type Action =
+  | ActionSearch
+  | ActionOpenPage
+  | ActionFindInPage
+  | discriminatedUnionTypes.Unknown<"type">;
+
+export const TypeWebSearchCall = {
+  WebSearchCall: "web_search_call",
+} as const;
+export type TypeWebSearchCall = ClosedEnum<typeof TypeWebSearchCall>;
 
 export type OutputWebSearchCallItem = {
-  type: TypeWebSearchCall;
+  action:
+    | ActionSearch
+    | ActionOpenPage
+    | ActionFindInPage
+    | discriminatedUnionTypes.Unknown<"type">;
   id: string;
-  action: ActionSearch | ActionOpenPage | ActionFindInPage;
   status: WebSearchStatus;
+  type: TypeWebSearchCall;
 };
-
-/** @internal */
-export const TypeWebSearchCall$inboundSchema: z.ZodEnum<
-  typeof TypeWebSearchCall
-> = z.enum(TypeWebSearchCall);
-/** @internal */
-export const TypeWebSearchCall$outboundSchema: z.ZodEnum<
-  typeof TypeWebSearchCall
-> = TypeWebSearchCall$inboundSchema;
 
 /** @internal */
 export const ActionFindInPage$inboundSchema: z.ZodType<
   ActionFindInPage,
   unknown
 > = z.object({
-  type: z.literal("find_in_page"),
   pattern: z.string(),
+  type: z.literal("find_in_page"),
   url: z.string(),
 });
 /** @internal */
 export type ActionFindInPage$Outbound = {
-  type: "find_in_page";
   pattern: string;
+  type: "find_in_page";
   url: string;
 };
 
@@ -86,8 +83,8 @@ export const ActionFindInPage$outboundSchema: z.ZodType<
   ActionFindInPage$Outbound,
   ActionFindInPage
 > = z.object({
-  type: z.literal("find_in_page"),
   pattern: z.string(),
+  type: z.literal("find_in_page"),
   url: z.string(),
 });
 
@@ -143,56 +140,19 @@ export function actionOpenPageFromJSON(
 }
 
 /** @internal */
-export const TypeURL$inboundSchema: z.ZodEnum<typeof TypeURL> = z.enum(TypeURL);
-/** @internal */
-export const TypeURL$outboundSchema: z.ZodEnum<typeof TypeURL> =
-  TypeURL$inboundSchema;
-
-/** @internal */
-export const Source$inboundSchema: z.ZodType<Source, unknown> = z.object({
-  type: TypeURL$inboundSchema,
-  url: z.string(),
-});
-/** @internal */
-export type Source$Outbound = {
-  type: string;
-  url: string;
-};
-
-/** @internal */
-export const Source$outboundSchema: z.ZodType<Source$Outbound, Source> = z
-  .object({
-    type: TypeURL$outboundSchema,
-    url: z.string(),
-  });
-
-export function sourceToJSON(source: Source): string {
-  return JSON.stringify(Source$outboundSchema.parse(source));
-}
-export function sourceFromJSON(
-  jsonString: string,
-): SafeParseResult<Source, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Source$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Source' from JSON`,
-  );
-}
-
-/** @internal */
 export const ActionSearch$inboundSchema: z.ZodType<ActionSearch, unknown> = z
   .object({
-    type: z.literal("search"),
-    query: z.string(),
     queries: z.array(z.string()).optional(),
-    sources: z.array(z.lazy(() => Source$inboundSchema)).optional(),
+    query: z.string(),
+    sources: z.array(WebSearchSource$inboundSchema).optional(),
+    type: z.literal("search"),
   });
 /** @internal */
 export type ActionSearch$Outbound = {
-  type: "search";
-  query: string;
   queries?: Array<string> | undefined;
-  sources?: Array<Source$Outbound> | undefined;
+  query: string;
+  sources?: Array<WebSearchSource$Outbound> | undefined;
+  type: "search";
 };
 
 /** @internal */
@@ -200,10 +160,10 @@ export const ActionSearch$outboundSchema: z.ZodType<
   ActionSearch$Outbound,
   ActionSearch
 > = z.object({
-  type: z.literal("search"),
-  query: z.string(),
   queries: z.array(z.string()).optional(),
-  sources: z.array(z.lazy(() => Source$outboundSchema)).optional(),
+  query: z.string(),
+  sources: z.array(WebSearchSource$outboundSchema).optional(),
+  type: z.literal("search"),
 });
 
 export function actionSearchToJSON(actionSearch: ActionSearch): string {
@@ -220,11 +180,12 @@ export function actionSearchFromJSON(
 }
 
 /** @internal */
-export const Action$inboundSchema: z.ZodType<Action, unknown> = z.union([
-  z.lazy(() => ActionSearch$inboundSchema),
-  z.lazy(() => ActionOpenPage$inboundSchema),
-  z.lazy(() => ActionFindInPage$inboundSchema),
-]);
+export const Action$inboundSchema: z.ZodType<Action, unknown> =
+  discriminatedUnion("type", {
+    search: z.lazy(() => ActionSearch$inboundSchema),
+    open_page: z.lazy(() => ActionOpenPage$inboundSchema),
+    find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
+  });
 /** @internal */
 export type Action$Outbound =
   | ActionSearch$Outbound
@@ -253,28 +214,37 @@ export function actionFromJSON(
 }
 
 /** @internal */
+export const TypeWebSearchCall$inboundSchema: z.ZodEnum<
+  typeof TypeWebSearchCall
+> = z.enum(TypeWebSearchCall);
+/** @internal */
+export const TypeWebSearchCall$outboundSchema: z.ZodEnum<
+  typeof TypeWebSearchCall
+> = TypeWebSearchCall$inboundSchema;
+
+/** @internal */
 export const OutputWebSearchCallItem$inboundSchema: z.ZodType<
   OutputWebSearchCallItem,
   unknown
 > = z.object({
-  type: TypeWebSearchCall$inboundSchema,
+  action: discriminatedUnion("type", {
+    search: z.lazy(() => ActionSearch$inboundSchema),
+    open_page: z.lazy(() => ActionOpenPage$inboundSchema),
+    find_in_page: z.lazy(() => ActionFindInPage$inboundSchema),
+  }),
   id: z.string(),
-  action: z.union([
-    z.lazy(() => ActionSearch$inboundSchema),
-    z.lazy(() => ActionOpenPage$inboundSchema),
-    z.lazy(() => ActionFindInPage$inboundSchema),
-  ]),
   status: WebSearchStatus$inboundSchema,
+  type: TypeWebSearchCall$inboundSchema,
 });
 /** @internal */
 export type OutputWebSearchCallItem$Outbound = {
-  type: string;
-  id: string;
   action:
     | ActionSearch$Outbound
     | ActionOpenPage$Outbound
     | ActionFindInPage$Outbound;
+  id: string;
   status: string;
+  type: string;
 };
 
 /** @internal */
@@ -282,14 +252,14 @@ export const OutputWebSearchCallItem$outboundSchema: z.ZodType<
   OutputWebSearchCallItem$Outbound,
   OutputWebSearchCallItem
 > = z.object({
-  type: TypeWebSearchCall$outboundSchema,
-  id: z.string(),
   action: z.union([
     z.lazy(() => ActionSearch$outboundSchema),
     z.lazy(() => ActionOpenPage$outboundSchema),
     z.lazy(() => ActionFindInPage$outboundSchema),
   ]),
+  id: z.string(),
   status: WebSearchStatus$outboundSchema,
+  type: TypeWebSearchCall$outboundSchema,
 });
 
 export function outputWebSearchCallItemToJSON(
