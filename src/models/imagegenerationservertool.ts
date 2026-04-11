@@ -25,8 +25,8 @@ export const InputFidelity = {
 export type InputFidelity = OpenEnum<typeof InputFidelity>;
 
 export type InputImageMask = {
-  imageUrl?: string | undefined;
   fileId?: string | undefined;
+  imageUrl?: string | undefined;
 };
 
 export const ModelEnum = {
@@ -68,7 +68,6 @@ export type Size = OpenEnum<typeof Size>;
  * Image generation tool configuration
  */
 export type ImageGenerationServerTool = {
-  type: "image_generation";
   background?: Background | undefined;
   inputFidelity?: InputFidelity | null | undefined;
   inputImageMask?: InputImageMask | undefined;
@@ -79,6 +78,7 @@ export type ImageGenerationServerTool = {
   partialImages?: number | undefined;
   quality?: Quality | undefined;
   size?: Size | undefined;
+  type: "image_generation";
 };
 
 /** @internal */
@@ -98,18 +98,18 @@ export const InputFidelity$outboundSchema: z.ZodType<string, InputFidelity> =
 /** @internal */
 export const InputImageMask$inboundSchema: z.ZodType<InputImageMask, unknown> =
   z.object({
-    image_url: z.string().optional(),
     file_id: z.string().optional(),
+    image_url: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
-      "image_url": "imageUrl",
       "file_id": "fileId",
+      "image_url": "imageUrl",
     });
   });
 /** @internal */
 export type InputImageMask$Outbound = {
-  image_url?: string | undefined;
   file_id?: string | undefined;
+  image_url?: string | undefined;
 };
 
 /** @internal */
@@ -117,12 +117,12 @@ export const InputImageMask$outboundSchema: z.ZodType<
   InputImageMask$Outbound,
   InputImageMask
 > = z.object({
-  imageUrl: z.string().optional(),
   fileId: z.string().optional(),
+  imageUrl: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    imageUrl: "image_url",
     fileId: "file_id",
+    imageUrl: "image_url",
   });
 });
 
@@ -179,17 +179,17 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
   ImageGenerationServerTool,
   unknown
 > = z.object({
-  type: z.literal("image_generation"),
   background: Background$inboundSchema.optional(),
   input_fidelity: z.nullable(InputFidelity$inboundSchema).optional(),
   input_image_mask: z.lazy(() => InputImageMask$inboundSchema).optional(),
   model: ModelEnum$inboundSchema.optional(),
   moderation: Moderation$inboundSchema.optional(),
-  output_compression: z.number().optional(),
+  output_compression: z.int().optional(),
   output_format: OutputFormat$inboundSchema.optional(),
-  partial_images: z.number().optional(),
+  partial_images: z.int().optional(),
   quality: Quality$inboundSchema.optional(),
   size: Size$inboundSchema.optional(),
+  type: z.literal("image_generation"),
 }).transform((v) => {
   return remap$(v, {
     "input_fidelity": "inputFidelity",
@@ -201,7 +201,6 @@ export const ImageGenerationServerTool$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ImageGenerationServerTool$Outbound = {
-  type: "image_generation";
   background?: string | undefined;
   input_fidelity?: string | null | undefined;
   input_image_mask?: InputImageMask$Outbound | undefined;
@@ -212,6 +211,7 @@ export type ImageGenerationServerTool$Outbound = {
   partial_images?: number | undefined;
   quality?: string | undefined;
   size?: string | undefined;
+  type: "image_generation";
 };
 
 /** @internal */
@@ -219,17 +219,17 @@ export const ImageGenerationServerTool$outboundSchema: z.ZodType<
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool
 > = z.object({
-  type: z.literal("image_generation"),
   background: Background$outboundSchema.optional(),
   inputFidelity: z.nullable(InputFidelity$outboundSchema).optional(),
   inputImageMask: z.lazy(() => InputImageMask$outboundSchema).optional(),
   model: ModelEnum$outboundSchema.optional(),
   moderation: Moderation$outboundSchema.optional(),
-  outputCompression: z.number().optional(),
+  outputCompression: z.int().optional(),
   outputFormat: OutputFormat$outboundSchema.optional(),
-  partialImages: z.number().optional(),
+  partialImages: z.int().optional(),
   quality: Quality$outboundSchema.optional(),
   size: Size$outboundSchema.optional(),
+  type: z.literal("image_generation"),
 }).transform((v) => {
   return remap$(v, {
     inputFidelity: "input_fidelity",
