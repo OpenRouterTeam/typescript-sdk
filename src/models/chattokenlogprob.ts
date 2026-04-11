@@ -10,9 +10,9 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatTokenLogprobTopLogprob = {
-  token: string;
-  logprob: number;
   bytes: Array<number> | null;
+  logprob: number;
+  token: string;
 };
 
 /**
@@ -20,17 +20,17 @@ export type ChatTokenLogprobTopLogprob = {
  */
 export type ChatTokenLogprob = {
   /**
-   * The token
+   * UTF-8 bytes of the token
    */
-  token: string;
+  bytes: Array<number> | null;
   /**
    * Log probability of the token
    */
   logprob: number;
   /**
-   * UTF-8 bytes of the token
+   * The token
    */
-  bytes: Array<number> | null;
+  token: string;
   /**
    * Top alternative tokens with probabilities
    */
@@ -42,9 +42,9 @@ export const ChatTokenLogprobTopLogprob$inboundSchema: z.ZodType<
   ChatTokenLogprobTopLogprob,
   unknown
 > = z.object({
-  token: z.string(),
+  bytes: z.nullable(z.array(z.int())),
   logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
+  token: z.string(),
 });
 
 export function chatTokenLogprobTopLogprobFromJSON(
@@ -62,9 +62,9 @@ export const ChatTokenLogprob$inboundSchema: z.ZodType<
   ChatTokenLogprob,
   unknown
 > = z.object({
-  token: z.string(),
+  bytes: z.nullable(z.array(z.int())),
   logprob: z.number(),
-  bytes: z.nullable(z.array(z.number())),
+  token: z.string(),
   top_logprobs: z.array(z.lazy(() => ChatTokenLogprobTopLogprob$inboundSchema)),
 }).transform((v) => {
   return remap$(v, {

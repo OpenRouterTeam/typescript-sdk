@@ -8,14 +8,14 @@ File content part for document processing
 import { ChatContentFile } from "@openrouter/sdk/models";
 
 let value: ChatContentFile = {
-  type: "file",
   file: {},
+  type: "file",
 };
 ```
 
 ## Fields
 
-| Field                                                          | Type                                                           | Required                                                       | Description                                                    |
-| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
-| `type`                                                         | [models.ChatContentFileType](../models/chatcontentfiletype.md) | :heavy_check_mark:                                             | N/A                                                            |
-| `file`                                                         | [models.FileT](../models/filet.md)                             | :heavy_check_mark:                                             | N/A                                                            |
+| Field                              | Type                               | Required                           | Description                        |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `file`                             | [models.FileT](../models/filet.md) | :heavy_check_mark:                 | N/A                                |
+| `type`                             | *"file"*                           | :heavy_check_mark:                 | N/A                                |

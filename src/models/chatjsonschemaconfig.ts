@@ -10,13 +10,13 @@ import * as z from "zod/v4";
  */
 export type ChatJsonSchemaConfig = {
   /**
-   * Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
-   */
-  name: string;
-  /**
    * Schema description for the model
    */
   description?: string | undefined;
+  /**
+   * Schema name (a-z, A-Z, 0-9, underscores, dashes, max 64 chars)
+   */
+  name: string;
   /**
    * JSON Schema object
    */
@@ -29,8 +29,8 @@ export type ChatJsonSchemaConfig = {
 
 /** @internal */
 export type ChatJsonSchemaConfig$Outbound = {
-  name: string;
   description?: string | undefined;
+  name: string;
   schema?: { [k: string]: any | null } | undefined;
   strict?: boolean | null | undefined;
 };
@@ -40,8 +40,8 @@ export const ChatJsonSchemaConfig$outboundSchema: z.ZodType<
   ChatJsonSchemaConfig$Outbound,
   ChatJsonSchemaConfig
 > = z.object({
-  name: z.string(),
   description: z.string().optional(),
+  name: z.string(),
   schema: z.record(z.string(), z.nullable(z.any())).optional(),
   strict: z.nullable(z.boolean()).optional(),
 });
