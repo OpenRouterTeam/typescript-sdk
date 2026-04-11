@@ -8,12 +8,12 @@ Event emitted when reasoning text delta is streamed
 import { ReasoningDeltaEvent } from "@openrouter/sdk/models";
 
 let value: ReasoningDeltaEvent = {
-  type: "response.reasoning_text.delta",
-  outputIndex: 7444.55,
-  itemId: "<id>",
-  contentIndex: 9044.46,
+  contentIndex: 744455,
   delta: "<value>",
+  itemId: "<id>",
+  outputIndex: 904446,
   sequenceNumber: 0,
+  type: "response.reasoning_text.delta",
 };
 ```
 
@@ -21,9 +21,9 @@ let value: ReasoningDeltaEvent = {
 
 | Field                             | Type                              | Required                          | Description                       |
 | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
-| `type`                            | *"response.reasoning_text.delta"* | :heavy_check_mark:                | N/A                               |
-| `outputIndex`                     | *number*                          | :heavy_check_mark:                | N/A                               |
-| `itemId`                          | *string*                          | :heavy_check_mark:                | N/A                               |
 | `contentIndex`                    | *number*                          | :heavy_check_mark:                | N/A                               |
 | `delta`                           | *string*                          | :heavy_check_mark:                | N/A                               |
+| `itemId`                          | *string*                          | :heavy_check_mark:                | N/A                               |
+| `outputIndex`                     | *number*                          | :heavy_check_mark:                | N/A                               |
 | `sequenceNumber`                  | *number*                          | :heavy_check_mark:                | N/A                               |
+| `type`                            | *"response.reasoning_text.delta"* | :heavy_check_mark:                | N/A                               |
