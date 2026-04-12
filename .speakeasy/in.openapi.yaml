@@ -5416,6 +5416,24 @@ components:
       required:
         - type
       type: object
+    FrameImage:
+      allOf:
+        - $ref: '#/components/schemas/ContentPartImage'
+        - properties:
+            frame_type:
+              description: Whether this image represents the first or last frame of the video
+              enum:
+                - first_frame
+                - last_frame
+              example: first_frame
+              type: string
+          required:
+            - frame_type
+          type: object
+      example:
+        image_url:
+          url: https://example.com/image.png
+        type: image_url
     FunctionCallArgsDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseFunctionCallArgsDeltaEvent'
@@ -12149,10 +12167,17 @@ components:
           exclusiveMinimum: true
           minimum: 0
           type: integer
+        frame_images:
+          description: >-
+            Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of
+            first_frame or last_frame.
+          items:
+            $ref: '#/components/schemas/FrameImage'
+          type: array
         generate_audio:
           description: >-
-            Whether to generate audio alongside the video. Defaults to true for models that support audio output, false
-            otherwise.
+            Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag,
+            false if not set.
           example: true
           type: boolean
         input_references:
@@ -12676,10 +12701,12 @@ components:
         canonical_slug: google/veo-3.1
         created: 1700000000
         description: Google video generation model
+        generate_audio: true
         id: google/veo-3.1
         name: Veo 3.1
         pricing_skus:
           generate: '0.50'
+        seed: null
         supported_aspect_ratios:
           - '16:9'
         supported_durations:
@@ -12706,6 +12733,10 @@ components:
           description: Description of the model
           example: GPT-4 is a large multimodal model that can solve difficult problems with greater accuracy.
           type: string
+        generate_audio:
+          description: Whether the model supports generating audio alongside video
+          nullable: true
+          type: boolean
         hugging_face_id:
           description: Hugging Face model identifier, if applicable
           example: microsoft/DialoGPT-medium
@@ -12725,6 +12756,10 @@ components:
           description: Pricing SKUs with provider prefix stripped, values as strings
           nullable: true
           type: object
+        seed:
+          description: Whether the model supports deterministic generation via seed parameter
+          nullable: true
+          type: boolean
         supported_aspect_ratios:
           description: Supported output aspect ratios
           items:
@@ -12802,6 +12837,8 @@ components:
         - supported_aspect_ratios
         - supported_sizes
         - supported_durations
+        - generate_audio
+        - seed
         - allowed_passthrough_parameters
       type: object
     VideoModelsListResponse:
@@ -12811,10 +12848,12 @@ components:
             canonical_slug: google/veo-3.1
             created: 1700000000
             description: Google video generation model
+            generate_audio: true
             id: google/veo-3.1
             name: Veo 3.1
             pricing_skus:
               generate: '0.50'
+            seed: null
             supported_aspect_ratios:
               - '16:9'
             supported_durations:
@@ -19125,10 +19164,12 @@ paths:
                     canonical_slug: google/veo-3.1
                     created: 1700000000
                     description: Google video generation model
+                    generate_audio: true
                     id: google/veo-3.1
                     name: Veo 3.1
                     pricing_skus:
                       generate: '0.50'
+                    seed: null
                     supported_aspect_ratios:
                       - '16:9'
                     supported_durations:
