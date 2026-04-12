@@ -1,0 +1,25 @@
+# VideoGenerationResponse
+
+## Example Usage
+
+```typescript
+import { VideoGenerationResponse } from "@openrouter/sdk/models";
+
+let value: VideoGenerationResponse = {
+  id: "job-abc123",
+  pollingUrl: "/api/v1/videos/job-abc123",
+  status: "pending",
+};
+```
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             | Example                                                                                                 |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `error`                                                                                                 | *string*                                                                                                | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |                                                                                                         |
+| `generationId`                                                                                          | *string*                                                                                                | :heavy_minus_sign:                                                                                      | The generation ID associated with this video generation job. Available once the job has been processed. |                                                                                                         |
+| `id`                                                                                                    | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |                                                                                                         |
+| `pollingUrl`                                                                                            | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |                                                                                                         |
+| `status`                                                                                                | [models.VideoGenerationResponseStatus](../models/videogenerationresponsestatus.md)                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |                                                                                                         |
+| `unsignedUrls`                                                                                          | *string*[]                                                                                              | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |                                                                                                         |
+| `usage`                                                                                                 | [models.VideoGenerationUsage](../models/videogenerationusage.md)                                        | :heavy_minus_sign:                                                                                      | Usage and cost information for the video generation. Available once the job has completed.              | {<br/>"cost": 0.5,<br/>"is_byok": false<br/>}                                                           |

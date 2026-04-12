@@ -6,8 +6,6 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
@@ -21,153 +19,66 @@ import {
   SearchContextSizeEnum$inboundSchema,
   SearchContextSizeEnum$outboundSchema,
 } from "./searchcontextsizeenum.js";
-
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export const Preview20250311WebSearchServerToolEngine = {
-  Auto: "auto",
-  Native: "native",
-  Exa: "exa",
-  Firecrawl: "firecrawl",
-  Parallel: "parallel",
-} as const;
-/**
- * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
- */
-export type Preview20250311WebSearchServerToolEngine = OpenEnum<
-  typeof Preview20250311WebSearchServerToolEngine
->;
-
-export type Preview20250311WebSearchServerToolFilters = {
-  allowedDomains?: Array<string> | null | undefined;
-  excludedDomains?: Array<string> | null | undefined;
-};
+import {
+  WebSearchDomainFilter,
+  WebSearchDomainFilter$inboundSchema,
+  WebSearchDomainFilter$Outbound,
+  WebSearchDomainFilter$outboundSchema,
+} from "./websearchdomainfilter.js";
+import {
+  WebSearchEngineEnum,
+  WebSearchEngineEnum$inboundSchema,
+  WebSearchEngineEnum$outboundSchema,
+} from "./websearchengineenum.js";
 
 /**
  * Web search preview tool configuration (2025-03-11 version)
  */
 export type Preview20250311WebSearchServerTool = {
-  type: "web_search_preview_2025_03_11";
-  /**
-   * Size of the search context for web search tools
-   */
-  searchContextSize?: SearchContextSizeEnum | undefined;
-  userLocation?: PreviewWebSearchUserLocation | null | undefined;
   /**
    * Which search engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in search. "exa" forces the Exa search API. "firecrawl" uses Firecrawl (requires BYOK). "parallel" uses the Parallel search API.
    */
-  engine?: Preview20250311WebSearchServerToolEngine | undefined;
+  engine?: WebSearchEngineEnum | undefined;
+  filters?: WebSearchDomainFilter | null | undefined;
   /**
    * Maximum number of search results to return per search call. Defaults to 5. Applies to Exa, Firecrawl, and Parallel engines; ignored with native provider search.
    */
   maxResults?: number | undefined;
-  filters?: Preview20250311WebSearchServerToolFilters | null | undefined;
+  /**
+   * Size of the search context for web search tools
+   */
+  searchContextSize?: SearchContextSizeEnum | undefined;
+  type: "web_search_preview_2025_03_11";
+  userLocation?: PreviewWebSearchUserLocation | null | undefined;
 };
-
-/** @internal */
-export const Preview20250311WebSearchServerToolEngine$inboundSchema: z.ZodType<
-  Preview20250311WebSearchServerToolEngine,
-  unknown
-> = openEnums.inboundSchema(Preview20250311WebSearchServerToolEngine);
-/** @internal */
-export const Preview20250311WebSearchServerToolEngine$outboundSchema: z.ZodType<
-  string,
-  Preview20250311WebSearchServerToolEngine
-> = openEnums.outboundSchema(Preview20250311WebSearchServerToolEngine);
-
-/** @internal */
-export const Preview20250311WebSearchServerToolFilters$inboundSchema: z.ZodType<
-  Preview20250311WebSearchServerToolFilters,
-  unknown
-> = z.object({
-  allowed_domains: z.nullable(z.array(z.string())).optional(),
-  excluded_domains: z.nullable(z.array(z.string())).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "allowed_domains": "allowedDomains",
-    "excluded_domains": "excludedDomains",
-  });
-});
-/** @internal */
-export type Preview20250311WebSearchServerToolFilters$Outbound = {
-  allowed_domains?: Array<string> | null | undefined;
-  excluded_domains?: Array<string> | null | undefined;
-};
-
-/** @internal */
-export const Preview20250311WebSearchServerToolFilters$outboundSchema:
-  z.ZodType<
-    Preview20250311WebSearchServerToolFilters$Outbound,
-    Preview20250311WebSearchServerToolFilters
-  > = z.object({
-    allowedDomains: z.nullable(z.array(z.string())).optional(),
-    excludedDomains: z.nullable(z.array(z.string())).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      allowedDomains: "allowed_domains",
-      excludedDomains: "excluded_domains",
-    });
-  });
-
-export function preview20250311WebSearchServerToolFiltersToJSON(
-  preview20250311WebSearchServerToolFilters:
-    Preview20250311WebSearchServerToolFilters,
-): string {
-  return JSON.stringify(
-    Preview20250311WebSearchServerToolFilters$outboundSchema.parse(
-      preview20250311WebSearchServerToolFilters,
-    ),
-  );
-}
-export function preview20250311WebSearchServerToolFiltersFromJSON(
-  jsonString: string,
-): SafeParseResult<
-  Preview20250311WebSearchServerToolFilters,
-  SDKValidationError
-> {
-  return safeParse(
-    jsonString,
-    (x) =>
-      Preview20250311WebSearchServerToolFilters$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'Preview20250311WebSearchServerToolFilters' from JSON`,
-  );
-}
 
 /** @internal */
 export const Preview20250311WebSearchServerTool$inboundSchema: z.ZodType<
   Preview20250311WebSearchServerTool,
   unknown
 > = z.object({
-  type: z.literal("web_search_preview_2025_03_11"),
+  engine: WebSearchEngineEnum$inboundSchema.optional(),
+  filters: z.nullable(WebSearchDomainFilter$inboundSchema).optional(),
+  max_results: z.int().optional(),
   search_context_size: SearchContextSizeEnum$inboundSchema.optional(),
+  type: z.literal("web_search_preview_2025_03_11"),
   user_location: z.nullable(PreviewWebSearchUserLocation$inboundSchema)
     .optional(),
-  engine: Preview20250311WebSearchServerToolEngine$inboundSchema.optional(),
-  max_results: z.number().optional(),
-  filters: z.nullable(
-    z.lazy(() => Preview20250311WebSearchServerToolFilters$inboundSchema),
-  ).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "max_results": "maxResults",
     "search_context_size": "searchContextSize",
     "user_location": "userLocation",
-    "max_results": "maxResults",
   });
 });
 /** @internal */
 export type Preview20250311WebSearchServerTool$Outbound = {
-  type: "web_search_preview_2025_03_11";
-  search_context_size?: string | undefined;
-  user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
   engine?: string | undefined;
+  filters?: WebSearchDomainFilter$Outbound | null | undefined;
   max_results?: number | undefined;
-  filters?:
-    | Preview20250311WebSearchServerToolFilters$Outbound
-    | null
-    | undefined;
+  search_context_size?: string | undefined;
+  type: "web_search_preview_2025_03_11";
+  user_location?: PreviewWebSearchUserLocation$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -175,20 +86,18 @@ export const Preview20250311WebSearchServerTool$outboundSchema: z.ZodType<
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool
 > = z.object({
-  type: z.literal("web_search_preview_2025_03_11"),
+  engine: WebSearchEngineEnum$outboundSchema.optional(),
+  filters: z.nullable(WebSearchDomainFilter$outboundSchema).optional(),
+  maxResults: z.int().optional(),
   searchContextSize: SearchContextSizeEnum$outboundSchema.optional(),
+  type: z.literal("web_search_preview_2025_03_11"),
   userLocation: z.nullable(PreviewWebSearchUserLocation$outboundSchema)
     .optional(),
-  engine: Preview20250311WebSearchServerToolEngine$outboundSchema.optional(),
-  maxResults: z.number().optional(),
-  filters: z.nullable(
-    z.lazy(() => Preview20250311WebSearchServerToolFilters$outboundSchema),
-  ).optional(),
 }).transform((v) => {
   return remap$(v, {
+    maxResults: "max_results",
     searchContextSize: "search_context_size",
     userLocation: "user_location",
-    maxResults: "max_results",
   });
 });
 
