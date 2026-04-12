@@ -10,6 +10,7 @@ sources:
             - location: .speakeasy/overlays/add-headers.overlay.yaml
             - location: .speakeasy/overlays/allof-simplify.overlay.yaml
             - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
+            - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

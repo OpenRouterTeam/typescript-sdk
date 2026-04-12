@@ -1,0 +1,42 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Mark model response fields as nullable
+  version: 0.0.0
+actions:
+  # DefaultParameters fields - API returns null for these number fields
+  - target: $.components.schemas.DefaultParameters.properties.frequency_penalty
+    description: Mark frequency_penalty as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.DefaultParameters.properties.presence_penalty
+    description: Mark presence_penalty as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.DefaultParameters.properties.repetition_penalty
+    description: Mark repetition_penalty as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.DefaultParameters.properties.temperature
+    description: Mark temperature as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.DefaultParameters.properties.top_p
+    description: Mark top_p as nullable
+    update:
+      nullable: true
+
+  # TopProviderInfo fields - API returns null for these integer fields
+  - target: $.components.schemas.TopProviderInfo.properties.context_length
+    description: Mark context_length as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.TopProviderInfo.properties.max_completion_tokens
+    description: Mark max_completion_tokens as nullable
+    update:
+      nullable: true
