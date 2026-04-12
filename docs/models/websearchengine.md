@@ -7,7 +7,7 @@ The search engine to use for web search.
 ```typescript
 import { WebSearchEngine } from "@openrouter/sdk/models";
 
-let value: WebSearchEngine = "native";
+let value: WebSearchEngine = "exa";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
