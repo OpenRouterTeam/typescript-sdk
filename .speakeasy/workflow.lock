@@ -2,8 +2,8 @@ speakeasyVersion: 1.761.0
 sources:
     OpenRouter API:
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:87266665422e9d6e5e28cda694187c2ce383c3a43c4f808668a7b17b4e129a22
-        sourceBlobDigest: sha256:79bd9c141c4e9a9838681324981fdfe076c21753cedee1f948707687ae45f1bd
+        sourceRevisionDigest: sha256:3af53a46d19759cbc5722cec3a918044aea7e61e4aea1f88473866ef7400e853
+        sourceBlobDigest: sha256:65867749e932dfcd62598e1bb3cfaf360f668104caa359ef346c830f0dd00e82
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     openrouter:
         source: OpenRouter API
         sourceNamespace: open-router-chat-completions-api
-        sourceRevisionDigest: sha256:87266665422e9d6e5e28cda694187c2ce383c3a43c4f808668a7b17b4e129a22
-        sourceBlobDigest: sha256:79bd9c141c4e9a9838681324981fdfe076c21753cedee1f948707687ae45f1bd
+        sourceRevisionDigest: sha256:3af53a46d19759cbc5722cec3a918044aea7e61e4aea1f88473866ef7400e853
+        sourceBlobDigest: sha256:65867749e932dfcd62598e1bb3cfaf360f668104caa359ef346c830f0dd00e82
         codeSamplesNamespace: open-router-chat-completions-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:9a832d36ae2ccf77b0f32fc8f6b84e621e9664d18dbedcfb148b061ceafd38f9
+        codeSamplesRevisionDigest: sha256:089d13712d858cf28e4449a06b8f767df659c19cc8ed2d3ad0405f6686d0c1c4
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.761.0
@@ -26,6 +26,8 @@ workflow:
                 - location: .speakeasy/overlays/open-enums.overlay.yaml
                 - location: .speakeasy/overlays/remove-rss-responses.overlay.yaml
                 - location: .speakeasy/overlays/add-headers.overlay.yaml
+                - location: .speakeasy/overlays/allof-simplify.overlay.yaml
+                - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api

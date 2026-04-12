@@ -60,10 +60,6 @@ export type GetCurrentKeyRequest = {
  */
 export type RateLimit = {
   /**
-   * Number of requests allowed per interval
-   */
-  requests: number;
-  /**
    * Rate limit interval
    */
   interval: string;
@@ -71,36 +67,16 @@ export type RateLimit = {
    * Note about the rate limit
    */
   note: string;
+  /**
+   * Number of requests allowed per interval
+   */
+  requests: number;
 };
 
 /**
  * Current API key information
  */
 export type GetCurrentKeyData = {
-  /**
-   * Human-readable label for the API key
-   */
-  label: string;
-  /**
-   * Spending limit for the API key in USD
-   */
-  limit: number | null;
-  /**
-   * Total OpenRouter credit usage (in USD) for the API key
-   */
-  usage: number;
-  /**
-   * OpenRouter credit usage (in USD) for the current UTC day
-   */
-  usageDaily: number;
-  /**
-   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
-   */
-  usageWeekly: number;
-  /**
-   * OpenRouter credit usage (in USD) for the current UTC month
-   */
-  usageMonthly: number;
   /**
    * Total external BYOK usage (in USD) for the API key
    */
@@ -110,13 +86,25 @@ export type GetCurrentKeyData = {
    */
   byokUsageDaily: number;
   /**
+   * External BYOK usage (in USD) for current UTC month
+   */
+  byokUsageMonthly: number;
+  /**
    * External BYOK usage (in USD) for the current UTC week (Monday-Sunday)
    */
   byokUsageWeekly: number;
   /**
-   * External BYOK usage (in USD) for current UTC month
+   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
    */
-  byokUsageMonthly: number;
+  creatorUserId: string | null;
+  /**
+   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
+   */
+  expiresAt?: Date | null | undefined;
+  /**
+   * Whether to include external BYOK usage in the credit limit
+   */
+  includeByokInLimit: boolean;
   /**
    * Whether this is a free tier API key
    */
@@ -132,31 +120,43 @@ export type GetCurrentKeyData = {
    */
   isProvisioningKey: boolean;
   /**
+   * Human-readable label for the API key
+   */
+  label: string;
+  /**
+   * Spending limit for the API key in USD
+   */
+  limit: number;
+  /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
   limitReset: string | null;
-  /**
-   * Whether to include external BYOK usage in the credit limit
-   */
-  includeByokInLimit: boolean;
-  /**
-   * ISO 8601 UTC timestamp when the API key expires, or null if no expiration
-   */
-  expiresAt?: Date | null | undefined;
-  /**
-   * The user ID of the key creator. For organization-owned keys, this is the member who created the key. For individual users, this is the user's own ID.
-   */
-  creatorUserId: string | null;
   /**
    * Legacy rate limit information about a key. Will always return -1.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   rateLimit: RateLimit;
+  /**
+   * Total OpenRouter credit usage (in USD) for the API key
+   */
+  usage: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC day
+   */
+  usageDaily: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC month
+   */
+  usageMonthly: number;
+  /**
+   * OpenRouter credit usage (in USD) for the current UTC week (Monday-Sunday)
+   */
+  usageWeekly: number;
 };
 
 /**
@@ -200,9 +200,9 @@ export function getCurrentKeyRequestToJSON(
 
 /** @internal */
 export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
-  requests: z.number(),
   interval: z.string(),
   note: z.string(),
+  requests: z.int(),
 });
 
 export function rateLimitFromJSON(
@@ -220,45 +220,45 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   GetCurrentKeyData,
   unknown
 > = z.object({
-  label: z.string(),
-  limit: z.nullable(z.number()),
-  usage: z.number(),
-  usage_daily: z.number(),
-  usage_weekly: z.number(),
-  usage_monthly: z.number(),
   byok_usage: z.number(),
   byok_usage_daily: z.number(),
-  byok_usage_weekly: z.number(),
   byok_usage_monthly: z.number(),
-  is_free_tier: z.boolean(),
-  is_management_key: z.boolean(),
-  is_provisioning_key: z.boolean(),
-  limit_remaining: z.nullable(z.number()),
-  limit_reset: z.nullable(z.string()),
-  include_byok_in_limit: z.boolean(),
+  byok_usage_weekly: z.number(),
+  creator_user_id: z.nullable(z.string()),
   expires_at: z.nullable(
     z.iso.datetime({ offset: true }).transform(v => new Date(v)),
   ).optional(),
-  creator_user_id: z.nullable(z.string()),
+  include_byok_in_limit: z.boolean(),
+  is_free_tier: z.boolean(),
+  is_management_key: z.boolean(),
+  is_provisioning_key: z.boolean(),
+  label: z.string(),
+  limit: z.number(),
+  limit_remaining: z.number(),
+  limit_reset: z.nullable(z.string()),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
+  usage: z.number(),
+  usage_daily: z.number(),
+  usage_monthly: z.number(),
+  usage_weekly: z.number(),
 }).transform((v) => {
   return remap$(v, {
-    "usage_daily": "usageDaily",
-    "usage_weekly": "usageWeekly",
-    "usage_monthly": "usageMonthly",
     "byok_usage": "byokUsage",
     "byok_usage_daily": "byokUsageDaily",
-    "byok_usage_weekly": "byokUsageWeekly",
     "byok_usage_monthly": "byokUsageMonthly",
+    "byok_usage_weekly": "byokUsageWeekly",
+    "creator_user_id": "creatorUserId",
+    "expires_at": "expiresAt",
+    "include_byok_in_limit": "includeByokInLimit",
     "is_free_tier": "isFreeTier",
     "is_management_key": "isManagementKey",
     "is_provisioning_key": "isProvisioningKey",
     "limit_remaining": "limitRemaining",
     "limit_reset": "limitReset",
-    "include_byok_in_limit": "includeByokInLimit",
-    "expires_at": "expiresAt",
-    "creator_user_id": "creatorUserId",
     "rate_limit": "rateLimit",
+    "usage_daily": "usageDaily",
+    "usage_monthly": "usageMonthly",
+    "usage_weekly": "usageWeekly",
   });
 });
 
