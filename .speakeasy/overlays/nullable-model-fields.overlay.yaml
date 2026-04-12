@@ -40,3 +40,49 @@ actions:
     description: Mark max_completion_tokens as nullable
     update:
       nullable: true
+
+  # BaseResponsesResult fields - Responses API returns null for these fields
+  - target: $.components.schemas.BaseResponsesResult.properties.error
+    description: Mark error as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.incomplete_details
+    description: Mark incomplete_details as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.instructions
+    description: Mark instructions as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.max_output_tokens
+    description: Mark max_output_tokens as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.max_tool_calls
+    description: Mark max_tool_calls as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.reasoning
+    description: Mark reasoning as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.text
+    description: Mark text as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.truncation
+    description: Mark truncation as nullable
+    update:
+      nullable: true
+
+  - target: $.components.schemas.BaseResponsesResult.properties.top_logprobs
+    description: Mark top_logprobs as nullable
+    update:
+      nullable: true
