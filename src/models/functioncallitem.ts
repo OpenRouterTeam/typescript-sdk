@@ -7,9 +7,9 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import { ClosedEnum } from "../types/enums.js";
 import {
-  ToolCallStatusEnum,
-  ToolCallStatusEnum$outboundSchema,
-} from "./toolcallstatusenum.js";
+  ToolCallStatus,
+  ToolCallStatus$outboundSchema,
+} from "./toolcallstatus.js";
 
 export const FunctionCallItemType = {
   FunctionCall: "function_call",
@@ -20,12 +20,12 @@ export type FunctionCallItemType = ClosedEnum<typeof FunctionCallItemType>;
  * A function call initiated by the model
  */
 export type FunctionCallItem = {
-  type: FunctionCallItemType;
-  callId: string;
-  name: string;
   arguments: string;
+  callId: string;
   id: string;
-  status?: ToolCallStatusEnum | null | undefined;
+  name: string;
+  status?: ToolCallStatus | undefined;
+  type: FunctionCallItemType;
 };
 
 /** @internal */
@@ -35,12 +35,12 @@ export const FunctionCallItemType$outboundSchema: z.ZodEnum<
 
 /** @internal */
 export type FunctionCallItem$Outbound = {
-  type: string;
-  call_id: string;
-  name: string;
   arguments: string;
+  call_id: string;
   id: string;
-  status?: string | null | undefined;
+  name: string;
+  status?: string | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -48,12 +48,12 @@ export const FunctionCallItem$outboundSchema: z.ZodType<
   FunctionCallItem$Outbound,
   FunctionCallItem
 > = z.object({
-  type: FunctionCallItemType$outboundSchema,
-  callId: z.string(),
-  name: z.string(),
   arguments: z.string(),
+  callId: z.string(),
   id: z.string(),
-  status: z.nullable(ToolCallStatusEnum$outboundSchema).optional(),
+  name: z.string(),
+  status: ToolCallStatus$outboundSchema.optional(),
+  type: FunctionCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
