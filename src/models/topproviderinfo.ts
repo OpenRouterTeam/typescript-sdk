@@ -16,7 +16,7 @@ export type TopProviderInfo = {
   /**
    * Context length from the top provider
    */
-  contextLength?: number | undefined;
+  contextLength?: number | null | undefined;
   /**
    * Whether the top provider moderates content
    */
@@ -24,7 +24,7 @@ export type TopProviderInfo = {
   /**
    * Maximum completion tokens from the top provider
    */
-  maxCompletionTokens?: number | undefined;
+  maxCompletionTokens?: number | null | undefined;
 };
 
 /** @internal */
@@ -32,9 +32,9 @@ export const TopProviderInfo$inboundSchema: z.ZodType<
   TopProviderInfo,
   unknown
 > = z.object({
-  context_length: z.int().optional(),
+  context_length: z.nullable(z.int()).optional(),
   is_moderated: z.boolean(),
-  max_completion_tokens: z.int().optional(),
+  max_completion_tokens: z.nullable(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "context_length": "contextLength",
