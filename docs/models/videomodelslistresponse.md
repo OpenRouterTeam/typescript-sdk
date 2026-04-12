@@ -1,0 +1,42 @@
+# VideoModelsListResponse
+
+## Example Usage
+
+```typescript
+import { VideoModelsListResponse } from "@openrouter/sdk/models";
+
+let value: VideoModelsListResponse = {
+  data: [
+    {
+      allowedPassthroughParameters: [],
+      canonicalSlug: "google/veo-3.1",
+      created: 1700000000,
+      generateAudio: true,
+      id: "google/veo-3.1",
+      name: "Veo 3.1",
+      seed: null,
+      supportedAspectRatios: [
+        "16:9",
+      ],
+      supportedDurations: [
+        5,
+        8,
+      ],
+      supportedFrameImages: [
+        "first_frame",
+        "last_frame",
+      ],
+      supportedResolutions: [
+        "720p",
+      ],
+      supportedSizes: null,
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                          | Type                                           | Required                                       | Description                                    |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| `data`                                         | [models.VideoModel](../models/videomodel.md)[] | :heavy_check_mark:                             | N/A                                            |

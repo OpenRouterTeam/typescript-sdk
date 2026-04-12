@@ -16,8 +16,8 @@ const value: string = "<value>";
 ```typescript
 const value: models.ChatContentItems[] = [
   {
-    type: "text",
     text: "Hello, world!",
+    type: "text",
   },
 ];
 ```
