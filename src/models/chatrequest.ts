@@ -6,7 +6,17 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { OpenEnum } from "../types/enums.js";
+import {
+  AnthropicCacheControlDirective,
+  AnthropicCacheControlDirective$Outbound,
+  AnthropicCacheControlDirective$outboundSchema,
+} from "./anthropiccachecontroldirective.js";
+import {
+  AutoRouterPlugin,
+  AutoRouterPlugin$Outbound,
+  AutoRouterPlugin$outboundSchema,
+} from "./autorouterplugin.js";
 import {
   ChatDebugOptions,
   ChatDebugOptions$Outbound,
@@ -43,6 +53,10 @@ import {
   ChatMessages$outboundSchema,
 } from "./chatmessages.js";
 import {
+  ChatReasoningSummaryVerbosityEnum,
+  ChatReasoningSummaryVerbosityEnum$outboundSchema,
+} from "./chatreasoningsummaryverbosityenum.js";
+import {
   ChatStreamOptions,
   ChatStreamOptions$Outbound,
   ChatStreamOptions$outboundSchema,
@@ -53,304 +67,62 @@ import {
   ChatToolChoice$outboundSchema,
 } from "./chattoolchoice.js";
 import {
-  ContextCompressionEngine,
-  ContextCompressionEngine$outboundSchema,
-} from "./contextcompressionengine.js";
+  ContextCompressionPlugin,
+  ContextCompressionPlugin$Outbound,
+  ContextCompressionPlugin$outboundSchema,
+} from "./contextcompressionplugin.js";
 import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
+  FileParserPlugin,
+  FileParserPlugin$Outbound,
+  FileParserPlugin$outboundSchema,
+} from "./fileparserplugin.js";
 import {
   FormatJsonObjectConfig,
   FormatJsonObjectConfig$Outbound,
   FormatJsonObjectConfig$outboundSchema,
 } from "./formatjsonobjectconfig.js";
 import {
-  PDFParserOptions,
-  PDFParserOptions$Outbound,
-  PDFParserOptions$outboundSchema,
-} from "./pdfparseroptions.js";
+  ModerationPlugin,
+  ModerationPlugin$Outbound,
+  ModerationPlugin$outboundSchema,
+} from "./moderationplugin.js";
 import {
-  PreferredMaxLatency,
-  PreferredMaxLatency$Outbound,
-  PreferredMaxLatency$outboundSchema,
-} from "./preferredmaxlatency.js";
+  ProviderPreferences,
+  ProviderPreferences$Outbound,
+  ProviderPreferences$outboundSchema,
+} from "./providerpreferences.js";
 import {
-  PreferredMinThroughput,
-  PreferredMinThroughput$Outbound,
-  PreferredMinThroughput$outboundSchema,
-} from "./preferredminthroughput.js";
-import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
-import { Quantization, Quantization$outboundSchema } from "./quantization.js";
+  ResponseHealingPlugin,
+  ResponseHealingPlugin$Outbound,
+  ResponseHealingPlugin$outboundSchema,
+} from "./responsehealingplugin.js";
 import {
-  WebSearchEngine,
-  WebSearchEngine$outboundSchema,
-} from "./websearchengine.js";
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
+import {
+  WebSearchPlugin,
+  WebSearchPlugin$Outbound,
+  WebSearchPlugin$outboundSchema,
+} from "./websearchplugin.js";
 
-export type ChatRequestOrder = ProviderName | string;
+export type ChatRequestImageConfig = string | number | Array<any | null>;
 
-export type ChatRequestOnly = ProviderName | string;
-
-export type ChatRequestIgnore = ProviderName | string;
-
-export const ChatRequestSortEnum = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
+export const Modality = {
+  Text: "text",
+  Image: "image",
+  Audio: "audio",
 } as const;
-export type ChatRequestSortEnum = OpenEnum<typeof ChatRequestSortEnum>;
+export type Modality = OpenEnum<typeof Modality>;
 
-export const ChatRequestProviderSortConfigEnum = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-export type ChatRequestProviderSortConfigEnum = ClosedEnum<
-  typeof ChatRequestProviderSortConfigEnum
->;
-
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export const ChatRequestBy = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type ChatRequestBy = OpenEnum<typeof ChatRequestBy>;
-
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export const ChatRequestPartition = {
-  Model: "model",
-  None: "none",
-} as const;
-/**
- * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
- */
-export type ChatRequestPartition = OpenEnum<typeof ChatRequestPartition>;
-
-export type ChatRequestProviderSortConfig = {
-  /**
-   * The provider sorting strategy (price, throughput, latency)
-   */
-  by?: ChatRequestBy | null | undefined;
-  /**
-   * Partitioning strategy for sorting: "model" (default) groups endpoints by model before sorting (fallback models remain fallbacks), "none" sorts all endpoints together regardless of model.
-   */
-  partition?: ChatRequestPartition | null | undefined;
-};
-
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type ChatRequestProviderSortConfigUnion =
-  | ChatRequestProviderSortConfig
-  | ChatRequestProviderSortConfigEnum;
-
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export const ChatRequestProviderSort = {
-  Price: "price",
-  Throughput: "throughput",
-  Latency: "latency",
-  Exacto: "exacto",
-} as const;
-/**
- * The provider sorting strategy (price, throughput, latency)
- */
-export type ChatRequestProviderSort = OpenEnum<typeof ChatRequestProviderSort>;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type ChatRequestSortUnion =
-  | ChatRequestProviderSort
-  | ChatRequestProviderSortConfig
-  | ChatRequestProviderSortConfigEnum
-  | ChatRequestSortEnum;
-
-/**
- * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
- */
-export type ChatRequestMaxPrice = {
-  /**
-   * Price per million prompt tokens
-   */
-  prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
-  request?: string | undefined;
-};
-
-/**
- * When multiple model providers are available, optionally indicate your routing preference.
- */
-export type ChatRequestProvider = {
-  /**
-   * Whether to allow backup providers to serve requests
-   *
-   * @remarks
-   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-   */
-  allowFallbacks?: boolean | null | undefined;
-  /**
-   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-   */
-  requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   *
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: DataCollection | null | undefined;
-  /**
-   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-   */
-  zdr?: boolean | null | undefined;
-  /**
-   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
-   */
-  enforceDistillableText?: boolean | null | undefined;
-  /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-   */
-  order?: Array<ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-   */
-  only?: Array<ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-   */
-  ignore?: Array<ProviderName | string> | null | undefined;
-  /**
-   * A list of quantization levels to filter the provider by.
-   */
-  quantizations?: Array<Quantization> | null | undefined;
-  sort?:
-    | ChatRequestProviderSort
-    | ChatRequestProviderSortConfig
-    | ChatRequestProviderSortConfigEnum
-    | ChatRequestSortEnum
-    | null
-    | undefined;
-  /**
-   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-   */
-  maxPrice?: ChatRequestMaxPrice | undefined;
-  /**
-   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
-  /**
-   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
-};
-
-export type ChatRequestPluginContextCompression = {
-  id: "context-compression";
-  /**
-   * Set to false to disable the context-compression plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * The compression engine to use. Defaults to "middle-out".
-   */
-  engine?: ContextCompressionEngine | undefined;
-};
-
-export type ChatRequestPluginResponseHealing = {
-  id: "response-healing";
-  /**
-   * Set to false to disable the response-healing plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-};
-
-export type ChatRequestPluginFileParser = {
-  id: "file-parser";
-  /**
-   * Set to false to disable the file-parser plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * Options for PDF parsing.
-   */
-  pdf?: PDFParserOptions | undefined;
-};
-
-export type ChatRequestPluginWeb = {
-  id: "web";
-  /**
-   * Set to false to disable the web-search plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  maxResults?: number | undefined;
-  searchPrompt?: string | undefined;
-  /**
-   * The search engine to use for web search.
-   */
-  engine?: WebSearchEngine | undefined;
-  /**
-   * A list of domains to restrict web search results to. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
-   */
-  includeDomains?: Array<string> | undefined;
-  /**
-   * A list of domains to exclude from web search results. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
-   */
-  excludeDomains?: Array<string> | undefined;
-};
-
-export type ChatRequestPluginModeration = {
-  id: "moderation";
-};
-
-export type ChatRequestPluginAutoRouter = {
-  id: "auto-router";
-  /**
-   * Set to false to disable the auto-router plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
-   */
-  allowedModels?: Array<string> | undefined;
-};
-
-export type ChatRequestPluginUnion =
-  | ChatRequestPluginAutoRouter
-  | ChatRequestPluginModeration
-  | ChatRequestPluginWeb
-  | ChatRequestPluginFileParser
-  | ChatRequestPluginResponseHealing
-  | ChatRequestPluginContextCompression;
-
-/**
- * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
- */
-export type ChatRequestTrace = {
-  traceId?: string | undefined;
-  traceName?: string | undefined;
-  spanName?: string | undefined;
-  generationName?: string | undefined;
-  parentSpanId?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
-};
+export type ChatRequestPlugin =
+  | AutoRouterPlugin
+  | ContextCompressionPlugin
+  | FileParserPlugin
+  | ModerationPlugin
+  | ResponseHealingPlugin
+  | WebSearchPlugin;
 
 /**
  * Constrains effort on reasoning for reasoning models
@@ -376,51 +148,18 @@ export type Reasoning = {
    * Constrains effort on reasoning for reasoning models
    */
   effort?: Effort | null | undefined;
-  summary?: any | null | undefined;
+  summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
 /**
  * Response format configuration
  */
 export type ResponseFormat =
-  | ChatFormatTextConfig
+  | ChatFormatGrammarConfig
   | FormatJsonObjectConfig
   | ChatFormatJsonSchemaConfig
-  | ChatFormatGrammarConfig
-  | ChatFormatPythonConfig;
-
-/**
- * Stop sequences (up to 4)
- */
-export type Stop = string | Array<string> | any;
-
-export type ChatRequestImageConfig = string | number | Array<any | null>;
-
-export const Modality = {
-  Text: "text",
-  Image: "image",
-  Audio: "audio",
-} as const;
-export type Modality = OpenEnum<typeof Modality>;
-
-export const ChatRequestType = {
-  Ephemeral: "ephemeral",
-} as const;
-export type ChatRequestType = ClosedEnum<typeof ChatRequestType>;
-
-export const ChatRequestTtl = {
-  Fivem: "5m",
-  Oneh: "1h",
-} as const;
-export type ChatRequestTtl = OpenEnum<typeof ChatRequestTtl>;
-
-/**
- * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
- */
-export type CacheControl = {
-  type: ChatRequestType;
-  ttl?: ChatRequestTtl | undefined;
-};
+  | ChatFormatPythonConfig
+  | ChatFormatTextConfig;
 
 /**
  * The service tier to use for processing this request.
@@ -438,54 +177,29 @@ export const ChatRequestServiceTier = {
 export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 
 /**
+ * Stop sequences (up to 4)
+ */
+export type Stop = string | Array<string> | any;
+
+/**
  * Chat completion request parameters
  */
 export type ChatRequest = {
+  cacheControl?: AnthropicCacheControlDirective | undefined;
   /**
-   * When multiple model providers are available, optionally indicate your routing preference.
+   * Debug options for inspecting request transformations (streaming only)
    */
-  provider?: ChatRequestProvider | null | undefined;
-  /**
-   * Plugins you want to enable for this request, including their settings.
-   */
-  plugins?:
-    | Array<
-      | ChatRequestPluginAutoRouter
-      | ChatRequestPluginModeration
-      | ChatRequestPluginWeb
-      | ChatRequestPluginFileParser
-      | ChatRequestPluginResponseHealing
-      | ChatRequestPluginContextCompression
-    >
-    | undefined;
-  /**
-   * Unique user identifier
-   */
-  user?: string | undefined;
-  /**
-   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
-   */
-  sessionId?: string | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: ChatRequestTrace | undefined;
-  /**
-   * List of messages for the conversation
-   */
-  messages: Array<ChatMessages>;
-  /**
-   * Model to use for completion
-   */
-  model?: string | undefined;
-  /**
-   * Models to use for completion
-   */
-  models?: Array<string> | undefined;
+  debug?: ChatDebugOptions | undefined;
   /**
    * Frequency penalty (-2.0 to 2.0)
    */
   frequencyPenalty?: number | null | undefined;
+  /**
+   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
+   */
+  imageConfig?:
+    | { [k: string]: string | number | Array<any | null> }
+    | undefined;
   /**
    * Token logit bias adjustments
    */
@@ -495,25 +209,58 @@ export type ChatRequest = {
    */
   logprobs?: boolean | null | undefined;
   /**
-   * Number of top log probabilities to return (0-20)
-   */
-  topLogprobs?: number | null | undefined;
-  /**
    * Maximum tokens in completion
    */
   maxCompletionTokens?: number | null | undefined;
   /**
    * Maximum tokens (deprecated, use max_completion_tokens). Note: some providers enforce a minimum of 16.
    */
-  maxTokens?: number | null | undefined;
+  maxTokens?: number | undefined;
+  /**
+   * List of messages for the conversation
+   */
+  messages: Array<ChatMessages>;
   /**
    * Key-value pairs for additional object information (max 16 pairs, 64 char keys, 512 char values)
    */
   metadata?: { [k: string]: string } | undefined;
   /**
+   * Output modalities for the response. Supported values are "text", "image", and "audio".
+   */
+  modalities?: Array<Modality> | undefined;
+  /**
+   * Model to use for completion
+   */
+  model?: string | undefined;
+  /**
+   * Models to use for completion
+   */
+  models?: Array<string> | undefined;
+  /**
+   * Whether to enable parallel function calling during tool use. When true, the model may generate multiple tool calls in a single response.
+   */
+  parallelToolCalls?: boolean | null | undefined;
+  /**
+   * Plugins you want to enable for this request, including their settings.
+   */
+  plugins?:
+    | Array<
+      | AutoRouterPlugin
+      | ContextCompressionPlugin
+      | FileParserPlugin
+      | ModerationPlugin
+      | ResponseHealingPlugin
+      | WebSearchPlugin
+    >
+    | undefined;
+  /**
    * Presence penalty (-2.0 to 2.0)
    */
   presencePenalty?: number | null | undefined;
+  /**
+   * When multiple model providers are available, optionally indicate your routing preference.
+   */
+  provider?: ProviderPreferences | null | undefined;
   /**
    * Configuration options for reasoning models
    */
@@ -522,16 +269,24 @@ export type ChatRequest = {
    * Response format configuration
    */
   responseFormat?:
-    | ChatFormatTextConfig
+    | ChatFormatGrammarConfig
     | FormatJsonObjectConfig
     | ChatFormatJsonSchemaConfig
-    | ChatFormatGrammarConfig
     | ChatFormatPythonConfig
+    | ChatFormatTextConfig
     | undefined;
   /**
    * Random seed for deterministic outputs
    */
-  seed?: number | null | undefined;
+  seed?: number | undefined;
+  /**
+   * The service tier to use for processing this request.
+   */
+  serviceTier?: ChatRequestServiceTier | null | undefined;
+  /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
   /**
    * Stop sequences (up to 4)
    */
@@ -548,7 +303,6 @@ export type ChatRequest = {
    * Sampling temperature (0-2)
    */
   temperature?: number | null | undefined;
-  parallelToolCalls?: boolean | null | undefined;
   /**
    * Tool choice configuration
    */
@@ -558,597 +312,22 @@ export type ChatRequest = {
    */
   tools?: Array<ChatFunctionTool> | undefined;
   /**
+   * Number of top log probabilities to return (0-20)
+   */
+  topLogprobs?: number | undefined;
+  /**
    * Nucleus sampling parameter (0-1)
    */
   topP?: number | null | undefined;
   /**
-   * Debug options for inspecting request transformations (streaming only)
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
-  debug?: ChatDebugOptions | undefined;
+  trace?: TraceConfig | undefined;
   /**
-   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
+   * Unique user identifier
    */
-  imageConfig?:
-    | { [k: string]: string | number | Array<any | null> }
-    | undefined;
-  /**
-   * Output modalities for the response. Supported values are "text", "image", and "audio".
-   */
-  modalities?: Array<Modality> | undefined;
-  /**
-   * Enable automatic prompt caching. When set, the system automatically applies cache breakpoints to the last cacheable block in the request. Currently supported for Anthropic Claude models.
-   */
-  cacheControl?: CacheControl | undefined;
-  /**
-   * The service tier to use for processing this request.
-   */
-  serviceTier?: ChatRequestServiceTier | null | undefined;
+  user?: string | undefined;
 };
-
-/** @internal */
-export type ChatRequestOrder$Outbound = string | string;
-
-/** @internal */
-export const ChatRequestOrder$outboundSchema: z.ZodType<
-  ChatRequestOrder$Outbound,
-  ChatRequestOrder
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function chatRequestOrderToJSON(
-  chatRequestOrder: ChatRequestOrder,
-): string {
-  return JSON.stringify(
-    ChatRequestOrder$outboundSchema.parse(chatRequestOrder),
-  );
-}
-
-/** @internal */
-export type ChatRequestOnly$Outbound = string | string;
-
-/** @internal */
-export const ChatRequestOnly$outboundSchema: z.ZodType<
-  ChatRequestOnly$Outbound,
-  ChatRequestOnly
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function chatRequestOnlyToJSON(
-  chatRequestOnly: ChatRequestOnly,
-): string {
-  return JSON.stringify(ChatRequestOnly$outboundSchema.parse(chatRequestOnly));
-}
-
-/** @internal */
-export type ChatRequestIgnore$Outbound = string | string;
-
-/** @internal */
-export const ChatRequestIgnore$outboundSchema: z.ZodType<
-  ChatRequestIgnore$Outbound,
-  ChatRequestIgnore
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function chatRequestIgnoreToJSON(
-  chatRequestIgnore: ChatRequestIgnore,
-): string {
-  return JSON.stringify(
-    ChatRequestIgnore$outboundSchema.parse(chatRequestIgnore),
-  );
-}
-
-/** @internal */
-export const ChatRequestSortEnum$outboundSchema: z.ZodType<
-  string,
-  ChatRequestSortEnum
-> = openEnums.outboundSchema(ChatRequestSortEnum);
-
-/** @internal */
-export const ChatRequestProviderSortConfigEnum$outboundSchema: z.ZodEnum<
-  typeof ChatRequestProviderSortConfigEnum
-> = z.enum(ChatRequestProviderSortConfigEnum);
-
-/** @internal */
-export const ChatRequestBy$outboundSchema: z.ZodType<string, ChatRequestBy> =
-  openEnums.outboundSchema(ChatRequestBy);
-
-/** @internal */
-export const ChatRequestPartition$outboundSchema: z.ZodType<
-  string,
-  ChatRequestPartition
-> = openEnums.outboundSchema(ChatRequestPartition);
-
-/** @internal */
-export type ChatRequestProviderSortConfig$Outbound = {
-  by?: string | null | undefined;
-  partition?: string | null | undefined;
-};
-
-/** @internal */
-export const ChatRequestProviderSortConfig$outboundSchema: z.ZodType<
-  ChatRequestProviderSortConfig$Outbound,
-  ChatRequestProviderSortConfig
-> = z.object({
-  by: z.nullable(ChatRequestBy$outboundSchema).optional(),
-  partition: z.nullable(ChatRequestPartition$outboundSchema).optional(),
-});
-
-export function chatRequestProviderSortConfigToJSON(
-  chatRequestProviderSortConfig: ChatRequestProviderSortConfig,
-): string {
-  return JSON.stringify(
-    ChatRequestProviderSortConfig$outboundSchema.parse(
-      chatRequestProviderSortConfig,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestProviderSortConfigUnion$Outbound =
-  | ChatRequestProviderSortConfig$Outbound
-  | string;
-
-/** @internal */
-export const ChatRequestProviderSortConfigUnion$outboundSchema: z.ZodType<
-  ChatRequestProviderSortConfigUnion$Outbound,
-  ChatRequestProviderSortConfigUnion
-> = z.union([
-  z.lazy(() => ChatRequestProviderSortConfig$outboundSchema),
-  ChatRequestProviderSortConfigEnum$outboundSchema,
-]);
-
-export function chatRequestProviderSortConfigUnionToJSON(
-  chatRequestProviderSortConfigUnion: ChatRequestProviderSortConfigUnion,
-): string {
-  return JSON.stringify(
-    ChatRequestProviderSortConfigUnion$outboundSchema.parse(
-      chatRequestProviderSortConfigUnion,
-    ),
-  );
-}
-
-/** @internal */
-export const ChatRequestProviderSort$outboundSchema: z.ZodType<
-  string,
-  ChatRequestProviderSort
-> = openEnums.outboundSchema(ChatRequestProviderSort);
-
-/** @internal */
-export type ChatRequestSortUnion$Outbound =
-  | string
-  | ChatRequestProviderSortConfig$Outbound
-  | string
-  | string;
-
-/** @internal */
-export const ChatRequestSortUnion$outboundSchema: z.ZodType<
-  ChatRequestSortUnion$Outbound,
-  ChatRequestSortUnion
-> = z.union([
-  ChatRequestProviderSort$outboundSchema,
-  z.union([
-    z.lazy(() => ChatRequestProviderSortConfig$outboundSchema),
-    ChatRequestProviderSortConfigEnum$outboundSchema,
-  ]),
-  ChatRequestSortEnum$outboundSchema,
-]);
-
-export function chatRequestSortUnionToJSON(
-  chatRequestSortUnion: ChatRequestSortUnion,
-): string {
-  return JSON.stringify(
-    ChatRequestSortUnion$outboundSchema.parse(chatRequestSortUnion),
-  );
-}
-
-/** @internal */
-export type ChatRequestMaxPrice$Outbound = {
-  prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
-  request?: string | undefined;
-};
-
-/** @internal */
-export const ChatRequestMaxPrice$outboundSchema: z.ZodType<
-  ChatRequestMaxPrice$Outbound,
-  ChatRequestMaxPrice
-> = z.object({
-  prompt: z.string().optional(),
-  completion: z.string().optional(),
-  image: z.string().optional(),
-  audio: z.string().optional(),
-  request: z.string().optional(),
-});
-
-export function chatRequestMaxPriceToJSON(
-  chatRequestMaxPrice: ChatRequestMaxPrice,
-): string {
-  return JSON.stringify(
-    ChatRequestMaxPrice$outboundSchema.parse(chatRequestMaxPrice),
-  );
-}
-
-/** @internal */
-export type ChatRequestProvider$Outbound = {
-  allow_fallbacks?: boolean | null | undefined;
-  require_parameters?: boolean | null | undefined;
-  data_collection?: string | null | undefined;
-  zdr?: boolean | null | undefined;
-  enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
-  ignore?: Array<string | string> | null | undefined;
-  quantizations?: Array<string> | null | undefined;
-  sort?:
-    | string
-    | ChatRequestProviderSortConfig$Outbound
-    | string
-    | string
-    | null
-    | undefined;
-  max_price?: ChatRequestMaxPrice$Outbound | undefined;
-  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
-  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
-};
-
-/** @internal */
-export const ChatRequestProvider$outboundSchema: z.ZodType<
-  ChatRequestProvider$Outbound,
-  ChatRequestProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(
-    z.array(z.union([ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([
-      ChatRequestProviderSort$outboundSchema,
-      z.union([
-        z.lazy(() => ChatRequestProviderSortConfig$outboundSchema),
-        ChatRequestProviderSortConfigEnum$outboundSchema,
-      ]),
-      ChatRequestSortEnum$outboundSchema,
-    ]),
-  ).optional(),
-  maxPrice: z.lazy(() => ChatRequestMaxPrice$outboundSchema).optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
-    .optional(),
-  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
-    preferredMaxLatency: "preferred_max_latency",
-  });
-});
-
-export function chatRequestProviderToJSON(
-  chatRequestProvider: ChatRequestProvider,
-): string {
-  return JSON.stringify(
-    ChatRequestProvider$outboundSchema.parse(chatRequestProvider),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginContextCompression$Outbound = {
-  id: "context-compression";
-  enabled?: boolean | undefined;
-  engine?: string | undefined;
-};
-
-/** @internal */
-export const ChatRequestPluginContextCompression$outboundSchema: z.ZodType<
-  ChatRequestPluginContextCompression$Outbound,
-  ChatRequestPluginContextCompression
-> = z.object({
-  id: z.literal("context-compression"),
-  enabled: z.boolean().optional(),
-  engine: ContextCompressionEngine$outboundSchema.optional(),
-});
-
-export function chatRequestPluginContextCompressionToJSON(
-  chatRequestPluginContextCompression: ChatRequestPluginContextCompression,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginContextCompression$outboundSchema.parse(
-      chatRequestPluginContextCompression,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginResponseHealing$Outbound = {
-  id: "response-healing";
-  enabled?: boolean | undefined;
-};
-
-/** @internal */
-export const ChatRequestPluginResponseHealing$outboundSchema: z.ZodType<
-  ChatRequestPluginResponseHealing$Outbound,
-  ChatRequestPluginResponseHealing
-> = z.object({
-  id: z.literal("response-healing"),
-  enabled: z.boolean().optional(),
-});
-
-export function chatRequestPluginResponseHealingToJSON(
-  chatRequestPluginResponseHealing: ChatRequestPluginResponseHealing,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginResponseHealing$outboundSchema.parse(
-      chatRequestPluginResponseHealing,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginFileParser$Outbound = {
-  id: "file-parser";
-  enabled?: boolean | undefined;
-  pdf?: PDFParserOptions$Outbound | undefined;
-};
-
-/** @internal */
-export const ChatRequestPluginFileParser$outboundSchema: z.ZodType<
-  ChatRequestPluginFileParser$Outbound,
-  ChatRequestPluginFileParser
-> = z.object({
-  id: z.literal("file-parser"),
-  enabled: z.boolean().optional(),
-  pdf: PDFParserOptions$outboundSchema.optional(),
-});
-
-export function chatRequestPluginFileParserToJSON(
-  chatRequestPluginFileParser: ChatRequestPluginFileParser,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginFileParser$outboundSchema.parse(
-      chatRequestPluginFileParser,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginWeb$Outbound = {
-  id: "web";
-  enabled?: boolean | undefined;
-  max_results?: number | undefined;
-  search_prompt?: string | undefined;
-  engine?: string | undefined;
-  include_domains?: Array<string> | undefined;
-  exclude_domains?: Array<string> | undefined;
-};
-
-/** @internal */
-export const ChatRequestPluginWeb$outboundSchema: z.ZodType<
-  ChatRequestPluginWeb$Outbound,
-  ChatRequestPluginWeb
-> = z.object({
-  id: z.literal("web"),
-  enabled: z.boolean().optional(),
-  maxResults: z.number().optional(),
-  searchPrompt: z.string().optional(),
-  engine: WebSearchEngine$outboundSchema.optional(),
-  includeDomains: z.array(z.string()).optional(),
-  excludeDomains: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxResults: "max_results",
-    searchPrompt: "search_prompt",
-    includeDomains: "include_domains",
-    excludeDomains: "exclude_domains",
-  });
-});
-
-export function chatRequestPluginWebToJSON(
-  chatRequestPluginWeb: ChatRequestPluginWeb,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginWeb$outboundSchema.parse(chatRequestPluginWeb),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginModeration$Outbound = {
-  id: "moderation";
-};
-
-/** @internal */
-export const ChatRequestPluginModeration$outboundSchema: z.ZodType<
-  ChatRequestPluginModeration$Outbound,
-  ChatRequestPluginModeration
-> = z.object({
-  id: z.literal("moderation"),
-});
-
-export function chatRequestPluginModerationToJSON(
-  chatRequestPluginModeration: ChatRequestPluginModeration,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginModeration$outboundSchema.parse(
-      chatRequestPluginModeration,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginAutoRouter$Outbound = {
-  id: "auto-router";
-  enabled?: boolean | undefined;
-  allowed_models?: Array<string> | undefined;
-};
-
-/** @internal */
-export const ChatRequestPluginAutoRouter$outboundSchema: z.ZodType<
-  ChatRequestPluginAutoRouter$Outbound,
-  ChatRequestPluginAutoRouter
-> = z.object({
-  id: z.literal("auto-router"),
-  enabled: z.boolean().optional(),
-  allowedModels: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedModels: "allowed_models",
-  });
-});
-
-export function chatRequestPluginAutoRouterToJSON(
-  chatRequestPluginAutoRouter: ChatRequestPluginAutoRouter,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginAutoRouter$outboundSchema.parse(
-      chatRequestPluginAutoRouter,
-    ),
-  );
-}
-
-/** @internal */
-export type ChatRequestPluginUnion$Outbound =
-  | ChatRequestPluginAutoRouter$Outbound
-  | ChatRequestPluginModeration$Outbound
-  | ChatRequestPluginWeb$Outbound
-  | ChatRequestPluginFileParser$Outbound
-  | ChatRequestPluginResponseHealing$Outbound
-  | ChatRequestPluginContextCompression$Outbound;
-
-/** @internal */
-export const ChatRequestPluginUnion$outboundSchema: z.ZodType<
-  ChatRequestPluginUnion$Outbound,
-  ChatRequestPluginUnion
-> = z.union([
-  z.lazy(() => ChatRequestPluginAutoRouter$outboundSchema),
-  z.lazy(() => ChatRequestPluginModeration$outboundSchema),
-  z.lazy(() => ChatRequestPluginWeb$outboundSchema),
-  z.lazy(() => ChatRequestPluginFileParser$outboundSchema),
-  z.lazy(() => ChatRequestPluginResponseHealing$outboundSchema),
-  z.lazy(() => ChatRequestPluginContextCompression$outboundSchema),
-]);
-
-export function chatRequestPluginUnionToJSON(
-  chatRequestPluginUnion: ChatRequestPluginUnion,
-): string {
-  return JSON.stringify(
-    ChatRequestPluginUnion$outboundSchema.parse(chatRequestPluginUnion),
-  );
-}
-
-/** @internal */
-export type ChatRequestTrace$Outbound = {
-  trace_id?: string | undefined;
-  trace_name?: string | undefined;
-  span_name?: string | undefined;
-  generation_name?: string | undefined;
-  parent_span_id?: string | undefined;
-  [additionalProperties: string]: unknown;
-};
-
-/** @internal */
-export const ChatRequestTrace$outboundSchema: z.ZodType<
-  ChatRequestTrace$Outbound,
-  ChatRequestTrace
-> = z.object({
-  traceId: z.string().optional(),
-  traceName: z.string().optional(),
-  spanName: z.string().optional(),
-  generationName: z.string().optional(),
-  parentSpanId: z.string().optional(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
-}).transform((v) => {
-  return {
-    ...v.additionalProperties,
-    ...remap$(v, {
-      traceId: "trace_id",
-      traceName: "trace_name",
-      spanName: "span_name",
-      generationName: "generation_name",
-      parentSpanId: "parent_span_id",
-      additionalProperties: null,
-    }),
-  };
-});
-
-export function chatRequestTraceToJSON(
-  chatRequestTrace: ChatRequestTrace,
-): string {
-  return JSON.stringify(
-    ChatRequestTrace$outboundSchema.parse(chatRequestTrace),
-  );
-}
-
-/** @internal */
-export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
-  .outboundSchema(Effort);
-
-/** @internal */
-export type Reasoning$Outbound = {
-  effort?: string | null | undefined;
-  summary?: any | null | undefined;
-};
-
-/** @internal */
-export const Reasoning$outboundSchema: z.ZodType<
-  Reasoning$Outbound,
-  Reasoning
-> = z.object({
-  effort: z.nullable(Effort$outboundSchema).optional(),
-  summary: z.nullable(z.any()).optional(),
-});
-
-export function reasoningToJSON(reasoning: Reasoning): string {
-  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
-}
-
-/** @internal */
-export type ResponseFormat$Outbound =
-  | ChatFormatTextConfig$Outbound
-  | FormatJsonObjectConfig$Outbound
-  | ChatFormatJsonSchemaConfig$Outbound
-  | ChatFormatGrammarConfig$Outbound
-  | ChatFormatPythonConfig$Outbound;
-
-/** @internal */
-export const ResponseFormat$outboundSchema: z.ZodType<
-  ResponseFormat$Outbound,
-  ResponseFormat
-> = z.union([
-  ChatFormatTextConfig$outboundSchema,
-  FormatJsonObjectConfig$outboundSchema,
-  ChatFormatJsonSchemaConfig$outboundSchema,
-  ChatFormatGrammarConfig$outboundSchema,
-  ChatFormatPythonConfig$outboundSchema,
-]);
-
-export function responseFormatToJSON(responseFormat: ResponseFormat): string {
-  return JSON.stringify(ResponseFormat$outboundSchema.parse(responseFormat));
-}
-
-/** @internal */
-export type Stop$Outbound = string | Array<string> | any;
-
-/** @internal */
-export const Stop$outboundSchema: z.ZodType<Stop$Outbound, Stop> = z.union([
-  z.string(),
-  z.array(z.string()),
-  z.any(),
-]);
-
-export function stopToJSON(stop: Stop): string {
-  return JSON.stringify(Stop$outboundSchema.parse(stop));
-}
 
 /** @internal */
 export type ChatRequestImageConfig$Outbound =
@@ -1175,30 +354,81 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
   .outboundSchema(Modality);
 
 /** @internal */
-export const ChatRequestType$outboundSchema: z.ZodEnum<typeof ChatRequestType> =
-  z.enum(ChatRequestType);
+export type ChatRequestPlugin$Outbound =
+  | AutoRouterPlugin$Outbound
+  | ContextCompressionPlugin$Outbound
+  | FileParserPlugin$Outbound
+  | ModerationPlugin$Outbound
+  | ResponseHealingPlugin$Outbound
+  | WebSearchPlugin$Outbound;
 
 /** @internal */
-export const ChatRequestTtl$outboundSchema: z.ZodType<string, ChatRequestTtl> =
-  openEnums.outboundSchema(ChatRequestTtl);
+export const ChatRequestPlugin$outboundSchema: z.ZodType<
+  ChatRequestPlugin$Outbound,
+  ChatRequestPlugin
+> = z.union([
+  AutoRouterPlugin$outboundSchema,
+  ContextCompressionPlugin$outboundSchema,
+  FileParserPlugin$outboundSchema,
+  ModerationPlugin$outboundSchema,
+  ResponseHealingPlugin$outboundSchema,
+  WebSearchPlugin$outboundSchema,
+]);
+
+export function chatRequestPluginToJSON(
+  chatRequestPlugin: ChatRequestPlugin,
+): string {
+  return JSON.stringify(
+    ChatRequestPlugin$outboundSchema.parse(chatRequestPlugin),
+  );
+}
 
 /** @internal */
-export type CacheControl$Outbound = {
-  type: string;
-  ttl?: string | undefined;
+export const Effort$outboundSchema: z.ZodType<string, Effort> = openEnums
+  .outboundSchema(Effort);
+
+/** @internal */
+export type Reasoning$Outbound = {
+  effort?: string | null | undefined;
+  summary?: string | null | undefined;
 };
 
 /** @internal */
-export const CacheControl$outboundSchema: z.ZodType<
-  CacheControl$Outbound,
-  CacheControl
+export const Reasoning$outboundSchema: z.ZodType<
+  Reasoning$Outbound,
+  Reasoning
 > = z.object({
-  type: ChatRequestType$outboundSchema,
-  ttl: ChatRequestTtl$outboundSchema.optional(),
+  effort: z.nullable(Effort$outboundSchema).optional(),
+  summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
+    .optional(),
 });
 
-export function cacheControlToJSON(cacheControl: CacheControl): string {
-  return JSON.stringify(CacheControl$outboundSchema.parse(cacheControl));
+export function reasoningToJSON(reasoning: Reasoning): string {
+  return JSON.stringify(Reasoning$outboundSchema.parse(reasoning));
+}
+
+/** @internal */
+export type ResponseFormat$Outbound =
+  | ChatFormatGrammarConfig$Outbound
+  | FormatJsonObjectConfig$Outbound
+  | ChatFormatJsonSchemaConfig$Outbound
+  | ChatFormatPythonConfig$Outbound
+  | ChatFormatTextConfig$Outbound;
+
+/** @internal */
+export const ResponseFormat$outboundSchema: z.ZodType<
+  ResponseFormat$Outbound,
+  ResponseFormat
+> = z.union([
+  ChatFormatGrammarConfig$outboundSchema,
+  FormatJsonObjectConfig$outboundSchema,
+  ChatFormatJsonSchemaConfig$outboundSchema,
+  ChatFormatPythonConfig$outboundSchema,
+  ChatFormatTextConfig$outboundSchema,
+]);
+
+export function responseFormatToJSON(responseFormat: ResponseFormat): string {
+  return JSON.stringify(ResponseFormat$outboundSchema.parse(responseFormat));
 }
 
 /** @internal */
@@ -1208,56 +438,70 @@ export const ChatRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ChatRequestServiceTier);
 
 /** @internal */
+export type Stop$Outbound = string | Array<string> | any;
+
+/** @internal */
+export const Stop$outboundSchema: z.ZodType<Stop$Outbound, Stop> = z.union([
+  z.string(),
+  z.array(z.string()),
+  z.any(),
+]);
+
+export function stopToJSON(stop: Stop): string {
+  return JSON.stringify(Stop$outboundSchema.parse(stop));
+}
+
+/** @internal */
 export type ChatRequest$Outbound = {
-  provider?: ChatRequestProvider$Outbound | null | undefined;
-  plugins?:
-    | Array<
-      | ChatRequestPluginAutoRouter$Outbound
-      | ChatRequestPluginModeration$Outbound
-      | ChatRequestPluginWeb$Outbound
-      | ChatRequestPluginFileParser$Outbound
-      | ChatRequestPluginResponseHealing$Outbound
-      | ChatRequestPluginContextCompression$Outbound
-    >
-    | undefined;
-  user?: string | undefined;
-  session_id?: string | undefined;
-  trace?: ChatRequestTrace$Outbound | undefined;
-  messages: Array<ChatMessages$Outbound>;
-  model?: string | undefined;
-  models?: Array<string> | undefined;
-  frequency_penalty?: number | null | undefined;
-  logit_bias?: { [k: string]: number } | null | undefined;
-  logprobs?: boolean | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_completion_tokens?: number | null | undefined;
-  max_tokens?: number | null | undefined;
-  metadata?: { [k: string]: string } | undefined;
-  presence_penalty?: number | null | undefined;
-  reasoning?: Reasoning$Outbound | undefined;
-  response_format?:
-    | ChatFormatTextConfig$Outbound
-    | FormatJsonObjectConfig$Outbound
-    | ChatFormatJsonSchemaConfig$Outbound
-    | ChatFormatGrammarConfig$Outbound
-    | ChatFormatPythonConfig$Outbound
-    | undefined;
-  seed?: number | null | undefined;
-  stop?: string | Array<string> | any | null | undefined;
-  stream: boolean;
-  stream_options?: ChatStreamOptions$Outbound | null | undefined;
-  temperature: number | null;
-  parallel_tool_calls?: boolean | null | undefined;
-  tool_choice?: ChatToolChoice$Outbound | undefined;
-  tools?: Array<ChatFunctionTool$Outbound> | undefined;
-  top_p: number | null;
+  cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
+  frequency_penalty?: number | null | undefined;
   image_config?:
     | { [k: string]: string | number | Array<any | null> }
     | undefined;
+  logit_bias?: { [k: string]: number } | null | undefined;
+  logprobs?: boolean | null | undefined;
+  max_completion_tokens?: number | null | undefined;
+  max_tokens?: number | undefined;
+  messages: Array<ChatMessages$Outbound>;
+  metadata?: { [k: string]: string } | undefined;
   modalities?: Array<string> | undefined;
-  cache_control?: CacheControl$Outbound | undefined;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
+  parallel_tool_calls?: boolean | null | undefined;
+  plugins?:
+    | Array<
+      | AutoRouterPlugin$Outbound
+      | ContextCompressionPlugin$Outbound
+      | FileParserPlugin$Outbound
+      | ModerationPlugin$Outbound
+      | ResponseHealingPlugin$Outbound
+      | WebSearchPlugin$Outbound
+    >
+    | undefined;
+  presence_penalty?: number | null | undefined;
+  provider?: ProviderPreferences$Outbound | null | undefined;
+  reasoning?: Reasoning$Outbound | undefined;
+  response_format?:
+    | ChatFormatGrammarConfig$Outbound
+    | FormatJsonObjectConfig$Outbound
+    | ChatFormatJsonSchemaConfig$Outbound
+    | ChatFormatPythonConfig$Outbound
+    | ChatFormatTextConfig$Outbound
+    | undefined;
+  seed?: number | undefined;
   service_tier?: string | null | undefined;
+  session_id?: string | undefined;
+  stop?: string | Array<string> | any | null | undefined;
+  stream: boolean;
+  stream_options?: ChatStreamOptions$Outbound | null | undefined;
+  temperature?: number | null | undefined;
+  tool_choice?: ChatToolChoice$Outbound | undefined;
+  tools?: Array<ChatFunctionTool$Outbound> | undefined;
+  top_logprobs?: number | undefined;
+  top_p?: number | null | undefined;
+  trace?: TraceConfig$Outbound | undefined;
+  user?: string | undefined;
 };
 
 /** @internal */
@@ -1265,75 +509,74 @@ export const ChatRequest$outboundSchema: z.ZodType<
   ChatRequest$Outbound,
   ChatRequest
 > = z.object({
-  provider: z.nullable(z.lazy(() => ChatRequestProvider$outboundSchema))
-    .optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => ChatRequestPluginAutoRouter$outboundSchema),
-      z.lazy(() => ChatRequestPluginModeration$outboundSchema),
-      z.lazy(() => ChatRequestPluginWeb$outboundSchema),
-      z.lazy(() => ChatRequestPluginFileParser$outboundSchema),
-      z.lazy(() => ChatRequestPluginResponseHealing$outboundSchema),
-      z.lazy(() => ChatRequestPluginContextCompression$outboundSchema),
-    ]),
-  ).optional(),
-  user: z.string().optional(),
-  sessionId: z.string().optional(),
-  trace: z.lazy(() => ChatRequestTrace$outboundSchema).optional(),
-  messages: z.array(ChatMessages$outboundSchema),
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
-  logprobs: z.nullable(z.boolean()).optional(),
-  topLogprobs: z.nullable(z.number()).optional(),
-  maxCompletionTokens: z.nullable(z.number()).optional(),
-  maxTokens: z.nullable(z.number()).optional(),
-  metadata: z.record(z.string(), z.string()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
-  responseFormat: z.union([
-    ChatFormatTextConfig$outboundSchema,
-    FormatJsonObjectConfig$outboundSchema,
-    ChatFormatJsonSchemaConfig$outboundSchema,
-    ChatFormatGrammarConfig$outboundSchema,
-    ChatFormatPythonConfig$outboundSchema,
-  ]).optional(),
-  seed: z.nullable(z.int()).optional(),
-  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
-    .optional(),
-  stream: z.boolean().default(false),
-  streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
-  temperature: z.nullable(z.number().default(1)),
-  parallelToolCalls: z.nullable(z.boolean()).optional(),
-  toolChoice: ChatToolChoice$outboundSchema.optional(),
-  tools: z.array(ChatFunctionTool$outboundSchema).optional(),
-  topP: z.nullable(z.number().default(1)),
+  cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
+  frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(
     z.string(),
     z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]),
   ).optional(),
+  logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
+  logprobs: z.nullable(z.boolean()).optional(),
+  maxCompletionTokens: z.nullable(z.int()).optional(),
+  maxTokens: z.int().optional(),
+  messages: z.array(ChatMessages$outboundSchema),
+  metadata: z.record(z.string(), z.string()).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
-  cacheControl: z.lazy(() => CacheControl$outboundSchema).optional(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
+  parallelToolCalls: z.nullable(z.boolean()).optional(),
+  plugins: z.array(
+    z.union([
+      AutoRouterPlugin$outboundSchema,
+      ContextCompressionPlugin$outboundSchema,
+      FileParserPlugin$outboundSchema,
+      ModerationPlugin$outboundSchema,
+      ResponseHealingPlugin$outboundSchema,
+      WebSearchPlugin$outboundSchema,
+    ]),
+  ).optional(),
+  presencePenalty: z.nullable(z.number()).optional(),
+  provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
+  reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
+  responseFormat: z.union([
+    ChatFormatGrammarConfig$outboundSchema,
+    FormatJsonObjectConfig$outboundSchema,
+    ChatFormatJsonSchemaConfig$outboundSchema,
+    ChatFormatPythonConfig$outboundSchema,
+    ChatFormatTextConfig$outboundSchema,
+  ]).optional(),
+  seed: z.int().optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
+  sessionId: z.string().optional(),
+  stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
+    .optional(),
+  stream: z.boolean().default(false),
+  streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
+  temperature: z.nullable(z.number()).optional(),
+  toolChoice: ChatToolChoice$outboundSchema.optional(),
+  tools: z.array(ChatFunctionTool$outboundSchema).optional(),
+  topLogprobs: z.int().optional(),
+  topP: z.nullable(z.number()).optional(),
+  trace: TraceConfig$outboundSchema.optional(),
+  user: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
-    sessionId: "session_id",
+    cacheControl: "cache_control",
     frequencyPenalty: "frequency_penalty",
+    imageConfig: "image_config",
     logitBias: "logit_bias",
-    topLogprobs: "top_logprobs",
     maxCompletionTokens: "max_completion_tokens",
     maxTokens: "max_tokens",
+    parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
     responseFormat: "response_format",
-    streamOptions: "stream_options",
-    parallelToolCalls: "parallel_tool_calls",
-    toolChoice: "tool_choice",
-    topP: "top_p",
-    imageConfig: "image_config",
-    cacheControl: "cache_control",
     serviceTier: "service_tier",
+    sessionId: "session_id",
+    streamOptions: "stream_options",
+    toolChoice: "tool_choice",
+    topLogprobs: "top_logprobs",
+    topP: "top_p",
   });
 });
 

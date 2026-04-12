@@ -9,28 +9,28 @@ import { CreateResponsesResponseBody } from "@openrouter/sdk/models/operations";
 
 let value: CreateResponsesResponseBody = {
   data: {
-    type: "response.created",
     response: {
-      id: "resp-abc123",
-      object: "response",
+      completedAt: 798483,
       createdAt: 1704067200,
-      model: "gpt-4",
-      status: "in_progress",
-      completedAt: 8101.12,
-      output: [],
       error: null,
+      frequencyPenalty: 9758.23,
+      id: "resp-abc123",
       incompleteDetails: null,
-      temperature: null,
-      topP: null,
-      presencePenalty: 8087.26,
-      frequencyPenalty: 4886.88,
       instructions: null,
       metadata: null,
-      tools: [],
-      toolChoice: "auto",
+      model: "gpt-4",
+      object: "response",
+      output: [],
       parallelToolCalls: true,
+      presencePenalty: 4800.08,
+      status: "in_progress",
+      temperature: null,
+      toolChoice: "auto",
+      tools: [],
+      topP: null,
     },
     sequenceNumber: 0,
+    type: "response.created",
   },
 };
 ```
@@ -39,4 +39,4 @@ let value: CreateResponsesResponseBody = {
 
 | Field                                                                                                                                                                                                                                                                                                                                                                                                                 | Type                                                                                                                                                                                                                                                                                                                                                                                                                  | Required                                                                                                                                                                                                                                                                                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                                                                                                           | Example                                                                                                                                                                                                                                                                                                                                                                                                               |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`                                                                                                                                                                                                                                                                                                                                                                                                                | *models.StreamEvents*                                                                                                                                                                                                                                                                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                    | Union of all possible event types emitted during response streaming                                                                                                                                                                                                                                                                                                                                                   | {<br/>"type": "response.created",<br/>"response": {<br/>"id": "resp-abc123",<br/>"object": "response",<br/>"created_at": 1704067200,<br/>"model": "gpt-4",<br/>"status": "in_progress",<br/>"output": [],<br/>"tools": [],<br/>"tool_choice": "auto",<br/>"parallel_tool_calls": true,<br/>"error": null,<br/>"incomplete_details": null,<br/>"metadata": null,<br/>"instructions": null,<br/>"temperature": null,<br/>"top_p": null,<br/>"max_output_tokens": null<br/>},<br/>"sequence_number": 0<br/>} |
+| `data`                                                                                                                                                                                                                                                                                                                                                                                                                | *models.StreamEvents*                                                                                                                                                                                                                                                                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                    | Union of all possible event types emitted during response streaming                                                                                                                                                                                                                                                                                                                                                   | {<br/>"response": {<br/>"created_at": 1704067200,<br/>"error": null,<br/>"id": "resp-abc123",<br/>"incomplete_details": null,<br/>"instructions": null,<br/>"max_output_tokens": null,<br/>"metadata": null,<br/>"model": "gpt-4",<br/>"object": "response",<br/>"output": [],<br/>"parallel_tool_calls": true,<br/>"status": "in_progress",<br/>"temperature": null,<br/>"tool_choice": "auto",<br/>"tools": [],<br/>"top_p": null<br/>},<br/>"sequence_number": 0,<br/>"type": "response.created"<br/>} |

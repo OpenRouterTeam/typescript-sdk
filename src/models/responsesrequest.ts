@@ -13,6 +13,11 @@ import {
   ApplyPatchServerTool$outboundSchema,
 } from "./applypatchservertool.js";
 import {
+  AutoRouterPlugin,
+  AutoRouterPlugin$Outbound,
+  AutoRouterPlugin$outboundSchema,
+} from "./autorouterplugin.js";
+import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
@@ -28,23 +33,25 @@ import {
   ComputerUseServerTool$outboundSchema,
 } from "./computeruseservertool.js";
 import {
-  ContextCompressionEngine,
-  ContextCompressionEngine$outboundSchema,
-} from "./contextcompressionengine.js";
+  ContextCompressionPlugin,
+  ContextCompressionPlugin$Outbound,
+  ContextCompressionPlugin$outboundSchema,
+} from "./contextcompressionplugin.js";
 import {
   CustomTool,
   CustomTool$Outbound,
   CustomTool$outboundSchema,
 } from "./customtool.js";
 import {
-  DataCollection,
-  DataCollection$outboundSchema,
-} from "./datacollection.js";
-import {
   DatetimeServerTool,
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
+import {
+  FileParserPlugin,
+  FileParserPlugin$Outbound,
+  FileParserPlugin$outboundSchema,
+} from "./fileparserplugin.js";
 import {
   FileSearchServerTool,
   FileSearchServerTool$Outbound,
@@ -71,6 +78,11 @@ import {
   McpServerTool$outboundSchema,
 } from "./mcpservertool.js";
 import {
+  ModerationPlugin,
+  ModerationPlugin$Outbound,
+  ModerationPlugin$outboundSchema,
+} from "./moderationplugin.js";
+import {
   OpenAIResponsesToolChoiceUnion,
   OpenAIResponsesToolChoiceUnion$Outbound,
   OpenAIResponsesToolChoiceUnion$outboundSchema,
@@ -84,21 +96,6 @@ import {
   OutputModalityEnum$outboundSchema,
 } from "./outputmodalityenum.js";
 import {
-  PDFParserOptions,
-  PDFParserOptions$Outbound,
-  PDFParserOptions$outboundSchema,
-} from "./pdfparseroptions.js";
-import {
-  PreferredMaxLatency,
-  PreferredMaxLatency$Outbound,
-  PreferredMaxLatency$outboundSchema,
-} from "./preferredmaxlatency.js";
-import {
-  PreferredMinThroughput,
-  PreferredMinThroughput$Outbound,
-  PreferredMinThroughput$outboundSchema,
-} from "./preferredminthroughput.js";
-import {
   Preview20250311WebSearchServerTool,
   Preview20250311WebSearchServerTool$Outbound,
   Preview20250311WebSearchServerTool$outboundSchema,
@@ -108,19 +105,21 @@ import {
   PreviewWebSearchServerTool$Outbound,
   PreviewWebSearchServerTool$outboundSchema,
 } from "./previewwebsearchservertool.js";
-import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
-import { ProviderSort, ProviderSort$outboundSchema } from "./providersort.js";
 import {
-  ProviderSortConfig,
-  ProviderSortConfig$Outbound,
-  ProviderSortConfig$outboundSchema,
-} from "./providersortconfig.js";
-import { Quantization, Quantization$outboundSchema } from "./quantization.js";
+  ProviderPreferences,
+  ProviderPreferences$Outbound,
+  ProviderPreferences$outboundSchema,
+} from "./providerpreferences.js";
 import {
   ReasoningConfig,
   ReasoningConfig$Outbound,
   ReasoningConfig$outboundSchema,
 } from "./reasoningconfig.js";
+import {
+  ResponseHealingPlugin,
+  ResponseHealingPlugin$Outbound,
+  ResponseHealingPlugin$outboundSchema,
+} from "./responsehealingplugin.js";
 import {
   ResponseIncludesEnum,
   ResponseIncludesEnum$outboundSchema,
@@ -141,9 +140,15 @@ import {
   TextExtendedConfig$outboundSchema,
 } from "./textextendedconfig.js";
 import {
-  WebSearchEngine,
-  WebSearchEngine$outboundSchema,
-} from "./websearchengine.js";
+  TraceConfig,
+  TraceConfig$Outbound,
+  TraceConfig$outboundSchema,
+} from "./traceconfig.js";
+import {
+  WebSearchPlugin,
+  WebSearchPlugin$Outbound,
+  WebSearchPlugin$outboundSchema,
+} from "./websearchplugin.js";
 import {
   WebSearchServerTool,
   WebSearchServerTool$Outbound,
@@ -155,15 +160,36 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export type ResponsesRequestImageConfig = string | number;
+
+export type ResponsesRequestPlugin =
+  | AutoRouterPlugin
+  | ContextCompressionPlugin
+  | FileParserPlugin
+  | ModerationPlugin
+  | ResponseHealingPlugin
+  | WebSearchPlugin;
+
+export const ResponsesRequestServiceTier = {
+  Auto: "auto",
+  Default: "default",
+  Flex: "flex",
+  Priority: "priority",
+  Scale: "scale",
+} as const;
+export type ResponsesRequestServiceTier = OpenEnum<
+  typeof ResponsesRequestServiceTier
+>;
+
 /**
  * Function tool definition
  */
 export type ResponsesRequestToolFunction = {
-  type: "function";
-  name: string;
   description?: string | null | undefined;
-  strict?: boolean | null | undefined;
+  name: string;
   parameters: { [k: string]: any | null } | null;
+  strict?: boolean | null | undefined;
+  type: "function";
 };
 
 export type ResponsesRequestToolUnion =
@@ -184,214 +210,74 @@ export type ResponsesRequestToolUnion =
   | (DatetimeServerTool & { type: "openrouter:datetime" })
   | WebSearchServerToolOpenRouter;
 
-export type ResponsesRequestImageConfig = string | number;
-
-export const ResponsesRequestServiceTier = {
-  Auto: "auto",
-  Default: "default",
-  Flex: "flex",
-  Priority: "priority",
-  Scale: "scale",
-} as const;
-export type ResponsesRequestServiceTier = OpenEnum<
-  typeof ResponsesRequestServiceTier
->;
-
-export type ResponsesRequestOrder = ProviderName | string;
-
-export type ResponsesRequestOnly = ProviderName | string;
-
-export type ResponsesRequestIgnore = ProviderName | string;
-
-/**
- * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
- */
-export type ResponsesRequestSort = ProviderSort | ProviderSortConfig | any;
-
-/**
- * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
- */
-export type ResponsesRequestMaxPrice = {
-  /**
-   * Price per million prompt tokens
-   */
-  prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
-  request?: string | undefined;
-};
-
-/**
- * When multiple model providers are available, optionally indicate your routing preference.
- */
-export type ResponsesRequestProvider = {
-  /**
-   * Whether to allow backup providers to serve requests
-   *
-   * @remarks
-   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
-   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
-   */
-  allowFallbacks?: boolean | null | undefined;
-  /**
-   * Whether to filter providers to only those that support the parameters you've provided. If this setting is omitted or set to false, then providers will receive only the parameters they support, and ignore the rest.
-   */
-  requireParameters?: boolean | null | undefined;
-  /**
-   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
-   *
-   * @remarks
-   * - allow: (default) allow providers which store user data non-transiently and may train on it
-   *
-   * - deny: use only providers which do not collect user data.
-   */
-  dataCollection?: DataCollection | null | undefined;
-  /**
-   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
-   */
-  zdr?: boolean | null | undefined;
-  /**
-   * Whether to restrict routing to only models that allow text distillation. When true, only models where the author has allowed distillation will be used.
-   */
-  enforceDistillableText?: boolean | null | undefined;
-  /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
-   */
-  order?: Array<ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
-   */
-  only?: Array<ProviderName | string> | null | undefined;
-  /**
-   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
-   */
-  ignore?: Array<ProviderName | string> | null | undefined;
-  /**
-   * A list of quantization levels to filter the provider by.
-   */
-  quantizations?: Array<Quantization> | null | undefined;
-  /**
-   * The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.
-   */
-  sort?: ProviderSort | ProviderSortConfig | any | null | undefined;
-  /**
-   * The object specifying the maximum price you want to pay for this request. USD price per million tokens, for prompt and completion.
-   */
-  maxPrice?: ResponsesRequestMaxPrice | undefined;
-  /**
-   * Preferred minimum throughput (in tokens per second). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints below the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMinThroughput?: PreferredMinThroughput | null | undefined;
-  /**
-   * Preferred maximum latency (in seconds). Can be a number (applies to p50) or an object with percentile-specific cutoffs. Endpoints above the threshold(s) may still be used, but are deprioritized in routing. When using fallback models, this may cause a fallback model to be used instead of the primary model if it meets the threshold.
-   */
-  preferredMaxLatency?: PreferredMaxLatency | null | undefined;
-};
-
-export type ResponsesRequestPluginContextCompression = {
-  id: "context-compression";
-  /**
-   * Set to false to disable the context-compression plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * The compression engine to use. Defaults to "middle-out".
-   */
-  engine?: ContextCompressionEngine | undefined;
-};
-
-export type ResponsesRequestPluginResponseHealing = {
-  id: "response-healing";
-  /**
-   * Set to false to disable the response-healing plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-};
-
-export type ResponsesRequestPluginFileParser = {
-  id: "file-parser";
-  /**
-   * Set to false to disable the file-parser plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * Options for PDF parsing.
-   */
-  pdf?: PDFParserOptions | undefined;
-};
-
-export type ResponsesRequestPluginWeb = {
-  id: "web";
-  /**
-   * Set to false to disable the web-search plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  maxResults?: number | undefined;
-  searchPrompt?: string | undefined;
-  /**
-   * The search engine to use for web search.
-   */
-  engine?: WebSearchEngine | undefined;
-  /**
-   * A list of domains to restrict web search results to. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
-   */
-  includeDomains?: Array<string> | undefined;
-  /**
-   * A list of domains to exclude from web search results. Supports wildcards (e.g. "*.substack.com") and path filtering (e.g. "openai.com/blog").
-   */
-  excludeDomains?: Array<string> | undefined;
-};
-
-export type ResponsesRequestPluginModeration = {
-  id: "moderation";
-};
-
-export type ResponsesRequestPluginAutoRouter = {
-  id: "auto-router";
-  /**
-   * Set to false to disable the auto-router plugin for this request. Defaults to true.
-   */
-  enabled?: boolean | undefined;
-  /**
-   * List of model patterns to filter which models the auto-router can route between. Supports wildcards (e.g., "anthropic/*" matches all Anthropic models). When not specified, uses the default supported models list.
-   */
-  allowedModels?: Array<string> | undefined;
-};
-
-export type ResponsesRequestPluginUnion =
-  | ResponsesRequestPluginAutoRouter
-  | ResponsesRequestPluginModeration
-  | ResponsesRequestPluginWeb
-  | ResponsesRequestPluginFileParser
-  | ResponsesRequestPluginResponseHealing
-  | ResponsesRequestPluginContextCompression;
-
-/**
- * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
- */
-export type ResponsesRequestTrace = {
-  traceId?: string | undefined;
-  traceName?: string | undefined;
-  spanName?: string | undefined;
-  generationName?: string | undefined;
-  parentSpanId?: string | undefined;
-  additionalProperties?: { [k: string]: any | null } | undefined;
-};
-
 /**
  * Request schema for Responses endpoint
  */
 export type ResponsesRequest = {
+  background?: boolean | null | undefined;
+  frequencyPenalty?: number | null | undefined;
+  /**
+   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
+   */
+  imageConfig?: { [k: string]: string | number } | undefined;
+  include?: Array<ResponseIncludesEnum> | null | undefined;
   /**
    * Input for a response request - can be a string or array of items
    */
   input?: InputsUnion | undefined;
   instructions?: string | null | undefined;
+  maxOutputTokens?: number | undefined;
+  maxToolCalls?: number | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
   metadata?: { [k: string]: string } | null | undefined;
+  /**
+   * Output modalities for the response. Supported values are "text" and "image".
+   */
+  modalities?: Array<OutputModalityEnum> | undefined;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
+  parallelToolCalls?: boolean | null | undefined;
+  /**
+   * Plugins you want to enable for this request, including their settings.
+   */
+  plugins?:
+    | Array<
+      | AutoRouterPlugin
+      | ContextCompressionPlugin
+      | FileParserPlugin
+      | ModerationPlugin
+      | ResponseHealingPlugin
+      | WebSearchPlugin
+    >
+    | undefined;
+  presencePenalty?: number | null | undefined;
+  previousResponseId?: string | null | undefined;
+  prompt?: StoredPromptTemplate | null | undefined;
+  promptCacheKey?: string | null | undefined;
+  /**
+   * When multiple model providers are available, optionally indicate your routing preference.
+   */
+  provider?: ProviderPreferences | null | undefined;
+  /**
+   * Configuration for reasoning mode in the response
+   */
+  reasoning?: ReasoningConfig | null | undefined;
+  safetyIdentifier?: string | null | undefined;
+  serviceTier?: ResponsesRequestServiceTier | null | undefined;
+  /**
+   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
+   */
+  sessionId?: string | undefined;
+  store?: false | undefined;
+  stream?: boolean | undefined;
+  temperature?: number | null | undefined;
+  /**
+   * Text output configuration including format and verbosity
+   */
+  text?: TextExtendedConfig | undefined;
+  toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction
@@ -412,82 +298,82 @@ export type ResponsesRequest = {
       | WebSearchServerToolOpenRouter
     >
     | undefined;
-  toolChoice?: OpenAIResponsesToolChoiceUnion | undefined;
-  parallelToolCalls?: boolean | null | undefined;
-  model?: string | undefined;
-  models?: Array<string> | undefined;
-  /**
-   * Text output configuration including format and verbosity
-   */
-  text?: TextExtendedConfig | undefined;
-  /**
-   * Configuration for reasoning mode in the response
-   */
-  reasoning?: ReasoningConfig | null | undefined;
-  maxOutputTokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  topP?: number | null | undefined;
-  topLogprobs?: number | null | undefined;
-  maxToolCalls?: number | null | undefined;
-  presencePenalty?: number | null | undefined;
-  frequencyPenalty?: number | null | undefined;
   topK?: number | undefined;
+  topLogprobs?: number | undefined;
+  topP?: number | null | undefined;
   /**
-   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
-  imageConfig?: { [k: string]: string | number } | undefined;
-  /**
-   * Output modalities for the response. Supported values are "text" and "image".
-   */
-  modalities?: Array<OutputModalityEnum> | undefined;
-  promptCacheKey?: string | null | undefined;
-  previousResponseId?: string | null | undefined;
-  prompt?: StoredPromptTemplate | null | undefined;
-  include?: Array<ResponseIncludesEnum> | null | undefined;
-  background?: boolean | null | undefined;
-  safetyIdentifier?: string | null | undefined;
-  store?: false | undefined;
-  serviceTier?: ResponsesRequestServiceTier | null | undefined;
+  trace?: TraceConfig | undefined;
   truncation?: OpenAIResponsesTruncation | null | undefined;
-  stream?: boolean | undefined;
-  /**
-   * When multiple model providers are available, optionally indicate your routing preference.
-   */
-  provider?: ResponsesRequestProvider | null | undefined;
-  /**
-   * Plugins you want to enable for this request, including their settings.
-   */
-  plugins?:
-    | Array<
-      | ResponsesRequestPluginAutoRouter
-      | ResponsesRequestPluginModeration
-      | ResponsesRequestPluginWeb
-      | ResponsesRequestPluginFileParser
-      | ResponsesRequestPluginResponseHealing
-      | ResponsesRequestPluginContextCompression
-    >
-    | undefined;
   /**
    * A unique identifier representing your end-user, which helps distinguish between different users of your app. This allows your app to identify specific users in case of abuse reports, preventing your entire app from being affected by the actions of individual users. Maximum of 256 characters.
    */
   user?: string | undefined;
-  /**
-   * A unique identifier for grouping related requests (e.g., a conversation or agent workflow) for observability. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters.
-   */
-  sessionId?: string | undefined;
-  /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
-   */
-  trace?: ResponsesRequestTrace | undefined;
 };
 
 /** @internal */
+export type ResponsesRequestImageConfig$Outbound = string | number;
+
+/** @internal */
+export const ResponsesRequestImageConfig$outboundSchema: z.ZodType<
+  ResponsesRequestImageConfig$Outbound,
+  ResponsesRequestImageConfig
+> = z.union([z.string(), z.number()]);
+
+export function responsesRequestImageConfigToJSON(
+  responsesRequestImageConfig: ResponsesRequestImageConfig,
+): string {
+  return JSON.stringify(
+    ResponsesRequestImageConfig$outboundSchema.parse(
+      responsesRequestImageConfig,
+    ),
+  );
+}
+
+/** @internal */
+export type ResponsesRequestPlugin$Outbound =
+  | AutoRouterPlugin$Outbound
+  | ContextCompressionPlugin$Outbound
+  | FileParserPlugin$Outbound
+  | ModerationPlugin$Outbound
+  | ResponseHealingPlugin$Outbound
+  | WebSearchPlugin$Outbound;
+
+/** @internal */
+export const ResponsesRequestPlugin$outboundSchema: z.ZodType<
+  ResponsesRequestPlugin$Outbound,
+  ResponsesRequestPlugin
+> = z.union([
+  AutoRouterPlugin$outboundSchema,
+  ContextCompressionPlugin$outboundSchema,
+  FileParserPlugin$outboundSchema,
+  ModerationPlugin$outboundSchema,
+  ResponseHealingPlugin$outboundSchema,
+  WebSearchPlugin$outboundSchema,
+]);
+
+export function responsesRequestPluginToJSON(
+  responsesRequestPlugin: ResponsesRequestPlugin,
+): string {
+  return JSON.stringify(
+    ResponsesRequestPlugin$outboundSchema.parse(responsesRequestPlugin),
+  );
+}
+
+/** @internal */
+export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
+  string,
+  ResponsesRequestServiceTier
+> = openEnums.outboundSchema(ResponsesRequestServiceTier);
+
+/** @internal */
 export type ResponsesRequestToolFunction$Outbound = {
-  type: "function";
-  name: string;
   description?: string | null | undefined;
-  strict?: boolean | null | undefined;
+  name: string;
   parameters: { [k: string]: any | null } | null;
+  strict?: boolean | null | undefined;
+  type: "function";
 };
 
 /** @internal */
@@ -495,11 +381,11 @@ export const ResponsesRequestToolFunction$outboundSchema: z.ZodType<
   ResponsesRequestToolFunction$Outbound,
   ResponsesRequestToolFunction
 > = z.object({
-  type: z.literal("function"),
-  name: z.string(),
   description: z.nullable(z.string()).optional(),
-  strict: z.nullable(z.boolean()).optional(),
+  name: z.string(),
   parameters: z.nullable(z.record(z.string(), z.nullable(z.any()))),
+  strict: z.nullable(z.boolean()).optional(),
+  type: z.literal("function"),
 });
 
 export function responsesRequestToolFunctionToJSON(
@@ -565,455 +451,44 @@ export function responsesRequestToolUnionToJSON(
 }
 
 /** @internal */
-export type ResponsesRequestImageConfig$Outbound = string | number;
-
-/** @internal */
-export const ResponsesRequestImageConfig$outboundSchema: z.ZodType<
-  ResponsesRequestImageConfig$Outbound,
-  ResponsesRequestImageConfig
-> = z.union([z.string(), z.number()]);
-
-export function responsesRequestImageConfigToJSON(
-  responsesRequestImageConfig: ResponsesRequestImageConfig,
-): string {
-  return JSON.stringify(
-    ResponsesRequestImageConfig$outboundSchema.parse(
-      responsesRequestImageConfig,
-    ),
-  );
-}
-
-/** @internal */
-export const ResponsesRequestServiceTier$outboundSchema: z.ZodType<
-  string,
-  ResponsesRequestServiceTier
-> = openEnums.outboundSchema(ResponsesRequestServiceTier);
-
-/** @internal */
-export type ResponsesRequestOrder$Outbound = string | string;
-
-/** @internal */
-export const ResponsesRequestOrder$outboundSchema: z.ZodType<
-  ResponsesRequestOrder$Outbound,
-  ResponsesRequestOrder
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function responsesRequestOrderToJSON(
-  responsesRequestOrder: ResponsesRequestOrder,
-): string {
-  return JSON.stringify(
-    ResponsesRequestOrder$outboundSchema.parse(responsesRequestOrder),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestOnly$Outbound = string | string;
-
-/** @internal */
-export const ResponsesRequestOnly$outboundSchema: z.ZodType<
-  ResponsesRequestOnly$Outbound,
-  ResponsesRequestOnly
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function responsesRequestOnlyToJSON(
-  responsesRequestOnly: ResponsesRequestOnly,
-): string {
-  return JSON.stringify(
-    ResponsesRequestOnly$outboundSchema.parse(responsesRequestOnly),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestIgnore$Outbound = string | string;
-
-/** @internal */
-export const ResponsesRequestIgnore$outboundSchema: z.ZodType<
-  ResponsesRequestIgnore$Outbound,
-  ResponsesRequestIgnore
-> = z.union([ProviderName$outboundSchema, z.string()]);
-
-export function responsesRequestIgnoreToJSON(
-  responsesRequestIgnore: ResponsesRequestIgnore,
-): string {
-  return JSON.stringify(
-    ResponsesRequestIgnore$outboundSchema.parse(responsesRequestIgnore),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestSort$Outbound =
-  | string
-  | ProviderSortConfig$Outbound
-  | any;
-
-/** @internal */
-export const ResponsesRequestSort$outboundSchema: z.ZodType<
-  ResponsesRequestSort$Outbound,
-  ResponsesRequestSort
-> = z.union([
-  ProviderSort$outboundSchema,
-  ProviderSortConfig$outboundSchema,
-  z.any(),
-]);
-
-export function responsesRequestSortToJSON(
-  responsesRequestSort: ResponsesRequestSort,
-): string {
-  return JSON.stringify(
-    ResponsesRequestSort$outboundSchema.parse(responsesRequestSort),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestMaxPrice$Outbound = {
-  prompt?: string | undefined;
-  completion?: string | undefined;
-  image?: string | undefined;
-  audio?: string | undefined;
-  request?: string | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestMaxPrice$outboundSchema: z.ZodType<
-  ResponsesRequestMaxPrice$Outbound,
-  ResponsesRequestMaxPrice
-> = z.object({
-  prompt: z.string().optional(),
-  completion: z.string().optional(),
-  image: z.string().optional(),
-  audio: z.string().optional(),
-  request: z.string().optional(),
-});
-
-export function responsesRequestMaxPriceToJSON(
-  responsesRequestMaxPrice: ResponsesRequestMaxPrice,
-): string {
-  return JSON.stringify(
-    ResponsesRequestMaxPrice$outboundSchema.parse(responsesRequestMaxPrice),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestProvider$Outbound = {
-  allow_fallbacks?: boolean | null | undefined;
-  require_parameters?: boolean | null | undefined;
-  data_collection?: string | null | undefined;
-  zdr?: boolean | null | undefined;
-  enforce_distillable_text?: boolean | null | undefined;
-  order?: Array<string | string> | null | undefined;
-  only?: Array<string | string> | null | undefined;
-  ignore?: Array<string | string> | null | undefined;
-  quantizations?: Array<string> | null | undefined;
-  sort?: string | ProviderSortConfig$Outbound | any | null | undefined;
-  max_price?: ResponsesRequestMaxPrice$Outbound | undefined;
-  preferred_min_throughput?: PreferredMinThroughput$Outbound | null | undefined;
-  preferred_max_latency?: PreferredMaxLatency$Outbound | null | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestProvider$outboundSchema: z.ZodType<
-  ResponsesRequestProvider$Outbound,
-  ResponsesRequestProvider
-> = z.object({
-  allowFallbacks: z.nullable(z.boolean()).optional(),
-  requireParameters: z.nullable(z.boolean()).optional(),
-  dataCollection: z.nullable(DataCollection$outboundSchema).optional(),
-  zdr: z.nullable(z.boolean()).optional(),
-  enforceDistillableText: z.nullable(z.boolean()).optional(),
-  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
-    .optional(),
-  ignore: z.nullable(
-    z.array(z.union([ProviderName$outboundSchema, z.string()])),
-  ).optional(),
-  quantizations: z.nullable(z.array(Quantization$outboundSchema)).optional(),
-  sort: z.nullable(
-    z.union([
-      ProviderSort$outboundSchema,
-      ProviderSortConfig$outboundSchema,
-      z.any(),
-    ]),
-  ).optional(),
-  maxPrice: z.lazy(() => ResponsesRequestMaxPrice$outboundSchema).optional(),
-  preferredMinThroughput: z.nullable(PreferredMinThroughput$outboundSchema)
-    .optional(),
-  preferredMaxLatency: z.nullable(PreferredMaxLatency$outboundSchema)
-    .optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowFallbacks: "allow_fallbacks",
-    requireParameters: "require_parameters",
-    dataCollection: "data_collection",
-    enforceDistillableText: "enforce_distillable_text",
-    maxPrice: "max_price",
-    preferredMinThroughput: "preferred_min_throughput",
-    preferredMaxLatency: "preferred_max_latency",
-  });
-});
-
-export function responsesRequestProviderToJSON(
-  responsesRequestProvider: ResponsesRequestProvider,
-): string {
-  return JSON.stringify(
-    ResponsesRequestProvider$outboundSchema.parse(responsesRequestProvider),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginContextCompression$Outbound = {
-  id: "context-compression";
-  enabled?: boolean | undefined;
-  engine?: string | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestPluginContextCompression$outboundSchema: z.ZodType<
-  ResponsesRequestPluginContextCompression$Outbound,
-  ResponsesRequestPluginContextCompression
-> = z.object({
-  id: z.literal("context-compression"),
-  enabled: z.boolean().optional(),
-  engine: ContextCompressionEngine$outboundSchema.optional(),
-});
-
-export function responsesRequestPluginContextCompressionToJSON(
-  responsesRequestPluginContextCompression:
-    ResponsesRequestPluginContextCompression,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginContextCompression$outboundSchema.parse(
-      responsesRequestPluginContextCompression,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginResponseHealing$Outbound = {
-  id: "response-healing";
-  enabled?: boolean | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestPluginResponseHealing$outboundSchema: z.ZodType<
-  ResponsesRequestPluginResponseHealing$Outbound,
-  ResponsesRequestPluginResponseHealing
-> = z.object({
-  id: z.literal("response-healing"),
-  enabled: z.boolean().optional(),
-});
-
-export function responsesRequestPluginResponseHealingToJSON(
-  responsesRequestPluginResponseHealing: ResponsesRequestPluginResponseHealing,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginResponseHealing$outboundSchema.parse(
-      responsesRequestPluginResponseHealing,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginFileParser$Outbound = {
-  id: "file-parser";
-  enabled?: boolean | undefined;
-  pdf?: PDFParserOptions$Outbound | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestPluginFileParser$outboundSchema: z.ZodType<
-  ResponsesRequestPluginFileParser$Outbound,
-  ResponsesRequestPluginFileParser
-> = z.object({
-  id: z.literal("file-parser"),
-  enabled: z.boolean().optional(),
-  pdf: PDFParserOptions$outboundSchema.optional(),
-});
-
-export function responsesRequestPluginFileParserToJSON(
-  responsesRequestPluginFileParser: ResponsesRequestPluginFileParser,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginFileParser$outboundSchema.parse(
-      responsesRequestPluginFileParser,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginWeb$Outbound = {
-  id: "web";
-  enabled?: boolean | undefined;
-  max_results?: number | undefined;
-  search_prompt?: string | undefined;
-  engine?: string | undefined;
-  include_domains?: Array<string> | undefined;
-  exclude_domains?: Array<string> | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestPluginWeb$outboundSchema: z.ZodType<
-  ResponsesRequestPluginWeb$Outbound,
-  ResponsesRequestPluginWeb
-> = z.object({
-  id: z.literal("web"),
-  enabled: z.boolean().optional(),
-  maxResults: z.number().optional(),
-  searchPrompt: z.string().optional(),
-  engine: WebSearchEngine$outboundSchema.optional(),
-  includeDomains: z.array(z.string()).optional(),
-  excludeDomains: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    maxResults: "max_results",
-    searchPrompt: "search_prompt",
-    includeDomains: "include_domains",
-    excludeDomains: "exclude_domains",
-  });
-});
-
-export function responsesRequestPluginWebToJSON(
-  responsesRequestPluginWeb: ResponsesRequestPluginWeb,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginWeb$outboundSchema.parse(responsesRequestPluginWeb),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginModeration$Outbound = {
-  id: "moderation";
-};
-
-/** @internal */
-export const ResponsesRequestPluginModeration$outboundSchema: z.ZodType<
-  ResponsesRequestPluginModeration$Outbound,
-  ResponsesRequestPluginModeration
-> = z.object({
-  id: z.literal("moderation"),
-});
-
-export function responsesRequestPluginModerationToJSON(
-  responsesRequestPluginModeration: ResponsesRequestPluginModeration,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginModeration$outboundSchema.parse(
-      responsesRequestPluginModeration,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginAutoRouter$Outbound = {
-  id: "auto-router";
-  enabled?: boolean | undefined;
-  allowed_models?: Array<string> | undefined;
-};
-
-/** @internal */
-export const ResponsesRequestPluginAutoRouter$outboundSchema: z.ZodType<
-  ResponsesRequestPluginAutoRouter$Outbound,
-  ResponsesRequestPluginAutoRouter
-> = z.object({
-  id: z.literal("auto-router"),
-  enabled: z.boolean().optional(),
-  allowedModels: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    allowedModels: "allowed_models",
-  });
-});
-
-export function responsesRequestPluginAutoRouterToJSON(
-  responsesRequestPluginAutoRouter: ResponsesRequestPluginAutoRouter,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginAutoRouter$outboundSchema.parse(
-      responsesRequestPluginAutoRouter,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestPluginUnion$Outbound =
-  | ResponsesRequestPluginAutoRouter$Outbound
-  | ResponsesRequestPluginModeration$Outbound
-  | ResponsesRequestPluginWeb$Outbound
-  | ResponsesRequestPluginFileParser$Outbound
-  | ResponsesRequestPluginResponseHealing$Outbound
-  | ResponsesRequestPluginContextCompression$Outbound;
-
-/** @internal */
-export const ResponsesRequestPluginUnion$outboundSchema: z.ZodType<
-  ResponsesRequestPluginUnion$Outbound,
-  ResponsesRequestPluginUnion
-> = z.union([
-  z.lazy(() => ResponsesRequestPluginAutoRouter$outboundSchema),
-  z.lazy(() => ResponsesRequestPluginModeration$outboundSchema),
-  z.lazy(() => ResponsesRequestPluginWeb$outboundSchema),
-  z.lazy(() => ResponsesRequestPluginFileParser$outboundSchema),
-  z.lazy(() => ResponsesRequestPluginResponseHealing$outboundSchema),
-  z.lazy(() => ResponsesRequestPluginContextCompression$outboundSchema),
-]);
-
-export function responsesRequestPluginUnionToJSON(
-  responsesRequestPluginUnion: ResponsesRequestPluginUnion,
-): string {
-  return JSON.stringify(
-    ResponsesRequestPluginUnion$outboundSchema.parse(
-      responsesRequestPluginUnion,
-    ),
-  );
-}
-
-/** @internal */
-export type ResponsesRequestTrace$Outbound = {
-  trace_id?: string | undefined;
-  trace_name?: string | undefined;
-  span_name?: string | undefined;
-  generation_name?: string | undefined;
-  parent_span_id?: string | undefined;
-  [additionalProperties: string]: unknown;
-};
-
-/** @internal */
-export const ResponsesRequestTrace$outboundSchema: z.ZodType<
-  ResponsesRequestTrace$Outbound,
-  ResponsesRequestTrace
-> = z.object({
-  traceId: z.string().optional(),
-  traceName: z.string().optional(),
-  spanName: z.string().optional(),
-  generationName: z.string().optional(),
-  parentSpanId: z.string().optional(),
-  additionalProperties: z.record(z.string(), z.nullable(z.any())).optional(),
-}).transform((v) => {
-  return {
-    ...v.additionalProperties,
-    ...remap$(v, {
-      traceId: "trace_id",
-      traceName: "trace_name",
-      spanName: "span_name",
-      generationName: "generation_name",
-      parentSpanId: "parent_span_id",
-      additionalProperties: null,
-    }),
-  };
-});
-
-export function responsesRequestTraceToJSON(
-  responsesRequestTrace: ResponsesRequestTrace,
-): string {
-  return JSON.stringify(
-    ResponsesRequestTrace$outboundSchema.parse(responsesRequestTrace),
-  );
-}
-
-/** @internal */
 export type ResponsesRequest$Outbound = {
+  background?: boolean | null | undefined;
+  frequency_penalty?: number | null | undefined;
+  image_config?: { [k: string]: string | number } | undefined;
+  include?: Array<string> | null | undefined;
   input?: InputsUnion$Outbound | undefined;
   instructions?: string | null | undefined;
+  max_output_tokens?: number | undefined;
+  max_tool_calls?: number | undefined;
   metadata?: { [k: string]: string } | null | undefined;
+  modalities?: Array<string> | undefined;
+  model?: string | undefined;
+  models?: Array<string> | undefined;
+  parallel_tool_calls?: boolean | null | undefined;
+  plugins?:
+    | Array<
+      | AutoRouterPlugin$Outbound
+      | ContextCompressionPlugin$Outbound
+      | FileParserPlugin$Outbound
+      | ModerationPlugin$Outbound
+      | ResponseHealingPlugin$Outbound
+      | WebSearchPlugin$Outbound
+    >
+    | undefined;
+  presence_penalty?: number | null | undefined;
+  previous_response_id?: string | null | undefined;
+  prompt?: StoredPromptTemplate$Outbound | null | undefined;
+  prompt_cache_key?: string | null | undefined;
+  provider?: ProviderPreferences$Outbound | null | undefined;
+  reasoning?: ReasoningConfig$Outbound | null | undefined;
+  safety_identifier?: string | null | undefined;
+  service_tier: string | null;
+  session_id?: string | undefined;
+  store: false;
+  stream: boolean;
+  temperature?: number | null | undefined;
+  text?: TextExtendedConfig$Outbound | undefined;
+  tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
   tools?:
     | Array<
       | ResponsesRequestToolFunction$Outbound
@@ -1034,46 +509,12 @@ export type ResponsesRequest$Outbound = {
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
-  tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
-  parallel_tool_calls?: boolean | null | undefined;
-  model?: string | undefined;
-  models?: Array<string> | undefined;
-  text?: TextExtendedConfig$Outbound | undefined;
-  reasoning?: ReasoningConfig$Outbound | null | undefined;
-  max_output_tokens?: number | null | undefined;
-  temperature?: number | null | undefined;
-  top_p?: number | null | undefined;
-  top_logprobs?: number | null | undefined;
-  max_tool_calls?: number | null | undefined;
-  presence_penalty?: number | null | undefined;
-  frequency_penalty?: number | null | undefined;
   top_k?: number | undefined;
-  image_config?: { [k: string]: string | number } | undefined;
-  modalities?: Array<string> | undefined;
-  prompt_cache_key?: string | null | undefined;
-  previous_response_id?: string | null | undefined;
-  prompt?: StoredPromptTemplate$Outbound | null | undefined;
-  include?: Array<string> | null | undefined;
-  background?: boolean | null | undefined;
-  safety_identifier?: string | null | undefined;
-  store: false;
-  service_tier: string | null;
+  top_logprobs?: number | undefined;
+  top_p?: number | null | undefined;
+  trace?: TraceConfig$Outbound | undefined;
   truncation?: string | null | undefined;
-  stream: boolean;
-  provider?: ResponsesRequestProvider$Outbound | null | undefined;
-  plugins?:
-    | Array<
-      | ResponsesRequestPluginAutoRouter$Outbound
-      | ResponsesRequestPluginModeration$Outbound
-      | ResponsesRequestPluginWeb$Outbound
-      | ResponsesRequestPluginFileParser$Outbound
-      | ResponsesRequestPluginResponseHealing$Outbound
-      | ResponsesRequestPluginContextCompression$Outbound
-    >
-    | undefined;
   user?: string | undefined;
-  session_id?: string | undefined;
-  trace?: ResponsesRequestTrace$Outbound | undefined;
 };
 
 /** @internal */
@@ -1081,9 +522,46 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest$Outbound,
   ResponsesRequest
 > = z.object({
+  background: z.nullable(z.boolean()).optional(),
+  frequencyPenalty: z.nullable(z.number()).optional(),
+  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
+    .optional(),
+  include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
   input: InputsUnion$outboundSchema.optional(),
   instructions: z.nullable(z.string()).optional(),
+  maxOutputTokens: z.int().optional(),
+  maxToolCalls: z.int().optional(),
   metadata: z.nullable(z.record(z.string(), z.string())).optional(),
+  modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
+  model: z.string().optional(),
+  models: z.array(z.string()).optional(),
+  parallelToolCalls: z.nullable(z.boolean()).optional(),
+  plugins: z.array(
+    z.union([
+      AutoRouterPlugin$outboundSchema,
+      ContextCompressionPlugin$outboundSchema,
+      FileParserPlugin$outboundSchema,
+      ModerationPlugin$outboundSchema,
+      ResponseHealingPlugin$outboundSchema,
+      WebSearchPlugin$outboundSchema,
+    ]),
+  ).optional(),
+  presencePenalty: z.nullable(z.number()).optional(),
+  previousResponseId: z.nullable(z.string()).optional(),
+  prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
+  promptCacheKey: z.nullable(z.string()).optional(),
+  provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
+  reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
+  safetyIdentifier: z.nullable(z.string()).optional(),
+  serviceTier: z.nullable(
+    ResponsesRequestServiceTier$outboundSchema.default("auto"),
+  ),
+  sessionId: z.string().optional(),
+  store: z.literal(false).default(false as const),
+  stream: z.boolean().default(false),
+  temperature: z.nullable(z.number()).optional(),
+  text: TextExtendedConfig$outboundSchema.optional(),
+  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
   tools: z.array(
     z.union([
       z.lazy(() => ResponsesRequestToolFunction$outboundSchema),
@@ -1106,67 +584,29 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
-  toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
-  parallelToolCalls: z.nullable(z.boolean()).optional(),
-  model: z.string().optional(),
-  models: z.array(z.string()).optional(),
-  text: TextExtendedConfig$outboundSchema.optional(),
-  reasoning: z.nullable(ReasoningConfig$outboundSchema).optional(),
-  maxOutputTokens: z.nullable(z.number()).optional(),
-  temperature: z.nullable(z.number()).optional(),
+  topK: z.int().optional(),
+  topLogprobs: z.int().optional(),
   topP: z.nullable(z.number()).optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  maxToolCalls: z.nullable(z.int()).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  topK: z.number().optional(),
-  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
-    .optional(),
-  modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
-  promptCacheKey: z.nullable(z.string()).optional(),
-  previousResponseId: z.nullable(z.string()).optional(),
-  prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
-  include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
-  background: z.nullable(z.boolean()).optional(),
-  safetyIdentifier: z.nullable(z.string()).optional(),
-  store: z.literal(false).default(false as const),
-  serviceTier: z.nullable(
-    ResponsesRequestServiceTier$outboundSchema.default("auto"),
-  ),
+  trace: TraceConfig$outboundSchema.optional(),
   truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
-  stream: z.boolean().default(false),
-  provider: z.nullable(z.lazy(() => ResponsesRequestProvider$outboundSchema))
-    .optional(),
-  plugins: z.array(
-    z.union([
-      z.lazy(() => ResponsesRequestPluginAutoRouter$outboundSchema),
-      z.lazy(() => ResponsesRequestPluginModeration$outboundSchema),
-      z.lazy(() => ResponsesRequestPluginWeb$outboundSchema),
-      z.lazy(() => ResponsesRequestPluginFileParser$outboundSchema),
-      z.lazy(() => ResponsesRequestPluginResponseHealing$outboundSchema),
-      z.lazy(() => ResponsesRequestPluginContextCompression$outboundSchema),
-    ]),
-  ).optional(),
   user: z.string().optional(),
-  sessionId: z.string().optional(),
-  trace: z.lazy(() => ResponsesRequestTrace$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
-    toolChoice: "tool_choice",
-    parallelToolCalls: "parallel_tool_calls",
-    maxOutputTokens: "max_output_tokens",
-    topP: "top_p",
-    topLogprobs: "top_logprobs",
-    maxToolCalls: "max_tool_calls",
-    presencePenalty: "presence_penalty",
     frequencyPenalty: "frequency_penalty",
-    topK: "top_k",
     imageConfig: "image_config",
-    promptCacheKey: "prompt_cache_key",
+    maxOutputTokens: "max_output_tokens",
+    maxToolCalls: "max_tool_calls",
+    parallelToolCalls: "parallel_tool_calls",
+    presencePenalty: "presence_penalty",
     previousResponseId: "previous_response_id",
+    promptCacheKey: "prompt_cache_key",
     safetyIdentifier: "safety_identifier",
     serviceTier: "service_tier",
     sessionId: "session_id",
+    toolChoice: "tool_choice",
+    topK: "top_k",
+    topLogprobs: "top_logprobs",
+    topP: "top_p",
   });
 });
 

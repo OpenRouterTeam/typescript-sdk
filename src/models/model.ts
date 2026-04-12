@@ -16,6 +16,7 @@ import {
   ModelArchitecture,
   ModelArchitecture$inboundSchema,
 } from "./modelarchitecture.js";
+import { ModelLinks, ModelLinks$inboundSchema } from "./modellinks.js";
 import { Parameter, Parameter$inboundSchema } from "./parameter.js";
 import {
   PerRequestLimits,
@@ -32,95 +33,100 @@ import {
  */
 export type Model = {
   /**
-   * Unique identifier for the model
+   * Model architecture information
    */
-  id: string;
+  architecture: ModelArchitecture;
   /**
    * Canonical slug for the model
    */
   canonicalSlug: string;
   /**
-   * Hugging Face model identifier, if applicable
+   * Maximum context length in tokens
    */
-  huggingFaceId?: string | null | undefined;
-  /**
-   * Display name of the model
-   */
-  name: string;
+  contextLength: number | null;
   /**
    * Unix timestamp of when the model was created
    */
   created: number;
   /**
+   * Default parameters for this model
+   */
+  defaultParameters: DefaultParameters | null;
+  /**
    * Description of the model
    */
   description?: string | undefined;
   /**
-   * Pricing information for the model
+   * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
    */
-  pricing: PublicPricing;
+  expirationDate?: string | null | undefined;
   /**
-   * Maximum context length in tokens
+   * Hugging Face model identifier, if applicable
    */
-  contextLength: number | null;
+  huggingFaceId?: string | null | undefined;
   /**
-   * Model architecture information
+   * Unique identifier for the model
    */
-  architecture: ModelArchitecture;
-  /**
-   * Information about the top provider for this model
-   */
-  topProvider: TopProviderInfo;
-  /**
-   * Per-request token limits
-   */
-  perRequestLimits: PerRequestLimits | null;
-  /**
-   * List of supported parameters for this model
-   */
-  supportedParameters: Array<Parameter>;
-  /**
-   * Default parameters for this model
-   */
-  defaultParameters: DefaultParameters | null;
+  id: string;
   /**
    * The date up to which the model was trained on data. ISO 8601 date string (YYYY-MM-DD) or null if unknown.
    */
   knowledgeCutoff?: string | null | undefined;
   /**
-   * The date after which the model may be removed. ISO 8601 date string (YYYY-MM-DD) or null if no expiration.
+   * Related API endpoints and resources for this model.
    */
-  expirationDate?: string | null | undefined;
+  links: ModelLinks;
+  /**
+   * Display name of the model
+   */
+  name: string;
+  /**
+   * Per-request token limits
+   */
+  perRequestLimits: PerRequestLimits | null;
+  /**
+   * Pricing information for the model
+   */
+  pricing: PublicPricing;
+  /**
+   * List of supported parameters for this model
+   */
+  supportedParameters: Array<Parameter>;
+  /**
+   * Information about the top provider for this model
+   */
+  topProvider: TopProviderInfo;
 };
 
 /** @internal */
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
-  id: z.string(),
-  canonical_slug: z.string(),
-  hugging_face_id: z.nullable(z.string()).optional(),
-  name: z.string(),
-  created: z.number(),
-  description: z.string().optional(),
-  pricing: PublicPricing$inboundSchema,
-  context_length: z.nullable(z.number()),
   architecture: ModelArchitecture$inboundSchema,
-  top_provider: TopProviderInfo$inboundSchema,
-  per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
-  supported_parameters: z.array(Parameter$inboundSchema),
+  canonical_slug: z.string(),
+  context_length: z.nullable(z.int()),
+  created: z.int(),
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
-  knowledge_cutoff: z.nullable(z.string()).optional(),
+  description: z.string().optional(),
   expiration_date: z.nullable(z.string()).optional(),
+  hugging_face_id: z.nullable(z.string()).optional(),
+  id: z.string(),
+  knowledge_cutoff: z.nullable(z.string()).optional(),
+  links: ModelLinks$inboundSchema,
+  name: z.string(),
+  per_request_limits: z.nullable(PerRequestLimits$inboundSchema),
+  pricing: PublicPricing$inboundSchema,
+  supported_parameters: z.array(Parameter$inboundSchema),
+  top_provider: TopProviderInfo$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "canonical_slug": "canonicalSlug",
-    "hugging_face_id": "huggingFaceId",
     "context_length": "contextLength",
-    "top_provider": "topProvider",
+    "default_parameters": "defaultParameters",
+    "expiration_date": "expirationDate",
+    "hugging_face_id": "huggingFaceId",
+    "knowledge_cutoff": "knowledgeCutoff",
     "per_request_limits": "perRequestLimits",
     "supported_parameters": "supportedParameters",
-    "default_parameters": "defaultParameters",
-    "knowledge_cutoff": "knowledgeCutoff",
-    "expiration_date": "expirationDate",
+    "top_provider": "topProvider",
   });
 });
 

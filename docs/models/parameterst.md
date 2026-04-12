@@ -1,0 +1,16 @@
+# ParametersT
+
+## Example Usage
+
+```typescript
+import { ParametersT } from "@openrouter/sdk/models";
+
+let value: ParametersT = {};
+```
+
+## Fields
+
+| Field                                                                                                                                                     | Type                                                                                                                                                      | Required                                                                                                                                                  | Description                                                                                                                                               | Example                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxResults`                                                                                                                                              | *number*                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                        | Maximum number of search results to return per search call. Defaults to 5.                                                                                | 5                                                                                                                                                         |
+| `maxTotalResults`                                                                                                                                         | *number*                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                        | Maximum total number of search results across all search calls in a single request. Once this limit is reached, the tool will stop returning new results. | 20                                                                                                                                                        |
