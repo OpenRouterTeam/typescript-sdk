@@ -12712,6 +12712,9 @@ components:
         supported_durations:
           - 5
           - 8
+        supported_frame_images:
+          - first_frame
+          - last_frame
         supported_resolutions:
           - 720p
         supported_sizes: null
@@ -12780,6 +12783,15 @@ components:
             type: integer
           nullable: true
           type: array
+        supported_frame_images:
+          description: Supported frame image types (e.g. first_frame, last_frame)
+          items:
+            enum:
+              - first_frame
+              - last_frame
+            type: string
+          nullable: true
+          type: array
         supported_resolutions:
           description: Supported output resolutions
           items:
@@ -12837,6 +12849,7 @@ components:
         - supported_aspect_ratios
         - supported_sizes
         - supported_durations
+        - supported_frame_images
         - generate_audio
         - seed
         - allowed_passthrough_parameters
@@ -12859,6 +12872,9 @@ components:
             supported_durations:
               - 5
               - 8
+            supported_frame_images:
+              - first_frame
+              - last_frame
             supported_resolutions:
               - 720p
             supported_sizes: null
@@ -19175,6 +19191,9 @@ paths:
                     supported_durations:
                       - 5
                       - 8
+                    supported_frame_images:
+                      - first_frame
+                      - last_frame
                     supported_resolutions:
                       - 720p
                     supported_sizes: null
