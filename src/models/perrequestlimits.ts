@@ -14,13 +14,13 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type PerRequestLimits = {
   /**
-   * Maximum prompt tokens per request
-   */
-  promptTokens: number;
-  /**
    * Maximum completion tokens per request
    */
   completionTokens: number;
+  /**
+   * Maximum prompt tokens per request
+   */
+  promptTokens: number;
 };
 
 /** @internal */
@@ -28,12 +28,12 @@ export const PerRequestLimits$inboundSchema: z.ZodType<
   PerRequestLimits,
   unknown
 > = z.object({
-  prompt_tokens: z.number(),
   completion_tokens: z.number(),
+  prompt_tokens: z.number(),
 }).transform((v) => {
   return remap$(v, {
-    "prompt_tokens": "promptTokens",
     "completion_tokens": "completionTokens",
+    "prompt_tokens": "promptTokens",
   });
 });
 
