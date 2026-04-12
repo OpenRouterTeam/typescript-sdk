@@ -10,16 +10,16 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type FilePath = {
-  type: "file_path";
   fileId: string;
   index: number;
+  type: "file_path";
 };
 
 /** @internal */
 export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
-  type: z.literal("file_path"),
   file_id: z.string(),
-  index: z.number(),
+  index: z.int(),
+  type: z.literal("file_path"),
 }).transform((v) => {
   return remap$(v, {
     "file_id": "fileId",
@@ -27,17 +27,17 @@ export const FilePath$inboundSchema: z.ZodType<FilePath, unknown> = z.object({
 });
 /** @internal */
 export type FilePath$Outbound = {
-  type: "file_path";
   file_id: string;
   index: number;
+  type: "file_path";
 };
 
 /** @internal */
 export const FilePath$outboundSchema: z.ZodType<FilePath$Outbound, FilePath> = z
   .object({
-    type: z.literal("file_path"),
     fileId: z.string(),
-    index: z.number(),
+    index: z.int(),
+    type: z.literal("file_path"),
   }).transform((v) => {
     return remap$(v, {
       fileId: "file_id",
