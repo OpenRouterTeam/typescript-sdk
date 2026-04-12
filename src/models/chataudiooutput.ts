@@ -14,17 +14,17 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ChatAudioOutput = {
   /**
-   * Audio output identifier
+   * Base64 encoded audio data
    */
-  id?: string | undefined;
+  data?: string | undefined;
   /**
    * Audio expiration timestamp
    */
   expiresAt?: number | undefined;
   /**
-   * Base64 encoded audio data
+   * Audio output identifier
    */
-  data?: string | undefined;
+  id?: string | undefined;
   /**
    * Audio transcript
    */
@@ -36,9 +36,9 @@ export const ChatAudioOutput$inboundSchema: z.ZodType<
   ChatAudioOutput,
   unknown
 > = z.object({
-  id: z.string().optional(),
-  expires_at: z.number().optional(),
   data: z.string().optional(),
+  expires_at: z.int().optional(),
+  id: z.string().optional(),
   transcript: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
@@ -47,9 +47,9 @@ export const ChatAudioOutput$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type ChatAudioOutput$Outbound = {
-  id?: string | undefined;
-  expires_at?: number | undefined;
   data?: string | undefined;
+  expires_at?: number | undefined;
+  id?: string | undefined;
   transcript?: string | undefined;
 };
 
@@ -58,9 +58,9 @@ export const ChatAudioOutput$outboundSchema: z.ZodType<
   ChatAudioOutput$Outbound,
   ChatAudioOutput
 > = z.object({
-  id: z.string().optional(),
-  expiresAt: z.number().optional(),
   data: z.string().optional(),
+  expiresAt: z.int().optional(),
+  id: z.string().optional(),
   transcript: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

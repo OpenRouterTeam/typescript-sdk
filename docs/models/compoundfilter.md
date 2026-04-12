@@ -8,17 +8,14 @@ A compound filter that combines multiple comparison or compound filters
 import { CompoundFilter } from "@openrouter/sdk/models";
 
 let value: CompoundFilter = {
-  type: "or",
   filters: [
-    {},
     {
-      "key": "<value>",
-    },
-    {
-      "key": "<value>",
-      "key1": "<value>",
+      "key": "author",
+      "type": "eq",
+      "value": "Alice",
     },
   ],
+  type: "and",
 };
 ```
 
@@ -26,5 +23,5 @@ let value: CompoundFilter = {
 
 | Field                                                        | Type                                                         | Required                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `type`                                                       | [models.CompoundFilterType](../models/compoundfiltertype.md) | :heavy_check_mark:                                           | N/A                                                          |
 | `filters`                                                    | Record<string, *any*>[]                                      | :heavy_check_mark:                                           | N/A                                                          |
+| `type`                                                       | [models.CompoundFilterType](../models/compoundfiltertype.md) | :heavy_check_mark:                                           | N/A                                                          |
