@@ -10,13 +10,6 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const OutputFunctionCallItemType = {
-  FunctionCall: "function_call",
-} as const;
-export type OutputFunctionCallItemType = ClosedEnum<
-  typeof OutputFunctionCallItemType
->;
-
 export const OutputFunctionCallItemStatusInProgress = {
   InProgress: "in_progress",
 } as const;
@@ -43,27 +36,25 @@ export type OutputFunctionCallItemStatusUnion =
   | OutputFunctionCallItemStatusIncomplete
   | OutputFunctionCallItemStatusInProgress;
 
+export const OutputFunctionCallItemType = {
+  FunctionCall: "function_call",
+} as const;
+export type OutputFunctionCallItemType = ClosedEnum<
+  typeof OutputFunctionCallItemType
+>;
+
 export type OutputFunctionCallItem = {
-  type: OutputFunctionCallItemType;
-  id?: string | undefined;
-  name: string;
   arguments: string;
   callId: string;
+  id?: string | undefined;
+  name: string;
   status?:
     | OutputFunctionCallItemStatusCompleted
     | OutputFunctionCallItemStatusIncomplete
     | OutputFunctionCallItemStatusInProgress
     | undefined;
+  type: OutputFunctionCallItemType;
 };
-
-/** @internal */
-export const OutputFunctionCallItemType$inboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = z.enum(OutputFunctionCallItemType);
-/** @internal */
-export const OutputFunctionCallItemType$outboundSchema: z.ZodEnum<
-  typeof OutputFunctionCallItemType
-> = OutputFunctionCallItemType$inboundSchema;
 
 /** @internal */
 export const OutputFunctionCallItemStatusInProgress$inboundSchema: z.ZodEnum<
@@ -137,20 +128,29 @@ export function outputFunctionCallItemStatusUnionFromJSON(
 }
 
 /** @internal */
+export const OutputFunctionCallItemType$inboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemType
+> = z.enum(OutputFunctionCallItemType);
+/** @internal */
+export const OutputFunctionCallItemType$outboundSchema: z.ZodEnum<
+  typeof OutputFunctionCallItemType
+> = OutputFunctionCallItemType$inboundSchema;
+
+/** @internal */
 export const OutputFunctionCallItem$inboundSchema: z.ZodType<
   OutputFunctionCallItem,
   unknown
 > = z.object({
-  type: OutputFunctionCallItemType$inboundSchema,
-  id: z.string().optional(),
-  name: z.string(),
   arguments: z.string(),
   call_id: z.string(),
+  id: z.string().optional(),
+  name: z.string(),
   status: z.union([
     OutputFunctionCallItemStatusCompleted$inboundSchema,
     OutputFunctionCallItemStatusIncomplete$inboundSchema,
     OutputFunctionCallItemStatusInProgress$inboundSchema,
   ]).optional(),
+  type: OutputFunctionCallItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
@@ -158,12 +158,12 @@ export const OutputFunctionCallItem$inboundSchema: z.ZodType<
 });
 /** @internal */
 export type OutputFunctionCallItem$Outbound = {
-  type: string;
-  id?: string | undefined;
-  name: string;
   arguments: string;
   call_id: string;
+  id?: string | undefined;
+  name: string;
   status?: string | string | string | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -171,16 +171,16 @@ export const OutputFunctionCallItem$outboundSchema: z.ZodType<
   OutputFunctionCallItem$Outbound,
   OutputFunctionCallItem
 > = z.object({
-  type: OutputFunctionCallItemType$outboundSchema,
-  id: z.string().optional(),
-  name: z.string(),
   arguments: z.string(),
   callId: z.string(),
+  id: z.string().optional(),
+  name: z.string(),
   status: z.union([
     OutputFunctionCallItemStatusCompleted$outboundSchema,
     OutputFunctionCallItemStatusIncomplete$outboundSchema,
     OutputFunctionCallItemStatusInProgress$outboundSchema,
   ]).optional(),
+  type: OutputFunctionCallItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",

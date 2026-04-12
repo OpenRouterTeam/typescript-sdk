@@ -36,7 +36,7 @@ generation:
     skipResponseBodyAssertions: false
   preApplyUnionDiscriminators: true
 typescript:
-  version: 0.11.2
+  version: 0.12.0
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies:
@@ -95,7 +95,7 @@ typescript:
   flatteningOrder: parameters-first
   formStringArrayEncodeMode: encoded-string
   forwardCompatibleEnumsByDefault: false
-  forwardCompatibleUnionsByDefault: "tagged-only"
+  forwardCompatibleUnionsByDefault: tagged-only
   generateExamples: true
   imports:
     option: openapi

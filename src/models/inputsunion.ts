@@ -5,8 +5,7 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import { ClosedEnum } from "../types/enums.js";
 import {
   EasyInputMessage,
   EasyInputMessage$Outbound,
@@ -53,15 +52,19 @@ import {
   OutputImageGenerationCallItem$outboundSchema,
 } from "./outputimagegenerationcallitem.js";
 import {
-  OutputServerToolItem,
-  OutputServerToolItem$Outbound,
-  OutputServerToolItem$outboundSchema,
-} from "./outputservertoolitem.js";
-import {
   OutputWebSearchCallItem,
   OutputWebSearchCallItem$Outbound,
   OutputWebSearchCallItem$outboundSchema,
 } from "./outputwebsearchcallitem.js";
+import {
+  OutputWebSearchServerToolItem,
+  OutputWebSearchServerToolItem$Outbound,
+  OutputWebSearchServerToolItem$outboundSchema,
+} from "./outputwebsearchservertoolitem.js";
+import {
+  ReasoningFormat,
+  ReasoningFormat$outboundSchema,
+} from "./reasoningformat.js";
 import {
   ReasoningItem,
   ReasoningItem$Outbound,
@@ -82,11 +85,6 @@ import {
   ResponseOutputText$Outbound,
   ResponseOutputText$outboundSchema,
 } from "./responseoutputtext.js";
-
-export const InputsTypeReasoning = {
-  Reasoning: "reasoning",
-} as const;
-export type InputsTypeReasoning = ClosedEnum<typeof InputsTypeReasoning>;
 
 export const InputsStatusInProgress2 = {
   InProgress: "in_progress",
@@ -112,79 +110,31 @@ export type InputsStatusUnion2 =
   | InputsStatusIncomplete2
   | InputsStatusInProgress2;
 
-/**
- * The format of the reasoning content
- */
-export const InputsFormat = {
-  Unknown: "unknown",
-  OpenaiResponsesV1: "openai-responses-v1",
-  AzureOpenaiResponsesV1: "azure-openai-responses-v1",
-  XaiResponsesV1: "xai-responses-v1",
-  AnthropicClaudeV1: "anthropic-claude-v1",
-  GoogleGeminiV1: "google-gemini-v1",
+export const InputsTypeReasoning = {
+  Reasoning: "reasoning",
 } as const;
-/**
- * The format of the reasoning content
- */
-export type InputsFormat = OpenEnum<typeof InputsFormat>;
+export type InputsTypeReasoning = ClosedEnum<typeof InputsTypeReasoning>;
 
 /**
  * An output item containing reasoning
  */
 export type InputsReasoning = {
-  type: InputsTypeReasoning;
-  id: string;
   content?: Array<ReasoningTextContent> | null | undefined;
-  summary: Array<ReasoningSummaryText> | null;
   encryptedContent?: string | null | undefined;
+  id: string;
   status?:
     | InputsStatusCompleted2
     | InputsStatusIncomplete2
     | InputsStatusInProgress2
     | undefined;
+  summary: Array<ReasoningSummaryText> | null;
+  type: InputsTypeReasoning;
+  format?: ReasoningFormat | null | undefined;
   /**
    * A signature for the reasoning content, used for verification
    */
   signature?: string | null | undefined;
-  /**
-   * The format of the reasoning content
-   */
-  format?: InputsFormat | null | undefined;
 };
-
-export const InputsRole = {
-  Assistant: "assistant",
-} as const;
-export type InputsRole = ClosedEnum<typeof InputsRole>;
-
-export const InputsTypeMessage = {
-  Message: "message",
-} as const;
-export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
-
-export const InputsStatusInProgress1 = {
-  InProgress: "in_progress",
-} as const;
-export type InputsStatusInProgress1 = ClosedEnum<
-  typeof InputsStatusInProgress1
->;
-
-export const InputsStatusIncomplete1 = {
-  Incomplete: "incomplete",
-} as const;
-export type InputsStatusIncomplete1 = ClosedEnum<
-  typeof InputsStatusIncomplete1
->;
-
-export const InputsStatusCompleted1 = {
-  Completed: "completed",
-} as const;
-export type InputsStatusCompleted1 = ClosedEnum<typeof InputsStatusCompleted1>;
-
-export type InputsStatusUnion1 =
-  | InputsStatusCompleted1
-  | InputsStatusIncomplete1
-  | InputsStatusInProgress1;
 
 export type InputsContent1 = ResponseOutputText | OpenAIResponsesRefusalContent;
 
@@ -211,23 +161,50 @@ export type InputsPhaseUnion =
   | InputsPhaseFinalAnswer
   | any;
 
+export const InputsRole = {
+  Assistant: "assistant",
+} as const;
+export type InputsRole = ClosedEnum<typeof InputsRole>;
+
+export const InputsStatusInProgress1 = {
+  InProgress: "in_progress",
+} as const;
+export type InputsStatusInProgress1 = ClosedEnum<
+  typeof InputsStatusInProgress1
+>;
+
+export const InputsStatusIncomplete1 = {
+  Incomplete: "incomplete",
+} as const;
+export type InputsStatusIncomplete1 = ClosedEnum<
+  typeof InputsStatusIncomplete1
+>;
+
+export const InputsStatusCompleted1 = {
+  Completed: "completed",
+} as const;
+export type InputsStatusCompleted1 = ClosedEnum<typeof InputsStatusCompleted1>;
+
+export type InputsStatusUnion1 =
+  | InputsStatusCompleted1
+  | InputsStatusIncomplete1
+  | InputsStatusInProgress1;
+
+export const InputsTypeMessage = {
+  Message: "message",
+} as const;
+export type InputsTypeMessage = ClosedEnum<typeof InputsTypeMessage>;
+
 /**
  * An output message item
  */
 export type InputsMessage = {
-  id: string;
-  role: InputsRole;
-  type: InputsTypeMessage;
-  status?:
-    | InputsStatusCompleted1
-    | InputsStatusIncomplete1
-    | InputsStatusInProgress1
-    | undefined;
   content:
     | Array<ResponseOutputText | OpenAIResponsesRefusalContent>
     | string
     | any
     | null;
+  id: string;
   /**
    * The phase of an assistant message. Use `commentary` for an intermediate assistant message and `final_answer` for the final assistant message. For follow-up requests with models like `gpt-5.3-codex` and later, preserve and resend phase on all assistant messages. Omitting it can degrade performance. Not used for user messages.
    */
@@ -237,6 +214,13 @@ export type InputsMessage = {
     | any
     | null
     | undefined;
+  role: InputsRole;
+  status?:
+    | InputsStatusCompleted1
+    | InputsStatusIncomplete1
+    | InputsStatusInProgress1
+    | undefined;
+  type: InputsTypeMessage;
 };
 
 export type InputsUnion1 =
@@ -250,7 +234,7 @@ export type InputsUnion1 =
   | FunctionCallOutputItem
   | InputsReasoning
   | OutputImageGenerationCallItem
-  | OutputServerToolItem
+  | OutputWebSearchServerToolItem
   | EasyInputMessage
   | InputMessageItem;
 
@@ -270,15 +254,10 @@ export type InputsUnion =
     | FunctionCallOutputItem
     | InputsReasoning
     | OutputImageGenerationCallItem
-    | OutputServerToolItem
+    | OutputWebSearchServerToolItem
     | EasyInputMessage
     | InputMessageItem
   >;
-
-/** @internal */
-export const InputsTypeReasoning$outboundSchema: z.ZodEnum<
-  typeof InputsTypeReasoning
-> = z.enum(InputsTypeReasoning);
 
 /** @internal */
 export const InputsStatusInProgress2$outboundSchema: z.ZodEnum<
@@ -317,19 +296,20 @@ export function inputsStatusUnion2ToJSON(
 }
 
 /** @internal */
-export const InputsFormat$outboundSchema: z.ZodType<string, InputsFormat> =
-  openEnums.outboundSchema(InputsFormat);
+export const InputsTypeReasoning$outboundSchema: z.ZodEnum<
+  typeof InputsTypeReasoning
+> = z.enum(InputsTypeReasoning);
 
 /** @internal */
 export type InputsReasoning$Outbound = {
-  type: string;
-  id: string;
   content?: Array<ReasoningTextContent$Outbound> | null | undefined;
-  summary: Array<ReasoningSummaryText$Outbound> | null;
   encrypted_content?: string | null | undefined;
+  id: string;
   status?: string | string | string | undefined;
-  signature?: string | null | undefined;
+  summary: Array<ReasoningSummaryText$Outbound> | null;
+  type: string;
   format?: string | null | undefined;
+  signature?: string | null | undefined;
 };
 
 /** @internal */
@@ -337,18 +317,18 @@ export const InputsReasoning$outboundSchema: z.ZodType<
   InputsReasoning$Outbound,
   InputsReasoning
 > = z.object({
-  type: InputsTypeReasoning$outboundSchema,
-  id: z.string(),
   content: z.nullable(z.array(ReasoningTextContent$outboundSchema)).optional(),
-  summary: z.nullable(z.array(ReasoningSummaryText$outboundSchema)),
   encryptedContent: z.nullable(z.string()).optional(),
+  id: z.string(),
   status: z.union([
     InputsStatusCompleted2$outboundSchema,
     InputsStatusIncomplete2$outboundSchema,
     InputsStatusInProgress2$outboundSchema,
   ]).optional(),
+  summary: z.nullable(z.array(ReasoningSummaryText$outboundSchema)),
+  type: InputsTypeReasoning$outboundSchema,
+  format: z.nullable(ReasoningFormat$outboundSchema).optional(),
   signature: z.nullable(z.string()).optional(),
-  format: z.nullable(InputsFormat$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     encryptedContent: "encrypted_content",
@@ -359,52 +339,6 @@ export function inputsReasoningToJSON(
   inputsReasoning: InputsReasoning,
 ): string {
   return JSON.stringify(InputsReasoning$outboundSchema.parse(inputsReasoning));
-}
-
-/** @internal */
-export const InputsRole$outboundSchema: z.ZodEnum<typeof InputsRole> = z.enum(
-  InputsRole,
-);
-
-/** @internal */
-export const InputsTypeMessage$outboundSchema: z.ZodEnum<
-  typeof InputsTypeMessage
-> = z.enum(InputsTypeMessage);
-
-/** @internal */
-export const InputsStatusInProgress1$outboundSchema: z.ZodEnum<
-  typeof InputsStatusInProgress1
-> = z.enum(InputsStatusInProgress1);
-
-/** @internal */
-export const InputsStatusIncomplete1$outboundSchema: z.ZodEnum<
-  typeof InputsStatusIncomplete1
-> = z.enum(InputsStatusIncomplete1);
-
-/** @internal */
-export const InputsStatusCompleted1$outboundSchema: z.ZodEnum<
-  typeof InputsStatusCompleted1
-> = z.enum(InputsStatusCompleted1);
-
-/** @internal */
-export type InputsStatusUnion1$Outbound = string | string | string;
-
-/** @internal */
-export const InputsStatusUnion1$outboundSchema: z.ZodType<
-  InputsStatusUnion1$Outbound,
-  InputsStatusUnion1
-> = z.union([
-  InputsStatusCompleted1$outboundSchema,
-  InputsStatusIncomplete1$outboundSchema,
-  InputsStatusInProgress1$outboundSchema,
-]);
-
-export function inputsStatusUnion1ToJSON(
-  inputsStatusUnion1: InputsStatusUnion1,
-): string {
-  return JSON.stringify(
-    InputsStatusUnion1$outboundSchema.parse(inputsStatusUnion1),
-  );
 }
 
 /** @internal */
@@ -482,11 +416,53 @@ export function inputsPhaseUnionToJSON(
 }
 
 /** @internal */
+export const InputsRole$outboundSchema: z.ZodEnum<typeof InputsRole> = z.enum(
+  InputsRole,
+);
+
+/** @internal */
+export const InputsStatusInProgress1$outboundSchema: z.ZodEnum<
+  typeof InputsStatusInProgress1
+> = z.enum(InputsStatusInProgress1);
+
+/** @internal */
+export const InputsStatusIncomplete1$outboundSchema: z.ZodEnum<
+  typeof InputsStatusIncomplete1
+> = z.enum(InputsStatusIncomplete1);
+
+/** @internal */
+export const InputsStatusCompleted1$outboundSchema: z.ZodEnum<
+  typeof InputsStatusCompleted1
+> = z.enum(InputsStatusCompleted1);
+
+/** @internal */
+export type InputsStatusUnion1$Outbound = string | string | string;
+
+/** @internal */
+export const InputsStatusUnion1$outboundSchema: z.ZodType<
+  InputsStatusUnion1$Outbound,
+  InputsStatusUnion1
+> = z.union([
+  InputsStatusCompleted1$outboundSchema,
+  InputsStatusIncomplete1$outboundSchema,
+  InputsStatusInProgress1$outboundSchema,
+]);
+
+export function inputsStatusUnion1ToJSON(
+  inputsStatusUnion1: InputsStatusUnion1,
+): string {
+  return JSON.stringify(
+    InputsStatusUnion1$outboundSchema.parse(inputsStatusUnion1),
+  );
+}
+
+/** @internal */
+export const InputsTypeMessage$outboundSchema: z.ZodEnum<
+  typeof InputsTypeMessage
+> = z.enum(InputsTypeMessage);
+
+/** @internal */
 export type InputsMessage$Outbound = {
-  id: string;
-  role: string;
-  type: string;
-  status?: string | string | string | undefined;
   content:
     | Array<
       ResponseOutputText$Outbound | OpenAIResponsesRefusalContent$Outbound
@@ -494,7 +470,11 @@ export type InputsMessage$Outbound = {
     | string
     | any
     | null;
+  id: string;
   phase?: string | string | any | null | undefined;
+  role: string;
+  status?: string | string | string | undefined;
+  type: string;
 };
 
 /** @internal */
@@ -502,14 +482,6 @@ export const InputsMessage$outboundSchema: z.ZodType<
   InputsMessage$Outbound,
   InputsMessage
 > = z.object({
-  id: z.string(),
-  role: InputsRole$outboundSchema,
-  type: InputsTypeMessage$outboundSchema,
-  status: z.union([
-    InputsStatusCompleted1$outboundSchema,
-    InputsStatusIncomplete1$outboundSchema,
-    InputsStatusInProgress1$outboundSchema,
-  ]).optional(),
   content: z.nullable(
     z.union([
       z.array(
@@ -522,6 +494,7 @@ export const InputsMessage$outboundSchema: z.ZodType<
       z.any(),
     ]),
   ),
+  id: z.string(),
   phase: z.nullable(
     z.union([
       InputsPhaseCommentary$outboundSchema,
@@ -529,6 +502,13 @@ export const InputsMessage$outboundSchema: z.ZodType<
       z.any(),
     ]),
   ).optional(),
+  role: InputsRole$outboundSchema,
+  status: z.union([
+    InputsStatusCompleted1$outboundSchema,
+    InputsStatusIncomplete1$outboundSchema,
+    InputsStatusInProgress1$outboundSchema,
+  ]).optional(),
+  type: InputsTypeMessage$outboundSchema,
 });
 
 export function inputsMessageToJSON(inputsMessage: InputsMessage): string {
@@ -547,7 +527,7 @@ export type InputsUnion1$Outbound =
   | FunctionCallOutputItem$Outbound
   | InputsReasoning$Outbound
   | OutputImageGenerationCallItem$Outbound
-  | OutputServerToolItem$Outbound
+  | OutputWebSearchServerToolItem$Outbound
   | EasyInputMessage$Outbound
   | InputMessageItem$Outbound;
 
@@ -566,7 +546,7 @@ export const InputsUnion1$outboundSchema: z.ZodType<
   FunctionCallOutputItem$outboundSchema,
   z.lazy(() => InputsReasoning$outboundSchema),
   OutputImageGenerationCallItem$outboundSchema,
-  OutputServerToolItem$outboundSchema,
+  OutputWebSearchServerToolItem$outboundSchema,
   EasyInputMessage$outboundSchema,
   InputMessageItem$outboundSchema,
 ]);
@@ -589,7 +569,7 @@ export type InputsUnion$Outbound =
     | FunctionCallOutputItem$Outbound
     | InputsReasoning$Outbound
     | OutputImageGenerationCallItem$Outbound
-    | OutputServerToolItem$Outbound
+    | OutputWebSearchServerToolItem$Outbound
     | EasyInputMessage$Outbound
     | InputMessageItem$Outbound
   >;
@@ -611,7 +591,7 @@ export const InputsUnion$outboundSchema: z.ZodType<
     FunctionCallOutputItem$outboundSchema,
     z.lazy(() => InputsReasoning$outboundSchema),
     OutputImageGenerationCallItem$outboundSchema,
-    OutputServerToolItem$outboundSchema,
+    OutputWebSearchServerToolItem$outboundSchema,
     EasyInputMessage$outboundSchema,
     InputMessageItem$outboundSchema,
   ])),
