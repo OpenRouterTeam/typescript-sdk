@@ -13,11 +13,11 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  * Event emitted when function call arguments are being streamed
  */
 export type FunctionCallArgsDeltaEvent = {
-  type: "response.function_call_arguments.delta";
+  delta: string;
   itemId: string;
   outputIndex: number;
-  delta: string;
   sequenceNumber: number;
+  type: "response.function_call_arguments.delta";
 };
 
 /** @internal */
@@ -25,11 +25,11 @@ export const FunctionCallArgsDeltaEvent$inboundSchema: z.ZodType<
   FunctionCallArgsDeltaEvent,
   unknown
 > = z.object({
-  type: z.literal("response.function_call_arguments.delta"),
-  item_id: z.string(),
-  output_index: z.number(),
   delta: z.string(),
-  sequence_number: z.number(),
+  item_id: z.string(),
+  output_index: z.int(),
+  sequence_number: z.int(),
+  type: z.literal("response.function_call_arguments.delta"),
 }).transform((v) => {
   return remap$(v, {
     "item_id": "itemId",
