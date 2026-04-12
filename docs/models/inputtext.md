@@ -8,8 +8,8 @@ Text input content item
 import { InputText } from "@openrouter/sdk/models";
 
 let value: InputText = {
-  type: "input_text",
   text: "Hello, how can I help you?",
+  type: "input_text",
 };
 ```
 
@@ -17,5 +17,5 @@ let value: InputText = {
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *"input_text"*     | :heavy_check_mark: | N/A                |
 | `text`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"input_text"*     | :heavy_check_mark: | N/A                |
