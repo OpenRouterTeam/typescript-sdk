@@ -5,11 +5,6 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../../lib/primitives.js";
-import { safeParse } from "../../lib/schemas.js";
-import * as openEnums from "../../types/enums.js";
-import { OpenEnum } from "../../types/enums.js";
-import { Result as SafeParseResult } from "../../types/fp.js";
-import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type GetGuardrailGlobals = {
   /**
@@ -59,81 +54,6 @@ export type GetGuardrailRequest = {
   id: string;
 };
 
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export const GetGuardrailResetInterval = {
-  Daily: "daily",
-  Weekly: "weekly",
-  Monthly: "monthly",
-} as const;
-/**
- * Interval at which the limit resets (daily, weekly, monthly)
- */
-export type GetGuardrailResetInterval = OpenEnum<
-  typeof GetGuardrailResetInterval
->;
-
-/**
- * The guardrail
- */
-export type GetGuardrailData = {
-  /**
-   * Unique identifier for the guardrail
-   */
-  id: string;
-  /**
-   * Name of the guardrail
-   */
-  name: string;
-  /**
-   * Description of the guardrail
-   */
-  description?: string | null | undefined;
-  /**
-   * Spending limit in USD
-   */
-  limitUsd?: number | null | undefined;
-  /**
-   * Interval at which the limit resets (daily, weekly, monthly)
-   */
-  resetInterval?: GetGuardrailResetInterval | null | undefined;
-  /**
-   * List of allowed provider IDs
-   */
-  allowedProviders?: Array<string> | null | undefined;
-  /**
-   * List of provider IDs to exclude from routing
-   */
-  ignoredProviders?: Array<string> | null | undefined;
-  /**
-   * Array of model canonical_slugs (immutable identifiers)
-   */
-  allowedModels?: Array<string> | null | undefined;
-  /**
-   * Whether to enforce zero data retention
-   */
-  enforceZdr?: boolean | null | undefined;
-  /**
-   * ISO 8601 timestamp of when the guardrail was created
-   */
-  createdAt: string;
-  /**
-   * ISO 8601 timestamp of when the guardrail was last updated
-   */
-  updatedAt?: string | null | undefined;
-};
-
-/**
- * Guardrail details
- */
-export type GetGuardrailResponse = {
-  /**
-   * The guardrail
-   */
-  data: GetGuardrailData;
-};
-
 /** @internal */
 export type GetGuardrailRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
@@ -162,69 +82,5 @@ export function getGuardrailRequestToJSON(
 ): string {
   return JSON.stringify(
     GetGuardrailRequest$outboundSchema.parse(getGuardrailRequest),
-  );
-}
-
-/** @internal */
-export const GetGuardrailResetInterval$inboundSchema: z.ZodType<
-  GetGuardrailResetInterval,
-  unknown
-> = openEnums.inboundSchema(GetGuardrailResetInterval);
-
-/** @internal */
-export const GetGuardrailData$inboundSchema: z.ZodType<
-  GetGuardrailData,
-  unknown
-> = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.nullable(z.string()).optional(),
-  limit_usd: z.nullable(z.number()).optional(),
-  reset_interval: z.nullable(GetGuardrailResetInterval$inboundSchema)
-    .optional(),
-  allowed_providers: z.nullable(z.array(z.string())).optional(),
-  ignored_providers: z.nullable(z.array(z.string())).optional(),
-  allowed_models: z.nullable(z.array(z.string())).optional(),
-  enforce_zdr: z.nullable(z.boolean()).optional(),
-  created_at: z.string(),
-  updated_at: z.nullable(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "limit_usd": "limitUsd",
-    "reset_interval": "resetInterval",
-    "allowed_providers": "allowedProviders",
-    "ignored_providers": "ignoredProviders",
-    "allowed_models": "allowedModels",
-    "enforce_zdr": "enforceZdr",
-    "created_at": "createdAt",
-    "updated_at": "updatedAt",
-  });
-});
-
-export function getGuardrailDataFromJSON(
-  jsonString: string,
-): SafeParseResult<GetGuardrailData, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetGuardrailData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetGuardrailData' from JSON`,
-  );
-}
-
-/** @internal */
-export const GetGuardrailResponse$inboundSchema: z.ZodType<
-  GetGuardrailResponse,
-  unknown
-> = z.object({
-  data: z.lazy(() => GetGuardrailData$inboundSchema),
-});
-
-export function getGuardrailResponseFromJSON(
-  jsonString: string,
-): SafeParseResult<GetGuardrailResponse, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => GetGuardrailResponse$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'GetGuardrailResponse' from JSON`,
   );
 }
