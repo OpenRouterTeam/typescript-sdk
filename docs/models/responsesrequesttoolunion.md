@@ -153,6 +153,14 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.ChatSearchModelsServerTool`
+
+```typescript
+const value: models.ChatSearchModelsServerTool = {
+  type: "openrouter:experimental__search_models",
+};
+```
+
 ### `models.WebSearchServerToolOpenRouter`
 
 ```typescript
