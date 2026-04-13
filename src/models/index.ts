@@ -92,7 +92,6 @@ export * from "./formatjsonobjectconfig.js";
 export * from "./formatjsonschemaconfig.js";
 export * from "./formats.js";
 export * from "./formattextconfig.js";
-export * from "./frameimage.js";
 export * from "./functioncallargsdeltaevent.js";
 export * from "./functioncallargsdoneevent.js";
 export * from "./functioncallitem.js";
