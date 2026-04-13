@@ -7770,6 +7770,7 @@ components:
                 - Crusoe
                 - DeepInfra
                 - DeepSeek
+                - DekaLLM
                 - Featherless
                 - Fireworks
                 - Friendli
@@ -7804,6 +7805,7 @@ components:
                 - Parasail
                 - Perplexity
                 - Phala
+                - Recraft
                 - Reka
                 - Relace
                 - SambaNova
@@ -10152,6 +10154,7 @@ components:
         - Crusoe
         - DeepInfra
         - DeepSeek
+        - DekaLLM
         - Featherless
         - Fireworks
         - Friendli
@@ -10186,6 +10189,7 @@ components:
         - Parasail
         - Perplexity
         - Phala
+        - Recraft
         - Reka
         - Relace
         - SambaNova
@@ -10455,6 +10459,7 @@ components:
             - Crusoe
             - DeepInfra
             - DeepSeek
+            - DekaLLM
             - Featherless
             - Fireworks
             - Friendli
@@ -10489,6 +10494,7 @@ components:
             - Parasail
             - Perplexity
             - Phala
+            - Recraft
             - Reka
             - Relace
             - SambaNova
@@ -12408,6 +12414,10 @@ components:
                   additionalProperties:
                     nullable: true
                   type: object
+                dekallm:
+                  additionalProperties:
+                    nullable: true
+                  type: object
                 enfer:
                   additionalProperties:
                     nullable: true
@@ -12605,6 +12615,10 @@ components:
                     nullable: true
                   type: object
                 phala:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                recraft:
                   additionalProperties:
                     nullable: true
                   type: object

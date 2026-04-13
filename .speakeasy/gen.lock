@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b295641a427eb017accbcbe3b6f6455c
+  docChecksum: 8334ab9aeab08f88d195af2aa9da49bb
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.1
-  configChecksum: 89006eccda82b9b03813c090d7a7c9c1
+  releaseVersion: 0.12.2
+  configChecksum: b3a727f47b2a9ee7fbdb2052505128f8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 29c0b6a9-069a-4de8-a989-5a8a3923aeb5
-  pristine_commit_hash: 245a7b3d8507ac50ed584e0b366bcdce73d6b051
-  pristine_tree_hash: 8a2dea102781ab01b6e79b59b91d0fb7a440132b
+  generation_id: 364f3193-7983-45e7-9609-b474960ca988
+  pristine_commit_hash: 4792263b40ffa0397a2c4472334f7acd954d0079
+  pristine_tree_hash: d67fc28e5e9ac89ad2eb5c9ce9c1d3b592f71e2c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2672,8 +2672,8 @@ trackedFiles:
     pristine_git_object: 83453002a36901fb9972e6c8768c141d6b7e4c02
   docs/models/options.md:
     id: 5363d2a90efd
-    last_write_checksum: sha1:beda0d878b9e09357463ccd52f3ac8a6ffad683d
-    pristine_git_object: 9ab65158d71c5843fab1f315fe3712fefce6d885
+    last_write_checksum: sha1:832febf5bf352d38a4eecea0e535a6d0d1effd21
+    pristine_git_object: 7907e41f8e5989de73ed4c0c84cd8cb533b6c9a2
     deleted: true
   docs/models/order.md:
     id: 5d2682daf79b
@@ -3151,8 +3151,8 @@ trackedFiles:
     deleted: true
   docs/models/providername.md:
     id: 661ee6ccfa8a
-    last_write_checksum: sha1:fcfb3c629ab2fcc010e2ae47b17045609d452042
-    pristine_git_object: 8bda55cf0adbc47aa5d5803fe845c6d7d2dcf1d2
+    last_write_checksum: sha1:119ad02b2c5ae604d1f14c20be5d4862a4f98415
+    pristine_git_object: f25a0c54bd330bd2739d52de8e00338f3a10e308
   docs/models/provideroverloadedresponseerrordata.md:
     id: 23d66996874e
     last_write_checksum: sha1:93e27b1eabea198409d833c54370b889a138f6b0
@@ -3168,8 +3168,8 @@ trackedFiles:
     deleted: true
   docs/models/providerresponseprovidername.md:
     id: d59f0f17ca15
-    last_write_checksum: sha1:bc63217e1cc0ae9de3475f0369da078aeeb05308
-    pristine_git_object: 2d654e404f07cf4b6618ae2129892486a0b7ca24
+    last_write_checksum: sha1:c438d535c0c18d42ad2893fa90781c60c7c03e9b
+    pristine_git_object: 1bdf7a0d583b04b95ae4e97eb54d60499c1efad8
     deleted: true
   docs/models/providersort.md:
     id: dedd9969d635
@@ -4002,12 +4002,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:41ba08e35a3009c4485e6aa6f6dfef675254ebd9
-    pristine_git_object: 5a21d156e75f214ed9fb3bbd6ec6b37f5f0c8329
+    last_write_checksum: sha1:029a5e3e58c5b2f179272362efcef48aaf957172
+    pristine_git_object: 1d74194733833ee1530acd5b37d804c590d9c500
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:32acd01aef7764f0b1b96e8c68a310baf3655368
-    pristine_git_object: 987a1d0780d38cec6b51d0fff96427efe48e1585
+    last_write_checksum: sha1:0bf4d1ab093c5c26540ccf77aeed6158fe0c1bf8
+    pristine_git_object: 57bd965211c0e808e885031ea210771b85a73648
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4194,8 +4194,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6460732c15d32af353586b7bb39e505d91d52b4c
-    pristine_git_object: 78e69bf4826e966f9897b688dfe48c14a9391462
+    last_write_checksum: sha1:d645aec73cad0c0ff6bb9faaf342fb3f741e251e
+    pristine_git_object: aad76fae249d8fecde841e916110af4b354a2129
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5242,8 +5242,8 @@ trackedFiles:
     pristine_git_object: 789ab79f12eb208766f43c93c285d7ee49e08cac
   src/models/providername.ts:
     id: 89e536fb023a
-    last_write_checksum: sha1:99bd9dc6bc73d3b722bd59f48ab3b3135ba2a126
-    pristine_git_object: 60ffc0ccd85ab9437c84b7ef9fa21292a981ff67
+    last_write_checksum: sha1:4ca0b8bb10d06b30acf6ef9c1ddba851fda23d34
+    pristine_git_object: e087515011d5008184d3507f0df8d764bde36684
   src/models/provideroverloadedresponseerrordata.ts:
     id: 379f1256314f
     last_write_checksum: sha1:0458b6a8454adfa7c415e3bd7f49f2879cc6093e
@@ -5254,8 +5254,8 @@ trackedFiles:
     pristine_git_object: bf002879b3743ebeb20c0fa43df369757de9d068
   src/models/providerresponse.ts:
     id: 7427d17a27bc
-    last_write_checksum: sha1:fbbc2ccac697f81aa0116a9f090c7070bdfc6852
-    pristine_git_object: a520f49fc9218b4452ce5d4b6a37376d691ea780
+    last_write_checksum: sha1:5de85e0aabb3b3f25063dba057c92ce94bbb2035
+    pristine_git_object: efc127464acfff18eab9c1ada1cb04251512b122
   src/models/providersort.ts:
     id: 7d1e919d1ec3
     last_write_checksum: sha1:4c871e5fc8af6042ca41d12c54ba8640706c0863
@@ -5498,8 +5498,8 @@ trackedFiles:
     pristine_git_object: 04d39d4a51cbd87b52ee2f6db5ec0397af8eaa0d
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:9ffa290274caf6766a7ebcfafd7a1a34d6c29763
-    pristine_git_object: 54f47c30c6115a3bf5fe4fc090d50001f69d6f6f
+    last_write_checksum: sha1:bc4c27b911ae99e0063e5158db80e10f54e52078
+    pristine_git_object: a96cc879fe92206dcb8f6272b576ae0fccc983ba
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:73c631114adc4f4076585919439c06126aa6d55f
@@ -6320,4 +6320,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].ignoredModels` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.ignoredModels` **Added**\n  *  `response.data.ignoredModels` **Added**\n* `openrouter.guardrails.get()`:  `response.data.ignoredModels` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.ignoredModels` **Added**\n  *  `response.data.ignoredModels` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName` **Changed**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options` **Changed**\n"
