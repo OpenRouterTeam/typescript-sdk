@@ -39,6 +39,10 @@ export type Guardrail = {
    */
   id: string;
   /**
+   * Array of model canonical_slugs to exclude from routing
+   */
+  ignoredModels?: Array<string> | null | undefined;
+  /**
    * List of provider IDs to exclude from routing
    */
   ignoredProviders?: Array<string> | null | undefined;
@@ -68,6 +72,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   description: z.nullable(z.string()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   id: z.string(),
+  ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
   limit_usd: z.number().optional(),
   name: z.string(),
@@ -79,6 +84,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "allowed_providers": "allowedProviders",
     "created_at": "createdAt",
     "enforce_zdr": "enforceZdr",
+    "ignored_models": "ignoredModels",
     "ignored_providers": "ignoredProviders",
     "limit_usd": "limitUsd",
     "reset_interval": "resetInterval",
