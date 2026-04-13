@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8334ab9aeab08f88d195af2aa9da49bb
+  docChecksum: 1c1c8e866218a7ab24b20519bbce0b8a
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.2
-  configChecksum: b3a727f47b2a9ee7fbdb2052505128f8
+  releaseVersion: 0.12.3
+  configChecksum: 52f3c6a790fefaa71d8e619089baef27
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 364f3193-7983-45e7-9609-b474960ca988
-  pristine_commit_hash: 4792263b40ffa0397a2c4472334f7acd954d0079
-  pristine_tree_hash: d67fc28e5e9ac89ad2eb5c9ce9c1d3b592f71e2c
+  generation_id: 631cee48-8a3e-4899-843d-9d9081adf5ab
+  pristine_commit_hash: 923259909f7d953d866014191286baa3855caae9
+  pristine_tree_hash: 438f0f20a52ddd723378068ae37e353d675d8d89
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -568,8 +568,8 @@ trackedFiles:
     deleted: true
   docs/models/chatfunctiontool.md:
     id: 5464656ccd20
-    last_write_checksum: sha1:f4ba9133089d782ce49bd2b70979d9121e7b2477
-    pristine_git_object: 1ab302a1d98e366a849bd001aa44cf509a7eda78
+    last_write_checksum: sha1:4430b36eb0f559c7089a7eb58fba447d0d075947
+    pristine_git_object: 046735613d28e844a29a5a45df5e3bda44799541
     deleted: true
   docs/models/chatfunctiontoolfunction.md:
     id: 65b6def5d64c
@@ -761,6 +761,14 @@ trackedFiles:
     last_write_checksum: sha1:b0e4eac18af6dcd0907c869b1d323e6eed87bf85
     pristine_git_object: 380700030ded86637b308c8674491a5a8ab5fac1
     deleted: true
+  docs/models/chatsearchmodelsservertool.md:
+    id: 2a2175627463
+    last_write_checksum: sha1:4bf49e5dcb1802236ef8bfa89a2db635b9056b82
+    pristine_git_object: 277745902a32b17f940704b2c47bd00210e23e5e
+  docs/models/chatsearchmodelsservertooltype.md:
+    id: 212eb3e1a305
+    last_write_checksum: sha1:d5adff886d9d5d77642b2fe621a53fd70f070702
+    pristine_git_object: a176fb95728629f1bd0eca7d050188893d0004e4
   docs/models/chatstreamchoice.md:
     id: ea07d9ed7159
     last_write_checksum: sha1:f71b64f0213a7459d09f4d46053da9cf18c3621e
@@ -3507,8 +3515,8 @@ trackedFiles:
     deleted: true
   docs/models/responsesrequesttoolunion.md:
     id: 0cab4203954b
-    last_write_checksum: sha1:73a6fe020106147f207c48a80c74ab3f3925a6ea
-    pristine_git_object: b9a408cd102e99c793193344b522763699eb6dc1
+    last_write_checksum: sha1:4c5a0c09c7d81e0ce818bd91f8fd2bdbdb682517
+    pristine_git_object: f3b78d77ca3c90681fce57b181cd7b77d26e0b09
     deleted: true
   docs/models/responsesrequesttrace.md:
     id: ace3d4b73652
@@ -3520,6 +3528,10 @@ trackedFiles:
     last_write_checksum: sha1:efc7659126209876e2b83b5fd67b1dc379796ad0
     pristine_git_object: cae2b42b5d37cec04614acacf0805b08217dec45
     deleted: true
+  docs/models/searchmodelsservertoolconfig.md:
+    id: 5f844c779adc
+    last_write_checksum: sha1:e0e263379d99c1cd77f27de152a7762daf6c77c5
+    pristine_git_object: 98412cb0cf31d2ce48766539585899bbbe2dd978
   docs/models/searchqualitylevel.md:
     id: 2940faca7194
     last_write_checksum: sha1:0957dafcbade0cad136e8fce0f43ca7482329995
@@ -4002,12 +4014,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:029a5e3e58c5b2f179272362efcef48aaf957172
-    pristine_git_object: 1d74194733833ee1530acd5b37d804c590d9c500
+    last_write_checksum: sha1:d6b89191e6574bdbb6844aaf29a03079c672ea8a
+    pristine_git_object: 1f18621d214269a11623c2b2170b644368062e8c
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:0bf4d1ab093c5c26540ccf77aeed6158fe0c1bf8
-    pristine_git_object: 57bd965211c0e808e885031ea210771b85a73648
+    last_write_checksum: sha1:42ce051bb8cb236853a965e440d6a6f41b45238b
+    pristine_git_object: a51d6925f43427125e9cea1d75dcc9a8c671646b
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4194,8 +4206,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:d645aec73cad0c0ff6bb9faaf342fb3f741e251e
-    pristine_git_object: aad76fae249d8fecde841e916110af4b354a2129
+    last_write_checksum: sha1:a479dc877ab18064c27893717edee149a601a4fc
+    pristine_git_object: cb8e635c3bb624b45b9c9a4667faedd30fcdb295
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -4410,8 +4422,8 @@ trackedFiles:
     pristine_git_object: d082d241abf206468fe635e7c47dca140e3bfd90
   src/models/chatfunctiontool.ts:
     id: 400104319b29
-    last_write_checksum: sha1:f530a292267460e5c3d857f12d975b6de03085cf
-    pristine_git_object: 719fcb5add210f9ef3a382786c0d5062cdcfc124
+    last_write_checksum: sha1:e1268f146b9ca927b1028ce723502f4ef86ae2d0
+    pristine_git_object: bd11eba0cd662da126bfad1db320d4e2ac06c383
   src/models/chatjsonschemaconfig.ts:
     id: 1ad0e5d930fb
     last_write_checksum: sha1:9af3223f14c0c9d62046de826a737544b86d222e
@@ -4436,6 +4448,10 @@ trackedFiles:
     id: afefd8aadd09
     last_write_checksum: sha1:9ca27d61ba748d663b37a8fef2ad863ac0ecbe9c
     pristine_git_object: c7ba2b22b7776c940c3f6ac82280715fffd02c24
+  src/models/chatsearchmodelsservertool.ts:
+    id: bb9f1922b007
+    last_write_checksum: sha1:8e6ef0f89bc36d9ba8a0d73aaf5873a4cfcb6157
+    pristine_git_object: 10b524a32df9213dbbb9518c1f9a377627b85423
   src/models/chatstreamchoice.ts:
     id: 3747d92a0ba4
     last_write_checksum: sha1:550fa3775e020f2dcf8181b3c25fe77ba2259479
@@ -4758,8 +4774,8 @@ trackedFiles:
     pristine_git_object: 8e109bedfdcf2c4808e49323dda861e3c6069d51
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:6aeab82f7ee222755b4ec44c4ee069393d81abb9
-    pristine_git_object: ac0c78a9e451601887086923d3da02b6020cbfdf
+    last_write_checksum: sha1:f0f96089d03dedb5adb3ec8097b985da664bec28
+    pristine_git_object: a0f9afa8846a7e54dba953ee44dde6e54f9b3ca1
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:2f8dc4c1d6a9c2927d9eb186e0ecedf7b81838e6
@@ -5374,12 +5390,16 @@ trackedFiles:
     pristine_git_object: 584f66cd23f2e112b14f8d0b23aea1cd4532c412
   src/models/responsesrequest.ts:
     id: 39799702f982
-    last_write_checksum: sha1:e2526e2cad5f7dd226ab34e5e0764d0ea4e546ff
-    pristine_git_object: c181304086329c324734411e1390dcb176296a58
+    last_write_checksum: sha1:fbb688b06a1bcf30086ea8f2a0941d1664460496
+    pristine_git_object: 48900ecdd73d9bf4a8564479df40e19ddab70c4a
   src/models/searchcontextsizeenum.ts:
     id: d76263d711fe
     last_write_checksum: sha1:84b915e8d44e263ab6436d727663d69caa799149
     pristine_git_object: 59040b90a79f43fd75d693a44b2911a6fbaf63ff
+  src/models/searchmodelsservertoolconfig.ts:
+    id: f15358a543a6
+    last_write_checksum: sha1:976a01543f0c15191ef9c10d3aa86166bdd06754
+    pristine_git_object: 3575fca667c595cf323800fd2d78ab93a4836e66
   src/models/searchqualitylevel.ts:
     id: 3f28e436c1e6
     last_write_checksum: sha1:efbd3397588aeb3e563cdc8ccc4b3b72c6519ba1
@@ -6320,4 +6340,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName` **Changed**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName` **Changed**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider.ignore[].union(ProviderName)` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider.options` **Changed**\n"
