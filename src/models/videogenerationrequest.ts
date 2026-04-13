@@ -12,11 +12,6 @@ import {
   ContentPartImage$Outbound,
   ContentPartImage$outboundSchema,
 } from "./contentpartimage.js";
-import {
-  FrameImage,
-  FrameImage$Outbound,
-  FrameImage$outboundSchema,
-} from "./frameimage.js";
 
 /**
  * Aspect ratio of the generated video
@@ -181,11 +176,7 @@ export type VideoGenerationRequest = {
    */
   duration?: number | undefined;
   /**
-   * Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame.
-   */
-  frameImages?: Array<FrameImage> | undefined;
-  /**
-   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set.
+   * Whether to generate audio alongside the video. Defaults to true for models that support audio output, false otherwise.
    */
   generateAudio?: boolean | undefined;
   /**
@@ -483,7 +474,6 @@ export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   duration?: number | undefined;
-  frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
   input_references?: Array<ContentPartImage$Outbound> | undefined;
   model: string;
@@ -501,7 +491,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 > = z.object({
   aspectRatio: AspectRatio$outboundSchema.optional(),
   duration: z.int().optional(),
-  frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
   inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
   model: z.string(),
@@ -513,7 +502,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
-    frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
   });
