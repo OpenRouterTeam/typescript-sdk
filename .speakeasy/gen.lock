@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b295641a427eb017accbcbe3b6f6455c
+  docChecksum: ed2b2205a7098975e966b20188773d43
   docVersion: 1.0.0
   speakeasyVersion: 1.761.0
   generationVersion: 2.879.1
-  releaseVersion: 0.12.1
-  configChecksum: 89006eccda82b9b03813c090d7a7c9c1
+  releaseVersion: 0.12.2
+  configChecksum: b3a727f47b2a9ee7fbdb2052505128f8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 29c0b6a9-069a-4de8-a989-5a8a3923aeb5
-  pristine_commit_hash: 245a7b3d8507ac50ed584e0b366bcdce73d6b051
-  pristine_tree_hash: 8a2dea102781ab01b6e79b59b91d0fb7a440132b
+  generation_id: 38b02bb5-bb5d-4bcb-8965-21c14c960b6c
+  pristine_commit_hash: 79271a0127243e132e136f27eaba2df05bae9a16
+  pristine_tree_hash: 77f9c0fab3f3dbb0ce70dd27b4bcdbace7a5cfe9
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2672,8 +2672,8 @@ trackedFiles:
     pristine_git_object: 83453002a36901fb9972e6c8768c141d6b7e4c02
   docs/models/options.md:
     id: 5363d2a90efd
-    last_write_checksum: sha1:beda0d878b9e09357463ccd52f3ac8a6ffad683d
-    pristine_git_object: 9ab65158d71c5843fab1f315fe3712fefce6d885
+    last_write_checksum: sha1:d01e7661f27f364f25701fd2db68220fd7c2595d
+    pristine_git_object: 6c5ebf4258a992bb3ac4c00b4903c6665d63b81a
     deleted: true
   docs/models/order.md:
     id: 5d2682daf79b
@@ -3151,8 +3151,8 @@ trackedFiles:
     deleted: true
   docs/models/providername.md:
     id: 661ee6ccfa8a
-    last_write_checksum: sha1:fcfb3c629ab2fcc010e2ae47b17045609d452042
-    pristine_git_object: 8bda55cf0adbc47aa5d5803fe845c6d7d2dcf1d2
+    last_write_checksum: sha1:ff66a7a04f3d3e148dcd73c042c522f3b67df284
+    pristine_git_object: 38848b8502cde0c796cc157ebed9430c6dec694b
   docs/models/provideroverloadedresponseerrordata.md:
     id: 23d66996874e
     last_write_checksum: sha1:93e27b1eabea198409d833c54370b889a138f6b0
@@ -3168,8 +3168,8 @@ trackedFiles:
     deleted: true
   docs/models/providerresponseprovidername.md:
     id: d59f0f17ca15
-    last_write_checksum: sha1:bc63217e1cc0ae9de3475f0369da078aeeb05308
-    pristine_git_object: 2d654e404f07cf4b6618ae2129892486a0b7ca24
+    last_write_checksum: sha1:2b40d4eb30bc2a0f946199d40edaeaf971c46a16
+    pristine_git_object: de4a46c923582a50d603a707be7f0b5f717406d5
     deleted: true
   docs/models/providersort.md:
     id: dedd9969d635
@@ -4002,12 +4002,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:41ba08e35a3009c4485e6aa6f6dfef675254ebd9
-    pristine_git_object: 5a21d156e75f214ed9fb3bbd6ec6b37f5f0c8329
+    last_write_checksum: sha1:029a5e3e58c5b2f179272362efcef48aaf957172
+    pristine_git_object: 1d74194733833ee1530acd5b37d804c590d9c500
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:32acd01aef7764f0b1b96e8c68a310baf3655368
-    pristine_git_object: 987a1d0780d38cec6b51d0fff96427efe48e1585
+    last_write_checksum: sha1:f2550483cbe391f81f131e3695ce56713d2d0268
+    pristine_git_object: 65a7eec2df4c835aa455fe6816828c5a1d22de1a
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -4194,8 +4194,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:6460732c15d32af353586b7bb39e505d91d52b4c
-    pristine_git_object: 78e69bf4826e966f9897b688dfe48c14a9391462
+    last_write_checksum: sha1:d645aec73cad0c0ff6bb9faaf342fb3f741e251e
+    pristine_git_object: aad76fae249d8fecde841e916110af4b354a2129
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -5242,8 +5242,8 @@ trackedFiles:
     pristine_git_object: 789ab79f12eb208766f43c93c285d7ee49e08cac
   src/models/providername.ts:
     id: 89e536fb023a
-    last_write_checksum: sha1:99bd9dc6bc73d3b722bd59f48ab3b3135ba2a126
-    pristine_git_object: 60ffc0ccd85ab9437c84b7ef9fa21292a981ff67
+    last_write_checksum: sha1:2c1ad3eb363b251f7d1774f8bea6f0d201d4e14c
+    pristine_git_object: 131931d0a2b16ed4a587e1094a4e95f2c755178a
   src/models/provideroverloadedresponseerrordata.ts:
     id: 379f1256314f
     last_write_checksum: sha1:0458b6a8454adfa7c415e3bd7f49f2879cc6093e
@@ -5254,8 +5254,8 @@ trackedFiles:
     pristine_git_object: bf002879b3743ebeb20c0fa43df369757de9d068
   src/models/providerresponse.ts:
     id: 7427d17a27bc
-    last_write_checksum: sha1:fbbc2ccac697f81aa0116a9f090c7070bdfc6852
-    pristine_git_object: a520f49fc9218b4452ce5d4b6a37376d691ea780
+    last_write_checksum: sha1:8ef202a8cf62dd8f1a0badf74a6fdceb7a34dca7
+    pristine_git_object: cab77e2a8a34a4372209fb51ec888fb658a835bd
   src/models/providersort.ts:
     id: 7d1e919d1ec3
     last_write_checksum: sha1:4c871e5fc8af6042ca41d12c54ba8640706c0863
@@ -5498,8 +5498,8 @@ trackedFiles:
     pristine_git_object: 04d39d4a51cbd87b52ee2f6db5ec0397af8eaa0d
   src/models/videogenerationrequest.ts:
     id: e72ea2e4c5b3
-    last_write_checksum: sha1:9ffa290274caf6766a7ebcfafd7a1a34d6c29763
-    pristine_git_object: 54f47c30c6115a3bf5fe4fc090d50001f69d6f6f
+    last_write_checksum: sha1:a2b0569cec7061e5284d81aaefba33cdb729405d
+    pristine_git_object: 173e297c6f26c2fbb473a76be62363ed96b787c1
   src/models/videogenerationresponse.ts:
     id: 0a96c6ee9eea
     last_write_checksum: sha1:73c631114adc4f4076585919439c06126aa6d55f
@@ -6320,4 +6320,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].ignoredModels` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.ignoredModels` **Added**\n  *  `response.data.ignoredModels` **Added**\n* `openrouter.guardrails.get()`:  `response.data.ignoredModels` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.ignoredModels` **Added**\n  *  `response.data.ignoredModels` **Added**\n"
