@@ -18,6 +18,11 @@ import {
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
+  ChatSearchModelsServerTool,
+  ChatSearchModelsServerTool$Outbound,
+  ChatSearchModelsServerTool$outboundSchema,
+} from "./chatsearchmodelsservertool.js";
+import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
@@ -208,6 +213,7 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (ChatSearchModelsServerTool & { type: "experimental__search_models" })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -295,6 +301,7 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (ChatSearchModelsServerTool & { type: "experimental__search_models" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -415,6 +422,9 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (ChatSearchModelsServerTool$Outbound & {
+    type: "experimental__search_models";
+  })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -438,6 +448,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   CustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  ChatSearchModelsServerTool$outboundSchema.and(
+    z.object({ type: z.literal("experimental__search_models") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -506,6 +519,9 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (ChatSearchModelsServerTool$Outbound & {
+        type: "experimental__search_models";
+      })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -580,6 +596,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+      ChatSearchModelsServerTool$outboundSchema.and(
+        z.object({ type: z.literal("experimental__search_models") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
