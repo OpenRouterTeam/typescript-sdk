@@ -22,12 +22,6 @@ export const SupportedAspectRatio = {
 } as const;
 export type SupportedAspectRatio = OpenEnum<typeof SupportedAspectRatio>;
 
-export const SupportedFrameImage = {
-  FirstFrame: "first_frame",
-  LastFrame: "last_frame",
-} as const;
-export type SupportedFrameImage = OpenEnum<typeof SupportedFrameImage>;
-
 export const SupportedResolution = {
   FourHundredAndEightyp: "480p",
   SevenHundredAndTwentyp: "720p",
@@ -88,10 +82,6 @@ export type VideoModel = {
    */
   description?: string | undefined;
   /**
-   * Whether the model supports generating audio alongside video
-   */
-  generateAudio: boolean | null;
-  /**
    * Hugging Face model identifier, if applicable
    */
   huggingFaceId?: string | null | undefined;
@@ -108,10 +98,6 @@ export type VideoModel = {
    */
   pricingSkus?: { [k: string]: string } | null | undefined;
   /**
-   * Whether the model supports deterministic generation via seed parameter
-   */
-  seed: boolean | null;
-  /**
    * Supported output aspect ratios
    */
   supportedAspectRatios: Array<SupportedAspectRatio> | null;
@@ -119,10 +105,6 @@ export type VideoModel = {
    * Supported video durations in seconds
    */
   supportedDurations: Array<number> | null;
-  /**
-   * Supported frame image types (e.g. first_frame, last_frame)
-   */
-  supportedFrameImages: Array<SupportedFrameImage> | null;
   /**
    * Supported output resolutions
    */
@@ -138,12 +120,6 @@ export const SupportedAspectRatio$inboundSchema: z.ZodType<
   SupportedAspectRatio,
   unknown
 > = openEnums.inboundSchema(SupportedAspectRatio);
-
-/** @internal */
-export const SupportedFrameImage$inboundSchema: z.ZodType<
-  SupportedFrameImage,
-  unknown
-> = openEnums.inboundSchema(SupportedFrameImage);
 
 /** @internal */
 export const SupportedResolution$inboundSchema: z.ZodType<
@@ -162,19 +138,14 @@ export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
     canonical_slug: z.string(),
     created: z.int(),
     description: z.string().optional(),
-    generate_audio: z.nullable(z.boolean()),
     hugging_face_id: z.nullable(z.string()).optional(),
     id: z.string(),
     name: z.string(),
     pricing_skus: z.nullable(z.record(z.string(), z.string())).optional(),
-    seed: z.nullable(z.boolean()),
     supported_aspect_ratios: z.nullable(
       z.array(SupportedAspectRatio$inboundSchema),
     ),
     supported_durations: z.nullable(z.array(z.int())),
-    supported_frame_images: z.nullable(
-      z.array(SupportedFrameImage$inboundSchema),
-    ),
     supported_resolutions: z.nullable(
       z.array(SupportedResolution$inboundSchema),
     ),
@@ -183,12 +154,10 @@ export const VideoModel$inboundSchema: z.ZodType<VideoModel, unknown> = z
     return remap$(v, {
       "allowed_passthrough_parameters": "allowedPassthroughParameters",
       "canonical_slug": "canonicalSlug",
-      "generate_audio": "generateAudio",
       "hugging_face_id": "huggingFaceId",
       "pricing_skus": "pricingSkus",
       "supported_aspect_ratios": "supportedAspectRatios",
       "supported_durations": "supportedDurations",
-      "supported_frame_images": "supportedFrameImages",
       "supported_resolutions": "supportedResolutions",
       "supported_sizes": "supportedSizes",
     });
