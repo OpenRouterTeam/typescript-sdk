@@ -12,11 +12,6 @@ import {
   ContentPartImage$Outbound,
   ContentPartImage$outboundSchema,
 } from "./contentpartimage.js";
-import {
-  FrameImage,
-  FrameImage$Outbound,
-  FrameImage$outboundSchema,
-} from "./frameimage.js";
 
 /**
  * Aspect ratio of the generated video
@@ -68,7 +63,6 @@ export type Options = {
   crusoe?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
-  dekallm?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
   fakeProvider?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
@@ -119,7 +113,6 @@ export type Options = {
   parasail?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
-  recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
   reka?: { [k: string]: any | null } | undefined;
@@ -183,11 +176,7 @@ export type VideoGenerationRequest = {
    */
   duration?: number | undefined;
   /**
-   * Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame.
-   */
-  frameImages?: Array<FrameImage> | undefined;
-  /**
-   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set.
+   * Whether to generate audio alongside the video. Defaults to true for models that support audio output, false otherwise.
    */
   generateAudio?: boolean | undefined;
   /**
@@ -249,7 +238,6 @@ export type Options$Outbound = {
   crusoe?: { [k: string]: any | null } | undefined;
   deepinfra?: { [k: string]: any | null } | undefined;
   deepseek?: { [k: string]: any | null } | undefined;
-  dekallm?: { [k: string]: any | null } | undefined;
   enfer?: { [k: string]: any | null } | undefined;
   "fake-provider"?: { [k: string]: any | null } | undefined;
   featherless?: { [k: string]: any | null } | undefined;
@@ -300,7 +288,6 @@ export type Options$Outbound = {
   parasail?: { [k: string]: any | null } | undefined;
   perplexity?: { [k: string]: any | null } | undefined;
   phala?: { [k: string]: any | null } | undefined;
-  recraft?: { [k: string]: any | null } | undefined;
   recursal?: { [k: string]: any | null } | undefined;
   reflection?: { [k: string]: any | null } | undefined;
   reka?: { [k: string]: any | null } | undefined;
@@ -360,7 +347,6 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     crusoe: z.record(z.string(), z.nullable(z.any())).optional(),
     deepinfra: z.record(z.string(), z.nullable(z.any())).optional(),
     deepseek: z.record(z.string(), z.nullable(z.any())).optional(),
-    dekallm: z.record(z.string(), z.nullable(z.any())).optional(),
     enfer: z.record(z.string(), z.nullable(z.any())).optional(),
     fakeProvider: z.record(z.string(), z.nullable(z.any())).optional(),
     featherless: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -411,7 +397,6 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     parasail: z.record(z.string(), z.nullable(z.any())).optional(),
     perplexity: z.record(z.string(), z.nullable(z.any())).optional(),
     phala: z.record(z.string(), z.nullable(z.any())).optional(),
-    recraft: z.record(z.string(), z.nullable(z.any())).optional(),
     recursal: z.record(z.string(), z.nullable(z.any())).optional(),
     reflection: z.record(z.string(), z.nullable(z.any())).optional(),
     reka: z.record(z.string(), z.nullable(z.any())).optional(),
@@ -489,7 +474,6 @@ export const Resolution$outboundSchema: z.ZodType<string, Resolution> =
 export type VideoGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   duration?: number | undefined;
-  frame_images?: Array<FrameImage$Outbound> | undefined;
   generate_audio?: boolean | undefined;
   input_references?: Array<ContentPartImage$Outbound> | undefined;
   model: string;
@@ -507,7 +491,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 > = z.object({
   aspectRatio: AspectRatio$outboundSchema.optional(),
   duration: z.int().optional(),
-  frameImages: z.array(FrameImage$outboundSchema).optional(),
   generateAudio: z.boolean().optional(),
   inputReferences: z.array(ContentPartImage$outboundSchema).optional(),
   model: z.string(),
@@ -519,7 +502,6 @@ export const VideoGenerationRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     aspectRatio: "aspect_ratio",
-    frameImages: "frame_images",
     generateAudio: "generate_audio",
     inputReferences: "input_references",
   });
