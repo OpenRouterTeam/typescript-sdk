@@ -9,10 +9,10 @@ import { StreamEventsResponseIncomplete } from "@openrouter/sdk/models";
 
 let value: StreamEventsResponseIncomplete = {
   response: {
-    completedAt: 332914,
+    completedAt: 854864,
     createdAt: 1704067200,
     error: null,
-    frequencyPenalty: 8548.64,
+    frequencyPenalty: 7279.68,
     id: "resp-abc123",
     incompleteDetails: null,
     instructions: null,
@@ -21,12 +21,12 @@ let value: StreamEventsResponseIncomplete = {
     object: "response",
     output: [],
     parallelToolCalls: true,
-    presencePenalty: 8157.75,
+    presencePenalty: 1969.92,
     status: "in_progress",
-    temperature: 7279.68,
+    temperature: null,
     toolChoice: "auto",
     tools: [],
-    topP: 9104.83,
+    topP: null,
   },
   sequenceNumber: 0,
   type: "response.incomplete",

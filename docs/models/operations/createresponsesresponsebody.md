@@ -10,10 +10,10 @@ import { CreateResponsesResponseBody } from "@openrouter/sdk/models/operations";
 let value: CreateResponsesResponseBody = {
   data: {
     response: {
-      completedAt: 798483,
+      completedAt: 810112,
       createdAt: 1704067200,
       error: null,
-      frequencyPenalty: 8101.12,
+      frequencyPenalty: 8087.26,
       id: "resp-abc123",
       incompleteDetails: null,
       instructions: null,
@@ -22,12 +22,12 @@ let value: CreateResponsesResponseBody = {
       object: "response",
       output: [],
       parallelToolCalls: true,
-      presencePenalty: 9758.23,
+      presencePenalty: 4886.88,
       status: "in_progress",
-      temperature: 8087.26,
+      temperature: null,
       toolChoice: "auto",
       tools: [],
-      topP: 4800.08,
+      topP: null,
     },
     sequenceNumber: 0,
     type: "response.created",
