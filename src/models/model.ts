@@ -43,7 +43,7 @@ export type Model = {
   /**
    * Maximum context length in tokens
    */
-  contextLength: number;
+  contextLength: number | null;
   /**
    * Unix timestamp of when the model was created
    */
@@ -102,7 +102,7 @@ export type Model = {
 export const Model$inboundSchema: z.ZodType<Model, unknown> = z.object({
   architecture: ModelArchitecture$inboundSchema,
   canonical_slug: z.string(),
-  context_length: z.int(),
+  context_length: z.nullable(z.int()),
   created: z.int(),
   default_parameters: z.nullable(DefaultParameters$inboundSchema),
   description: z.string().optional(),
