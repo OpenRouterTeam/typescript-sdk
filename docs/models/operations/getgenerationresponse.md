@@ -20,6 +20,7 @@ let value: GetGenerationResponse = {
     httpReferer: null,
     id: "gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG",
     isByok: false,
+    isCached: "<value>",
     latency: 1250,
     model: "sao10k/l3-stheno-8b",
     moderationLatency: 50,
