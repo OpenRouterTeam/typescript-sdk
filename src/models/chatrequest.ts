@@ -320,7 +320,7 @@ export type ChatRequest = {
    */
   topP?: number | undefined;
   /**
-   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+   * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured observability destinations.
    */
   trace?: TraceConfig | undefined;
   /**

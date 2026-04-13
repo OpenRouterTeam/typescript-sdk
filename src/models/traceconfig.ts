@@ -7,7 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 /**
- * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
+ * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured observability destinations.
  */
 export type TraceConfig = {
   generationName?: string | undefined;
