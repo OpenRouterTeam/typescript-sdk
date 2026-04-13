@@ -63,6 +63,11 @@ import {
   ImageGenerationServerTool$outboundSchema,
 } from "./imagegenerationservertool.js";
 import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
   InputsUnion,
   InputsUnion$Outbound,
   InputsUnion$outboundSchema,
@@ -208,6 +213,9 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter & {
+    type: "openrouter:image_generation";
+  })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -295,6 +303,9 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter & {
+        type: "openrouter:image_generation";
+      })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -415,6 +426,9 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter$Outbound & {
+    type: "openrouter:image_generation";
+  })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -438,6 +452,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   CustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  ImageGenerationServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:image_generation") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -506,6 +523,9 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter$Outbound & {
+        type: "openrouter:image_generation";
+      })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -580,6 +600,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+      ImageGenerationServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:image_generation") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),

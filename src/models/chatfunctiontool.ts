@@ -22,6 +22,11 @@ import {
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
 import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
   OpenRouterWebSearchServerTool,
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
@@ -72,6 +77,7 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
+  | ImageGenerationServerToolOpenRouter
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -142,6 +148,7 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
+  | ImageGenerationServerToolOpenRouter$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -152,6 +159,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
