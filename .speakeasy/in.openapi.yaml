@@ -7708,6 +7708,7 @@ components:
                 - Crusoe
                 - DeepInfra
                 - DeepSeek
+                - DekaLLM
                 - Featherless
                 - Fireworks
                 - Friendli
@@ -10089,6 +10090,7 @@ components:
         - Crusoe
         - DeepInfra
         - DeepSeek
+        - DekaLLM
         - Featherless
         - Fireworks
         - Friendli
@@ -10400,6 +10402,7 @@ components:
             - Crusoe
             - DeepInfra
             - DeepSeek
+            - DekaLLM
             - Featherless
             - Fireworks
             - Friendli
@@ -12346,6 +12349,10 @@ components:
                     nullable: true
                   type: object
                 deepseek:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                dekallm:
                   additionalProperties:
                     nullable: true
                   type: object
