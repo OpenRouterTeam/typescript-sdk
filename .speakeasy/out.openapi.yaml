@@ -12264,8 +12264,7 @@ components:
         duration:
           description: Duration of the generated video in seconds
           example: 8
-          exclusiveMinimum: true
-          minimum: 0
+          minimum: 1
           type: integer
         frame_images:
           description: >-
@@ -14009,8 +14008,7 @@ paths:
                 dimensions:
                   description: The number of dimensions for the output embeddings
                   example: 1536
-                  exclusiveMinimum: 0
-                  minimum: 0
+                  minimum: 1
                   type: integer
                 encoding_format:
                   description: The format of the output embeddings
@@ -18700,8 +18698,7 @@ paths:
                 top_n:
                   description: Number of most relevant documents to return
                   example: 3
-                  exclusiveMinimum: 0
-                  minimum: 0
+                  minimum: 1
                   type: integer
               required:
                 - model
