@@ -123,6 +123,10 @@ export type GetGenerationData = {
    */
   isByok: boolean;
   /**
+   * If this generation was served from response cache, contains the original generation ID. Null otherwise.
+   */
+  isCached: string | null;
+  /**
    * Total latency in milliseconds
    */
   latency: number;
@@ -293,6 +297,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   http_referer: z.nullable(z.string()),
   id: z.string(),
   is_byok: z.boolean(),
+  is_cached: z.nullable(z.string()),
   latency: z.number(),
   model: z.string(),
   moderation_latency: z.number(),
@@ -333,6 +338,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "generation_time": "generationTime",
     "http_referer": "httpReferer",
     "is_byok": "isByok",
+    "is_cached": "isCached",
     "moderation_latency": "moderationLatency",
     "native_finish_reason": "nativeFinishReason",
     "native_tokens_cached": "nativeTokensCached",
