@@ -4818,6 +4818,7 @@ components:
           - deepseek
         description: A guardrail for limiting API usage
         enforce_zdr: false
+        ignored_models: null
         ignored_providers: null
         limit_usd: 50
         name: My New Guardrail
@@ -4856,6 +4857,15 @@ components:
           example: false
           nullable: true
           type: boolean
+        ignored_models:
+          description: Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
+          example:
+            - openai/gpt-4o-mini
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
@@ -4893,6 +4903,7 @@ components:
           description: A guardrail for limiting API usage
           enforce_zdr: false
           id: 550e8400-e29b-41d4-a716-446655440000
+          ignored_models: null
           ignored_providers: null
           limit_usd: 50
           name: My New Guardrail
@@ -5557,6 +5568,7 @@ components:
           description: Guardrail for production environment
           enforce_zdr: false
           id: 550e8400-e29b-41d4-a716-446655440000
+          ignored_models: null
           ignored_providers: null
           limit_usd: 100
           name: Production Guardrail
@@ -5619,6 +5631,7 @@ components:
         description: Guardrail for production environment
         enforce_zdr: false
         id: 550e8400-e29b-41d4-a716-446655440000
+        ignored_models: null
         ignored_providers: null
         limit_usd: 100
         name: Production Guardrail
@@ -5664,6 +5677,14 @@ components:
           example: 550e8400-e29b-41d4-a716-446655440000
           format: uuid
           type: string
+        ignored_models:
+          description: Array of model canonical_slugs to exclude from routing
+          example:
+            - openai/gpt-4o-mini-2024-07-18
+          items:
+            type: string
+          nullable: true
+          type: array
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
@@ -6426,6 +6447,7 @@ components:
             description: Guardrail for production environment
             enforce_zdr: false
             id: 550e8400-e29b-41d4-a716-446655440000
+            ignored_models: null
             ignored_providers: null
             limit_usd: 100
             name: Production Guardrail
@@ -12026,6 +12048,15 @@ components:
           example: true
           nullable: true
           type: boolean
+        ignored_models:
+          description: Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
+          example:
+            - openai/gpt-4o-mini
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
@@ -12059,6 +12090,7 @@ components:
           description: Updated description
           enforce_zdr: true
           id: 550e8400-e29b-41d4-a716-446655440000
+          ignored_models: null
           ignored_providers: null
           limit_usd: 75
           name: Updated Guardrail Name
@@ -14757,6 +14789,7 @@ paths:
                     description: Guardrail for production environment
                     enforce_zdr: false
                     id: 550e8400-e29b-41d4-a716-446655440000
+                    ignored_models: null
                     ignored_providers: null
                     limit_usd: 100
                     name: Production Guardrail
@@ -14817,6 +14850,7 @@ paths:
                 - deepseek
               description: A guardrail for limiting API usage
               enforce_zdr: false
+              ignored_models: null
               ignored_providers: null
               limit_usd: 50
               name: My New Guardrail
@@ -14839,6 +14873,7 @@ paths:
                   description: A guardrail for limiting API usage
                   enforce_zdr: false
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  ignored_models: null
                   ignored_providers: null
                   limit_usd: 50
                   name: My New Guardrail
@@ -14966,6 +15001,7 @@ paths:
                   description: Guardrail for production environment
                   enforce_zdr: false
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  ignored_models: null
                   ignored_providers: null
                   limit_usd: 100
                   name: Production Guardrail
@@ -15045,6 +15081,7 @@ paths:
                   description: Updated description
                   enforce_zdr: true
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  ignored_models: null
                   ignored_providers: null
                   limit_usd: 75
                   name: Updated Guardrail Name
