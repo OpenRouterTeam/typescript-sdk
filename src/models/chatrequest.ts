@@ -82,6 +82,11 @@ import {
   FormatJsonObjectConfig$outboundSchema,
 } from "./formatjsonobjectconfig.js";
 import {
+  ImageConfig,
+  ImageConfig$Outbound,
+  ImageConfig$outboundSchema,
+} from "./imageconfig.js";
+import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
   ModerationPlugin$outboundSchema,
@@ -106,8 +111,6 @@ import {
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
 } from "./websearchplugin.js";
-
-export type ChatRequestImageConfig = string | number | Array<any | null>;
 
 export const Modality = {
   Text: "text",
@@ -193,13 +196,11 @@ export type ChatRequest = {
   /**
    * Frequency penalty (-2.0 to 2.0)
    */
-  frequencyPenalty?: number | null | undefined;
+  frequencyPenalty?: number | undefined;
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
    */
-  imageConfig?:
-    | { [k: string]: string | number | Array<any | null> }
-    | undefined;
+  imageConfig?: { [k: string]: ImageConfig } | undefined;
   /**
    * Token logit bias adjustments
    */
@@ -211,11 +212,11 @@ export type ChatRequest = {
   /**
    * Maximum tokens in completion
    */
-  maxCompletionTokens?: number | null | undefined;
+  maxCompletionTokens?: number | undefined;
   /**
    * Maximum tokens (deprecated, use max_completion_tokens). Note: some providers enforce a minimum of 16.
    */
-  maxTokens?: number | null | undefined;
+  maxTokens?: number | undefined;
   /**
    * List of messages for the conversation
    */
@@ -256,7 +257,7 @@ export type ChatRequest = {
   /**
    * Presence penalty (-2.0 to 2.0)
    */
-  presencePenalty?: number | null | undefined;
+  presencePenalty?: number | undefined;
   /**
    * When multiple model providers are available, optionally indicate your routing preference.
    */
@@ -278,7 +279,7 @@ export type ChatRequest = {
   /**
    * Random seed for deterministic outputs
    */
-  seed?: number | null | undefined;
+  seed?: number | undefined;
   /**
    * The service tier to use for processing this request.
    */
@@ -302,7 +303,7 @@ export type ChatRequest = {
   /**
    * Sampling temperature (0-2)
    */
-  temperature?: number | null | undefined;
+  temperature?: number | undefined;
   /**
    * Tool choice configuration
    */
@@ -314,11 +315,11 @@ export type ChatRequest = {
   /**
    * Number of top log probabilities to return (0-20)
    */
-  topLogprobs?: number | null | undefined;
+  topLogprobs?: number | undefined;
   /**
    * Nucleus sampling parameter (0-1)
    */
-  topP?: number | null | undefined;
+  topP?: number | undefined;
   /**
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
@@ -328,26 +329,6 @@ export type ChatRequest = {
    */
   user?: string | undefined;
 };
-
-/** @internal */
-export type ChatRequestImageConfig$Outbound =
-  | string
-  | number
-  | Array<any | null>;
-
-/** @internal */
-export const ChatRequestImageConfig$outboundSchema: z.ZodType<
-  ChatRequestImageConfig$Outbound,
-  ChatRequestImageConfig
-> = z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]);
-
-export function chatRequestImageConfigToJSON(
-  chatRequestImageConfig: ChatRequestImageConfig,
-): string {
-  return JSON.stringify(
-    ChatRequestImageConfig$outboundSchema.parse(chatRequestImageConfig),
-  );
-}
 
 /** @internal */
 export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
@@ -455,14 +436,12 @@ export function stopToJSON(stop: Stop): string {
 export type ChatRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
-  frequency_penalty?: number | null | undefined;
-  image_config?:
-    | { [k: string]: string | number | Array<any | null> }
-    | undefined;
+  frequency_penalty?: number | undefined;
+  image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
-  max_completion_tokens?: number | null | undefined;
-  max_tokens?: number | null | undefined;
+  max_completion_tokens?: number | undefined;
+  max_tokens?: number | undefined;
   messages: Array<ChatMessages$Outbound>;
   metadata?: { [k: string]: string } | undefined;
   modalities?: Array<string> | undefined;
@@ -479,7 +458,7 @@ export type ChatRequest$Outbound = {
       | WebSearchPlugin$Outbound
     >
     | undefined;
-  presence_penalty?: number | null | undefined;
+  presence_penalty?: number | undefined;
   provider?: ProviderPreferences$Outbound | null | undefined;
   reasoning?: Reasoning$Outbound | undefined;
   response_format?:
@@ -489,17 +468,17 @@ export type ChatRequest$Outbound = {
     | ChatFormatPythonConfig$Outbound
     | ChatFormatTextConfig$Outbound
     | undefined;
-  seed?: number | null | undefined;
+  seed?: number | undefined;
   service_tier?: string | null | undefined;
   session_id?: string | undefined;
   stop?: string | Array<string> | any | null | undefined;
   stream: boolean;
   stream_options?: ChatStreamOptions$Outbound | null | undefined;
-  temperature?: number | null | undefined;
+  temperature?: number | undefined;
   tool_choice?: ChatToolChoice$Outbound | undefined;
   tools?: Array<ChatFunctionTool$Outbound> | undefined;
-  top_logprobs?: number | null | undefined;
-  top_p?: number | null | undefined;
+  top_logprobs?: number | undefined;
+  top_p?: number | undefined;
   trace?: TraceConfig$Outbound | undefined;
   user?: string | undefined;
 };
@@ -511,15 +490,12 @@ export const ChatRequest$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  imageConfig: z.record(
-    z.string(),
-    z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]),
-  ).optional(),
+  frequencyPenalty: z.number().optional(),
+  imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
-  maxCompletionTokens: z.nullable(z.int()).optional(),
-  maxTokens: z.nullable(z.int()).optional(),
+  maxCompletionTokens: z.int().optional(),
+  maxTokens: z.int().optional(),
   messages: z.array(ChatMessages$outboundSchema),
   metadata: z.record(z.string(), z.string()).optional(),
   modalities: z.array(Modality$outboundSchema).optional(),
@@ -536,7 +512,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
       WebSearchPlugin$outboundSchema,
     ]),
   ).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
+  presencePenalty: z.number().optional(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   reasoning: z.lazy(() => Reasoning$outboundSchema).optional(),
   responseFormat: z.union([
@@ -546,18 +522,18 @@ export const ChatRequest$outboundSchema: z.ZodType<
     ChatFormatPythonConfig$outboundSchema,
     ChatFormatTextConfig$outboundSchema,
   ]).optional(),
-  seed: z.nullable(z.int()).optional(),
+  seed: z.int().optional(),
   serviceTier: z.nullable(ChatRequestServiceTier$outboundSchema).optional(),
   sessionId: z.string().optional(),
   stop: z.nullable(z.union([z.string(), z.array(z.string()), z.any()]))
     .optional(),
   stream: z.boolean().default(false),
   streamOptions: z.nullable(ChatStreamOptions$outboundSchema).optional(),
-  temperature: z.nullable(z.number()).optional(),
+  temperature: z.number().optional(),
   toolChoice: ChatToolChoice$outboundSchema.optional(),
   tools: z.array(ChatFunctionTool$outboundSchema).optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  topP: z.nullable(z.number()).optional(),
+  topLogprobs: z.int().optional(),
+  topP: z.number().optional(),
   trace: TraceConfig$outboundSchema.optional(),
   user: z.string().optional(),
 }).transform((v) => {
