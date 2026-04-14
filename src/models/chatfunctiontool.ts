@@ -31,6 +31,11 @@ import {
   OpenRouterWebSearchServerTool$Outbound,
   OpenRouterWebSearchServerTool$outboundSchema,
 } from "./openrouterwebsearchservertool.js";
+import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
 
 /**
  * Function definition for tool calling
@@ -78,6 +83,7 @@ export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
   | ChatSearchModelsServerTool
+  | WebFetchServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -149,6 +155,7 @@ export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
   | ChatSearchModelsServerTool$Outbound
+  | WebFetchServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -160,6 +167,7 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
   ChatSearchModelsServerTool$outboundSchema,
+  WebFetchServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
