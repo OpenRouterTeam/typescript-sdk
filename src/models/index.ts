@@ -106,6 +106,8 @@ export * from "./imagegencallgeneratingevent.js";
 export * from "./imagegencallinprogressevent.js";
 export * from "./imagegencallpartialimageevent.js";
 export * from "./imagegenerationservertool.js";
+export * from "./imagegenerationservertoolconfig.js";
+export * from "./imagegenerationservertoolopenrouter.js";
 export * from "./imagegenerationstatus.js";
 export * from "./incompletedetails.js";
 export * from "./inputaudio.js";

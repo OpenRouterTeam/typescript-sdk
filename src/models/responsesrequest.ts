@@ -68,6 +68,11 @@ import {
   ImageGenerationServerTool$outboundSchema,
 } from "./imagegenerationservertool.js";
 import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
+import {
   InputsUnion,
   InputsUnion$Outbound,
   InputsUnion$outboundSchema,
@@ -213,6 +218,9 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter & {
+    type: "openrouter:image_generation";
+  })
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
@@ -303,6 +311,9 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter & {
+        type: "openrouter:image_generation";
+      })
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
@@ -426,6 +437,9 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter$Outbound & {
+    type: "openrouter:image_generation";
+  })
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
@@ -452,6 +466,9 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   CustomTool$outboundSchema,
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
+  ),
+  ImageGenerationServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:image_generation") }),
   ),
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
@@ -523,6 +540,9 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter$Outbound & {
+        type: "openrouter:image_generation";
+      })
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
@@ -600,6 +620,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       CustomTool$outboundSchema,
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
+      ),
+      ImageGenerationServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:image_generation") }),
       ),
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
