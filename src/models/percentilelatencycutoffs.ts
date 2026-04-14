@@ -12,27 +12,27 @@ export type PercentileLatencyCutoffs = {
   /**
    * Maximum p50 latency (seconds)
    */
-  p50?: number | null | undefined;
+  p50?: number | undefined;
   /**
    * Maximum p75 latency (seconds)
    */
-  p75?: number | null | undefined;
+  p75?: number | undefined;
   /**
    * Maximum p90 latency (seconds)
    */
-  p90?: number | null | undefined;
+  p90?: number | undefined;
   /**
    * Maximum p99 latency (seconds)
    */
-  p99?: number | null | undefined;
+  p99?: number | undefined;
 };
 
 /** @internal */
 export type PercentileLatencyCutoffs$Outbound = {
-  p50?: number | null | undefined;
-  p75?: number | null | undefined;
-  p90?: number | null | undefined;
-  p99?: number | null | undefined;
+  p50?: number | undefined;
+  p75?: number | undefined;
+  p90?: number | undefined;
+  p99?: number | undefined;
 };
 
 /** @internal */
@@ -40,10 +40,10 @@ export const PercentileLatencyCutoffs$outboundSchema: z.ZodType<
   PercentileLatencyCutoffs$Outbound,
   PercentileLatencyCutoffs
 > = z.object({
-  p50: z.nullable(z.number()).optional(),
-  p75: z.nullable(z.number()).optional(),
-  p90: z.nullable(z.number()).optional(),
-  p99: z.nullable(z.number()).optional(),
+  p50: z.number().optional(),
+  p75: z.number().optional(),
+  p90: z.number().optional(),
+  p99: z.number().optional(),
 });
 
 export function percentileLatencyCutoffsToJSON(
