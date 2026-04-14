@@ -3495,6 +3495,7 @@ components:
             - function
           type: object
         - $ref: '#/components/schemas/DatetimeServerTool'
+        - $ref: '#/components/schemas/ChatSearchModelsServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
       description: Tool definition for function calling (regular function or OpenRouter built-in server tool)
@@ -3935,6 +3936,22 @@ components:
         - model
         - object
         - system_fingerprint
+      type: object
+    ChatSearchModelsServerTool:
+      description: 'OpenRouter built-in server tool: searches and filters AI models available on OpenRouter'
+      example:
+        parameters:
+          max_results: 5
+        type: openrouter:experimental__search_models
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SearchModelsServerToolConfig'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - type
       type: object
     ChatStreamChoice:
       description: Streaming completion choice chunk
@@ -7531,6 +7548,7 @@ components:
                   - name
                 type: object
               - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
           type: array
         top_k:
@@ -11399,6 +11417,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
           type: array
         top_k:
@@ -11428,6 +11447,16 @@ components:
         - high
       example: medium
       type: string
+    SearchModelsServerToolConfig:
+      description: Configuration for the openrouter:experimental__search_models server tool
+      example:
+        max_results: 5
+      properties:
+        max_results:
+          description: Maximum number of models to return. Defaults to 5, max 20.
+          example: 5
+          type: integer
+      type: object
     SearchQualityLevel:
       description: >-
         How much context to retrieve per result. Defaults to medium (15000 chars). Only applies when using the Exa
@@ -12202,8 +12231,7 @@ components:
         duration:
           description: Duration of the generated video in seconds
           example: 8
-          exclusiveMinimum: true
-          minimum: 0
+          minimum: 1
           type: integer
         frame_images:
           description: >-
@@ -13933,8 +13961,7 @@ paths:
                 dimensions:
                   description: The number of dimensions for the output embeddings
                   example: 1536
-                  exclusiveMinimum: 0
-                  minimum: 0
+                  minimum: 1
                   type: integer
                 encoding_format:
                   description: The format of the output embeddings
@@ -18581,8 +18608,7 @@ paths:
                 top_n:
                   description: Number of most relevant documents to return
                   example: 3
-                  exclusiveMinimum: 0
-                  minimum: 0
+                  minimum: 1
                   type: integer
               required:
                 - model
