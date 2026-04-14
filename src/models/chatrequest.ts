@@ -82,6 +82,11 @@ import {
   FormatJsonObjectConfig$outboundSchema,
 } from "./formatjsonobjectconfig.js";
 import {
+  ImageConfig,
+  ImageConfig$Outbound,
+  ImageConfig$outboundSchema,
+} from "./imageconfig.js";
+import {
   ModerationPlugin,
   ModerationPlugin$Outbound,
   ModerationPlugin$outboundSchema,
@@ -106,8 +111,6 @@ import {
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
 } from "./websearchplugin.js";
-
-export type ChatRequestImageConfig = string | number | Array<any | null>;
 
 export const Modality = {
   Text: "text",
@@ -197,9 +200,7 @@ export type ChatRequest = {
   /**
    * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
    */
-  imageConfig?:
-    | { [k: string]: string | number | Array<any | null> }
-    | undefined;
+  imageConfig?: { [k: string]: ImageConfig } | undefined;
   /**
    * Token logit bias adjustments
    */
@@ -330,26 +331,6 @@ export type ChatRequest = {
 };
 
 /** @internal */
-export type ChatRequestImageConfig$Outbound =
-  | string
-  | number
-  | Array<any | null>;
-
-/** @internal */
-export const ChatRequestImageConfig$outboundSchema: z.ZodType<
-  ChatRequestImageConfig$Outbound,
-  ChatRequestImageConfig
-> = z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]);
-
-export function chatRequestImageConfigToJSON(
-  chatRequestImageConfig: ChatRequestImageConfig,
-): string {
-  return JSON.stringify(
-    ChatRequestImageConfig$outboundSchema.parse(chatRequestImageConfig),
-  );
-}
-
-/** @internal */
 export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
   .outboundSchema(Modality);
 
@@ -456,9 +437,7 @@ export type ChatRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
-  image_config?:
-    | { [k: string]: string | number | Array<any | null> }
-    | undefined;
+  image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
   logprobs?: boolean | null | undefined;
   max_completion_tokens?: number | null | undefined;
@@ -512,10 +491,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
-  imageConfig: z.record(
-    z.string(),
-    z.union([z.string(), z.number(), z.array(z.nullable(z.any()))]),
-  ).optional(),
+  imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
   logprobs: z.nullable(z.boolean()).optional(),
   maxCompletionTokens: z.nullable(z.int()).optional(),
