@@ -43,7 +43,6 @@ let value: Options = {};
 | `crusoe`              | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepinfra`           | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `deepseek`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `dekallm`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `enfer`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `fakeProvider`        | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `featherless`         | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
@@ -94,7 +93,6 @@ let value: Options = {};
 | `parasail`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `perplexity`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `phala`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
-| `recraft`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `recursal`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `reflection`          | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `reka`                | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

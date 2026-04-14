@@ -12,27 +12,27 @@ export type PercentileThroughputCutoffs = {
   /**
    * Minimum p50 throughput (tokens/sec)
    */
-  p50?: number | undefined;
+  p50?: number | null | undefined;
   /**
    * Minimum p75 throughput (tokens/sec)
    */
-  p75?: number | undefined;
+  p75?: number | null | undefined;
   /**
    * Minimum p90 throughput (tokens/sec)
    */
-  p90?: number | undefined;
+  p90?: number | null | undefined;
   /**
    * Minimum p99 throughput (tokens/sec)
    */
-  p99?: number | undefined;
+  p99?: number | null | undefined;
 };
 
 /** @internal */
 export type PercentileThroughputCutoffs$Outbound = {
-  p50?: number | undefined;
-  p75?: number | undefined;
-  p90?: number | undefined;
-  p99?: number | undefined;
+  p50?: number | null | undefined;
+  p75?: number | null | undefined;
+  p90?: number | null | undefined;
+  p99?: number | null | undefined;
 };
 
 /** @internal */
@@ -40,10 +40,10 @@ export const PercentileThroughputCutoffs$outboundSchema: z.ZodType<
   PercentileThroughputCutoffs$Outbound,
   PercentileThroughputCutoffs
 > = z.object({
-  p50: z.number().optional(),
-  p75: z.number().optional(),
-  p90: z.number().optional(),
-  p99: z.number().optional(),
+  p50: z.nullable(z.number()).optional(),
+  p75: z.nullable(z.number()).optional(),
+  p90: z.nullable(z.number()).optional(),
+  p99: z.nullable(z.number()).optional(),
 });
 
 export function percentileThroughputCutoffsToJSON(

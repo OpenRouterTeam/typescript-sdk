@@ -28,17 +28,13 @@ export type UpdateGuardrailRequest = {
    */
   enforceZdr?: boolean | null | undefined;
   /**
-   * Array of model identifiers to exclude from routing (slug or canonical_slug accepted)
-   */
-  ignoredModels?: Array<string> | null | undefined;
-  /**
    * List of provider IDs to exclude from routing
    */
   ignoredProviders?: Array<string> | null | undefined;
   /**
    * New spending limit in USD
    */
-  limitUsd?: number | undefined;
+  limitUsd?: number | null | undefined;
   /**
    * New name for the guardrail
    */
@@ -55,9 +51,8 @@ export type UpdateGuardrailRequest$Outbound = {
   allowed_providers?: Array<string> | null | undefined;
   description?: string | null | undefined;
   enforce_zdr?: boolean | null | undefined;
-  ignored_models?: Array<string> | null | undefined;
   ignored_providers?: Array<string> | null | undefined;
-  limit_usd?: number | undefined;
+  limit_usd?: number | null | undefined;
   name?: string | undefined;
   reset_interval?: string | null | undefined;
 };
@@ -71,9 +66,8 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   allowedProviders: z.nullable(z.array(z.string())).optional(),
   description: z.nullable(z.string()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
-  ignoredModels: z.nullable(z.array(z.string())).optional(),
   ignoredProviders: z.nullable(z.array(z.string())).optional(),
-  limitUsd: z.number().optional(),
+  limitUsd: z.nullable(z.number()).optional(),
   name: z.string().optional(),
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
 }).transform((v) => {
@@ -81,7 +75,6 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
     allowedModels: "allowed_models",
     allowedProviders: "allowed_providers",
     enforceZdr: "enforce_zdr",
-    ignoredModels: "ignored_models",
     ignoredProviders: "ignored_providers",
     limitUsd: "limit_usd",
     resetInterval: "reset_interval",
