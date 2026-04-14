@@ -3556,6 +3556,7 @@ components:
         - $ref: '#/components/schemas/DatetimeServerTool'
         - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+        - $ref: '#/components/schemas/WebFetchServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
       description: Tool definition for function calling (regular function or OpenRouter built-in server tool)
@@ -7686,6 +7687,7 @@ components:
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
           type: array
         top_k:
@@ -11563,6 +11565,7 @@ components:
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
           type: array
         top_k:
@@ -13115,6 +13118,61 @@ components:
           type: array
       required:
         - data
+      type: object
+    WebFetchEngineEnum:
+      description: >-
+        Which fetch engine to use. "auto" (default) uses native if the provider supports it, otherwise Exa. "native" forces the provider's built-in fetch. "exa" uses Exa Contents API (supports BYOK). "openrouter" uses direct HTTP fetch. "firecrawl" uses Firecrawl scrape (requires BYOK).
+      enum:
+        - auto
+        - native
+        - openrouter
+        - firecrawl
+        - exa
+      example: auto
+      type: string
+      x-speakeasy-unknown-values: allow
+    WebFetchServerTool:
+      description: 'OpenRouter built-in server tool: fetches full content from a URL (web page or PDF)'
+      example:
+        parameters:
+          max_uses: 10
+        type: openrouter:web_fetch
+      properties:
+        parameters:
+          $ref: '#/components/schemas/WebFetchServerToolConfig'
+        type:
+          enum:
+            - openrouter:web_fetch
+          type: string
+      required:
+        - type
+      type: object
+    WebFetchServerToolConfig:
+      description: Configuration for the openrouter:web_fetch server tool
+      example:
+        max_content_tokens: 100000
+        max_uses: 10
+      properties:
+        allowed_domains:
+          description: Only fetch from these domains.
+          items:
+            type: string
+          type: array
+        blocked_domains:
+          description: Never fetch from these domains.
+          items:
+            type: string
+          type: array
+        engine:
+          $ref: '#/components/schemas/WebFetchEngineEnum'
+        max_content_tokens:
+          description: Maximum content length in approximate tokens. Content exceeding this limit is truncated.
+          example: 100000
+          type: integer
+        max_uses:
+          description: Maximum number of web fetches per request. Once exceeded, the tool returns an error.
+          example: 10
+          type: integer
       type: object
     WebSearchCallCompletedEvent:
       allOf:
@@ -14775,6 +14833,11 @@ paths:
                         example: 5
                         nullable: true
                         type: integer
+                      num_fetches:
+                        description: Number of web fetches performed
+                        example: 0
+                        nullable: true
+                        type: integer
                       num_input_audio_prompt:
                         description: Number of audio inputs in the prompt
                         example: 0
@@ -14891,6 +14954,7 @@ paths:
                       - num_input_audio_prompt
                       - num_media_completion
                       - num_search_results
+                      - num_fetches
                       - origin
                       - usage
                       - is_byok
