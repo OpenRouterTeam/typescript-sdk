@@ -24,11 +24,27 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
+### `models.ImageGenerationServerToolOpenRouter`
+
+```typescript
+const value: models.ImageGenerationServerToolOpenRouter = {
+  type: "openrouter:image_generation",
+};
+```
+
 ### `models.ChatSearchModelsServerTool`
 
 ```typescript
 const value: models.ChatSearchModelsServerTool = {
   type: "openrouter:experimental__search_models",
+};
+```
+
+### `models.WebFetchServerTool`
+
+```typescript
+const value: models.WebFetchServerTool = {
+  type: "openrouter:web_fetch",
 };
 ```
 
