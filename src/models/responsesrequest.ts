@@ -63,10 +63,20 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
+  ImageConfig,
+  ImageConfig$Outbound,
+  ImageConfig$outboundSchema,
+} from "./imageconfig.js";
+import {
   ImageGenerationServerTool,
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool$outboundSchema,
 } from "./imagegenerationservertool.js";
+import {
+  ImageGenerationServerToolOpenRouter,
+  ImageGenerationServerToolOpenRouter$Outbound,
+  ImageGenerationServerToolOpenRouter$outboundSchema,
+} from "./imagegenerationservertoolopenrouter.js";
 import {
   InputsUnion,
   InputsUnion$Outbound,
@@ -150,6 +160,11 @@ import {
   TraceConfig$outboundSchema,
 } from "./traceconfig.js";
 import {
+  WebFetchServerTool,
+  WebFetchServerTool$Outbound,
+  WebFetchServerTool$outboundSchema,
+} from "./webfetchservertool.js";
+import {
   WebSearchPlugin,
   WebSearchPlugin$Outbound,
   WebSearchPlugin$outboundSchema,
@@ -164,8 +179,6 @@ import {
   WebSearchServerToolOpenRouter$Outbound,
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
-
-export type ResponsesRequestImageConfig = string | number;
 
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
@@ -213,9 +226,13 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter & {
+    type: "openrouter:image_generation";
+  })
   | (ChatSearchModelsServerTool & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -225,9 +242,9 @@ export type ResponsesRequest = {
   background?: boolean | null | undefined;
   frequencyPenalty?: number | null | undefined;
   /**
-   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
+   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
    */
-  imageConfig?: { [k: string]: string | number } | undefined;
+  imageConfig?: { [k: string]: ImageConfig } | undefined;
   include?: Array<ResponseIncludesEnum> | null | undefined;
   /**
    * Input for a response request - can be a string or array of items
@@ -303,9 +320,13 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter & {
+        type: "openrouter:image_generation";
+      })
       | (ChatSearchModelsServerTool & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
@@ -322,25 +343,6 @@ export type ResponsesRequest = {
    */
   user?: string | undefined;
 };
-
-/** @internal */
-export type ResponsesRequestImageConfig$Outbound = string | number;
-
-/** @internal */
-export const ResponsesRequestImageConfig$outboundSchema: z.ZodType<
-  ResponsesRequestImageConfig$Outbound,
-  ResponsesRequestImageConfig
-> = z.union([z.string(), z.number()]);
-
-export function responsesRequestImageConfigToJSON(
-  responsesRequestImageConfig: ResponsesRequestImageConfig,
-): string {
-  return JSON.stringify(
-    ResponsesRequestImageConfig$outboundSchema.parse(
-      responsesRequestImageConfig,
-    ),
-  );
-}
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
@@ -426,9 +428,13 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+  | (ImageGenerationServerToolOpenRouter$Outbound & {
+    type: "openrouter:image_generation";
+  })
   | (ChatSearchModelsServerTool$Outbound & {
     type: "openrouter:experimental__search_models";
   })
+  | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -453,8 +459,14 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
+  ImageGenerationServerToolOpenRouter$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:image_generation") }),
+  ),
   ChatSearchModelsServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:experimental__search_models") }),
+  ),
+  WebFetchServerTool$outboundSchema.and(
+    z.object({ type: z.literal("openrouter:web_fetch") }),
   ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
@@ -471,7 +483,7 @@ export function responsesRequestToolUnionToJSON(
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
   frequency_penalty?: number | null | undefined;
-  image_config?: { [k: string]: string | number } | undefined;
+  image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   include?: Array<string> | null | undefined;
   input?: InputsUnion$Outbound | undefined;
   instructions?: string | null | undefined;
@@ -523,9 +535,13 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
+      | (ImageGenerationServerToolOpenRouter$Outbound & {
+        type: "openrouter:image_generation";
+      })
       | (ChatSearchModelsServerTool$Outbound & {
         type: "openrouter:experimental__search_models";
       })
+      | (WebFetchServerTool$Outbound & { type: "openrouter:web_fetch" })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
@@ -544,8 +560,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
-  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
-    .optional(),
+  imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
   input: InputsUnion$outboundSchema.optional(),
   instructions: z.nullable(z.string()).optional(),
@@ -601,8 +616,14 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
+      ImageGenerationServerToolOpenRouter$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:image_generation") }),
+      ),
       ChatSearchModelsServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:experimental__search_models") }),
+      ),
+      WebFetchServerTool$outboundSchema.and(
+        z.object({ type: z.literal("openrouter:web_fetch") }),
       ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
