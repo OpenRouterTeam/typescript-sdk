@@ -168,6 +168,7 @@ export * from "./outputmessageitem.js";
 export * from "./outputmodality.js";
 export * from "./outputmodalityenum.js";
 export * from "./outputreasoningitem.js";
+export * from "./outputsearchmodelsservertoolitem.js";
 export * from "./outputtexteditorservertoolitem.js";
 export * from "./outputtoolsearchservertoolitem.js";
 export * from "./outputwebfetchservertoolitem.js";
