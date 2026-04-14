@@ -58,7 +58,7 @@ export type ListRequest = {
   /**
    * Number of API keys to skip for pagination
    */
-  offset?: number | undefined;
+  offset?: number | null | undefined;
 };
 
 export type ListData = {
@@ -109,11 +109,11 @@ export type ListData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number;
+  limit: number | null;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number;
+  limitRemaining: number | null;
   /**
    * Type of limit reset for the API key
    */
@@ -160,7 +160,7 @@ export type ListRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   include_disabled?: boolean | undefined;
-  offset?: number | undefined;
+  offset?: number | null | undefined;
 };
 
 /** @internal */
@@ -172,7 +172,7 @@ export const ListRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   includeDisabled: z.boolean().optional(),
-  offset: z.int().optional(),
+  offset: z.nullable(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
@@ -199,8 +199,8 @@ export const ListData$inboundSchema: z.ZodType<ListData, unknown> = z.object({
   hash: z.string(),
   include_byok_in_limit: z.boolean(),
   label: z.string(),
-  limit: z.number(),
-  limit_remaining: z.number(),
+  limit: z.nullable(z.number()),
+  limit_remaining: z.nullable(z.number()),
   limit_reset: z.nullable(z.string()),
   name: z.string(),
   updated_at: z.nullable(z.string()),

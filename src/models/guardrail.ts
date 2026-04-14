@@ -49,7 +49,7 @@ export type Guardrail = {
   /**
    * Spending limit in USD
    */
-  limitUsd?: number | undefined;
+  limitUsd?: number | null | undefined;
   /**
    * Name of the guardrail
    */
@@ -74,7 +74,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   id: z.string(),
   ignored_models: z.nullable(z.array(z.string())).optional(),
   ignored_providers: z.nullable(z.array(z.string())).optional(),
-  limit_usd: z.number().optional(),
+  limit_usd: z.nullable(z.number()).optional(),
   name: z.string(),
   reset_interval: z.nullable(GuardrailInterval$inboundSchema).optional(),
   updated_at: z.nullable(z.string()).optional(),
