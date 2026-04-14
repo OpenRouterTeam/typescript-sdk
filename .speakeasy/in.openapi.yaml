@@ -3511,6 +3511,7 @@ components:
             - function
           type: object
         - $ref: '#/components/schemas/DatetimeServerTool'
+        - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
         - $ref: '#/components/schemas/ChatSearchModelsServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
@@ -3673,20 +3674,7 @@ components:
           nullable: true
           type: number
         image_config:
-          additionalProperties:
-            anyOf:
-              - type: string
-              - format: double
-                type: number
-              - items:
-                  nullable: true
-                type: array
-          description: >-
-            Provider-specific image configuration options. Keys and values vary by model/provider. See
-            https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
-          example:
-            aspect_ratio: '16:9'
-          type: object
+          $ref: '#/components/schemas/ImageConfig'
         logit_bias:
           additionalProperties:
             format: double
@@ -5775,6 +5763,22 @@ components:
       example: monthly
       nullable: true
       type: string
+    ImageConfig:
+      additionalProperties:
+        anyOf:
+          - type: string
+          - format: double
+            type: number
+          - items:
+              nullable: true
+            type: array
+      description: >-
+        Provider-specific image configuration options. Keys and values vary by model/provider. See
+        https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
+      example:
+        aspect_ratio: '16:9'
+        quality: high
+      type: object
     ImageGenCallCompletedEvent:
       allOf:
         - $ref: '#/components/schemas/OpenAIResponsesImageGenCallCompleted'
@@ -5887,6 +5891,46 @@ components:
           type: string
       required:
         - type
+      type: object
+    ImageGenerationServerTool_OpenRouter:
+      description: 'OpenRouter built-in server tool: generates images from text prompts using an image generation model'
+      example:
+        parameters:
+          model: openai/gpt-image-1
+          quality: high
+          size: 1024x1024
+        type: openrouter:image_generation
+      properties:
+        parameters:
+          $ref: '#/components/schemas/ImageGenerationServerToolConfig'
+        type:
+          enum:
+            - openrouter:image_generation
+          type: string
+      required:
+        - type
+      type: object
+    ImageGenerationServerToolConfig:
+      additionalProperties:
+        anyOf:
+          - type: string
+          - format: double
+            type: number
+          - items:
+              nullable: true
+            type: array
+      description: >-
+        Configuration for the openrouter:image_generation server tool. Accepts all image_config params (aspect_ratio,
+        quality, size, background, output_format, output_compression, moderation, etc.) plus a model field.
+      example:
+        aspect_ratio: '16:9'
+        model: openai/gpt-image-1
+        quality: high
+      properties:
+        model:
+          description: Which image generation model to use (e.g. "openai/gpt-image-1"). Defaults to "openai/gpt-image-1".
+          example: openai/gpt-image-1
+          type: string
       type: object
     ImageGenerationStatus:
       enum:
@@ -7584,6 +7628,7 @@ components:
                   - name
                 type: object
               - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
           type: array
@@ -11316,17 +11361,7 @@ components:
           nullable: true
           type: number
         image_config:
-          additionalProperties:
-            anyOf:
-              - type: string
-              - format: double
-                type: number
-          description: >-
-            Provider-specific image configuration options. Keys and values vary by model/provider. See
-            https://openrouter.ai/docs/features/multimodal/image-generation for more details.
-          example:
-            aspect_ratio: '16:9'
-          type: object
+          $ref: '#/components/schemas/ImageConfig'
         include:
           items:
             $ref: '#/components/schemas/ResponseIncludesEnum'
@@ -11475,6 +11510,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
+              - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
               - $ref: '#/components/schemas/ChatSearchModelsServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
           type: array
