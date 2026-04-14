@@ -21,7 +21,7 @@ export type ReasoningConfig = {
   effort?: ReasoningEffort | null | undefined;
   summary?: ReasoningSummaryVerbosity | null | undefined;
   enabled?: boolean | null | undefined;
-  maxTokens?: number | undefined;
+  maxTokens?: number | null | undefined;
 };
 
 /** @internal */
@@ -29,7 +29,7 @@ export type ReasoningConfig$Outbound = {
   effort?: string | null | undefined;
   summary?: string | null | undefined;
   enabled?: boolean | null | undefined;
-  max_tokens?: number | undefined;
+  max_tokens?: number | null | undefined;
 };
 
 /** @internal */
@@ -40,7 +40,7 @@ export const ReasoningConfig$outboundSchema: z.ZodType<
   effort: z.nullable(ReasoningEffort$outboundSchema).optional(),
   summary: z.nullable(ReasoningSummaryVerbosity$outboundSchema).optional(),
   enabled: z.nullable(z.boolean()).optional(),
-  maxTokens: z.int().optional(),
+  maxTokens: z.nullable(z.int()).optional(),
 }).transform((v) => {
   return remap$(v, {
     maxTokens: "max_tokens",

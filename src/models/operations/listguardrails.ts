@@ -55,7 +55,7 @@ export type ListGuardrailsRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: number | undefined;
+  offset?: number | null | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
@@ -71,7 +71,7 @@ export type ListGuardrailsRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset?: number | undefined;
+  offset?: number | null | undefined;
   limit?: number | undefined;
 };
 
@@ -83,7 +83,7 @@ export const ListGuardrailsRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.int().optional(),
+  offset: z.nullable(z.int()).optional(),
   limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
