@@ -1326,12 +1326,16 @@ components:
           nullable: true
           type: array
         new_lines:
+          nullable: true
           type: integer
         new_start:
+          nullable: true
           type: integer
         old_lines:
+          nullable: true
           type: integer
         old_start:
+          nullable: true
           type: integer
         type:
           enum:
@@ -1414,10 +1418,13 @@ components:
             - pdf
           type: string
         num_lines:
+          nullable: true
           type: integer
         start_line:
+          nullable: true
           type: integer
         total_lines:
+          nullable: true
           type: integer
         type:
           enum:
@@ -1674,8 +1681,10 @@ components:
         cache_creation:
           $ref: '#/components/schemas/AnthropicCacheCreation'
         cache_creation_input_tokens:
+          nullable: true
           type: integer
         cache_read_input_tokens:
+          nullable: true
           type: integer
         inference_geo:
           nullable: true
@@ -2704,6 +2713,7 @@ components:
           nullable: true
           type: boolean
         completed_at:
+          nullable: true
           type: integer
         created_at:
           type: integer
@@ -2711,6 +2721,7 @@ components:
           $ref: '#/components/schemas/ResponsesErrorField'
         frequency_penalty:
           format: double
+          nullable: true
           type: number
         id:
           type: string
@@ -2719,8 +2730,10 @@ components:
         instructions:
           $ref: '#/components/schemas/BaseInputs'
         max_output_tokens:
+          nullable: true
           type: integer
         max_tool_calls:
+          nullable: true
           type: integer
         metadata:
           $ref: '#/components/schemas/RequestMetadata'
@@ -2755,6 +2768,7 @@ components:
           type: boolean
         presence_penalty:
           format: double
+          nullable: true
           type: number
         previous_response_id:
           nullable: true
@@ -2777,6 +2791,7 @@ components:
           type: boolean
         temperature:
           format: double
+          nullable: true
           type: number
         text:
           $ref: '#/components/schemas/TextConfig'
@@ -2825,6 +2840,7 @@ components:
           type: integer
         top_p:
           format: double
+          nullable: true
           type: number
         truncation:
           $ref: '#/components/schemas/Truncation'
@@ -3654,6 +3670,7 @@ components:
           description: Frequency penalty (-2.0 to 2.0)
           example: 0
           format: double
+          nullable: true
           type: number
         image_config:
           additionalProperties:
@@ -3687,10 +3704,12 @@ components:
         max_completion_tokens:
           description: Maximum tokens in completion
           example: 100
+          nullable: true
           type: integer
         max_tokens:
           description: 'Maximum tokens (deprecated, use max_completion_tokens). Note: some providers enforce a minimum of 16.'
           example: 100
+          nullable: true
           type: integer
         messages:
           description: List of messages for the conversation
@@ -3756,6 +3775,7 @@ components:
           description: Presence penalty (-2.0 to 2.0)
           example: 0
           format: double
+          nullable: true
           type: number
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
@@ -3804,6 +3824,7 @@ components:
         seed:
           description: Random seed for deterministic outputs
           example: 42
+          nullable: true
           type: integer
         service_tier:
           description: The service tier to use for processing this request.
@@ -3847,6 +3868,7 @@ components:
           description: Sampling temperature (0-2)
           example: 0.7
           format: double
+          nullable: true
           type: number
         tool_choice:
           $ref: '#/components/schemas/ChatToolChoice'
@@ -3863,11 +3885,13 @@ components:
         top_logprobs:
           description: Number of top log probabilities to return (0-20)
           example: 5
+          nullable: true
           type: integer
         top_p:
           description: Nucleus sampling parameter (0-1)
           example: 1
           format: double
+          nullable: true
           type: number
         trace:
           $ref: '#/components/schemas/TraceConfig'
@@ -4346,15 +4370,19 @@ components:
           properties:
             accepted_prediction_tokens:
               description: Accepted prediction tokens
+              nullable: true
               type: integer
             audio_tokens:
               description: Tokens used for audio output
+              nullable: true
               type: integer
             reasoning_tokens:
               description: Tokens used for reasoning
+              nullable: true
               type: integer
             rejected_prediction_tokens:
               description: Rejected prediction tokens
+              nullable: true
               type: integer
           type: object
         prompt_tokens:
@@ -4896,6 +4924,7 @@ components:
           description: Spending limit in USD
           example: 50
           format: double
+          nullable: true
           type: number
         name:
           description: Name for the new guardrail
@@ -5019,22 +5048,26 @@ components:
       properties:
         frequency_penalty:
           format: double
+          nullable: true
           type: number
         presence_penalty:
           format: double
+          nullable: true
           type: number
         repetition_penalty:
           format: double
+          nullable: true
           type: number
         temperature:
           format: double
+          nullable: true
           type: number
         top_k:
-          minimum: 0
           nullable: true
           type: integer
         top_p:
           format: double
+          nullable: true
           type: number
       type: object
     DeleteGuardrailResponse:
@@ -5714,6 +5747,7 @@ components:
           description: Spending limit in USD
           example: 100
           format: double
+          nullable: true
           type: number
         name:
           description: Name of the guardrail
@@ -7495,6 +7529,7 @@ components:
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
                   max_uses:
+                    nullable: true
                     type: integer
                   name:
                     enum:
@@ -7532,6 +7567,7 @@ components:
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
                   max_uses:
+                    nullable: true
                     type: integer
                   name:
                     enum:
@@ -7581,6 +7617,7 @@ components:
                 - properties:
                     cost:
                       format: double
+                      nullable: true
                       type: number
                     cost_details:
                       nullable: true
@@ -7590,6 +7627,7 @@ components:
                           type: number
                         upstream_inference_cost:
                           format: double
+                          nullable: true
                           type: number
                         upstream_inference_prompt_cost:
                           format: double
@@ -7921,6 +7959,7 @@ components:
         context_length:
           description: Maximum context length in tokens
           example: 8192
+          nullable: true
           type: integer
         created:
           description: Unix timestamp of when the model was created
@@ -9886,18 +9925,22 @@ components:
         p50:
           description: Maximum p50 latency (seconds)
           format: double
+          nullable: true
           type: number
         p75:
           description: Maximum p75 latency (seconds)
           format: double
+          nullable: true
           type: number
         p90:
           description: Maximum p90 latency (seconds)
           format: double
+          nullable: true
           type: number
         p99:
           description: Maximum p99 latency (seconds)
           format: double
+          nullable: true
           type: number
       type: object
     PercentileStats:
@@ -9946,18 +9989,22 @@ components:
         p50:
           description: Minimum p50 throughput (tokens/sec)
           format: double
+          nullable: true
           type: number
         p75:
           description: Minimum p75 throughput (tokens/sec)
           format: double
+          nullable: true
           type: number
         p90:
           description: Minimum p90 throughput (tokens/sec)
           format: double
+          nullable: true
           type: number
         p99:
           description: Minimum p99 throughput (tokens/sec)
           format: double
+          nullable: true
           type: number
       type: object
     PerRequestLimits:
@@ -10566,8 +10613,10 @@ components:
         latency_last_30m:
           $ref: '#/components/schemas/PercentileStats'
         max_completion_tokens:
+          nullable: true
           type: integer
         max_prompt_tokens:
+          nullable: true
           type: integer
         model_id:
           description: The unique identifier for the model (permaslug)
@@ -10665,15 +10714,18 @@ components:
             Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) *
             100. Rate-limited requests are excluded. Returns null if insufficient data.
           format: double
+          nullable: true
           type: number
         uptime_last_30m:
           format: double
+          nullable: true
           type: number
         uptime_last_5m:
           description: >-
             Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests)
             * 100. Rate-limited requests are excluded. Returns null if insufficient data.
           format: double
+          nullable: true
           type: number
       required:
         - name
@@ -10782,6 +10834,7 @@ components:
               nullable: true
               type: boolean
             max_tokens:
+              nullable: true
               type: integer
           type: object
       description: Configuration for reasoning mode in the response
@@ -11260,6 +11313,7 @@ components:
           type: boolean
         frequency_penalty:
           format: double
+          nullable: true
           type: number
         image_config:
           additionalProperties:
@@ -11284,8 +11338,10 @@ components:
           nullable: true
           type: string
         max_output_tokens:
+          nullable: true
           type: integer
         max_tool_calls:
+          nullable: true
           type: integer
         metadata:
           $ref: '#/components/schemas/RequestMetadata'
@@ -11328,6 +11384,7 @@ components:
           type: array
         presence_penalty:
           format: double
+          nullable: true
           type: number
         previous_response_id:
           nullable: true
@@ -11373,6 +11430,7 @@ components:
           type: boolean
         temperature:
           format: double
+          nullable: true
           type: number
         text:
           $ref: '#/components/schemas/TextExtendedConfig'
@@ -11423,9 +11481,11 @@ components:
         top_k:
           type: integer
         top_logprobs:
+          nullable: true
           type: integer
         top_p:
           format: double
+          nullable: true
           type: number
         trace:
           $ref: '#/components/schemas/TraceConfig'
@@ -11935,6 +11995,7 @@ components:
         context_length:
           description: Context length from the top provider
           example: 8192
+          nullable: true
           type: integer
         is_moderated:
           description: Whether the top provider moderates content
@@ -11943,6 +12004,7 @@ components:
         max_completion_tokens:
           description: Maximum completion tokens from the top provider
           example: 4096
+          nullable: true
           type: integer
       required:
         - is_moderated
@@ -12105,6 +12167,7 @@ components:
           description: New spending limit in USD
           example: 75
           format: double
+          nullable: true
           type: number
         name:
           description: New name for the guardrail
@@ -12174,11 +12237,13 @@ components:
             cost:
               description: Cost of the completion
               format: double
+              nullable: true
               type: number
             cost_details:
               properties:
                 upstream_inference_cost:
                   format: double
+                  nullable: true
                   type: number
                 upstream_inference_input_cost:
                   format: double
@@ -12764,6 +12829,7 @@ components:
         cost:
           description: The cost of the video generation in USD.
           format: double
+          nullable: true
           type: number
         is_byok:
           description: Whether the request was made using a Bring Your Own Key configuration.
@@ -14501,11 +14567,13 @@ paths:
                       app_id:
                         description: ID of the app that made the request
                         example: 12345
+                        nullable: true
                         type: integer
                       cache_discount:
                         description: Discount applied due to caching
                         example: 0.0002
                         format: double
+                        nullable: true
                         type: number
                       cancelled:
                         description: Whether the generation was cancelled
@@ -14530,6 +14598,7 @@ paths:
                         description: Time taken for generation in milliseconds
                         example: 1200
                         format: double
+                        nullable: true
                         type: number
                       http_referer:
                         description: Referer header from the request
@@ -14547,6 +14616,7 @@ paths:
                         description: Total latency in milliseconds
                         example: 1250
                         format: double
+                        nullable: true
                         type: number
                       model:
                         description: Model used for the generation
@@ -14556,6 +14626,7 @@ paths:
                         description: Moderation latency in milliseconds
                         example: 50
                         format: double
+                        nullable: true
                         type: number
                       native_finish_reason:
                         description: Native finish reason as reported by provider
@@ -14565,38 +14636,47 @@ paths:
                       native_tokens_cached:
                         description: Native cached tokens as reported by provider
                         example: 3
+                        nullable: true
                         type: integer
                       native_tokens_completion:
                         description: Native completion tokens as reported by provider
                         example: 25
+                        nullable: true
                         type: integer
                       native_tokens_completion_images:
                         description: Native completion image tokens as reported by provider
                         example: 0
+                        nullable: true
                         type: integer
                       native_tokens_prompt:
                         description: Native prompt tokens as reported by provider
                         example: 10
+                        nullable: true
                         type: integer
                       native_tokens_reasoning:
                         description: Native reasoning tokens as reported by provider
                         example: 5
+                        nullable: true
                         type: integer
                       num_input_audio_prompt:
                         description: Number of audio inputs in the prompt
                         example: 0
+                        nullable: true
                         type: integer
                       num_media_completion:
                         description: Number of media items in the completion
                         example: 0
+                        nullable: true
                         type: integer
                       num_media_prompt:
                         description: Number of media items in the prompt
                         example: 1
+                        nullable: true
                         type: integer
                       num_search_results:
                         description: Number of search results included
                         example: 5
+                        nullable: true
                         type: integer
                       origin:
                         description: Origin URL of the request
@@ -14635,10 +14715,12 @@ paths:
                       tokens_completion:
                         description: Number of tokens in the completion
                         example: 25
+                        nullable: true
                         type: integer
                       tokens_prompt:
                         description: Number of tokens in the prompt
                         example: 10
+                        nullable: true
                         type: integer
                       total_cost:
                         description: Total cost of the generation in USD
@@ -14654,6 +14736,7 @@ paths:
                         description: Cost charged by the upstream provider
                         example: 0.0012
                         format: double
+                        nullable: true
                         type: number
                       usage:
                         description: Usage amount in USD
@@ -14804,6 +14887,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
@@ -15199,6 +15283,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
@@ -15451,6 +15536,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
@@ -15695,6 +15781,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
@@ -15773,6 +15860,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
@@ -15977,11 +16065,13 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
+                        nullable: true
                         type: number
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
+                        nullable: true
                         type: number
                       limit_reset:
                         description: Type of limit reset for the API key
@@ -16105,6 +16195,7 @@ paths:
             description: Number of API keys to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
       responses:
         '200':
@@ -16238,11 +16329,13 @@ paths:
                           description: Spending limit for the API key in USD
                           example: 100
                           format: double
+                          nullable: true
                           type: number
                         limit_remaining:
                           description: Remaining spending limit in USD
                           example: 74.5
                           format: double
+                          nullable: true
                           type: number
                         limit_reset:
                           description: Type of limit reset for the API key
@@ -16384,6 +16477,7 @@ paths:
                   description: Optional spending limit for the API key in USD
                   example: 50
                   format: double
+                  nullable: true
                   type: number
                 limit_reset:
                   description: >-
@@ -16539,11 +16633,13 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
+                        nullable: true
                         type: number
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
+                        nullable: true
                         type: number
                       limit_reset:
                         description: Type of limit reset for the API key
@@ -16872,11 +16968,13 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
+                        nullable: true
                         type: number
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
+                        nullable: true
                         type: number
                       limit_reset:
                         description: Type of limit reset for the API key
@@ -17022,6 +17120,7 @@ paths:
                   description: New spending limit for the API key in USD
                   example: 75
                   format: double
+                  nullable: true
                   type: number
                 limit_reset:
                   description: >-
@@ -17172,11 +17271,13 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
+                        nullable: true
                         type: number
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
+                        nullable: true
                         type: number
                       limit_reset:
                         description: Type of limit reset for the API key
@@ -17846,6 +17947,7 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
+            nullable: true
             type: integer
         - description: Maximum number of records to return (max 100)
           in: query
