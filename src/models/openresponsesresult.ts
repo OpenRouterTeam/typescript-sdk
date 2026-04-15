@@ -130,13 +130,13 @@ export type OpenResponsesResultToolUnion =
  */
 export type OpenResponsesResult = {
   background?: boolean | null | undefined;
-  completedAt: number | null;
+  completedAt: number;
   createdAt: number;
   /**
    * Error information returned from the API
    */
   error: ResponsesErrorField | null;
-  frequencyPenalty: number | null;
+  frequencyPenalty: number;
   id: string;
   incompleteDetails: IncompleteDetails | null;
   instructions: BaseInputsUnion | null;
@@ -151,7 +151,7 @@ export type OpenResponsesResult = {
   output: Array<OutputItems>;
   outputText?: string | undefined;
   parallelToolCalls: boolean;
-  presencePenalty: number | null;
+  presencePenalty: number;
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
@@ -160,7 +160,7 @@ export type OpenResponsesResult = {
   serviceTier?: string | null | undefined;
   status: OpenAIResponsesResponseStatus;
   store?: boolean | undefined;
-  temperature: number | null;
+  temperature: number;
   /**
    * Text output configuration including format and verbosity
    */
@@ -184,7 +184,7 @@ export type OpenResponsesResult = {
     | discriminatedUnionTypes.Unknown<"type">
   >;
   topLogprobs?: number | null | undefined;
-  topP: number | null;
+  topP: number;
   truncation?: Truncation | null | undefined;
   /**
    * Token usage information for the response
@@ -258,10 +258,10 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
-  completed_at: z.nullable(z.int()),
+  completed_at: z.int(),
   created_at: z.int(),
   error: z.nullable(ResponsesErrorField$inboundSchema),
-  frequency_penalty: z.nullable(z.number()),
+  frequency_penalty: z.number(),
   id: z.string(),
   incomplete_details: z.nullable(IncompleteDetails$inboundSchema),
   instructions: z.nullable(BaseInputsUnion$inboundSchema),
@@ -273,7 +273,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   output: z.array(OutputItems$inboundSchema),
   output_text: z.string().optional(),
   parallel_tool_calls: z.boolean(),
-  presence_penalty: z.nullable(z.number()),
+  presence_penalty: z.number(),
   previous_response_id: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$inboundSchema).optional(),
   prompt_cache_key: z.nullable(z.string()).optional(),
@@ -282,7 +282,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   service_tier: z.nullable(z.string()).optional(),
   status: OpenAIResponsesResponseStatus$inboundSchema,
   store: z.boolean().optional(),
-  temperature: z.nullable(z.number()),
+  temperature: z.number(),
   text: TextConfig$inboundSchema.optional(),
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
   tools: z.array(discriminatedUnion("type", {
@@ -303,7 +303,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     custom: CustomTool$inboundSchema,
   })),
   top_logprobs: z.nullable(z.int()).optional(),
-  top_p: z.nullable(z.number()),
+  top_p: z.number(),
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
