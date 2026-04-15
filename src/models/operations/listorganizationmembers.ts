@@ -56,7 +56,7 @@ export type ListOrganizationMembersRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: number | null | undefined;
+  offset?: number | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
@@ -121,7 +121,7 @@ export type ListOrganizationMembersRequest$Outbound = {
   "HTTP-Referer"?: string | undefined;
   appTitle?: string | undefined;
   appCategories?: string | undefined;
-  offset?: number | null | undefined;
+  offset?: number | undefined;
   limit?: number | undefined;
 };
 
@@ -133,7 +133,7 @@ export const ListOrganizationMembersRequest$outboundSchema: z.ZodType<
   httpReferer: z.string().optional(),
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
-  offset: z.nullable(z.int()).optional(),
+  offset: z.int().optional(),
   limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {

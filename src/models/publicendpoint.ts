@@ -62,8 +62,8 @@ export type PublicEndpoint = {
    * Latency percentiles in milliseconds over the last 30 minutes. Latency measures time to first token. Only visible when authenticated with an API key or cookie; returns null for unauthenticated requests.
    */
   latencyLast30m: PercentileStats | null;
-  maxCompletionTokens: number | null;
-  maxPromptTokens: number | null;
+  maxCompletionTokens: number;
+  maxPromptTokens: number;
   /**
    * The unique identifier for the model (permaslug)
    */
@@ -81,12 +81,12 @@ export type PublicEndpoint = {
   /**
    * Uptime percentage over the last 1 day, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
    */
-  uptimeLast1d: number | null;
-  uptimeLast30m: number | null;
+  uptimeLast1d: number;
+  uptimeLast30m: number;
   /**
    * Uptime percentage over the last 5 minutes, calculated as successful requests / (successful + error requests) * 100. Rate-limited requests are excluded. Returns null if insufficient data.
    */
-  uptimeLast5m: number | null;
+  uptimeLast5m: number;
 };
 
 /** @internal */
@@ -139,8 +139,8 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
   z.object({
     context_length: z.int(),
     latency_last_30m: z.nullable(PercentileStats$inboundSchema),
-    max_completion_tokens: z.nullable(z.int()),
-    max_prompt_tokens: z.nullable(z.int()),
+    max_completion_tokens: z.int(),
+    max_prompt_tokens: z.int(),
     model_id: z.string(),
     model_name: z.string(),
     name: z.string(),
@@ -152,9 +152,9 @@ export const PublicEndpoint$inboundSchema: z.ZodType<PublicEndpoint, unknown> =
     supports_implicit_caching: z.boolean(),
     tag: z.string(),
     throughput_last_30m: z.nullable(PercentileStats$inboundSchema),
-    uptime_last_1d: z.nullable(z.number()),
-    uptime_last_30m: z.nullable(z.number()),
-    uptime_last_5m: z.nullable(z.number()),
+    uptime_last_1d: z.number(),
+    uptime_last_30m: z.number(),
+    uptime_last_5m: z.number(),
   }).transform((v) => {
     return remap$(v, {
       "context_length": "contextLength",
