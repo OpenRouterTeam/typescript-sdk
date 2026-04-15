@@ -40,6 +40,7 @@ let value: GetGenerationResponse = {
         status: 200,
       },
     ],
+    responseCacheSourceId: "<id>",
     router: "openrouter/auto",
     streamed: true,
     tokensCompletion: 25,
