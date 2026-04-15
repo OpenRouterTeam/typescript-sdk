@@ -5,7 +5,10 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { ClosedEnum } from "../types/enums.js";
@@ -125,6 +128,92 @@ export type OpenResponsesResultToolUnion =
   | CustomTool
   | discriminatedUnionTypes.Unknown<"type">;
 
+export type RateLimit = {
+  interval?: string | undefined;
+  requests?: number | undefined;
+};
+
+export type Account = {
+  autoTopup?: boolean | undefined;
+  creditsRemaining: number | null;
+  isFreeTier: boolean;
+  rateLimit?: RateLimit | undefined;
+  usageLimit?: number | null | undefined;
+};
+
+export type Attempt = {
+  durationMs: number;
+  isByok?: boolean | undefined;
+  model: string;
+  provider: string;
+  status: number;
+};
+
+export type Available = {
+  latencyP50Ms?: number | null | undefined;
+  model: string;
+  provider: string;
+  region?: string | null | undefined;
+  selected: boolean;
+  sortRank: number;
+  sortValue: number | null;
+};
+
+export type Excluded = {
+  model: string;
+  provider: string;
+  reason: string;
+  step?: string | undefined;
+};
+
+export type Endpoints = {
+  available: Array<Available>;
+  excluded?: Array<Excluded> | undefined;
+  sort: string;
+  sortValue?: number | null | undefined;
+  total: number;
+};
+
+export type Latency = {
+  fallbackMs?: number | null | undefined;
+  routingMs?: number | undefined;
+  totalMs?: number | undefined;
+  upstreamMs?: number | undefined;
+};
+
+export type Params = {
+  qualityFloor?: number | undefined;
+  sort?: string | undefined;
+  throughputFloor?: number | undefined;
+  versionGroup?: string | undefined;
+  additionalProperties?: { [k: string]: any | null } | undefined;
+};
+
+export type Pipeline = {
+  costUsd?: number | null | undefined;
+  data?: { [k: string]: any | null } | undefined;
+  durationMs?: number | undefined;
+  guardrailId?: string | undefined;
+  guardrailScope?: string | undefined;
+  name: string;
+  type: string;
+};
+
+export type Router = {
+  account: Account;
+  attempt: number;
+  attempts?: Array<Attempt> | undefined;
+  endpoints: Endpoints;
+  isByok: boolean;
+  latency?: Latency | undefined;
+  params?: Params | undefined;
+  pipeline?: Array<Pipeline> | undefined;
+  region: string | null;
+  requested: string;
+  strategy: string;
+  summary: string;
+};
+
 /**
  * Complete non-streaming response from the Responses API
  */
@@ -191,6 +280,7 @@ export type OpenResponsesResult = {
    */
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
+  router?: Router | undefined;
 };
 
 /** @internal */
@@ -253,6 +343,253 @@ export function openResponsesResultToolUnionFromJSON(
 }
 
 /** @internal */
+export const RateLimit$inboundSchema: z.ZodType<RateLimit, unknown> = z.object({
+  interval: z.string().optional(),
+  requests: z.int().optional(),
+});
+
+export function rateLimitFromJSON(
+  jsonString: string,
+): SafeParseResult<RateLimit, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => RateLimit$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'RateLimit' from JSON`,
+  );
+}
+
+/** @internal */
+export const Account$inboundSchema: z.ZodType<Account, unknown> = z.object({
+  auto_topup: z.boolean().optional(),
+  credits_remaining: z.nullable(z.number()),
+  is_free_tier: z.boolean(),
+  rate_limit: z.lazy(() => RateLimit$inboundSchema).optional(),
+  usage_limit: z.nullable(z.number()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "auto_topup": "autoTopup",
+    "credits_remaining": "creditsRemaining",
+    "is_free_tier": "isFreeTier",
+    "rate_limit": "rateLimit",
+    "usage_limit": "usageLimit",
+  });
+});
+
+export function accountFromJSON(
+  jsonString: string,
+): SafeParseResult<Account, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Account$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Account' from JSON`,
+  );
+}
+
+/** @internal */
+export const Attempt$inboundSchema: z.ZodType<Attempt, unknown> = z.object({
+  duration_ms: z.int(),
+  is_byok: z.boolean().optional(),
+  model: z.string(),
+  provider: z.string(),
+  status: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "duration_ms": "durationMs",
+    "is_byok": "isByok",
+  });
+});
+
+export function attemptFromJSON(
+  jsonString: string,
+): SafeParseResult<Attempt, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Attempt$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Attempt' from JSON`,
+  );
+}
+
+/** @internal */
+export const Available$inboundSchema: z.ZodType<Available, unknown> = z.object({
+  latency_p50_ms: z.nullable(z.int()).optional(),
+  model: z.string(),
+  provider: z.string(),
+  region: z.nullable(z.string()).optional(),
+  selected: z.boolean(),
+  sort_rank: z.int(),
+  sort_value: z.nullable(z.number()),
+}).transform((v) => {
+  return remap$(v, {
+    "latency_p50_ms": "latencyP50Ms",
+    "sort_rank": "sortRank",
+    "sort_value": "sortValue",
+  });
+});
+
+export function availableFromJSON(
+  jsonString: string,
+): SafeParseResult<Available, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Available$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Available' from JSON`,
+  );
+}
+
+/** @internal */
+export const Excluded$inboundSchema: z.ZodType<Excluded, unknown> = z.object({
+  model: z.string(),
+  provider: z.string(),
+  reason: z.string(),
+  step: z.string().optional(),
+});
+
+export function excludedFromJSON(
+  jsonString: string,
+): SafeParseResult<Excluded, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Excluded$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Excluded' from JSON`,
+  );
+}
+
+/** @internal */
+export const Endpoints$inboundSchema: z.ZodType<Endpoints, unknown> = z.object({
+  available: z.array(z.lazy(() => Available$inboundSchema)),
+  excluded: z.array(z.lazy(() => Excluded$inboundSchema)).optional(),
+  sort: z.string(),
+  sort_value: z.nullable(z.number()).optional(),
+  total: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "sort_value": "sortValue",
+  });
+});
+
+export function endpointsFromJSON(
+  jsonString: string,
+): SafeParseResult<Endpoints, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Endpoints$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Endpoints' from JSON`,
+  );
+}
+
+/** @internal */
+export const Latency$inboundSchema: z.ZodType<Latency, unknown> = z.object({
+  fallback_ms: z.nullable(z.int()).optional(),
+  routing_ms: z.int().optional(),
+  total_ms: z.int().optional(),
+  upstream_ms: z.int().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "fallback_ms": "fallbackMs",
+    "routing_ms": "routingMs",
+    "total_ms": "totalMs",
+    "upstream_ms": "upstreamMs",
+  });
+});
+
+export function latencyFromJSON(
+  jsonString: string,
+): SafeParseResult<Latency, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Latency$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Latency' from JSON`,
+  );
+}
+
+/** @internal */
+export const Params$inboundSchema: z.ZodType<Params, unknown> =
+  collectExtraKeys$(
+    z.object({
+      quality_floor: z.number().optional(),
+      sort: z.string().optional(),
+      throughput_floor: z.number().optional(),
+      version_group: z.string().optional(),
+    }).catchall(z.any()),
+    "additionalProperties",
+    true,
+  ).transform((v) => {
+    return remap$(v, {
+      "quality_floor": "qualityFloor",
+      "throughput_floor": "throughputFloor",
+      "version_group": "versionGroup",
+    });
+  });
+
+export function paramsFromJSON(
+  jsonString: string,
+): SafeParseResult<Params, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Params$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Params' from JSON`,
+  );
+}
+
+/** @internal */
+export const Pipeline$inboundSchema: z.ZodType<Pipeline, unknown> = z.object({
+  cost_usd: z.nullable(z.number()).optional(),
+  data: z.record(z.string(), z.nullable(z.any())).optional(),
+  duration_ms: z.int().optional(),
+  guardrail_id: z.string().optional(),
+  guardrail_scope: z.string().optional(),
+  name: z.string(),
+  type: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "cost_usd": "costUsd",
+    "duration_ms": "durationMs",
+    "guardrail_id": "guardrailId",
+    "guardrail_scope": "guardrailScope",
+  });
+});
+
+export function pipelineFromJSON(
+  jsonString: string,
+): SafeParseResult<Pipeline, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Pipeline$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Pipeline' from JSON`,
+  );
+}
+
+/** @internal */
+export const Router$inboundSchema: z.ZodType<Router, unknown> = z.object({
+  account: z.lazy(() => Account$inboundSchema),
+  attempt: z.int(),
+  attempts: z.array(z.lazy(() => Attempt$inboundSchema)).optional(),
+  endpoints: z.lazy(() => Endpoints$inboundSchema),
+  is_byok: z.boolean(),
+  latency: z.lazy(() => Latency$inboundSchema).optional(),
+  params: z.lazy(() => Params$inboundSchema).optional(),
+  pipeline: z.array(z.lazy(() => Pipeline$inboundSchema)).optional(),
+  region: z.nullable(z.string()),
+  requested: z.string(),
+  strategy: z.string(),
+  summary: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "is_byok": "isByok",
+  });
+});
+
+export function routerFromJSON(
+  jsonString: string,
+): SafeParseResult<Router, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Router$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Router' from JSON`,
+  );
+}
+
+/** @internal */
 export const OpenResponsesResult$inboundSchema: z.ZodType<
   OpenResponsesResult,
   unknown
@@ -307,6 +644,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(Usage$inboundSchema).optional(),
   user: z.nullable(z.string()).optional(),
+  router: z.lazy(() => Router$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "completed_at": "completedAt",
