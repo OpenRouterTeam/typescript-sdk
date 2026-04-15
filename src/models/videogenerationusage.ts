@@ -16,7 +16,7 @@ export type VideoGenerationUsage = {
   /**
    * The cost of the video generation in USD.
    */
-  cost?: number | null | undefined;
+  cost?: number | undefined;
   /**
    * Whether the request was made using a Bring Your Own Key configuration.
    */
@@ -28,7 +28,7 @@ export const VideoGenerationUsage$inboundSchema: z.ZodType<
   VideoGenerationUsage,
   unknown
 > = z.object({
-  cost: z.nullable(z.number()).optional(),
+  cost: z.number().optional(),
   is_byok: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
