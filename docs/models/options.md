@@ -29,6 +29,7 @@ let value: Options = {};
 | `atoma`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `avian`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `azure`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
+| `baidu`               | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `baseten`             | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `blackForestLabs`     | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
 | `byteplus`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |
