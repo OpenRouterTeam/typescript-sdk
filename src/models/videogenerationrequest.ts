@@ -54,6 +54,7 @@ export type Options = {
   atoma?: { [k: string]: any | null } | undefined;
   avian?: { [k: string]: any | null } | undefined;
   azure?: { [k: string]: any | null } | undefined;
+  baidu?: { [k: string]: any | null } | undefined;
   baseten?: { [k: string]: any | null } | undefined;
   blackForestLabs?: { [k: string]: any | null } | undefined;
   byteplus?: { [k: string]: any | null } | undefined;
@@ -235,6 +236,7 @@ export type Options$Outbound = {
   atoma?: { [k: string]: any | null } | undefined;
   avian?: { [k: string]: any | null } | undefined;
   azure?: { [k: string]: any | null } | undefined;
+  baidu?: { [k: string]: any | null } | undefined;
   baseten?: { [k: string]: any | null } | undefined;
   "black-forest-labs"?: { [k: string]: any | null } | undefined;
   byteplus?: { [k: string]: any | null } | undefined;
@@ -346,6 +348,7 @@ export const Options$outboundSchema: z.ZodType<Options$Outbound, Options> = z
     atoma: z.record(z.string(), z.nullable(z.any())).optional(),
     avian: z.record(z.string(), z.nullable(z.any())).optional(),
     azure: z.record(z.string(), z.nullable(z.any())).optional(),
+    baidu: z.record(z.string(), z.nullable(z.any())).optional(),
     baseten: z.record(z.string(), z.nullable(z.any())).optional(),
     blackForestLabs: z.record(z.string(), z.nullable(z.any())).optional(),
     byteplus: z.record(z.string(), z.nullable(z.any())).optional(),
