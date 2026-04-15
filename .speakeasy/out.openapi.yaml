@@ -1491,6 +1491,15 @@ components:
         - thinking
         - signature
       type: object
+    AnthropicThinkingDisplay:
+      enum:
+        - summarized
+        - omitted
+        - null
+      example: summarized
+      nullable: true
+      type: string
+      x-speakeasy-unknown-values: allow
     AnthropicThinkingTurns:
       example:
         type: thinking_turns
@@ -7484,6 +7493,8 @@ components:
             - properties:
                 budget_tokens:
                   type: integer
+                display:
+                  $ref: '#/components/schemas/AnthropicThinkingDisplay'
                 type:
                   enum:
                     - enabled
@@ -7501,6 +7512,8 @@ components:
                 - type
               type: object
             - properties:
+                display:
+                  $ref: '#/components/schemas/AnthropicThinkingDisplay'
                 type:
                   enum:
                     - adaptive
@@ -7708,6 +7721,23 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseMessagesResult'
         - properties:
+            context_management:
+              nullable: true
+              properties:
+                applied_edits:
+                  items:
+                    additionalProperties:
+                      nullable: true
+                    properties:
+                      type:
+                        type: string
+                    required:
+                      - type
+                    type: object
+                  type: array
+              required:
+                - applied_edits
+              type: object
             provider:
               $ref: '#/components/schemas/ProviderName'
             usage:
