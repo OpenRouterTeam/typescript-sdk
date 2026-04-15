@@ -153,14 +153,6 @@ const value: models.DatetimeServerTool = {
 };
 ```
 
-### `models.ImageGenerationServerToolOpenRouter`
-
-```typescript
-const value: models.ImageGenerationServerToolOpenRouter = {
-  type: "openrouter:image_generation",
-};
-```
-
 ### `models.ChatSearchModelsServerTool`
 
 ```typescript

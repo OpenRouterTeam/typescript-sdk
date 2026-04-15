@@ -79,7 +79,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GetGenerationResponse](../../models/operations/getgenerationresponse.md)\>**
+**Promise\<[models.GenerationWithContentResponse](../../models/generationwithcontentresponse.md)\>**
 
 ### Errors
 
