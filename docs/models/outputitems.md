@@ -126,6 +126,15 @@ const value: models.OutputDatetimeItem = {
 };
 ```
 
+### `models.OutputSearchModelsServerToolItem`
+
+```typescript
+const value: models.OutputSearchModelsServerToolItem = {
+  status: "completed",
+  type: "openrouter:experimental__search_models",
+};
+```
+
 ### `models.OutputFileSearchServerToolItem`
 
 ```typescript
