@@ -7790,6 +7790,7 @@ components:
                 - AionLabs
                 - Alibaba
                 - Ambient
+                - Baidu
                 - Amazon Bedrock
                 - Amazon Nova
                 - Anthropic
@@ -10182,6 +10183,7 @@ components:
         - AionLabs
         - Alibaba
         - Ambient
+        - Baidu
         - Amazon Bedrock
         - Amazon Nova
         - Anthropic
@@ -10495,6 +10497,7 @@ components:
             - AionLabs
             - Alibaba
             - Ambient
+            - Baidu
             - Amazon Bedrock
             - Amazon Nova
             - Anthropic
@@ -12425,6 +12428,10 @@ components:
                     nullable: true
                   type: object
                 azure:
+                  additionalProperties:
+                    nullable: true
+                  type: object
+                baidu:
                   additionalProperties:
                     nullable: true
                   type: object
