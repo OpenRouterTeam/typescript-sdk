@@ -82,7 +82,10 @@ import {
   StoredPromptTemplate,
   StoredPromptTemplate$inboundSchema,
 } from "./storedprompttemplate.js";
-import { TextConfig, TextConfig$inboundSchema } from "./textconfig.js";
+import {
+  TextExtendedConfig,
+  TextExtendedConfig$inboundSchema,
+} from "./textextendedconfig.js";
 import { Truncation, Truncation$inboundSchema } from "./truncation.js";
 import { Usage, Usage$inboundSchema } from "./usage.js";
 import {
@@ -164,7 +167,7 @@ export type OpenResponsesResult = {
   /**
    * Text output configuration including format and verbosity
    */
-  text?: TextConfig | undefined;
+  text?: TextExtendedConfig | undefined;
   toolChoice: OpenAIResponsesToolChoiceUnion;
   tools: Array<
     | OpenResponsesResultToolFunction
@@ -283,7 +286,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   status: OpenAIResponsesResponseStatus$inboundSchema,
   store: z.boolean().optional(),
   temperature: z.nullable(z.number()),
-  text: TextConfig$inboundSchema.optional(),
+  text: TextExtendedConfig$inboundSchema.optional(),
   tool_choice: OpenAIResponsesToolChoiceUnion$inboundSchema,
   tools: z.array(discriminatedUnion("type", {
     function: z.lazy(() => OpenResponsesResultToolFunction$inboundSchema),

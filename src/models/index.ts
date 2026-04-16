@@ -241,7 +241,6 @@ export * from "./streameventsresponseoutputitemadded.js";
 export * from "./streameventsresponseoutputitemdone.js";
 export * from "./streamlogprob.js";
 export * from "./streamlogprobtoplogprob.js";
-export * from "./textconfig.js";
 export * from "./textdeltaevent.js";
 export * from "./textdoneevent.js";
 export * from "./textextendedconfig.js";
