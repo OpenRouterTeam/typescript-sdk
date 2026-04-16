@@ -7215,11 +7215,12 @@ components:
         effort:
           description: >-
             How much effort the model should put into its response. Higher effort levels may result in more thorough
-            analysis but take longer. Valid values are `low`, `medium`, `high`, or `max`.
+            analysis but take longer. Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.
           enum:
             - low
             - medium
             - high
+            - xhigh
             - max
             - null
           example: medium
@@ -8841,6 +8842,8 @@ components:
             service_tier:
               nullable: true
               type: string
+            text:
+              $ref: '#/components/schemas/TextExtendedConfig'
             usage:
               $ref: '#/components/schemas/Usage'
           type: object
@@ -12002,7 +12005,17 @@ components:
     TextExtendedConfig:
       allOf:
         - $ref: '#/components/schemas/TextConfig'
-        - properties: {}
+        - properties:
+            verbosity:
+              enum:
+                - low
+                - medium
+                - high
+                - xhigh
+                - max
+                - null
+              nullable: true
+              type: string
           type: object
       description: Text output configuration including format and verbosity
       example:
