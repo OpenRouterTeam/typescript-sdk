@@ -4,26 +4,22 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
-import { Result as SafeParseResult } from "../types/fp.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   Formats,
-  Formats$inboundSchema,
   Formats$Outbound,
   Formats$outboundSchema,
 } from "./formats.js";
 
-export const Verbosity = {
+export const TextExtendedConfigVerbosity = {
+  High: "high",
   Low: "low",
   Medium: "medium",
-  High: "high",
-  Xhigh: "xhigh",
-  Max: "max",
 } as const;
-export type Verbosity = OpenEnum<typeof Verbosity>;
+export type TextExtendedConfigVerbosity = OpenEnum<
+  typeof TextExtendedConfigVerbosity
+>;
 
 /**
  * Text output configuration including format and verbosity
@@ -33,24 +29,15 @@ export type TextExtendedConfig = {
    * Text response format configuration
    */
   format?: Formats | undefined;
-  verbosity?: Verbosity | null | undefined;
+  verbosity?: TextExtendedConfigVerbosity | null | undefined;
 };
 
 /** @internal */
-export const Verbosity$inboundSchema: z.ZodType<Verbosity, unknown> = openEnums
-  .inboundSchema(Verbosity);
-/** @internal */
-export const Verbosity$outboundSchema: z.ZodType<string, Verbosity> = openEnums
-  .outboundSchema(Verbosity);
+export const TextExtendedConfigVerbosity$outboundSchema: z.ZodType<
+  string,
+  TextExtendedConfigVerbosity
+> = openEnums.outboundSchema(TextExtendedConfigVerbosity);
 
-/** @internal */
-export const TextExtendedConfig$inboundSchema: z.ZodType<
-  TextExtendedConfig,
-  unknown
-> = z.object({
-  format: Formats$inboundSchema.optional(),
-  verbosity: z.nullable(Verbosity$inboundSchema).optional(),
-});
 /** @internal */
 export type TextExtendedConfig$Outbound = {
   format?: Formats$Outbound | undefined;
@@ -63,7 +50,7 @@ export const TextExtendedConfig$outboundSchema: z.ZodType<
   TextExtendedConfig
 > = z.object({
   format: Formats$outboundSchema.optional(),
-  verbosity: z.nullable(Verbosity$outboundSchema).optional(),
+  verbosity: z.nullable(TextExtendedConfigVerbosity$outboundSchema).optional(),
 });
 
 export function textExtendedConfigToJSON(
@@ -71,14 +58,5 @@ export function textExtendedConfigToJSON(
 ): string {
   return JSON.stringify(
     TextExtendedConfig$outboundSchema.parse(textExtendedConfig),
-  );
-}
-export function textExtendedConfigFromJSON(
-  jsonString: string,
-): SafeParseResult<TextExtendedConfig, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => TextExtendedConfig$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'TextExtendedConfig' from JSON`,
   );
 }

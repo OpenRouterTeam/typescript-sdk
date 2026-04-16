@@ -9,10 +9,10 @@ import { OpenResponsesCreatedEvent } from "@openrouter/sdk/models";
 
 let value: OpenResponsesCreatedEvent = {
   response: {
-    completedAt: null,
+    completedAt: 67105,
     createdAt: 1704067200,
     error: null,
-    frequencyPenalty: 2702.39,
+    frequencyPenalty: 1576.67,
     id: "resp-abc123",
     incompleteDetails: null,
     instructions: null,
@@ -21,12 +21,12 @@ let value: OpenResponsesCreatedEvent = {
     object: "response",
     output: [],
     parallelToolCalls: true,
-    presencePenalty: 134.06,
+    presencePenalty: 2702.39,
     status: "in_progress",
-    temperature: null,
+    temperature: 1841.91,
     toolChoice: "auto",
     tools: [],
-    topP: null,
+    topP: 134.06,
   },
   sequenceNumber: 0,
   type: "response.created",
