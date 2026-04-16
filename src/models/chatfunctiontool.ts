@@ -12,11 +12,6 @@ import {
   ChatContentCacheControl$outboundSchema,
 } from "./chatcontentcachecontrol.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
-import {
   ChatWebSearchShorthand,
   ChatWebSearchShorthand$Outbound,
   ChatWebSearchShorthand$outboundSchema,
@@ -26,11 +21,6 @@ import {
   DatetimeServerTool$Outbound,
   DatetimeServerTool$outboundSchema,
 } from "./datetimeservertool.js";
-import {
-  ImageGenerationServerToolOpenRouter,
-  ImageGenerationServerToolOpenRouter$Outbound,
-  ImageGenerationServerToolOpenRouter$outboundSchema,
-} from "./imagegenerationservertoolopenrouter.js";
 import {
   OpenRouterWebSearchServerTool,
   OpenRouterWebSearchServerTool$Outbound,
@@ -82,8 +72,6 @@ export type ChatFunctionToolFunction = {
 export type ChatFunctionTool =
   | ChatFunctionToolFunction
   | DatetimeServerTool
-  | ImageGenerationServerToolOpenRouter
-  | ChatSearchModelsServerTool
   | OpenRouterWebSearchServerTool
   | ChatWebSearchShorthand;
 
@@ -154,8 +142,6 @@ export function chatFunctionToolFunctionToJSON(
 export type ChatFunctionTool$Outbound =
   | ChatFunctionToolFunction$Outbound
   | DatetimeServerTool$Outbound
-  | ImageGenerationServerToolOpenRouter$Outbound
-  | ChatSearchModelsServerTool$Outbound
   | OpenRouterWebSearchServerTool$Outbound
   | ChatWebSearchShorthand$Outbound;
 
@@ -166,8 +152,6 @@ export const ChatFunctionTool$outboundSchema: z.ZodType<
 > = z.union([
   z.lazy(() => ChatFunctionToolFunction$outboundSchema),
   DatetimeServerTool$outboundSchema,
-  ImageGenerationServerToolOpenRouter$outboundSchema,
-  ChatSearchModelsServerTool$outboundSchema,
   OpenRouterWebSearchServerTool$outboundSchema,
   ChatWebSearchShorthand$outboundSchema,
 ]);
