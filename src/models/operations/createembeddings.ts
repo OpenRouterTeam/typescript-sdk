@@ -46,6 +46,16 @@ export const EncodingFormat = {
  */
 export type EncodingFormat = OpenEnum<typeof EncodingFormat>;
 
+export type VideoUrl = {
+  mimeType?: string | undefined;
+  url: string;
+};
+
+export type ContentVideoURL = {
+  type: "video_url";
+  videoUrl: VideoUrl;
+};
+
 export type ImageUrl = {
   url: string;
 };
@@ -60,10 +70,10 @@ export type ContentText = {
   type: "text";
 };
 
-export type Content = ContentText | ContentImageURL;
+export type Content = ContentText | ContentImageURL | ContentVideoURL;
 
 export type Input = {
-  content: Array<ContentText | ContentImageURL>;
+  content: Array<ContentText | ContentImageURL | ContentVideoURL>;
 };
 
 /**
@@ -213,6 +223,52 @@ export const EncodingFormat$outboundSchema: z.ZodType<string, EncodingFormat> =
   openEnums.outboundSchema(EncodingFormat);
 
 /** @internal */
+export type VideoUrl$Outbound = {
+  mime_type?: string | undefined;
+  url: string;
+};
+
+/** @internal */
+export const VideoUrl$outboundSchema: z.ZodType<VideoUrl$Outbound, VideoUrl> = z
+  .object({
+    mimeType: z.string().optional(),
+    url: z.string(),
+  }).transform((v) => {
+    return remap$(v, {
+      mimeType: "mime_type",
+    });
+  });
+
+export function videoUrlToJSON(videoUrl: VideoUrl): string {
+  return JSON.stringify(VideoUrl$outboundSchema.parse(videoUrl));
+}
+
+/** @internal */
+export type ContentVideoURL$Outbound = {
+  type: "video_url";
+  video_url: VideoUrl$Outbound;
+};
+
+/** @internal */
+export const ContentVideoURL$outboundSchema: z.ZodType<
+  ContentVideoURL$Outbound,
+  ContentVideoURL
+> = z.object({
+  type: z.literal("video_url"),
+  videoUrl: z.lazy(() => VideoUrl$outboundSchema),
+}).transform((v) => {
+  return remap$(v, {
+    videoUrl: "video_url",
+  });
+});
+
+export function contentVideoURLToJSON(
+  contentVideoURL: ContentVideoURL,
+): string {
+  return JSON.stringify(ContentVideoURL$outboundSchema.parse(contentVideoURL));
+}
+
+/** @internal */
 export type ImageUrl$Outbound = {
   url: string;
 };
@@ -272,13 +328,17 @@ export function contentTextToJSON(contentText: ContentText): string {
 }
 
 /** @internal */
-export type Content$Outbound = ContentText$Outbound | ContentImageURL$Outbound;
+export type Content$Outbound =
+  | ContentText$Outbound
+  | ContentImageURL$Outbound
+  | ContentVideoURL$Outbound;
 
 /** @internal */
 export const Content$outboundSchema: z.ZodType<Content$Outbound, Content> = z
   .union([
     z.lazy(() => ContentText$outboundSchema),
     z.lazy(() => ContentImageURL$outboundSchema),
+    z.lazy(() => ContentVideoURL$outboundSchema),
   ]);
 
 export function contentToJSON(content: Content): string {
@@ -287,7 +347,9 @@ export function contentToJSON(content: Content): string {
 
 /** @internal */
 export type Input$Outbound = {
-  content: Array<ContentText$Outbound | ContentImageURL$Outbound>;
+  content: Array<
+    ContentText$Outbound | ContentImageURL$Outbound | ContentVideoURL$Outbound
+  >;
 };
 
 /** @internal */
@@ -296,6 +358,7 @@ export const Input$outboundSchema: z.ZodType<Input$Outbound, Input> = z.object({
     z.union([
       z.lazy(() => ContentText$outboundSchema),
       z.lazy(() => ContentImageURL$outboundSchema),
+      z.lazy(() => ContentVideoURL$outboundSchema),
     ]),
   ),
 });

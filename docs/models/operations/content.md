@@ -23,3 +23,14 @@ const value: operations.ContentImageURL = {
 };
 ```
 
+### `operations.ContentVideoURL`
+
+```typescript
+const value: operations.ContentVideoURL = {
+  type: "video_url",
+  videoUrl: {
+    url: "https://pleasant-futon.com/",
+  },
+};
+```
+
