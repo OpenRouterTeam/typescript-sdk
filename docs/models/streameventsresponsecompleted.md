@@ -9,10 +9,10 @@ import { StreamEventsResponseCompleted } from "@openrouter/sdk/models";
 
 let value: StreamEventsResponseCompleted = {
   response: {
-    completedAt: null,
+    completedAt: 92098,
     createdAt: 1704067200,
     error: null,
-    frequencyPenalty: 1785.15,
+    frequencyPenalty: 9052,
     id: "resp-abc123",
     incompleteDetails: null,
     instructions: null,
@@ -21,12 +21,12 @@ let value: StreamEventsResponseCompleted = {
     object: "response",
     output: [],
     parallelToolCalls: true,
-    presencePenalty: 4270.15,
+    presencePenalty: 1785.15,
     status: "in_progress",
-    temperature: null,
+    temperature: 7834.95,
     toolChoice: "auto",
     tools: [],
-    topP: null,
+    topP: 4270.15,
   },
   sequenceNumber: 0,
   type: "response.completed",
