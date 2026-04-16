@@ -126,11 +126,11 @@ export type GetCurrentKeyData = {
   /**
    * Spending limit for the API key in USD
    */
-  limit: number | null;
+  limit: number;
   /**
    * Remaining spending limit in USD
    */
-  limitRemaining: number | null;
+  limitRemaining: number;
   /**
    * Type of limit reset for the API key
    */
@@ -233,8 +233,8 @@ export const GetCurrentKeyData$inboundSchema: z.ZodType<
   is_management_key: z.boolean(),
   is_provisioning_key: z.boolean(),
   label: z.string(),
-  limit: z.nullable(z.number()),
-  limit_remaining: z.nullable(z.number()),
+  limit: z.number(),
+  limit_remaining: z.number(),
   limit_reset: z.nullable(z.string()),
   rate_limit: z.lazy(() => RateLimit$inboundSchema),
   usage: z.number(),
