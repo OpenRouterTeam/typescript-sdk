@@ -95,6 +95,10 @@ export type GetGenerationData = {
    */
   cancelled: boolean | null;
   /**
+   * Whether a content guardrail (e.g. PII filter, prompt injection) acted on this request
+   */
+  contentGuardrailInvoked?: boolean | null | undefined;
+  /**
    * ISO 8601 timestamp of when the generation was created
    */
   createdAt: string;
@@ -286,6 +290,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   app_id: z.nullable(z.int()),
   cache_discount: z.nullable(z.number()),
   cancelled: z.nullable(z.boolean()),
+  content_guardrail_invoked: z.nullable(z.boolean()).optional(),
   created_at: z.string(),
   external_user: z.nullable(z.string()),
   finish_reason: z.nullable(z.string()),
@@ -327,6 +332,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "api_type": "apiType",
     "app_id": "appId",
     "cache_discount": "cacheDiscount",
+    "content_guardrail_invoked": "contentGuardrailInvoked",
     "created_at": "createdAt",
     "external_user": "externalUser",
     "finish_reason": "finishReason",
