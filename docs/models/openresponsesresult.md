@@ -8,10 +8,10 @@ Complete non-streaming response from the Responses API
 import { OpenResponsesResult } from "@openrouter/sdk/models";
 
 let value: OpenResponsesResult = {
-  completedAt: 831625,
+  completedAt: 988146,
   createdAt: 1704067200,
   error: null,
-  frequencyPenalty: 9553.57,
+  frequencyPenalty: 8316.25,
   id: "resp-abc123",
   incompleteDetails: null,
   instructions: null,
@@ -32,12 +32,12 @@ let value: OpenResponsesResult = {
     },
   ],
   parallelToolCalls: true,
-  presencePenalty: 9626.13,
+  presencePenalty: 4579.82,
   status: "completed",
-  temperature: null,
+  temperature: 9553.57,
   toolChoice: "auto",
   tools: [],
-  topP: null,
+  topP: 8128.71,
 };
 ```
 
