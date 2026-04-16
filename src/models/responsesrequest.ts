@@ -18,11 +18,6 @@ import {
   AutoRouterPlugin$outboundSchema,
 } from "./autorouterplugin.js";
 import {
-  ChatSearchModelsServerTool,
-  ChatSearchModelsServerTool$Outbound,
-  ChatSearchModelsServerTool$outboundSchema,
-} from "./chatsearchmodelsservertool.js";
-import {
   CodeInterpreterServerTool,
   CodeInterpreterServerTool$Outbound,
   CodeInterpreterServerTool$outboundSchema,
@@ -63,20 +58,10 @@ import {
   FileSearchServerTool$outboundSchema,
 } from "./filesearchservertool.js";
 import {
-  ImageConfig,
-  ImageConfig$Outbound,
-  ImageConfig$outboundSchema,
-} from "./imageconfig.js";
-import {
   ImageGenerationServerTool,
   ImageGenerationServerTool$Outbound,
   ImageGenerationServerTool$outboundSchema,
 } from "./imagegenerationservertool.js";
-import {
-  ImageGenerationServerToolOpenRouter,
-  ImageGenerationServerToolOpenRouter$Outbound,
-  ImageGenerationServerToolOpenRouter$outboundSchema,
-} from "./imagegenerationservertoolopenrouter.js";
 import {
   InputsUnion,
   InputsUnion$Outbound,
@@ -175,6 +160,8 @@ import {
   WebSearchServerToolOpenRouter$outboundSchema,
 } from "./websearchservertoolopenrouter.js";
 
+export type ResponsesRequestImageConfig = string | number;
+
 export type ResponsesRequestPlugin =
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -221,12 +208,6 @@ export type ResponsesRequestToolUnion =
   | ApplyPatchServerTool
   | CustomTool
   | (DatetimeServerTool & { type: "openrouter:datetime" })
-  | (ImageGenerationServerToolOpenRouter & {
-    type: "openrouter:image_generation";
-  })
-  | (ChatSearchModelsServerTool & {
-    type: "openrouter:experimental__search_models";
-  })
   | WebSearchServerToolOpenRouter;
 
 /**
@@ -234,19 +215,19 @@ export type ResponsesRequestToolUnion =
  */
 export type ResponsesRequest = {
   background?: boolean | null | undefined;
-  frequencyPenalty?: number | null | undefined;
+  frequencyPenalty?: number | undefined;
   /**
-   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/guides/overview/multimodal/image-generation for more details.
+   * Provider-specific image configuration options. Keys and values vary by model/provider. See https://openrouter.ai/docs/features/multimodal/image-generation for more details.
    */
-  imageConfig?: { [k: string]: ImageConfig } | undefined;
+  imageConfig?: { [k: string]: string | number } | undefined;
   include?: Array<ResponseIncludesEnum> | null | undefined;
   /**
    * Input for a response request - can be a string or array of items
    */
   input?: InputsUnion | undefined;
   instructions?: string | null | undefined;
-  maxOutputTokens?: number | null | undefined;
-  maxToolCalls?: number | null | undefined;
+  maxOutputTokens?: number | undefined;
+  maxToolCalls?: number | undefined;
   /**
    * Metadata key-value pairs for the request. Keys must be ≤64 characters and cannot contain brackets. Values must be ≤512 characters. Maximum 16 pairs allowed.
    */
@@ -271,7 +252,7 @@ export type ResponsesRequest = {
       | WebSearchPlugin
     >
     | undefined;
-  presencePenalty?: number | null | undefined;
+  presencePenalty?: number | undefined;
   previousResponseId?: string | null | undefined;
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
@@ -291,7 +272,7 @@ export type ResponsesRequest = {
   sessionId?: string | undefined;
   store?: false | undefined;
   stream?: boolean | undefined;
-  temperature?: number | null | undefined;
+  temperature?: number | undefined;
   /**
    * Text output configuration including format and verbosity
    */
@@ -314,18 +295,12 @@ export type ResponsesRequest = {
       | ApplyPatchServerTool
       | CustomTool
       | (DatetimeServerTool & { type: "openrouter:datetime" })
-      | (ImageGenerationServerToolOpenRouter & {
-        type: "openrouter:image_generation";
-      })
-      | (ChatSearchModelsServerTool & {
-        type: "openrouter:experimental__search_models";
-      })
       | WebSearchServerToolOpenRouter
     >
     | undefined;
   topK?: number | undefined;
-  topLogprobs?: number | null | undefined;
-  topP?: number | null | undefined;
+  topLogprobs?: number | undefined;
+  topP?: number | undefined;
   /**
    * Metadata for observability and tracing. Known keys (trace_id, trace_name, span_name, generation_name, parent_span_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations.
    */
@@ -336,6 +311,25 @@ export type ResponsesRequest = {
    */
   user?: string | undefined;
 };
+
+/** @internal */
+export type ResponsesRequestImageConfig$Outbound = string | number;
+
+/** @internal */
+export const ResponsesRequestImageConfig$outboundSchema: z.ZodType<
+  ResponsesRequestImageConfig$Outbound,
+  ResponsesRequestImageConfig
+> = z.union([z.string(), z.number()]);
+
+export function responsesRequestImageConfigToJSON(
+  responsesRequestImageConfig: ResponsesRequestImageConfig,
+): string {
+  return JSON.stringify(
+    ResponsesRequestImageConfig$outboundSchema.parse(
+      responsesRequestImageConfig,
+    ),
+  );
+}
 
 /** @internal */
 export type ResponsesRequestPlugin$Outbound =
@@ -421,12 +415,6 @@ export type ResponsesRequestToolUnion$Outbound =
   | ApplyPatchServerTool$Outbound
   | CustomTool$Outbound
   | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-  | (ImageGenerationServerToolOpenRouter$Outbound & {
-    type: "openrouter:image_generation";
-  })
-  | (ChatSearchModelsServerTool$Outbound & {
-    type: "openrouter:experimental__search_models";
-  })
   | WebSearchServerToolOpenRouter$Outbound;
 
 /** @internal */
@@ -451,12 +439,6 @@ export const ResponsesRequestToolUnion$outboundSchema: z.ZodType<
   DatetimeServerTool$outboundSchema.and(
     z.object({ type: z.literal("openrouter:datetime") }),
   ),
-  ImageGenerationServerToolOpenRouter$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:image_generation") }),
-  ),
-  ChatSearchModelsServerTool$outboundSchema.and(
-    z.object({ type: z.literal("openrouter:experimental__search_models") }),
-  ),
   WebSearchServerToolOpenRouter$outboundSchema,
 ]);
 
@@ -471,13 +453,13 @@ export function responsesRequestToolUnionToJSON(
 /** @internal */
 export type ResponsesRequest$Outbound = {
   background?: boolean | null | undefined;
-  frequency_penalty?: number | null | undefined;
-  image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
+  frequency_penalty?: number | undefined;
+  image_config?: { [k: string]: string | number } | undefined;
   include?: Array<string> | null | undefined;
   input?: InputsUnion$Outbound | undefined;
   instructions?: string | null | undefined;
-  max_output_tokens?: number | null | undefined;
-  max_tool_calls?: number | null | undefined;
+  max_output_tokens?: number | undefined;
+  max_tool_calls?: number | undefined;
   metadata?: { [k: string]: string } | null | undefined;
   modalities?: Array<string> | undefined;
   model?: string | undefined;
@@ -493,7 +475,7 @@ export type ResponsesRequest$Outbound = {
       | WebSearchPlugin$Outbound
     >
     | undefined;
-  presence_penalty?: number | null | undefined;
+  presence_penalty?: number | undefined;
   previous_response_id?: string | null | undefined;
   prompt?: StoredPromptTemplate$Outbound | null | undefined;
   prompt_cache_key?: string | null | undefined;
@@ -504,7 +486,7 @@ export type ResponsesRequest$Outbound = {
   session_id?: string | undefined;
   store: false;
   stream: boolean;
-  temperature?: number | null | undefined;
+  temperature?: number | undefined;
   text?: TextExtendedConfig$Outbound | undefined;
   tool_choice?: OpenAIResponsesToolChoiceUnion$Outbound | undefined;
   tools?:
@@ -524,18 +506,12 @@ export type ResponsesRequest$Outbound = {
       | ApplyPatchServerTool$Outbound
       | CustomTool$Outbound
       | (DatetimeServerTool$Outbound & { type: "openrouter:datetime" })
-      | (ImageGenerationServerToolOpenRouter$Outbound & {
-        type: "openrouter:image_generation";
-      })
-      | (ChatSearchModelsServerTool$Outbound & {
-        type: "openrouter:experimental__search_models";
-      })
       | WebSearchServerToolOpenRouter$Outbound
     >
     | undefined;
   top_k?: number | undefined;
-  top_logprobs?: number | null | undefined;
-  top_p?: number | null | undefined;
+  top_logprobs?: number | undefined;
+  top_p?: number | undefined;
   trace?: TraceConfig$Outbound | undefined;
   truncation?: string | null | undefined;
   user?: string | undefined;
@@ -547,13 +523,14 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   ResponsesRequest
 > = z.object({
   background: z.nullable(z.boolean()).optional(),
-  frequencyPenalty: z.nullable(z.number()).optional(),
-  imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
+  frequencyPenalty: z.number().optional(),
+  imageConfig: z.record(z.string(), z.union([z.string(), z.number()]))
+    .optional(),
   include: z.nullable(z.array(ResponseIncludesEnum$outboundSchema)).optional(),
   input: InputsUnion$outboundSchema.optional(),
   instructions: z.nullable(z.string()).optional(),
-  maxOutputTokens: z.nullable(z.int()).optional(),
-  maxToolCalls: z.nullable(z.int()).optional(),
+  maxOutputTokens: z.int().optional(),
+  maxToolCalls: z.int().optional(),
   metadata: z.nullable(z.record(z.string(), z.string())).optional(),
   modalities: z.array(OutputModalityEnum$outboundSchema).optional(),
   model: z.string().optional(),
@@ -569,7 +546,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       WebSearchPlugin$outboundSchema,
     ]),
   ).optional(),
-  presencePenalty: z.nullable(z.number()).optional(),
+  presencePenalty: z.number().optional(),
   previousResponseId: z.nullable(z.string()).optional(),
   prompt: z.nullable(StoredPromptTemplate$outboundSchema).optional(),
   promptCacheKey: z.nullable(z.string()).optional(),
@@ -582,7 +559,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   sessionId: z.string().optional(),
   store: z.literal(false).default(false as const),
   stream: z.boolean().default(false),
-  temperature: z.nullable(z.number()).optional(),
+  temperature: z.number().optional(),
   text: TextExtendedConfig$outboundSchema.optional(),
   toolChoice: OpenAIResponsesToolChoiceUnion$outboundSchema.optional(),
   tools: z.array(
@@ -604,18 +581,12 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
       DatetimeServerTool$outboundSchema.and(
         z.object({ type: z.literal("openrouter:datetime") }),
       ),
-      ImageGenerationServerToolOpenRouter$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:image_generation") }),
-      ),
-      ChatSearchModelsServerTool$outboundSchema.and(
-        z.object({ type: z.literal("openrouter:experimental__search_models") }),
-      ),
       WebSearchServerToolOpenRouter$outboundSchema,
     ]),
   ).optional(),
   topK: z.int().optional(),
-  topLogprobs: z.nullable(z.int()).optional(),
-  topP: z.nullable(z.number()).optional(),
+  topLogprobs: z.int().optional(),
+  topP: z.number().optional(),
   trace: TraceConfig$outboundSchema.optional(),
   truncation: z.nullable(OpenAIResponsesTruncation$outboundSchema).optional(),
   user: z.string().optional(),
