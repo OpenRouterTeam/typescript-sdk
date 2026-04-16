@@ -191,6 +191,10 @@ export type GetGenerationData = {
    */
   requestId?: string | null | undefined;
   /**
+   * If this generation was served from response cache, contains the original generation ID. Null otherwise.
+   */
+  responseCacheSourceId: string | null;
+  /**
    * Router used for the request (e.g., openrouter/auto)
    */
   router: string | null;
@@ -230,6 +234,10 @@ export type GetGenerationData = {
    * User-Agent header from the request
    */
   userAgent: string | null;
+  /**
+   * The resolved web search engine used for this generation (e.g. exa, firecrawl, parallel)
+   */
+  webSearchEngine: string | null;
 };
 
 /**
@@ -312,6 +320,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     z.array(models.ProviderResponse$inboundSchema),
   ),
   request_id: z.nullable(z.string()).optional(),
+  response_cache_source_id: z.nullable(z.string()),
   router: z.nullable(z.string()),
   session_id: z.nullable(z.string()).optional(),
   streamed: z.nullable(z.boolean()),
@@ -322,6 +331,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
   upstream_inference_cost: z.nullable(z.number()),
   usage: z.number(),
   user_agent: z.nullable(z.string()),
+  web_search_engine: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
     "api_type": "apiType",
@@ -347,6 +357,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "provider_name": "providerName",
     "provider_responses": "providerResponses",
     "request_id": "requestId",
+    "response_cache_source_id": "responseCacheSourceId",
     "session_id": "sessionId",
     "tokens_completion": "tokensCompletion",
     "tokens_prompt": "tokensPrompt",
@@ -354,6 +365,7 @@ export const GetGenerationData$inboundSchema: z.ZodType<
     "upstream_id": "upstreamId",
     "upstream_inference_cost": "upstreamInferenceCost",
     "user_agent": "userAgent",
+    "web_search_engine": "webSearchEngine",
   });
 });
 
