@@ -59,7 +59,7 @@ export type ListGuardrailMemberAssignmentsRequest = {
   /**
    * Number of records to skip for pagination
    */
-  offset?: number | null | undefined;
+  offset?: number | undefined;
   /**
    * Maximum number of records to return (max 100)
    */
@@ -76,7 +76,7 @@ export type ListGuardrailMemberAssignmentsRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
-  offset?: number | null | undefined;
+  offset?: number | undefined;
   limit?: number | undefined;
 };
 
@@ -89,7 +89,7 @@ export const ListGuardrailMemberAssignmentsRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
-  offset: z.nullable(z.int()).optional(),
+  offset: z.int().optional(),
   limit: z.int().optional(),
 }).transform((v) => {
   return remap$(v, {
