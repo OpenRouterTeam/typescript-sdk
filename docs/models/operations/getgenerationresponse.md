@@ -40,6 +40,7 @@ let value: GetGenerationResponse = {
         status: 200,
       },
     ],
+    responseCacheSourceId: "<id>",
     router: "openrouter/auto",
     streamed: true,
     tokensCompletion: 25,
@@ -49,6 +50,7 @@ let value: GetGenerationResponse = {
     upstreamInferenceCost: 0.0012,
     usage: 0.0015,
     userAgent: "<value>",
+    webSearchEngine: "exa",
   },
 };
 ```
