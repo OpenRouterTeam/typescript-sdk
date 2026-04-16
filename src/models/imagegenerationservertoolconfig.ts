@@ -15,7 +15,7 @@ import {
  */
 export type ImageGenerationServerToolConfig = {
   /**
-   * Which image generation model to use (e.g. "openai/gpt-image-1"). Defaults to "openai/gpt-image-1".
+   * Which image generation model to use (e.g. "openai/gpt-5-image"). Defaults to "openai/gpt-5-image".
    */
   model?: string | undefined;
   additionalProperties?:
